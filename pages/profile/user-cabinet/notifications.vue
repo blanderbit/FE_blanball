@@ -1,0 +1,134 @@
+<template>
+  <div class="user-cabinet">
+    <div class="title-block">
+      <div class="titles">
+        <div  class="title">Особистий кабінет</div>
+        <div class="subtitle">Оновіть своє фото та персональні дані </div>
+      </div>
+      <div class="buttons">
+        <WhiteBtn :text="'Скасувати'" />
+        <GreenBtn :text="'Зберегти'" />
+      </div>
+    </div>
+    <div class="tab-block">
+      <nuxt-link
+        v-for="tab in tabs"
+        :key="tab.id"
+        :class="['tab-element', {active : tab.isActive}]"
+        @click="changeTab(tab.id)"
+        :to="tab.url"
+      >
+        <img :src="tab.img" :alt="tab.name">
+        {{tab.name}}
+      </nuxt-link>
+    </div>
+    <div class="notifications-tab">
+      Notifications
+    </div>
+  </div>
+</template>
+
+<script>
+import { ref } from 'vue'
+import GreenBtn from '../../../components/GreenBtn.vue'
+import WhiteBtn from '../../../components/WhiteBtn.vue'
+
+export default {
+  name: 'user-cabinet',
+  components: {
+    GreenBtn,
+    WhiteBtn
+  },
+  setup() {
+    const tabs = ref([
+      {
+        id: 0,
+        name: 'Мій профіль',
+        img: require('../../../assets/img/user.svg'),
+        url: '/profile/user-cabinet/my-profile',
+        isActive: false
+      },
+      {
+        id: 1,
+        name: 'Тарифний план',
+        img: require('../../../assets/img/database.svg'),
+        url: '/profile/user-cabinet/rate-plan',
+        isActive: false
+      },
+      {
+        id: 2,
+        name: 'Сповіщення',
+        img: require('../../../assets/img/notification-small.svg'),
+        url: '/profile/user-cabinet/notifications',
+        isActive: true
+      },
+    ])
+    const changeTab = id => {
+      tabs.value = tabs.value.map(item => ({ ...item, isActive: false }))
+                              .map(item => {
+                                return item.id === id ?
+                                      { ...item, isActive: true } :
+                                      item
+                              })
+    }
+
+    return {
+      tabs,
+      changeTab
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.title-block {
+  display: flex;
+  justify-content: space-between;
+  .title {
+    font-family: 'Exo 2';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 22px;
+    color: #262541;
+  }
+  .subtitle {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    color: #575775;
+    margin-top: 4px;
+  }
+  .buttons {
+    display: flex;
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+}
+.tab-block {
+  display: flex;
+  border-bottom: 1px solid #DFDEED;
+  margin-top: 28px;
+  cursor: pointer;
+  .tab-element {
+    display: flex;
+    align-items: center;
+    margin-right: 24px;
+    padding-bottom: 12px;
+    text-decoration: none;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    color: #262541;
+    img {
+      margin-right: 8px;
+    }
+    &.active {
+      border-bottom: 2px solid #262541;
+    }
+  }
+}
+.notifications-tab {}
+</style>
