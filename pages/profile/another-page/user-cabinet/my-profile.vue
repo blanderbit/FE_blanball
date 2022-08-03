@@ -33,10 +33,10 @@
           </div>
           <div class="scale-block">
             <div class="image">
-              <img src="../../../assets/img/Slightly_Smiling_Face.png" alt="">
+              <img src="../../../../assets/img/Slightly_Smiling_Face.png" alt="">
             </div>
             <div class="image">
-              <img src="../../../assets/img/scale.png" alt="">
+              <img src="../../../../assets/img/scale.png" alt="">
             </div>
           </div>
           <div class="btns-block">
@@ -51,10 +51,10 @@
             <div class="picture-block">
               <div class="profile-picture">
                 <div class="add-image">
-                  <img src="../../../assets/img/add-user-pic.svg" alt="">
+                  <img src="../../../../assets/img/add-user-pic.svg" alt="">
                 </div>
                 <div class="user-img">
-                  <img src="../../../assets/img/user-photo.png" alt="">
+                  <img src="../../../../assets/img/user-photo.png" alt="">
                 </div>
               </div>
             </div>
@@ -65,7 +65,7 @@
                   <div class="surname">Калиновська</div>
                 </div>
                 <div class="edit-btn">
-                  <img src="../../../assets/img/edit.svg" alt="">
+                  <img src="../../../../assets/img/edit.svg" alt="">
                 </div>
               </div>
               <div class="nick-name-line">
@@ -101,7 +101,7 @@
           </div>
           <div class="change-pass-btn">
             Змінити пароль
-            <img src="../../../assets/img/lock.svg" alt="">
+            <img src="../../../../assets/img/lock.svg" alt="">
           </div>
         </div>
         <div class="delete-account">
@@ -147,11 +147,10 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-import GreenBtn from '../../../components/GreenBtn.vue'
-import WhiteBtn from '../../../components/WhiteBtn.vue'
-import Switcher from '../../../components/Switcher.vue'
-import Dropdown from '../../../components/Dropdown.vue'
+import GreenBtn from '../../../../components/GreenBtn.vue'
+import WhiteBtn from '../../../../components/WhiteBtn.vue'
+import Switcher from '../../../../components/Switcher.vue'
+import Dropdown from '../../../../components/Dropdown.vue'
 
 export default {
   name: 'user-cabinet',
@@ -161,42 +160,41 @@ export default {
     Switcher,
     Dropdown
   },
-  setup() {
-    const tabs = ref([
-      {
-        id: 0,
-        name: 'Мій профіль',
-        img: require('../../../assets/img/user.svg'),
-        url: '/profile/user-cabinet/my-profile',
-        isActive: true
-      },
-      {
-        id: 1,
-        name: 'Тарифний план',
-        img: require('../../../assets/img/database.svg'),
-        url: '/profile/user-cabinet/rate-plan',
-        isActive: false
-      },
-      {
-        id: 2,
-        name: 'Сповіщення',
-        img: require('../../../assets/img/notification-small.svg'),
-        url: '/profile/user-cabinet/notifications',
-        isActive: false
-      },
-    ])
-    const changeTab = id => {
-      tabs.value = tabs.value.map(item => ({ ...item, isActive: false }))
+  data() {
+    return {
+      tabs: [
+        {
+          id: 0,
+          name: 'Мій профіль',
+          img: require('../../../../assets/img/user.svg'),
+          url: '/profile/another-page/user-cabinet/my-profile',
+          isActive: true
+        },
+        {
+          id: 1,
+          name: 'Тарифний план',
+          img: require('../../../../assets/img/database.svg'),
+          url: '/profile/another-page/user-cabinet/rate-plan',
+          isActive: false
+        },
+        {
+          id: 2,
+          name: 'Сповіщення',
+          img: require('../../../../assets/img/notification-small.svg'),
+          url: '/profile/another-page/user-cabinet/notifications',
+          isActive: false
+        },
+      ]
+    }
+  },
+  methods: {
+    changeTab(id) {
+      this.tabs = this.tabs.map(item => ({ ...item, isActive: false }))
                               .map(item => {
                                 return item.id === id ?
                                       { ...item, isActive: true } :
                                       item
                               })
-    }
-
-    return {
-      tabs,
-      changeTab
     }
   }
 }
@@ -244,6 +242,7 @@ export default {
     font-weight: 400;
     font-size: 13px;
     color: #262541;
+    user-select: none;
     img {
       margin-right: 8px;
     }

@@ -22,37 +22,34 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-
 export default {
   name: 'dropdown-component',
-  setup() {
-    const isOpened = ref(false)
-    const options = [
-      {
-        id: 0,
-        value: 'Жінка'
-      },
-      {
-        id: 1,
-        value: 'Чоловик'
-      },
-    ]
-    const currentValue = ref(options[0].value)
-    const toggleDropdown = () => {
-      isOpened.value = !isOpened.value
-    }
-    const setNewValue = val => {
-      console.log(val)
-      currentValue.value = val
-    }
-
+  data() {
     return {
-      options,
-      currentValue,
-      isOpened,
-      toggleDropdown,
-      setNewValue
+      isOpened: false,
+      options: [
+        {
+          id: 0,
+          value: 'Жінка'
+        },
+        {
+          id: 1,
+          value: 'Чоловик'
+        },
+      ]
+    }
+  },
+  computed: {
+    currentValue() {
+      return this.options[0].value
+    }
+  },
+  methods: {
+    toggleDropdown() {
+      this.isOpened = !this.isOpened
+    },
+    setNewValue(val) {
+      this.currentValue = val
     }
   }
 }

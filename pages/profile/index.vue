@@ -1,7 +1,8 @@
 <template>
   <div>
-    Profile
-    <nuxt-link to="profile/user-cabinet/my-profile">User cabinet</nuxt-link>
+    Profile. 
+    Go to - 
+    <nuxt-link to="/profile/another-page">another-page</nuxt-link>
   </div>
 </template>
 

@@ -146,7 +146,6 @@
 </template>
 
 <script>
-import { ref } from 'vue'
 import GreenBtn from './GreenBtn.vue'
 import WhiteBtn from './WhiteBtn.vue'
 import Switcher from './Switcher.vue'
@@ -159,42 +158,41 @@ export default {
     Switcher,
     Dropdown
   },
-  setup() {
-    const tabs = ref([
-      {
-        id: 0,
-        name: 'Мій профіль',
-        img: '../assets/img/user.svg',
-        url: '/',
-        isActive: true
-      },
-      {
-        id: 1,
-        name: 'Тарифний план',
-        img: '../assets/img/database.svg',
-        url: '/rate-plan',
-        isActive: false
-      },
-      {
-        id: 2,
-        name: 'Сповіщення',
-        img: '../assets/img/notification-small.svg',
-        url: '/notifications',
-        isActive: false
-      },
-    ])
-    const changeTab = id => {
-      tabs.value = tabs.value.map(item => ({ ...item, isActive: false }))
-                              .map(item => {
-                                return item.id === id ?
-                                      { ...item, isActive: true } :
-                                      item
-                              })
-    }
-
+  data() {
     return {
-      tabs,
-      changeTab
+      tabs: [
+        {
+          id: 0,
+          name: 'Мій профіль',
+          img: '../assets/img/user.svg',
+          url: '/',
+          isActive: true
+        },
+        {
+          id: 1,
+          name: 'Тарифний план',
+          img: '../assets/img/database.svg',
+          url: '/rate-plan',
+          isActive: false
+        },
+        {
+          id: 2,
+          name: 'Сповіщення',
+          img: '../assets/img/notification-small.svg',
+          url: '/notifications',
+          isActive: false
+        },
+      ]
+    }
+  },
+  methods: {
+    changeTab(id) {
+      this.tabs = this.tabs.map(item => ({ ...item, isActive: false }))
+                            .map(item => {
+                              return item.id === id ?
+                                    { ...item, isActive: true } :
+                                    item
+                            })
     }
   }
 }
