@@ -99,6 +99,7 @@ export default {
       font-size: 13px;
       line-height: 24px;
       color: #262541;
+      z-index: -1;
       ul {
         position: absolute;
         top: 40px;

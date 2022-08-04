@@ -85,6 +85,7 @@ export default {
     height: 40px;
     width: 220px;
     min-width: 220px;
+    z-index: -1;
     img {
       position: absolute;
       right: 15.5px;
