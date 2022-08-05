@@ -33,7 +33,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.219);
+  background: rgba(255, 255, 255, 0.514);
   z-index: 1;
   .modal-window {
     position: absolute;
