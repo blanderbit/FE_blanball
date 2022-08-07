@@ -1,5 +1,6 @@
 <template>
   <div class="user-cabinet">
+    <Spiner />
     <div class="title-block">
       <div class="titles">
         <div  class="title">Особистий кабінет</div>
@@ -152,6 +153,7 @@ import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
 import Switcher from '../../../components/Switcher.vue'
 import Dropdown from '../../../components/Dropdown.vue'
+import Spiner from '../../../components/GlobalSpiner.vue'
 
 export default {
   name: 'user-cabinet',
@@ -159,7 +161,8 @@ export default {
     GreenBtn,
     WhiteBtn,
     Switcher,
-    Dropdown
+    Dropdown,
+    Spiner
   },
   setup() {
     const tabs = ref([
