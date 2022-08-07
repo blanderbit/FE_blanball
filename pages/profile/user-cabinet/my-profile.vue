@@ -6,8 +6,14 @@
         <div class="subtitle">Оновіть своє фото та персональні дані </div>
       </div>
       <div class="buttons">
-        <WhiteBtn :text="'Скасувати'" />
-        <GreenBtn :text="'Зберегти'" />
+        <WhiteBtn 
+          :text="'Скасувати'"
+          :width="98"
+        />
+        <GreenBtn 
+          :text="'Зберегти'"
+          :width="89"
+        />
       </div>
     </div>
     <div class="tab-block">
@@ -140,14 +146,17 @@
           </div>
           <input type="text" placeholder="09. 07. 1998">
         </div>
-        <Dropdown />
+        <Dropdown 
+          :options="dataDropdown"
+          :main-title="'Гендер'"
+          :insideTitle="true"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
 import Switcher from '../../../components/Switcher.vue'
@@ -161,42 +170,51 @@ export default {
     Switcher,
     Dropdown
   },
-  setup() {
-    const tabs = ref([
-      {
-        id: 0,
-        name: 'Мій профіль',
-        img: require('../../../assets/img/user.svg'),
-        url: '/profile/user-cabinet/my-profile',
-        isActive: true
-      },
-      {
-        id: 1,
-        name: 'Тарифний план',
-        img: require('../../../assets/img/database.svg'),
-        url: '/profile/user-cabinet/rate-plan',
-        isActive: false
-      },
-      {
-        id: 2,
-        name: 'Сповіщення',
-        img: require('../../../assets/img/notification-small.svg'),
-        url: '/profile/user-cabinet/notifications',
-        isActive: false
-      },
-    ])
-    const changeTab = id => {
-      tabs.value = tabs.value.map(item => ({ ...item, isActive: false }))
+  data() {
+    return {
+      dataDropdown: [
+        {
+          id: 0,
+          value: 'Жінка'
+        },
+        {
+          id: 1,
+          value: 'Чоловик'
+        }
+      ],
+      tabs: [
+        {
+          id: 0,
+          name: 'Мій профіль',
+          img: require('../../../assets/img/user.svg'),
+          url: '/profile/user-cabinet/my-profile',
+          isActive: true
+        },
+        {
+          id: 1,
+          name: 'Тарифний план',
+          img: require('../../../assets/img/database.svg'),
+          url: '/profile/user-cabinet/rate-plan',
+          isActive: false
+        },
+        {
+          id: 2,
+          name: 'Сповіщення',
+          img: require('../../../assets/img/notification-small.svg'),
+          url: '/profile/user-cabinet/notifications',
+          isActive: false
+        }
+      ]
+    }
+  },
+  methods: {
+    changeTab(id) {
+      this.tabs = this.tabs.map(item => ({ ...item, isActive: false }))
                               .map(item => {
                                 return item.id === id ?
                                       { ...item, isActive: true } :
                                       item
                               })
-    }
-
-    return {
-      tabs,
-      changeTab
     }
   }
 }
