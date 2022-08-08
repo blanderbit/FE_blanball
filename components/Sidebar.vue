@@ -79,6 +79,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  z-index: -1;
   @media (max-width: 992px) {
     display: none;
   }
