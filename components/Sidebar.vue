@@ -9,10 +9,10 @@
       </div>
       <div class="menu-block">
         <ul>
-          <li class="menu-item"
+          <li
             v-for="item in menuItems"
             :key="item.id"
-            :class="{ active: item.isActive }"
+            :class="['menu-item', { active: item.isActive }]"
           >
             <img :src="item.url" alt="">
           </li>
@@ -30,37 +30,35 @@
 <script>
 export default {
   name: 'main-sidebar',
-  setup() {
-    const menuItems = [
-      {
-        id: 0,
-        url: require('../assets/img/Notification.svg'),
-        isActive: true
-      },
-      {
-        id: 1,
-        url: require('../assets/img/Settings.svg'),
-        isActive: false
-      },
-      {
-        id: 2,
-        url: require('../assets/img/record.svg'),
-        isActive: false
-      },
-      {
-        id: 3,
-        url: require('../assets/img/window.svg'),
-        isActive: false
-      },
-      {
-        id: 4,
-        url: require('../assets/img/members.svg'),
-        isActive: false
-      },
-    ]
-
+  data() {
     return {
-      menuItems
+      menuItems: [
+        {
+          id: 0,
+          url: require('../assets/img/Notification.svg'),
+          isActive: true
+        },
+        {
+          id: 1,
+          url: require('../assets/img/Settings.svg'),
+          isActive: false
+        },
+        {
+          id: 2,
+          url: require('../assets/img/record.svg'),
+          isActive: false
+        },
+        {
+          id: 3,
+          url: require('../assets/img/window.svg'),
+          isActive: false
+        },
+        {
+          id: 4,
+          url: require('../assets/img/members.svg'),
+          isActive: false
+        },
+      ]
     }
   }
 }
@@ -79,6 +77,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  z-index: -1;
   @media (max-width: 992px) {
     display: none;
   }

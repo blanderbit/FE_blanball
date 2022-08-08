@@ -137,7 +137,6 @@ export default {
       font-size: 13px;
       line-height: 24px;
       color: #262541;
-      background: #fff;
       ul {
         position: absolute;
         top: 40px;

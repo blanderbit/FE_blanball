@@ -1,8 +1,97 @@
 <template>
   <div class="user-cabinet">
+    <Spiner />
+    <Transition>
+      <ModalWindow 
+        v-if="isModalActive" 
+        @close-modal="toggleModal"
+      >
+        <template #title>
+          Зміна номера телефону
+        </template>
+        <template #title-icon>
+          <img src="../../../assets/img/add-phone.svg" alt="" />
+        </template>
+        <template #change-phone-number>
+          <div 
+            v-if="modal.first" 
+            class="change-phone-screen-1"
+          >
+            <div class="current-number">
+              (617) 623-2338
+            </div>
+            <p class="description-text">
+              Тут Ви можете змінити номер телефону. Ваш акаунт і всі наявні дані будут перенесені на новий номер без втрати поточних налаштувань та інформації.
+            </p>
+            <div class="btns-block">
+              <div 
+                class="cancle-btn"
+                @click="toggleModal"
+              >
+                Залишити поточний номер
+              </div>
+              <div 
+                class="save-btn"
+                @click="toggleModalPage"
+              >
+                Змінити номер
+              </div>
+            </div>
+          </div>
+          <div 
+            v-if="modal.second" 
+            class="change-phone-screen-2"
+          >
+            <div class="current-number">
+              <InputComponent
+                :title="'Поточний номер'"
+                :placeholder="'(617) 623-2338'"
+                :titleWidth="138"
+                :inputType="'number'"
+              />
+            </div>
+            <div class="new-number">
+              <InputComponent
+                :title="'Новий номер'"
+                :placeholder="'(050) 623-78 95'"
+                :titleWidth="138"
+                :inputType="'number'"
+              />
+            </div>
+            <p class="sms-text">
+              SMS із кодом підтвердження прийде протягом 30 сек          
+            </p>
+            <div class="sms-code-block">
+              <input type="number" placeholder="_" v-model="smscode[1]">
+              <input type="number" placeholder="_" v-model="smscode[2]">
+              <input type="number" placeholder="_" v-model="smscode[3]">
+              <input type="number" placeholder="_" v-model="smscode[4]">
+              <input type="number" placeholder="_" v-model="smscode[5]">
+            </div>
+            <div class="btns-block">
+              <div 
+                class="cancle-btn"
+                @click="toggleModal"
+              >
+                Скасувати редагування
+              </div>
+              <div 
+                class="save-btn"
+                @click="toggleModal"
+              >
+                Зберегти зміни
+              </div>
+            </div>
+          </div>
+        </template>
+      </ModalWindow>
+    </Transition>
+
     <div class="title-block">
       <div class="titles">
-        <div  class="title">Особистий кабінет</div>
+        <div  class="title">
+          Особистий кабінет
+        </div>
         <div class="subtitle">Оновіть своє фото та персональні дані </div>
       </div>
       <div class="buttons">
@@ -39,10 +128,10 @@
           </div>
           <div class="scale-block">
             <div class="image">
-              <img src="../../../assets/img/Slightly_Smiling_Face.png" alt="">
+              <img src="../../../../assets/img/Slightly_Smiling_Face.png" alt="">
             </div>
             <div class="image">
-              <img src="../../../assets/img/scale.png" alt="">
+              <img src="../../../../assets/img/scale.png" alt="">
             </div>
           </div>
           <div class="btns-block">
@@ -57,10 +146,10 @@
             <div class="picture-block">
               <div class="profile-picture">
                 <div class="add-image">
-                  <img src="../../../assets/img/add-user-pic.svg" alt="">
+                  <img src="../../../../assets/img/add-user-pic.svg" alt="">
                 </div>
                 <div class="user-img">
-                  <img src="../../../assets/img/user-photo.png" alt="">
+                  <img src="../../../../assets/img/user-photo.png" alt="">
                 </div>
               </div>
             </div>
@@ -71,14 +160,14 @@
                   <div class="surname">Калиновська</div>
                 </div>
                 <div class="edit-btn">
-                  <img src="../../../assets/img/edit.svg" alt="">
+                  <img src="../../../../assets/img/edit.svg" alt="">
                 </div>
               </div>
               <div class="nick-name-line">
                 <div class="nick-name">@S_Kalyna</div>
                 <div class="status">Гість</div>
               </div>
-              <div class="phone-number-line">+380 (95) 390 86 50</div>
+              <div class="phone-number-line" @click="toggleModal">+380 (95) 390 86 50</div>
             </div>
           </div>
           <div class="bottom-part">
@@ -99,15 +188,14 @@
           <div class="subtitle">
             Ви можете змінити свій логін та пароль
           </div>
-          <div class="email-input">
-            <div class="title">
-              <span>E-mail</span>
-            </div>
-            <input type="text" placeholder="f.j.swann@aol.com">
-          </div>
+          <InputComponent
+            :title="'E-mail'"
+            :placeholder="'f.j.swann@aol.com'"
+            :titleWidth="68"
+          />
           <div class="change-pass-btn">
             Змінити пароль
-            <img src="../../../assets/img/lock.svg" alt="">
+            <img src="../../../../assets/img/lock.svg" alt="">
           </div>
         </div>
         <div class="delete-account">
@@ -140,12 +228,10 @@
         <div class="title">
           Особиста інформація
         </div>
-        <div class="age-input">
-          <div class="title">
-            <span>Вік</span>
-          </div>
-          <input type="text" placeholder="09. 07. 1998">
-        </div>
+        <InputComponent
+          :title="'Вік'"
+          :placeholder="'09. 07. 1998'"
+        />
         <Dropdown 
           :options="dataDropdown"
           :main-title="'Гендер'"
@@ -161,6 +247,9 @@ import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
 import Switcher from '../../../components/Switcher.vue'
 import Dropdown from '../../../components/Dropdown.vue'
+import Spiner from '../../../components/GlobalSpiner.vue'
+import ModalWindow from '../../../components/ModalWindow.vue'
+import InputComponent from '../../../components/InputComponent.vue'
 
 export default {
   name: 'user-cabinet',
@@ -168,7 +257,10 @@ export default {
     GreenBtn,
     WhiteBtn,
     Switcher,
-    Dropdown
+    Dropdown,
+    Spiner,
+    ModalWindow,
+    InputComponent
   },
   data() {
     return {
@@ -182,6 +274,18 @@ export default {
           value: 'Чоловик'
         }
       ],
+      modal: {
+        first: true,
+        second: false
+      },
+      smscode: {
+        1: null,
+        2: null,
+        3: null,
+        4: null,
+        5: null
+      },
+      isModalActive: false,
       tabs: [
         {
           id: 0,
@@ -203,7 +307,7 @@ export default {
           img: require('../../../assets/img/notification-small.svg'),
           url: '/profile/user-cabinet/notifications',
           isActive: false
-        }
+        },
       ]
     }
   },
@@ -215,12 +319,34 @@ export default {
                                       { ...item, isActive: true } :
                                       item
                               })
+    },
+    toggleModal() {
+      this.isModalActive = !this.isModalActive
+      this.modal = {
+        first: true,
+        second: false
+      }
+    },
+    toggleModalPage() {
+      this.modal = {
+        first: false,
+        second: true
+      }
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 .title-block {
   display: flex;
   justify-content: space-between;
@@ -262,6 +388,7 @@ export default {
     font-weight: 400;
     font-size: 13px;
     color: #262541;
+    user-select: none;
     img {
       margin-right: 8px;
     }
@@ -376,6 +503,7 @@ export default {
         .profile-picture {
           position: relative;
           margin-right: 12px;
+          z-index: -1;
           .add-image {
             position: absolute;
             width: 36px;
@@ -466,43 +594,6 @@ export default {
       order: 5;
     }
     .top-table {
-      .email-input {
-        width: 100%;
-        height: 40px;
-        border: 1px solid #DFDEED;
-        position: relative;
-        border-radius: 6px;
-        margin: 12px 0;
-        .title {
-          display: table;
-          width: 68px;
-          height: 100%;
-          position: absolute;
-          top: 0;
-          left: 0;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 14px;
-          line-height: 24px;
-          color: #575775;
-          span {
-            display: table-cell;
-            text-align: center;
-            vertical-align: middle;
-            border-right: 1px solid #DFDEED;
-          }
-        }
-        input {
-          width: 100%;
-          height: 100%;
-          border: none;
-          outline: none;
-          padding-left: 75px;
-          padding-right: 5px;
-          border-radius: 6px;
-        }
-      }
       .change-pass-btn {
         padding-left: 16px;
         padding-right: 20px;
@@ -568,46 +659,6 @@ export default {
       width: 328px;
       min-width: 328px;
       order: 4;
-    }
-    .age-input {
-      width: 100%;
-      height: 40px;
-      border: 1px solid #DFDEED;
-      position: relative;
-      border-radius: 6px;
-      margin: 12px 0;
-      .title {
-        display: table;
-        width: 108px;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 24px;
-        color: #575775;
-        background: #fff;
-        border-radius: 6px;
-        span {
-          display: table-cell;
-          text-align: left;
-          vertical-align: middle;
-          border-right: 1px solid #DFDEED;
-          padding-left: 12px;
-        }
-      }
-      input {
-        width: 100%;
-        height: 100%;
-        border: none;
-        outline: none;
-        padding-left: 115px;
-        padding-right: 5px;
-        border-radius: 6px;
-      }
     }
   }
 }
