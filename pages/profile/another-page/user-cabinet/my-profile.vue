@@ -122,10 +122,10 @@
           </div>
           <div class="scale-block">
             <div class="image">
-              <img src="../../../assets/img/Slightly_Smiling_Face.png" alt="">
+              <img src="../../../../assets/img/Slightly_Smiling_Face.png" alt="">
             </div>
             <div class="image">
-              <img src="../../../assets/img/scale.png" alt="">
+              <img src="../../../../assets/img/scale.png" alt="">
             </div>
           </div>
           <div class="btns-block">
@@ -140,10 +140,10 @@
             <div class="picture-block">
               <div class="profile-picture">
                 <div class="add-image">
-                  <img src="../../../assets/img/add-user-pic.svg" alt="">
+                  <img src="../../../../assets/img/add-user-pic.svg" alt="">
                 </div>
                 <div class="user-img">
-                  <img src="../../../assets/img/user-photo.png" alt="">
+                  <img src="../../../../assets/img/user-photo.png" alt="">
                 </div>
               </div>
             </div>
@@ -154,7 +154,7 @@
                   <div class="surname">Калиновська</div>
                 </div>
                 <div class="edit-btn">
-                  <img src="../../../assets/img/edit.svg" alt="">
+                  <img src="../../../../assets/img/edit.svg" alt="">
                 </div>
               </div>
               <div class="nick-name-line">
@@ -189,7 +189,7 @@
           />
           <div class="change-pass-btn">
             Змінити пароль
-            <img src="../../../assets/img/lock.svg" alt="">
+            <img src="../../../../assets/img/lock.svg" alt="">
           </div>
         </div>
         <div class="delete-account">
@@ -368,6 +368,7 @@ export default {
     font-weight: 400;
     font-size: 13px;
     color: #262541;
+    user-select: none;
     img {
       margin-right: 8px;
     }

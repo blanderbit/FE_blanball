@@ -29,9 +29,8 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-import GreenBtn from '../../../components/GreenBtn.vue'
-import WhiteBtn from '../../../components/WhiteBtn.vue'
+import GreenBtn from '../../../../components/GreenBtn.vue'
+import WhiteBtn from '../../../../components/WhiteBtn.vue'
 
 export default {
   name: 'user-cabinet',
@@ -39,42 +38,41 @@ export default {
     GreenBtn,
     WhiteBtn
   },
-  setup() {
-    const tabs = ref([
-      {
-        id: 0,
-        name: 'Мій профіль',
-        img: require('../../../assets/img/user.svg'),
-        url: '/profile/user-cabinet/my-profile',
-        isActive: false
-      },
-      {
-        id: 1,
-        name: 'Тарифний план',
-        img: require('../../../assets/img/database.svg'),
-        url: '/profile/user-cabinet/rate-plan',
-        isActive: true
-      },
-      {
-        id: 2,
-        name: 'Сповіщення',
-        img: require('../../../assets/img/notification-small.svg'),
-        url: '/profile/user-cabinet/notifications',
-        isActive: false
-      },
-    ])
-    const changeTab = id => {
-      tabs.value = tabs.value.map(item => ({ ...item, isActive: false }))
-                              .map(item => {
-                                return item.id === id ?
-                                      { ...item, isActive: true } :
-                                      item
-                              })
-    }
-
+  data() {
     return {
-      tabs,
-      changeTab
+      tabs: [
+        {
+          id: 0,
+          name: 'Мій профіль',
+          img: require('../../../../assets/img/user.svg'),
+          url: '/profile/another-page/user-cabinet/my-profile',
+          isActive: false
+        },
+        {
+          id: 1,
+          name: 'Тарифний план',
+          img: require('../../../../assets/img/database.svg'),
+          url: '/profile/another-page/user-cabinet/rate-plan',
+          isActive: true
+        },
+        {
+          id: 2,
+          name: 'Сповіщення',
+          img: require('../../../../assets/img/notification-small.svg'),
+          url: '/profile/another-page/user-cabinet/notifications',
+          isActive: false
+        },
+      ]
+    }
+  },
+  methods: {
+    changeTab(id) {
+      this.tabs = this.tabs.map(item => ({ ...item, isActive: false }))
+                            .map(item => {
+                              return item.id === id ?
+                                    { ...item, isActive: true } :
+                                    item
+                            })
     }
   }
 }
@@ -122,6 +120,7 @@ export default {
     font-weight: 400;
     font-size: 13px;
     color: #262541;
+    user-select: none;
     img {
       margin-right: 8px;
     }

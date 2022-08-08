@@ -3,17 +3,7 @@
     <div class="mob-menu-icon">
       <img src="../assets/img/mob-menu-icon.svg" alt="">
     </div>
-    <div class="bread-crumbs">
-      <ul>
-        <li
-          v-for="(item, idx) of breadCrumbs"
-          :key="item.name"
-        >
-          {{ item.name }}
-          <img v-if="!(idx + 1 === breadCrumbsLength)" src="../assets/img/arrow-right.svg" alt="">
-        </li>
-      </ul>
-    </div>
+    <BreadCrumbs />
     <div class="logo">
       <img src="../assets/img/Blanball.png" alt="">
     </div>
@@ -25,20 +15,11 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import BreadCrumbs from '../components/Breadcrumbs.vue'
 
 export default {
-  setup() {
-    const breadCrumbsLength = computed(() => breadCrumbs.length)
-    const breadCrumbs = [
-      { name: 'Головна' },
-      { name: 'Профіль' },
-      { name: 'Особистий кабінет' }
-    ]
-    return {
-      breadCrumbs,
-      breadCrumbsLength
-    }
+  components: {
+    BreadCrumbs
   }
 }
 </script>
@@ -53,25 +34,6 @@ export default {
     display: none;
     @media (max-width: 992px) {
       display: block;
-    }
-  }
-  .bread-crumbs {
-    ul {
-      display: flex;
-      li {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 12px;
-        list-style: none;
-        img {
-          margin-left: 13.5px;
-          margin-right: 13.5px;
-        }
-      }
-    }
-    @media (max-width: 992px) {
-      display: none;
     }
   }
   .logo {
