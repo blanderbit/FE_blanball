@@ -1,5 +1,6 @@
 <template>
   <div class="user-cabinet">
+    <Spiner />
     <Transition>
       <ModalWindow 
         v-if="isModalActive" 
@@ -236,6 +237,7 @@ import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
 import Switcher from '../../../components/Switcher.vue'
 import Dropdown from '../../../components/Dropdown.vue'
+import Spiner from '../../../components/GlobalSpiner.vue'
 import ModalWindow from '../../../components/ModalWindow.vue'
 import InputComponent from '../../../components/InputComponent.vue'
 
@@ -246,6 +248,7 @@ export default {
     WhiteBtn,
     Switcher,
     Dropdown,
+    Spiner,
     ModalWindow,
     InputComponent
   },
