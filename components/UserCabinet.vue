@@ -352,6 +352,7 @@ export default {
         .profile-picture {
           position: relative;
           margin-right: 12px;
+          z-index: -1;
           .add-image {
             position: absolute;
             width: 36px;
@@ -449,6 +450,7 @@ export default {
         position: relative;
         border-radius: 6px;
         margin: 12px 0;
+        z-index: -1;
         .title {
           display: table;
           width: 68px;
@@ -552,6 +554,7 @@ export default {
       position: relative;
       border-radius: 6px;
       margin: 12px 0;
+      z-index: -1;
       .title {
         display: table;
         width: 108px;
