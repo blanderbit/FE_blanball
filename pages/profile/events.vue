@@ -4,6 +4,7 @@
       <div class="header-block">
         <div class="left-part">
           <div class="title">Майбутні події</div>
+          <div class="subtitle">Оновіть своє фото та персональні дані</div>
           <div class="event-switcher">
             <div class="general-events">Загальна</div>
             <div class="my-events">Мої події</div>
@@ -79,6 +80,54 @@
             </div>
           </div>
         </div>
+        <div class="search-block-mob">
+          <div class="filters-block">
+            <div class="sorting-block sort-item">
+              <div class="icon">
+                <img src="../../assets/img/sort-arrows.svg" alt="">
+              </div>
+              <div class="text">
+                <div class="title">Сортування</div>
+                <div class="terms">спочатку нові</div>
+              </div>
+            </div>
+            <div class="filtering-block sort-item">
+              <div class="icon">
+                <img src="../../assets/img/set-filter.svg" alt="">
+              </div>
+              <div class="text">
+                <div class="title">Фільтри</div>
+                <div class="terms">знайдено 15 оголошень</div>
+              </div>
+            </div>
+            <div class="calendar-icon">
+              <img src="../../assets/img/calendar.svg" alt="">
+            </div>
+          </div>
+          <div class="dates-block">
+            <div class="months">
+              <div class="wrapper">
+                <div class="arrow arrow-left">
+                  <img src="../../assets/img/arrow-left.svg" alt="">
+                </div>
+                <div class="main-part">Червень 2022</div>
+                <div class="arrow arrow-right">
+                  <img src="../../assets/img/arrow-right.svg" alt="">
+                </div>
+              </div>
+            </div>
+            <div class="dates">
+              <div
+                v-for="item of calendar"
+                :key="item.id"
+                :class="['date-item', {active: item.isActive}]"
+              >
+                <div class="day">{{item.day}}</div>
+                <div class="number">{{item.number}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="cards-block">
           <div class="event-card">
             <div class="top-title">
@@ -87,7 +136,11 @@
                   <img src="../../assets/img/hands-shake.png" alt=""></div>
                 <div class="text-block">
                   <div class="title">Дружній матч</div>
-                  <div class="address">
+                  <div class="date-time-mob">
+                    <div class="date">16 червня</div>
+                    <div class="time">12:00 – 14:00</div>
+                  </div>
+                  <div class="address desk-address">
                     <img src="../../assets/img/location-point.svg" alt="">
                     <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
                   </div>
@@ -98,6 +151,10 @@
                 <div class="time">12:00 – 14:00</div>
               </div>
             </div>
+            <div class="address mob-address">
+              <img src="../../assets/img/location-point.svg" alt="">
+              <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
+            </div>
             <div class="main-text">
               Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd
             </div>
@@ -105,7 +162,6 @@
               <div class="label">Футбол</div>
               <div class="label">Чоловіки</div>
               <div class="label">Без розряду</div>
-              <div class="label">Потрібна форма</div>
             </div>
             <div class="bottom-block">
               <div class="top-line">
@@ -198,6 +254,17 @@ export default {
           id: 2,
           value: 'Баскетбол'
         }
+      ],
+      calendar: [
+        { id: 0, day: 'Пн', number: 13, isActive: false },
+        { id: 1, day: 'Вт', number: 14, isActive: false },
+        { id: 2, day: 'Ср', number: 15, isActive: false },
+        { id: 3, day: 'Чт', number: 16, isActive: false },
+        { id: 4, day: 'Пт', number: 17, isActive: false },
+        { id: 5, day: 'Сб', number: 18, isActive: false },
+        { id: 6, day: 'Вс', number: 19, isActive: true },
+        { id: 7, day: 'Пн', number: 20, isActive: false },
+
       ]
     }
   }
@@ -209,6 +276,9 @@ export default {
     display: grid;
     grid-template-columns: 1fr 256px;
     grid-gap: 16px;
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
     .main-body {
       .header-block {
         display: flex;
@@ -224,6 +294,17 @@ export default {
             color: #262541;
             margin-bottom: 4px;     
           }
+          .subtitle {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 13px;
+            line-height: 20px;
+            color: #575775;
+            @media (min-width: 768px) {
+              display: none;
+            }
+          }
           .event-switcher {
             font-family: 'Inter';
             font-style: normal;
@@ -233,6 +314,9 @@ export default {
             text-align: center;
             color: #262541;
             display: flex;
+            @media (max-width: 768px) {
+              display: none;
+            }
             .general-events {
               display: flex;
               flex-direction: row;
@@ -260,13 +344,18 @@ export default {
           }
         }
         .right-part {
-
+          @media (max-width: 768px) {
+            display: none;
+          }
         }
       }
       .main-search-block {
         margin-top: 36px;
         padding: 20px 16px;
         position: relative;
+        @media (max-width: 768px) {
+          padding: 0;
+        }
         .grey-rectangle {
           width: 100%;
           height: 208px;
@@ -276,8 +365,14 @@ export default {
           top: 0;
           left: 0;
           z-index: -1;
+          @media (max-width: 768px) {
+            display: none;
+          }
         }
         .search-block {
+          @media (max-width: 768px) {
+            display: none;
+          }
           .first-line {
             display: flex;
             justify-content: space-between;
@@ -454,6 +549,154 @@ export default {
             }
           }
         }
+        .search-block-mob {
+          @media (min-width: 768px) {
+            display: none;
+          }
+          .filters-block {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .icon {
+              display: flex;
+              width: 36px;
+              height: 36px;
+              background: #FAFAFA;
+              border-radius: 6px;
+              img {
+                margin: auto;
+              }
+            }
+            .title {
+              font-family: 'Inter';
+              font-style: normal;
+              font-weight: 500;
+              font-size: 13px;
+              line-height: 20px;
+              color: #262541;
+            }
+            .terms {
+              font-family: 'Inter';
+              font-style: normal;
+              font-weight: 400;
+              font-size: 12px;
+              line-height: 20px;
+              color: #575775;
+              display: -webkit-box;
+              -webkit-line-clamp: 1;
+              -webkit-box-orient: vertical;
+              overflow: hidden;
+            }
+            .sort-item {
+              display: flex;
+              margin-right: 16px;
+              width: 132px;
+              min-width: 132px;
+              .icon {
+                margin-right: 4px;
+              }
+            }
+            .calendar-icon {
+              display: flex;
+              width: 32px;
+              height: 32px;
+              background: #FAFAFA;
+              border-radius: 6px;
+              img {
+                margin: auto;
+              }
+            }
+          }
+          .dates-block {
+            .months {
+              .wrapper {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                margin-top: 8px;
+                .arrow {
+                  display: flex;
+                  width: 24px;
+                  height: 24px;
+                  background: #FAFAFA;
+                  border-radius: 6px;
+                  img {
+                    margin: auto;
+                  }
+                }
+                .main-part {
+                  font-family: 'Inter';
+                  font-style: normal;
+                  font-weight: 500;
+                  font-size: 14px;
+                  line-height: 24px;
+                  text-align: center;
+                  color: #262541;
+                  margin: 0 16px;
+                }
+              }
+            }
+            .dates {
+              margin-top: 8px;
+              display: flex;
+              align-items: start;
+              .date-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                width: 36px;
+                min-width: 3px;
+                height: 51px;
+                border-radius: 4px 4px 0px 0px;
+                margin-right: 6px;
+                &.active {
+                  background: #FFDAEA;
+                  border-bottom: 2px solid #C3305C;
+                  margin-right: 12px;
+                  position: relative;
+                  &:after {
+                    content: '';
+                    display: block;
+                    width: 1px;
+                    height: 12px;
+                    background: #000;
+                    position: absolute;
+                    right: -12px;
+                    top: 50%;
+                    margin-top: -6px;
+                  }
+                  .day {
+                    color: #C3305C;
+                  }
+                  .number {
+                    font-weight: 500;
+                    color: #C3305C;
+                  }
+                }
+                .day {
+                  font-family: 'Inter';
+                  font-style: normal;
+                  font-weight: 400;
+                  font-size: 12px;
+                  line-height: 16px;
+                  text-align: center;
+                  color: #575775;
+                }
+                .number {
+                  margin-top: 2px;
+                  font-family: 'Inter';
+                  font-style: normal;
+                  font-weight: 400;
+                  font-size: 13px;
+                  line-height: 20px;
+                  text-align: center;
+                  color: #262541;
+                }
+              }
+            }
+          }
+        }
         .cards-block {
           margin-top: 23px;
           .event-card {
@@ -463,10 +706,70 @@ export default {
             background: #FFFFFF;
             box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
             border-radius: 6px;
+            @media (max-width: 768px) {
+              width: 100%;
+            }
+            .address {
+              &.desk-address {
+                @media (max-width: 768px) {
+                  display: none;
+                }
+              }
+              &.mob-address {
+                display: none;
+                @media (max-width: 768px) {
+                  display: flex;
+                }
+              }
+              display: flex;
+              background: #FAFAFA;
+              padding: 0px 4px;
+              margin-top: 4px;
+              width: 212px;
+              @media (max-width: 768px) {
+                width: fit-content;
+                margin-top: 8px;
+              }
+              img {
+                margin-right: 5px;
+              }
+              p {
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 20px;
+                color: #575775;
+                border-radius: 4px;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+              }
+            }
             .top-title {
               display: flex;
               justify-content: space-between;
               align-items: center;
+              .date {
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 20px;
+                text-align: right;
+                color: #262541;
+              }
+              .time {
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 20px;
+                text-align: right;
+                color: #4C4A82;
+                margin-top: 4px;
+              }
               .left-side {
                 display: flex;
                 .card-icon {
@@ -489,53 +792,25 @@ export default {
                     line-height: 24px;
                     color: #262541;
                   }
-                  .address {
-                    display: flex;
-                    background: #FAFAFA;
-                    padding: 0px 4px;
-                    margin-top: 4px;
-                    width: 212px;
-                    img {
-                      margin-right: 5px;
+                  .date-time-mob {
+                    display: none;
+                    @media (max-width: 768px) {
+                      display: flex;
+                      align-items: center;
                     }
-                    p {
-                      font-family: 'Inter';
-                      font-style: normal;
-                      font-weight: 400;
-                      font-size: 12px;
-                      line-height: 20px;
-                      color: #575775;
-                      border-radius: 4px;
-                      display: -webkit-box;
-                      -webkit-line-clamp: 1;
-                      -webkit-box-orient: vertical;
-                      overflow: hidden;
+                    .date {
+                      margin-right: 12px;
                     }
                   }
                 }
               }
               .right-side {
-                .date {
-                  font-family: 'Inter';
-                  font-style: normal;
-                  font-weight: 500;
-                  font-size: 14px;
-                  line-height: 20px;
-                  text-align: right;
-                  color: #262541;
-                }
-                .time {
-                  font-family: 'Inter';
-                  font-style: normal;
-                  font-weight: 400;
-                  font-size: 12px;
-                  line-height: 20px;
-                  text-align: right;
-                  color: #4C4A82;
-                  margin-top: 4px;
+                @media (max-width: 768px) {
+                  display: none;
                 }
               }
             }
+            
             .main-text {
               font-family: 'Inter';
               font-style: normal;
@@ -568,6 +843,7 @@ export default {
             }
             .bottom-block {
               margin-top: 12px;
+              border-top: 1px dashed #DFDEED;
               .top-line {
                 display: flex;
                 justify-content: space-between;
@@ -628,6 +904,9 @@ export default {
       }
     }
     .right-sidebar {
+      @media (max-width: 768px) {
+        display: none;
+      }
       .title-block {
         .title {
           font-family: 'Exo 2';
