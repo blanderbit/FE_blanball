@@ -100,8 +100,14 @@
                 <div class="terms">знайдено 15 оголошень</div>
               </div>
             </div>
-            <div class="calendar-icon">
-              <img src="../../assets/img/calendar.svg" alt="">
+            <div class="calendar-block sort-item">
+              <div class="icon">
+                <img src="../../assets/img/calendar.svg" alt="">
+              </div>
+              <div class="text">
+                <div class="title">Обрати дату</div>
+                <div class="terms">19, 23 черв. 2022</div>
+              </div>
             </div>
           </div>
           <div class="dates-block">
@@ -116,14 +122,22 @@
                 </div>
               </div>
             </div>
-            <div class="dates">
-              <div
-                v-for="item of calendar"
-                :key="item.id"
-                :class="['date-item', {active: item.isActive}]"
-              >
-                <div class="day">{{item.day}}</div>
-                <div class="number">{{item.number}}</div>
+            <div class="dates-wrapper">
+              <div class="dates">
+                <div
+                  v-for="week of calendar"
+                  :key="week.id"
+                  class="week"
+                >
+                  <div 
+                    v-for="item of week.week"
+                    :key="item.id"
+                    :class="['date-item', {active: item.isActive}]"
+                  >
+                    <div class="day">{{item.day}}</div>
+                    <div class="number">{{item.number}}</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -256,15 +270,42 @@ export default {
         }
       ],
       calendar: [
-        { id: 0, day: 'Пн', number: 13, isActive: false },
-        { id: 1, day: 'Вт', number: 14, isActive: false },
-        { id: 2, day: 'Ср', number: 15, isActive: false },
-        { id: 3, day: 'Чт', number: 16, isActive: false },
-        { id: 4, day: 'Пт', number: 17, isActive: false },
-        { id: 5, day: 'Сб', number: 18, isActive: false },
-        { id: 6, day: 'Вс', number: 19, isActive: true },
-        { id: 7, day: 'Пн', number: 20, isActive: false },
-
+        {
+          id: 0,
+          week: [
+            { id: 0, day: 'Пн', number: 13, isActive: false },
+            { id: 1, day: 'Вт', number: 14, isActive: false },
+            { id: 2, day: 'Ср', number: 15, isActive: false },
+            { id: 3, day: 'Чт', number: 16, isActive: false },
+            { id: 4, day: 'Пт', number: 17, isActive: false },
+            { id: 5, day: 'Сб', number: 18, isActive: false },
+            { id: 6, day: 'Вс', number: 19, isActive: true }
+          ]
+        },
+        {
+          id: 1,
+          week: [
+            { id: 0, day: 'Пн', number: 20, isActive: false },
+            { id: 1, day: 'Вт', number: 21, isActive: false },
+            { id: 2, day: 'Ср', number: 22, isActive: true },
+            { id: 3, day: 'Чт', number: 23, isActive: false },
+            { id: 4, day: 'Пт', number: 24, isActive: false },
+            { id: 5, day: 'Сб', number: 25, isActive: false },
+            { id: 6, day: 'Вс', number: 26, isActive: false }
+          ]
+        },
+        {
+          id: 2,
+          week: [
+            { id: 0, day: 'Пн', number: 27, isActive: true },
+            { id: 1, day: 'Вт', number: 28, isActive: false },
+            { id: 2, day: 'Ср', number: 29, isActive: false },
+            { id: 3, day: 'Чт', number: 30, isActive: false },
+            { id: 4, day: 'Пт', number: 31, isActive: false },
+            { id: 5, day: 'Сб', number: 1, isActive: false },
+            { id: 6, day: 'Вс', number: 2, isActive: false }
+          ]
+        }
       ]
     }
   }
@@ -276,7 +317,7 @@ export default {
     display: grid;
     grid-template-columns: 1fr 256px;
     grid-gap: 16px;
-    @media (max-width: 768px) {
+    @media (max-width: 992px) {
       grid-template-columns: 1fr;
     }
     .main-body {
@@ -301,7 +342,7 @@ export default {
             font-size: 13px;
             line-height: 20px;
             color: #575775;
-            @media (min-width: 768px) {
+            @media (min-width: 992px) {
               display: none;
             }
           }
@@ -314,7 +355,7 @@ export default {
             text-align: center;
             color: #262541;
             display: flex;
-            @media (max-width: 768px) {
+            @media (max-width: 992px) {
               display: none;
             }
             .general-events {
@@ -344,7 +385,7 @@ export default {
           }
         }
         .right-part {
-          @media (max-width: 768px) {
+          @media (max-width: 992px) {
             display: none;
           }
         }
@@ -353,7 +394,7 @@ export default {
         margin-top: 36px;
         padding: 20px 16px;
         position: relative;
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
           padding: 0;
         }
         .grey-rectangle {
@@ -365,12 +406,12 @@ export default {
           top: 0;
           left: 0;
           z-index: -1;
-          @media (max-width: 768px) {
+          @media (max-width: 992px) {
             display: none;
           }
         }
         .search-block {
-          @media (max-width: 768px) {
+          @media (max-width: 992px) {
             display: none;
           }
           .first-line {
@@ -550,7 +591,7 @@ export default {
           }
         }
         .search-block-mob {
-          @media (min-width: 768px) {
+          @media (min-width: 992px) {
             display: none;
           }
           .filters-block {
@@ -560,6 +601,7 @@ export default {
             .icon {
               display: flex;
               width: 36px;
+              min-width: 36px;
               height: 36px;
               background: #FAFAFA;
               border-radius: 6px;
@@ -589,21 +631,36 @@ export default {
             }
             .sort-item {
               display: flex;
-              margin-right: 16px;
               width: 132px;
               min-width: 132px;
+              @media (min-width: 768px) {
+                width: 196px;
+                min-width: 196px;
+              }
+              &:last-child {
+                width: auto;
+                min-width: auto;
+              }
               .icon {
                 margin-right: 4px;
               }
             }
-            .calendar-icon {
-              display: flex;
-              width: 32px;
-              height: 32px;
-              background: #FAFAFA;
-              border-radius: 6px;
-              img {
-                margin: auto;
+            .calendar-block {
+              .icon {
+                width: 32px;
+                min-width: 32px;
+                height: 32px;
+                @media (min-width: 768px) {
+                  width: 36px;
+                  min-width: 36px;
+                  height: 36px;
+                  background: #EFEFF6;
+                }
+              }
+              .text {
+                @media (max-width: 768px) {
+                  display: none;
+                }
               }
             }
           }
@@ -636,25 +693,22 @@ export default {
                 }
               }
             }
-            .dates {
-              margin-top: 8px;
-              display: flex;
-              align-items: start;
-              .date-item {
+            .dates-wrapper {
+              position: relative;
+              height: 60px;
+              overflow: hidden;
+              .dates {
+                position: absolute;
+                top: 0;
+                left: 0;
+                margin-top: 8px;
                 display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                width: 36px;
-                min-width: 3px;
-                height: 51px;
-                border-radius: 4px 4px 0px 0px;
-                margin-right: 6px;
-                &.active {
-                  background: #FFDAEA;
-                  border-bottom: 2px solid #C3305C;
-                  margin-right: 12px;
+                align-items: start;
+                .week {
+                  display: flex;
+                  align-items: flex-start;
                   position: relative;
+                  margin: 0 12px;
                   &:after {
                     content: '';
                     display: block;
@@ -666,35 +720,54 @@ export default {
                     top: 50%;
                     margin-top: -6px;
                   }
-                  .day {
-                    color: #C3305C;
+                  .date-item {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    width: 36px;
+                    min-width: 3px;
+                    height: 51px;
+                    border-radius: 4px 4px 0px 0px;
+                    margin-right: 6px;
+                    &:last-child {
+                      margin: 0;
+                    }
+                    &.active {
+                      background: #FFDAEA;
+                      border-bottom: 2px solid #C3305C;
+                      .day {
+                        color: #C3305C;
+                      }
+                      .number {
+                        font-weight: 500;
+                        color: #C3305C;
+                      }
+                    }
+                    .day {
+                      font-family: 'Inter';
+                      font-style: normal;
+                      font-weight: 400;
+                      font-size: 12px;
+                      line-height: 16px;
+                      text-align: center;
+                      color: #575775;
+                    }
+                    .number {
+                      margin-top: 2px;
+                      font-family: 'Inter';
+                      font-style: normal;
+                      font-weight: 400;
+                      font-size: 13px;
+                      line-height: 20px;
+                      text-align: center;
+                      color: #262541;
+                    }
                   }
-                  .number {
-                    font-weight: 500;
-                    color: #C3305C;
-                  }
-                }
-                .day {
-                  font-family: 'Inter';
-                  font-style: normal;
-                  font-weight: 400;
-                  font-size: 12px;
-                  line-height: 16px;
-                  text-align: center;
-                  color: #575775;
-                }
-                .number {
-                  margin-top: 2px;
-                  font-family: 'Inter';
-                  font-style: normal;
-                  font-weight: 400;
-                  font-size: 13px;
-                  line-height: 20px;
-                  text-align: center;
-                  color: #262541;
                 }
               }
             }
+
           }
         }
         .cards-block {
@@ -711,13 +784,13 @@ export default {
             }
             .address {
               &.desk-address {
-                @media (max-width: 768px) {
+                @media (max-width: 992px) {
                   display: none;
                 }
               }
               &.mob-address {
                 display: none;
-                @media (max-width: 768px) {
+                @media (max-width: 992px) {
                   display: flex;
                 }
               }
@@ -725,8 +798,7 @@ export default {
               background: #FAFAFA;
               padding: 0px 4px;
               margin-top: 4px;
-              width: 212px;
-              @media (max-width: 768px) {
+              @media (max-width: 992px) {
                 width: fit-content;
                 margin-top: 8px;
               }
@@ -794,7 +866,7 @@ export default {
                   }
                   .date-time-mob {
                     display: none;
-                    @media (max-width: 768px) {
+                    @media (max-width: 992px) {
                       display: flex;
                       align-items: center;
                     }
@@ -805,7 +877,7 @@ export default {
                 }
               }
               .right-side {
-                @media (max-width: 768px) {
+                @media (max-width: 992px) {
                   display: none;
                 }
               }
@@ -904,7 +976,7 @@ export default {
       }
     }
     .right-sidebar {
-      @media (max-width: 768px) {
+      @media (max-width: 992px) {
         display: none;
       }
       .title-block {
