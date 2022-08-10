@@ -10,7 +10,7 @@
           Зміна номера телефону
         </template>
         <template #title-icon>
-          <img src="../../../assets/img/add-phone.svg" alt="" />
+          <img src="../../../../assets/img/add-phone.svg" alt="" />
         </template>
         <template #change-phone-number>
           <div 
@@ -95,8 +95,14 @@
         <div class="subtitle">Оновіть своє фото та персональні дані </div>
       </div>
       <div class="buttons">
-        <WhiteBtn :text="'Скасувати'" />
-        <GreenBtn :text="'Зберегти'" />
+        <WhiteBtn 
+          :text="'Скасувати'"
+          :width="98"
+        />
+        <GreenBtn 
+          :text="'Зберегти'"
+          :width="89"
+        />
       </div>
     </div>
     <div class="tab-block">
@@ -226,20 +232,24 @@
           :title="'Вік'"
           :placeholder="'09. 07. 1998'"
         />
-        <Dropdown />
+        <Dropdown 
+          :options="dataDropdown"
+          :main-title="'Гендер'"
+          :insideTitle="true"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import GreenBtn from '../../../components/GreenBtn.vue'
-import WhiteBtn from '../../../components/WhiteBtn.vue'
-import Switcher from '../../../components/Switcher.vue'
-import Dropdown from '../../../components/Dropdown.vue'
-import Spiner from '../../../components/GlobalSpiner.vue'
-import ModalWindow from '../../../components/ModalWindow.vue'
-import InputComponent from '../../../components/InputComponent.vue'
+import GreenBtn from '../../../../components/GreenBtn.vue'
+import WhiteBtn from '../../../../components/WhiteBtn.vue'
+import Switcher from '../../../../components/Switcher.vue'
+import Dropdown from '../../../../components/Dropdown.vue'
+import Spiner from '../../../../components/GlobalSpiner.vue'
+import ModalWindow from '../../../../components/ModalWindow.vue'
+import InputComponent from '../../../../components/InputComponent.vue'
 
 export default {
   name: 'user-cabinet',
@@ -254,6 +264,16 @@ export default {
   },
   data() {
     return {
+      dataDropdown: [
+        {
+          id: 0,
+          value: 'Жінка'
+        },
+        {
+          id: 1,
+          value: 'Чоловик'
+        }
+      ],
       modal: {
         first: true,
         second: false
@@ -270,21 +290,21 @@ export default {
         {
           id: 0,
           name: 'Мій профіль',
-          img: require('../../../assets/img/user.svg'),
+          img: require('../../../../assets/img/user.svg'),
           url: '/profile/user-cabinet/my-profile',
           isActive: true
         },
         {
           id: 1,
           name: 'Тарифний план',
-          img: require('../../../assets/img/database.svg'),
+          img: require('../../../../assets/img/database.svg'),
           url: '/profile/user-cabinet/rate-plan',
           isActive: false
         },
         {
           id: 2,
           name: 'Сповіщення',
-          img: require('../../../assets/img/notification-small.svg'),
+          img: require('../../../../assets/img/notification-small.svg'),
           url: '/profile/user-cabinet/notifications',
           isActive: false
         },
@@ -320,7 +340,7 @@ export default {
 <style lang="scss" scoped>
 .v-enter-active,
 .v-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.6s ease;
 }
 
 .v-enter-from,

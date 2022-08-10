@@ -1,7 +1,13 @@
 <template>
-  <div class="dropdown">
-    <div class="title">
-      <span>Гендер</span>
+  <div 
+    class="dropdown"
+    :style="dropdownStyle"
+  >
+    <div v-if="outsideTitle" class="outer-title">
+      <span>{{mainTitle}}</span>
+    </div>
+    <div v-if="insideTitle" class="inner-title">
+      <span>{{mainTitle}}</span>
     </div>
     <div class="drop-current" @click="toggleDropdown">
       <div class="current-name">{{currentValue}}</div>
@@ -24,24 +30,39 @@
 <script>
 export default {
   name: 'dropdown-component',
+  props: {
+    insideTitle: {
+      type: Boolean,
+      default: false
+    },
+    outsideTitle: {
+      type: Boolean,
+      default: false
+    },
+    mainTitle: {
+      type: String,
+      default: 'Title'
+    },
+    options: {
+      type: Array,
+      default: () => []
+    },
+    width: {
+      type: Number,
+      default: null
+    }
+  },
   data() {
     return {
       isOpened: false,
-      options: [
-        {
-          id: 0,
-          value: 'Жінка'
-        },
-        {
-          id: 1,
-          value: 'Чоловик'
-        },
-      ]
+      currentValue: this.options[0].value
     }
   },
   computed: {
-    currentValue() {
-      return this.options[0].value
+    dropdownStyle() {
+      return {
+        width: this.width ? this.width + 'px' : '100%'
+      }
     }
   },
   methods: {
@@ -63,7 +84,27 @@ export default {
     border-radius: 6px;
     margin: 12px 0;
     display: flex;
-    .title {
+    position: relative;
+    .outer-title {
+      width: 53px;
+      height: 16px;
+      background: linear-gradient(180deg, #F9F9FC 0%, #FFFFFF 100%);
+      border-radius: 4px;
+      position: absolute;
+      top: -8px;
+      left: 8px;
+      z-index: 1;
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+      color: #262541;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .inner-title {
       width: 108px;
       min-width: 108px;
       font-family: "Inter";
@@ -96,7 +137,6 @@ export default {
       font-size: 13px;
       line-height: 24px;
       color: #262541;
-      z-index: -1;
       ul {
         position: absolute;
         top: 40px;

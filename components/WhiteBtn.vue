@@ -1,5 +1,8 @@
 <template>
-  <div class="white-btn">
+  <div 
+    class="white-btn"
+    :style="{ width: btnWidth }"
+  >
     {{ text }}
   </div>
 </template>
@@ -10,6 +13,15 @@ export default {
     text: {
       type: String,
       required: true
+    },
+    width: {
+      type: Number,
+      default: null
+    }
+  },
+  computed: {
+    btnWidth() {
+      return this.width ? this.width + 'px' : '100%'
     }
   }
 }
@@ -20,7 +32,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 98px;
   height: 32px;
   border: 1px solid #148783;
   border-radius: 6px;
@@ -30,5 +41,6 @@ export default {
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
+  cursor: pointer;
 }
 </style>
