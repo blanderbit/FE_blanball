@@ -48,12 +48,12 @@ export default {
     [
       '@nuxtjs/i18n',
       {
-        locales: ['ukr', 'en'],
-        defaultLocale: 'ukr',
+        locales: ['ua', 'en'],
+        defaultLocale: 'ua',
         vueI18n: {
-          fallbackLocale: 'ukr',
+          fallbackLocale: 'ua',
           messages: {
-            ukr: {
+            ua: {
               events: EventsPage,
               profile: ProfilePage,
               modals: Modals,
