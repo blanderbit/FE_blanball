@@ -3,16 +3,16 @@
     <div class="main-body">
       <div class="header-block">
         <div class="left-part">
-          <div class="title">Майбутні події</div>
-          <div class="subtitle">Оновіть своє фото та персональні дані</div>
+          <div class="title">{{ $t('events.title') }}</div>
+          <div class="subtitle">{{ $t('events.subtitle') }}</div>
           <div class="event-switcher">
-            <div class="general-events">Загальна</div>
-            <div class="my-events">Мої події</div>
+            <div class="general-events">{{ $t('events.general-events') }}</div>
+            <div class="my-events">{{ $t('events.my-events') }}</div>
           </div>
         </div>
         <div class="right-part">
           <GreenBtn 
-            :text="'Створити подію'" 
+            :text="$t('events.create-event')"
             :width="168"
             :icon="require('../../assets/img/plus.svg')"
             :height="40"
@@ -25,7 +25,7 @@
           <div class="first-line">
             <Dropdown 
               :options="dataDropdown"
-              :main-title="'Тип гри'"
+              :main-title="$t('events.game-type')"
               :outsideTitle="true"
               :width="152"
             />
@@ -47,7 +47,7 @@
                   <input id="radio-1" name="radio" type="radio" checked>
                   <label for="radio-1" class="radio-label">
                     <img src="../../assets/img/male-icon.svg" alt="">
-                    Checked
+                    {{ $t('events.men') }}
                   </label>
                 </div>
 
@@ -55,7 +55,7 @@
                   <input id="radio-2" name="radio" type="radio">
                   <label for="radio-2" class="radio-label">
                   <img src="../../assets/img/female-icon.svg" alt="">
-                    Unchecked
+                    {{ $t('events.women') }}
                   </label>
                 </div>
 
@@ -63,13 +63,13 @@
                   <input id="radio-3" name="radio" type="radio">
                   <label for="radio-3" class="radio-label">
                     <img src="../../assets/img/unisex.svg" alt="">
-                    Disabled
+                    {{ $t('events.all') }}
                   </label>
                 </div>
               </div>
               <div class="calendar">
                 <img src="../../assets/img/calendar.svg" alt="">
-                Календар
+                {{ $t('events.calendar') }}
               </div>
             </div>
             <div class="right-side">
@@ -87,8 +87,8 @@
                 <img src="../../assets/img/sort-arrows.svg" alt="">
               </div>
               <div class="text">
-                <div class="title">Сортування</div>
-                <div class="terms">спочатку нові</div>
+                <div class="title">{{ $t('events.sorting') }}</div>
+                <div class="terms">{{ $t('events.first-new') }}</div>
               </div>
             </div>
             <div class="filtering-block sort-item">
@@ -96,7 +96,7 @@
                 <img src="../../assets/img/set-filter.svg" alt="">
               </div>
               <div class="text">
-                <div class="title">Фільтри</div>
+                <div class="title">{{ $t('events.filters') }}</div>
                 <div class="terms">знайдено 15 оголошень</div>
               </div>
             </div>
@@ -105,7 +105,7 @@
                 <img src="../../assets/img/calendar.svg" alt="">
               </div>
               <div class="text">
-                <div class="title">Обрати дату</div>
+                <div class="title">{{ $t('events.chose-date') }}</div>
                 <div class="terms">19, 23 черв. 2022</div>
               </div>
             </div>
@@ -116,7 +116,7 @@
                 <div class="arrow arrow-left">
                   <img src="../../assets/img/arrow-left.svg" alt="">
                 </div>
-                <div class="main-part">Червень 2022</div>
+                <div class="main-part">{{ $t('events.months.June') }} 2022</div>
                 <div class="arrow arrow-right">
                   <img src="../../assets/img/arrow-right.svg" alt="">
                 </div>
@@ -149,9 +149,9 @@
                 <div class="card-icon">
                   <img src="../../assets/img/hands-shake.png" alt=""></div>
                 <div class="text-block">
-                  <div class="title">Дружній матч</div>
+                  <div class="title">{{ $t('events.friendly-match') }}</div>
                   <div class="date-time-mob">
-                    <div class="date">16 червня</div>
+                    <div class="date">16 {{ $t('events.months.June') }}</div>
                     <div class="time">12:00 – 14:00</div>
                   </div>
                   <div class="address desk-address">
@@ -161,7 +161,7 @@
                 </div>
               </div>
               <div class="right-side">
-                <div class="date">16 червня</div>
+                <div class="date">16 {{ $t('events.months.June') }}</div>
                 <div class="time">12:00 – 14:00</div>
               </div>
             </div>
@@ -173,20 +173,20 @@
               Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd
             </div>
             <div class="labels">
-              <div class="label">Футбол</div>
-              <div class="label">Чоловіки</div>
-              <div class="label">Без розряду</div>
+              <div class="label">{{ $t('events.football') }}</div>
+              <div class="label">{{ $t('events.men') }}</div>
+              <div class="label">{{ $t('events.without-category') }}</div>
             </div>
             <div class="bottom-block">
               <div class="top-line">
                 <div class="name">В’ячеслав Залізняк</div>
-                <div class="price">Безкоштовно</div>
+                <div class="price">{{ $t('events.for-free') }}</div>
               </div>
               <div class="bottom-line">
                 <div class="left-side">
                   <div class="titles">
-                    <div class="players">Гравці:</div>
-                    <div class="visitors">Вболівальники:</div>
+                    <div class="players">{{ $t('events.players') }}:</div>
+                    <div class="visitors">{{ $t('events.fans') }}:</div>
                   </div>
                   <div class="date">
                     <div class="players-date">10 / 22</div>
@@ -209,8 +209,8 @@
 
     <div class="right-sidebar">
        <div class="title-block">
-          <div class="title">Заплановані події</div>
-          <div class="subtitle">Заходи у яких ви запланували участь</div>
+          <div class="title">{{ $t('events.planned-events') }}</div>
+          <div class="subtitle">{{ $t('events.your-events') }}</div>
        </div>
 
        <div class="cards-block">
@@ -221,10 +221,10 @@
               <img src="../../assets/img/hands-shake.png" alt="">
             </div>
             <div class="text-data">
-              <div class="top-line name">Дружній матч</div>
+              <div class="top-line name">{{ $t('events.friendly-match') }}</div>
               <div class="bottom-line">
                 <div class="time">12:00 – 14:00</div>
-                <div class="date">16 червня</div>
+                <div class="date">16 {{ $t('events.months.June') }}</div>
               </div>
             </div>
           </div>
@@ -233,8 +233,8 @@
             <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
           </div>
           <div class="labels">
-            <div class="label">Футбол</div>
-            <div class="label">Чоловіки</div>
+            <div class="label">{{ $t('events.football') }}</div>
+            <div class="label">{{ $t('events.men') }}</div>
             <div class="label">...</div>
           </div>
         </div>
