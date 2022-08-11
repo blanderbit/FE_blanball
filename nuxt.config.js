@@ -1,7 +1,4 @@
-import EventsPage from './i18n/events'
-import ProfilePage from './i18n/profile'
-import Modals from './i18n/modals'
-import Buttons from './i18n/buttons'
+import UA from './i18n/ua'
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -53,12 +50,7 @@ export default {
         vueI18n: {
           fallbackLocale: 'ua',
           messages: {
-            ua: {
-              events: EventsPage,
-              profile: ProfilePage,
-              modals: Modals,
-              buttons: Buttons
-            },
+            ua: UA,
             en: {
               greeting: 'Hello world'
             }
