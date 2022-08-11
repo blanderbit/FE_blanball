@@ -1,3 +1,5 @@
+import UA from './i18n/ua'
+
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -39,7 +41,24 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
+  modules: [
+    [
+      '@nuxtjs/i18n',
+      {
+        locales: ['ua', 'en'],
+        defaultLocale: 'ua',
+        vueI18n: {
+          fallbackLocale: 'ua',
+          messages: {
+            ua: UA,
+            en: {
+              greeting: 'Hello world'
+            }
+          }
+        }
+      }
+    ]
+  ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},

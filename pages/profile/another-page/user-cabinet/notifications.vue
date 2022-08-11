@@ -2,12 +2,18 @@
   <div class="user-cabinet">
     <div class="title-block">
       <div class="titles">
-        <div  class="title">Особистий кабінет</div>
-        <div class="subtitle">Оновіть своє фото та персональні дані </div>
+        <div  class="title">{{ $t('profile.title') }}</div>
+        <div class="subtitle">{{ $t('profile.change-personal-data') }}</div>
       </div>
       <div class="buttons">
-        <WhiteBtn :text="'Скасувати'" />
-        <GreenBtn :text="'Зберегти'" />
+        <WhiteBtn 
+          :text="$t('buttons.cancel')" 
+          :width="98" 
+        />
+        <GreenBtn 
+          :text="$t('buttons.save')" 
+          :width="89"
+        />
       </div>
     </div>
     <div class="tab-block">
@@ -19,7 +25,7 @@
         :to="tab.url"
       >
         <img :src="tab.img" :alt="tab.name">
-        {{tab.name}}
+        {{ $t('profile.' + tab.name) }}
       </nuxt-link>
     </div>
     <div class="notifications-tab">
@@ -43,21 +49,21 @@ export default {
       tabs: [
         {
           id: 0,
-          name: 'Мій профіль',
+          name: 'my-profile',
           img: require('../../../../assets/img/user.svg'),
           url: '/profile/another-page/user-cabinet/my-profile',
           isActive: false
         },
         {
           id: 1,
-          name: 'Тарифний план',
+          name: 'rate-plan',
           img: require('../../../../assets/img/database.svg'),
           url: '/profile/another-page/user-cabinet/rate-plan',
           isActive: false
         },
         {
           id: 2,
-          name: 'Сповіщення',
+          name: 'notifications',
           img: require('../../../../assets/img/notification-small.svg'),
           url: '/profile/another-page/user-cabinet/notifications',
           isActive: true

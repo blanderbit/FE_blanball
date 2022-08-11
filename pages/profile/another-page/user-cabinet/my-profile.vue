@@ -1,13 +1,13 @@
 <template>
   <div class="user-cabinet">
-    <Spiner />
+    <Spiner v-if="isSpinerActive" />
     <Transition>
       <ModalWindow 
         v-if="isModalActive" 
         @close-modal="toggleModal"
       >
         <template #title>
-          Зміна номера телефону
+          {{ $t('modals.change_number.change-number') }}
         </template>
         <template #title-icon>
           <img src="../../../../assets/img/add-phone.svg" alt="" />
@@ -21,20 +21,20 @@
               (617) 623-2338
             </div>
             <p class="description-text">
-              Тут Ви можете змінити номер телефону. Ваш акаунт і всі наявні дані будут перенесені на новий номер без втрати поточних налаштувань та інформації.
+              {{ $t('modals.change_number.main-text') }}
             </p>
             <div class="btns-block">
               <div 
                 class="cancle-btn"
                 @click="toggleModal"
               >
-                Залишити поточний номер
+                {{ $t('modals.change_number.leave-email') }}
               </div>
               <div 
                 class="save-btn"
                 @click="toggleModalPage"
               >
-                Змінити номер
+                {{ $t('modals.change_number.change-number-title') }}
               </div>
             </div>
           </div>
@@ -44,7 +44,7 @@
           >
             <div class="current-number">
               <InputComponent
-                :title="'Поточний номер'"
+                :title="$t('modals.change_number.current-number')"
                 :placeholder="'(617) 623-2338'"
                 :titleWidth="138"
                 :inputType="'number'"
@@ -52,14 +52,14 @@
             </div>
             <div class="new-number">
               <InputComponent
-                :title="'Новий номер'"
+                :title="$t('modals.change_number.new-number')"
                 :placeholder="'(050) 623-78 95'"
                 :titleWidth="138"
                 :inputType="'number'"
               />
             </div>
             <p class="sms-text">
-              SMS із кодом підтвердження прийде протягом 30 сек          
+              {{ $t('modals.change_number.sms-code') }}        
             </p>
             <div class="sms-code-block">
               <input type="number" placeholder="_" v-model="smscode[1]">
@@ -73,13 +73,15 @@
                 class="cancle-btn"
                 @click="toggleModal"
               >
-                Скасувати редагування
+                {{ $t('buttons.cancel-editing') }}
+                
               </div>
               <div 
                 class="save-btn"
                 @click="toggleModal"
               >
-                Зберегти зміни
+                {{ $t('buttons.save-changes') }}
+                
               </div>
             </div>
           </div>
@@ -90,17 +92,17 @@
     <div class="title-block">
       <div class="titles">
         <div  class="title">
-          Особистий кабінет
+          {{ $t('profile.title') }}
         </div>
-        <div class="subtitle">Оновіть своє фото та персональні дані </div>
+        <div class="subtitle">{{ $t('profile.change-personal-data') }}</div>
       </div>
       <div class="buttons">
         <WhiteBtn 
-          :text="'Скасувати'"
+          :text="$t('buttons.cancel')"
           :width="98"
         />
         <GreenBtn 
-          :text="'Зберегти'"
+          :text="$t('buttons.save')"
           :width="89"
         />
       </div>
@@ -114,17 +116,17 @@
         :to="tab.url"
       >
         <img :src="tab.img" :alt="tab.name">
-        {{tab.name}}
+        {{ $t('profile.' + tab.name) }}
       </nuxt-link>
     </div>
     <div class="my-profile-tab">
       <div class="block block-1">
         <div class="top-table">
           <div class="title">
-            Ваш рейтинг
+            {{ $t('profile.your-rate') }}
           </div>
           <div class="subtitle">
-            Складається на основі оцінок інших користувачів
+            {{ $t('profile.sub-rate') }}
           </div>
           <div class="scale-block">
             <div class="image">
@@ -135,8 +137,8 @@
             </div>
           </div>
           <div class="btns-block">
-            <div class="left-btn">Узагальнено</div>
-            <div class="right-btn">Детально</div>
+            <div class="left-btn">{{ $t('profile.generally') }}</div>
+            <div class="right-btn">{{ $t('profile.detailed') }}</div>
           </div>
         </div>
       </div>
@@ -172,7 +174,7 @@
           </div>
           <div class="bottom-part">
             <div class="title">
-              Про себе:
+              {{ $t('profile.about-myself') }}
             </div>
             <div class="description">
               Donec vitae mi vulputate, suscipit urna in, malesuada nisl. Pellentesque laoreet pretium nisl, et pulvinar massa eleifend sed
@@ -183,10 +185,10 @@
       <div class="block block-3">
         <div class="top-table">
           <div class="title">
-            Безпека
+            {{ $t('profile.safety') }}
           </div>
           <div class="subtitle">
-            Ви можете змінити свій логін та пароль
+            {{ $t('profile.change-login&password') }}
           </div>
           <InputComponent
             :title="'E-mail'"
@@ -194,39 +196,39 @@
             :titleWidth="68"
           />
           <div class="change-pass-btn">
-            Змінити пароль
+            {{ $t('profile.change-password') }}
             <img src="../../../../assets/img/lock.svg" alt="">
           </div>
         </div>
         <div class="delete-account">
-          Видалити акаунт
+          {{ $t('profile.delete-account') }}
         </div>
       </div>
       <div class="block block-4">
         <div class="title">
-          Конфіденційність
+          {{ $t('profile.confidentiality') }}
         </div>
         <div class="subtitle">
-          Налаштуйте видимість ваших персональних даних іншим користувачам
+          {{ $t('profile.set-personal-details') }}
         </div>
         <div class="settings-block">
           <div class="personal-settings">
-            <p>Номер телефону</p>
+            <p>{{ $t('profile.phone-number') }}</p>
             <Switcher :id="'phone'" />
           </div>
           <div class="personal-settings">
-            <p>E-mail</p>
+            <p>{{ $t('profile.e-mail') }}</p>
             <Switcher :id="'email'" />
           </div>
           <div class="personal-settings">
-            <p>Відгуки про мене<span>(Деякі)</span></p>
+            <p>{{ $t('profile.my-feedbacks') }}<span>(Деякі)</span></p>
             <Switcher :id="'feedback'" />
           </div>
         </div>
       </div>
       <div class="block block-5">
         <div class="title">
-          Особиста інформація
+          {{ $t('profile.personal-details') }}
         </div>
         <InputComponent
           :title="'Вік'"
@@ -264,6 +266,7 @@ export default {
   },
   data() {
     return {
+      isSpinerActive: false,
       dataDropdown: [
         {
           id: 0,
@@ -289,36 +292,36 @@ export default {
       tabs: [
         {
           id: 0,
-          name: 'Мій профіль',
+          name: 'my-profile',
           img: require('../../../../assets/img/user.svg'),
-          url: '/profile/user-cabinet/my-profile',
+          url: '/profile/another-page/user-cabinet/my-profile',
           isActive: true
         },
         {
           id: 1,
-          name: 'Тарифний план',
+          name: 'rate-plan',
           img: require('../../../../assets/img/database.svg'),
-          url: '/profile/user-cabinet/rate-plan',
+          url: '/profile/another-page/user-cabinet/rate-plan',
           isActive: false
         },
         {
           id: 2,
-          name: 'Сповіщення',
+          name: 'notifications',
           img: require('../../../../assets/img/notification-small.svg'),
-          url: '/profile/user-cabinet/notifications',
+          url: '/profile/another-page/user-cabinet/notifications',
           isActive: false
-        },
+        }
       ]
     }
   },
   methods: {
     changeTab(id) {
       this.tabs = this.tabs.map(item => ({ ...item, isActive: false }))
-                              .map(item => {
-                                return item.id === id ?
-                                      { ...item, isActive: true } :
-                                      item
-                              })
+                            .map(item => {
+                              return item.id === id ?
+                                    { ...item, isActive: true } :
+                                    item
+                            })
     },
     toggleModal() {
       this.isModalActive = !this.isModalActive

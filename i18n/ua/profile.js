@@ -1,0 +1,22 @@
+export default {
+  'title': 'Особистий кабінет',
+  'change-personal-data': 'Оновіть своє фото та персональні дані',
+  'my-profile': 'Мій профіль',
+  'rate-plan': 'Тарифний план',
+  'notifications': 'Сповіщення',
+  'your-rate': 'Ваш рейтинг',
+  'sub-rate': 'Складається на основі оцінок інших користувачів',
+  'generally': 'Узагальнено',
+  'detailed': 'Детально',
+  'about-myself': 'Про себе:',
+  'safety': 'Безпека',
+  'change-login&password': 'Ви можете змінити свій логін та пароль',
+  'change-password': 'Змінити пароль',
+  'delete-account': 'Видалити акаунт',
+  'confidentiality': 'Конфіденційність',
+  'set-personal-details': 'Налаштуйте видимість ваших персональних даних іншим користувачам',
+  'phone-number': 'Номер телефону',
+  'e-mail': 'E-mail',
+  'my-feedbacks': 'Відгуки про мене',
+  'personal-details': 'Особиста інформація'
+}
