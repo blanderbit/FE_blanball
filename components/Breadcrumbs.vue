@@ -23,14 +23,13 @@ const pathPages = {
 }
 
 export default {
-  name: 'bread-crumbs',
+  name: 'BreadCrumbs',
   data() {
     return {}
   },
   computed: {
     breads() {
       let arr = []
-      console.log(this.$route.path)
       if (this.$route.path.includes('user-cabinet')) {
         const middleArr = this.$route.path.slice(1).split('/')
         arr = middleArr.slice(0, middleArr.length - 1)
