@@ -13,13 +13,15 @@
 
 <script>
 export default {
-  name: 'input-component',
+  name: 'inputComponent',
   props: {
     title: {
-      type: String
+      type: String,
+      default: ''
     },
     placeholder: {
-      type: String
+      type: String,
+      default: ''
     },
     titleWidth: {
       type: Number,

@@ -26,7 +26,7 @@
             <Dropdown 
               :options="dataDropdown"
               :main-title="$t('events.game-type')"
-              :outsideTitle="true"
+              :outside-title="true"
               :width="152"
             />
             <div class="location-filters">
@@ -248,7 +248,7 @@ import GreenBtn from '../../components/GreenBtn.vue'
 import Dropdown from '../../components/Dropdown.vue'
 
 export default {
-  name: 'events-page',
+  name: 'EventsPage',
   components: {
     GreenBtn,
     Dropdown
@@ -703,7 +703,7 @@ export default {
                 left: 0;
                 margin-top: 8px;
                 display: flex;
-                align-items: start;
+                align-items: flex-start;
                 .week {
                   display: flex;
                   align-items: flex-start;

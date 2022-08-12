@@ -41,31 +41,32 @@
             v-if="modal.second" 
             class="change-phone-screen-2"
           >
+          hellllooooo
             <div class="current-number">
               <InputComponent
                 :title="$t('modals.change_number.current-number')"
                 :placeholder="'(617) 623-2338'"
-                :titleWidth="138"
-                :inputType="'number'"
+                :title-width="138"
+                :input-type="'number'"
               />
             </div>
             <div class="new-number">
               <InputComponent
                 :title="$t('modals.change_number.new-number')"
                 :placeholder="'(050) 623-78 95'"
-                :titleWidth="138"
-                :inputType="'number'"
+                :title-width="138"
+                :input-type="'number'"
               />
             </div>
             <p class="sms-text">
               {{ $t('modals.change_number.sms-code') }}        
             </p>
             <div class="sms-code-block">
-              <input type="number" placeholder="_" v-model="smscode[1]">
-              <input type="number" placeholder="_" v-model="smscode[2]">
-              <input type="number" placeholder="_" v-model="smscode[3]">
-              <input type="number" placeholder="_" v-model="smscode[4]">
-              <input type="number" placeholder="_" v-model="smscode[5]">
+              <input v-model="smscode[1]" type="number" placeholder="_">
+              <input v-model="smscode[2]" type="number" placeholder="_">
+              <input v-model="smscode[3]" type="number" placeholder="_">
+              <input v-model="smscode[4]" type="number" placeholder="_">
+              <input v-model="smscode[5]" type="number" placeholder="_">
             </div>
             <div class="btns-block">
               <div 

@@ -24,8 +24,8 @@
         v-for="tab in tabs"
         :key="tab.id"
         :class="['tab-element', {active : tab.isActive}]"
-        @click="changeTab(tab.id)"
         :to="tab.url"
+        @click="changeTab(tab.id)"
       >
         <img :src="tab.img" :alt="tab.name">
         {{ $t('profile.' + tab.name) }}
@@ -105,7 +105,7 @@
           <InputComponent
             :title="'E-mail'"
             :placeholder="'f.j.swann@aol.com'"
-            :titleWidth="68"
+            :title-width="68"
           />
           <div class="change-pass-btn">
             {{ $t('profile.change-password') }}
@@ -149,7 +149,7 @@
         <Dropdown 
           :options="dataDropdown"
           :main-title="'Гендер'"
-          :insideTitle="true"
+          :inside-title="true"
         />
       </div>
     </div>
@@ -165,7 +165,7 @@ import Spiner from '../../../../components/GlobalSpiner.vue'
 import InputComponent from '../../../../components/InputComponent.vue'
 
 export default {
-  name: 'user-cabinet',
+  name: 'UserCabinet',
   components: {
     GreenBtn,
     WhiteBtn,
