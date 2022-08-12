@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <Transition>
+    <Transition appear>
       <ModalWindow 
         v-if="isModalActive" 
         @close-modal="toggleModal"
@@ -148,6 +148,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.8s ease;
+}
+
+.v-enter,
+.v-leave-to {
+  opacity: 0;
+}
 .header {
   display: flex;
   justify-content: space-between;
