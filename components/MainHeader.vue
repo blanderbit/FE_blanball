@@ -1,9 +1,99 @@
 <template>
   <div class="header">
+    <Transition>
+      <ModalWindow 
+        v-if="isModalActive" 
+        @close-modal="toggleModal"
+      >
+        <template #title>
+          {{ $t('modals.change_number.change-number') }}
+        </template>
+        <template #title-icon>
+          <img src="../assets/img/add-phone.svg" alt="" />
+        </template>
+        <template #change-phone-number>
+          <div 
+            v-if="modal.first" 
+            class="change-phone-screen-1"
+          >
+            <div class="current-number">
+              (617) 623-2338
+            </div>
+            <p class="description-text">
+              {{ $t('modals.change_number.main-text') }}
+            </p>
+            <div class="btns-block">
+              <div 
+                class="cancle-btn"
+                @click="toggleModal"
+              >
+                {{ $t('modals.change_number.leave-email') }}
+              </div>
+              <div 
+                class="save-btn"
+                @click="toggleModalPage"
+              >
+                {{ $t('modals.change_number.change-number-title') }}
+              </div>
+            </div>
+          </div>
+          <div 
+            v-if="modal.second" 
+            class="change-phone-screen-2"
+          >
+            <div class="current-number">
+              <InputComponent
+                :title="$t('modals.change_number.current-number')"
+                :placeholder="'(617) 623-2338'"
+                :titleWidth="138"
+                :inputType="'number'"
+              />
+            </div>
+            <div class="new-number">
+              <InputComponent
+                :title="$t('modals.change_number.new-number')"
+                :placeholder="'(050) 623-78 95'"
+                :titleWidth="138"
+                :inputType="'number'"
+              />
+            </div>
+            <p class="sms-text">
+              {{ $t('modals.change_number.sms-code') }}        
+            </p>
+            <div class="sms-code-block">
+              <input type="number" placeholder="_" v-model="smscode[1]">
+              <input type="number" placeholder="_" v-model="smscode[2]">
+              <input type="number" placeholder="_" v-model="smscode[3]">
+              <input type="number" placeholder="_" v-model="smscode[4]">
+              <input type="number" placeholder="_" v-model="smscode[5]">
+            </div>
+            <div class="btns-block">
+              <div 
+                class="cancle-btn"
+                @click="toggleModal"
+              >
+                {{ $t('buttons.cancel-editing') }}
+                
+              </div>
+              <div 
+                class="save-btn"
+                @click="toggleModal"
+              >
+                {{ $t('buttons.save-changes') }}
+                
+              </div>
+            </div>
+          </div>
+        </template>
+      </ModalWindow>
+    </Transition>
     <div class="mob-menu-icon">
       <img src="../assets/img/mob-menu-icon.svg" alt="">
     </div>
     <BreadCrumbs />
+    <!-- delete -->
+    <button @click="toggleModal">Изменить телефон</button>
+    <!-- delete -->
     <div class="logo">
       <img src="../assets/img/Blanball.png" alt="">
     </div>
@@ -15,11 +105,44 @@
 </template>
 
 <script>
+import ModalWindow from '../components/ModalWindow.vue'
 import BreadCrumbs from '../components/Breadcrumbs.vue'
 
 export default {
   components: {
-    BreadCrumbs
+    BreadCrumbs,
+    ModalWindow
+  },
+  data() {
+    return {
+      isModalActive: false,
+      modal: {
+        first: true,
+        second: false
+      },
+      smscode: {
+        1: null,
+        2: null,
+        3: null,
+        4: null,
+        5: null
+      }
+    }
+  },
+  methods: {
+    toggleModal() {
+      this.isModalActive = !this.isModalActive
+      this.modal = {
+        first: true,
+        second: false
+      }
+    },
+    toggleModalPage() {
+      this.modal = {
+        first: false,
+        second: true
+      }
+    }
   }
 }
 </script>
