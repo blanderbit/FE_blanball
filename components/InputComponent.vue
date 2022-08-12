@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: 'inputComponent',
+  name: 'InputComponent',
   props: {
     title: {
       type: String,
