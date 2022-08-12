@@ -41,7 +41,6 @@ export default {
     position: relative;
     border-radius: 6px;
     margin: 12px 0;
-    z-index: -1;
     .title {
       display: table;
       height: 100%;
