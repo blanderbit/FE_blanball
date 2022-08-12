@@ -23,7 +23,6 @@ export default {
   height: 20px;
   position: relative;
   width: 40px;
-  z-index: -1;
 }
 
 .switch input {
