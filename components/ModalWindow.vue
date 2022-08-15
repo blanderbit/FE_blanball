@@ -14,6 +14,7 @@
         </div>
         <div class="change-phone-number">
           <slot name="change-phone-number"></slot>
+          <slot name="change-login"></slot>
         </div>
       </div>
     </div>

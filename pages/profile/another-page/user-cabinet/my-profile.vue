@@ -1,6 +1,138 @@
 <template>
   <div class="user-cabinet">
     <Spiner v-if="isSpinerActive" />
+    <!-- Modals delete -->
+    <Transition>
+      <ModalWindow 
+        v-if="isModalActive.phone" 
+        @close-modal="toggleModal('phone')"
+      >
+        <template #title>
+          {{ $t('modals.change_number.title') }}
+        </template>
+        <template #title-icon>
+          <img src="../../../../assets/img/add-phone.svg" alt="" />
+        </template>
+        <template #change-phone-number>
+          <div 
+            v-if="modal.first" 
+            class="change-phone-screen-1"
+          >
+            <div class="current-number">
+              (617) 623-2338
+            </div>
+            <p class="description-text">
+              {{ $t('modals.change_number.main-text') }}
+            </p>
+            <div class="btns-block">
+              <div 
+                class="cancle-btn"
+                @click="toggleModal('phone')"
+              >
+                {{ $t('modals.change_number.leave-email') }}
+              </div>
+              <div 
+                class="save-btn"
+                @click="toggleModalPage"
+              >
+                {{ $t('modals.change_number.change-number-title') }}
+              </div>
+            </div>
+          </div>
+          <div 
+            v-if="modal.second" 
+            class="change-phone-screen-2"
+          >
+            <div class="current-number">
+              <InputComponent
+                :title="$t('modals.change_number.current-number')"
+                :placeholder="'(617) 623-2338'"
+                :title-width="138"
+                :input-type="'number'"
+                :insideTitle="true"
+              />
+            </div>
+            <div class="new-number">
+              <InputComponent
+                :title="$t('modals.change_number.new-number')"
+                :placeholder="'(050) 623-78 95'"
+                :title-width="138"
+                :input-type="'number'"
+                :insideTitle="true"
+              />
+            </div>
+            <p class="sms-text">
+              {{ $t('modals.change_number.sms-code') }}        
+            </p>
+            <div class="sms-code-block">
+              <input v-model="smscode[1]" type="number" placeholder="_">
+              <input v-model="smscode[2]" type="number" placeholder="_">
+              <input v-model="smscode[3]" type="number" placeholder="_">
+              <input v-model="smscode[4]" type="number" placeholder="_">
+              <input v-model="smscode[5]" type="number" placeholder="_">
+            </div>
+            <div class="btns-block">
+              <div 
+                class="cancle-btn"
+                @click="toggleModal('phone')"
+              >
+                {{ $t('buttons.cancel-editing') }}
+                
+              </div>
+              <div 
+                class="save-btn"
+                @click="toggleModal('phone')"
+              >
+                {{ $t('buttons.save-changes') }}
+                
+              </div>
+            </div>
+          </div>
+        </template>
+      </ModalWindow>
+      <ModalWindow 
+        v-if="isModalActive.email" 
+        @close-modal="toggleModal('email')"
+      >
+        <template #title>
+          {{ $t('modals.change_login.title') }}
+        </template>
+        <template #title-icon>
+          <img src="../../../../assets/img/envelop.svg" alt="" />
+        </template>
+        <template #change-login>
+          <InputComponent
+            :title="$t('modals.change_login.current-email')"
+            :placeholder="'stefa.kalyna@gmail.com'"
+            :outsideTitle="true"
+            :titleWidth="0"
+          />
+          <InputComponent
+            :title="$t('modals.change_login.new-email')"
+            :placeholder="'stefa.kalyna@gmail.com'"
+            :outsideTitle="true"
+            :titleWidth="0"
+          />
+          <div class="btns-block">
+            <div 
+              class="cancle-btn"
+              @click="toggleModal('email')"
+            >
+              {{ $t('buttons.cancel-editing') }}
+              
+            </div>
+            <div 
+              class="save-btn"
+              @click="toggleModal('email')"
+            >
+              {{ $t('buttons.save-changes') }}
+              
+            </div>
+          </div>
+        </template>
+      </ModalWindow>
+    </Transition>
+    <!-- Modals delete -->
     <div class="title-block">
       <div class="titles">
         <div  class="title">
@@ -106,6 +238,7 @@
             :title="'E-mail'"
             :placeholder="'f.j.swann@aol.com'"
             :title-width="68"
+            :insideTitle="true"
           />
           <div class="change-pass-btn">
             {{ $t('profile.change-password') }}
@@ -115,6 +248,12 @@
         <div class="delete-account">
           {{ $t('profile.delete-account') }}
         </div>
+        <!-- delete -->
+        <div class="buttons-block">
+          <button @click="toggleModal('phone')">Изменить телефон</button>
+          <button @click="toggleModal('email')">Изменить почту</button>
+        </div>
+        <!-- delete -->
       </div>
       <div class="block block-4">
         <div class="title">
@@ -145,6 +284,7 @@
         <InputComponent
           :title="'Вік'"
           :placeholder="'09. 07. 1998'"
+          :insideTitle="true"
         />
         <Dropdown 
           :options="dataDropdown"
@@ -163,6 +303,7 @@ import Switcher from '../../../../components/Switcher.vue'
 import Dropdown from '../../../../components/Dropdown.vue'
 import Spiner from '../../../../components/GlobalSpiner.vue'
 import InputComponent from '../../../../components/InputComponent.vue'
+import ModalWindow from '../../../../components/ModalWindow.vue'
 
 export default {
   name: 'UserCabinet',
@@ -172,10 +313,26 @@ export default {
     Switcher,
     Dropdown,
     Spiner,
-    InputComponent
+    InputComponent,
+    ModalWindow
   },
   data() {
     return {
+      isModalActive: {
+        phone: false,
+        email: false
+      },
+      modal: {
+        first: true,
+        second: false
+      },
+      smscode: {
+        1: null,
+        2: null,
+        3: null,
+        4: null,
+        5: null
+      },
       isSpinerActive: false,
       dataDropdown: [
         {
@@ -220,6 +377,26 @@ export default {
                                     { ...item, isActive: true } :
                                     item
                             })
+    },
+    toggleModal(val) {
+      switch (val) {
+        case 'phone':
+          this.isModalActive.phone = !this.isModalActive.phone
+          this.modal = {
+            first: true,
+            second: false
+          }
+        break;
+        case 'email':
+          this.isModalActive.email = !this.isModalActive.email
+        break;
+      }
+    },
+    toggleModalPage() {
+      this.modal = {
+        first: false,
+        second: true
+      }
     }
   }
 }

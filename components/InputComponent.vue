@@ -1,6 +1,9 @@
 <template>
   <div class="input">
-    <div class="title" :style="{width: titleWidth + 'px'}">
+    <div v-if="outsideTitle" class="outer-title">
+      <span>{{title}}</span>
+    </div>
+    <div v-if="insideTitle" class="inner-title" :style="{width: titleWidth + 'px'}">
       <span>{{title}}</span>
     </div>
     <input 
@@ -15,6 +18,14 @@
 export default {
   name: 'InputComponent',
   props: {
+    insideTitle: {
+      type: Boolean,
+      default: false
+    },
+    outsideTitle: {
+      type: Boolean,
+      default: false
+    },
     title: {
       type: String,
       default: ''
@@ -43,7 +54,20 @@ export default {
     position: relative;
     border-radius: 6px;
     margin: 12px 0;
-    .title {
+    .outer-title {
+      padding: 0px 4px;
+      position: absolute;
+      left: 8px;
+      top: -8px;
+      background: #FFFFFF;
+      border-radius: 4px;
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+    }
+    .inner-title {
       display: table;
       height: 100%;
       position: absolute;
