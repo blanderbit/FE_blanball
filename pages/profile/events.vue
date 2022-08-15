@@ -203,17 +203,197 @@
               </div>
             </div>
           </div>
+          <div class="event-card">
+            <div class="top-title">
+              <div class="left-side">
+                <div class="card-icon">
+                  <img src="../../assets/img/hands-shake.png" alt=""></div>
+                <div class="text-block">
+                  <div class="title">{{ $t('events.friendly-match') }}</div>
+                  <div class="date-time-mob">
+                    <div class="date">16 {{ $t('events.months.June') }}</div>
+                    <div class="time">12:00 – 14:00</div>
+                  </div>
+                  <div class="address desk-address">
+                    <img src="../../assets/img/location-point.svg" alt="">
+                    <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
+                  </div>
+                </div>
+              </div>
+              <div class="right-side">
+                <div class="date">16 {{ $t('events.months.June') }}</div>
+                <div class="time">12:00 – 14:00</div>
+              </div>
+            </div>
+            <div class="address mob-address">
+              <img src="../../assets/img/location-point.svg" alt="">
+              <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
+            </div>
+            <div class="main-text">
+              Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd
+            </div>
+            <div class="labels">
+              <div class="label">{{ $t('events.football') }}</div>
+              <div class="label">{{ $t('events.men') }}</div>
+              <div class="label">{{ $t('events.without-category') }}</div>
+            </div>
+            <div class="bottom-block">
+              <div class="top-line">
+                <div class="name">В’ячеслав Залізняк</div>
+                <div class="price">{{ $t('events.for-free') }}</div>
+              </div>
+              <div class="bottom-line">
+                <div class="left-side">
+                  <div class="titles">
+                    <div class="players">{{ $t('events.players') }}:</div>
+                    <div class="visitors">{{ $t('events.fans') }}:</div>
+                  </div>
+                  <div class="date">
+                    <div class="players-date">10 / 22</div>
+                    <div class="visitors-date">17 / 30</div>
+                  </div>
+                </div>
+                <div class="right-side">
+                  <GreenBtn 
+                    :text="'Долучитися'" 
+                    :width="115"
+                    :height="32"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="event-card">
+            <div class="top-title">
+              <div class="left-side">
+                <div class="card-icon">
+                  <img src="../../assets/img/hands-shake.png" alt=""></div>
+                <div class="text-block">
+                  <div class="title">{{ $t('events.friendly-match') }}</div>
+                  <div class="date-time-mob">
+                    <div class="date">16 {{ $t('events.months.June') }}</div>
+                    <div class="time">12:00 – 14:00</div>
+                  </div>
+                  <div class="address desk-address">
+                    <img src="../../assets/img/location-point.svg" alt="">
+                    <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
+                  </div>
+                </div>
+              </div>
+              <div class="right-side">
+                <div class="date">16 {{ $t('events.months.June') }}</div>
+                <div class="time">12:00 – 14:00</div>
+              </div>
+            </div>
+            <div class="address mob-address">
+              <img src="../../assets/img/location-point.svg" alt="">
+              <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
+            </div>
+            <div class="main-text">
+              Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd
+            </div>
+            <div class="labels">
+              <div class="label">{{ $t('events.football') }}</div>
+              <div class="label">{{ $t('events.men') }}</div>
+              <div class="label">{{ $t('events.without-category') }}</div>
+            </div>
+            <div class="bottom-block">
+              <div class="top-line">
+                <div class="name">В’ячеслав Залізняк</div>
+                <div class="price">{{ $t('events.for-free') }}</div>
+              </div>
+              <div class="bottom-line">
+                <div class="left-side">
+                  <div class="titles">
+                    <div class="players">{{ $t('events.players') }}:</div>
+                    <div class="visitors">{{ $t('events.fans') }}:</div>
+                  </div>
+                  <div class="date">
+                    <div class="players-date">10 / 22</div>
+                    <div class="visitors-date">17 / 30</div>
+                  </div>
+                </div>
+                <div class="right-side">
+                  <GreenBtn 
+                    :text="'Долучитися'" 
+                    :width="115"
+                    :height="32"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="event-card">
+            <div class="top-title">
+              <div class="left-side">
+                <div class="card-icon">
+                  <img src="../../assets/img/hands-shake.png" alt=""></div>
+                <div class="text-block">
+                  <div class="title">{{ $t('events.friendly-match') }}</div>
+                  <div class="date-time-mob">
+                    <div class="date">16 {{ $t('events.months.June') }}</div>
+                    <div class="time">12:00 – 14:00</div>
+                  </div>
+                  <div class="address desk-address">
+                    <img src="../../assets/img/location-point.svg" alt="">
+                    <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
+                  </div>
+                </div>
+              </div>
+              <div class="right-side">
+                <div class="date">16 {{ $t('events.months.June') }}</div>
+                <div class="time">12:00 – 14:00</div>
+              </div>
+            </div>
+            <div class="address mob-address">
+              <img src="../../assets/img/location-point.svg" alt="">
+              <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
+            </div>
+            <div class="main-text">
+              Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd
+            </div>
+            <div class="labels">
+              <div class="label">{{ $t('events.football') }}</div>
+              <div class="label">{{ $t('events.men') }}</div>
+              <div class="label">{{ $t('events.without-category') }}</div>
+            </div>
+            <div class="bottom-block">
+              <div class="top-line">
+                <div class="name">В’ячеслав Залізняк</div>
+                <div class="price">{{ $t('events.for-free') }}</div>
+              </div>
+              <div class="bottom-line">
+                <div class="left-side">
+                  <div class="titles">
+                    <div class="players">{{ $t('events.players') }}:</div>
+                    <div class="visitors">{{ $t('events.fans') }}:</div>
+                  </div>
+                  <div class="date">
+                    <div class="players-date">10 / 22</div>
+                    <div class="visitors-date">17 / 30</div>
+                  </div>
+                </div>
+                <div class="right-side">
+                  <GreenBtn 
+                    :text="'Долучитися'" 
+                    :width="115"
+                    :height="32"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="right-sidebar">
-       <div class="title-block">
-          <div class="title">{{ $t('events.planned-events') }}</div>
-          <div class="subtitle">{{ $t('events.your-events') }}</div>
-       </div>
+      <div class="title-block">
+        <div class="title">{{ $t('events.planned-events') }}</div>
+        <div class="subtitle">{{ $t('events.your-events') }}</div>
+      </div>
 
-       <div class="cards-block">
+      <div class="cards-block">
         <div class="card">
           <div class="close">&times;</div>
           <div class="top-line">
@@ -238,7 +418,79 @@
             <div class="label">...</div>
           </div>
         </div>
-       </div>
+        <div class="card">
+          <div class="close">&times;</div>
+          <div class="top-line">
+            <div class="icon-pic">
+              <img src="../../assets/img/hands-shake.png" alt="">
+            </div>
+            <div class="text-data">
+              <div class="top-line name">{{ $t('events.friendly-match') }}</div>
+              <div class="bottom-line">
+                <div class="time">12:00 – 14:00</div>
+                <div class="date">16 {{ $t('events.months.June') }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="address">
+            <img src="../../assets/img/location-point.svg" alt="">
+            <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
+          </div>
+          <div class="labels">
+            <div class="label">{{ $t('events.football') }}</div>
+            <div class="label">{{ $t('events.men') }}</div>
+            <div class="label">...</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="close">&times;</div>
+          <div class="top-line">
+            <div class="icon-pic">
+              <img src="../../assets/img/hands-shake.png" alt="">
+            </div>
+            <div class="text-data">
+              <div class="top-line name">{{ $t('events.friendly-match') }}</div>
+              <div class="bottom-line">
+                <div class="time">12:00 – 14:00</div>
+                <div class="date">16 {{ $t('events.months.June') }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="address">
+            <img src="../../assets/img/location-point.svg" alt="">
+            <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
+          </div>
+          <div class="labels">
+            <div class="label">{{ $t('events.football') }}</div>
+            <div class="label">{{ $t('events.men') }}</div>
+            <div class="label">...</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="close">&times;</div>
+          <div class="top-line">
+            <div class="icon-pic">
+              <img src="../../assets/img/hands-shake.png" alt="">
+            </div>
+            <div class="text-data">
+              <div class="top-line name">{{ $t('events.friendly-match') }}</div>
+              <div class="bottom-line">
+                <div class="time">12:00 – 14:00</div>
+                <div class="date">16 {{ $t('events.months.June') }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="address">
+            <img src="../../assets/img/location-point.svg" alt="">
+            <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
+          </div>
+          <div class="labels">
+            <div class="label">{{ $t('events.football') }}</div>
+            <div class="label">{{ $t('events.men') }}</div>
+            <div class="label">...</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -772,6 +1024,9 @@ export default {
         }
         .cards-block {
           margin-top: 23px;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-around;
           .event-card {
             padding: 20px 16px;
             isolation: isolate;
@@ -779,6 +1034,7 @@ export default {
             background: #FFFFFF;
             box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
             border-radius: 6px;
+            margin-bottom: 16px;
             @media (max-width: 768px) {
               width: 100%;
             }
@@ -844,16 +1100,19 @@ export default {
               }
               .left-side {
                 display: flex;
+                width: 262px;
+                min-width: 262px;
                 .card-icon {
                   display: flex;
                   flex-direction: row;
                   justify-content: center;
                   align-items: center;
+                  min-width: 48px;
                   width: 48px;
                   height: 48px;
                   background: #EFEFF6;
                   border-radius: 4px;
-                  margin-right: 8px;
+                  margin-right: 8px
                 }
                 .text-block {
                   .title {
@@ -1006,6 +1265,7 @@ export default {
           border: 1px solid #DFDEED;
           border-radius: 6px;
           padding: 10px 12px;
+          margin-bottom: 16px;
           .close {
             position: absolute;
             right: 10px;

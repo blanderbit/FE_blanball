@@ -5,7 +5,7 @@
     </div>
     <BreadCrumbs />
     <div class="logo">
-      <img src="../assets/img/Blanball.png" alt="">
+      <img src="../assets/img/Logo.png" alt="">
     </div>
     <div class="search-block">
       <img src="../assets/img/search.svg" alt="">
@@ -25,15 +25,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.8s ease;
-}
-
-.v-enter,
-.v-leave-to {
-  opacity: 0;
-}
 .header {
   display: flex;
   justify-content: space-between;
