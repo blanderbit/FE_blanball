@@ -242,13 +242,12 @@ export default {
           }
         }
         .bottom-line {
-          text-align: center;
+          text-align: left;
           font-family: 'Inter';
           font-style: normal;
           font-weight: 400;
           font-size: 12px;
           line-height: 16px;
-          text-align: center;
           color: #8A8AA8;
         }
       }
