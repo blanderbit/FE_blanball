@@ -165,6 +165,61 @@
           </div>
         </template>
       </ModalWindow>
+      <ModalWindow 
+        v-if="isModalActive.change_password" 
+        @close-modal="toggleModal('change_password')"
+      >
+        <template #title>
+          {{ $t('modals.change_password.title') }}
+        </template>
+        <template #title-icon>
+          <img src="../../../../assets/img/key.svg" alt="" />
+        </template>
+        <template #change-password>
+          <InputComponent
+            :title="$t('modals.change_password.current-pass')"
+            :title-width="0"
+            :input-type="'password'"
+            :outsideTitle="true"
+            :hasIcon="true"
+            :icon="require('../../../../assets/img/eye-crossed.svg')"
+          />
+          <InputComponent
+            :title="$t('modals.change_password.new-pass')"
+            :title-width="0"
+            :input-type="'password'"
+            :outsideTitle="true"
+            :hasIcon="true"
+            :icon="require('../../../../assets/img/eye-crossed.svg')"
+          />
+          <p class="sms-text">
+            {{ $t('modals.change_password.sms-code') }}        
+          </p>
+          <div class="sms-code-block">
+            <input v-model="smscode[1]" type="number" placeholder="_">
+            <input v-model="smscode[2]" type="number" placeholder="_">
+            <input v-model="smscode[3]" type="number" placeholder="_">
+            <input v-model="smscode[4]" type="number" placeholder="_">
+            <input v-model="smscode[5]" type="number" placeholder="_">
+          </div>
+          <div class="btns-block">
+            <div 
+              class="cancle-btn"
+              @click="toggleModal('change_password')"
+            >
+              {{ $t('buttons.cancel-editing') }}
+              
+            </div>
+            <div 
+              class="save-btn"
+              @click="toggleModal('change_password')"
+            >
+              {{ $t('buttons.save-changes') }}
+              
+            </div>
+          </div>
+        </template>
+      </ModalWindow>
     </Transition>
     <!-- Modals delete -->
     <div class="title-block">
@@ -287,6 +342,7 @@
           <button @click="toggleModal('phone')">Изменить телефон</button>
           <button @click="toggleModal('email')">Изменить почту</button>
           <button @click="toggleModal('delete_acc')">Удалить аккаунт</button>
+          <button @click="toggleModal('change_password')">Изменить пароль</button>
         </div>
         <!-- delete -->
       </div>
@@ -356,7 +412,8 @@ export default {
       isModalActive: {
         phone: false,
         email: false,
-        delete_acc: false
+        delete_acc: false,
+        change_password: false,
       },
       modal: {
         first: true,
@@ -428,6 +485,9 @@ export default {
         break;
         case 'delete_acc':
           this.isModalActive.delete_acc = !this.isModalActive.delete_acc
+        break;
+        case 'change_password':
+          this.isModalActive.change_password = !this.isModalActive.change_password
         break;
       }
     },

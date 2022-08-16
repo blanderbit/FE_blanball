@@ -12,10 +12,11 @@
             <slot name="title-icon"></slot>
           </div>
         </div>
-        <div class="change-phone-number">
+        <div class="modals-container">
           <slot name="change-phone-number"></slot>
           <slot name="change-login"></slot>
           <slot name="delete-account"></slot>
+          <slot name="change-password"></slot>
         </div>
       </div>
     </div>
@@ -42,7 +43,7 @@ export default {
   width: 100%;
   height: 100%;
   background: rgba(255, 255, 255, 0.514);
-  z-index: 1;
+  z-index: 999;
   .modal-window {
     position: absolute;
     top: 50%;
