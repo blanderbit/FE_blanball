@@ -2,7 +2,7 @@
   <div>
     <div class="modal-wrapper" @click.self="$emit('close-modal')">
       <div class="modal-window">
-        <div class="window-title">
+        <div class="window-title" :style="{'background': titleColor}">
           <div class="text">
             <slot name="title">
               Modal name
@@ -15,6 +15,7 @@
         <div class="change-phone-number">
           <slot name="change-phone-number"></slot>
           <slot name="change-login"></slot>
+          <slot name="delete-account"></slot>
         </div>
       </div>
     </div>
@@ -23,7 +24,13 @@
 
 <script>
 export default {
-  name: 'modal-window'
+  name: 'modal-window',
+  props: {
+    titleColor: {
+      type: String,
+      default: '#148783'
+    }
+  }
 }
 </script>
 
@@ -54,7 +61,6 @@ export default {
       align-items: center;
       padding: 20px;
       width: 100%;
-      background: #148783;
       position: absolute;
       top: 0;
       left: 0;
@@ -117,11 +123,33 @@ export default {
           -moz-appearance: textfield;
         }
       }
-    }
+    } 
     .btns-block {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      .cancle-delete-acc {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 24px;
+        text-align: center;
+        color: #262541;
+        padding: 4px 0;
+        cursor: pointer;
+      }
+      .delete-acc {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 24px;
+        text-align: center;
+        color: #C10B0B;
+        padding: 4px 0;
+        cursor: pointer;
+      }
       .cancle-btn {
         padding: 4px 0;
         border-radius: 6px;
