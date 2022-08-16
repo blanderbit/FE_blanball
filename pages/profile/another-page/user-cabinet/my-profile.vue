@@ -131,6 +131,40 @@
           </div>
         </template>
       </ModalWindow>
+      <ModalWindow 
+        v-if="isModalActive.delete_acc" 
+        :titleColor="'#C10B0B'"
+        @close-modal="toggleModal('delete_acc')"
+      >
+        <template #title>
+          {{ $t('modals.delete_acc.title') }}
+        </template>
+        <template #title-icon>
+          <img src="../../../../assets/img/warning.svg" alt="" />
+        </template>
+        <template #delete-account>
+          <div class="current-number">
+            (617) 623-2338
+          </div>
+          <div class="description-text">
+            {{ $t('modals.delete_acc.text') }}
+          </div>
+          <div class="btns-block">
+            <div 
+              class="cancle-delete-acc"
+              @click="toggleModal('delete_acc')"
+            >
+              {{ $t('buttons.cancel-deleting') }}
+            </div>
+            <div 
+              class="delete-acc"
+              @click="toggleModal('delete_acc')"
+            >
+              {{ $t('buttons.delete-account') }}
+            </div>
+          </div>
+        </template>
+      </ModalWindow>
     </Transition>
     <!-- Modals delete -->
     <div class="title-block">
@@ -252,6 +286,7 @@
         <div class="buttons-block">
           <button @click="toggleModal('phone')">Изменить телефон</button>
           <button @click="toggleModal('email')">Изменить почту</button>
+          <button @click="toggleModal('delete_acc')">Удалить аккаунт</button>
         </div>
         <!-- delete -->
       </div>
@@ -320,7 +355,8 @@ export default {
     return {
       isModalActive: {
         phone: false,
-        email: false
+        email: false,
+        delete_acc: false
       },
       modal: {
         first: true,
@@ -389,6 +425,9 @@ export default {
         break;
         case 'email':
           this.isModalActive.email = !this.isModalActive.email
+        break;
+        case 'delete_acc':
+          this.isModalActive.delete_acc = !this.isModalActive.delete_acc
         break;
       }
     },
