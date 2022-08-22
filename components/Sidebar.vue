@@ -1,7 +1,15 @@
 <template>
   <div class="sidebar-wrapper">
-    <div v-if="isMenuOpened" class="slide-menu-back" @click="toggleMenu"></div>
-    <div class="slide-menu-wrapper" :style="sliderStyle">
+    <div 
+      v-if="isMenuOpened" 
+      class="slide-menu-back"
+      @click="toggleMenu"
+    >
+    </div>
+    <div 
+      class="slide-menu-wrapper" 
+      :style="sliderStyle"
+    >
       <div class="sidebar-arrow" @click="toggleMenu">
         <img :src="arrowPosition" alt="">
       </div>
@@ -64,7 +72,7 @@
 
 <script>
 export default {
-  name: 'main-sidebar',
+  name: 'MainSidebar',
   data() {
     return {
       isMenuOpened: false,
@@ -126,6 +134,9 @@ export default {
 <style lang="scss" scoped>
 .sidebar-wrapper {
   position: relative;
+  @media (max-width: 992px) {
+    display: none;
+  }
   .slide-menu-back {
     position: fixed;
     top: 0;
@@ -267,9 +278,6 @@ export default {
     align-items: center;
     z-index: 2;
     background: #FFFFFF;
-    @media (max-width: 992px) {
-      display: none;
-    }
     .top-block {
       .picture-top {
         padding-bottom: 30px;

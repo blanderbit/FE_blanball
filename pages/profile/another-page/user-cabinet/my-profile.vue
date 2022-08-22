@@ -46,10 +46,11 @@
             <div class="current-number">
               <InputComponent
                 :title="$t('modals.change_number.current-number')"
-                :placeholder="'(617) 623-2338'"
+                :placeholder="'+38 066 825 07 77'"
                 :title-width="138"
                 :input-type="'number'"
-                :insideTitle="true"
+                :inside-title="true"
+                :is-disabled="true"
               />
             </div>
             <div class="new-number">
@@ -58,18 +59,22 @@
                 :placeholder="'(050) 623-78 95'"
                 :title-width="138"
                 :input-type="'number'"
-                :insideTitle="true"
+                :inside-title="true"
               />
             </div>
             <p class="sms-text">
               {{ $t('modals.change_number.sms-code') }}        
             </p>
             <div class="sms-code-block">
-              <input v-model="smscode[1]" type="number" placeholder="_">
-              <input v-model="smscode[2]" type="number" placeholder="_">
-              <input v-model="smscode[3]" type="number" placeholder="_">
-              <input v-model="smscode[4]" type="number" placeholder="_">
-              <input v-model="smscode[5]" type="number" placeholder="_">
+              <input 
+                v-for="item in codeResettingInputs"
+                :key="item.id"
+                v-model="item.value"
+                type="number"
+                placeholder="_"
+                :ref="`input-${item.id}`"
+                @input="codeInput(item.id, $event)"
+              >
             </div>
             <div class="btns-block">
               <div 
@@ -104,14 +109,14 @@
           <InputComponent
             :title="$t('modals.change_login.current-email')"
             :placeholder="'stefa.kalyna@gmail.com'"
-            :outsideTitle="true"
-            :titleWidth="0"
+            :outside-title="true"
+            :title-width="0"
           />
           <InputComponent
             :title="$t('modals.change_login.new-email')"
             :placeholder="'stefa.kalyna@gmail.com'"
-            :outsideTitle="true"
-            :titleWidth="0"
+            :outside-title="true"
+            :title-width="0"
           />
           <div class="btns-block">
             <div 
@@ -133,7 +138,7 @@
       </ModalWindow>
       <ModalWindow 
         v-if="isModalActive.delete_acc" 
-        :titleColor="'#C10B0B'"
+        :title-color="'#C10B0B'"
         @close-modal="toggleModal('delete_acc')"
       >
         <template #title>
@@ -179,18 +184,24 @@
           <InputComponent
             :title="$t('modals.change_password.current-pass')"
             :title-width="0"
-            :input-type="'password'"
-            :outsideTitle="true"
-            :hasIcon="true"
-            :icon="require('../../../../assets/img/eye-crossed.svg')"
+            :type="['password', 'text']"
+            :outside-title="true"
+            :has-icon="true"
+            :icon="[
+              require('../../../../assets/img/eye-crossed.svg'),
+              require('../../../../assets/img/eye-opened.svg')
+            ]"
           />
           <InputComponent
             :title="$t('modals.change_password.new-pass')"
             :title-width="0"
-            :input-type="'password'"
-            :outsideTitle="true"
-            :hasIcon="true"
-            :icon="require('../../../../assets/img/eye-crossed.svg')"
+            :type="['password', 'text']"
+            :outside-title="true"
+            :has-icon="true"
+            :icon="[
+              require('../../../../assets/img/eye-crossed.svg'),
+              require('../../../../assets/img/eye-opened.svg')
+            ]"
           />
           <p class="sms-text">
             {{ $t('modals.change_password.sms-code') }}        
@@ -327,7 +338,7 @@
             :title="'E-mail'"
             :placeholder="'f.j.swann@aol.com'"
             :title-width="68"
-            :insideTitle="true"
+            :inside-title="true"
           />
           <div class="change-pass-btn">
             {{ $t('profile.change-password') }}
@@ -375,7 +386,7 @@
         <InputComponent
           :title="'Вік'"
           :placeholder="'09. 07. 1998'"
-          :insideTitle="true"
+          :inside-title="true"
         />
         <Dropdown 
           :options="dataDropdown"
@@ -409,6 +420,13 @@ export default {
   },
   data() {
     return {
+      codeResettingInputs: [
+        { id: 0, value: '' },
+        { id: 1, value: '' },
+        { id: 2, value: '' },
+        { id: 3, value: '' },
+        { id: 4, value: '' }
+      ],
       isModalActive: {
         phone: false,
         email: false,
@@ -418,13 +436,6 @@ export default {
       modal: {
         first: true,
         second: false
-      },
-      smscode: {
-        1: null,
-        2: null,
-        3: null,
-        4: null,
-        5: null
       },
       isSpinerActive: false,
       dataDropdown: [
@@ -462,6 +473,11 @@ export default {
       ]
     }
   },
+  watch: {
+    codeResettingInputs() {
+      console.log('changed')
+    }
+  },
   methods: {
     changeTab(id) {
       this.tabs = this.tabs.map(item => ({ ...item, isActive: false }))
@@ -496,6 +512,15 @@ export default {
         first: false,
         second: true
       }
+    },
+    codeInput(id, e) {
+      console.log(e)
+      console.log(this)
+      const currentInput = this.codeResettingInputs.find(i => i.id === id)
+      if (currentInput.value.length > 1) {
+        currentInput.value = currentInput.value.slice(1, 2);
+      }
+      this.$refs[`input-${id + 1}`].focus()
     }
   }
 }

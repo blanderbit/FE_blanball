@@ -30,6 +30,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   height: 88px;
+  padding-left: 16px;
   .mob-menu-icon {
     display: none;
     @media (max-width: 992px) {

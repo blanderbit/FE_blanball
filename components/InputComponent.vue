@@ -13,13 +13,16 @@
     <div 
       v-if="hasIcon" 
       class="input-icon"
+      @click="iconClickAction"
     >
-      <img :src="icon" alt="">
+      <img :src="rightIcon" alt="">
     </div>
     <input 
       :type="inputType" 
       :placeholder="placeholder"
       :style="inputStyle"
+      :disabled="isDisabled"
+      v-model="mainValue"
     >
   </div>
 </template>
@@ -28,9 +31,13 @@
 export default {
   name: 'InputComponent',
   props: {
+    isDisabled: {
+      type: Boolean,
+      default: false
+    },
     icon: {
-      type: String,
-      default: ''
+      type: Array,
+      default: () => []
     },
     hasIcon: {
       type: Boolean,
@@ -56,9 +63,16 @@ export default {
       type: Number,
       default: 108
     },
-    inputType: {
-      type: String,
-      default: 'text'
+    type: {
+      type: Array,
+      default: () => ['text']
+    }
+  },
+  data() {
+    return {
+      mainValue: '',
+      iconCount: 0,
+      inputType: null
     }
   },
   computed: {
@@ -67,7 +81,19 @@ export default {
         'padding-left': 10 + this.titleWidth + 'px',
         'padding-right': this.hasIcon ? '52px' : '5px'
       }
+    },
+    rightIcon() {
+      return this.icon[this.iconCount]
     }
+  },
+  methods: {
+    iconClickAction() {
+      this.iconCount = this.iconCount === 0 ? 1 : 0
+      this.inputType = this.inputType === 'password' ? 'text' : 'password'
+    }
+  },
+  mounted() {
+    this.inputType = this.type[0]
   }
 }
 </script>
