@@ -10,11 +10,15 @@
       <span>{{mainTitle}}</span>
     </div>
     <div class="drop-current" @click="toggleDropdown">
+      <slot name="drop-icon"></slot>
       <div class="current-name">{{currentValue}}</div>
       <div class="arrow-down">
-        <img src="../assets/img/arrow-down.svg" alt="">
+        <img src="../assets/img/arrow-down2.svg" alt="">
       </div>
-      <ul v-if="isOpened">
+      <ul 
+        v-if="isOpened" 
+        :style="ulStyle"
+      >
         <li 
           v-for="item of options"
           :key="item.id"
@@ -50,6 +54,10 @@ export default {
     width: {
       type: Number,
       default: null
+    },
+    height: {
+      type: Number,
+      default: null
     }
   },
   data() {
@@ -61,7 +69,13 @@ export default {
   computed: {
     dropdownStyle() {
       return {
-        width: this.width ? this.width + 'px' : '100%'
+        width: this.width ? this.width + 'px' : '100%',
+        height: this.height ? this.height + 'px' : '38px',
+      }
+    },
+    ulStyle() {
+      return {
+        top: this.height + 'px'
       }
     }
   },
@@ -79,7 +93,6 @@ export default {
 <style lang="scss" scoped>
   .dropdown {
     width: 100%;
-    height: 40px;
     border: 1px solid #DFDEED;
     border-radius: 6px;
     margin: 12px 0;
@@ -139,13 +152,13 @@ export default {
       color: #262541;
       ul {
         position: absolute;
-        top: 40px;
         left: 0;
         width: 100%;
         background: #fff;
         border-right: 1px solid #DFDEED;
         border-left: 1px solid #DFDEED;
         border-bottom: 1px solid #DFDEED;
+        z-index: 999;
         li {
           list-style: none;
           padding: 2px 12px;

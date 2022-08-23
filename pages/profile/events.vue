@@ -20,62 +20,87 @@
         </div>
       </div>
       <div class="main-search-block">
-        <div class="grey-rectangle"></div>
         <div class="search-block">
           <div class="first-line">
-            <Dropdown 
-              :options="dataDropdown"
-              :main-title="$t('events.game-type')"
-              :outside-title="true"
-              :width="152"
-            />
-            <div class="location-filters">
-              <div class="location">
-                <img src="../../assets/img/location-point.svg" alt="">
-                <p>Запоріжжя</p>
+            <div class="left-block">
+              <div class="old-new-filter">
+                <img src="../../assets/img/sort-arrows.svg" alt="">
+                Cпочатку нові
               </div>
-              <div class="drop-filters">
+              <div class="dropdown-wrapper">
+                <Dropdown 
+                  :options="dataDropdown"
+                  :width="140"
+                  :height="32"
+                />
+              </div>
+              <Dropdown 
+                :options="dataDropdown"
+                :width="160"
+                :height="32"
+              >
+                <template #drop-icon >
+                  <img src="../../assets/img/cup.png" alt="">
+                </template>
+              </Dropdown>
+            </div>
+            <div class="right-block">
+              <div class="search-input">
+                <InputComponent 
+                  :titleWidth="0"
+                  :placeholder="'Пошук серед подій'"
+                  :hasIcon="true"
+                  :icon="[
+                    require('../../assets/img/search.svg')
+                  ]"
+                />
+              </div>
+              <div class="icon-container">
                 <img src="../../assets/img/clear-filter.svg" alt="">
               </div>
-              <img class="set-filter" src="../../assets/img/set-filter.svg" alt="">
+              <div class="icon-container">
+                <img class="set-filter" src="../../assets/img/cross.svg" alt="">
+              </div>
             </div>
           </div>
           <div class="second-line">
             <div class="left-side">
-              <div class="choose-gender">
-                <div class="radio">
-                  <input id="radio-1" name="radio" type="radio" checked>
-                  <label for="radio-1" class="radio-label">
+              <div class="dropdown-wrapper">
+                <Dropdown 
+                  :options="dataDropdown2"
+                  :width="132"
+                  :height="32"
+                >
+                  <template #drop-icon >
                     <img src="../../assets/img/male-icon.svg" alt="">
-                    {{ $t('events.men') }}
-                  </label>
-                </div>
-
-                <div class="radio">
-                  <input id="radio-2" name="radio" type="radio">
-                  <label for="radio-2" class="radio-label">
-                  <img src="../../assets/img/female-icon.svg" alt="">
-                    {{ $t('events.women') }}
-                  </label>
-                </div>
-
-                <div class="radio">
-                  <input id="radio-3" name="radio" type="radio">
-                  <label for="radio-3" class="radio-label">
-                    <img src="../../assets/img/unisex.svg" alt="">
-                    {{ $t('events.all') }}
-                  </label>
-                </div>
+                  </template>
+                </Dropdown>
               </div>
               <div class="calendar">
                 <img src="../../assets/img/calendar.svg" alt="">
                 {{ $t('events.calendar') }}
               </div>
+              <div class="dropdown-wrapper">
+                <Dropdown 
+                  :options="dataDropdown3"
+                  :width="180"
+                  :height="32"
+                >
+                  <template #drop-icon >
+                    <img src="../../assets/img/location-point.svg" alt="">
+                  </template>
+                </Dropdown>
+              </div>
             </div>
             <div class="right-side">
-              <div class="address-block">
-                <img src="../../assets/img/address-icon.svg" alt="">
-                <p>35 West Fork Street, Missoula</p>
+              <div class="free-pay-games">
+                <div :class="['grey-block', plan === 'free' ? 'right' : 'left']"></div>
+                <div class="all" @click="changePlanSearch('all')">
+                  {{ $t('events.all') }}
+                </div>
+                <div class="free" @click="changePlanSearch('free')">
+                  {{ $t('events.free') }}
+                </div>
               </div>
             </div>
           </div>
@@ -498,15 +523,19 @@
 <script>
 import GreenBtn from '../../components/GreenBtn.vue'
 import Dropdown from '../../components/Dropdown.vue'
+import InputComponent from '../../components/InputComponent.vue'
+
 
 export default {
   name: 'EventsPage',
   components: {
     GreenBtn,
-    Dropdown
+    Dropdown,
+    InputComponent
   },
   data() {
     return {
+      plan: 'free',
       dataDropdown: [
         {
           id: 0,
@@ -519,6 +548,34 @@ export default {
         {
           id: 2,
           value: 'Баскетбол'
+        }
+      ],
+      dataDropdown2: [
+        {
+          id: 0,
+          value: this.$t('events.men')
+        },
+        {
+          id: 1,
+          value: this.$t('events.women')
+        },
+        {
+          id: 2,
+          value: this.$t('events.all')
+        }
+      ],
+      dataDropdown3: [
+        {
+          id: 0,
+          value: 'Запорожье'
+        },
+        {
+          id: 1,
+          value: 'Мелитополь'
+        },
+        {
+          id: 2,
+          value: 'Киев'
         }
       ],
       calendar: [
@@ -560,6 +617,11 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+    changePlanSearch(val) {
+      this.plan = val
+    }
   }
 }
 </script>
@@ -568,7 +630,7 @@ export default {
   .events-page {
     display: grid;
     grid-template-columns: 1fr 256px;
-    grid-gap: 16px;
+    grid-gap: 28px;
     @media (max-width: 992px) {
       grid-template-columns: 1fr;
     }
@@ -577,7 +639,6 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0 16px;
         .left-part {
           .title {
             font-family: 'Exo 2';
@@ -645,23 +706,9 @@ export default {
       }
       .main-search-block {
         margin-top: 36px;
-        padding: 20px 16px;
         position: relative;
         @media (max-width: 992px) {
           padding: 0;
-        }
-        .grey-rectangle {
-          width: 100%;
-          height: 208px;
-          background: #F9F9FC;
-          border-radius: 8px;
-          position: absolute;
-          top: 0;
-          left: 0;
-          z-index: -1;
-          @media (max-width: 992px) {
-            display: none;
-          }
         }
         .search-block {
           @media (max-width: 992px) {
@@ -671,29 +718,38 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            .location-filters {
+            .left-block {
               display: flex;
               align-items: center;
-              .location {
-                margin-right: 20px;
+              .old-new-filter {
                 display: flex;
                 align-items: center;
+                margin-right: 20px;
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 500;
+                font-size: 13px;
+                line-height: 20px;
+                color: #262541;
                 img {
-                  margin-right: 8px;
-                }
-                p {
-                  font-family: 'Inter';
-                  font-style: normal;
-                  font-weight: 400;
-                  font-size: 14px;
-                  line-height: 20px;
-                  color: #262541;
-                  border-bottom: 1px dashed #000;
-                  cursor: pointer;
+                  margin-right: 6px;
                 }
               }
-              .drop-filters {
+              .dropdown-wrapper {
+                margin-right: 4px;
+              }
+            }
+            .right-block {
+              display: flex;
+              align-items: center;
+              .search-input {
+                width: 220px;
+                height: 32px;
+                margin-right: 8px;
+              }
+              .icon-container {
                 width: 36px;
+                min-width: 36px;
                 height: 36px;
                 background: #EFEFF6;
                 border-radius: 6px;
@@ -716,99 +772,20 @@ export default {
             .left-side {
               display: flex;
               align-items: center;
-              .choose-gender {
-                $color1: #f4f4f4;
-                $color2: #148783;
-                display: flex;
-                align-items: center;
-                margin-right: 16px;
-                .radio {
-                  margin-right: 8px;
-                  display: flex;
-                  flex-direction: row;
-                  align-items: center;
-                  padding: 6px 12px;
-                  background: #FFFFFF;
-                  border: 1px solid #DFDEED;
-                  border-radius: 6px;
-                  input[type="radio"] {
-                    position: absolute;
-                    opacity: 0;
-                    + .radio-label {
-                      display: flex;
-                      align-items: center;
-                      font-family: 'Inter';
-                      font-style: normal;
-                      font-weight: 400;
-                      font-size: 13px;
-                      line-height: 24px;
-                      text-transform: capitalize;
-                      color: #262541;
-                      img {
-                        margin-right: 4px;
-                      }
-                      &:after {
-                        content: '';
-                        border-radius: 100%;
-                        border: 1px solid #262541;
-                        display: inline-block;
-                        width: 13px;
-                        height: 13px;
-                        position: relative;
-                        top: 0px;
-                        margin-left: 12px; 
-                        vertical-align: top;
-                        cursor: pointer;
-                        text-align: center;
-                        transition: all 250ms ease;
-                      }
-                    }
-                    &:checked {
-                      + .radio-label {
-                        &:after {
-                          border: 1px solid $color2;
-                          background-color: $color2;
-                          box-shadow: inset 0 0 0 3px $color1;
-                        }
-                      }
-                    }
-                    &:focus {
-                      + .radio-label {
-                        &:before {
-                          outline: none;
-                          border-color: $color2;
-                        }
-                      }
-                    }
-                    &:disabled {
-                      + .radio-label {
-                        &:before {
-                          box-shadow: inset 0 0 0 4px $color1;
-                          border-color: darken($color1, 25%);
-                          background: darken($color1, 25%);
-                        }
-                      }
-                    }
-                    + .radio-label {
-                      &:empty {
-                        &:before {
-                          margin-right: 0;
-                        }
-                      }
-                    }
-                  }
-                }
+              .dropdown-wrapper {
+                margin-right: 4px;
               }
               .calendar {
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 width: 112px;
-                height: 36px;
+                height: 30px;
                 background: #FFFFFF;
                 border: 1px solid #DFDEED;
                 border-radius: 6px;
                 cursor: pointer;
+                margin-right: 4px;
                 img {
                   margin-right: 7px;
                 }
@@ -822,22 +799,41 @@ export default {
               }
             }
             .right-side {
-              .address-block {
+              .free-pay-games {
                 display: flex;
-                justify-content: center;
-                align-items: center;
-                img {
-                  margin-right: 7px;
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 13px;
+                line-height: 20px;
+                text-align: center;
+                padding: 4px;
+                width: 186px;
+                height: 32px;
+                border: 1px solid #F0F0F4;
+                border-radius: 6px;
+                position: relative;
+                .grey-block {
+                  position: absolute;
+                  top: 4px;
+                  background: #EFEFF6;
+                  border-radius: 4px;
+                  height: 23px;
+                  width: 88px;
+                  z-index: -1;
+                  &.right {
+                    transition: all 0.6s ease;
+                    right: 4px;      
+                  }
+                  &.left {
+                    transition: all 0.6s ease;
+                    left: 4px;
+                  }
                 }
-                p {
-                  font-family: 'Inter';
-                  font-style: normal;
-                  font-weight: 400;
-                  font-size: 14px;
-                  line-height: 20px;
-                  text-align: right;
-                  color: #262541;
-                  border-bottom: 1px dashed #000;
+                .all, .free {
+                  flex-basis: 50%;
+                  user-select: none;
+                  cursor: pointer;
                 }
               }
             }
@@ -1027,29 +1023,50 @@ export default {
           margin-top: 23px;
           display: flex;
           flex-wrap: wrap;
-          justify-content: space-around;
+          justify-content: space-between;
           .event-card {
+            position: relative;
             padding: 20px 16px;
             isolation: isolate;
-            width: 416px;
+            width: 328px;
             background: #FFFFFF;
             box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
             border-radius: 6px;
             margin-bottom: 16px;
+            @media (min-width: 1200px) and (max-width: 1400px) {
+              width: 408px;
+            }
+            @media (min-width: 992px) and (max-width: 1199px) {
+              width: 320px;
+            }
+            @media (min-width: 768px) and (max-width: 991px) {
+              width: 344px;
+            }
+            &:before {
+              content: '';
+              display: block;
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 6px;
+              background: linear-gradient(90.37deg, #4A7DEB -29.39%, #8978EE 37.85%, #D243C5 97.19%);
+              border-radius: 6px 6px 0px 0px;
+            }
             @media (max-width: 768px) {
               width: 100%;
             }
             .address {
               &.desk-address {
-                @media (max-width: 992px) {
-                  display: none;
-                }
+                display: none;
+                // @media (max-width: 992px) {
+                //   display: none;
+                // }
               }
               &.mob-address {
-                display: none;
-                @media (max-width: 992px) {
-                  display: flex;
-                }
+                // @media (max-width: 992px) {
+                //   display: flex;
+                // }
               }
               display: flex;
               background: #FAFAFA;
@@ -1097,12 +1114,11 @@ export default {
                 line-height: 20px;
                 text-align: right;
                 color: #4C4A82;
-                margin-top: 4px;
               }
               .left-side {
                 display: flex;
-                width: 262px;
-                min-width: 262px;
+                // width: 262px;
+                // min-width: 262px;
                 .card-icon {
                   display: flex;
                   flex-direction: row;
@@ -1125,11 +1141,9 @@ export default {
                     color: #262541;
                   }
                   .date-time-mob {
-                    display: none;
-                    @media (max-width: 992px) {
-                      display: flex;
-                      align-items: center;
-                    }
+                    display: flex;
+                    align-items: center;
+                    margin-top: 4px;
                     .date {
                       margin-right: 12px;
                     }
@@ -1137,9 +1151,10 @@ export default {
                 }
               }
               .right-side {
-                @media (max-width: 992px) {
-                  display: none;
-                }
+                display: none;
+                // @media (max-width: 992px) {
+                //   display: none;
+                // }
               }
             }
             
@@ -1190,7 +1205,7 @@ export default {
                   color: #393762;
                 }
                 .price {
-                  font-family: 'Lato';
+                  font-family: 'Inter';
                   font-style: normal;
                   font-weight: 600;
                   font-size: 14px;
@@ -1207,23 +1222,21 @@ export default {
                 .left-side {
                   display: flex;
                   align-items: center;
+                  .titles {
+                    margin-right: 30px;
+                  }
                   .titles, .date {
                     font-family: 'Inter';
                     font-style: normal;
                     font-weight: 400;
                     font-size: 12px;
                     line-height: 20px;
-                    margin-right: 30px;
                   }
-                    .players, .players-date {
-                      color: #262541;
-                    }
-                    .visitors, .visitors-date {
-                      color: #575775;
-                    }
-                  
-                  .date {
-
+                  .players, .players-date {
+                    color: #262541;
+                  }
+                  .visitors, .visitors-date {
+                    color: #575775;
                   }
                 }
                 .right-side {

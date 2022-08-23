@@ -1,5 +1,8 @@
 <template>
-  <div class="input">
+  <div 
+    class="input-wrapper"
+    :style="inputWrapper"
+  >
     <div v-if="outsideTitle" class="outer-title">
       <span>{{title}}</span>
     </div>
@@ -66,6 +69,10 @@ export default {
     type: {
       type: Array,
       default: () => ['text']
+    },
+    height: {
+      type: Number,
+      default: null
     }
   },
   data() {
@@ -79,7 +86,12 @@ export default {
     inputStyle() {
       return {
         'padding-left': 10 + this.titleWidth + 'px',
-        'padding-right': this.hasIcon ? '52px' : '5px'
+        'padding-right': this.hasIcon ? '52px' : '10px'
+      }
+    },
+    inputWrapper() {
+      return {
+        height: this.height ? this.height + 'px' : '100%'
       }
     },
     rightIcon() {
@@ -99,13 +111,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .input {
+  .input-wrapper {
     width: 100%;
-    height: 40px;
     border: 1px solid #DFDEED;
     position: relative;
     border-radius: 6px;
-    margin: 12px 0;
     .input-icon {
       display: flex;
       height: 100%;
