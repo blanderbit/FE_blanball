@@ -73,6 +73,11 @@ export default {
       font-size: 16px;
       line-height: 24px;
     }
+    .inut-wrapper {
+      width: 360px;
+      height: 40px;
+      margin-bottom: 16px;
+    }
     .current-number {
       font-family: 'Inter';
       font-style: normal;
