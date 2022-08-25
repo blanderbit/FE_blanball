@@ -38,7 +38,7 @@ export default {
       type: Boolean,
       default: false
     },
-    icon: {
+    icon:            {
       type: Array,
       default: () => []
     },
@@ -100,8 +100,13 @@ export default {
   },
   methods: {
     iconClickAction() {
-      this.iconCount = this.iconCount === 0 ? 1 : 0
-      this.inputType = this.inputType === 'password' ? 'text' : 'password'
+      if (this.inputType === 'password') {
+        this.iconCount = this.iconCount === 0 ? 1 : 0
+        this.inputType = this.inputType === 'password' ? 'text' : 'password'
+      } else {
+        console.log('blaaaa')
+        this.$emit('icon-click')
+      }
     }
   },
   mounted() {

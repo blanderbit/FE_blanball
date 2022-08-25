@@ -11,7 +11,7 @@
           {{ $t('modals.change_number.title') }}
         </template>
         <template #title-icon>
-          <img src="../../../../assets/img/add-phone.svg" alt="" />
+          <img src="../../../assets/img/add-phone.svg" alt="" />
         </template>
         <template #change-phone-number>
           <div 
@@ -43,24 +43,28 @@
             v-if="modal.second" 
             class="change-phone-screen-2"
           >
-            <div class="current-number">
-              <InputComponent
-                :title="$t('modals.change_number.current-number')"
-                :placeholder="'+38 066 825 07 77'"
-                :title-width="138"
-                :input-type="'number'"
-                :inside-title="true"
-                :is-disabled="true"
-              />
+            <div class="current-number"> 
+              <div class="inut-wrapper">
+                <InputComponent
+                  :title="$t('modals.change_number.current-number')"
+                  :placeholder="'+38 066 825 07 77'"
+                  :title-width="138"
+                  :input-type="'number'"
+                  :inside-title="true"
+                  :is-disabled="true"
+                />
+              </div>
             </div>
             <div class="new-number">
-              <InputComponent
-                :title="$t('modals.change_number.new-number')"
-                :placeholder="'(050) 623-78 95'"
-                :title-width="138"
-                :input-type="'number'"
-                :inside-title="true"
-              />
+              <div class="inut-wrapper">
+                <InputComponent
+                  :title="$t('modals.change_number.new-number')"
+                  :placeholder="'(050) 623-78 95'"
+                  :title-width="138"
+                  :input-type="'number'"
+                  :inside-title="true"
+                />
+              </div>
             </div>
             <p class="sms-text">
               {{ $t('modals.change_number.sms-code') }}        
@@ -69,12 +73,13 @@
               <input 
                 v-for="item in codeResettingInputs"
                 :key="item.id"
-                v-model="item.value"
-                type="number"
-                placeholder="_"
                 :ref="`input-${item.id}`"
+                v-model="item.value"
+                type="text"
+                placeholder="_"
                 @input="codeInput(item.id, $event)"
               >
+                <!-- @keydown="codeInput(item.id, $event)" -->
             </div>
             <div class="btns-block">
               <div 
@@ -103,21 +108,25 @@
           {{ $t('modals.change_login.title') }}
         </template>
         <template #title-icon>
-          <img src="../../../../assets/img/envelop.svg" alt="" />
+          <img src="../../../assets/img/envelop.svg" alt="" />
         </template>
         <template #change-login>
-          <InputComponent
-            :title="$t('modals.change_login.current-email')"
-            :placeholder="'stefa.kalyna@gmail.com'"
-            :outside-title="true"
-            :title-width="0"
-          />
-          <InputComponent
-            :title="$t('modals.change_login.new-email')"
-            :placeholder="'stefa.kalyna@gmail.com'"
-            :outside-title="true"
-            :title-width="0"
-          />
+          <div class="inut-wrapper">
+            <InputComponent
+              :title="$t('modals.change_login.current-email')"
+              :placeholder="'stefa.kalyna@gmail.com'"
+              :outside-title="true"
+              :title-width="0"
+            />
+          </div>
+          <div class="inut-wrapper">
+            <InputComponent
+              :title="$t('modals.change_login.new-email')"
+              :placeholder="'stefa.kalyna@gmail.com'"
+              :outside-title="true"
+              :title-width="0"
+            />
+          </div>
           <div class="btns-block">
             <div 
               class="cancle-btn"
@@ -145,7 +154,7 @@
           {{ $t('modals.delete_acc.title') }}
         </template>
         <template #title-icon>
-          <img src="../../../../assets/img/warning.svg" alt="" />
+          <img src="../../../assets/img/warning.svg" alt="" />
         </template>
         <template #delete-account>
           <div class="current-number">
@@ -178,40 +187,48 @@
           {{ $t('modals.change_password.title') }}
         </template>
         <template #title-icon>
-          <img src="../../../../assets/img/key.svg" alt="" />
+          <img src="../../../assets/img/key.svg" alt="" />
         </template>
         <template #change-password>
-          <InputComponent
-            :title="$t('modals.change_password.current-pass')"
-            :title-width="0"
-            :type="['password', 'text']"
-            :outside-title="true"
-            :has-icon="true"
-            :icon="[
-              require('../../../../assets/img/eye-crossed.svg'),
-              require('../../../../assets/img/eye-opened.svg')
-            ]"
-          />
-          <InputComponent
-            :title="$t('modals.change_password.new-pass')"
-            :title-width="0"
-            :type="['password', 'text']"
-            :outside-title="true"
-            :has-icon="true"
-            :icon="[
-              require('../../../../assets/img/eye-crossed.svg'),
-              require('../../../../assets/img/eye-opened.svg')
-            ]"
-          />
+          <div class="inut-wrapper">
+            <InputComponent
+              :title="$t('modals.change_password.current-pass')"
+              :title-width="0"
+              :type="['password', 'text']"
+              :outside-title="true"
+              :has-icon="true"
+              :icon="[
+                require('../../../assets/img/eye-crossed.svg'),
+                require('../../../assets/img/eye-opened.svg')
+              ]"
+            />
+          </div>
+          <div class="inut-wrapper">
+            <InputComponent
+              :title="$t('modals.change_password.new-pass')"
+              :title-width="0"
+              :type="['password', 'text']"
+              :outside-title="true"
+              :has-icon="true"
+              :icon="[
+                require('../../../assets/img/eye-crossed.svg'),
+                require('../../../assets/img/eye-opened.svg')
+              ]"
+            />
+          </div>
           <p class="sms-text">
             {{ $t('modals.change_password.sms-code') }}        
           </p>
           <div class="sms-code-block">
-            <input v-model="smscode[1]" type="number" placeholder="_">
-            <input v-model="smscode[2]" type="number" placeholder="_">
-            <input v-model="smscode[3]" type="number" placeholder="_">
-            <input v-model="smscode[4]" type="number" placeholder="_">
-            <input v-model="smscode[5]" type="number" placeholder="_">
+            <input 
+              v-for="item in codeResettingInputs"
+              :key="item.id"
+              :ref="`input-${item.id}`"
+              v-model="item.value"
+              type="number"
+              placeholder="_"
+              @input="codeInput(item.id, $event)"
+            >
           </div>
           <div class="btns-block">
             <div 
@@ -274,10 +291,10 @@
           </div>
           <div class="scale-block">
             <div class="image">
-              <img src="../../../../assets/img/Slightly_Smiling_Face.png" alt="">
+              <img src="../../../assets/img/Slightly_Smiling_Face.png" alt="">
             </div>
             <div class="image">
-              <img src="../../../../assets/img/scale.png" alt="">
+              <img src="../../../assets/img/scale.png" alt="">
             </div>
           </div>
           <div class="btns-block">
@@ -292,10 +309,10 @@
             <div class="picture-block">
               <div class="profile-picture">
                 <div class="add-image">
-                  <img src="../../../../assets/img/add-user-pic.svg" alt="">
+                  <img src="../../../assets/img/add-user-pic.svg" alt="">
                 </div>
                 <div class="user-img">
-                  <img src="../../../../assets/img/user-photo.png" alt="">
+                  <img src="../../../assets/img/user-photo.png" alt="">
                 </div>
               </div>
             </div>
@@ -305,15 +322,26 @@
                   <div class="name">Стефанія</div>
                   <div class="surname">Калиновська</div>
                 </div>
-                <div class="edit-btn">
-                  <img src="../../../../assets/img/edit.svg" alt="">
+                <div 
+                  class="edit-btn"
+                  @click="switchEditMode"
+                >
+                  <img 
+                    :src="editProfileIcon" 
+                    alt=""
+                  >
                 </div>
               </div>
               <div class="nick-name-line">
                 <div class="nick-name">@S_Kalyna</div>
                 <div class="status">Гість</div>
               </div>
-              <div class="phone-number-line">+380 (95) 390 86 50</div>
+              <div 
+                class="phone-number-line"
+                @click="openChangeNumberModal"
+              >
+              +380 (95) 390 86 50
+              </div>
             </div>
           </div>
           <div class="bottom-part">
@@ -334,28 +362,33 @@
           <div class="subtitle">
             {{ $t('profile.change-login&password') }}
           </div>
-          <InputComponent
-            :title="'E-mail'"
-            :placeholder="'f.j.swann@aol.com'"
-            :title-width="68"
-            :inside-title="true"
-          />
-          <div class="change-pass-btn">
+          <div class="email-input">
+            <InputComponent
+              :title="'E-mail'"
+              :placeholder="'f.j.swann@aol.com'"
+              :title-width="68"
+              :inside-title="true"
+              :has-icon="true"
+              :icon="[
+                require('../../../assets/img/sort-arrows-horizontal.svg')
+              ]"
+              @icon-click="changeEmailIconClick"
+            />
+          </div>
+          <div 
+            class="change-pass-btn"
+            @click="toggleModal('change_password')"
+          >
             {{ $t('profile.change-password') }}
-            <img src="../../../../assets/img/lock.svg" alt="">
+            <img src="../../../assets/img/lock.svg" alt="">
           </div>
         </div>
-        <div class="delete-account">
+        <div 
+          class="delete-account" 
+          @click="toggleModal('delete_acc')"
+        >
           {{ $t('profile.delete-account') }}
         </div>
-        <!-- delete -->
-        <div class="buttons-block">
-          <button @click="toggleModal('phone')">Изменить телефон</button>
-          <button @click="toggleModal('email')">Изменить почту</button>
-          <button @click="toggleModal('delete_acc')">Удалить аккаунт</button>
-          <button @click="toggleModal('change_password')">Изменить пароль</button>
-        </div>
-        <!-- delete -->
       </div>
       <div class="block block-4">
         <div class="title">
@@ -383,15 +416,19 @@
         <div class="title">
           {{ $t('profile.personal-details') }}
         </div>
-        <InputComponent
-          :title="'Вік'"
-          :placeholder="'09. 07. 1998'"
-          :inside-title="true"
-        />
+        <div class="age-input">
+          <InputComponent
+            :title="'Вік'"
+            :placeholder="'09. 07. 1998'"
+            :inside-title="true"
+          />
+        </div>
         <Dropdown 
           :options="dataDropdown"
           :main-title="'Гендер'"
           :inside-title="true"
+          :width="344"
+          :height="40"
         />
       </div>
     </div>
@@ -399,13 +436,13 @@
 </template>
 
 <script>
-import GreenBtn from '../../../../components/GreenBtn.vue'
-import WhiteBtn from '../../../../components/WhiteBtn.vue'
-import Switcher from '../../../../components/Switcher.vue'
-import Dropdown from '../../../../components/Dropdown.vue'
-import Spiner from '../../../../components/GlobalSpiner.vue'
-import InputComponent from '../../../../components/InputComponent.vue'
-import ModalWindow from '../../../../components/ModalWindow.vue'
+import GreenBtn from '../../../components/GreenBtn.vue'
+import WhiteBtn from '../../../components/WhiteBtn.vue'
+import Switcher from '../../../components/Switcher.vue'
+import Dropdown from '../../../components/Dropdown.vue'
+import Spiner from '../../../components/GlobalSpiner.vue'
+import InputComponent from '../../../components/InputComponent.vue'
+import ModalWindow from '../../../components/ModalWindow.vue'
 
 export default {
   name: 'UserCabinet',
@@ -420,6 +457,7 @@ export default {
   },
   data() {
     return {
+      isEditProfileMode: false,
       codeResettingInputs: [
         { id: 0, value: '' },
         { id: 1, value: '' },
@@ -452,31 +490,39 @@ export default {
         {
           id: 0,
           name: 'my-profile',
-          img: require('../../../../assets/img/user.svg'),
-          url: '/profile/another-page/user-cabinet/my-profile',
+          img: require('../../../assets/img/user.svg'),
+          url: '/profile/user-cabinet/my-profile',
           isActive: true
         },
         {
           id: 1,
           name: 'rate-plan',
-          img: require('../../../../assets/img/database.svg'),
-          url: '/profile/another-page/user-cabinet/rate-plan',
+          img: require('../../../assets/img/database.svg'),
+          url: '/profile/user-cabinet/rate-plan',
           isActive: false
         },
         {
           id: 2,
           name: 'notifications',
-          img: require('../../../../assets/img/notification-small.svg'),
-          url: '/profile/another-page/user-cabinet/notifications',
+          img: require('../../../assets/img/notification-small.svg'),
+          url: '/profile/user-cabinet/notifications',
           isActive: false
         }
       ]
     }
   },
-  watch: {
-    codeResettingInputs() {
-      console.log('changed')
+  computed: {
+    editProfileIcon() {
+      return this.isEditProfileMode ? 
+      require('../../../assets/img/tick.svg') : 
+      require('../../../assets/img/edit.svg')
     }
+  },
+  mounted() {
+    window.addEventListener('paste', this.pasteHandler)
+  },
+  beforeDestroy() {
+    window.removeEventListener('paste', this.pasteHandler)
   },
   methods: {
     changeTab(id) {
@@ -495,6 +541,7 @@ export default {
             first: true,
             second: false
           }
+          this.codeResettingInputs = this.codeResettingInputs.map(item => ({...item, value: ''}))
         break;
         case 'email':
           this.isModalActive.email = !this.isModalActive.email
@@ -512,15 +559,47 @@ export default {
         first: false,
         second: true
       }
+      this.$nextTick(() => {
+        this.$refs.test.focus()
+      })
     },
-    codeInput(id, e) {
-      console.log(e)
-      console.log(this)
+    codeInput(id) {
       const currentInput = this.codeResettingInputs.find(i => i.id === id)
       if (currentInput.value.length > 1) {
         currentInput.value = currentInput.value.slice(1, 2);
       }
-      this.$refs[`input-${id + 1}`].focus()
+      const nextRefIndex = id + 1
+      if (nextRefIndex !== 5) {
+        this.$refs[`input-${id + 1}`][0].focus()
+      }
+    },
+    switchEditMode() {
+      this.isEditProfileMode = !this.isEditProfileMode
+    },
+    openChangeNumberModal() {
+      if (this.isEditProfileMode) {
+        this.toggleModal('phone')
+      }
+    },
+    changeEmailIconClick() {
+      this.toggleModal('email')
+    },
+    pasteHandler() {
+      navigator.clipboard.readText()
+        .then(text => {
+          if (text.length === 5) {
+            const splitedValue = text.split('')
+            this.codeResettingInputs = this.codeResettingInputs.map((item, idx) => {
+              return {
+                ...item,
+                value: splitedValue[idx]
+              }
+            })
+          }
+        })
+        .catch(err => {
+          console.log('К сожалению не удалось взять текст из буффера', err);
+        });
     }
   }
 }
@@ -718,6 +797,14 @@ export default {
             font-weight: 700;
             font-size: 16px;
             color: #262541;
+            .edit-btn {
+              width: 30px;
+              height: 30px;
+              display: flex;
+              img {
+                margin: auto;
+              }
+            }
           }
           .nick-name-line {
             margin-top: 4px;
@@ -782,6 +869,12 @@ export default {
       min-width: 328px;
       order: 5;
     }
+    .email-input {
+      width: 240px;
+      height: 40px;
+      margin-bottom: 12px;
+      margin-top: 8px;
+    }
     .top-table {
       .change-pass-btn {
         padding-left: 16px;
@@ -840,6 +933,10 @@ export default {
     }
   }
   .block-5 {
+    .age-input {
+      width: 344px;
+      height: 40px;
+    }
     @media (min-width: 992px) {
       width: 344px;
       min-width: 344px;

@@ -47,9 +47,9 @@
             <div class="right-block">
               <div class="search-input">
                 <InputComponent 
-                  :titleWidth="0"
+                  :title-width="0"
                   :placeholder="'Пошук серед подій'"
-                  :hasIcon="true"
+                  :has-icon="true"
                   :icon="[
                     require('../../assets/img/search.svg')
                   ]"
