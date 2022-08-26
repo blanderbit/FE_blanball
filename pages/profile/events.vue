@@ -6,8 +6,24 @@
           <div class="title">{{ $t('events.title') }}</div>
           <div class="subtitle">{{ $t('events.subtitle') }}</div>
           <div class="event-switcher">
-            <div class="general-events">{{ $t('events.general-events') }}</div>
-            <div class="my-events">{{ $t('events.my-events') }}</div>
+            <div 
+              class="general-events"
+              :style="{
+                border: `1px solid ${eventsSwitcher ? '#DFDEED': '#148581'}`
+              }"
+              @click="switchEvents(false)"
+            >
+              {{ $t('events.general-events') }}
+            </div>
+            <div 
+              class="my-events"
+              :style="{
+                border: `1px solid ${eventsSwitcher ? '#148581': '#DFDEED'}`
+              }"
+              @click="switchEvents(true)"
+            >
+              {{ $t('events.my-events') }}
+            </div>
           </div>
         </div>
         <div class="right-part">
@@ -167,7 +183,10 @@
             </div>
           </div>
         </div>
-        <div class="cards-block">
+        <div 
+          v-if="!eventsSwitcher"
+          class="cards-block"
+        >
           <div class="event-card">
             <div class="top-title">
               <div class="left-side">
@@ -404,6 +423,57 @@
                     :width="115"
                     :height="32"
                   />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div 
+          v-if="eventsSwitcher"
+          class="my-events-block"
+        >
+          <div 
+            v-for="event in myEvents"
+            :key="event.id"
+            :class="['my-event-card', {active: event.isActive}]"
+          >
+            <div class="left-block">
+              <div class="col-1">
+                <div class="card-icon">
+                  <img src="../../assets/img/hands-shake.png" alt="" />
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="title">{{event.title}}</div>
+                <div class="address">
+                  <img src="../../assets/img/location-point.svg" alt="">
+                  <p>
+                    {{event.address}}
+                  </p>
+                </div>
+                <div class="labels">
+                  <div 
+                    v-for="label in event.labels"
+                    :key="label"
+                    class="label"
+                  >
+                    {{ label }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="right-block">
+              <div class="col-3">
+                <div 
+                  :class="['state', {active: event.isActive}]"
+                >
+                  {{ event.isActive ? 'Активно' : 'Заплановано' }}
+                </div>
+                <div class="date">
+                  {{ event.date }}
+                </div>
+                <div class="time">
+                  {{ event.time }}
                 </div>
               </div>
             </div>
@@ -535,6 +605,63 @@ export default {
   },
   data() {
     return {
+      myEvents: [
+        {
+          id: 0,
+          title: 'Дружній матч',
+          isActive: true,
+          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
+          date: '7 липня',
+          time: '18:00 – 22:00',
+          labels: ['Футбол', 'Чоловіки', 'Без розряду']
+        },
+        {
+          id: 1,
+          title: 'Дружній матч',
+          isActive: true,
+          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
+          date: '7 липня',
+          time: '18:00 – 22:00',
+          labels: ['Футбол', 'Чоловіки', 'Без розряду']
+        },
+        {
+          id: 2,
+          title: 'Дружній матч',
+          isActive: false,
+          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
+          date: '7 липня',
+          time: '18:00 – 22:00',
+          labels: ['Футбол', 'Чоловіки', 'Без розряду']
+        },
+        {
+          id: 3,
+          title: 'Дружній матч',
+          isActive: false,
+          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
+          date: '7 липня',
+          time: '18:00 – 22:00',
+          labels: ['Футбол', 'Чоловіки', 'Без розряду']
+        },
+        {
+          id: 4,
+          title: 'Дружній матч',
+          isActive: true,
+          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
+          date: '7 липня',
+          time: '18:00 – 22:00',
+          labels: ['Футбол', 'Чоловіки', 'Без розряду']
+        },
+        {
+          id: 5,
+          title: 'Дружній матч',
+          isActive: true,
+          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
+          date: '7 липня',
+          time: '18:00 – 22:00',
+          labels: ['Футбол', 'Чоловіки', 'Без розряду']
+        }
+      ],
+      eventsSwitcher: false,
       plan: 'free',
       dataDropdown: [
         {
@@ -621,6 +748,9 @@ export default {
   methods: {
     changePlanSearch(val) {
       this.plan = val
+    },
+    switchEvents(val) {
+      this.eventsSwitcher = val
     }
   }
 }
@@ -680,7 +810,6 @@ export default {
               gap: 10px;
               width: 100px;
               height: 28px;
-              border: 1px solid #148581;
               border-radius: 6px 0px 0px 6px;
               cursor: pointer;
             }
@@ -692,7 +821,6 @@ export default {
               gap: 10px;
               width: 100px;
               height: 28px;
-              border: 1px solid #DFDEED;
               border-radius: 0px 6px 6px 0px;
               cursor: pointer;
             }
@@ -1042,6 +1170,9 @@ export default {
             @media (min-width: 768px) and (max-width: 991px) {
               width: 344px;
             }
+            @media (max-width: 768px) {
+              width: 100%;
+            }
             &:before {
               content: '';
               display: block;
@@ -1052,9 +1183,6 @@ export default {
               height: 6px;
               background: linear-gradient(90.37deg, #4A7DEB -29.39%, #8978EE 37.85%, #D243C5 97.19%);
               border-radius: 6px 6px 0px 0px;
-            }
-            @media (max-width: 768px) {
-              width: 100%;
             }
             .address {
               &.desk-address {
@@ -1241,6 +1369,164 @@ export default {
                 }
                 .right-side {
 
+                }
+              }
+            }
+          }
+        }
+        .my-events-block {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          margin-top: 23px;
+          .my-event-card {
+            padding: 12px;
+            background: #FFFFFF;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            border: 1px solid #DFDEED;
+            margin-bottom: 16px;
+            width: 328px;
+            @media (min-width: 1200px) and (max-width: 1400px) {
+              width: 408px;
+            }
+            @media (min-width: 992px) and (max-width: 1199px) {
+              width: 320px;
+            }
+            @media (min-width: 768px) and (max-width: 991px) {
+              width: 344px;
+            }
+            @media (max-width: 768px) {
+              width: 100%;
+            }
+            &.active {
+              border: 1px solid #71BA12;
+            }
+            .left-block {
+              display: flex;
+              .col-1 {
+                margin-right: 8px;
+                min-width: 50px;
+                .card-icon {
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: center;
+                  align-items: center;
+                  min-width: 48px;
+                  width: 48px;
+                  height: 48px;
+                  background: #EFEFF6;
+                  border-radius: 4px;
+                }
+              }
+              .col-2 {
+                width: 150px;
+                @media (min-width: 1200px) and (max-width: 1400px) {
+                  width: 230px;
+                }
+                @media (min-width: 992px) and (max-width: 1199px) {
+                  width: 150px;
+                }
+                @media (min-width: 768px) and (max-width: 991px) {
+                  width: 165px;
+                }
+                @media (max-width: 768px) {
+                  width: 70%;
+                }
+                .title {
+                  font-family: 'Exo 2';
+                  font-style: normal;
+                  font-weight: 700;
+                  font-size: 16px;
+                  line-height: 24px;
+                  color: #262541;
+                }
+                .address {
+                  display: flex;
+                  background: #FAFAFA;
+                  padding: 0px 4px;
+                  margin-top: 4px;
+                  img {
+                    margin-right: 5px;
+                  }
+                  p {
+                    font-family: "Inter";
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 12px;
+                    line-height: 20px;
+                    color: #575775;
+                    border-radius: 4px;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                  }
+                }
+                .labels {
+                  display: flex;
+                  align-items: center;
+                  flex-wrap: wrap;
+                  margin-top: 8px;
+                  .label {
+                    padding: 0px 8px;
+                    border: 1px solid #EFEFF6;
+                    border-radius: 100px;
+                    font-family: 'Inter';
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 12px;
+                    line-height: 20px;
+                    color: #575775;
+                    margin-right: 4px;
+                    margin-bottom: 4px;
+                  }
+                }
+              }
+            }
+            .right-block {
+              .col-3 {
+                min-width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                .state {
+                  font-family: 'Inter';
+                  font-style: normal;
+                  font-weight: 400;
+                  font-size: 13px;
+                  line-height: 20px;
+                  text-align: center;
+                  padding: 0px 4px;
+                  border-radius: 4px;
+                  background: #EFEFF6;
+                  color:  #262541;
+                  width: fit-content;
+                  &.active {
+                    background: #71BA12;
+                    color:  #fff;
+                  }
+                }
+                .date {
+                  font-family: 'Inter';
+                  font-style: normal;
+                  font-weight: 500;
+                  font-size: 14px;
+                  line-height: 20px;
+                  text-align: right;
+                  color: #262541;
+                  margin-top: 12px;
+                  margin-bottom: 4px;
+                }
+                .time {
+                  font-family: 'Inter';
+                  font-style: normal;
+                  font-weight: 400;
+                  font-size: 12px;
+                  line-height: 20px;
+                  text-align: right;
+                  color: #4C4A82;
                 }
               }
             }
