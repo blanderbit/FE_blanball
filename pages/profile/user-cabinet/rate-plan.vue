@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import GreenBtn from '../../../../components/GreenBtn.vue'
-import WhiteBtn from '../../../../components/WhiteBtn.vue'
+import GreenBtn from '../../../components/GreenBtn.vue'
+import WhiteBtn from '../../../components/WhiteBtn.vue'
 
 export default {
   name: 'user-cabinet',
@@ -50,24 +50,24 @@ export default {
         {
           id: 0,
           name: 'my-profile',
-          img: require('../../../../assets/img/user.svg'),
-          url: '/profile/another-page/user-cabinet/my-profile',
+          img: require('../../../assets/img/user.svg'),
+          url: '/profile/user-cabinet/my-profile',
           isActive: false
         },
         {
           id: 1,
           name: 'rate-plan',
-          img: require('../../../../assets/img/database.svg'),
-          url: '/profile/another-page/user-cabinet/rate-plan',
+          img: require('../../../assets/img/database.svg'),
+          url: '/profile/user-cabinet/rate-plan',
           isActive: true
         },
         {
           id: 2,
           name: 'notifications',
-          img: require('../../../../assets/img/notification-small.svg'),
-          url: '/profile/another-page/user-cabinet/notifications',
+          img: require('../../../assets/img/notification-small.svg'),
+          url: '/profile/user-cabinet/notifications',
           isActive: false
-        },
+        }
       ]
     }
   },

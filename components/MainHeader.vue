@@ -8,18 +8,28 @@
       <img src="../assets/img/Logo.png" alt="">
     </div>
     <div class="search-block">
-      <img src="../assets/img/search.svg" alt="">
-      <input type="text" placeholder="Пошук">
+      <div class="search-input">
+        <InputComponent 
+          :title-width="0"
+          :placeholder="'Пошук серед подій'"
+          :has-icon="true"
+          :icon="[
+            require('../assets/img/search.svg')
+          ]"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import BreadCrumbs from '../components/Breadcrumbs.vue'
+import InputComponent from '../components/InputComponent.vue'
 
 export default {
   components: {
-    BreadCrumbs
+    BreadCrumbs,
+    InputComponent
   }
 }
 </script>
@@ -43,27 +53,9 @@ export default {
     }
   }
   .search-block {
-    position: relative;
-    height: 40px;
-    width: 220px;
-    min-width: 220px;
-    img {
-      position: absolute;
-      right: 15.5px;
-      top: 13.5px;
-      z-index: 1;
-      cursor: pointer;
-    }
-    input {
-      position: absolute;
+    .search-input {
       width: 220px;
-      min-width: 220px;
       height: 40px;
-      border: 1px solid #DFDEED;
-      border-radius: 6px;
-      outline: none;
-      padding-left: 15px;
-      padding-right: 40px;
     }
   }
 }

@@ -18,7 +18,6 @@
 const pathPages = {
   'profile' : 'Профіль',
   'user-cabinet' : 'Особистий кабінет',
-  'another-page' : 'Другая страница',
   'events' : 'Події'
 }
 

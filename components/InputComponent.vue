@@ -1,5 +1,8 @@
 <template>
-  <div class="input">
+  <div 
+    class="input-wrapper"
+    :style="inputWrapper"
+  >
     <div v-if="outsideTitle" class="outer-title">
       <span>{{title}}</span>
     </div>
@@ -13,13 +16,16 @@
     <div 
       v-if="hasIcon" 
       class="input-icon"
+      @click="iconClickAction"
     >
-      <img :src="icon" alt="">
+      <img :src="rightIcon" alt="">
     </div>
     <input 
       :type="inputType" 
       :placeholder="placeholder"
       :style="inputStyle"
+      :disabled="isDisabled"
+      v-model="mainValue"
     >
   </div>
 </template>
@@ -28,9 +34,13 @@
 export default {
   name: 'InputComponent',
   props: {
-    icon: {
-      type: String,
-      default: ''
+    isDisabled: {
+      type: Boolean,
+      default: false
+    },
+    icon:            {
+      type: Array,
+      default: () => []
     },
     hasIcon: {
       type: Boolean,
@@ -56,30 +66,61 @@ export default {
       type: Number,
       default: 108
     },
-    inputType: {
-      type: String,
-      default: 'text'
+    type: {
+      type: Array,
+      default: () => ['text']
+    },
+    height: {
+      type: Number,
+      default: null
+    }
+  },
+  data() {
+    return {
+      mainValue: '',
+      iconCount: 0,
+      inputType: null
     }
   },
   computed: {
     inputStyle() {
       return {
         'padding-left': 10 + this.titleWidth + 'px',
-        'padding-right': this.hasIcon ? '52px' : '5px'
+        'padding-right': this.hasIcon ? '52px' : '10px'
+      }
+    },
+    inputWrapper() {
+      return {
+        height: this.height ? this.height + 'px' : '100%'
+      }
+    },
+    rightIcon() {
+      return this.icon[this.iconCount]
+    }
+  },
+  methods: {
+    iconClickAction() {
+      if (this.inputType === 'password') {
+        this.iconCount = this.iconCount === 0 ? 1 : 0
+        this.inputType = this.inputType === 'password' ? 'text' : 'password'
+      } else {
+        console.log('blaaaa')
+        this.$emit('icon-click')
       }
     }
+  },
+  mounted() {
+    this.inputType = this.type[0]
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .input {
+  .input-wrapper {
     width: 100%;
-    height: 40px;
     border: 1px solid #DFDEED;
     position: relative;
     border-radius: 6px;
-    margin: 12px 0;
     .input-icon {
       display: flex;
       height: 100%;

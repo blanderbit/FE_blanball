@@ -1,7 +1,15 @@
 <template>
   <div class="sidebar-wrapper">
-    <div v-if="isMenuOpened" class="slide-menu-back" @click="toggleMenu"></div>
-    <div class="slide-menu-wrapper" :style="sliderStyle">
+    <div 
+      v-if="isMenuOpened" 
+      class="slide-menu-back"
+      @click="toggleMenu"
+    >
+    </div>
+    <div 
+      class="slide-menu-wrapper" 
+      :style="sliderStyle"
+    >
       <div class="sidebar-arrow" @click="toggleMenu">
         <img :src="arrowPosition" alt="">
       </div>
@@ -48,14 +56,18 @@
               :key="item.id"
               :class="['menu-item', { active: item.isActive }]"
             >
-              <img :src="item.url" alt="">
+              <nuxt-link :to="item.url">
+                <img :src="item.img" alt="">
+              </nuxt-link>
             </li>
           </ul>
         </div>
       </div>
       <div class="bottom-block">
         <div class="picture-bottom">
-          <img src="../assets/img/Rectangle_148.png" alt="">
+          <nuxt-link to="/profile/user-cabinet/my-profile">
+            <img src="../assets/img/Rectangle_148.png" alt="">
+          </nuxt-link>
         </div>
       </div>
     </div>
@@ -64,34 +76,39 @@
 
 <script>
 export default {
-  name: 'main-sidebar',
+  name: 'MainSidebar',
   data() {
     return {
       isMenuOpened: false,
       menuItems: [
         {
           id: 0,
-          url: require('../assets/img/Notification.svg'),
+          img: require('../assets/img/Notification.svg'),
+          url: '',
           isActive: true
         },
         // {
         //   id: 1,
-        //   url: require('../assets/img/Settings.svg'),
+        //   img: require('../assets/img/Settings.svg'),
+        //   url: '',
         //   isActive: false
         // },
         {
           id: 2,
-          url: require('../assets/img/record.svg'),
+          img: require('../assets/img/record.svg'),
+          url: '/profile/events',
           isActive: false
         },
         // {
         //   id: 3,
-        //   url: require('../assets/img/window.svg'),
+        //   img: require('../assets/img/window.svg'),
+        //   url: '',
         //   isActive: false
         // },
         {
           id: 4,
-          url: require('../assets/img/members.svg'),
+          img: require('../assets/img/members.svg'),
+          url: '',
           isActive: false
         },
       ]
@@ -126,6 +143,9 @@ export default {
 <style lang="scss" scoped>
 .sidebar-wrapper {
   position: relative;
+  @media (max-width: 992px) {
+    display: none;
+  }
   .slide-menu-back {
     position: fixed;
     top: 0;
@@ -267,9 +287,6 @@ export default {
     align-items: center;
     z-index: 2;
     background: #FFFFFF;
-    @media (max-width: 992px) {
-      display: none;
-    }
     .top-block {
       .picture-top {
         padding-bottom: 30px;
@@ -285,15 +302,19 @@ export default {
           width: 40px;
           height: 40px;
           border-radius: 6px;
-          display: flex;
           cursor: pointer;
           &.active {
             background: #D3F8F7;
           }
-          img {
-            margin: auto;
-            &:hover {
-              animation: shake 0.4s linear;
+          a {
+            display: flex;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            img {
+              &:hover {
+                animation: shake 0.4s linear;
+              }
             }
           }
         }
