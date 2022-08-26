@@ -480,13 +480,13 @@
 
 <script>
 import StarRating from 'vue-dynamic-star-rating'
-import GreenBtn from '../../../../components/GreenBtn.vue'
-import WhiteBtn from '../../../../components/WhiteBtn.vue'
-import Switcher from '../../../../components/Switcher.vue'
-import Dropdown from '../../../../components/Dropdown.vue'
-import Spiner from '../../../../components/GlobalSpiner.vue'
-import InputComponent from '../../../../components/InputComponent.vue'
-import ModalWindow from '../../../../components/ModalWindow.vue'
+import GreenBtn from '../../../components/GreenBtn.vue'
+import WhiteBtn from '../../../components/WhiteBtn.vue'
+import Switcher from '../../../components/Switcher.vue'
+import Dropdown from '../../../components/Dropdown.vue'
+import Spiner from '../../../components/GlobalSpiner.vue'
+import InputComponent from '../../../components/InputComponent.vue'
+import ModalWindow from '../../../components/ModalWindow.vue'
 
 export default {
   name: 'UserCabinet',
