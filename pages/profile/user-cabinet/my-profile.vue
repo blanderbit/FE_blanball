@@ -298,9 +298,52 @@
             </div>
           </div>
           <div class="btns-block">
-            <div class="left-btn">{{ $t('profile.generally') }}</div>
-            <div class="right-btn">{{ $t('profile.detailed') }}</div>
+            <div 
+              class="left-btn" 
+              :style="{ border: `1px solid ${rateStatus ? '#DFDEED' : '#148581'}` }"
+              @click="switchRate(false)"
+            >
+              {{ $t('profile.generally') }}
+            </div>
+            <div 
+              class="right-btn"
+              :style="{ border: `1px solid ${rateStatus ? '#148581' : '#DFDEED'}` }"
+              @click="switchRate(true)"
+            >
+              {{ $t('profile.detailed') }}
+            </div>
           </div>
+          <transition>
+            <div 
+              v-if="rateStatus"
+              class="cards-block"
+            >
+              <div 
+                v-for="item in rateBlbock"
+                :key="item.id"
+                class="card"
+                :style="{ 'border-top': item.id !== 0 && '1px dashed #DFDEED' }"
+              >
+                <div class="top-line">
+                  <div class="name">
+                    {{ item.name }}
+                  </div>
+                  <div class="rate">
+                    <star-rating 
+                      :star-style="starStyle"
+                      :rating="3"
+                      :isIndicatorActive="false"
+                    ></star-rating>
+                  </div>
+                </div>
+                <div class="bottom-line">
+                  <div class="date">
+                    {{ item.date }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </transition>
         </div>
       </div>
       <div class="block block-2">
@@ -436,6 +479,7 @@
 </template>
 
 <script>
+import StarRating from 'vue-dynamic-star-rating'
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
 import Switcher from '../../../components/Switcher.vue'
@@ -453,10 +497,40 @@ export default {
     Dropdown,
     Spiner,
     InputComponent,
-    ModalWindow
+    ModalWindow,
+    StarRating
   },
   data() {
     return {
+      rateStatus: false,
+      starStyle: {
+        fullStarColor: '#148783',
+        emptyStarColor: '#bbb',
+        starWidth: 15,
+        starHeight: 15
+      },
+      rateBlbock: [
+        {
+          id: 0,
+          name: 'Дмитро Горбачевський',
+          date: '13.07.2022'
+        },
+        {
+          id: 1,
+          name: 'Захар Беркут',
+          date: '13.07.2022'
+        },
+        {
+          id: 2,
+          name: 'Василь Величко',
+          date: '13.07.2022'
+        },
+        {
+          id: 3,
+          name: 'Дмитро Горбачевський',
+          date: '13.07.2022'
+        }
+      ],
       isEditProfileMode: false,
       codeResettingInputs: [
         { id: 0, value: '' },
@@ -600,6 +674,9 @@ export default {
         .catch(err => {
           console.log('К сожалению не удалось взять текст из буффера', err);
         });
+    },
+    switchRate(val) {
+      this.rateStatus = val
     }
   }
 }
@@ -734,7 +811,6 @@ export default {
           align-items: center;
           height: 32px;
           color: #262541;
-          border: 1px solid #148581;
           border-radius: 6px 0px 0px 6px;
           flex-basis: 50%;
           cursor: pointer;
@@ -745,10 +821,42 @@ export default {
           align-items: center;
           height: 32px;
           color: #575775;
-          border: 1px solid #DFDEED;
           border-radius: 0px 6px 6px 0px;
           flex-basis: 50%;
           cursor: pointer;
+        }
+      }
+      .cards-block {
+        margin-top: 20px;
+        .card {
+          padding-top: 8px;
+          margin-bottom: 8px;
+          .top-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .name {
+              font-family: 'Inter';
+              font-style: normal;
+              font-weight: 500;
+              font-size: 13px;
+              line-height: 20px;
+              color: #262541;
+            }
+          }
+          .bottom-line {
+            display: flex;
+            justify-content: flex-start;
+            .date {
+              font-family: 'Inter';
+              font-style: normal;
+              font-weight: 400;
+              font-size: 12px;
+              line-height: 20px;
+              text-align: center;
+              color: #575775;
+            }
+          }
         }
       }
     }
