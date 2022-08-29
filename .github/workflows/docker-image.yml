@@ -1,0 +1,46 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "production" ]
+  pull_request:
+    branches: [ "production" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DOCKERFILE_PATH: .deploy/Dockerfile
+      LATEST_IMAGE: 178.151.201.167:49159/blanball-registry:latest
+      COMMIT_IMAGE: 178.151.201.167:49159/blanball-registry:${{ github.sha }}
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Login to registry
+        run: |
+          docker login --username admin --password 1023220208850z
+        
+      - name: Pull latest image
+        run: |
+          docker pull ${LATEST_IMAGE}
+
+      - name: Build image
+        working-directory: .
+        run: |
+          docker build -f ${DOCKERFILE_PATH} --cache-from ${LATEST_IMAGE} -t ${COMMIT_IMAGE} .
+
+      - name: Tag latest image
+        run: |
+          docker tag ${COMMIT_IMAGE} ${LATEST_IMAGE}
+
+      - name: Push images
+        run: |
+          docker push ${COMMIT_IMAGE}
+          docker push ${LATEST_IMAGE}
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger deploy in portainer
+        run: |
+          curl -X POST http://178.151.201.167:9000/api/stacks/webhooks/5210fed0-af1e-4e3f-a667-ebc66416e697
