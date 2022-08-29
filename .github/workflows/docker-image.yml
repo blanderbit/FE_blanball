@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      DOCKERFILE_PATH: .deploy/Dockerfile
+      DOCKERFILE_PATH: ../../Dockerfile
       LATEST_IMAGE: 178.151.201.167:49159/blanball-registry:latest
       COMMIT_IMAGE: 178.151.201.167:49159/blanball-registry:${{ github.sha }}
     steps:
@@ -18,7 +18,7 @@ jobs:
 
       - name: Login to registry
         run: |
-          docker login --username admin --password 1023220208850z
+          docker login 178.151.201.167:49159 --username admin --password 1023220208850z
         
       - name: Pull latest image
         run: |
