@@ -302,6 +302,7 @@ export default {
           width: 40px;
           height: 40px;
           border-radius: 6px;
+          list-style: none;
           cursor: pointer;
           &.active {
             background: #D3F8F7;

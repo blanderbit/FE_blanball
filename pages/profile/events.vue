@@ -1,5 +1,12 @@
 <template>
   <div class="events-page">
+    <ContextMenu 
+      v-if="isContextMenuActive" 
+      :client-x="contextMenuX"
+      :client-y="contextMenuY"
+      :menu-text="menuText"
+      @close-modal="isContextMenuActive = false"
+    />
     <div class="main-body">
       <div class="header-block">
         <div class="left-part">
@@ -61,7 +68,7 @@
               </Dropdown>
             </div>
             <div class="right-block">
-              <div class="search-input">
+              <div class="search-input-desktop">
                 <InputComponent 
                   :title-width="0"
                   :placeholder="'Пошук серед подій'"
@@ -70,6 +77,9 @@
                     require('../../assets/img/search.svg')
                   ]"
                 />
+              </div>
+              <div class="search-input-tablet">
+                <img src="../../assets/img/search.svg" alt="">
               </div>
               <div class="icon-container">
                 <img src="../../assets/img/clear-filter.svg" alt="">
@@ -436,6 +446,7 @@
             v-for="event in myEvents"
             :key="event.id"
             :class="['my-event-card', {active: event.isActive}]"
+            @click.right.prevent="myCardRightClick"
           >
             <div class="left-block">
               <div class="col-1">
@@ -594,6 +605,7 @@
 import GreenBtn from '../../components/GreenBtn.vue'
 import Dropdown from '../../components/Dropdown.vue'
 import InputComponent from '../../components/InputComponent.vue'
+import ContextMenu from '../../components/ContextMenuModal.vue'
 
 
 export default {
@@ -601,10 +613,31 @@ export default {
   components: {
     GreenBtn,
     Dropdown,
-    InputComponent
+    InputComponent,
+    ContextMenu
   },
   data() {
     return {
+      menuText: [
+        {
+          id: 0,
+          text: 'Виділити',
+          img: require('../../assets/img/tick-in-circle.svg')
+        },
+        {
+          id: 1,
+          text: 'Видалити',
+          img: require('../../assets/img/bucket.svg')
+        },
+        {
+          id: 2,
+          text: 'Закріпити',
+          img: require('../../assets/img/pin.svg')
+        }
+      ],
+      contextMenuX: null,
+      contextMenuY: null,
+      isContextMenuActive: false,
       myEvents: [
         {
           id: 0,
@@ -751,6 +784,11 @@ export default {
     },
     switchEvents(val) {
       this.eventsSwitcher = val
+    },
+    myCardRightClick(e) {
+      this.contextMenuX = e.clientX
+      this.contextMenuY = e.clientY
+      this.isContextMenuActive = true
     }
   }
 }
@@ -870,15 +908,34 @@ export default {
             .right-block {
               display: flex;
               align-items: center;
-              .search-input {
+              .search-input-desktop {
                 width: 220px;
                 height: 32px;
                 margin-right: 8px;
+                @media (max-width: 1200px) {
+                  display: none;
+                }
+              }
+              .search-input-tablet {
+                display: none;
+                @media (min-width: 992px) and (max-width: 1200px) {
+                  display: flex;
+                }
+                width: 32px;
+                height: 32px;
+                background: #FFFFFF;
+                border: 1px solid #DFDEED;
+                border-radius: 6px;
+                margin-right: 8px;
+                cursor: pointer;
+                img {
+                  margin: auto;
+                }
               }
               .icon-container {
-                width: 36px;
-                min-width: 36px;
-                height: 36px;
+                width: 32px;
+                min-width: 32px;
+                height: 32px;
                 background: #EFEFF6;
                 border-radius: 6px;
                 display: flex;
