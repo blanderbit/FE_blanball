@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      DOCKERFILE_PATH: .deploy/Dockerfile
+      DOCKERFILE_PATH: ./deploy/Dockerfile
       LATEST_IMAGE: ${{ secrets.DOCKER_REGISTRY }}:latest
       COMMIT_IMAGE: ${{ secrets.DOCKER_REGISTRY }}:${{ github.sha }}
     steps:
