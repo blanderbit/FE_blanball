@@ -4,8 +4,8 @@ services:
  blanball-fe-prod:
   container_name: blanball-fe-prod
   build:
-   context: ..
-   dockerfile: deploy/Dockerfile
+   context: ./deploy
+   dockerfile: Dockerfile
   command: 'bash deploy/test.sh'
   ports:
    - "49201:49201"
