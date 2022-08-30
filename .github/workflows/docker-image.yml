@@ -39,10 +39,7 @@ jobs:
       run: |
         docker push ${COMMIT_IMAGE}
         docker push ${LATEST_IMAGE}
-
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
+        
     - name: Trigger deploy in portainer
       run: |
         curl -X POST ${{ secrets.PORTAINER_WEBHOOK_URL }}
