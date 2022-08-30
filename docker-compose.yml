@@ -1,0 +1,12 @@
+version: ‘3.8’
+
+services:
+ blanball-fe-prod:
+  container_name: blanball-fe-prod
+  volumes:
+    - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+  build:
+   context: ..
+   dockerfile: Dockerfile
+  ports:
+   - "49201:80"

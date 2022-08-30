@@ -1,0 +1,11 @@
+version: ‘3.8’
+
+services:
+ blanball-fe-prod:
+  container_name: blanball-fe-prod
+  build:
+   context: ..
+   dockerfile: ./deploy/Dockerfile
+  command: 'bash test.sh' 
+  ports:
+   - "49201:49201"
