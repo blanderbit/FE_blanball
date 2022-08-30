@@ -24,7 +24,7 @@ jobs:
 
     - name: Pull latest image
       run: |
-        docker pull ${LATEST_IMAGE}
+        docker pull ${LATEST_IMAGE} --ignore-pull-failures || true
 
     - name: Build image
       working-directory: .
