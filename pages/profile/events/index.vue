@@ -34,12 +34,14 @@
           </div>
         </div>
         <div class="right-part">
-          <GreenBtn 
-            :text="$t('events.create-event')"
-            :width="168"
-            :icon="require('../../assets/img/plus.svg')"
-            :height="40"
-          />
+          <nuxt-link to="/profile/events/create-event">
+            <GreenBtn 
+              :text="$t('events.create-event')"
+              :width="168"
+              :icon="require('../../../assets/img/plus.svg')"
+              :height="40"
+            />
+          </nuxt-link>
         </div>
       </div>
       <div class="main-search-block">
@@ -47,7 +49,7 @@
           <div class="first-line">
             <div class="left-block">
               <div class="old-new-filter">
-                <img src="../../assets/img/sort-arrows.svg" alt="">
+                <img src="../../../assets/img/sort-arrows.svg" alt="">
                 Cпочатку нові
               </div>
               <div class="dropdown-wrapper">
@@ -63,7 +65,7 @@
                 :height="32"
               >
                 <template #drop-icon >
-                  <img src="../../assets/img/cup.png" alt="">
+                  <img src="../../../assets/img/cup.png" alt="">
                 </template>
               </Dropdown>
             </div>
@@ -74,18 +76,18 @@
                   :placeholder="'Пошук серед подій'"
                   :has-icon="true"
                   :icon="[
-                    require('../../assets/img/search.svg')
+                    require('../../../assets/img/search.svg')
                   ]"
                 />
               </div>
               <div class="search-input-tablet">
-                <img src="../../assets/img/search.svg" alt="">
+                <img src="../../../assets/img/search.svg" alt="">
               </div>
               <div class="icon-container">
-                <img src="../../assets/img/clear-filter.svg" alt="">
+                <img src="../../../assets/img/clear-filter.svg" alt="">
               </div>
               <div class="icon-container">
-                <img class="set-filter" src="../../assets/img/cross.svg" alt="">
+                <img class="set-filter" src="../../../assets/img/cross.svg" alt="">
               </div>
             </div>
           </div>
@@ -98,12 +100,12 @@
                   :height="32"
                 >
                   <template #drop-icon >
-                    <img src="../../assets/img/male-icon.svg" alt="">
+                    <img src="../../../assets/img/male-icon.svg" alt="">
                   </template>
                 </Dropdown>
               </div>
               <div class="calendar">
-                <img src="../../assets/img/calendar.svg" alt="">
+                <img src="../../../assets/img/calendar.svg" alt="">
                 {{ $t('events.calendar') }}
               </div>
               <div class="dropdown-wrapper">
@@ -113,7 +115,7 @@
                   :height="32"
                 >
                   <template #drop-icon >
-                    <img src="../../assets/img/location-point.svg" alt="">
+                    <img src="../../../assets/img/location-point.svg" alt="">
                   </template>
                 </Dropdown>
               </div>
@@ -135,7 +137,7 @@
           <div class="filters-block">
             <div class="sorting-block sort-item">
               <div class="icon">
-                <img src="../../assets/img/sort-arrows.svg" alt="">
+                <img src="../../../assets/img/sort-arrows.svg" alt="">
               </div>
               <div class="text">
                 <div class="title">{{ $t('events.sorting') }}</div>
@@ -144,7 +146,7 @@
             </div>
             <div class="filtering-block sort-item">
               <div class="icon">
-                <img src="../../assets/img/set-filter.svg" alt="">
+                <img src="../../../assets/img/set-filter.svg" alt="">
               </div>
               <div class="text">
                 <div class="title">{{ $t('events.filters') }}</div>
@@ -153,7 +155,7 @@
             </div>
             <div class="calendar-block sort-item">
               <div class="icon">
-                <img src="../../assets/img/calendar.svg" alt="">
+                <img src="../../../assets/img/calendar.svg" alt="">
               </div>
               <div class="text">
                 <div class="title">{{ $t('events.chose-date') }}</div>
@@ -165,11 +167,11 @@
             <div class="months">
               <div class="wrapper">
                 <div class="arrow arrow-left">
-                  <img src="../../assets/img/arrow-left.svg" alt="">
+                  <img src="../../../assets/img/arrow-left.svg" alt="">
                 </div>
                 <div class="main-part">{{ $t('events.months.June') }} 2022</div>
                 <div class="arrow arrow-right">
-                  <img src="../../assets/img/arrow-right.svg" alt="">
+                  <img src="../../../assets/img/arrow-right.svg" alt="">
                 </div>
               </div>
             </div>
@@ -201,7 +203,7 @@
             <div class="top-title">
               <div class="left-side">
                 <div class="card-icon">
-                  <img src="../../assets/img/hands-shake.png" alt=""></div>
+                  <img src="../../../assets/img/hands-shake.png" alt=""></div>
                 <div class="text-block">
                   <div class="title">{{ $t('events.friendly-match') }}</div>
                   <div class="date-time-mob">
@@ -209,7 +211,7 @@
                     <div class="time">12:00 – 14:00</div>
                   </div>
                   <div class="address desk-address">
-                    <img src="../../assets/img/location-point.svg" alt="">
+                    <img src="../../../assets/img/location-point.svg" alt="">
                     <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
                   </div>
                 </div>
@@ -220,7 +222,7 @@
               </div>
             </div>
             <div class="address mob-address">
-              <img src="../../assets/img/location-point.svg" alt="">
+              <img src="../../../assets/img/location-point.svg" alt="">
               <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
             </div>
             <div class="main-text">
@@ -261,7 +263,7 @@
             <div class="top-title">
               <div class="left-side">
                 <div class="card-icon">
-                  <img src="../../assets/img/hands-shake.png" alt=""></div>
+                  <img src="../../../assets/img/hands-shake.png" alt=""></div>
                 <div class="text-block">
                   <div class="title">{{ $t('events.friendly-match') }}</div>
                   <div class="date-time-mob">
@@ -269,7 +271,7 @@
                     <div class="time">12:00 – 14:00</div>
                   </div>
                   <div class="address desk-address">
-                    <img src="../../assets/img/location-point.svg" alt="">
+                    <img src="../../../assets/img/location-point.svg" alt="">
                     <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
                   </div>
                 </div>
@@ -280,7 +282,7 @@
               </div>
             </div>
             <div class="address mob-address">
-              <img src="../../assets/img/location-point.svg" alt="">
+              <img src="../../../assets/img/location-point.svg" alt="">
               <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
             </div>
             <div class="main-text">
@@ -321,7 +323,7 @@
             <div class="top-title">
               <div class="left-side">
                 <div class="card-icon">
-                  <img src="../../assets/img/hands-shake.png" alt=""></div>
+                  <img src="../../../assets/img/hands-shake.png" alt=""></div>
                 <div class="text-block">
                   <div class="title">{{ $t('events.friendly-match') }}</div>
                   <div class="date-time-mob">
@@ -329,7 +331,7 @@
                     <div class="time">12:00 – 14:00</div>
                   </div>
                   <div class="address desk-address">
-                    <img src="../../assets/img/location-point.svg" alt="">
+                    <img src="../../../assets/img/location-point.svg" alt="">
                     <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
                   </div>
                 </div>
@@ -340,7 +342,7 @@
               </div>
             </div>
             <div class="address mob-address">
-              <img src="../../assets/img/location-point.svg" alt="">
+              <img src="../../../assets/img/location-point.svg" alt="">
               <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
             </div>
             <div class="main-text">
@@ -381,7 +383,7 @@
             <div class="top-title">
               <div class="left-side">
                 <div class="card-icon">
-                  <img src="../../assets/img/hands-shake.png" alt=""></div>
+                  <img src="../../../assets/img/hands-shake.png" alt=""></div>
                 <div class="text-block">
                   <div class="title">{{ $t('events.friendly-match') }}</div>
                   <div class="date-time-mob">
@@ -389,7 +391,7 @@
                     <div class="time">12:00 – 14:00</div>
                   </div>
                   <div class="address desk-address">
-                    <img src="../../assets/img/location-point.svg" alt="">
+                    <img src="../../../assets/img/location-point.svg" alt="">
                     <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
                   </div>
                 </div>
@@ -400,7 +402,7 @@
               </div>
             </div>
             <div class="address mob-address">
-              <img src="../../assets/img/location-point.svg" alt="">
+              <img src="../../../assets/img/location-point.svg" alt="">
               <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
             </div>
             <div class="main-text">
@@ -451,13 +453,13 @@
             <div class="left-block">
               <div class="col-1">
                 <div class="card-icon">
-                  <img src="../../assets/img/hands-shake.png" alt="" />
+                  <img src="../../../assets/img/hands-shake.png" alt="" />
                 </div>
               </div>
               <div class="col-2">
                 <div class="title">{{event.title}}</div>
                 <div class="address">
-                  <img src="../../assets/img/location-point.svg" alt="">
+                  <img src="../../../assets/img/location-point.svg" alt="">
                   <p>
                     {{event.address}}
                   </p>
@@ -504,7 +506,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../assets/img/hands-shake.png" alt="">
+              <img src="../../../assets/img/hands-shake.png" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -515,7 +517,7 @@
             </div>
           </div>
           <div class="address">
-            <img src="../../assets/img/location-point.svg" alt="">
+            <img src="../../../assets/img/location-point.svg" alt="">
             <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
           </div>
           <div class="labels">
@@ -528,7 +530,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../assets/img/hands-shake.png" alt="">
+              <img src="../../../assets/img/hands-shake.png" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -539,7 +541,7 @@
             </div>
           </div>
           <div class="address">
-            <img src="../../assets/img/location-point.svg" alt="">
+            <img src="../../../assets/img/location-point.svg" alt="">
             <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
           </div>
           <div class="labels">
@@ -552,7 +554,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../assets/img/hands-shake.png" alt="">
+              <img src="../../../assets/img/hands-shake.png" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -563,7 +565,7 @@
             </div>
           </div>
           <div class="address">
-            <img src="../../assets/img/location-point.svg" alt="">
+            <img src="../../../assets/img/location-point.svg" alt="">
             <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
           </div>
           <div class="labels">
@@ -576,7 +578,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../assets/img/hands-shake.png" alt="">
+              <img src="../../../assets/img/hands-shake.png" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -587,7 +589,7 @@
             </div>
           </div>
           <div class="address">
-            <img src="../../assets/img/location-point.svg" alt="">
+            <img src="../../../assets/img/location-point.svg" alt="">
             <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
           </div>
           <div class="labels">
@@ -602,10 +604,10 @@
 </template>
 
 <script>
-import GreenBtn from '../../components/GreenBtn.vue'
-import Dropdown from '../../components/Dropdown.vue'
-import InputComponent from '../../components/InputComponent.vue'
-import ContextMenu from '../../components/ContextMenuModal.vue'
+import GreenBtn from '../../../components/GreenBtn.vue'
+import Dropdown from '../../../components/Dropdown.vue'
+import InputComponent from '../../../components/InputComponent.vue'
+import ContextMenu from '../../../components/ContextMenuModal.vue'
 
 
 export default {
@@ -622,17 +624,17 @@ export default {
         {
           id: 0,
           text: 'Виділити',
-          img: require('../../assets/img/tick-in-circle.svg')
+          img: require('../../../assets/img/tick-in-circle.svg')
         },
         {
           id: 1,
           text: 'Видалити',
-          img: require('../../assets/img/bucket.svg')
+          img: require('../../../assets/img/bucket.svg')
         },
         {
           id: 2,
           text: 'Закріпити',
-          img: require('../../assets/img/pin.svg')
+          img: require('../../../assets/img/pin.svg')
         }
       ],
       contextMenuX: null,
@@ -867,6 +869,9 @@ export default {
         .right-part {
           @media (max-width: 992px) {
             display: none;
+          }
+          a {
+            text-decoration: none;
           }
         }
       }

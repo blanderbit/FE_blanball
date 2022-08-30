@@ -5,6 +5,7 @@
   >
     <img v-if="icon" :src="icon" alt="">
     {{ text }}
+    <img v-if="iconRight" :src="iconRight" alt="">
   </div>
 </template>
 
@@ -26,6 +27,18 @@ export default {
     icon: {
       type: String,
       default: null
+    },
+    iconRight: {
+      type: String,
+      default: null
+    },
+    backgroundColor: {
+      type: String,
+      default: '#148783'
+    },
+    fontStyles: {
+      type: Object,
+      default: () => {}
     }
   },
   computed: {
@@ -34,8 +47,10 @@ export default {
     },
     btnStyle() {
       return {
+        ...this.fontStyles,
         width: this.width ? this.width + 'px' : '100%',
-        height: this.height + 'px'
+        height: this.height + 'px',
+        background: this.backgroundColor
       }
     }
   }
@@ -44,7 +59,6 @@ export default {
 
 <style lang="scss" scoped>
 .green-btn {
-  background: #148783;
   border-radius: 6px;
   color: #fff;
   height: 32px;
