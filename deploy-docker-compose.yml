@@ -4,6 +4,6 @@ services:
  blanball-fe-prod:
   container_name: blanball-fe-prod
   image: registry.it-flumx.com/blanball_fe:latest
-  command: 'bash deploy/test.sh'
+  command: 'bash build.sh'
   ports:
    - "49201:49201"
