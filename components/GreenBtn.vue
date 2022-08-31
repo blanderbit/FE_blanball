@@ -2,6 +2,7 @@
   <div 
     class="green-btn"
     :style="btnStyle"
+    @click="$emit('click-function')"
   >
     <img v-if="icon" :src="icon" alt="">
     {{ text }}
@@ -71,6 +72,7 @@ export default {
   font-weight: 500;
   font-size: 14px;
   cursor: pointer;
+  user-select: none;
   img {
     margin-right: 8px;
   }

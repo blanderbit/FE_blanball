@@ -98,6 +98,11 @@ export default {
       return this.icon[this.iconCount]
     }
   },
+  watch: {
+    mainValue(newVal, oldVal) {
+      this.$emit('new-value', newVal)
+    }
+  },
   methods: {
     iconClickAction() {
       if (this.inputType === 'password') {

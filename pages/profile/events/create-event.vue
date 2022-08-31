@@ -1,61 +1,205 @@
 <template>
   <div class="create-events-page">
     <div class="create-event-block">
-      <Dropdown
-        :outside-title="true"
-        :main-title="'Тип події'"
-        :options="dataDropdown"
-        :width="320"
-        :height="40"
-      />
-      <div class="title">Гендер учасників події</div>
-      <div class="choose-gender">
-        <div class="radio">
-          <input id="radio-1" name="radio" type="radio" checked>
-          <label for="radio-1" class="radio-label">
-            <img src="../../../assets/img/male-icon.svg" alt="">
-              Men
-          </label>
-        </div>
-        <div class="radio">
-          <input id="radio-2" name="radio" type="radio">
-          <label for="radio-2" class="radio-label">
-            <img src="../../../assets/img/female-icon.svg" alt="">
-              Women
-          </label>
-        </div>
-      </div>
-      <Dropdown
-        :outside-title="true"
-        :main-title="'Вид спорту'"
-        :options="dataDropdown2"
-        :width="320"
-        :height="40"
-      />
-      <div class="input">
-        <InputComponent
+      <div
+        v-if="currentStep === 1"
+        class="first-step"
+      >
+        <Dropdown
           :outside-title="true"
-          :title="'Дата, час проведення'"
-          :placeholder="'Input'"
-          :title-width="0"
+          :main-title="'Тип події'"
+          :options="dataDropdown"
+          :width="320"
+          :height="40"
+          @new-value="setFormValue('title', $event)"
         />
-      </div>
-      <div class="input">
-        <InputComponent
+        <div class="title">Гендер учасників події</div>
+        <div class="radio-btn-wrapper">
+          <div class="radio">
+            <input 
+              id="radio-1" 
+              name="radio" 
+              type="radio"
+              value="Чоловіки"
+              v-model="eventData.labels[1].text"
+              checked
+             >
+            <label for="radio-1" class="radio-label">
+              <img src="../../../assets/img/male-icon.svg" alt="">
+                Чоловіки
+            </label>
+          </div>
+          <div class="radio">
+            <input 
+              id="radio-2" 
+              name="radio" 
+              type="radio"
+              value="Жінки"
+              v-model="eventData.labels[1].text"
+            >
+            <label for="radio-2" class="radio-label">
+              <img src="../../../assets/img/female-icon.svg" alt="">
+                Жінки
+            </label>
+          </div>
+        </div>
+        <Dropdown
           :outside-title="true"
-          :title="'Місце проведення'"
-          :placeholder="'Input'"
-          :title-width="0"
+          :main-title="'Вид спорту'"
+          :options="dataDropdown2"
+          :width="320"
+          :height="40"
+          @new-value="setFormValue('gameType', $event)"
         />
+        <div class="input">
+          <InputComponent
+            :outside-title="true"
+            :title="'Дата проведення'"
+            :placeholder="'Input'"
+            :title-width="0"
+            :v-model="eventData.date"
+            @new-value="setFormValue('date', $event)"
+          />
+        </div>
+        <div class="input">
+          <InputComponent
+            :outside-title="true"
+            :title="'Час проведення'"
+            :placeholder="'Input'"
+            :title-width="0"
+            :v-model="eventData.date"
+            @new-value="setFormValue('time', $event)"
+          />
+        </div>
+        <div class="input">
+          <InputComponent
+            :outside-title="true"
+            :title="'Місце проведення'"
+            :placeholder="'Input'"
+            :title-width="0"
+            @new-value="setFormValue('place', $event)"
+          />
+        </div>
+        <div class="event-map">
+          <img src="../../../assets/img/map.png" alt="">
+        </div>
       </div>
-      <div class="event-map">
-        <img src="../../../assets/img/map.png" alt="">
+
+      <div 
+        v-if="currentStep === 2"
+        class="second-step"
+      >
+        <div class="title-block">
+          <span>Конфіденційність</span>
+          <div class="vip-only">
+            Тільки для ViP
+          </div>
+        </div>
+        <div class="subtitle">
+          Чи бажаєте ви отримувати запити на участьу події?
+        </div>
+        <div class="radio-btn-wrapper">
+          <div class="radio">
+            <input 
+              id="radio-3" 
+              name="entrance" 
+              type="radio"
+              value="Вільний"
+              v-model="eventData.labels[1].text"
+              checked
+             >
+            <label for="radio-1" class="radio-label">
+              <img src="../../../assets/img/male-icon.svg" alt="">
+                Вільний
+            </label>
+          </div>
+          <div class="radio">
+            <input 
+              id="radio-4" 
+              name="entrance" 
+              type="radio"
+              value="Закритий"
+              v-model="eventData.labels[1].text"
+            >
+            <label for="radio-2" class="radio-label">
+              <img src="../../../assets/img/female-icon.svg" alt="">
+                Закритий
+            </label>
+          </div>
+        </div>
+        <div class="radio-btn-wrapper">
+          <div class="radio">
+            <input 
+              id="radio-5" 
+              name="payment" 
+              type="radio"
+              value="Безкоштовно"
+              v-model="eventData.labels[1].text"
+              checked
+             >
+            <label for="radio-1" class="radio-label">
+              <img src="../../../assets/img/male-icon.svg" alt="">
+                Безкоштовно
+            </label>
+          </div>
+          <div class="radio">
+            <input 
+              id="radio-6" 
+              name="payment" 
+              type="radio"
+              value="Платно"
+              v-model="eventData.labels[1].text"
+            >
+            <label for="radio-2" class="radio-label">
+              <img src="../../../assets/img/female-icon.svg" alt="">
+                Платно
+            </label>
+          </div>
+        </div>
+        <div class="input">
+          <InputComponent
+            :outside-title="true"
+            :title="'Дата проведення'"
+            :placeholder="'Input'"
+            :title-width="0"
+            :v-model="eventData.date"
+            @new-value="setFormValue('date', $event)"
+          />
+        </div>
+        <div class="input">
+          <InputComponent
+            :outside-title="true"
+            :title="'Час проведення'"
+            :placeholder="'Input'"
+            :title-width="0"
+            :v-model="eventData.date"
+            @new-value="setFormValue('time', $event)"
+          />
+        </div>
+        <div class="input">
+          <InputComponent
+            :outside-title="true"
+            :title="'Місце проведення'"
+            :placeholder="'Input'"
+            :title-width="0"
+            @new-value="setFormValue('place', $event)"
+          />
+        </div>
       </div>
+
+      <div class="third-step">
+
+      </div>
+       
       <div class="progress-line">
         <div class="sections">
-          <div class="section"></div>
-          <div class="section"></div>
-          <div class="section"></div>
+          <div
+            v-for="item of 3"
+            :key="item"
+            :class="['section', { 
+              active : item <= currentStep
+            }]"
+          ></div>
         </div>
       </div>
       <div class="buttons-block">
@@ -68,6 +212,7 @@
           :text="$t('buttons.next')"
           :width="160"
           :icon-right="require('../../../assets/img/arrow-right.svg')"
+          @click-function="changeStep"
         />
       </div>
     </div>
@@ -87,11 +232,11 @@
               </div>
             </div>
             <div class="col-2">
-              <div class="title">Дружній матч</div>
+              <div class="title">{{eventData.title}}</div>
               <div class="address">
                 <img src="../../../assets/img/location-point.svg" alt="">
                 <p>
-                  Запоріжжя, Центральна, стадіон «Торпеда»
+                  {{ eventData.place }}
                 </p>
               </div>
             </div>
@@ -99,10 +244,10 @@
           <div class="right-block">
             <div class="col-3">
               <div class="date">
-                17 липня
+                {{ eventData.date }}
               </div>
               <div class="time">
-                17:00
+                {{ eventData.time }}
               </div>
             </div>
           </div>
@@ -110,11 +255,16 @@
         <div class="text-area"></div>
         <div class="labels">
           <div 
-            v-for="label in labels"
-            :key="label"
+            v-for="label in eventData.labels"
+            :key="label.id"
             class="label"
+            :style="
+              label.text.length ?  
+              labelStyle :
+              emptyLabelStyle
+            "
           >
-            {{ label }}
+            {{ label.text }}
           </div>
         </div>
         <div class="bottom-part">
@@ -186,7 +336,23 @@ export default {
   },
   data() {
     return {
-      labels: ['football', 'baseball'],
+      currentStep: 1,
+      eventData: {
+        title: '',
+        labels: [
+          {
+            id: 0,
+            text: ''
+          },
+          {
+            id: 1,
+            text: ''
+          }
+        ],
+        date: '',
+        time: '',
+        place: ''
+      },
       dataDropdown: [
         {
           id: 0,
@@ -220,6 +386,35 @@ export default {
         }
       ]
     }
+  },
+  computed: {
+    labelStyle() {
+      return {
+        padding: '0px 8px',
+        border: '1px solid #EFEFF6',
+        'border-radius': '100px'
+      }
+    },
+    emptyLabelStyle() {
+      return {
+        width: '70px',
+        height: '18px',
+        background: '#EFEFF6',
+        'border-radius': '100px'
+      }
+    }
+  },
+  methods: {
+    setFormValue(key, value) {
+      if (key === 'gameType') {
+        this.eventData.labels[0].text = value
+        return
+      }
+      this.eventData[key] = value
+    },
+    changeStep() {
+      this.currentStep++
+    }
   }
 }
 </script>
@@ -235,16 +430,7 @@ export default {
       box-shadow: 2px 6px 10px rgba(56, 56, 251, 0.1);
       border-radius: 0px 6px 6px 0px;
       margin-right: 44px;
-      .title {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 13px;
-        line-height: 20px;
-        color: #262541;
-        margin-bottom: 8px;
-      }
-      .choose-gender {
+      .radio-btn-wrapper {
         $color1: #f4f4f4;
         $color2: #148783;
         display: flex;
@@ -332,9 +518,72 @@ export default {
         height: 40px;
         margin-top: 16px;
       }
-      .event-map {
-        margin-top: 16px;
+      .first-step {
+        .title {
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 500;
+          font-size: 13px;
+          line-height: 20px;
+          color: #262541;
+          margin-bottom: 8px;
+        }
+        .event-map {
+          margin-top: 16px;
+        }
       }
+      .second-step {
+        .title-block {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          span {
+            font-family: 'Exo 2';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 24px;
+            color: #262541;
+          }
+          .vip-only {
+            width: 93px;
+            height: 20px;
+            background: #EFEFF6;
+            border-radius: 4px;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 20px;
+            color: #575775;
+            text-align: center;
+          }
+        }
+        .subtitle {
+          margin-top: 8px;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 13px;
+          line-height: 20px;
+          color: #575775;
+          margin-bottom: 20px;
+        }
+        .title {
+          margin-top: 20px;
+          margin-bottom: 8px;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 500;
+          font-size: 13px;
+          line-height: 20px;
+          color: #262541;
+        }
+      }
+      .third-step {
+
+      }
+
       .progress-line {
         margin-top: 72px;
         padding-top: 24px;
@@ -346,8 +595,11 @@ export default {
           .section {
             width: 102.67px;
             height: 4px;
-            background: #1AB2AD;
+            background: #EFEFF6;
             border-radius: 2px;
+            &.active {
+              background: #1AB2AD;
+            }
           }
         }
       }
@@ -407,7 +659,7 @@ export default {
               }
             }
             .col-2 {
-              width: 150px;
+              width: 200px;
               @media (min-width: 1200px) and (max-width: 1400px) {
                 width: 230px;
               }
@@ -509,9 +761,6 @@ export default {
           flex-wrap: wrap;
           margin-top: 8px;
           .label {
-            padding: 0px 8px;
-            border: 1px solid #EFEFF6;
-            border-radius: 100px;
             font-family: 'Inter';
             font-style: normal;
             font-weight: 400;
