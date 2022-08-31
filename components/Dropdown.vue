@@ -79,12 +79,16 @@ export default {
       }
     }
   },
+  mounted() {
+    this.$emit('new-value', this.options[0].value)
+  },
   methods: {
     toggleDropdown() {
       this.isOpened = !this.isOpened
     },
     setNewValue(val) {
       this.currentValue = val
+      this.$emit('new-value', val)
     }
   }
 }
@@ -99,7 +103,6 @@ export default {
     display: flex;
     position: relative;
     .outer-title {
-      width: 53px;
       height: 16px;
       background: linear-gradient(180deg, #F9F9FC 0%, #FFFFFF 100%);
       border-radius: 4px;

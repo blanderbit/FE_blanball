@@ -1,8 +1,9 @@
 <template>
   <div 
     class="white-btn"
-    :style="{ width: btnWidth }"
+    :style="styles"
   >
+    <img v-if="icon" :src="icon" alt=""></img>
     {{ text }}
   </div>
 </template>
@@ -10,6 +11,10 @@
 <script>
 export default {
   props: {
+    icon: {
+      type: String,
+      default: null
+    },
     text: {
       type: String,
       required: true
@@ -17,11 +22,32 @@ export default {
     width: {
       type: Number,
       default: null
+    },
+    height: {
+      type: Number,
+      default: 32
+    },
+    mainColor: {
+      type: String,
+      default: '#148783'
+    },
+    fontStyles: {
+      type: Object,
+      default: () => {}
     }
   },
   computed: {
     btnWidth() {
       return this.width ? this.width + 'px' : '100%'
+    },
+    styles() {
+      return {
+        ...this.fontStyles,
+        width: this.btnWidth,
+        color: this.mainColor,
+        border: `1px solid ${this.mainColor}`,
+        height: this.height + 'px'
+      }
     }
   }
 }
@@ -32,15 +58,16 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 32px;
-  border: 1px solid #148783;
   border-radius: 6px;
-  color: #148783;
   margin-right: 12px;
   font-family: 'Inter';
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   cursor: pointer;
+  user-select: none;
+  img {
+    margin-right: 8px;
+  }
 }
 </style>

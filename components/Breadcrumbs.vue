@@ -16,6 +16,7 @@
 
 <script>
 const pathPages = {
+  'create-event': 'Дружній матч',
   'profile' : 'Профіль',
   'user-cabinet' : 'Особистий кабінет',
   'events' : 'Події'
