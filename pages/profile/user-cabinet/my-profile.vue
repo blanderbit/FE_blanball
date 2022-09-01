@@ -396,6 +396,25 @@
             </div>
           </div>
         </div>
+        <div class="personal-information">
+          <div class="title">
+            {{ $t('profile.personal-details') }}
+          </div>
+          <div class="age-input">
+            <InputComponent
+              :title="'Вік'"
+              :placeholder="'09. 07. 1998'"
+              :inside-title="true"
+            />
+          </div>
+          <Dropdown
+            :options="dataDropdown"
+            :main-title="'Гендер'"
+            :inside-title="true"
+            :width="344"
+            :height="40"
+          />
+        </div>
       </div>
       <div class="block block-3">
         <div class="top-table">
@@ -454,25 +473,6 @@
             <Switcher :id="'feedback'" />
           </div>
         </div>
-      </div>
-      <div class="block block-5">
-        <div class="title">
-          {{ $t('profile.personal-details') }}
-        </div>
-        <div class="age-input">
-          <InputComponent
-            :title="'Вік'"
-            :placeholder="'09. 07. 1998'"
-            :inside-title="true"
-          />
-        </div>
-        <Dropdown 
-          :options="dataDropdown"
-          :main-title="'Гендер'"
-          :inside-title="true"
-          :width="344"
-          :height="40"
-        />
       </div>
     </div>
   </div>
@@ -966,6 +966,21 @@ export default {
       }
 
     }
+    .personal-information {
+      .age-input {
+        width: 344px;
+        height: 40px;
+      }
+      @media (min-width: 992px) {
+        width: 344px;
+        min-width: 344px;
+      }
+      @media (min-width: 768px) and (max-width: 992px) {
+        width: 328px;
+        min-width: 328px;
+        order: 4;
+      }
+    }
   }
   .block-3 {
     @media (min-width: 992px) {
@@ -1038,21 +1053,6 @@ export default {
         justify-content: space-between;
         align-items: center;
       }
-    }
-  }
-  .block-5 {
-    .age-input {
-      width: 344px;
-      height: 40px;
-    }
-    @media (min-width: 992px) {
-      width: 344px;
-      min-width: 344px;
-    }
-    @media (min-width: 768px) and (max-width: 992px) {
-      width: 328px;
-      min-width: 328px;
-      order: 4;
     }
   }
 }
