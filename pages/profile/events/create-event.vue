@@ -18,10 +18,10 @@
           <div class="radio">
             <input 
               id="radio-1" 
+              v-model="eventData.labels[1].text"
               name="radio" 
               type="radio"
               value="Чоловіки"
-              v-model="eventData.labels[1].text"
               checked
              >
             <label for="radio-1" class="radio-label">
@@ -32,10 +32,10 @@
           <div class="radio">
             <input 
               id="radio-2" 
+              v-model="eventData.labels[1].text"
               name="radio" 
               type="radio"
               value="Жінки"
-              v-model="eventData.labels[1].text"
             >
             <label for="radio-2" class="radio-label">
               <img src="../../../assets/img/female-icon.svg" alt="">
@@ -102,88 +102,143 @@
           <div class="radio">
             <input 
               id="radio-3" 
-              name="entrance" 
+              v-model="eventData.isOpened"
+              name="openness" 
               type="radio"
-              value="Вільний"
-              v-model="eventData.labels[1].text"
+              value="Долучитися"
               checked
              >
-            <label for="radio-1" class="radio-label">
-              <img src="../../../assets/img/male-icon.svg" alt="">
+            <label for="radio-3" class="radio-label">
+              <img src="../../../assets/img/lock-closed.svg" alt="">
                 Вільний
             </label>
           </div>
           <div class="radio">
             <input 
               id="radio-4" 
-              name="entrance" 
+              v-model="eventData.isOpened"
+              name="openness" 
               type="radio"
-              value="Закритий"
-              v-model="eventData.labels[1].text"
+              value="Подати заявку"
             >
-            <label for="radio-2" class="radio-label">
-              <img src="../../../assets/img/female-icon.svg" alt="">
+            <label for="radio-4" class="radio-label">
+              <img src="../../../assets/img/lock-opened.svg" alt="">
                 Закритий
             </label>
           </div>
+        </div>
+        <div class="title">
+          Чи потребує участь у події внесків?
         </div>
         <div class="radio-btn-wrapper">
           <div class="radio">
             <input 
               id="radio-5" 
+              v-model="eventData.payment"
               name="payment" 
               type="radio"
               value="Безкоштовно"
-              v-model="eventData.labels[1].text"
               checked
              >
-            <label for="radio-1" class="radio-label">
-              <img src="../../../assets/img/male-icon.svg" alt="">
-                Безкоштовно
+            <label for="radio-5" class="radio-label">
+              Безкоштовно
             </label>
           </div>
           <div class="radio">
             <input 
               id="radio-6" 
+              v-model="eventData.payment"
               name="payment" 
               type="radio"
               value="Платно"
-              v-model="eventData.labels[1].text"
             >
-            <label for="radio-2" class="radio-label">
-              <img src="../../../assets/img/female-icon.svg" alt="">
-                Платно
+            <label for="radio-6" class="radio-label">
+              Платно
             </label>
           </div>
         </div>
-        <div class="input">
-          <InputComponent
-            :outside-title="true"
-            :title="'Дата проведення'"
-            :placeholder="'Input'"
-            :title-width="0"
-            :v-model="eventData.date"
-            @new-value="setFormValue('date', $event)"
-          />
+        <div class="contact-switcher">
+          <span>
+            Показувати мої контакти
+          </span>
+          <Switcher :id="'contacts'" />
         </div>
         <div class="input">
           <InputComponent
-            :outside-title="true"
-            :title="'Час проведення'"
-            :placeholder="'Input'"
+            :placeholder="'+38 025 67 98'"
             :title-width="0"
             :v-model="eventData.date"
-            @new-value="setFormValue('time', $event)"
+            :has-icon="true"
+            :icon="[
+              require('../../../assets/img/sort-arrows-horizontal.svg')
+            ]"
           />
+        </div>
+        <div class="title">
+          Запросити учасників
         </div>
         <div class="input">
           <InputComponent
-            :outside-title="true"
-            :title="'Місце проведення'"
-            :placeholder="'Input'"
-            :title-width="0"
-            @new-value="setFormValue('place', $event)"
+            :placeholder="'Пошук користувачів'"
+            :title-width="30"
+            :v-model="eventData.date"
+            :has-icon="true"
+            :icon-left="require('../../../assets/img/add-user.svg')"
+            :icon="[
+              require('../../../assets/img/search.svg')
+            ]"
           />
+        </div>
+        <div class="search-users-block">
+          <div class="title">
+            Шукати серед:
+          </div>
+          <div class="tegs-block">
+            <div
+              v-for="tag in tags"
+              :key="tag.id"
+              :class="['teg', { active: tag.isActive }]"
+              @click="chooseCategory(tag.id)"
+            >
+              {{ tag.text }}
+            </div>
+          </div>
+          <div class="users-window">
+            <div
+              v-for="team of filteredTeams"
+              :key="team.id"
+              class="category-block"
+            >
+              <div class="category-name">
+                {{ team.category_name }}
+              </div>
+              <div class="users-list">
+                <div 
+                  v-for="user of team.users"
+                  :key="user.id"
+                  class="user"
+                >
+                  <div class="user-data">
+                    <div class="user-img">
+                      <img :src="user.img" alt="">
+                    </div>
+                    <div class="user-name">
+                      {{ user.name }}
+                    </div>
+                  </div>
+                  <div 
+                    class="add-user"
+                    @click="inviteUser(team.id, user.id)"
+                  >
+                    <img src="../../../assets/img/plus.svg" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="show-more-results">
+            Показати ще 20 результатів
+          </div>
         </div>
       </div>
 
@@ -216,78 +271,120 @@
         />
       </div>
     </div>
-    <div class="preview-block">
-      <div class="title">
-        Попередній перегляд афіші
-      </div>
-      <div class="subtitle">
-        Таким чином виглядатиме афіша вашої події для інших користувачів додатку BlanBall
-      </div>
-      <div class="form-block">
-        <div class="top-line">
-          <div class="left-block">
-            <div class="col-1">
-              <div class="card-icon">
-                <img src="../../../assets/img/hands-shake.png" alt="" />
+    <div class="wrapper-preview-block">
+      <div class="preview-block">
+        <div class="title">
+          Попередній перегляд афіші
+        </div>
+        <div class="subtitle">
+          Таким чином виглядатиме афіша вашої події для інших користувачів додатку BlanBall
+        </div>
+        <div class="form-block">
+          <div class="top-line">
+            <div class="left-block">
+              <div class="col-1">
+                <div class="card-icon">
+                  <img src="../../../assets/img/hands-shake.png" alt="" />
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="title">{{eventData.title}}</div>
+                <div class="address">
+                  <img src="../../../assets/img/location-point.svg" alt="">
+                  <p>
+                    {{ eventData.place }}
+                  </p>
+                </div>
               </div>
             </div>
-            <div class="col-2">
-              <div class="title">{{eventData.title}}</div>
-              <div class="address">
-                <img src="../../../assets/img/location-point.svg" alt="">
-                <p>
-                  {{ eventData.place }}
-                </p>
+            <div class="right-block">
+              <div class="col-3">
+                <div class="date">
+                  {{ eventData.date }}
+                </div>
+                <div class="time">
+                  {{ eventData.time }}
+                </div>
               </div>
             </div>
           </div>
-          <div class="right-block">
-            <div class="col-3">
+          <div class="text-area"></div>
+          <div class="labels">
+            <div 
+              v-for="label in eventData.labels"
+              :key="label.id"
+              class="label"
+              :style="
+                label.text.length ?  
+                labelStyle :
+                emptyLabelStyle
+              "
+            >
+              {{ label.text }}
+            </div>
+          </div>
+          <div class="bottom-part">
+            <div class="left-block">
+              В’ячеслав Залізняк
+            </div>
+            <div class="right-block">
+              {{ eventData.payment }}
+            </div>
+          </div>
+          <div class="bottom-line">
+            <div class="left-side">
+              <div class="titles">
+                <div class="players">{{ $t('events.players') }}:</div>
+                <div class="visitors">{{ $t('events.fans') }}:</div>
+              </div>
               <div class="date">
-                {{ eventData.date }}
+                <div class="players-date">10 / 22</div>
+                <div class="visitors-date">17 / 30</div>
               </div>
-              <div class="time">
-                {{ eventData.time }}
-              </div>
+            </div>
+            <div class="right-side">
+              <GreenBtn 
+                :text="eventData.isOpened" 
+                :width="115"
+                :height="32"
+              />
             </div>
           </div>
         </div>
-        <div class="text-area"></div>
-        <div class="labels">
+      </div>
+      <div
+        v-if="currentStep === 2" 
+        class="chosen-ppl"
+      >
+        <div class="title">
+          Люди, яких ви запросили
+        </div>
+        <div 
+          @click="deleteAll"
+          class="delete-all"
+        >
+          Видалити всіх
+        </div>
+        <div class="users-list">
           <div 
-            v-for="label in eventData.labels"
-            :key="label.id"
-            class="label"
-            :style="
-              label.text.length ?  
-              labelStyle :
-              emptyLabelStyle
-            "
+            v-for="user of chosenUsers"
+            :key="user.id"
+            class="user"
           >
-            {{ label.text }}
-          </div>
-        </div>
-        <div class="bottom-part">
-          <div class="left-block"></div>
-          <div class="right-block"></div>
-        </div>
-        <div class="bottom-line">
-          <div class="left-side">
-            <div class="titles">
-              <div class="players">{{ $t('events.players') }}:</div>
-              <div class="visitors">{{ $t('events.fans') }}:</div>
+            <div class="user-data">
+              <div class="user-img">
+                <img :src="user.img" alt="">
+              </div>
+              <div class="user-name">
+                {{ user.name }}
+              </div>
             </div>
-            <div class="date">
-              <div class="players-date">10 / 22</div>
-              <div class="visitors-date">17 / 30</div>
+            <div 
+              class="delete-user"
+              @click="deleteFromChosen(user.id)"
+            >
+              <img src="../../../assets/img/cross.svg" alt="">
             </div>
-          </div>
-          <div class="right-side">
-            <GreenBtn 
-              :text="'Долучитися'" 
-              :width="115"
-              :height="32"
-            />
           </div>
         </div>
       </div>
@@ -325,6 +422,7 @@ import Dropdown from '../../../components/Dropdown.vue'
 import InputComponent from '../../../components/InputComponent.vue'
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
+import Switcher from '../../../components/Switcher.vue'
 
 export default {
   name: 'CreateEventPage',
@@ -332,10 +430,177 @@ export default {
     Dropdown,
     InputComponent,
     GreenBtn,
-    WhiteBtn
+    WhiteBtn,
+    Switcher
   },
   data() {
     return {
+      chosenUsers: [],
+      tags: [
+        {
+          id: 0,
+          text: 'Всі',
+          isActive: true
+        },
+        {
+          id: 1,
+          text: 'Гравці',
+          isActive: false
+        },
+        {
+          id: 2,
+          text: 'Події',
+          isActive: false
+        },
+        {
+          id: 3,
+          text: 'Організатори',
+          isActive: false
+        },
+        {
+          id: 4,
+          text: 'Тренери',
+          isActive: false
+        },
+        {
+          id: 5,
+          text: 'Рефері',
+          isActive: false
+        },
+        {
+          id: 6,
+          text: 'Команди',
+          isActive: false
+        }
+      ],
+      teams: [
+        {
+          id: 1,
+          category_name: 'Гравці',
+          users: [
+            {
+              id: 0,
+              img: require('../../../assets/img/user1.png'),
+              name: 'Oganez Gurgenovich'
+            },
+            {
+              id: 1,
+              img: require('../../../assets/img/user2.png'),
+              name: 'Rubik Joraevich'
+            },
+            {
+              id: 2,
+              img: require('../../../assets/img/user3.png'),
+              name: 'Ogli Timurlanovich'
+            }
+          ]
+        },
+        {
+          id: 2,
+          category_name: 'Події',
+          users: [
+            {
+              id: 11,
+              img: require('../../../assets/img/user2.png'),
+              name: 'Rubik Joraevich'
+            },
+            {
+              id: 21,
+              img: require('../../../assets/img/user3.png'),
+              name: 'Ogli Timurlanovich'
+            },
+            {
+              id: 101,
+              img: require('../../../assets/img/user1.png'),
+              name: 'Oganez Gurgenovich'
+            }
+          ]
+        },
+        {
+          id: 3,
+          category_name: 'Організатори',
+          users: [
+            // {
+            //   id: 202,
+            //   img: require('../../../assets/img/user1.png'),
+            //   name: 'Oganez Gurgenovich'
+            // },
+            {
+              id: 12,
+              img: require('../../../assets/img/user2.png'),
+              name: 'Rubik Joraevich'
+            },
+            {
+              id: 22,
+              img: require('../../../assets/img/user3.png'),
+              name: 'Ogli Timurlanovich'
+            }
+          ]
+        },
+        {
+          id: 4,
+          category_name: 'Тренери',
+          users: [
+            {
+              id: 3023,
+              img: require('../../../assets/img/user1.png'),
+              name: 'Oganez Gurgenovich'
+            },
+            // {
+            //   id: 123,
+            //   img: require('../../../assets/img/user2.png'),
+            //   name: 'Rubik Joraevich'
+            // },
+            {
+              id: 223,
+              img: require('../../../assets/img/user3.png'),
+              name: 'Ogli Timurlanovich'
+            }
+          ]
+        },
+        {
+          id: 5,
+          category_name: 'Рефері',
+          users: [
+            {
+              id: 4024,
+              img: require('../../../assets/img/user1.png'),
+              name: 'Oganez Gurgenovich'
+            },
+            {
+              id: 124,
+              img: require('../../../assets/img/user2.png'),
+              name: 'Rubik Joraevich'
+            },
+            // {
+            //   id: 224,
+            //   img: require('../../../assets/img/user3.png'),
+            //   name: 'Ogli Timurlanovich'
+            // }
+          ]
+        },
+        {
+          id: 6,
+          category_name: 'Команди',
+          users: [
+            {
+              id: 125,
+              img: require('../../../assets/img/user2.png'),
+              name: 'Rubik Joraevich'
+            },
+            {
+              id: 225,
+              img: require('../../../assets/img/user3.png'),
+              name: 'Ogli Timurlanovich'
+            },
+            {
+              id: 5025,
+              img: require('../../../assets/img/user1.png'),
+              name: 'Oganez Gurgenovich'
+            }
+          ]
+        },
+      ],
       currentStep: 1,
       eventData: {
         title: '',
@@ -351,7 +616,9 @@ export default {
         ],
         date: '',
         time: '',
-        place: ''
+        place: '',
+        payment: '',
+        isOpened: ''
       },
       dataDropdown: [
         {
@@ -388,6 +655,16 @@ export default {
     }
   },
   computed: {
+    filteredTeams() {
+      if (this.currentCategory === 'Всі') {
+        return this.teams
+      } else {
+        return [this.teams.find(item => item.category_name === this.currentCategory)]
+      }
+    },
+    currentCategory() {
+      return this.tags.find(item => item.isActive).text
+    },
     labelStyle() {
       return {
         padding: '0px 8px',
@@ -405,6 +682,12 @@ export default {
     }
   },
   methods: {
+    deleteAll() {
+      this.chosenUsers = []
+    },
+    deleteFromChosen(id) {
+      this.chosenUsers = this.chosenUsers.filter(i => i.id !== id)
+    },
     setFormValue(key, value) {
       if (key === 'gameType') {
         this.eventData.labels[0].text = value
@@ -414,6 +697,24 @@ export default {
     },
     changeStep() {
       this.currentStep++
+    },
+    chooseCategory(id) {
+      this.tags = this.tags.map(item => ({...item, isActive: false}))
+      this.tags = this.tags.map(item => {
+        if (item.id === id) {
+          return {
+            ...item,
+            isActive: true
+          }
+        } else {
+          return item
+        }
+      })
+    },
+    inviteUser(teamId, userId) {
+      const team = this.teams.find(i => i.id === teamId)
+      const user = team.users.find(i => i.id === userId)
+      this.chosenUsers.push(user)
     }
   }
 }
@@ -579,13 +880,131 @@ export default {
           line-height: 20px;
           color: #262541;
         }
+        .contact-switcher {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 20px;
+          margin-bottom: 8px;
+          span {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 13px;
+            line-height: 20px;
+            color: #262541;
+          }
+        }
+        .input {
+          margin-top: 0;
+        }
+        .search-users-block {
+          padding: 12px;
+          height: 418px;
+          background: #FFFFFF;
+          box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+          border-radius: 6px;
+          margin-top: 8px;
+          .title {
+            margin: 0;
+          }
+          .tegs-block {
+            display: flex;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #DFDEED;
+            padding-bottom: 14px;
+            margin-top: 8px;
+            .teg {
+              padding: 2px 6px;
+              border-radius: 4px;
+              font-family: 'Inter';
+              font-style: normal;
+              font-weight: 400;
+              font-size: 12px;
+              line-height: 20px;
+              text-align: center;
+              color: #8A8AA8;
+              cursor: pointer;
+              &.active {
+                color: #262541;
+                background: #F0F0F4;
+              }
+            }
+          }
+          .users-window {
+            overflow: hidden;
+            height: 268px;
+            .category-block {
+              .category-name {
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 500;
+                font-size: 12px;
+                line-height: 20px;
+                color: #8A8AA8;
+                margin: 8px 0;
+              }
+              .users-list {
+                .user {
+                  padding: 4px;
+                  border-radius: 0px 6px 6px 0px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  .user-data {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    .user-img {
+                      img {
+                        display: block;
+                      }
+                    }
+                    .user-name {
+                      margin-left: 8px;
+                      font-family: 'Inter';
+                      font-style: normal;
+                      font-weight: 400;
+                      font-size: 12px;
+                      line-height: 20px;
+                      color: #262541;
+                      user-select: none;
+                    }
+                  }
+                  .add-user {
+                    cursor: pointer;
+                    img {
+                      margin-right: 12px;
+                    }
+                  }
+                  &:hover {
+                    background: #F0F0F4;
+                    .add-user img {
+                      filter: invert(61%) sepia(21%) saturate(354%) hue-rotate(202deg) brightness(87%) contrast(90%);
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .show-more-results {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 20px;
+            color: #8A8AA8;
+            margin-top: 12px;
+            cursor: pointer;
+          }
+        }
       }
       .third-step {
 
       }
 
       .progress-line {
-        margin-top: 72px;
+        margin-top: 20px;
         padding-top: 24px;
         border-top: 1px dashed #DFDEED;
         .sections {
@@ -610,213 +1029,266 @@ export default {
         margin-top: 20px;
       }
     }
-    .preview-block {
-      padding: 24px 44px;
-      width: 504px;
-      background: #F9F9FC;
-      border-radius: 12px;
+    .wrapper-preview-block {
       margin-right: 40px;
-      .title {
-        font-family: 'Exo 2';
-        font-style: normal;
-        font-weight: 700;
-        font-size: 16px;
-        line-height: 24px;
-        color: #262541;
-      }
-      .subtitle {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 13px;
-        line-height: 20px;
-        color: #575775;
-        margin: 6px 0 20px;
-      }
-      .form-block {
-        padding: 20px 16px;
-        background: #FFFFFF;
-        box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
-        border-radius: 6px;
-        .top-line {
-          display: flex;
-          justify-content: space-between;
-          .left-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .preview-block {
+        padding: 24px 44px;
+        width: 504px;
+        background: #F9F9FC;
+        border-radius: 12px;
+        .title {
+          font-family: 'Exo 2';
+          font-style: normal;
+          font-weight: 700;
+          font-size: 16px;
+          line-height: 24px;
+          color: #262541;
+        }
+        .subtitle {
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 13px;
+          line-height: 20px;
+          color: #575775;
+          margin: 6px 0 20px;
+        }
+        .form-block {
+          padding: 20px 16px;
+          background: #FFFFFF;
+          box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+          border-radius: 6px;
+          .top-line {
             display: flex;
-            .col-1 {
-              margin-right: 8px;
-              min-width: 50px;
-              .card-icon {
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                align-items: center;
-                min-width: 48px;
-                width: 48px;
-                height: 48px;
-                background: #EFEFF6;
-                border-radius: 4px;
+            justify-content: space-between;
+            .left-block {
+              display: flex;
+              .col-1 {
+                margin-right: 8px;
+                min-width: 50px;
+                .card-icon {
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: center;
+                  align-items: center;
+                  min-width: 48px;
+                  width: 48px;
+                  height: 48px;
+                  background: #EFEFF6;
+                  border-radius: 4px;
+                }
+              }
+              .col-2 {
+                width: 200px;
+                @media (min-width: 1200px) and (max-width: 1400px) {
+                  width: 230px;
+                }
+                @media (min-width: 992px) and (max-width: 1199px) {
+                  width: 150px;
+                }
+                @media (min-width: 768px) and (max-width: 991px) {
+                  width: 165px;
+                }
+                @media (max-width: 768px) {
+                  width: 70%;
+                }
+                .title {
+                  font-family: 'Exo 2';
+                  font-style: normal;
+                  font-weight: 700;
+                  font-size: 16px;
+                  line-height: 24px;
+                  color: #262541;
+                }
+                .address {
+                  display: flex;
+                  background: #FAFAFA;
+                  padding: 0px 4px;
+                  margin-top: 4px;
+                  img {
+                    margin-right: 5px;
+                  }
+                  p {
+                    font-family: "Inter";
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 12px;
+                    line-height: 20px;
+                    color: #575775;
+                    border-radius: 4px;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                  }
+                }
               }
             }
-            .col-2 {
-              width: 200px;
-              @media (min-width: 1200px) and (max-width: 1400px) {
-                width: 230px;
-              }
-              @media (min-width: 992px) and (max-width: 1199px) {
-                width: 150px;
-              }
-              @media (min-width: 768px) and (max-width: 991px) {
-                width: 165px;
-              }
-              @media (max-width: 768px) {
-                width: 70%;
-              }
-              .title {
-                font-family: 'Exo 2';
-                font-style: normal;
-                font-weight: 700;
-                font-size: 16px;
-                line-height: 24px;
-                color: #262541;
-              }
-              .address {
+            .right-block {
+              .col-3 {
+                min-width: 100%;
                 display: flex;
-                background: #FAFAFA;
-                padding: 0px 4px;
-                margin-top: 4px;
-                img {
-                  margin-right: 5px;
+                flex-direction: column;
+                align-items: flex-end;
+                .state {
+                  font-family: 'Inter';
+                  font-style: normal;
+                  font-weight: 400;
+                  font-size: 13px;
+                  line-height: 20px;
+                  text-align: center;
+                  padding: 0px 4px;
+                  border-radius: 4px;
+                  background: #EFEFF6;
+                  color:  #262541;
+                  width: fit-content;
+                  &.active {
+                    background: #71BA12;
+                    color:  #fff;
+                  }
                 }
-                p {
-                  font-family: "Inter";
+                .date {
+                  font-family: 'Inter';
+                  font-style: normal;
+                  font-weight: 500;
+                  font-size: 14px;
+                  line-height: 20px;
+                  text-align: right;
+                  color: #262541;
+                  margin-bottom: 4px;
+                }
+                .time {
+                  font-family: 'Inter';
                   font-style: normal;
                   font-weight: 400;
                   font-size: 12px;
                   line-height: 20px;
-                  color: #575775;
-                  border-radius: 4px;
-                  display: -webkit-box;
-                  -webkit-line-clamp: 1;
-                  -webkit-box-orient: vertical;
-                  overflow: hidden;
+                  text-align: right;
+                  color: #4C4A82;
                 }
               }
             }
           }
-          .right-block {
-            .col-3 {
-              min-width: 100%;
-              display: flex;
-              flex-direction: column;
-              align-items: flex-end;
-              .state {
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 400;
-                font-size: 13px;
-                line-height: 20px;
-                text-align: center;
-                padding: 0px 4px;
-                border-radius: 4px;
-                background: #EFEFF6;
-                color:  #262541;
-                width: fit-content;
-                &.active {
-                  background: #71BA12;
-                  color:  #fff;
-                }
-              }
-              .date {
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 500;
-                font-size: 14px;
-                line-height: 20px;
-                text-align: right;
-                color: #262541;
-                margin-bottom: 4px;
-              }
-              .time {
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 400;
-                font-size: 12px;
-                line-height: 20px;
-                text-align: right;
-                color: #4C4A82;
-              }
-            }
-          }
-        }
-        .text-area {
-          margin-top: 12px;
-          height: 80px;
-          background: #EFEFF6;
-          border-radius: 6px;
-        }
-        .labels {
-          display: flex;
-          align-items: center;
-          flex-wrap: wrap;
-          margin-top: 8px;
-          .label {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 20px;
-            color: #575775;
-            margin-right: 4px;
-            margin-bottom: 4px;
-          }
-        }
-        .bottom-part {
-          border-top: 1px dashed #DFDEED;
-          padding-top: 12px;
-          display: flex;
-          justify-content: space-between;
-          .left-block {
-            width: 113px;
-            height: 20px;
+          .text-area {
+            margin-top: 12px;
+            height: 80px;
             background: #EFEFF6;
             border-radius: 6px;
           }
-          .right-block {
-            width: 87px;
-            height: 20px;
-            background: #EFEFF6;
-            border-radius: 6px;
-          }
-        }
-        .bottom-line {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-top: 12px;
-          .left-side {
+          .labels {
             display: flex;
             align-items: center;
-            .titles {
-              margin-right: 30px;
-            }
-            .titles, .date {
+            flex-wrap: wrap;
+            margin-top: 8px;
+            .label {
               font-family: 'Inter';
               font-style: normal;
               font-weight: 400;
               font-size: 12px;
               line-height: 20px;
-            }
-            .players, .players-date {
-              color: #262541;
-            }
-            .visitors, .visitors-date {
               color: #575775;
+              margin-right: 4px;
+              margin-bottom: 4px;
+            }
+          }
+          .bottom-part {
+            border-top: 1px dashed #DFDEED;
+            padding-top: 12px;
+            display: flex;
+            justify-content: space-between;
+          }
+          .bottom-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            .left-side {
+              display: flex;
+              align-items: center;
+              .titles {
+                margin-right: 30px;
+              }
+              .titles, .date {
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 20px;
+              }
+              .players, .players-date {
+                color: #262541;
+              }
+              .visitors, .visitors-date {
+                color: #575775;
+              }
+            }
+          }
+        }
+      }
+      .chosen-ppl {
+        width: 416px;
+        margin-top: 16px;
+        .title {
+          font-family: 'Exo 2';
+          font-style: normal;
+          font-weight: 700;
+          font-size: 16px;
+          line-height: 24px;
+          color: #262541;
+        }
+        .delete-all {
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 20px;
+          color: #575775;
+          margin-bottom: 8px;
+          text-align: right;
+          cursor: pointer;
+        }
+        .users-list {
+          .user {
+            padding: 4px;
+            border-radius: 0px 6px 6px 0px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid #F0F0F4;
+            .user-data {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              .user-img {
+                img {
+                  display: block;
+                }
+              }
+              .user-name {
+                margin-left: 8px;
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 20px;
+                color: #262541;
+                user-select: none;
+              }
+            }
+            .delete-user {
+              cursor: pointer;
+              img {
+                margin-right: 12px;
+              }
             }
           }
         }
       }
     }
+
     .manage-template-block {
       .title {
         font-family: 'Exo 2';

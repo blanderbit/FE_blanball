@@ -3,7 +3,10 @@
     class="input-wrapper"
     :style="inputWrapper"
   >
-    <div v-if="outsideTitle" class="outer-title">
+    <div 
+      v-if="outsideTitle" 
+      class="outer-title"
+    >
       <span>{{title}}</span>
     </div>
     <div 
@@ -19,6 +22,12 @@
       @click="iconClickAction"
     >
       <img :src="rightIcon" alt="">
+    </div>
+    <div 
+      v-if="iconLeft.length" 
+      class="icon-left"
+    >
+      <img :src="iconLeft" alt="">
     </div>
     <input 
       :type="inputType" 
@@ -38,9 +47,13 @@ export default {
       type: Boolean,
       default: false
     },
-    icon:            {
+    icon: {
       type: Array,
       default: () => []
+    },
+    iconLeft: {
+      type: String,
+      default: ''
     },
     hasIcon: {
       type: Boolean,
@@ -133,6 +146,18 @@ export default {
       position: absolute;
       top: 0;
       right: 0;
+      background: #fff;
+      img {
+        margin: auto;
+      }
+    }
+    .icon-left {
+      display: flex;
+      height: 100%;
+      width: 40px;
+      position: absolute;
+      top: 0;
+      left: 0;
       background: #fff;
       img {
         margin: auto;
