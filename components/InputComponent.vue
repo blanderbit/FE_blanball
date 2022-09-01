@@ -118,11 +118,10 @@ export default {
   },
   methods: {
     iconClickAction() {
-      if (this.inputType === 'password') {
+      if (this.type[0] === 'password') {
         this.iconCount = this.iconCount === 0 ? 1 : 0
         this.inputType = this.inputType === 'password' ? 'text' : 'password'
       } else {
-        console.log('blaaaa')
         this.$emit('icon-click')
       }
     }
