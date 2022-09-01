@@ -55,6 +55,7 @@
               v-for="item in menuItems"
               :key="item.id"
               :class="['menu-item', { active: item.isActive }]"
+              @click="menuItemClick(item.id)"
             >
               <nuxt-link :to="item.url">
                 <img :src="item.img" alt="">
@@ -135,6 +136,20 @@ export default {
   methods: {
     toggleMenu() {
       this.isMenuOpened = !this.isMenuOpened
+    },
+    menuItemClick(id) {
+      this.menuItems = this.menuItems
+                      .map(item => ({...item, isActive: false}))
+                      .map(item => {
+                        if (item.id === id) {
+                          return {
+                            ...item,
+                            isActive: true
+                          }
+                        } else {
+                          return item
+                        }
+                      })
     }
   }
 }
