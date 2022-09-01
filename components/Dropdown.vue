@@ -2,18 +2,25 @@
   <div 
     class="dropdown"
     :style="dropdownStyle"
-  >
+    >
+    <div 
+      v-if="isOpened"
+      class="back-layer"
+      @click="toggleDropdown"
+    ></div>
     <div v-if="outsideTitle" class="outer-title">
       <span>{{mainTitle}}</span>
     </div>
     <div v-if="insideTitle" class="inner-title">
       <span>{{mainTitle}}</span>
     </div>
-    <div class="drop-current" @click="toggleDropdown">
-      <slot name="drop-icon"></slot>
-      <div class="current-name">{{currentValue}}</div>
-      <div class="arrow-down">
-        <img src="../assets/img/arrow-down2.svg" alt="">
+    <div class="current-wrapper">
+      <div class="drop-current" @click="toggleDropdown">
+        <slot name="drop-icon"></slot>
+        <div class="current-name">{{currentValue}}</div>
+        <div class="arrow-down">
+          <img src="../assets/img/arrow-down2.svg" alt="">
+        </div>
       </div>
       <ul 
         v-if="isOpened" 
@@ -28,6 +35,7 @@
         </li>
       </ul>
     </div>
+
   </div>
 </template>
 
@@ -89,6 +97,7 @@ export default {
     setNewValue(val) {
       this.currentValue = val
       this.$emit('new-value', val)
+      this.isOpened = !this.isOpened
     }
   }
 }
@@ -102,6 +111,14 @@ export default {
     margin: 12px 0;
     display: flex;
     position: relative;
+    .back-layer {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 998;
+    }
     .outer-title {
       height: 16px;
       background: linear-gradient(180deg, #F9F9FC 0%, #FFFFFF 100%);
@@ -139,36 +156,43 @@ export default {
         padding-left: 12px;
       }
     }
-    .drop-current {
-      display: flex;
-      flex-basis: 100%;
-      padding: 0 12px;
-      justify-content: space-between;
-      align-items: center;
-      user-select: none;
-      position: relative;
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 13px;
-      line-height: 24px;
-      color: #262541;
-      ul {
-        position: absolute;
-        left: 0;
-        width: 100%;
+    .current-wrapper {
+      height: 100%;
+      width: 100%;
+      .drop-current {
+        display: flex;
+        flex-basis: 100%;
+        padding: 0 12px;
+        justify-content: space-between;
+        align-items: center;
+        user-select: none;
+        // position: relative;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 24px;
+        color: #262541;
+        height: 100%;
+      }
+    }
+    ul {
+      // position: absolute;
+      // left: 0;
+      width: 100%;
+      background: #fff;
+      border-right: 1px solid #DFDEED;
+      border-left: 1px solid #DFDEED;
+      border-bottom: 1px solid #DFDEED;
+      z-index: 999;
+      position: absolute;
+      li {
+        list-style: none;
+        padding: 2px 12px;
         background: #fff;
-        border-right: 1px solid #DFDEED;
-        border-left: 1px solid #DFDEED;
-        border-bottom: 1px solid #DFDEED;
-        z-index: 999;
-        li {
-          list-style: none;
-          padding: 2px 12px;
-          &:hover {
-            background: rgba(47, 32, 255, 0.795);
-            color: #fff;
-          }
+        &:hover {
+          background: rgba(47, 32, 255, 0.795);
+          color: #fff;
         }
       }
     }
