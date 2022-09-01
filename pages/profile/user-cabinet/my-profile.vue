@@ -79,7 +79,6 @@
                 placeholder="_"
                 @input="codeInput(item.id, $event)"
               >
-                <!-- @keydown="codeInput(item.id, $event)" -->
             </div>
             <div class="btns-block">
               <div 
@@ -637,15 +636,20 @@ export default {
         this.$refs.test.focus()
       })
     },
-    codeInput(id) {
-      const currentInput = this.codeResettingInputs.find(i => i.id === id)
-      if (currentInput.value.length > 1) {
-        currentInput.value = currentInput.value.slice(1, 2);
+    codeInput(id, e) {
+      if (e.inputType === 'deleteContentBackward') {
+        if (id !== 0) this.$refs[`input-${id - 1}`][0].focus()
+      } else {
+        const currentInput = this.codeResettingInputs.find(i => i.id === id)
+        if (currentInput.value.length > 1) {
+          currentInput.value = currentInput.value.slice(1, 2);
+        }
+        const nextRefIndex = id + 1
+        if (nextRefIndex !== 5) {
+          this.$refs[`input-${id + 1}`][0].focus()
+        }
       }
-      const nextRefIndex = id + 1
-      if (nextRefIndex !== 5) {
-        this.$refs[`input-${id + 1}`][0].focus()
-      }
+
     },
     switchEditMode() {
       this.isEditProfileMode = !this.isEditProfileMode
