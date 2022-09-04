@@ -134,10 +134,10 @@ export default {
 
 <style lang="scss" scoped>
   .input-wrapper {
-    width: 100%;
     border: 1px solid #DFDEED;
     position: relative;
     border-radius: 6px;
+    width: 100%;
     .input-icon {
       display: flex;
       height: 100%;
@@ -146,6 +146,7 @@ export default {
       top: 0;
       right: 0;
       background: #fff;
+      border-radius: 6px;
       img {
         margin: auto;
       }
@@ -158,6 +159,7 @@ export default {
       top: 0;
       left: 0;
       background: #fff;
+      border-radius: 6px;
       img {
         margin: auto;
       }
