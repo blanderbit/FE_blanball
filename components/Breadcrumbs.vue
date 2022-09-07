@@ -19,7 +19,9 @@ const pathPages = {
   'create-event': 'Дружній матч',
   'profile' : 'Профіль',
   'user-cabinet' : 'Особистий кабінет',
-  'events' : 'Події'
+  'events' : 'Події',
+  'players': 'Гравці',
+  'player': 'Стефанія Калиновська'
 }
 
 export default {
