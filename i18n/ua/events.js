@@ -3,7 +3,6 @@ export default {
   'general-events': 'Загальна',
   'my-events': 'Мої події',
   'subtitle' : 'Оновіть своє фото та персональні дані',
-  'create-event' : 'Створити подію',
   'men': 'Чоловіки',
   'women': 'Жінки',
   'all': 'Всі',

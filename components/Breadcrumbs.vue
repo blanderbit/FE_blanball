@@ -19,7 +19,9 @@ const pathPages = {
   'create-event': 'Дружній матч',
   'profile' : 'Профіль',
   'user-cabinet' : 'Особистий кабінет',
-  'events' : 'Події'
+  'events' : 'Події',
+  'my-events': 'Мої події',
+  'friendly-match': 'Дружній матч'
 }
 
 export default {
