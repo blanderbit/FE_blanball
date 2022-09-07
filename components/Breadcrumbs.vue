@@ -20,6 +20,8 @@ const pathPages = {
   'profile' : 'Профіль',
   'user-cabinet' : 'Особистий кабінет',
   'events' : 'Події',
+  'my-events': 'Мої події',
+  'friendly-match': 'Дружній матч',
   'players': 'Гравці',
   'player': 'Стефанія Калиновська'
 }

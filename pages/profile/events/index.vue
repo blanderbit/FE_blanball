@@ -36,7 +36,7 @@
         <div class="right-part">
           <nuxt-link to="/profile/events/create-event">
             <GreenBtn 
-              :text="$t('events.create-event')"
+              :text="$t('buttons.create-event')"
               :width="168"
               :icon="require('../../../assets/img/plus.svg')"
               :height="40"
@@ -199,7 +199,12 @@
           v-if="!eventsSwitcher"
           class="cards-block"
         >
-          <div class="event-card">
+          <div 
+            v-for="card of eventCards"
+            :key="card.id"
+            class="event-card"
+            @click="goToEventPage"
+          >
             <div class="top-title">
               <div class="left-side">
                 <div class="card-icon">
@@ -207,26 +212,26 @@
                 <div class="text-block">
                   <div class="title">{{ $t('events.friendly-match') }}</div>
                   <div class="date-time-mob">
-                    <div class="date">16 {{ $t('events.months.June') }}</div>
-                    <div class="time">12:00 – 14:00</div>
+                    <div class="date">{{card.date}} {{ $t('events.months.June') }}</div>
+                    <div class="time">{{card.time}}</div>
                   </div>
                   <div class="address desk-address">
                     <img src="../../../assets/img/location-point.svg" alt="">
-                    <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
+                    <p>{{card.address}}</p>
                   </div>
                 </div>
               </div>
               <div class="right-side">
-                <div class="date">16 {{ $t('events.months.June') }}</div>
-                <div class="time">12:00 – 14:00</div>
+                <div class="date">{{card.date}} {{ $t('events.months.June') }}</div>
+                <div class="time">{{card.time}}</div>
               </div>
             </div>
             <div class="address mob-address">
               <img src="../../../assets/img/location-point.svg" alt="">
-              <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
+              <p>{{card.address}}</p>
             </div>
             <div class="main-text">
-              Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd
+              {{card.main_text}}
             </div>
             <div class="labels">
               <div class="label">{{ $t('events.football') }}</div>
@@ -235,7 +240,7 @@
             </div>
             <div class="bottom-block">
               <div class="top-line">
-                <div class="name">В’ячеслав Залізняк</div>
+                <div class="name">{{card.name}}</div>
                 <div class="price">{{ $t('events.for-free') }}</div>
               </div>
               <div class="bottom-line">
@@ -245,188 +250,8 @@
                     <div class="visitors">{{ $t('events.fans') }}:</div>
                   </div>
                   <div class="date">
-                    <div class="players-date">10 / 22</div>
-                    <div class="visitors-date">17 / 30</div>
-                  </div>
-                </div>
-                <div class="right-side">
-                  <GreenBtn 
-                    :text="'Долучитися'" 
-                    :width="115"
-                    :height="32"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="event-card">
-            <div class="top-title">
-              <div class="left-side">
-                <div class="card-icon">
-                  <img src="../../../assets/img/hands-shake.png" alt=""></div>
-                <div class="text-block">
-                  <div class="title">{{ $t('events.friendly-match') }}</div>
-                  <div class="date-time-mob">
-                    <div class="date">16 {{ $t('events.months.June') }}</div>
-                    <div class="time">12:00 – 14:00</div>
-                  </div>
-                  <div class="address desk-address">
-                    <img src="../../../assets/img/location-point.svg" alt="">
-                    <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
-                  </div>
-                </div>
-              </div>
-              <div class="right-side">
-                <div class="date">16 {{ $t('events.months.June') }}</div>
-                <div class="time">12:00 – 14:00</div>
-              </div>
-            </div>
-            <div class="address mob-address">
-              <img src="../../../assets/img/location-point.svg" alt="">
-              <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
-            </div>
-            <div class="main-text">
-              Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd
-            </div>
-            <div class="labels">
-              <div class="label">{{ $t('events.football') }}</div>
-              <div class="label">{{ $t('events.men') }}</div>
-              <div class="label">{{ $t('events.without-category') }}</div>
-            </div>
-            <div class="bottom-block">
-              <div class="top-line">
-                <div class="name">В’ячеслав Залізняк</div>
-                <div class="price">{{ $t('events.for-free') }}</div>
-              </div>
-              <div class="bottom-line">
-                <div class="left-side">
-                  <div class="titles">
-                    <div class="players">{{ $t('events.players') }}:</div>
-                    <div class="visitors">{{ $t('events.fans') }}:</div>
-                  </div>
-                  <div class="date">
-                    <div class="players-date">10 / 22</div>
-                    <div class="visitors-date">17 / 30</div>
-                  </div>
-                </div>
-                <div class="right-side">
-                  <GreenBtn 
-                    :text="'Долучитися'" 
-                    :width="115"
-                    :height="32"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="event-card">
-            <div class="top-title">
-              <div class="left-side">
-                <div class="card-icon">
-                  <img src="../../../assets/img/hands-shake.png" alt=""></div>
-                <div class="text-block">
-                  <div class="title">{{ $t('events.friendly-match') }}</div>
-                  <div class="date-time-mob">
-                    <div class="date">16 {{ $t('events.months.June') }}</div>
-                    <div class="time">12:00 – 14:00</div>
-                  </div>
-                  <div class="address desk-address">
-                    <img src="../../../assets/img/location-point.svg" alt="">
-                    <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
-                  </div>
-                </div>
-              </div>
-              <div class="right-side">
-                <div class="date">16 {{ $t('events.months.June') }}</div>
-                <div class="time">12:00 – 14:00</div>
-              </div>
-            </div>
-            <div class="address mob-address">
-              <img src="../../../assets/img/location-point.svg" alt="">
-              <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
-            </div>
-            <div class="main-text">
-              Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd
-            </div>
-            <div class="labels">
-              <div class="label">{{ $t('events.football') }}</div>
-              <div class="label">{{ $t('events.men') }}</div>
-              <div class="label">{{ $t('events.without-category') }}</div>
-            </div>
-            <div class="bottom-block">
-              <div class="top-line">
-                <div class="name">В’ячеслав Залізняк</div>
-                <div class="price">{{ $t('events.for-free') }}</div>
-              </div>
-              <div class="bottom-line">
-                <div class="left-side">
-                  <div class="titles">
-                    <div class="players">{{ $t('events.players') }}:</div>
-                    <div class="visitors">{{ $t('events.fans') }}:</div>
-                  </div>
-                  <div class="date">
-                    <div class="players-date">10 / 22</div>
-                    <div class="visitors-date">17 / 30</div>
-                  </div>
-                </div>
-                <div class="right-side">
-                  <GreenBtn 
-                    :text="'Долучитися'" 
-                    :width="115"
-                    :height="32"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="event-card">
-            <div class="top-title">
-              <div class="left-side">
-                <div class="card-icon">
-                  <img src="../../../assets/img/hands-shake.png" alt=""></div>
-                <div class="text-block">
-                  <div class="title">{{ $t('events.friendly-match') }}</div>
-                  <div class="date-time-mob">
-                    <div class="date">16 {{ $t('events.months.June') }}</div>
-                    <div class="time">12:00 – 14:00</div>
-                  </div>
-                  <div class="address desk-address">
-                    <img src="../../../assets/img/location-point.svg" alt="">
-                    <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
-                  </div>
-                </div>
-              </div>
-              <div class="right-side">
-                <div class="date">16 {{ $t('events.months.June') }}</div>
-                <div class="time">12:00 – 14:00</div>
-              </div>
-            </div>
-            <div class="address mob-address">
-              <img src="../../../assets/img/location-point.svg" alt="">
-              <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
-            </div>
-            <div class="main-text">
-              Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd
-            </div>
-            <div class="labels">
-              <div class="label">{{ $t('events.football') }}</div>
-              <div class="label">{{ $t('events.men') }}</div>
-              <div class="label">{{ $t('events.without-category') }}</div>
-            </div>
-            <div class="bottom-block">
-              <div class="top-line">
-                <div class="name">В’ячеслав Залізняк</div>
-                <div class="price">{{ $t('events.for-free') }}</div>
-              </div>
-              <div class="bottom-line">
-                <div class="left-side">
-                  <div class="titles">
-                    <div class="players">{{ $t('events.players') }}:</div>
-                    <div class="visitors">{{ $t('events.fans') }}:</div>
-                  </div>
-                  <div class="date">
-                    <div class="players-date">10 / 22</div>
-                    <div class="visitors-date">17 / 30</div>
+                    <div class="players-date">{{card.play_dates}}</div>
+                    <div class="visitors-date">{{card.visitor_dates}}</div>
                   </div>
                 </div>
                 <div class="right-side">
@@ -620,6 +445,52 @@ export default {
   },
   data() {
     return {
+      eventCards: [
+        {
+          id: 0,
+          url: '/my-events/friendly-match',
+          date: 14,
+          time: '12:00 – 14:00',
+          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
+          'main_text': 'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
+          name: 'В’ячеслав Залізняк',
+          'play_dates': '10 / 22',
+          'visitor_dates': '17 / 30'
+        },
+        {
+          id: 1,
+          url: '/my-events/friendly-match',
+          date: 14,
+          time: '12:00 – 14:00',
+          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
+          'main_text': 'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
+          name: 'В’ячеслав Залізняк',
+          'play_dates': '10 / 22',
+          'visitor_dates': '17 / 30'
+        },       
+        {
+          id: 2,
+          url: '/my-events/friendly-match',
+          date: 14,
+          time: '12:00 – 14:00',
+          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
+          'main_text': 'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
+          name: 'В’ячеслав Залізняк',
+          'play_dates': '10 / 22',
+          'visitor_dates': '17 / 30'
+        },     
+        {
+          id: 3,
+          url: '/my-events/friendly-match',
+          date: 14,
+          time: '12:00 – 14:00',
+          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
+          'main_text': 'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
+          name: 'В’ячеслав Залізняк',
+          'play_dates': '10 / 22',
+          'visitor_dates': '17 / 30'
+        }
+      ],
       menuText: [
         {
           id: 0,
@@ -791,6 +662,9 @@ export default {
       this.contextMenuX = e.clientX
       this.contextMenuY = e.clientY
       this.isContextMenuActive = true
+    },
+    goToEventPage() {
+      this.$router.push('/my-events/friendly-match')
     }
   }
 }

@@ -2,6 +2,7 @@
   <div 
     class="white-btn"
     :style="styles"
+    @click="$emit('click-function')"
   >
     <img v-if="icon" :src="icon" alt=""></img>
     {{ text }}
@@ -59,7 +60,6 @@ export default {
   justify-content: center;
   align-items: center;
   border-radius: 6px;
-  margin-right: 12px;
   font-family: 'Inter';
   font-style: normal;
   font-weight: 500;
