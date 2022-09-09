@@ -486,6 +486,7 @@ import Dropdown from '../../../components/Dropdown.vue'
 import Spiner from '../../../components/GlobalSpiner.vue'
 import InputComponent from '../../../components/InputComponent.vue'
 import ModalWindow from '../../../components/ModalWindow.vue'
+import CONSTANTS from '../../../consts'
 
 export default {
   name: 'UserCabinet',
@@ -502,12 +503,6 @@ export default {
   data() {
     return {
       rateStatus: false,
-      starStyle: {
-        fullStarColor: '#148783',
-        emptyStarColor: '#bbb',
-        starWidth: 15,
-        starHeight: 15
-      },
       rateBlbock: [
         {
           id: 0,
@@ -589,6 +584,9 @@ export default {
       return this.isEditProfileMode ? 
       require('../../../assets/img/tick.svg') : 
       require('../../../assets/img/edit.svg')
+    },
+    starStyle() {
+      return CONSTANTS.star_style
     }
   },
   mounted() {
