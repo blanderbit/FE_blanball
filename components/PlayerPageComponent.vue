@@ -149,6 +149,7 @@
 
 <script>
 import StarRating from 'vue-dynamic-star-rating'
+import CONSTANTS from '../consts'
 
 export default {
   name: 'PlayerPage',
@@ -157,12 +158,6 @@ export default {
   },
   data() {
     return {
-      starStyle: {
-        fullStarColor: '#F57125',
-        emptyStarColor: '#bbb',
-        starWidth: 15,
-        starHeight: 15
-      },
       users: new Array(6).fill('t').map((item, idx) => {
         return {
           id: idx,
@@ -194,6 +189,11 @@ export default {
           ]
         }
       })
+    }
+  },
+  computed: {
+    starStyle() {
+      return CONSTANTS.star_style
     }
   }
 }

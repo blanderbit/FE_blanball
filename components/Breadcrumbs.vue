@@ -23,7 +23,13 @@ const pathPages = {
   'my-events': 'Мої події',
   'friendly-match': 'Дружній матч',
   'players': 'Гравці',
-  'player': 'Стефанія Калиновська'
+  'player': 'Стефанія Калиновська',
+  'users': 'Рейтинг',
+  'general': 'Загальний',
+  'players': 'Гравці',
+  'trainers': 'Тренери',
+  'referee': 'Рефері',
+  'teams': 'Команди'
 }
 
 export default {
