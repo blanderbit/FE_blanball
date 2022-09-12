@@ -60,7 +60,7 @@
               :title-width="0"
               :has-icon="true"
               :icon="[
-                require('../../../assets/img/calendar.svg')
+                '../../../assets/img/calendar.svg'
               ]"
               :v-model="eventData.date"
               @new-value="setFormValue('date', $event)"
@@ -74,7 +74,7 @@
               :title-width="0"
               :has-icon="true"
               :icon="[
-                require('../../../assets/img/watch.svg')
+                '../../../assets/img/watch.svg'
               ]"
               :v-model="eventData.date"
               @new-value="setFormValue('time', $event)"
@@ -87,7 +87,7 @@
             :title-width="0"
             :has-icon="true"
             :icon="[
-              require('../../../assets/img/location-point.svg')
+              '../../../assets/img/location-point.svg'
             ]"
             @new-value="setFormValue('place', $event)"
           />
@@ -193,7 +193,7 @@
             :v-model="eventData.date"
             :has-icon="true"
             :icon="[
-              require('../../../assets/img/sort-arrows-horizontal.svg')
+              '../../../assets/img/sort-arrows-horizontal.svg'
             ]"
           />
         </div>
@@ -206,9 +206,9 @@
             :title-width="30"
             :v-model="eventData.date"
             :has-icon="true"
-            :icon-left="require('../../../assets/img/add-user.svg')"
+            :icon-left="'../../../assets/img/add-user.svg'"
             :icon="[
-              require('../../../assets/img/search.svg')
+              '../../../assets/img/search.svg'
             ]"
           />
         </div>
@@ -310,7 +310,7 @@
             :v-model="eventData.date"
             :has-icon="true"
             :icon="[
-              require('../../../assets/img/aim.svg')
+              '../../../assets/img/aim.svg'
             ]"
           />
         </div>
@@ -386,7 +386,7 @@
         <GreenBtn
           :text="$t('buttons.next')"
           :width="160"
-          :icon-right="require('../../../assets/img/arrow-right.svg')"
+          :icon-right="'../../../assets/img/arrow-right.svg'"
           @click-function="changeStep('+')"
         />
       </div>
@@ -398,7 +398,7 @@
           :width="103"
           :background-color="'#575775'"
           :height="28"
-          :icon="require('../../../assets/img/save-icon.svg')"
+          :icon="'../../../assets/img/save-icon.svg'"
           :font-styles="{'font-size': '13px'}"
         />
         <WhiteBtn
@@ -410,7 +410,7 @@
             'font-weight': 400
           }"
           :main-color="'#575775'"
-          :icon="require('../../../assets/img/download-cloud.svg')"
+          :icon="'../../../assets/img/download-cloud.svg'"
         />
         <div class="close-btn">
           <img src="../../../assets/img/cross.svg" alt="">
@@ -583,12 +583,12 @@
             :height="40"
             :main-color="'#262541'"
             :font-styles="{ 'font-weight': 400 }"
-            :icon="require('../../../assets/img/download-cloud.svg')"
+            :icon="'../../../assets/img/download-cloud.svg'"
           />
         </div>
         <GreenBtn
           :text="$t('buttons.save-as-template')"
-          :icon="require('../../../assets/img/save-icon.svg')"
+          :icon="'../../../assets/img/save-icon.svg'"
           :width="208"
           :height="40"
           :background-color="'#575775'"
@@ -605,6 +605,11 @@ import InputComponent from '../../../components/InputComponent.vue'
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
 import Switcher from '../../../components/Switcher.vue'
+
+import User1 from '../../../assets/img/user1.png'
+import User2 from '../../../assets/img/user2.png'
+import User3 from '../../../assets/img/user3.png'
+
 
 export default {
   name: 'CreateEventPage',
@@ -662,21 +667,21 @@ export default {
           users: [
             {
               id: 0,
-              img: require('../../../assets/img/user1.png'),
+              img: User1,
               name: 'Oganez Gurgenovich',
               category: 'Гравці',
               isChosen: false
             },
             {
               id: 1,
-              img: require('../../../assets/img/user2.png'),
+              img: User2,
               name: 'Rubik Joraevich',
               category: 'Гравці',
               isChosen: false
             },
             {
               id: 2,
-              img: require('../../../assets/img/user3.png'),
+              img: User3,
               name: 'Ogli Timurlanovich',
               category: 'Гравці',
               isChosen: false
@@ -689,21 +694,21 @@ export default {
           users: [
             {
               id: 11,
-              img: require('../../../assets/img/user2.png'),
+              img: User2,
               name: 'Rubik Joraevich',
               category: 'Події',
               isChosen: false
             },
             {
               id: 21,
-              img: require('../../../assets/img/user3.png'),
+              img: User3,
               name: 'Ogli Timurlanovich',
               category: 'Події',
               isChosen: false
             },
             {
               id: 101,
-              img: require('../../../assets/img/user1.png'),
+              img: User1,
               name: 'Oganez Gurgenovich',
               category: 'Події',
               isChosen: false
@@ -716,19 +721,19 @@ export default {
           users: [
             // {
             //   id: 202,
-            //   img: require('../../../assets/img/user1.png'),
+            //   img: User1,
             //   name: 'Oganez Gurgenovich'
             // },
             {
               id: 12,
-              img: require('../../../assets/img/user2.png'),
+              img: User2,
               name: 'Rubik Joraevich',
               category: 'Організатори',
               isChosen: false
             },
             {
               id: 22,
-              img: require('../../../assets/img/user3.png'),
+              img: User3,
               name: 'Ogli Timurlanovich',
               category: 'Організатори',
               isChosen: false
@@ -741,19 +746,19 @@ export default {
           users: [
             {
               id: 3023,
-              img: require('../../../assets/img/user1.png'),
+              img: User1,
               name: 'Oganez Gurgenovich',
               category: 'Тренери',
               isChosen: false
             },
             // {
             //   id: 123,
-            //   img: require('../../../assets/img/user2.png'),
+            //   img: User2,
             //   name: 'Rubik Joraevich'
             // },
             {
               id: 223,
-              img: require('../../../assets/img/user3.png'),
+              img: User3,
               name: 'Ogli Timurlanovich',
               category: 'Тренери',
               isChosen: false
@@ -766,21 +771,21 @@ export default {
           users: [
             {
               id: 4024,
-              img: require('../../../assets/img/user1.png'),
+              img: User1,
               name: 'Oganez Gurgenovich',
               category: 'Рефері',
               isChosen: false
             },
             {
               id: 124,
-              img: require('../../../assets/img/user2.png'),
+              img: User2,
               name: 'Rubik Joraevich',
               category: 'Рефері',
               isChosen: false
             },
             // {
             //   id: 224,
-            //   img: require('../../../assets/img/user3.png'),
+            //   img: User3,
             //   name: 'Ogli Timurlanovich'
             // }
           ]
@@ -791,21 +796,21 @@ export default {
           users: [
             {
               id: 125,
-              img: require('../../../assets/img/user2.png'),
+              img: User2,
               name: 'Rubik Joraevich',
               category: 'Команди',
               isChosen: false
             },
             {
               id: 225,
-              img: require('../../../assets/img/user3.png'),
+              img: User3,
               name: 'Ogli Timurlanovich',
               category: 'Команди',
               isChosen: false
             },
             {
               id: 5025,
-              img: require('../../../assets/img/user1.png'),
+              img: User1,
               name: 'Oganez Gurgenovich',
               category: 'Команди',
               isChosen: false

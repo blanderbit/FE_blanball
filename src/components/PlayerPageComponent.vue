@@ -1,7 +1,7 @@
 <template>
   <div class="player-page">
     <div class="back-image">
-      <img src="../assets/img/user-page-back.png" alt="">
+      <img :src="backPic" alt="">
     </div>
     <div class="main-block">
       <div class="user-card">
@@ -14,7 +14,12 @@
           <div class="right-side">
             <div class="line">
               <div class="name">Калиновська Стефанія</div>
-              <div class="label">Гравець</div>
+              <div
+                :style="labelColor"
+                class="label"
+              >
+                Гравець
+              </div>
             </div>
             <div class="line">
               <div class="rating">
@@ -47,7 +52,10 @@
             Donec vitae mi vulputate, suscipit urna in, malesuada nisl. Pellentesque laoreet pretium nisl, et pulvinar massa eleifend sed
           </div>
         </div>
-        <div class="sport-results">
+        <div
+          v-if="!isResultVisible"
+          class="sport-results"
+        >
           <div class="title">Спортивні показники</div>
           <div class="line">
             <div class="block">
@@ -148,56 +156,78 @@
 </template>
 
 <script>
-// import StarRating from 'vue-dynamic-star-rating'
+  // import StarRating from 'vue-dynamic-star-rating'
+  import CONSTANTS from '../consts'
 
-export default {
-  name: 'PlayerPage',
-  components: {
-    // StarRating
-  },
-  data() {
-    return {
-      starStyle: {
-        fullStarColor: '#F57125',
-        emptyStarColor: '#bbb',
-        starWidth: 15,
-        starHeight: 15
+  import publicPageBack from '../assets/img/public-page-back.png'
+  import userPageBack from '../assets/img/user-page-back.png'
+
+  
+  const PAGE_MODE = 'public'
+  
+  export default {
+    name: 'PlayerPage',
+    props: {
+      pageMode: {
+        type: String,
+        default: ''
+      }
+    },
+    components: {
+    },
+    data() {
+      return {
+        users: new Array(6).fill('t').map((item, idx) => {
+          return {
+            id: idx,
+            name: 'Гончарук Павло',
+            date: '3 серпня',
+            text: 'Круто зіграла, відмінні передачі і ще якісь там слова похвали в кілька рядків'
+          }
+        }),
+        events: new Array(2).fill('t').map((item, idx) => {
+          return {
+            id: idx,
+            title: 'Дружній матч',
+            label: 'Гравець',
+            time: '12:00 – 14:00',
+            date: '3 серпня',
+            labels: [
+              {
+                id: 0,
+                text: 'Футбол'
+              },
+              {
+                id: 1,
+                text: 'Чоловіки'
+              },
+              {
+                id: 2,
+                text: 'Розряд'
+              }
+            ]
+          }
+        })
+      }
+    },
+    computed: {
+      starStyle() {
+        return CONSTANTS.star_style
       },
-      users: new Array(6).fill('t').map((item, idx) => {
-        return {
-          id: idx,
-          name: 'Гончарук Павло',
-          date: '3 серпня',
-          text: 'Круто зіграла, відмінні передачі і ще якісь там слова похвали в кілька рядків'
-        }
-      }),
-      events: new Array(2).fill('t').map((item, idx) => {
-        return {
-          id: idx,
-          title: 'Дружній матч',
-          label: 'Гравець',
-          time: '12:00 – 14:00',
-          date: '3 серпня',
-          labels: [
-            {
-              id: 0,
-              text: 'Футбол'
-            },
-            {
-              id: 1,
-              text: 'Чоловіки'
-            },
-            {
-              id: 2,
-              text: 'Розряд'
-            }
-          ]
-        }
-      })
+      backPic() {
+        return this.pageMode === PAGE_MODE ? publicPageBack : userPageBack
+      },
+      labelColor() {
+        return this.pageMode === PAGE_MODE ? 
+                { background: '#148783' } :
+                { background: '#F57125' }
+      },
+      isResultVisible() {
+        return this.pageMode === PAGE_MODE
+      }
     }
   }
-}
-</script>
+  </script>
 
 <style lang="scss" scoped>
 .player-page {

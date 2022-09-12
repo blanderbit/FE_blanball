@@ -99,6 +99,9 @@
           </div>
         </template>
       </ModalWindow>
+    </Transition>
+
+    <Transition>
       <ModalWindow 
         v-if="isModalActive.email" 
         @close-modal="toggleModal('email')"
@@ -144,6 +147,9 @@
           </div>
         </template>
       </ModalWindow>
+    </Transition>
+
+    <Transition>
       <ModalWindow 
         v-if="isModalActive.delete_acc" 
         :title-color="'#C10B0B'"
@@ -178,6 +184,9 @@
           </div>
         </template>
       </ModalWindow>
+    </Transition>
+
+    <Transition>
       <ModalWindow 
         v-if="isModalActive.change_password" 
         @close-modal="toggleModal('change_password')"
@@ -197,8 +206,8 @@
               :outside-title="true"
               :has-icon="true"
               :icon="[
-                require('../../../assets/img/eye-crossed.svg'),
-                require('../../../assets/img/eye-opened.svg')
+                '../../../assets/img/eye-crossed.svg',
+                '../../../assets/img/eye-opened.svg'
               ]"
             />
           </div>
@@ -210,8 +219,8 @@
               :outside-title="true"
               :has-icon="true"
               :icon="[
-                require('../../../assets/img/eye-crossed.svg'),
-                require('../../../assets/img/eye-opened.svg')
+                '../../../assets/img/eye-crossed.svg',
+                '../../../assets/img/eye-opened.svg'
               ]"
             />
           </div>
@@ -248,6 +257,19 @@
         </template>
       </ModalWindow>
     </Transition>
+
+    <Transition>
+      <ModalUserWindow
+        v-if="isModalActive.public_profile" 
+        @close-modal="toggleModal('public_profile')"
+      >
+        <template #user-content>
+          <PlayerPageComponent
+            :page-mode="'public'"
+          />
+        </template>
+      </ModalUserWindow>
+    </Transition>
     <!-- Modals delete -->
     <div class="title-block">
       <div class="titles">
@@ -257,27 +279,29 @@
         <div class="subtitle">{{ $t('profile.change-personal-data') }}</div>
       </div>
       <div class="buttons">
-        <WhiteBtn 
-          :text="$t('buttons.cancel')"
-          :width="98"
-        />
+        <div class="btn-wrapper">
+          <WhiteBtn 
+            :text="$t('buttons.cancel')"
+            :width="98"
+          />
+        </div>
         <GreenBtn 
           :text="$t('buttons.save')"
           :width="89"
+          @click-function="openPublicProfile"
         />
       </div>
     </div>
     <div class="tab-block">
-      <nuxt-link
+      <div
         v-for="tab in tabs"
         :key="tab.id"
         :class="['tab-element', {active : tab.isActive}]"
-        :to="tab.url"
-        @click="changeTab(tab.id)"
+        @click="changeTab(tab.id, tab.url)"
       >
         <img :src="tab.img" :alt="tab.name">
         {{ $t('profile.' + tab.name) }}
-      </nuxt-link>
+      </div>
     </div>
     <div class="my-profile-tab">
       <div class="block block-1">
@@ -328,11 +352,7 @@
                     {{ item.name }}
                   </div>
                   <div class="rate">
-                    <star-rating 
-                      :star-style="starStyle"
-                      :rating="3"
-                      :isIndicatorActive="false"
-                    ></star-rating>
+                    <!-- rating stars -->
                   </div>
                 </div>
                 <div class="bottom-line">
@@ -431,7 +451,7 @@
               :inside-title="true"
               :has-icon="true"
               :icon="[
-                require('../../../assets/img/sort-arrows-horizontal.svg')
+                '../../../assets/img/sort-arrows-horizontal.svg'
               ]"
               @icon-click="changeEmailIconClick"
             />
@@ -478,7 +498,6 @@
 </template>
 
 <script>
-import StarRating from 'vue-dynamic-star-rating'
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
 import Switcher from '../../../components/Switcher.vue'
@@ -486,6 +505,15 @@ import Dropdown from '../../../components/Dropdown.vue'
 import Spiner from '../../../workers/loading-worker/Loading.vue'
 import InputComponent from '../../../components/InputComponent.vue'
 import ModalWindow from '../../../components/ModalWindow.vue'
+import ModalUserWindow from '../../../components/ModalUserWindow.vue'
+import PlayerPageComponent from '../../../components/PlayerPageComponent.vue'
+
+import user from '../../../assets/img/user.svg'
+import database from '../../../assets/img/database.svg'
+import notification from '../../../assets/img/notification-small.svg'
+import tick from '../../../assets/img/tick.svg'
+import edit from '../../../assets/img/edit.svg'
+
 
 export default {
   name: 'UserCabinet',
@@ -497,7 +525,8 @@ export default {
     Spiner,
     InputComponent,
     ModalWindow,
-    StarRating
+    ModalUserWindow,
+    PlayerPageComponent
   },
   data() {
     return {
@@ -543,6 +572,7 @@ export default {
         email: false,
         delete_acc: false,
         change_password: false,
+        public_profile: false
       },
       modal: {
         first: true,
@@ -563,22 +593,22 @@ export default {
         {
           id: 0,
           name: 'my-profile',
-          img: require('../../../assets/img/user.svg'),
-          url: '/application/application/my-application',
+          img: user,
+          url: '/application/profile/my-application',
           isActive: true
         },
         {
           id: 1,
           name: 'rate-plan',
-          img: require('../../../assets/img/database.svg'),
-          url: '/application/application/rate-plan',
+          img: database,
+          url: '/application/profile/rate-plan',
           isActive: false
         },
         {
           id: 2,
           name: 'notifications',
-          img: require('../../../assets/img/notification-small.svg'),
-          url: '/application/application/notifications',
+          img: notification,
+          url: '/application/profile/notifications',
           isActive: false
         }
       ]
@@ -586,9 +616,7 @@ export default {
   },
   computed: {
     editProfileIcon() {
-      return this.isEditProfileMode ? 
-      require('../../../assets/img/tick.svg') : 
-      require('../../../assets/img/edit.svg')
+      return this.isEditProfileMode ? tick : edit
     }
   },
   mounted() {
@@ -598,13 +626,14 @@ export default {
     window.removeEventListener('paste', this.pasteHandler)
   },
   methods: {
-    changeTab(id) {
+    changeTab(id, url) {
       this.tabs = this.tabs.map(item => ({ ...item, isActive: false }))
                             .map(item => {
                               return item.id === id ?
                                     { ...item, isActive: true } :
                                     item
                             })
+      this.$router.push(url)
     },
     toggleModal(val) {
       switch (val) {
@@ -621,6 +650,9 @@ export default {
         break;
         case 'delete_acc':
           this.isModalActive.delete_acc = !this.isModalActive.delete_acc
+        break;
+        case 'public_profile':
+          this.isModalActive.public_profile = !this.isModalActive.public_profile
         break;
         case 'change_password':
           this.isModalActive.change_password = !this.isModalActive.change_password
@@ -661,6 +693,9 @@ export default {
     },
     changeEmailIconClick() {
       this.toggleModal('email')
+    },
+    openPublicProfile() {
+      this.toggleModal('public_profile')
     },
     pasteHandler() {
       navigator.clipboard.readText()
@@ -719,6 +754,9 @@ export default {
     @media (max-width: 768px) {
       display: none;
     }
+    .btn-wrapper {
+      margin-right: 12px;
+    }
   }
 }
 .tab-block {
@@ -731,7 +769,6 @@ export default {
     align-items: center;
     margin-right: 24px;
     padding-bottom: 12px;
-    text-decoration: none;
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;

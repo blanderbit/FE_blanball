@@ -1,5 +1,5 @@
 <template>
-  <div class="events-page">
+  <div class="event-info-page">
     <ContextMenu 
       v-if="isContextMenuActive" 
       :client-x="contextMenuX"
@@ -561,7 +561,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .events-page {
+  .event-info-page {
     display: grid;
     grid-template-columns: 1fr 256px;
     grid-gap: 28px;

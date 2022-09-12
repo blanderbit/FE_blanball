@@ -53,10 +53,10 @@
                 <div class="menu-block">
                     <ul>
                         <li
-                                v-for="item in menuItems"
-                                :key="item.id"
-                                :class="['menu-item', { active: item.isActive }]"
-                                @click="menuItemClick(item.id)"
+                            v-for="item in menuItems"
+                            :key="item.id"
+                            :class="['menu-item', { active: item.isActive }]"
+                            @click="menuItemClick(item.id)"
                         >
                             <router-link :to="item.url">
                                 <img :src="item.img" alt="">
@@ -67,9 +67,11 @@
             </div>
             <div class="bottom-block">
                 <div class="picture-bottom">
-                    <nuxt-link to="/profile/user-cabinet/my-profile">
-                        <img src="../assets/img/Rectangle_148.png" alt="">
-                    </nuxt-link>
+                    <img
+                        src="../assets/img/Rectangle_148.png" 
+                        alt=""
+                        @click="goToProfile"
+                    >
                 </div>
             </div>
         </div>
@@ -107,7 +109,7 @@
                     {
                         id: 4,
                         img: members,
-                        url: '',
+                        url: '/application/users/general',
                         isActive: false
                     },
                 ]
@@ -148,6 +150,9 @@
                             return item
                         }
                     })
+            },
+            goToProfile() {
+                this.$router.push('/application/profile/my-profile')
             }
         }
     }

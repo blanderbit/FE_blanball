@@ -43,6 +43,26 @@ export const ROUTES = {
             absolute: '/application/company',
             name: 'application-company'
         },
+        PROFILE: {
+            relative: 'profile',
+            absolute: '/application/profile',
+            name: 'application-profile',
+            MY_PROFILE: {
+                relative: 'profile/my-profile',
+                absolute: '/application/profile/my-profile',
+                name: 'application-events-my-profile'
+            },
+            RATE_PLAN: {
+                relative: 'profile/rate-plan',
+                absolute: '/application/profile/rate-plan',
+                name: 'application-events-rate-plan'
+            },
+            NOTIFICATIONS: {
+                relative: 'profile/notifications',
+                absolute: '/application/profile/notifications',
+                name: 'application-events-notifications'
+            },
+        },
         EVENTS: {
             relative: 'events',
             absolute: '/application/events',
@@ -72,6 +92,31 @@ export const ROUTES = {
             relative: 'users',
             absolute: '/application/users',
             name: 'application-users',
+            GENERAL: {
+                relative: 'users/general',
+                absolute: '/application/users/general',
+                name: 'application-users-general'
+            },
+            PLAYERS: {
+                relative: 'users/players',
+                absolute: '/application/users/players',
+                name: 'application-users-players'
+            },
+            REFEREE: {
+                relative: 'users/referee',
+                absolute: '/application/users/referee',
+                name: 'application-users-referee'
+            },
+            TEAMS: {
+                relative: 'users/teams',
+                absolute: '/application/users/teams',
+                name: 'application-users-teams'
+            },
+            TRAINERS: {
+                relative: 'users/trainers',
+                absolute: '/application/users/trainers',
+                name: 'application-users-trainers'
+            },
             GET_ONE: {
                 relative: 'users/:id',
                 absolute: (userId) => `/application/users/${userId}`,
@@ -158,6 +203,48 @@ const router = createRouter({
                     }
                 },
                 {
+                    path: ROUTES.APPLICATION.PROFILE.MY_PROFILE.relative,
+                    name: ROUTES.APPLICATION.PROFILE.MY_PROFILE.name,
+                    beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
+                        // usersData: () => $api.UsersRequest.getAll(to.query),
+                    })),
+                    component: () => import('../views/application/profile/my-profile.vue'),
+                    meta: {
+                        breadcrumbs: [
+                            { name:'Main', path: '/' },
+                            { name: 'Profile'}
+                        ]
+                    }
+                },
+                {
+                    path: ROUTES.APPLICATION.PROFILE.RATE_PLAN.relative,
+                    name: ROUTES.APPLICATION.PROFILE.RATE_PLAN.name,
+                    beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
+                        // usersData: () => $api.UsersRequest.getAll(to.query),
+                    })),
+                    component: () => import('../views/application/profile/rate-plan.vue'),
+                    meta: {
+                        breadcrumbs: [
+                            { name:'Main', path: '/' },
+                            { name: 'Profile'}
+                        ]
+                    }
+                },
+                {
+                    path: ROUTES.APPLICATION.PROFILE.NOTIFICATIONS.relative,
+                    name: ROUTES.APPLICATION.PROFILE.NOTIFICATIONS.name,
+                    beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
+                        // usersData: () => $api.UsersRequest.getAll(to.query),
+                    })),
+                    component: () => import('../views/application/profile/notifications.vue'),
+                    meta: {
+                        breadcrumbs: [
+                            { name:'Main', path: '/' },
+                            { name: 'Profile'}
+                        ]
+                    }
+                },
+                {
                     path: ROUTES.APPLICATION.MY_EVENTS.relative,
                     name: ROUTES.APPLICATION.MY_EVENTS.name,
                     beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
@@ -232,12 +319,68 @@ const router = createRouter({
                     }
                 },
                 {
-                    path: ROUTES.APPLICATION.USERS.relative,
-                    name: ROUTES.APPLICATION.USERS.name,
+                    path: ROUTES.APPLICATION.USERS.GENERAL.relative,
+                    name: ROUTES.APPLICATION.USERS.GENERAL.name,
                     beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
                         // usersData: () => $api.UsersRequest.getAll(to.query),
                     })),
-                    component: () => import('../views/application/users/users.vue'),
+                    component: () => import('../views/application/users/general.vue'),
+                    meta: {
+                        breadcrumbs: [
+                            { name:'Main', path: '/' },
+                            { name: 'Users' },
+                        ]
+                    }
+                },
+                {
+                    path: ROUTES.APPLICATION.USERS.PLAYERS.relative,
+                    name: ROUTES.APPLICATION.USERS.PLAYERS.name,
+                    beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
+                        // usersData: () => $api.UsersRequest.getAll(to.query),
+                    })),
+                    component: () => import('../views/application/users/players.vue'),
+                    meta: {
+                        breadcrumbs: [
+                            { name:'Main', path: '/' },
+                            { name: 'Users' },
+                        ]
+                    }
+                },
+                {
+                    path: ROUTES.APPLICATION.USERS.REFEREE.relative,
+                    name: ROUTES.APPLICATION.USERS.REFEREE.name,
+                    beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
+                        // usersData: () => $api.UsersRequest.getAll(to.query),
+                    })),
+                    component: () => import('../views/application/users/referee.vue'),
+                    meta: {
+                        breadcrumbs: [
+                            { name:'Main', path: '/' },
+                            { name: 'Users' },
+                        ]
+                    }
+                },
+                {
+                    path: ROUTES.APPLICATION.USERS.TEAMS.relative,
+                    name: ROUTES.APPLICATION.USERS.TEAMS.name,
+                    beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
+                        // usersData: () => $api.UsersRequest.getAll(to.query),
+                    })),
+                    component: () => import('../views/application/users/teams.vue'),
+                    meta: {
+                        breadcrumbs: [
+                            { name:'Main', path: '/' },
+                            { name: 'Users' },
+                        ]
+                    }
+                },
+                {
+                    path: ROUTES.APPLICATION.USERS.TRAINERS.relative,
+                    name: ROUTES.APPLICATION.USERS.TRAINERS.name,
+                    beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
+                        // usersData: () => $api.UsersRequest.getAll(to.query),
+                    })),
+                    component: () => import('../views/application/users/trainers.vue'),
                     meta: {
                         breadcrumbs: [
                             { name:'Main', path: '/' },

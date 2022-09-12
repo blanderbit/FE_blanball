@@ -6,10 +6,12 @@
         <div class="subtitle">{{ $t('profile.change-personal-data') }}</div>
       </div>
       <div class="buttons">
-        <WhiteBtn 
-          :text="$t('buttons.cancel')" 
-          :width="98" 
-        />
+        <div class="btn-wrapper">
+          <WhiteBtn 
+            :text="$t('buttons.cancel')" 
+            :width="98" 
+          />
+        </div>
         <GreenBtn 
           :text="$t('buttons.save')" 
           :width="89"
@@ -17,16 +19,15 @@
       </div>
     </div>
     <div class="tab-block">
-      <nuxt-link
+      <div
         v-for="tab in tabs"
         :key="tab.id"
         :class="['tab-element', {active : tab.isActive}]"
-        @click="changeTab(tab.id)"
-        :to="tab.url"
+        @click="changeTab(tab.id, tab.url)"
       >
         <img :src="tab.img" :alt="tab.name">
         {{ $t('profile.' + tab.name) }}
-      </nuxt-link>
+      </div>
     </div>
     <div class="notifications-tab">
       Notifications
@@ -37,6 +38,10 @@
 <script>
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
+
+import user from '../../../assets/img/user.svg'
+import database from '../../../assets/img/database.svg'
+import notification from '../../../assets/img/notification-small.svg'
 
 export default {
   name: 'user-cabinet',
@@ -50,35 +55,36 @@ export default {
         {
           id: 0,
           name: 'my-profile',
-          img: require('../../../assets/img/user.svg'),
-          url: '/application/application/my-application',
+          img: user,
+          url: '/application/profile/my-profile',
           isActive: false
         },
         {
           id: 1,
           name: 'rate-plan',
-          img: require('../../../assets/img/database.svg'),
-          url: '/application/application/rate-plan',
+          img: database,
+          url: '/application/profile/rate-plan',
           isActive: false
         },
         {
           id: 2,
           name: 'notifications',
-          img: require('../../../assets/img/notification-small.svg'),
-          url: '/application/application/notifications',
+          img: notification,
+          url: '/application/profile/notifications',
           isActive: true
         },
       ]
     }
   },
   methods: {
-    changeTab(id) {
+    changeTab(id, url) {
       this.tabs = this.tabs.map(item => ({ ...item, isActive: false }))
                             .map(item => {
                               return item.id === id ?
                                     { ...item, isActive: true } :
                                     item
                             })
+      this.$router.push(url)
     }
   }
 }
@@ -107,6 +113,9 @@ export default {
     display: flex;
     @media (max-width: 768px) {
       display: none;
+    }
+    .btn-wrapper {
+      margin-right: 12px;
     }
   }
 }

@@ -1,133 +1,104 @@
 <template>
   <div class="events-page">
-    <ContextMenu 
-      v-if="isContextMenuActive" 
-      :client-x="contextMenuX"
-      :client-y="contextMenuY"
-      :menu-text="menuText"
-      @close-modal="isContextMenuActive = false"
-    />
     <div class="main-body">
       <div class="header-block">
         <div class="left-part">
-          <div class="title">{{ $t('events.title') }}</div>
-          <div class="subtitle">{{ $t('events.subtitle') }}</div>
-          <div class="event-switcher">
-            <div 
-              class="general-events"
-              :style="{
-                border: `1px solid ${eventsSwitcher ? '#DFDEED': '#148581'}`
-              }"
-              @click="switchEvents(false)"
-            >
-              {{ $t('events.general-events') }}
-            </div>
-            <div 
-              class="my-events"
-              :style="{
-                border: `1px solid ${eventsSwitcher ? '#148581': '#DFDEED'}`
-              }"
-              @click="switchEvents(true)"
-            >
-              {{ $t('events.my-events') }}
-            </div>
-          </div>
+          <div class="title">{{ $t('users.title') }}</div>
         </div>
         <div class="right-part">
-          <GreenBtn 
-            :text="$t('buttons.create-event')"
-            :width="168"
-            :icon="'../../../assets/img/plus.svg'"
-            :height="40"
-            @click-function="goToCreateEvent"
-          />
+          <div class="search-input-desktop">
+            <InputComponent 
+              :title-width="0"
+              :placeholder="'Пошук користувачів'"
+              :has-icon="true"
+              :icon="[
+                require('../../assets/img/search.svg')
+              ]"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="tab-block-wrapper">
+        <div class="tab-block">
+          <nuxt-link
+            v-for="tab in tabs"
+            :key="tab.id"
+            :class="['tab-element', {active : tab.isActive}]"
+            :to="tab.url"
+            @click="changeTab(tab.id)"
+          >
+            <img :src="tab.img" :alt="tab.name">
+            {{ $t('users.' + tab.name) }}
+          </nuxt-link>
         </div>
       </div>
       <div class="main-search-block">
         <div class="search-block">
           <div class="first-line">
             <div class="left-block">
-              <div class="old-new-filter">
-                <img src="../../../assets/img/sort-arrows.svg" alt="">
-                Cпочатку нові
+              <div class="radio-btn-wrapper">
+                <div class="radio">
+                  <input 
+                    id="radio-1" 
+                    v-model="eventData.gender"
+                    name="radio" 
+                    type="radio"
+                    value="Чоловіки"
+                    checked
+                  >
+                  <label for="radio-1" class="radio-label">
+                    <img src="../../assets/img/male-icon.svg" alt="">
+                      Чоловіки
+                  </label>
+                </div>
+                <div class="radio">
+                  <input 
+                    id="radio-2" 
+                    v-model="eventData.gender"
+                    name="radio" 
+                    type="radio"
+                    value="Жінки"
+                  >
+                  <label for="radio-2" class="radio-label">
+                    <img src="../../assets/img/female-icon.svg" alt="">
+                      Жінки
+                  </label>
+                </div>
+                <div class="radio">
+                  <input 
+                    id="radio-3" 
+                    v-model="eventData.gender"
+                    name="radio" 
+                    type="radio"
+                    value="Всі"
+                  >
+                  <label for="radio-3" class="radio-label">
+                    <img src="../../assets/img/unisex.svg" alt="">
+                    Всі
+                  </label>
+                </div>
               </div>
-              <div class="dropdown-wrapper">
-                <Dropdown 
-                  :options="dataDropdown"
-                  :width="140"
-                  :height="32"
-                />
-              </div>
-              <Dropdown 
-                :options="dataDropdown"
-                :width="160"
-                :height="32"
-              >
-                <template #drop-icon >
-                  <img src="../../../assets/img/cup.png" alt="">
-                </template>
-              </Dropdown>
+            </div>
+            <div class="middle-block">
+              <img src="../../assets/img/address-icon.svg" alt="">
+              <div class="address">35 West Fork Street, Missoula</div>
             </div>
             <div class="right-block">
-              <div class="search-input-desktop">
-                <InputComponent 
-                  :title-width="0"
-                  :placeholder="'Пошук серед подій'"
-                  :has-icon="true"
-                  :icon="[
-                    '../../../assets/img/search.svg'
-                  ]"
-                />
+              <div class="old-new-filter">
+                <img src="../../assets/img/sort-arrows.svg" alt="">
+                <div class="text-block">
+                  Сортування
+                  <span>Cпочатку нові</span>
+                </div>
               </div>
               <div class="search-input-tablet">
-                <img src="../../../assets/img/search.svg" alt="">
+                <img src="../../assets/img/search.svg" alt="">
               </div>
               <div class="icon-container">
-                <img src="../../../assets/img/clear-filter.svg" alt="">
+                <img src="../../assets/img/clear-filter.svg" alt="">
               </div>
               <div class="icon-container">
-                <img class="set-filter" src="../../../assets/img/cross.svg" alt="">
-              </div>
-            </div>
-          </div>
-          <div class="second-line">
-            <div class="left-side">
-              <div class="dropdown-wrapper">
-                <Dropdown 
-                  :options="dataDropdown2"
-                  :width="132"
-                  :height="32"
-                >
-                  <template #drop-icon >
-                    <img src="../../../assets/img/male-icon.svg" alt="">
-                  </template>
-                </Dropdown>
-              </div>
-              <div class="calendar">
-                <img src="../../../assets/img/calendar.svg" alt="">
-                {{ $t('events.calendar') }}
-              </div>
-              <div class="dropdown-wrapper">
-                <Dropdown 
-                  :options="dataDropdown3"
-                  :width="180"
-                  :height="32"
-                >
-                  <template #drop-icon >
-                    <img src="../../../assets/img/location-point.svg" alt="">
-                  </template>
-                </Dropdown>
-              </div>
-            </div>
-            <div class="right-side">
-              <div class="free-pay-games">
-                <div :class="['grey-block', plan === 'free' ? 'right' : 'left']"></div>
-                <div class="all" @click="changePlanSearch('all')">
-                  {{ $t('events.all') }}
-                </div>
-                <div class="free" @click="changePlanSearch('free')">
-                  {{ $t('events.free') }}
-                </div>
+                <img class="set-filter" src="../../assets/img/set-filter.svg" alt="">
               </div>
             </div>
           </div>
@@ -136,7 +107,7 @@
           <div class="filters-block">
             <div class="sorting-block sort-item">
               <div class="icon">
-                <img src="../../../assets/img/sort-arrows.svg" alt="">
+                <img src="../../assets/img/sort-arrows.svg" alt="">
               </div>
               <div class="text">
                 <div class="title">{{ $t('events.sorting') }}</div>
@@ -145,7 +116,7 @@
             </div>
             <div class="filtering-block sort-item">
               <div class="icon">
-                <img src="../../../assets/img/set-filter.svg" alt="">
+                <img src="../../assets/img/set-filter.svg" alt="">
               </div>
               <div class="text">
                 <div class="title">{{ $t('events.filters') }}</div>
@@ -154,7 +125,7 @@
             </div>
             <div class="calendar-block sort-item">
               <div class="icon">
-                <img src="../../../assets/img/calendar.svg" alt="">
+                <img src="../../assets/img/calendar.svg" alt="">
               </div>
               <div class="text">
                 <div class="title">{{ $t('events.chose-date') }}</div>
@@ -162,161 +133,10 @@
               </div>
             </div>
           </div>
-          <div class="dates-block">
-            <div class="months">
-              <div class="wrapper">
-                <div class="arrow arrow-left">
-                  <img src="../../../assets/img/arrow-left.svg" alt="">
-                </div>
-                <div class="main-part">{{ $t('events.months.June') }} 2022</div>
-                <div class="arrow arrow-right">
-                  <img src="../../../assets/img/arrow-right.svg" alt="">
-                </div>
-              </div>
-            </div>
-            <div class="dates-wrapper">
-              <div class="dates">
-                <div
-                  v-for="week of calendar"
-                  :key="week.id"
-                  class="week"
-                >
-                  <div 
-                    v-for="item of week.week"
-                    :key="item.id"
-                    :class="['date-item', {active: item.isActive}]"
-                  >
-                    <div class="day">{{item.day}}</div>
-                    <div class="number">{{item.number}}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div 
-          v-if="!eventsSwitcher"
-          class="cards-block"
-        >
-          <div 
-            v-for="card of eventCards"
-            :key="card.id"
-            class="event-card"
-          >
-            <div class="top-title">
-              <div class="left-side">
-                <div class="card-icon">
-                  <img src="../../../assets/img/hands-shake.png" alt=""></div>
-                <div class="text-block">
-                  <div class="title">{{ $t('events.friendly-match') }}</div>
-                  <div class="date-time-mob">
-                    <div class="date">{{card.date}} {{ $t('events.months.June') }}</div>
-                    <div class="time">{{card.time}}</div>
-                  </div>
-                  <div class="address desk-address">
-                    <img src="../../../assets/img/location-point.svg" alt="">
-                    <p>{{card.address}}</p>
-                  </div>
-                </div>
-              </div>
-              <div class="right-side">
-                <div class="date">{{card.date}} {{ $t('events.months.June') }}</div>
-                <div class="time">{{card.time}}</div>
-              </div>
-            </div>
-            <div class="address mob-address">
-              <img src="../../../assets/img/location-point.svg" alt="">
-              <p>{{card.address}}</p>
-            </div>
-            <div class="main-text">
-              {{card.main_text}}
-            </div>
-            <div class="labels">
-              <div class="label">{{ $t('events.football') }}</div>
-              <div class="label">{{ $t('events.men') }}</div>
-              <div class="label">{{ $t('events.without-category') }}</div>
-            </div>
-            <div class="bottom-block">
-              <div class="top-line">
-                <div class="name">{{card.name}}</div>
-                <div class="price">{{ $t('events.for-free') }}</div>
-              </div>
-              <div class="bottom-line">
-                <div class="left-side">
-                  <div class="titles">
-                    <div class="players">{{ $t('events.players') }}:</div>
-                    <div class="visitors">{{ $t('events.fans') }}:</div>
-                  </div>
-                  <div class="date">
-                    <div class="players-date">{{card.play_dates}}</div>
-                    <div class="visitors-date">{{card.visitor_dates}}</div>
-                  </div>
-                </div>
-                <div class="right-side">
-                  <GreenBtn 
-                    :text="'Долучитися'" 
-                    :width="115"
-                    :height="32"
-                    @click-function="goToEventPage"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div 
-          v-if="eventsSwitcher"
-          class="my-events-block"
-        >
-          <div 
-            v-for="event in myEvents"
-            :key="event.id"
-            :class="['my-event-card', {active: event.isActive}]"
-            @click.right.prevent="myCardRightClick"
-          >
-            <div class="left-block">
-              <div class="col-1">
-                <div class="card-icon">
-                  <img src="../../../assets/img/hands-shake.png" alt="" />
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="title">{{event.title}}</div>
-                <div class="address">
-                  <img src="../../../assets/img/location-point.svg" alt="">
-                  <p>
-                    {{event.address}}
-                  </p>
-                </div>
-                <div class="labels">
-                  <div 
-                    v-for="label in event.labels"
-                    :key="label"
-                    class="label"
-                  >
-                    {{ label }}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="right-block">
-              <div class="col-3">
-                <div 
-                  :class="['state', {active: event.isActive}]"
-                >
-                  {{ event.isActive ? 'Активно' : 'Заплановано' }}
-                </div>
-                <div class="date">
-                  {{ event.date }}
-                </div>
-                <div class="time">
-                  {{ event.time }}
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
+
+      teams
     </div>
 
     <div class="right-sidebar">
@@ -330,7 +150,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.png" alt="">
+              <img src="../../assets/img/hands-shake.png" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -341,7 +161,7 @@
             </div>
           </div>
           <div class="address">
-            <img src="../../../assets/img/location-point.svg" alt="">
+            <img src="../../assets/img/location-point.svg" alt="">
             <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
           </div>
           <div class="labels">
@@ -354,7 +174,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.png" alt="">
+              <img src="../../assets/img/hands-shake.png" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -365,7 +185,7 @@
             </div>
           </div>
           <div class="address">
-            <img src="../../../assets/img/location-point.svg" alt="">
+            <img src="../../assets/img/location-point.svg" alt="">
             <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
           </div>
           <div class="labels">
@@ -378,7 +198,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.png" alt="">
+              <img src="../../assets/img/hands-shake.png" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -389,7 +209,7 @@
             </div>
           </div>
           <div class="address">
-            <img src="../../../assets/img/location-point.svg" alt="">
+            <img src="../../assets/img/location-point.svg" alt="">
             <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
           </div>
           <div class="labels">
@@ -402,7 +222,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.png" alt="">
+              <img src="../../assets/img/hands-shake.png" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -413,7 +233,7 @@
             </div>
           </div>
           <div class="address">
-            <img src="../../../assets/img/location-point.svg" alt="">
+            <img src="../../assets/img/location-point.svg" alt="">
             <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
           </div>
           <div class="labels">
@@ -428,190 +248,53 @@
 </template>
 
 <script>
-import GreenBtn from '../../../components/GreenBtn.vue'
-import Dropdown from '../../../components/Dropdown.vue'
-import InputComponent from '../../../components/InputComponent.vue'
-import ContextMenu from '../../../components/ContextMenuModal.vue'
-
-import circleTick from '../../../assets/img/tick-in-circle.svg'
-import bucket from '../../../assets/img/bucket.svg'
-import pin from '../../../assets/img/pin.svg'
-
+import InputComponent from '../../components/InputComponent.vue'
 
 export default {
-  name: 'EventsPage',
+  name: 'RatingPage',
   components: {
-    GreenBtn,
-    Dropdown,
-    InputComponent,
-    ContextMenu
+    InputComponent
   },
   data() {
     return {
-      eventCards: [
+      eventData: {
+        gender: ''
+      },
+      tabs: [
         {
           id: 0,
-          url: '/my-events/friendly-match',
-          date: 14,
-          time: '12:00 – 14:00',
-          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-          'main_text': 'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
-          name: 'В’ячеслав Залізняк',
-          'play_dates': '10 / 22',
-          'visitor_dates': '17 / 30'
+          name: 'general',
+          img: require('../../assets/img/members.svg'),
+          url: '/users/general',
+          isActive: false
         },
         {
           id: 1,
-          url: '/my-events/friendly-match',
-          date: 14,
-          time: '12:00 – 14:00',
-          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-          'main_text': 'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
-          name: 'В’ячеслав Залізняк',
-          'play_dates': '10 / 22',
-          'visitor_dates': '17 / 30'
-        },       
-        {
-          id: 2,
-          url: '/my-events/friendly-match',
-          date: 14,
-          time: '12:00 – 14:00',
-          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-          'main_text': 'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
-          name: 'В’ячеслав Залізняк',
-          'play_dates': '10 / 22',
-          'visitor_dates': '17 / 30'
-        },     
-        {
-          id: 3,
-          url: '/my-events/friendly-match',
-          date: 14,
-          time: '12:00 – 14:00',
-          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-          'main_text': 'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
-          name: 'В’ячеслав Залізняк',
-          'play_dates': '10 / 22',
-          'visitor_dates': '17 / 30'
-        }
-      ],
-      menuText: [
-        {
-          id: 0,
-          text: 'Виділити',
-          img: circleTick
-        },
-        {
-          id: 1,
-          text: 'Видалити',
-          img: bucket
+          name: 'players',
+          img: require('../../assets/img/runner.svg'),
+          url: '/users/players',
+          isActive: false
         },
         {
           id: 2,
-          text: 'Закріпити',
-          img: pin
-        }
-      ],
-      contextMenuX: null,
-      contextMenuY: null,
-      isContextMenuActive: false,
-      myEvents: [
-        {
-          id: 0,
-          title: 'Дружній матч',
-          isActive: true,
-          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-          date: '7 липня',
-          time: '18:00 – 22:00',
-          labels: ['Футбол', 'Чоловіки', 'Без розряду']
-        },
-        {
-          id: 1,
-          title: 'Дружній матч',
-          isActive: true,
-          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-          date: '7 липня',
-          time: '18:00 – 22:00',
-          labels: ['Футбол', 'Чоловіки', 'Без розряду']
-        },
-        {
-          id: 2,
-          title: 'Дружній матч',
-          isActive: false,
-          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-          date: '7 липня',
-          time: '18:00 – 22:00',
-          labels: ['Футбол', 'Чоловіки', 'Без розряду']
+          name: 'trainers',
+          img: require('../../assets/img/ball.svg'),
+          url: '/users/trainers',
+          isActive: false
         },
         {
           id: 3,
-          title: 'Дружній матч',
-          isActive: false,
-          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-          date: '7 липня',
-          time: '18:00 – 22:00',
-          labels: ['Футбол', 'Чоловіки', 'Без розряду']
+          name: 'referee',
+          img: require('../../assets/img/timer.svg'),
+          url: '/users/referee',
+          isActive: false
         },
         {
           id: 4,
-          title: 'Дружній матч',
-          isActive: true,
-          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-          date: '7 липня',
-          time: '18:00 – 22:00',
-          labels: ['Футбол', 'Чоловіки', 'Без розряду']
-        },
-        {
-          id: 5,
-          title: 'Дружній матч',
-          isActive: true,
-          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-          date: '7 липня',
-          time: '18:00 – 22:00',
-          labels: ['Футбол', 'Чоловіки', 'Без розряду']
-        }
-      ],
-      eventsSwitcher: false,
-      plan: 'free',
-      dataDropdown: [
-        {
-          id: 0,
-          value: 'Футбол'
-        },
-        {
-          id: 1,
-          value: 'Хокей'
-        },
-        {
-          id: 2,
-          value: 'Баскетбол'
-        }
-      ],
-      dataDropdown2: [
-        {
-          id: 0,
-          value: this.$t('events.men')
-        },
-        {
-          id: 1,
-          value: this.$t('events.women')
-        },
-        {
-          id: 2,
-          value: this.$t('events.all')
-        }
-      ],
-      dataDropdown3: [
-        {
-          id: 0,
-          value: 'Запорожье'
-        },
-        {
-          id: 1,
-          value: 'Мелитополь'
-        },
-        {
-          id: 2,
-          value: 'Киев'
+          name: 'teams',
+          img: require('../../assets/img/t-shirt.svg'),
+          url: '/users/teams',
+          isActive: true
         }
       ],
       calendar: [
@@ -655,23 +338,6 @@ export default {
     }
   },
   methods: {
-    changePlanSearch(val) {
-      this.plan = val
-    },
-    switchEvents(val) {
-      this.eventsSwitcher = val
-    },
-    myCardRightClick(e) {
-      this.contextMenuX = e.clientX
-      this.contextMenuY = e.clientY
-      this.isContextMenuActive = true
-    },
-    goToEventPage() {
-      this.$router.push('/application/events/3')
-    },
-    goToCreateEvent() {
-      this.$router.push('/application/events/create')
-    }
   }
 }
 </script>
@@ -698,17 +364,6 @@ export default {
             line-height: 32px;
             color: #262541;
             margin-bottom: 4px;     
-          }
-          .subtitle {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 500;
-            font-size: 13px;
-            line-height: 20px;
-            color: #575775;
-            @media (min-width: 992px) {
-              display: none;
-            }
           }
           .event-switcher {
             font-family: 'Inter';
@@ -747,14 +402,53 @@ export default {
           }
         }
         .right-part {
-          @media (max-width: 992px) {
-            display: none;
-          }
-          a {
-            text-decoration: none;
+          .search-input-desktop {
+            width: 220px;
+            height: 32px;
+            margin-right: 8px;
+            @media (max-width: 1200px) {
+              display: none;
+            }
           }
         }
       }
+      .tab-block-wrapper {
+        @media (max-width: 576px) {
+          height: 36px;
+          position: relative;
+          overflow-x: scroll;
+          margin-top: 24px;
+        }
+        .tab-block {
+          display: flex;
+          border-bottom: 1px solid #DFDEED;
+          margin-top: 28px;
+          @media (max-width: 576px) {
+            position: absolute;
+            margin-top: 0;
+          }
+          .tab-element {
+            display: flex;
+            align-items: center;
+            margin-right: 24px;
+            padding-bottom: 12px;
+            text-decoration: none;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 13px;
+            color: #262541;
+            user-select: none;
+            img {
+              margin-right: 8px;
+            }
+            &.active {
+              border-bottom: 2px solid #262541;
+            }
+          }
+        }
+      }
+
       .main-search-block {
         margin-top: 36px;
         position: relative;
@@ -772,6 +466,109 @@ export default {
             .left-block {
               display: flex;
               align-items: center;
+              .radio-btn-wrapper {
+                $color1: #f4f4f4;
+                $color2: #148783;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                .radio {
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+                  padding: 6px 12px;
+                  background: #FFFFFF;
+                  border: 1px solid #DFDEED;
+                  border-radius: 6px;
+                  margin-right: 8px;
+                  input[type="radio"] {
+                    position: absolute;
+                    opacity: 0;
+                    + .radio-label {
+                      display: flex;
+                      align-items: center;
+                      font-family: 'Inter';
+                      font-style: normal;
+                      font-weight: 400;
+                      font-size: 13px;
+                      line-height: 24px;
+                      text-transform: capitalize;
+                      color: #262541;
+                      img {
+                        margin-right: 4px;
+                      }
+                      &:after {
+                        content: '';
+                        border-radius: 100%;
+                        border: 1px solid #262541;
+                        display: inline-block;
+                        width: 13px;
+                        height: 13px;
+                        position: relative;
+                        top: 0px;
+                        margin-left: 12px; 
+                        vertical-align: top;
+                        cursor: pointer;
+                        text-align: center;
+                        transition: all 250ms ease;
+                      }
+                    }
+                    &:checked {
+                      + .radio-label {
+                        &:after {
+                          border: 1px solid $color2;
+                          background-color: $color2;
+                          box-shadow: inset 0 0 0 3px $color1;
+                        }
+                      }
+                    }
+                    &:focus {
+                      + .radio-label {
+                        &:before {
+                          outline: none;
+                          border-color: $color2;
+                        }
+                      }
+                    }
+                    &:disabled {
+                      + .radio-label {
+                        &:before {
+                          box-shadow: inset 0 0 0 4px $color1;
+                          border-color: darken($color1, 25%);
+                          background: darken($color1, 25%);
+                        }
+                      }
+                    }
+                    + .radio-label {
+                      &:empty {
+                        &:before {
+                          margin-right: 0;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            .middle-block {
+              display: flex;
+              align-items: center;
+              border-bottom: 1px dashed #262541;
+              img {
+                margin-right: 7px;
+              }
+              .address {
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 20px;
+                color: #262541;
+              }
+            }
+            .right-block {
+              display: flex;
+              align-items: center;
               .old-new-filter {
                 display: flex;
                 align-items: center;
@@ -782,23 +579,17 @@ export default {
                 font-size: 13px;
                 line-height: 20px;
                 color: #262541;
+                span {
+                  display: block;
+                  font-family: 'Inter';
+                  font-style: normal;
+                  font-weight: 400;
+                  font-size: 12px;
+                  line-height: 20px;
+                  color: #575775;
+                }
                 img {
                   margin-right: 6px;
-                }
-              }
-              .dropdown-wrapper {
-                margin-right: 4px;
-              }
-            }
-            .right-block {
-              display: flex;
-              align-items: center;
-              .search-input-desktop {
-                width: 220px;
-                height: 32px;
-                margin-right: 8px;
-                @media (max-width: 1200px) {
-                  display: none;
                 }
               }
               .search-input-tablet {
@@ -832,79 +623,6 @@ export default {
               }
               .set-filter {
                 cursor: pointer;
-              }
-            }
-          }
-          .second-line {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            .left-side {
-              display: flex;
-              align-items: center;
-              .dropdown-wrapper {
-                margin-right: 4px;
-              }
-              .calendar {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 112px;
-                height: 30px;
-                background: #FFFFFF;
-                border: 1px solid #DFDEED;
-                border-radius: 6px;
-                cursor: pointer;
-                margin-right: 4px;
-                img {
-                  margin-right: 7px;
-                }
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 400;
-                font-size: 13px;
-                line-height: 24px;
-                text-transform: capitalize;
-                color: #262541;
-              }
-            }
-            .right-side {
-              .free-pay-games {
-                display: flex;
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 400;
-                font-size: 13px;
-                line-height: 20px;
-                text-align: center;
-                padding: 4px;
-                width: 186px;
-                height: 32px;
-                border: 1px solid #F0F0F4;
-                border-radius: 6px;
-                position: relative;
-                .grey-block {
-                  position: absolute;
-                  top: 4px;
-                  background: #EFEFF6;
-                  border-radius: 4px;
-                  height: 23px;
-                  width: 88px;
-                  z-index: -1;
-                  &.right {
-                    transition: all 0.6s ease;
-                    right: 4px;      
-                  }
-                  &.left {
-                    transition: all 0.6s ease;
-                    left: 4px;
-                  }
-                }
-                .all, .free {
-                  flex-basis: 50%;
-                  user-select: none;
-                  cursor: pointer;
-                }
               }
             }
           }
@@ -982,111 +700,6 @@ export default {
                 }
               }
             }
-          }
-          .dates-block {
-            .months {
-              .wrapper {
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-                margin-top: 8px;
-                .arrow {
-                  display: flex;
-                  width: 24px;
-                  height: 24px;
-                  background: #FAFAFA;
-                  border-radius: 6px;
-                  img {
-                    margin: auto;
-                  }
-                }
-                .main-part {
-                  font-family: 'Inter';
-                  font-style: normal;
-                  font-weight: 500;
-                  font-size: 14px;
-                  line-height: 24px;
-                  text-align: center;
-                  color: #262541;
-                  margin: 0 16px;
-                }
-              }
-            }
-            .dates-wrapper {
-              position: relative;
-              height: 60px;
-              overflow: hidden;
-              .dates {
-                position: absolute;
-                top: 0;
-                left: 0;
-                margin-top: 8px;
-                display: flex;
-                align-items: flex-start;
-                .week {
-                  display: flex;
-                  align-items: flex-start;
-                  position: relative;
-                  margin: 0 12px;
-                  &:after {
-                    content: '';
-                    display: block;
-                    width: 1px;
-                    height: 12px;
-                    background: #000;
-                    position: absolute;
-                    right: -12px;
-                    top: 50%;
-                    margin-top: -6px;
-                  }
-                  .date-item {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    width: 36px;
-                    min-width: 3px;
-                    height: 51px;
-                    border-radius: 4px 4px 0px 0px;
-                    margin-right: 6px;
-                    &:last-child {
-                      margin: 0;
-                    }
-                    &.active {
-                      background: #FFDAEA;
-                      border-bottom: 2px solid #C3305C;
-                      .day {
-                        color: #C3305C;
-                      }
-                      .number {
-                        font-weight: 500;
-                        color: #C3305C;
-                      }
-                    }
-                    .day {
-                      font-family: 'Inter';
-                      font-style: normal;
-                      font-weight: 400;
-                      font-size: 12px;
-                      line-height: 16px;
-                      text-align: center;
-                      color: #575775;
-                    }
-                    .number {
-                      margin-top: 2px;
-                      font-family: 'Inter';
-                      font-style: normal;
-                      font-weight: 400;
-                      font-size: 13px;
-                      line-height: 20px;
-                      text-align: center;
-                      color: #262541;
-                    }
-                  }
-                }
-              }
-            }
-
           }
         }
         .cards-block {
