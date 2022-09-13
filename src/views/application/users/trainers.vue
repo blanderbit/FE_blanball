@@ -12,7 +12,7 @@
               :placeholder="'Пошук користувачів'"
               :has-icon="true"
               :icon="[
-                require('../../../assets/img/search.svg')
+                '../../../assets/img/search.svg'
               ]"
             />
           </div>
@@ -264,35 +264,35 @@ export default {
         {
           id: 0,
           name: 'general',
-          img: require('../../../assets/img/members.svg'),
+          img: '../../../assets/img/members.svg',
           url: '/users/general',
           isActive: false
         },
         {
           id: 1,
           name: 'players',
-          img: require('../../../assets/img/runner.svg'),
+          img: '../../../assets/img/runner.svg',
           url: '/users/players',
           isActive: false
         },
         {
           id: 2,
           name: 'trainers',
-          img: require('../../../assets/img/ball.svg'),
+          img: '../../../assets/img/ball.svg',
           url: '/users/trainers',
           isActive: true
         },
         {
           id: 3,
           name: 'referee',
-          img: require('../../../assets/img/timer.svg'),
+          img: '../../../assets/img/timer.svg',
           url: '/users/referee',
           isActive: false
         },
         {
           id: 4,
           name: 'teams',
-          img: require('../../../assets/img/t-shirt.svg'),
+          img: '../../../assets/img/t-shirt.svg',
           url: '/users/teams',
           isActive: false
         }

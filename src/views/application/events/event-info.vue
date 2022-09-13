@@ -1,12 +1,5 @@
 <template>
   <div class="event-info-page">
-    <ContextMenu 
-      v-if="isContextMenuActive" 
-      :client-x="contextMenuX"
-      :client-y="contextMenuY"
-      :menu-text="menuText"
-      @close-modal="isContextMenuActive = false"
-    />
     <div class="main-body">
       <div class="header-block">
         <div class="left-part">
@@ -14,13 +7,13 @@
           <div class="subtitle">{{ $t('my_events.subtitle') }}</div>
         </div>
         <div class="right-part">
-          <nuxt-link to="/profile/events/create-event">
+          <router-link to="/application/events/create">
             <GreenBtn 
               :text="$t('buttons.take-part-applications')"
               :width="168"
               :height="40"
             />
-          </nuxt-link>
+          </router-link>
           <div class="share-link">
             <img src="../../../assets/img/share-icon.svg" alt="">
             <span>Поділитися</span>
@@ -343,12 +336,14 @@
 
 <script>
 import GreenBtn from '../../../components/GreenBtn.vue'
+
 import user5 from '../../../assets/img/user5.png'
 import user4 from '../../../assets/img/user4.png'
 import smile_face from '../../../assets/img/smile_face.png'
 import no_user from '../../../assets/img/no-user.png'
 import minus from '../../../assets/img/minus.png'
 import add_user from '../../../assets/img/add-user.png'
+
 export default {
   name: 'EventsPage',
   components: {

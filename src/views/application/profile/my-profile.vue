@@ -451,7 +451,7 @@
               :inside-title="true"
               :has-icon="true"
               :icon="[
-                '../../../assets/img/sort-arrows-horizontal.svg'
+                sortArrowHorizontal
               ]"
               @icon-click="changeEmailIconClick"
             />
@@ -513,8 +513,7 @@ import database from '../../../assets/img/database.svg'
 import notification from '../../../assets/img/notification-small.svg'
 import tick from '../../../assets/img/tick.svg'
 import edit from '../../../assets/img/edit.svg'
-
-import CONSTANTS from '../../../consts'
+import sortArrowHorizontal from '../../../assets/img/sort-arrows-horizontal.svg'
 
 export default {
   name: 'UserCabinet',
@@ -610,6 +609,9 @@ export default {
     }
   },
   computed: {
+    sortArrowHorizontal() {
+      return sortArrowHorizontal
+    },
     editProfileIcon() {
       return this.isEditProfileMode ? tick : edit
     }
