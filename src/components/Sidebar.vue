@@ -1,14 +1,14 @@
 <template>
     <div class="sidebar-wrapper">
         <div
-                v-if="isMenuOpened"
-                class="slide-menu-back"
-                @click="toggleMenu"
+            v-if="isMenuOpened"
+            class="slide-menu-back"
+            @click="toggleMenu"
         >
         </div>
         <div
-                class="slide-menu-wrapper"
-                :style="sliderStyle"
+            class="slide-menu-wrapper"
+            :style="sliderStyle"
         >
             <div class="sidebar-arrow" @click="toggleMenu">
                 <img :src="arrowPosition" alt="">
@@ -80,9 +80,13 @@
 
 <script>
     import {inject} from 'vue'
-    import notification from '../assets/img/Notification.svg';
-    import record from '../assets/img/record.svg';
-    import members from '../assets/img/members.svg';
+    
+    import notification from '../assets/img/Notification.svg'
+    import record from '../assets/img/record.svg'
+    import members from '../assets/img/members.svg'
+    import sidebarArrowBack from '../assets/img/sidebar-arrow-back.svg'
+    import sidebarArrow from '../assets/img/sidebar-arrow.svg'
+
     export default {
         name: 'MainSidebar',
         setup() {
@@ -128,9 +132,7 @@
                 }
             },
             arrowPosition() {
-                return this.isMenuOpened ?
-                    import("../assets/img/sidebar-arrow-back.svg") :
-                    import("../assets/img/sidebar-arrow.svg")
+                return this.isMenuOpened ? sidebarArrowBack : sidebarArrow
             }
         },
         methods: {

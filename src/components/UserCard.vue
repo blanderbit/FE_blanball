@@ -27,11 +27,11 @@
       <div class="b_user_card_rating_team">
         <div class="b_user_card_top_line_rating_status">
           <div class="b_user_card_team_rating">
-            <star-rating
+            <!-- <star-rating
               :star-style="starStyle"
               :rating="3"
               :is-indicator-active="false"
-            ></star-rating>
+            ></star-rating> -->
           </div>
           <div class="b_user_card_team_status">
             <div class="b_user_card_team">{{user.team}}</div>

@@ -12,7 +12,7 @@
               :placeholder="'Пошук користувачів'"
               :has-icon="true"
               :icon="[
-                '../../../assets/img/search.svg'
+                searchIcon
               ]"
             />
           </div>
@@ -140,7 +140,6 @@
           :key="user.id"
           :user-data="user"
         />
-
       </div>
     </div>
 
@@ -262,7 +261,7 @@ import runner from '../../../assets/img/runner.svg'
 import ball from '../../../assets/img/ball.svg'
 import timer from '../../../assets/img/timer.svg'
 import tShirt from '../../../assets/img/t-shirt.svg'
-
+import searchIcon from '../../../assets/img/search.svg'
 
 export default {
   name: 'RatingPage',
@@ -355,6 +354,9 @@ export default {
   computed: {
     users() {
       return CONSTANTS.users_page.users
+    },
+    searchIcon() {
+      return searchIcon
     }
   },
   methods: {

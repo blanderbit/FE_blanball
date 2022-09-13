@@ -2,12 +2,12 @@
   <div class="bread-crumbs">
     <ul>
       <li
-        v-for="(item, idx) of breadcrumbs"
+        v-for="(item, idx) in breadcrumbs"
         :key="item.name"
       >
-        <nuxt-link :to="idx + 1 === breadcrumbs.length ? '' : item.to">
+        <router-link :to="idx + 1 === breadcrumbs.length ? '' : item.path">
           {{ item.name }}
-        </nuxt-link>
+        </router-link>
         <img v-if="!(idx + 1 === breadcrumbs.length)" src="../assets/img/arrow-right.svg" alt="">
       </li>
     </ul>
@@ -18,6 +18,8 @@
 import {useRouter} from 'vue-router'
 
 const { breadcrumbs } = useRouter().currentRoute.value.meta;
+
+console.log(breadcrumbs)
 </script>
 
 <style lang="scss" scoped>
