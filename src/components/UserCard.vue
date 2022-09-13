@@ -12,7 +12,11 @@
           <div class="b_user_card_top_line_name_rating">
             <div class="b_user_card_name">{{user.name}}</div>
             <div class="b_user_card_team_rating_mob">
-              <!-- star-rating -->
+              <star-rating
+                :star-style="starStyle"
+                :rating="3"
+                :is-indicator-active="false"
+              ></star-rating>
             </div>
           </div>
           <div class="b_user_card_pnz">
@@ -23,7 +27,11 @@
       <div class="b_user_card_rating_team">
         <div class="b_user_card_top_line_rating_status">
           <div class="b_user_card_team_rating">
-            <!-- star-rating -->
+            <star-rating
+              :star-style="starStyle"
+              :rating="3"
+              :is-indicator-active="false"
+            ></star-rating>
           </div>
           <div class="b_user_card_team_status">
             <div class="b_user_card_team">{{user.team}}</div>
@@ -53,11 +61,13 @@
 </template>
 
 <script>
+import StarRating from 'vue-dynamic-star-rating'
 import CONSTANTS from '../consts'
 
 export default {
   name: "UserCard",
   components: {
+    StarRating
   },
   props: {
     userData: {

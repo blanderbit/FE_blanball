@@ -173,8 +173,6 @@
         default: ''
       }
     },
-    components: {
-    },
     data() {
       return {
         users: new Array(6).fill('t').map((item, idx) => {
@@ -211,9 +209,6 @@
       }
     },
     computed: {
-      starStyle() {
-        return CONSTANTS.star_style
-      },
       backPic() {
         return this.pageMode === PAGE_MODE ? publicPageBack : userPageBack
       },
