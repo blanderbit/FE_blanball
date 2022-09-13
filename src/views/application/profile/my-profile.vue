@@ -505,7 +505,6 @@ import Dropdown from '../../../components/Dropdown.vue'
 import Spiner from '../../../workers/loading-worker/Loading.vue'
 import InputComponent from '../../../components/InputComponent.vue'
 import ModalWindow from '../../../components/ModalWindow.vue'
-<<<<<<< HEAD:src/views/application/profile/my-profile.vue
 import ModalUserWindow from '../../../components/ModalUserWindow.vue'
 import PlayerPageComponent from '../../../components/PlayerPageComponent.vue'
 
@@ -515,9 +514,7 @@ import notification from '../../../assets/img/notification-small.svg'
 import tick from '../../../assets/img/tick.svg'
 import edit from '../../../assets/img/edit.svg'
 
-=======
 import CONSTANTS from '../../../consts'
->>>>>>> master:pages/profile/user-cabinet/my-profile.vue
 
 export default {
   name: 'UserCabinet',
@@ -614,16 +611,7 @@ export default {
   },
   computed: {
     editProfileIcon() {
-<<<<<<< HEAD:src/views/application/profile/my-profile.vue
       return this.isEditProfileMode ? tick : edit
-=======
-      return this.isEditProfileMode ? 
-      require('../../../assets/img/tick.svg') : 
-      require('../../../assets/img/edit.svg')
-    },
-    starStyle() {
-      return CONSTANTS.star_style
->>>>>>> master:pages/profile/user-cabinet/my-profile.vue
     }
   },
   mounted() {
