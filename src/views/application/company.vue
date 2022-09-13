@@ -61,9 +61,11 @@
             </div>
             <div class="b-versions__right-side">
                 <div class="b-versions__title-level3">Історія оновлень Blanball</div>
-                <template v-for="(item, index) in versions">
+                <template 
+                    v-for="(item, index) in versions"
+                    :key="'versions' + index"
+                >
                     <version-item
-                        :key="'versions' + index"
                         :version="item.version"
                         :date="item.date"
                         :is-active="item.version === currentVersion.version"
@@ -76,7 +78,7 @@
 </template>
 
 <script>
-    import VersionItem from '../../components/versions-page/version-item'
+    import VersionItem from '../../components/versions-page/version-item.vue'
 
     const json = {
         version: '0.0.3',

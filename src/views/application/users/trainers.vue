@@ -12,7 +12,7 @@
               :placeholder="'Пошук користувачів'"
               :has-icon="true"
               :icon="[
-                require('../../assets/img/search.svg')
+                require('../../../assets/img/search.svg')
               ]"
             />
           </div>
@@ -47,7 +47,7 @@
                     checked
                   >
                   <label for="radio-1" class="radio-label">
-                    <img src="../../assets/img/male-icon.svg" alt="">
+                    <img src="../../../assets/img/male-icon.svg" alt="">
                       Чоловіки
                   </label>
                 </div>
@@ -60,7 +60,7 @@
                     value="Жінки"
                   >
                   <label for="radio-2" class="radio-label">
-                    <img src="../../assets/img/female-icon.svg" alt="">
+                    <img src="../../../assets/img/female-icon.svg" alt="">
                       Жінки
                   </label>
                 </div>
@@ -73,32 +73,32 @@
                     value="Всі"
                   >
                   <label for="radio-3" class="radio-label">
-                    <img src="../../assets/img/unisex.svg" alt="">
+                    <img src="../../../assets/img/unisex.svg" alt="">
                     Всі
                   </label>
                 </div>
               </div>
             </div>
             <div class="middle-block">
-              <img src="../../assets/img/address-icon.svg" alt="">
+              <img src="../../../assets/img/address-icon.svg" alt="">
               <div class="address">35 West Fork Street, Missoula</div>
             </div>
             <div class="right-block">
               <div class="old-new-filter">
-                <img src="../../assets/img/sort-arrows.svg" alt="">
+                <img src="../../../assets/img/sort-arrows.svg" alt="">
                 <div class="text-block">
                   Сортування
                   <span>Cпочатку нові</span>
                 </div>
               </div>
               <div class="search-input-tablet">
-                <img src="../../assets/img/search.svg" alt="">
+                <img src="../../../assets/img/search.svg" alt="">
               </div>
               <div class="icon-container">
-                <img src="../../assets/img/clear-filter.svg" alt="">
+                <img src="../../../assets/img/clear-filter.svg" alt="">
               </div>
               <div class="icon-container">
-                <img class="set-filter" src="../../assets/img/set-filter.svg" alt="">
+                <img class="set-filter" src="../../../assets/img/set-filter.svg" alt="">
               </div>
             </div>
           </div>
@@ -107,7 +107,7 @@
           <div class="filters-block">
             <div class="sorting-block sort-item">
               <div class="icon">
-                <img src="../../assets/img/sort-arrows.svg" alt="">
+                <img src="../../../assets/img/sort-arrows.svg" alt="">
               </div>
               <div class="text">
                 <div class="title">{{ $t('events.sorting') }}</div>
@@ -116,7 +116,7 @@
             </div>
             <div class="filtering-block sort-item">
               <div class="icon">
-                <img src="../../assets/img/set-filter.svg" alt="">
+                <img src="../../../assets/img/set-filter.svg" alt="">
               </div>
               <div class="text">
                 <div class="title">{{ $t('events.filters') }}</div>
@@ -125,7 +125,7 @@
             </div>
             <div class="calendar-block sort-item">
               <div class="icon">
-                <img src="../../assets/img/calendar.svg" alt="">
+                <img src="../../../assets/img/calendar.svg" alt="">
               </div>
               <div class="text">
                 <div class="title">{{ $t('events.chose-date') }}</div>
@@ -150,7 +150,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../assets/img/hands-shake.png" alt="">
+              <img src="../../../assets/img/hands-shake.png" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -161,7 +161,7 @@
             </div>
           </div>
           <div class="address">
-            <img src="../../assets/img/location-point.svg" alt="">
+            <img src="../../../assets/img/location-point.svg" alt="">
             <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
           </div>
           <div class="labels">
@@ -174,7 +174,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../assets/img/hands-shake.png" alt="">
+              <img src="../../../assets/img/hands-shake.png" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -185,7 +185,7 @@
             </div>
           </div>
           <div class="address">
-            <img src="../../assets/img/location-point.svg" alt="">
+            <img src="../../../assets/img/location-point.svg" alt="">
             <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
           </div>
           <div class="labels">
@@ -198,7 +198,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../assets/img/hands-shake.png" alt="">
+              <img src="../../../assets/img/hands-shake.png" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -209,7 +209,7 @@
             </div>
           </div>
           <div class="address">
-            <img src="../../assets/img/location-point.svg" alt="">
+            <img src="../../../assets/img/location-point.svg" alt="">
             <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
           </div>
           <div class="labels">
@@ -222,7 +222,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../assets/img/hands-shake.png" alt="">
+              <img src="../../../assets/img/hands-shake.png" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -233,7 +233,7 @@
             </div>
           </div>
           <div class="address">
-            <img src="../../assets/img/location-point.svg" alt="">
+            <img src="../../../assets/img/location-point.svg" alt="">
             <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
           </div>
           <div class="labels">
@@ -248,7 +248,7 @@
 </template>
 
 <script>
-import InputComponent from '../../components/InputComponent.vue'
+import InputComponent from '../../../components/InputComponent.vue'
 
 export default {
   name: 'RatingPage',
@@ -264,35 +264,35 @@ export default {
         {
           id: 0,
           name: 'general',
-          img: require('../../assets/img/members.svg'),
+          img: require('../../../assets/img/members.svg'),
           url: '/users/general',
           isActive: false
         },
         {
           id: 1,
           name: 'players',
-          img: require('../../assets/img/runner.svg'),
+          img: require('../../../assets/img/runner.svg'),
           url: '/users/players',
           isActive: false
         },
         {
           id: 2,
           name: 'trainers',
-          img: require('../../assets/img/ball.svg'),
+          img: require('../../../assets/img/ball.svg'),
           url: '/users/trainers',
           isActive: true
         },
         {
           id: 3,
           name: 'referee',
-          img: require('../../assets/img/timer.svg'),
+          img: require('../../../assets/img/timer.svg'),
           url: '/users/referee',
           isActive: false
         },
         {
           id: 4,
           name: 'teams',
-          img: require('../../assets/img/t-shirt.svg'),
+          img: require('../../../assets/img/t-shirt.svg'),
           url: '/users/teams',
           isActive: false
         }
