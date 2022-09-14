@@ -508,7 +508,7 @@ import ModalWindow from '../../../components/ModalWindow.vue'
 import ModalUserWindow from '../../../components/ModalUserWindow.vue'
 import PlayerPageComponent from '../../../components/PlayerPageComponent.vue'
 
-import user from '../../../assets/img/user.svg'
+import userIcon from '../../../assets/img/user-icon.svg'
 import database from '../../../assets/img/database.svg'
 import notification from '../../../assets/img/notification-small.svg'
 import tick from '../../../assets/img/tick.svg'
@@ -587,7 +587,7 @@ export default {
         {
           id: 0,
           name: 'my-profile',
-          img: user,
+          img: userIcon,
           url: '/application/profile/my-application',
           isActive: true
         },

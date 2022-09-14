@@ -39,7 +39,7 @@
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
 
-import user from '../../../assets/img/user.svg'
+import userIcon from '../../../assets/img/user-icon.svg'
 import database from '../../../assets/img/database.svg'
 import notification from '../../../assets/img/notification-small.svg'
 
@@ -55,7 +55,7 @@ export default {
         {
           id: 0,
           name: 'my-profile',
-          img: user,
+          img: userIcon,
           url: '/application/profile/my-profile',
           isActive: false
         },

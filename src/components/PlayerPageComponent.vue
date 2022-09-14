@@ -40,7 +40,7 @@
                 Запросити на подію
               </div>
               <div class="share">
-                <img src="../assets/img/share.svg" alt="">
+                <img src="../assets/img/share-icon.svg" alt="">
                 <span>Поділитися</span>
               </div>
             </div>
