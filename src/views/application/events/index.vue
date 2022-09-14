@@ -75,7 +75,7 @@
                   :placeholder="'Пошук серед подій'"
                   :has-icon="true"
                   :icon="[
-                    '../../../assets/img/search.svg'
+                    searchIcon
                   ]"
                 />
               </div>
@@ -436,6 +436,7 @@ import ContextMenu from '../../../components/ContextMenuModal.vue'
 import circleTick from '../../../assets/img/tick-in-circle.svg'
 import bucket from '../../../assets/img/bucket.svg'
 import pin from '../../../assets/img/pin.svg'
+import search from '../../../assets/img/search.svg'
 
 
 export default {
@@ -652,6 +653,11 @@ export default {
           ]
         }
       ]
+    }
+  },
+  computed: {
+    searchIcon() {
+      return search
     }
   },
   methods: {

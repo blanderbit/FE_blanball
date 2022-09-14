@@ -14,7 +14,7 @@
           :placeholder="'Пошук серед подій'"
           :has-icon="true"
           :icon="[
-            import('../assets/img/search.svg')
+            searchIcon
           ]"
         />
       </div>
@@ -25,11 +25,17 @@
 <script>
 import BreadCrumbs from './Breadcrumbs.vue'
 import InputComponent from './InputComponent.vue'
+import search from '../assets/img/search.svg'
 
 export default {
   components: {
     BreadCrumbs,
     InputComponent
+  },
+  computed: {
+    searchIcon() {
+      return search
+    }
   }
 }
 </script>
