@@ -95,7 +95,7 @@
           <div class="title">Рейтинг та відгуки</div>
           <div class="raiting">
             4
-            <img src="../assets/img/star.png" alt="">
+            <img src="../assets/img/star.svg" alt="">
           </div>
         </div>
         <div class="ratings-cards">
@@ -159,8 +159,8 @@
   // import StarRating from 'vue-dynamic-star-rating'
   import CONSTANTS from '../consts'
 
-  import publicPageBack from '../assets/img/public-page-back.png'
-  import userPageBack from '../assets/img/user-page-back.png'
+  import publicPageBack from '../assets/img/public-page-back.svg'
+  import userPageBack from '../assets/img/user-page-back.svg'
 
   
   const PAGE_MODE = 'public'

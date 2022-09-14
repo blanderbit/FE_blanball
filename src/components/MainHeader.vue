@@ -5,7 +5,7 @@
     </div>
     <BreadCrumbs />
     <div class="logo">
-      <img src="../assets/img/logo-header.png" alt="">
+      <img src="../assets/img/logo-header.svg" alt="">
     </div>
     <div class="search-block">
       <div class="search-input">

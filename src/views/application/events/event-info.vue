@@ -81,7 +81,7 @@
             </div>
           </div>
           <div class="map">
-            <img src="../../../assets/img/map-event-info.png" alt="">
+            <img src="../../../assets/img/map-event-info.svg" alt="">
           </div>
         </div>
       </div>
@@ -150,7 +150,7 @@
               </div>
               <div class="right-side">
                 <div class="icon">
-                  <img src="../../../assets/img/smile_face.png" alt="">
+                  <img src="../../../assets/img/smile_face.svg" alt="">
                 </div>
               </div>
             </div>
@@ -179,7 +179,7 @@
               </div>
               <div class="right-side">
                 <div class="icon">
-                  <img src="../../../assets/img/smile_face.png" alt="">
+                  <img src="../../../assets/img/smile_face.svg" alt="">
                 </div>
               </div>
             </div>
@@ -237,7 +237,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.png" alt="">
+              <img src="../../../assets/img/hands-shake.svg" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -261,7 +261,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.png" alt="">
+              <img src="../../../assets/img/hands-shake.svg" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -285,7 +285,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.png" alt="">
+              <img src="../../../assets/img/hands-shake.svg" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -309,7 +309,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.png" alt="">
+              <img src="../../../assets/img/hands-shake.svg" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -338,10 +338,10 @@
 import GreenBtn from '../../../components/GreenBtn.vue'
 
 import user from '../../../assets/img/user.png'
-import smile_face from '../../../assets/img/smile_face.png'
-import no_user from '../../../assets/img/no-user-picture.png'
-import minus from '../../../assets/img/minus.png'
-import add_user from '../../../assets/img/add-user-button.png'
+import smile_face from '../../../assets/img/smile_face.svg'
+import no_user from '../../../assets/img/no-user-picture.svg'
+import minus from '../../../assets/img/minus.svg'
+import add_user from '../../../assets/img/add-user-button.svg'
 
 export default {
   name: 'EventsPage',
