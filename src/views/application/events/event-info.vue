@@ -81,7 +81,7 @@
             </div>
           </div>
           <div class="map">
-            <img src="../../../assets/img/map2.png" alt="">
+            <img src="../../../assets/img/map-event-info.png" alt="">
           </div>
         </div>
       </div>
@@ -135,7 +135,7 @@
             >
               <div class="left-side">
                 <div class="picture">
-                  <img src="../../../assets/img/user3.png" alt="">
+                  <img src="../../../assets/img/user.png" alt="">
                 </div>
                 <div class="text-block">
                   <div 
@@ -164,7 +164,7 @@
             >
               <div class="left-side">
                 <div class="picture">
-                  <img src="../../../assets/img/user3.png" alt="">
+                  <img src="../../../assets/img/user.png" alt="">
                 </div>
                 <div class="text-block">
                   <div 
@@ -337,12 +337,11 @@
 <script>
 import GreenBtn from '../../../components/GreenBtn.vue'
 
-import user5 from '../../../assets/img/user5.png'
-import user4 from '../../../assets/img/user4.png'
+import user from '../../../assets/img/user.png'
 import smile_face from '../../../assets/img/smile_face.png'
-import no_user from '../../../assets/img/no-user.png'
+import no_user from '../../../assets/img/no-user-picture.png'
 import minus from '../../../assets/img/minus.png'
-import add_user from '../../../assets/img/add-user.png'
+import add_user from '../../../assets/img/add-user-button.png'
 
 export default {
   name: 'EventsPage',
@@ -354,7 +353,7 @@ export default {
       playersList: [
         {
           id: 0,
-          img: user5,
+          img: user,
           name: 'Капустин Никита',
           status: 'ПНЗ',
           icon: smile_face,
@@ -362,14 +361,14 @@ export default {
         },
         {
           id: 1,
-          img: user5,
+          img: user,
           name: 'Капустин Никита',
           status: 'ПНЗ',
           icon: smile_face,
           isActive: true
         },        {
           id: 2,
-          img: user5,
+          img: user,
           name: 'Капустин Никита',
           status: 'ПНЗ',
           icon: smile_face,
@@ -377,7 +376,7 @@ export default {
         },
         {
           id: 3,
-          img: user5,
+          img: user,
           name: 'Капустин Никита',
           status: 'ПНЗ',
           icon: smile_face,
@@ -385,7 +384,7 @@ export default {
         },
         {
           id: 4,
-          img: user5,
+          img: user,
           name: 'Капустин Никита',
           status: 'ПНЗ',
           icon: smile_face,
@@ -393,7 +392,7 @@ export default {
         },
         {
           id: 5,
-          img: user5,
+          img: user,
           name: 'Капустин Никита',
           status: 'ПНЗ',
           icon: smile_face,
@@ -401,7 +400,7 @@ export default {
         },
         {
           id: 6,
-          img: user5,
+          img: user,
           name: 'Капустин Никита',
           status: 'ПНЗ',
           icon: smile_face,
@@ -409,7 +408,7 @@ export default {
         },
         {
           id: 7,
-          img: user5,
+          img: user,
           name: 'Капустин Никита',
           status: 'ПНЗ',
           icon: smile_face,
@@ -417,7 +416,7 @@ export default {
         },
         {
           id: 8,
-          img: user5,
+          img: user,
           name: 'Капустин Никита',
           status: 'ПНЗ',
           icon: smile_face,
@@ -537,14 +536,14 @@ export default {
       ciefs: [
         {
           id: 0,
-          img: user4,
+          img: user,
           name: 'Сергій Білецький',
           phone: '+380 66 873 05 75',
           status: 'Організатор'
         },
         {
           id: 1,
-          img: user4,
+          img: user,
           name: 'Ярослав Бойко',
           phone: '+380 97 773 05 81',
           status: 'Тренер'

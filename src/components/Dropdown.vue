@@ -19,7 +19,7 @@
         <slot name="drop-icon"></slot>
         <div class="current-name">{{currentValue}}</div>
         <div class="arrow-down">
-          <img src="../assets/img/arrow-down2.svg" alt="">
+          <img src="../assets/img/arrow-down-background.svg" alt="">
         </div>
       </div>
       <ul 

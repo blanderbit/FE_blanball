@@ -93,7 +93,7 @@
           />
         </div>
         <div class="event-map">
-          <img src="../../../assets/img/map.png" alt="">
+          <img src="../../../assets/img/map-manage-event.png" alt="">
         </div>
       </div>
 
@@ -606,9 +606,7 @@ import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
 import Switcher from '../../../components/Switcher.vue'
 
-import User1 from '../../../assets/img/user1.png'
-import User2 from '../../../assets/img/user2.png'
-import User3 from '../../../assets/img/user3.png'
+import User from '../../../assets/img/user.png'
 
 
 export default {
@@ -667,21 +665,21 @@ export default {
           users: [
             {
               id: 0,
-              img: User1,
+              img: User,
               name: 'Oganez Gurgenovich',
               category: 'Гравці',
               isChosen: false
             },
             {
               id: 1,
-              img: User2,
+              img: User,
               name: 'Rubik Joraevich',
               category: 'Гравці',
               isChosen: false
             },
             {
               id: 2,
-              img: User3,
+              img: User,
               name: 'Ogli Timurlanovich',
               category: 'Гравці',
               isChosen: false
@@ -694,21 +692,21 @@ export default {
           users: [
             {
               id: 11,
-              img: User2,
+              img: User,
               name: 'Rubik Joraevich',
               category: 'Події',
               isChosen: false
             },
             {
               id: 21,
-              img: User3,
+              img: User,
               name: 'Ogli Timurlanovich',
               category: 'Події',
               isChosen: false
             },
             {
               id: 101,
-              img: User1,
+              img: User,
               name: 'Oganez Gurgenovich',
               category: 'Події',
               isChosen: false
@@ -719,21 +717,16 @@ export default {
           id: 3,
           category_name: 'Організатори',
           users: [
-            // {
-            //   id: 202,
-            //   img: User1,
-            //   name: 'Oganez Gurgenovich'
-            // },
             {
               id: 12,
-              img: User2,
+              img: User,
               name: 'Rubik Joraevich',
               category: 'Організатори',
               isChosen: false
             },
             {
               id: 22,
-              img: User3,
+              img: User,
               name: 'Ogli Timurlanovich',
               category: 'Організатори',
               isChosen: false
@@ -746,19 +739,14 @@ export default {
           users: [
             {
               id: 3023,
-              img: User1,
+              img: User,
               name: 'Oganez Gurgenovich',
               category: 'Тренери',
               isChosen: false
             },
-            // {
-            //   id: 123,
-            //   img: User2,
-            //   name: 'Rubik Joraevich'
-            // },
             {
               id: 223,
-              img: User3,
+              img: User,
               name: 'Ogli Timurlanovich',
               category: 'Тренери',
               isChosen: false
@@ -771,23 +759,18 @@ export default {
           users: [
             {
               id: 4024,
-              img: User1,
+              img: User,
               name: 'Oganez Gurgenovich',
               category: 'Рефері',
               isChosen: false
             },
             {
               id: 124,
-              img: User2,
+              img: User,
               name: 'Rubik Joraevich',
               category: 'Рефері',
               isChosen: false
             },
-            // {
-            //   id: 224,
-            //   img: User3,
-            //   name: 'Ogli Timurlanovich'
-            // }
           ]
         },
         {
@@ -796,21 +779,21 @@ export default {
           users: [
             {
               id: 125,
-              img: User2,
+              img: User,
               name: 'Rubik Joraevich',
               category: 'Команди',
               isChosen: false
             },
             {
               id: 225,
-              img: User3,
+              img: User,
               name: 'Ogli Timurlanovich',
               category: 'Команди',
               isChosen: false
             },
             {
               id: 5025,
-              img: User1,
+              img: User,
               name: 'Oganez Gurgenovich',
               category: 'Команди',
               isChosen: false
