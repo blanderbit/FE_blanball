@@ -588,7 +588,7 @@ export default {
           id: 0,
           name: 'my-profile',
           img: userIcon,
-          url: '/application/profile/my-application',
+          url: '/application/profile/my-profile',
           isActive: true
         },
         {
