@@ -93,7 +93,7 @@
           />
         </div>
         <div class="event-map">
-          <img src="../../../assets/img/map-manage-event.png" alt="">
+          <img src="../../../assets/img/map-manage-event.svg" alt="">
         </div>
       </div>
 
@@ -466,7 +466,7 @@
             <div class="left-block">
               <div class="col-1">
                 <div class="card-icon">
-                  <img src="../../../assets/img/hands-shake.png" alt="" />
+                  <img src="../../../assets/img/hands-shake.svg" alt="" />
                 </div>
               </div>
               <div class="col-2">

@@ -16,7 +16,7 @@
             <div class="slide-menu">
                 <div class="top-block">
                     <div class="logo">
-                        <img src="../assets/img/logo-sidebar.png" alt="">
+                        <img src="../assets/img/logo-sidebar.svg" alt="">
                     </div>
                     <div class="slide-menu-items">
                         <div class="title">Сповіщення</div>
@@ -48,7 +48,7 @@
         <div class="sidebar">
             <div class="top-block">
                 <div class="picture-top">
-                    <img src="../assets/img/my-profile-dark.png" alt="">
+                    <img src="../assets/img/my-profile-logo.svg" alt="">
                 </div>
                 <div class="menu-block">
                     <ul>
@@ -68,7 +68,7 @@
             <div class="bottom-block">
                 <div class="picture-bottom">
                     <img
-                        src="../assets/img/my-profile-pic.png" 
+                        src="../assets/img/my-profile-pic.svg" 
                         alt=""
                         @click="goToProfile"
                     >

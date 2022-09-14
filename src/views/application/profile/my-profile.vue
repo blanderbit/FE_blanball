@@ -314,10 +314,10 @@
           </div>
           <div class="scale-block">
             <div class="image">
-              <img src="../../../assets/img/smile_face.png" alt="">
+              <img src="../../../assets/img/smile_face.svg" alt="">
             </div>
             <div class="image">
-              <img src="../../../assets/img/scale.png" alt="">
+              <img src="../../../assets/img/scale.svg" alt="">
             </div>
           </div>
           <div class="btns-block">

@@ -150,7 +150,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.png" alt="">
+              <img src="../../../assets/img/hands-shake.svg" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -174,7 +174,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.png" alt="">
+              <img src="../../../assets/img/hands-shake.svg" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -198,7 +198,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.png" alt="">
+              <img src="../../../assets/img/hands-shake.svg" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -222,7 +222,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.png" alt="">
+              <img src="../../../assets/img/hands-shake.svg" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>

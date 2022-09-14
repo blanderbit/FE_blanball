@@ -64,7 +64,7 @@
                 :height="32"
               >
                 <template #drop-icon >
-                  <img src="../../../assets/img/cup.png" alt="">
+                  <img src="../../../assets/img/cup.svg" alt="">
                 </template>
               </Dropdown>
             </div>
@@ -206,7 +206,7 @@
             <div class="top-title">
               <div class="left-side">
                 <div class="card-icon">
-                  <img src="../../../assets/img/hands-shake.png" alt=""></div>
+                  <img src="../../../assets/img/hands-shake.svg" alt=""></div>
                 <div class="text-block">
                   <div class="title">{{ $t('events.friendly-match') }}</div>
                   <div class="date-time-mob">
@@ -277,7 +277,7 @@
             <div class="left-block">
               <div class="col-1">
                 <div class="card-icon">
-                  <img src="../../../assets/img/hands-shake.png" alt="" />
+                  <img src="../../../assets/img/hands-shake.svg" alt="" />
                 </div>
               </div>
               <div class="col-2">
@@ -330,7 +330,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.png" alt="">
+              <img src="../../../assets/img/hands-shake.svg" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -354,7 +354,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.png" alt="">
+              <img src="../../../assets/img/hands-shake.svg" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -378,7 +378,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.png" alt="">
+              <img src="../../../assets/img/hands-shake.svg" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
@@ -402,7 +402,7 @@
           <div class="close">&times;</div>
           <div class="top-line">
             <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.png" alt="">
+              <img src="../../../assets/img/hands-shake.svg" alt="">
             </div>
             <div class="text-data">
               <div class="top-line name">{{ $t('events.friendly-match') }}</div>
