@@ -14,7 +14,7 @@
     <div v-if="insideTitle" class="inner-title">
       <span>{{mainTitle}}</span>
     </div>
-    <div class="current-wrapper">
+    <div ref="wrapper" class="current-wrapper">
       <div class="drop-current" @click="toggleDropdown">
         <slot name="drop-icon"></slot>
         <div class="current-name">{{currentValue}}</div>
@@ -70,6 +70,7 @@ export default {
   },
   data() {
     return {
+      currentWindowWidth: null,
       isOpened: false,
       currentValue: this.options[0].value
     }
@@ -83,11 +84,13 @@ export default {
     },
     ulStyle() {
       return {
-        top: this.height + 'px'
+        top: this.height + 'px',
+        width: this.currentWindowWidth + 'px'
       }
     }
   },
   mounted() {
+    this.currentWindowWidth = this.$refs.wrapper.clientWidth
     this.$emit('new-value', this.options[0].value)
   },
   methods: {

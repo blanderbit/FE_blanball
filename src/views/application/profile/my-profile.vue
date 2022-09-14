@@ -364,6 +364,28 @@
             </div>
           </transition>
         </div>
+        <div class="confidentiality">
+          <div class="title">
+            {{ $t('profile.confidentiality') }}
+          </div>
+          <div class="subtitle">
+            {{ $t('profile.set-personal-details') }}
+          </div>
+          <div class="settings-block">
+            <div class="personal-settings">
+              <p>{{ $t('profile.phone-number') }}</p>
+              <Switcher :id="'phone'" />
+            </div>
+            <div class="personal-settings">
+              <p>{{ $t('profile.e-mail') }}</p>
+              <Switcher :id="'email'" />
+            </div>
+            <div class="personal-settings">
+              <p>{{ $t('profile.my-feedbacks') }}<span>(Деякі)</span></p>
+              <Switcher :id="'feedback'" />
+            </div>
+          </div>
+        </div>
       </div>
       <div class="block block-2">
         <div class="top-table">
@@ -430,7 +452,6 @@
             :options="dataDropdown"
             :main-title="'Гендер'"
             :inside-title="true"
-            :width="344"
             :height="40"
           />
         </div>
@@ -472,26 +493,7 @@
         </div>
       </div>
       <div class="block block-4">
-        <div class="title">
-          {{ $t('profile.confidentiality') }}
-        </div>
-        <div class="subtitle">
-          {{ $t('profile.set-personal-details') }}
-        </div>
-        <div class="settings-block">
-          <div class="personal-settings">
-            <p>{{ $t('profile.phone-number') }}</p>
-            <Switcher :id="'phone'" />
-          </div>
-          <div class="personal-settings">
-            <p>{{ $t('profile.e-mail') }}</p>
-            <Switcher :id="'email'" />
-          </div>
-          <div class="personal-settings">
-            <p>{{ $t('profile.my-feedbacks') }}<span>(Деякі)</span></p>
-            <Switcher :id="'feedback'" />
-          </div>
-        </div>
+
       </div>
     </div>
   </div>
@@ -783,6 +785,7 @@ export default {
 .my-profile-tab {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
   margin-top: 28px;
   @media (max-width: 768px) {
     flex-direction: column;
@@ -810,9 +813,9 @@ export default {
     margin-bottom: 28px;
   }
   .block {
-    margin-right: 88px;
+    // margin-right: 88px;
     @media (max-width: 992px) {
-      margin-right: 12px;
+      // margin-right: 12px;
     }
     @media (max-width: 768px) {
       width: 100%;
@@ -895,6 +898,24 @@ export default {
               color: #575775;
             }
           }
+        }
+      }
+    }
+    .confidentiality {
+      .settings-block {
+        margin-top: 12px;
+        .personal-settings {
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 20px;
+          color: #262541;
+          border-top: 1px solid #DFDEED;
+          padding: 12px 0;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
         }
       }
     }
@@ -1006,7 +1027,6 @@ export default {
     }
     .personal-information {
       .age-input {
-        width: 344px;
         height: 40px;
       }
       @media (min-width: 992px) {
@@ -1021,9 +1041,14 @@ export default {
     }
   }
   .block-3 {
-    @media (min-width: 992px) {
+    @media (min-width: 1200px) {
       width: 272px;
       min-width: 272px;
+    }
+    @media (min-width: 992px) and (max-width: 1199px) {
+      width: 344px;
+      min-width: 344px;
+      margin-top: 28px;
     }
     @media (min-width: 768px) and (max-width: 992px) {
       width: 328px;
@@ -1075,22 +1100,6 @@ export default {
       width: 328px;
       min-width: 328px;
       order: 3;
-    }
-    .settings-block {
-      margin-top: 12px;
-    .personal-settings {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 20px;
-        color: #262541;
-        border-top: 1px solid #DFDEED;
-        padding: 12px 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
     }
   }
 }
