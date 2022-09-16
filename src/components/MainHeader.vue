@@ -1,14 +1,14 @@
 <template>
-  <div class="header">
-    <div class="mob-menu-icon">
+  <div class="b_header">
+    <div class="b_header_mob-menu-icon">
       <img src="../assets/img/mob-menu-icon.svg" alt="">
     </div>
     <BreadCrumbs />
-    <div class="logo">
+    <div class="b_header_logo">
       <img src="../assets/img/logo-header.svg" alt="">
     </div>
-    <div class="search-block">
-      <div class="search-input">
+    <div class="b_header_search-block">
+      <div class="b_header_search-input">
         <InputComponent 
           :title-width="0"
           :placeholder="'Пошук серед подій'"
@@ -41,25 +41,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.header {
+.b_header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 88px;
-  .mob-menu-icon {
+  .b_header_mob-menu-icon {
     display: none;
     @media (max-width: 992px) {
       display: block;
     }
   }
-  .logo {
+  .b_header_logo {
     display: none;
     @media (min-width: 576px) and (max-width: 992px) {
       display: block;
     }
   }
-  .search-block {
-    .search-input {
+  .b_header_search-block {
+    .b_header_search-input {
       width: 220px;
       height: 40px;
     }

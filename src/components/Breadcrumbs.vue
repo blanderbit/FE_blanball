@@ -1,5 +1,5 @@
 <template>
-  <div class="bread-crumbs">
+  <div class="b_breadcrumbs">
     <ul>
       <li
         v-for="(item, idx) in breadcrumbs"
@@ -18,12 +18,10 @@
 import {useRouter} from 'vue-router'
 
 const { breadcrumbs } = useRouter().currentRoute.value.meta;
-
-console.log(breadcrumbs)
 </script>
 
 <style lang="scss" scoped>
-.bread-crumbs {
+.b_breadcrumbs {
   ul {
     display: flex;
     li {

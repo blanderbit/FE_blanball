@@ -198,71 +198,11 @@
           v-if="!eventsSwitcher"
           class="cards-block"
         >
-          <div 
-            v-for="card of eventCards"
+          <EventCard
+            v-for="card of mockData.event_cards"
             :key="card.id"
-            class="event-card"
-          >
-            <div class="top-title">
-              <div class="left-side">
-                <div class="card-icon">
-                  <img src="../../../assets/img/hands-shake.svg" alt=""></div>
-                <div class="text-block">
-                  <div class="title">{{ $t('events.friendly-match') }}</div>
-                  <div class="date-time-mob">
-                    <div class="date">{{card.date}} {{ $t('events.months.June') }}</div>
-                    <div class="time">{{card.time}}</div>
-                  </div>
-                  <div class="address desk-address">
-                    <img src="../../../assets/img/location-point.svg" alt="">
-                    <p>{{card.address}}</p>
-                  </div>
-                </div>
-              </div>
-              <div class="right-side">
-                <div class="date">{{card.date}} {{ $t('events.months.June') }}</div>
-                <div class="time">{{card.time}}</div>
-              </div>
-            </div>
-            <div class="address mob-address">
-              <img src="../../../assets/img/location-point.svg" alt="">
-              <p>{{card.address}}</p>
-            </div>
-            <div class="main-text">
-              {{card.main_text}}
-            </div>
-            <div class="labels">
-              <div class="label">{{ $t('events.football') }}</div>
-              <div class="label">{{ $t('events.men') }}</div>
-              <div class="label">{{ $t('events.without-category') }}</div>
-            </div>
-            <div class="bottom-block">
-              <div class="top-line">
-                <div class="name">{{card.name}}</div>
-                <div class="price">{{ $t('events.for-free') }}</div>
-              </div>
-              <div class="bottom-line">
-                <div class="left-side">
-                  <div class="titles">
-                    <div class="players">{{ $t('events.players') }}:</div>
-                    <div class="visitors">{{ $t('events.fans') }}:</div>
-                  </div>
-                  <div class="date">
-                    <div class="players-date">{{card.play_dates}}</div>
-                    <div class="visitors-date">{{card.visitor_dates}}</div>
-                  </div>
-                </div>
-                <div class="right-side">
-                  <GreenBtn 
-                    :text="'Долучитися'" 
-                    :width="115"
-                    :height="32"
-                    @click-function="goToEventPage"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+            :card="card"
+          />
         </div>
         <div 
           v-if="eventsSwitcher"
@@ -318,112 +258,7 @@
         </div>
       </div>
     </div>
-
-    <div class="right-sidebar">
-      <div class="title-block">
-        <div class="title">{{ $t('events.planned-events') }}</div>
-        <div class="subtitle">{{ $t('events.your-events') }}</div>
-      </div>
-
-      <div class="cards-block">
-        <div class="card">
-          <div class="close">&times;</div>
-          <div class="top-line">
-            <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.svg" alt="">
-            </div>
-            <div class="text-data">
-              <div class="top-line name">{{ $t('events.friendly-match') }}</div>
-              <div class="bottom-line">
-                <div class="time">12:00 – 14:00</div>
-                <div class="date">16 {{ $t('events.months.June') }}</div>
-              </div>
-            </div>
-          </div>
-          <div class="address">
-            <img src="../../../assets/img/location-point.svg" alt="">
-            <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
-          </div>
-          <div class="labels">
-            <div class="label">{{ $t('events.football') }}</div>
-            <div class="label">{{ $t('events.men') }}</div>
-            <div class="label">...</div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="close">&times;</div>
-          <div class="top-line">
-            <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.svg" alt="">
-            </div>
-            <div class="text-data">
-              <div class="top-line name">{{ $t('events.friendly-match') }}</div>
-              <div class="bottom-line">
-                <div class="time">12:00 – 14:00</div>
-                <div class="date">16 {{ $t('events.months.June') }}</div>
-              </div>
-            </div>
-          </div>
-          <div class="address">
-            <img src="../../../assets/img/location-point.svg" alt="">
-            <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
-          </div>
-          <div class="labels">
-            <div class="label">{{ $t('events.football') }}</div>
-            <div class="label">{{ $t('events.men') }}</div>
-            <div class="label">...</div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="close">&times;</div>
-          <div class="top-line">
-            <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.svg" alt="">
-            </div>
-            <div class="text-data">
-              <div class="top-line name">{{ $t('events.friendly-match') }}</div>
-              <div class="bottom-line">
-                <div class="time">12:00 – 14:00</div>
-                <div class="date">16 {{ $t('events.months.June') }}</div>
-              </div>
-            </div>
-          </div>
-          <div class="address">
-            <img src="../../../assets/img/location-point.svg" alt="">
-            <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
-          </div>
-          <div class="labels">
-            <div class="label">{{ $t('events.football') }}</div>
-            <div class="label">{{ $t('events.men') }}</div>
-            <div class="label">...</div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="close">&times;</div>
-          <div class="top-line">
-            <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.svg" alt="">
-            </div>
-            <div class="text-data">
-              <div class="top-line name">{{ $t('events.friendly-match') }}</div>
-              <div class="bottom-line">
-                <div class="time">12:00 – 14:00</div>
-                <div class="date">16 {{ $t('events.months.June') }}</div>
-              </div>
-            </div>
-          </div>
-          <div class="address">
-            <img src="../../../assets/img/location-point.svg" alt="">
-            <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
-          </div>
-          <div class="labels">
-            <div class="label">{{ $t('events.football') }}</div>
-            <div class="label">{{ $t('events.men') }}</div>
-            <div class="label">...</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <RightSidebar />
   </div>
 </template>
 
@@ -432,12 +267,15 @@ import GreenBtn from '../../../components/GreenBtn.vue'
 import Dropdown from '../../../components/Dropdown.vue'
 import InputComponent from '../../../components/InputComponent.vue'
 import ContextMenu from '../../../components/ContextMenuModal.vue'
+import RightSidebar from '../../../components/RightSidebar.vue'
+import EventCard from '../../../components/EventCard.vue'
 
 import circleTick from '../../../assets/img/tick-in-circle.svg'
 import bucket from '../../../assets/img/bucket.svg'
 import pin from '../../../assets/img/pin.svg'
 import search from '../../../assets/img/search.svg'
 
+import CONSTANTS from '../../../consts/index'
 
 export default {
   name: 'EventsPage',
@@ -445,56 +283,12 @@ export default {
     GreenBtn,
     Dropdown,
     InputComponent,
-    ContextMenu
+    ContextMenu,
+    RightSidebar,
+    EventCard
   },
   data() {
     return {
-      eventCards: [
-        {
-          id: 0,
-          url: '/my-events/friendly-match',
-          date: 14,
-          time: '12:00 – 14:00',
-          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-          'main_text': 'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
-          name: 'В’ячеслав Залізняк',
-          'play_dates': '10 / 22',
-          'visitor_dates': '17 / 30'
-        },
-        {
-          id: 1,
-          url: '/my-events/friendly-match',
-          date: 14,
-          time: '12:00 – 14:00',
-          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-          'main_text': 'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
-          name: 'В’ячеслав Залізняк',
-          'play_dates': '10 / 22',
-          'visitor_dates': '17 / 30'
-        },       
-        {
-          id: 2,
-          url: '/my-events/friendly-match',
-          date: 14,
-          time: '12:00 – 14:00',
-          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-          'main_text': 'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
-          name: 'В’ячеслав Залізняк',
-          'play_dates': '10 / 22',
-          'visitor_dates': '17 / 30'
-        },     
-        {
-          id: 3,
-          url: '/my-events/friendly-match',
-          date: 14,
-          time: '12:00 – 14:00',
-          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-          'main_text': 'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
-          name: 'В’ячеслав Залізняк',
-          'play_dates': '10 / 22',
-          'visitor_dates': '17 / 30'
-        }
-      ],
       menuText: [
         {
           id: 0,
@@ -658,6 +452,11 @@ export default {
   computed: {
     searchIcon() {
       return search
+    },
+    mockData() {
+      return {
+        event_cards: CONSTANTS.event_page.event_cards
+      }
     }
   },
   methods: {
@@ -671,9 +470,6 @@ export default {
       this.contextMenuX = e.clientX
       this.contextMenuY = e.clientY
       this.isContextMenuActive = true
-    },
-    goToEventPage() {
-      this.$router.push('/application/events/3')
     },
     goToCreateEvent() {
       this.$router.push('/application/events/create')
@@ -1100,227 +896,6 @@ export default {
           display: flex;
           flex-wrap: wrap;
           justify-content: space-between;
-          .event-card {
-            position: relative;
-            padding: 20px 16px;
-            isolation: isolate;
-            width: 328px;
-            background: #FFFFFF;
-            box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
-            border-radius: 6px;
-            margin-bottom: 16px;
-            @media (min-width: 1200px) and (max-width: 1400px) {
-              width: 408px;
-            }
-            @media (min-width: 992px) and (max-width: 1199px) {
-              width: 320px;
-            }
-            @media (min-width: 768px) and (max-width: 991px) {
-              width: 344px;
-            }
-            @media (max-width: 768px) {
-              width: 100%;
-            }
-            &:before {
-              content: '';
-              display: block;
-              position: absolute;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: 6px;
-              background: linear-gradient(90.37deg, #4A7DEB -29.39%, #8978EE 37.85%, #D243C5 97.19%);
-              border-radius: 6px 6px 0px 0px;
-            }
-            .address {
-              &.desk-address {
-                display: none;
-                // @media (max-width: 992px) {
-                //   display: none;
-                // }
-              }
-              &.mob-address {
-                // @media (max-width: 992px) {
-                //   display: flex;
-                // }
-              }
-              display: flex;
-              background: #FAFAFA;
-              padding: 0px 4px;
-              margin-top: 4px;
-              @media (max-width: 992px) {
-                width: fit-content;
-                margin-top: 8px;
-              }
-              img {
-                margin-right: 5px;
-              }
-              p {
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 400;
-                font-size: 12px;
-                line-height: 20px;
-                color: #575775;
-                border-radius: 4px;
-                display: -webkit-box;
-                -webkit-line-clamp: 1;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-              }
-            }
-            .top-title {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              .date {
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 500;
-                font-size: 14px;
-                line-height: 20px;
-                text-align: right;
-                color: #262541;
-              }
-              .time {
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 400;
-                font-size: 12px;
-                line-height: 20px;
-                text-align: right;
-                color: #4C4A82;
-              }
-              .left-side {
-                display: flex;
-                // width: 262px;
-                // min-width: 262px;
-                .card-icon {
-                  display: flex;
-                  flex-direction: row;
-                  justify-content: center;
-                  align-items: center;
-                  min-width: 48px;
-                  width: 48px;
-                  height: 48px;
-                  background: #EFEFF6;
-                  border-radius: 4px;
-                  margin-right: 8px
-                }
-                .text-block {
-                  .title {
-                    font-family: 'Exo 2';
-                    font-style: normal;
-                    font-weight: 700;
-                    font-size: 16px;
-                    line-height: 24px;
-                    color: #262541;
-                  }
-                  .date-time-mob {
-                    display: flex;
-                    align-items: center;
-                    margin-top: 4px;
-                    .date {
-                      margin-right: 12px;
-                    }
-                  }
-                }
-              }
-              .right-side {
-                display: none;
-                // @media (max-width: 992px) {
-                //   display: none;
-                // }
-              }
-            }
-            
-            .main-text {
-              font-family: 'Inter';
-              font-style: normal;
-              font-weight: 400;
-              font-size: 12px;
-              line-height: 20px;
-              color: #393762;
-              display: -webkit-box;
-              -webkit-line-clamp: 2;
-              -webkit-box-orient: vertical;
-              overflow: hidden;
-              margin-top: 12px;
-            }
-            .labels {
-              display: flex;
-              align-items: center;
-              margin-top: 12px;
-              .label {
-                margin-right: 4px;
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 400;
-                font-size: 12px;
-                line-height: 20px;
-                color: #575775;
-                padding: 0px 8px;
-                border: 1px solid #EFEFF6;
-                border-radius: 100px;
-              }
-            }
-            .bottom-block {
-              margin-top: 12px;
-              border-top: 1px dashed #DFDEED;
-              .top-line {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding-top: 12px;
-                .name {
-                  font-family: 'Inter';
-                  font-style: normal;
-                  font-weight: 500;
-                  font-size: 12px;
-                  line-height: 20px;
-                  color: #393762;
-                }
-                .price {
-                  font-family: 'Inter';
-                  font-style: normal;
-                  font-weight: 600;
-                  font-size: 14px;
-                  line-height: 20px;
-                  text-align: right;
-                  color: #262541;
-                }
-              }
-              .bottom-line {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-top: 8px;
-                .left-side {
-                  display: flex;
-                  align-items: center;
-                  .titles {
-                    margin-right: 30px;
-                  }
-                  .titles, .date {
-                    font-family: 'Inter';
-                    font-style: normal;
-                    font-weight: 400;
-                    font-size: 12px;
-                    line-height: 20px;
-                  }
-                  .players, .players-date {
-                    color: #262541;
-                  }
-                  .visitors, .visitors-date {
-                    color: #575775;
-                  }
-                }
-                .right-side {
-
-                }
-              }
-            }
-          }
         }
         .my-events-block {
           display: flex;
@@ -1477,126 +1052,6 @@ export default {
                   color: #4C4A82;
                 }
               }
-            }
-          }
-        }
-      }
-    }
-    .right-sidebar {
-      @media (max-width: 992px) {
-        display: none;
-      }
-      .title-block {
-        .title {
-          font-family: 'Exo 2';
-          font-style: normal;
-          font-weight: 700;
-          font-size: 22px;
-          line-height: 32px;
-          color: #262541;
-        }
-        .subtitle {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 500;
-          font-size: 13px;
-          line-height: 20px;
-          color: #575775;
-        }
-      }
-      .cards-block {
-        margin-top: 20px;
-        .card {
-          position: relative;
-          width: 100%;
-          background: #FFFFFF;
-          border: 1px solid #DFDEED;
-          border-radius: 6px;
-          padding: 10px 12px;
-          margin-bottom: 16px;
-          .close {
-            position: absolute;
-            right: 10px;
-            top: 10px;
-            font-size: 20px;
-            cursor: pointer;
-          }
-          .top-line {
-            display: flex;
-            align-items: center;
-            .text-data {
-              margin-left: 8px;
-              .name {
-                font-family: 'Exo 2';
-                font-style: normal;
-                font-weight: 600;
-                font-size: 14px;
-                line-height: 16px;
-                color: #262541;
-              }
-              .bottom-line {
-                display: flex;
-                align-items: center;
-                margin-top: 4px;
-                .time {
-                  font-family: 'Inter';
-                  font-style: normal;
-                  font-weight: 400;
-                  font-size: 12px;
-                  line-height: 20px;
-                  text-align: right;
-                  color: #575775;
-                  margin-right: 21px;
-                }
-                .date {
-                  font-family: 'Inter';
-                  font-style: normal;
-                  font-weight: 500;
-                  font-size: 12px;
-                  line-height: 16px;
-                  text-align: right;
-                  color: #262541;
-                }
-              }
-            }
-          }
-          .address {
-            display: flex;
-            background: #FAFAFA;
-            padding: 0px 4px;
-            margin-top: 4px;
-            img {
-              margin-right: 5px;
-            }
-            p {
-              font-family: 'Inter';
-              font-style: normal;
-              font-weight: 400;
-              font-size: 12px;
-              line-height: 20px;
-              color: #575775;
-              border-radius: 4px;
-              display: -webkit-box;
-              -webkit-line-clamp: 1;
-              -webkit-box-orient: vertical;
-              overflow: hidden;
-            }
-          }
-          .labels {
-            display: flex;
-            align-items: center;
-            margin-top: 12px;
-            .label {
-              margin-right: 4px;
-              font-family: 'Inter';
-              font-style: normal;
-              font-weight: 400;
-              font-size: 12px;
-              line-height: 20px;
-              color: #575775;
-              padding: 0px 8px;
-              border: 1px solid #EFEFF6;
-              border-radius: 100px;
             }
           }
         }

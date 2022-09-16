@@ -1,6 +1,6 @@
 <template>
   <div 
-    class="green-btn"
+    class="b_green_btn"
     :style="btnStyle"
     @click="$emit('click-function')"
   >
@@ -59,7 +59,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.green-btn {
+.b_green_btn {
   border-radius: 6px;
   color: #fff;
   height: 32px;

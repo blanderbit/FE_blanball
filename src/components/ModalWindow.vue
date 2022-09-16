@@ -1,18 +1,18 @@
 <template>
   <div>
-    <div class="modal-wrapper" @click.self="$emit('close-modal')">
-      <div class="modal-window">
-        <div class="window-title" :style="{'background': titleColor}">
-          <div class="text">
+    <div class="b_modal_wrapper" @click.self="$emit('close-modal')">
+      <div class="b_modal_modal-window">
+        <div class="b_modal_window-title" :style="{'background': titleColor}">
+          <div class="b_modal_text">
             <slot name="title">
               Modal name
             </slot>
           </div>
-          <div class="icon">
+          <div class="b_modal_icon">
             <slot name="title-icon"></slot>
           </div>
         </div>
-        <div class="modals-container">
+        <div class="b_modal_modals-container">
           <slot name="change-phone-number"></slot>
           <slot name="change-login"></slot>
           <slot name="delete-account"></slot>
@@ -36,7 +36,7 @@ export default {
 </script>
 
 <style lang="scss">
-.modal-wrapper {
+.b_modal_wrapper {
   position: fixed;
   top: 0;
   left: 0;
@@ -44,7 +44,7 @@ export default {
   height: 100%;
   background: rgba(255, 255, 255, 0.514);
   z-index: 999;
-  .modal-window {
+  .b_modal_modal-window {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -56,7 +56,7 @@ export default {
     border-radius: 6px;
     background: #fff;
     padding: 80px 20px 20px 20px;
-    .window-title {
+    .b_modal_window-title {
       display: flex;
       justify-content: space-between;
       align-items: center;

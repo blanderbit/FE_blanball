@@ -1,11 +1,11 @@
 <template>
   <div 
-    class="context-modal-wrapper"
+    class="b_context_modal_wrapper"
     @click="wrapperClick"
   >
     <div 
-      class="context-modal"
-      :style="contextWindowStyle"
+      class=""
+      :style="contb_context_modalextWindowStyle"
     >
       <ul>
         <li 
@@ -57,14 +57,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.context-modal-wrapper {
+.b_context_modal_wrapper {
   position: fixed;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
   z-index: 999;
-  .context-modal {
+  .b_context_modal {
     width: 228px;
     background: #fff;
     position: absolute;
