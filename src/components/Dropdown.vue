@@ -1,24 +1,24 @@
 <template>
   <div 
-    class="b_dropdown"
+    class="b-dropdown"
     :style="dropdownStyle"
     >
     <div 
       v-if="isOpened"
-      class="b_dropdown_back-layer"
+      class="b-dropdown__back-layer"
       @click="toggleDropdown"
     ></div>
-    <div v-if="outsideTitle" class="b_dropdown_outer-title">
+    <div v-if="outsideTitle" class="b-dropdown__outer-title">
       <span>{{mainTitle}}</span>
     </div>
-    <div v-if="insideTitle" class="b_dropdown_inner-title">
+    <div v-if="insideTitle" class="b-dropdown__inner-title">
       <span>{{mainTitle}}</span>
     </div>
-    <div ref="wrapper" class="b_dropdown_current-wrapper">
-      <div class="b_dropdown_drop-current" @click="toggleDropdown">
+    <div ref="wrapper" class="b-dropdown__current-wrapper">
+      <div class="b-dropdown__drop-current" @click="toggleDropdown">
         <slot name="drop-icon"></slot>
-        <div class="b_dropdown_current-name">{{currentValue}}</div>
-        <div class="b_dropdown_arrow-down">
+        <div class="b-dropdown__current-name">{{currentValue}}</div>
+        <div class="b-dropdown__arrow-down">
           <img src="../assets/img/arrow-down-background.svg" alt="">
         </div>
       </div>
@@ -107,14 +107,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .b_dropdown {
+  .b-dropdown {
     width: 100%;
     border: 1px solid #DFDEED;
     border-radius: 6px;
     margin: 12px 0;
     display: flex;
     position: relative;
-    .b_dropdown_back-layer {
+    .b-dropdown__back-layer {
       width: 100%;
       height: 100%;
       position: fixed;
@@ -122,7 +122,7 @@ export default {
       left: 0;
       z-index: 998;
     }
-    .b_dropdown_outer-title {
+    .b-dropdown__outer-title {
       height: 16px;
       background: linear-gradient(180deg, #F9F9FC 0%, #FFFFFF 100%);
       border-radius: 4px;
@@ -140,7 +140,7 @@ export default {
       justify-content: center;
       align-items: center;
     }
-    .b_dropdown_inner-title {
+    .b-dropdown__inner-title {
       width: 108px;
       min-width: 108px;
       font-family: "Inter";
@@ -159,10 +159,10 @@ export default {
         padding-left: 12px;
       }
     }
-    .b_dropdown_current-wrapper {
+    .b-dropdown__current-wrapper {
       height: 100%;
       width: 100%;
-      .b_dropdown_drop-current {
+      .b-dropdown__drop-current {
         display: flex;
         flex-basis: 100%;
         padding: 0 12px;

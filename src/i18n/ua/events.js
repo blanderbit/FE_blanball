@@ -21,17 +21,17 @@ export default {
   'planned-events': 'Заплановані події',
   'your-events': 'Заходи у яких ви запланували участь',
   months: {
-    'January':	'Січень',
-    'February':	'Лютий',
-    'March':	'Березень',
-    'April':	'Квітень',
-    'May':	'Травень',
-    'June':	'Червень',
-    'July':	'Липень',
-    'August':	'Серпень',
-    'September': 'Вересень',
-    'October':	'Жовтень',
-    'November':	'Листопад',
-    'December':	'Грудень'
+    'january':	'Січень',
+    'february':	'Лютий',
+    'march':	'Березень',
+    'april':	'Квітень',
+    'may':	'Травень',
+    'june':	'Червень',
+    'july':	'Липень',
+    'august':	'Серпень',
+    'september': 'Вересень',
+    'october':	'Жовтень',
+    'november':	'Листопад',
+    'december':	'Грудень'
   }
 }

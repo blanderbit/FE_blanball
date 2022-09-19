@@ -1,11 +1,10 @@
 <template>
-  <div class="b_right_sidebar">
-    <div class="b_right_sidebar_title-block">
-      <div class="b_right_sidebar_title">{{ $t('events.planned-events') }}</div>
-      <div class="b_right_sidebar_subtitle">{{ $t('events.your-events') }}</div>
+  <div class="b-right-sidebar">
+    <div class="b-right-sidebar__title-block">
+      <div class="b-right-sidebar__title">{{ $t('events.planned-events') }}</div>
+      <div class="b-right-sidebar__subtitle">{{ $t('events.your-events') }}</div>
     </div>
-
-    <div class="b_right_sidebar_cards-block">
+    <div class="b-right-sidebar__cards-block">
       <SmallEventCard 
         v-for="item in 5"
         :key="item"
@@ -19,12 +18,12 @@ import SmallEventCard from './SmallEventCard.vue'
 </script>
 
 <style lang="scss" scoped>
-.b_right_sidebar {
-  @media (max-width: 1200px) {
+.b-right-sidebar {
+  @media (max-width: 992px) {
     display: none;
   }
-  .b_right_sidebar_title-block {
-    .b_right_sidebar_title {
+  .b-right-sidebar__title-block {
+    .b-right-sidebar__title {
       font-family: 'Exo 2';
       font-style: normal;
       font-weight: 700;
@@ -32,7 +31,7 @@ import SmallEventCard from './SmallEventCard.vue'
       line-height: 32px;
       color: #262541;
     }
-    .b_right_sidebar_subtitle {
+    .b-right-sidebar__subtitle {
       font-family: 'Inter';
       font-style: normal;
       font-weight: 500;
@@ -41,7 +40,7 @@ import SmallEventCard from './SmallEventCard.vue'
       color: #575775;
     }
   }
-  .b_right_sidebar_cards-block {
+  .b-right-sidebar__cards-block {
     margin-top: 20px;
   }
 }
