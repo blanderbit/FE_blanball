@@ -14,7 +14,7 @@
     height: 36px;
   }
   .main {
-    background: #E5E5E5;
+    background: #F8F8FC;
     width: 640px;
     padding: 45px 48px 28px 45px;
   }
@@ -27,6 +27,10 @@
   }
   .main .header .logo-block .main-logo .logo {
     display: table-cell;
+    margin-right: 8px;
+  }
+  .main .header .logo-block .main-logo .logo img {
+    margin-right: 8px;
   }
   .main .header .logo-block .main-logo .name-wrapper {
     display: table-cell;
@@ -122,27 +126,55 @@
     margin-bottom: 20px;
     font-weight: 700;
   }
-  .main .footer .main_text,
-  .main .footer .address,
-  .main .footer .copyright {
+  .main .social-line-wrapper .social-line {
+    margin-top: 31px;
+    margin-bottom: 19px;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+  }
+  .main .social-line-wrapper .social-line a {
+    text-decoration: none;
+    margin-right: 28px;
+  }
+  .main .social-line-wrapper .social-line a:last-child {
+    margin-right: 0;
+  }
+
+  .main .logo-line-wrapper .logo-line {
+    margin: 0 auto;
+    width: fit-content;
+    margin-bottom: 16px;
+  }
+  .main .logo-line-wrapper .logo-line .logo-icon {
+    display: inline-block;
+    margin-right: 8px;
+  }
+  .main .logo-line-wrapper .logo-line .logo-icon img {
+    width: 28px;
+  }
+  .main .logo-line-wrapper .logo-line .text {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 32px;
+    color: #262541;
+    display: inline-block;
+    vertical-align: top;
+  }
+  .main .footer-wrapper {
+    margin-top: 16px;
+  }
+  .main .footer {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
-    line-height: 20px;
-    color: #575775;
-  }
-  .main .footer .address {
-    margin-top: 20px;
-  }
-  .main .footer .main_text {
-    margin-top: 36px;
-  }
-  .main .footer .main_text a {
-    color: #0069FF;
-  }
-  .main .footer .main_text .email {
-    text-decoration: none;
+    line-height: 160%;
+    text-align: center;
+    letter-spacing: 0.002em;
+    color: #8A8AA8;
   }
   
 </style>
@@ -198,18 +230,45 @@
         </div>
       </td>
     </tr>
-    <tr class="footer">
+    <tr class="social-line-wrapper">
       <td>
-        <div class="main_text">
-          Цей електронний лист надіслано на <a href="#" class="email">gita@email.com</a>. 
-          Якщо ви не бажаєте отримувати електронні листи такого типу, 
-          чи хочете ви, щоб ваш бренд більше не отримував листи? <a href="#">Відписатися</a>.
+        <div class="social-line">
+          <a href="">
+            <img src="../src/assets/img/twitter-icon.svg" alt="">
+          </a>
+          <a href="">
+            <img src="../src/assets/img/fb-icon.svg" alt="">
+          </a>
+          <a href="">
+            <img src="../src/assets/img/insta-icon.svg" alt="">
+          </a>
         </div>
-        <div class="address">
-          915 Wilshire BLVD #1600, Львів, CA 90017-6410, Україна
+      </td>
+    </tr>
+    <tr class="logo-line-wrapper">
+      <td>
+        <div class="logo-line">
+          <div class="logo-icon">
+            <img src="../src/assets/img/my-profile-logo.svg" alt="">
+          </div>
+          <div class="text">
+            BlanBall
+          </div>
         </div>
-        <div class="copyright">
-          © 2022 BlanBall
+      </td>
+    </tr>
+    <tr class="footer-wrapper">
+      <td>
+        <div class="footer">
+          <div class="info1">
+            Blanball © 2022
+          </div>
+          <div class="info1">
+            Govinda’s Rewards & Recognition.
+          </div>
+          <div class="info1">
+            A better company begins with a personalized employee experience.
+          </div>
         </div>
       </td>
     </tr>
