@@ -2,9 +2,10 @@
   <div class="b-tech-works">
     <div class="b-tech-works__top-message-line">
       <div class="b-tech-works__text">
-        Наразі, сайт працює у тестовому режимі, тому може містити помилки. Будь ласка, повідомте нас якщо помітите якусь із них :)
+        Наразі, сайт працює у тестовому режимі, тому може містити помилки. Будь
+        ласка, повідомте нас якщо помітите якусь із них :)
       </div>
-      <GreenBtn 
+      <GreenBtn
         :text="'Я знайшов помилку'"
         :width="143"
         :height="28"
@@ -18,29 +19,33 @@
           <div>тривають<span> технічні роботи</span></div>
         </div>
         <div class="b-tech-works__subtitle">
-          Наша команда працює над тим, щоб ви могли користувалися додатком із задоволенням, вибачте за тимчасові незручності
+          Наша команда працює над тим, щоб ви могли користувалися додатком із
+          задоволенням, вибачте за тимчасові незручності
         </div>
-        <div class="b-tech-works__not-have-account">
-          Ще не маєте акаунту?
-        </div>
+        <div class="b-tech-works__not-have-account">Ще не маєте акаунту?</div>
         <div class="b-tech-works__register-link">
           Зареєструйтеся та будьте в курсі всіх оновлень
         </div>
       </div>
       <div class="b-tech-works__right-side">
-        <img src="../../assets/img/tech-works.svg" alt="">
+        <img src="../../assets/img/tech-works-back.svg" alt="" />
+        <div class="st">
+          <div class="st1"></div>
+          <div class="st2"></div>
+          <div class="st3"></div>
+        </div>
       </div>
     </div>
-  </div>  
+  </div>
 </template>
 
 <script>
-import GreenBtn from '../../components/GreenBtn.vue';
+import GreenBtn from '../../components/GreenBtn.vue'
 
 export default {
   components: {
-    GreenBtn
-  }
+    GreenBtn,
+  },
 }
 </script>
 
@@ -48,11 +53,11 @@ export default {
 .b-tech-works {
   .b-tech-works__top-message-line {
     padding: 8px 0 8px 0;
-    background: #F0F0F4;
+    background: #f0f0f4;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    @media (max-width: 768px) {
+    @media (max-width: 992px) {
       display: none;
     }
     .b-tech-works__text {
@@ -61,7 +66,7 @@ export default {
       font-weight: 500;
       font-size: 12px;
       line-height: 20px;
-      color: #8A8AA8;
+      color: #8a8aa8;
     }
   }
   .b-tech-works__main-part {
@@ -102,7 +107,7 @@ export default {
         color: #575775;
         padding-bottom: 28px;
         margin-bottom: 12px;
-        border-bottom: 1px solid #DFDEED;
+        border-bottom: 1px solid #dfdeed;
         @media (max-width: 768px) {
           font-size: 12px;
         }
@@ -125,8 +130,67 @@ export default {
       }
     }
     .b-tech-works__right-side {
+      position: relative;
       img {
         width: 100%;
+      }
+      .st {
+        position: absolute;
+        width: 340px;
+        height: 340px;
+        margin: 0 20px;
+        top: 5%;
+        left: 5%;
+        @media (max-width: 576px) {
+          top: 0;
+          left: 0;
+        }
+      }
+      .st1 {
+        position: absolute;
+        top: 10%;
+        left: 4%;
+        background: url('../../assets/img/wheel1.svg') no-repeat center / cover;
+        width: 145px;
+        height: 145px;
+        animation: stid 2.5s linear infinite;
+        @media (max-width: 576px) {
+          left: 0;
+        }
+      }
+      .st2 {
+        position: absolute;
+        top: 17%;
+        left: 45%;
+        width: 180px;
+        height: 180px;
+        background: url('../../assets/img/wheel2.svg') no-repeat center / cover;
+        animation: stidd 2.5s linear infinite;
+        @media (max-width: 576px) {
+          left: 40%;
+        }
+      }
+      .st3 {
+        position: absolute;
+        top: 64%;
+        left: 34%;
+        background: url('../../assets/img/wheel1.svg') no-repeat center / cover;
+        width: 110px;
+        height: 110px;
+        animation: stid 2.5s linear infinite;
+        @media (max-width: 576px) {
+          top: 66%;
+        }
+      }
+      @keyframes stid {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes stidd {
+        to {
+          transform: rotate(-360deg);
+        }
       }
     }
   }
