@@ -1,25 +1,24 @@
 <template>
   <div class="bread-crumbs">
     <ul>
-      <li
-        v-for="(item, idx) in breadcrumbs"
-        :key="item.name"
-      >
+      <li v-for="(item, idx) in breadcrumbs" :key="item.name">
         <router-link :to="idx + 1 === breadcrumbs.length ? '' : item.path">
           {{ item.name }}
         </router-link>
-        <img v-if="!(idx + 1 === breadcrumbs.length)" src="../assets/img/arrow-right.svg" alt="">
+        <img
+          v-if="!(idx + 1 === breadcrumbs.length)"
+          src="../assets/img/arrow-right.svg"
+          alt=""
+        />
       </li>
     </ul>
   </div>
 </template>
 
 <script setup>
-import {useRouter} from 'vue-router'
+import { useRouter } from 'vue-router'
 
-const { breadcrumbs } = useRouter().currentRoute.value.meta;
-
-console.log(breadcrumbs)
+const { breadcrumbs } = useRouter().currentRoute.value.meta
 </script>
 
 <style lang="scss" scoped>
