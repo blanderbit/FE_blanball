@@ -205,10 +205,7 @@
               :type="['password', 'text']"
               :outside-title="true"
               :has-icon="true"
-              :icon="[
-                '../../../assets/img/eye-crossed.svg',
-                '../../../assets/img/eye-opened.svg'
-              ]"
+              :icon="[eyeCrossed, eyeOpened]"
             />
           </div>
           <div class="inut-wrapper">
@@ -218,10 +215,7 @@
               :type="['password', 'text']"
               :outside-title="true"
               :has-icon="true"
-              :icon="[
-                '../../../assets/img/eye-crossed.svg',
-                '../../../assets/img/eye-opened.svg'
-              ]"
+              :icon="[eyeCrossed, eyeOpened]"
             />
           </div>
           <p class="sms-text">
@@ -510,6 +504,8 @@ import ModalWindow from '../../../components/ModalWindow.vue'
 import ModalUserWindow from '../../../components/ModalUserWindow.vue'
 import PlayerPageComponent from '../../../components/PlayerPageComponent.vue'
 
+import eyeCross from '../../../assets/img/eye-crossed.svg'
+import eyeOpen from '../../../assets/img/eye-opened.svg'
 import userIcon from '../../../assets/img/user-icon.svg'
 import database from '../../../assets/img/database.svg'
 import notification from '../../../assets/img/notification-small.svg'
@@ -611,6 +607,12 @@ export default {
     }
   },
   computed: {
+    eyeCrossed() {
+      return eyeCross
+    },
+    eyeOpened() {
+      return eyeOpen
+    },
     sortArrowHorizontal() {
       return sortArrowHorizontal
     },
