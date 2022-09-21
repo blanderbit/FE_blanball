@@ -407,7 +407,7 @@ const router = createRouter({
         },
         {
             path: '/:pathMatch(.*)*',
-            component: import('../views/404.vue')
+            component: () => import('../views/404.vue')
         },
     ]
 });
