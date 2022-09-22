@@ -1,0 +1,9 @@
+version: "3.7"
+
+services:
+ blanball-fe-prod:
+  container_name: blanball-fe-prod
+  image: registry.it-flumx.com/test_blanball_fe:latest
+  command: 'bash build.sh'
+  ports:
+   - "49205:49201"
