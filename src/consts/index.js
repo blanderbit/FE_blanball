@@ -1,7 +1,9 @@
 import UsersPage from './user-page'
 import starStyle from './star-style'
+import modalFeedback from './modal-feedback'
 
 export default {
   users_page: UsersPage,
-  star_style: starStyle
+  star_style: starStyle,
+  modal_feedback: modalFeedback
 }
