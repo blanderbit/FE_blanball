@@ -12,11 +12,14 @@
           <div class="b_user_card_top_line_name_rating">
             <div class="b_user_card_name">{{user.name}}</div>
             <div class="b_user_card_team_rating_mob">
-              <!-- <star-rating
-                :star-style="starStyle"
-                :rating="3"
-                :is-indicator-active="false"
-              ></star-rating> -->
+              <star-rating 
+                :rating="rating"
+                :star-size="14"
+                :show-rating="false"
+                :read-only="true"
+                :active-color="'#148783'"
+              >
+              </star-rating>
             </div>
           </div>
           <div class="b_user_card_pnz">
@@ -27,11 +30,14 @@
       <div class="b_user_card_rating_team">
         <div class="b_user_card_top_line_rating_status">
           <div class="b_user_card_team_rating">
-            <!-- <star-rating
-              :star-style="starStyle"
-              :rating="3"
-              :is-indicator-active="false"
-            ></star-rating> -->
+            <star-rating 
+              :rating="rating"
+              :star-size="14"
+              :show-rating="false"
+              :read-only="true"
+              :active-color="'#148783'"
+            >
+            </star-rating>
           </div>
           <div class="b_user_card_team_status">
             <div class="b_user_card_team">{{user.team}}</div>
@@ -61,13 +67,13 @@
 </template>
 
 <script>
-// import StarRating from 'vue-dynamic-star-rating'
 import CONSTANTS from '../consts'
+import StarRating from 'vue-star-rating'
 
 export default {
   name: "UserCard",
   components: {
-    // StarRating
+    StarRating
   },
   props: {
     userData: {
@@ -77,6 +83,7 @@ export default {
   },
   data() {
     return {
+      rating: 3,
       isCardActive: false
     }
   },
@@ -149,14 +156,11 @@ export default {
             }
           }
           .b_user_card_team_rating_mob {
-            margin-top: 5px;
-            .star-rating {
-              height: 0px;
-              overflow: hidden;
+            display: none;
               @media (max-width: 768px) {
                 height: auto;
+                display: block;
               }
-            }
           }
         }
 
@@ -191,11 +195,11 @@ export default {
         align-items: center;
         height: 32px;
         .b_user_card_team_rating {
-          .star-rating {
+          // .star-rating {
             @media (max-width: 768px) {
               display: none;
             }
-          }
+          // }
 
         }
         .b_user_card_team_status {

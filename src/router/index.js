@@ -122,6 +122,11 @@ export const ROUTES = {
                 absolute: (userId) => `/application/users/${userId}`,
                 name: 'application-users'
             }
+        },
+        WORKS: {
+            relative: 'works',
+            absolute: '/application/works',
+            name: 'application-works'
         }
     },
 };
@@ -402,12 +407,26 @@ const router = createRouter({
                             { name: 'Show profile', path: ''},
                         ]
                     }
+                },
+                {
+                    path: ROUTES.APPLICATION.WORKS.relative,
+                    name: ROUTES.APPLICATION.WORKS.name,
+                    beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
+                        // usersData: () => $api.UsersRequest.getAll(to.query),
+                    })),
+                    component: () => import('../views/application/works.vue'),
+                    meta: {
+                        breadcrumbs: [
+                            { name:'Main', path: '/' },
+                            { name: 'Works', path: '/application/works'},
+                        ]
+                    }
                 }
             ]
         },
         {
             path: '/:pathMatch(.*)*',
-            component: import('../views/404.vue')
+            component: () => import('../views/404.vue')
         },
     ]
 });
