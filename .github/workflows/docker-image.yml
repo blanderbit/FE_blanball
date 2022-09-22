@@ -1,7 +1,7 @@
 name: Deploy
 on:
   push:
-    branches: [ "develop","main" ]
+    branches: [ "develop","master" ]
 
 jobs:
   build_develop:
@@ -40,7 +40,7 @@ jobs:
       run: |
         curl -X POST ${{ secrets.PORTAINER_WEBHOOK_URL_TEST }}
   build_main:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     env:
       DOCKERFILE_PATH: Dockerfile
