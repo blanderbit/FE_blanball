@@ -1,38 +1,40 @@
 <template>
-  <div class="b-modal-bottom-card" :style="bottomCardStyle">
-    <div class="b-modal-bottom-card__title-line">
-      <div class="b-modal-bottom-card__title">Оцінити гру учасників матчу</div>
-      <div
-        class="b-modal-bottom-card__arrow"
-        :style="arrowStyle"
-        @click="$emit('arrowClick')"
-      >
-        <img src="../../assets/img/arrow-down.svg" alt="" />
-      </div>
-      <div class="b-modal-bottom-card__send-complain" v-if="isOpened">
-        <img src="../../assets/img/warning-red.svg" alt="" />
-        Подати скаргу
-      </div>
-    </div>
-    <div v-if="isOpened" class="b-modal-bottom-card__players-viewport">
-      <div class="b-modal-bottom-card__players-wrapper">
-        <div class="b-modal-bottom-card__team-1">
-          <RatePlayerCard
-            v-for="player in players.team_1"
-            :key="player.id"
-            :player="player"
-          />
+  <Transition>
+    <div class="b-modal-bottom-card" :style="bottomCardStyle">
+      <div class="b-modal-bottom-card__title-line">
+        <div class="b-modal-bottom-card__title">Оцінити гру учасників матчу</div>
+        <div
+          class="b-modal-bottom-card__arrow"
+          :style="arrowStyle"
+          @click="$emit('arrowClick')"
+        >
+          <img src="../../assets/img/arrow-down.svg" alt="" />
         </div>
-        <div class="b-modal-bottom-card__team-2">
-          <RatePlayerCard
-            v-for="player in players.team_2"
-            :key="player.id"
-            :player="player"
-          />
+        <div class="b-modal-bottom-card__send-complain" v-if="isOpened">
+          <img src="../../assets/img/warning-red.svg" alt="" />
+          Подати скаргу
         </div>
       </div>
+      <div v-if="isOpened" class="b-modal-bottom-card__players-viewport">
+        <div class="b-modal-bottom-card__players-wrapper">
+          <div class="b-modal-bottom-card__team-1">
+            <RatePlayerCard
+              v-for="player in players.team_1"
+              :key="player.id"
+              :player="player"
+            />
+          </div>
+          <div class="b-modal-bottom-card__team-2">
+            <RatePlayerCard
+              v-for="player in players.team_2"
+              :key="player.id"
+              :player="player"
+            />
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  </Transition>
 </template>
 
 <script>
@@ -80,10 +82,12 @@ export default {
 
 <style lang="scss" scoped>
 .b-modal-bottom-card {
-  padding: 20px;
+  overflow-y: scroll;
+  padding: 20px 20px 0 20px;
   background: #ffffff;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 6px;
+  transition: all 0.3s ease;
   .b-modal-bottom-card__title-line {
     display: flex;
     justify-content: space-between;

@@ -11,7 +11,14 @@
     </div>
     <div class="b-player-card__right-part">
       <div class="b-player-card__rating">
-        <!-- <star-rating v-model:rating="rating"></star-rating> -->
+        <star-rating 
+          :rating="rating"
+          :star-size="14"
+          :show-rating="false"
+          :read-only="true"
+          :active-color="'#148783'"
+        >
+        </star-rating>
       </div>
       <div class="b-player-card__message">
         <img src="../../assets/img/message-icon.svg" alt="">
@@ -23,12 +30,12 @@
 <script>
 import { onMounted, ref } from 'vue'
 
-// import VueStarRating from 'vue-star-rating'
+import StarRating from 'vue-star-rating'
 
 export default {
   name: 'RatePlayerCard',
   components: {
-    // VueStarRating
+    StarRating
   },
   props: {
     player: {
