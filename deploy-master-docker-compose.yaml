@@ -6,4 +6,4 @@ services:
   image: registry.it-flumx.com/prod_blanball_fe:latest
   command: 'bash build.sh'
   ports:
-   - "49205:49201"
+   - "49205:49205"
