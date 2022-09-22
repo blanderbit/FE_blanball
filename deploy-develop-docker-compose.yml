@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
- blanball-fe-prod:
+ blanball-fe-test:
   container_name: blanball-fe-test
   image: registry.it-flumx.com/test_blanball_fe:latest
   command: 'bash build.sh'
