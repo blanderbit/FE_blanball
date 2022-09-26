@@ -40,6 +40,10 @@ export default {
     fontStyles: {
       type: Object,
       default: () => {}
+    },
+    isIconAndTextApart: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -51,7 +55,8 @@ export default {
         ...this.fontStyles,
         width: this.width ? this.width + 'px' : '100%',
         height: this.height + 'px',
-        background: this.backgroundColor
+        background: this.backgroundColor,
+        'justify-content': this.isIconAndTextApart ? 'space-around' : 'center'
       }
     }
   }
@@ -65,7 +70,6 @@ export default {
   height: 32px;
   display: flex;
   align-items: center;
-  justify-content: center;
   align-items: center;
   font-family: 'Inter';
   font-style: normal;

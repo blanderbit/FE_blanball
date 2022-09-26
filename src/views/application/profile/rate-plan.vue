@@ -81,8 +81,8 @@ export default {
       this.tabs = this.tabs.map(item => ({ ...item, isActive: false }))
                             .map(item => {
                               return item.id === id ?
-                                    { ...item, isActive: true } :
-                                    item
+                                { ...item, isActive: true } :
+                                item
                             })
       this.$router.push(url)
     }
