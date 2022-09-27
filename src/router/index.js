@@ -421,7 +421,7 @@ const router = createRouter({
                             { name: 'Works', path: '/application/works'},
                         ]
                     }
-                }
+                },
             ]
         },
         {

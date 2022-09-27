@@ -30,7 +30,7 @@ const _checkAsyncIsAdmin = async () => {
 const isUserAuthorized = async (e) => {
     // let loginned = AltesiaTokenWorkerPlugin.isToken() && await _checkAsyncIsAdmin();
     // return Promise.resolve(!!loginned);
-    return Promise.resolve(true);
+    return Promise.resolve(false);
 };
 
 const isAuthorizedError = ({ to, next }) => {

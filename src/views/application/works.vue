@@ -5,12 +5,9 @@
         Наразі, сайт працює у тестовому режимі, тому може містити помилки. Будь
         ласка, повідомте нас якщо помітите якусь із них :)
       </div>
-      <GreenBtn
-        :text="'Я знайшов помилку'"
-        :width="143"
-        :height="28"
-        :backgroundColor="'#575775'"
-      />
+      <div class="b-tech-works__button">
+        Я знайшов помилку
+      </div>
     </div>
     <div class="b-tech-works__main-part">
       <div class="b-tech-works__left-side">
@@ -40,12 +37,7 @@
 </template>
 
 <script>
-import GreenBtn from '../../components/GreenBtn.vue'
-
 export default {
-  components: {
-    GreenBtn,
-  },
 }
 </script>
 
@@ -55,8 +47,11 @@ export default {
     padding: 8px 0 8px 0;
     background: #f0f0f4;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
+    @media (min-width: 992px) and (max-width: 1200px) {
+      padding: 8px;
+    }
     @media (max-width: 992px) {
       display: none;
     }
@@ -67,19 +62,36 @@ export default {
       font-size: 12px;
       line-height: 20px;
       color: #8a8aa8;
+      margin-right: 119px;
+    }
+    .b-tech-works__button {
+      padding: 2px 8px;
+      background: #575775;
+      border-radius: 4px;
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 13px;
+      line-height: 24px;
+      text-align: center;
+      color: #FFFFFF;
+      min-width: 143px;
     }
   }
   .b-tech-works__main-part {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 20px;
     @media (max-width: 768px) {
       flex-direction: column;
     }
     .b-tech-works__left-side {
       width: 416px;
+      margin-right: 40px;
       @media (max-width: 768px) {
         width: 100%;
+        margin: 0;
       }
       .b-tech-works__title {
         font-family: 'Exo 2';
@@ -131,6 +143,9 @@ export default {
     }
     .b-tech-works__right-side {
       position: relative;
+      @media (max-width: 768px) {
+        margin-top: 20px;
+      }
       img {
         width: 100%;
       }
