@@ -422,20 +422,6 @@ const router = createRouter({
                         ]
                     }
                 },
-                //  TO DO delete
-                {
-                    path: 'register',
-                    name: 'register',
-                    component: () => import('../views/application/register.vue'),
-                    meta: {
-                        breadcrumbs: [
-                            { name:'Main', path: '/' },
-                            { name: 'Register', path: '/application/register'},
-                        ]
-                    }
-                }
-                //  TO DO delete
-
             ]
         },
         {
