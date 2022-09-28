@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import Step_1 from '../../components/reset-components/Step-1.vue'
 import Step_2 from '../../components/reset-components/Step-2.vue'

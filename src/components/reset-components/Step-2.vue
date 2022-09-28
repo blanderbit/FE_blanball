@@ -1,27 +1,22 @@
 <template>
   <div class="b-register-step">
     <div class="b-register-step__top-part">
-      <div class="b-register-step__title">Створення облікового запису</div>
+      <div class="b-register-step__title">Відновлення доступу</div>
       <div class="b-register-step__progress-line">
         <div class="b-register-step__sections">
           <div
-            v-for="item of 2"
+            v-for="item of 3"
             :key="item"
             class="b-register-step__section active"
           ></div>
         </div>
       </div>
-      <div class="b-register-step__input">
-        <InputComponent
-          :outside-title="true"
-          :title="`E-mail`"
-          :placeholder="'elektron@mail.com'"
-          :title-width="0"
-        />
+      <div class="b-register-step__subtitle">
+        Придумайте новий надійний пароль. Зміни вступлять у силу одразу після збереження
       </div>
       <div class="b-register-step__input">
         <InputComponent 
-          :placeholder="'Придумайте пароль'" 
+          :title="'Новий пароль'"
           :title-width="0"
           :type="['password', 'text']"
           :outside-title="true"
@@ -31,7 +26,7 @@
       </div>
       <div class="b-register-step__input">
         <InputComponent 
-          :placeholder="'Повторіть пароль'" 
+          :title="'Повторіть пароль'"
           :title-width="0"
           :type="['password', 'text']"
           :outside-title="true"
@@ -45,14 +40,12 @@
         class="b-register-step__back-btn"
         @click="$emit('decrementStep')"
       >
-        Повернутися назад
+        Скасувати
       </div>
       <GreenBtn
-        :text="'Зареєструватися'"
+        :text="'Зберегти зміни'"
         :width="179"
         :height="40"
-        :icon-right="tick"
-        :is-icon-and-text-apart="true"
         @click-function="$emit('incrementStep')"
       />
     </div>
@@ -129,7 +122,7 @@ export default {
           margin: 0 auto;
         }
         .b-register-step__section {
-          width: 49%;
+          width: 33%;
           height: 4px;
           background: #efeff6;
           border-radius: 2px;
@@ -138,6 +131,14 @@ export default {
           }
         }
       }
+    }
+    .b-register-step__subtitle {
+      font-family: 'Exo 2';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      color: #575775;
     }
   }
   .b-register-step__input {
