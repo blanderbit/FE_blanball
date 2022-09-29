@@ -1,7 +1,8 @@
 <template>
   <div class="main-wrapper">
     <mobile-menu
-        v-if="isMobMenuActive"
+      :isMenuActive="isMobMenuActive"
+      @close-menu="isMobMenuActive = false"
     />
     <sidebar />
     <div class="main-block">
