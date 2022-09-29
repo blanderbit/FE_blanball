@@ -27,7 +27,7 @@ export default {
       left: 50%;
       display: flex;
       flex-direction: column;
-      width: 90%;
+      width: 1192px;
       transform: translate(-50%, -50%);
       box-shadow: 2px 2px 10px rgb(56 56 251 / 10%);
       border-radius: 6px;

@@ -682,7 +682,6 @@ export default {
           this.$refs[`input-${id + 1}`][0].focus()
         }
       }
-
     },
     switchEditMode() {
       this.isEditProfileMode = !this.isEditProfileMode

@@ -11,6 +11,9 @@
     <div v-if="outsideTitle" class="outer-title">
       <span>{{mainTitle}}</span>
     </div>
+    <div v-if="outsideTitleLeft" class="outer-title-left">
+      <span>{{outsideTitleLeft}}</span>
+    </div>
     <div v-if="insideTitle" class="inner-title">
       <span>{{mainTitle}}</span>
     </div>
@@ -50,6 +53,10 @@ export default {
     outsideTitle: {
       type: Boolean,
       default: false
+    },
+    outsideTitleLeft: {
+      type: String,
+      default: ''
     },
     mainTitle: {
       type: String,
@@ -139,6 +146,21 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
+
+      &-left {
+        padding: 0px 2px;
+        position: absolute;
+        top: -8px;
+        right: 5px;
+        background: #EFEFF6;
+        border-radius: 4px;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 16px;
+        color: #A8A8BD;
+      }
     }
     .inner-title {
       width: 108px;
@@ -169,7 +191,6 @@ export default {
         justify-content: space-between;
         align-items: center;
         user-select: none;
-        // position: relative;
         font-family: 'Inter';
         font-style: normal;
         font-weight: 400;
@@ -180,8 +201,6 @@ export default {
       }
     }
     ul {
-      // position: absolute;
-      // left: 0;
       width: 100%;
       background: #fff;
       border-right: 1px solid #DFDEED;
@@ -193,6 +212,12 @@ export default {
         list-style: none;
         padding: 2px 12px;
         background: #fff;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 24px;
+        color: #262541;
         &:hover {
           background: rgba(47, 32, 255, 0.795);
           color: #fff;
