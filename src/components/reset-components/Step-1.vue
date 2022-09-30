@@ -5,7 +5,7 @@
       <div class="b-reset-step__progress-line">
         <div class="b-reset-step__sections">
           <div
-            v-for="item of progress_line"
+            v-for="item of progressLine"
             :key="item.id"
             :class="[
               'b-reset-step__section',
@@ -44,7 +44,10 @@
       </div>
     </div>
     <div class="b-reset-step__buttons">
-      <div class="b-reset-step__cancel-button">
+      <div 
+        class="b-reset-step__cancel-button"
+        @click="$emit('secondLineOff')"
+      >
         Скасувати
       </div>
       <GreenBtn
@@ -69,13 +72,14 @@ export default {
     GreenBtn,
     InputComponent,
   },
-  emit: ['incrementStep'],
+  props: {
+    progressLine: {
+      type: Array,
+      default: () => []
+    }
+  },
+  emit: ['incrementStep', 'secondLineOn'],
   setup(props, {emit}) {
-    const progress_line = ref([
-      {id: 0, isActive: true},
-      {id: 1, isActive: false},
-      {id: 2, isActive: false}
-    ])
     const codeResettingInputs = ref([
       { id: 0, value: '' },
       { id: 1, value: '' },
@@ -105,8 +109,8 @@ export default {
       }
     }
     function handleNextClick() {
-      if (!progress_line.value[1].isActive) {
-        progress_line.value[1].isActive = true
+      if (!props.progressLine[1].isActive) {
+        emit('secondLineOn')
       } else {
         emit('incrementStep')
       }
@@ -137,7 +141,6 @@ export default {
 
     return {
       codeResettingInputs,
-      progress_line,
       setItemRef,
       codeInput,
       handleNextClick
