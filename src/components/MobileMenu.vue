@@ -1,16 +1,8 @@
 <template>
-  <div 
-    class="b-mob-menu"
-    :style="mobMenuStyle"
-  >
+  <div class="b-mob-menu" :style="mobMenuStyle">
     <div class="b-mob-menu__logo-block">
       <div class="b-mob-menu__logo">Blanball</div>
-      <div 
-        class="b-mob-menu__close"
-        @click="closeMobMenu"
-      >
-        &times;
-      </div>
+      <div class="b-mob-menu__close" @click="closeMobMenu">&times;</div>
     </div>
     <div class="b-mob-menu__user-data">
       <div class="b-mob-menu__user-img">
@@ -24,10 +16,7 @@
         <img src="../assets/img/logout-icon.svg" alt="" />
       </div>
     </div>
-    <div 
-      class="b-mob-menu__menu-block"
-      :style="menuBlockStyle"
-    >
+    <div class="b-mob-menu__menu-block" :style="menuBlockStyle">
       <div class="b-mob-menu__line">
         <div
           class="b-mob-menu__menu-item"
@@ -40,7 +29,7 @@
             background: item.background,
             color: item.textColor,
           }"
-          @click="lineMenuClick(item.id, 'top-menu')"
+          @click="lineMenuClick(item.id, item.url, 'top-menu')"
         >
           <img
             :src="item.isIconActive ? item.imgActive : item.imgInactive"
@@ -87,7 +76,7 @@
             background: item.background,
             color: item.textColor,
           }"
-          @click="lineMenuClick(item.id)"
+          @click="lineMenuClick(item.id, item.url)"
         >
           <img
             :src="item.isIconActive ? item.imgActive : item.imgInactive"
@@ -116,17 +105,18 @@ import Settings from '../assets/img/Settings.svg'
 import SettingsWhite from '../assets/img/Settings-white.svg'
 
 import CONSTANTS from '../consts/index'
+import { ROUTES } from '../router/index'
 
 export default {
   name: 'MobileMenu',
   props: {
     isMenuActive: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   emit: ['closeMenu'],
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     const topMenu = ref([
       {
         id: 0,
@@ -153,6 +143,7 @@ export default {
         alignement: 'flex-start',
         background: '#FFFFFF',
         textColor: '#575775',
+        url: ROUTES.APPLICATION.EVENTS.absolute,
       },
     ])
     const bottomMenu = ref([
@@ -168,6 +159,7 @@ export default {
         alignement: 'flex-start',
         background: '#FFFFFF',
         textColor: '#575775',
+        url: ROUTES.APPLICATION.USERS.GENERAL.absolute,
       },
       {
         id: 1,
@@ -181,6 +173,7 @@ export default {
         alignement: 'flex-start',
         background: '#FFFFFF',
         textColor: '#575775',
+        url: ROUTES.APPLICATION.HOME.absolute,
       },
     ])
     const router = useRouter()
@@ -193,12 +186,12 @@ export default {
     const menuBlockHeight = ref('auto')
     const menuBlockStyle = computed(() => {
       return {
-        height: menuBlockHeight.value
+        height: menuBlockHeight.value,
       }
     })
     const mobMenuStyle = computed(() => {
       return {
-        transform: `translateX(${props.isMenuActive ? 0 : -100}%)`
+        transform: `translateX(${props.isMenuActive ? 0 : -100}%)`,
       }
     })
 
@@ -222,7 +215,12 @@ export default {
         }
       })
     }
-    function lineMenuClick(id, menuType) {
+    function lineMenuClick(id, url, menuType) {
+      if (url) {
+        router.push(url)
+        closeMobMenu()
+        return
+      }
       menuBlockHeight.value = '100%'
       const currentlyClickedMenu =
         menuType === 'top-menu' ? topMenu : bottomMenu
@@ -272,7 +270,7 @@ export default {
       menuBlockStyle,
       mobMenuStyle,
       lineMenuClick,
-      closeMobMenu
+      closeMobMenu,
     }
   },
 }
