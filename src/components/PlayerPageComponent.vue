@@ -31,13 +31,20 @@
                 <div class="text">17 оцінок</div>
               </div>
             </div>
-            <div class="line">
+            <div class="line invite-share-desk">
               <div class="invite">Запросити на подію</div>
               <div class="share">
                 <img src="../assets/img/share-icon.svg" alt="" />
                 <span>Поділитися</span>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="invite-share-mob">
+          <div class="invite">Запросити на подію</div>
+          <div class="share">
+            <img src="../assets/img/share-icon.svg" alt="" />
+            <span>Поділитися</span>
           </div>
         </div>
         <div class="about-line">
@@ -90,6 +97,9 @@
             <img src="../assets/img/star.svg" alt="" />
           </div>
         </div>
+        <div class="rate-quantity-mob">
+          17 відміток
+        </div>
         <div class="ratings-cards">
           <div v-for="user of users" :key="user.id" class="rating-card">
             <div class="header">
@@ -101,12 +111,21 @@
             </div>
           </div>
         </div>
+        <div class="show-more-mob">
+          <span>
+            Показати ще 10 відгуків
+          </span>
+        </div>
       </div>
       <div class="planed-events">
         <div class="top-part">
           <div class="title">Заплановані події</div>
           <div class="events-cards">
-            <div v-for="event of events" :key="event.id" class="event-card">
+            <div 
+              v-for="event of events" 
+              :key="event.id" 
+              class="event-card"
+            >
               <div class="title-line">
                 <div class="name">{{ event.title }}</div>
                 <div class="label">{{ event.label }}</div>
@@ -116,13 +135,16 @@
                 <div class="date">{{ event.date }}</div>
               </div>
               <div class="labels-line">
-                <div
-                  v-for="label of event.labels"
-                  :key="label.id"
-                  class="label"
-                >
-                  {{ label.text }}
+                <div class="labels">
+                  <div
+                    v-for="label of event.labels"
+                    :key="label.id"
+                    class="label"
+                  >
+                    {{ label.text }}
+                  </div>
                 </div>
+                <img src="../assets/img/arrow-long-right.svg" alt="">
               </div>
             </div>
           </div>
@@ -211,8 +233,9 @@ export default {
 .player-page {
   position: relative;
   padding: 80px 20px 20px 20px;
+  height: 100%;
   @media (max-width: 1200px) {
-    padding: 60px 20px 20px 20px;
+    padding: 60px 16px 28px 16px;
   }
   .back-image {
     position: absolute;
@@ -220,6 +243,10 @@ export default {
     top: 0;
     z-index: -1;
     width: 100%;
+    @media (max-width: 576px) {
+      left: -70px;
+      width: 250%;
+    }
     img {
       width: 100%;
     }
@@ -228,6 +255,8 @@ export default {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
+    overflow-y: scroll;
+    overflow-x: auto;
     @media (max-width: 1200px) {
       flex-direction: column;
       align-items: center;
@@ -250,6 +279,9 @@ export default {
             img {
               display: block;
               width: 92px;
+              @media (max-width: 1200px) {
+                width: 60px;
+              }
             }
           }
         }
@@ -260,6 +292,14 @@ export default {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            @media (max-width: 576px) {
+              align-items: flex-start;
+            }
+            &.invite-share-desk {
+              @media (max-width: 576px) {
+                display: none;
+              }
+            }
             .name {
               font-family: 'Exo 2';
               font-style: normal;
@@ -267,6 +307,10 @@ export default {
               font-size: 20px;
               line-height: 24px;
               color: #262541;
+              @media (max-width: 576px) {
+                font-size: 16px;
+                line-height: 20px;
+              }
             }
 
             .label {
@@ -280,6 +324,9 @@ export default {
               line-height: 20px;
               text-align: center;
               color: #ffffff;
+              @media (max-width: 576px) {
+                font-size: 12px;
+              }
             }
             .invite {
               padding: 2px 12px;
@@ -322,8 +369,47 @@ export default {
                 color: #8a8aa8;
                 margin-left: 6px;
               }
+              @media (max-width: 576px) {
+                margin-bottom: 0;
+              }
             }
           }
+        }
+      }
+
+      .invite-share-mob {
+        display: flex;
+        align-items: center;
+        margin-top: 14px;
+        .invite {
+          padding: 2px 12px;
+          background: #262541;
+          border-radius: 6px;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 500;
+          font-size: 13px;
+          line-height: 24px;
+          text-align: center;
+          color: #ffffff;
+          margin-right: 25px;
+        }
+        .share {
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 13px;
+          line-height: 24px;
+          text-align: center;
+          color: #575775;
+          display: flex;
+          align-items: center;
+          img {
+            margin-right: 8px;
+          }
+        }
+        @media (min-width: 576px) {
+          display: none;
         }
       }
       .about-line {
@@ -407,6 +493,9 @@ export default {
         .info {
           display: flex;
           align-items: flex-start;
+          @media (max-width: 576px) {
+            display: block;
+          }
           .block {
             margin-right: 20px;
             .block-title {
@@ -424,6 +513,10 @@ export default {
               font-size: 14px;
               line-height: 20px;
               color: #262541;
+            }
+            @media (max-width: 576px) {
+              margin-top: 8px;
+              margin-right: 0;
             }
           }
         }
@@ -466,6 +559,17 @@ export default {
           }
         }
       }
+      .rate-quantity-mob {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 20px;
+        color: #8A8AA8;
+        @media (min-width: 576px) {
+          display: none;
+        }
+      }
       .ratings-cards {
         .rating-card {
           border-top: 1px dashed #dfdeed;
@@ -504,6 +608,21 @@ export default {
           }
         }
       }
+      .show-more-mob {
+        span {
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 12px;
+          line-height: 20px;
+          color: #575775;
+          border-bottom: 1px dashed #A8A8BD;
+          width: fit-content;
+          margin: 0 auto;
+          display: block;
+          cursor: pointer;
+        }
+      }
     }
     .planed-events {
       width: 256px;
@@ -525,13 +644,22 @@ export default {
           color: #262541;
         }
         .events-cards {
-          @media (min-width: 768px) and (max-width: 1200px) {
+          @media (max-width: 1200px) {
             display: flex;
+            flex-wrap: wrap;
           }
           .event-card {
             margin-top: 16px;
             padding-top: 16px;
             border-top: 1px dashed #dfdeed;
+            @media (min-width: 768px) and (max-width: 1200px) {
+              margin-right: 16px;
+              border-right: 1px dashed #dfdeed;
+              width: 240px;
+            }
+            @media (max-width: 768px) {
+              width: 100%;
+            }
             .title-line {
               display: flex;
               align-items: center;
@@ -574,19 +702,27 @@ export default {
 
             .labels-line {
               display: flex;
-              align-items: center;
-              flex-wrap: wrap;
-              .label {
-                padding: 0px 8px;
-                border: 1px solid #dfdeed;
-                border-radius: 100px;
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 400;
-                font-size: 12px;
-                line-height: 20px;
-                color: #262541;
-                margin-right: 4px;
+              align-items: flex-start;
+              justify-content: space-between;
+              .labels {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                .label {
+                  padding: 0px 8px;
+                  border: 1px solid #dfdeed;
+                  border-radius: 100px;
+                  font-family: 'Inter';
+                  font-style: normal;
+                  font-weight: 400;
+                  font-size: 12px;
+                  line-height: 20px;
+                  color: #262541;
+                  margin-right: 4px;
+                }
+              }
+              img {
+
               }
             }
           }
