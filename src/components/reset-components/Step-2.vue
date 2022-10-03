@@ -46,7 +46,6 @@
         :text="'Зберегти зміни'"
         :width="179"
         :height="40"
-        @click-function="$emit('incrementStep')"
       />
     </div>
   </div>
