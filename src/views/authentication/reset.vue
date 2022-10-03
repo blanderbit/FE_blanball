@@ -9,8 +9,11 @@
     <div class="b-reset__central-block">
       <div class="b-reset__left-part">
         <Step_1 
-            v-if="currentStep === 1" 
-            @increment-step="currentStep++" 
+          v-if="currentStep === 1"
+          :progress-line="FirstStepProgressLine"
+          @increment-step="currentStep++"
+          @second-line-on="FirstStepProgressLine[1].isActive = true"
+          @second-line-off="FirstStepProgressLine[1].isActive = false"
         />
         <Step_2
           v-if="currentStep === 2"
@@ -45,9 +48,15 @@ export default {
   },
   setup() {
     const currentStep = ref(1)
+    const FirstStepProgressLine = ref([
+      {id: 0, isActive: true},
+      {id: 1, isActive: false},
+      {id: 2, isActive: false}
+    ])
 
     return {
-      currentStep
+      currentStep,
+      FirstStepProgressLine
     }
   }
 }
