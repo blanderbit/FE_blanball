@@ -171,7 +171,7 @@ export default {
         }
       }
       label:before {
-        content: '✓';
+        content: '';
         position: absolute;
         display: flex;
         justify-content: center;
@@ -183,7 +183,10 @@ export default {
         border-radius: 3px;
       }
       input:checked + label::before {
-        background: #0d5956;
+        background-image: url('../../assets/img/login-tick.svg');
+        background-position: center;
+        background-size: cover;
+        border: none;
       }
     }
 
