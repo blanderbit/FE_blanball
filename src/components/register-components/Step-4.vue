@@ -139,8 +139,13 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background: #ffffff;
+  border-radius: 28px 28px 0px 0px;
   @media (max-width: 576px) {
-    padding: 44px 0px 72px 0px;
+    padding: 44px 16px 72px 16px;
+  }
+  @media (min-width: 576px) {
+    border-radius: 8px;
   }
   .b-register-step__top-part {
     .b-register-step__title {

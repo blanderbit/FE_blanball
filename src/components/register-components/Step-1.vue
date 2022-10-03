@@ -1,5 +1,15 @@
 <template>
   <div class="b-register-step">
+    <img
+      src="../../assets/img/ball-colored.svg"
+      alt="ball-big"
+      class="b-register-step__ball-big"
+    />
+    <img
+      src="../../assets/img/ball-colored.svg"
+      alt="ball-small"
+      class="b-register-step__ball-small"
+    />
     <div class="b-register-step__top-part">
       <div class="b-register-step__title">Створення облікового запису</div>
       <div class="b-register-step__progress-line">
@@ -78,8 +88,32 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background: #ffffff;
+  border-radius: 28px 28px 0px 0px;
+  position: relative;
+  overflow: hidden;
   @media (max-width: 576px) {
-    padding: 44px 0px 72px 0px;
+    padding: 44px 16px 72px 16px;
+  }
+  @media (min-width: 576px) {
+    border-radius: 8px;
+  }
+  .b-register-step__ball-big {
+    position: absolute;
+    width: 80px;
+    top: -30px;
+    left: -30px;
+    @media (min-width: 576px) {
+      display: none;
+    }
+  }
+  .b-register-step__ball-small {
+    position: absolute;
+    top: 0;
+    right: 0;
+    @media (min-width: 576px) {
+      display: none;
+    }
   }
   .b-register-step__top-part {
     .b-register-step__title {
