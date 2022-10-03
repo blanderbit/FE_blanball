@@ -20,32 +20,47 @@
         class="b-register__ball-small"
       />
       <div class="b-register__left-part">
-        <Step_1 v-if="currentStep === 1" @increment-step="currentStep++" />
-        <Step_2
-          v-if="currentStep === 2"
-          @increment-step="currentStep++"
-          @decrement-step="currentStep--"
-        />
-        <Step_3
-          v-if="currentStep === 3"
-          @increment-step="currentStep++"
-          @decrement-step="currentStep--"
-        />
-        <Step_4
-          v-if="currentStep === 4"
-          @increment-step="currentStep++"
-          @decrement-step="currentStep--"
-        />
-        <Step_5
-          v-if="currentStep === 5"
-          @increment-step="currentStep++"
-          @decrement-step="currentStep--"
-        />
-        <Step_6
-          v-if="currentStep === 6"
-          @increment-step="currentStep++"
-          @decrement-step="currentStep--"
-        />
+        <Transition>
+          <Step_1 
+            v-if="currentStep === 1" 
+            @increment-step="currentStep++" 
+          />
+        </Transition>
+        <Transition>
+          <Step_2
+            v-if="currentStep === 2"
+            @increment-step="currentStep++"
+            @decrement-step="currentStep--"
+          />
+        </Transition>
+        <Transition>
+          <Step_3
+            v-if="currentStep === 3"
+            @increment-step="currentStep++"
+            @decrement-step="currentStep--"
+          />
+        </Transition>
+        <Transition>
+          <Step_4
+            v-if="currentStep === 4"
+            @increment-step="currentStep++"
+            @decrement-step="currentStep--"
+          />
+        </Transition>
+        <Transition>
+          <Step_5
+            v-if="currentStep === 5"
+            @increment-step="currentStep++"
+            @decrement-step="currentStep--"
+          />
+        </Transition>
+        <Transition>
+          <Step_6
+            v-if="currentStep === 6"
+            @increment-step="currentStep++"
+            @decrement-step="currentStep--"
+          />
+        </Transition>
       </div>
       <div class="b-register__right-part" :style="rightSideStyle">
         <div class="b-register__google-play-block">
@@ -141,6 +156,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.8s ease;
+}
+
+.v-enter,
+.v-leave-to {
+  opacity: 0;
+}
 .b-register {
   position: relative;
   @media (min-width: 576px) and (max-width: 992px) {
