@@ -5,9 +5,7 @@
         Наразі, сайт працює у тестовому режимі, тому може містити помилки. Будь
         ласка, повідомте нас якщо помітите якусь із них :)
       </div>
-      <div class="b-tech-works__button">
-        Я знайшов помилку
-      </div>
+      <div class="b-tech-works__button">Я знайшов помилку</div>
     </div>
     <div class="b-tech-works__main-part">
       <div class="b-tech-works__left-side">
@@ -37,12 +35,18 @@
 </template>
 
 <script>
-export default {
-}
+export default {}
 </script>
 
 <style lang="scss" scoped>
 .b-tech-works {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  z-index: 999;
   .b-tech-works__top-message-line {
     padding: 8px 0 8px 0;
     background: #f0f0f4;
@@ -74,7 +78,7 @@ export default {
       font-size: 13px;
       line-height: 24px;
       text-align: center;
-      color: #FFFFFF;
+      color: #ffffff;
       min-width: 143px;
     }
   }
@@ -83,6 +87,7 @@ export default {
     justify-content: center;
     align-items: center;
     margin-top: 20px;
+    padding: 0 16px;
     @media (max-width: 768px) {
       flex-direction: column;
     }
