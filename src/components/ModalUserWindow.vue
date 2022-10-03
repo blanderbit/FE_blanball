@@ -33,6 +33,21 @@ export default {
       border-radius: 6px;
       background: #fff;
       padding: 36px 28px;
+      height: 90%;
+      overflow: hidden;
+      @media (min-width: 992px) and (max-width: 1200px) {
+        width: 980px;
+      }
+      @media (min-width: 768px) and (max-width: 992px) {
+        width: 748px;
+      }
+      @media (min-width: 576px) and (max-width: 768px) {
+        width: 556px;
+      }
+      @media (max-width: 576px) {
+        width: 90%;
+        padding: 0;
+      }
     }
   }
   </style>
