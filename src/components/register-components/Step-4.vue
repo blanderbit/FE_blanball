@@ -200,7 +200,7 @@ export default {
         width: 133px;
       }
       @media (max-width: 576px) {
-        width: 104px;
+        width: 32.5%;
       }
     }
   }
