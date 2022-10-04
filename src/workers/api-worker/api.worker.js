@@ -22,7 +22,8 @@ const excludedMethods = [
     "api"
 ];
 
-const getAvailableMethods = (instance, skippedMethods) => {
+const getAvailableMethods = (instance = {}, skippedMethods = []) => {
+    if(!instance) return [];
     return Object
         .keys(instance)
         .filter(key => !skippedMethods.find(item => item === key))
