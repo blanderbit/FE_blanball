@@ -425,6 +425,10 @@ const router = createRouter({
             ]
         },
         {
+            path: '/list-of-requests',
+            component: () => import('../views/list-of-api-requests.vue')
+        },
+        {
             path: '/:pathMatch(.*)*',
             component: () => import('../views/404.vue')
         }
