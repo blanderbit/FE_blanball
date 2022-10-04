@@ -10,6 +10,7 @@ import pkg from '../package'
 import './assets/main.css'
 import { UA_LANGUAGE } from "./i18n/ua";
 import { createLoader } from "./workers/loading-worker/loading.worker";
+import { API } from "./workers/api-worker/api.worker";
 
 const i18n = createI18n({
     locale: 'ua',
