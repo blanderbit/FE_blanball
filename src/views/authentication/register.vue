@@ -7,45 +7,48 @@
       <img :src="backgroundMob" alt="background image mobile" />
     </div>
     <div class="b-register__central-block">
-      <img
-        v-if="currentStep === 1 || currentStep === 2"
-        src="../../assets/img/ball-colored.svg"
-        alt="ball-big"
-        class="b-register__ball-big"
-      />
-      <img
-        v-if="currentStep === 1 || currentStep === 2"
-        src="../../assets/img/ball-colored.svg"
-        alt="ball-small"
-        class="b-register__ball-small"
-      />
       <div class="b-register__left-part">
-        <Step_1 v-if="currentStep === 1" @increment-step="currentStep++" />
-        <Step_2
-          v-if="currentStep === 2"
-          @increment-step="currentStep++"
-          @decrement-step="currentStep--"
-        />
-        <Step_3
-          v-if="currentStep === 3"
-          @increment-step="currentStep++"
-          @decrement-step="currentStep--"
-        />
-        <Step_4
-          v-if="currentStep === 4"
-          @increment-step="currentStep++"
-          @decrement-step="currentStep--"
-        />
-        <Step_5
-          v-if="currentStep === 5"
-          @increment-step="currentStep++"
-          @decrement-step="currentStep--"
-        />
-        <Step_6
-          v-if="currentStep === 6"
-          @increment-step="currentStep++"
-          @decrement-step="currentStep--"
-        />
+        <Transition>
+          <Step_1 
+            v-if="currentStep === 1" 
+            @increment-step="currentStep++" 
+          />
+        </Transition>
+        <Transition>
+          <Step_2
+            v-if="currentStep === 2"
+            @increment-step="currentStep++"
+            @decrement-step="currentStep--"
+          />
+        </Transition>
+        <Transition>
+          <Step_3
+            v-if="currentStep === 3"
+            @increment-step="currentStep++"
+            @decrement-step="currentStep--"
+          />
+        </Transition>
+        <Transition>
+          <Step_4
+            v-if="currentStep === 4"
+            @increment-step="currentStep++"
+            @decrement-step="currentStep--"
+          />
+        </Transition>
+        <Transition>
+          <Step_5
+            v-if="currentStep === 5"
+            @increment-step="currentStep++"
+            @decrement-step="currentStep--"
+          />
+        </Transition>
+        <Transition>
+          <Step_6
+            v-if="currentStep === 6"
+            @increment-step="currentStep++"
+            @decrement-step="currentStep--"
+          />
+        </Transition>
       </div>
       <div class="b-register__right-part" :style="rightSideStyle">
         <div class="b-register__google-play-block">
@@ -141,6 +144,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.8s ease;
+}
+
+.v-enter,
+.v-leave-to {
+  opacity: 0;
+}
 .b-register {
   position: relative;
   @media (min-width: 576px) and (max-width: 992px) {
@@ -182,30 +194,9 @@ export default {
     height: 555px;
     width: 992px;
     display: flex;
-    background: #ffffff;
     margin: 0 auto;
     position: relative;
     overflow: hidden;
-    @media (max-width: 576px) {
-      border-radius: 28px 28px 0px 0px;
-    }
-    .b-register__ball-big {
-      position: absolute;
-      width: 80px;
-      top: -30px;
-      left: -30px;
-      @media (min-width: 576px) {
-        display: none;
-      }
-    }
-    .b-register__ball-small {
-      position: absolute;
-      top: 0;
-      right: 0;
-      @media (min-width: 576px) {
-        display: none;
-      }
-    }
     @media (min-width: 992px) and (max-width: 1200px) {
       width: 890px;
     }
@@ -215,6 +206,7 @@ export default {
       border-radius: 8px;
     }
     @media (max-width: 576px) {
+      border-radius: 28px 28px 0px 0px;
       width: 100%;
     }
     .b-register__left-part {

@@ -29,6 +29,7 @@
               name="gender"
               type="radio"
               value="Самостійно"
+              v-model="profesionaLevel"
               checked
             />
             <label for="radio-1" class="radio-label"> Самостійно </label>
@@ -38,7 +39,8 @@
               id="radio-2" 
               name="gender" 
               type="radio" 
-              value="Професійно" 
+              value="Професійно"
+              v-model="profesionaLevel"
             />
             <label for="radio-2" class="radio-label"> Професійно </label>
           </div>
@@ -48,6 +50,7 @@
               name="gender"
               type="radio"
               value="Любительськи"
+              v-model="profesionaLevel"
             />
             <label for="radio-3" class="radio-label"> Любительськи </label>
           </div>
@@ -57,23 +60,29 @@
               name="gender"
               type="radio"
               value="Не займався"
+              v-model="profesionaLevel"
             />
             <label for="radio-4" class="radio-label"> Не займався </label>
           </div>
         </div>
       </div>
-      <div class="b-register-step__small-title">
-        Підтвердіть вашу кваліфікацію документом
-      </div>
-      <div class="b-register-step__input">
-        <InputComponent
-          :is-disabled="true"
-          :icon="[clip]"
-          :has-icon="true"
-          :outside-title="true"
-          :title="'Документ'"
-          :title-width="0"
-        />
+      <div 
+        class="b-register-step__confirm-qualification"
+        v-if="isDocumentNeeded"
+      >
+        <div class="b-register-step__small-title">
+          Підтвердіть вашу кваліфікацію документом
+        </div>
+        <div class="b-register-step__input">
+          <InputComponent
+            :is-disabled="true"
+            :icon="[clip]"
+            :has-icon="true"
+            :outside-title="true"
+            :title="'Документ'"
+            :title-width="0"
+          />
+        </div>
       </div>
     </div>
     <div class="b-register-step__buttons">
@@ -93,7 +102,7 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 import GreenBtn from '../GreenBtn.vue'
 import Dropdown from '../Dropdown.vue'
@@ -110,16 +119,22 @@ export default {
     InputComponent,
   },
   setup() {
+    const profesionaLevel = ref('')
     const clip = computed(() => {
       return clipIcon
     })
     const arrow_right = computed(() => {
       return arrowRight
     })
+    const isDocumentNeeded = computed(() => {
+      return profesionaLevel.value === 'Професійно'
+    })
 
     return {
       arrow_right,
       clip,
+      profesionaLevel,
+      isDocumentNeeded
     }
   },
 }
@@ -132,8 +147,13 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background: #ffffff;
+  border-radius: 28px 28px 0px 0px;
   @media (max-width: 576px) {
-    padding: 44px 0px 72px 0px;
+    padding: 44px 16px 72px 16px;
+  }
+  @media (min-width: 576px) {
+    border-radius: 8px;
   }
   .b-register-step__top-part {
     .b-register-step__title {
@@ -212,7 +232,7 @@ export default {
             width: 204px;
           }
           @media (max-width: 576px) {
-            width: 160px;
+            width: 49%;
           }
           input[type='radio'] {
             position: absolute;

@@ -46,7 +46,6 @@
         :text="'Зберегти зміни'"
         :width="179"
         :height="40"
-        @click-function="$emit('incrementStep')"
       />
     </div>
   </div>
@@ -96,7 +95,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   @media (max-width: 576px) {
-    padding: 44px 0px 72px 0px;
+    padding: 44px 16px 72px 16px;
   }
   .b-register-step__top-part {
     .b-register-step__title {

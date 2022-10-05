@@ -1,6 +1,9 @@
 <template>
   <div class="header">
-    <div class="mob-menu-icon">
+    <div 
+      class="mob-menu-icon"
+      @click="$emit('menuIconClick')"
+    >
       <img src="../assets/img/mob-menu-icon.svg" alt="">
     </div>
     <BreadCrumbs />
