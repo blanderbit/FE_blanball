@@ -49,6 +49,34 @@
             @decrement-step="currentStep--"
           />
         </Transition>
+        <Transition>
+          <Step_7
+            v-if="currentStep === 7"
+            @increment-step="currentStep++"
+            @decrement-step="currentStep--"
+          />
+        </Transition>
+        <Transition>
+          <Step_8
+            v-if="currentStep === 8"
+            @increment-step="currentStep++"
+            @decrement-step="currentStep--"
+          />
+        </Transition>
+        <Transition>
+          <Step_9
+            v-if="currentStep === 9"
+            @increment-step="currentStep++"
+            @decrement-step="currentStep--"
+          />
+        </Transition>
+        <Transition>
+          <Step_10
+            v-if="currentStep === 10"
+            @increment-step="currentStep++"
+            @decrement-step="currentStep--"
+          />
+        </Transition>
       </div>
       <div class="b-register__right-part" :style="rightSideStyle">
         <div class="b-register__google-play-block">
@@ -65,12 +93,17 @@
 
 <script>
 import { computed, ref } from 'vue'
+
 import Step_1 from '../../components/register-components/Step-1.vue'
 import Step_2 from '../../components/register-components/Step-2.vue'
 import Step_3 from '../../components/register-components/Step-3.vue'
 import Step_4 from '../../components/register-components/Step-4.vue'
 import Step_5 from '../../components/register-components/Step-5.vue'
 import Step_6 from '../../components/register-components/Step-6.vue'
+import Step_7 from '../../components/register-components/Step-7.vue'
+import Step_8 from '../../components/register-components/Step-8.vue'
+import Step_9 from '../../components/register-components/Step-9.vue'
+import Step_10 from '../../components/register-components/Step-10.vue'
 
 import imageStep_1 from '../../assets/img/registration-back-1.svg'
 import imageStep_2 from '../../assets/img/registration-back-2.svg'
@@ -96,6 +129,10 @@ export default {
     Step_4,
     Step_5,
     Step_6,
+    Step_7,
+    Step_8,
+    Step_9,
+    Step_10
   },
   setup() {
     const currentStep = ref(1)
