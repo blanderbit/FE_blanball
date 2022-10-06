@@ -1,17 +1,28 @@
 <template>
   <div class="b-review-details">
-    <div 
-      v-for="item in lines"
-      :key="item.id"
-      class="b-review-details__line"
-      :style="{ background: item.color }"
-    >
+    <div class="b-review-details__emoji">
+      <img :src="emoji" alt="">
+    </div>
+    <div class="b-review-details__lines">
+      <div 
+        v-for="item in lines"
+        :key="item.id"
+        class="b-review-details__line"
+        :style="{ background: item.color }"
+      >
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { computed } from 'vue';
+
+import emoji_1 from '../assets/img/emojies/1.svg'
+import emoji_2 from '../assets/img/emojies/2.svg'
+import emoji_3 from '../assets/img/emojies/3.svg'
+import emoji_4 from '../assets/img/emojies/4.svg'
+import emoji_5 from '../assets/img/emojies/5.svg'
 
 const COLORS = {
   grey: '#DFDEED',
@@ -31,9 +42,8 @@ export default {
     }
   },
   setup(props) {
-    const rateNumber = Math.floor(+props.userRate)
-
     const lines = computed(() => {
+      const rateNumber = Math.floor(+props.userRate)
       const arr = Array.from({length: 25}, (v, idx) => {
         return {
           id: idx,
@@ -63,9 +73,26 @@ export default {
         default: return arr
       }
     })
+    const emoji = computed(() => {
+      const rateNumber = Math.floor(+props.userRate)
+      switch(rateNumber) {
+        case 5: return emoji_5
+        break;
+        case 4: return emoji_4
+        break;
+        case 3: return emoji_3
+        break;
+        case 2: return emoji_2
+        break;
+        case 1: return emoji_1
+        break;
+        default: return emoji_1
+      }
+    })
 
     return {
-      lines
+      lines,
+      emoji
     }
   }
 }
@@ -75,12 +102,19 @@ export default {
   .b-review-details {
     display: flex;
     justify-content: space-between;
-    width: 250px;
-    height: 36px;
-    clip-path: polygon(0 88%, 100% 0, 100% 100%, 0 100%);
-    .b-review-details__line {
-      width: 4px;
-      height: 100%;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    .b-review-details__lines {
+      display: flex;
+      justify-content: space-between;
+      width: 250px;
+      height: 36px;
+      clip-path: polygon(0 88%, 100% 0, 100% 100%, 0 100%);
+      .b-review-details__line {
+        width: 4px;
+        height: 100%;
+        border-radius: 4px;
+      }
     }
   }
 </style>

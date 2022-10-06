@@ -255,12 +255,10 @@
           <div class="subtitle">
             {{ $t('profile.sub-rate') }}
           </div>
-          <div class="scale-block">
-            <div class="image">
-              <img src="../../../assets/img/smile_face.svg" alt="" />
-            </div>
-            <ReviewDetailsComponent :user-rate="'5'" />
-          </div>
+          <ReviewDetailsComponent 
+              :user-rate="rating"
+            />
+          <input type="text" v-model="userRating">
           <div class="btns-block">
             <div
               class="left-btn"
@@ -461,6 +459,8 @@ export default {
   data() {
     return {
       rateStatus: false,
+      userRating: '',
+      rating: '',
       rateBlbock: [
         {
           id: 0,
@@ -536,6 +536,11 @@ export default {
           isActive: false,
         },
       ],
+    }
+  },
+  watch: {
+    userRating(newData) {
+      this.rating = newData
     }
   },
   computed: {
