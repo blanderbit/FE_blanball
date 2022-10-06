@@ -14,7 +14,7 @@
 import { computed } from 'vue';
 
 const COLORS = {
-  grey: '#DFDEE',
+  grey: '#DFDEED',
   red: '#FF1D1D',
   yellow: '#FFF61D',
   green: '#B2FF8E',

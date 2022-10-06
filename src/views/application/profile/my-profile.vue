@@ -259,7 +259,7 @@
             <div class="image">
               <img src="../../../assets/img/smile_face.svg" alt="" />
             </div>
-            <ReviewDetailsComponent :user-rate="'3'" />
+            <ReviewDetailsComponent :user-rate="'5'" />
           </div>
           <div class="btns-block">
             <div
