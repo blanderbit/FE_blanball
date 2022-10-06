@@ -13,6 +13,15 @@
 <script>
 import { computed } from 'vue';
 
+const COLORS = {
+  grey: 'DFDEE',
+  red: '#FF1D1D',
+  yellow: '#FFF61D',
+  green: '#B2FF8E',
+  turquoise: '#79FFC7',
+  blue: '#62C7FF'
+}
+
 export default {
   name: 'ReviewDetailsComponent',
   props: {
@@ -28,27 +37,27 @@ export default {
       const arr = Array.from({length: 25}, (v, idx) => {
         return {
           id: idx,
-          color: '#DFDEED'
+          color: COLORS.grey
         }
       })
 
       switch(rateNumber) {
-        case 5: return arr.map(item => ({...item, color: '#62C7FF'}))
+        case 5: return arr.map(item => ({...item, color: COLORS.blue}))
         break;
         case 4: return arr.map(item => {
-          return item.id < 20 ? {...item, color: '#79FFC7'} : item
+          return item.id < 20 ? {...item, color: COLORS.turquoise} : item
         })
         break;
         case 3: return arr.map(item => {
-          return item.id < 15 ? {...item, color: '#B2FF8E'} : item
+          return item.id < 15 ? {...item, color: COLORS.green} : item
         })
         break;
         case 2: return arr.map(item => {
-          return item.id < 10 ? {...item, color: '#FFF61D'} : item
+          return item.id < 10 ? {...item, color: COLORS.yellow} : item
         })
         break;
         case 1: return arr.map(item => {
-          return item.id < 5 ? {...item, color: '#FF1D1D'} : item
+          return item.id < 5 ? {...item, color: COLORS.red} : item
         })
         break;
         default: return arr
