@@ -879,7 +879,8 @@ export default {
                 border: transparent;
               }
               .input-right {
-                border-left: 1px solid #dfdeed;
+                // border-left: 1px solid #dfdeed;
+                border-left: 1px solid transparent;
                 border-right: 1px solid transparent;
                 border-top: 1px solid transparent;
                 border-bottom: 1px solid transparent;
