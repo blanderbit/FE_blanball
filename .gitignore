@@ -88,7 +88,3 @@ sw.*
 
 # Vim swap files
 *.swp
-
-# swagger json data
-
-swagger.json
