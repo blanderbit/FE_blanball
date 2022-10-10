@@ -49,7 +49,7 @@
         :height="40"
         :icon-right="tick"
         :is-icon-and-text-apart="true"
-        @click-function="completeRegistration"
+        @click-function="$emit('incrementStep')"
       />
     </div>
   </div>
@@ -65,7 +65,6 @@ import Dropdown from '../Dropdown.vue'
 import tickIcon from '../../assets/img/tick-white.svg'
 
 import CONSTANTS from '../../consts/index'
-import { ROUTES } from '../../router'
 
 export default {
   name: 'Step6',
@@ -83,17 +82,10 @@ export default {
     const tick = computed(() => {
       return tickIcon
     })
-    const router = useRouter()
-
-    function completeRegistration() {
-      // router.push(ROUTES.APPLICATION.HOME.absolute)
-      return
-    }
 
     return {
       mockData,
-      tick,
-      completeRegistration,
+      tick
     }
   },
 }

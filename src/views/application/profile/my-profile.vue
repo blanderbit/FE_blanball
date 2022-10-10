@@ -3,8 +3,8 @@
     <Spiner v-if="isSpinerActive" />
     <!-- Modals delete -->
     <Transition>
-      <ModalWindow 
-        v-if="isModalActive.phone" 
+      <ModalWindow
+        v-if="isModalActive.phone"
         @close-modal="toggleModal('phone')"
       >
         <template #title>
@@ -14,36 +14,22 @@
           <img src="../../../assets/img/add-phone.svg" alt="" />
         </template>
         <template #change-phone-number>
-          <div 
-            v-if="modal.first" 
-            class="change-phone-screen-1"
-          >
-            <div class="current-number">
-              (617) 623-2338
-            </div>
+          <div v-if="modal.first" class="change-phone-screen-1">
+            <div class="current-number">(617) 623-2338</div>
             <p class="description-text">
               {{ $t('modals.change_number.main-text') }}
             </p>
             <div class="btns-block">
-              <div 
-                class="cancle-btn"
-                @click="toggleModal('phone')"
-              >
+              <div class="cancle-btn" @click="toggleModal('phone')">
                 {{ $t('modals.change_number.leave-email') }}
               </div>
-              <div 
-                class="save-btn"
-                @click="toggleModalPage"
-              >
+              <div class="save-btn" @click="toggleModalPage">
                 {{ $t('modals.change_number.change-number-title') }}
               </div>
             </div>
           </div>
-          <div 
-            v-if="modal.second" 
-            class="change-phone-screen-2"
-          >
-            <div class="current-number"> 
+          <div v-if="modal.second" class="change-phone-screen-2">
+            <div class="current-number">
               <div class="inut-wrapper">
                 <InputComponent
                   :title="$t('modals.change_number.current-number')"
@@ -67,10 +53,10 @@
               </div>
             </div>
             <p class="sms-text">
-              {{ $t('modals.change_number.sms-code') }}        
+              {{ $t('modals.change_number.sms-code') }}
             </p>
             <div class="sms-code-block">
-              <input 
+              <input
                 v-for="item in codeResettingInputs"
                 :key="item.id"
                 :ref="`input-${item.id}`"
@@ -78,22 +64,14 @@
                 type="text"
                 placeholder="_"
                 @input="codeInput(item.id, $event)"
-              >
+              />
             </div>
             <div class="btns-block">
-              <div 
-                class="cancle-btn"
-                @click="toggleModal('phone')"
-              >
+              <div class="cancle-btn" @click="toggleModal('phone')">
                 {{ $t('buttons.cancel-editing') }}
-                
               </div>
-              <div 
-                class="save-btn"
-                @click="toggleModal('phone')"
-              >
+              <div class="save-btn" @click="toggleModal('phone')">
                 {{ $t('buttons.save-changes') }}
-                
               </div>
             </div>
           </div>
@@ -102,8 +80,8 @@
     </Transition>
 
     <Transition>
-      <ModalWindow 
-        v-if="isModalActive.email" 
+      <ModalWindow
+        v-if="isModalActive.email"
         @close-modal="toggleModal('email')"
       >
         <template #title>
@@ -130,19 +108,11 @@
             />
           </div>
           <div class="btns-block">
-            <div 
-              class="cancle-btn"
-              @click="toggleModal('email')"
-            >
+            <div class="cancle-btn" @click="toggleModal('email')">
               {{ $t('buttons.cancel-editing') }}
-              
             </div>
-            <div 
-              class="save-btn"
-              @click="toggleModal('email')"
-            >
+            <div class="save-btn" @click="toggleModal('email')">
               {{ $t('buttons.save-changes') }}
-              
             </div>
           </div>
         </template>
@@ -150,8 +120,8 @@
     </Transition>
 
     <Transition>
-      <ModalWindow 
-        v-if="isModalActive.delete_acc" 
+      <ModalWindow
+        v-if="isModalActive.delete_acc"
         :title-color="'#C10B0B'"
         @close-modal="toggleModal('delete_acc')"
       >
@@ -162,23 +132,15 @@
           <img src="../../../assets/img/warning.svg" alt="" />
         </template>
         <template #delete-account>
-          <div class="current-number">
-            (617) 623-2338
-          </div>
+          <div class="current-number">(617) 623-2338</div>
           <div class="description-text">
             {{ $t('modals.delete_acc.text') }}
           </div>
           <div class="btns-block">
-            <div 
-              class="cancle-delete-acc"
-              @click="toggleModal('delete_acc')"
-            >
+            <div class="cancle-delete-acc" @click="toggleModal('delete_acc')">
               {{ $t('buttons.cancel-deleting') }}
             </div>
-            <div 
-              class="delete-acc"
-              @click="toggleModal('delete_acc')"
-            >
+            <div class="delete-acc" @click="toggleModal('delete_acc')">
               {{ $t('buttons.delete-account') }}
             </div>
           </div>
@@ -187,8 +149,8 @@
     </Transition>
 
     <Transition>
-      <ModalWindow 
-        v-if="isModalActive.change_password" 
+      <ModalWindow
+        v-if="isModalActive.change_password"
         @close-modal="toggleModal('change_password')"
       >
         <template #title>
@@ -219,10 +181,10 @@
             />
           </div>
           <p class="sms-text">
-            {{ $t('modals.change_password.sms-code') }}        
+            {{ $t('modals.change_password.sms-code') }}
           </p>
           <div class="sms-code-block">
-            <input 
+            <input
               v-for="item in codeResettingInputs"
               :key="item.id"
               :ref="`input-${item.id}`"
@@ -230,22 +192,14 @@
               type="number"
               placeholder="_"
               @input="codeInput(item.id, $event)"
-            >
+            />
           </div>
           <div class="btns-block">
-            <div 
-              class="cancle-btn"
-              @click="toggleModal('change_password')"
-            >
+            <div class="cancle-btn" @click="toggleModal('change_password')">
               {{ $t('buttons.cancel-editing') }}
-              
             </div>
-            <div 
-              class="save-btn"
-              @click="toggleModal('change_password')"
-            >
+            <div class="save-btn" @click="toggleModal('change_password')">
               {{ $t('buttons.save-changes') }}
-              
             </div>
           </div>
         </template>
@@ -254,32 +208,27 @@
 
     <Transition>
       <ModalUserWindow
-        v-if="isModalActive.public_profile" 
+        v-if="isModalActive.public_profile"
         @close-modal="toggleModal('public_profile')"
       >
         <template #user-content>
-          <PlayerPageComponent
-            :page-mode="'public'"
-          />
+          <PlayerPageComponent :page-mode="'public'" />
         </template>
       </ModalUserWindow>
     </Transition>
     <!-- Modals delete -->
     <div class="title-block">
       <div class="titles">
-        <div  class="title">
+        <div class="title">
           {{ $t('profile.title') }}
         </div>
         <div class="subtitle">{{ $t('profile.change-personal-data') }}</div>
       </div>
       <div class="buttons">
         <div class="btn-wrapper">
-          <WhiteBtn 
-            :text="$t('buttons.cancel')"
-            :width="98"
-          />
+          <WhiteBtn :text="$t('buttons.cancel')" :width="98" />
         </div>
-        <GreenBtn 
+        <GreenBtn
           :text="$t('buttons.save')"
           :width="89"
           @click-function="openPublicProfile"
@@ -290,10 +239,10 @@
       <div
         v-for="tab in tabs"
         :key="tab.id"
-        :class="['tab-element', {active : tab.isActive}]"
+        :class="['tab-element', { active: tab.isActive }]"
         @click="changeTab(tab.id, tab.url)"
       >
-        <img :src="tab.img" :alt="tab.name">
+        <img :src="tab.img" :alt="tab.name" />
         {{ $t('profile.' + tab.name) }}
       </div>
     </div>
@@ -306,36 +255,33 @@
           <div class="subtitle">
             {{ $t('profile.sub-rate') }}
           </div>
-          <div class="scale-block">
-            <div class="image">
-              <img src="../../../assets/img/smile_face.svg" alt="">
-            </div>
-            <div class="image">
-              <img src="../../../assets/img/scale.svg" alt="">
-            </div>
-          </div>
+          <ReviewDetailsComponent 
+              :user-rate="rating"
+            />
+          <input type="text" v-model="userRating">
           <div class="btns-block">
-            <div 
-              class="left-btn" 
-              :style="{ border: `1px solid ${rateStatus ? '#DFDEED' : '#148581'}` }"
+            <div
+              class="left-btn"
+              :style="{
+                border: `1px solid ${rateStatus ? '#DFDEED' : '#148581'}`,
+              }"
               @click="switchRate(false)"
             >
               {{ $t('profile.generally') }}
             </div>
-            <div 
+            <div
               class="right-btn"
-              :style="{ border: `1px solid ${rateStatus ? '#148581' : '#DFDEED'}` }"
+              :style="{
+                border: `1px solid ${rateStatus ? '#148581' : '#DFDEED'}`,
+              }"
               @click="switchRate(true)"
             >
               {{ $t('profile.detailed') }}
             </div>
           </div>
           <transition>
-            <div 
-              v-if="rateStatus"
-              class="cards-block"
-            >
-              <div 
+            <div v-if="rateStatus" class="cards-block">
+              <div
                 v-for="item in rateBlbock"
                 :key="item.id"
                 class="card"
@@ -387,10 +333,10 @@
             <div class="picture-block">
               <div class="profile-picture">
                 <div class="add-image">
-                  <img src="../../../assets/img/add-user-pic.svg" alt="">
+                  <img src="../../../assets/img/add-user-pic.svg" alt="" />
                 </div>
                 <div class="user-img">
-                  <img src="../../../assets/img/user-photo.png" alt="">
+                  <img src="../../../assets/img/user-photo.png" alt="" />
                 </div>
               </div>
             </div>
@@ -400,25 +346,16 @@
                   <div class="name">Стефанія</div>
                   <div class="surname">Калиновська</div>
                 </div>
-                <div 
-                  class="edit-btn"
-                  @click="switchEditMode"
-                >
-                  <img 
-                    :src="editProfileIcon" 
-                    alt=""
-                  >
+                <div class="edit-btn" @click="switchEditMode">
+                  <img :src="editProfileIcon" alt="" />
                 </div>
               </div>
               <div class="nick-name-line">
                 <div class="nick-name">@S_Kalyna</div>
                 <div class="status">Гість</div>
               </div>
-              <div 
-                class="phone-number-line"
-                @click="openChangeNumberModal"
-              >
-              +380 (95) 390 86 50
+              <div class="phone-number-line" @click="openChangeNumberModal">
+                +380 (95) 390 86 50
               </div>
             </div>
           </div>
@@ -427,7 +364,8 @@
               {{ $t('profile.about-myself') }}
             </div>
             <div class="description">
-              Donec vitae mi vulputate, suscipit urna in, malesuada nisl. Pellentesque laoreet pretium nisl, et pulvinar massa eleifend sed
+              Donec vitae mi vulputate, suscipit urna in, malesuada nisl.
+              Pellentesque laoreet pretium nisl, et pulvinar massa eleifend sed
             </div>
           </div>
         </div>
@@ -465,30 +403,20 @@
               :title-width="68"
               :inside-title="true"
               :has-icon="true"
-              :icon="[
-                sortArrowHorizontal
-              ]"
+              :icon="[sortArrowHorizontal]"
               @icon-click="changeEmailIconClick"
             />
           </div>
-          <div 
-            class="change-pass-btn"
-            @click="toggleModal('change_password')"
-          >
+          <div class="change-pass-btn" @click="toggleModal('change_password')">
             {{ $t('profile.change-password') }}
-            <img src="../../../assets/img/lock.svg" alt="">
+            <img src="../../../assets/img/lock.svg" alt="" />
           </div>
         </div>
-        <div 
-          class="delete-account" 
-          @click="toggleModal('delete_acc')"
-        >
+        <div class="delete-account" @click="toggleModal('delete_acc')">
           {{ $t('profile.delete-account') }}
         </div>
       </div>
-      <div class="block block-4">
-
-      </div>
+      <div class="block block-4"></div>
     </div>
   </div>
 </template>
@@ -503,6 +431,7 @@ import InputComponent from '../../../components/InputComponent.vue'
 import ModalWindow from '../../../components/ModalWindow.vue'
 import ModalUserWindow from '../../../components/ModalUserWindow.vue'
 import PlayerPageComponent from '../../../components/PlayerPageComponent.vue'
+import ReviewDetailsComponent from '../../../components/ReviewDetails.vue'
 
 import eyeCross from '../../../assets/img/eye-crossed.svg'
 import eyeOpen from '../../../assets/img/eye-opened.svg'
@@ -524,32 +453,35 @@ export default {
     InputComponent,
     ModalWindow,
     ModalUserWindow,
-    PlayerPageComponent
+    PlayerPageComponent,
+    ReviewDetailsComponent,
   },
   data() {
     return {
       rateStatus: false,
+      userRating: '',
+      rating: '',
       rateBlbock: [
         {
           id: 0,
           name: 'Дмитро Горбачевський',
-          date: '13.07.2022'
+          date: '13.07.2022',
         },
         {
           id: 1,
           name: 'Захар Беркут',
-          date: '13.07.2022'
+          date: '13.07.2022',
         },
         {
           id: 2,
           name: 'Василь Величко',
-          date: '13.07.2022'
+          date: '13.07.2022',
         },
         {
           id: 3,
           name: 'Дмитро Горбачевський',
-          date: '13.07.2022'
-        }
+          date: '13.07.2022',
+        },
       ],
       isEditProfileMode: false,
       codeResettingInputs: [
@@ -557,29 +489,29 @@ export default {
         { id: 1, value: '' },
         { id: 2, value: '' },
         { id: 3, value: '' },
-        { id: 4, value: '' }
+        { id: 4, value: '' },
       ],
       isModalActive: {
         phone: false,
         email: false,
         delete_acc: false,
         change_password: false,
-        public_profile: false
+        public_profile: false,
       },
       modal: {
         first: true,
-        second: false
+        second: false,
       },
       isSpinerActive: false,
       dataDropdown: [
         {
           id: 0,
-          value: 'Жінка'
+          value: 'Жінка',
         },
         {
           id: 1,
-          value: 'Чоловик'
-        }
+          value: 'Чоловик',
+        },
       ],
       tabs: [
         {
@@ -587,23 +519,28 @@ export default {
           name: 'my-profile',
           img: userIcon,
           url: '/application/profile/my-profile',
-          isActive: true
+          isActive: true,
         },
         {
           id: 1,
           name: 'rate-plan',
           img: database,
           url: '/application/profile/rate-plan',
-          isActive: false
+          isActive: false,
         },
         {
           id: 2,
           name: 'notifications',
           img: notification,
           url: '/application/profile/notifications',
-          isActive: false
-        }
-      ]
+          isActive: false,
+        },
+      ],
+    }
+  },
+  watch: {
+    userRating(newData) {
+      this.rating = newData
     }
   },
   computed: {
@@ -618,7 +555,7 @@ export default {
     },
     editProfileIcon() {
       return this.isEditProfileMode ? tick : edit
-    }
+    },
   },
   mounted() {
     window.addEventListener('paste', this.pasteHandler)
@@ -628,12 +565,11 @@ export default {
   },
   methods: {
     changeTab(id, url) {
-      this.tabs = this.tabs.map(item => ({ ...item, isActive: false }))
-                            .map(item => {
-                              return item.id === id ?
-                                    { ...item, isActive: true } :
-                                    item
-                            })
+      this.tabs = this.tabs
+        .map((item) => ({ ...item, isActive: false }))
+        .map((item) => {
+          return item.id === id ? { ...item, isActive: true } : item
+        })
       this.$router.push(url)
     },
     toggleModal(val) {
@@ -642,28 +578,32 @@ export default {
           this.isModalActive.phone = !this.isModalActive.phone
           this.modal = {
             first: true,
-            second: false
+            second: false,
           }
-          this.codeResettingInputs = this.codeResettingInputs.map(item => ({...item, value: ''}))
-        break;
+          this.codeResettingInputs = this.codeResettingInputs.map((item) => ({
+            ...item,
+            value: '',
+          }))
+          break
         case 'email':
           this.isModalActive.email = !this.isModalActive.email
-        break;
+          break
         case 'delete_acc':
           this.isModalActive.delete_acc = !this.isModalActive.delete_acc
-        break;
+          break
         case 'public_profile':
           this.isModalActive.public_profile = !this.isModalActive.public_profile
-        break;
+          break
         case 'change_password':
-          this.isModalActive.change_password = !this.isModalActive.change_password
-        break;
+          this.isModalActive.change_password =
+            !this.isModalActive.change_password
+          break
       }
     },
     toggleModalPage() {
       this.modal = {
         first: false,
-        second: true
+        second: true,
       }
       this.$nextTick(() => {
         this.$refs.test.focus()
@@ -673,9 +613,9 @@ export default {
       if (e.inputType === 'deleteContentBackward') {
         if (id !== 0) this.$refs[`input-${id - 1}`][0].focus()
       } else {
-        const currentInput = this.codeResettingInputs.find(i => i.id === id)
+        const currentInput = this.codeResettingInputs.find((i) => i.id === id)
         if (currentInput.value.length > 1) {
-          currentInput.value = currentInput.value.slice(1, 2);
+          currentInput.value = currentInput.value.slice(1, 2)
         }
         const nextRefIndex = id + 1
         if (nextRefIndex !== 5) {
@@ -698,26 +638,29 @@ export default {
       this.toggleModal('public_profile')
     },
     pasteHandler() {
-      navigator.clipboard.readText()
-        .then(text => {
+      navigator.clipboard
+        .readText()
+        .then((text) => {
           if (text.length === 5) {
             const splitedValue = text.split('')
-            this.codeResettingInputs = this.codeResettingInputs.map((item, idx) => {
-              return {
-                ...item,
-                value: splitedValue[idx]
+            this.codeResettingInputs = this.codeResettingInputs.map(
+              (item, idx) => {
+                return {
+                  ...item,
+                  value: splitedValue[idx],
+                }
               }
-            })
+            )
           }
         })
-        .catch(err => {
-          console.log('К сожалению не удалось взять текст из буффера', err);
-        });
+        .catch((err) => {
+          console.log('К сожалению не удалось взять текст из буффера', err)
+        })
     },
     switchRate(val) {
       this.rateStatus = val
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -761,7 +704,7 @@ export default {
 }
 .tab-block {
   display: flex;
-  border-bottom: 1px solid #DFDEED;
+  border-bottom: 1px solid #dfdeed;
   margin-top: 28px;
   cursor: pointer;
   .tab-element {
@@ -808,7 +751,7 @@ export default {
     color: #575775;
   }
   .top-table {
-    border: 1px solid #DFDEED;
+    border: 1px solid #dfdeed;
     border-radius: 6px;
     padding: 16px;
     margin-bottom: 28px;
@@ -912,7 +855,7 @@ export default {
           font-size: 14px;
           line-height: 20px;
           color: #262541;
-          border-top: 1px solid #DFDEED;
+          border-top: 1px solid #dfdeed;
           padding: 12px 0;
           display: flex;
           justify-content: space-between;
@@ -934,7 +877,7 @@ export default {
     .top-table {
       .top-part {
         display: flex;
-        border-bottom: 1px solid #DFDEED;
+        border-bottom: 1px solid #dfdeed;
         padding-bottom: 5px;
         .profile-picture {
           position: relative;
@@ -1024,7 +967,6 @@ export default {
           color: #262541;
         }
       }
-
     }
     .personal-information {
       .age-input {
@@ -1070,7 +1012,7 @@ export default {
         justify-content: space-between;
         align-items: center;
         height: 40px;
-        background: #D3F8F7;
+        background: #d3f8f7;
         border-radius: 6px;
         font-family: 'Inter';
         font-style: normal;
