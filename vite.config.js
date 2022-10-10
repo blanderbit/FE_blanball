@@ -13,6 +13,8 @@ const globalVariables = {
 }
 if (process.env.NODE_ENV === 'development') {
   globalVariables.global = 'true'
+} else {
+  globalVariables.process = process 
 }
 
 export default defineConfig({
