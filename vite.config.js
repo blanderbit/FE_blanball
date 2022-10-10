@@ -4,6 +4,17 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 require('dotenv').config();
 // https://vitejs.dev/config/
+
+const globalVariables = {
+  'process.browser': 'true',
+  'process.env': {
+      ...process.env
+  }
+}
+if (process.env.NODE_ENV === 'development') {
+  globalVariables.global = 'true'
+}
+
 export default defineConfig({
   plugins: [vue()],
   resolve: {
@@ -12,11 +23,5 @@ export default defineConfig({
        // fs: require.resolve('rollup-plugin-node-builtins'),
     }
   },
-    define: {
-        'process.browser': 'true',
-        'global': 'true',
-        'process.env': {
-            ...process.env
-        }
-    },
+    define: globalVariables
 })

@@ -321,7 +321,6 @@
             </div>
           </div>
         </div>
-        <v-calendar v-model="range" />
       </div>
     </div>
 
