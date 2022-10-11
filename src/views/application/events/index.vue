@@ -15,18 +15,14 @@
           <div class="b-events-page__event-switcher">
             <div 
               class="b-events-page__general-events"
-              :style="{
-                border: `1px solid ${eventsSwitcher ? '#DFDEED': '#148581'}`
-              }"
+              :style="generalEventsStyle"
               @click="switchEvents(false)"
             >
               {{ $t('events.general-events') }}
             </div>
             <div 
               class="b-events-page__my-events"
-              :style="{
-                border: `1px solid ${eventsSwitcher ? '#148581': '#DFDEED'}`
-              }"
+              :style="myEventsStyle"
               @click="switchEvents(true)"
             >
               {{ $t('events.my-events') }}
@@ -91,6 +87,11 @@ import SearchBlockEvents from '../../../components/SearchBlockEvents.vue'
 
 import CONSTANTS from '../../../consts/index'
 
+const COLORS = {
+  green: '#148581',
+  grey: '#DFDEED'
+}
+
 export default {
   name: 'EventsPage',
   components: {
@@ -120,6 +121,16 @@ export default {
         menu_text: CONSTANTS.event_page.menu_text
       }
     })
+    const generalEventsStyle = computed(() => {
+      return {
+        border: `1px solid ${eventsSwitcher.value ? COLORS.grey : COLORS.green}`
+      }
+    })
+    const myEventsStyle = computed(() => {
+      return {
+        border: `1px solid ${eventsSwitcher.value ? COLORS.green : COLORS.grey}`
+      }
+    })
 
     function switchEvents(val) {
       eventsSwitcher.value = val
@@ -141,7 +152,9 @@ export default {
       mockData,
       switchEvents,
       myCardRightClick,
-      goToCreateEvent
+      goToCreateEvent,
+      generalEventsStyle,
+      myEventsStyle
     }
   }
 }
