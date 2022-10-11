@@ -1,3 +1,5 @@
+
+
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createI18n } from 'vue-i18n'
@@ -11,7 +13,6 @@ import './assets/main.css'
 import 'v-calendar/dist/style.css';
 import { UA_LANGUAGE } from "./i18n/ua";
 import { createLoader } from "./workers/loading-worker/loading.worker";
-import { API } from "./workers/api-worker/api.worker";
 
 const i18n = createI18n({
     locale: 'ua',

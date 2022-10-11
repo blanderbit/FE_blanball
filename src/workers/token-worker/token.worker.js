@@ -1,4 +1,4 @@
-export class TokenWorker {
+export class TokenServiceWorker {
     _getKeyName () {
         return this._keyName;
     }
