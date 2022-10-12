@@ -94,7 +94,7 @@
                 </Dropdown>
               </div>
               <div class="calendar">
-                <img src="../../../assets/img/calendar.svg" alt="">
+                <img src="../../../assets/img/calendar.svg" alt="" />
                 <v-date-picker locale="ukr" v-model="range" is-range>
                   <template v-slot="{ inputValue, inputEvents }">
                     <div class="flex justify-center items-center">
@@ -457,56 +457,57 @@ export default {
         start: new Date(2020, 9, 12),
         end: new Date(2020, 9, 16),
       },
-      eventCards: [
-        {
-          id: 0,
-          url: '/my-events/friendly-match',
-          date: 14,
-          time: '12:00 – 14:00',
-          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-          main_text:
-            'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
-          name: 'В’ячеслав Залізняк',
-          play_dates: '10 / 22',
-          visitor_dates: '17 / 30',
-        },
-        {
-          id: 1,
-          url: '/my-events/friendly-match',
-          date: 14,
-          time: '12:00 – 14:00',
-          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-          main_text:
-            'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
-          name: 'В’ячеслав Залізняк',
-          play_dates: '10 / 22',
-          visitor_dates: '17 / 30',
-        },
-        {
-          id: 2,
-          url: '/my-events/friendly-match',
-          date: 14,
-          time: '12:00 – 14:00',
-          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-          main_text:
-            'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
-          name: 'В’ячеслав Залізняк',
-          play_dates: '10 / 22',
-          visitor_dates: '17 / 30',
-        },
-        {
-          id: 3,
-          url: '/my-events/friendly-match',
-          date: 14,
-          time: '12:00 – 14:00',
-          address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-          main_text:
-            'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
-          name: 'В’ячеслав Залізняк',
-          play_dates: '10 / 22',
-          visitor_dates: '17 / 30',
-        },
-      ],
+      eventCards: [],
+      // eventCards: [
+      //   {
+      //     id: 0,
+      //     url: '/my-events/friendly-match',
+      //     date: 14,
+      //     time: '12:00 – 14:00',
+      //     address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
+      //     main_text:
+      //       'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
+      //     name: 'В’ячеслав Залізняк',
+      //     play_dates: '10 / 22',
+      //     visitor_dates: '17 / 30',
+      //   },
+      //   {
+      //     id: 1,
+      //     url: '/my-events/friendly-match',
+      //     date: 14,
+      //     time: '12:00 – 14:00',
+      //     address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
+      //     main_text:
+      //       'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
+      //     name: 'В’ячеслав Залізняк',
+      //     play_dates: '10 / 22',
+      //     visitor_dates: '17 / 30',
+      //   },
+      //   {
+      //     id: 2,
+      //     url: '/my-events/friendly-match',
+      //     date: 14,
+      //     time: '12:00 – 14:00',
+      //     address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
+      //     main_text:
+      //       'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
+      //     name: 'В’ячеслав Залізняк',
+      //     play_dates: '10 / 22',
+      //     visitor_dates: '17 / 30',
+      //   },
+      //   {
+      //     id: 3,
+      //     url: '/my-events/friendly-match',
+      //     date: 14,
+      //     time: '12:00 – 14:00',
+      //     address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
+      //     main_text:
+      //       'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
+      //     name: 'В’ячеслав Залізняк',
+      //     play_dates: '10 / 22',
+      //     visitor_dates: '17 / 30',
+      //   },
+      // ],
       menuText: [
         {
           id: 0,
@@ -690,6 +691,26 @@ export default {
     goToCreateEvent() {
       this.$router.push('/application/events/create')
     },
+    test(e) {
+      console.log('scroll goes', e)
+    },
+  },
+  created () {
+    window.addEventListener('scroll', this.test);
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.test);
+  },
+  mounted() {
+    console.log(this.$route.meta.eventData.results)
+    this.eventCards = this.$route.meta.eventData.results
+
+    window.addEventListener('wheel', this.test)
+    // document.addEventListener('scroll', this.test)
+    // document.addEventListener('scroll', function () {
+    //   console.log('scrooool')
+    // })
+
   },
 }
 </script>
@@ -948,17 +969,17 @@ export default {
                           }
                           .vc-day-layer {
                             .vc-highlight {
-                              background: #E9FCFB !important;
+                              background: #e9fcfb !important;
                               border-radius: 6px !important;
                             }
                             .vc-highlight.vc-highlight-base-start {
-                              background: #E9FCFB !important;
+                              background: #e9fcfb !important;
                             }
                             .vc-highlight.vc-highlight-base-middle {
-                              background: #E9FCFB !important;
+                              background: #e9fcfb !important;
                             }
                             .vc-highlight.vc-highlight-base-end {
-                              background: #E9FCFB !important;
+                              background: #e9fcfb !important;
                             }
                           }
                         }
