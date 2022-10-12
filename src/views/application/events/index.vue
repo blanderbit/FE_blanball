@@ -704,14 +704,7 @@ export default {
   mounted() {
     console.log(this.$route.meta.eventData.results)
     this.eventCards = this.$route.meta.eventData.results
-
-    window.addEventListener('wheel', this.test)
-    // document.addEventListener('scroll', this.test)
-    // document.addEventListener('scroll', function () {
-    //   console.log('scrooool')
-    // })
-
-  },
+  }
 }
 </script>
 
