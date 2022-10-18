@@ -7,9 +7,7 @@
     <sidebar />
     <div class="main-block">
       <div class="container">
-        <main-header 
-            @menu-icon-click="isMobMenuActive = true" 
-        />
+        <main-header @menu-icon-click="isMobMenuActive = true" />
         <router-view />
       </div>
     </div>
@@ -44,7 +42,7 @@ const isMobMenuActive = ref(false)
   }
   .main-block {
     height: 100%;
-    overflow: scroll;
+    // overflow: hidden;
   }
 }
 </style>

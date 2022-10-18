@@ -211,71 +211,17 @@
           </div>
         </div>
         <div v-if="!eventsSwitcher" class="cards-block">
-          <div v-for="card of eventCards" :key="card.id" class="event-card">
-            <div class="top-title">
-              <div class="left-side">
-                <div class="card-icon">
-                  <img src="../../../assets/img/hands-shake.svg" alt="" />
-                </div>
-                <div class="text-block">
-                  <div class="title">{{ $t('events.friendly-match') }}</div>
-                  <div class="date-time-mob">
-                    <div class="date">
-                      {{ card.date }} {{ $t('events.months.June') }}
-                    </div>
-                    <div class="time">{{ card.time }}</div>
-                  </div>
-                  <div class="address desk-address">
-                    <img src="../../../assets/img/location-point.svg" alt="" />
-                    <p>{{ card.address }}</p>
-                  </div>
-                </div>
-              </div>
-              <div class="right-side">
-                <div class="date">
-                  {{ card.date }} {{ $t('events.months.June') }}
-                </div>
-                <div class="time">{{ card.time }}</div>
-              </div>
-            </div>
-            <div class="address mob-address">
-              <img src="../../../assets/img/location-point.svg" alt="" />
-              <p>{{ card.address }}</p>
-            </div>
-            <div class="main-text">
-              {{ card.main_text }}
-            </div>
-            <div class="labels">
-              <div class="label">{{ $t('events.football') }}</div>
-              <div class="label">{{ $t('events.men') }}</div>
-              <div class="label">{{ $t('events.without-category') }}</div>
-            </div>
-            <div class="bottom-block">
-              <div class="top-line">
-                <div class="name">{{ card.name }}</div>
-                <div class="price">{{ $t('events.for-free') }}</div>
-              </div>
-              <div class="bottom-line">
-                <div class="left-side">
-                  <div class="titles">
-                    <div class="players">{{ $t('events.players') }}:</div>
-                    <div class="visitors">{{ $t('events.fans') }}:</div>
-                  </div>
-                  <div class="date">
-                    <div class="players-date">{{ card.play_dates }}</div>
-                    <div class="visitors-date">{{ card.visitor_dates }}</div>
-                  </div>
-                </div>
-                <div class="right-side">
-                  <GreenBtn
-                    :text="'Долучитися'"
-                    :width="115"
-                    :height="32"
-                    @click-function="goToEventPage"
-                  />
-                </div>
-              </div>
-            </div>
+          <!-- <div class="cards-loader"></div> -->
+          <div class="cards-event-wrapper" ref="scrollComponent">
+            <SmallLoader
+              :is-active="isLoaderActive"
+            />
+            <EventCard
+              v-for="card of eventCards" 
+              :key="card.id"
+              :card="card"
+              @go-to-event-page="goToEventPage"
+            />
           </div>
         </div>
         <div v-if="eventsSwitcher" class="my-events-block">
@@ -433,15 +379,25 @@
 </template>
 
 <script>
+import { ref, onMounted, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
+import dayjs from 'dayjs'
+import dayjsUkrLocale from 'dayjs/locale/uk'
+import { useI18n } from 'vue-i18n'
+
 import GreenBtn from '../../../components/GreenBtn.vue'
 import Dropdown from '../../../components/Dropdown.vue'
 import InputComponent from '../../../components/InputComponent.vue'
 import ContextMenu from '../../../components/ContextMenuModal.vue'
+import EventCard from '../../../components/event-components/EventCard.vue'
+import SmallLoader from '../../../components/SmallLoader.vue'
 
 import circleTick from '../../../assets/img/tick-in-circle.svg'
 import bucket from '../../../assets/img/bucket.svg'
 import pin from '../../../assets/img/pin.svg'
 import search from '../../../assets/img/search.svg'
+
+import { EventService } from '../../../workers/api-worker/http/http-services/authorization.service'
 
 export default {
   name: 'EventsPage',
@@ -450,6 +406,79 @@ export default {
     Dropdown,
     InputComponent,
     ContextMenu,
+    EventCard,
+    SmallLoader
+  },
+  setup() {
+    const scrollComponent = ref(null)
+    const currentPage = ref(null)
+    const totalPages = ref(null)
+    const route = useRoute()
+    const eventCards = ref([])
+    const { t } = useI18n()
+    const isLoaderActive = ref(false)
+
+    function getDate(date) {
+      return dayjs(date)
+              .locale(dayjsUkrLocale)
+              .format('D MMMM')
+    }
+    function getTime(time) {
+      return dayjs(time)
+              .locale(dayjsUkrLocale)
+              .format('HH:mm')
+    }
+
+    function getCards() {
+      if (currentPage.value < totalPages.value) {
+        currentPage.value = currentPage.value + 1
+        isLoaderActive.value = true
+        EventService.getAllEvents(currentPage.value).then((res) => {
+          eventCards.value.push(...route.meta.eventData.data.results.map(handlingIncomeData))
+          isLoaderActive.value = false
+        })
+      }
+
+    }
+    function handlingIncomeData(item) {
+      return {
+        ...item,
+        date: getDate(item.date_and_time),
+        time: getTime(item.date_and_time),
+        labels: [
+          item.type,
+          item.gender === "Man" ? t('events.men') : t('events.women'),
+          item.need_form ? t('events.need-uniform') : t('events.do-not-need-uniform')
+        ]
+      }
+    }
+
+    onMounted(() => {
+      scrollComponent.value.addEventListener('scroll', handleScroll)
+      currentPage.value = 1
+      totalPages.value = route.meta.eventData.data.total_pages
+      eventCards.value = route.meta.eventData.data.results.map(handlingIncomeData)
+    })
+
+    onUnmounted(() => {
+      scrollComponent.value.removeEventListener('scroll', handleScroll)
+    })
+    
+    function handleScroll() {
+      const element = scrollComponent.value
+      const difference = element.scrollHeight - element.offsetHeight
+
+      if (element.scrollTop === difference) {
+        getCards()
+      }
+      
+    }
+
+    return {
+      scrollComponent,
+      eventCards,
+      isLoaderActive
+    }
   },
   data() {
     return {
@@ -457,57 +486,6 @@ export default {
         start: new Date(2020, 9, 12),
         end: new Date(2020, 9, 16),
       },
-      eventCards: [],
-      // eventCards: [
-      //   {
-      //     id: 0,
-      //     url: '/my-events/friendly-match',
-      //     date: 14,
-      //     time: '12:00 – 14:00',
-      //     address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-      //     main_text:
-      //       'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
-      //     name: 'В’ячеслав Залізняк',
-      //     play_dates: '10 / 22',
-      //     visitor_dates: '17 / 30',
-      //   },
-      //   {
-      //     id: 1,
-      //     url: '/my-events/friendly-match',
-      //     date: 14,
-      //     time: '12:00 – 14:00',
-      //     address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-      //     main_text:
-      //       'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
-      //     name: 'В’ячеслав Залізняк',
-      //     play_dates: '10 / 22',
-      //     visitor_dates: '17 / 30',
-      //   },
-      //   {
-      //     id: 2,
-      //     url: '/my-events/friendly-match',
-      //     date: 14,
-      //     time: '12:00 – 14:00',
-      //     address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-      //     main_text:
-      //       'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
-      //     name: 'В’ячеслав Залізняк',
-      //     play_dates: '10 / 22',
-      //     visitor_dates: '17 / 30',
-      //   },
-      //   {
-      //     id: 3,
-      //     url: '/my-events/friendly-match',
-      //     date: 14,
-      //     time: '12:00 – 14:00',
-      //     address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-      //     main_text:
-      //       'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
-      //     name: 'В’ячеслав Залізняк',
-      //     play_dates: '10 / 22',
-      //     visitor_dates: '17 / 30',
-      //   },
-      // ],
       menuText: [
         {
           id: 0,
@@ -690,20 +668,7 @@ export default {
     },
     goToCreateEvent() {
       this.$router.push('/application/events/create')
-    },
-    test(e) {
-      console.log('scroll goes', e)
-    },
-  },
-  created () {
-    window.addEventListener('scroll', this.test);
-  },
-  destroyed () {
-    window.removeEventListener('scroll', this.test);
-  },
-  mounted() {
-    console.log(this.$route.meta.eventData.results)
-    this.eventCards = this.$route.meta.eventData.results
+    }
   }
 }
 </script>
@@ -718,6 +683,14 @@ export default {
     grid-template-columns: 1fr;
   }
   .main-body {
+    height: 90vh;
+    overflow-y: scroll;
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      display: none; /* for Chrome, Safari, and Opera */
+    }
     .header-block {
       display: flex;
       justify-content: space-between;
@@ -1214,236 +1187,29 @@ export default {
         }
       }
       .cards-block {
+        position: relative;
         margin-top: 23px;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        .event-card {
-          position: relative;
-          padding: 20px 16px;
-          isolation: isolate;
-          width: 328px;
-          background: #ffffff;
-          box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
-          border-radius: 6px;
-          margin-bottom: 16px;
-          @media (min-width: 1200px) and (max-width: 1400px) {
-            width: 408px;
-          }
-          @media (min-width: 992px) and (max-width: 1199px) {
-            width: 320px;
-          }
-          @media (min-width: 768px) and (max-width: 991px) {
-            width: 344px;
-          }
-          @media (max-width: 768px) {
-            width: 100%;
-          }
-          &:before {
-            content: '';
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: linear-gradient(
-              90.37deg,
-              #4a7deb -29.39%,
-              #8978ee 37.85%,
-              #d243c5 97.19%
-            );
-            border-radius: 6px 6px 0px 0px;
-          }
-          .address {
-            &.desk-address {
-              display: none;
-              // @media (max-width: 992px) {
-              //   display: none;
-              // }
-            }
-            &.mob-address {
-              // @media (max-width: 992px) {
-              //   display: flex;
-              // }
-            }
-            display: flex;
-            background: #fafafa;
-            padding: 0px 4px;
-            margin-top: 4px;
-            @media (max-width: 992px) {
-              width: fit-content;
-              margin-top: 8px;
-            }
-            img {
-              margin-right: 5px;
-            }
-            p {
-              font-family: 'Inter';
-              font-style: normal;
-              font-weight: 400;
-              font-size: 12px;
-              line-height: 20px;
-              color: #575775;
-              border-radius: 4px;
-              display: -webkit-box;
-              -webkit-line-clamp: 1;
-              -webkit-box-orient: vertical;
-              overflow: hidden;
-            }
-          }
-          .top-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            .date {
-              font-family: 'Inter';
-              font-style: normal;
-              font-weight: 500;
-              font-size: 14px;
-              line-height: 20px;
-              text-align: right;
-              color: #262541;
-            }
-            .time {
-              font-family: 'Inter';
-              font-style: normal;
-              font-weight: 400;
-              font-size: 12px;
-              line-height: 20px;
-              text-align: right;
-              color: #4c4a82;
-            }
-            .left-side {
-              display: flex;
-              // width: 262px;
-              // min-width: 262px;
-              .card-icon {
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                align-items: center;
-                min-width: 48px;
-                width: 48px;
-                height: 48px;
-                background: #efeff6;
-                border-radius: 4px;
-                margin-right: 8px;
-              }
-              .text-block {
-                .title {
-                  font-family: 'Exo 2';
-                  font-style: normal;
-                  font-weight: 700;
-                  font-size: 16px;
-                  line-height: 24px;
-                  color: #262541;
-                }
-                .date-time-mob {
-                  display: flex;
-                  align-items: center;
-                  margin-top: 4px;
-                  .date {
-                    margin-right: 12px;
-                  }
-                }
-              }
-            }
-            .right-side {
-              display: none;
-              // @media (max-width: 992px) {
-              //   display: none;
-              // }
-            }
-          }
-
-          .main-text {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 20px;
-            color: #393762;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            margin-top: 12px;
-          }
-          .labels {
-            display: flex;
-            align-items: center;
-            margin-top: 12px;
-            .label {
-              margin-right: 4px;
-              font-family: 'Inter';
-              font-style: normal;
-              font-weight: 400;
-              font-size: 12px;
-              line-height: 20px;
-              color: #575775;
-              padding: 0px 8px;
-              border: 1px solid #efeff6;
-              border-radius: 100px;
-            }
-          }
-          .bottom-block {
-            margin-top: 12px;
-            border-top: 1px dashed #dfdeed;
-            .top-line {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              padding-top: 12px;
-              .name {
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 500;
-                font-size: 12px;
-                line-height: 20px;
-                color: #393762;
-              }
-              .price {
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 600;
-                font-size: 14px;
-                line-height: 20px;
-                text-align: right;
-                color: #262541;
-              }
-            }
-            .bottom-line {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              margin-top: 8px;
-              .left-side {
-                display: flex;
-                align-items: center;
-                .titles {
-                  margin-right: 30px;
-                }
-                .titles,
-                .date {
-                  font-family: 'Inter';
-                  font-style: normal;
-                  font-weight: 400;
-                  font-size: 12px;
-                  line-height: 20px;
-                }
-                .players,
-                .players-date {
-                  color: #262541;
-                }
-                .visitors,
-                .visitors-date {
-                  color: #575775;
-                }
-              }
-              .right-side {
-              }
-            }
+        height: 76vh;
+        overflow: hidden;
+        .cards-loader {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgb(255 255 255 / 68%);
+          z-index: 1;
+        }
+        .cards-event-wrapper {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          overflow-y: scroll;
+          height: 100%;
+          -ms-overflow-style: none; /* for Internet Explorer, Edge */
+          scrollbar-width: none; /* for Firefox */
+          &::-webkit-scrollbar {
+            display: none; /* for Chrome, Safari, and Opera */
           }
         }
       }

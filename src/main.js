@@ -16,6 +16,7 @@ import { createLoader } from "./workers/loading-worker/loading.worker";
 
 const i18n = createI18n({
     locale: 'ua',
+    allowComposition: true,
     messages: {
         ua: UA_LANGUAGE
     }
