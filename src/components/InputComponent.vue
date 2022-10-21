@@ -1,31 +1,31 @@
 <template>
   <div 
-    class="input-wrapper"
+    class="b-input__wrapper"
     :style="inputWrapper"
   >
     <div 
       v-if="outsideTitle" 
-      class="outer-title"
+      class="b-input__outer-title"
     >
       <span>{{title}}</span>
     </div>
     <div 
       v-if="insideTitle" 
-      class="inner-title" 
+      class="b-input__inner-title" 
       :style="{width: titleWidth + 'px'}"
     >
       <span>{{title}}</span>
     </div>
     <div 
       v-if="hasIcon" 
-      class="input-icon"
+      class="b-input__icon"
       @click="iconClickAction"
     >
       <img :src="rightIcon" alt="">
     </div>
     <div 
       v-if="iconLeft.length" 
-      class="icon-left"
+      class="b-input__icon-left"
     >
       <img :src="iconLeft" alt="">
     </div>
@@ -133,12 +133,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .input-wrapper {
+  .b-input__wrapper {
     border: 1px solid #DFDEED;
     position: relative;
     border-radius: 6px;
     width: 100%;
-    .input-icon {
+    .b-input__icon {
       display: flex;
       height: 100%;
       width: 48px;
@@ -151,7 +151,7 @@ export default {
         margin: auto;
       }
     }
-    .icon-left {
+    .b-input__icon-left {
       display: flex;
       height: 100%;
       width: 40px;
@@ -164,7 +164,7 @@ export default {
         margin: auto;
       }
     }
-    .outer-title {
+    .b-input__outer-title {
       padding: 0px 4px;
       position: absolute;
       left: 8px;
@@ -177,7 +177,7 @@ export default {
       font-size: 12px;
       line-height: 16px;
     }
-    .inner-title {
+    .b-input__inner-title {
       display: table;
       height: 100%;
       position: absolute;
