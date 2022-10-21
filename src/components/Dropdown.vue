@@ -1,27 +1,27 @@
 <template>
   <div 
-    class="dropdown"
+    class="b-dropdown"
     :style="dropdownStyle"
     >
     <div 
       v-if="isOpened"
-      class="back-layer"
+      class="b-dropdown__back-layer"
       @click="toggleDropdown"
     ></div>
-    <div v-if="outsideTitle" class="outer-title">
+    <div v-if="outsideTitle" class="b-dropdown__outer-title">
       <span>{{mainTitle}}</span>
     </div>
-    <div v-if="outsideTitleLeft" class="outer-title-left">
+    <div v-if="outsideTitleLeft" class="b-dropdown__outer-title-left">
       <span>{{outsideTitleLeft}}</span>
     </div>
-    <div v-if="insideTitle" class="inner-title">
+    <div v-if="insideTitle" class="b-dropdown__inner-title">
       <span>{{mainTitle}}</span>
     </div>
-    <div ref="wrapper" class="current-wrapper">
-      <div class="drop-current" @click="toggleDropdown">
+    <div ref="wrapper" class="b-dropdown__current-wrapper">
+      <div class="b-dropdown__drop-current" @click="toggleDropdown">
         <slot name="drop-icon"></slot>
-        <div class="current-name">{{currentValue}}</div>
-        <div class="arrow-down">
+        <div class="b-dropdown__current-name">{{currentValue}}</div>
+        <div class="b-dropdown__arrow-down">
           <img src="../assets/img/arrow-down-background.svg" alt="">
         </div>
       </div>
@@ -114,14 +114,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .dropdown {
+  .b-dropdown {
     width: 100%;
     border: 1px solid #DFDEED;
     border-radius: 6px;
     margin: 12px 0;
     display: flex;
     position: relative;
-    .back-layer {
+    .b-dropdown__back-layer {
       width: 100%;
       height: 100%;
       position: fixed;
@@ -129,7 +129,7 @@ export default {
       left: 0;
       z-index: 998;
     }
-    .outer-title {
+    .b-dropdown__outer-title {
       height: 16px;
       background: linear-gradient(180deg, #F9F9FC 0%, #FFFFFF 100%);
       border-radius: 4px;
@@ -162,7 +162,7 @@ export default {
         color: #A8A8BD;
       }
     }
-    .inner-title {
+    .b-dropdown__inner-title {
       width: 108px;
       min-width: 108px;
       font-family: "Inter";
@@ -181,10 +181,10 @@ export default {
         padding-left: 12px;
       }
     }
-    .current-wrapper {
+    .b-dropdown__current-wrapper {
       height: 100%;
       width: 100%;
-      .drop-current {
+      .b-dropdown__drop-current {
         display: flex;
         flex-basis: 100%;
         padding: 0 12px;

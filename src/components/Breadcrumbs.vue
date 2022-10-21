@@ -1,5 +1,5 @@
 <template>
-  <div class="bread-crumbs">
+  <div class="b_breadcrumbs">
     <ul>
       <li v-for="(item, idx) in breadcrumbs" :key="item.name">
         <router-link :to="idx + 1 === breadcrumbs.length ? '' : item.path">
@@ -19,10 +19,11 @@
 import { useRouter } from 'vue-router'
 
 const { breadcrumbs } = useRouter().currentRoute.value.meta
+
 </script>
 
 <style lang="scss" scoped>
-.bread-crumbs {
+.b_breadcrumbs {
   ul {
     display: flex;
     li {

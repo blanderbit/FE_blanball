@@ -1,10 +1,10 @@
 <template>
   <div 
-    class="context-modal-wrapper"
+    class="b-context-modal__wrapper"
     @click="wrapperClick"
   >
     <div 
-      class="context-modal"
+      class="b-context-modal"
       :style="contextWindowStyle"
     >
       <ul>
@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { computed } from 'vue'
+
 export default {
   name: 'ContextMenu',
   props: {
@@ -40,31 +42,35 @@ export default {
       require: true
     }
   },
-  computed: {
-    contextWindowStyle() {
+  emits: ['close-modal'],
+  setup(props, context) {
+    const contextWindowStyle = computed(() => {
       return {
-        top: this.clientY + 'px',
-        left: this.clientX + 'px'
+        top: props.clientY + 'px',
+        left: props.clientX + 'px'
       }
+    })
+    function wrapperClick() {
+      context.emit('close-modal')
     }
-  },
-  methods: {
-    wrapperClick() {
-      this.$emit('close-modal')
+
+    return {
+      contextWindowStyle,
+      wrapperClick
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.context-modal-wrapper {
+.b-context-modal__wrapper {
   position: fixed;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
   z-index: 999;
-  .context-modal {
+  .b-context-modal {
     width: 228px;
     background: #fff;
     position: absolute;
