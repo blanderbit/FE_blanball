@@ -258,9 +258,9 @@ const router = createRouter({
                     path: ROUTES.APPLICATION.MY_EVENTS.relative,
                     name: ROUTES.APPLICATION.MY_EVENTS.name,
                     beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-                        // usersData: () => $api.UsersRequest.getAll(to.query),
+                        eventData: () => EventService.getAllEvents(CONSTANTS.first_page_events)
                     })),
-                    component: () => import('../views/application/events/index.vue'),
+                    component: () => import('../views/application/events/my-events.vue'),
                     meta: {
                         breadcrumbs: [
                             { name:'Main', path: '/' },

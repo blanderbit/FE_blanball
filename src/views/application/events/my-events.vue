@@ -1,5 +1,12 @@
 <template>
   <div class="b-events-page">
+    <ContextMenu
+      v-if="isContextMenuActive"
+      :client-x="contextMenuX"
+      :client-y="contextMenuY"
+      :menu-text="mockData.menu_text"
+      @close-modal="isContextMenuActive = false"
+    />
     <div class="b-events-page__main-body">
       <div class="b-events-page__header-block">
         <div class="b-events-page__left-part">
@@ -8,12 +15,12 @@
           <div class="b-events-page__event-switcher">
             <div
               class="b-events-page__general-events"
+              @click="switchToEvents"
             >
               {{ $t('events.general-events') }}
-            </div>
+            </div>``
             <div
               class="b-events-page__my-events"
-              @click="switchToMyEvents"
             >
               {{ $t('events.my-events') }}
             </div>
@@ -36,21 +43,28 @@
           :gender-dropdown="mockData.gender_dropdown"
           :cities-dropdown="mockData.cities_dropdown"
         />
-        <div class="b-events-page__all-events-block">
+        <div v-if="!eventsSwitcher" class="b-events-page__all-events-block">
           <div class="b-events-page__cards-event-wrapper" ref="scrollComponent">
             <SmallLoader :is-active="isLoaderActive" />
             <EventCard
               v-for="card of eventCards"
               :key="card.id"
               :card="card"
-              @go-to-event-page="goToEventPage(card.id)"
+              @go-to-event-page="goToEventPage"
             />
           </div>
+        </div>
+        <div v-if="eventsSwitcher" class="b-events-page__my-events-block">
+          <MyEventCard
+            v-for="card of mockData.my_events"
+            :key="card.id"
+            :card="card"
+            @card-right-click="myCardRightClick"
+          />
         </div>
       </div>
     </div>
 
-    <RightSidebar />
   </div>
 </template>
 
@@ -72,8 +86,6 @@ import MyEventCard from '../../../components/MyEventCard.vue'
 import RightSidebar from '../../../components/RightSidebar.vue'
 
 import CONSTANTS from '../../../consts/index'
-
-import {ROUTES} from '../../../router'
 
 import { EventService } from '../../../workers/api-worker/http/http-services/authorization.service'
 
@@ -104,13 +116,20 @@ export default {
     const eventCards = ref([])
     const { t } = useI18n()
     const isLoaderActive = ref(false)
+    const eventsSwitcher = ref(false)
+    const contextMenuX = ref(null)
+    const contextMenuY = ref(null)
+    const isContextMenuActive = ref(false)
 
     const mockData = computed(() => {
       return {
         event_cards: CONSTANTS.event_page.event_cards,
+        my_events: CONSTANTS.event_page.my_events,
         sport_type_dropdown: CONSTANTS.event_page.sport_type_dropdown,
         gender_dropdown: CONSTANTS.event_page.gender_dropdown,
-        cities_dropdown: CONSTANTS.event_page.cities_dropdown
+        cities_dropdown: CONSTANTS.event_page.cities_dropdown,
+        calendar: CONSTANTS.event_page.calendar,
+        menu_text: CONSTANTS.event_page.menu_text,
       }
     })
 
@@ -156,16 +175,24 @@ export default {
       }
     }
 
-    function goToEventPage(id) {
-      router.push(ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(id))
+    function switchToEvents(val) {
+      eventsSwitcher.value = val
+    }
+
+    function myCardRightClick(e) {
+      console.log('click')
+      contextMenuX.value = e.clientX
+      contextMenuY.value = e.clientY
+      isContextMenuActive.value = true
+    }
+
+    function goToEventPage() {
+      router.push('/application/events/3')
     }
 
     function goToCreateEvent() {
-      router.push(ROUTES.APPLICATION.EVENTS.CREATE.absolute)
-    }
-
-    function switchToMyEvents() {
-      router.push(ROUTES.APPLICATION.MY_EVENTS.absolute)
+      console.log('first')
+      router.push('/application/events/create')
     }
 
     onMounted(() => {
@@ -186,10 +213,13 @@ export default {
       scrollComponent,
       eventCards,
       isLoaderActive,
-      switchToMyEvents,
+      eventsSwitcher,
+      switchToEvents,
       mockData,
+      myCardRightClick,
       goToEventPage,
-      goToCreateEvent
+      goToCreateEvent,
+      isContextMenuActive
     }
   },
 }
@@ -259,8 +289,7 @@ export default {
             width: 100px;
             height: 28px;
             border-radius: 6px 0px 0px 6px;
-            border: 1px solid '#000';
-            // border: 1px solid #000;
+            border: 1px solid '#148581';
             cursor: pointer;
           }
           .b-events-page__my-events {
@@ -272,7 +301,7 @@ export default {
             width: 100px;
             height: 28px;
             border-radius: 0px 6px 6px 0px;
-            border: 1px solid '#148581';
+            border: 1px solid '#DFDEED';
             cursor: pointer;
           }
         }
@@ -309,6 +338,12 @@ export default {
             display: none; /* for Chrome, Safari, and Opera */
           }
         }
+      }
+      .b-events-page__my-events-block {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: 23px;
       }
     }
   }
