@@ -1,7 +1,7 @@
 <template>
-  <label class="switch" :for="id">
+  <label class="b_switch" :for="id">
     <input type="checkbox" :id="id" />
-    <div class="slider round"></div>
+    <div class="b_switch_slider round"></div>
   </label>
 </template>
 
@@ -18,18 +18,18 @@ export default {
 </script>
 
 <style scoped>
-.switch {
+.b_switch {
   display: inline-block;
   height: 20px;
   position: relative;
   width: 40px;
 }
 
-.switch input {
+.b_switch input {
   display:none;
 }
 
-.slider {
+.b_switch_slider {
   background-color: #ccc;
   bottom: 0;
   cursor: pointer;
@@ -40,7 +40,7 @@ export default {
   transition: .4s;
 }
 
-.slider:before {
+.b_switch_slider:before {
   background-color: #fff;
   bottom: 2px;
   content: "";
@@ -51,19 +51,19 @@ export default {
   width: 16px;
 }
 
-input:checked + .slider {
+input:checked + .b_switch_slider {
   background-color: #148783;
 }
 
-input:checked + .slider:before {
+input:checked + .b_switch_slider:before {
   transform: translateX(20px);
 }
 
-.slider.round {
+.b_switch_slider.round {
   border-radius: 34px;
 }
 
-.slider.round:before {
+.b_switch_slider.round:before {
   border-radius: 50%;
 }
 </style>

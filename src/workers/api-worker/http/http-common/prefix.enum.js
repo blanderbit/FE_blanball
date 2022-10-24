@@ -8,5 +8,8 @@ export const EndpointsEnum = {
         Read: '/notifications/client/read/notifications',
         Delete: '/notifications/client/delete/notifications',
         DeleteAllMyNotifications: '/notifications/client/delete-all/notifications' // TODO
+    },
+    Events: {
+        getEvents: '/events/client/events/list'
     }
 };

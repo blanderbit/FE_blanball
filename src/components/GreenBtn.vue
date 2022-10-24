@@ -1,6 +1,6 @@
 <template>
   <div
-    class="green-btn"
+    class="b-green-btn"
     :style="btnStyle"
     @click="$emit('click-function')"
   >
@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+
 export default {
   props: {
     text: {
@@ -46,25 +48,29 @@ export default {
       default: false
     }
   },
-  computed: {
-    btnWidth() {
-      return this.width ? this.width + 'px' : '100%'
-    },
-    btnStyle() {
+  setup(props) {
+    const btnWidth = computed(() => {
+      return props.width ? props.width + 'px' : '100%'
+    })
+    const btnStyle = computed(() => {
       return {
-        ...this.fontStyles,
-        width: this.width ? this.width + 'px' : '100%',
-        height: this.height + 'px',
-        background: this.backgroundColor,
-        'justify-content': this.isIconAndTextApart ? 'space-around' : 'center'
+        ...props.fontStyles,
+        width: props.width ? props.width + 'px' : '100%',
+        height: props.height + 'px',
+        background: props.backgroundColor
       }
+    })
+
+    return {
+      btnWidth,
+      btnStyle
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.green-btn {
+.b-green-btn {
   border-radius: 6px;
   color: #fff;
   height: 32px;

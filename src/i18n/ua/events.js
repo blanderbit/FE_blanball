@@ -20,6 +20,8 @@ export default {
   'fans': 'Вболівальники',
   'planned-events': 'Заплановані події',
   'your-events': 'Заходи у яких ви запланували участь',
+  'need-uniform': 'Потрібна форма',
+  'do-not-need-uniform': 'Не потрібна форма',
   months: {
     'January':	'Січень',
     'February':	'Лютий',

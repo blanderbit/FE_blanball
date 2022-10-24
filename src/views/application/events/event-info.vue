@@ -1,574 +1,177 @@
 <template>
-  <div class="event-info-page">
-    <div class="main-body">
-      <div class="header-block">
-        <div class="left-part">
-          <div class="title">{{ $t('my_events.title') }}</div>
-          <div class="subtitle">{{ $t('my_events.subtitle') }}</div>
+  <div class="b-event-info">
+    <div class="b-event-info__main-body">
+      <div class="b-event-info__header-block">
+        <div class="b-event-info__left-part">
+          <div class="b-event-info__title">{{ $t('my_events.title') }}</div>
+          <div class="b-event-info__subtitle">{{ $t('my_events.subtitle') }}</div>
         </div>
-        <div class="right-part">
-          <router-link to="/application/events/create">
+        <div class="b-event-info__right-part">
+          <router-link :to="ALL_ROUTES.APPLICATION.EVENTS.CREATE.absolute">
             <GreenBtn 
               :text="$t('buttons.take-part-applications')"
               :width="168"
               :height="40"
             />
           </router-link>
-          <div class="share-link">
+          <div class="b-event-info__share-link">
             <img src="../../../assets/img/share-icon.svg" alt="">
             <span>Поділитися</span>
           </div>
         </div>
       </div>
-      <div class="details-block">
-        <div class="left-side">
-          <div class="timing">
+      <div class="b-event-info__details-block">
+        <div class="b-event-info__left-side">
+          <div class="b-event-info__timing">
             <img src="../../../assets/img/watch.svg" alt="">
             16 червня. 12:00 – 14:00
           </div>
-          <div class="address">
+          <div class="b-event-info__address">
             <img src="../../../assets/img/address-icon.svg" alt="">
             <span>Запоріжжя, Центральна, стадіон «Торпеда»</span>
           </div>
-          <div class="clothes">
-            <div class="clothe">
+          <div class="b-event-info__clothes">
+            <div class="b-event-info__clothe">
               <img src="../../../assets/img/t-shirt.svg" alt="">
               <span>Форма №1</span>
             </div>
-            <div class="clothe">
+            <div class="b-event-info__clothe">
               <img src="../../../assets/img/t-shirt.svg" alt="">
               <span>Форма №2</span>
             </div>
           </div>
-          <div class="title">
+          <div class="b-event-info__title">
             {{ $t('my_events.description-title') }}
           </div>
-          <div class="description">
+          <div class="b-event-info__description">
             Donec a eros justo. Fusce egestas tristique ultrices. Nam tempor, augue nec tincidunt molestie, massa nunc varius arcu, at scelerisque elit erat a magna. Donec quis erat at libero ultrices mollis. In hac habitasse platea dictumst. Vivamus vehicula leo dui, at porta nisi facilisis finibus. In euismod augue vitae nisi ultricies, non aliquet urna tincidunt. Integer in nisi eget nulla commodo faucibus efficitur quis massa. Praesent felis est, finibus et nisi ac, hendrerit venenatis libero. Donec consectetur faucibus ipsum id gravida.
           </div>
-          <div class="labels">
+          <div class="b-event-info__labels">
             <div
-              v-for="label of labels"
+              v-for="label of mockData.labels"
               :key="label.id"
-              class="label"
+              class="b-event-info__label"
             >
               {{ label.text }}
             </div>
           </div>
         </div>
-        <div class="right-side">
-          <div class="users">
+        <div class="b-event-info__right-side">
+          <div class="b-event-info__users">
             <div
-              v-for="cief of ciefs" 
+              v-for="cief of mockData.ciefs" 
               :key="cief.id"
-              class="user"
+              class="b-event-info__user"
               :style="{
                 'border-top': cief.id === 0 ? 'none' : '1px solid #DFDEED'
               }"
             >
-              <div class="left-side">
-                <div class="picture">
+              <div class="b-event-info__left-side">
+                <div class="b-event-info__picture">
                   <img :src="cief.img" alt="">
                 </div>
-                <div class="text-block">
-                  <div class="name">{{cief.name}}</div>
-                  <div class="phone">{{cief.phone}}</div>
+                <div class="b-event-info__text-block">
+                  <div class="b-event-info__name">{{cief.name}}</div>
+                  <div class="b-event-info__phone">{{cief.phone}}</div>
                 </div>
               </div>
-              <div class="right-side">
+              <div class="b-event-info__right-side">
                 {{cief.status}}
               </div>
             </div>
           </div>
-          <div class="map">
+          <div class="b-event-info__map">
             <img src="../../../assets/img/map-event-info.svg" alt="">
           </div>
         </div>
       </div>
-      <div class="tables-block">
-        <div class="tables-title">{{ $t('my_events.already-accepted') }}</div>
-        <div class="users-table table-players">
-          <div class="table-label">
-            Список гравців
-          </div>
-          <div 
-            v-for="player of playersList"
-            :key="player.id"
-            :class="['table_card', { inactive: !player.isActive }]"
-          >
-            <div class="left-side">
-              <div class="picture">
-                <img :src="player.img" alt="">
-              </div>
-              <div 
-                class="name"
-              >
-                {{player.name}}
-              </div>
-            </div>
-            <div class="right-side">
-              <div
-                v-if="player.isActive"
-                class="status"
-              >
-                {{ player.status }}
-              </div>
-              <img 
-                v-else 
-                :src="player.status" 
-                class="inactive"
-                alt=""
-              >
-              <div class="icon">
-                <img :src="player.icon" alt="">
-              </div>
-            </div>
-          </div>
+      <div class="b-event-info__tables-block">
+        <div class="b-event-info__tables-title">{{ $t('my_events.already-accepted') }}</div>
+        <EventInfoUsersTable 
+          :data="mockData.players_list"
+          :table-title-text="'Список гравців'"
+          :table-color="'#148783'"
+        />
+        <div class="b-event-info__judge-trainer-tables">
+          <EventInfoUsersTable 
+            :data="mockData.judge_list"
+            :table-title-text="'Суддя'"
+            :table-color="'#7355B2'"
+          />
+          <EventInfoUsersTable 
+            :data="mockData.trainer_list"
+            :table-title-text="'Тренер'"
+            :table-color="'#1C4FC5'"
+          />
         </div>
-        <div class="judge-trainer-tables">
-          <div class="users-table table-judge">
-            <div class="table-label">
-              Суддя
-            </div>
-            <div 
-              class="table_card"
-            >
-              <div class="left-side">
-                <div class="picture">
-                  <img src="../../../assets/img/user.png" alt="">
-                </div>
-                <div class="text-block">
-                  <div 
-                    class="name"
-                  >
-                    Валерій Завгородній
-                  </div>
-                  <div class="duty">
-                    Суддівська категорія
-                  </div>
-                </div>
-              </div>
-              <div class="right-side">
-                <div class="icon">
-                  <img src="../../../assets/img/smile_face.svg" alt="">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="users-table table-trainer">
-            <div class="table-label">
-              Тренер
-            </div>
-            <div 
-              class="table_card"
-            >
-              <div class="left-side">
-                <div class="picture">
-                  <img src="../../../assets/img/user.png" alt="">
-                </div>
-                <div class="text-block">
-                  <div 
-                    class="name"
-                  >
-                    Валерій Завгородній
-                  </div>
-                  <div class="duty">
-                    Суддівська категорія
-                  </div>
-                </div>
-              </div>
-              <div class="right-side">
-                <div class="icon">
-                  <img src="../../../assets/img/smile_face.svg" alt="">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="users-table table-awdience">
-          <div class="table-label">
-            Зареєстровані глядачі
-          </div>
-          <div 
-            v-for="player of playersList"
-            :key="player.id"
-            :class="['table_card', { inactive: !player.isActive }]"
-          >
-            <div class="left-side">
-              <div class="picture">
-                <img :src="player.img" alt="">
-              </div>
-              <div 
-                class="name"
-              >
-                {{player.name}}
-              </div>
-            </div>
-            <div class="right-side">
-              <div
-                v-if="player.isActive"
-                class="status"
-              >
-                {{ player.status }}
-              </div>
-              <div 
-                v-else
-                class="status"
-              >
-                <img :src="player.status" alt="">
-              </div>
-              <div class="icon">
-                <img :src="player.icon" alt="">
-              </div>
-            </div>
-          </div>
-        </div>
+        <EventInfoUsersTable 
+          :data="mockData.players_list"
+          :table-title-text="'Зареєстровані глядачі'"
+          :table-color="'#148783'"
+        />
       </div>
     </div>
 
-    <div class="right-sidebar">
-      <div class="title-block">
-        <div class="title">{{ $t('events.planned-events') }}</div>
-        <div class="subtitle">{{ $t('events.your-events') }}</div>
-      </div>
+    <RightSidebar />
 
-      <div class="cards-block">
-        <div class="card">
-          <div class="close">&times;</div>
-          <div class="top-line">
-            <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.svg" alt="">
-            </div>
-            <div class="text-data">
-              <div class="top-line name">{{ $t('events.friendly-match') }}</div>
-              <div class="bottom-line">
-                <div class="time">12:00 – 14:00</div>
-                <div class="date">16 {{ $t('events.months.June') }}</div>
-              </div>
-            </div>
-          </div>
-          <div class="address">
-            <img src="../../../assets/img/location-point.svg" alt="">
-            <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
-          </div>
-          <div class="labels">
-            <div class="label">{{ $t('events.football') }}</div>
-            <div class="label">{{ $t('events.men') }}</div>
-            <div class="label">...</div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="close">&times;</div>
-          <div class="top-line">
-            <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.svg" alt="">
-            </div>
-            <div class="text-data">
-              <div class="top-line name">{{ $t('events.friendly-match') }}</div>
-              <div class="bottom-line">
-                <div class="time">12:00 – 14:00</div>
-                <div class="date">16 {{ $t('events.months.June') }}</div>
-              </div>
-            </div>
-          </div>
-          <div class="address">
-            <img src="../../../assets/img/location-point.svg" alt="">
-            <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
-          </div>
-          <div class="labels">
-            <div class="label">{{ $t('events.football') }}</div>
-            <div class="label">{{ $t('events.men') }}</div>
-            <div class="label">...</div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="close">&times;</div>
-          <div class="top-line">
-            <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.svg" alt="">
-            </div>
-            <div class="text-data">
-              <div class="top-line name">{{ $t('events.friendly-match') }}</div>
-              <div class="bottom-line">
-                <div class="time">12:00 – 14:00</div>
-                <div class="date">16 {{ $t('events.months.June') }}</div>
-              </div>
-            </div>
-          </div>
-          <div class="address">
-            <img src="../../../assets/img/location-point.svg" alt="">
-            <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
-          </div>
-          <div class="labels">
-            <div class="label">{{ $t('events.football') }}</div>
-            <div class="label">{{ $t('events.men') }}</div>
-            <div class="label">...</div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="close">&times;</div>
-          <div class="top-line">
-            <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.svg" alt="">
-            </div>
-            <div class="text-data">
-              <div class="top-line name">{{ $t('events.friendly-match') }}</div>
-              <div class="bottom-line">
-                <div class="time">12:00 – 14:00</div>
-                <div class="date">16 {{ $t('events.months.June') }}</div>
-              </div>
-            </div>
-          </div>
-          <div class="address">
-            <img src="../../../assets/img/location-point.svg" alt="">
-            <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
-          </div>
-          <div class="labels">
-            <div class="label">{{ $t('events.football') }}</div>
-            <div class="label">{{ $t('events.men') }}</div>
-            <div class="label">...</div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
-import GreenBtn from '../../../components/GreenBtn.vue'
+import { computed } from 'vue'
 
-import user from '../../../assets/img/user.png'
-import smile_face from '../../../assets/img/smile_face.svg'
-import no_user from '../../../assets/img/no-user-picture.svg'
-import minus from '../../../assets/img/minus.svg'
-import add_user from '../../../assets/img/add-user-button.svg'
+import GreenBtn from '../../../components/GreenBtn.vue'
+import RightSidebar from '../../../components/RightSidebar.vue'
+import EventInfoUsersTable from '../../../components/EventInfoUsersTable.vue'
+
+import CONSTANTS from '../../../consts/index'
+import { ROUTES } from '../../../router/index'
 
 export default {
   name: 'EventsPage',
   components: {
-    GreenBtn
+    GreenBtn,
+    RightSidebar,
+    EventInfoUsersTable
   },
-  data() {
+  setup() {
+    const mockData = computed(() => {
+      return {
+        players_list: CONSTANTS.event_info.playersList,
+        trainer_list: CONSTANTS.event_info.trainer,
+        judge_list: CONSTANTS.event_info.judge,
+        ciefs: CONSTANTS.event_info.ciefs,
+        labels: CONSTANTS.event_info.labels
+      }
+    })
+
+    const ALL_ROUTES = computed(() => {
+      return ROUTES
+    })
+
     return {
-      playersList: [
-        {
-          id: 0,
-          img: user,
-          name: 'Капустин Никита',
-          status: 'ПНЗ',
-          icon: smile_face,
-          isActive: true
-        },
-        {
-          id: 1,
-          img: user,
-          name: 'Капустин Никита',
-          status: 'ПНЗ',
-          icon: smile_face,
-          isActive: true
-        },        {
-          id: 2,
-          img: user,
-          name: 'Капустин Никита',
-          status: 'ПНЗ',
-          icon: smile_face,
-          isActive: true
-        },
-        {
-          id: 3,
-          img: user,
-          name: 'Капустин Никита',
-          status: 'ПНЗ',
-          icon: smile_face,
-          isActive: true
-        },
-        {
-          id: 4,
-          img: user,
-          name: 'Капустин Никита',
-          status: 'ПНЗ',
-          icon: smile_face,
-          isActive: true
-        },
-        {
-          id: 5,
-          img: user,
-          name: 'Капустин Никита',
-          status: 'ПНЗ',
-          icon: smile_face,
-          isActive: true
-        },
-        {
-          id: 6,
-          img: user,
-          name: 'Капустин Никита',
-          status: 'ПНЗ',
-          icon: smile_face,
-          isActive: true
-        },
-        {
-          id: 7,
-          img: user,
-          name: 'Капустин Никита',
-          status: 'ПНЗ',
-          icon: smile_face,
-          isActive: true
-        },
-        {
-          id: 8,
-          img: user,
-          name: 'Капустин Никита',
-          status: 'ПНЗ',
-          icon: smile_face,
-          isActive: true
-        },
-        {
-          id: 9,
-          img: no_user,
-          name: 'Приєднатися до команди',
-          status: minus,
-          icon: add_user,
-          isActive: false
-        },
-        {
-          id: 10,
-          img: no_user,
-          name: 'Приєднатися до команди',
-          status: minus,
-          icon: add_user,
-          isActive: false
-        },
-        {
-          id: 11,
-          img: no_user,
-          name: 'Приєднатися до команди',
-          status: minus,
-          icon: add_user,
-          isActive: false
-        },
-        {
-          id: 12,
-          img: no_user,
-          name: 'Приєднатися до команди',
-          status: minus,
-          icon: add_user,
-          isActive: false
-        },
-        {
-          id: 13,
-          img: no_user,
-          name: 'Приєднатися до команди',
-          status: minus,
-          icon: add_user,
-          isActive: false
-        },
-        {
-          id: 14,
-          img: no_user,
-          name: 'Приєднатися до команди',
-          status: minus,
-          icon: add_user,
-          isActive: false
-        },
-        {
-          id: 15,
-          img: no_user,
-          name: 'Приєднатися до команди',
-          status: minus,
-          icon: add_user,
-          isActive: false
-        },
-        {
-          id: 16,
-          img: no_user,
-          name: 'Приєднатися до команди',
-          status: minus,
-          icon: add_user,
-          isActive: false
-        },
-        {
-          id: 17,
-          img: no_user,
-          name: 'Приєднатися до команди',
-          status: minus,
-          icon: add_user,
-          isActive: false
-        },
-        {
-          id: 18,
-          img: no_user,
-          name: 'Приєднатися до команди',
-          status: minus,
-          icon: add_user,
-          isActive: false
-        },
-        {
-          id: 19,
-          img: no_user,
-          name: 'Приєднатися до команди',
-          status: minus,
-          icon: add_user,
-          isActive: false
-        },
-        {
-          id: 20,
-          img: no_user,
-          name: 'Приєднатися до команди',
-          status: minus,
-          icon: add_user,
-          isActive: false
-        }
-      ],
-      labels: [
-        {
-          id: 0,
-          text: 'Футбол'
-        },
-        {
-          id: 1,
-          text: 'Чоловіки'
-        },
-        {
-          id: 2,
-          text: 'Без розряду'
-        },
-      ],
-      ciefs: [
-        {
-          id: 0,
-          img: user,
-          name: 'Сергій Білецький',
-          phone: '+380 66 873 05 75',
-          status: 'Організатор'
-        },
-        {
-          id: 1,
-          img: user,
-          name: 'Ярослав Бойко',
-          phone: '+380 97 773 05 81',
-          status: 'Тренер'
-        }
-      ]
+      mockData,
+      ALL_ROUTES
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .event-info-page {
+  .b-event-info {
     display: grid;
     grid-template-columns: 1fr 256px;
     grid-gap: 28px;
     @media (max-width: 1200px) {
       grid-template-columns: 1fr;
     }
-    .main-body {
-      .header-block {
+    .b-event-info__main-body {
+      .b-event-info__header-block {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        .left-part {
-          .title {
+        .b-event-info__left-part {
+          .b-event-info__title {
             font-family: 'Exo 2';
             font-style: normal;
             font-weight: 700;
@@ -577,7 +180,7 @@ export default {
             color: #262541;
             margin-bottom: 4px;     
           }
-          .subtitle {
+          .b-event-info__subtitle {
             font-family: 'Inter';
             font-style: normal;
             font-weight: 500;
@@ -586,7 +189,7 @@ export default {
             color: #575775;
           }
         }
-        .right-part {
+        .b-event-info__right-part {
           display: flex;
           align-items: center;
           @media (max-width: 992px) {
@@ -595,7 +198,7 @@ export default {
           a {
             text-decoration: none;
           }
-          .share-link {
+          .b-event-info__share-link {
             font-family: 'Inter';
             font-style: normal;
             font-weight: 400;
@@ -611,7 +214,7 @@ export default {
           }
         }
       }
-      .details-block {
+      .b-event-info__details-block {
         border-top: 1px solid #DFDEED;
         padding-top: 14px;
         display: grid;
@@ -622,10 +225,10 @@ export default {
           grid-template-columns: 1fr;
           gap: 20px;
         }
-        .left-side {
-          .timing,
-          .address,
-          .clothes {
+        .b-event-info__left-side {
+          .b-event-info__timing,
+          .b-event-info__address,
+          .b-event-info__clothes {
             font-family: 'Inter';
             font-style: normal;
             font-weight: 400;
@@ -640,13 +243,13 @@ export default {
             span {
               border-bottom: 1px dashed #000;
             }
-            .clothe {
+            .b-event-info__clothe {
               margin-right: 16px;
               display: flex;
               align-items: center;
             }
           }
-          .title {
+          .b-event-info__title {
             font-family: 'Inter';
             font-style: normal;
             font-weight: 400;
@@ -656,7 +259,7 @@ export default {
             margin-top: 20px;
             margin-bottom: 16px;
           }
-          .description {
+          .b-event-info__description {
             font-family: 'Inter';
             font-style: normal;
             font-weight: 400;
@@ -665,9 +268,9 @@ export default {
             color: #262541;
             margin-bottom: 16px;
           }
-          .labels {
+          .b-event-info__labels {
             display: flex;
-            .label {
+            .b-event-info__label {
               padding: 2px 8px;
               border: 1px solid #DFDEED;
               border-radius: 100px;
@@ -681,21 +284,21 @@ export default {
             }
           }
         }
-        .right-side {
-          .users {
-            .user {
+        .b-event-info__right-side {
+          .b-event-info__users {
+            .b-event-info__user {
               display: flex;
               justify-content: space-between;
               align-items: flex-start;
               padding-top: 12px;
               margin-bottom: 12px;
-              .left-side {
+              .b-event-info__left-side {
                 display: flex;
                 align-items: center;
-                .picture {
+                .b-event-info__picture {
                   margin-right: 12px;
                 }
-                .name {
+                .b-event-info__name {
                   font-family: 'Inter';
                   font-style: normal;
                   font-weight: 500;
@@ -703,7 +306,7 @@ export default {
                   line-height: 20px;
                   color: #262541;
                 }
-                .phone {
+                .b-event-info__phone {
                   font-family: 'Inter';
                   font-style: normal;
                   font-weight: 400;
@@ -712,7 +315,7 @@ export default {
                   color: #575775;
                 }
               }
-              .right-side {
+              .b-event-info__right-side {
                 font-family: 'Inter';
                 font-style: normal;
                 font-weight: 400;
@@ -722,7 +325,7 @@ export default {
               }
             }
           }
-          .map {
+          .b-event-info__map {
             margin-top: 20px;
             img {
               width: 100%;
@@ -730,9 +333,9 @@ export default {
           }
         }
       }
-      .tables-block {
+      .b-event-info__tables-block {
         margin-top: 36px;
-        .tables-title {
+        .b-event-info__tables-title {
           margin-bottom: 32px;
           font-family: 'Exo 2';
           font-style: normal;
@@ -741,230 +344,12 @@ export default {
           line-height: 24px;
           color: #262541;
         }
-        .table-label {
-          position: absolute;
-          left: 20px;
-          top: -12px;
-          padding: 2px 12px;
-          border-radius: 4px;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 500;
-          font-size: 14px;
-          line-height: 20px;
-          text-align: center;
-          color: #FFFFFF;
-        }
-        .users-table {
-          padding: 24px 20px 12px 20px;
-          margin-bottom: 32px;
-          border-radius: 6px;
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: space-between;
-          position: relative;
-          .table_card {
-            width: 368px;
-            padding: 14px 20px;
-            border: 1px solid #DFDEED;
-            border-radius: 4px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 20px;
-            color: #262541;
-            @media (min-width: 768px) and (max-width: 992px) {
-              width: 300px;
-            }
-            @media (max-width: 768px) {
-              width: 100%;
-            }
-            &.inactive {
-              font-size: 13px;
-              color: #575775;
-            }
-            .left-side {
-              display: flex;
-              align-items: center;
-              .picture {
-                margin-right: 16px;
-              }
-              .duty {
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 400;
-                font-size: 12px;
-                line-height: 20px;
-                color: #575775;
-              }
-            }
-            .right-side {
-              display: flex;
-              align-items: center;
-              .status {
-                margin-right: 24px;
-              }
-              .inactive {
-                margin-right: 24px;
-              }
-            }
-          }
-        }
-        .table-players, .table-awdience {
-          border: 1px solid #148783;
-          .table-label {
-            background: #148783;
-          }
-        }
-        .table-judge {
-          border: 1px solid #7355B2;
-          .table-label {
-            background: #7355B2;
-          }
-          @media (max-width: 768px) {
-            width: 100%;
-          }
-        }
-        .table-trainer {
-          border: 1px solid #1C4FC5;
-          .table-label {
-            background: #1C4FC5;
-          }
-          @media (max-width: 768px) {
-            width: 100%;
-          }
-        }
-        .judge-trainer-tables {
+        .b-event-info__judge-trainer-tables {
           display: flex;
           justify-content: space-between;
           align-items: center;
           @media (max-width: 768px) {
             flex-direction: column;
-          }
-        }
-      }
-    }
-    .right-sidebar {
-      @media (max-width: 1200px) {
-        display: none;
-      }
-      .title-block {
-        .title {
-          font-family: 'Exo 2';
-          font-style: normal;
-          font-weight: 700;
-          font-size: 22px;
-          line-height: 32px;
-          color: #262541;
-        }
-        .subtitle {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 500;
-          font-size: 13px;
-          line-height: 20px;
-          color: #575775;
-        }
-      }
-      .cards-block {
-        margin-top: 20px;
-        .card {
-          position: relative;
-          width: 100%;
-          background: #FFFFFF;
-          border: 1px solid #DFDEED;
-          border-radius: 6px;
-          padding: 10px 12px;
-          margin-bottom: 16px;
-          .close {
-            position: absolute;
-            right: 10px;
-            top: 10px;
-            font-size: 20px;
-            cursor: pointer;
-          }
-          .top-line {
-            display: flex;
-            align-items: center;
-            .text-data {
-              margin-left: 8px;
-              .name {
-                font-family: 'Exo 2';
-                font-style: normal;
-                font-weight: 600;
-                font-size: 14px;
-                line-height: 16px;
-                color: #262541;
-              }
-              .bottom-line {
-                display: flex;
-                align-items: center;
-                margin-top: 4px;
-                .time {
-                  font-family: 'Inter';
-                  font-style: normal;
-                  font-weight: 400;
-                  font-size: 12px;
-                  line-height: 20px;
-                  text-align: right;
-                  color: #575775;
-                  margin-right: 21px;
-                }
-                .date {
-                  font-family: 'Inter';
-                  font-style: normal;
-                  font-weight: 500;
-                  font-size: 12px;
-                  line-height: 16px;
-                  text-align: right;
-                  color: #262541;
-                }
-              }
-            }
-          }
-          .address {
-            display: flex;
-            background: #FAFAFA;
-            padding: 0px 4px;
-            margin-top: 4px;
-            img {
-              margin-right: 5px;
-            }
-            p {
-              font-family: 'Inter';
-              font-style: normal;
-              font-weight: 400;
-              font-size: 12px;
-              line-height: 20px;
-              color: #575775;
-              border-radius: 4px;
-              display: -webkit-box;
-              -webkit-line-clamp: 1;
-              -webkit-box-orient: vertical;
-              overflow: hidden;
-            }
-          }
-          .labels {
-            display: flex;
-            align-items: center;
-            margin-top: 12px;
-            .label {
-              margin-right: 4px;
-              font-family: 'Inter';
-              font-style: normal;
-              font-weight: 400;
-              font-size: 12px;
-              line-height: 20px;
-              color: #575775;
-              padding: 0px 8px;
-              border: 1px solid #EFEFF6;
-              border-radius: 100px;
-            }
           }
         }
       }
