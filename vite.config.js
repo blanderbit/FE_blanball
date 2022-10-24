@@ -2,14 +2,39 @@ import {fileURLToPath, URL} from 'node:url'
 
 import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
+
 require('dotenv').config();
+import {babel} from '@rollup/plugin-babel'
 
 const globalVariables = {
     'process.env': process.env,
 };
 
 export default defineConfig({
-    plugins: [vue()],
+    plugins: [
+        babel({
+            "plugins": [
+                ["@babel/plugin-proposal-decorators", {
+                    "legacy": true,
+                }],
+                ["@babel/plugin-proposal-class-properties", {"loose" : true}]
+            ]
+        }),
+        vue({
+            script: {
+                babelParserPlugins: [
+                    "decorators-legacy",
+                    "classPrivateMethods",
+                    "classPrivateProperties",
+                    "classProperties",
+                    "decoratorAutoAccessors",
+                    "destructuringPrivate",
+                    "doExpressions",
+                    "dynamicImport"
+                ]
+            }
+        })
+    ],
 
     resolve: {
         alias: {

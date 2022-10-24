@@ -79,17 +79,27 @@
 </template>
 
 <script>
-    import {inject} from 'vue'
+    import { inject } from 'vue'
     
     import notification from '../assets/img/Notification.svg'
     import record from '../assets/img/record.svg'
     import members from '../assets/img/members.svg'
     import sidebarArrowBack from '../assets/img/sidebar-arrow-back.svg'
     import sidebarArrow from '../assets/img/sidebar-arrow.svg'
+    import {WebSocketWorkerInstance} from "./../workers/web-socket-worker";
+    import { API } from "../workers/api-worker/api.worker";
 
     export default {
         name: 'MainSidebar',
         setup() {
+            WebSocketWorkerInstance
+                .registerCallback((instanceType) => {
+                    if(instanceType.notification) {
+                        // createToastFromInstanceType(instanceType);
+                    }
+                });
+
+            API.NotificationService.getNotifications()
             return {
                 clientVersion: inject('clientVersion')
             }

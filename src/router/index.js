@@ -122,13 +122,13 @@ export const ROUTES = {
                 absolute: (userId) => `/application/users/${userId}`,
                 name: 'application-users'
             }
-        },
-        WORKS: {
-            relative: 'works',
-            absolute: '/application/works',
-            name: 'application-works'
         }
     },
+    WORKS: {
+        relative: '/works',
+        absolute: '/works',
+        name: 'works'
+    }
 };
 
 const router = createRouter({
@@ -408,25 +408,12 @@ const router = createRouter({
                         ]
                     }
                 },
-                {
-                    path: ROUTES.APPLICATION.WORKS.relative,
-                    name: ROUTES.APPLICATION.WORKS.name,
-                    beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-                        // usersData: () => $api.UsersRequest.getAll(to.query),
-                    })),
-                    component: () => import('../views/application/works.vue'),
-                    meta: {
-                        breadcrumbs: [
-                            { name:'Main', path: '/' },
-                            { name: 'Works', path: '/application/works'},
-                        ]
-                    }
-                },
             ]
         },
         {
-            path: '/list-of-requests',
-            component: () => import('../views/list-of-api-requests.vue')
+            path: ROUTES.WORKS.relative,
+            name: ROUTES.WORKS.name,
+            component: () => import('../views/application/works.vue'),
         },
         {
             path: '/:pathMatch(.*)*',
