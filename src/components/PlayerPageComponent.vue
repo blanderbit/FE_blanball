@@ -1,24 +1,29 @@
 <template>
-  <div class="player-page">
-    <div class="back-image">
-      <img :src="backPic" alt="" />
+  <div class="b_player-page">
+    <div class="b_player-page_back-image">
+      <img :src="backPic" alt="">
     </div>
-    <div class="main-block">
-      <div class="user-card">
-        <div class="top-line">
-          <div class="left-side">
-            <div class="picture">
-              <img src="../assets/img/user-photo.png" alt="" />
+    <div class="b_player-page_main-block">
+      <div class="b_player-page_user-card">
+        <div class="b_player-page_top-line">
+          <div class="b_player-page_left-side">
+            <div class="b_player-page_picture">
+              <img src="../assets/img/user-photo.png" alt="">
             </div>
           </div>
-          <div class="right-side">
-            <div class="line">
-              <div class="name">Калиновська Стефанія</div>
-              <div :style="labelColor" class="label">Гравець</div>
+          <div class="b_player-page_right-side">
+            <div class="b_player-page_line">
+              <div class="b_player-page_name">Калиновська Стефанія</div>
+              <div
+                :style="labelColor"
+                class="b_player-page_label"
+              >
+                Гравець
+              </div>
             </div>
-            <div class="line">
-              <div class="rating">
-                <div class="start">
+            <div class="b_player-page_line">
+              <div class="b_player-page_rating">
+                <div class="b_player-page_start">
                   <star-rating 
                     :rating="rating"
                     :star-size="14"
@@ -28,118 +33,128 @@
                   >
                   </star-rating>
                 </div>
-                <div class="text">17 оцінок</div>
+                <div class="b_player-page_text">
+                  17 оцінок
+                </div>
               </div>
             </div>
-            <div class="line invite-share-desk">
-              <div class="invite">Запросити на подію</div>
-              <div class="share">
-                <img src="../assets/img/share-icon.svg" alt="" />
+            <div class="b_player-page_line">
+              <div class="b_player-page_invite">
+                Запросити на подію
+              </div>
+              <div class="b_player-page_share">
+                <img src="../assets/img/share-icon.svg" alt="">
                 <span>Поділитися</span>
               </div>
             </div>
           </div>
         </div>
-        <div class="invite-share-mob">
-          <div class="invite">Запросити на подію</div>
-          <div class="share">
+        <div class="b_player-page_invite-share-mob">
+          <div class="b_player-page_invite">Запросити на подію</div>
+          <div class="b_player-page_share">
             <img src="../assets/img/share-icon.svg" alt="" />
             <span>Поділитися</span>
           </div>
         </div>
-        <div class="about-line">
-          <div class="title">Про себе:</div>
-          <div class="text">
-            Donec vitae mi vulputate, suscipit urna in, malesuada nisl.
-            Pellentesque laoreet pretium nisl, et pulvinar massa eleifend sed
+        <div class="b_player-page_about-line">
+          <div class="b_player-page_title">Про себе:</div>
+          <div class="b_player-page_text">
+            Donec vitae mi vulputate, suscipit urna in, malesuada nisl. Pellentesque laoreet pretium nisl, et pulvinar massa eleifend sed
           </div>
         </div>
-        <div v-if="!isResultVisible" class="sport-results">
-          <div class="title">Спортивні показники</div>
-          <div class="line">
-            <div class="block">
-              <div class="block-title">Зріст</div>
-              <div class="text">168 см</div>
+        <div
+          v-if="!isResultVisible"
+          class="b_player-page_sport-results"
+        >
+          <div class="b_player-page_title">Спортивні показники</div>
+          <div class="b_player-page_line">
+            <div class="b_player-page_block">
+              <div class="b_player-page_block-title">Зріст</div>
+              <div class="b_player-page_text">168 см</div>
             </div>
-            <div class="block">
-              <div class="block-title">Вага</div>
-              <div class="text">48 кг</div>
+            <div class="b_player-page_block">
+              <div class="b_player-page_block-title">Вага</div>
+              <div class="b_player-page_text">48 кг</div>
             </div>
-            <div class="block">
-              <div class="block-title">Ігрова позиція</div>
-              <div class="text">Лівий Напівзахисник (ЛНЗ)</div>
+            <div class="b_player-page_block">
+              <div class="b_player-page_block-title">Ігрова позиція</div>
+              <div class="b_player-page_text">Лівий Напівзахисник (ЛНЗ)</div>
             </div>
-            <div class="block">
-              <div class="block-title">Кваліфікація</div>
-              <div class="text active">Підтверджено</div>
+            <div class="b_player-page_block">
+              <div class="b_player-page_block-title">Кваліфікація</div>
+              <div class="b_player-page_text active">Підтверджено</div>
             </div>
           </div>
         </div>
-        <div class="contacts-block">
-          <div class="title">Контакти</div>
-          <div class="info">
-            <div class="block">
-              <div class="block-title">Телефон</div>
-              <div class="text">+380 (95) 390 86 50</div>
+        <div class="b_player-page_contacts-block">
+          <div class="b_player-page_title">Контакти</div>
+          <div class="b_player-page_info">
+            <div class="b_player-page_block">
+              <div class="b_player-page_block-title">Телефон</div>
+              <div class="b_player-page_text">+380 (95) 390 86 50</div>
             </div>
-            <div class="block">
-              <div class="block-title">E-mail</div>
-              <div class="text">eddie_lake@gmail.com</div>
+            <div class="b_player-page_block">
+              <div class="b_player-page_block-title">E-mail</div>
+              <div class="b_player-page_text">eddie_lake@gmail.com</div>
             </div>
           </div>
         </div>
       </div>
-      <div class="rating-block">
-        <div class="header-line">
-          <div class="title">Рейтинг та відгуки</div>
-          <div class="raiting">
+      <div class="b_player-page_rating-block">
+        <div class="b_player-page_header-line">
+          <div class="b_player-page_title">Рейтинг та відгуки</div>
+          <div class="b_player-page_raiting">
             4
             <img src="../assets/img/star.svg" alt="" />
           </div>
         </div>
-        <div class="rate-quantity-mob">
+        <div class="b_player-page_rate-quantity-mob">
           17 відміток
         </div>
-        <div class="ratings-cards">
-          <div v-for="user of users" :key="user.id" class="rating-card">
-            <div class="header">
-              <div class="name">{{ user.name }}</div>
-              <div class="date">{{ user.date }}</div>
+        <div class="b_player-page_ratings-cards">
+          <div
+            v-for="user of users"
+            :key="user.id"
+            class="b_player-page_rating-card"
+          >
+            <div class="b_player-page_header">
+              <div class="b_player-page_name">{{user.name}}</div>
+              <div class="b_player-page_date">{{user.date}}</div>
             </div>
-            <div class="text">
-              {{ user.text }}
+            <div class="b_player-page_text">
+              {{user.text}}
             </div>
           </div>
         </div>
-        <div class="show-more-mob">
+        <div class="b_player-page_show-more-mob">
           <span>
             Показати ще 10 відгуків
           </span>
         </div>
       </div>
-      <div class="planed-events">
-        <div class="top-part">
-          <div class="title">Заплановані події</div>
-          <div class="events-cards">
-            <div 
-              v-for="event of events" 
-              :key="event.id" 
-              class="event-card"
+      <div class="b_player-page_planed-events">
+        <div class="b_player-page_top-part">
+          <div class="b_player-page_title">Заплановані події</div>
+          <div class="b_player-page_events-cards">
+            <div
+              v-for="event of events"
+              :key="event.id"
+              class="b_player-page_event-card"
             >
-              <div class="title-line">
-                <div class="name">{{ event.title }}</div>
-                <div class="label">{{ event.label }}</div>
+            <div class="b_player-page_title-line">
+                <div class="b_player-page_name">{{event.title}}</div>
+                <div class="b_player-page_label">{{event.label}}</div>
               </div>
-              <div class="time-line">
-                <div class="time">{{ event.time }}</div>
-                <div class="date">{{ event.date }}</div>
+              <div class="b_player-page_time-line">
+                <div class="b_player-page_time">{{event.time}}</div>
+                <div class="b_player-page_date">{{event.date}}</div>
               </div>
-              <div class="labels-line">
+              <div class="b_player-page_labels-line">
                 <div class="labels">
                   <div
                     v-for="label of event.labels"
                     :key="label.id"
-                    class="label"
+                    class="b_player-page_label"
                   >
                     {{ label.text }}
                   </div>
@@ -149,9 +164,11 @@
             </div>
           </div>
         </div>
-        <div class="bottom-part">
-          <span> Історія участі у заходах </span>
-          <img src="../assets/img/arrow-right.svg" alt="" />
+        <div class="b_player-page_bottom-part">
+          <span>
+            Історія участі у заходах
+          </span>
+          <img src="../assets/img/arrow-right.svg" alt="">
         </div>
       </div>
     </div>
@@ -159,6 +176,7 @@
 </template>
 
 <script>
+import CONSTANTS from '../consts'
 import StarRating from 'vue-star-rating'
 
 import publicPageBack from '../assets/img/public-page-back.svg'
@@ -230,14 +248,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.player-page {
+.b_player-page {
   position: relative;
   padding: 80px 20px 20px 20px;
   height: 100%;
   @media (max-width: 1200px) {
     padding: 60px 16px 28px 16px;
   }
-  .back-image {
+  .b_player-page_back-image {
     position: absolute;
     left: 0;
     top: 0;
@@ -251,7 +269,7 @@ export default {
       width: 100%;
     }
   }
-  .main-block {
+  .b_player-page_main-block {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -261,7 +279,7 @@ export default {
       flex-direction: column;
       align-items: center;
     }
-    .user-card {
+    .b_player-page_user-card { 
       padding: 24px 20px;
       width: 536px;
       background: #ffffff;
@@ -270,11 +288,11 @@ export default {
       @media (max-width: 1200px) {
         width: 100%;
       }
-      .top-line {
+      .b_player-page_top-line { 
         display: flex;
         align-items: flex-start;
-        .left-side {
-          .picture {
+        .b_player-page_left-side { 
+          .b_player-page_picture { 
             margin-right: 12px;
             img {
               display: block;
@@ -286,9 +304,9 @@ export default {
           }
         }
 
-        .right-side {
+        .b_player-page_right-side { 
           width: 100%;
-          .line {
+          .b_player-page_line { 
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -300,7 +318,7 @@ export default {
                 display: none;
               }
             }
-            .name {
+            .b_player-page_name { 
               font-family: 'Exo 2';
               font-style: normal;
               font-weight: 700;
@@ -313,7 +331,7 @@ export default {
               }
             }
 
-            .label {
+            .b_player-page_label { 
               padding: 0px 4px;
               background: #f57125;
               border-radius: 4px;
@@ -328,7 +346,7 @@ export default {
                 font-size: 12px;
               }
             }
-            .invite {
+            .b_player-page_invite {
               padding: 2px 12px;
               background: #262541;
               border-radius: 6px;
@@ -340,7 +358,7 @@ export default {
               text-align: center;
               color: #ffffff;
             }
-            .share {
+            .b_player-page_share {
               font-family: 'Inter';
               font-style: normal;
               font-weight: 400;
@@ -354,13 +372,13 @@ export default {
                 margin-right: 8px;
               }
             }
-            .rating {
+            .b_player-page_rating {
               display: flex;
               align-items: center;
               justify-content: flex-start;
               margin-top: 8px;
               margin-bottom: 12px;
-              .text {
+              .b_player-page_text {
                 font-family: 'Inter';
                 font-style: normal;
                 font-weight: 400;
@@ -377,11 +395,11 @@ export default {
         }
       }
 
-      .invite-share-mob {
+      .b_player-page_invite-share-mob {
         display: flex;
         align-items: center;
         margin-top: 14px;
-        .invite {
+        .b_player-page_invite {
           padding: 2px 12px;
           background: #262541;
           border-radius: 6px;
@@ -394,7 +412,7 @@ export default {
           color: #ffffff;
           margin-right: 25px;
         }
-        .share {
+        .b_player-page_share {
           font-family: 'Inter';
           font-style: normal;
           font-weight: 400;
@@ -412,9 +430,9 @@ export default {
           display: none;
         }
       }
-      .about-line {
+      .b_player-page_about-line { 
         margin-top: 16px;
-        .title {
+        .b_player-page_title { 
           font-family: 'Inter';
           font-style: normal;
           font-weight: 400;
@@ -423,7 +441,7 @@ export default {
           color: #575775;
           margin-bottom: 4px;
         }
-        .text {
+        .b_player-page_text { 
           font-family: 'Inter';
           font-style: normal;
           font-weight: 400;
@@ -432,13 +450,13 @@ export default {
           color: #262541;
         }
       }
-      .sport-results {
-        border-top: 1px dashed #dfdeed;
-        border-bottom: 1px dashed #dfdeed;
+      .b_player-page_sport-results { 
+        border-top: 1px dashed #DFDEED;
+        border-bottom: 1px dashed #DFDEED;
         margin-top: 16px;
         padding-top: 16px;
         padding-bottom: 16px;
-        .title {
+        .b_player-page_title { 
           margin-bottom: 8px;
           font-family: 'Inter';
           font-style: normal;
@@ -448,12 +466,12 @@ export default {
           color: #262541;
         }
 
-        .line {
+        .b_player-page_line { 
           display: flex;
           align-items: flex-start;
           justify-content: space-between;
-          .block {
-            .block-title {
+          .b_player-page_block { 
+            .b_player-page_block-title { 
               font-family: 'Inter';
               font-style: normal;
               font-weight: 400;
@@ -462,14 +480,14 @@ export default {
               color: #8a8aa8;
             }
 
-            .text {
+            .b_player-page_text { 
               font-family: 'Inter';
               font-style: normal;
               font-weight: 400;
               font-size: 14px;
               line-height: 20px;
               color: #262541;
-              &.active {
+              &.b_player-page_active {
                 font-size: 12px;
                 padding: 0px 4px;
                 background: #d2f6a2;
@@ -479,9 +497,9 @@ export default {
           }
         }
       }
-      .contacts-block {
+      .b_player-page_contacts-block { 
         margin-top: 16px;
-        .title {
+        .b_player-page_title { 
           font-family: 'Inter';
           font-style: normal;
           font-weight: 600;
@@ -490,15 +508,15 @@ export default {
           color: #262541;
           margin-bottom: 8px;
         }
-        .info {
+        .b_player-page_info { 
           display: flex;
           align-items: flex-start;
           @media (max-width: 576px) {
             display: block;
           }
-          .block {
+          .b_player-page_block { 
             margin-right: 20px;
-            .block-title {
+            .b_player-page_block-title { 
               font-family: 'Inter';
               font-style: normal;
               font-weight: 400;
@@ -506,7 +524,7 @@ export default {
               line-height: 16px;
               color: #8a8aa8;
             }
-            .text {
+            .b_player-page_text { 
               font-family: 'Inter';
               font-style: normal;
               font-weight: 400;
@@ -522,7 +540,7 @@ export default {
         }
       }
     }
-    .rating-block {
+    .b_player-page_rating-block {
       padding: 24px 20px;
       width: 272px;
       background: #ffffff;
@@ -532,11 +550,11 @@ export default {
         margin-top: 16px;
         width: 100%;
       }
-      .header-line {
+      .b_player-page_header-line { 
         display: flex;
         align-items: center;
         justify-content: space-between;
-        .title {
+        .b_player-page_title { 
           font-family: 'Inter';
           font-style: normal;
           font-weight: 600;
@@ -545,7 +563,7 @@ export default {
           color: #262541;
         }
 
-        .raiting {
+        .b_player-page_raiting { 
           font-family: 'Inter';
           font-style: normal;
           font-weight: 500;
@@ -559,7 +577,7 @@ export default {
           }
         }
       }
-      .rate-quantity-mob {
+      .b_player-page_rate-quantity-mob {
         font-family: 'Inter';
         font-style: normal;
         font-weight: 400;
@@ -570,17 +588,18 @@ export default {
           display: none;
         }
       }
-      .ratings-cards {
-        .rating-card {
-          border-top: 1px dashed #dfdeed;
+      .b_player-page_ratings-cards { 
+
+        .b_player-page_rating-card { 
+          border-top: 1px dashed #DFDEED;
           margin-top: 16px;
           padding-top: 16px;
           margin-bottom: 16px;
-          .header {
+          .b_player-page_header { 
             display: flex;
             align-items: center;
             justify-content: space-between;
-            .name {
+            .b_player-page_name { 
               font-family: 'Inter';
               font-style: normal;
               font-weight: 500;
@@ -588,7 +607,7 @@ export default {
               line-height: 20px;
               color: #575775;
             }
-            .date {
+            .b_player-page_date { 
               font-family: 'Inter';
               font-style: normal;
               font-weight: 400;
@@ -597,7 +616,7 @@ export default {
               color: #575775;
             }
           }
-          .text {
+          .b_player-page_text { 
             font-family: 'Inter';
             font-style: normal;
             font-weight: 400;
@@ -608,7 +627,7 @@ export default {
           }
         }
       }
-      .show-more-mob {
+      .b_player-page_show-more-mob {
         span {
           font-family: 'Inter';
           font-style: normal;
@@ -624,18 +643,18 @@ export default {
         }
       }
     }
-    .planed-events {
+    .b_player-page_planed-events { 
       width: 256px;
       @media (max-width: 1200px) {
         margin-top: 16px;
         width: 100%;
       }
-      .top-part {
+      .b_player-page_top-part { 
         padding: 24px 20px;
         background: #ffffff;
         box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
         border-radius: 6px;
-        .title {
+        .b_player-page_title {
           font-family: 'Inter';
           font-style: normal;
           font-weight: 600;
@@ -643,12 +662,12 @@ export default {
           line-height: 20px;
           color: #262541;
         }
-        .events-cards {
-          @media (max-width: 1200px) {
+        .b_player-page_events-cards {
+          @media (min-width: 768px) and (max-width: 1200px) {
             display: flex;
             flex-wrap: wrap;
           }
-          .event-card {
+          .b_player-page_event-card {
             margin-top: 16px;
             padding-top: 16px;
             border-top: 1px dashed #dfdeed;
@@ -660,10 +679,10 @@ export default {
             @media (max-width: 768px) {
               width: 100%;
             }
-            .title-line {
+            .b_player-page_title-line { 
               display: flex;
               align-items: center;
-              .name {
+              .b_player-page_name { 
                 font-family: 'Exo 2';
                 font-style: normal;
                 font-weight: 600;
@@ -671,7 +690,7 @@ export default {
                 line-height: 20px;
                 color: #262541;
               }
-              .label {
+              .b_player-page_label { 
                 padding: 0px 4px;
                 background: #feefe7;
                 border-radius: 4px;
@@ -684,7 +703,7 @@ export default {
                 color: #262541;
               }
             }
-            .time-line {
+            .b_player-page_time-line { 
               display: flex;
               align-items: center;
               font-family: 'Inter';
@@ -695,20 +714,20 @@ export default {
               color: #575775;
               margin-top: 6px;
               margin-bottom: 4px;
-              .time {
+              .b_player-page_time { 
                 margin-right: 16px;
               }
             }
 
-            .labels-line {
+            .b_player-page_labels-line { 
               display: flex;
-              align-items: flex-start;
-              justify-content: space-between;
-              .labels {
+              align-items: center;
+              flex-wrap: wrap;
+              .b_player-page_labels {
                 display: flex;
                 align-items: center;
                 flex-wrap: wrap;
-                .label {
+                .b_player-page_label {
                   padding: 0px 8px;
                   border: 1px solid #dfdeed;
                   border-radius: 100px;
@@ -721,14 +740,11 @@ export default {
                   margin-right: 4px;
                 }
               }
-              img {
-
-              }
             }
           }
         }
       }
-      .bottom-part {
+      .b_player-page_bottom-part { 
         padding: 16px 20px;
         background: #ffffff;
         box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);

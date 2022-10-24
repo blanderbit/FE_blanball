@@ -17,6 +17,7 @@ import { createLoader } from "./workers/loading-worker/loading.worker";
 import Toast from "vue-toastification";
 const i18n = createI18n({
     locale: 'ua',
+    allowComposition: true,
     messages: {
         ua: UA_LANGUAGE
     }

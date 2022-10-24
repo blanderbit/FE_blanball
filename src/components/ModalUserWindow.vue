@@ -1,6 +1,6 @@
 <template>
-  <div class="modal-wrapper" @click.self="$emit('close-modal')">
-    <div class="modal-window">
+  <div class="b_modal_user_wrapper" @click.self="$emit('close-modal')">
+    <div class="b_modal_user_modal-window">
       <slot name="user-content"></slot>
     </div>
   </div>
@@ -13,7 +13,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .modal-wrapper {
+  .b_modal_user_wrapper {
     position: fixed;
     top: 0;
     left: 0;
@@ -21,7 +21,7 @@ export default {
     height: 100%;
     background: rgb(0 0 0 / 51%);
     z-index: 999;
-    .modal-window {
+    .b_modal_user_modal-window {
       position: absolute;
       top: 50%;
       left: 50%;
