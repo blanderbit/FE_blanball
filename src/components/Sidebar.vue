@@ -99,7 +99,7 @@
                     }
                 });
 
-            API.NotificationService.getNotifications()
+            API.NotificationService.getNotifications();
             return {
                 clientVersion: inject('clientVersion')
             }
@@ -168,7 +168,7 @@
             },
             logout() {
                 TokenWorker.clearToken();
-                this.$router.push('/authentication')
+                this.$router.push('/authentication/login')
             }
         }
     }
