@@ -1,5 +1,5 @@
 <template>
-  <div 
+  <div
     class="b-green-btn"
     :style="btnStyle"
     @click="$emit('click-function')"
