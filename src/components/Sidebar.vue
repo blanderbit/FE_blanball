@@ -34,7 +34,7 @@
                             <div class="position">тренер</div>
                             <div class="name">Юлія Кісліцина</div>
                         </div>
-                        <div class="right-part">
+                        <div class="right-part" @click="logout()">
                             <img src="../assets/img/exit-icon.svg" alt="">
                         </div>
                     </div>
@@ -88,7 +88,7 @@
     import sidebarArrow from '../assets/img/sidebar-arrow.svg'
     import {WebSocketWorkerInstance} from "./../workers/web-socket-worker";
     import { API } from "../workers/api-worker/api.worker";
-
+    import { TokenWorker } from "../workers/token-worker";
     export default {
         name: 'MainSidebar',
         setup() {
@@ -165,6 +165,10 @@
             },
             goToProfile() {
                 this.$router.push('/application/profile/my-profile')
+            },
+            logout() {
+                TokenWorker.clearToken();
+                this.$router.push('/authentication')
             }
         }
     }
