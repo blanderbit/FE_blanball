@@ -2,76 +2,65 @@
   <div class="second-step">
     <div class="title-block">
       <span>Конфіденційність</span>
-      <div class="vip-only">
-        Тільки для ViP
-      </div>
+      <div class="vip-only">Тільки для ViP</div>
     </div>
     <div class="subtitle">
       Чи бажаєте ви отримувати запити на участьу події?
     </div>
     <div class="radio-btn-wrapper">
       <div class="radio">
-        <input 
-          id="radio-3" 
+        <input
+          id="radio-3"
           v-model="isOpened"
-          name="openness" 
+          name="openness"
           type="radio"
           value="Долучитися"
           checked
-          >
+        />
         <label for="radio-3" class="radio-label">
-          <img src="../../../assets/img/lock-closed.svg" alt="">
-            Вільний
+          <img src="../../assets/img/lock-closed.svg" alt="" />
+          Вільний
         </label>
       </div>
       <div class="radio">
-        <input 
-          id="radio-4" 
+        <input
+          id="radio-4"
           v-model="isOpened"
-          name="openness" 
+          name="openness"
           type="radio"
           value="Подати заявку"
-        >
+        />
         <label for="radio-4" class="radio-label">
-          <img src="../../../assets/img/lock-opened.svg" alt="">
-            Закритий
+          <img src="../../assets/img/lock-opened.svg" alt="" />
+          Закритий
         </label>
       </div>
     </div>
-    <div class="title">
-      Чи потребує участь у події внесків?
-    </div>
+    <div class="title">Чи потребує участь у події внесків?</div>
     <div class="radio-btn-wrapper">
       <div class="radio">
-        <input 
-          id="radio-5" 
+        <input
+          id="radio-5"
           v-model="payment"
-          name="payment" 
+          name="payment"
           type="radio"
           value="Безкоштовно"
           checked
-          >
-        <label for="radio-5" class="radio-label">
-          Безкоштовно
-        </label>
+        />
+        <label for="radio-5" class="radio-label"> Безкоштовно </label>
       </div>
       <div class="radio">
-        <input 
-          id="radio-6" 
+        <input
+          id="radio-6"
           v-model="payment"
-          name="payment" 
+          name="payment"
           type="radio"
           value="Платно"
-        >
-        <label for="radio-6" class="radio-label">
-          Платно
-        </label>
+        />
+        <label for="radio-6" class="radio-label"> Платно </label>
       </div>
     </div>
-    <div 
-      v-if="payment === 'Платно'"
-      class="input"
-    >
+    <div v-if="payment === 'Платно'" class="input">
       <InputComponent
         :outside-title="true"
         :title="'Вкажіть суму'"
@@ -80,9 +69,7 @@
       />
     </div>
     <div class="contact-switcher">
-      <span>
-        Показувати мої контакти
-      </span>
+      <span> Показувати мої контакти </span>
       <Switcher :id="'contacts'" />
     </div>
     <div class="input">
@@ -90,29 +77,21 @@
         :placeholder="'+38 025 67 98'"
         :title-width="0"
         :has-icon="true"
-        :icon="[
-          '../../../assets/img/sort-arrows-horizontal.svg'
-        ]"
+        :icon="['../../assets/img/sort-arrows-horizontal.svg']"
       />
     </div>
-    <div class="title">
-      Запросити учасників
-    </div>
+    <div class="title">Запросити учасників</div>
     <div class="input">
       <InputComponent
         :placeholder="'Пошук користувачів'"
         :title-width="30"
         :has-icon="true"
-        :icon-left="'../../../assets/img/add-user.svg'"
-        :icon="[
-          '../../../assets/img/search.svg'
-        ]"
+        :icon-left="'../../assets/img/add-user.svg'"
+        :icon="['../../assets/img/search.svg']"
       />
     </div>
     <div class="search-users-block">
-      <div class="title">
-        Шукати серед:
-      </div>
+      <div class="title">Шукати серед:</div>
       <div class="tegs-block">
         <div
           v-for="tag in tags"
@@ -133,49 +112,42 @@
             {{ team.category_name }}
           </div>
           <div class="users-list">
-            <div 
+            <div
               v-for="user of team.users"
               :key="user.id"
               :class="['user', { taken: user.isChosen }]"
             >
               <div class="user-data">
                 <div class="user-img">
-                  <img :src="user.img" alt="">
+                  <img :src="user.img" alt="" />
                 </div>
                 <div class="user-name">
                   {{ user.name }}
                 </div>
               </div>
-              <div 
+              <div
                 v-if="!user.isChosen"
                 class="add-user"
                 @click="inviteUser(team.id, user.id)"
               >
                 <img
-                  :class="{ taken: user.isChosen  }"
-                  src="../../../assets/img/plus.svg" 
+                  :class="{ taken: user.isChosen }"
+                  src="../../assets/img/plus.svg"
                   alt=""
-                >
+                />
               </div>
-              <div 
-                v-else
-                class="invited"
-              >
-                Запрошено
-              </div>
+              <div v-else class="invited">Запрошено</div>
             </div>
           </div>
         </div>
       </div>
-      <div class="show-more-results">
-        Показати ще 20 результатів
-      </div>
+      <div class="show-more-results">Показати ще 20 результатів</div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted } from 'vue'
 import InputComponent from '../../components/InputComponent.vue'
 import Switcher from '../../components/Switcher.vue'
 
@@ -183,19 +155,19 @@ export default {
   props: {
     tags: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     filteredTeams: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   components: {
     InputComponent,
-    Switcher
+    Switcher,
   },
   emit: ['chooseCategory'],
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     const isOpened = ref(null)
     const payment = ref(null)
 
@@ -215,9 +187,9 @@ export default {
 
     return {
       isOpened,
-      payment
+      payment,
     }
-  }
+  },
 }
 </script>
 
@@ -239,11 +211,11 @@ export default {
       flex-direction: row;
       align-items: center;
       padding: 6px 12px;
-      background: #FFFFFF;
-      border: 1px solid #DFDEED;
+      background: #ffffff;
+      border: 1px solid #dfdeed;
       border-radius: 6px;
       min-width: 154px;
-      input[type="radio"] {
+      input[type='radio'] {
         position: absolute;
         opacity: 0;
         + .radio-label {
@@ -268,7 +240,7 @@ export default {
             height: 13px;
             position: relative;
             top: 0px;
-            margin-left: 12px; 
+            margin-left: 12px;
             vertical-align: top;
             cursor: pointer;
             text-align: center;
@@ -326,7 +298,7 @@ export default {
     .vip-only {
       width: 93px;
       height: 20px;
-      background: #EFEFF6;
+      background: #efeff6;
       border-radius: 4px;
       font-family: 'Inter';
       font-style: normal;
@@ -375,7 +347,7 @@ export default {
   .search-users-block {
     padding: 12px;
     height: 418px;
-    background: #FFFFFF;
+    background: #ffffff;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 6px;
     margin-top: 8px;
@@ -385,7 +357,7 @@ export default {
     .tegs-block {
       display: flex;
       flex-wrap: wrap;
-      border-bottom: 1px solid #DFDEED;
+      border-bottom: 1px solid #dfdeed;
       padding-bottom: 14px;
       margin-top: 8px;
       .teg {
@@ -397,11 +369,11 @@ export default {
         font-size: 12px;
         line-height: 20px;
         text-align: center;
-        color: #8A8AA8;
+        color: #8a8aa8;
         cursor: pointer;
         &.active {
           color: #262541;
-          background: #F0F0F4;
+          background: #f0f0f4;
         }
       }
     }
@@ -415,7 +387,7 @@ export default {
           font-weight: 500;
           font-size: 12px;
           line-height: 20px;
-          color: #8A8AA8;
+          color: #8a8aa8;
           margin: 8px 0;
         }
         .users-list {
@@ -426,7 +398,7 @@ export default {
             align-items: center;
             justify-content: space-between;
             &.taken {
-              border: 1px solid #E2E2E9;
+              border: 1px solid #e2e2e9;
               img {
                 opacity: 0.5;
               }
@@ -463,12 +435,13 @@ export default {
               font-weight: 400;
               font-size: 12px;
               line-height: 20px;
-              color: #8A8AA8;
+              color: #8a8aa8;
             }
             &:hover {
-              background: #F0F0F4;
+              background: #f0f0f4;
               .add-user img {
-                filter: invert(61%) sepia(21%) saturate(354%) hue-rotate(202deg) brightness(87%) contrast(90%);
+                filter: invert(61%) sepia(21%) saturate(354%) hue-rotate(202deg)
+                  brightness(87%) contrast(90%);
               }
             }
           }
@@ -481,7 +454,7 @@ export default {
       font-weight: 400;
       font-size: 12px;
       line-height: 20px;
-      color: #8A8AA8;
+      color: #8a8aa8;
       margin-top: 12px;
       cursor: pointer;
     }
