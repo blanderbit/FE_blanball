@@ -1,14 +1,17 @@
-import {AxiosInstance} from "../../../../plugins/axios.plugin";
-import {EndpointsEnum} from "../http-common/prefix.enum";
+import { AxiosInstance } from "../../../../plugins/axios.plugin";
+import { EndpointsEnum } from "../http-common/prefix.enum";
 
 export class AuthorizationService {
-    static login () {
-        AxiosInstance.get(EndpointsEnum.Authorization.Register)
-    }
-
-    static register() {
-
+    static login(data) {
+        return AxiosInstance.post(EndpointsEnum.Authorization.Login, data)
     }
 }
 
-// example AuthorizationService.login()
+export class EventService {
+    static getAllEvents(pageNumber) {
+        return AxiosInstance.get(EndpointsEnum.Events.getAllEvents + `?page=${pageNumber}`) // TODO query params shoud be set in the config ,  second parametr  + `?page=${pageNumber}`
+    }
+    static getAllMyEvents(pageNumber) {
+        return AxiosInstance.get(EndpointsEnum.Events.getAllMyEvents + `?page=${pageNumber}`)
+    }
+} // TODO add new service for this 

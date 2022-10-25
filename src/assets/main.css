@@ -1,0 +1,17 @@
+@import "./../../node_modules/vue-toastification/dist/index.css";
+.Vue-Toastification__toast {
+    background: #262541;
+    width: 320px;
+    padding: 16px;
+}
+.Vue-Toastification__close-button {
+    display: none
+}
+
+.notification-success {
+    background: radial-gradient(240.34% 150.94% at 34.38% 36.36%, rgba(10, 230, 244, 0.3) 0%, rgba(10, 224, 185, 0) 100%), #262541;
+}
+
+.notification-error {
+    background: radial-gradient(240.34% 150.94% at 34.38% 36.36%, rgba(224, 10, 48, 0.3) 0%, rgba(224, 10, 48, 0) 100%), #262541;;
+}

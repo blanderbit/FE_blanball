@@ -1,3 +1,3 @@
 export const ResponseInterceptor = (response) => {
-    return response
+    return response.data
 };

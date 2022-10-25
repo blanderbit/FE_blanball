@@ -3,6 +3,7 @@
 // import { finishSpinner } from "../../packages/blanball-loading-worker";
 import { ROUTES } from "../../router";
 import { finishSpinner } from "../loading-worker/loading.worker";
+import { TokenWorker } from "../token-worker";
 
 const $createQuery = (objQuery) => Object
     .keys(objQuery)
@@ -30,8 +31,9 @@ const _checkAsyncIsAdmin = async () => {
 const isUserAuthorized = async (e) => {
     // let loginned = AltesiaTokenWorkerPlugin.isToken() && await _checkAsyncIsAdmin();
     // return Promise.resolve(!!loginned);
-    const localStorageGetItem = localStorage.getItem('isLogin') === 'true'
-    return Promise.resolve(localStorageGetItem);
+    const token = !!TokenWorker.getToken();
+
+    return Promise.resolve(token);
 };
 
 const isAuthorizedError = ({ to, next }) => {

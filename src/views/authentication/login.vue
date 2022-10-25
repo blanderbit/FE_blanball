@@ -41,10 +41,6 @@ export default {
   components: {
     LoginComponent,
   },
-  setup() {
-    return {
-    }
-  },
 }
 </script>
 
