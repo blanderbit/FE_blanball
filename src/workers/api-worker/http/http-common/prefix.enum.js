@@ -10,6 +10,7 @@ export const EndpointsEnum = {
         DeleteAllMyNotifications: '/notifications/client/delete-all/notifications' // TODO
     },
     Events: {
-        getEvents: '/events/client/events/list'
+        getAllEvents: '/events/client/events/list',
+        getAllMyEvents: '/events/client/my/events/list'
     }
 };

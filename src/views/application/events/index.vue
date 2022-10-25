@@ -127,7 +127,7 @@ export default {
         isLoaderActive.value = true
         EventService.getAllEvents(currentPage.value).then((res) => {
           eventCards.value.push(
-            ...route.meta.eventData.data.results.map(handlingIncomeData)
+            ...route.meta.eventData.results.map(handlingIncomeData)
           )
           isLoaderActive.value = false
         })
@@ -171,8 +171,8 @@ export default {
     onMounted(() => {
       scrollComponent.value.addEventListener('scroll', handleScroll)
       currentPage.value = 1
-      totalPages.value = route.meta.eventData.data.total_pages
-      eventCards.value = route.meta.eventData.data.results.map(handlingIncomeData)
+      totalPages.value = route.meta.eventData.total_pages
+      eventCards.value = route.meta.eventData.results.map(handlingIncomeData)
       // eventCards.value = mockData.event_cards
     })
 
@@ -259,8 +259,7 @@ export default {
             width: 100px;
             height: 28px;
             border-radius: 6px 0px 0px 6px;
-            border: 1px solid '#000';
-            // border: 1px solid #000;
+            border: 1px solid #148581;
             cursor: pointer;
           }
           .b-events-page__my-events {
@@ -272,7 +271,9 @@ export default {
             width: 100px;
             height: 28px;
             border-radius: 0px 6px 6px 0px;
-            border: 1px solid '#148581';
+            border-top: 1px solid #F0F0F4;
+            border-right: 1px solid #F0F0F4;
+            border-bottom: 1px solid #F0F0F4;
             cursor: pointer;
           }
         }

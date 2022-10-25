@@ -258,7 +258,7 @@ const router = createRouter({
                     path: ROUTES.APPLICATION.MY_EVENTS.relative,
                     name: ROUTES.APPLICATION.MY_EVENTS.name,
                     beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-                        eventData: () => EventService.getAllEvents(CONSTANTS.first_page_events)
+                        eventData: () => EventService.getAllMyEvents(CONSTANTS.first_page_events)
                     })),
                     component: () => import('../views/application/events/my-events.vue'),
                     meta: {

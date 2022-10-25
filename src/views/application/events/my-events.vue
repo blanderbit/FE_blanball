@@ -15,10 +15,10 @@
           <div class="b-events-page__event-switcher">
             <div
               class="b-events-page__general-events"
-              @click="switchToEvents"
+              @click="switchEvents"
             >
               {{ $t('events.general-events') }}
-            </div>``
+            </div>
             <div
               class="b-events-page__my-events"
             >
@@ -43,20 +43,9 @@
           :gender-dropdown="mockData.gender_dropdown"
           :cities-dropdown="mockData.cities_dropdown"
         />
-        <div v-if="!eventsSwitcher" class="b-events-page__all-events-block">
-          <div class="b-events-page__cards-event-wrapper" ref="scrollComponent">
-            <SmallLoader :is-active="isLoaderActive" />
-            <EventCard
-              v-for="card of eventCards"
-              :key="card.id"
-              :card="card"
-              @go-to-event-page="goToEventPage"
-            />
-          </div>
-        </div>
-        <div v-if="eventsSwitcher" class="b-events-page__my-events-block">
+        <div class="b-events-page__my-events-block" ref="scrollComponent">
           <MyEventCard
-            v-for="card of mockData.my_events"
+            v-for="card of eventCards"
             :key="card.id"
             :card="card"
             @card-right-click="myCardRightClick"
@@ -65,6 +54,7 @@
       </div>
     </div>
 
+  <RightSidebar />
   </div>
 </template>
 
@@ -86,6 +76,11 @@ import MyEventCard from '../../../components/MyEventCard.vue'
 import RightSidebar from '../../../components/RightSidebar.vue'
 
 import CONSTANTS from '../../../consts/index'
+
+import {ROUTES} from '../../../router'
+
+import { defineRule } from 'vee-validate';
+console.log(defineRule)
 
 import { EventService } from '../../../workers/api-worker/http/http-services/authorization.service'
 
@@ -116,7 +111,6 @@ export default {
     const eventCards = ref([])
     const { t } = useI18n()
     const isLoaderActive = ref(false)
-    const eventsSwitcher = ref(false)
     const contextMenuX = ref(null)
     const contextMenuY = ref(null)
     const isContextMenuActive = ref(false)
@@ -133,6 +127,10 @@ export default {
       }
     })
 
+    function switchEvents() {
+      router.push(ROUTES.APPLICATION.EVENTS.absolute)
+    }
+
     function getDate(date) {
       return dayjs(date).locale(dayjsUkrLocale).format('D MMMM')
     }
@@ -146,7 +144,7 @@ export default {
         isLoaderActive.value = true
         EventService.getAllEvents(currentPage.value).then((res) => {
           eventCards.value.push(
-            ...route.meta.eventData.data.results.map(handlingIncomeData)
+            ...route.meta.eventData.results.map(handlingIncomeData)
           )
           isLoaderActive.value = false
         })
@@ -175,10 +173,6 @@ export default {
       }
     }
 
-    function switchToEvents(val) {
-      eventsSwitcher.value = val
-    }
-
     function myCardRightClick(e) {
       console.log('click')
       contextMenuX.value = e.clientX
@@ -198,9 +192,8 @@ export default {
     onMounted(() => {
       scrollComponent.value.addEventListener('scroll', handleScroll)
       currentPage.value = 1
-      totalPages.value = route.meta.eventData.data.total_pages
-      eventCards.value = route.meta.eventData.data.results.map(handlingIncomeData)
-      // eventCards.value = mockData.event_cards
+      totalPages.value = route.meta.eventData.total_pages
+      eventCards.value = route.meta.eventData.results.map(handlingIncomeData)
     })
 
     onUnmounted(() => {
@@ -213,12 +206,11 @@ export default {
       scrollComponent,
       eventCards,
       isLoaderActive,
-      eventsSwitcher,
-      switchToEvents,
       mockData,
       myCardRightClick,
       goToEventPage,
       goToCreateEvent,
+      switchEvents,
       isContextMenuActive
     }
   },
@@ -289,7 +281,9 @@ export default {
             width: 100px;
             height: 28px;
             border-radius: 6px 0px 0px 6px;
-            border: 1px solid '#148581';
+            border-top: 1px solid #F0F0F4;
+            border-left: 1px solid #F0F0F4;
+            border-bottom: 1px solid #F0F0F4;
             cursor: pointer;
           }
           .b-events-page__my-events {
@@ -301,7 +295,7 @@ export default {
             width: 100px;
             height: 28px;
             border-radius: 0px 6px 6px 0px;
-            border: 1px solid '#DFDEED';
+            border: 1px solid #148581;
             cursor: pointer;
           }
         }
