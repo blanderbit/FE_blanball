@@ -1,7 +1,16 @@
 <template>
-  <div class="b-input__wrapper" :style="inputWrapper">
-    <div v-if="outsideTitle" class="b-input__outer-title">
-      <div v-if="outsideTitle" class="outer-title">
+  <div 
+    class="b-input__wrapper" 
+    :style="inputWrapper"
+  >
+    <div 
+      v-if="outsideTitle" 
+      class="b-input__outer-title"
+    >
+      <div 
+        v-if="outsideTitle" 
+        class="outer-title"
+      >
         <span>{{ title }}</span>
       </div>
       <div
@@ -12,10 +21,17 @@
         <span>{{ title }}</span>
       </div>
 
-      <div v-if="hasIcon" class="b-input__icon" @click="iconClickAction">
+      <div 
+        v-if="hasIcon" 
+        class="b-input__icon" 
+        @click="iconClickAction"
+      >
         <img :src="rightIcon" alt="" />
       </div>
-      <div v-if="iconLeft.length" class="b-input__icon-left">
+      <div 
+        v-if="iconLeft.length" 
+        class="b-input__icon-left"
+      >
         <img :src="iconLeft" alt="" />
       </div>
       <input
