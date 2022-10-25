@@ -26,9 +26,8 @@
         :style="inputStyle"
         :disabled="isDisabled"
       />
-      <p>{{ errorMessage }}</p>
-      // TODO add style for error message
     </div>
+    <p>{{ errorMessage }}</p>
   </div>
 </template>
 
