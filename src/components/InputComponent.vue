@@ -1,15 +1,12 @@
 <template>
-  <div 
-    class="b-input__wrapper" 
-    :style="inputWrapper"
-  >
+  <div class="b-input__input-component">
     <div 
-      v-if="outsideTitle" 
-      class="b-input__outer-title"
+      class="b-input__wrapper" 
+      :style="inputWrapper"
     >
       <div 
         v-if="outsideTitle" 
-        class="outer-title"
+        class="b-input__outer-title"
       >
         <span>{{ title }}</span>
       </div>
@@ -20,7 +17,6 @@
       >
         <span>{{ title }}</span>
       </div>
-
       <div 
         v-if="hasIcon" 
         class="b-input__icon" 
@@ -43,7 +39,7 @@
         :disabled="isDisabled"
       />
     </div>
-    <p>{{ errorMessage }}</p>
+    <p class="b-input__error-message">{{ errorMessage }}</p>
   </div>
 </template>
 
@@ -194,86 +190,97 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.b-input__wrapper {
-  border: 1px solid #dfdeed;
-  position: relative;
-  border-radius: 6px;
-  width: 100%;
-  .b-input__icon {
-    display: flex;
-    height: 100%;
-    width: 48px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    background: #fff;
+.b-input__input-component {
+  height: 100%;
+  .b-input__wrapper {
+    border: 1px solid #dfdeed;
+    position: relative;
     border-radius: 6px;
-    img {
-      margin: auto;
+    width: 100%;
+    .b-input__icon {
+      display: flex;
+      height: 100%;
+      width: 48px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: #fff;
+      border-radius: 6px;
+      img {
+        margin: auto;
+      }
+    }
+    .b-input__icon-left {
+      display: flex;
+      height: 100%;
+      width: 40px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: #fff;
+      border-radius: 6px;
+      img {
+        margin: auto;
+      }
+    }
+    .b-input__outer-title {
+      padding: 0px 4px;
+      position: absolute;
+      left: 8px;
+      top: -8px;
+      background: #ffffff;
+      border-radius: 4px;
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+    }
+    .b-input__inner-title {
+      display: table;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 24px;
+      color: #575775;
+      background: #fff;
+      border-radius: 6px;
+      span {
+        display: table-cell;
+        text-align: left;
+        vertical-align: middle;
+        border-right: 1px solid #dfdeed;
+        padding-left: 12px;
+      }
+    }
+    input {
+      width: 100%;
+      height: 100%;
+      border: none;
+      outline: none;
+      border-radius: 6px;
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      &[type='number'] {
+        -moz-appearance: textfield;
+      }
     }
   }
-  .b-input__icon-left {
-    display: flex;
-    height: 100%;
-    width: 40px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: #fff;
-    border-radius: 6px;
-    img {
-      margin: auto;
-    }
-  }
-  .b-input__outer-title {
-    padding: 0px 4px;
-    position: absolute;
-    left: 8px;
-    top: -8px;
-    background: #ffffff;
-    border-radius: 4px;
+  .b-input__error-message {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
     font-size: 12px;
-    line-height: 16px;
-  }
-  .b-input__inner-title {
-    display: table;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 24px;
-    color: #575775;
-    background: #fff;
-    border-radius: 6px;
-    span {
-      display: table-cell;
-      text-align: left;
-      vertical-align: middle;
-      border-right: 1px solid #dfdeed;
-      padding-left: 12px;
-    }
-  }
-  input {
-    width: 100%;
-    height: 100%;
-    border: none;
-    outline: none;
-    border-radius: 6px;
-    &::-webkit-outer-spin-button,
-    &::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-    &[type='number'] {
-      -moz-appearance: textfield;
-    }
+    line-height: 20px;
+    color: #F32929;
   }
 }
 </style>
