@@ -31,7 +31,6 @@ export class WebSocketWorker {
 
         this.instance.onopen =(e) => {
             console.log('WebSocket Client Connected');
-
         };
 
         this.instance.onclose = (e) =>  {
