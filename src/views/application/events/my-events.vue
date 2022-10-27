@@ -79,9 +79,6 @@ import CONSTANTS from '../../../consts/index'
 
 import {ROUTES} from '../../../router'
 
-import { defineRule } from 'vee-validate';
-console.log(defineRule)
-
 import { EventService } from '../../../workers/api-worker/http/http-services/authorization.service'
 
 const COLORS = {
