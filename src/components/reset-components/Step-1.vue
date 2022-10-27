@@ -157,7 +157,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   @media (max-width: 576px) {
-    padding: 44px 0px 72px 0px;
+    padding: 44px 16px 72px 16px;
   }
   .b-reset-step__top-part {
     .b-reset-step__title {
@@ -216,6 +216,9 @@ export default {
       margin-bottom: 24px;
       justify-content: space-between;
       align-items: center;
+      @media (max-width: 576px) {
+        justify-content: center;
+      }
       input {
         padding: 8px;
         width: 72px;
@@ -229,6 +232,9 @@ export default {
         &::-webkit-inner-spin-button {
           -webkit-appearance: none;
           margin: 0;
+        }
+        @media (max-width: 576px) {
+          margin-right: 6px;
         }
 
         /* Firefox */
