@@ -76,7 +76,7 @@ export default {
   height: 32px;
   display: flex;
   align-items: center;
-  align-items: center;
+  justify-content: center;
   font-family: 'Inter';
   font-style: normal;
   font-weight: 500;
