@@ -1,5 +1,18 @@
 <template>
   <div class="b-login-step">
+    <div
+      class="b-login-step__wrong-credentials-message-top"
+      :style="warningTopStyle"
+    >
+      <div class="b-login-step__left-part">
+        <img src="../../assets/img/warning-black.svg" alt="" />
+        Помилка завантаження
+      </div>
+      <div class="b-login-step__right-part">
+        Перевірте, будь ласка, стабільність інтернет з’єднання та спробуйте ще
+        раз
+      </div>
+    </div>
     <Form v-slot="data" :validation-schema="schema">
       <div class="b-login-step__top-part">
         <div class="b-login-step__main-title">Blanball</div>
@@ -10,6 +23,7 @@
             :title="`Логін`"
             :placeholder="'elektron@mail.com'"
             :title-width="0"
+            :height="40"
             name="email"
           />
         </div>
@@ -21,6 +35,7 @@
             :outside-title="true"
             :has-icon="true"
             name="password"
+            :height="40"
             :icon="[eyeCrossed, eyeOpened]"
           />
         </div>
@@ -41,6 +56,13 @@
           </div>
         </div>
       </div>
+      <div
+        v-if="showInvalidCredentials"
+        class="b-login-step__wrong-credentials-message"
+      >
+        Неправильний логін або пароль, будь ласка, перевірте правильність
+        введених даних
+      </div>
       <div class="b-login-step__buttons">
         <GreenBtn
           @click-function="handleLogin(data)"
@@ -57,9 +79,8 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useToast } from 'vue-toastification'
 
 import GreenBtn from '../GreenBtn.vue'
 import InputComponent from '../InputComponent.vue'
@@ -81,58 +102,56 @@ export default {
   },
   setup() {
     const router = useRouter()
-    const toast = useToast();
 
-    toast.success("My toast success", {
-        timeout: 2000
-    });
-    toast.error("My toast error", {
-        timeout: 2000
-    });    
-    toast.warning("My toast warning", {
-        timeout: 2000
-    });
-    toast.info("My toast info", {
-        timeout: 2000
-    });
-
+    const isWrongCreds = ref(false)
+    const showInvalidCredentials = computed(() => {
+      return isWrongCreds.value
+    })
     const eyeCrossed = computed(() => {
       return eyeCross
+    })
+    const warningTopStyle = computed(() => {
+      return {
+        top: showInvalidCredentials.value ? '20px' : '-50px',
+      }
     })
     const eyeOpened = computed(() => {
       return eyeOpen
     })
-
     const schema = yup.object({
       email: yup.string().email().required(),
-      password: '', // TODO implement password options
+      password: yup.string().required().min(8), // TODO implement password options
     })
 
     const handleLogin = async (data) => {
-      data.validate() // TODO validate
-      // TODO check if data valid
-      try {
-        const apiRequestResult = await API.AuthorizationService.login(
-          data.values
-        )
+      data.validate().then((res) => {
+        if (res.valid) loginUser()
+      })
 
-        TokenWorker.setToken(apiRequestResult.tokens.access)
-        const redirectUrl = router.currentRoute.value.query.redirectUrl
-        // TODO toast
-        if (redirectUrl) {
-          const resolveRouter = router.resolve(redirectUrl)
-          if (
-            resolveRouter?.matched?.find((match) =>
-              match?.path?.includes('pathMatch')
-            )
-          ) {
-            return router.push(ROUTES.APPLICATION.EVENTS.absolute)
+      async function loginUser() {
+        try {
+          const apiRequestResult = await API.AuthorizationService.login(
+            data.values
+          )
+
+          TokenWorker.setToken(apiRequestResult.tokens.access)
+          const redirectUrl = router.currentRoute.value.query.redirectUrl
+          // TODO toast
+          if (redirectUrl) {
+            const resolveRouter = router.resolve(redirectUrl)
+            if (
+              resolveRouter?.matched?.find((match) =>
+                match?.path?.includes('pathMatch')
+              )
+            ) {
+              return router.push(ROUTES.APPLICATION.EVENTS.absolute)
+            }
+            return router.push(redirectUrl)
           }
-          return router.push(redirectUrl)
+          await router.push(ROUTES.APPLICATION.EVENTS.absolute)
+        } catch (e) {
+          isWrongCreds.value = true
         }
-        await router.push(ROUTES.APPLICATION.EVENTS.absolute)
-      } catch (e) {
-        // TODO toast
       }
     }
 
@@ -141,6 +160,8 @@ export default {
       eyeOpened,
       schema,
       handleLogin,
+      showInvalidCredentials,
+      warningTopStyle,
     }
   },
 }
@@ -152,6 +173,42 @@ export default {
   height: 100%;
   @media (max-width: 576px) {
     padding: 44px 0px 72px 0px;
+  }
+  .b-login-step__wrong-credentials-message-top {
+    padding: 8px;
+    position: absolute;
+    width: 749px;
+    height: 40px;
+    background: #fee7e7;
+    border-radius: 6px;
+    position: fixed;
+    z-index: 1;
+    width: max-content;
+    display: flex;
+    align-items: center;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+    color: #f32929;
+    transition: all 0.3s ease-in-out;
+    .b-login-step__left-part {
+      display: flex;
+      align-items: center;
+      padding-right: 8px;
+      margin-right: 12px;
+      border-right: 1px solid #e26767;
+      img {
+        margin-right: 7px;
+      }
+    }
+    .b-login-step__right-part {
+      font-weight: 400;
+    }
   }
   .b-login-step__top-part {
     .b-login-step__main-title {
@@ -179,7 +236,6 @@ export default {
   }
   .b-login-step__input {
     width: 384px;
-    height: 40px;
     margin-top: 12px;
     @media (max-width: 992px) {
       width: 100%;
@@ -274,6 +330,20 @@ export default {
   }
   .b-login-step__buttons {
     margin-top: 24px;
+  }
+  .b-login-step__wrong-credentials-message {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    color: #f32929;
+    padding: 2px 0px 2px 4px;
+    width: 100%;
+    height: 44px;
+    background: #fee7e7;
+    border-radius: 6px;
+    margin-top: 22px;
   }
   .b-login-step__has-no-account {
     margin-top: 12px;
