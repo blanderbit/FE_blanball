@@ -1,11 +1,35 @@
 @import "./../../node_modules/vue-toastification/dist/index.css";
+
 .Vue-Toastification__toast {
     background: #262541;
     width: 320px;
     padding: 16px;
 }
+
+.Vue-Toastification__toast--success {
+    background: #F4FDE8;
+    border: 1px solid #71BA12;
+    color: #262541;
+}
+.Vue-Toastification__toast--error {
+    background: #FFEEEE;
+    border: 1px solid #F43E3E;
+    color: #262541;
+}
+.Vue-Toastification__toast--warning {
+    background: #FFF4EC;
+    border: 1px solid #F6803C;
+    color: #262541;
+}
+.Vue-Toastification__toast--info {
+    background: #F7F7FE;
+    border: 1px solid #BFBEDA;
+    color: #262541;
+}
+
+
 .Vue-Toastification__close-button {
-    display: none
+    color: #575775;
 }
 
 .notification-success {

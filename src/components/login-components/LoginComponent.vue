@@ -159,8 +159,8 @@ export default {
       eyeCrossed,
       eyeOpened,
       schema,
-      showInvalidCredentials,
       handleLogin,
+      showInvalidCredentials,
       warningTopStyle,
     }
   },
