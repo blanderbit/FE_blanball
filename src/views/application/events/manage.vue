@@ -392,10 +392,12 @@ export default {
       }
     })
     const filteredTeams = computed(() => {
+      console.log(mockData.value)
+
       if (currentCategory === 'Всі') {
-        return mockData.teams
+        return mockData.value.teams
       } else {
-        return [mockData.teams.find(item => item.category_name === currentCategory)]
+        return [mockData.value.teams.find(item => item.category_name === currentCategory)]
       }
     })
 
@@ -417,7 +419,7 @@ export default {
     }
 
     onMounted(() => {
-      console.log(filteredTeams)
+      console.log(filteredTeams.value)
     })
 
     return {

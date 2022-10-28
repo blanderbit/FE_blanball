@@ -136,8 +136,14 @@
           </div>
         </div>
       </div>
-      <div class="users-cards">
-        <UserCard v-for="user of users" :key="user.id" :user-data="user" />
+      <div class="user-cards-wrapper">
+        <div class="users-cards">
+          <UserCard
+            v-for="user of users"
+            :key="user.id"
+            :user-data="user"
+          />
+        </div>
       </div>
     </div>
 
@@ -1114,9 +1120,14 @@ export default {
         }
       }
     }
-    .users-cards {
-      margin-top: 20px;
+    .user-cards-wrapper {
+      height: 70vh;
+      overflow-y: scroll;
+      .users-cards {
+        margin-top: 20px;
+      }
     }
+
   }
   .right-sidebar {
     @media (max-width: 992px) {
