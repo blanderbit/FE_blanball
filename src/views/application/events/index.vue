@@ -172,7 +172,7 @@ export default {
       scrollComponent.value.addEventListener('scroll', handleScroll)
       currentPage.value = 1
       totalPages.value = route.meta.eventData.total_pages
-      eventCards.value = route.meta.eventData.results.map(handlingIncomeData)
+      eventCards.value = route.meta.eventData.data.results.map(handlingIncomeData)
       // eventCards.value = mockData.event_cards
     })
 
