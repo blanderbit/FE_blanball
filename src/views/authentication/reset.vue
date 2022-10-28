@@ -65,6 +65,10 @@ export default {
 <style lang="scss" scoped>
 .b-reset {
   position: relative;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   @media (min-width: 576px) and (max-width: 992px) {
     padding-top: 132px;
     overflow: hidden;
