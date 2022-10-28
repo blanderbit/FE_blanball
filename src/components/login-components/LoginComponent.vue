@@ -124,17 +124,22 @@ export default {
     })
 
     const handleLogin = async (data) => {
+      console.log('handleLogin')
       data.validate().then((res) => {
+        console.log(res)
         if (res.valid) loginUser()
       })
 
       async function loginUser() {
+        console.log('loginUser')
         try {
+        console.log('try')
           const apiRequestResult = await API.AuthorizationService.login(
             data.values
           )
+          console.log(apiRequestResult)
 
-          TokenWorker.setToken(apiRequestResult.tokens.access)
+          TokenWorker.setToken(apiRequestResult.data.tokens.access)
           const redirectUrl = router.currentRoute.value.query.redirectUrl
           // TODO toast
           if (redirectUrl) {
@@ -150,6 +155,7 @@ export default {
           }
           await router.push(ROUTES.APPLICATION.EVENTS.absolute)
         } catch (e) {
+          console.log('catch', e)
           isWrongCreds.value = true
         }
       }

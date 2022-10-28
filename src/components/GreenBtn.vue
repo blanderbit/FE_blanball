@@ -49,20 +49,17 @@ export default {
     }
   },
   setup(props) {
-    const btnWidth = computed(() => {
-      return props.width ? props.width + 'px' : '100%'
-    })
     const btnStyle = computed(() => {
       return {
         ...props.fontStyles,
         width: props.width ? props.width + 'px' : '100%',
         height: props.height + 'px',
-        background: props.backgroundColor
+        background: props.backgroundColor,
+        'justify-content': props.iconRight || props.icon ? 'space-around' : 'center'
       }
     })
 
     return {
-      btnWidth,
       btnStyle
     }
   }
@@ -76,7 +73,6 @@ export default {
   height: 32px;
   display: flex;
   align-items: center;
-  justify-content: center;
   font-family: 'Inter';
   font-style: normal;
   font-weight: 500;
