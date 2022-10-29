@@ -17,13 +17,14 @@ import { WebSocketTypes } from "../../web.socket.types";
 @SetActions([
     {
         type: MessageActionTypes.ActionClose,
-        text: 'Понятно',
+        text: 'Понятно'
     },
     {
         type: MessageActionTypes.Action,
         text: 'Найти ивенты',
         action: ROUTES.APPLICATION.EVENTS.absolute,
-        actionType: MessageActionDataTypes.Url
+        actionType: MessageActionDataTypes.Url,
+        buttonType: 'stroked'
     }
 ])
 export class EventDeletedMessage extends InitialMessage {

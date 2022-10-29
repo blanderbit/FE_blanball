@@ -15,6 +15,10 @@ export class NotificationService {
         return AxiosInstance.get(EndpointsEnum.Notification.Index)
     }
 
+    static getNotificationsCount() {
+        return AxiosInstance.get(EndpointsEnum.Notification.Count)
+    }
+
     static deleteNotifications(ids) {
         return AxiosInstance.get(
             EndpointsEnum.Notification.Delete,

@@ -15,7 +15,7 @@ import { WebSocketTypes } from "../../web.socket.types";
 @SetActions([
     {
         type: MessageActionTypes.ActionClose,
-        text: 'Понятно',
+        text: 'Понятно'
     }
 ])
 export class EventTimeNotificationMessage extends InitialMessage {

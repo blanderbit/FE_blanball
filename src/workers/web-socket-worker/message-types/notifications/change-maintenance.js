@@ -13,12 +13,13 @@ import { WebSocketTypes } from "../../web.socket.types";
         type: MessageActionTypes.Action,
         text: 'Понятно',
         action: ROUTES.WORKS.absolute,
-        actionType: MessageActionDataTypes.Url
+        actionType: MessageActionDataTypes.Url,
     },
     {
         type: MessageActionTypes.Close,
         action: ROUTES.WORKS.absolute,
-        actionType: MessageActionDataTypes.Url
+        actionType: MessageActionDataTypes.Url,
+        buttonType: 'stroked'
     }
 ])
 export class ChangeMaintenanceMessage extends InitialMessage {

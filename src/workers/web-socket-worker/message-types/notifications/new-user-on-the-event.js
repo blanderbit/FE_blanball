@@ -15,13 +15,14 @@ import { WebSocketTypes } from "../../web.socket.types";
 @SetActions([
     {
         type: MessageActionTypes.ActionClose,
-        text: 'Понятно',
+        text: 'Понятно'
     },
     {
         type: MessageActionTypes.Action,
         text: 'Просмотреть ивент',
         action: (instance) => ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(instance.data.event.id),
-        actionType: MessageActionDataTypes.UrlCallback
+        actionType: MessageActionDataTypes.UrlCallback,
+        buttonType: 'stroked'
     },
 ])
 export class NewUserOnTheEventMessage extends InitialMessage {

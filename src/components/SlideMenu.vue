@@ -20,13 +20,11 @@
           </div>
           <div class="b_slide_menu_items">
               <div class="b_slide_menu_title">Сповіщення</div>
-              <ul>
-                  <li v-for="item of 7" :key="item">
-                      <img src="../assets/img/Settings.svg" alt="">
-                      Посилання
-                  </li>
-              </ul>
           </div>
+          <ul class="b_slide_menu_notification">
+              <div class="b_slide_menu_new_notifications" v-if="newNotifications" @click="$emit('reLoading')">Новые уведомления - {{newNotifications}}</div>
+              <Notifications :notifications="notifications"></Notifications>
+          </ul>
         </div>
         <div class="b_slide_menu_bottom-block">
           <div class="b_slide_menu_top-line">
@@ -50,19 +48,46 @@
 
 <script>
   import { ref, inject, computed } from 'vue'
+  import Notifications from './sitebar-notifications/Notifications.vue'
 
   import sidebarArrowBack from '../assets/img/sidebar-arrow-back.svg'
   import sidebarArrow from '../assets/img/sidebar-arrow.svg'
 
   export default {
-    setup() {
-      const isMenuOpened = ref(false)
-      const clientVersion = ref(inject('clientVersion'))
+      components: {
+          Notifications
+      },
+      props: {
+          notifications: {
+              type: Array,
+              default: () => []
+          },
+          notReadNotificationCount: {
+              type: Number,
+              default: 0
+          },
+          loading: {
+              type: Boolean,
+              default: false
+          },
+          newNotifications: {
+              type: Number,
+              default: 0
+          }
+      },
+      emits: [
+          'loading',
+          'closed',
+          'reLoading'
+      ],
+    setup(context, { emit }) {
+      const isMenuOpened = ref(false);
+      const clientVersion = ref(inject('clientVersion'));
 
       const sliderStyle = computed(() => {
         if (isMenuOpened.value) {
           return {
-            'right': '-260px'
+            'right': '-464px'
           }
         } else {
           return {
@@ -75,9 +100,13 @@
       })
 
       function toggleMenu() {
-        isMenuOpened.value = !isMenuOpened.value
+        isMenuOpened.value = !isMenuOpened.value;
+        if(isMenuOpened.value) {
+            emit('loading')
+        } else {
+            emit('closed')
+        }
       }
-
       return {
         isMenuOpened,
         clientVersion,
@@ -105,6 +134,14 @@
   top: 0;
   right: -260px;
   height: 100%;
+  .b_slide_menu_new_notifications {
+    padding: 8px;
+    background: #F0F0F4;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 20px;
+    color: #8A8AA8;
+  }
   .b_slide_menu_sidebar-arrow {
     position: absolute;
     width: 32px;
@@ -122,8 +159,8 @@
     }
   }
   .b_slide_menu_main {
-    width: 260px;
-    padding: 24px 20px 0 8px;
+    width: 464px;
+    padding: 24px 20px 0 20px;
     position: absolute;
     top: 0;
     right: 0px;
@@ -139,10 +176,14 @@
       .b_slide_menu_logo {
         padding-left: 8px;
       }
+      .b_slide_menu_notification {
+          height: calc(100vh - 20px - 100px - 70px);
+          overflow-y: scroll;
+      }
       .b_slide_menu_items {
         margin-top: 12px;
         border-top: 1px solid #DFDEED;
-        padding: 12px 11px;
+        padding-top: 12px;
         .b_slide_menu_title {
           font-family: 'Inter';
           font-style: normal;

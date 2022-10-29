@@ -8,6 +8,7 @@ import {
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { WebSocketTypes } from "../../web.socket.types";
+import { API } from "../../../api-worker/api.worker";
 
 @WebSocketMessage()
 @SetMessageType(WebSocketTypes.NewRequestToParticipation)
@@ -15,14 +16,16 @@ import { WebSocketTypes } from "../../web.socket.types";
     {
         type: MessageActionTypes.Action,
         text: 'Принять',
-        action: () => '',
-        actionType: MessageActionDataTypes.Callback
+        action: (instance) => API.EventService.declineOrAcceptParticipations(instance.data.sender.id, true),
+        actionType: MessageActionDataTypes.Callback,
+        buttonColor: 'success'
     },
     {
         type: MessageActionTypes.Action,
         text: 'Отклонить',
-        action: () => '',
-        actionType: MessageActionDataTypes.Callback
+        action: (instance) => API.EventService.declineOrAcceptParticipations(instance.data.sender.id, false),
+        actionType: MessageActionDataTypes.Callback,
+        buttonColor: 'error'
     },
 ])
 export class NewRequestToParticipationMessage extends InitialMessage {

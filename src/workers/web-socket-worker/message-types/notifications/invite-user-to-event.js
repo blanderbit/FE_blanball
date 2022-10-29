@@ -1,7 +1,6 @@
 import { InitialMessage } from "./initial.message";
 
 import {
-    MessageDataConfiguration,
     SetActions,
     SetMessageType,
     WebSocketMessage
@@ -9,6 +8,7 @@ import {
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { WebSocketTypes } from "../../web.socket.types";
+import { API } from "../../../api-worker/api.worker";
 
 @WebSocketMessage()
 @SetMessageType(WebSocketTypes.InviteUserToEvent)
@@ -16,23 +16,19 @@ import { WebSocketTypes } from "../../web.socket.types";
     {
         type: MessageActionTypes.Action,
         text: 'Принять',
-        action: () => new Promise(resolve => {
-            setTimeout(() => {
-                resolve()
-            }, 5000)
-        }),
-        actionType: MessageActionDataTypes.Callback
+        action: (instance) => API.EventService.declineOrAcceptInvites(instance.data.recipient.id, true),
+        actionType: MessageActionDataTypes.Callback,
+        buttonColor: 'success'
     },
     {
         type: MessageActionTypes.Action,
         text: 'Отклонить',
-        action: () => '',
-        actionType: MessageActionDataTypes.Callback
+        action: (instance) => API.EventService.declineOrAcceptInvites(instance.data.recipient.id, false),
+        actionType: MessageActionDataTypes.Callback,
+        buttonColor: 'error'
     },
 ])
 export class InviteUserToEventMessage extends InitialMessage {
-    @MessageDataConfiguration(1) data;
-
     createTexts(data) {
         return [
             `Юзер ${data.sender.name} приглашает вас на событие "${data.event.name}", пожалуйста выбирите действие!`

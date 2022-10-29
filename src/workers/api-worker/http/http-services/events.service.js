@@ -1,33 +1,46 @@
 import {AxiosInstance} from "../../../../plugins/axios.plugin";
 import {EndpointsEnum} from "../http-common/prefix.enum";
+import { AxiosParams, AxiosQuery } from "../../../utils-worker";
 
-export class NotificationService {
-    static readNotifications (notifications) {
+export class EventService {
+    static declineOrAcceptInvites(id, isAccept) {
         return AxiosInstance.post(
-            EndpointsEnum.Notification.Read,
+            EndpointsEnum.Events.DeclineOrAcceptInvites,
             {
-                notifications
+                ids: [id],
+                type: isAccept
+            }
+        )
+    }
+    static declineOrAcceptParticipations(id, isAccept) {
+        return AxiosInstance.post(
+            EndpointsEnum.Events.DeclineOrAcceptParticipations,
+            {
+                ids: [id],
+                type: isAccept
             }
         )
     }
 
-    static getNotifications() {
-        return AxiosInstance.get(EndpointsEnum.Notification.Index)
-    }
-
-    static deleteNotifications(notifications) {
+    static getAllEvents(pageNumber) { // TODO should add filters
         return AxiosInstance.get(
-            EndpointsEnum.Notification.Delete,
-            {
-                notifications
-            }
+            EndpointsEnum.Events.GetAllEvents,
+            AxiosParams(
+                AxiosQuery.bind(null, {
+                    page: pageNumber
+                })
+            )
         )
     }
 
-    static deleteAllMyNotifications() {
+    static getAllMyEvents(pageNumber) {
         return AxiosInstance.get(
-            EndpointsEnum.Notification.DeleteAllMyNotifications
+            EndpointsEnum.Events.GetAllMyEvents,
+            AxiosParams(
+                AxiosQuery.bind(null, {
+                    page: pageNumber
+                })
+            )
         )
     }
 }
-

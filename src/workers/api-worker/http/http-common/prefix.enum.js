@@ -5,12 +5,15 @@ export const EndpointsEnum = {
     },
     Notification: {
         Index: '/notifications/admin/notifications/list',
+        Count: '/notifications/client/my/not-read/notifications/count',
         Read: '/notifications/client/read/notifications',
         Delete: '/notifications/client/delete/notifications',
         DeleteAllMyNotifications: '/notifications/client/delete-all/notifications' // TODO
     },
     Events: {
-        getAllEvents: '/events/client/events/list',
-        getAllMyEvents: '/events/client/my/events/list'
+        GetAllEvents: '/events/client/events/list',
+        GetAllMyEvents: '/events/client/my/events/list',
+        DeclineOrAcceptInvites: '/events/client/accept/or/decline/invites/to/events',
+        DeclineOrAcceptParticipations: '/events/client/accept/or/decline/participations',
     }
 };

@@ -1,6 +1,13 @@
 <template>
   <div class="b_sidebar_wrapper">
-    <SlideMenu />
+    <SlideMenu
+      :notifications="notifications"
+      :notReadNotificationCount="notReadNotificationCount"
+      :newNotifications="newNotifications"
+      @closed="notifications.value = []"
+      @loading="loadNotification()"
+      @reLoading="loadNotification()"
+      :loading="loading"/>
     <div class="b_sidebar">
       <div class="b_sidebar_top-block">
         <div class="b_sidebar_picture-top">
@@ -11,11 +18,12 @@
             <li
               v-for="item in menuItems"
               :key="item.id"
-              :class="['b_sidebar_menu-item', { active: item.isActive }]"
+              :class="['b_sidebar_menu-item', { b_sidebar_active: item.isActive }]"
               @click="menuItemClick(item.id)"
             >
               <router-link :to="item.url">
-                <img :src="item.img" alt="" />
+                <img v-if="item.type === 'notification'" :src="notReadNotificationCount ? item.img[0] : item.img[1]" alt="" />
+                <img v-else :src="item.img" alt="" />
               </router-link>
             </li>
           </ul>
@@ -37,14 +45,21 @@
 <script>
 
 import SlideMenu from '../components/SlideMenu.vue'
-import { inject } from 'vue'
+import { ref } from 'vue'
 import notification from '../assets/img/Notification.svg'
+import notificationUnread from '../assets/img/notificationUnread.svg'
 import record from '../assets/img/record.svg'
 import members from '../assets/img/members.svg'
-import sidebarArrowBack from '../assets/img/sidebar-arrow-back.svg'
-import sidebarArrow from '../assets/img/sidebar-arrow.svg'
 import {WebSocketWorkerInstance} from "./../workers/web-socket-worker";
 import { API } from "../workers/api-worker/api.worker";
+
+function createNotificationFromData(message) {
+    const constructor = WebSocketWorkerInstance.messages.find(item => item.messageType === message.message_type);
+
+    if(constructor) {
+        return new constructor(message)
+    }
+}
 
 export default {
   name: 'MainSidebar',
@@ -52,16 +67,48 @@ export default {
     SlideMenu,
   },
   setup() {
-    WebSocketWorkerInstance
+      const notifications = ref([]);
+      const notReadNotificationCount = ref(0);
+      const newNotifications = ref(0);
+      const loading = ref(false);
+
+      const getNotificationsCount = () => {
+          return API.NotificationService
+              .getNotificationsCount()
+              .then(item => notReadNotificationCount.value = item.data.not_read_notifications_count || 0)
+      };
+
+      WebSocketWorkerInstance
       .registerCallback((instanceType) => {
         if(instanceType.notification) {
-            // createToastFromInstanceType(instanceType);
+            getNotificationsCount();
+            newNotifications.value = newNotifications.value + 1;
         }
       });
 
-    API.NotificationService.getNotifications()
+      const loadNotification = () => {
+         Promise.all([
+             API.NotificationService.getNotifications(),
+             getNotificationsCount()
+         ])
+             .then(([result]) => {
+                 result.data.results = result.data.results
+                     .map(item => {
+                         item.notification_id = item.id;
+                         return createNotificationFromData(item);
+                     });
+                 notifications.value = notifications.value.concat(result.data.results);
+                 newNotifications.value = 0;
+                 loading.value = true;
+             });
+     };
+      getNotificationsCount();
     return {
-     clientVersion: inject('clientVersion')
+      notifications,
+      notReadNotificationCount,
+      loading,
+      newNotifications,
+      loadNotification
     }
   },
   data() {
@@ -69,9 +116,10 @@ export default {
       menuItems: [
         {
           id: 0,
-          img: notification,
+          type: 'notification',
+          img: [notificationUnread, notification],
           url: '',
-          isActive: true,
+          isActive: false, // should be dinamically
         },
         {
           id: 2,

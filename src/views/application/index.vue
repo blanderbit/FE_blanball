@@ -19,7 +19,7 @@ import { ref } from 'vue'
 import Sidebar from './../../components/Sidebar.vue'
 import MainHeader from './../../components/MainHeader.vue'
 import MobileMenu from '../../components/MobileMenu.vue'
-import ToastNotification from '../../components/ToastNotification.vue'
+import Notification from '../../components/Notification.vue'
 import { useToast } from 'vue-toastification'
 import {
   MessageActionDataTypes,
@@ -44,11 +44,11 @@ const handlerAction = async (item, notificationInstance) => {
   }
 
   if (item.actionType === MessageActionDataTypes.UrlCallback) {
-    router.push(item.action(notificationInstance))
+    router.push(item.action(router))
   }
 
   if (item.actionType === MessageActionDataTypes.Callback) {
-    await item.action(router)
+    await item.action(notificationInstance)
   }
 
   if (
@@ -76,15 +76,16 @@ const toggleToastProgress = (notificationInstance, toastId, active) => {
 const getToastOptions = (notificationInstance, toastId) => {
   const close = notificationInstance.actions.find(
     (item) => item.type === MessageActionTypes.Close
-  )
+  );
   notificationInstance.actions = notificationInstance.actions.filter(
     (item) => item.type !== MessageActionTypes.Close
-  )
+  );
   return {
     componentOptions: {
-      component: ToastNotification,
+      component: Notification,
       props: {
         notificationInstance,
+        notificationType: 'push'
       },
       listeners: {
         handlerAction: async (item) => {
