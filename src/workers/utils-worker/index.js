@@ -10,3 +10,5 @@ export const AxiosParams = (functionResult) => {
 
     return allParameters;
 };
+
+export const createUniqueId = () => 'id' + Math.random().toString(16).slice(2);

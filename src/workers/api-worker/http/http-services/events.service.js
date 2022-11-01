@@ -12,6 +12,7 @@ export class EventService {
             }
         )
     }
+
     static declineOrAcceptParticipations(id, isAccept) {
         return AxiosInstance.post(
             EndpointsEnum.Events.DeclineOrAcceptParticipations,

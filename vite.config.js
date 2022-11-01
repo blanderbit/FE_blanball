@@ -23,6 +23,11 @@ export default defineConfig({
             // ]
         }),
         vue({
+            // template: {
+            //     compilerOptions: {
+            //         isCustomElement: (tag) => ['InfiniteLoading'].includes(tag),
+            //     }
+            // },
             script: {
                 babelParserPlugins: [
                     "decorators-legacy",

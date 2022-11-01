@@ -11,7 +11,7 @@ import { WebSocketTypes } from "../../web.socket.types";
 import { ROUTES } from "../../../../router";
 
 @AuthWebSocketMessage()
-@SetMessageType(WebSocketTypes.EventUpdated)
+@SetMessageType(WebSocketTypes.LastUserOnTheEvent)
 @SetActions([
     {
         type: MessageActionTypes.ActionClose,
@@ -25,14 +25,14 @@ import { ROUTES } from "../../../../router";
         buttonType: 'stroked'
     },
 ])
-export class EventUpdatedMessage extends InitialMessage {
+export class LastUserOnTheEventMessage extends InitialMessage {
     createTexts(data) {
         return [
-            `${data.recipient.name} - событие обновилось. Для того что бы просмотреть подробности обновления нажмите кнопку "${this.actions[1].text}"`
+            `${data.event.name} - на событие добавился последний учасник! Вас ждет что то чудесное:)"`
         ]
     };
 
     createTitle() {
-        return 'Ивент был обновлен!';
+        return 'Набраны все учасники!';
     }
 }

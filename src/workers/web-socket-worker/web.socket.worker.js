@@ -8,20 +8,15 @@ export class WebSocketWorker {
 
     constructor (options) {
         this.options = options;
-        this.messages = WebSocketWorker.prototype.messages || this.messages;
     }
 
-    connect (token) {
-        if(!token) {
-            console.warn('WebSocketWorker connect - haven`t token')
-            return;
-        }
+    connect (params) {
         if(this.instance) {
-            console.warn('WebSocketWorker connect - have instance')
+            console.warn('WebSocketWorker connect - have instance');
             return;
         }
         this.instance = new w3cwebsocket(
-            this.options.SOCKET_URL + token,
+            this.options.SOCKET_URL + this._createQueryParametrs(params),
             this.options.SOCKET_ECHO_PROTOCOL
         );
 
@@ -38,22 +33,14 @@ export class WebSocketWorker {
         };
 
         this.instance.onmessage = (e) => {
-            this.createElementAndCallHandler(this.parseSocketData(e.data));
+            this._createElementAndCallHandler(this._parseSocketData(e.data).message);
         };
 
-        window.createElementAndCallHandler = this.createElementAndCallHandler.bind(this)
+        window.createElementAndCallHandler = this._createElementAndCallHandler.bind(this)
     }
 
     disconnect () {
         this.instance.disconnect()
-    }
-
-    registerMessage(message) {
-        if(typeof message !== "class") {
-
-        }
-        this.messages.push(message);
-        return this;
     }
 
     registerCallback(callback) {
@@ -65,29 +52,56 @@ export class WebSocketWorker {
         return this;
     }
 
-    handleCallback(element) {
+    _handleCallback(element) {
         this.callbacks.forEach(item => item(element))
     }
 
-    createElementAndCallHandler(message) {
+    _createElementAndCallHandler(message) {
         if(!message) {
-            console.warn('createElementAndCallHandler = message false');
+            console.warn('_createElementAndCallHandler = message false');
             return;
         }
-        const constructor = this.messages.find(item => item.messageType === message.message_type);
+        const constructor = this.messages.find(item => item.messageType === message.message_type || item.messageType === message.new_message_type);// TODO delete new_message_type
         if(!constructor) {
-            console.warn('createElementAndCallHandler = socket type not found');
+            console.warn('_createElementAndCallHandler = socket type not found');
             return;
         }
-        this.handleCallback(new constructor(message))
+        this._handleCallback(new constructor(message))
     }
 
-    parseSocketData(e) {
+    _parseSocketData(e) {
         try {
             return JSON.parse(e)
         } catch (e) {
-            console.warn('e => something wrong parseSocketData', e)
+            console.warn('e => something wrong parseSocketData', e);
             return false
         }
+    }
+
+    _createQueryParametrs(obj) {
+        if (typeof obj !== 'object') {
+            return '';
+        }
+
+        const elements = Object
+            .keys(obj)
+            .map(key => `${key}=${obj[key]}`);
+
+        return elements.length
+            ? '?' + elements.join('&')
+            : ''
+    }
+}
+
+export class AuthWebSocketWorker extends WebSocketWorker {
+    constructor(options) {
+        super(options);
+        this.messages = AuthWebSocketWorker.messages || this.messages;
+    }
+}
+export class GeneralWebSocketWorker extends WebSocketWorker {
+    constructor(options) {
+        super(options);
+        this.messages = GeneralWebSocketWorker.messages || this.messages;
     }
 }

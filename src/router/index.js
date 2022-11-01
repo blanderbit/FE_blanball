@@ -33,11 +33,6 @@ export const ROUTES = {
             path: '/application',
             name: 'application'
         },
-        HOME: {
-            relative: 'home',
-            absolute: '/application/home',
-            name: 'application-home'
-        },
         VERSION: {
             relative: 'versions',
             absolute: '/application/versions',
@@ -171,19 +166,6 @@ const router = createRouter({
             beforeEnter: routerAuthResolver.routeInterceptor(),
             component: () => import('../views/application/index.vue'),
             children: [
-                {
-                    path: ROUTES.APPLICATION.HOME.relative,
-                    name: ROUTES.APPLICATION.HOME.name,
-                    beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-                        // usersData: () => $api.UsersRequest.getAll(to.query),
-                    })),
-                    component: () => import('../views/application/home.vue'),
-                    meta: {
-                        breadcrumbs: [
-                            { name:'Main' }
-                        ]
-                    }
-                },
                 {
                     path: ROUTES.APPLICATION.VERSION.relative,
                     name: ROUTES.APPLICATION.VERSION.name,

@@ -3,19 +3,17 @@ import { InitialMessage } from "./initial.message";
 import {
     SetActions,
     SetMessageType,
-    SetPushNotificationTheme,
-    WebSocketMessage,
+    AuthWebSocketMessage
 } from "../../type.decorator";
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { ROUTES } from "../../../../router/index";
 import { WebSocketTypes } from "../../web.socket.types";
 
-@WebSocketMessage()
+@AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.ResponseToRequestForParticipation)
 @SetActions()
 export class ResponseToRequestForParticipationMessage extends InitialMessage {
-
     createTexts(data) {
         return [
             data.invite.response
@@ -38,7 +36,7 @@ export class ResponseToRequestForParticipationMessage extends InitialMessage {
             }
         ];
 
-        if (this.data.invite.response) {
+        if (this.data.request.response) {
             this.actions.push({
                 type: MessageActionTypes.Action,
                 text: 'Просмотреть ивент',

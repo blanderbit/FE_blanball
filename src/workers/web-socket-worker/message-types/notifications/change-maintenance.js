@@ -1,13 +1,13 @@
 import { InitialMessage } from "./initial.message";
 
-import { SetActions, SetMessageType, WebSocketMessage } from "../../type.decorator";
+import { GeneralWebSocketMessage, SetActions, SetMessageType } from "../../type.decorator";
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { ROUTES } from "../../../../router/index";
 import { WebSocketTypes } from "../../web.socket.types";
 
 @SetMessageType(WebSocketTypes.ChangeMaintenance)
-@WebSocketMessage()
+@GeneralWebSocketMessage()
 @SetActions([
     {
         type: MessageActionTypes.Action,

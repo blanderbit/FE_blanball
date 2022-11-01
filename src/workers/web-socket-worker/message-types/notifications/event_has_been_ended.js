@@ -11,7 +11,7 @@ import { WebSocketTypes } from "../../web.socket.types";
 import { ROUTES } from "../../../../router";
 
 @AuthWebSocketMessage()
-@SetMessageType(WebSocketTypes.EventUpdated)
+@SetMessageType(WebSocketTypes.EventHasBeenEnded)
 @SetActions([
     {
         type: MessageActionTypes.ActionClose,
@@ -19,20 +19,23 @@ import { ROUTES } from "../../../../router";
     },
     {
         type: MessageActionTypes.Action,
-        text: 'Просмотреть ивент',
-        action: (instance) => ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(instance.data.event.id),
-        actionType: MessageActionDataTypes.UrlCallback,
+        text: 'Оставить отзыв',
+        action: (instance, modals) => {
+            modals.review.data = instance;
+            modals.review.active = true
+        },
+        actionType: MessageActionDataTypes.Callback,
         buttonType: 'stroked'
     },
 ])
-export class EventUpdatedMessage extends InitialMessage {
+export class EventHasBeenEndedMessage extends InitialMessage {
     createTexts(data) {
         return [
-            `${data.recipient.name} - событие обновилось. Для того что бы просмотреть подробности обновления нажмите кнопку "${this.actions[1].text}"`
+            `${data.event.name} - событие закончилось! Вы можете оставить отзыв о событии и учасниках, надеемся Вам все понравилось!"`
         ]
     };
 
     createTitle() {
-        return 'Ивент был обновлен!';
+        return 'Событие закончилось!';
     }
 }

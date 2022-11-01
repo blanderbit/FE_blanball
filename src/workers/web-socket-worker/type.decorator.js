@@ -1,4 +1,4 @@
-import {WebSocketWorker} from "./web.socket.worker";
+import { AuthWebSocketWorker, GeneralWebSocketWorker } from "./web.socket.worker";
 
 export function SetMessageType(e) {
     return (a) => {
@@ -30,6 +30,13 @@ export function Notification() {
     return (a) => {
         a.notification = true;
         a.prototype.notification = true;
+    }
+}
+
+export function UpdateWebSocketMessage() {
+    return (a) => {
+        a.updateWebSocketMessage = true;
+        a.prototype.updateWebSocketMessage = true;
     }
 }
 
@@ -74,11 +81,20 @@ export function MessageDataConfiguration (data) {
 
 }
 
-export function WebSocketMessage() {
+export function AuthWebSocketMessage() {
     return (a) => {
-        if(!WebSocketWorker.prototype.messages) {
-            WebSocketWorker.prototype.messages = [];
+        if(!AuthWebSocketWorker.messages) {
+            AuthWebSocketWorker.messages = [];
         }
-        WebSocketWorker.prototype.messages.push(a);
+        AuthWebSocketWorker.messages.push(a);
+    }
+}
+
+export function GeneralWebSocketMessage() {
+    return (a) => {
+        if(!GeneralWebSocketWorker.messages) {
+            GeneralWebSocketWorker.messages = [];
+        }
+        GeneralWebSocketWorker.messages.push(a);
     }
 }

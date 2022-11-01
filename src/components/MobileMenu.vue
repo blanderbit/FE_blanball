@@ -173,7 +173,7 @@ export default {
         alignement: 'flex-start',
         background: '#FFFFFF',
         textColor: '#575775',
-        url: ROUTES.APPLICATION.HOME.absolute,
+        url: ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute,
       },
     ])
     const router = useRouter()

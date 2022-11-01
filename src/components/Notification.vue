@@ -61,7 +61,7 @@
         },
         computed: {
             formatDate() {
-                return dayJs(String(this.notificationInstance.date)).format('DD.MM.YYYY')
+                return this.notificationInstance?.parseDate || dayJs(String(this.notificationInstance.date)).format('DD.MM.YYYY')
             },
             isPush() {
                 return this.notificationType === 'push'

@@ -4,7 +4,7 @@ export const EndpointsEnum = {
         Login: '/authentication/client/login'
     },
     Notification: {
-        Index: '/notifications/admin/notifications/list',
+        Index: '/notifications/client/my/notifications/list',
         Count: '/notifications/client/my/not-read/notifications/count',
         Read: '/notifications/client/read/notifications',
         Delete: '/notifications/client/delete/notifications',

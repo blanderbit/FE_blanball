@@ -4,14 +4,14 @@ import {
     SetActions,
     SetMessageType,
     SetPushNotificationTheme,
-    WebSocketMessage
+    AuthWebSocketMessage
 } from "../../type.decorator";
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { ROUTES } from "../../../../router/index";
 import { WebSocketTypes } from "../../web.socket.types";
 
-@WebSocketMessage()
+@AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.ResponseToInviteForEvent)
 @SetActions()
 export class ResponseToInviteForParticipationMessage extends InitialMessage {
@@ -49,8 +49,8 @@ export class ResponseToInviteForParticipationMessage extends InitialMessage {
         } else {
             this.actions.push({
                 type: MessageActionTypes.Action,
-                text: 'Найти другие ивенты',
-                action: ROUTES.APPLICATION.EVENTS.absolute,
+                text: 'Найти юзеров',
+                action: ROUTES.APPLICATION.USERS.absolute,
                 actionType: MessageActionDataTypes.Url,
                 buttonType: 'stroked'
             });

@@ -3,27 +3,27 @@ import { InitialMessage } from "./initial.message";
 import {
     SetActions,
     SetMessageType,
-    WebSocketMessage
+    AuthWebSocketMessage
 } from "../../type.decorator";
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { WebSocketTypes } from "../../web.socket.types";
 import { API } from "../../../api-worker/api.worker";
 
-@WebSocketMessage()
+@AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.NewRequestToParticipation)
 @SetActions([
     {
         type: MessageActionTypes.Action,
         text: 'Принять',
-        action: (instance) => API.EventService.declineOrAcceptParticipations(instance.data.sender.id, true),
+        action: (instance) => API.EventService.declineOrAcceptParticipations(instance.data.request.id, true),
         actionType: MessageActionDataTypes.Callback,
         buttonColor: 'success'
     },
     {
         type: MessageActionTypes.Action,
         text: 'Отклонить',
-        action: (instance) => API.EventService.declineOrAcceptParticipations(instance.data.sender.id, false),
+        action: (instance) => API.EventService.declineOrAcceptParticipations(instance.data.request.id, false),
         actionType: MessageActionDataTypes.Callback,
         buttonColor: 'error'
     },

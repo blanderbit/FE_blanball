@@ -1,5 +1,6 @@
 import {AxiosInstance} from "../../../../plugins/axios.plugin";
 import {EndpointsEnum} from "../http-common/prefix.enum";
+import { AxiosParams, AxiosQuery } from "../../../utils-worker";
 
 export class NotificationService {
     static readNotifications (ids) {
@@ -11,8 +12,15 @@ export class NotificationService {
         )
     }
 
-    static getNotifications() {
-        return AxiosInstance.get(EndpointsEnum.Notification.Index)
+    static getNotifications(pageNumber) {
+        return AxiosInstance.get(
+            EndpointsEnum.Notification.Index,
+            AxiosParams(
+                AxiosQuery.bind(null, {
+                    page: pageNumber
+                })
+            )
+        )
     }
 
     static getNotificationsCount() {

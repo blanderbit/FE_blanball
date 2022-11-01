@@ -3,27 +3,27 @@ import { InitialMessage } from "./initial.message";
 import {
     SetActions,
     SetMessageType,
-    WebSocketMessage
+    AuthWebSocketMessage
 } from "../../type.decorator";
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { WebSocketTypes } from "../../web.socket.types";
 import { API } from "../../../api-worker/api.worker";
 
-@WebSocketMessage()
+@AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.InviteUserToEvent)
 @SetActions([
     {
         type: MessageActionTypes.Action,
         text: 'Принять',
-        action: (instance) => API.EventService.declineOrAcceptInvites(instance.data.recipient.id, true),
+        action: (instance) => API.EventService.declineOrAcceptInvites(instance.data.invite.id, true),
         actionType: MessageActionDataTypes.Callback,
         buttonColor: 'success'
     },
     {
         type: MessageActionTypes.Action,
         text: 'Отклонить',
-        action: (instance) => API.EventService.declineOrAcceptInvites(instance.data.recipient.id, false),
+        action: (instance) => API.EventService.declineOrAcceptInvites(instance.data.invite.id, false),
         actionType: MessageActionDataTypes.Callback,
         buttonColor: 'error'
     },
@@ -40,36 +40,3 @@ export class InviteUserToEventMessage extends InitialMessage {
         return 'Приглашение на событие.';
     }
 }
-
-// {event
-// :
-// {id: 5}
-// id
-// :
-// 5
-// recipient
-// :
-// {id: 1, name: "string", last_name: "string"}
-// id
-// :
-// 1
-// last_name
-// :
-// "string"
-// name
-// :
-// "string"
-// sender
-// :
-// {id: 2, name: "string", last_name: "string"}
-// id
-// :
-// 2
-// last_name
-// :
-// "string"
-// name
-// :
-// "string"}
-
-// TODO нужно ли добавить нам просмотреть ивент этот?

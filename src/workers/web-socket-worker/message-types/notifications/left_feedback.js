@@ -3,17 +3,15 @@ import { InitialMessage } from "./initial.message";
 import {
     SetActions,
     SetMessageType,
-    SetPushNotificationTheme,
     AuthWebSocketMessage
 } from "../../type.decorator";
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
-import { ROUTES } from "../../../../router/index";
 import { WebSocketTypes } from "../../web.socket.types";
+import { ROUTES } from "../../../../router";
 
 @AuthWebSocketMessage()
-@SetMessageType(WebSocketTypes.EventDeleted)
-@SetPushNotificationTheme('error')
+@SetMessageType(WebSocketTypes.LeftFeedback)
 @SetActions([
     {
         type: MessageActionTypes.ActionClose,
@@ -21,20 +19,20 @@ import { WebSocketTypes } from "../../web.socket.types";
     },
     {
         type: MessageActionTypes.Action,
-        text: 'Найти ивенты',
-        action: ROUTES.APPLICATION.EVENTS.absolute,
+        text: 'Просмотреть все отзывы', // TODO should add right button
+        action: ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute,
         actionType: MessageActionDataTypes.Url,
         buttonType: 'stroked'
-    }
+    },
 ])
-export class EventDeletedMessage extends InitialMessage {
+export class LeftFeedbackMessage extends InitialMessage {
     createTexts(data) {
         return [
-            `Событие было удалено. Для того что бы подобрать другое событие нажмите кнопку "${this.actions[1].text}."`
+            `Один из учасников события оставил вам отзыв! Что бы просмотреть все отзывы нажмите на кнопку "${this.actions[1].text}"`
         ]
     };
 
     createTitle() {
-        return 'Событие удалено!';
+        return 'Вам оставили отзыв!';
     }
 }

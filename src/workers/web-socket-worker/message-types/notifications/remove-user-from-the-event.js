@@ -3,14 +3,14 @@ import { InitialMessage } from "./initial.message";
 import {
     SetActions,
     SetMessageType,
-    WebSocketMessage
+    AuthWebSocketMessage
 } from "../../type.decorator";
 
 import { ROUTES } from "../../../../router";
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { WebSocketTypes } from "../../web.socket.types";
 
-@WebSocketMessage()
+@AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.UserRemoveFromEvent)
 @SetActions([
     {

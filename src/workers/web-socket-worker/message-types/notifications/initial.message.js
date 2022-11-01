@@ -7,6 +7,31 @@ import {
     TimeForCloseIfInactive,
     Notification
 } from "../../type.decorator";
+import dayjs from 'dayjs'
+
+import relativeTime from 'dayjs/plugin/relativeTime'
+import updateLocale from 'dayjs/plugin/updateLocale'
+dayjs.extend(relativeTime);
+dayjs.extend(updateLocale);
+
+
+dayjs.updateLocale('uk', {
+    relativeTime: {
+        future: "через %s",
+        past: "%s назад",
+        s: 'несколько мекунд',
+        m: "минута",
+        mm: "%d минут",
+        h: "час",
+        hh: "%d часов",
+        d: "день",
+        dd: "%d дней",
+        M: "месяц",
+        MM: "%d месяцев",
+        y: "год",
+        yy: "%d годов"
+    }
+});
 
 @PushNotification()
 @Notification()
@@ -15,7 +40,6 @@ import {
     .readNotifications([
         instance.notification_id
     ])
-    .then(() => instance.isRead = true)
 )
 @SetPushNotificationTheme('standard')
 export class InitialMessage {
@@ -24,6 +48,10 @@ export class InitialMessage {
     title;
     isRead;
     notification_id;
+
+    get parseDate () {
+        return dayjs().locale('uk').to(dayjs(this.date))
+    }
 
     constructor(message) {
         this.data = message.data;
