@@ -1,11 +1,11 @@
 <template>
   <div class="second-step">
     <div class="title-block">
-      <span>Конфіденційність</span>
-      <div class="vip-only">Тільки для ViP</div>
+      <span>{{ $t('events.confidentiality') }}</span>
+      <div class="vip-only">{{ $t('events.vip-only') }}</div>
     </div>
     <div class="subtitle">
-      Чи бажаєте ви отримувати запити на участьу події?
+      {{ $t('events.agree-to-get-requests') }}
     </div>
     <div class="radio-btn-wrapper">
       <div class="radio">
@@ -14,12 +14,12 @@
           v-model="isOpened"
           name="openness"
           type="radio"
-          value="Долучитися"
+          :value="$t('events.join')"
           checked
         />
         <label for="radio-3" class="radio-label">
           <img src="../../assets/img/lock-closed.svg" alt="" />
-          Вільний
+          {{$t('events.free')}}
         </label>
       </div>
       <div class="radio">
@@ -28,15 +28,15 @@
           v-model="isOpened"
           name="openness"
           type="radio"
-          value="Подати заявку"
+          :value="$t('events.apply')"
         />
         <label for="radio-4" class="radio-label">
           <img src="../../assets/img/lock-opened.svg" alt="" />
-          Закритий
+          {{ $t('events.closed') }}
         </label>
       </div>
     </div>
-    <div class="title">Чи потребує участь у події внесків?</div>
+    <div class="title">{{ $t('events.is-event-free') }}</div>
     <div class="radio-btn-wrapper">
       <div class="radio">
         <input
@@ -44,10 +44,10 @@
           v-model="payment"
           name="payment"
           type="radio"
-          value="Безкоштовно"
+          :value="$t('events.for-free')"
           checked
         />
-        <label for="radio-5" class="radio-label"> Безкоштовно </label>
+        <label for="radio-5" class="radio-label"> {{ $t('events.for-free') }} </label>
       </div>
       <div class="radio">
         <input
@@ -55,21 +55,21 @@
           v-model="payment"
           name="payment"
           type="radio"
-          value="Платно"
+          :value="$t('events.payed')"
         />
-        <label for="radio-6" class="radio-label"> Платно </label>
+        <label for="radio-6" class="radio-label"> {{ $t('events.payed') }} </label>
       </div>
     </div>
-    <div v-if="payment === 'Платно'" class="input">
+    <div v-if="payment === $t('events.payed')" class="input">
       <InputComponent
         :outside-title="true"
-        :title="'Вкажіть суму'"
+        :title="$t('events.payed')"
         :placeholder="'45₴'"
         :title-width="0"
       />
     </div>
     <div class="contact-switcher">
-      <span> Показувати мої контакти </span>
+      <span>{{$t('events.show-my-contacts')}}</span>
       <Switcher :id="'contacts'" />
     </div>
     <div class="input">
@@ -80,10 +80,10 @@
         :icon="['../../assets/img/sort-arrows-horizontal.svg']"
       />
     </div>
-    <div class="title">Запросити учасників</div>
+    <div class="title">{{$t('events.invite-users')}}</div>
     <div class="input">
       <InputComponent
-        :placeholder="'Пошук користувачів'"
+        :placeholder="$t('events.search-users')"
         :title-width="30"
         :has-icon="true"
         :icon-left="'../../assets/img/add-user.svg'"
@@ -91,7 +91,7 @@
       />
     </div>
     <div class="search-users-block">
-      <div class="title">Шукати серед:</div>
+      <div class="title">{{$t('events.search-among')}}</div>
       <div class="tegs-block">
         <div
           v-for="tag in tags"
@@ -136,12 +136,12 @@
                   alt=""
                 />
               </div>
-              <div v-else class="invited">Запрошено</div>
+              <div v-else class="invited">{{$t('events.requested')}}</div>
             </div>
           </div>
         </div>
       </div>
-      <div class="show-more-results">Показати ще 20 результатів</div>
+      <div class="show-more-results">{{$t('events.show-more')}}</div>
     </div>
   </div>
 </template>

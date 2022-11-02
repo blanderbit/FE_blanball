@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { routerResolverByLoginPage, routerAuthResolver } from "../workers/resolver-worker/reolver.worker"
-import {  EventService } from '../workers/api-worker/http/http-services/authorization.service'
+import {  EventService, UserService } from '../workers/api-worker/http/http-services/authorization.service'
 
 const CONSTANTS = {
     first_page_events: 1
@@ -216,7 +216,7 @@ const router = createRouter({
                     path: ROUTES.APPLICATION.PROFILE.MY_PROFILE.relative,
                     name: ROUTES.APPLICATION.PROFILE.MY_PROFILE.name,
                     beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-                        // usersData: () => $api.UsersRequest.getAll(to.query),
+                        usersData: () => UserService.getMyProfile(),
                     })),
                     component: () => import('../views/application/profile/my-profile.vue'),
                     meta: {

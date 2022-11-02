@@ -12,5 +12,8 @@ export const EndpointsEnum = {
     Events: {
         getAllEvents: '/events/client/events/list',
         getAllMyEvents: '/events/client/my/events/list'
+    },
+    Users: {
+        getMyProfile: '/authentication/client/me',
     }
 };

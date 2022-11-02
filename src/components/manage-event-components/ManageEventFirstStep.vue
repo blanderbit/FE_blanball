@@ -2,13 +2,13 @@
   <div class="first-step">
     <Dropdown
       :outside-title="true"
-      :main-title="'Тип події'"
+      :main-title="$t('events.event-type')"
       :options="typeOfEventDropdown"
       :width="320"
       :height="40"
       @new-value="$emit('dropdown-form-value', 'title', $event)"
     />
-    <div class="title">Гендер учасників події</div>
+    <div class="title">{{ $t('events.gender') }}</div>
     <div class="radio-btn-wrapper">
       <div class="radio">
         <input 
@@ -16,12 +16,12 @@
           v-model="secondLabel"
           name="radio" 
           type="radio"
-          value="Чоловіки"
+          :value="$t('events.men')"
           checked
           >
         <label for="radio-1" class="radio-label">
           <img src="../../assets/img/male-icon.svg" alt="">
-            Чоловіки
+          {{ $t('events.men') }}
         </label>
       </div>
       <div class="radio">
@@ -30,17 +30,17 @@
           v-model="secondLabel"
           name="radio" 
           type="radio"
-          value="Жінки"
+          :value="$t('events.women')"
         >
         <label for="radio-2" class="radio-label">
           <img src="../../assets/img/female-icon.svg" alt="">
-            Жінки
+          {{ $t('events.women') }}
         </label>
       </div>
     </div>
     <Dropdown
       :outside-title="true"
-      :main-title="'Вид спорту'"
+      :main-title="$t('events.sport-type')"
       :options="typeOfSportDropdown"
       :width="320"
       :height="40"
@@ -50,7 +50,7 @@
       <div class="input">
         <InputComponent
           :outside-title="true"
-          :title="'Дата'"
+          :title="$t('events.date')"
           :placeholder="'02.09.2022'"
           :title-width="0"
           :has-icon="true"
@@ -63,7 +63,7 @@
       <div class="input">
         <InputComponent
           :outside-title="true"
-          :title="'Час'"
+          :title="$t('events.time')"
           :placeholder="'17:00'"
           :title-width="0"
           :has-icon="true"
@@ -76,7 +76,7 @@
     </div>
     <div class="input-location">
       <InputComponent
-        :placeholder="'Місце проведення'"
+        :placeholder="$t('events.place')"
         :title-width="0"
         :has-icon="true"
         :icon="[

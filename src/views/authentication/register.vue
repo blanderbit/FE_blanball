@@ -82,8 +82,7 @@
         <div class="b-register__google-play-block">
           <img src="../../assets/img/google-play.svg" alt="" />
           <span>
-            Завантажте додаток BlanBall на свій смартфон та будьте завжди на
-            зв’язку
+            {{ $t('register.load-app') }}
           </span>
         </div>
       </div>

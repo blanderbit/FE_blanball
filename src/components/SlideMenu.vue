@@ -19,11 +19,13 @@
               <img src="../assets/img/logo-sidebar.svg" alt="">
           </div>
           <div class="b_slide_menu_items">
-              <div class="b_slide_menu_title">Сповіщення</div>
+              <div class="b_slide_menu_title">
+                {{$t('slide_menu.notifications')}}
+              </div>
               <ul>
                   <li v-for="item of 7" :key="item">
                       <img src="../assets/img/Settings.svg" alt="">
-                      Посилання
+                      {{$t('slide_menu.link')}}
                   </li>
               </ul>
           </div>
@@ -39,7 +41,7 @@
             </div>
           </div>
           <div class="b_slide_menu_bottom-line">
-            Blanball.version
+            {{$t('slide_menu.version')}}
             <router-link to="/versions">{{clientVersion}}</router-link>
           </div>
         </div>
