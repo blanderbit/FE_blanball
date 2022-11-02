@@ -256,8 +256,8 @@
             {{ $t('profile.sub-rate') }}
           </div>
           <ReviewDetailsComponent 
-              :user-rate="rating"
-            />
+            :user-rate="rating"
+          />
           <input type="text" v-model="userRating">
           <div class="btns-block">
             <div
@@ -321,7 +321,7 @@
               <Switcher :id="'email'" />
             </div>
             <div class="personal-settings">
-              <p>{{ $t('profile.my-feedbacks') }}<span>(Деякі)</span></p>
+              <p>{{ $t('profile.my-feedbacks') }}<span>{{ $t('profile.some') }}</span></p>
               <Switcher :id="'feedback'" />
             </div>
           </div>

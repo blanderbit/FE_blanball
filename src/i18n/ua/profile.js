@@ -18,5 +18,6 @@ export default {
   'phone-number': 'Номер телефону',
   'e-mail': 'E-mail',
   'my-feedbacks': 'Відгуки про мене',
-  'personal-details': 'Особиста інформація'
+  'personal-details': 'Особиста інформація',
+  'some': '(Деякі)'
 }

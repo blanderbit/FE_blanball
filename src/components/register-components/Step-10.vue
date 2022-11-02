@@ -2,10 +2,10 @@
   <div class="b-register-step">
     <div class="b-register-step__top-part">
       <div class="b-register-step__title">
-        Заповніть профіль та розпочніть пошук команди
+        {{$t('register.feel-profile')}}
       </div>
       <div class="b-register-step__subtitle">
-        Blanball — це застосунок, покликаний спростити пошук команд для гри у футбол і так далі тому подібне. Тут треба буде написати нашо взагалі воно є та чим може бути корисне.
+        {{$t('register.app-description3')}}
       </div>
     </div>
     <div class="b-register-step__buttons">
@@ -13,10 +13,10 @@
         class="b-register-step__back-btn" 
         @click="finishOnBoarding"
       >
-        Пропустити
+      {{$t('register.skip')}}
       </div>
       <GreenBtn
-        :text="'Продовжити'"
+        :text="$t('register.continue')"
         :width="156"
         :height="40"
         :icon-right="arrow"

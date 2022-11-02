@@ -1,9 +1,11 @@
 <template>
   <div class="b-register-step">
     <div class="b-register-step__top-part">
-      <div class="b-register-step__title">Вітаємо у BLANBALL !</div>
+      <div class="b-register-step__title">
+        {{$t('register.welcome')}}
+      </div>
       <div class="b-register-step__subtitle">
-        Blanball — це застосунок, покликаний спростити пошук команд для гри у футбол і так далі тому подібне. Тут треба буде написати нашо взагалі воно є та чим може бути корисне.
+        {{$t('register.app-description')}}
       </div>
     </div>
     <div class="b-register-step__buttons">
@@ -11,10 +13,10 @@
         class="b-register-step__back-btn" 
         @click="finishOnBoarding"
       >
-        Пропустити
+      {{$t('register.skip')}}
       </div>
       <GreenBtn
-        :text="'Продовжити'"
+        :text="$t('register.continue')"
         :width="156"
         :height="40"
         :icon-right="arrow"

@@ -45,7 +45,7 @@
           </div>
         </div>
         <div class="b_user_card_bottom-line">
-          <span class="title">Стать:</span>
+          <span class="title">{{$t('users.gender')}}</span>
           <span class="icon">
             <img :src="user.gender_icon" alt="">
           </span> 

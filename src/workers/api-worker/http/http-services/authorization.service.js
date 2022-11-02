@@ -15,3 +15,9 @@ export class EventService {
         return AxiosInstance.get(EndpointsEnum.Events.getAllMyEvents + `?page=${pageNumber}`)
     }
 } // TODO add new service for this 
+
+export class UserService {
+    static getMyProfile() {
+        return AxiosInstance.get(EndpointsEnum.Users.getMyProfile)
+    }
+}

@@ -4,5 +4,18 @@ export default {
   'players': 'Гравці',
   'trainers': 'Тренери',
   'referee': 'Рефері',
-  'teams': 'Команди'
+  'teams': 'Команди',
+  'gender': 'Стать:',
+  'men': 'Чоловіки',
+  'women': 'Жінки',
+  'all': 'Всі',
+  'sorting': 'Сортування',
+  'new-first': 'Cпочатку нові',
+  'found': 'знайдено',
+  'advertisments': 'оголошень',
+  'users-search': 'Пошук користувачів',
+  'filters': 'Фільтри',
+  'chose-date': 'Обрати дату',
+  'planned-events': 'Заплановані події',
+  'your-events': 'Заходи у яких ви запланували участь'
 }

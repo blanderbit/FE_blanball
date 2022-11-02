@@ -40,12 +40,12 @@
                     v-model="eventData.gender"
                     name="radio"
                     type="radio"
-                    value="Чоловіки"
+                    :value="$t('users.men')"
                     checked
                   />
                   <label for="radio-1" class="radio-label">
                     <img src="../../../assets/img/male-icon.svg" alt="" />
-                    Чоловіки
+                    {{ $t('users.men') }}
                   </label>
                 </div>
                 <div class="radio">
@@ -54,11 +54,11 @@
                     v-model="eventData.gender"
                     name="radio"
                     type="radio"
-                    value="Жінки"
+                    :value="$t('users.women')"
                   />
                   <label for="radio-2" class="radio-label">
                     <img src="../../../assets/img/female-icon.svg" alt="" />
-                    Жінки
+                    {{ $t('users.women') }}
                   </label>
                 </div>
                 <div class="radio">
@@ -67,11 +67,11 @@
                     v-model="eventData.gender"
                     name="radio"
                     type="radio"
-                    value="Всі"
+                    :value="$t('users.all')"
                   />
                   <label for="radio-3" class="radio-label">
                     <img src="../../../assets/img/unisex.svg" alt="" />
-                    Всі
+                    {{ $t('users.all') }}
                   </label>
                 </div>
               </div>
@@ -84,8 +84,8 @@
               <div class="old-new-filter">
                 <img src="../../../assets/img/sort-arrows.svg" alt="" />
                 <div class="text-block">
-                  Сортування
-                  <span>Cпочатку нові</span>
+                  {{ $t('users.sorting') }}
+                  <span>{{ $t('users.new-first') }}</span>
                 </div>
               </div>
               <div class="search-input-tablet">
@@ -121,7 +121,9 @@
               </div>
               <div class="text">
                 <div class="title">{{ $t('events.filters') }}</div>
-                <div class="terms">знайдено 15 оголошень</div>
+                <div class="terms">
+                  {{ $t('events.found') }} 15 {{ $t('events.advertisments') }}
+                </div>
               </div>
             </div>
             <div class="calendar-block sort-item">
