@@ -204,7 +204,7 @@ const router = createRouter({
                     beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
                         // usersData: () => $api.UsersRequest.getAll(to.query),
                     })),
-                    component: () => import('../views/application/company.vue'),
+                    component: () => import('../views/application/versions.vue'),
                     meta: {
                         breadcrumbs: [
                             { name:'Main', path: '/' },
