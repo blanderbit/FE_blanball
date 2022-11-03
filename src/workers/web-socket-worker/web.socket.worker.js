@@ -24,7 +24,7 @@ export class WebSocketWorker {
             console.log('Connection Error', e);
         };
 
-        this.instance.onopen =(e) => {
+        this.instance.onopen = (e) => {
             console.log('WebSocket Client Connected');
         };
 
@@ -99,6 +99,7 @@ export class AuthWebSocketWorker extends WebSocketWorker {
         this.messages = AuthWebSocketWorker.messages || this.messages;
     }
 }
+
 export class GeneralWebSocketWorker extends WebSocketWorker {
     constructor(options) {
         super(options);
