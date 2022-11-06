@@ -8,11 +8,7 @@
     </div>
     <div class="b-reset__central-block">
       <div class="b-reset__left-part">
-        <Stepper
-          :currentStep="currentStep"
-          @increment-step="currentStep++"
-          @decrement-step="currentStep--"
-        />
+        <Stepper/>
       </div>
       <div class="b-reset__right-part">
         <div class="b-reset__google-play-block">
