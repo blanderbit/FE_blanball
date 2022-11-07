@@ -24,11 +24,30 @@
                         <div class="b_slide_menu_title">Сповіщення</div>
                     </div>
                     <ul class="b_slide_menu_notification" v-if="isMenuOpened">
+                        <!--<InfiniteLoading ref="scrollbar" :firstload="false" @infinite="test()"/>-->
                         <div class="b_slide_menu_new_notifications" v-if="isMenuOpened && newNotifications" @click="$emit('reLoading')">
-                            Новые уведомления - {{newNotifications}}
+                            Новые уведомления - {{ newNotifications }}
                         </div>
-                        <Notifications :notifications="notifications"></Notifications>
-                        <InfiniteLoading @infinite="$emit('loadingInfinite', $event)"/>
+                        <!--<virtual-list class="list-infinite scroll-touch"-->
+                            <!--:data-key="'notification_id'"-->
+                            <!--:data-sources="notifications"-->
+                            <!--:data-component="itemComponent"-->
+                                      <!--ref="virtual"-->
+                            <!--:keeps="10"-->
+                            <!--:estimate-size="70"-->
+                            <!--:item-class="'list-item-infinite'"-->
+                            <!--:footer-class="'loader-wrapper'"-->
+                            <!--v-on:totop="test1()"-->
+                            <!--v-on:tobottom="test()"-->
+                        <!--&gt;-->
+                        <!--<div slot="footer" class="loader">-->
+
+                        <!--</div>-->
+                        <!--</virtual-list>-->
+                        <!--<virtual-scroll-list style="height: 360px; overflow-y: auto;">-->
+                            <Notifications :notifications="notifications"></Notifications>
+                        <!--</virtual-scroll-list>-->
+                        <InfiniteLoading ref="scrollbar" :firstload="false" @infinite="$emit('loadingInfinite',$event)"/>
                     </ul>
                 </div>
                 <div class="b_slide_menu_bottom-block">
@@ -37,7 +56,7 @@
                             <div class="b_slide_menu_position">тренер</div>
                             <div class="b_slide_menu_name">Юлія Кісліцина</div>
                         </div>
-                        <div class="b_slide_menu_right-part">
+                        <div class="b_slide_menu_right-part" @click="logOut()">
                             <img src="../assets/img/exit-icon.svg" alt="">
                         </div>
                     </div>
@@ -54,15 +73,18 @@
 <script>
     import { ref, inject, computed } from 'vue'
     import Notifications from './sitebar-notifications/Notifications.vue'
-
+    import { useRouter } from "vue-router";
     import sidebarArrowBack from '../assets/img/sidebar-arrow-back.svg'
     import sidebarArrow from '../assets/img/sidebar-arrow.svg'
-    import InfiniteLoading from 'v3-infinite-loading'
-
+    import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue'
+    import { ROUTES } from "../router";
+    import { TokenWorker } from "../workers/token-worker";
+    import VirtualList from 'vue3-virtual-scroll-list';
     export default {
         components: {
-            Notifications,
-            InfiniteLoading
+            InfiniteLoading,
+          VirtualList,
+          Notifications
         },
         props: {
             notifications: {
@@ -82,9 +104,11 @@
             'closed',
             'reLoading',
             'loading',
-            'loadingInfinite'
+            'loadingInfinite',
+            'loadingDowngradeInfinite'
         ],
         setup(context, {emit}) {
+            const router = useRouter();
             const isMenuOpened = ref(false);
             const clientVersion = ref(inject('clientVersion'));
 
@@ -97,11 +121,31 @@
                 emit(isMenuOpened.value ? 'loading' : 'closed');
             }
 
+            function logOut() {
+                TokenWorker.clearToken();
+                router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute)
+            }
+            // watch(
+            //   () => context.notifications,
+            //   () => {
+            //     if(!virtual.value) return;
+            //     if(last.value === 'loadingDowngradeInfinite') {
+            //       return virtual?.value?.scrollToIndex(10)
+            //     }
+            //     return virtual?.value?.scrollToIndex(0)
+            //   }
+            // );
+
+            // function test($event) {
+            //   debugger
+            //   emit('loadingInfinite',$event)
+            // }
             return {
                 isMenuOpened,
                 clientVersion,
                 arrowPosition,
                 toggleMenu,
+                logOut,
             }
         }
     }
@@ -244,5 +288,4 @@
             }
         }
     }
-
 </style>

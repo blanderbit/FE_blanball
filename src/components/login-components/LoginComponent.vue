@@ -143,7 +143,7 @@ export default {
         if (redirectUrl) {
           const resolveRouter = router.resolve(redirectUrl);
           if (
-            resolveRouter?.matched?.find((match) =>
+            !redirectUrl || resolveRouter?.matched?.find((match) =>
               match?.path?.includes('pathMatch')
             )
           ) {

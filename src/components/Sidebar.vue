@@ -6,6 +6,7 @@
             :newNotifications="newNotifications"
             @closed="clearData()"
             @loadingInfinite="loadDataNotifications(page + 1, $event)"
+            @loadingDowngradeInfinite="loadDataNotifications(page - 1, $event)"
             @reLoading="loadDataNotifications(1, null, true)"
             @loading="loadDataNotifications(1, null, true)"
         />
@@ -102,6 +103,8 @@
             });
 
             const loadDataNotifications =  (pageNumber, $state, isNewNotifications) => {
+                pageNumber = pageNumber < 1 ? 1 : pageNumber;
+                if(pageNumber === page.value) return;
                 loadNotification(pageNumber, $state)
                     .then(() => {
                         if(isNewNotifications) {
