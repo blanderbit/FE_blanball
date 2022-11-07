@@ -21,13 +21,14 @@
                         <img src="../assets/img/logo-sidebar.svg" alt="">
                     </div>
                     <div class="b_slide_menu_items">
-                        <div class="b_slide_menu_title">Сповіщення</div>
+                        <div class="b_slide_menu_title"> {{$t('slide_menu.notifications')}}</div>
                     </div>
                     <ul class="b_slide_menu_notification" v-if="isMenuOpened">
                         <!--<InfiniteLoading ref="scrollbar" :firstload="false" @infinite="test()"/>-->
                         <div class="b_slide_menu_new_notifications" v-if="isMenuOpened && newNotifications" @click="$emit('reLoading')">
                             Новые уведомления - {{ newNotifications }}
                         </div>
+                      <!--TODO need delete 'slide_menu.link'-->
                         <!--<virtual-list class="list-infinite scroll-touch"-->
                             <!--:data-key="'notification_id'"-->
                             <!--:data-sources="notifications"-->
@@ -61,7 +62,7 @@
                         </div>
                     </div>
                     <div class="b_slide_menu_bottom-line">
-                        Blanball.version
+                        {{$t('slide_menu.version')}}
                         <router-link to="/versions">{{clientVersion}}</router-link>
                     </div>
                 </div>

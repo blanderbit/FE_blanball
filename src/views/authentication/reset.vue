@@ -25,8 +25,7 @@
         <div class="b-reset__google-play-block">
           <img src="../../assets/img/google-play.svg" alt="" />
           <span>
-            Завантажте додаток BlanBall на свій смартфон та будьте завжди на
-            зв’язку
+            {{ $t('reset.load-app') }}
           </span>
         </div>
       </div>

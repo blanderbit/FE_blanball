@@ -11,7 +11,7 @@
       class="b-register-step__ball-small"
     />
     <div class="b-register-step__top-part">
-      <div class="b-register-step__title">Створення облікового запису</div>
+      <div class="b-register-step__title">{{$t('register.create-account')}}</div>
       <div class="b-register-step__progress-line">
         <div class="b-register-step__sections">
           <div
@@ -24,14 +24,14 @@
       <div class="b-register-step__input">
         <InputComponent
           :outside-title="true"
-          :title="`E-mail`"
+          :title="$t('register.email')"
           :placeholder="'elektron@mail.com'"
           :title-width="0"
         />
       </div>
       <div class="b-register-step__input">
         <InputComponent 
-          :placeholder="'Придумайте пароль'" 
+          :placeholder="$t('register.create-password')" 
           :title-width="0"
           :type="['password', 'text']"
           :outside-title="true"
@@ -41,7 +41,7 @@
       </div>
       <div class="b-register-step__input">
         <InputComponent 
-          :placeholder="'Повторіть пароль'" 
+          :placeholder="$t('register.repeat-password')" 
           :title-width="0"
           :type="['password', 'text']"
           :outside-title="true"
@@ -55,10 +55,10 @@
         class="b-register-step__back-btn"
         @click="$emit('decrementStep')"
       >
-        Повернутися назад
+        {{$t('register.return')}}
       </div>
       <GreenBtn
-        :text="'Зареєструватися'"
+        :text="$t('register.register')"
         :width="179"
         :height="40"
         :icon-right="tick"

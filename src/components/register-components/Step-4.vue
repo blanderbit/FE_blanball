@@ -2,7 +2,7 @@
   <div class="b-register-step">
     <div class="b-register-step__top-part">
       <div class="b-register-step__title">
-        Давайте знайомитись!     
+        {{$t('register.get-acquainted')}}   
       </div>
       <div class="b-register-step__progress-line">
         <div class="b-register-step__sections">
@@ -17,33 +17,33 @@
         </div>
       </div>
       <div class="b-register-step__small-title">
-        Коли ви народилися?
+        {{$t('register.birth-date')}}
       </div>
       <div class="b-register-step__date-block">
         <div class="b-register-step__dropdown">
           <Dropdown 
             :outside-title="true"
-            :main-title="'День'"
+            :main-title="$t('register.day')"
             :options="mockData.days"
           />
         </div>
         <div class="b-register-step__dropdown">
           <Dropdown 
             :outside-title="true"
-            :main-title="'Місяць'"
+            :main-title="$t('register.month')"
             :options="mockData.months"
           />
         </div>
         <div class="b-register-step__dropdown">
           <Dropdown 
             :outside-title="true"
-            :main-title="'Рік'"
+            :main-title="$t('register.year')"
             :options="mockData.years"
           />
         </div>
       </div>
       <div class="b-register-step__small-title">
-        Ви ідентифікуєте себе як ... ?
+        {{$t('register.you-identified-as')}}
       </div>
       <div class="b-register-step__gender-block">
         <div class="radio-btn-wrapper">
@@ -52,11 +52,11 @@
               id="radio-1" 
               name="gender" 
               type="radio"
-              value="Чоловіки"
+              :value="$t('register.men')"
               checked
              >
             <label for="radio-1" class="radio-label">
-              Чоловіки
+              {{$t('register.men')}}
               <img src="../../assets/img/male-icon.svg" alt="">
             </label>
           </div>
@@ -65,10 +65,10 @@
               id="radio-2" 
               name="gender" 
               type="radio"
-              value="Жінки"
+              :value="$t('register.women')"
             >
             <label for="radio-2" class="radio-label">
-              Жінки
+              {{$t('register.women')}}
               <img src="../../assets/img/female-icon.svg" alt="">
             </label>
           </div>
@@ -80,10 +80,10 @@
         class="b-register-step__back-btn"
         @click="$emit('decrementStep')"
       >
-        Повернутися назад
+      {{$t('register.return')}}
       </div>
       <GreenBtn
-        :text="'Далі'"
+        :text="$t('register.next')"
         :width="156"
         :height="40"
         :icon-right="arrow_right"

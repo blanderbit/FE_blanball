@@ -1,7 +1,9 @@
 <template>
   <div class="b-register-step">
     <div class="b-register-step__top-part">
-      <div class="b-register-step__title">Локації</div>
+      <div class="b-register-step__title">
+        {{$t('register.locations')}}
+      </div>
       <div class="b-register-step__progress-line">
         <div class="b-register-step__sections">
           <div
@@ -12,39 +14,43 @@
         </div>
       </div>
       <div class="b-register-step__subtitle">
-        Допоможіть нам з’ясувати які райони будуть зручними для вас для участі в
-        оффлайн заходах. Надалі ці локації будуть пріорітетними у пропозиціях.
+        {{$t('register.which-areas')}}
       </div>
-      <div class="b-register-step__small-title">Ваш населений пункт</div>
+      <div class="b-register-step__small-title">
+        {{$t('register.your-city')}}
+      </div>
       <div class="b-register-step__dropdown">
         <Dropdown
           :outside-title="true"
-          :main-title="'Місто'"
+          :main-title="$t('register.city')"
           :options="mockData.cities"
         />
       </div>
       <div class="b-register-step__dropdown">
         <Dropdown
           :outside-title="true"
-          :main-title="'Місто'"
+          :main-title="$t('register.city')"
           :options="mockData.district"
         />
       </div>
       <div class="b-register-step__dropdown">
         <Dropdown
           :outside-title="true"
-          :main-title="'Додати район'"
+          :main-title="$t('register.add-district')"
           :options="mockData.district"
-          :outside-title-left="'Опціонально'"
+          :outside-title-left="$t('register.optionally')"
         />
       </div>
     </div>
     <div class="b-register-step__buttons">
-      <div class="b-register-step__back-btn" @click="$emit('decrementStep')">
-        Повернутися назад
+      <div 
+        class="b-register-step__back-btn" 
+        @click="$emit('decrementStep')"
+      >
+        {{$t('register.return')}}
       </div>
       <GreenBtn
-        :text="'Завершити'"
+        :text="$t('register.finish')"
         :width="156"
         :height="40"
         :icon-right="tick"

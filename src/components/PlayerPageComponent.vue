@@ -18,7 +18,7 @@
                 :style="labelColor"
                 class="b_player-page_label"
               >
-                Гравець
+                {{$t('player_page.player')}}
               </div>
             </div>
             <div class="b_player-page_line">
@@ -34,26 +34,30 @@
                   </star-rating>
                 </div>
                 <div class="b_player-page_text">
-                  17 оцінок
+                  17 {{$t('player_page.rates')}}
                 </div>
               </div>
             </div>
             <div class="b_player-page_line">
               <div class="b_player-page_invite">
-                Запросити на подію
+                {{$t('player_page.invite')}}
               </div>
               <div class="b_player-page_share">
                 <img src="../assets/img/share-icon.svg" alt="">
-                <span>Поділитися</span>
+                <span>
+                  {{$t('player_page.share')}}
+                </span>
               </div>
             </div>
           </div>
         </div>
         <div class="b_player-page_invite-share-mob">
-          <div class="b_player-page_invite">Запросити на подію</div>
+          <div class="b_player-page_invite">
+            {{$t('player_page.invite')}}
+          </div>
           <div class="b_player-page_share">
             <img src="../assets/img/share-icon.svg" alt="" />
-            <span>Поділитися</span>
+            <span>{{$t('player_page.share')}}</span>
           </div>
         </div>
         <div class="b_player-page_about-line">
@@ -66,35 +70,35 @@
           v-if="!isResultVisible"
           class="b_player-page_sport-results"
         >
-          <div class="b_player-page_title">Спортивні показники</div>
+          <div class="b_player-page_title">{{$t('player_page.sports-performance')}}</div>
           <div class="b_player-page_line">
             <div class="b_player-page_block">
-              <div class="b_player-page_block-title">Зріст</div>
+              <div class="b_player-page_block-title">{{$t('player_page.height')}}</div>
               <div class="b_player-page_text">168 см</div>
             </div>
             <div class="b_player-page_block">
-              <div class="b_player-page_block-title">Вага</div>
+              <div class="b_player-page_block-title">{{$t('player_page.weight')}}</div>
               <div class="b_player-page_text">48 кг</div>
             </div>
             <div class="b_player-page_block">
-              <div class="b_player-page_block-title">Ігрова позиція</div>
+              <div class="b_player-page_block-title">{{$t('player_page.position')}}</div>
               <div class="b_player-page_text">Лівий Напівзахисник (ЛНЗ)</div>
             </div>
             <div class="b_player-page_block">
-              <div class="b_player-page_block-title">Кваліфікація</div>
-              <div class="b_player-page_text active">Підтверджено</div>
+              <div class="b_player-page_block-title">{{$t('player_page.qualification')}}</div>
+              <div class="b_player-page_text active">{{$t('player_page.approved')}}</div>
             </div>
           </div>
         </div>
         <div class="b_player-page_contacts-block">
-          <div class="b_player-page_title">Контакти</div>
+          <div class="b_player-page_title">{{$t('player_page.contacts')}}</div>
           <div class="b_player-page_info">
             <div class="b_player-page_block">
-              <div class="b_player-page_block-title">Телефон</div>
+              <div class="b_player-page_block-title">{{$t('player_page.phone')}}</div>
               <div class="b_player-page_text">+380 (95) 390 86 50</div>
             </div>
             <div class="b_player-page_block">
-              <div class="b_player-page_block-title">E-mail</div>
+              <div class="b_player-page_block-title">{{$t('player_page.email')}}</div>
               <div class="b_player-page_text">eddie_lake@gmail.com</div>
             </div>
           </div>
@@ -102,14 +106,14 @@
       </div>
       <div class="b_player-page_rating-block">
         <div class="b_player-page_header-line">
-          <div class="b_player-page_title">Рейтинг та відгуки</div>
+          <div class="b_player-page_title">{{$t('player_page.rates-feedbacks')}}</div>
           <div class="b_player-page_raiting">
             4
             <img src="../assets/img/star.svg" alt="" />
           </div>
         </div>
         <div class="b_player-page_rate-quantity-mob">
-          17 відміток
+          17 {{$t('player_page.marks')}}
         </div>
         <div class="b_player-page_ratings-cards">
           <div
@@ -128,13 +132,15 @@
         </div>
         <div class="b_player-page_show-more-mob">
           <span>
-            Показати ще 10 відгуків
+            {{$t('player_page.show-more')}}
           </span>
         </div>
       </div>
       <div class="b_player-page_planed-events">
         <div class="b_player-page_top-part">
-          <div class="b_player-page_title">Заплановані події</div>
+          <div class="b_player-page_title">
+            {{$t('player_page.planned-events')}}
+          </div>
           <div class="b_player-page_events-cards">
             <div
               v-for="event of events"
@@ -166,7 +172,7 @@
         </div>
         <div class="b_player-page_bottom-part">
           <span>
-            Історія участі у заходах
+            {{$t('player_page.history')}}
           </span>
           <img src="../assets/img/arrow-right.svg" alt="">
         </div>

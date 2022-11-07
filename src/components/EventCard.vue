@@ -60,7 +60,7 @@
         </div>
         <div class="b-event-card__right-side">
           <GreenBtn
-            :text="'Долучитися'"
+            :text="$t('events.join')"
             :width="115"
             :height="32"
             @click-function="goToEventPage"
