@@ -3,29 +3,27 @@ import { InitialMessage } from "./initial.message";
 import {
     SetActions,
     SetMessageType,
-    SetPushNotificationTheme,
-    WebSocketMessage,
+    AuthWebSocketMessage
 } from "../../type.decorator";
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { ROUTES } from "../../../../router/index";
 import { WebSocketTypes } from "../../web.socket.types";
 
-@WebSocketMessage()
+@AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.ResponseToRequestForParticipation)
 @SetActions()
 export class ResponseToRequestForParticipationMessage extends InitialMessage {
-
     createTexts(data) {
         return [
-            data.invite.response === 'accepted'
+            data.invite.response
                 ? `Владелец ивента ${data.sender.name} подтвердил ваш запрос участие на ивенте;`
                 : `Владелец ивента ${data.sender.name} отклонил ваш запрос участие на ивенте;`
         ]
     };
 
     createTitle(data) {
-        return data.invite.response === 'accepted'
+        return data.invite.response
             ? 'Владелец подтвердил ваш запрос участие на ивенте;'
             : 'Владелец отклонил ваш запрос участие на ивенте;'
     }
@@ -38,12 +36,13 @@ export class ResponseToRequestForParticipationMessage extends InitialMessage {
             }
         ];
 
-        if (this.data.invite.response === 'accepted') {
+        if (this.data.request.response) {
             this.actions.push({
                 type: MessageActionTypes.Action,
                 text: 'Просмотреть ивент',
-                action: () => ROUTES.APPLICATION.GET_ONE.absolute(this.data.event.id),
-                actionType: MessageActionDataTypes.UrlCallback
+                action: () => ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(this.data.event.id),
+                actionType: MessageActionDataTypes.UrlCallback,
+                buttonType: 'stroked'
             });
             SetPushNotificationTheme('success')(this)
         } else {
@@ -51,7 +50,8 @@ export class ResponseToRequestForParticipationMessage extends InitialMessage {
                 type: MessageActionTypes.Action,
                 text: 'Найти другие ивенты',
                 action: ROUTES.APPLICATION.EVENTS.absolute,
-                actionType: MessageActionDataTypes.Url
+                actionType: MessageActionDataTypes.Url,
+                buttonType: 'stroked'
             });
             SetPushNotificationTheme('error')(this)
         }

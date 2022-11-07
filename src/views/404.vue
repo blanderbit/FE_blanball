@@ -41,7 +41,7 @@ export default {
     const router = useRouter()
 
     function goToMainPage() {
-        router.push(ROUTES.APPLICATION.HOME.absolute)
+        router.push(ROUTES.APPLICATION.EVENTS.absolute)
     }
 
     return {
