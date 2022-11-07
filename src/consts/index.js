@@ -7,6 +7,8 @@ import EventsData from './events'
 import EventInfo from './event-info'
 import EventPage from './event-page'
 import ManageEvent from './manage-event'
+import Dates from './dates'
+import Profile from './profile'
 
 export default {
   users_page: UsersPage,
@@ -17,5 +19,7 @@ export default {
   events: EventsData,
   event_info: EventInfo,
   event_page: EventPage,
-  manage_event: ManageEvent
+  manage_event: ManageEvent,
+  dates: Dates,
+  profile: Profile
 }
