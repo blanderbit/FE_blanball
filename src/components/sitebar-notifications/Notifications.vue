@@ -1,5 +1,5 @@
 <template>
-    <div v-for="notification in notifications" class="notification-wrapper">
+    <div v-for="(notification) in notifications" class="notification-wrapper">
         <Notification
                 :notificationInstance="notification"
                 :active="activeNotification === notification.notification_id"
@@ -68,30 +68,5 @@
 <style scoped lang="scss">
     .notification-wrapper {
         position: relative;
-    }
-
-    ::v-deep {
-        .notification-standard {
-            * {
-                color: #000;
-            }
-            border-bottom: 1px solid #EFEFF6;
-            padding: 16px 0;
-
-            .spiner-wrapper {
-                background: rgba(239, 239, 246, 0.38);
-                width: 100%;
-            }
-            .spiner-wrapper .spiner-body {
-                width: 100%;
-                box-shadow: none;
-                .spiner {
-                    .lds-ring div {
-                        border-color: #575775 transparent transparent transparent;
-                    }
-                }
-            }
-
-        }
     }
 </style>

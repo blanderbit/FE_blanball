@@ -1,4 +1,3 @@
-export { ChangeMaintenanceMessage } from './change-maintenance'
 export { EventDeletedMessage } from './event-deleted'
 export { EventTimeNotificationMessage } from './event-time-notification'
 export { EventUpdatedMessage } from './event-updated'

@@ -405,6 +405,10 @@ const router = createRouter({
         {
             path: '/:pathMatch(.*)*',
             component: () => import('../views/404.vue')
+        },
+        {
+            path: '/',
+            redirect: ROUTES.AUTHENTICATIONS.LOGIN.absolute
         }
     ]
 });

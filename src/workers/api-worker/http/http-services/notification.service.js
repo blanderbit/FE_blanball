@@ -23,6 +23,10 @@ export class NotificationService {
         )
     }
 
+    static getMaintenance() {
+      return AxiosInstance.get(EndpointsEnum.Notification.Maintenance)
+    }
+
     static getNotificationsCount() {
         return AxiosInstance.get(EndpointsEnum.Notification.Count)
     }

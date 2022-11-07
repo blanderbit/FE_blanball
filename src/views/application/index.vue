@@ -30,7 +30,7 @@ import {
   MessageActionDataTypes,
   MessageActionTypes,
 } from '../../workers/web-socket-worker/message.action.types'
-import { useRouter } from 'vue-router'
+import { useRouter, onBeforeRouteLeave } from 'vue-router'
 import { AuthWebSocketWorkerInstance } from './../../workers/web-socket-worker'
 import { TokenWorker } from '../../workers/token-worker'
 import { createUniqueId } from "../../workers/utils-worker";
@@ -50,7 +50,7 @@ let timeout;
 
 const handlerAction = async (item, notificationInstance) => {
   clearTimeout(timeout);
-  if (item.actionType === MessageActionDataTypes.Url) {
+  if (item.actionType === MessageActionDataTypes.Url) { // TODO notifications
     router.push(item.action)
   }
 
@@ -156,9 +156,12 @@ AuthWebSocketWorkerInstance.registerCallback((instanceType) => {
     audio.play()
   }
 })
-    .connect({
-        token: TokenWorker.getToken()
-    })
+  .connect({
+    token: TokenWorker.getToken()
+  });
+
+onBeforeRouteLeave(() => AuthWebSocketWorkerInstance.disconnect());
+
 </script>
 
 <style lang="scss">

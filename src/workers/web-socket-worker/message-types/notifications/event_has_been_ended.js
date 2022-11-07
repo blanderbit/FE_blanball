@@ -8,7 +8,6 @@ import {
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { WebSocketTypes } from "../../web.socket.types";
-import { ROUTES } from "../../../../router";
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.EventHasBeenEnded)

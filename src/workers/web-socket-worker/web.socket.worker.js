@@ -40,7 +40,8 @@ export class WebSocketWorker {
     }
 
     disconnect () {
-        this.instance.disconnect()
+        this.instance.close();
+        this.instance = null
     }
 
     registerCallback(callback) {

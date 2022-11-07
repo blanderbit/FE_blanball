@@ -139,13 +139,13 @@ export default {
           )
           console.log(apiRequestResult)
 
-          TokenWorker.setToken(apiRequestResult.data.tokens.access)
-          const redirectUrl = router.currentRoute.value.query.redirectUrl
+          TokenWorker.setToken(apiRequestResult.data.tokens.access);
+          const redirectUrl = router.currentRoute.value.query.redirectUrl;
           // TODO toast
           if (redirectUrl) {
-            const resolveRouter = router.resolve(redirectUrl)
+            const resolveRouter = router.resolve(redirectUrl);
             if (
-              resolveRouter?.matched?.find((match) =>
+              !redirectUrl || resolveRouter?.matched?.find((match) =>
                 match?.path?.includes('pathMatch')
               )
             ) {
