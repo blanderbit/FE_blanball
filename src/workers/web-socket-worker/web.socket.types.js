@@ -10,4 +10,12 @@ export class WebSocketTypes {
     static LeaveUserFromTheEvent = 'leave_from_the_event';
     static EventTimeNotification = 'event_time_notification';
     static ChangeMaintenance = 'change_maintenance';
+    static EventHasBeenEnded = 'event_has_been_ended';
+    static LastUserOnTheEvent = 'last_user_on_the_event';
+    static LeftFeedback = 'left_feedback';
+
+    static NotificationRead = 'notification_read';
+    static UpdateMessageAcceptOrDeclineInviteToEvent = 'update_message_accept_or_decline_invite_to_event';
+    static UpdateMessageAcceptOrDeclineParticipationToEvent = 'update_message_accept_or_decline_invite_to_participation';
+    static NotificationDelete = 'notification_delete';
 }

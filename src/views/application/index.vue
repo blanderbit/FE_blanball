@@ -11,6 +11,10 @@
         <router-view />
       </div>
     </div>
+    <ModalFeedback
+        v-if="modals.review.active"
+        @close-modal="toggleModal"
+    />
   </div>
 </template>
 
@@ -19,36 +23,43 @@ import { ref } from 'vue'
 import Sidebar from './../../components/Sidebar.vue'
 import MainHeader from './../../components/MainHeader.vue'
 import MobileMenu from '../../components/MobileMenu.vue'
-import ToastNotification from '../../components/ToastNotification.vue'
+import Notification from '../../components/Notification.vue'
 import { useToast } from 'vue-toastification'
+import message_audio from '../../assets/message_audio.mp3'
 import {
   MessageActionDataTypes,
   MessageActionTypes,
 } from '../../workers/web-socket-worker/message.action.types'
-import { useRouter } from 'vue-router'
-import { WebSocketWorkerInstance } from './../../workers/web-socket-worker'
+import { useRouter, onBeforeRouteLeave } from 'vue-router'
+import { AuthWebSocketWorkerInstance } from './../../workers/web-socket-worker'
 import { TokenWorker } from '../../workers/token-worker'
+import { createUniqueId } from "../../workers/utils-worker";
 
-const isMobMenuActive = ref(false)
+const isMobMenuActive = ref(false);
+const modals = ref({
+    review: {
+        data: {},
+        active: false
+    }
+});
 
-const router = useRouter()
-const toast = useToast()
-let timeout
-
-const createUniqueId = () => 'id' + Math.random().toString(16).slice(2)
+const router = useRouter();
+const toast = useToast();
+const audio = new Audio(message_audio);
+let timeout;
 
 const handlerAction = async (item, notificationInstance) => {
-  clearTimeout(timeout)
-  if (item.actionType === MessageActionDataTypes.Url) {
+  clearTimeout(timeout);
+  if (item.actionType === MessageActionDataTypes.Url) { // TODO notifications
     router.push(item.action)
   }
 
   if (item.actionType === MessageActionDataTypes.UrlCallback) {
-    router.push(item.action(notificationInstance))
+    router.push(item.action(router))
   }
 
   if (item.actionType === MessageActionDataTypes.Callback) {
-    await item.action(router)
+    await item.action(notificationInstance, modals)
   }
 
   if (
@@ -60,44 +71,44 @@ const handlerAction = async (item, notificationInstance) => {
   ) {
     notificationInstance.readAfterActiveActionCallBack(notificationInstance)
   }
-}
+};
 
 const toggleToastProgress = (notificationInstance, toastId, active) => {
-  const toastDataOptions = getToastOptions(notificationInstance, toastId)
-  toastDataOptions.componentOptions.props.active = active
-  // toastDataOptions.options.draggable = !active;
+  const toastDataOptions = getToastOptions(notificationInstance, toastId);
+  toastDataOptions.componentOptions.props.active = active;
 
   toast.update(toastId, {
     content: toastDataOptions.componentOptions,
     options: toastDataOptions.options,
   })
-}
+};
 
 const getToastOptions = (notificationInstance, toastId) => {
   const close = notificationInstance.actions.find(
     (item) => item.type === MessageActionTypes.Close
-  )
+  );
   notificationInstance.actions = notificationInstance.actions.filter(
     (item) => item.type !== MessageActionTypes.Close
-  )
+  );
   return {
     componentOptions: {
-      component: ToastNotification,
+      component: Notification,
       props: {
         notificationInstance,
+        notificationType: 'push'
       },
       listeners: {
         handlerAction: async (item) => {
-          toggleToastProgress(notificationInstance, toastId, true)
-          await handlerAction(item, notificationInstance)
-          toggleToastProgress(notificationInstance, toastId, false)
+          toggleToastProgress(notificationInstance, toastId, true);
+          await handlerAction(item, notificationInstance);
+          toggleToastProgress(notificationInstance, toastId, false);
           toast.dismiss(toastId)
         },
         handlerClose: async () => {
           if (close) {
-            toggleToastProgress(notificationInstance, toastId, true)
-            await handlerAction(close, notificationInstance)
-            toggleToastProgress(notificationInstance, toastId, false)
+            toggleToastProgress(notificationInstance, toastId, true);
+            await handlerAction(close, notificationInstance);
+            toggleToastProgress(notificationInstance, toastId, false);
           }
 
           toast.dismiss(toastId)
@@ -119,31 +130,38 @@ const getToastOptions = (notificationInstance, toastId) => {
       toastClassName: [notificationInstance.getPushNotificationTheme()],
     },
   }
-}
+};
 
 const createToastFromInstanceType = (notificationInstance) => {
   const toastDataOptions = getToastOptions(
     notificationInstance,
     createUniqueId()
-  )
+  );
 
   const toastId = toast(
     toastDataOptions.componentOptions,
     toastDataOptions.options
-  )
+  );
 
   if (notificationInstance.timeForClose) {
     timeout = setTimeout(() => {
       toast.dismiss(toastId)
     }, notificationInstance.timeForClose)
   }
-}
+};
 
-WebSocketWorkerInstance.registerCallback((instanceType) => {
+AuthWebSocketWorkerInstance.registerCallback((instanceType) => {
   if (instanceType.pushNotification) {
-    createToastFromInstanceType(instanceType)
+    createToastFromInstanceType(instanceType);
+    audio.play()
   }
-}).connect(TokenWorker.getToken())
+})
+  .connect({
+    token: TokenWorker.getToken()
+  });
+
+onBeforeRouteLeave(() => AuthWebSocketWorkerInstance.disconnect());
+
 </script>
 
 <style lang="scss">

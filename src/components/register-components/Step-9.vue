@@ -2,14 +2,14 @@
   <div class="b-register-step">
     <div class="b-register-step__top-part">
       <div class="b-register-step__title">
-        Впливайте на якість подій за допомогою оцінок
+        {{$t('register.affect-on-rates')}}
       </div>
       <div class="b-register-step__subtitle">
-        Після кожної події, у якій ви приймали участь як гравець або глядач, ви матимете змогу залишити відгук про ваші враження. Водночас, оцінюючи гравців, ви формуєте рейтинг кожного з них.
+        {{$t('register.you-can-leave-feedback')}}
       </div>
       <div class="b-register-step__info-block">
         <img src="../../assets/img/info-icon.svg" alt="">
-        Гравці з хорошим рейтингом, репутацією легше знаходять команди, тож закликаємо вас вести чесну гру!
+        {{$t('register.honest-game')}}
       </div>
     </div>
     <div class="b-register-step__buttons">
@@ -17,10 +17,10 @@
         class="b-register-step__back-btn" 
         @click="finishOnBoarding"
       >
-        Пропустити
+      {{$t('register.skip')}}
       </div>
       <GreenBtn
-        :text="'Продовжити'"
+        :text="$t('register.continue')"
         :width="156"
         :height="40"
         :icon-right="arrow"
@@ -53,7 +53,7 @@ export default {
     const router = useRouter()
 
     function finishOnBoarding() {
-      router.push(ROUTES.APPLICATION.HOME.absolute)
+      router.push(ROUTES.APPLICATION.EVENTS.absolute)
     }
 
     return {

@@ -23,10 +23,10 @@
         class="third-step"
       >
         <div class="title-block">
-          <span>Додаткова інформація</span>
+          <span>{{$t('events.additional-info')}}</span>
         </div>
         <div class="subtitle">
-          Додайте свій коментар до події та, за бажанням, визначте бонусні пропозиції для гравців
+          {{$t('events.add-comment')}}
         </div>
         <div class="text-area-wrapper">
           <textarea
@@ -38,7 +38,7 @@
         </div>
         <div class="contact-switcher">
           <div class="title-prize">
-            Чи буде розіграно приз?
+            {{$t('events.prize')}}
             <span>
               VIP
             </span>
@@ -47,7 +47,7 @@
         </div>
         <div class="input">
           <InputComponent
-            :placeholder="'Яким буде приз?'"
+            :placeholder="$t('events.what-prize')"
             :title-width="0"
             :v-model="eventData.date"
             :has-icon="true"
@@ -57,7 +57,7 @@
           />
         </div>
         <div class="title-outfit">
-          Чи потрібно мати свою форму?
+          {{$t('events.need-clothes')}}
         </div>
         <div class="radio-btn-wrapper">
           <div class="radio">
@@ -65,11 +65,11 @@
               id="radio-outfit"
               name="outfit" 
               type="radio"
-              value="Так"
+              :value="$t('events.yes')"
               checked
              >
             <label for="radio-outfit" class="radio-label">
-              Так
+              {{ $t('events.yes') }}
             </label>
           </div>
           <div class="radio">
@@ -77,15 +77,15 @@
               id="radio-outfit2" 
               name="outfit" 
               type="radio"
-              value="Ні, є маніжки"
+              :value="$t('events.clothes-available')"
             >
             <label for="radio-outfit2" class="radio-label">
-              Ні, є маніжки
+              {{$t('events.clothes-available')}}
             </label>
           </div>
         </div>
         <div class="title-outfit">
-          Вкажіть кольори форм
+          {{$t('events.enter-colors')}}
         </div>
         <div class="outfit-colors">
           <div class="input">
@@ -93,7 +93,7 @@
               :placeholder="'Input'"
               :title-width="0"
               :outside-title="true"
-              :title="'Команда №1'"
+              :title="$t('events.team1')"
             />
           </div>
           <div class="input">
@@ -101,7 +101,7 @@
               :placeholder="'Input'"
               :title-width="0"
               :outside-title="true"
-              :title="'Команда №2'"
+              :title="$t('events.team2')"
             />
           </div>
         </div>
@@ -164,7 +164,9 @@
           <div class="img-icon">
             <img src="../../../assets/img/img-icon.svg" alt="">
           </div>
-          <span>Попередній перегляд афіші</span>
+          <span>
+            {{ $t('buttons.poster-preview') }}
+          </span>
         </div>
         <div class="arrow-down">
           <img src="../../../assets/img/arrow-down.svg" alt="">
@@ -180,7 +182,7 @@
         <div class="img-icon">
           <img src="../../../assets/img/img-icon.svg" alt="">
         </div>
-        <span>Попередній перегляд афіші</span>
+        <span>{{ $t('buttons.poster-preview') }}</span>
       </div>
       <div class="arrow-down">
         <img src="../../../assets/img/arrow-down.svg" alt="">
@@ -192,20 +194,20 @@
       class="preview-mob-block-second"
     >
       <div class="btn btn-previous">
-        <span>Попередній перегляд</span>
+        <span>{{ $t('buttons.preview') }}</span>
       </div>
       <div class="btn btn-users">
-        <span>Запрошені учасники</span>
+        <span>{{ $t('buttons.invited-members') }}</span>
       </div>
     </div>
 
     <div class="wrapper-preview-block">
       <div class="preview-block">
         <div class="title">
-          Попередній перегляд афіші
+          {{ $t('buttons.poster-preview') }}
         </div>
         <div class="subtitle">
-          Таким чином виглядатиме афіша вашої події для інших користувачів додатку BlanBall
+          {{ $t('buttons.poster-main-preview') }}
         </div>
         <div class="form-block">
           <div class="top-line">
@@ -272,7 +274,7 @@
             </div>
             <div class="right-side">
               <GreenBtn 
-                :text="eventData.isOpened" 
+                :text="eventData.isOpened"
                 :width="115"
                 :height="32"
               />
@@ -285,13 +287,13 @@
         class="chosen-ppl"
       >
         <div class="title">
-          Люди, яких ви запросили
+          {{ $t('events.invited-people') }}
         </div>
         <div 
           @click="deleteAll"
           class="delete-all"
         >
-          Видалити всіх
+          {{ $t('events.delete-all') }}
         </div>
         <div class="users-list">
           <div 
@@ -320,7 +322,7 @@
 
     <div class="manage-template-block">
       <div class="title">
-        Управління шаблонами
+        {{ $t('events.template-managing') }}
       </div>
       <div class="btns-block">
         <div class="white-btn-wrapper">

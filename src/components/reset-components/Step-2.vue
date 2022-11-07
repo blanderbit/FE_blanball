@@ -1,7 +1,9 @@
 <template>
   <div class="b-register-step">
     <div class="b-register-step__top-part">
-      <div class="b-register-step__title">Відновлення доступу</div>
+      <div class="b-register-step__title">
+        {{$t('reset.renew-access')}}
+      </div>
       <div class="b-register-step__progress-line">
         <div class="b-register-step__sections">
           <div
@@ -12,11 +14,11 @@
         </div>
       </div>
       <div class="b-register-step__subtitle">
-        Придумайте новий надійний пароль. Зміни вступлять у силу одразу після збереження
+        {{$t('reset.new-password')}}
       </div>
       <div class="b-register-step__input">
         <InputComponent 
-          :title="'Новий пароль'"
+          :title="$t('reset.letter-code')"
           :title-width="0"
           :type="['password', 'text']"
           :outside-title="true"
@@ -26,7 +28,7 @@
       </div>
       <div class="b-register-step__input">
         <InputComponent 
-          :title="'Повторіть пароль'"
+          :title="$t('reset.letter-code')"
           :title-width="0"
           :type="['password', 'text']"
           :outside-title="true"
@@ -40,10 +42,10 @@
         class="b-register-step__back-btn"
         @click="$emit('decrementStep')"
       >
-        Скасувати
+      {{$t('reset.cancel')}}
       </div>
       <GreenBtn
-        :text="'Зберегти зміни'"
+        :text="$t('reset.letter-code')"
         :width="179"
         :height="40"
       />

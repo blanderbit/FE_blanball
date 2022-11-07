@@ -3,25 +3,26 @@ import { InitialMessage } from "./initial.message";
 import {
     SetActions,
     SetMessageType,
-    WebSocketMessage
+    AuthWebSocketMessage
 } from "../../type.decorator";
 
 import { ROUTES } from "../../../../router";
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { WebSocketTypes } from "../../web.socket.types";
 
-@WebSocketMessage()
+@AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.UserRemoveFromEvent)
 @SetActions([
     {
         type: MessageActionTypes.ActionClose,
-        text: 'Понятно',
+        text: 'Понятно'
     },
     {
         type: MessageActionTypes.Action,
         text: 'Найти ивенты',
         action: ROUTES.APPLICATION.EVENTS.absolute,
-        actionType: MessageActionDataTypes.Url
+        actionType: MessageActionDataTypes.Url,
+        buttonType: 'stroked'
     }
 ])
 export class RemoveUserFromTheEventMessage extends InitialMessage {

@@ -2,7 +2,9 @@
   <Transition>
     <div class="b-modal-bottom-card" :style="bottomCardStyle">
       <div class="b-modal-bottom-card__title-line">
-        <div class="b-modal-bottom-card__title">Оцінити гру учасників матчу</div>
+        <div class="b-modal-bottom-card__title">
+          {{$t('modal_feedback.evaluate_game')}}
+        </div>
         <div
           class="b-modal-bottom-card__arrow"
           :style="arrowStyle"
@@ -12,7 +14,7 @@
         </div>
         <div class="b-modal-bottom-card__send-complain" v-if="isOpened">
           <img src="../../assets/img/warning-red.svg" alt="" />
-          Подати скаргу
+          {{$t('modal_feedback.complain')}}
         </div>
       </div>
       <div v-if="isOpened" class="b-modal-bottom-card__players-viewport">
