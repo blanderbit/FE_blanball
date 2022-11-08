@@ -75,7 +75,7 @@ import CONSTANTS from '../../../consts/index'
 
 import {ROUTES} from '../../../router'
 
-import { EventService } from '../../../workers/api-worker/http/http-services/authorization.service'
+import { API } from "../../../workers/api-worker/api.worker";
 
 const COLORS = {
   green: '#148581',
@@ -120,12 +120,11 @@ export default {
     function getTime(time) {
       return dayjs(time).locale(dayjsUkrLocale).format('HH:mm')
     }
-
     function getCards() {
       if (currentPage.value < totalPages.value) {
         currentPage.value = currentPage.value + 1
         isLoaderActive.value = true
-        EventService.getAllEvents(currentPage.value).then((res) => {
+        API.EventService.getAllEvents(currentPage.value).then((res) => {
           eventCards.value.push(
             ...route.meta.eventData.results.map(handlingIncomeData)
           )

@@ -1,4 +1,4 @@
-import {WebSocketWorker} from "./web.socket.worker";
+import { AuthWebSocketWorker, GeneralWebSocketWorker } from "./web.socket.worker";
 
 export function SetMessageType(e) {
     return (a) => {
@@ -33,6 +33,13 @@ export function Notification() {
     }
 }
 
+export function UpdateWebSocketMessage() {
+    return (a) => {
+        a.updateWebSocketMessage = true;
+        a.prototype.updateWebSocketMessage = true;
+    }
+}
+
 export function ReadAfterActiveAction(callBack) {
     return (a) => {
         a.readAfterActiveAction = true;
@@ -52,7 +59,10 @@ export function TimeForCloseIfInactive(e) {
 export function SetActions(e = []) {
     return (a) => {
         a.actions = e;
-        a.prototype.actions = e;
+        if(a.prototype) {
+            a.prototype.actions = e;
+        }
+
     }
 }
 
@@ -71,11 +81,20 @@ export function MessageDataConfiguration (data) {
 
 }
 
-export function WebSocketMessage() {
+export function AuthWebSocketMessage() {
     return (a) => {
-        if(!WebSocketWorker.prototype.messages) {
-            WebSocketWorker.prototype.messages = [];
+        if(!AuthWebSocketWorker.messages) {
+            AuthWebSocketWorker.messages = [];
         }
-        WebSocketWorker.prototype.messages.push(a);
+        AuthWebSocketWorker.messages.push(a);
+    }
+}
+
+export function GeneralWebSocketMessage() {
+    return (a) => {
+        if(!GeneralWebSocketWorker.messages) {
+            GeneralWebSocketWorker.messages = [];
+        }
+        GeneralWebSocketWorker.messages.push(a);
     }
 }

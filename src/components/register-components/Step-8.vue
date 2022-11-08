@@ -2,10 +2,10 @@
   <div class="b-register-step">
     <div class="b-register-step__top-part">
       <div class="b-register-step__title">
-        Обирайте для себе найцікавіші активності
+        {{$t('register.choose-activities')}}
       </div>
       <div class="b-register-step__subtitle">
-        Турніри, дружні матчі або ж колективні тренування — усе це тепер можна організувати через online-застосунок.
+        {{$t('register.app-description2')}}
       </div>
     </div>
     <div class="b-register-step__buttons">
@@ -13,10 +13,10 @@
         class="b-register-step__back-btn" 
         @click="finishOnBoarding"
       >
-        Пропустити
+        {{$t('register.skip')}}
       </div>
       <GreenBtn
-        :text="'Продовжити'"
+        :text="$t('register.continue')"
         :width="156"
         :height="40"
         :icon-right="arrow"
@@ -49,7 +49,7 @@ export default {
     const router = useRouter()
 
     function finishOnBoarding() {
-      router.push(ROUTES.APPLICATION.HOME.absolute)
+      router.push(ROUTES.APPLICATION.EVENTS.absolute)
     }
 
     return {

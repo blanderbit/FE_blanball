@@ -1,24 +1,25 @@
-import { InitialMessage } from "./initial.message";
+import { InitialMessage } from "../notifications/initial.message";
 
-import { SetActions, SetMessageType, WebSocketMessage } from "../../type.decorator";
+import { GeneralWebSocketMessage, SetActions, SetMessageType } from "../../type.decorator";
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { ROUTES } from "../../../../router/index";
 import { WebSocketTypes } from "../../web.socket.types";
 
 @SetMessageType(WebSocketTypes.ChangeMaintenance)
-@WebSocketMessage()
+@GeneralWebSocketMessage()
 @SetActions([
     {
         type: MessageActionTypes.Action,
         text: 'Понятно',
         action: ROUTES.WORKS.absolute,
-        actionType: MessageActionDataTypes.Url
+        actionType: MessageActionDataTypes.Url,
     },
     {
         type: MessageActionTypes.Close,
         action: ROUTES.WORKS.absolute,
-        actionType: MessageActionDataTypes.Url
+        actionType: MessageActionDataTypes.Url,
+        buttonType: 'stroked'
     }
 ])
 export class ChangeMaintenanceMessage extends InitialMessage {
@@ -30,7 +31,7 @@ export class ChangeMaintenanceMessage extends InitialMessage {
         ]
     };
 
-    createTitle() {
+    createTitle(data) {
         return data.maintenance.type
             ? 'Начались технические работы'
             : 'Закончились технические работы'

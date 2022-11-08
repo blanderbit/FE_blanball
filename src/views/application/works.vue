@@ -2,24 +2,36 @@
   <div class="b-tech-works">
     <div class="b-tech-works__top-message-line">
       <div class="b-tech-works__text">
-        Наразі, сайт працює у тестовому режимі, тому може містити помилки. Будь
-        ласка, повідомте нас якщо помітите якусь із них :)
+        {{ $t('works.site-is-broken') }}
       </div>
-      <div class="b-tech-works__button">Я знайшов помилку</div>
+      <div class="b-tech-works__button">
+        {{ $t('works.found-mistake') }}
+      </div>
     </div>
     <div class="b-tech-works__main-part">
       <div class="b-tech-works__left-side">
         <div class="b-tech-works__title">
-          <div><span>На сервері</span> BlanBall</div>
-          <div>тривають<span> технічні роботи</span></div>
+          <div>
+            <span>
+              {{ $t('works.at-server') }}
+            </span> 
+            BlanBall
+          </div>
+          <div>
+            {{ $t('works.is-going') }}
+            <span> 
+              {{ $t('works.technical-works') }}
+            </span>
+          </div>
         </div>
         <div class="b-tech-works__subtitle">
-          Наша команда працює над тим, щоб ви могли користувалися додатком із
-          задоволенням, вибачте за тимчасові незручності
+          {{ $t('works.we-are-fixing') }}
         </div>
-        <div class="b-tech-works__not-have-account">Ще не маєте акаунту?</div>
+        <div class="b-tech-works__not-have-account">
+          {{ $t('works.no-account') }}
+        </div>
         <div class="b-tech-works__register-link">
-          Зареєструйтеся та будьте в курсі всіх оновлень
+          {{ $t('works.register') }}
         </div>
       </div>
       <div class="b-tech-works__right-side">

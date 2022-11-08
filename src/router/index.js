@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { routerResolverByLoginPage, routerAuthResolver } from "../workers/resolver-worker/reolver.worker"
-import {  EventService } from '../workers/api-worker/http/http-services/authorization.service'
+import { API } from "../workers/api-worker/api.worker";
 
 const CONSTANTS = {
     first_page_events: 1
@@ -32,11 +32,6 @@ export const ROUTES = {
         index: {
             path: '/application',
             name: 'application'
-        },
-        HOME: {
-            relative: 'home',
-            absolute: '/application/home',
-            name: 'application-home'
         },
         VERSION: {
             relative: 'versions',
@@ -172,19 +167,6 @@ const router = createRouter({
             component: () => import('../views/application/index.vue'),
             children: [
                 {
-                    path: ROUTES.APPLICATION.HOME.relative,
-                    name: ROUTES.APPLICATION.HOME.name,
-                    beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-                        // usersData: () => $api.UsersRequest.getAll(to.query),
-                    })),
-                    component: () => import('../views/application/home.vue'),
-                    meta: {
-                        breadcrumbs: [
-                            { name:'Main' }
-                        ]
-                    }
-                },
-                {
                     path: ROUTES.APPLICATION.VERSION.relative,
                     name: ROUTES.APPLICATION.VERSION.name,
                     beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
@@ -204,7 +186,7 @@ const router = createRouter({
                     beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
                         // usersData: () => $api.UsersRequest.getAll(to.query),
                     })),
-                    component: () => import('../views/application/company.vue'),
+                    component: () => import('../views/application/versions.vue'),
                     meta: {
                         breadcrumbs: [
                             { name:'Main', path: '/' },
@@ -216,7 +198,7 @@ const router = createRouter({
                     path: ROUTES.APPLICATION.PROFILE.MY_PROFILE.relative,
                     name: ROUTES.APPLICATION.PROFILE.MY_PROFILE.name,
                     beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-                        // usersData: () => $api.UsersRequest.getAll(to.query),
+                        usersData: () => API.UserService.getMyProfile(),
                     })),
                     component: () => import('../views/application/profile/my-profile.vue'),
                     meta: {
@@ -258,7 +240,7 @@ const router = createRouter({
                     path: ROUTES.APPLICATION.MY_EVENTS.relative,
                     name: ROUTES.APPLICATION.MY_EVENTS.name,
                     beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-                        eventData: () => EventService.getAllMyEvents(CONSTANTS.first_page_events)
+                        eventData: () => API.EventService.getAllMyEvents(CONSTANTS.first_page_events)
                     })),
                     component: () => import('../views/application/events/my-events.vue'),
                     meta: {
@@ -273,7 +255,7 @@ const router = createRouter({
                     path: ROUTES.APPLICATION.EVENTS.relative,
                     name: ROUTES.APPLICATION.EVENTS.name,
                     beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-                        eventData: () => EventService.getAllEvents(CONSTANTS.first_page_events)
+                        eventData: () => API.EventService.getAllEvents(CONSTANTS.first_page_events)
                     })),
                     component: () => import('../views/application/events/index.vue'),
                     meta: {
@@ -423,6 +405,10 @@ const router = createRouter({
         {
             path: '/:pathMatch(.*)*',
             component: () => import('../views/404.vue')
+        },
+        {
+            path: '/',
+            redirect: ROUTES.AUTHENTICATIONS.LOGIN.absolute
         }
     ]
 });

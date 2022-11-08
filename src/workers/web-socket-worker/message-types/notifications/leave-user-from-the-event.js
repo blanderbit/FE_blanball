@@ -3,26 +3,27 @@ import { InitialMessage } from "./initial.message";
 import {
     SetActions,
     SetMessageType,
-    WebSocketMessage
+    AuthWebSocketMessage
 } from "../../type.decorator";
 
 import { MessageActionDataTypes, MessageActionTypes } from "../../message.action.types";
 import { WebSocketTypes } from "../../web.socket.types";
 import { ROUTES } from "../../../../router";
 
-@WebSocketMessage()
+@AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.LeaveUserFromTheEvent)
 @SetActions([
 
     {
         type: MessageActionTypes.ActionClose,
-        text: 'Понятно',
+        text: 'Понятно'
     },
     {
         type: MessageActionTypes.Action,
         text: 'Просмотреть ивент',
         action: (instance) => ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(instance.data.event.id),
-        actionType: MessageActionDataTypes.UrlCallback
+        actionType: MessageActionDataTypes.UrlCallback,
+        buttonType: 'stroked'
     },
 ])
 export class LeaveUserFromTheEventMessage extends InitialMessage {

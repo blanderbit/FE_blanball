@@ -1,7 +1,9 @@
 <template>
   <div class="b-register-step">
     <div class="b-register-step__top-part">
-      <div class="b-register-step__title">Ваші спортивні навички</div>
+      <div class="b-register-step__title">
+        {{$t('register.your-skills')}}
+      </div>
       <div class="b-register-step__progress-line">
         <div class="b-register-step__sections">
           <div
@@ -15,11 +17,15 @@
         </div>
       </div>
       <div class="b-register-step__subtitle">
-        Чудово! <br />
-        А як щодо вашого досвіду у футболі?
+        <span>
+          {{$t('register.great')}}
+        </span>
+        <span>
+          {{$t('register.your-football-experience')}}
+        </span>
       </div>
       <div class="b-register-step__small-title">
-        Ви раніше займалися футболом?
+        {{$t('register.you-played-football')}}
       </div>
       <div class="b-register-step__experience-block">
         <div class="radio-btn-wrapper">
@@ -28,41 +34,49 @@
               id="radio-1"
               name="gender"
               type="radio"
-              value="Самостійно"
+              :value="$t('register.along')"
               v-model="profesionaLevel"
               checked
             />
-            <label for="radio-1" class="radio-label"> Самостійно </label>
+            <label for="radio-1" class="radio-label">
+              {{$t('register.along')}} 
+            </label>
           </div>
           <div class="radio">
             <input 
               id="radio-2" 
               name="gender" 
               type="radio" 
-              value="Професійно"
+              :value="$t('register.professionally')"
               v-model="profesionaLevel"
             />
-            <label for="radio-2" class="radio-label"> Професійно </label>
+            <label for="radio-2" class="radio-label"> 
+              {{$t('register.professionally')}} 
+            </label>
           </div>
           <div class="radio">
             <input
               id="radio-3"
               name="gender"
               type="radio"
-              value="Любительськи"
+              :value="$t('register.amateurishly')"
               v-model="profesionaLevel"
             />
-            <label for="radio-3" class="radio-label"> Любительськи </label>
+            <label for="radio-3" class="radio-label">
+              {{$t('register.amateurishly')}} 
+            </label>
           </div>
           <div class="radio">
             <input
               id="radio-4"
               name="gender"
               type="radio"
-              value="Не займався"
+              :value="$t('register.not-engaged')"
               v-model="profesionaLevel"
             />
-            <label for="radio-4" class="radio-label"> Не займався </label>
+            <label for="radio-4" class="radio-label">
+              {{$t('register.not-engaged')}} 
+            </label>
           </div>
         </div>
       </div>
@@ -71,7 +85,7 @@
         v-if="isDocumentNeeded"
       >
         <div class="b-register-step__small-title">
-          Підтвердіть вашу кваліфікацію документом
+          {{$t('register.add-document')}}
         </div>
         <div class="b-register-step__input">
           <InputComponent
@@ -79,18 +93,21 @@
             :icon="[clip]"
             :has-icon="true"
             :outside-title="true"
-            :title="'Документ'"
+            :title="$t('register.document')"
             :title-width="0"
           />
         </div>
       </div>
     </div>
     <div class="b-register-step__buttons">
-      <div class="b-register-step__back-btn" @click="$emit('decrementStep')">
-        Повернутися назад
+      <div 
+        class="b-register-step__back-btn"
+        @click="$emit('decrementStep')"
+      >
+        {{$t('register.return')}}
       </div>
       <GreenBtn
-        :text="'Далі'"
+        :text="$t('register.next')"
         :width="156"
         :height="40"
         :icon-right="arrow_right"

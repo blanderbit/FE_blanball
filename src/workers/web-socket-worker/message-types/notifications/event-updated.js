@@ -3,25 +3,26 @@ import { InitialMessage } from "./initial.message";
 import {
     SetActions,
     SetMessageType,
-    WebSocketMessage
+    AuthWebSocketMessage
 } from "../../type.decorator";
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { WebSocketTypes } from "../../web.socket.types";
 import { ROUTES } from "../../../../router";
 
-@WebSocketMessage()
+@AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.EventUpdated)
 @SetActions([
     {
         type: MessageActionTypes.ActionClose,
-        text: 'Понятно',
+        text: 'Понятно'
     },
     {
         type: MessageActionTypes.Action,
         text: 'Просмотреть ивент',
         action: (instance) => ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(instance.data.event.id),
-        actionType: MessageActionDataTypes.UrlCallback
+        actionType: MessageActionDataTypes.UrlCallback,
+        buttonType: 'stroked'
     },
 ])
 export class EventUpdatedMessage extends InitialMessage {
@@ -35,37 +36,3 @@ export class EventUpdatedMessage extends InitialMessage {
         return 'Ивент был обновлен!';
     }
 }
-
-// data
-// :
-// {recipient: {id: 1, name: "string", last_name: "string"},…}
-// event
-// :
-// {id: 1, start_time: null, time_to_start: null}
-// id
-// :
-// 1
-// start_time
-// :
-// null
-// time_to_start
-// :
-// null
-// recipient
-// :
-// {id: 1, name: "string", last_name: "string"}
-// id
-// :
-// 1
-// last_name
-// :
-// "string"
-// name
-// :
-// "string"
-// date_time
-// :
-// "2022-10-23 15:22:41.274298+00:00"
-// message_type
-// :
-// "event_updated"

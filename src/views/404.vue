@@ -12,12 +12,14 @@
         alt="404 mobile image"
       />
       <div class="b-error-page__text-block">
-        <div class="b-error-page__text">Шкода, але такої сторінки не існує</div>
+        <div class="b-error-page__text">
+          {{ $t('page_404.main-text') }}
+        </div>
         <GreenBtn 
-            :text="'Повернутися на головну'" 
-            :width="202" 
-            :height="40"
-            @click-function="goToMainPage"
+          :text="$t('page_404.return')" 
+          :width="202" 
+          :height="40"
+          @click-function="goToMainPage"
         />
       </div>
     </div>
@@ -39,7 +41,7 @@ export default {
     const router = useRouter()
 
     function goToMainPage() {
-        router.push(ROUTES.APPLICATION.HOME.absolute)
+        router.push(ROUTES.APPLICATION.EVENTS.absolute)
     }
 
     return {

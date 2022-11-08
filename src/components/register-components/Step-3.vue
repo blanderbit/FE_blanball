@@ -2,10 +2,10 @@
   <div class="b-register-step">
     <div class="b-register-step__top-part">
       <div class="b-register-step__title">
-        Вітаємо вас на спортивній платформі Blanball      
+        {{$t('register.welcome-title')}}     
       </div>
       <div class="b-register-step__subtitle">
-        Розкажіть нам трохи про себе, щоби ми могли підлаштувати ваш профіль для зручної взаємодіїз усіма користувачами додатку
+        {{$t('register.tell-about-yourself')}} 
       </div>
     </div>
     <div class="b-register-step__buttons">
@@ -13,10 +13,10 @@
         class="b-register-step__back-btn"
         @click="$emit('decrementStep')"
       >
-        Нагадати пізніше
+        {{$t('register.remind-later')}} 
       </div>
       <GreenBtn
-        :text="'Налаштувати'"
+        :text="$t('register.adjust')"
         :width="156"
         :height="40"
         :icon-right="arrow_right"

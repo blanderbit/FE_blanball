@@ -1,7 +1,9 @@
 <template>
   <div class="b-reset-step">
     <div class="b-reset-step__top-part">
-      <div class="b-reset-step__title">Відновлення доступу</div>
+      <div class="b-reset-step__title">
+        {{$t('reset.renew-access')}}
+      </div>
       <div class="b-reset-step__progress-line">
         <div class="b-reset-step__sections">
           <div
@@ -17,19 +19,18 @@
         </div>
       </div>
       <div class="b-reset-step__subtitle">
-        Лист із кодом-підтвердження надійде на вказану адресу, введіть його у
-        відведене поле
+        {{$t('reset.letter-code')}}
       </div>
       <div class="b-reset-step__input">
         <InputComponent
           :outside-title="true"
-          :title="`Телефон або пошта`"
+          :title="$t('reset.phone-email')"
           :placeholder="'example@email.com'"
           :title-width="0"
         />
       </div>
       <div class="b-reset-step__code-title">
-        Повідомлення прийде протягом 30 сек
+        {{$t('reset.message-30sec')}}
       </div>
       <div class="b-reset-step__sms-code-block">
         <input
@@ -48,10 +49,10 @@
         class="b-reset-step__cancel-button"
         @click="$emit('secondLineOff')"
       >
-        Скасувати
+      {{$t('reset.cancel')}}
       </div>
       <GreenBtn
-        :text="'Скинути пароль'"
+        :text="$t('reset.drop-password')"
         :width="155"
         :height="40"
         @click-function="handleNextClick"
