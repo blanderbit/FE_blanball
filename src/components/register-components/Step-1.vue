@@ -11,7 +11,7 @@
       class="b-register-step__ball-small"
     />
     <div class="b-register-step__top-part">
-      <div class="b-register-step__title">Створення облікового запису</div>
+      <div class="b-register-step__title">{{$t('register.title')}}</div>
       <div class="b-register-step__progress-line">
         <div class="b-register-step__sections">
           <div
@@ -29,7 +29,7 @@
       <div class="b-register-step__input">
         <InputComponent
           :outside-title="true"
-          :title="`Ваше повне ім'я`"
+          :title="$t('register.full-name')"
           :placeholder="'Олександра Білозерська'"
           :title-width="0"
         />
@@ -37,7 +37,7 @@
       <div class="b-register-step__input">
         <InputComponent
           :outside-title="true"
-          :title="`Ваш номер телефону`"
+          :title="$t('register.phone-number')"
           :placeholder="'+38 0ХХ ХХХ ХХ ХХ'"
           :title-width="0"
         />
@@ -45,7 +45,7 @@
     </div>
     <div class="b-register-step__buttons">
       <GreenBtn
-        :text="'Далі'"
+        :text="$t('register.next')"
         :width="155"
         :height="40"
         :icon-right="arrow_right"

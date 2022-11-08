@@ -1,4 +1,4 @@
-import { InitialMessage } from "./initial.message";
+import { InitialMessage } from "../notifications/initial.message";
 
 import { GeneralWebSocketMessage, SetActions, SetMessageType } from "../../type.decorator";
 
@@ -31,7 +31,7 @@ export class ChangeMaintenanceMessage extends InitialMessage {
         ]
     };
 
-    createTitle() {
+    createTitle(data) {
         return data.maintenance.type
             ? 'Начались технические работы'
             : 'Закончились технические работы'

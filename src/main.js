@@ -32,5 +32,4 @@ app.use(i18n);
 app.use(VCalendar, {})
 app.mount('#app');
 app.use(Toast);
-
 // }, 4000)

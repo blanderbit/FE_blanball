@@ -5,7 +5,7 @@
         <div class="b-main-search__left-block">
           <div class="b-main-search__old-new-filter">
             <img src="../assets/img/sort-arrows.svg" alt="" />
-            Cпочатку нові
+            {{$t('events.new-first')}}
           </div>
           <div class="b-main-search__dropdown-wrapper">
             <Dropdown :options="sportTypeDropdown" :width="140" :height="32" />
@@ -20,7 +20,7 @@
           <div class="b-main-search__search-input-desktop">
             <InputComponent
               :title-width="0"
-              :placeholder="'Пошук серед подій'"
+              :placeholder="$t('events.search-events')"
               :has-icon="true"
               :icon="[searchIcon]"
             />
@@ -128,7 +128,9 @@
           </div>
           <div class="b-main-search__text">
             <div class="b-main-search__title">{{ $t('events.filters') }}</div>
-            <div class="b-main-search__terms">знайдено 15 оголошень</div>
+            <div class="b-main-search__terms">
+              {{ $t('events.found') }} 15 {{ $t('events.advertisments') }}
+            </div>
           </div>
         </div>
         <div class="b-main-search__calendar-block sort-item">

@@ -9,7 +9,7 @@
           <div class="search-input-desktop">
             <InputComponent
               :title-width="0"
-              :placeholder="'Пошук користувачів'"
+              :placeholder="$t('users.users-search')"
               :has-icon="true"
               :icon="['../../../assets/img/search.svg']"
             />
@@ -41,12 +41,12 @@
                     v-model="eventData.gender"
                     name="radio"
                     type="radio"
-                    value="Чоловіки"
+                    :value="$t('users.men')"
                     checked
                   />
                   <label for="radio-1" class="radio-label">
                     <img src="../../../assets/img/male-icon.svg" alt="" />
-                    Чоловіки
+                    {{$t('users.men')}}
                   </label>
                 </div>
                 <div class="radio">
@@ -55,11 +55,11 @@
                     v-model="eventData.gender"
                     name="radio"
                     type="radio"
-                    value="Жінки"
+                    :value="$t('users.women')"
                   />
                   <label for="radio-2" class="radio-label">
                     <img src="../../../assets/img/female-icon.svg" alt="" />
-                    Жінки
+                    {{ $t('users.women') }}
                   </label>
                 </div>
                 <div class="radio">
@@ -68,11 +68,11 @@
                     v-model="eventData.gender"
                     name="radio"
                     type="radio"
-                    value="Всі"
+                    :value="$t('users.all')"
                   />
                   <label for="radio-3" class="radio-label">
                     <img src="../../../assets/img/unisex.svg" alt="" />
-                    Всі
+                    {{ $t('users.all') }}
                   </label>
                 </div>
               </div>
@@ -85,8 +85,8 @@
               <div class="old-new-filter">
                 <img src="../../../assets/img/sort-arrows.svg" alt="" />
                 <div class="text-block">
-                  Сортування
-                  <span>Cпочатку нові</span>
+                  {{ $t('users.sorting') }}
+                  <span>{{ $t('users.new-first') }}</span>
                 </div>
               </div>
               <div class="search-input-tablet">
@@ -112,8 +112,8 @@
                 <img src="../../../assets/img/sort-arrows.svg" alt="" />
               </div>
               <div class="text">
-                <div class="title">{{ $t('events.sorting') }}</div>
-                <div class="terms">{{ $t('events.first-new') }}</div>
+                <div class="title">{{ $t('users.sorting') }}</div>
+                <div class="terms">{{ $t('users.first-new') }}</div>
               </div>
             </div>
             <div class="filtering-block sort-item">
@@ -121,8 +121,10 @@
                 <img src="../../../assets/img/set-filter.svg" alt="" />
               </div>
               <div class="text">
-                <div class="title">{{ $t('events.filters') }}</div>
-                <div class="terms">знайдено 15 оголошень</div>
+                <div class="title">{{ $t('users.filters') }}</div>
+                <div class="terms">
+                  {{$t('users.found')}} 15 {{$t('users.advertisments')}}
+                </div>
               </div>
             </div>
             <div class="calendar-block sort-item">
@@ -130,21 +132,20 @@
                 <img src="../../../assets/img/calendar.svg" alt="" />
               </div>
               <div class="text">
-                <div class="title">{{ $t('events.chose-date') }}</div>
+                <div class="title">{{ $t('users.chose-date') }}</div>
                 <div class="terms">19, 23 черв. 2022</div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
       players
     </div>
 
     <div class="right-sidebar">
       <div class="title-block">
-        <div class="title">{{ $t('events.planned-events') }}</div>
-        <div class="subtitle">{{ $t('events.your-events') }}</div>
+        <div class="title">{{ $t('users.planned-events') }}</div>
+        <div class="subtitle">{{ $t('users.your-events') }}</div>
       </div>
 
       <div class="cards-block">

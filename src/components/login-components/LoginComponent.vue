@@ -6,17 +6,16 @@
     >
       <div class="b-login-step__left-part">
         <img src="../../assets/img/warning-black.svg" alt="" />
-        Помилка завантаження
+        {{ $t('login.error-label') }}
       </div>
       <div class="b-login-step__right-part">
-        Перевірте, будь ласка, стабільність інтернет з’єднання та спробуйте ще
-        раз
+        {{ $t('login.check-network') }}
       </div>
     </div>
     <Form v-slot="data" :validation-schema="schema">
       <div class="b-login-step__top-part">
-        <div class="b-login-step__main-title">Blanball</div>
-        <div class="b-login-step__title">Авторизація у системі</div>
+        <div class="b-login-step__main-title">{{ $t('login.app-name') }}</div>
+        <div class="b-login-step__title">{{ $t('login.authorization') }}</div>
         <div class="b-login-step__input">
           <InputComponent
             :outside-title="true"
@@ -41,18 +40,18 @@
         </div>
 
         <div class="b-login-step__forgot-password" @click="openResetPasswordModal()">
-          <span> Я не пам’ятаю пароль </span>
+          <span> {{ $t('login.forgot-password') }} </span>
         </div>
         <div class="b-login-step__remember-me">
           <div class="b-login-step__check-block">
             <input type="checkbox" name="" id="verification" />
             <label for="verification">
-              <span>Запам’ятати логін та пароль для автоматичного входу</span>
-              <div class="b-login-step__text-mob">Запам’ятати мене</div>
+              <span>{{ $t('login.remember-login') }}</span>
+              <div class="b-login-step__text-mob">{{ $t('login.remember-me') }}</div>
             </label>
           </div>
           <div class="b-login-step__forgot-password-mob" @click="openResetPasswordModal()">
-            Я не пам’ятаю пароль
+            {{ $t('login.forgot-password') }}
           </div>
         </div>
       </div>
@@ -60,8 +59,7 @@
         v-if="showInvalidCredentials"
         class="b-login-step__wrong-credentials-message"
       >
-        Неправильний логін або пароль, будь ласка, перевірте правильність
-        введених даних
+        {{ $t('login.wrong-credentials') }}
       </div>
       <div class="b-login-step__buttons">
         <GreenBtn
@@ -72,8 +70,8 @@
       </div>
     </Form>
     <div class="b-login-step__has-no-account">
-      Ще не маєте акаунту?
-      <span>Зареєструватися</span>
+      {{ $t('login.no-account') }}
+      <span>{{ $t('login.register') }}</span>
     </div>
   </div>
 </template>
@@ -143,7 +141,7 @@ export default {
         if (redirectUrl) {
           const resolveRouter = router.resolve(redirectUrl);
           if (
-            resolveRouter?.matched?.find((match) =>
+            !redirectUrl || resolveRouter?.matched?.find((match) =>
               match?.path?.includes('pathMatch')
             )
           ) {

@@ -186,7 +186,7 @@ const router = createRouter({
                     beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
                         // usersData: () => $api.UsersRequest.getAll(to.query),
                     })),
-                    component: () => import('../views/application/company.vue'),
+                    component: () => import('../views/application/versions.vue'),
                     meta: {
                         breadcrumbs: [
                             { name:'Main', path: '/' },
@@ -198,7 +198,7 @@ const router = createRouter({
                     path: ROUTES.APPLICATION.PROFILE.MY_PROFILE.relative,
                     name: ROUTES.APPLICATION.PROFILE.MY_PROFILE.name,
                     beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-                        // usersData: () => $api.UsersRequest.getAll(to.query),
+                        usersData: () => API.UserService.getMyProfile(),
                     })),
                     component: () => import('../views/application/profile/my-profile.vue'),
                     meta: {
@@ -405,6 +405,10 @@ const router = createRouter({
         {
             path: '/:pathMatch(.*)*',
             component: () => import('../views/404.vue')
+        },
+        {
+            path: '/',
+            redirect: ROUTES.AUTHENTICATIONS.LOGIN.absolute
         }
     ]
 });

@@ -16,7 +16,9 @@
           </router-link>
           <div class="b-event-info__share-link">
             <img src="../../../assets/img/share-icon.svg" alt="">
-            <span>Поділитися</span>
+            <span>
+              {{ $t('my_events.share') }}
+            </span>
           </div>
         </div>
       </div>
@@ -33,11 +35,11 @@
           <div class="b-event-info__clothes">
             <div class="b-event-info__clothe">
               <img src="../../../assets/img/t-shirt.svg" alt="">
-              <span>Форма №1</span>
+              <span>{{ $t('my_events.form1') }}</span>
             </div>
             <div class="b-event-info__clothe">
               <img src="../../../assets/img/t-shirt.svg" alt="">
-              <span>Форма №2</span>
+              <span>{{ $t('my_events.form2') }}</span>
             </div>
           </div>
           <div class="b-event-info__title">
@@ -89,24 +91,24 @@
         <div class="b-event-info__tables-title">{{ $t('my_events.already-accepted') }}</div>
         <EventInfoUsersTable 
           :data="mockData.players_list"
-          :table-title-text="'Список гравців'"
+          :table-title-text="$t('my_events.players-list')"
           :table-color="'#148783'"
         />
         <div class="b-event-info__judge-trainer-tables">
           <EventInfoUsersTable 
             :data="mockData.judge_list"
-            :table-title-text="'Суддя'"
+            :table-title-text="$t('my_events.judge')"
             :table-color="'#7355B2'"
           />
           <EventInfoUsersTable 
             :data="mockData.trainer_list"
-            :table-title-text="'Тренер'"
+            :table-title-text="$t('my_events.coach')"
             :table-color="'#1C4FC5'"
           />
         </div>
         <EventInfoUsersTable 
           :data="mockData.players_list"
-          :table-title-text="'Зареєстровані глядачі'"
+          :table-title-text="$t('my_events.registered-audience')"
           :table-color="'#148783'"
         />
       </div>

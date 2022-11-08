@@ -12,3 +12,8 @@ export const AxiosParams = (functionResult) => {
 };
 
 export const createUniqueId = () => 'id' + Math.random().toString(16).slice(2);
+
+export const createQueryStringFromObject = (objQuery) => Object
+  .keys(objQuery)
+  .map((key) => `${key}=${objQuery[key]}`)
+  .join('&');

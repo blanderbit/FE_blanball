@@ -1,7 +1,7 @@
 <template>
   <div class="b-mob-menu" :style="mobMenuStyle">
     <div class="b-mob-menu__logo-block">
-      <div class="b-mob-menu__logo">Blanball</div>
+      <div class="b-mob-menu__logo">{{$t('menu.blanball')}}</div>
       <div class="b-mob-menu__close" @click="closeMobMenu">&times;</div>
     </div>
     <div class="b-mob-menu__user-data">
@@ -10,7 +10,9 @@
       </div>
       <div class="b-mob-menu__text-block">
         <div class="b-mob-menu__user-name">Стефанія Калиновська</div>
-        <div class="b-mob-menu__account-type">Гостьовий акаунт</div>
+        <div class="b-mob-menu__account-type">
+          {{$t('menu.guest-account')}}
+        </div>
       </div>
       <div class="b-mob-menu__logout-icon">
         <img src="../assets/img/logout-icon.svg" alt="" />

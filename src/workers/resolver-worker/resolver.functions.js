@@ -1,17 +1,11 @@
-// import { AltesiaTokenWorkerPlugin } from "../plugins/token.plugin";
-// import { $api } from "../api";
-// import { finishSpinner } from "../../packages/blanball-loading-worker";
+
 import { ROUTES } from "../../router";
 import { finishSpinner } from "../loading-worker/loading.worker";
 import { TokenWorker } from "../token-worker";
-
-const $createQuery = (objQuery) => Object
-    .keys(objQuery)
-    .map((key) => `${key}=${objQuery[key]}`)
-    .join('&');
+import { createQueryStringFromObject } from "../utils-worker";
 
 const _createLoginPath = (redirectUrl) => {
-    const query = $createQuery({
+    const query = createQueryStringFromObject({
         redirectUrl
     });
 

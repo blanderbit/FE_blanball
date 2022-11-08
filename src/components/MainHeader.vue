@@ -14,7 +14,7 @@
       <div class="b_header_search-input">
         <InputComponent 
           :title-width="0"
-          :placeholder="'Пошук серед подій'"
+          :placeholder="$t('header.search-events')"
           :has-icon="true"
           :icon="[
             searchIcon
