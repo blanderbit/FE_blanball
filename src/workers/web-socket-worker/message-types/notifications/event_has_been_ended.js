@@ -19,8 +19,8 @@ import { WebSocketTypes } from "../../web.socket.types";
     {
         type: MessageActionTypes.Action,
         text: 'Оставить отзыв',
-        action: (instance, modals) => {
-            modals.review.data = instance;
+        action: ({notificationInstance, modals}) => {
+            modals.review.data = notificationInstance;
             modals.review.active = true
         },
         actionType: MessageActionDataTypes.Callback,

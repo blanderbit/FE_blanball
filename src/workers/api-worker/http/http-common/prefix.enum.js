@@ -1,7 +1,10 @@
 export const EndpointsEnum = {
   Authorization: {
     Register: '/authentication/client/login',
-    Login: '/authentication/client/login'
+    Login: '/authentication/client/login',
+    ResetPasswordRequest: '/authentication/client/request-reset/password',
+    VerifyCode: '/authentication/client/check/code',
+    ResetComplete: '/authentication/client/password/reset-complete'
   },
   Notification: {
     Index: '/notifications/client/my/notifications/list',

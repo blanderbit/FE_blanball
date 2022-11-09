@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 
 export const PaginationWorker = (options) => {
-    const { paginationDataRequest, filters, dataTransformation } = options || {};
+    const { paginationDataRequest, dataTransformation } = options || {};
     const elements = ref([]);
     const paginationElement = ref();
     const page = ref(0);
@@ -14,7 +14,7 @@ export const PaginationWorker = (options) => {
         nextPage.value = true;
     };
 
-    const loadNotification = async (pageNumber, $state) => {
+    const loadNotification = async ({ pageNumber, $state }) => {
         if (!nextPage.value) {
           $state?.complete && $state.complete();
           return;
@@ -22,23 +22,13 @@ export const PaginationWorker = (options) => {
         if ($state?.loading) $state.loading();
 
         page.value = pageNumber;
-        await paginationDataRequest(pageNumber, filters)
-            // .then((result) => {
-            //     result.data.results.map((item) => {
-            //         item.metaData = {
-            //             page: pageNumber
-            //         };
-            //         return item
-            //     });
-            //     return result
-            // })
+        await paginationDataRequest(pageNumber)
             .then((result) => {
                 if(dataTransformation) {
                     result.data.results = result.data.results
                         .map(dataTransformation);
                 }
 
-                // elements.value = result.data.results
                 elements.value = elements.value
                     .concat(result.data.results);
 

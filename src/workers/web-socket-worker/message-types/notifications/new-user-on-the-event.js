@@ -20,7 +20,7 @@ import { WebSocketTypes } from "../../web.socket.types";
     {
         type: MessageActionTypes.Action,
         text: 'Просмотреть ивент',
-        action: (instance) => ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(instance.data.event.id),
+        action: ({ notificationInstance }) => ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(notificationInstance.data.event.id),
         actionType: MessageActionDataTypes.UrlCallback,
         buttonType: 'stroked'
     },
