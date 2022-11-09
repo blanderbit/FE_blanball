@@ -62,7 +62,6 @@ export class InviteUserToEventMessage extends InitialMessage {
   }
 
   onUpdate() {
-    debugger
     this.textsAfterAction = typeof this.data.response === 'boolean' && this.createTextsAfterAction();
   }
 
