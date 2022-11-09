@@ -33,20 +33,21 @@
       <input
         :type="inputType"
         :placeholder="placeholder"
-        v-on="handlers"
-        :value="value"
+        v-on="modelHandlers"
+        :value="modelValue"
         :style="inputStyle"
         :disabled="isDisabled"
       />
     </div>
-    <p class="b-input__error-message">{{ errorMessage }}</p>
+    <p class="b-input__error-message">{{ modelErrorMessage }}</p>
   </div>
 </template>
 
 <script>
 import { useField } from 'vee-validate'
 import { computed, toRef } from 'vue'
-import { modes } from './__tests__/interactionModes'
+import { modes } from '../workers/custom-model-worker/interactionModes'
+import { CustomModelWorker } from "../workers/custom-model-worker";
 
 // TODO vue 3 fully, validate message
 export default {
@@ -106,43 +107,16 @@ export default {
     },
   },
   setup(props) {
-    const { meta, value, errorMessage, handleChange, handleBlur } = useField(
-      toRef(props, 'name'),
-      null,
-      {
-        validateOnValueUpdate: false,
-      }
-    )
-    const handlers = computed(() => {
-      const on = {
-        blur: handleBlur,
-        // default input event to sync the value
-        // the `false` here prevents validation
-        input: [(e) => handleChange(e, false)],
-      }
-
-      // Get list of validation events based on the current mode
-      const triggers = modes[props.mode]({
-        errorMessage,
-        meta,
-      })
-
-      // add them to the "on" handlers object
-      triggers.forEach((t) => {
-        if (Array.isArray(on[t])) {
-          on[t].push(handleChange)
-        } else {
-          on[t] = handleChange
-        }
-      })
-
-      return on
-    })
+    const {
+        modelValue,
+        modelErrorMessage,
+        modelHandlers
+    } = CustomModelWorker(props);
 
     return {
-      handlers,
-      errorMessage,
-      value,
+      modelValue,
+      modelErrorMessage,
+      modelHandlers
     }
   },
   data() {
@@ -166,7 +140,7 @@ export default {
     },
     rightIcon() {
       return this.icon[this.iconCount]
-    },
+    }
   },
   watch: {
     mainValue(newVal, oldVal) {
@@ -185,7 +159,7 @@ export default {
   },
   mounted() {
     this.inputType = this.type[0]
-  },
+  }
 }
 </script>
 
@@ -260,7 +234,7 @@ export default {
     }
     input {
       width: 100%;
-      height: 100%;
+      height: 40px;
       border: none;
       outline: none;
       border-radius: 6px;

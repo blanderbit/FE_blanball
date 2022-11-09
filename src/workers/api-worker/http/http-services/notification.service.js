@@ -12,12 +12,13 @@ export class NotificationService {
     )
   }
 
-  static getNotifications(pageNumber) {
+  static getNotifications({ page, skipids }) {
     return AxiosInstance.get(
       EndpointsEnum.Notification.Index,
       AxiosParams(
         AxiosQuery.bind(null, {
-          page: pageNumber
+          page,
+          skipids: skipids?.join(',')
         })
       )
     )

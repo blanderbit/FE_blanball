@@ -38,11 +38,11 @@
                 }
 
                 if (item.actionType === MessageActionDataTypes.UrlCallback) {
-                    router.push(item.action(router))
+                    router.push(item.action({ router, notificationInstance }))
                 }
 
                 if (item.actionType === MessageActionDataTypes.Callback) {
-                    await item.action(notificationInstance)
+                    await item.action({ notificationInstance })
                 }
 
                 if (

@@ -66,21 +66,6 @@ export function SetActions(e = []) {
     }
 }
 
-export function MessageDataConfiguration (data) {
-    return (a, b) => {
-        // e.prototype[b] = new Proxy(
-        //     data,
-        // )
-    }
-
-    // Object.defineProperty(user, "fullName", {
-    //     get: () {
-    //         return this.firstName + ' ' + this.surname;
-    //     }
-    // });
-
-}
-
 export function AuthWebSocketMessage() {
     return (a) => {
         if(!AuthWebSocketWorker.messages) {

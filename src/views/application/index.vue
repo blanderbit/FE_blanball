@@ -7,8 +7,10 @@
     <sidebar />
     <div class="main-block">
       <div class="container">
-        <main-header @menu-icon-click="isMobMenuActive = true" />
-        <router-view />
+        <div class="main-body-inner">
+          <main-header @menu-icon-click="isMobMenuActive = true" />
+          <router-view />
+        </div>
       </div>
     </div>
     <ModalFeedback
@@ -55,11 +57,11 @@ const handlerAction = async (item, notificationInstance) => {
   }
 
   if (item.actionType === MessageActionDataTypes.UrlCallback) {
-    router.push(item.action(router))
+    router.push(item.action({ router, notificationInstance }))
   }
 
   if (item.actionType === MessageActionDataTypes.Callback) {
-    await item.action(notificationInstance, modals)
+    await item.action({ notificationInstance, modals })
   }
 
   if (
@@ -95,7 +97,7 @@ const getToastOptions = (notificationInstance, toastId) => {
       component: Notification,
       props: {
         notificationInstance,
-        notificationType: 'push'
+        notificationType: 'notification-push'
       },
       listeners: {
         handlerAction: async (item) => {
@@ -184,6 +186,11 @@ onBeforeRouteLeave(() => AuthWebSocketWorkerInstance.disconnect());
   .main-block {
     height: 100%;
     // overflow: hidden;
+    .main-body-inner {
+      display: grid;
+      grid-template-rows: 90px 1fr;
+      height: 100vh;
+    }
   }
 }
 </style>
