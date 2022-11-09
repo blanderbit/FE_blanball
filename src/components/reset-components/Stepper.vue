@@ -109,8 +109,7 @@
       Form,
       CodeInput
     },
-    setup(props) {
-
+    setup() {
       const currentStep = ref(1);
       const loading = ref(false);
       const router = useRouter();
@@ -141,7 +140,7 @@
       const handleSuccess = (result) => toast.success(result.data.success);
       const handleError = (result) => toast.error(result?.message || 'Упс, что то пошло не так');
       const handleBackClick = () => {
-        if (props.currentStep === 1) {
+        if (currentStep.value === 1) {
           return router.back()
         }
         currentStep.value = currentStep.value - 1
@@ -161,7 +160,6 @@
           currentStep.value = currentStep.value + 1;
           handleSuccess(result);
         } catch (e) {
-          debugger
           handleError(e);
         }
         loading.value = false;
