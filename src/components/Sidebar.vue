@@ -59,6 +59,7 @@
     import { AuthWebSocketWorkerInstance } from "./../workers/web-socket-worker";
     import { API } from "../workers/api-worker/api.worker";
     import { PaginationWorker } from "../workers/pagination-worker";
+    import { ROUTES } from '../router'
 
     function createNotificationFromData(message) {
         const constructor = AuthWebSocketWorkerInstance.messages.find(item => item.messageType === message.message_type);
@@ -178,7 +179,7 @@
                     })
             },
             goToProfile() {
-                this.$router.push('/application/profile/my-profile')
+                this.$router.push(ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute)
             },
         },
     }

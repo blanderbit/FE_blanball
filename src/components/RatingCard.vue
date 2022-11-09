@@ -85,7 +85,7 @@ export default {
     }
 
     onMounted(() => {
-      console.log(props.rateBlock)
+      console.log(props.rateBlock, props.ratingScale)
     })
 
     return {

@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite --port 4172",
     "build": "vite build",
-    "preview": "vite preview --port 4173",
+    "preview": "vite preview --port 4172",
     "test:unit": "vitest --environment jsdom",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "create:env": "cp .env.example .env",
