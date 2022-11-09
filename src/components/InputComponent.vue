@@ -166,7 +166,7 @@ export default {
     },
     rightIcon() {
       return this.icon[this.iconCount]
-    },
+    }
   },
   watch: {
     mainValue(newVal, oldVal) {
@@ -185,7 +185,7 @@ export default {
   },
   mounted() {
     this.inputType = this.type[0]
-  },
+  }
 }
 </script>
 

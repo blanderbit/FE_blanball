@@ -118,7 +118,6 @@ export default {
     width: 100%;
     border: 1px solid #DFDEED;
     border-radius: 6px;
-    margin: 12px 0;
     display: flex;
     position: relative;
     .b-dropdown__back-layer {
