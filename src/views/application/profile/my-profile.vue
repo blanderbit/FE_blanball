@@ -249,6 +249,7 @@
     <div class="my-profile-tab">
       <RatingCard 
         :rate-block="rateBlbock"
+        :rating-scale="userRating"
       />
       <UserDetailsCard
         :labels="labels"
@@ -259,16 +260,22 @@
         :main-lag="mockData.main_lag"
         :cities="mockData.cities"
         :district="mockData.district"
-        :user-data="mockData.user_info"
+        :user-data="userProfile"
+        :phone="userPhone"
+
       />
       <SecurityBlock 
         :toggle-modal="toggleModal('email')"
+        :user-email="userEmail"
       />
     </div>
   </div>
 </template>
 
 <script>
+import { useRoute } from 'vue-router'
+import { ref } from 'vue'
+
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
 import Switcher from '../../../components/Switcher.vue'
@@ -309,6 +316,27 @@ export default {
     RatingCard,
     UserDetailsCard,
     SecurityBlock
+  },
+  setup() {
+    const route = useRoute()
+    const userProfile = ref('')
+    const userRating = ref(null)
+    const userPhone = ref('')
+    const userEmail = ref('')
+
+    userRating.value = route.meta.usersData.data.raiting
+    userProfile.value = route.meta.usersData.data.profile
+    userPhone.value = route.meta.usersData.data.phone
+    userEmail.value = route.meta.usersData.data.email
+
+    console.log(route.meta.usersData.data)
+
+    return {
+      userProfile,
+      userRating,
+      userPhone,
+      userEmail
+    }
   },
   data() {
     return {
@@ -441,7 +469,6 @@ export default {
       this.$router.push(url)
     },
     toggleModal(val) {
-      console.log('=-=-----------------', val)
       switch (val) {
         case 'phone':
           this.isModalActive.phone = !this.isModalActive.phone
@@ -518,7 +545,7 @@ export default {
           console.log('К сожалению не удалось взять текст из буффера', err)
         })
     }
-  },
+  }
 }
 </script>
 

@@ -8,11 +8,7 @@
         {{ $t('profile.sub-rate') }}
       </div>
       <ReviewDetailsComponent 
-        :user-rate="rating" 
-      />
-      <input 
-        type="text" 
-        v-model="userRating" 
+        :user-rate="ratingScale" 
       />
       <div class="b-rating-card__btns-block">
         <div
@@ -75,16 +71,14 @@ export default {
     rateBlock: {
       type: Array,
       default: () => []
+    },
+    ratingScale: {
+      type: Number,
+      default: null
     }
   },
   setup(props) {
-    const rating = ref('')
-    const userRating = ref('')
     const rateStatus = ref(false)
-
-    watch(() => userRating.value, (newData) => {
-      rating.value = newData
-    })
 
     function switchRate(val) {
       rateStatus.value = val
@@ -95,8 +89,6 @@ export default {
     })
 
     return {
-      rating,
-      userRating,
       rateStatus,
       switchRate
     }

@@ -32,7 +32,7 @@
       <div class="b-security__email-input">
         <InputComponent
           :title="'E-mail'"
-          :placeholder="'f.j.swann@aol.com'"
+          :placeholder="userEmail"
           :title-width="0"
           :outside-title="true"
           :has-icon="true"
@@ -62,6 +62,12 @@ export default {
   components: {
     Switcher,
     InputComponent
+  },
+  props: {
+    userEmail: {
+      type: String,
+      default: ''
+    }
   },
   emits: ['toggleModal'],
   setup(props, context) {

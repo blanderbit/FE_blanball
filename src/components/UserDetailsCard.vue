@@ -11,7 +11,7 @@
           <div class="b-user-card__name-line-wrapper">
             <div class="b-user-card__user-name">
               {{userData.name}}
-              {{userData.surname}}
+              {{userData.last_name}}
             </div>
             <img 
               :src="isEditMode ? icons.tickIcon : icons.editIcon"
@@ -60,7 +60,7 @@
                 :outside-title="true"
                 :title="'Прізвище'"
                 :height="40"
-                :placeholder="userData.surname"
+                :placeholder="userData.last_name"
                 :title-width="0"
               />
             </div>
@@ -76,7 +76,7 @@
           </div>
           <div class="b-user-card__textarea-line">
             <div v-if="!isEditMode" class="b-user-card__about-me">
-              {{userData.about}}
+              {{userData.about_me}}
               <div class="b-user-card__title">
                 Про себе
               </div>
@@ -84,13 +84,13 @@
             <TextAreaComponent
               v-else
               :height="88"
-              :placeholder="userData.about"
+              :placeholder="userData.about_me"
               :title="'Декілька слів про себе'"
             />
           </div>
           <div class="b-user-card__birthday-line">
             <div v-if="!isEditMode" class="b-user-card__birth-date">
-              {{userData.birth_date}}
+              {{birthDate}}
               <div class="b-user-card__title">
                 Дата народження
               </div>
@@ -98,7 +98,7 @@
             <div v-else class="b-user-card__dropdowns">
               <Dropdown
                 :outside-title="true"
-                :main-title="'Вид спорту'"
+                :main-title="'День'"
                 :options="days"
                 :width="96"
                 :height="40"
@@ -108,7 +108,7 @@
               />
               <Dropdown
                 :outside-title="true"
-                :main-title="'Вид спорту'"
+                :main-title="'Місяць'"
                 :options="months"
                 :width="168"
                 :height="40"
@@ -118,7 +118,7 @@
               />
               <Dropdown
                 :outside-title="true"
-                :main-title="'Вид спорту'"
+                :main-title="'Рік'"
                 :options="years"
                 :width="120"
                 :height="40"
@@ -145,7 +145,7 @@
                 :outside-title="true"
                 :title="'Зріст'"
                 :height="40"
-                :placeholder="'168 см'"
+                :placeholder="userData.height"
                 :title-width="0"
               />
             </div>
@@ -163,21 +163,24 @@
                 :outside-title="true"
                 :title="`Вага`"
                 :height="40"
-                :placeholder="'48 кг'"
+                :placeholder="userData.weight"
                 :title-width="0"
               />
             </div>
             <div class="b-user-card__main-leg">
-              <div v-if="!isEditMode" class="b-user-card__to-show">
+              <div 
+                v-if="!isEditMode && userData.working_leg" 
+                class="b-user-card__to-show"
+              >
                 <div class="b-user-card__data">
-                  {{userData.main_leg}}
+                  {{userData.working_leg}}
                 </div>
                 <div class="b-user-card__title">
                   Ударна нога
                 </div>
               </div>
               <Dropdown
-                v-else
+                v-if="isEditMode"
                 :outside-title="true"
                 :main-title="'Ударна нога'"
                 :options="mainLag"
@@ -201,7 +204,7 @@
             <InputComponent
               v-else
               :title="'Ігрова позиція'"
-              :placeholder="'Правий напівзахисник'"
+              :placeholder="userData.position"
               :title-width="0"
               :outside-title="true"
               :hasIcon="true"
@@ -214,7 +217,7 @@
           <div class="b-user-card__phone">
             <div v-if="!isEditMode" class="b-user-card__to-show">
               <div class="b-user-card__data">
-                {{userData.phone}}
+                {{phone}}
               </div>
               <div class="b-user-card__title">
                 Телефон
@@ -223,7 +226,7 @@
             <InputComponent
               v-else
               :title="'Телефон'"
-              :placeholder="'+380 (95) 390 86 50'"
+              :placeholder="phone"
               :title-width="0"
               :outside-title="true"
               :height="40"
@@ -269,6 +272,8 @@
 
 <script>
 import { ref, computed } from 'vue';
+import dayjs from 'dayjs'
+import dayjsUkrLocale from 'dayjs/locale/uk'
 
 import InputComponent from '../components/InputComponent.vue'
 import TextAreaComponent from '../components/TextAreaComponent.vue'
@@ -321,9 +326,13 @@ export default {
     userData: {
       type: Object,
       default: () => {}
+    },
+    phone: {
+      type: String,
+      default: ''
     }
   },
-  setup() {
+  setup(props) {
     const currentTab = ref(0)
     const isEditMode = ref(false)
 
@@ -333,6 +342,10 @@ export default {
         tickIcon: tick,
         editIcon: edit
       }
+    })
+
+    const birthDate = computed(() => {
+      return `${dayjs(props.userData.birthday).locale(dayjsUkrLocale).format('D MMMM YYYY')} p.`
     })
 
     function changeUserTab(id) {
@@ -347,7 +360,8 @@ export default {
       changeUserTab,
       icons,
       isEditMode,
-      toggleEditMode
+      toggleEditMode,
+      birthDate
     }
   }
 }
