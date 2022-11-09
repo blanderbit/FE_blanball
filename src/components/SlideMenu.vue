@@ -49,7 +49,7 @@
             <!--<virtual-scroll-list style="height: 360px; overflow-y: auto;">-->
             <Notifications :notifications="notifications"></Notifications>
             <!--</virtual-scroll-list>-->
-            <InfiniteLoading ref="scrollbar" :firstload="false" @infinite="$emit('loadingInfinite',$event)"/>
+            <InfiniteLoading ref="scrollbar"  @infinite="$emit('loadingInfinite',$event)"/>
           </ul>
         </div>
         <div class="b_slide_menu_bottom-block">
@@ -142,7 +142,7 @@
 
       // function test($event) {
       //   debugger
-      //   emit('loadingInfinite',$event)
+      //   emit('loadingInfinite')
       // }
       return {
         isMenuOpened,

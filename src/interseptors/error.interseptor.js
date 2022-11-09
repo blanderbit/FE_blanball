@@ -1,27 +1,23 @@
 
 
-// import { AltesiaTokenWorkerPlugin } from "../plugins/token.plugin";
-// import router, { ROUTES } from "../router";
-// import { resolverFunctions } from "../resolvers/resolver.functions";
+import { TokenWorker } from "../workers/token-worker";
+import router, { ROUTES } from "../router";
+import { resolverFunctions } from "../workers/resolver-worker/resolver.functions";
 
 export const ErrorInterceptor = (error) => {
+    const getJsonErrorData = error.toJSON();
+    error = error?.response?.data || getJsonErrorData;
 
-    error = error.response.data.data;
+    if (error?.status === 401) {
+        const findCurRouteFromList = window.location.pathname.includes('application');
+        TokenWorker.clearToken();
 
-    if (error.statusCode === 401 || error.statusCode === 403 || error.code === 'UnauthorizedException') {
-        // TODO 401 error
-        // const listOfRoutes = router.getRoutes();
-        // const curRoute = window.location.pathname;
-        // const findCurRouteFromList = listOfRoutes.find(item => curRoute.includes(item.path));
-        // AltesiaTokenWorkerPlugin.clearToken();
-        //
-        // if(findCurRouteFromList) {
-        //     router.push(resolverFunctions._createLoginPath(findCurRouteFromList.path));
-        // } else {
-        //     router.push(ROUTES.LOGIN)
-        // }
+        router.push(
+            findCurRouteFromList
+                ? resolverFunctions._createLoginPath(window.location.pathname)
+                : ROUTES.AUTHENTICATIONS.LOGIN.absolute
+        );
     }
-
 
     return  Promise.reject(error)
 };

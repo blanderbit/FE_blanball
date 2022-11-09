@@ -39,7 +39,7 @@
           />
         </div>
 
-        <div class="b-login-step__forgot-password">
+        <div class="b-login-step__forgot-password" @click="openResetPasswordModal()">
           <span> {{ $t('login.forgot-password') }} </span>
         </div>
         <div class="b-login-step__remember-me">
@@ -50,7 +50,7 @@
               <div class="b-login-step__text-mob">{{ $t('login.remember-me') }}</div>
             </label>
           </div>
-          <div class="b-login-step__forgot-password-mob">
+          <div class="b-login-step__forgot-password-mob" @click="openResetPasswordModal()">
             {{ $t('login.forgot-password') }}
           </div>
         </div>
@@ -121,43 +121,39 @@ export default {
       password: yup.string().required().min(8), // TODO implement password options
     })
 
-    const handleLogin = async (data) => {
-      console.log('handleLogin')
-      data.validate().then((res) => {
-        console.log(res)
-        if (res.valid) loginUser()
-      })
-
-      async function loginUser() {
-        console.log('loginUser')
-        try {
-        console.log('try')
-          const apiRequestResult = await API.AuthorizationService.login(
-            data.values
-          )
-          console.log(apiRequestResult)
-
-          TokenWorker.setToken(apiRequestResult.data.tokens.access);
-          const redirectUrl = router.currentRoute.value.query.redirectUrl;
-          // TODO toast
-          if (redirectUrl) {
-            const resolveRouter = router.resolve(redirectUrl);
-            if (
-              !redirectUrl || resolveRouter?.matched?.find((match) =>
-                match?.path?.includes('pathMatch')
-              )
-            ) {
-              return router.push(ROUTES.APPLICATION.EVENTS.absolute)
-            }
-            return router.push(redirectUrl)
-          }
-          await router.push(ROUTES.APPLICATION.EVENTS.absolute)
-        } catch (e) {
-          console.log('catch', e)
-          isWrongCreds.value = true
-        }
-      }
+    const openResetPasswordModal = () => {
+      router.push(ROUTES.AUTHENTICATIONS.RESET.absolute)
     }
+    const handleLogin = async (data) => {
+      const { valid } = await data.validate();
+
+      if(!valid) {
+        return false
+      }
+
+      try {
+        const apiRequestResult = await API.AuthorizationService.login(
+          data.values
+        );
+
+        TokenWorker.setToken(apiRequestResult.data.tokens.access);
+        const redirectUrl = router.currentRoute.value.query.redirectUrl;
+        if (redirectUrl) {
+          const resolveRouter = router.resolve(redirectUrl);
+          if (
+            !redirectUrl || resolveRouter?.matched?.find((match) =>
+              match?.path?.includes('pathMatch')
+            )
+          ) {
+            return router.push(ROUTES.APPLICATION.EVENTS.absolute)
+          }
+          return router.push(redirectUrl)
+        }
+        await router.push(ROUTES.APPLICATION.EVENTS.absolute)
+      } catch (e) {
+        isWrongCreds.value = true
+      }
+    };
 
     return {
       eyeCrossed,
@@ -166,6 +162,7 @@ export default {
       handleLogin,
       showInvalidCredentials,
       warningTopStyle,
+      openResetPasswordModal
     }
   },
 }
@@ -247,6 +244,7 @@ export default {
   }
   .b-login-step__forgot-password {
     text-align: right;
+    cursor: pointer;
     margin-top: 8px;
     span {
       font-family: 'Inter';
