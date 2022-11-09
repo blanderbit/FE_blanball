@@ -40,7 +40,7 @@ export class ResponseToRequestForParticipationMessage extends InitialMessage {
             this.actions.push({
                 type: MessageActionTypes.Action,
                 text: 'Просмотреть ивент',
-                action: () => ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(this.data.event.id),
+                action: ({ notificationInstance }) => ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(notificationInstance.data.event.id),
                 actionType: MessageActionDataTypes.UrlCallback,
                 buttonType: 'stroked'
             });

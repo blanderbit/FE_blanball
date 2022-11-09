@@ -9,8 +9,17 @@
       </div>
     </template>
     <template v-else>
-      <div class="notification-title">{{notificationInstance.title}}</div>
-      <div class="notification-date">{{formatDate}}</div>
+      <div class="d-flex justify-content-between">
+        <div class="notification-title">{{notificationInstance.title}}</div>
+        <div class="notification-date">{{formatDate}}</div>
+      </div>
+    </template>
+    <template v-if="notificationInstance.textsAfterAction">
+      <div class="notification-response d-flex align-items-center">
+        <img v-if="notificationInstance.textsAfterAction.response" src="../assets/img/true_check.svg">
+        <img v-else src="../assets/img/red_cross.svg">
+        {{notificationInstance.textsAfterAction.text}}
+      </div>
     </template>
     <div class="notification-content" v-for="item in notificationInstance.texts">{{item}}</div>
     <div class="notification-actions" v-if="notificationInstance?.actions?.length">
@@ -61,7 +70,7 @@
       },
       notificationType: {
         type: String,
-        default: 'notification-sidebar' // notification-push
+        default: 'notification-sidebar'
       },
     },
     watch: {
@@ -154,74 +163,87 @@
     }
   }
 
+  .notification-push {
+    ::v-deep {
+      .spiner-text {
+        display: none;
+      }
+      .spiner-wrapper {
+        position: absolute;
+        background: rgba(239, 239, 246, 0.38);
+        width: 100%;
+      }
+      .spiner-wrapper .spiner-body {
+        background: transparent;
+        height: 100%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
 
-    .notification-push {
-      ::v-deep {
-        .spiner-text {
-          display: none;
-        }
-        .spiner-wrapper {
-          position: absolute;
-          background: rgba(239, 239, 246, 0.38);
-          width: 100%;
-        }
-        .spiner-wrapper .spiner-body {
-          background: transparent;
-          height: 100%;
-          .spiner {
-            .lds-ring, .lds-ring div {
-              width: 50px;
-              height: 50px;
-            }
-            .lds-ring div {
-              border-color: white transparent transparent transparent;
-            }
+        .spiner {
+          .lds-ring, .lds-ring div {
+            width: 50px;
+            height: 50px;
+          }
+          .lds-ring div {
+            border-color: white transparent transparent transparent;
           }
         }
       }
     }
+  }
 
-    .notification-sidebar {
-      * {
-        color: #000;
-      }
-      border-bottom: 1px solid #EFEFF6;
-      padding: 16px 0;
+  .notification-sidebar {
+    * {
+      color: #000;
+    }
+    border-bottom: 1px solid #EFEFF6;
+    padding: 16px 0;
 
-      .notification-title {
-        color: #262541;
-      }
+    .notification-title {
+      color: #262541;
+    }
 
-      .notification-date {
-        color: #575775;
+    .notification-date {
+      color: #575775;
+    }
+    .notification-content {
+      color: #575775;
+    }
+    ::v-deep {
+      .spiner-wrapper {
+        background: rgba(239, 239, 246, 0.38);
+        width: 100%;
       }
-      .notification-content {
-        color: #575775;
-      }
-      ::v-deep {
-        .spiner-wrapper {
-          background: rgba(239, 239, 246, 0.38);
-          width: 100%;
-        }
-        .spiner-wrapper .spiner-body {
-          width: 100%;
-          box-shadow: none;
-          .spiner {
-            .lds-ring div {
-              border-color: #575775 transparent transparent transparent;
-            }
+      .spiner-wrapper .spiner-body {
+        width: 100%;
+        box-shadow: none;
+        .spiner {
+          .lds-ring div {
+            border-color: #575775 transparent transparent transparent;
           }
         }
       }
     }
-
-
+  }
 
   .notification-read {
     position: absolute;
     width: 100%;
     height: 100%;
     background: white;
-    opacity: 0.8;
+    opacity: 0.6;
+  }
+
+  .notification-response {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    color: #8A8AA8;
+    margin-bottom: 8px;
+    > img {
+      margin-right: 5px;
+    }
   }
 </style>

@@ -57,11 +57,11 @@ const handlerAction = async (item, notificationInstance) => {
   }
 
   if (item.actionType === MessageActionDataTypes.UrlCallback) {
-    router.push(item.action(router))
+    router.push(item.action({ router, notificationInstance }))
   }
 
   if (item.actionType === MessageActionDataTypes.Callback) {
-    await item.action(notificationInstance, modals)
+    await item.action({ notificationInstance, modals })
   }
 
   if (
@@ -97,7 +97,7 @@ const getToastOptions = (notificationInstance, toastId) => {
       component: Notification,
       props: {
         notificationInstance,
-        notificationType: 'push'
+        notificationType: 'notification-push'
       },
       listeners: {
         handlerAction: async (item) => {
