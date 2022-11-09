@@ -7,8 +7,10 @@
     <sidebar />
     <div class="main-block">
       <div class="container">
-        <main-header @menu-icon-click="isMobMenuActive = true" />
-        <router-view />
+        <div class="main-body-inner">
+          <main-header @menu-icon-click="isMobMenuActive = true" />
+          <router-view />
+        </div>
       </div>
     </div>
     <ModalFeedback
@@ -184,6 +186,11 @@ onBeforeRouteLeave(() => AuthWebSocketWorkerInstance.disconnect());
   .main-block {
     height: 100%;
     // overflow: hidden;
+    .main-body-inner {
+      display: grid;
+      grid-template-rows: 90px 1fr;
+      height: 100vh;
+    }
   }
 }
 </style>
