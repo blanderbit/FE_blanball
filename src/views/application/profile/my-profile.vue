@@ -14,7 +14,7 @@
           <img src="../../../assets/img/add-phone.svg" alt="" />
         </template>
         <template #change-phone-number>
-          <div v-if="modal.first" class="change-phone-screen-1">
+          <div v-if="modalChangePhone.first" class="change-phone-screen-1">
             <div class="current-number">(617) 623-2338</div>
             <p class="description-text">
               {{ $t('modals.change_number.main-text') }}
@@ -28,7 +28,7 @@
               </div>
             </div>
           </div>
-          <div v-if="modal.second" class="change-phone-screen-2">
+          <div v-if="modalChangePhone.second" class="change-phone-screen-2">
             <div class="current-number">
               <div class="inut-wrapper">
                 <InputComponent
@@ -56,15 +56,7 @@
               {{ $t('modals.change_number.sms-code') }}
             </p>
             <div class="sms-code-block">
-              <input
-                v-for="item in codeResettingInputs"
-                :key="item.id"
-                :ref="`input-${item.id}`"
-                v-model="item.value"
-                type="text"
-                placeholder="_"
-                @input="codeInput(item.id, $event)"
-              />
+            <!-- Past Code Input -->
             </div>
             <div class="btns-block">
               <div class="cancle-btn" @click="toggleModal('phone')">
@@ -125,26 +117,71 @@
         :title-color="'#C10B0B'"
         @close-modal="toggleModal('delete_acc')"
       >
-        <template #title>
-          {{ $t('modals.delete_acc.title') }}
-        </template>
-        <template #title-icon>
-          <img src="../../../assets/img/warning.svg" alt="" />
-        </template>
-        <template #delete-account>
-          <div class="current-number">(617) 623-2338</div>
-          <div class="description-text">
-            {{ $t('modals.delete_acc.text') }}
-          </div>
-          <div class="btns-block">
-            <div class="cancle-delete-acc" @click="toggleModal('delete_acc')">
-              {{ $t('buttons.cancel-deleting') }}
+
+
+
+          <template #title>
+            {{ $t('modals.delete_acc.title') }}
+          </template>
+          <template #title-icon>
+            <img src="../../../assets/img/warning.svg" alt="" />
+          </template>
+          <template #delete-account>
+            <div
+              v-if="modalDeleteAcc.first" 
+              class="first-screen"
+            >
+              <div class="description-text">
+                {{ $t('modals.delete_acc.text') }}
+              </div>
+              <div class="btns-block">
+                <div class="cancle-delete-acc" @click="toggleModal('delete_acc')">
+                  {{ $t('buttons.cancel-deleting') }}
+                </div>
+                <div class="delete-acc" @click="sendCodeForDeleteAcc">
+                  {{ $t('buttons.delete-account') }}
+                </div>
+              </div>
             </div>
-            <div class="delete-acc" @click="toggleModal('delete_acc')">
-              {{ $t('buttons.delete-account') }}
+            <div 
+              v-if="modalDeleteAcc.second" 
+              class="second-screen"
+            >
+              <div class="description-title-second">
+                {{ $t('modals.delete_acc.title-second') }}
+              </div>
+              <div class="description-text">
+                {{ $t('modals.delete_acc.text-second') }}
+                some@email.com
+                {{ $t('modals.delete_acc.during-seconds') }}
+              </div>
+              <Form v-slot="data" :validation-schema="schema">
+                <div class="code-input-field">
+                  <CodeInput
+                    :fields="5"
+                    :fieldWidth="48"
+                    :fieldHeight="40"
+                    :required="true"
+                    name="verify_code"
+                    @complete="completed = true"
+                  />
+                </div>
+                <div class="btns-block">
+                  <div class="cancle-delete-acc" @click="toggleModal('delete_acc')">
+                    {{ $t('buttons.cancel-deleting') }}
+                  </div>
+                  <div class="delete-acc" @click="deleteAcc(data)">
+                    {{ $t('buttons.delete-account') }}
+                  </div>
+                </div>
+              </Form>
             </div>
-          </div>
-        </template>
+
+          </template>
+
+
+
+
       </ModalWindow>
     </Transition>
 
@@ -184,15 +221,7 @@
             {{ $t('modals.change_password.sms-code') }}
           </p>
           <div class="sms-code-block">
-            <input
-              v-for="item in codeResettingInputs"
-              :key="item.id"
-              :ref="`input-${item.id}`"
-              v-model="item.value"
-              type="number"
-              placeholder="_"
-              @input="codeInput(item.id, $event)"
-            />
+            <!-- Past Code Input -->
           </div>
           <div class="btns-block">
             <div class="cancle-btn" @click="toggleModal('change_password')">
@@ -264,7 +293,7 @@
         :phone="userPhone"
       />
       <SecurityBlock
-        @toggle-modal="toggleModal('email')"
+        @toggle-modal="toggleModal"
         :user-email="userEmail"
       />
     </div>
@@ -272,8 +301,10 @@
 </template>
 
 <script>
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { ref } from 'vue'
+import { Form } from 'vee-validate'
+import * as yup from "yup";
 
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
@@ -287,6 +318,7 @@ import TextAreaComponent from '../../../components/TextAreaComponent.vue'
 import RatingCard from '../../../components/RatingCard.vue'
 import UserDetailsCard from '../../../components/UserDetailsCard.vue'
 import SecurityBlock from '../../../components/SecurityBlock.vue'
+import CodeInput from '../../../components/CodeInput.vue'
 
 import eyeCross from '../../../assets/img/eye-crossed.svg'
 import eyeOpen from '../../../assets/img/eye-opened.svg'
@@ -296,6 +328,8 @@ import notification from '../../../assets/img/notification-small.svg'
 import sortArrowHorizontal from '../../../assets/img/sort-arrows-horizontal.svg'
 
 import Spiner from '../../../workers/loading-worker/Loading.vue'
+import { API } from "../../../workers/api-worker/api.worker"
+import { ROUTES } from "../../../router"
 
 import CONSTANTS from '../../../consts'
 
@@ -315,6 +349,8 @@ export default {
     RatingCard,
     UserDetailsCard,
     SecurityBlock,
+    CodeInput,
+    Form
   },
   setup() {
     const route = useRoute()
@@ -322,6 +358,12 @@ export default {
     const userRating = ref(null)
     const userPhone = ref('')
     const userEmail = ref('')
+
+    let schema = computed(() => {
+      return yup.object({
+        verify_code: yup.string().required().min(5),
+      })
+    });
 
     userRating.value = route.meta.usersData.data.raiting
     userProfile.value = route.meta.usersData.data.profile
@@ -334,6 +376,7 @@ export default {
       userRating,
       userPhone,
       userEmail,
+      schema
     }
   },
   data() {
@@ -372,13 +415,6 @@ export default {
           date: '13.07.2022',
         },
       ],
-      codeResettingInputs: [
-        { id: 0, value: '' },
-        { id: 1, value: '' },
-        { id: 2, value: '' },
-        { id: 3, value: '' },
-        { id: 4, value: '' },
-      ],
       isModalActive: {
         phone: false,
         email: false,
@@ -386,7 +422,11 @@ export default {
         change_password: false,
         public_profile: false,
       },
-      modal: {
+      modalChangePhone: {
+        first: true,
+        second: false,
+      },
+      modalDeleteAcc: {
         first: true,
         second: false,
       },
@@ -448,13 +488,27 @@ export default {
       }
     },
   },
-  mounted() {
-    window.addEventListener('paste', this.pasteHandler)
-  },
-  beforeDestroy() {
-    window.removeEventListener('paste', this.pasteHandler)
-  },
   methods: {
+    showData(val) {
+      console.log(val)
+    },
+    deleteAcc(formData) {
+      API.UserService.sendApproveCode(formData.controlledValues.verify_code)
+        .then(() => {
+          localStorage.removeItem('token')
+          this.$router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute)
+        })
+        .catch((e) => {
+          console.log('Delete account error', e)
+        })
+    },
+    sendCodeForDeleteAcc() {
+      this.modalDeleteAcc = {
+        first: false,
+        second: true,
+      },
+      API.UserService.deleteMyProfile()
+    },
     changeUserTab(id) {
       this.currentTab = id
     },
@@ -470,20 +524,20 @@ export default {
       switch (val) {
         case 'phone':
           this.isModalActive.phone = !this.isModalActive.phone
-          this.modal = {
+          this.modalChangePhone = {
             first: true,
             second: false,
           }
-          this.codeResettingInputs = this.codeResettingInputs.map((item) => ({
-            ...item,
-            value: '',
-          }))
           break
         case 'email':
           this.isModalActive.email = !this.isModalActive.email
           break
         case 'delete_acc':
           this.isModalActive.delete_acc = !this.isModalActive.delete_acc
+          this.modalDeleteAcc = {
+            first: true,
+            second: false,
+          }
           break
         case 'public_profile':
           this.isModalActive.public_profile = !this.isModalActive.public_profile
@@ -503,46 +557,12 @@ export default {
         this.$refs.test.focus()
       })
     },
-    codeInput(id, e) {
-      if (e.inputType === 'deleteContentBackward') {
-        if (id !== 0) this.$refs[`input-${id - 1}`][0].focus()
-      } else {
-        const currentInput = this.codeResettingInputs.find((i) => i.id === id)
-        if (currentInput.value.length > 1) {
-          currentInput.value = currentInput.value.slice(1, 2)
-        }
-        const nextRefIndex = id + 1
-        if (nextRefIndex !== 5) {
-          this.$refs[`input-${id + 1}`][0].focus()
-        }
-      }
-    },
     changeEmailIconClick() {
       this.toggleModal('email')
     },
     openPublicProfile() {
       this.toggleModal('public_profile')
-    },
-    pasteHandler() {
-      navigator.clipboard
-        .readText()
-        .then((text) => {
-          if (text.length === 5) {
-            const splitedValue = text.split('')
-            this.codeResettingInputs = this.codeResettingInputs.map(
-              (item, idx) => {
-                return {
-                  ...item,
-                  value: splitedValue[idx],
-                }
-              }
-            )
-          }
-        })
-        .catch((err) => {
-          console.log('К сожалению не удалось взять текст из буффера', err)
-        })
-    },
+    }
   }
 }
 </script>

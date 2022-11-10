@@ -87,6 +87,15 @@ export default {
       color: #262541;
       margin-bottom: 12px;
     }
+    .description-title-second {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 20px;
+      color: #262541;
+      margin-bottom: 16px;
+    }
     .description-text {
       font-family: 'Inter';
       font-style: normal;

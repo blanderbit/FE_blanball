@@ -73,8 +73,8 @@ export default {
   setup(props, context) {
     const sortArrowHorizontal = computed(() => sortArrowHorizontally)
 
-    function toggleModalWindow() {
-      context.emit('toggleModal')
+    function toggleModalWindow(val) {
+      context.emit('toggleModal', val)
     }
 
     return {
