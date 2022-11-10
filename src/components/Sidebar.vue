@@ -50,16 +50,17 @@
 
 <script>
 
-  import SlideMenu from '../components/SlideMenu.vue'
-  import { ref } from 'vue'
-  import notification from '../assets/img/Notification.svg'
-  import notificationUnread from '../assets/img/notificationUnread.svg'
-  import record from '../assets/img/record.svg'
-  import members from '../assets/img/members.svg'
-  import { AuthWebSocketWorkerInstance } from "./../workers/web-socket-worker";
-  import { API } from "../workers/api-worker/api.worker";
-  import { PaginationWorker } from "../workers/pagination-worker";
-  import { NotificationsBus } from "../workers/event-bus-worker";
+    import SlideMenu from '../components/SlideMenu.vue'
+    import { ref } from 'vue'
+    import notification from '../assets/img/Notification.svg'
+    import notificationUnread from '../assets/img/notificationUnread.svg'
+    import record from '../assets/img/record.svg'
+    import members from '../assets/img/members.svg'
+    import { AuthWebSocketWorkerInstance } from "./../workers/web-socket-worker";
+    import { API } from "../workers/api-worker/api.worker";
+    import { PaginationWorker } from "../workers/pagination-worker";
+    import { NotificationsBus } from "../workers/event-bus-worker";
+    import { ROUTES } from '../router'
 
   function createNotificationFromData(message) {
     const constructor = AuthWebSocketWorkerInstance.messages.find(item => item.messageType === message.message_type);
@@ -177,7 +178,7 @@
           })
       },
       goToProfile() {
-        this.$router.push('/application/profile/my-profile')
+        this.$router.push(ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute)
       },
     },
   }
