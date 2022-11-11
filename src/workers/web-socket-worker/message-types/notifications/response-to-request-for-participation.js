@@ -1,17 +1,19 @@
 import { InitialMessage } from "./initial.message";
 
 import {
-    SetActions,
-    SetMessageType,
-    AuthWebSocketMessage
+  SetActions,
+  SetMessageType,
+  AuthWebSocketMessage, NotificationSetImage
 } from "../../type.decorator";
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { ROUTES } from "../../../../router/index";
 import { WebSocketTypes } from "../../web.socket.types";
+import { NotificationImage } from "../../../../assets/img/notifications/notification.images";
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.ResponseToRequestForParticipation)
+@NotificationSetImage(NotificationImage.NotificationInfo)
 @SetActions()
 export class ResponseToRequestForParticipationMessage extends InitialMessage {
     createTexts(data) {

@@ -1,16 +1,18 @@
 import { InitialMessage } from "./initial.message";
 
 import {
-    SetActions,
-    SetMessageType,
-    AuthWebSocketMessage
+  SetActions,
+  SetMessageType,
+  AuthWebSocketMessage, NotificationSetImage
 } from "../../type.decorator";
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { WebSocketTypes } from "../../web.socket.types";
+import { NotificationImage } from "../../../../assets/img/notifications/notification.images";
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.EventHasBeenEnded)
+@NotificationSetImage(NotificationImage.NotificationSuccess)
 @SetActions([
     {
         type: MessageActionTypes.ActionClose,

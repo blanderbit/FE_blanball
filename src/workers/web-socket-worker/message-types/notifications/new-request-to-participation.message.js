@@ -3,15 +3,17 @@ import { InitialMessage } from "./initial.message";
 import {
   SetActions,
   SetMessageType,
-  AuthWebSocketMessage
+  AuthWebSocketMessage, NotificationSetImage
 } from "../../type.decorator";
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { WebSocketTypes } from "../../web.socket.types";
 import { API } from "../../../api-worker/api.worker";
+import { NotificationImage } from "../../../../assets/img/notifications/notification.images";
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.NewRequestToParticipation)
+@NotificationSetImage(NotificationImage.NotificationInfo)
 @SetActions([
   {
     type: MessageActionTypes.Action,

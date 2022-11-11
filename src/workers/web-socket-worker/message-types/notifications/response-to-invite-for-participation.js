@@ -1,18 +1,20 @@
 import { InitialMessage } from "./initial.message";
 
 import {
-    SetActions,
-    SetMessageType,
-    SetPushNotificationTheme,
-    AuthWebSocketMessage
+  SetActions,
+  SetMessageType,
+  SetPushNotificationTheme,
+  AuthWebSocketMessage, NotificationSetImage
 } from "../../type.decorator";
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { ROUTES } from "../../../../router/index";
 import { WebSocketTypes } from "../../web.socket.types";
+import { NotificationImage } from "../../../../assets/img/notifications/notification.images";
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.ResponseToInviteForEvent)
+@NotificationSetImage(NotificationImage.NotificationInfo)
 @SetActions()
 export class ResponseToInviteForParticipationMessage extends InitialMessage {
     createTexts(data) {

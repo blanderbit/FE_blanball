@@ -112,6 +112,7 @@
     setup() {
       const currentStep = ref(1);
       const loading = ref(false);
+      const state = ref({});
       const router = useRouter();
       const toast = useToast();
 
@@ -131,7 +132,7 @@
             new_password: yup.string().required().min(8),
             confirm_new_password: yup.string().required().min(8).when('new_password', (password, field) =>
               password ? field.required().oneOf([yup.ref('new_password')]) : field
-            )
+            ),
           });
         }
         return yup.object({})
@@ -147,7 +148,7 @@
       };
 
       const handleResetPasswordRequest = async (formData) => {
-        const {valid} = await formData.validate();
+        const { valid } = await formData.validate();
 
         if (!valid) {
           return false
@@ -166,28 +167,28 @@
       };
 
       const handleResetVerifyCode = async (formData) => {
-        const {valid} = await formData.validate();
+        const { valid } = await formData.validate();
 
         if (!valid) {
-          loading.value = false;
           return false
         }
+
+        state.value = formData.controlledValues;
         currentStep.value = currentStep.value + 1;
       };
 
       const handleResetResetComplete = async (formData) => {
-        loading.value = true;
-        const {valid} = await formData.validate();
-
+        const { valid } = await formData.validate();
         if (!valid) {
-          loading.value = false;
           return false
         }
 
+        loading.value = true;
+
         try {
-          const result = await API.AuthorizationService.ResetPasswordRequest({
-            ...formData.values,
-            verify_code: ''
+          const result = await API.AuthorizationService.ResetComplete({
+            new_password: formData.values.new_password,
+            verify_code: state.value.verify_code
           });
           router.push(ROUTES.AUTHENTICATIONS.LOGIN);
           handleSuccess(result);

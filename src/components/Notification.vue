@@ -1,45 +1,53 @@
 <template>
   <div class="notification" :class="[notificationType]">
     <loading ref="loading"></loading>
-    <div class="notification-read" v-if="notificationInstance.isRead"></div>
-    <template v-if="notificationType === 'notification-sidebar'">
-      <div class="d-flex justify-content-between">
-        <div class="notification-title">{{notificationInstance.title}}</div>
-        <div class="notification-date">{{formatDate}}</div>
+    <div class="notification-parts d-flex justify-content-between">
+      <div class="notification-image" v-if="notificationType === 'notification-sidebar' && notificationInstance.notificationImage">
+        <img :src="notificationInstance.notificationImage">
       </div>
-    </template>
-    <template v-else>
-      <div class="d-flex justify-content-between">
-        <div class="notification-title">{{notificationInstance.title}}</div>
-        <div class="notification-date">{{formatDate}}</div>
-      </div>
-    </template>
-    <template v-if="notificationInstance.textsAfterAction">
-      <div class="notification-response d-flex align-items-center">
-        <img v-if="notificationInstance.textsAfterAction.response" src="../assets/img/true_check.svg">
-        <img v-else src="../assets/img/red_cross.svg">
-        {{notificationInstance.textsAfterAction.text}}
-      </div>
-    </template>
-    <div class="notification-content" v-for="item in notificationInstance.texts">{{item}}</div>
-    <div class="notification-actions" v-if="notificationInstance?.actions?.length">
-      <template v-for="item in notificationInstance.actions">
-        <NotificationButton
-            @click="$emit('handler-action', item)"
-            :button-type="item.buttonType"
-            :button-color="item.buttonColor"
-        >
-          {{item.text}}
-        </NotificationButton>
-      </template>
+      <div class="notification-data">
+        <div class="notification-read" v-if="notificationInstance.isRead"></div>
+        <template v-if="notificationType === 'notification-sidebar'">
+          <div class="d-flex justify-content-between">
+            <div class="notification-title">{{notificationInstance.title}}</div>
+            <div class="notification-date">{{formatDate}}</div>
+          </div>
+        </template>
+        <template v-else>
+          <div class="d-flex justify-content-between">
+            <div class="notification-title">{{notificationInstance.title}}</div>
+            <div class="notification-date">{{formatDate}}</div>
+          </div>
+        </template>
+        <template v-if="notificationInstance.textsAfterAction">
+          <div class="notification-response d-flex align-items-center">
+            <img v-if="notificationInstance.textsAfterAction.response" src="../assets/img/true_check.svg">
+            <img v-else src="../assets/img/red_cross.svg">
+            {{notificationInstance.textsAfterAction.text}}
+          </div>
+        </template>
+        <div class="notification-content" v-for="item in notificationInstance.texts">{{item}}</div>
+        <div class="notification-actions" v-if="!notificationInstance.textsAfterAction && notificationInstance?.actions?.length">
+          <template v-for="item in notificationInstance.actions">
+            <NotificationButton
+                @click="$emit('handler-action', item)"
+                :button-type="item.buttonType"
+                :button-color="item.buttonColor"
+                :notification-type="notificationType"
+            >
+              {{item.text}}
+            </NotificationButton>
+          </template>
 
-    </div>
-    <div class="notification-close" v-if="isPush" @click="$emit('handler-close')">
-      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M0.189895 0.189192C0.433973 -0.0548856 0.829701 -0.0548852 1.07378 0.189193L5.00069 4.11612L8.92758 0.189194C9.17166 -0.0548846 9.56739 -0.0548862 9.81147 0.189191C10.0555 0.433267 10.0555 0.828995 9.81147 1.07307L5.88458 5L9.81147 8.92689C10.0555 9.17097 10.0555 9.5667 9.81147 9.81077C9.56739 10.0549 9.17166 10.0549 8.92759 9.81077L5.00069 5.88388L1.07378 9.81078C0.829698 10.0549 0.43397 10.0549 0.189893 9.81077C-0.0541841 9.5667 -0.0541829 9.17097 0.189896 8.92689L4.11681 5L0.189894 1.07308C-0.0541837 0.828997 -0.0541833 0.433269 0.189895 0.189192Z"
-              fill="#DFDEED"/>
-      </svg>
+        </div>
+        <div class="notification-close" v-if="isPush" @click="$emit('handler-close')">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M0.189895 0.189192C0.433973 -0.0548856 0.829701 -0.0548852 1.07378 0.189193L5.00069 4.11612L8.92758 0.189194C9.17166 -0.0548846 9.56739 -0.0548862 9.81147 0.189191C10.0555 0.433267 10.0555 0.828995 9.81147 1.07307L5.88458 5L9.81147 8.92689C10.0555 9.17097 10.0555 9.5667 9.81147 9.81077C9.56739 10.0549 9.17166 10.0549 8.92759 9.81077L5.00069 5.88388L1.07378 9.81078C0.829698 10.0549 0.43397 10.0549 0.189893 9.81077C-0.0541841 9.5667 -0.0541829 9.17097 0.189896 8.92689L4.11681 5L0.189894 1.07308C-0.0541837 0.828997 -0.0541833 0.433269 0.189895 0.189192Z"
+                  fill="#DFDEED"/>
+          </svg>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -170,6 +178,8 @@
       }
       .spiner-wrapper {
         position: absolute;
+        left: 0;
+        top: 0;
         background: rgba(239, 239, 246, 0.38);
         width: 100%;
       }
@@ -212,14 +222,29 @@
       color: #575775;
     }
     ::v-deep {
+      .spiner-text {
+        display: none;
+      }
       .spiner-wrapper {
         background: rgba(239, 239, 246, 0.38);
         width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
       }
       .spiner-wrapper .spiner-body {
-        width: 100%;
         box-shadow: none;
+        background: transparent;
+        height: 100%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
         .spiner {
+          .lds-ring, .lds-ring div {
+            width: 50px;
+            height: 50px;
+          }
           .lds-ring div {
             border-color: #575775 transparent transparent transparent;
           }
@@ -233,6 +258,8 @@
     width: 100%;
     height: 100%;
     background: white;
+    left: 0;
+    top: 0;
     opacity: 0.6;
   }
 

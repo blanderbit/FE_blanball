@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onBeforeUnmount } from 'vue'
 import Sidebar from './../../components/Sidebar.vue'
 import MainHeader from './../../components/MainHeader.vue'
 import MobileMenu from '../../components/MobileMenu.vue'
@@ -32,7 +32,7 @@ import {
   MessageActionDataTypes,
   MessageActionTypes,
 } from '../../workers/web-socket-worker/message.action.types'
-import { useRouter, onBeforeRouteLeave } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { AuthWebSocketWorkerInstance } from './../../workers/web-socket-worker'
 import { TokenWorker } from '../../workers/token-worker'
 import { createUniqueId } from "../../workers/utils-worker";
@@ -162,7 +162,7 @@ AuthWebSocketWorkerInstance.registerCallback((instanceType) => {
     token: TokenWorker.getToken()
   });
 
-onBeforeRouteLeave(() => AuthWebSocketWorkerInstance.disconnect());
+onBeforeUnmount(() => AuthWebSocketWorkerInstance.disconnect());
 
 </script>
 
