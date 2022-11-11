@@ -7,10 +7,10 @@
         {{ $t('modals.change_password.title') }}
       </template>
       <template #title-icon>
-        <img src="../../../assets/img/key.svg" alt="" />
+        <img src="../../assets/img/key.svg" alt="" />
       </template>
       <template #change-password>
-        <!-- <Form v-slot="data" :validation-schema="schema"> -->
+        <Form v-slot="data" :validation-schema="schema">
           <div class="inut-wrapper">
             <InputComponent
               :title="$t('modals.change_password.current-pass')"
@@ -62,7 +62,7 @@
               {{ $t('buttons.save-changes') }}
             </div>
           </div>
-        <!-- </Form> -->
+        </Form>
       </template>
     </ModalWindow>
   </Transition>
