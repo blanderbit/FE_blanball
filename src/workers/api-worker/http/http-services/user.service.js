@@ -6,4 +6,19 @@ export class UserService {
       EndpointsEnum.Users.getMyProfile
     )
   }
+
+  static deleteMyProfile() {
+    return AxiosInstance.delete(
+      EndpointsEnum.Users.deleteMyProfile
+    )
+  }
+
+  static sendApproveCode(verificationCode) {
+    return AxiosInstance.post(
+      EndpointsEnum.Users.sendApproveCode,
+      {
+        verify_code: verificationCode
+      }
+    )
+  }
 }
