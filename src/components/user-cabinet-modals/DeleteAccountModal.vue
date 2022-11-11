@@ -8,7 +8,7 @@
         {{ $t('modals.delete_acc.title') }}
       </template>
       <template #title-icon>
-        <img src="../../../assets/img/warning.svg" alt="" />
+        <img src="../../assets/img/warning.svg" alt="" />
       </template>
       <template #delete-account>
         <div
@@ -45,7 +45,7 @@
             {{userEmail}}
             {{ $t('modals.delete_acc.during-seconds') }}
           </div>
-          <Form v-slot="data" :validation-schema="passSchema">
+          <Form v-slot="data" :validation-schema="schema">
             <div class="code-input-field">
               <CodeInput
                 :fields="5"
@@ -108,7 +108,7 @@ export default {
       first: true,
       second: false,
     })
-    const passSchema = computed(() => {
+    const schema = computed(() => {
       return yup.object({
         verify_code: yup.string().required().min(5),
       })
@@ -146,7 +146,7 @@ export default {
       closeModal,
       deleteAcc,
       modalDeleteAcc,
-      passSchema
+      schema
     }
   }
 }
