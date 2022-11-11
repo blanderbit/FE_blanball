@@ -111,85 +111,24 @@
       </ModalWindow>
     </Transition>
 
-    <Transition>
-      <ModalWindow
-        v-if="isModalActive.delete_acc"
-        :title-color="'#C10B0B'"
-        @close-modal="toggleModal('delete_acc')"
-      >
+    <DeleteAccountModal
+      v-if="isModalActive.delete_acc"
+      :user-email="userEmail"
+      @close-modal="toggleModal"
+    />
 
-
-
-          <template #title>
-            {{ $t('modals.delete_acc.title') }}
-          </template>
-          <template #title-icon>
-            <img src="../../../assets/img/warning.svg" alt="" />
-          </template>
-          <template #delete-account>
-            <div
-              v-if="modalDeleteAcc.first" 
-              class="first-screen"
-            >
-              <div class="description-text">
-                {{ $t('modals.delete_acc.text') }}
-              </div>
-              <div class="btns-block">
-                <div class="cancle-delete-acc" @click="toggleModal('delete_acc')">
-                  {{ $t('buttons.cancel-deleting') }}
-                </div>
-                <div class="delete-acc" @click="sendCodeForDeleteAcc">
-                  {{ $t('buttons.delete-account') }}
-                </div>
-              </div>
-            </div>
-            <div 
-              v-if="modalDeleteAcc.second" 
-              class="second-screen"
-            >
-              <div class="description-title-second">
-                {{ $t('modals.delete_acc.title-second') }}
-              </div>
-              <div class="description-text">
-                {{ $t('modals.delete_acc.text-second') }}
-                some@email.com
-                {{ $t('modals.delete_acc.during-seconds') }}
-              </div>
-              <Form v-slot="data" :validation-schema="schema">
-                <div class="code-input-field">
-                  <CodeInput
-                    :fields="5"
-                    :fieldWidth="48"
-                    :fieldHeight="40"
-                    :required="true"
-                    name="verify_code"
-                    @complete="completed = true"
-                  />
-                </div>
-                <div class="btns-block">
-                  <div class="cancle-delete-acc" @click="toggleModal('delete_acc')">
-                    {{ $t('buttons.cancel-deleting') }}
-                  </div>
-                  <div class="delete-acc" @click="deleteAcc(data)">
-                    {{ $t('buttons.delete-account') }}
-                  </div>
-                </div>
-              </Form>
-            </div>
-
-          </template>
-
-
-
-
-      </ModalWindow>
-    </Transition>
+    <!-- Delete Acc Modal -->
+    <ChangePasswordModal 
+      v-if="isModalActive.delete_acc"
+      :user-email="userEmail"
+      @close-modal="toggleModal"
+    />
 
     <Transition>
       <ModalWindow
-        v-if="isModalActive.change_password"
+      v-if="isModalActive.change_password"
         @close-modal="toggleModal('change_password')"
-      >
+        >
         <template #title>
           {{ $t('modals.change_password.title') }}
         </template>
@@ -217,23 +156,41 @@
               :icon="[eyeCrossed, eyeOpened]"
             />
           </div>
-          <p class="sms-text">
+          <p 
+            class="sms-text"
+          >
             {{ $t('modals.change_password.sms-code') }}
+            stefa.kalyna@gmail.com
+            {{ $t('modals.change_password.during') }}
+            30
+            {{ $t('modals.change_password.seconds') }}
           </p>
-          <div class="sms-code-block">
-            <!-- Past Code Input -->
+          <div
+            class="sms-code-block"
+          >
+            <CodeInput
+              :fields="5"
+              :fieldWidth="48"
+              :fieldHeight="40"
+              :required="true"
+              name="password_code"
+              @complete="completed = true"
+            />
           </div>
           <div class="btns-block">
             <div class="cancle-btn" @click="toggleModal('change_password')">
               {{ $t('buttons.cancel-editing') }}
             </div>
-            <div class="save-btn" @click="toggleModal('change_password')">
+            <div class="save-btn" @click="changePassword(data)">
               {{ $t('buttons.save-changes') }}
             </div>
           </div>
         </template>
       </ModalWindow>
     </Transition>
+    <!-- Delete Acc Modal -->
+
+
 
     <Transition>
       <ModalUserWindow
@@ -319,6 +276,8 @@ import RatingCard from '../../../components/RatingCard.vue'
 import UserDetailsCard from '../../../components/UserDetailsCard.vue'
 import SecurityBlock from '../../../components/SecurityBlock.vue'
 import CodeInput from '../../../components/CodeInput.vue'
+import DeleteAccountModal from '../../../components/user-cabinet-modals/DeleteAccountModal.vue'
+import ChangePasswordModal from '../../../components/user-cabinet-modals/ChangePasswordModal.vue'
 
 import eyeCross from '../../../assets/img/eye-crossed.svg'
 import eyeOpen from '../../../assets/img/eye-opened.svg'
@@ -350,7 +309,9 @@ export default {
     UserDetailsCard,
     SecurityBlock,
     CodeInput,
-    Form
+    Form,
+    DeleteAccountModal,
+    ChangePasswordModal
   },
   setup() {
     const route = useRoute()
@@ -359,17 +320,16 @@ export default {
     const userPhone = ref('')
     const userEmail = ref('')
 
-    let schema = computed(() => {
+    const schema = computed(() => {
       return yup.object({
         verify_code: yup.string().required().min(5),
       })
-    });
+    })
 
     userRating.value = route.meta.usersData.data.raiting
     userProfile.value = route.meta.usersData.data.profile
     userPhone.value = route.meta.usersData.data.phone
     userEmail.value = route.meta.usersData.data.email
-
 
     return {
       userProfile,
@@ -426,10 +386,6 @@ export default {
         first: true,
         second: false,
       },
-      modalDeleteAcc: {
-        first: true,
-        second: false,
-      },
       isSpinerActive: false,
       dataDropdown: [
         {
@@ -463,10 +419,13 @@ export default {
           url: '/application/profile/notifications',
           isActive: false,
         },
-      ],
+      ]
     }
   },
   computed: {
+    changePasswordStep() {
+      return this.modalChangePassword
+    },
     eyeCrossed() {
       return eyeCross
     },
@@ -489,9 +448,6 @@ export default {
     },
   },
   methods: {
-    showData(val) {
-      console.log(val)
-    },
     deleteAcc(formData) {
       API.UserService.sendApproveCode(formData.controlledValues.verify_code)
         .then(() => {
@@ -534,10 +490,6 @@ export default {
           break
         case 'delete_acc':
           this.isModalActive.delete_acc = !this.isModalActive.delete_acc
-          this.modalDeleteAcc = {
-            first: true,
-            second: false,
-          }
           break
         case 'public_profile':
           this.isModalActive.public_profile = !this.isModalActive.public_profile

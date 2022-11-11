@@ -226,7 +226,6 @@
   }
 
   .b-reset-step {
-
     padding: 44px 24px 72px 24px;
     height: 100%;
     display: flex;
