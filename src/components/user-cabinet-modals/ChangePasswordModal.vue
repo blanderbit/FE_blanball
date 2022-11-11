@@ -10,7 +10,7 @@
         <img src="../../../assets/img/key.svg" alt="" />
       </template>
       <template #change-password>
-        <Form v-slot="data" :validation-schema="schema">
+        <!-- <Form v-slot="data" :validation-schema="schema"> -->
           <div class="inut-wrapper">
             <InputComponent
               :title="$t('modals.change_password.current-pass')"
@@ -62,7 +62,7 @@
               {{ $t('buttons.save-changes') }}
             </div>
           </div>
-        </Form>
+        <!-- </Form> -->
       </template>
     </ModalWindow>
   </Transition>
@@ -78,6 +78,8 @@ import ModalWindow from '../../components/ModalWindow.vue'
 import CodeInput from '../../components/CodeInput.vue'
 import InputComponent from '../../components/InputComponent.vue'
 
+import eyeCross from '../../assets/img/eye-crossed.svg'
+import eyeOpen from '../../assets/img/eye-opened.svg'
 
 import { API } from "../../workers/api-worker/api.worker"
 
@@ -101,9 +103,11 @@ export default {
     const modalChangeStep = ref(1)
     const schema = computed(() => {
       return yup.object({
-        verify_code: yup.string().required().min(5),
+        password_code: yup.string().required().min(5),
       })
     })
+    const eyeCrossed = computed(() => eyeCross)
+    const eyeOpened = computed(() => eyeOpen) 
 
     function closeModal() {
       modalChangeStep.value = 1
@@ -113,7 +117,7 @@ export default {
     function changePassword(formData) {
       console.log(formData)
       if (modalChangeStep.value === 1) {
-        console.log('inside changePass')
+        console.log('send code')
         modalChangeStep.value = 2
       } else {
         console.log('api goo')
@@ -124,7 +128,9 @@ export default {
       closeModal,
       changePassword,
       modalChangeStep,
-      schema
+      schema,
+      eyeCrossed,
+      eyeOpened
     }
   }
 }
