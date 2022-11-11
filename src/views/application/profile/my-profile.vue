@@ -119,75 +119,10 @@
 
     <!-- Delete Acc Modal -->
     <ChangePasswordModal 
-      v-if="isModalActive.delete_acc"
+      v-if="isModalActive.change_password"
       :user-email="userEmail"
       @close-modal="toggleModal"
     />
-
-    <Transition>
-      <ModalWindow
-      v-if="isModalActive.change_password"
-        @close-modal="toggleModal('change_password')"
-        >
-        <template #title>
-          {{ $t('modals.change_password.title') }}
-        </template>
-        <template #title-icon>
-          <img src="../../../assets/img/key.svg" alt="" />
-        </template>
-        <template #change-password>
-          <div class="inut-wrapper">
-            <InputComponent
-              :title="$t('modals.change_password.current-pass')"
-              :title-width="0"
-              :type="['password', 'text']"
-              :outside-title="true"
-              :has-icon="true"
-              :icon="[eyeCrossed, eyeOpened]"
-            />
-          </div>
-          <div class="inut-wrapper">
-            <InputComponent
-              :title="$t('modals.change_password.new-pass')"
-              :title-width="0"
-              :type="['password', 'text']"
-              :outside-title="true"
-              :has-icon="true"
-              :icon="[eyeCrossed, eyeOpened]"
-            />
-          </div>
-          <p 
-            class="sms-text"
-          >
-            {{ $t('modals.change_password.sms-code') }}
-            stefa.kalyna@gmail.com
-            {{ $t('modals.change_password.during') }}
-            30
-            {{ $t('modals.change_password.seconds') }}
-          </p>
-          <div
-            class="sms-code-block"
-          >
-            <CodeInput
-              :fields="5"
-              :fieldWidth="48"
-              :fieldHeight="40"
-              :required="true"
-              name="password_code"
-              @complete="completed = true"
-            />
-          </div>
-          <div class="btns-block">
-            <div class="cancle-btn" @click="toggleModal('change_password')">
-              {{ $t('buttons.cancel-editing') }}
-            </div>
-            <div class="save-btn" @click="changePassword(data)">
-              {{ $t('buttons.save-changes') }}
-            </div>
-          </div>
-        </template>
-      </ModalWindow>
-    </Transition>
     <!-- Delete Acc Modal -->
 
 
@@ -320,11 +255,11 @@ export default {
     const userPhone = ref('')
     const userEmail = ref('')
 
-    const schema = computed(() => {
-      return yup.object({
-        verify_code: yup.string().required().min(5),
-      })
-    })
+    // const schema = computed(() => {
+    //   return yup.object({
+    //     verify_code: yup.string().required().min(5),
+    //   })
+    // })
 
     userRating.value = route.meta.usersData.data.raiting
     userProfile.value = route.meta.usersData.data.profile
@@ -336,7 +271,7 @@ export default {
       userRating,
       userPhone,
       userEmail,
-      schema
+      // schema
     }
   },
   data() {

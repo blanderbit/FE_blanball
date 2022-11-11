@@ -45,7 +45,7 @@
             {{userEmail}}
             {{ $t('modals.delete_acc.during-seconds') }}
           </div>
-          <Form v-slot="data" :validation-schema="schema">
+          <Form v-slot="data" :validation-schema="passSchema">
             <div class="code-input-field">
               <CodeInput
                 :fields="5"
@@ -108,7 +108,7 @@ export default {
       first: true,
       second: false,
     })
-    const schema = computed(() => {
+    const passSchema = computed(() => {
       return yup.object({
         verify_code: yup.string().required().min(5),
       })
@@ -146,7 +146,7 @@ export default {
       closeModal,
       deleteAcc,
       modalDeleteAcc,
-      schema
+      passSchema
     }
   }
 }
