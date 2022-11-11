@@ -47,7 +47,7 @@ import RatePlayerCard from '../ModalFeedback/RatePlayerCard.vue'
 import CONSTANTS from '../../consts/index'
 
 export default {
-  name: 'ModalFeedback',
+  name: 'ModalBottomCard',
   components: {
     RatePlayerCard,
   },

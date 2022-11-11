@@ -37,15 +37,15 @@
           :outside-title="true"
           :has-icon="true"
           :icon="[sortArrowHorizontal]"
-          @icon-click="changeEmailIconClick"
+          @icon-click="toggleModalWindow"
         />
       </div>
-      <div class="b-security__change-pass-btn" @click="toggleModal('change_password')">
+      <div class="b-security__change-pass-btn" @click="toggleModalWindow('change_password')">
         {{ $t('profile.change-password') }}
         <img src="../assets/img/lock.svg" alt="" />
       </div>
     </div>
-    <div class="b-security__delete-account" @click="toggleModal('delete_acc')">
+    <div class="b-security__delete-account" @click="toggleModalWindow('delete_acc')">
       {{ $t('profile.delete-account') }}
     </div>
   </div>
@@ -73,13 +73,13 @@ export default {
   setup(props, context) {
     const sortArrowHorizontal = computed(() => sortArrowHorizontally)
 
-    function changeEmailIconClick() {
+    function toggleModalWindow() {
       context.emit('toggleModal')
     }
 
     return {
       sortArrowHorizontal,
-      changeEmailIconClick,
+      toggleModalWindow,
     }
   },
 }

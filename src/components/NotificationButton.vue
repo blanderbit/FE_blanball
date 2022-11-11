@@ -15,12 +15,16 @@
             buttonType: {
                 type: String,
                 default: 'flat'
+            },
+            notificationType: {
+                type: String,
+                default: 'notification-push' // notification-sidebar
             }
         }
     }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
     .notification-button  {
         cursor: pointer;
         display: inline-block;
@@ -47,11 +51,21 @@
         background: #575775;
         border-color: #575775;
         color: #FFFFFF;
+        &.notification-sidebar {
+            background: #EFEFF6;
+            border-color: #EFEFF6;
+            color: #575775;
+        }
     }
     .notification-button.stroked {
         background: #262541;
         border-color: #C5C5D3;
         color: #FFFFFF;
+        &.notification-sidebar {
+            background: #FCFCFC;
+            border-color: #EFEFF6;
+            color: #424257;
+        }
     }
     .notification-button.flat.success {
         background:#148581;

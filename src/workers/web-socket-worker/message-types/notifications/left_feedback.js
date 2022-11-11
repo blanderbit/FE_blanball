@@ -1,17 +1,19 @@
 import { InitialMessage } from "./initial.message";
 
 import {
-    SetActions,
-    SetMessageType,
-    AuthWebSocketMessage
+  SetActions,
+  SetMessageType,
+  AuthWebSocketMessage, NotificationSetImage
 } from "../../type.decorator";
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { WebSocketTypes } from "../../web.socket.types";
 import { ROUTES } from "../../../../router";
+import { NotificationImage } from "../../../../assets/img/notifications/notification.images";
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.LeftFeedback)
+@NotificationSetImage(NotificationImage.NotificationInfo)
 @SetActions([
     {
         type: MessageActionTypes.ActionClose,

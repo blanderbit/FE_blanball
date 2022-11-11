@@ -56,13 +56,19 @@ export function TimeForCloseIfInactive(e) {
     }
 }
 
+export function NotificationSetImage(e) {
+    return (a) => {
+        a.notificationImage = e;
+        a.prototype.notificationImage = e;
+    }
+}
+
 export function SetActions(e = []) {
     return (a) => {
         a.actions = e;
         if(a.prototype) {
             a.prototype.actions = e;
         }
-
     }
 }
 

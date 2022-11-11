@@ -248,8 +248,8 @@
     </div>
     <div class="my-profile-tab">
       <RatingCard 
-        :rate-block="rateBlbock"
-        :rating-scale="userRating"
+        :rate-block="rateBlbock" 
+        :rating-scale="userRating" 
       />
       <UserDetailsCard
         :labels="labels"
@@ -262,10 +262,9 @@
         :district="mockData.district"
         :user-data="userProfile"
         :phone="userPhone"
-
       />
-      <SecurityBlock 
-        :toggle-modal="toggleModal('email')"
+      <SecurityBlock
+        @toggle-modal="toggleModal('email')"
         :user-email="userEmail"
       />
     </div>
@@ -315,7 +314,7 @@ export default {
     TextAreaComponent,
     RatingCard,
     UserDetailsCard,
-    SecurityBlock
+    SecurityBlock,
   },
   setup() {
     const route = useRoute()
@@ -329,13 +328,12 @@ export default {
     userPhone.value = route.meta.usersData.data.phone
     userEmail.value = route.meta.usersData.data.email
 
-    console.log(route.meta.usersData.data)
 
     return {
       userProfile,
       userRating,
       userPhone,
-      userEmail
+      userEmail,
     }
   },
   data() {
@@ -446,9 +444,9 @@ export default {
         main_lag: CONSTANTS.profile.mainLeg,
         cities: CONSTANTS.profile.cities,
         district: CONSTANTS.profile.district,
-        user_info: CONSTANTS.users_page.userInfo
+        user_info: CONSTANTS.users_page.userInfo,
       }
-    }
+    },
   },
   mounted() {
     window.addEventListener('paste', this.pasteHandler)
@@ -544,7 +542,7 @@ export default {
         .catch((err) => {
           console.log('К сожалению не удалось взять текст из буффера', err)
         })
-    }
+    },
   }
 }
 </script>
@@ -568,8 +566,8 @@ export default {
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .user-cabinet {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 .title-block {
   display: flex;

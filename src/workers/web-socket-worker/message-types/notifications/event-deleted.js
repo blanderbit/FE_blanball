@@ -1,19 +1,21 @@
 import { InitialMessage } from "./initial.message";
 
 import {
-    SetActions,
-    SetMessageType,
-    SetPushNotificationTheme,
-    AuthWebSocketMessage
+  SetActions,
+  SetMessageType,
+  SetPushNotificationTheme,
+  AuthWebSocketMessage, NotificationSetImage
 } from "../../type.decorator";
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { ROUTES } from "../../../../router/index";
 import { WebSocketTypes } from "../../web.socket.types";
+import { NotificationImage } from "../../../../assets/img/notifications/notification.images";
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.EventDeleted)
 @SetPushNotificationTheme('error')
+@NotificationSetImage(NotificationImage.NotificationError)
 @SetActions([
     {
         type: MessageActionTypes.ActionClose,

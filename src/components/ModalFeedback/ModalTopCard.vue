@@ -77,7 +77,7 @@
 import { computed, ref } from 'vue'
 
 export default {
-  name: 'ModalFeedback',
+  name: 'ModalTopCard',
   props: {
     step: {
       type: Object,
