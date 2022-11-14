@@ -113,6 +113,10 @@ export default {
       line-height: 20px;
       color: #575775;
       margin-bottom: 4px;
+      span {
+        border-bottom: 1px solid #575775;
+        cursor: pointer;
+      }
     }
     .sms-code-block {
       display: flex;
@@ -138,7 +142,15 @@ export default {
           -moz-appearance: textfield;
         }
       }
-    } 
+    }
+    .error-message {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 20px;
+      color: #F32929;
+    }
     .btns-block {
       display: flex;
       justify-content: space-between;

@@ -117,14 +117,11 @@
       @close-modal="toggleModal"
     />
 
-    <!-- Delete Acc Modal -->
     <ChangePasswordModal 
       v-if="isModalActive.change_password"
       :user-email="userEmail"
       @close-modal="toggleModal"
     />
-    <!-- Delete Acc Modal -->
-
 
 
     <Transition>
