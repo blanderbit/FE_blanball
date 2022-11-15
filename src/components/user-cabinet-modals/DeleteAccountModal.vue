@@ -131,7 +131,8 @@ export default {
     }
 
     function deleteAcc(formData) {
-      API.UserService.sendApproveCode(formData.controlledValues.verify_code)
+      console.log(formData.controlledValues)
+      API.UserService.sendApproveCode(formData.controlledValues)
         .then(() => {
           localStorage.removeItem('token')
           router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute)
