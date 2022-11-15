@@ -4,24 +4,18 @@ import { WebSocketTypes } from "../../web.socket.types";
 import { NotificationsBus } from "../../../event-bus-worker";
 
 @AuthWebSocketMessage()
-@SetMessageType(WebSocketTypes.BulkNotificationDelete)
-export class NotificationBulkDeleteUpdation extends InitialUpdation {
+@SetMessageType(WebSocketTypes.AllDeletedNotifications)
+export class NotificationAllDeletedNotificationsUpdation extends InitialUpdation {
   handleUpdate(notifications, callbackAfterAction) {
     let find = 0;
-    notifications.value = notifications.value.filter(item => {
-      const check = item.notification_id !== this.data.notification.id;
-      if(!check && !find) {
-        find = 1;
-      }
-      return check;
-    });
+    notifications.value = [];
 
     if (typeof callbackAfterAction === 'function') {
       callbackAfterAction()
     }
 
     if(find) {
-      NotificationsBus.emit('SidebarReloadLastLoadedPage')
+      NotificationsBus.emit('SidebarClearData')
     }
   }
 }

@@ -17,6 +17,7 @@
           <slot name="change-login"></slot>
           <slot name="delete-account"></slot>
           <slot name="change-password"></slot>
+          <slot name="version-modal"></slot>
         </div>
       </div>
     </div>
@@ -30,6 +31,10 @@ export default {
     titleColor: {
       type: String,
       default: '#148783'
+    },
+    titleName: {
+      type: String,
+      default: 'Modal'
     }
   }
 }

@@ -25,10 +25,6 @@
           </div>
           <ul class="b_slide_menu_notification" v-if="isMenuOpened">
             <!--<InfiniteLoading ref="scrollbar" :firstload="false" @infinite="test()"/>-->
-            <div class="b_slide_menu_new_notifications" v-if="isMenuOpened && newNotifications"
-                 @click="$emit('reLoading')">
-              Новые уведомления - {{ newNotifications }}
-            </div>
             <!--TODO need delete 'slide_menu.link'-->
             <!--<virtual-list class="list-infinite scroll-touch"-->
             <!--:data-key="'notification_id'"-->
@@ -47,9 +43,26 @@
             <!--</div>-->
             <!--</virtual-list>-->
             <!--<virtual-scroll-list style="height: 360px; overflow-y: auto;">-->
+            <Notification
+                v-if="newNotifications"
+                class="b-new-notification"
+                :notificationInstance="getNewNotificationInstance"
+                @handler-action="$emit('reLoading')"
+            >
+
+            </Notification>
             <Notifications :notifications="notifications"></Notifications>
             <!--</virtual-scroll-list>-->
-            <InfiniteLoading ref="scrollbar"  @infinite="$emit('loadingInfinite',$event)"/>
+            <InfiniteLoading ref="scrollbar"  @infinite="$emit('loadingInfinite',$event)">
+              <template #complete>
+                <empty-list
+                    v-if="!notifications.length"
+                    :title="emptyListMessages.title"
+                    :description="emptyListMessages.title">
+                </empty-list>
+
+              </template>
+            </InfiniteLoading>
           </ul>
         </div>
         <div class="b_slide_menu_bottom-block">
@@ -73,20 +86,25 @@
 </template>
 
 <script>
-  import { ref, inject, computed } from 'vue'
-  import Notifications from './sitebar-notifications/Notifications.vue'
+  import { ref, inject, computed } from 'vue';
+  import Notifications from './sitebar-notifications/Notifications.vue';
+  import Notification from './Notification.vue';
+  import EmptyList from './EmptyList.vue';
   import { useRouter } from "vue-router";
   import sidebarArrowBack from '../assets/img/sidebar-arrow-back.svg'
   import sidebarArrow from '../assets/img/sidebar-arrow.svg'
   import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue'
   import { ROUTES } from "../router";
   import { TokenWorker } from "../workers/token-worker";
+  import { NewNotifications } from "../workers/web-socket-worker/not-includes-to-socket/new_notifications";
   // import VirtualList from 'vue3-virtual-scroll-list';
 
   export default {
     components: {
       InfiniteLoading,
       // VirtualList,
+      Notification,
+      EmptyList,
       Notifications
     },
     props: {
@@ -113,6 +131,7 @@
     setup(context, {emit}) {
       const router = useRouter();
       const isMenuOpened = ref(false);
+      const newNotificationInstance = ref(new NewNotifications());
       const clientVersion = ref(inject('clientVersion'));
 
       const arrowPosition = computed(() => {
@@ -128,6 +147,18 @@
         TokenWorker.clearToken();
         router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute)
       }
+
+      const getNewNotificationInstance = computed(() => {
+        newNotificationInstance.value.countOfNewNotifications = context.newNotifications;
+        return newNotificationInstance.value;
+      });
+
+      const emptyListMessages = computed(() => {
+        return {
+          title: "Немає повідомлень для відображення",
+          description:"Вам ще не надходили сповіщення від інших користувачів"
+        }
+      });
 
       // watch(
       //   () => context.notifications,
@@ -150,6 +181,8 @@
         arrowPosition,
         toggleMenu,
         logOut,
+        getNewNotificationInstance,
+        emptyListMessages
       }
     }
   }
@@ -291,5 +324,9 @@
         }
       }
     }
+  }
+
+  .b-new-notification {
+    border-bottom: 1px solid #262541;
   }
 </style>

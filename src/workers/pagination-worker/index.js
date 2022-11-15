@@ -14,8 +14,8 @@ export const PaginationWorker = (options) => {
         nextPage.value = true;
     };
 
-    const loadNotification = async ({ pageNumber, $state }) => {
-        if (!nextPage.value) {
+    const loadNotification = async ({ pageNumber, $state, forceUpdate }) => {
+        if (!nextPage.value && !forceUpdate) {
           $state?.complete && $state.complete();
           return;
         }
