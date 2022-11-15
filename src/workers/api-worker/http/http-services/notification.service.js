@@ -42,8 +42,14 @@ export class NotificationService {
   }
 
   static deleteAllMyNotifications() {
-    return AxiosInstance.get(
+    return AxiosInstance.delete(
       EndpointsEnum.Notification.DeleteAllMyNotifications
+    )
+  }
+
+  static readAllMyNotifications() {
+    return AxiosInstance.delete(
+      EndpointsEnum.Notification.ReadAllMyNotifications
     )
   }
 }

@@ -56,12 +56,12 @@ export class InitialMessage {
   }
 
   constructor(message) {
-    this.data = message.data;
-    this.date = message.date_time || message.time_created;
-    this.isRead = message.type === 'Read';
-    this.notification_id = message.notification_id;
-    this.texts = this.createTexts(message.data);
-    this.title = this.createTitle(message.data);
+    this.data = message?.data;
+    this.date = message?.date_time || message?.time_created;
+    this.isRead = message?.type === 'Read';
+    this.notification_id = message?.notification_id;
+    this.texts = this.createTexts(message?.data);
+    this.title = this.createTitle(message?.data);
     this.onInit()
   }
 

@@ -152,12 +152,15 @@ const createToastFromInstanceType = (notificationInstance) => {
   }
 };
 
-AuthWebSocketWorkerInstance.registerCallback((instanceType) => {
+const handleNewMessage = (instanceType) => {
   if (instanceType.pushNotification) {
     createToastFromInstanceType(instanceType);
     audio.play()
-  }
-})
+  };
+};
+
+AuthWebSocketWorkerInstance
+  .registerCallback(handleNewMessage)
   .connect({
     token: TokenWorker.getToken()
   });

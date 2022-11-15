@@ -101,7 +101,10 @@
       const loadDataNotifications = (pageNumber, $state, isNewNotifications) => {
         pageNumber = pageNumber < 1 ? 1 : pageNumber;
         if (pageNumber === page.value) return;
-        loadNotification({ pageNumber, $state })
+        if(isNewNotifications) {
+          notifications.value = []
+        }
+        loadNotification({ pageNumber, $state, forceUpdate: isNewNotifications })
           .then(() => {
             if (isNewNotifications) {
               skipids.value = []
@@ -109,20 +112,26 @@
           })
       };
 
-      AuthWebSocketWorkerInstance
-        .registerCallback((instanceType) => {
-          if (instanceType.notification) {
-            getNotificationsCount();
-            skipids.value.push(instanceType.notification_id);
-          }
+      const handleMessageInSitebar = (instanceType) => {
+        if (instanceType.notification) {
+          getNotificationsCount();
+          skipids.value.push(instanceType.notification_id);
+        }
 
-          if (instanceType.updateWebSocketMessage) {
-            instanceType.handleUpdate(notifications, getNotificationsCount)
-          }
-        });
+        if (instanceType.updateWebSocketMessage) {
+          instanceType.handleUpdate(notifications, getNotificationsCount)
+        }
+      };
+
+      AuthWebSocketWorkerInstance
+        .registerCallback(handleMessageInSitebar);
 
       NotificationsBus.on('SidebarReloadLastLoadedPage', () => {
         loadDataNotifications(page.value);
+      });
+      NotificationsBus.on('SidebarClearData', () => {
+        page.value = 1;
+        skipids.value = [];
       });
 
 
