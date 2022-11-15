@@ -5,7 +5,7 @@
       <div class="notification-image" v-if="notificationType === 'notification-sidebar' && notificationInstance.notificationImage">
         <img :src="notificationInstance.notificationImage">
       </div>
-      <div class="notification-data">
+      <div class="notification-data flex-grow-1">
         <div class="notification-read" v-if="notificationInstance.isRead"></div>
         <template v-if="notificationType === 'notification-sidebar'">
           <div class="d-flex justify-content-between">
@@ -16,7 +16,6 @@
         <template v-else>
           <div class="d-flex justify-content-between">
             <div class="notification-title">{{notificationInstance.title}}</div>
-            <div class="notification-date">{{formatDate}}</div>
           </div>
         </template>
         <template v-if="notificationInstance.textsAfterAction">
@@ -64,9 +63,6 @@
       NotificationButton
     },
     emits: ['handler-action'],
-    data: () => ({
-      intersectionElement: null
-    }),
     props: {
       notificationInstance: {
         type: Object,

@@ -14,8 +14,10 @@ export class WebSocketTypes {
     static LastUserOnTheEvent = 'last_user_on_the_event';
     static LeftFeedback = 'left_feedback';
 
-    static NotificationRead = 'notification_read';
+    static BulkNotificationRead = 'bulk_notifications_read';
     static UpdateMessageAcceptOrDeclineInviteToEvent = 'update_message_accept_or_decline_invite_to_event';
     static UpdateMessageAcceptOrDeclineParticipationToEvent = 'update_message_accept_or_decline_invite_to_participation';
-    static NotificationDelete = 'notification_delete';
+    static BulkNotificationDelete = 'bulk_notifications_delete';
+    static AllDeletedNotifications = 'all_user_notifications_deleted';
+    static AllReadedNotifications = 'all_user_notifications_readed';
 }

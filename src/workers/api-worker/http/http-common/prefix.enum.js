@@ -12,7 +12,8 @@ export const EndpointsEnum = {
     Read: '/notifications/client/read/notifications',
     Delete: '/notifications/client/delete/notifications',
     Maintenance: '/notifications/admin/get/maintenance',
-    DeleteAllMyNotifications: '/notifications/client/delete-all/notifications' // TODO
+    DeleteAllMyNotifications: '/notifications/client/delete/all/notifications',
+    ReadAllMyNotifications: '/notifications/client/read/all/notifications'
   },
   Events: {
     GetAllEvents: '/events/client/events/list',
