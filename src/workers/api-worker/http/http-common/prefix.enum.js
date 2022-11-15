@@ -23,6 +23,7 @@ export const EndpointsEnum = {
   Users: {
     getMyProfile: '/authentication/client/me',
     deleteMyProfile: '/authentication/client/me',
-    sendApproveCode: '/authentication/client/check/code'
+    sendApproveCode: '/authentication/client/check/code',
+    changePassword: '/authentication/client/request-change/password'
   }
 };

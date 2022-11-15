@@ -14,11 +14,17 @@ export class UserService {
   }
 
   static sendApproveCode(verificationCode) {
+    console.log(verificationCode)
     return AxiosInstance.post(
       EndpointsEnum.Users.sendApproveCode,
-      {
-        verify_code: verificationCode
-      }
+      verificationCode
+    )
+  }
+
+  static changePassword(passwordsData) {
+    return AxiosInstance.post(
+      EndpointsEnum.Users.changePassword,
+      passwordsData
     )
   }
 }
