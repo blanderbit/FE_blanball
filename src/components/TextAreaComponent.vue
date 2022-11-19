@@ -5,17 +5,21 @@
         <span>{{ title }}</span>
       </div>
       <textarea
+        :value="modelValue"
         :placeholder="placeholder"
-        :value="value"
         :disabled="isDisabled"
+        v-on="modelHandlers"
       >
       </textarea>
     </div>
-    <p class="b-text-area__error-message">{{ errorMessage }}</p>
+    <p class="b-text-area__error-message">{{ modelErrorMessage }}</p>
   </div>
 </template>
 
 <script>
+import { computed } from 'vue'
+import { CustomModelWorker } from "../workers/custom-model-worker"
+
 export default {
   name: 'InputComponent',
   props: {
@@ -35,17 +39,35 @@ export default {
       type: Number,
       default: null,
     },
-  },
-  setup() {
-    return {}
-  },
-  computed: {
-    inputWrapper() {
-      return {
-        height: this.height ? this.height + 'px' : '100%',
-      }
+    name: {
+      type: String,
+      required: true,
     },
+    mode: {
+      type: String,
+      default: 'aggressive',
+    }
   },
+  setup(props) {
+    const {
+        modelValue,
+        modelErrorMessage,
+        modelHandlers
+    } = CustomModelWorker(props)
+
+    const inputWrapper = computed(() => {
+      return {
+        height: props.height ? props.height + 'px' : '100%',
+      }
+    })
+
+    return {
+      modelValue,
+      modelErrorMessage,
+      modelHandlers,
+      inputWrapper
+    }
+  }
 }
 </script>
 

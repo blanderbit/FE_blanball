@@ -1,18 +1,18 @@
 export default {
   mainLeg: [
-    { value: 'Права' },
-    { value: 'Левая' }
+    { value: 'Right' },
+    { value: 'Left' }
   ],
   cities: [
     { value: 'Sinaya' },
     { value: 'Bucharest' },
     { value: 'Stanbul' },
-    { value: 'Tbilisi' },
+    { value: 'Tbilisi' }
   ],
   district: [
     { value: 'Бабурка' },
     { value: 'Космос' },
     { value: 'Шевчик' },
-    { value: 'Бородок' },
+    { value: 'Бородок' }
   ],
 }
