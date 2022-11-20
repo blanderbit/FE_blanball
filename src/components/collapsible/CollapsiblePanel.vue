@@ -19,7 +19,7 @@
           class="vcp__header-icon"
       >
         <slot name="icon">
-          <span v-html="toggleIcon"/>
+          <span v-html="toggleIcon"></span>
         </slot>
       </div>
     </header>
@@ -83,7 +83,7 @@
 
       const body = computed(
         () => ({
-          hasContent: context.slots.content && (context.slots.content()[0].children).length > 0,
+          hasContent: context.slots.content,
           dataKey: uuid(),
         }),
       )
