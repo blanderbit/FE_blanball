@@ -10,20 +10,22 @@ import { NotificationImage } from "../../../assets/img/notifications/notificatio
 
 @NotificationSetImage(NotificationImage.NotificationInfo)
 @SetActions([
-    {
-        type: MessageActionTypes.Action,
-        text: 'Завантажити нові повідомлення'
-    },
+  {
+    type: MessageActionTypes.Action,
+    text: 'Завантажити нові повідомлення'
+  },
 ])
 export class NewNotifications extends InitialMessage {
-    countOfNewNotifications = 0;
+  countOfNewNotifications = 0;
 
-    set texts (value) {}
-    get texts () {
-        return [`У вас новіе уведомления - ${this.countOfNewNotifications}`]
-    }
+  set texts(value) {
+  }
 
-    createTitle() {
-        return 'Blanball';
-    }
+  get texts() {
+    return [`У вас новіе уведомления - ${this.countOfNewNotifications}`]
+  }
+
+  createTitle() {
+    return 'System notification';
+  }
 }

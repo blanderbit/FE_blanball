@@ -14,6 +14,7 @@ import PlayerPage from './player-page'
 import SlideMenu from './slide-menu'
 import Versions from './versions'
 import Page404 from './404'
+import Works from './works'
 
 export const UA_LANGUAGE = {
   events: EventsPage,
@@ -31,5 +32,6 @@ export const UA_LANGUAGE = {
   player_page: PlayerPage,
   slide_menu: SlideMenu,
   versions: Versions,
-  page_404: Page404
+  page_404: Page404,
+  works: Works
 }

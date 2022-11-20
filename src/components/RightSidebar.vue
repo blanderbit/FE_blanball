@@ -6,7 +6,7 @@
     </div>
     <div class="b-right-sidebar__cards-block">
       <SmallEventCard 
-        v-for="item in 5"
+        v-for="item in 4"
         :key="item"
       />
     </div>

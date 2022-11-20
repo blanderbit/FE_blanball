@@ -4,9 +4,9 @@ import { EventService } from "./http/http-services/events.service";
 import { UserService } from "./http/http-services/user.service";
 
 export class API {
-    static AuthorizationService = AuthorizationService;
-    static NotificationService = NotificationService;
-    static EventService = EventService;
-    static UserService = UserService;
+  static AuthorizationService = AuthorizationService;
+  static NotificationService = NotificationService;
+  static EventService = EventService;
+  static UserService = UserService;
 }
 

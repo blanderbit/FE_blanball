@@ -1,4 +1,4 @@
-import pkg from '../../../package'
+import pkg from '../../../package';
 
 const VersionEmmitter = {
   set: (version) => localStorage.setItem('version', version),

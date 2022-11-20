@@ -21,21 +21,15 @@ const _checkAsyncIsAdmin = async () => {
   }
 };
 
-const isUserAuthorized = async (e) => {
-  // let loginned = AltesiaTokenWorkerPlugin.isToken() && await _checkAsyncIsAdmin();
-  // return Promise.resolve(!!loginned);
-  const token = !!TokenWorker.getToken();
-
-  return Promise.resolve(token);
-};
+const isUserAuthorized = async () => !!TokenWorker.getToken() && _checkAsyncIsAdmin();
 
 const isAuthorizedError = ({to, next}) => {
+  finishSpinner();
   return next(_createLoginPath(to.fullPath));
 };
 
 const isResolveDataError = async (error) => {
-  // TOAST show
-  finishSpinner()
+  finishSpinner();
   console.log('TOAST_SHOWED_BY_ERROR', error);
 };
 
