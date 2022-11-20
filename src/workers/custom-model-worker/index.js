@@ -1,4 +1,4 @@
-import { useField } from 'vee-validate';
+import { useField } from '@system.it.flumx.com/vee-validate';
 import { computed, toRef } from 'vue';
 import { modes } from "./interactionModes";
 

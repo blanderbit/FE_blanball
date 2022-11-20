@@ -192,7 +192,7 @@
 <script>
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { Form } from 'vee-validate'
+import { Form } from '@system.it.flumx.com/vee-validate'
 import * as yup from "yup";
 
 import GreenBtn from '../../../components/GreenBtn.vue'

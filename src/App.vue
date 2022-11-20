@@ -85,3 +85,4 @@
 
   VersionDetectorWorker(VersionHandling.handleDifferentVersion)
 </script>
+
