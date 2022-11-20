@@ -1,17 +1,17 @@
 <template>
   <div class="b-login-step">
-    <div
-      class="b-login-step__wrong-credentials-message-top"
-      :style="warningTopStyle"
-    >
-      <div class="b-login-step__left-part">
-        <img src="../../assets/img/warning-black.svg" alt="" />
-        {{ $t('login.error-label') }}
-      </div>
-      <div class="b-login-step__right-part">
-        {{ $t('login.check-network') }}
-      </div>
-    </div>
+    <!--<div TODO will delete -->
+      <!--class="b-login-step__wrong-credentials-message-top"-->
+      <!--:style="warningTopStyle"-->
+    <!--&gt;-->
+      <!--<div class="b-login-step__left-part">-->
+        <!--<img src="../../assets/img/warning-black.svg" alt="" />-->
+        <!--{{ $t('login.error-label') }}-->
+      <!--</div>-->
+      <!--<div class="b-login-step__right-part">-->
+        <!--{{ $t('login.check-network') }}-->
+      <!--</div>-->
+    <!--</div>-->
     <Form v-slot="data" :validation-schema="schema">
       <div class="b-login-step__top-part">
         <div class="b-login-step__main-title">{{ $t('login.app-name') }}</div>
@@ -32,6 +32,7 @@
             :title-width="0"
             :type="['password', 'text']"
             :outside-title="true"
+            :placeholder="'********'"
             :has-icon="true"
             name="password"
             :height="40"
@@ -57,9 +58,9 @@
       </div>
       <div
         v-if="showInvalidCredentials"
-        class="b-login-step__wrong-credentials-message"
+        class="b-login-step__wrong-credentials-message d-flex align-items-center"
       >
-        {{ $t('login.wrong-credentials') }}
+        <img src="../../assets/img/warning-black.svg" alt="" /> {{ $t('login.wrong-credentials') }}
       </div>
       <div class="b-login-step__buttons">
         <GreenBtn
@@ -105,13 +106,14 @@ export default {
     const showInvalidCredentials = computed(() => {
       return isWrongCreds.value
     })
-    const eyeCrossed = computed(() => {
-      return eyeCross
-    })
+
     const warningTopStyle = computed(() => {
       return {
         top: showInvalidCredentials.value ? '20px' : '-50px',
       }
+    })
+    const eyeCrossed = computed(() => {
+      return eyeCross
     })
     const eyeOpened = computed(() => {
       return eyeOpen
@@ -225,6 +227,8 @@ export default {
     }
     .b-login-step__title {
       font-family: 'Exo 2';
+
+      margin-bottom: 16px;
       font-style: normal;
       font-weight: 700;
       font-size: 22px;

@@ -1,44 +1,58 @@
 <template>
-  <div class="notification" :class="[notificationType]">
+  <div class="notification" :class="[notificationType, notCollapsible && 'not-collapsible']">
     <loading ref="loading"></loading>
     <div class="notification-parts d-flex justify-content-between">
-      <div class="notification-image" v-if="notificationType === 'notification-sidebar' && notificationInstance.notificationImage">
-        <img :src="notificationInstance.notificationImage">
+      <div class="notification-image" v-if="notificationType === 'notification-sidebar'">
+        <img v-if="notificationInstance.notificationImage" :src="notificationInstance.notificationImage">
+        <avatar
+          v-if="notificationInstance.notificationUserImage"
+          :link="notificationInstance.profileImage"
+          :full-name="notificationInstance.fullName"
+        ></avatar>
       </div>
       <div class="notification-data flex-grow-1">
         <div class="notification-read" v-if="notificationInstance.isRead"></div>
-        <template v-if="notificationType === 'notification-sidebar'">
-          <div class="d-flex justify-content-between">
-            <div class="notification-title">{{notificationInstance.title}}</div>
-            <div class="notification-date">{{formatDate}}</div>
+        <div class="notification-header d-flex justify-content-between">
+          <div class="notification-sender">
+            {{notificationInstance.sender}}
           </div>
-        </template>
-        <template v-else>
-          <div class="d-flex justify-content-between">
-            <div class="notification-title">{{notificationInstance.title}}</div>
+          <div class="b-selectable" v-if="selectable">
+            <checkbox
+              :checked="checked"
+              :field-id="notificationInstance?.notification_id"
+              @update:checked="$emit('selected', {notification: notificationInstance, selected: $event})">
+            </checkbox>
           </div>
-        </template>
-        <template v-if="notificationInstance.textsAfterAction">
-          <div class="notification-response d-flex align-items-center">
-            <img v-if="notificationInstance.textsAfterAction.response" src="../assets/img/true_check.svg">
-            <img v-else src="../assets/img/red_cross.svg">
-            {{notificationInstance.textsAfterAction.text}}
-          </div>
-        </template>
-        <div class="notification-content" v-for="item in notificationInstance.texts">{{item}}</div>
-        <div class="notification-actions" v-if="!notificationInstance.textsAfterAction && notificationInstance?.actions?.length">
-          <template v-for="item in notificationInstance.actions">
-            <NotificationButton
-                @click="$emit('handler-action', item)"
-                :button-type="item.buttonType"
-                :button-color="item.buttonColor"
-                :notification-type="notificationType"
-            >
-              {{item.text}}
-            </NotificationButton>
-          </template>
-
+          <div  v-if="notificationType === 'notification-sidebar' && !selectable" class="notification-date">{{formatDate}}</div>
         </div>
+        <collapsible-panel v-model:expanding="expanding">
+          <template #title>
+            <div class="notification-title">{{notificationInstance.title}}</div>
+          </template>
+          <template #content>
+            <template v-if="notificationInstance.textsAfterAction">
+              <div class="notification-response d-flex align-items-center">
+                <img v-if="notificationInstance.textsAfterAction.response" src="../assets/img/true_check.svg">
+                <img v-else src="../assets/img/red_cross.svg">
+                {{notificationInstance.textsAfterAction.text}}
+              </div>
+            </template>
+            <div class="notification-content" v-for="item in notificationInstance.texts">{{item}}</div>
+            <div class="notification-actions" v-if="!notificationInstance.textsAfterAction && notificationInstance?.actions?.length">
+              <template v-for="item in notificationInstance.actions">
+                <NotificationButton
+                    @click="$emit('handler-action', item)"
+                    :button-type="item.buttonType"
+                    :button-color="item.buttonColor"
+                    :notification-type="notificationType"
+                >
+                  {{item.text}}
+                </NotificationButton>
+              </template>
+            </div>
+          </template>
+        </collapsible-panel>
+
         <div class="notification-close" v-if="isPush" @click="$emit('handler-close')">
           <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -55,20 +69,37 @@
   import dayJs from 'dayjs'
   import Loading from './../workers/loading-worker/Loading.vue'
   import NotificationButton from './../components/NotificationButton.vue'
-
+  import Avatar from './../components/Avatar.vue'
+  import Checkbox from './../components/Checkbox.vue'
+  import CollapsiblePanel from './../components/collapsible/CollapsiblePanel.vue'
   export default {
     name: "Notification",
     components: {
       Loading,
-      NotificationButton
+      NotificationButton,
+      Avatar,
+      Checkbox,
+      CollapsiblePanel
     },
-    emits: ['handler-action'],
+    emits: ['handler-action', 'selected', 'force'],
     props: {
       notificationInstance: {
         type: Object,
         default: () => ({})
       },
       active: {
+        type: Boolean,
+        default: false
+      },
+      selectable: {
+        type: Boolean,
+        default: false
+      },
+      checked: {
+        type: Boolean,
+        default: false
+      },
+      notCollapsible: {
         type: Boolean,
         default: false
       },
@@ -95,13 +126,31 @@
       },
       isStandard() {
         return this.notificationType === 'standard'
+      },
+      expanding: {
+        set(e) {
+          this.notificationInstance.metadata.expanding = this.notificationType === 'notification-sidebar' ? e : true;
+        },
+        get() {
+          if(this.notCollapsible) {
+            return true;
+          }
+          return this.notificationType === 'notification-sidebar' ? !!this.notificationInstance.metadata.expanding : true
+        }
       }
-    },
-
+    }
   }
 </script>
 
 <style scoped lang="scss">
+
+  .notification-sender {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #8A8AA8;
+  }
 
   .notification-content {
     font-family: 'Inter';
@@ -129,7 +178,7 @@
     font-size: 13px;
     line-height: 20px;
     color: #A8A8BD;
-    margin-bottom: 8px;
+
   }
 
   .notification-action {
@@ -200,6 +249,10 @@
     }
   }
 
+  .notification-header {
+    padding: 0 12px;
+  }
+
   .notification-sidebar {
     * {
       color: #000;
@@ -257,6 +310,7 @@
     left: 0;
     top: 0;
     opacity: 0.6;
+    z-index: 50;
   }
 
   .notification-response {
@@ -268,5 +322,39 @@
     > img {
       margin-right: 5px;
     }
+  }
+
+  ::v-deep {
+    .vcp__body {
+      z-index: 1!important;
+    }
+    .vcp__header {
+      padding-right: 7px;
+      padding-bottom: 0;
+    }
+    .vcp__header-icon, .b-selectable {
+      z-index: 1000;
+    }
+    .vcp__header-icon {
+      svg {
+        fill: #8A8AA8;
+      }
+    }
+  }
+
+  .notification-push, .not-collapsible {
+    ::v-deep {
+      .vcp__header, .vcp__body, .vcp__body-content, .notification-header {
+        padding: 0;
+      }
+      .vcp__header-icon {
+        display: none
+      }
+    }
+  }
+
+  .b-selectable {
+    width: 20px;
+    height: 20px;
   }
 </style>

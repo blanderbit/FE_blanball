@@ -21,16 +21,19 @@
           Лист із кодом-підтвердження надійде на вказану адресу, введіть його у
           відведене поле
         </div>
+        <div class="b-reset-step__subtitle" v-if="currentStep === 2">
+          Придумайте новий надійний пароль. Зміни вступлять у силу одразу після збереження
+        </div>
         <div class="b-reset-step__input" v-if="currentStep === 1">
           <InputComponent
               :outside-title="true"
-              :title="`Телефон або пошта`"
+              :title="`Пошта`"
               :placeholder="'example@email.com'"
               :title-width="0"
               name="email"
           />
         </div>
-        <div class="b-reset-step__code-title" v-if="currentStep === 2">
+        <div class="b-reset-step__code-title mb-2" v-if="currentStep === 2">
           Повідомлення прийде протягом 30 сек
         </div>
         <div class="b-reset-step__sms-code-block" v-if="currentStep === 2">
@@ -53,6 +56,7 @@
               :type="['password', 'text']"
               :outside-title="true"
               :has-icon="true"
+              :placeholder="'********'"
               name="new_password"
               :icon="[eyeCrossed, eyeOpened]"
           />
@@ -64,6 +68,7 @@
               :type="['password', 'text']"
               :outside-title="true"
               :has-icon="true"
+              :placeholder="'********'"
               name="confirm_new_password"
               :icon="[eyeCrossed, eyeOpened]"
           />
@@ -100,7 +105,8 @@
   import { ROUTES } from "../../router";
   import { useToast } from 'vue-toastification'
   import CodeInput from "../CodeInput.vue";
-
+  import eyeCross from '../../assets/img/eye-crossed.svg'
+  import eyeOpen from '../../assets/img/eye-opened.svg'
   export default {
     name: 'Step1',
     components: {
@@ -110,11 +116,18 @@
       CodeInput
     },
     setup() {
-      const currentStep = ref(1);
+      const currentStep = ref(2);
       const loading = ref(false);
       const state = ref({});
       const router = useRouter();
       const toast = useToast();
+
+      const eyeCrossed = computed(() => {
+        return eyeCross
+      })
+      const eyeOpened = computed(() => {
+        return eyeOpen
+      })
 
       let schema = computed(() => {
         if (currentStep.value === 1) {
@@ -215,7 +228,9 @@
         handleBackClick,
         loading,
         schema,
-        currentStep
+        currentStep,
+        eyeCrossed,
+        eyeOpened
       }
     },
   }
