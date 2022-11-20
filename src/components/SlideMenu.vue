@@ -333,9 +333,6 @@
         .b_slide_menu_logo {
           padding-left: 8px;
         }
-        .b_slide_menu_notification {
-          overflow-y: scroll;
-        }
         .b_slide_menu_items {
           margin-top: 12px;
           border-top: 1px solid #DFDEED;
