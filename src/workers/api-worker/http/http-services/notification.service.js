@@ -33,7 +33,7 @@ export class NotificationService {
   }
 
   static deleteNotifications(ids) {
-    return AxiosInstance.get(
+    return AxiosInstance.post(
       EndpointsEnum.Notification.Delete,
       {
         ids
@@ -48,7 +48,7 @@ export class NotificationService {
   }
 
   static readAllMyNotifications() {
-    return AxiosInstance.delete(
+    return AxiosInstance.get(
       EndpointsEnum.Notification.ReadAllMyNotifications
     )
   }

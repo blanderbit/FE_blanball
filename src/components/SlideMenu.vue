@@ -7,12 +7,12 @@
     >
     </div>
     <div
-        class="b_slide_menu_wrapper"
-        :style="{
-                    right: isMenuOpened ? '-464px' : '0px'
-                }"
+      class="b_slide_menu_wrapper"
+      :style="{
+        right: isMenuOpened ? '-464px' : '0px'
+      }"
     >
-      <div class="b_slide_menu_sidebar-arrow" @click="toggleMenu">
+      <div v-if="isMenuOpened" class="b_slide_menu_sidebar-arrow" @click="toggleMenu">
         <img :src="arrowPosition" alt="">
       </div>
       <div class="b_slide_menu_main">
@@ -20,49 +20,95 @@
           <div class="b_slide_menu_logo">
             <img src="../assets/img/logo-sidebar.svg" alt="">
           </div>
-          <div class="b_slide_menu_items">
-            <div class="b_slide_menu_title"> {{$t('slide_menu.notifications')}}</div>
+          <div class="b_slide_menu_items d-flex justify-content-between align-items-center mb-2" v-if="notifications.length">
+            <div class="d-flex align-items-center" :style="{opacity: selectedList.length ? '1' : '0'}">
+              <img src="../assets/img/cross.svg" height="10" alt="" class="me-2" @click="clearSelectedList"/>
+              <div class="d-flex">
+                <div class="b-selected-elements__count me-1">
+                  {{ selectedList.length }}
+                </div>
+                / {{totalNotificationsCount}}
+              </div>
+            </div>
+            <button  @click="selectable = !selectable,clearSelectedList()">
+              <span v-if="!selectable">Выбрать записи</span>
+              <span v-else>Отменить выбор</span>
+            </button>
           </div>
-          <ul class="b_slide_menu_notification" v-if="isMenuOpened">
-            <!--<InfiniteLoading ref="scrollbar" :firstload="false" @infinite="test()"/>-->
-            <!--TODO need delete 'slide_menu.link'-->
-            <!--<virtual-list class="list-infinite scroll-touch"-->
-            <!--:data-key="'notification_id'"-->
-            <!--:data-sources="notifications"-->
-            <!--:data-component="itemComponent"-->
-            <!--ref="virtual"-->
-            <!--:keeps="10"-->
-            <!--:estimate-size="70"-->
-            <!--:item-class="'list-item-infinite'"-->
-            <!--:footer-class="'loader-wrapper'"-->
-            <!--v-on:totop="test1()"-->
-            <!--v-on:tobottom="test()"-->
-            <!--&gt;-->
-            <!--<div slot="footer" class="loader">-->
-
-            <!--</div>-->
-            <!--</virtual-list>-->
-            <!--<virtual-scroll-list style="height: 360px; overflow-y: auto;">-->
-            <Notification
-                v-if="newNotifications"
-                class="b-new-notification"
-                :notificationInstance="getNewNotificationInstance"
-                @handler-action="$emit('reLoading')"
+          <div v-if="selectable && notifications.length" class="d-flex mb-2">
+            <button @click="HandleAction.deleteAll()" class="d-flex align-items-center">
+              <img src="../assets/img/notifications/trash.svg" alt="" height="16">
+              Удалить все
+            </button>
+            <button @click="HandleAction.readAll()" class="d-flex align-items-center" v-if="notReadNotificationCount">
+              <img src="../assets/img/notifications/double-check.svg" height="16" alt="">
+              Прочитать все
+            </button>
+            <button @click="HandleAction.deleteSelected()" class="d-flex align-items-center" v-if="selectedList.length">
+              <img src="../assets/img/notifications/trash.svg" height="16" alt="">
+              Удалить
+            </button>
+            <button @click="HandleAction.readSelected()" class="d-flex align-items-center"  v-if="selectedList.length">
+              <img src="../assets/img/notifications/double-check.svg" height="16" alt="">
+              Прочитать
+            </button>
+          </div>
+          <div class="d-flex">
+            <div class="b-notifications-title me-1"> {{$t('slide_menu.notifications')}}</div>
+            <div class="b-notification-unreaded d-flex align-items-center justify-content-center me-1" v-if="notReadNotificationCount">
+              {{ notReadNotificationCount }}
+            </div>
+          </div>
+          <ul
+              class="b_slide_menu_notification"
+              :style="{
+                height: `calc(100vh - ${selectable ? 95 : 60}px - 100px - 70px)`
+              }"
+              v-if="isMenuOpened"
+              ref="test"
+          >
+            <Notifications
+                :notifications="notifications"
+                :selectable="selectable"
+                ref="notificationList"
+                v-model:selected-list="selectedList"
+                v-model:scrollbar-existing="blockScrollToTopIfExist"
             >
-
-            </Notification>
-            <Notifications :notifications="notifications"></Notifications>
-            <!--</virtual-scroll-list>-->
-            <InfiniteLoading ref="scrollbar"  @infinite="$emit('loadingInfinite',$event)">
-              <template #complete>
-                <empty-list
-                    v-if="!notifications.length"
-                    :title="emptyListMessages.title"
-                    :description="emptyListMessages.title">
-                </empty-list>
-
+              <template #before>
+                <Notification
+                    v-if="newNotifications"
+                    class="b-new-notification"
+                    :notificationInstance="getNewNotificationInstance"
+                    :not-collapsible="true"
+                    @handler-action="$emit('reLoading'),restartInfiniteScroll()"
+                >
+                </Notification>
               </template>
-            </InfiniteLoading>
+              <template #after>
+                <InfiniteLoading
+                    :identifier="triggerForRestart"
+                    ref="scrollbar"  @infinite="$emit('loadingInfinite',$event)">
+                  <template #complete>
+                    <empty-list
+                        v-if="!notifications.length"
+                        :title="emptyListMessages.title"
+                        :description="emptyListMessages.title">
+                    </empty-list>
+                    <div class="b-return-top d-flex justify-content-between align-items-center my-3"
+                         v-if="notifications.length && blockScrollToTopIfExist">
+                      <div>Ви досягли кінця списку</div>
+                      <button
+                        class="b-button-scroll__to-first-element d-flex justify-content-between"
+                        @click="scrollToFirstElement()">
+                        Вгору
+                        <img src="../assets/img/arrow_up.svg">
+                      </button>
+                    </div>
+                    <div v-if="!blockScrollToTopIfExist"></div>
+                  </template>
+                </InfiniteLoading>
+              </template>
+            </Notifications>
           </ul>
         </div>
         <div class="b_slide_menu_bottom-block">
@@ -86,7 +132,7 @@
 </template>
 
 <script>
-  import { ref, inject, computed } from 'vue';
+  import { ref, inject, computed, watch } from 'vue';
   import Notifications from './sitebar-notifications/Notifications.vue';
   import Notification from './Notification.vue';
   import EmptyList from './EmptyList.vue';
@@ -97,12 +143,12 @@
   import { ROUTES } from "../router";
   import { TokenWorker } from "../workers/token-worker";
   import { NewNotifications } from "../workers/web-socket-worker/not-includes-to-socket/new_notifications";
-  // import VirtualList from 'vue3-virtual-scroll-list';
+  import { API } from "../workers/api-worker/api.worker";
+  import { v4 as uuid } from "uuid";
 
   export default {
     components: {
       InfiniteLoading,
-      // VirtualList,
       Notification,
       EmptyList,
       Notifications
@@ -119,6 +165,14 @@
       newNotifications: {
         type: Number,
         default: 0
+      },
+      totalNotificationsCount: {
+        type: Number,
+        default: 0
+      },
+      isMenuOpened:{
+        type: Boolean,
+        default: false
       }
     },
     emits: [
@@ -126,21 +180,29 @@
       'reLoading',
       'loading',
       'loadingInfinite',
-      'loadingDowngradeInfinite'
+      'update:isMenuOpened'
     ],
     setup(context, {emit}) {
       const router = useRouter();
-      const isMenuOpened = ref(false);
+      const notificationList = ref();
+      const selectable = ref(false);
+      const blockScrollToTopIfExist = ref(false);
+      const triggerForRestart = ref('');
+      const selectedList = ref([]);
       const newNotificationInstance = ref(new NewNotifications());
       const clientVersion = ref(inject('clientVersion'));
 
+      watch(
+        () => context.isMenuOpened,
+        () => !context.isMenuOpened && emit('closed')
+      );
+
       const arrowPosition = computed(() => {
-        return isMenuOpened.value ? sidebarArrowBack : sidebarArrow
+        return context.isMenuOpened ? sidebarArrowBack : sidebarArrow
       });
 
       function toggleMenu() {
-        isMenuOpened.value = !isMenuOpened.value;
-        emit(isMenuOpened.value ? 'loading' : 'closed');
+        emit('update:isMenuOpened', !context.isMenuOpened)
       }
 
       function logOut() {
@@ -160,29 +222,53 @@
         }
       });
 
-      // watch(
-      //   () => context.notifications,
-      //   () => {
-      //     if(!virtual.value) return;
-      //     if(last.value === 'loadingDowngradeInfinite') {
-      //       return virtual?.value?.scrollToIndex(10)
-      //     }
-      //     return virtual?.value?.scrollToIndex(0)
-      //   }
-      // );
+      const clearSelectedList = () => {
+        selectedList.value = []
+      };
 
-      // function test($event) {
-      //   debugger
-      //   emit('loadingInfinite')
-      // }
+      const HandleAction = {
+        deleteAll: () => {
+          if (!context.notifications.length && !context.newNotifications) return;
+          API.NotificationService.deleteAllMyNotifications();
+          clearSelectedList();
+        },
+        readAll: () => {
+          if (!context.notifications.length && !context.newNotifications) return;
+          API.NotificationService.readAllMyNotifications();
+          clearSelectedList();
+        },
+        deleteSelected: () => {
+          if(!selectedList.value) return;
+          API.NotificationService.deleteNotifications(selectedList.value);
+          clearSelectedList();
+        },
+        readSelected: () => {
+          if(!selectedList.value) return;
+          API.NotificationService.readNotifications(selectedList.value);
+          clearSelectedList();
+        },
+      };
+
       return {
-        isMenuOpened,
         clientVersion,
         arrowPosition,
         toggleMenu,
         logOut,
         getNewNotificationInstance,
-        emptyListMessages
+        emptyListMessages,
+        selectedList,
+        HandleAction,
+        triggerForRestart,
+        selectable,
+        notificationList,
+        blockScrollToTopIfExist,
+        clearSelectedList,
+        restartInfiniteScroll: () => {
+          triggerForRestart.value = uuid()
+        },
+        scrollToFirstElement: () => {
+          notificationList.value.scrollToFirstElement()
+        }
       }
     }
   }
@@ -243,11 +329,11 @@
       flex-direction: column;
       justify-content: space-between;
       .b_slide_menu_top-block {
+        height: calc(100% - 102px);
         .b_slide_menu_logo {
           padding-left: 8px;
         }
         .b_slide_menu_notification {
-          height: calc(100vh - 20px - 100px - 70px);
           overflow-y: scroll;
         }
         .b_slide_menu_items {
@@ -328,5 +414,61 @@
 
   .b-new-notification {
     border-bottom: 1px solid #262541;
+  }
+
+  button {
+    padding: 4px 8px;
+    border: 1px solid #DFDEED;
+    border-radius: 6px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    color: #262541;
+    background: white;
+    margin-right: 5px;
+    img {
+      margin-right: 3px;
+    }
+  }
+
+  .b-selected-elements__count {
+    background: #575775;
+    border-radius: 6px;
+    padding: 0px 4px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 20px;
+    color: #FFFFFF;
+  }
+
+  .b-notifications-title {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 20px;
+    color: #262541;
+  }
+
+  .b-notification-unreaded {
+    padding: 0px 4px;
+    background: #575775;
+    border-radius: 100px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    color: #FFFFFF;
+  }
+
+  .b-button-scroll__to-first-element {
+    align-items: center;
+    padding: 2px 12px;
+    background: #EFEFF6;
+    border-radius: 6px;
+    img {
+      margin-left: 12px;
+    }
   }
 </style>

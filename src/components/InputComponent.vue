@@ -135,7 +135,7 @@ export default {
     },
     inputWrapper() {
       return {
-        height: this.height ? this.height + 'px' : '100%',
+        height: this.height ? this.height + 2 + 'px' : '100%',
       }
     },
     rightIcon() {

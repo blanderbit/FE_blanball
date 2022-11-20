@@ -1,6 +1,6 @@
 <template>
   <div class="loader-wrapper">
-    <div class="loader" />
+    <div class="loader"/>
   </div>
 </template>
 
@@ -8,6 +8,7 @@
   .loader-wrapper {
     padding: 1em;
   }
+
   .loader {
     font-size: 10px;
     margin: 0px auto;
@@ -25,6 +26,7 @@
     animation: load3 1.4s infinite linear;
     transform: translateZ(0);
   }
+
   .loader:before {
     width: 50%;
     height: 50%;
@@ -35,6 +37,7 @@
     left: 0;
     content: '';
   }
+
   .loader:after {
     background: #ffffff;
     width: 75%;
@@ -48,6 +51,7 @@
     bottom: 0;
     right: 0;
   }
+
   @-webkit-keyframes load3 {
     0% {
       transform: rotate(0deg);
@@ -56,6 +60,7 @@
       transform: rotate(360deg);
     }
   }
+
   @keyframes load3 {
     0% {
       transform: rotate(0deg);

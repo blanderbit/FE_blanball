@@ -22,20 +22,23 @@
 
 <script setup>
 import { ref, onBeforeUnmount } from 'vue'
+import { useRouter } from 'vue-router'
+import { useToast } from 'vue-toastification'
+import { v4 as uuid } from "uuid";
+
 import Sidebar from './../../components/Sidebar.vue'
 import MainHeader from './../../components/MainHeader.vue'
 import MobileMenu from '../../components/MobileMenu.vue'
 import Notification from '../../components/Notification.vue'
-import { useToast } from 'vue-toastification'
+
 import message_audio from '../../assets/message_audio.mp3'
-import {
-  MessageActionDataTypes,
-  MessageActionTypes,
-} from '../../workers/web-socket-worker/message.action.types'
-import { useRouter } from 'vue-router'
+
+
 import { AuthWebSocketWorkerInstance } from './../../workers/web-socket-worker'
 import { TokenWorker } from '../../workers/token-worker'
-import { createUniqueId } from "../../workers/utils-worker";
+import { notificationButtonHandlerMessage } from "../../workers/utils-worker";
+
+import { MessageActionTypes } from '../../workers/web-socket-worker/message.action.types'
 
 const isMobMenuActive = ref(false);
 const modals = ref({
@@ -52,27 +55,11 @@ let timeout;
 
 const handlerAction = async (item, notificationInstance) => {
   clearTimeout(timeout);
-  if (item.actionType === MessageActionDataTypes.Url) { // TODO notifications
-    router.push(item.action)
-  }
-
-  if (item.actionType === MessageActionDataTypes.UrlCallback) {
-    router.push(item.action({ router, notificationInstance }))
-  }
-
-  if (item.actionType === MessageActionDataTypes.Callback) {
-    await item.action({ notificationInstance, modals })
-  }
-
-  if (
-    [
-      MessageActionTypes.Action,
-      MessageActionTypes.ActionClose,
-      MessageActionTypes.Close,
-    ].includes(item.type)
-  ) {
-    notificationInstance.readAfterActiveActionCallBack(notificationInstance)
-  }
+  await notificationButtonHandlerMessage({
+    item,
+    notificationInstance,
+    router
+  })
 };
 
 const toggleToastProgress = (notificationInstance, toastId, active) => {
@@ -137,7 +124,7 @@ const getToastOptions = (notificationInstance, toastId) => {
 const createToastFromInstanceType = (notificationInstance) => {
   const toastDataOptions = getToastOptions(
     notificationInstance,
-    createUniqueId()
+    uuid()
   );
 
   const toastId = toast(
@@ -148,7 +135,7 @@ const createToastFromInstanceType = (notificationInstance) => {
   if (notificationInstance.timeForClose) {
     timeout = setTimeout(() => {
       toast.dismiss(toastId)
-    }, notificationInstance.timeForClose)
+    }, notificationInstance.timeForClose )
   }
 };
 
@@ -165,12 +152,15 @@ AuthWebSocketWorkerInstance
     token: TokenWorker.getToken()
   });
 
-onBeforeUnmount(() => AuthWebSocketWorkerInstance.disconnect());
+onBeforeUnmount(() => {
+  AuthWebSocketWorkerInstance
+    .destroyCallback(handleNewMessage)
+    .disconnect()
+});
 
 </script>
 
 <style lang="scss">
-@import 'bootstrap/dist/css/bootstrap-grid.min.css';
 
 * {
   margin: 0;

@@ -1,27 +1,26 @@
 import { InitialUpdation } from "./initial.message";
+
 import { SetMessageType, AuthWebSocketMessage } from "../../type.decorator";
+
 import { WebSocketTypes } from "../../web.socket.types";
-import { NotificationsBus } from "../../../event-bus-worker";
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.BulkNotificationDelete)
 export class NotificationBulkDeleteUpdation extends InitialUpdation {
-  handleUpdate(notifications, callbackAfterAction) {
-    let find = 0;
-    notifications.value = notifications.value.filter(item => {
-      const check = item.notification_id !== this.data.notification.id;
-      if(!check && !find) {
-        find = 1;
-      }
-      return check;
+  handleUpdate({ paginationElements, paginationLoad, paginationPage }, callbackAfterAction) {
+    const itemsPerPage = 10;
+    const deletedItems = this.data.objects;
+
+    paginationElements.value = paginationElements.value.filter(item => {
+      return !deletedItems.includes(item.notification_id);
     });
 
     if (typeof callbackAfterAction === 'function') {
       callbackAfterAction()
     }
 
-    if(find) {
-      NotificationsBus.emit('SidebarReloadLastLoadedPage')
-    }
+    const pageNumber = Math.floor(paginationElements.value.length / itemsPerPage);
+
+    paginationLoad({pageNumber, forceUpdate: true})
   }
 }

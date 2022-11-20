@@ -1,22 +1,20 @@
-import {createApp} from 'vue';
+import { createApp } from 'vue';
 import Loading from "./Loading.vue";
 
-const startSpinner = () => {
-    window && window.loading && typeof window.loading.start === 'function' &&  window.loading.start();
-};
+let loading;
 
-const finishSpinner = () => {
-    window && window.loading && typeof window.loading.finish === 'function' &&  window.loading.finish();
-};
+const startSpinner = () => loading?.start?.();
+
+const finishSpinner = () => loading?.finish?.();
 
 const createLoader = () => {
-    window.loading = createApp(Loading)
-        .mount('#loading');
-    // startSpinner()
+  loading = createApp(Loading)
+    .mount('#loading');
+  startSpinner()
 };
 
 export {
-    startSpinner,
-    finishSpinner,
-    createLoader
+  startSpinner,
+  finishSpinner,
+  createLoader
 }

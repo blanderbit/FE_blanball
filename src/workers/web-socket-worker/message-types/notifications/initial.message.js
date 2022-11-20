@@ -50,6 +50,22 @@ export class InitialMessage {
   isRead;
   notification_id;
   textsAfterAction;
+  metadata = {};
+
+  get profileImage() {
+    return this.data?.sender?.avatar;
+  }
+
+  get sender() {
+    return this.fullName || "Blanball";
+  }
+
+  get fullName() {
+    return [
+      this?.data?.sender?.name,
+      this.data?.sender?.last_name
+    ].filter(_ => !!_).join(' ')
+  }
 
   get parseDate() {
     return dayjs().locale('uk').to(dayjs(this.date))
