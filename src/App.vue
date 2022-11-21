@@ -1,30 +1,40 @@
 <template>
-  <router-view />
+  <div>
+    <router-view />
+  </div>
+
 </template>
 
 <script setup>
-  import { GeneralSocketWorkerInstance } from "./workers/web-socket-worker";
+  import { ref } from "vue";
   import { useRouter } from "vue-router";
+
+  import { GeneralSocketWorkerInstance } from "./workers/web-socket-worker";
+  import { createQueryStringFromObject } from "./workers/utils-worker";
+  import { VersionDetectorWorker } from "./workers/version-detector-worker";
+  import { API } from "./workers/api-worker/api.worker";
+
   import { ROUTES } from "./router";
   import { WebSocketTypes } from "./workers/web-socket-worker/web.socket.types";
-  import { API } from "./workers/api-worker/api.worker";
-  import { createQueryStringFromObject } from "./workers/utils-worker";
 
   const router = useRouter();
 
-  const handlerGeneral = (instance) => {
+  const handleMessageGeneral = (instance) => {
     switch (instance.messageType) {
       case WebSocketTypes.ChangeMaintenance: {
         const maintenance = instance.data.maintenance.type;
+        const ifCurrentRouteMaintenance = location.pathname.includes(ROUTES.WORKS.absolute);
+        const ifCurrentRouteApplication = location.pathname.includes(ROUTES.APPLICATION.index.name);
 
-        if(maintenance) {
+        if(ifCurrentRouteMaintenance && maintenance) {
+          return
+        } else if (!ifCurrentRouteMaintenance && maintenance) {
           const query = createQueryStringFromObject({
             redirectUrl: window.location.pathname
           });
 
           return router.push(`${ROUTES.WORKS.absolute}${query ? '?' + query : query}`)
-        } else {
-          // TODO dublicate with login
+        } else if (!maintenance && !ifCurrentRouteApplication) {
           const redirectUrl = router.currentRoute.value.query.redirectUrl;
           const resolveRouter = redirectUrl && router.resolve(redirectUrl);
           if (
@@ -40,9 +50,17 @@
     }
   };
 
+  const VersionHandling = {
+    handleDifferentVersion: () => {
+      VersionHandling.version.value = true
+    },
+    closeVersionModal: () => VersionHandling.version.value = false,
+    version: ref(false)
+  };
+
   API.NotificationService
     .getMaintenance()
-    .then((result) => handlerGeneral({
+    .then((result) => handleMessageGeneral({
       messageType: WebSocketTypes.ChangeMaintenance,
       data: {
         maintenance: {
@@ -52,6 +70,8 @@
     }));
 
   GeneralSocketWorkerInstance
-    .registerCallback(handlerGeneral)
-    .connect()
+    .registerCallback(handleMessageGeneral)
+    .connect();
+
+  VersionDetectorWorker(VersionHandling.handleDifferentVersion)
 </script>

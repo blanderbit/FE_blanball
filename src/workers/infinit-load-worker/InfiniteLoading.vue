@@ -8,19 +8,20 @@
     initEmitter,
     isVisible,
   } from "./utils.js";
+
   const emit = defineEmits(["infinite"]);
   const props = defineProps({
-    top: { type: Boolean, required: false },
-    target: { type: [String, Boolean], required: false },
-    distance: { type: Number, required: false, default: 0 },
-    identifier: { required: false },
-    firstload: { type: Boolean, required: false, default: true },
-    slots: { type: Object, required: false },
+    top: {type: Boolean, required: false},
+    target: {type: [String, Boolean], required: false},
+    distance: {type: Number, required: false, default: 0},
+    identifier: {required: false},
+    firstload: {type: Boolean, required: false, default: true},
+    slots: {type: Object, required: false},
   });
   const infiniteLoading = ref(null);
   const state = ref("ready");
-  const { top, firstload, target, distance } = props;
-  const { identifier } = toRefs(props);
+  const {top, firstload, target, distance} = props;
+  const {identifier} = toRefs(props);
   const params = {
     infiniteLoading,
     target,
@@ -42,7 +43,9 @@
       if (newVal == "complete") stopObserver();
     });
   const identifierWatcher = () =>
-    watch(identifier, () => {
+    watch(identifier, (value) => {
+      if (!value) return;
+
       state.value = "ready";
       stopObserver();
       startObserver(params);
@@ -60,7 +63,7 @@
 <template>
   <div class="infiniteLoading" ref="infiniteLoading">
     <slot v-if="state == 'loading'" name="spinner">
-      <Spinner />
+      <Spinner/>
     </slot>
     <slot v-if="state == 'complete'" name="complete">
       <span> {{ slots?.complete || "No more results!" }} </span>
@@ -78,11 +81,13 @@
   .infiniteLoading {
     min-height: 10px;
   }
+
   .state-error {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
+
   .retry {
     margin-top: 8px;
     padding: 2px 6px 4px 6px;
@@ -96,6 +101,7 @@
     outline: none;
     cursor: pointer;
   }
+
   .retry:hover {
     opacity: 0.8;
   }

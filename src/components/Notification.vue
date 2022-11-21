@@ -1,45 +1,66 @@
 <template>
-  <div class="notification" :class="[notificationType]">
+  <div class="notification" :class="[notificationType, notCollapsible && 'not-collapsible']">
     <loading ref="loading"></loading>
-    <div class="notification-read" v-if="notificationInstance.isRead"></div>
-    <template v-if="notificationType === 'notification-sidebar'">
-      <div class="d-flex justify-content-between">
-        <div class="notification-title">{{notificationInstance.title}}</div>
-        <div class="notification-date">{{formatDate}}</div>
+    <div class="notification-parts d-flex justify-content-between">
+      <div class="notification-image" v-if="notificationType === 'notification-sidebar'">
+        <img v-if="notificationInstance.notificationImage" :src="notificationInstance.notificationImage">
+        <avatar
+          v-if="notificationInstance.notificationUserImage"
+          :link="notificationInstance.profileImage"
+          :full-name="notificationInstance.fullName"
+        ></avatar>
       </div>
-    </template>
-    <template v-else>
-      <div class="d-flex justify-content-between">
-        <div class="notification-title">{{notificationInstance.title}}</div>
-        <div class="notification-date">{{formatDate}}</div>
-      </div>
-    </template>
-    <template v-if="notificationInstance.textsAfterAction">
-      <div class="notification-response d-flex align-items-center">
-        <img v-if="notificationInstance.textsAfterAction.response" src="../assets/img/true_check.svg">
-        <img v-else src="../assets/img/red_cross.svg">
-        {{notificationInstance.textsAfterAction.text}}
-      </div>
-    </template>
-    <div class="notification-content" v-for="item in notificationInstance.texts">{{item}}</div>
-    <div class="notification-actions" v-if="notificationInstance?.actions?.length">
-      <template v-for="item in notificationInstance.actions">
-        <NotificationButton
-            @click="$emit('handler-action', item)"
-            :button-type="item.buttonType"
-            :button-color="item.buttonColor"
-        >
-          {{item.text}}
-        </NotificationButton>
-      </template>
+      <div class="notification-data flex-grow-1">
+        <div class="notification-read" v-if="notificationInstance.isRead"></div>
+        <div class="notification-header d-flex justify-content-between">
+          <div class="notification-sender">
+            {{notificationInstance.sender}}
+          </div>
+          <div class="b-selectable" v-if="selectable">
+            <checkbox
+              :checked="checked"
+              :field-id="notificationInstance?.notification_id"
+              @update:checked="$emit('selected', {notification: notificationInstance, selected: $event})">
+            </checkbox>
+          </div>
+          <div  v-if="notificationType === 'notification-sidebar' && !selectable" class="notification-date">{{formatDate}}</div>
+        </div>
+        <collapsible-panel v-model:expanding="expanding">
+          <template #title>
+            <div class="notification-title">{{notificationInstance.title}}</div>
+          </template>
+          <template #content>
+            <template v-if="notificationInstance.textsAfterAction">
+              <div class="notification-response d-flex align-items-center">
+                <img v-if="notificationInstance.textsAfterAction.response" src="../assets/img/true_check.svg">
+                <img v-else src="../assets/img/red_cross.svg">
+                {{notificationInstance.textsAfterAction.text}}
+              </div>
+            </template>
+            <div class="notification-content" v-for="item in notificationInstance.texts">{{item}}</div>
+            <div class="notification-actions" v-if="!notificationInstance.textsAfterAction && notificationInstance?.actions?.length">
+              <template v-for="item in notificationInstance.actions">
+                <NotificationButton
+                    @click="$emit('handler-action', item)"
+                    :button-type="item.buttonType"
+                    :button-color="item.buttonColor"
+                    :notification-type="notificationType"
+                >
+                  {{item.text}}
+                </NotificationButton>
+              </template>
+            </div>
+          </template>
+        </collapsible-panel>
 
-    </div>
-    <div class="notification-close" v-if="isPush" @click="$emit('handler-close')">
-      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M0.189895 0.189192C0.433973 -0.0548856 0.829701 -0.0548852 1.07378 0.189193L5.00069 4.11612L8.92758 0.189194C9.17166 -0.0548846 9.56739 -0.0548862 9.81147 0.189191C10.0555 0.433267 10.0555 0.828995 9.81147 1.07307L5.88458 5L9.81147 8.92689C10.0555 9.17097 10.0555 9.5667 9.81147 9.81077C9.56739 10.0549 9.17166 10.0549 8.92759 9.81077L5.00069 5.88388L1.07378 9.81078C0.829698 10.0549 0.43397 10.0549 0.189893 9.81077C-0.0541841 9.5667 -0.0541829 9.17097 0.189896 8.92689L4.11681 5L0.189894 1.07308C-0.0541837 0.828997 -0.0541833 0.433269 0.189895 0.189192Z"
-              fill="#DFDEED"/>
-      </svg>
+        <div class="notification-close" v-if="isPush" @click="$emit('handler-close')">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M0.189895 0.189192C0.433973 -0.0548856 0.829701 -0.0548852 1.07378 0.189193L5.00069 4.11612L8.92758 0.189194C9.17166 -0.0548846 9.56739 -0.0548862 9.81147 0.189191C10.0555 0.433267 10.0555 0.828995 9.81147 1.07307L5.88458 5L9.81147 8.92689C10.0555 9.17097 10.0555 9.5667 9.81147 9.81077C9.56739 10.0549 9.17166 10.0549 8.92759 9.81077L5.00069 5.88388L1.07378 9.81078C0.829698 10.0549 0.43397 10.0549 0.189893 9.81077C-0.0541841 9.5667 -0.0541829 9.17097 0.189896 8.92689L4.11681 5L0.189894 1.07308C-0.0541837 0.828997 -0.0541833 0.433269 0.189895 0.189192Z"
+                  fill="#DFDEED"/>
+          </svg>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -48,23 +69,37 @@
   import dayJs from 'dayjs'
   import Loading from './../workers/loading-worker/Loading.vue'
   import NotificationButton from './../components/NotificationButton.vue'
-
+  import Avatar from './../components/Avatar.vue'
+  import Checkbox from './../components/Checkbox.vue'
+  import CollapsiblePanel from './../components/collapsible/CollapsiblePanel.vue'
   export default {
     name: "Notification",
     components: {
       Loading,
-      NotificationButton
+      NotificationButton,
+      Avatar,
+      Checkbox,
+      CollapsiblePanel
     },
-    emits: ['handler-action'],
-    data: () => ({
-      intersectionElement: null
-    }),
+    emits: ['handler-action', 'selected', 'force'],
     props: {
       notificationInstance: {
         type: Object,
         default: () => ({})
       },
       active: {
+        type: Boolean,
+        default: false
+      },
+      selectable: {
+        type: Boolean,
+        default: false
+      },
+      checked: {
+        type: Boolean,
+        default: false
+      },
+      notCollapsible: {
         type: Boolean,
         default: false
       },
@@ -91,13 +126,31 @@
       },
       isStandard() {
         return this.notificationType === 'standard'
+      },
+      expanding: {
+        set(e) {
+          this.notificationInstance.metadata.expanding = this.notificationType === 'notification-sidebar' ? e : true;
+        },
+        get() {
+          if(this.notCollapsible) {
+            return true;
+          }
+          return this.notificationType === 'notification-sidebar' ? !!this.notificationInstance.metadata.expanding : true
+        }
       }
-    },
-
+    }
   }
 </script>
 
 <style scoped lang="scss">
+
+  .notification-sender {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #8A8AA8;
+  }
 
   .notification-content {
     font-family: 'Inter';
@@ -125,7 +178,7 @@
     font-size: 13px;
     line-height: 20px;
     color: #A8A8BD;
-    margin-bottom: 8px;
+
   }
 
   .notification-action {
@@ -170,6 +223,8 @@
       }
       .spiner-wrapper {
         position: absolute;
+        left: 0;
+        top: 0;
         background: rgba(239, 239, 246, 0.38);
         width: 100%;
       }
@@ -194,6 +249,10 @@
     }
   }
 
+  .notification-header {
+    padding: 0 12px;
+  }
+
   .notification-sidebar {
     * {
       color: #000;
@@ -212,14 +271,29 @@
       color: #575775;
     }
     ::v-deep {
+      .spiner-text {
+        display: none;
+      }
       .spiner-wrapper {
         background: rgba(239, 239, 246, 0.38);
         width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
       }
       .spiner-wrapper .spiner-body {
-        width: 100%;
         box-shadow: none;
+        background: transparent;
+        height: 100%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
         .spiner {
+          .lds-ring, .lds-ring div {
+            width: 50px;
+            height: 50px;
+          }
           .lds-ring div {
             border-color: #575775 transparent transparent transparent;
           }
@@ -233,7 +307,10 @@
     width: 100%;
     height: 100%;
     background: white;
+    left: 0;
+    top: 0;
     opacity: 0.6;
+    z-index: 50;
   }
 
   .notification-response {
@@ -245,5 +322,39 @@
     > img {
       margin-right: 5px;
     }
+  }
+
+  ::v-deep {
+    .vcp__body {
+      z-index: 1!important;
+    }
+    .vcp__header {
+      padding-right: 7px;
+      padding-bottom: 0;
+    }
+    .vcp__header-icon, .b-selectable {
+      z-index: 1000;
+    }
+    .vcp__header-icon {
+      svg {
+        fill: #8A8AA8;
+      }
+    }
+  }
+
+  .notification-push, .not-collapsible {
+    ::v-deep {
+      .vcp__header, .vcp__body, .vcp__body-content, .notification-header {
+        padding: 0;
+      }
+      .vcp__header-icon {
+        display: none
+      }
+    }
+  }
+
+  .b-selectable {
+    width: 20px;
+    height: 20px;
   }
 </style>

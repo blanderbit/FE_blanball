@@ -3,7 +3,8 @@ import { InitialMessage } from "./initial.message";
 import {
   SetActions,
   SetMessageType,
-  AuthWebSocketMessage
+  AuthWebSocketMessage,
+  NotificationSetUserImage
 } from "../../type.decorator";
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
@@ -12,6 +13,7 @@ import { API } from "../../../api-worker/api.worker";
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.NewRequestToParticipation)
+@NotificationSetUserImage()
 @SetActions([
   {
     type: MessageActionTypes.Action,

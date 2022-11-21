@@ -1,54 +1,67 @@
 import { ref } from 'vue';
 
+const findDublicates = (list, newList) => {
+  return newList.filter(item => list.length ? !list.find(oldItem => oldItem.notification_id === item.notification_id) : true)
+}
+
 export const PaginationWorker = (options) => {
-    const { paginationDataRequest, dataTransformation } = options || {};
-    const elements = ref([]);
-    const paginationElement = ref();
-    const page = ref(0);
-    const nextPage = ref(true);
+  const {paginationDataRequest, dataTransformation} = options || {};
 
+  const paginationElements = ref([]);
+  const paginationPage = ref(0);
+  const paginationTotalCount = ref(0);
+  const paginationIsNextPage = ref(true);
 
-    const clearData = () => {
-        elements.value = [];
-        page.value = 0;
-        nextPage.value = true;
-    };
+  const paginationClearData = () => {
+    paginationElements.value = [];
+    paginationPage.value = 0;
+    paginationTotalCount.value = 0;
+    paginationIsNextPage.value = true;
+  };
 
-    const loadNotification = async ({ pageNumber, $state }) => {
-        if (!nextPage.value) {
-          $state?.complete && $state.complete();
-          return;
-        }
-        if ($state?.loading) $state.loading();
+  const paginationLoad = async ({pageNumber, $state, forceUpdate}) => {
+    pageNumber = pageNumber < 1 ? 1 : pageNumber;
 
-        page.value = pageNumber;
-        await paginationDataRequest(pageNumber)
-            .then((result) => {
-                if(dataTransformation) {
-                    result.data.results = result.data.results
-                        .map(dataTransformation);
-                }
+    if (pageNumber === paginationPage.value && !forceUpdate) return;
 
-                elements.value = elements.value
-                    .concat(result.data.results);
-
-                nextPage.value = !!result.data.next;
-
-                if ($state?.loaded) $state.loaded();
-                if (!nextPage.value && $state?.complete) $state.complete();
-            })
-            .catch(() => {
-                $state?.complete && $state.complete()
-            });
-    };
-
-    return {
-        elements,
-        page,
-        nextPage,
-        loadNotification,
-        clearData,
-        paginationElement
+    if (!paginationIsNextPage.value && !forceUpdate) {
+      $state?.complete && $state.complete();
+      return;
     }
+    if ($state?.loading) $state.loading();
 
+    paginationPage.value = pageNumber;
+    await paginationDataRequest(pageNumber)
+      .then((result) => {
+        if (dataTransformation) {
+          result.data.results = result.data.results
+            .map(dataTransformation);
+        }
+
+        if (pageNumber === 1) { // if it`s first page we not need try to find dublicates
+          paginationElements.value = result.data.results
+        } else {
+          paginationElements.value = paginationElements.value
+            .concat(findDublicates(paginationElements.value, result.data.results));
+        }
+
+        paginationTotalCount.value = result.data.total_count;
+        paginationIsNextPage.value = !!result.data.next;
+
+        if ($state?.loaded) $state.loaded();
+        if (!paginationIsNextPage.value && $state?.complete) $state.complete();
+      })
+      .catch(() => {
+        $state?.complete && $state.complete()
+      });
+  };
+
+  return {
+    paginationElements,
+    paginationPage,
+    paginationTotalCount,
+    paginationIsNextPage,
+    paginationClearData,
+    paginationLoad
+  }
 };
