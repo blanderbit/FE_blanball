@@ -78,7 +78,7 @@
 <script>
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { Form } from 'vee-validate'
+import { Form } from '@system.it.flumx.com/vee-validate'
 import * as yup from "yup"
 
 import ModalWindow from '../../components/ModalWindow.vue'

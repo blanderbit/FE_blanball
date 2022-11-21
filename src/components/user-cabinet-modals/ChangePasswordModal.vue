@@ -87,7 +87,7 @@
 
 <script>
 import { computed, ref, watch, onBeforeUnmount } from 'vue'
-import { Form } from 'vee-validate'
+import { Form } from '@system.it.flumx.com/vee-validate'
 import * as yup from "yup"
 
 import ModalWindow from '../../components/ModalWindow.vue'

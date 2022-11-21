@@ -87,7 +87,7 @@
             <div class="b-user-card__birthday-line">
               <div v-if="!isEditMode" class="b-user-card__birth-date">
                 {{ formValues.day }}
-                {{ formatedMonth }}
+                {{ formValues.month }} 
                 {{ formValues.year }}
                 <div class="b-user-card__title">Дата народження</div>
               </div>
@@ -206,6 +206,7 @@
                 :title-width="0"
                 :outside-title="true"
                 :height="40"
+                name="position"
               />
             </div>
             <!-- <div class="b-user-card__area-line">
@@ -252,7 +253,7 @@ import { ref, computed, watch } from 'vue'
 import dayjs from 'dayjs'
 import dayjsUkrLocale from 'dayjs/locale/uk'
 import * as yup from 'yup'
-import { Form, useForm } from 'vee-validate'
+import { Form, useForm } from '@system.it.flumx.com/vee-validate'
 
 import InputComponent from '../components/InputComponent.vue'
 import TextAreaComponent from '../components/TextAreaComponent.vue'
@@ -329,7 +330,6 @@ export default {
     const currentTab = ref(0)
     const isEditModeProfile = ref(false)
     const myForm = ref(null)
-    const { setValues } = useForm();
 
     const mockData = computed(() => {
       return {
@@ -346,10 +346,9 @@ export default {
       year: getBirthYear(props.userData.birthday),
       height: props.userData.height,
       weight: props.userData.weight,
-      working_leg: props.userData.working_leg,
+      working_leg: getWorkingLeg(props.userData.working_leg),
       position: props.userData.position,
     })
-    // const formValues = props.userData
 
     const icons = computed(() => {
       return {
@@ -373,9 +372,6 @@ export default {
       })
     })
 
-    const formatedMonth = computed(() => {
-      return mockData.value.monthFromNumber[formValues.value.month]
-    })
     const birthDate = computed(() => {
       return `${dayjs(formValues.value.year + '-' + formValues.value.month + '-' + formValues.value.day)
         .locale(dayjsUkrLocale)
@@ -386,14 +382,14 @@ export default {
       () => props.toSendForm,
       (newData, oldData) => {
         const refProfileData = { ...myForm.value.getControledValues() }
-        console.log('props.toSendForm has changeeeeeeeeeeed')
 
         if (newData) {
-          const { day, month, year } = refProfileData
+          const { day, month, year, working_leg } = refProfileData
           const profileData = {
             ...refProfileData,
             birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
             gender: props.userData.gender,
+            working_leg: getWorkingLeg(working_leg),
           }
           delete profileData.day
           delete profileData.month
@@ -417,22 +413,8 @@ export default {
           }
           API.UserService.updateProfileData(payload)
           .then(() => {
-            console.log('successfully changed')
             API.UserService.getMyProfile()
             .then(res => {
-              console.log('got info back', res)
-              // setValues({
-              //   last_name: res.data.profile.last_name,
-              //   name: res.data.profile.name,
-              //   about_me: res.data.profile.about_me,
-              //   day: getBirthDay(res.data.profile.birthday),
-              //   month: getBirthMonth(res.data.profile.birthday),
-              //   year: getBirthYear(res.data.profile.birthday),
-              //   height: res.data.profile.height,
-              //   weight: res.data.profile.weight,
-              //   working_leg: res.data.profile.working_leg,
-              //   position: res.data.profile.position
-              // });
               formValues.value = {
                 last_name: res.data.profile.last_name,
                 name: res.data.profile.name,
@@ -442,7 +424,7 @@ export default {
                 year: getBirthYear(res.data.profile.birthday),
                 height: res.data.profile.height,
                 weight: res.data.profile.weight,
-                working_leg: res.data.profile.working_leg,
+                working_leg: getWorkingLeg(res.data.profile.working_leg),
                 position: res.data.profile.position,
               }
             })
@@ -457,12 +439,23 @@ export default {
       return val.split('-')[2]
     }
     function getBirthMonth(val) {
-      return val.split('-')[1]
+      return mockData.value.monthFromNumber[val.split('-')[1]]
     }
     function getBirthYear(val) {
       return val.split('-')[0]
     }
-
+    function getWorkingLeg(val) {
+      switch(val) {
+        case 'Left': return 'Ліва'
+          break;
+        case 'Right': return 'Права'
+          break;
+        case 'Ліва': return 'Left'
+          break;
+        case 'Права': return 'Right'
+          break;
+      }
+    }
     function changeUserTab(id) {
       currentTab.value = id
     }
@@ -479,8 +472,7 @@ export default {
       birthDate,
       schema,
       formValues,
-      myForm,
-      formatedMonth
+      myForm
     }
   },
 }

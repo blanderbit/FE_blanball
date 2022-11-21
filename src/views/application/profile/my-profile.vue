@@ -233,7 +233,7 @@
 <script>
 import { ref, computed, reactive } from 'vue'
 import { useRoute } from 'vue-router'
-import { Form } from 'vee-validate'
+import { Form } from '@system.it.flumx.com/vee-validate'
 
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'

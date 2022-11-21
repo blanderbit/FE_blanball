@@ -1,7 +1,7 @@
 export default {
   mainLeg: [
-    { value: 'Right' },
-    { value: 'Left' }
+    { value: 'Права' },
+    { value: 'Ліва' }
   ],
   cities: [
     { value: 'Sinaya' },
@@ -14,5 +14,5 @@ export default {
     { value: 'Космос' },
     { value: 'Шевчик' },
     { value: 'Бородок' }
-  ],
+  ]
 }
