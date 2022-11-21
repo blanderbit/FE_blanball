@@ -14,11 +14,13 @@
     "@blanderbit/vue-resolver": "^0.1.2",
     "@rollup/plugin-babel": "^6.0.2",
     "@system.it.flumx.com/vee-validate": "^0.0.1",
+    "@types/uuid": "^8.3.0",
     "axios": "^0.24.0",
     "bootstrap": "^5.2.1",
     "dayjs": "^1.11.5",
     "dotenv": "^16.0.3",
     "pinia": "^2.0.21",
+    "uuid": "^8.3.2",
     "v-calendar": "^3.0.0-alpha.8",
     "v3-infinite-loading": "^1.2.1",
     "vee-validate": "file:../../vee-validate-main/packages/vee-validate",
@@ -29,9 +31,7 @@
     "vue-toastification": "^2.0.0-rc.5",
     "vue3-virtual-scroller": "^0.2.3",
     "websocket": "^1.0.34",
-    "yup": "^0.32.11",
-    "@types/uuid": "^8.3.0",
-    "uuid": "^8.3.2"
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.18.6",
