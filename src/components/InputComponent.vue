@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { useField } from 'vee-validate'
+import { useField } from '@system.it.flumx.com/vee-validate'
 import { computed, toRef } from 'vue'
 import { modes } from '../workers/custom-model-worker/interactionModes'
 import { CustomModelWorker } from "../workers/custom-model-worker";

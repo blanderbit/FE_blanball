@@ -43,6 +43,9 @@
 </template>
 
 <script>
+import { ref, computed, onMounted } from 'vue'
+import { CustomModelWorker } from "../workers/custom-model-worker"
+
 export default {
   name: 'dropdown-component',
   props: {
@@ -73,41 +76,68 @@ export default {
     height: {
       type: Number,
       default: null
-    }
+    },
+    mode: {
+      type: String,
+      default: 'aggressive',
+    },
+    name: String
   },
-  data() {
+  emits: ['new-value'],
+  setup(props, context) {
+    const currentWindowWidth = ref(null)
+    const wrapper = ref(null)
+    const isOpened = ref(false)
+    const currentValue = ref(props.options[0].value)
+    const {
+        modelValue,
+        modelErrorMessage,
+        modelHandlers
+    } = CustomModelWorker(props)
+
+    const dropdownStyle = computed(() => {
+      return {
+        width: props.width ? props.width + 'px' : '100%',
+        height: props.height ? props.height + 'px' : '38px',
+      }
+    })
+
+    const ulStyle = computed(() => {
+      return {
+        top: props.height + 'px',
+        width: currentWindowWidth.value + 'px'
+      }
+    })
+
+    function toggleDropdown() {
+      isOpened.value = !isOpened.value
+    }
+
+    function setNewValue(val) {
+      console.log(modelHandlers.value)
+      modelHandlers.value.input[0](val)
+      modelHandlers.value.input[1](val, false)
+      currentValue.value = val
+      context.emit('new-value', val)
+      isOpened.value = !isOpened.value
+    }
+
+    onMounted(() => {
+      currentWindowWidth.value = wrapper.value.clientWidth
+      context.emit('new-value', props.options[0].value)
+    })
+
     return {
-      currentWindowWidth: null,
-      isOpened: false,
-      currentValue: this.options[0].value
-    }
-  },
-  computed: {
-    dropdownStyle() {
-      return {
-        width: this.width ? this.width + 'px' : '100%',
-        height: this.height ? this.height + 'px' : '38px',
-      }
-    },
-    ulStyle() {
-      return {
-        top: this.height + 'px',
-        width: this.currentWindowWidth + 'px'
-      }
-    }
-  },
-  mounted() {
-    this.currentWindowWidth = this.$refs.wrapper.clientWidth
-    this.$emit('new-value', this.options[0].value)
-  },
-  methods: {
-    toggleDropdown() {
-      this.isOpened = !this.isOpened
-    },
-    setNewValue(val) {
-      this.currentValue = val
-      this.$emit('new-value', val)
-      this.isOpened = !this.isOpened
+      toggleDropdown,
+      setNewValue,
+      dropdownStyle,
+      ulStyle,
+      modelValue,
+      modelErrorMessage,
+      modelHandlers,
+      isOpened,
+      currentValue,
+      wrapper
     }
   }
 }
