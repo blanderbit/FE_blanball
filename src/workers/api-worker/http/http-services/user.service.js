@@ -27,4 +27,11 @@ export class UserService {
       passwordsData
     )
   }
+
+  static updateProfileData(payload) {
+    return AxiosInstance.patch(
+      EndpointsEnum.Users.updateProfileData,
+      payload
+    )
+  }
 }

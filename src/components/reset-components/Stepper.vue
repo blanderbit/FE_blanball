@@ -101,7 +101,7 @@
   import InputComponent from '../InputComponent.vue'
   import { API } from "../../workers/api-worker/api.worker";
   import * as yup from "yup";
-  import { Form } from 'vee-validate'
+  import { Form } from '@system.it.flumx.com/vee-validate'
   import { ROUTES } from "../../router";
   import { useToast } from 'vue-toastification'
   import CodeInput from "../CodeInput.vue";

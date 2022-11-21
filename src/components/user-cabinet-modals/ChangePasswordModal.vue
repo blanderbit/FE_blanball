@@ -87,7 +87,7 @@
 
 <script>
 import { computed, ref, watch, onBeforeUnmount } from 'vue'
-import { Form } from 'vee-validate'
+import { Form } from '@system.it.flumx.com/vee-validate'
 import * as yup from "yup"
 
 import ModalWindow from '../../components/ModalWindow.vue'
@@ -128,11 +128,9 @@ export default {
     const eyeOpened = computed(() => eyeOpen) 
 
     watch(modalChangeStep, () => {
-      console.log('value changed')
       interval.value = setInterval(() => {
         if (seconds.value !== 0) {
           seconds.value--
-          console.log(seconds.value)
         }
       }, 1000)
     })
