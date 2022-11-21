@@ -1,9 +1,15 @@
 <template>
   <div class="b-versions">
-    <div class="b-versions__title-level1"></div>
+    <div class="b-versions__title-level1 title-customs">Тут буде написано що саме ми додали до наявного функціоналу</div>
     <div class="b-versions__container d-flex justify-content-between">
       <div class="b-versions__left-side">
-        <div class="b-versions__images d-flex">
+        <!-- <div class="b-versions__title">
+          Тут буде написано що саме ми додали до наявного функціоналу
+        </div> -->
+        <div 
+          v-if="currentVersion.images?.length > 0"
+          class="b-versions__images d-flex"
+        >
           <div
             class="b-versions__image-of-changes"
             v-for="(item, index) of currentVersion.images"
@@ -13,14 +19,18 @@
         </div>
         <div class="b-versions__important-changes">
           <div class="b-versions__title-level3">
-            {{ $t('versions.whats-new') }}
+            {{ $t('versions.whats-new') }} 
+            {{currentVersion.version_number}}
+            <span class="b-versions__type-of-version">
+              {{currentVersion.version_type}}
+            </span>
         </div>
           <div
             class="b-versions__change-element"
             v-for="(
               item, index
-            ) of currentVersion.importantFromImprovementsBugFeatures"
-            :key="'importantFromImprovementsBugFeatures' + index"
+            ) of currentVersion.what_new"
+            :key="'what_new' + index"
           >
             {{ item }}
           </div>
@@ -48,7 +58,7 @@
           </div>
           <div
             class="b-versions__change-element"
-            v-for="(item, index) of currentVersion.bugs"
+            v-for="(item, index) of currentVersion.bug_fixes"
             :key="'bugs' + index"
           >
             {{ item }}
@@ -76,7 +86,7 @@
           <version-item
             :version="item.version"
             :date="item.date"
-            :is-active="item.version === currentVersion.version"
+            :is-active="item.version === currentVersion.version_number"
           >
           </version-item>
         </template>
@@ -86,58 +96,71 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+
 import VersionItem from '../../components/versions-page/version-item.vue'
 
-const json = {
-  version: '0.0.3',
-  date: new Date(),
-  images: [
-    '/version_page_image.svg',
-    '/version_page_image.svg',
-    '/version_page_image.svg',
-  ],
-  importantFromImprovementsBugFeatures: [
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-  ],
-  improvements: [
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-  ],
-  bugs: [
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-  ],
-  features: [
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-  ],
-}
+// const json = {
+//   version: '0.0.3',
+//   date: new Date(),
+//   images: [
+//     '/version_page_image.svg',
+//     '/version_page_image.svg',
+//     '/version_page_image.svg',
+//   ],
+//   importantFromImprovementsBugFeatures: [
+//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
+//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
+//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
+//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
+//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
+//   ],
+//   improvements: [
+//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
+//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
+//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
+//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
+//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
+//   ],
+//   bugs: [
+//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
+//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
+//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
+//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
+//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
+//   ],
+//   features: [
+//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
+//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
+//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
+//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
+//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
+//   ],
+// }
 export default {
   name: 'VersionsPage',
   components: {
     VersionItem,
   },
-  data: () => ({
-    versions: [
-      { version: '0.0.3', date: new Date().toString() },
-      { version: '0.0.2', date: new Date().toString() },
-      { version: '0.0.1', date: new Date().toString() },
-    ],
-    currentVersion: json,
-  }),
+  setup() {
+    const route = useRoute()
+    // const versions = [
+    //   { version: '0.0.3', date: new Date().toString() },
+    //   { version: '0.0.2', date: new Date().toString() },
+    //   { version: '0.0.1', date: new Date().toString() },
+    // ]
+    const versions = ref()
+    const currentVersion = ref()
+
+    versions.value = route.meta.allVersions
+    currentVersion.value = route.meta.currentVersion
+
+    return {
+      versions,
+      currentVersion
+    }
+  }
 }
 </script>
 
@@ -148,6 +171,10 @@ export default {
     font-size: 20px;
     color: #262541;
     font-family: 'Exo 2';
+    &.title-customs {
+      width: 368px;
+      margin-bottom: 20px;
+    }
   }
 
   &__title-level2 {
@@ -196,6 +223,19 @@ export default {
         order: 1;
       }
     }
+  }
+
+  &__type-of-version {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+    color: #FFFFFF;
+    padding: 0px 6px;
+    background: #575775;
+    border-radius: 4px;
   }
 
   &__change-element {

@@ -2,7 +2,7 @@
     <div class="b-version-item d-flex justify-content-between" :class="{'b-version-item__active': isActive}">
         <div class="b-version-item__element">Version {{ version }}</div>
         <div class="b-version-item__date d-flex">
-            <div>{{ date | formatDate }}</div>
+            <div>{{ date }}</div>
             <img src="../../assets/img/arrow-right.svg">
         </div>
     </div>
@@ -17,13 +17,6 @@
             version: String,
             date: String,
             isActive: Boolean
-        },
-        filters: {
-            formatDate(value) {
-                if (value) {
-                    return dayJs(String(value)).format('DD.MM.YYYY')
-                }
-            }
         }
     }
 </script>
