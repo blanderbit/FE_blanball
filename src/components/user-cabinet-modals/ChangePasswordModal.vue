@@ -128,11 +128,9 @@ export default {
     const eyeOpened = computed(() => eyeOpen) 
 
     watch(modalChangeStep, () => {
-      console.log('value changed')
       interval.value = setInterval(() => {
         if (seconds.value !== 0) {
           seconds.value--
-          console.log(seconds.value)
         }
       }, 1000)
     })

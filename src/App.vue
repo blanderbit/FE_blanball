@@ -1,31 +1,21 @@
 <template>
   <div>
     <router-view />
-    <!--{{VersionHandling.version}}-->
-    <!--<transition>-->
-      <!--<modal-window-->
-          <!--v-if="VersionHandling.version"-->
-          <!--@close-modal="VersionHandling.closeVersionModal()"-->
-      <!--&gt;-->
-        <!--<template #version-modal>-->
-         <!--wqdwedwedwedwedwe-->
-        <!--</template>-->
-      <!--</modal-window>-->
-    <!--</transition>-->
   </div>
 
 </template>
 
 <script setup>
-  import { GeneralSocketWorkerInstance } from "./workers/web-socket-worker";
+  import { ref } from "vue";
   import { useRouter } from "vue-router";
-  import { ROUTES } from "./router";
-  import { WebSocketTypes } from "./workers/web-socket-worker/web.socket.types";
-  import { API } from "./workers/api-worker/api.worker";
+
+  import { GeneralSocketWorkerInstance } from "./workers/web-socket-worker";
   import { createQueryStringFromObject } from "./workers/utils-worker";
   import { VersionDetectorWorker } from "./workers/version-detector-worker";
-  import { ref } from "vue";
-  import ModalWindow from './components/ModalWindow.vue'
+  import { API } from "./workers/api-worker/api.worker";
+
+  import { ROUTES } from "./router";
+  import { WebSocketTypes } from "./workers/web-socket-worker/web.socket.types";
 
   const router = useRouter();
 

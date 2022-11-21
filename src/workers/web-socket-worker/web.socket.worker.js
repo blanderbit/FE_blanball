@@ -1,5 +1,7 @@
 import { w3cwebsocket } from 'websocket';
 
+import { createQueryStringFromObject } from "../utils-worker";
+
 export class WebSocketWorker {
   messages = [];
   callbacks = [];
@@ -16,7 +18,7 @@ export class WebSocketWorker {
       return;
     }
     this.instance = new w3cwebsocket(
-      this.options.SOCKET_URL + this._createQueryParametrs(params),
+      this.options.SOCKET_URL + createQueryStringFromObject(params),
       this.options.SOCKET_ECHO_PROTOCOL
     );
 
@@ -50,13 +52,27 @@ export class WebSocketWorker {
       return this;
     }
 
-    if(this.callbacks.find(func => func.name === callback.name)) {
+    if (this.callbacks.find(func => func.name === callback.name)) {
       console.warn('registerCallback already use');
       return
     }
 
     this.callbacks.push(callback);
 
+    return this;
+  }
+
+  destroyCallback(destroyCallback) {
+    if (typeof destroyCallback !== 'function') {
+      console.warn('destroyCallback is not a function');
+      return this;
+    }
+
+    const index = this.callbacks.findIndex(func => func.name === destroyCallback.name);
+    if (index > -1) {
+      this.callbacks.splice(index, 1);
+      console.log('destroyCallback destroyed successfully');
+    }
     return this;
   }
 
@@ -84,20 +100,6 @@ export class WebSocketWorker {
       console.warn('e => something wrong parseSocketData', e);
       return false
     }
-  }
-
-  _createQueryParametrs(obj) {
-    if (typeof obj !== 'object') {
-      return '';
-    }
-
-    const elements = Object
-      .keys(obj)
-      .map(key => `${key}=${obj[key]}`);
-
-    return elements.length
-      ? '?' + elements.join('&')
-      : ''
   }
 }
 

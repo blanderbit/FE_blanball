@@ -1,5 +1,9 @@
 <template>
-  <div class="b_white-btn" :style="styles" @click="$emit('click-function')">
+  <div 
+    class="b_white-btn" 
+    :style="styles" 
+    @click="$emit('click-function')"
+  >
     <img v-if="icon" :src="icon" alt="" />
     {{ text }}
   </div>

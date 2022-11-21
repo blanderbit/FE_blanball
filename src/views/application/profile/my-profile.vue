@@ -123,7 +123,6 @@
       @close-modal="toggleModal"
     />
 
-
     <Transition>
       <ModalUserWindow
         v-if="isModalActive.public_profile"
@@ -134,6 +133,17 @@
         </template>
       </ModalUserWindow>
     </Transition>
+
+    <ChangeUserDataModal 
+      v-if="isModalActive.change_data"
+      :title="changeDataModal.title"
+      :btn-title_1="changeDataModal.button_1"
+      :btn-title_2="changeDataModal.button_2"
+      :btn-width_1="changeDataModal.btn_with_1"
+      :btn-width_2="changeDataModal.btn_with_2"
+      @close-modal="closeChangeUserDataModal"
+      @save-changes="saveUserDataChanges"
+    />
     <!-- Modals delete -->
     <div class="title-block">
       <div class="titles">
@@ -142,15 +152,43 @@
         </div>
         <div class="subtitle">{{ $t('profile.change-personal-data') }}</div>
       </div>
-      <div class="buttons">
-        <div class="btn-wrapper">
-          <WhiteBtn :text="$t('buttons.cancel')" :width="98" />
+      <div
+        class="buttons"
+      >
+        <div
+          v-if="isEditModeProfile"
+          class="save-cancel-btns"
+        >
+          <div class="btns-line">
+            <div class="btn-wrapper">
+              <WhiteBtn 
+                :text="$t('buttons.cancel')" 
+                :width="98"
+                @click-function="toggleModal('change_data')"
+              />
+            </div>
+            <GreenBtn
+              :text="$t('buttons.save')"
+              :width="89"
+              @click-function="toggleModal('change_data')"
+            />
+          </div>
+          <div class="look-preview">
+            Як виглядатиме мій профіль для інших?
+          </div>
         </div>
-        <GreenBtn
-          :text="$t('buttons.save')"
-          :width="89"
-          @click-function="openPublicProfile"
-        />
+        <div
+          v-else
+          class="edit-button"
+        >
+          <GreenBtn
+            :text="$t('buttons.edit-profile')"
+            :width="197"
+            :height="40"
+            :icon-right="icons.editIcon"
+            @click-function="toggleEditMode"
+          />
+        </div>
       </div>
     </div>
     <div class="tab-block">
@@ -180,6 +218,9 @@
         :district="mockData.district"
         :user-data="userProfile"
         :phone="userPhone"
+        :is-edit-mode="isEditModeProfile"
+        :to-send-form="sendChangedDataAction"
+        @change-data-action="toggleDataAction"
       />
       <SecurityBlock
         @toggle-modal="toggleModal"
@@ -190,7 +231,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { Form } from '@system.it.flumx.com/vee-validate'
 import * as yup from "yup";
@@ -210,6 +251,7 @@ import SecurityBlock from '../../../components/SecurityBlock.vue'
 import CodeInput from '../../../components/CodeInput.vue'
 import DeleteAccountModal from '../../../components/user-cabinet-modals/DeleteAccountModal.vue'
 import ChangePasswordModal from '../../../components/user-cabinet-modals/ChangePasswordModal.vue'
+import ChangeUserDataModal from '../../../components/user-cabinet-modals/ChangeUserDataModal.vue'
 
 import eyeCross from '../../../assets/img/eye-crossed.svg'
 import eyeOpen from '../../../assets/img/eye-opened.svg'
@@ -217,6 +259,7 @@ import userIcon from '../../../assets/img/user-icon.svg'
 import database from '../../../assets/img/database.svg'
 import notification from '../../../assets/img/notification-small.svg'
 import sortArrowHorizontal from '../../../assets/img/sort-arrows-horizontal.svg'
+import edit from '../../../assets/img/edit-white.svg'
 
 import Spiner from '../../../workers/loading-worker/Loading.vue'
 import { API } from "../../../workers/api-worker/api.worker"
@@ -243,7 +286,8 @@ export default {
     CodeInput,
     Form,
     DeleteAccountModal,
-    ChangePasswordModal
+    ChangePasswordModal,
+    ChangeUserDataModal
   },
   setup() {
     const route = useRoute()
@@ -251,23 +295,54 @@ export default {
     const userRating = ref(null)
     const userPhone = ref('')
     const userEmail = ref('')
+    const isEditModeProfile = ref(false)
+    const sendChangedDataAction = ref(false)
 
-    // const schema = computed(() => {
-    //   return yup.object({
-    //     verify_code: yup.string().required().min(5),
-    //   })
-    // })
+    const changeDataModal = reactive({
+      title: 'Подивитись зі сторони',
+      button_1: 'Перейти до демонстрації',
+      button_2: 'Просто зберегти',
+      btn_with_1: 189,
+      btn_with_2: 132
+    })
 
     userRating.value = route.meta.usersData.data.raiting
     userProfile.value = route.meta.usersData.data.profile
     userPhone.value = route.meta.usersData.data.phone
     userEmail.value = route.meta.usersData.data.email
 
+    const icons = computed(() => {
+      return {
+        editIcon: edit
+      }
+    })
+
+    function toggleEditMode() {
+      isEditModeProfile.value = !isEditModeProfile.value
+    }
+
+    function saveUserDataChanges() {
+      console.log('saveUserDataChanges')
+      sendChangedDataAction.value = true
+      console.log(sendChangedDataAction.value)
+    }
+
+    function toggleDataAction() {
+      sendChangedDataAction.value = !sendChangedDataAction.value
+    }
+
     return {
+      toggleEditMode,
+      saveUserDataChanges,
+      toggleDataAction,
       userProfile,
       userRating,
       userPhone,
       userEmail,
+      icons,
+      isEditModeProfile,
+      changeDataModal,
+      sendChangedDataAction
       // schema
     }
   },
@@ -313,6 +388,7 @@ export default {
         delete_acc: false,
         change_password: false,
         public_profile: false,
+        change_data: false
       },
       modalChangePhone: {
         first: true,
@@ -426,9 +502,11 @@ export default {
         case 'public_profile':
           this.isModalActive.public_profile = !this.isModalActive.public_profile
           break
+        case 'change_data':
+          this.isModalActive.change_data = !this.isModalActive.change_data
+          break
         case 'change_password':
-          this.isModalActive.change_password =
-            !this.isModalActive.change_password
+          this.isModalActive.change_password = !this.isModalActive.change_password
           break
       }
     },
@@ -444,8 +522,13 @@ export default {
     changeEmailIconClick() {
       this.toggleModal('email')
     },
+    // ----- show public profile
     openPublicProfile() {
       this.toggleModal('public_profile')
+    },
+    closeChangeUserDataModal() {
+      this.toggleModal('change_data')
+      this.toggleEditMode()
     }
   }
 }
@@ -492,12 +575,27 @@ export default {
     margin-top: 4px;
   }
   .buttons {
-    display: flex;
+    // display: flex;
     @media (max-width: 768px) {
       display: none;
     }
-    .btn-wrapper {
-      margin-right: 12px;
+    .save-cancel-btns {
+      .btns-line {
+        display: flex;
+        justify-content: flex-end;
+        .btn-wrapper {
+          margin-right: 12px;
+        }
+      }
+      .look-preview {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 20px;
+        color: #575775;
+        margin-top: 4px;
+      }
     }
   }
 }

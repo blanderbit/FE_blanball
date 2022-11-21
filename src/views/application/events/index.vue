@@ -80,7 +80,7 @@ import { API } from "../../../workers/api-worker/api.worker";
 const COLORS = {
   green: '#148581',
   grey: '#DFDEED',
-}
+};
 
 export default {
   name: 'EventsPage',

@@ -1,12 +1,13 @@
 <template>
   <div class="b_sidebar_wrapper">
     <SlideMenu
-        :notifications="notifications"
+        v-model:is-menu-opened="isMenuOpened"
+        :notifications="paginationElements"
         :notReadNotificationCount="notReadNotificationCount"
         :newNotifications="skipids.length"
-        @closed="clearData()"
-        @loadingInfinite="loadDataNotifications(page + 1, $event)"
-        @loadingDowngradeInfinite="loadDataNotifications(page - 1, $event)"
+        :total-notifications-count="paginationTotalCount"
+        @closed="paginationClearData()"
+        @loadingInfinite="loadDataNotifications(paginationPage + 1, $event)"
         @reLoading="loadDataNotifications(1, null, true)"
         @loading="loadDataNotifications(1, null, true)"
     />
@@ -18,19 +19,20 @@
         <div class="b_sidebar_menu-block">
           <ul>
             <li
-                v-for="item in menuItems"
-                :key="item.id"
+                v-for="(item, index) in menuItems"
+                :key="index"
                 :class="[
                     'b_sidebar_menu-item',
-                     item.type !== 'notification' && { b_sidebar_active: item.isActive }
-                 ]"
-                @click="menuItemClick(item.id)"
+                ]"
+                @click="item.action && item.action()"
             >
-              <router-link :to="item.url">
-                <img v-if="item.type === 'notification'"
-                     :src="notReadNotificationCount ? item.img[0] : item.img[1]" alt=""/>
-                <img v-else :src="item.img" alt=""/>
+              <router-link v-if="item.url" :to="item.url">
+                <img :src="item.img" alt=""/>
               </router-link>
+
+              <a v-else>
+                <img :src="item.img">
+              </a>
             </li>
           </ul>
         </div>
@@ -49,26 +51,23 @@
 </template>
 
 <script>
+  import { ref, computed, onBeforeUnmount } from 'vue'
+  import { useRouter } from 'vue-router'
 
-    import SlideMenu from '../components/SlideMenu.vue'
-    import { ref } from 'vue'
-    import notification from '../assets/img/Notification.svg'
-    import notificationUnread from '../assets/img/notificationUnread.svg'
-    import record from '../assets/img/record.svg'
-    import members from '../assets/img/members.svg'
-    import { AuthWebSocketWorkerInstance } from "./../workers/web-socket-worker";
-    import { API } from "../workers/api-worker/api.worker";
-    import { PaginationWorker } from "../workers/pagination-worker";
-    import { NotificationsBus } from "../workers/event-bus-worker";
-    import { ROUTES } from '../router'
+  import SlideMenu from '../components/SlideMenu.vue'
 
-  function createNotificationFromData(message) {
-    const constructor = AuthWebSocketWorkerInstance.messages.find(item => item.messageType === message.message_type);
+  import { createNotificationFromData } from "../workers/utils-worker";
+  import { AuthWebSocketWorkerInstance } from "./../workers/web-socket-worker";
+  import { API } from "../workers/api-worker/api.worker";
+  import { PaginationWorker } from "../workers/pagination-worker";
+  import { NotificationsBus } from "../workers/event-bus-worker";
 
-    if (constructor) {
-      return new constructor(message)
-    }
-  }
+  import { ROUTES } from '../router'
+
+  import notification from '../assets/img/Notification.svg'
+  import notificationUnread from '../assets/img/notificationUnread.svg'
+  import record from '../assets/img/record.svg'
+  import members from '../assets/img/members.svg'
 
   export default {
     name: 'MainSidebar',
@@ -78,118 +77,95 @@
     setup() {
       const notReadNotificationCount = ref(0);
       const skipids = ref([]);
+      const router = useRouter();
+      const isMenuOpened = ref(false);
+      const menuItems = computed(() => [
+        {
+          img: notReadNotificationCount.value ? notificationUnread :  notification,
+          action: () => isMenuOpened.value = true
+        },
+        {
+          img: record,
+          url: '/application/events',
+          action: () => isMenuOpened.value = false
+        },
+        {
+          img: members,
+          url: '/application/users/general',
+          action: () => isMenuOpened.value = false
+        },
+       ]);
 
-      const getNotificationsCount = async () => {
-        return API.NotificationService
+      const getNotificationsCount = async () => API.NotificationService
           .getNotificationsCount()
-          .then(item => notReadNotificationCount.value = item.data.not_read_notifications_count || 0)
-      };
+          .then(item => notReadNotificationCount.value = item.data.not_read_notifications_count || 0);
 
       const {
-        elements: notifications,
-        loadNotification,
-        clearData,
-        page
+        paginationElements,
+        paginationPage,
+        paginationTotalCount,
+        paginationClearData,
+        paginationLoad
       } = PaginationWorker({
-        paginationDataRequest: (page) => API.NotificationService.getNotifications({ page, skipids: skipids.value}),
-        dataTransformation: (item) => {
-          item.notification_id = item.id;
-          return createNotificationFromData(item);
-        }
+        paginationDataRequest: (page) => API.NotificationService.getNotifications({page, skipids: skipids.value}),
+        dataTransformation: (item) => createNotificationFromData(item)
       });
 
-      const loadDataNotifications = (pageNumber, $state, isNewNotifications) => {
-        pageNumber = pageNumber < 1 ? 1 : pageNumber;
-        if (pageNumber === page.value) return;
-        if(isNewNotifications) {
-          notifications.value = []
+      const loadDataNotifications = (pageNumber, $state, forceUpdate) => {
+        if (forceUpdate) {
+          paginationClearData();
+          skipids.value = []
         }
-        loadNotification({ pageNumber, $state, forceUpdate: isNewNotifications })
-          .then(() => {
-            if (isNewNotifications) {
-              skipids.value = []
-            }
-          })
+
+        paginationLoad({pageNumber, $state,forceUpdate})
       };
 
-      const handleMessageInSitebar = (instanceType) => {
+      const handleMessageInSidebar = (instanceType) => {
         if (instanceType.notification) {
-          getNotificationsCount();
           skipids.value.push(instanceType.notification_id);
         }
 
         if (instanceType.updateWebSocketMessage) {
-          instanceType.handleUpdate(notifications, getNotificationsCount)
+          instanceType.handleUpdate({
+            paginationElements,
+            paginationLoad,
+            paginationPage
+          }, getNotificationsCount)
         }
+
+        getNotificationsCount();
       };
 
+      const goToProfile = () => router.push(ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute);
+
       AuthWebSocketWorkerInstance
-        .registerCallback(handleMessageInSitebar);
+        .registerCallback(handleMessageInSidebar);
 
-      NotificationsBus.on('SidebarReloadLastLoadedPage', () => {
-        loadDataNotifications(page.value);
-      });
       NotificationsBus.on('SidebarClearData', () => {
-        page.value = 1;
         skipids.value = [];
+        paginationClearData()
       });
 
+      onBeforeUnmount(() => {
+        NotificationsBus.off('SidebarClearData');
+        AuthWebSocketWorkerInstance.destroyCallback(handleMessageInSidebar)
+      });
 
       getNotificationsCount();
+
       return {
-        notifications,
+        paginationElements,
+        paginationTotalCount,
+        paginationPage,
         notReadNotificationCount,
-        loading,
         skipids,
+        menuItems,
+        isMenuOpened,
         loadDataNotifications,
-        clearData,
-        page
+        paginationClearData,
+        goToProfile
       }
-    },
-    data() {
-      return {
-        menuItems: [
-          {
-            id: 0,
-            type: 'notification',
-            img: [notificationUnread, notification],
-            url: '',
-            isActive: false, // should be dinamically
-          },
-          {
-            id: 2,
-            img: record,
-            url: '/application/events',
-            isActive: false,
-          },
-          {
-            id: 4,
-            img: members,
-            url: '/application/users/general',
-            isActive: false,
-          },
-        ],
-      }
-    },
-    methods: {
-      menuItemClick(id) {
-        this.menuItems = this.menuItems
-          .map((item) => ({...item, isActive: false}))
-          .map((item) => {
-            if (item.id === id) {
-              return {
-                ...item,
-                isActive: true,
-              }
-            } else {
-              return item
-            }
-          })
-      },
-      goToProfile() {
-        this.$router.push(ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute)
-      },
-    },
+    }
   }
 </script>
 
@@ -226,15 +202,19 @@
           .b_sidebar_menu-item {
             width: 40px;
             height: 40px;
-            border-radius: 6px;
             list-style: none;
             cursor: pointer;
-            &.b_sidebar_active {
+            transition: 0.3s all;
+            .router-link-active {
               background: #d3f8f7;
+            }
+            &:hover {
+              background: rgba(220, 255, 254, 0.65);
             }
             a {
               display: flex;
               height: 100%;
+              border-radius: 6px;
               justify-content: center;
               align-items: center;
               img {
