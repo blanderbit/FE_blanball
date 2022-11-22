@@ -125,12 +125,15 @@ export default {
 
     const currentVersionId = versions.value[versions.value.length - 1].id
 
-    API.VersionsService.getCurrentVersion(currentVersionId)
-    .then(res => {
-        versionType.value = res.type
-        versionNumber.value = res.version
-        currentVersion.value = res.data
-    })
+    if (currentVersionId) {
+      API.VersionsService.getCurrentVersion(currentVersionId)
+      .then(res => {
+          versionType.value = res.type
+          versionNumber.value = res.version
+          currentVersion.value = res.data
+      })
+    }
+
 
     return {
       versions,
