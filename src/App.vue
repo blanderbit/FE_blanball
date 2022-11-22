@@ -24,7 +24,7 @@
   import ModalVersion from "./components/ModalVersion.vue";
 
   const router = useRouter();
-  const isModalActive = ref(true)
+  const isModalActive = ref(false)
 
   const handleMessageGeneral = (instance) => {
     switch (instance.messageType) {

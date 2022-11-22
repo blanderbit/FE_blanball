@@ -170,8 +170,7 @@ const router = createRouter({
                     path: ROUTES.APPLICATION.VERSION.relative,
                     name: ROUTES.APPLICATION.VERSION.name,
                     beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-                        allVersions: () => API.VersionsService.getAllVersions(),
-                        currentVersion: () => API.VersionsService.getCurrentVersion(),
+                        allVersions: () => API.VersionsService.getAllVersions()
                     })),
                     component: () => import('../views/application/versions.vue'),
                     meta: {

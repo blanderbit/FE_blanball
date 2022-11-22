@@ -3,11 +3,8 @@
     <div class="b-versions__title-level1 title-customs">Тут буде написано що саме ми додали до наявного функціоналу</div>
     <div class="b-versions__container d-flex justify-content-between">
       <div class="b-versions__left-side">
-        <!-- <div class="b-versions__title">
-          Тут буде написано що саме ми додали до наявного функціоналу
-        </div> -->
         <div 
-          v-if="currentVersion.images?.length > 0"
+          v-if="currentVersion?.images.length > 0"
           class="b-versions__images d-flex"
         >
           <div
@@ -20,16 +17,16 @@
         <div class="b-versions__important-changes">
           <div class="b-versions__title-level3">
             {{ $t('versions.whats-new') }} 
-            {{currentVersion.version_number}}
+            {{versionNumber}}
             <span class="b-versions__type-of-version">
-              {{currentVersion.version_type}}
+              {{versionType}}
             </span>
         </div>
           <div
             class="b-versions__change-element"
             v-for="(
               item, index
-            ) of currentVersion.what_new"
+            ) of currentVersion?.what_new"
             :key="'what_new' + index"
           >
             {{ item }}
@@ -45,7 +42,7 @@
           </div>
           <div
             class="b-versions__change-element"
-            v-for="(item, index) of currentVersion.features"
+            v-for="(item, index) of currentVersion?.features"
             :key="'features' + index"
           >
             {{ item }}
@@ -58,7 +55,7 @@
           </div>
           <div
             class="b-versions__change-element"
-            v-for="(item, index) of currentVersion.bug_fixes"
+            v-for="(item, index) of currentVersion?.bug_fixes"
             :key="'bugs' + index"
           >
             {{ item }}
@@ -71,7 +68,7 @@
           </div>
           <div
             class="b-versions__change-element"
-            v-for="(item, index) of currentVersion.improvements"
+            v-for="(item, index) of currentVersion?.improvements"
             :key="'improvements' + index"
           >
             {{ item }}
@@ -86,7 +83,7 @@
           <version-item
             :version="item.version"
             :date="item.date"
-            :is-active="item.version === currentVersion.version_number"
+            :is-active="item.version === versionNumber"
           >
           </version-item>
         </template>
@@ -98,46 +95,12 @@
 <script>
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
+import dayjs from 'dayjs'
+import dayjsUkrLocale from 'dayjs/locale/uk'
+import { API } from "../../workers/api-worker/api.worker"
 
 import VersionItem from '../../components/versions-page/version-item.vue'
 
-// const json = {
-//   version: '0.0.3',
-//   date: new Date(),
-//   images: [
-//     '/version_page_image.svg',
-//     '/version_page_image.svg',
-//     '/version_page_image.svg',
-//   ],
-//   importantFromImprovementsBugFeatures: [
-//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-//   ],
-//   improvements: [
-//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-//   ],
-//   bugs: [
-//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-//   ],
-//   features: [
-//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-//     'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-//   ],
-// }
 export default {
   name: 'VersionsPage',
   components: {
@@ -145,20 +108,35 @@ export default {
   },
   setup() {
     const route = useRoute()
-    // const versions = [
-    //   { version: '0.0.3', date: new Date().toString() },
-    //   { version: '0.0.2', date: new Date().toString() },
-    //   { version: '0.0.1', date: new Date().toString() },
-    // ]
     const versions = ref()
     const currentVersion = ref()
+    const versionType = ref()
+    const versionNumber = ref()
 
-    versions.value = route.meta.allVersions
-    currentVersion.value = route.meta.currentVersion
+    versions.value = route.meta.allVersions.results
+
+    versions.value = versions.value.map(item => {
+      return {
+        ...item,
+        date: dayjs(item.created_at).locale(dayjsUkrLocale).format('DD MM YYYY')
+
+      }
+    })
+
+    const currentVersionId = versions.value[versions.value.length - 1].id
+
+    API.VersionsService.getCurrentVersion(currentVersionId)
+    .then(res => {
+        versionType.value = res.type
+        versionNumber.value = res.version
+        currentVersion.value = res.data
+    })
 
     return {
       versions,
-      currentVersion
+      currentVersion,
+      versionNumber,
+      versionType
     }
   }
 }

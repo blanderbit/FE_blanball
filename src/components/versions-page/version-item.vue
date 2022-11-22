@@ -41,6 +41,7 @@
                 font-weight: 400;
                 font-size: 12px;
                 margin-right: 19px;
+                width: 60px;
             }
         }
 
