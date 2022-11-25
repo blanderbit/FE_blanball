@@ -19,5 +19,6 @@ export default {
   'e-mail': 'E-mail',
   'my-feedbacks': 'Відгуки про мене',
   'personal-details': 'Особиста інформація',
-  'some': '(Деякі)'
+  'some': '(Деякі)',
+  'how-profile-looks': 'Як виглядатиме мій профіль для інших?'
 }

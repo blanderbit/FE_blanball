@@ -171,7 +171,7 @@
             class="look-preview"
             @click="toggleModal('public_profile')"
           >
-            Як виглядатиме мій профіль для інших?
+          {{ $t('profile.how-profile-looks') }}
           </div>
         </div>
         <div
@@ -242,7 +242,6 @@ import edit from '../../../assets/img/edit-white.svg'
 import Spiner from '../../../workers/loading-worker/Loading.vue'
 import { API } from "../../../workers/api-worker/api.worker"
 import { ROUTES } from "../../../router"
-
 import CONSTANTS from '../../../consts'
 
 const usersData = {
