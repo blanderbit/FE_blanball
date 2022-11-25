@@ -198,7 +198,7 @@ const router = createRouter({
                     path: ROUTES.APPLICATION.PROFILE.MY_PROFILE.relative,
                     name: ROUTES.APPLICATION.PROFILE.MY_PROFILE.name,
                     beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-                        usersData: () => API.UserService.getMyProfile(),
+                        // usersData: () => API.UserService.getMyProfile(),
                     })),
                     component: () => import('../views/application/profile/my-profile.vue'),
                     meta: {

@@ -8,18 +8,34 @@
         {{ $t('profile.set-personal-details') }}
       </div>
       <div class="b-security__settings-block">
-        <div class="b-security__personal-settings">
-          <p>{{ $t('profile.phone-number') }}</p>
-          <Switcher :id="'phone'" />
-        </div>
-        <div class="b-security__personal-settings">
-          <p>{{ $t('profile.e-mail') }}</p>
-          <Switcher :id="'email'" />
-        </div>
-        <div class="b-security__personal-settings">
-          <p>{{ $t('profile.my-feedbacks') }} <span>(Деякі)</span></p>
-          <Switcher :id="'feedback'" />
-        </div>
+        <Form
+          v-slot="data"
+          :validation-schema="schema"
+          :initial-values="formValues"
+          ref="checkboxForm"
+        >
+          <div class="b-security__personal-settings">
+            <p>{{ $t('profile.phone-number') }}</p>
+            <Switcher 
+              :id="'phone'"
+              name="phone"
+            />
+          </div>
+          <div class="b-security__personal-settings">
+            <p>{{ $t('profile.e-mail') }}</p>
+            <Switcher 
+              :id="'email'"
+              name="email"
+            />
+          </div>
+          <div class="b-security__personal-settings">
+            <p>{{ $t('profile.my-feedbacks') }} <span>(Деякі)</span></p>
+            <Switcher 
+              :id="'feedback'"
+              name="show_reviews"
+            />
+          </div>
+        </Form>
       </div>
     </div>
     <div class="b-security__top-table">
@@ -52,10 +68,14 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
+import * as yup from 'yup'
+import { Form } from '@system.it.flumx.com/vee-validate'
+
 import Switcher from '../components/Switcher.vue'
-import sortArrowHorizontally from '../assets/img/sort-arrows-horizontal.svg'
 import InputComponent from '../components/InputComponent.vue'
+
+import sortArrowHorizontally from '../assets/img/sort-arrows-horizontal.svg'
 
 export default {
   name: 'SecurityBlock',
@@ -67,19 +87,40 @@ export default {
     userEmail: {
       type: String,
       default: ''
+    },
+    checkboxData: {
+      type: Object,
+      default: () => {}
     }
   },
   emits: ['toggleModal'],
   setup(props, context) {
+    const formValues = ref({
+      email: props.checkboxData.checkboxEmail,
+      phone: props.checkboxData.checkboxPhone,
+      show_reviews: props.checkboxData.checkboxReviews,
+    })
+    const checkboxForm = ref(null)
+
     const sortArrowHorizontal = computed(() => sortArrowHorizontally)
+    const schema = computed(() => {
+      return yup.object({
+        email: yup.string().required(),
+        phone: yup.string().required(),
+        show_reviews: yup.string().required()
+      })
+    })
 
     function toggleModalWindow(val) {
       context.emit('toggleModal', val)
     }
 
     return {
-      sortArrowHorizontal,
       toggleModalWindow,
+      sortArrowHorizontal,
+      checkboxForm,
+      schema,
+      formValues
     }
   },
 }

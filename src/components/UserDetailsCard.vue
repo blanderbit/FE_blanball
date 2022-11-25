@@ -35,7 +35,7 @@
       <div class="b-user-card__tabs-block">
         <div class="b-user-card__tab-titles">
           <div
-            v-for="item in tabTitles"
+            v-for="item in mockData.tabTitles"
             :key="item.id"
             class="b-user-card__tab-title"
             :style="{
@@ -95,7 +95,7 @@
                 <Dropdown
                   :outside-title="true"
                   :main-title="'День'"
-                  :options="days"
+                  :options="mockData.days"
                   :width="96"
                   :height="40"
                   name="day"
@@ -103,7 +103,7 @@
                 <Dropdown
                   :outside-title="true"
                   :main-title="'Місяць'"
-                  :options="months"
+                  :options="mockData.months"
                   :width="168"
                   :height="40"
                   name="month"
@@ -111,7 +111,7 @@
                 <Dropdown
                   :outside-title="true"
                   :main-title="'Рік'"
-                  :options="years"
+                  :options="mockData.years"
                   :width="120"
                   :height="40"
                   name="year"
@@ -164,7 +164,7 @@
                   v-if="isEditMode"
                   :outside-title="true"
                   :main-title="'Ударна нога'"
-                  :options="mainLag"
+                  :options="mockData.mainLag"
                   :width="200"
                   :height="40"
                   name="working_leg"
@@ -222,7 +222,7 @@
                 <Dropdown
                   :outside-title="true"
                   :main-title="'Місто'"
-                  :options="cities"
+                  :options="mockData.cities"
                   :width="176"
                   :height="40"
                   @new-value="
@@ -232,7 +232,7 @@
                 <Dropdown
                   :outside-title="true"
                   :main-title="'Район'"
-                  :options="district"
+                  :options="mockData.district"
                   :width="216"
                   :height="40"
                   @new-value="
@@ -275,38 +275,6 @@ export default {
     Form,
   },
   props: {
-    labels: {
-      type: Array,
-      default: () => [],
-    },
-    tabTitles: {
-      type: Array,
-      default: () => [],
-    },
-    days: {
-      type: Array,
-      default: () => [],
-    },
-    months: {
-      type: Array,
-      default: () => [],
-    },
-    years: {
-      type: Array,
-      default: () => [],
-    },
-    mainLag: {
-      type: Array,
-      default: () => [],
-    },
-    cities: {
-      type: Array,
-      default: () => [],
-    },
-    district: {
-      type: Array,
-      default: () => [],
-    },
     userData: {
       type: Object,
       default: () => {},
@@ -326,7 +294,6 @@ export default {
   },
   emits: [],
   setup(props, context) {
-    console.log(props.userData)
     const currentTab = ref(0)
     const isEditModeProfile = ref(false)
     const myForm = ref(null)
@@ -334,7 +301,15 @@ export default {
     const mockData = computed(() => {
       return {
         monthFromNumber: CONSTANTS.users_page.months.monthFromNumber,
-        numberFromMonth: CONSTANTS.users_page.months.numberFromMonth
+        numberFromMonth: CONSTANTS.users_page.months.numberFromMonth,
+        tabTitles: CONSTANTS.profile.tabTitles,
+        labels: CONSTANTS.profile.labels,
+        days: CONSTANTS.dates.days,
+        months: CONSTANTS.dates.months,
+        years: CONSTANTS.dates.years,
+        mainLag: CONSTANTS.profile.mainLeg,
+        cities: CONSTANTS.profile.cities,
+        district: CONSTANTS.profile.district,
       }
     })
     const formValues = ref({
@@ -347,7 +322,7 @@ export default {
       height: props.userData.height,
       weight: props.userData.weight,
       working_leg: getWorkingLeg(props.userData.working_leg),
-      position: props.userData.position,
+      position: props.userData.position
     })
 
     const icons = computed(() => {
@@ -399,7 +374,7 @@ export default {
             "configuration": {
               "email": true,
               "phone": true,
-              "show_reviews": true
+              "show_reviews": false
             },
             "profile": {
               "place": {
@@ -472,7 +447,8 @@ export default {
       birthDate,
       schema,
       formValues,
-      myForm
+      myForm,
+      mockData
     }
   },
 }

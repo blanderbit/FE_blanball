@@ -7,7 +7,7 @@
       <div class="b-change-data">
         <div class="b-change-data__title-block">
           <div class="b-change-data__title">
-            {{title}}
+            {{config.title}}
           </div>
           <div 
             class="b-change-data__close"
@@ -22,8 +22,8 @@
         <div class="b-change-data__btns-block">
           <div class="b-change-data__first-btn">
             <GreenBtn
-              :text="btnTitle_1"
-              :width="btnWidth_1"
+              :text="config.button_1"
+              :width="config.btn_with_1"
               :background-color="'#575775'"
               :font-styles="{
                 'font-size': '13px'
@@ -32,8 +32,8 @@
           </div>
           <div class="b-change-data__second-btn">
             <WhiteBtn 
-              :text="btnTitle_2"
-              :width="btnWidth_2"
+              :text="config.button_2"
+              :width="config.btn_with_2"
               :main-color="'#C5C5D3'"
               :font-styles="{
                 'font-size': '13px'
@@ -65,22 +65,10 @@ export default {
       type: String,
       default: ''
     },
-    btnTitle_1: {
-      type: String,
-      default: ''
-    },
-    btnTitle_2: {
-      type: String,
-      default: ''
-    },
-    btnWidth_1: {
-      type: Number,
-      default: null
-    },
-    btnWidth_2: {
-      type: Number,
-      default: null
-    },
+    config: {
+      type: Object,
+      default: () => {}
+    }
   },
   emits: ['closeModal', 'saveChanges'],
   setup(props, context) {

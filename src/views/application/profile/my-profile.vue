@@ -123,24 +123,18 @@
       @close-modal="toggleModal"
     />
 
-    <Transition>
-      <ModalUserWindow
-        v-if="isModalActive.public_profile"
-        @close-modal="toggleModal('public_profile')"
-      >
-        <template #user-content>
-          <PlayerPageComponent :page-mode="'public'" />
-        </template>
-      </ModalUserWindow>
-    </Transition>
+    <ModalUserWindow
+      v-if="isModalActive.public_profile"
+      @close-modal="toggleModal('public_profile')"
+    >
+      <template #user-content>
+        <PlayerPageComponent :page-mode="'public'" />
+      </template>
+    </ModalUserWindow>
 
     <ChangeUserDataModal 
       v-if="isModalActive.change_data"
-      :title="changeDataModal.title"
-      :btn-title_1="changeDataModal.button_1"
-      :btn-title_2="changeDataModal.button_2"
-      :btn-width_1="changeDataModal.btn_with_1"
-      :btn-width_2="changeDataModal.btn_with_2"
+      :config="changeDataModalConfig"
       @close-modal="closeChangeUserDataModal"
       @save-changes="saveUserDataChanges"
     />
@@ -164,16 +158,19 @@
               <WhiteBtn 
                 :text="$t('buttons.cancel')" 
                 :width="98"
-                @click-function="toggleModal('change_data')"
+                @click-function="saveCancelDataEdit('cancel')"
               />
             </div>
             <GreenBtn
               :text="$t('buttons.save')"
               :width="89"
-              @click-function="toggleModal('change_data')"
+              @click-function="saveCancelDataEdit('save')"
             />
           </div>
-          <div class="look-preview">
+          <div 
+            class="look-preview"
+            @click="toggleModal('public_profile')"
+          >
             Як виглядатиме мій профіль для інших?
           </div>
         </div>
@@ -193,29 +190,20 @@
     </div>
     <div class="tab-block">
       <div
-        v-for="tab in tabs"
+        v-for="tab in mockData.tabs"
         :key="tab.id"
         :class="['tab-element', { active: tab.isActive }]"
         @click="changeTab(tab.id, tab.url)"
       >
         <img :src="tab.img" :alt="tab.name" />
-        {{ $t('profile.' + tab.name) }}
+        {{ tab.name }}
       </div>
     </div>
     <div class="my-profile-tab">
       <RatingCard 
-        :rate-block="rateBlbock" 
         :rating-scale="userRating" 
       />
       <UserDetailsCard
-        :labels="labels"
-        :tab-titles="tabTitles"
-        :days="mockData.days"
-        :months="mockData.months"
-        :years="mockData.years"
-        :main-lag="mockData.main_lag"
-        :cities="mockData.cities"
-        :district="mockData.district"
         :user-data="userProfile"
         :phone="userPhone"
         :is-edit-mode="isEditModeProfile"
@@ -225,6 +213,7 @@
       <SecurityBlock
         @toggle-modal="toggleModal"
         :user-email="userEmail"
+        :checkbox-data="checkboxData"
       />
     </div>
   </div>
@@ -232,32 +221,22 @@
 
 <script>
 import { ref, computed, reactive } from 'vue'
-import { useRoute } from 'vue-router'
-import { Form } from '@system.it.flumx.com/vee-validate'
+import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
-import Switcher from '../../../components/Switcher.vue'
-import Dropdown from '../../../components/Dropdown.vue'
 import InputComponent from '../../../components/InputComponent.vue'
 import ModalWindow from '../../../components/ModalWindow.vue'
 import ModalUserWindow from '../../../components/ModalUserWindow.vue'
 import PlayerPageComponent from '../../../components/PlayerPageComponent.vue'
-import TextAreaComponent from '../../../components/TextAreaComponent.vue'
 import RatingCard from '../../../components/RatingCard.vue'
 import UserDetailsCard from '../../../components/UserDetailsCard.vue'
 import SecurityBlock from '../../../components/SecurityBlock.vue'
-import CodeInput from '../../../components/CodeInput.vue'
 import DeleteAccountModal from '../../../components/user-cabinet-modals/DeleteAccountModal.vue'
 import ChangePasswordModal from '../../../components/user-cabinet-modals/ChangePasswordModal.vue'
 import ChangeUserDataModal from '../../../components/user-cabinet-modals/ChangeUserDataModal.vue'
 
-import eyeCross from '../../../assets/img/eye-crossed.svg'
-import eyeOpen from '../../../assets/img/eye-opened.svg'
-import userIcon from '../../../assets/img/user-icon.svg'
-import database from '../../../assets/img/database.svg'
-import notification from '../../../assets/img/notification-small.svg'
-import sortArrowHorizontal from '../../../assets/img/sort-arrows-horizontal.svg'
 import edit from '../../../assets/img/edit-white.svg'
 
 import Spiner from '../../../workers/loading-worker/Loading.vue'
@@ -266,49 +245,87 @@ import { ROUTES } from "../../../router"
 
 import CONSTANTS from '../../../consts'
 
+const usersData = {
+  "configuration": {
+    "email": true,
+    "phone": true,
+    "show_reviews": false
+  },
+  "profile": {
+    "place": {
+      "place_name": "string",
+      "lat": "90",
+      "lon": "180"
+    },
+    "last_name": "Borisovich",
+    "name": "Mahmud",
+    "about_me": "I am a teacher in a school",
+    "birthday": "2000-04-12",
+    "height": "178",
+    "weight": "85",
+    "working_leg": "Left",
+    "position": "GK",
+  },
+  "raiting": "3",
+  "phone": "+38075645342",
+  "email": "hrundel@gmail.com",
+  "get_planned_events": "10d"
+}
+
 export default {
   name: 'UserCabinet',
   components: {
     GreenBtn,
     WhiteBtn,
-    Switcher,
-    Dropdown,
     Spiner,
     InputComponent,
     ModalWindow,
     ModalUserWindow,
     PlayerPageComponent,
-    TextAreaComponent,
     RatingCard,
     UserDetailsCard,
     SecurityBlock,
-    CodeInput,
-    Form,
     DeleteAccountModal,
     ChangePasswordModal,
     ChangeUserDataModal
   },
   setup() {
+    const { t } = useI18n()
+
     const route = useRoute()
+    const router = useRouter()
+
     const userProfile = ref('')
     const userRating = ref(null)
     const userPhone = ref('')
     const userEmail = ref('')
     const isEditModeProfile = ref(false)
     const sendChangedDataAction = ref(false)
+    const isSpinerActive = ref(false)
+    
+    const checkboxData = reactive({})
+    const changeDataModalConfig = ref(null)
 
-    const changeDataModal = reactive({
-      title: 'Подивитись зі сторони',
-      button_1: 'Перейти до демонстрації',
-      button_2: 'Просто зберегти',
-      btn_with_1: 189,
-      btn_with_2: 132
+    const isModalActive = reactive({
+        phone: false,
+        email: false,
+        delete_acc: false,
+        change_password: false,
+        public_profile: false,
+        change_data: false
     })
 
-    userRating.value = route.meta.usersData.data.raiting
-    userProfile.value = route.meta.usersData.data.profile
-    userPhone.value = route.meta.usersData.data.phone
-    userEmail.value = route.meta.usersData.data.email
+    const modalChangePhone = reactive({
+        first: true,
+        second: false
+    })
+
+    const mockData = computed(() => {
+      return {
+        user_info: CONSTANTS.users_page.userInfo,
+        tabs: CONSTANTS.profile.tabs.map(item => ({...item, name: t(item.name)}))
+      }
+    })
 
     const icons = computed(() => {
       return {
@@ -316,218 +333,128 @@ export default {
       }
     })
 
+    // ---------------- Switch back after server is back
+    // userRating.value = route.meta.usersData.data.raiting
+    // userProfile.value = route.meta.usersData.data.profile
+    // userPhone.value = route.meta.usersData.data.phone
+    // userEmail.value = route.meta.usersData.data.email
+
+    // checkboxData.value = {
+    //   checkboxPhone: route.meta.usersData.data.configuration.phone,
+    //   checkboxEmail: route.meta.usersData.data.configuration.email,
+    //   checkboxReviews: route.meta.usersData.data.configuration.show_reviews
+    // }
+    // ---------------- Switch back after server is back
+
+    // ---------------- DELETE after server is back
+    userRating.value = usersData.raiting
+    userProfile.value = usersData.profile
+    userPhone.value = usersData.phone
+    userEmail.value = usersData.email
+
+    checkboxData.value = {
+      checkboxPhone: usersData.configuration.phone,
+      checkboxEmail: usersData.configuration.email,
+      checkboxReviews: usersData.configuration.show_reviews
+    }
+    // ---------------- DELETE after server is back
+
+
+    function saveCancelDataEdit(val) {
+      toggleModal('change_data')
+      if (val === 'save') {
+        changeDataModalConfig.value = {
+          title: 'Подивитись зі сторони',
+          button_1: 'Перейти до демонстрації',
+          button_2: 'Просто зберегти',
+          btn_with_1: 189,
+          btn_with_2: 132
+        }
+      } else {
+        changeDataModalConfig.value = {
+          title: 'Вийти без збереження змін?',
+          button_1: 'Ні, не виходити',
+          button_2: 'Так, вийти',
+          btn_with_1: 124,
+          btn_with_2: 90
+        }
+      }
+    }
+
     function toggleEditMode() {
       isEditModeProfile.value = !isEditModeProfile.value
     }
 
     function saveUserDataChanges() {
-      console.log('saveUserDataChanges')
       sendChangedDataAction.value = true
-      console.log(sendChangedDataAction.value)
     }
 
     function toggleDataAction() {
       sendChangedDataAction.value = !sendChangedDataAction.value
     }
 
+    function changeTab(id, url) {
+      mockData.tabs = mockData.tabs
+        .map((item) => ({ ...item, isActive: false }))
+        .map((item) => {
+          return item.id === id ? { ...item, isActive: true } : item
+        })
+      router.push(url)
+    }
+
+    function closeChangeUserDataModal() {
+      toggleModal('change_data')
+      toggleEditMode()
+    }
+
+    function toggleModal(val) {
+      switch (val) {
+        case 'phone':
+        isModalActive.phone = !isModalActive.phone
+          modalChangePhone.value = {
+            first: true,
+            second: false,
+          }
+          break
+        case 'email':
+          isModalActive.email = !isModalActive.email
+          break
+        case 'delete_acc':
+          isModalActive.delete_acc = !isModalActive.delete_acc
+          break
+        case 'public_profile':
+          isModalActive.public_profile = !isModalActive.public_profile
+          break
+        case 'change_data':
+          isModalActive.change_data = !isModalActive.change_data
+          break
+        case 'change_password':
+          isModalActive.change_password = !isModalActive.change_password
+          break
+      }
+    }
+
     return {
       toggleEditMode,
       saveUserDataChanges,
       toggleDataAction,
+      changeTab,
+      closeChangeUserDataModal,
+      toggleModal,
+      saveCancelDataEdit,
       userProfile,
       userRating,
       userPhone,
       userEmail,
       icons,
       isEditModeProfile,
-      changeDataModal,
-      sendChangedDataAction
-      // schema
-    }
-  },
-  data() {
-    return {
-      currentTab: 0,
-      tabTitles: [
-        { id: 0, title: 'Про мене', width: '119px' },
-        { id: 1, title: 'Ігрові характеристики', width: '186px' },
-        { id: 2, title: 'Контакти', width: '119px' },
-      ],
-      labels: [
-        { title: 'asdfkj' },
-        { title: 'asdf' },
-        { title: 'as' },
-        { title: 'asdfk' },
-      ],
-      rateBlbock: [
-        {
-          id: 0,
-          name: 'Дмитро Горбачевський',
-          date: '13.07.2022',
-        },
-        {
-          id: 1,
-          name: 'Захар Беркут',
-          date: '13.07.2022',
-        },
-        {
-          id: 2,
-          name: 'Василь Величко',
-          date: '13.07.2022',
-        },
-        {
-          id: 3,
-          name: 'Дмитро Горбачевський',
-          date: '13.07.2022',
-        },
-      ],
-      isModalActive: {
-        phone: false,
-        email: false,
-        delete_acc: false,
-        change_password: false,
-        public_profile: false,
-        change_data: false
-      },
-      modalChangePhone: {
-        first: true,
-        second: false,
-      },
-      isSpinerActive: false,
-      dataDropdown: [
-        {
-          id: 0,
-          value: 'Жінка',
-        },
-        {
-          id: 1,
-          value: 'Чоловик',
-        },
-      ],
-      tabs: [
-        {
-          id: 0,
-          name: 'my-profile',
-          img: userIcon,
-          url: '/application/profile/my-profile',
-          isActive: true,
-        },
-        {
-          id: 1,
-          name: 'rate-plan',
-          img: database,
-          url: '/application/profile/rate-plan',
-          isActive: false,
-        },
-        {
-          id: 2,
-          name: 'notifications',
-          img: notification,
-          url: '/application/profile/notifications',
-          isActive: false,
-        },
-      ]
-    }
-  },
-  computed: {
-    changePasswordStep() {
-      return this.modalChangePassword
-    },
-    eyeCrossed() {
-      return eyeCross
-    },
-    eyeOpened() {
-      return eyeOpen
-    },
-    sortArrowHorizontal() {
-      return sortArrowHorizontal
-    },
-    mockData() {
-      return {
-        days: CONSTANTS.dates.days,
-        months: CONSTANTS.dates.months,
-        years: CONSTANTS.dates.years,
-        main_lag: CONSTANTS.profile.mainLeg,
-        cities: CONSTANTS.profile.cities,
-        district: CONSTANTS.profile.district,
-        user_info: CONSTANTS.users_page.userInfo,
-      }
-    },
-  },
-  methods: {
-    deleteAcc(formData) {
-      API.UserService.sendApproveCode(formData.controlledValues.verify_code)
-        .then(() => {
-          localStorage.removeItem('token')
-          this.$router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute)
-        })
-        .catch((e) => {
-          console.log('Delete account error', e)
-        })
-    },
-    sendCodeForDeleteAcc() {
-      this.modalDeleteAcc = {
-        first: false,
-        second: true,
-      },
-      API.UserService.deleteMyProfile()
-    },
-    changeUserTab(id) {
-      this.currentTab = id
-    },
-    changeTab(id, url) {
-      this.tabs = this.tabs
-        .map((item) => ({ ...item, isActive: false }))
-        .map((item) => {
-          return item.id === id ? { ...item, isActive: true } : item
-        })
-      this.$router.push(url)
-    },
-    toggleModal(val) {
-      switch (val) {
-        case 'phone':
-          this.isModalActive.phone = !this.isModalActive.phone
-          this.modalChangePhone = {
-            first: true,
-            second: false,
-          }
-          break
-        case 'email':
-          this.isModalActive.email = !this.isModalActive.email
-          break
-        case 'delete_acc':
-          this.isModalActive.delete_acc = !this.isModalActive.delete_acc
-          break
-        case 'public_profile':
-          this.isModalActive.public_profile = !this.isModalActive.public_profile
-          break
-        case 'change_data':
-          this.isModalActive.change_data = !this.isModalActive.change_data
-          break
-        case 'change_password':
-          this.isModalActive.change_password = !this.isModalActive.change_password
-          break
-      }
-    },
-    toggleModalPage() {
-      this.modal = {
-        first: false,
-        second: true,
-      }
-      this.$nextTick(() => {
-        this.$refs.test.focus()
-      })
-    },
-    changeEmailIconClick() {
-      this.toggleModal('email')
-    },
-    // ----- show public profile
-    openPublicProfile() {
-      this.toggleModal('public_profile')
-    },
-    closeChangeUserDataModal() {
-      this.toggleModal('change_data')
-      this.toggleEditMode()
+      changeDataModalConfig,
+      sendChangedDataAction,
+      mockData,
+      isSpinerActive,
+      isModalActive,
+      modalChangePhone,
+      checkboxData
     }
   }
 }
@@ -594,6 +521,7 @@ export default {
         line-height: 20px;
         color: #575775;
         margin-top: 4px;
+        cursor: pointer;
       }
     }
   }
