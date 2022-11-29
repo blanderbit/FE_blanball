@@ -17,7 +17,7 @@
           </div>
         </div>
         <div class="b-change-data__main-text">
-          Бажаєте подивитись як виглядатиме ваш профіль для інших користувачів?
+          {{ $t('modals.change_user_data.main-text') }}
         </div>
         <div class="b-change-data__btns-block">
           <div class="b-change-data__first-btn">
@@ -38,12 +38,12 @@
               :font-styles="{
                 'font-size': '13px'
               }"
-              @click-function="$emit('saveChanges')"
+              @click-function="$emit('saveDeclineChanges', config.btn_action)"
             />
           </div>
         </div>
         <div class="b-change-data__cancel-changes">
-          Скасувати зміни
+          {{ $t('modals.change_user_data.cancel-changes') }}
         </div>
       </div>
     </div>
@@ -70,7 +70,7 @@ export default {
       default: () => {}
     }
   },
-  emits: ['closeModal', 'saveChanges'],
+  emits: ['closeModal', 'saveChanges', 'saveDeclineChanges'],
   setup(props, context) {
     function closeModal() {
       context.emit('closeModal', 'change_data')

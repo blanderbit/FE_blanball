@@ -1,15 +1,11 @@
 <template>
-  <div>
-    <!-- <Checkbox
-      :checked="modelValue"
-      @update:checked="valueChange"
-    /> -->
+  <div class="b_switch_wrapper">
+    <div v-if="!isEditMode" class="b_switch_block"></div>
     <label class="b_switch" :for="id">
       <input 
         type="checkbox"
         :id="id" 
         :checked="modelValue" 
-        @change="valueChange"
         @input="valueChange($event.target.checked)"
       />
       <div class="b_switch_slider round"></div>
@@ -20,12 +16,10 @@
 <script>
 import { ref, watch } from 'vue';
 import { CustomModelWorker } from '../workers/custom-model-worker'
-import Checkbox from '../components/Checkbox.vue'
 
 export default {
   name: 'switch-component',
   components: {
-    Checkbox
   },
   props: {
     id: {
@@ -33,6 +27,10 @@ export default {
       required: true
     },
     initialValue: {
+      type: Boolean,
+      default: false
+    },
+    isEditMode: {
       type: Boolean,
       default: false
     },
@@ -46,9 +44,11 @@ export default {
     }
   },
   setup(props) {
+    watch(() => props.isEditMode, () => console.log('edit mode', props.isEditMode))
     const { modelValue, modelErrorMessage, modelHandlers } = CustomModelWorker(props)
 
     function valueChange(val) {
+      console.log(val)
       modelHandlers.value.input[0](val)
       modelHandlers.value.input[1](val, false)
       console.log(modelValue)
@@ -64,6 +64,20 @@ export default {
 </script>
 
 <style scoped>
+.b_switch_wrapper{
+  position: relative;
+  display: inherit;
+}
+.b_switch_block {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #d3f8f799;
+  z-index: 1;
+  border-radius: 34px;
+}
 .b_switch {
   display: inline-block;
   height: 20px;

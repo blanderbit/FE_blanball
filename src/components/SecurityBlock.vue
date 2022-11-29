@@ -8,34 +8,30 @@
         {{ $t('profile.set-personal-details') }}
       </div>
       <div class="b-security__settings-block">
-        <Form
-          v-slot="data"
-          :validation-schema="schema"
-          :initial-values="formValues"
-          ref="checkboxForm"
-        >
-          <div class="b-security__personal-settings">
-            <p>{{ $t('profile.phone-number') }}</p>
-            <Switcher 
-              :id="'phone'"
-              name="phone"
-            />
-          </div>
-          <div class="b-security__personal-settings">
-            <p>{{ $t('profile.e-mail') }}</p>
-            <Switcher 
-              :id="'email'"
-              name="email"
-            />
-          </div>
-          <div class="b-security__personal-settings">
-            <p>{{ $t('profile.my-feedbacks') }} <span>(Деякі)</span></p>
-            <Switcher 
-              :id="'feedback'"
-              name="show_reviews"
-            />
-          </div>
-        </Form>
+        <div class="b-security__personal-settings">
+          <p>{{ $t('profile.phone-number') }}</p>
+          <Switcher 
+            :id="'phone'"
+            :is-edit-mode="isEditMode"
+            name="phone"
+          />
+        </div>
+        <div class="b-security__personal-settings">
+          <p>{{ $t('profile.e-mail') }}</p>
+          <Switcher 
+            :id="'email'"
+            :is-edit-mode="isEditMode"
+            name="email"
+          />
+        </div>
+        <div class="b-security__personal-settings">
+          <p>{{ $t('profile.my-feedbacks') }} <span>(Деякі)</span></p>
+          <Switcher 
+            :id="'feedback'"
+            :is-edit-mode="isEditMode"
+            name="show_reviews"
+          />
+        </div>
       </div>
     </div>
     <div class="b-security__top-table">
@@ -54,6 +50,7 @@
           :has-icon="true"
           :icon="[sortArrowHorizontal]"
           @icon-click="toggleModalWindow"
+          name="change_email"
         />
       </div>
       <div class="b-security__change-pass-btn" @click="toggleModalWindow('change_password')">
@@ -69,8 +66,6 @@
 
 <script>
 import { ref, computed } from 'vue'
-import * as yup from 'yup'
-import { Form } from '@system.it.flumx.com/vee-validate'
 
 import Switcher from '../components/Switcher.vue'
 import InputComponent from '../components/InputComponent.vue'
@@ -91,25 +86,17 @@ export default {
     checkboxData: {
       type: Object,
       default: () => {}
+    },
+    isEditMode: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['toggleModal'],
   setup(props, context) {
-    const formValues = ref({
-      email: props.checkboxData.checkboxEmail,
-      phone: props.checkboxData.checkboxPhone,
-      show_reviews: props.checkboxData.checkboxReviews,
-    })
     const checkboxForm = ref(null)
 
     const sortArrowHorizontal = computed(() => sortArrowHorizontally)
-    const schema = computed(() => {
-      return yup.object({
-        email: yup.string().required(),
-        phone: yup.string().required(),
-        show_reviews: yup.string().required()
-      })
-    })
 
     function toggleModalWindow(val) {
       context.emit('toggleModal', val)
@@ -118,9 +105,7 @@ export default {
     return {
       toggleModalWindow,
       sortArrowHorizontal,
-      checkboxForm,
-      schema,
-      formValues
+      checkboxForm
     }
   },
 }

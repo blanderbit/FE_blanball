@@ -58,16 +58,16 @@
     version: ref(false)
   };
 
-  // API.NotificationService
-  //   .getMaintenance()
-  //   .then((result) => handleMessageGeneral({
-  //     messageType: WebSocketTypes.ChangeMaintenance,
-  //     data: {
-  //       maintenance: {
-  //         type: result.data.isMaintenance
-  //       }
-  //     }
-  //   }));
+  API.NotificationService
+    .getMaintenance()
+    .then((result) => handleMessageGeneral({
+      messageType: WebSocketTypes.ChangeMaintenance,
+      data: {
+        maintenance: {
+          type: result.data.isMaintenance
+        }
+      }
+    }));
 
   GeneralSocketWorkerInstance
     .registerCallback(handleMessageGeneral)

@@ -29,7 +29,7 @@ export class UserService {
   }
 
   static updateProfileData(payload) {
-    return AxiosInstance.patch(
+    return AxiosInstance.put(
       EndpointsEnum.Users.updateProfileData,
       payload
     )
