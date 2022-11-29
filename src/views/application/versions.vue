@@ -1,5 +1,6 @@
 <template>
   <div class="b-versions">
+    <Loading ref="load" />
     <div class="b-versions__title-level1 title-customs">Тут буде написано що саме ми додали до наявного функціоналу</div>
     <div class="b-versions__container d-flex justify-content-between">
       <div class="b-versions__left-side">
@@ -79,11 +80,16 @@
         <div class="b-versions__title-level3">
             {{ $t('versions.history') }}
         </div>
-        <template v-for="(item, index) in versions" :key="'versions' + index">
+        <template 
+          v-for="(item, index) in versions" 
+          :key="'versions' + index"
+        >
           <version-item
             :version="item.version"
             :date="item.date"
+            :id="item.id"
             :is-active="item.version === versionNumber"
+            @version-click="gerVersion"
           >
           </version-item>
         </template>
@@ -98,6 +104,7 @@ import { useRoute } from 'vue-router'
 import dayjs from 'dayjs'
 import dayjsUkrLocale from 'dayjs/locale/uk'
 import { API } from "../../workers/api-worker/api.worker"
+import Loading from '../../workers/loading-worker/Loading.vue'
 
 import VersionItem from '../../components/versions-page/version-item.vue'
 
@@ -105,6 +112,7 @@ export default {
   name: 'VersionsPage',
   components: {
     VersionItem,
+    Loading
   },
   setup() {
     const route = useRoute()
@@ -112,8 +120,10 @@ export default {
     const currentVersion = ref()
     const versionType = ref()
     const versionNumber = ref()
+    const load = ref(true)
 
     versions.value = route.meta.allVersions.results
+    console.log(versions.value)
 
     versions.value = versions.value.map(item => {
       return {
@@ -126,7 +136,12 @@ export default {
     const currentVersionId = versions.value[versions.value.length - 1].id
 
     if (currentVersionId) {
-      API.VersionsService.getCurrentVersion(currentVersionId)
+      gerVersion(currentVersionId)
+    }
+
+    function gerVersion(id) {
+      console.log('getVersion', id)
+      API.VersionsService.getCurrentVersion(id)
       .then(res => {
           versionType.value = res.type
           versionNumber.value = res.version
@@ -134,12 +149,13 @@ export default {
       })
     }
 
-
     return {
+      gerVersion,
       versions,
       currentVersion,
       versionNumber,
-      versionType
+      versionType,
+      load
     }
   }
 }
