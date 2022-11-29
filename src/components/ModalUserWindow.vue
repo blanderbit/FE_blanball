@@ -1,9 +1,11 @@
 <template>
-  <div class="b_modal_user_wrapper" @click.self="$emit('close-modal')">
-    <div class="b_modal_user_modal-window">
-      <slot name="user-content"></slot>
+  <Transition>
+    <div class="b_modal_user_wrapper" @click.self="$emit('close-modal')">
+      <div class="b_modal_user_modal-window">
+        <slot name="user-content"></slot>
+      </div>
     </div>
-  </div>
+  </Transition>
 </template>
 
 <script>
