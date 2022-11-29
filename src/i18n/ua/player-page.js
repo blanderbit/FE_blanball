@@ -17,4 +17,5 @@ export default {
   'show-more': 'Показати ще 10 відгуків',
   'planned-events': 'Заплановані події',
   'history': 'Історія участі у заходах',
+  'about-yourself': 'Про себе:'
 }

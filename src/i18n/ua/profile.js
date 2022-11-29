@@ -19,5 +19,20 @@ export default {
   'e-mail': 'E-mail',
   'my-feedbacks': 'Відгуки про мене',
   'personal-details': 'Особиста інформація',
-  'some': '(Деякі)'
+  'some': '(Деякі)',
+  'how-profile-looks': 'Як виглядатиме мій профіль для інших?',
+  'birth-date': 'Дата народження',
+  'surname': 'Прізвище',
+  'name': `Ім'я`,
+  'words-about-myself': 'Декілька слів про себе',
+  'day': 'День',
+  'month': 'Місяць',
+  'year': 'Рік',
+  'sm': 'см',
+  'height': 'Зріст',
+  'kg': 'кг',
+  'weight': 'Вага',
+  'main-leg': 'Ударна нога',
+  'game-position': 'Ігрова позиція',
+  'phone': 'Телефон'
 }
