@@ -30,9 +30,9 @@ import Sidebar from './../../components/Sidebar.vue'
 import MainHeader from './../../components/MainHeader.vue'
 import MobileMenu from '../../components/MobileMenu.vue'
 import Notification from '../../components/Notification.vue'
+import ModalFeedback from '../../components/ModalFeedback/index.vue'
 
 import message_audio from '../../assets/message_audio.mp3'
-
 
 import { AuthWebSocketWorkerInstance } from './../../workers/web-socket-worker'
 import { TokenWorker } from '../../workers/token-worker'
