@@ -34,4 +34,10 @@ export class UserService {
       payload
     )
   }
+
+  static getUserReviews(payload) {
+    return AxiosInstance.get(
+      EndpointsEnum.Reviews.getUserReviews + payload
+    )
+  }
 }

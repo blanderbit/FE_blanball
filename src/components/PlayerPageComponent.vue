@@ -208,6 +208,7 @@ import StarRating from 'vue-star-rating'
 import publicPageBack from '../assets/img/public-page-back.svg'
 import userPageBack from '../assets/img/user-page-back.svg'
 
+import { API } from '../workers/api-worker/api.worker'
 import CONSTANTS from '../consts'
 
 const PAGE_MODE = 'public'
@@ -228,6 +229,9 @@ export default {
     }
   },
   setup(props) {
+    console.log(props.userData.id)
+
+    API.
 
     return {
 
