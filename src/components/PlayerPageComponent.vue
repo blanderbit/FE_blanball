@@ -203,6 +203,7 @@
 </template>
 
 <script>
+import { ref } from 'vue'
 import StarRating from 'vue-star-rating'
 
 import publicPageBack from '../assets/img/public-page-back.svg'
@@ -229,9 +230,12 @@ export default {
     }
   },
   setup(props) {
-    console.log(props.userData.id)
+    const userId = ref(props.userData.id)
 
-    API.
+    API.ReviewService.getUserReviews(userId.value)
+      .then(res => {
+        console.log(res)
+      })
 
     return {
 
