@@ -14,7 +14,6 @@ export class UserService {
   }
 
   static sendApproveCode(verificationCode) {
-    console.log(verificationCode)
     return AxiosInstance.post(
       EndpointsEnum.Users.sendApproveCode,
       verificationCode

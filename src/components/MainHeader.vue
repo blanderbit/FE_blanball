@@ -27,7 +27,7 @@
 
 <script>
 import BreadCrumbs from './Breadcrumbs.vue'
-import InputComponent from './InputComponent.vue'
+import InputComponent from './forms/InputComponent.vue'
 import search from '../assets/img/search.svg'
 
 export default {

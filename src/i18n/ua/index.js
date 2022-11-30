@@ -15,6 +15,7 @@ import SlideMenu from './slide-menu'
 import Versions from './versions'
 import Page404 from './404'
 import Works from './works'
+import ResponseMessageTypes from './response.message.types'
 
 export const UA_LANGUAGE = {
   events: EventsPage,
@@ -33,5 +34,6 @@ export const UA_LANGUAGE = {
   slide_menu: SlideMenu,
   versions: Versions,
   page_404: Page404,
-  works: Works
+  works: Works,
+  responseMessageTypes: ResponseMessageTypes
 }

@@ -42,7 +42,13 @@
 
           return router.push(`${ROUTES.WORKS.absolute}${query ? '?' + query : query}`)
         } else if (!maintenance && !ifCurrentRouteApplication) {
-          const redirectUrl = router.currentRoute.value.query.redirectUrl;
+          const ifAuthentication = location.pathname.includes('authentication');
+
+          if(ifAuthentication) return;
+          const urlSearchParams = new URLSearchParams(window.location.search);
+          const params = Object.fromEntries(urlSearchParams.entries());
+          const redirectUrl = params.redirectUrl;
+
           const resolveRouter = redirectUrl && router.resolve(redirectUrl);
           if (
             !redirectUrl || resolveRouter?.matched?.find((match) =>

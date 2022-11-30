@@ -27,6 +27,7 @@
           :title="$t('register.email')"
           :placeholder="'elektron@mail.com'"
           :title-width="0"
+          name="email"
         />
       </div>
       <div class="b-register-step__input">
@@ -35,6 +36,7 @@
           :title-width="0"
           :type="['password', 'text']"
           :outside-title="true"
+          name="password"
           :has-icon="true"
           :icon="[eyeCrossed, eyeOpened]"
         />
@@ -46,6 +48,7 @@
           :type="['password', 'text']"
           :outside-title="true"
           :has-icon="true"
+          name="re_password"
           :icon="[eyeCrossed, eyeOpened]"
         />
       </div>
@@ -73,7 +76,7 @@
 import { computed } from 'vue'
 
 import GreenBtn from '../GreenBtn.vue'
-import InputComponent from '../InputComponent.vue'
+import InputComponent from '../forms/InputComponent.vue'
 
 import tickWhite from '../../assets/img/tick-white.svg'
 import eyeCross from '../../assets/img/eye-crossed.svg'
@@ -176,7 +179,6 @@ export default {
   }
   .b-register-step__input {
     width: 384px;
-    height: 40px;
     margin-top: 12px;
     @media (max-width: 992px) {
       width: 100%;

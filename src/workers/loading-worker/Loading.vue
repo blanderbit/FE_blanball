@@ -1,5 +1,5 @@
 <template>
-  <div class="spiner-wrapper" v-show="loading">
+  <div class="spiner-wrapper" v-show="isLoading">
     <div class="spiner-body">
       <div class="spiner">
         <div class="lds-ring">
@@ -19,15 +19,10 @@
 <script>
   export default {
     name: 'loading',
-    data: () => ({
-      loading: false
-    }),
-    methods: {
-      start() {
-        this.loading = true
-      },
-      finish() {
-        this.loading = false
+    props: {
+      isLoading: {
+        type: Boolean,
+        default: false
       }
     }
   }

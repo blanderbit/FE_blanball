@@ -19,6 +19,7 @@
             text-center
             transition-all
           "
+          :class="{'b-form-error': modelErrorMessage}"
           :type="type"
           :style="{
             width: `${props.fieldWidth}px`,
@@ -56,7 +57,7 @@ import {
   onMounted,
   onBeforeUnmount,
 } from 'vue'
-import { CustomModelWorker } from '../workers/custom-model-worker'
+import { CustomModelWorker } from '../../workers/custom-model-worker/index'
 const props = defineProps({
   className: String,
   fields: {
@@ -264,6 +265,7 @@ onBeforeUpdate(() => {
 </script>
 
 <style scoped>
+  @import "forms.scss";
 .code-input-container {
   position: relative;
   display: flex;

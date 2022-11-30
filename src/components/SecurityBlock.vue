@@ -68,9 +68,9 @@
 import { ref, computed } from 'vue'
 
 import Switcher from '../components/Switcher.vue'
-import InputComponent from '../components/InputComponent.vue'
 
 import sortArrowHorizontally from '../assets/img/sort-arrows-horizontal.svg'
+import InputComponent from './forms/InputComponent.vue'
 
 export default {
   name: 'SecurityBlock',

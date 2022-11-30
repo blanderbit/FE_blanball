@@ -29,21 +29,51 @@
       <div class="b-register-step__input">
         <InputComponent
           :outside-title="true"
-          :title="$t('register.full-name')"
-          :placeholder="'Олександра Білозерська'"
+          :title="$t('register.name')"
+          :placeholder="'Олександра'"
           :title-width="0"
+          name="profile.name"
+        />
+      </div>
+      <div class="b-register-step__input">
+        <InputComponent
+          :outside-title="true"
+          :title="$t('register.last_name')"
+          :placeholder="'Білозерська'"
+          :title-width="0"
+          name="profile.last_name"
         />
       </div>
       <div class="b-register-step__input">
         <InputComponent
           :outside-title="true"
           :title="$t('register.phone-number')"
-          :placeholder="'+38 0ХХ ХХХ ХХ ХХ'"
+          :placeholder="'+38 (0ХХ) ХХХ ХХ ХХ'"
           :title-width="0"
-        />
+          name="phone"
+        >
+         <template #input="slotProps">
+           <input
+               :type="slotProps.type"
+               :placeholder="slotProps.placeholder"
+               v-on="slotProps.on"
+               :value="slotProps.value"
+               :style="slotProps.style"
+               :disabled="slotProps.disabled"
+               v-maska="UkraineMasks"
+           />
+         </template>
+
+        </InputComponent>
       </div>
     </div>
     <div class="b-register-step__buttons">
+      <div
+          class="b-register-step__back-btn"
+          @click="$emit('decrementStep')"
+      >
+        {{$t('register.return')}}
+      </div>
       <GreenBtn
         :text="$t('register.next')"
         :width="155"
@@ -57,10 +87,10 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 import GreenBtn from '../GreenBtn.vue'
-import InputComponent from '../InputComponent.vue'
+import InputComponent from '../forms/InputComponent.vue'
 
 import arrowRight from '../../assets/img/arrow-right-white.svg'
 
@@ -74,8 +104,11 @@ export default {
     const arrow_right = computed(() => {
       return arrowRight
     })
+    const UkraineMasks = computed(() => '+38 (0##) ### ## ##');
+
     return {
       arrow_right,
+      UkraineMasks
     }
   },
 }
@@ -152,13 +185,25 @@ export default {
   }
   .b-register-step__input {
     width: 384px;
-    height: 40px;
     margin-top: 12px;
     @media (max-width: 992px) {
       width: 100%;
     }
   }
   .b-register-step__buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .b-register-step__back-btn {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 24px;
+      text-align: center;
+      color: #575775;
+      cursor: pointer;
+    }
   }
 }
 </style>

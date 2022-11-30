@@ -72,7 +72,7 @@
     </Form>
     <div class="b-login-step__has-no-account">
       {{ $t('login.no-account') }}
-      <span>{{ $t('login.register') }}</span>
+      <span @click="openRegisterPage()">{{ $t('login.register') }}</span>
     </div>
   </div>
 </template>
@@ -82,7 +82,7 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import GreenBtn from '../GreenBtn.vue'
-import InputComponent from '../InputComponent.vue'
+import InputComponent from '../forms/InputComponent.vue'
 
 import eyeCross from '../../assets/img/eye-crossed.svg'
 import eyeOpen from '../../assets/img/eye-opened.svg'
@@ -156,6 +156,7 @@ export default {
         isWrongCreds.value = true
       }
     };
+    const openRegisterPage = () => router.push(ROUTES.AUTHENTICATIONS.REGISTER.absolute)
 
     return {
       eyeCrossed,
@@ -164,7 +165,8 @@ export default {
       handleLogin,
       showInvalidCredentials,
       warningTopStyle,
-      openResetPasswordModal
+      openResetPasswordModal,
+      openRegisterPage
     }
   },
 }

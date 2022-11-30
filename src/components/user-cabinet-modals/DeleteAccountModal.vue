@@ -82,7 +82,7 @@ import { Form } from '@system.it.flumx.com/vee-validate'
 import * as yup from "yup"
 
 import ModalWindow from '../../components/ModalWindow.vue'
-import CodeInput from '../../components/CodeInput.vue'
+import CodeInput from '../forms/CodeInput.vue'
 
 import { API } from "../../workers/api-worker/api.worker"
 
