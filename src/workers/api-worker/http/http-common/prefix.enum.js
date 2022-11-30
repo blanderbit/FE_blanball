@@ -28,6 +28,9 @@ export const EndpointsEnum = {
     changePassword: '/authentication/client/request-change/password',
     updateProfileData: '/authentication/client/me/update'
   },
+  Reviews: {
+    getUserReviews: '/reviews/client/user/reviews/list/'
+  },
   Versions: {
     getAllVersions: '/versions/client/versions/list',
     getCurrentVersion: '/versions/admin/version/'

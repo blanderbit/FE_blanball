@@ -13,7 +13,10 @@
           </div>
           <div class="b_player-page_right-side">
             <div class="b_player-page_line">
-              <div class="b_player-page_name">Калиновська Стефанія</div>
+              <div class="b_player-page_name">
+                {{ userData.profile.last_name }}
+                {{ userData.profile.name }}
+              </div>
               <div
                 :style="labelColor"
                 class="b_player-page_label"
@@ -25,7 +28,7 @@
               <div class="b_player-page_rating">
                 <div class="b_player-page_start">
                   <star-rating 
-                    :rating="rating"
+                    :rating="userData.raiting"
                     :star-size="14"
                     :show-rating="false"
                     :read-only="true"
@@ -63,7 +66,7 @@
         <div class="b_player-page_about-line">
           <div class="b_player-page_title">{{$t('player_page.about-yourself')}}</div>
           <div class="b_player-page_text">
-            Donec vitae mi vulputate, suscipit urna in, malesuada nisl. Pellentesque laoreet pretium nisl, et pulvinar massa eleifend sed
+            {{ userData.profile.about_me }}
           </div>
         </div>
         <div
@@ -74,19 +77,33 @@
           <div class="b_player-page_line">
             <div class="b_player-page_block">
               <div class="b_player-page_block-title">{{$t('player_page.height')}}</div>
-              <div class="b_player-page_text">168 см</div>
+              <div class="b_player-page_text">
+                {{ userData.profile.height }}
+                {{$t('player_page.sm')}}
+              </div>
             </div>
             <div class="b_player-page_block">
               <div class="b_player-page_block-title">{{$t('player_page.weight')}}</div>
-              <div class="b_player-page_text">48 кг</div>
+              <div class="b_player-page_text">
+                {{ userData.profile.weight }}
+                {{$t('player_page.kg')}}
+              </div>
             </div>
             <div class="b_player-page_block">
-              <div class="b_player-page_block-title">{{$t('player_page.position')}}</div>
-              <div class="b_player-page_text">Лівий Напівзахисник (ЛНЗ)</div>
+              <div class="b_player-page_block-title">
+                {{$t('player_page.position')}}
+              </div>
+              <div class="b_player-page_text">
+                {{ userData.profile.position }}
+              </div>
             </div>
             <div class="b_player-page_block">
-              <div class="b_player-page_block-title">{{$t('player_page.qualification')}}</div>
-              <div class="b_player-page_text active">{{$t('player_page.approved')}}</div>
+              <div class="b_player-page_block-title">
+                {{$t('player_page.qualification')}}
+              </div>
+              <div class="b_player-page_text active">
+                {{$t('player_page.approved')}}
+              </div>
             </div>
           </div>
         </div>
@@ -95,11 +112,15 @@
           <div class="b_player-page_info">
             <div class="b_player-page_block">
               <div class="b_player-page_block-title">{{$t('player_page.phone')}}</div>
-              <div class="b_player-page_text">+380 (95) 390 86 50</div>
+              <div class="b_player-page_text">
+                {{ userData.phone }}
+              </div>
             </div>
             <div class="b_player-page_block">
               <div class="b_player-page_block-title">{{$t('player_page.email')}}</div>
-              <div class="b_player-page_text">eddie_lake@gmail.com</div>
+              <div class="b_player-page_text">
+                {{ userData.email }}
+              </div>
             </div>
           </div>
         </div>
@@ -182,11 +203,14 @@
 </template>
 
 <script>
-import CONSTANTS from '../consts'
+import { ref } from 'vue'
 import StarRating from 'vue-star-rating'
 
 import publicPageBack from '../assets/img/public-page-back.svg'
 import userPageBack from '../assets/img/user-page-back.svg'
+
+import { API } from '../workers/api-worker/api.worker'
+import CONSTANTS from '../consts'
 
 const PAGE_MODE = 'public'
 
@@ -200,10 +224,25 @@ export default {
       type: String,
       default: '',
     },
+    userData: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  setup(props) {
+    const userId = ref(props.userData.id)
+
+    API.ReviewService.getUserReviews(userId.value)
+      .then(res => {
+        console.log(res)
+      })
+
+    return {
+
+    }
   },
   data() {
     return {
-      rating: 3,
       users: new Array(6).fill('t').map((item, idx) => {
         return {
           id: idx,
