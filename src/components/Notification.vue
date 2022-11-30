@@ -73,7 +73,7 @@
   import Loading from './../workers/loading-worker/Loading.vue'
   import NotificationButton from './../components/NotificationButton.vue'
   import Avatar from './../components/Avatar.vue'
-  import Checkbox from './../components/Checkbox.vue'
+  import Checkbox from './forms/Checkbox.vue'
   import CollapsiblePanel from './../components/collapsible/CollapsiblePanel.vue'
   export default {
     name: "Notification",

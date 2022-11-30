@@ -240,6 +240,7 @@ import PlayerPageComponent from '../../../components/PlayerPageComponent.vue'
 import RatingCard from '../../../components/RatingCard.vue'
 import UserDetailsCard from '../../../components/UserDetailsCard.vue'
 import SecurityBlock from '../../../components/SecurityBlock.vue'
+
 import DeleteAccountModal from '../../../components/user-cabinet-modals/DeleteAccountModal.vue'
 import ChangePasswordModal from '../../../components/user-cabinet-modals/ChangePasswordModal.vue'
 import ChangeUserDataModal from '../../../components/user-cabinet-modals/ChangeUserDataModal.vue'

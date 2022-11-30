@@ -20,8 +20,11 @@ export const routerDataResolver = new VueResolver()
 export const routerResolverByLoginPage = routerAuthResolver.routeInterceptor(
   () => ({}),
   {
-    afterIntercept: ({next}) => {
-      next(ROUTES.APPLICATION.EVENTS.absolute);
+    afterIntercept: ({next, error}) => {
+      if(error !== 'FIRST_WORKER_ERROR') {
+        next(ROUTES.APPLICATION.EVENTS.absolute);
+      }
+
       finishSpinner();
     },
     resolveFirstWorkerError: ({next}) => {

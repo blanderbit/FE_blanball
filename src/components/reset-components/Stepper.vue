@@ -98,13 +98,13 @@
   import { useRouter } from 'vue-router'
 
   import GreenBtn from '../GreenBtn.vue'
-  import InputComponent from '../InputComponent.vue'
+  import InputComponent from '../forms/InputComponent.vue'
   import { API } from "../../workers/api-worker/api.worker";
   import * as yup from "yup";
   import { Form } from '@system.it.flumx.com/vee-validate'
   import { ROUTES } from "../../router";
   import { useToast } from 'vue-toastification'
-  import CodeInput from "../CodeInput.vue";
+  import CodeInput from "../forms/CodeInput.vue";
   import eyeCross from '../../assets/img/eye-crossed.svg'
   import eyeOpen from '../../assets/img/eye-opened.svg'
   export default {

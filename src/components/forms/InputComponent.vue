@@ -1,7 +1,8 @@
 <template>
   <div class="b-input__input-component">
     <div 
-      class="b-input__wrapper" 
+      class="b-input__wrapper"
+      :class="{'b-form-error': modelErrorMessage}"
       :style="inputWrapper"
     >
       <div 
@@ -30,14 +31,22 @@
       >
         <img :src="iconLeft" alt="" />
       </div>
-      <input
-        :type="inputType"
-        :placeholder="placeholder"
-        v-on="modelHandlers"
-        :value="modelValue"
-        :style="inputStyle"
-        :disabled="isDisabled"
-      />
+      <slot name="input" :type="inputType"
+            :placeholder="placeholder"
+            :on="modelHandlers"
+            :value="modelValue"
+            :style="inputStyle"
+            :disabled="isDisabled">
+        <input
+            :type="inputType"
+            :placeholder="placeholder"
+            v-on="modelHandlers"
+            :value="modelValue"
+            :style="inputStyle"
+            :disabled="isDisabled"
+        />
+      </slot>
+
     </div>
     <p class="b-input__error-message">{{ modelErrorMessage }}</p>
   </div>
@@ -46,8 +55,8 @@
 <script>
 import { useField } from '@system.it.flumx.com/vee-validate'
 import { computed, toRef } from 'vue'
-import { modes } from '../workers/custom-model-worker/interactionModes'
-import { CustomModelWorker } from "../workers/custom-model-worker";
+import { modes } from '../../workers/custom-model-worker/interactionModes'
+import { CustomModelWorker } from "../../workers/custom-model-worker/index";
 
 // TODO vue 3 fully, validate message
 export default {
@@ -164,6 +173,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  @import "forms.scss";
 .b-input__input-component {
   height: 100%;
   .b-input__wrapper {
@@ -232,7 +242,7 @@ export default {
         padding-left: 12px;
       }
     }
-    input {
+    ::v-deep input {
       width: 100%;
       height: 40px;
       border: none;

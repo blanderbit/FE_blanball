@@ -251,7 +251,7 @@
 </template>
 
 <script>
-import InputComponent from '../../../components/InputComponent.vue'
+import InputComponent from '../../../components/forms/InputComponent.vue'
 
 export default {
   name: 'RatingPage',

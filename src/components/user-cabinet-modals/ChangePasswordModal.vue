@@ -91,8 +91,8 @@ import { Form } from '@system.it.flumx.com/vee-validate'
 import * as yup from "yup"
 
 import ModalWindow from '../../components/ModalWindow.vue'
-import CodeInput from '../../components/CodeInput.vue'
-import InputComponent from '../../components/InputComponent.vue'
+import CodeInput from '../forms/CodeInput.vue'
+import InputComponent from '../forms/InputComponent.vue'
 
 import eyeCross from '../../assets/img/eye-crossed.svg'
 import eyeOpen from '../../assets/img/eye-opened.svg'
