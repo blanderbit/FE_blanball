@@ -33,7 +33,7 @@
       <transition>
         <div v-if="rateStatus" class="b-rating-card__cards-block">
           <div
-            v-for="item in rateBlock"
+            v-for="item in mockData.rateBlock"
             :key="item.id"
             class="b-rating-card__card"
             :style="{ 'border-top': item.id !== 0 && '1px dashed #DFDEED' }"
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { ref, watch, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import ReviewDetailsComponent from '../components/ReviewDetails.vue'
 
 export default {
@@ -68,29 +68,28 @@ export default {
     ReviewDetailsComponent
   },
   props: {
-    rateBlock: {
-      type: Array,
-      default: () => []
-    },
     ratingScale: {
       type: Number,
       default: null
     }
   },
-  setup(props) {
+  setup() {
     const rateStatus = ref(false)
+
+    const mockData = computed(() => {
+      return {
+        rateBlock: CONSTANTS.users_page.rateBlock,
+      }
+    })
 
     function switchRate(val) {
       rateStatus.value = val
     }
 
-    onMounted(() => {
-      console.log(props.rateBlock, props.ratingScale)
-    })
-
     return {
+      switchRate,
       rateStatus,
-      switchRate
+      mockData
     }
   }
 }

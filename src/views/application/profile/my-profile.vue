@@ -1,6 +1,5 @@
 <template>
-  <div class="user-cabinet">
-    <Spiner v-if="isSpinerActive" />
+  <div class="b-user-cabinet">
     <!-- Modals delete -->
     <Transition>
       <ModalWindow
@@ -123,63 +122,60 @@
       @close-modal="toggleModal"
     />
 
-    <Transition>
-      <ModalUserWindow
-        v-if="isModalActive.public_profile"
-        @close-modal="toggleModal('public_profile')"
-      >
-        <template #user-content>
-          <PlayerPageComponent :page-mode="'public'" />
-        </template>
-      </ModalUserWindow>
-    </Transition>
+    <ModalUserWindow
+      v-if="isModalActive.public_profile"
+      @close-modal="toggleModal('public_profile')"
+    >
+      <template #user-content>
+        <PlayerPageComponent :page-mode="'public'" />
+      </template>
+    </ModalUserWindow>
 
     <ChangeUserDataModal 
       v-if="isModalActive.change_data"
-      :title="changeDataModal.title"
-      :btn-title_1="changeDataModal.button_1"
-      :btn-title_2="changeDataModal.button_2"
-      :btn-width_1="changeDataModal.btn_with_1"
-      :btn-width_2="changeDataModal.btn_with_2"
+      :config="changeDataModalConfig"
       @close-modal="closeChangeUserDataModal"
-      @save-changes="saveUserDataChanges"
+      @save-decline-changes="saveDeclineUserDataChanges"
     />
     <!-- Modals delete -->
-    <div class="title-block">
-      <div class="titles">
-        <div class="title">
+    <div class="b-user-cabinet__title-block">
+      <div class="b-user-cabinet__titles">
+        <div class="b-user-cabinet__title">
           {{ $t('profile.title') }}
         </div>
-        <div class="subtitle">{{ $t('profile.change-personal-data') }}</div>
+        <div class="b-user-cabinet__subtitle">{{ $t('profile.change-personal-data') }}</div>
       </div>
       <div
-        class="buttons"
+        class="b-user-cabinet__buttons"
       >
         <div
           v-if="isEditModeProfile"
-          class="save-cancel-btns"
+          class="b-user-cabinet__save-cancel-btns"
         >
-          <div class="btns-line">
-            <div class="btn-wrapper">
+          <div class="b-user-cabinet__btns-line">
+            <div class="b-user-cabinet__btn-wrapper">
               <WhiteBtn 
                 :text="$t('buttons.cancel')" 
                 :width="98"
-                @click-function="toggleModal('change_data')"
+                @click-function="cancelDataEdit"
               />
             </div>
             <GreenBtn
               :text="$t('buttons.save')"
               :width="89"
-              @click-function="toggleModal('change_data')"
+              @click-function="saveDataEdit"
             />
           </div>
-          <div class="look-preview">
-            Як виглядатиме мій профіль для інших?
+          <div 
+            class="b-user-cabinet__look-preview"
+            @click="toggleModal('public_profile')"
+          >
+          {{ $t('profile.how-profile-looks') }}
           </div>
         </div>
         <div
           v-else
-          class="edit-button"
+          class="b-user-cabinet__edit-button"
         >
           <GreenBtn
             :text="$t('buttons.edit-profile')"
@@ -191,124 +187,164 @@
         </div>
       </div>
     </div>
-    <div class="tab-block">
+    <div class="b-user-cabinet__tab-block">
       <div
-        v-for="tab in tabs"
+        v-for="tab in mockData.tabs"
         :key="tab.id"
-        :class="['tab-element', { active: tab.isActive }]"
+        :class="['b-user-cabinet__tab-element', { active: tab.isActive }]"
         @click="changeTab(tab.id, tab.url)"
       >
         <img :src="tab.img" :alt="tab.name" />
-        {{ $t('profile.' + tab.name) }}
+        {{ tab.name }}
       </div>
     </div>
-    <div class="my-profile-tab">
-      <RatingCard 
-        :rate-block="rateBlbock" 
-        :rating-scale="userRating" 
-      />
-      <UserDetailsCard
-        :labels="labels"
-        :tab-titles="tabTitles"
-        :days="mockData.days"
-        :months="mockData.months"
-        :years="mockData.years"
-        :main-lag="mockData.main_lag"
-        :cities="mockData.cities"
-        :district="mockData.district"
-        :user-data="userProfile"
-        :phone="userPhone"
-        :is-edit-mode="isEditModeProfile"
-        :to-send-form="sendChangedDataAction"
-        @change-data-action="toggleDataAction"
-      />
-      <SecurityBlock
-        @toggle-modal="toggleModal"
-        :user-email="userEmail"
-      />
+    <div class="b-user-cabinet__my-profile-tab">
+      <Form
+        v-slot="data"
+        :validation-schema="schema"
+        :initial-values="formValues"
+        ref="myForm"
+      >
+        <RatingCard 
+          :rating-scale="userRating" 
+        />
+        <UserDetailsCard
+          :user-data="userData"
+          :phone="userPhone"
+          :is-edit-mode="isEditModeProfile"
+        />
+        <SecurityBlock
+          @toggle-modal="toggleModal"
+          :user-email="userEmail"
+          :checkbox-data="checkboxData"
+          :is-edit-mode="isEditModeProfile"
+        />
+      </Form>
     </div>
   </div>
 </template>
 
 <script>
 import { ref, computed, reactive } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { Form } from '@system.it.flumx.com/vee-validate'
+import * as yup from 'yup'
 
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
-import Switcher from '../../../components/Switcher.vue'
-import Dropdown from '../../../components/forms/Dropdown.vue'
-import InputComponent from '../../../components/forms/InputComponent.vue'
+import InputComponent from '../../../components/InputComponent.vue'
 import ModalWindow from '../../../components/ModalWindow.vue'
 import ModalUserWindow from '../../../components/ModalUserWindow.vue'
 import PlayerPageComponent from '../../../components/PlayerPageComponent.vue'
-import TextAreaComponent from '../../../components/TextAreaComponent.vue'
 import RatingCard from '../../../components/RatingCard.vue'
 import UserDetailsCard from '../../../components/UserDetailsCard.vue'
 import SecurityBlock from '../../../components/SecurityBlock.vue'
-import CodeInput from '../../../components/forms/CodeInput.vue'
+
 import DeleteAccountModal from '../../../components/user-cabinet-modals/DeleteAccountModal.vue'
 import ChangePasswordModal from '../../../components/user-cabinet-modals/ChangePasswordModal.vue'
 import ChangeUserDataModal from '../../../components/user-cabinet-modals/ChangeUserDataModal.vue'
 
-import eyeCross from '../../../assets/img/eye-crossed.svg'
-import eyeOpen from '../../../assets/img/eye-opened.svg'
-import userIcon from '../../../assets/img/user-icon.svg'
-import database from '../../../assets/img/database.svg'
-import notification from '../../../assets/img/notification-small.svg'
-import sortArrowHorizontal from '../../../assets/img/sort-arrows-horizontal.svg'
 import edit from '../../../assets/img/edit-white.svg'
 
-import Spiner from '../../../workers/loading-worker/Loading.vue'
 import { API } from "../../../workers/api-worker/api.worker"
 import { ROUTES } from "../../../router"
-
 import CONSTANTS from '../../../consts'
+
+const EDIT_BUTTON_ACTIONS = {
+  SAVE: 'save',
+  CANCEL: 'cancel'
+}
 
 export default {
   name: 'UserCabinet',
   components: {
     GreenBtn,
     WhiteBtn,
-    Switcher,
-    Dropdown,
-    Spiner,
     InputComponent,
     ModalWindow,
     ModalUserWindow,
     PlayerPageComponent,
-    TextAreaComponent,
     RatingCard,
     UserDetailsCard,
     SecurityBlock,
-    CodeInput,
-    Form,
     DeleteAccountModal,
     ChangePasswordModal,
-    ChangeUserDataModal
+    ChangeUserDataModal,
+    Form
   },
-  setup() {
+  setup(props) {
+    const { t } = useI18n()
+
     const route = useRoute()
-    const userProfile = ref('')
+    const router = useRouter()
+
     const userRating = ref(null)
     const userPhone = ref('')
     const userEmail = ref('')
+    const userData = ref(null)
     const isEditModeProfile = ref(false)
-    const sendChangedDataAction = ref(false)
+    const changeDataModalConfig = ref(null)
+    const myForm = ref(null)
 
-    const changeDataModal = reactive({
-      title: 'Подивитись зі сторони',
-      button_1: 'Перейти до демонстрації',
-      button_2: 'Просто зберегти',
-      btn_with_1: 189,
-      btn_with_2: 132
+    const mockData = computed(() => {
+      return {
+        user_info: CONSTANTS.users_page.userInfo,
+        tabs: CONSTANTS.profile.tabs.map(item => ({...item, name: t(item.name)})),
+        monthFromNumber: CONSTANTS.users_page.months.monthFromNumber,
+        numberFromMonth: CONSTANTS.users_page.months.numberFromMonth
+      }
     })
 
-    userRating.value = route.meta.usersData.data.raiting
-    userProfile.value = route.meta.usersData.data.profile
-    userPhone.value = route.meta.usersData.data.phone
-    userEmail.value = route.meta.usersData.data.email
+    console.log(route.meta.usersData.data)
+    const formValues = ref({
+      last_name: route.meta.usersData.data.profile.last_name,
+      name: route.meta.usersData.data.profile.name,
+      about_me: route.meta.usersData.data.profile.about_me,
+      day: getBirthDay(route.meta.usersData.data.profile.birthday),
+      month: getBirthMonth(route.meta.usersData.data.profile.birthday),
+      year: getBirthYear(route.meta.usersData.data.profile.birthday),
+      height: route.meta.usersData.data.profile.height,
+      weight: route.meta.usersData.data.profile.weight,
+      working_leg: getWorkingLeg(route.meta.usersData.data.profile.working_leg),
+      position: route.meta.usersData.data.profile.position,
+      phone: route.meta.usersData.data.configuration.phone,
+      email: route.meta.usersData.data.configuration.email,
+      show_reviews: route.meta.usersData.data.configuration.show_reviews
+    })
+    
+    const checkboxData = reactive({})
+    const isModalActive = reactive({
+      phone: false,
+      email: false,
+      delete_acc: false,
+      change_password: false,
+      public_profile: false,
+      change_data: false
+    })
+
+    const modalChangePhone = reactive({
+        first: true,
+        second: false
+    })
+
+    const schema = computed(() => {
+      return yup.object({
+        last_name: yup.string().required(),
+        name: yup.string().required(),
+        about_me: yup.string().required(),
+        day: yup.string().required(),
+        month: yup.string().required(),
+        year: yup.string().required(),
+        height: yup.string().required(),
+        weight: yup.string().required(),
+        working_leg: yup.string().required(),
+        position: yup.string().required(),
+        phone: yup.string().required(),
+        email: yup.string().required(),
+        show_reviews: yup.string().required(),
+      })
+    })
 
     const icons = computed(() => {
       return {
@@ -316,218 +352,202 @@ export default {
       }
     })
 
+    userRating.value = route.meta.usersData.data.raiting
+    userPhone.value = route.meta.usersData.data.phone
+    userEmail.value = route.meta.usersData.data.email
+    userData.value = {
+      ...route.meta.usersData.data.profile,
+      working_leg: getWorkingLeg(route.meta.usersData.data.profile.working_leg)
+    }
+
+    checkboxData.value = {
+      checkboxPhone: route.meta.usersData.data.configuration.phone,
+      checkboxEmail: route.meta.usersData.data.configuration.email,
+      checkboxReviews: route.meta.usersData.data.configuration.show_reviews
+    }
+
+    function getBirthDay(val) {
+      return val.split('-')[2]
+    }
+    function getBirthMonth(val) {
+      return mockData.value.monthFromNumber[val.split('-')[1]]
+    }
+    function getBirthYear(val) {
+      return val.split('-')[0]
+    }
+    function getWorkingLeg(val) {
+      switch(val) {
+        case 'Left': return 'Ліва'
+          break;
+        case 'Right': return 'Права'
+          break;
+        case 'Ліва': return 'Left'
+          break;
+        case 'Права': return 'Right'
+          break;
+      }
+    }
+
+    function saveDataEdit() {
+      toggleModal('change_data')
+      changeDataModalConfig.value = {
+        title: 'Подивитись зі сторони',
+        button_1: 'Перейти до демонстрації',
+        button_2: 'Просто зберегти',
+        btn_action: EDIT_BUTTON_ACTIONS.SAVE,
+        btn_with_1: 189,
+        btn_with_2: 132
+      }
+    }
+    function cancelDataEdit() {
+      toggleModal('change_data')
+      changeDataModalConfig.value = {
+        title: 'Вийти без збереження змін?',
+        button_1: 'Ні, не виходити',
+        button_2: 'Так, вийти',
+        btn_action: EDIT_BUTTON_ACTIONS.CANCEL,
+        btn_with_1: 124,
+        btn_with_2: 90
+      }
+    }
+
     function toggleEditMode() {
       isEditModeProfile.value = !isEditModeProfile.value
     }
 
-    function saveUserDataChanges() {
-      console.log('saveUserDataChanges')
-      sendChangedDataAction.value = true
-      console.log(sendChangedDataAction.value)
-    }
+    function saveDeclineUserDataChanges(val) {
+      if (val === EDIT_BUTTON_ACTIONS.SAVE) {
+        const refProfileData = { ...myForm.value.getControledValues() }
+        const { day, month, year, working_leg } = refProfileData
+        const profileData = {
+          ...refProfileData,
+          birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
+          gender: route.meta.usersData.data.profile.gender,
+          working_leg: getWorkingLeg(working_leg),
+        }
+        delete profileData.day
+        delete profileData.month
+        delete profileData.year
 
-    function toggleDataAction() {
-      sendChangedDataAction.value = !sendChangedDataAction.value
-    }
-
-    return {
-      toggleEditMode,
-      saveUserDataChanges,
-      toggleDataAction,
-      userProfile,
-      userRating,
-      userPhone,
-      userEmail,
-      icons,
-      isEditModeProfile,
-      changeDataModal,
-      sendChangedDataAction
-      // schema
-    }
-  },
-  data() {
-    return {
-      currentTab: 0,
-      tabTitles: [
-        { id: 0, title: 'Про мене', width: '119px' },
-        { id: 1, title: 'Ігрові характеристики', width: '186px' },
-        { id: 2, title: 'Контакти', width: '119px' },
-      ],
-      labels: [
-        { title: 'asdfkj' },
-        { title: 'asdf' },
-        { title: 'as' },
-        { title: 'asdfk' },
-      ],
-      rateBlbock: [
-        {
-          id: 0,
-          name: 'Дмитро Горбачевський',
-          date: '13.07.2022',
-        },
-        {
-          id: 1,
-          name: 'Захар Беркут',
-          date: '13.07.2022',
-        },
-        {
-          id: 2,
-          name: 'Василь Величко',
-          date: '13.07.2022',
-        },
-        {
-          id: 3,
-          name: 'Дмитро Горбачевський',
-          date: '13.07.2022',
-        },
-      ],
-      isModalActive: {
-        phone: false,
-        email: false,
-        delete_acc: false,
-        change_password: false,
-        public_profile: false,
-        change_data: false
-      },
-      modalChangePhone: {
-        first: true,
-        second: false,
-      },
-      isSpinerActive: false,
-      dataDropdown: [
-        {
-          id: 0,
-          value: 'Жінка',
-        },
-        {
-          id: 1,
-          value: 'Чоловик',
-        },
-      ],
-      tabs: [
-        {
-          id: 0,
-          name: 'my-profile',
-          img: userIcon,
-          url: '/application/profile/my-profile',
-          isActive: true,
-        },
-        {
-          id: 1,
-          name: 'rate-plan',
-          img: database,
-          url: '/application/profile/rate-plan',
-          isActive: false,
-        },
-        {
-          id: 2,
-          name: 'notifications',
-          img: notification,
-          url: '/application/profile/notifications',
-          isActive: false,
-        },
-      ]
-    }
-  },
-  computed: {
-    changePasswordStep() {
-      return this.modalChangePassword
-    },
-    eyeCrossed() {
-      return eyeCross
-    },
-    eyeOpened() {
-      return eyeOpen
-    },
-    sortArrowHorizontal() {
-      return sortArrowHorizontal
-    },
-    mockData() {
-      return {
-        days: CONSTANTS.dates.days,
-        months: CONSTANTS.dates.months,
-        years: CONSTANTS.dates.years,
-        main_lag: CONSTANTS.profile.mainLeg,
-        cities: CONSTANTS.profile.cities,
-        district: CONSTANTS.profile.district,
-        user_info: CONSTANTS.users_page.userInfo,
-      }
-    },
-  },
-  methods: {
-    deleteAcc(formData) {
-      API.UserService.sendApproveCode(formData.controlledValues.verify_code)
+        const payload = {
+          "configuration": {
+            "email": profileData.email,
+            "phone": profileData.phone,
+            "show_reviews": profileData.show_reviews
+          },
+          "profile": {
+            "place": {
+              "place_name": "string",
+              "lat": 90,
+              "lon": 180
+            },
+            ...profileData
+          },
+          "get_planned_events": "10d"
+        }
+        API.UserService.updateProfileData(payload)
         .then(() => {
-          localStorage.removeItem('token')
-          this.$router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute)
+          console.log('data successfully sent')
+          getMyProfile()
         })
-        .catch((e) => {
-          console.log('Delete account error', e)
+        .catch(e => console.log('mistake happened', e))
+      } else {
+        closeChangeUserDataModal()
+      }
+    }
+
+    function getMyProfile() {
+      API.UserService.getMyProfile()
+        .then(res => {
+          console.log('data successfully received')
+          formValues.value = {
+            last_name: res.data.profile.last_name,
+            name: res.data.profile.name,
+            about_me: res.data.profile.about_me,
+            day: getBirthDay(res.data.profile.birthday),
+            month: getBirthMonth(res.data.profile.birthday),
+            year: getBirthYear(res.data.profile.birthday),
+            height: res.data.profile.height,
+            weight: res.data.profile.weight,
+            working_leg: getWorkingLeg(res.data.profile.working_leg),
+            position: res.data.profile.position,
+            phone: res.data.configuration.phone,
+            email: res.data.configuration.email,
+            show_reviews: res.data.configuration.show_reviews
+          }
+          userData.value = res.data.profile
+
+          userData.value = {
+            ...res.data.profile,
+            working_leg: getWorkingLeg(res.data.profile.working_leg)
+          }
         })
-    },
-    sendCodeForDeleteAcc() {
-      this.modalDeleteAcc = {
-        first: false,
-        second: true,
-      },
-      API.UserService.deleteMyProfile()
-    },
-    changeUserTab(id) {
-      this.currentTab = id
-    },
-    changeTab(id, url) {
-      this.tabs = this.tabs
+    }
+
+
+    function changeTab(id, url) {
+      mockData.tabs = mockData.tabs
         .map((item) => ({ ...item, isActive: false }))
         .map((item) => {
           return item.id === id ? { ...item, isActive: true } : item
         })
-      this.$router.push(url)
-    },
-    toggleModal(val) {
+      router.push(url)
+    }
+
+    function closeChangeUserDataModal() {
+      toggleModal('change_data')
+      toggleEditMode()
+    }
+
+    function toggleModal(val) {
       switch (val) {
         case 'phone':
-          this.isModalActive.phone = !this.isModalActive.phone
-          this.modalChangePhone = {
+        isModalActive.phone = !isModalActive.phone
+          modalChangePhone.value = {
             first: true,
             second: false,
           }
           break
         case 'email':
-          this.isModalActive.email = !this.isModalActive.email
+          isModalActive.email = !isModalActive.email
           break
         case 'delete_acc':
-          this.isModalActive.delete_acc = !this.isModalActive.delete_acc
+          isModalActive.delete_acc = !isModalActive.delete_acc
           break
         case 'public_profile':
-          this.isModalActive.public_profile = !this.isModalActive.public_profile
+          isModalActive.public_profile = !isModalActive.public_profile
           break
         case 'change_data':
-          this.isModalActive.change_data = !this.isModalActive.change_data
+          isModalActive.change_data = !isModalActive.change_data
           break
         case 'change_password':
-          this.isModalActive.change_password = !this.isModalActive.change_password
+          isModalActive.change_password = !isModalActive.change_password
           break
       }
-    },
-    toggleModalPage() {
-      this.modal = {
-        first: false,
-        second: true,
-      }
-      this.$nextTick(() => {
-        this.$refs.test.focus()
-      })
-    },
-    changeEmailIconClick() {
-      this.toggleModal('email')
-    },
-    // ----- show public profile
-    openPublicProfile() {
-      this.toggleModal('public_profile')
-    },
-    closeChangeUserDataModal() {
-      this.toggleModal('change_data')
-      this.toggleEditMode()
+    }
+
+    return {
+      toggleEditMode,
+      saveDeclineUserDataChanges,
+      changeTab,
+      closeChangeUserDataModal,
+      toggleModal,
+      saveDataEdit,
+      cancelDataEdit,
+      userRating,
+      userPhone,
+      userEmail,
+      icons,
+      isEditModeProfile,
+      changeDataModalConfig,
+      mockData,
+      isModalActive,
+      modalChangePhone,
+      checkboxData,
+      userData,
+      schema,
+      formValues,
+      myForm
     }
   }
 }
@@ -543,29 +563,29 @@ export default {
 .v-leave-to {
   opacity: 0;
 }
-.user-cabinet {
+.b-user-cabinet {
   overflow-y: scroll;
 }
-.user-cabinet::-webkit-scrollbar {
+.b-user-cabinet__user-cabinet::-webkit-scrollbar {
   display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
-.user-cabinet {
+.b-user-cabinet__user-cabinet {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
-.title-block {
+.b-user-cabinet__title-block {
   display: flex;
   justify-content: space-between;
-  .title {
+  .b-user-cabinet__title {
     font-family: 'Exo 2';
     font-style: normal;
     font-weight: 700;
     font-size: 22px;
     color: #262541;
   }
-  .subtitle {
+  .b-user-cabinet__subtitle {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 500;
@@ -573,20 +593,20 @@ export default {
     color: #575775;
     margin-top: 4px;
   }
-  .buttons {
+  .b-user-cabinet__buttons {
     // display: flex;
     @media (max-width: 768px) {
       display: none;
     }
-    .save-cancel-btns {
-      .btns-line {
+    .b-user-cabinet__save-cancel-btns {
+      .b-user-cabinet__btns-line {
         display: flex;
         justify-content: flex-end;
-        .btn-wrapper {
+        .b-user-cabinet__btn-wrapper {
           margin-right: 12px;
         }
       }
-      .look-preview {
+      .b-user-cabinet__look-preview {
         font-family: 'Inter';
         font-style: normal;
         font-weight: 400;
@@ -594,16 +614,17 @@ export default {
         line-height: 20px;
         color: #575775;
         margin-top: 4px;
+        cursor: pointer;
       }
     }
   }
 }
-.tab-block {
+.b-user-cabinet__tab-block {
   display: flex;
   border-bottom: 1px solid #dfdeed;
   margin-top: 28px;
   cursor: pointer;
-  .tab-element {
+  .b-user-cabinet__tab-element {
     display: flex;
     align-items: center;
     margin-right: 24px;
@@ -622,34 +643,18 @@ export default {
     }
   }
 }
-.my-profile-tab {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-top: 24px;
-  @media (min-width: 1400px) {
-    justify-content: flex-start;
-  }
-  @media (max-width: 992px) {
-    flex-direction: column;
-  }
-  .title {
-    font-family: 'Exo 2';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 24px;
-    color: #262541;
-  }
-  .subtitle-security {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 13px;
-    line-height: 20px;
-    color: #575775;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #dfdeed;
+.b-user-cabinet__my-profile-tab {
+  form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 24px;
+    @media (min-width: 1400px) {
+      justify-content: flex-start;
+    }
+    @media (max-width: 992px) {
+      flex-direction: column;
+    }
   }
 }
 </style>

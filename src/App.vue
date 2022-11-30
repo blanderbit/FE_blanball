@@ -1,5 +1,9 @@
 <template>
   <div>
+    <ModalVersion 
+      v-if="isModalActive"
+      @close-modal-click="closeModal"
+    />
     <router-view />
   </div>
 
@@ -17,7 +21,10 @@
   import { ROUTES } from "./router";
   import { WebSocketTypes } from "./workers/web-socket-worker/web.socket.types";
 
+  import ModalVersion from "./components/ModalVersion.vue";
+
   const router = useRouter();
+  const isModalActive = ref(false)
 
   const handleMessageGeneral = (instance) => {
     switch (instance.messageType) {
@@ -58,11 +65,11 @@
 
   const VersionHandling = {
     handleDifferentVersion: () => {
-      VersionHandling.version.value = true
+      isModalActive.value = true
     },
-    closeVersionModal: () => VersionHandling.version.value = false,
-    version: ref(false)
+    closeVersionModal: () => isModalActive.value = false,
   };
+
 
   API.NotificationService
     .getMaintenance()
@@ -80,4 +87,9 @@
     .connect();
 
   VersionDetectorWorker(VersionHandling.handleDifferentVersion)
+
+  function closeModal() {
+    VersionHandling.closeVersionModal()
+  }
 </script>
+

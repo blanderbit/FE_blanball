@@ -10,15 +10,27 @@
       <div class="b-security__settings-block">
         <div class="b-security__personal-settings">
           <p>{{ $t('profile.phone-number') }}</p>
-          <Switcher :id="'phone'" />
+          <Switcher 
+            :id="'phone'"
+            :is-edit-mode="isEditMode"
+            name="phone"
+          />
         </div>
         <div class="b-security__personal-settings">
           <p>{{ $t('profile.e-mail') }}</p>
-          <Switcher :id="'email'" />
+          <Switcher 
+            :id="'email'"
+            :is-edit-mode="isEditMode"
+            name="email"
+          />
         </div>
         <div class="b-security__personal-settings">
           <p>{{ $t('profile.my-feedbacks') }} <span>(Деякі)</span></p>
-          <Switcher :id="'feedback'" />
+          <Switcher 
+            :id="'feedback'"
+            :is-edit-mode="isEditMode"
+            name="show_reviews"
+          />
         </div>
       </div>
     </div>
@@ -38,6 +50,7 @@
           :has-icon="true"
           :icon="[sortArrowHorizontal]"
           @icon-click="toggleModalWindow"
+          name="change_email"
         />
       </div>
       <div class="b-security__change-pass-btn" @click="toggleModalWindow('change_password')">
@@ -52,8 +65,10 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
+
 import Switcher from '../components/Switcher.vue'
+
 import sortArrowHorizontally from '../assets/img/sort-arrows-horizontal.svg'
 import InputComponent from './forms/InputComponent.vue'
 
@@ -67,10 +82,20 @@ export default {
     userEmail: {
       type: String,
       default: ''
+    },
+    checkboxData: {
+      type: Object,
+      default: () => {}
+    },
+    isEditMode: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['toggleModal'],
   setup(props, context) {
+    const checkboxForm = ref(null)
+
     const sortArrowHorizontal = computed(() => sortArrowHorizontally)
 
     function toggleModalWindow(val) {
@@ -78,8 +103,9 @@ export default {
     }
 
     return {
-      sortArrowHorizontal,
       toggleModalWindow,
+      sortArrowHorizontal,
+      checkboxForm
     }
   },
 }

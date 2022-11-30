@@ -1,9 +1,13 @@
 <template>
-    <div class="b-version-item d-flex justify-content-between" :class="{'b-version-item__active': isActive}">
+    <div 
+        class="b-version-item d-flex justify-content-between" 
+        :class="{'b-version-item__active': isActive}"
+        @click="$emit('versionClick', id)"
+    >
         <div class="b-version-item__element">Version {{ version }}</div>
         <div class="b-version-item__date d-flex">
-            <div>{{ date | formatDate }}</div>
-            <img src="../../assets/img/arrow-right.svg">
+            <div>{{ date }}</div>
+            <!-- <img src="../../assets/img/arrow-right.svg"> -->
         </div>
     </div>
 </template>
@@ -16,15 +20,10 @@
         props: {
             version: String,
             date: String,
-            isActive: Boolean
+            isActive: Boolean,
+            id: Number
         },
-        filters: {
-            formatDate(value) {
-                if (value) {
-                    return dayJs(String(value)).format('DD.MM.YYYY')
-                }
-            }
-        }
+        emits: ['versionClick']
     }
 </script>
 
@@ -35,6 +34,7 @@
         border-radius: 6px;
         padding: 16px;
         margin-bottom: 12px;
+        cursor: pointer;
 
         &__element {
             font-style: normal;
@@ -48,17 +48,18 @@
                 font-weight: 400;
                 font-size: 12px;
                 margin-right: 19px;
+                width: 60px;
             }
         }
 
-        &__active, &:hover {
-            border: 1px solid #DFDEED;
-            box-shadow: none;
-            transition: 0.5s all;
-            img {
-                transition: 0.5s all;
-                transform: rotate(90deg);
-            }
-        }
+        // &__active, &:hover {
+        //     border: 1px solid #DFDEED;
+        //     box-shadow: none;
+        //     transition: 0.5s all;
+        //     img {
+        //         transition: 0.5s all;
+        //         transform: rotate(90deg);
+        //     }
+        // }
     }
 </style>

@@ -61,7 +61,7 @@
           </div>
         </div>
         <div class="b_player-page_about-line">
-          <div class="b_player-page_title">Про себе:</div>
+          <div class="b_player-page_title">{{$t('player_page.about-yourself')}}</div>
           <div class="b_player-page_text">
             Donec vitae mi vulputate, suscipit urna in, malesuada nisl. Pellentesque laoreet pretium nisl, et pulvinar massa eleifend sed
           </div>

@@ -123,7 +123,9 @@
           </div>
           <div class="b_slide_menu_bottom-line">
             {{$t('slide_menu.version')}}
-            <router-link to="/versions">{{clientVersion}}</router-link>
+            <router-link :to="routeObject.APPLICATION.VERSION.absolute">
+              {{clientVersion}}
+            </router-link>
           </div>
         </div>
       </div>
@@ -201,6 +203,10 @@
         return context.isMenuOpened ? sidebarArrowBack : sidebarArrow
       });
 
+      const routeObject = computed(() => {
+        return ROUTES
+      })
+
       function toggleMenu() {
         emit('update:isMenuOpened', !context.isMenuOpened)
       }
@@ -256,6 +262,7 @@
         logOut,
         getNewNotificationInstance,
         emptyListMessages,
+        routeObject,
         selectedList,
         HandleAction,
         triggerForRestart,

@@ -1,9 +1,15 @@
 <template>
   <div class="b-versions">
-    <div class="b-versions__title-level1"></div>
+    <Loading 
+      :is-loading="loading" 
+    />
+    <div class="b-versions__title-level1 title-customs">Тут буде написано що саме ми додали до наявного функціоналу</div>
     <div class="b-versions__container d-flex justify-content-between">
       <div class="b-versions__left-side">
-        <div class="b-versions__images d-flex">
+        <div 
+          v-if="currentVersion?.images.length > 0"
+          class="b-versions__images d-flex"
+        >
           <div
             class="b-versions__image-of-changes"
             v-for="(item, index) of currentVersion.images"
@@ -13,14 +19,18 @@
         </div>
         <div class="b-versions__important-changes">
           <div class="b-versions__title-level3">
-            {{ $t('versions.whats-new') }}
+            {{ $t('versions.whats-new') }} 
+            {{versionNumber}}
+            <span class="b-versions__type-of-version">
+              {{versionType}}
+            </span>
         </div>
           <div
             class="b-versions__change-element"
             v-for="(
               item, index
-            ) of currentVersion.importantFromImprovementsBugFeatures"
-            :key="'importantFromImprovementsBugFeatures' + index"
+            ) of currentVersion?.what_new"
+            :key="'what_new' + index"
           >
             {{ item }}
           </div>
@@ -35,7 +45,7 @@
           </div>
           <div
             class="b-versions__change-element"
-            v-for="(item, index) of currentVersion.features"
+            v-for="(item, index) of currentVersion?.features"
             :key="'features' + index"
           >
             {{ item }}
@@ -48,7 +58,7 @@
           </div>
           <div
             class="b-versions__change-element"
-            v-for="(item, index) of currentVersion.bugs"
+            v-for="(item, index) of currentVersion?.bug_fixes"
             :key="'bugs' + index"
           >
             {{ item }}
@@ -61,7 +71,7 @@
           </div>
           <div
             class="b-versions__change-element"
-            v-for="(item, index) of currentVersion.improvements"
+            v-for="(item, index) of currentVersion?.improvements"
             :key="'improvements' + index"
           >
             {{ item }}
@@ -72,11 +82,16 @@
         <div class="b-versions__title-level3">
             {{ $t('versions.history') }}
         </div>
-        <template v-for="(item, index) in versions" :key="'versions' + index">
+        <template 
+          v-for="(item, index) in versions" 
+          :key="'versions' + index"
+        >
           <version-item
             :version="item.version"
             :date="item.date"
-            :is-active="item.version === currentVersion.version"
+            :id="item.id"
+            :is-active="item.version === versionNumber"
+            @version-click="gerVersion"
           >
           </version-item>
         </template>
@@ -86,58 +101,65 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+import dayjs from 'dayjs'
+import dayjsUkrLocale from 'dayjs/locale/uk'
+import { API } from "../../workers/api-worker/api.worker"
+import Loading from '../../workers/loading-worker/Loading.vue'
+
 import VersionItem from '../../components/versions-page/version-item.vue'
 
-const json = {
-  version: '0.0.3',
-  date: new Date(),
-  images: [
-    '/version_page_image.svg',
-    '/version_page_image.svg',
-    '/version_page_image.svg',
-  ],
-  importantFromImprovementsBugFeatures: [
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-  ],
-  improvements: [
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-  ],
-  bugs: [
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-  ],
-  features: [
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-    'Maecenas dignissim justo eget nulla rutrum molestie. Maecenas lobortis sem dui, vel rutrum risus tincidunt ullamcorper. Proin eu enim metus.',
-  ],
-}
 export default {
   name: 'VersionsPage',
   components: {
     VersionItem,
+    Loading
   },
-  data: () => ({
-    versions: [
-      { version: '0.0.3', date: new Date().toString() },
-      { version: '0.0.2', date: new Date().toString() },
-      { version: '0.0.1', date: new Date().toString() },
-    ],
-    currentVersion: json,
-  }),
+  setup() {
+    const route = useRoute()
+    const versions = ref()
+    const currentVersion = ref()
+    const versionType = ref()
+    const versionNumber = ref()
+    const loading = ref(false)
+
+    versions.value = route.meta.allVersions.results
+
+    versions.value = versions.value.map(item => {
+      return {
+        ...item,
+        date: dayjs(item.created_at).locale(dayjsUkrLocale).format('DD MM YYYY')
+
+      }
+    })
+
+    const currentVersionId = versions.value[versions.value.length - 1].id
+
+    if (currentVersionId) {
+      gerVersion(currentVersionId)
+    }
+
+    function gerVersion(id) {
+      loading.value = true
+      API.VersionsService.getCurrentVersion(id)
+      .then(res => {
+          versionType.value = res.type
+          versionNumber.value = res.version
+          currentVersion.value = res.data
+          loading.value = false
+      })
+    }
+
+    return {
+      gerVersion,
+      versions,
+      currentVersion,
+      versionNumber,
+      versionType,
+      loading
+    }
+  }
 }
 </script>
 
@@ -148,6 +170,10 @@ export default {
     font-size: 20px;
     color: #262541;
     font-family: 'Exo 2';
+    &.title-customs {
+      width: 368px;
+      margin-bottom: 20px;
+    }
   }
 
   &__title-level2 {
@@ -196,6 +222,19 @@ export default {
         order: 1;
       }
     }
+  }
+
+  &__type-of-version {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+    color: #FFFFFF;
+    padding: 0px 6px;
+    background: #575775;
+    border-radius: 4px;
   }
 
   &__change-element {
