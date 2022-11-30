@@ -1,21 +1,39 @@
 import { TokenWorker } from "../workers/token-worker";
 import router, { ROUTES } from "../router";
 import { resolverFunctions } from "../workers/resolver-worker/resolver.functions";
+import { useToast } from "vue-toastification";
+import { TypeRequestMessageWorker } from "../workers/type-request-message-worker";
+import { i18n } from "../main";
+
+const toast = useToast();
 
 export const ErrorInterceptor = (error) => {
-    const getJsonErrorData = error.toJSON();
-    error = error?.response?.data || getJsonErrorData;
+  const getJsonErrorData = error.toJSON();
+  error = error?.response?.data || getJsonErrorData;
 
-    if (error?.status === 401 || getJsonErrorData?.status === 401) {
-        const findCurRouteFromList = window.location.pathname.includes('application');
-        TokenWorker.clearToken();
+  if (error?.status === 401 || getJsonErrorData?.status === 401) {
+    const findCurRouteFromList = window.location.pathname.includes('application');
+    TokenWorker.clearToken();
 
-        router.push(
-            findCurRouteFromList
-                ? resolverFunctions._createLoginPath(window.location.pathname)
-                : ROUTES.AUTHENTICATIONS.LOGIN.absolute
-        );
-    }
+    router.push(
+      findCurRouteFromList
+        ? resolverFunctions._createLoginPath(window.location.pathname)
+        : ROUTES.AUTHENTICATIONS.LOGIN.absolute
+    );
+  }
 
-    return  Promise.reject(error)
+  const errorMessageType = TypeRequestMessageWorker(error)?.[0];
+debugger
+  toast.error(
+    i18n.global.t(
+      `responseMessageTypes.${errorMessageType.errorType}`,
+      {
+        field: i18n.global.t(
+          `responseMessageTypes.fields.${errorMessageType.field}`,
+        )
+      }
+    )
+  );
+  error.errorMessageType = errorMessageType;
+  return Promise.reject(error)
 };

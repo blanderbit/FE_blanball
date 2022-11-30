@@ -351,8 +351,8 @@
 <script>
 import { computed, onMounted, reactive } from 'vue'
 
-import Dropdown from '../../../components/Dropdown.vue'
-import InputComponent from '../../../components/InputComponent.vue'
+import Dropdown from '../../../components/forms/Dropdown.vue'
+import InputComponent from '../../../components/forms/InputComponent.vue'
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
 import Switcher from '../../../components/Switcher.vue'

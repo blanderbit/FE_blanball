@@ -17,4 +17,8 @@ export class AuthorizationService {
   static ResetComplete(data) {
     return AxiosInstance.post(EndpointsEnum.Authorization.ResetComplete, data)
   }
+
+  static Register(data) {
+    return AxiosInstance.post(EndpointsEnum.Authorization.Register, data)
+  }
 }

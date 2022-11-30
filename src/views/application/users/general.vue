@@ -258,7 +258,7 @@
 </template>
 
 <script>
-import InputComponent from '../../../components/InputComponent.vue'
+import InputComponent from '../../../components/forms/InputComponent.vue'
 import UserCard from '../../../components/UserCard.vue'
 import CONSTANTS from '../../../consts/index'
 

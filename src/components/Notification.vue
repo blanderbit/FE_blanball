@@ -1,6 +1,9 @@
 <template>
   <div class="notification" :class="[notificationType, notCollapsible && 'not-collapsible']">
-    <loading ref="loading"></loading>
+    <loading 
+      :is-loading="loading"
+    >
+    </loading>
     <div class="notification-parts d-flex justify-content-between">
       <div class="notification-image" v-if="notificationType === 'notification-sidebar'">
         <img v-if="notificationInstance.notificationImage" :src="notificationInstance.notificationImage">
@@ -70,7 +73,7 @@
   import Loading from './../workers/loading-worker/Loading.vue'
   import NotificationButton from './../components/NotificationButton.vue'
   import Avatar from './../components/Avatar.vue'
-  import Checkbox from './../components/Checkbox.vue'
+  import Checkbox from './forms/Checkbox.vue'
   import CollapsiblePanel from './../components/collapsible/CollapsiblePanel.vue'
   export default {
     name: "Notification",
@@ -108,14 +111,27 @@
         default: 'notification-sidebar'
       },
     },
+    data() {
+      return {
+        loading: false
+      }
+    },
     watch: {
       active(value) {
         if (value) {
-          this.$refs.loading.start();
+          this.start()
         } else {
-          this.$refs.loading.finish()
+          this.finish()
         }
       },
+    },
+    methods: {
+      start() {
+        this.loading = true
+      },
+      finish() {
+        this.loading = false
+      }
     },
     computed: {
       formatDate() {

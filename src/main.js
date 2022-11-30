@@ -17,8 +17,10 @@ import './assets/main.css'
 import 'v-calendar/dist/style.css';
 import 'vue3-virtual-scroller/dist/vue3-virtual-scroller.css';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
-
-const i18n = createI18n({
+import Maska from "./workers/phone-maska-worker";
+import "../src/components/maps/map.init";
+import "vue-select/dist/vue-select.css";
+export const i18n = createI18n({
   locale: 'ua',
   allowComposition: true,
   messages: {
@@ -37,4 +39,5 @@ app
   .use(i18n)
   .use(VCalendar, {})
   .use(Toast)
+  .use(Maska)
   .mount('#app');

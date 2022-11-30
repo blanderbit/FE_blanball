@@ -25,6 +25,9 @@
             :outside-title="true"
             :main-title="$t('register.day')"
             :options="mockData.days"
+            display-name="value"
+            display-value="id"
+            name="day"
           />
         </div>
         <div class="b-register-step__dropdown">
@@ -32,6 +35,9 @@
             :outside-title="true"
             :main-title="$t('register.month')"
             :options="mockData.months"
+            display-name="value"
+            display-value="id"
+            name="month"
           />
         </div>
         <div class="b-register-step__dropdown">
@@ -39,6 +45,9 @@
             :outside-title="true"
             :main-title="$t('register.year')"
             :options="mockData.years"
+            display-name="value"
+            display-value="value"
+            name="year"
           />
         </div>
       </div>
@@ -47,31 +56,18 @@
       </div>
       <div class="b-register-step__gender-block">
         <div class="radio-btn-wrapper">
-          <div class="radio">
-            <input 
-              id="radio-1" 
-              name="gender" 
-              type="radio"
-              :value="$t('register.men')"
-              checked
-             >
-            <label for="radio-1" class="radio-label">
-              {{$t('register.men')}}
-              <img src="../../assets/img/male-icon.svg" alt="">
-            </label>
-          </div>
-          <div class="radio">
-            <input 
-              id="radio-2" 
-              name="gender" 
-              type="radio"
-              :value="$t('register.women')"
-            >
-            <label for="radio-2" class="radio-label">
-              {{$t('register.women')}}
-              <img src="../../assets/img/female-icon.svg" alt="">
-            </label>
-          </div>
+          <radio-button
+            name="gender"
+            :title="$t('register.men')"
+            value="Man"
+            url="../../assets/img/male-icon.svg"
+          ></radio-button>
+          <radio-button
+              name="gender"
+              :title="$t('register.women')"
+              value="Woman"
+              url="../../assets/img/female-icon.svg"
+          ></radio-button>
         </div>
       </div>
     </div>
@@ -98,7 +94,8 @@
 import { computed, ref } from 'vue'
 
 import GreenBtn from '../GreenBtn.vue'
-import Dropdown from '../Dropdown.vue'
+import Dropdown from '../forms/Dropdown.vue'
+import RadioButton from '../forms/RadioButton.vue'
 
 import arrowRight from '../../assets/img/arrow-right-white.svg'
 
@@ -108,7 +105,8 @@ export default {
   name: 'Step4',
   components: {
     GreenBtn,
-    Dropdown
+    Dropdown,
+    RadioButton
   },
   setup() {
     const arrow_right = computed(() => {
@@ -195,6 +193,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     .b-register-step__dropdown {
+      margin-right: 10px;
       width: 120px;
       @media (min-width: 576px) and (max-width: 992px) {
         width: 133px;
@@ -211,83 +210,6 @@ export default {
       $color2: #148783;
       display: flex;
       align-items: center;
-      .radio {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        padding: 6px 12px;
-        background: #FFFFFF;
-        border: 1px solid #DFDEED;
-        border-radius: 6px;
-        margin-right: 12px;
-        input[type="radio"] {
-          position: absolute;
-          opacity: 0;
-          + .radio-label {
-            display: flex;
-            align-items: center;
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 13px;
-            line-height: 24px;
-            text-transform: capitalize;
-            color: #262541;
-            justify-content: space-between;
-            width: 120px;
-            img {
-              margin-right: 4px;
-            }
-            &::before {
-              content: '';
-              border-radius: 100%;
-              border: 1px solid #262541;
-              display: inline-block;
-              width: 13px;
-              height: 13px;
-              position: relative;
-              top: 0px;
-              vertical-align: top;
-              cursor: pointer;
-              text-align: center;
-              transition: all 250ms ease;
-            }
-          }
-          &:checked {
-            + .radio-label {
-              &:before {
-                border: 1px solid $color2;
-                background-color: $color2;
-                box-shadow: inset 0 0 0 3px $color1;
-              }
-            }
-          }
-          &:focus {
-            + .radio-label {
-              &:before {
-                outline: none;
-                border-color: $color2;
-              }
-            }
-          }
-          &:disabled {
-            + .radio-label {
-              &:before {
-                box-shadow: inset 0 0 0 4px $color1;
-                border-color: darken($color1, 25%);
-                background: darken($color1, 25%);
-              }
-            }
-          }
-          + .radio-label {
-            &:empty {
-              &:before {
-                margin-right: 0;
-              }
-            }
-          }
-        }
-      }
     }
   }
   .b-register-step__buttons {

@@ -1,6 +1,5 @@
 <template>
   <div class="b-user-cabinet">
-    <Spiner v-if="isSpinerActive" />
     <!-- Modals delete -->
     <Transition>
       <ModalWindow
@@ -244,13 +243,13 @@ import PlayerPageComponent from '../../../components/PlayerPageComponent.vue'
 import RatingCard from '../../../components/RatingCard.vue'
 import UserDetailsCard from '../../../components/UserDetailsCard.vue'
 import SecurityBlock from '../../../components/SecurityBlock.vue'
+
 import DeleteAccountModal from '../../../components/user-cabinet-modals/DeleteAccountModal.vue'
 import ChangePasswordModal from '../../../components/user-cabinet-modals/ChangePasswordModal.vue'
 import ChangeUserDataModal from '../../../components/user-cabinet-modals/ChangeUserDataModal.vue'
 
 import edit from '../../../assets/img/edit-white.svg'
 
-import Spiner from '../../../workers/loading-worker/Loading.vue'
 import { API } from "../../../workers/api-worker/api.worker"
 import { ROUTES } from "../../../router"
 import CONSTANTS from '../../../consts'
@@ -265,7 +264,6 @@ export default {
   components: {
     GreenBtn,
     WhiteBtn,
-    Spiner,
     InputComponent,
     ModalWindow,
     ModalUserWindow,
@@ -290,7 +288,6 @@ export default {
     const userEmail = ref('')
     const userData = ref(null)
     const isEditModeProfile = ref(false)
-    const isSpinerActive = ref(false)
     const changeDataModalConfig = ref(null)
     const myForm = ref(null)
 
@@ -548,7 +545,6 @@ export default {
       isEditModeProfile,
       changeDataModalConfig,
       mockData,
-      isSpinerActive,
       isModalActive,
       modalChangePhone,
       checkboxData,

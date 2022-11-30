@@ -9,12 +9,6 @@
       </div>
     </div>
     <div class="b-register-step__buttons">
-      <div 
-        class="b-register-step__back-btn"
-        @click="$emit('decrementStep')"
-      >
-        {{$t('register.remind-later')}} 
-      </div>
       <GreenBtn
         :text="$t('register.adjust')"
         :width="156"
