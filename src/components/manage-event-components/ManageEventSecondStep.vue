@@ -148,7 +148,7 @@
 
 <script>
 import { ref, watch, onMounted } from 'vue'
-import InputComponent from '../../components/InputComponent.vue'
+import InputComponent from '../forms/InputComponent.vue'
 import Switcher from '../../components/Switcher.vue'
 
 export default {

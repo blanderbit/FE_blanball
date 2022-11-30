@@ -39,3 +39,20 @@
 .notification-error {
     background: radial-gradient(240.34% 150.94% at 34.38% 36.36%, rgba(224, 10, 48, 0.3) 0%, rgba(224, 10, 48, 0) 100%), #262541;;
 }
+
+:root {
+    --vs-controls-color: #664cc3;
+    --vs-border-color: #664cc3;
+
+    --vs-dropdown-bg: #282c34;
+    --vs-dropdown-color: #cc99cd;
+    --vs-dropdown-option-color: #cc99cd;
+
+    --vs-selected-bg: #664cc3;
+    --vs-selected-color: #eeeeee;
+
+    --vs-search-input-color: #eeeeee;
+
+    --vs-dropdown-option--active-bg: #664cc3;
+    --vs-dropdown-option--active-color: #eeeeee;
+}

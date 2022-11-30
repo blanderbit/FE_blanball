@@ -255,9 +255,9 @@ import dayjsUkrLocale from 'dayjs/locale/uk'
 import * as yup from 'yup'
 import { Form, useForm } from '@system.it.flumx.com/vee-validate'
 
-import InputComponent from '../components/InputComponent.vue'
+import InputComponent from './forms/InputComponent.vue'
 import TextAreaComponent from '../components/TextAreaComponent.vue'
-import Dropdown from '../components/Dropdown.vue'
+import Dropdown from './forms/Dropdown.vue'
 
 import sortArrowHorizontally from '../assets/img/sort-arrows-horizontal.svg'
 import tick from '../assets/img/tick.svg'

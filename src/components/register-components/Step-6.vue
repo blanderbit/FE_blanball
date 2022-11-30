@@ -21,25 +21,34 @@
       </div>
       <div class="b-register-step__dropdown">
         <Dropdown
-          :outside-title="true"
-          :main-title="$t('register.city')"
-          :options="mockData.cities"
+            :outside-title="true"
+            :main-title="$t('register.city')"
+            :options="mockData.district"
+            @new-value="changeRegions"
+            display-name="name"
+            display-value="name"
+            name="region"
         />
       </div>
       <div class="b-register-step__dropdown">
         <Dropdown
-          :outside-title="true"
-          :main-title="$t('register.city')"
-          :options="mockData.district"
+            :outside-title="true"
+            :main-title="$t('register.city')"
+            :options="mockData.cities"
+            @new-value="changeCity"
+            display-name="name"
+            display-value="name"
+            name="city"
         />
       </div>
       <div class="b-register-step__dropdown">
-        <Dropdown
-          :outside-title="true"
-          :main-title="$t('register.add-district')"
-          :options="mockData.district"
-          :outside-title-left="$t('register.optionally')"
-        />
+        <InputComponent
+            :title="$t('register.weight')"
+            :placeholder="'Address'"
+            :title-width="0"
+            @input="changeAddress()"
+            name="address"
+        ></InputComponent>
       </div>
     </div>
     <div class="b-register-step__buttons">
@@ -62,36 +71,56 @@
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, ref } from 'vue'
 
 import GreenBtn from '../GreenBtn.vue'
-import Dropdown from '../Dropdown.vue'
-
+import Dropdown from '../forms/Dropdown.vue'
+import InputComponent from '../forms/InputComponent.vue'
 import tickIcon from '../../assets/img/tick-white.svg'
 
 import CONSTANTS from '../../consts/index'
+import { PositionMapBus } from "../../workers/event-bus-worker";
+import { API } from "../../workers/api-worker/api.worker";
 
 export default {
   name: 'Step6',
   components: {
     GreenBtn,
     Dropdown,
+    InputComponent
   },
   setup() {
+    const region = ref('');
+    const city = ref('');
+    const address = ref('');
     const mockData = computed(() => {
       return {
-        cities: CONSTANTS.register.cities,
-        district: CONSTANTS.register.district,
+        cities: CONSTANTS.register.jsonCityRegions.find(item => item.name.includes(region.value))?.cities || [],
+        district: CONSTANTS.register.jsonCityRegions,
       }
-    })
+    });
     const tick = computed(() => {
       return tickIcon
     })
 
+    async function getCorrdsByName(str) {
+      return await API.LocationService.GetPlaceByAddress(str)
+    }
     return {
       mockData,
-      tick
+      tick,
+      async changeRegions(e) {
+        region.value = e;
+        PositionMapBus.emit('update:map:by:coords', await getCorrdsByName(region.value))
+      },
+      async changeCity(e) {
+        city.value = e;
+        PositionMapBus.emit('update:map:by:coords', await getCorrdsByName(`${region.value} ${region.value}`))
+      },
+      async changeAddress(e) {
+        address.value = e;
+        PositionMapBus.emit('update:map:by:coords', await getCorrdsByName(`${region.value} ${region.value} ${address.value}`))
+      }
     }
   },
 }

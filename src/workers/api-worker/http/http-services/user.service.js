@@ -14,7 +14,6 @@ export class UserService {
   }
 
   static sendApproveCode(verificationCode) {
-    console.log(verificationCode)
     return AxiosInstance.post(
       EndpointsEnum.Users.sendApproveCode,
       verificationCode
@@ -29,7 +28,7 @@ export class UserService {
   }
 
   static updateProfileData(payload) {
-    return AxiosInstance.patch(
+    return AxiosInstance.put(
       EndpointsEnum.Users.updateProfileData,
       payload
     )

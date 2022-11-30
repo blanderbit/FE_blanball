@@ -54,7 +54,7 @@ export class WebSocketWorker {
 
     if (this.callbacks.find(func => func.name === callback.name)) {
       console.warn('registerCallback already use');
-      return
+      return this;
     }
 
     this.callbacks.push(callback);

@@ -327,6 +327,7 @@ export class VueResolver {
 
     const {
       resolverSecondWorker,
+      resolverFirstWorker,
       resolveFirstWorkerError,
       beforeIntercept,
       afterIntercept,
@@ -357,16 +358,16 @@ export class VueResolver {
         this[METHOD_HOOK_ENUM.BEFORE_INTERCEPT]
       )(standardDataParams);
 
-      const resultAsyncCheck = await this[
-        METHOD_HOOK_ENUM.RESOLVER_FIRST_WORKER
-        ](standardDataParamsWithNext);
+      const resultAsyncCheck = await isFunction(
+        resolverFirstWorker,
+        this[METHOD_HOOK_ENUM.RESOLVER_FIRST_WORKER]
+      )(standardDataParamsWithNext);
 
       if (typeof resultAsyncCheck !== JS_TYPES_ENUM.BOOLEAN || !resultAsyncCheck) {
         const firstWorkerError = {
           ...standardDataParamsWithNext,
           error: 'FIRST_WORKER_ERROR'
         };
-
         isFunction(
           resolveFirstWorkerError,
           this[METHOD_HOOK_ENUM.RESOLVER_FIRST_WORKER_ERROR]

@@ -94,8 +94,8 @@
 <script>
 import { ref, watch } from 'vue';
 
-import Dropdown from '../../components/Dropdown.vue'
-import InputComponent from '../../components/InputComponent.vue'
+import Dropdown from '../forms/Dropdown.vue'
+import InputComponent from '../forms/InputComponent.vue'
 
 export default {
   components: {
