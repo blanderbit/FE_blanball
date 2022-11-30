@@ -127,7 +127,10 @@
       @close-modal="toggleModal('public_profile')"
     >
       <template #user-content>
-        <PlayerPageComponent :page-mode="'public'" />
+        <PlayerPageComponent 
+          :page-mode="'public'"
+          :user-data="userInfo"
+        />
       </template>
     </ModalUserWindow>
 
@@ -233,7 +236,7 @@ import * as yup from 'yup'
 
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
-import InputComponent from '../../../components/InputComponent.vue'
+import InputComponent from '../../../components/forms/InputComponent.vue'
 import ModalWindow from '../../../components/ModalWindow.vue'
 import ModalUserWindow from '../../../components/ModalUserWindow.vue'
 import PlayerPageComponent from '../../../components/PlayerPageComponent.vue'
@@ -279,6 +282,7 @@ export default {
     const route = useRoute()
     const router = useRouter()
 
+    const userInfo = ref(null)
     const userRating = ref(null)
     const userPhone = ref('')
     const userEmail = ref('')
@@ -352,6 +356,7 @@ export default {
       }
     })
 
+    userInfo.value = route.meta.usersData.data
     userRating.value = route.meta.usersData.data.raiting
     userPhone.value = route.meta.usersData.data.phone
     userEmail.value = route.meta.usersData.data.email
@@ -475,8 +480,7 @@ export default {
             email: res.data.configuration.email,
             show_reviews: res.data.configuration.show_reviews
           }
-          userData.value = res.data.profile
-
+          userInfo.value = res.data
           userData.value = {
             ...res.data.profile,
             working_leg: getWorkingLeg(res.data.profile.working_leg)
@@ -547,7 +551,8 @@ export default {
       userData,
       schema,
       formValues,
-      myForm
+      myForm,
+      userInfo
     }
   }
 }
