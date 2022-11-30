@@ -236,7 +236,7 @@ import * as yup from 'yup'
 
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
-import InputComponent from '../../../components/InputComponent.vue'
+import InputComponent from '../../../components/forms/InputComponent.vue'
 import ModalWindow from '../../../components/ModalWindow.vue'
 import ModalUserWindow from '../../../components/ModalUserWindow.vue'
 import PlayerPageComponent from '../../../components/PlayerPageComponent.vue'
