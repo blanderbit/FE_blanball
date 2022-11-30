@@ -7,13 +7,14 @@
     <img v-if="icon" :src="icon" alt="">
     {{ text }}
     <img v-if="iconRight" :src="iconRight" alt="">
-    <loading ref="loading"></loading>
+    <loading :is-loading="loading"></loading>
   </div>
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import Loading from './../workers/loading-worker/Loading.vue'
+
 export default {
   components: {
       Loading
@@ -56,12 +57,8 @@ export default {
       default: false
     },
   },
-  watch: {
-    loading(value) {
-      value ? this.$refs.loading.start() : this.$refs.loading.finish()
-    }
-  },
   setup(props) {
+    const loading = ref(false)
     const btnStyle = computed(() => {
       return {
         ...props.fontStyles,
@@ -71,6 +68,17 @@ export default {
         'justify-content': props.iconRight || props.icon ? 'space-around' : 'center'
       }
     })
+
+    watch(() => props.loading, (value) => {
+      value ? start() : finish()
+    })
+
+    function start() {
+      loading.value = true
+    }
+    function finish() {
+      loading.value = false
+    }
 
     return {
       btnStyle

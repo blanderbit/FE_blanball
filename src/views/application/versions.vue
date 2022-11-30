@@ -1,6 +1,8 @@
 <template>
   <div class="b-versions">
-    <Loading ref="load" />
+    <Loading 
+      :is-loading="loading" 
+    />
     <div class="b-versions__title-level1 title-customs">Тут буде написано що саме ми додали до наявного функціоналу</div>
     <div class="b-versions__container d-flex justify-content-between">
       <div class="b-versions__left-side">
@@ -120,10 +122,9 @@ export default {
     const currentVersion = ref()
     const versionType = ref()
     const versionNumber = ref()
-    const load = ref(true)
+    const loading = ref(false)
 
     versions.value = route.meta.allVersions.results
-    console.log(versions.value)
 
     versions.value = versions.value.map(item => {
       return {
@@ -140,12 +141,13 @@ export default {
     }
 
     function gerVersion(id) {
-      console.log('getVersion', id)
+      loading.value = true
       API.VersionsService.getCurrentVersion(id)
       .then(res => {
           versionType.value = res.type
           versionNumber.value = res.version
           currentVersion.value = res.data
+          loading.value = false
       })
     }
 
@@ -155,7 +157,7 @@ export default {
       currentVersion,
       versionNumber,
       versionType,
-      load
+      loading
     }
   }
 }
