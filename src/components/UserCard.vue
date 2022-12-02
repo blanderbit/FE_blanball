@@ -10,10 +10,10 @@
         </div>
         <div class="b_user_card_name_pnz">
           <div class="b_user_card_top_line_name_rating">
-            <div class="b_user_card_name">{{user.name}}</div>
+            <div class="b_user_card_name">{{user.profile.name}} {{user.profile.last_name}}</div>
             <div class="b_user_card_team_rating_mob">
               <star-rating 
-                :rating="rating"
+                :rating="user.raiting || 0"
                 :star-size="14"
                 :show-rating="false"
                 :read-only="true"
@@ -23,7 +23,7 @@
             </div>
           </div>
           <div class="b_user_card_pnz">
-            ПНЗ <span>{{user.pnz}}</span>
+            {{user.profile.position}} <span>{{user.profile.position}}</span>
           </div>
         </div>
       </div>
@@ -31,7 +31,7 @@
         <div class="b_user_card_top_line_rating_status">
           <div class="b_user_card_team_rating">
             <star-rating 
-              :rating="rating"
+              :rating="user.raiting || 0"
               :star-size="14"
               :show-rating="false"
               :read-only="true"
@@ -40,8 +40,8 @@
             </star-rating>
           </div>
           <div class="b_user_card_team_status">
-            <div class="b_user_card_team">{{user.team}}</div>
-            <div class="b_user_card_status_mob">{{user.status}}</div>
+            <div class="b_user_card_team">Какая-то команда</div>
+            <div class="b_user_card_status_mob">{{user.role}}</div>
           </div>
         </div>
         <div class="b_user_card_bottom-line">
@@ -49,12 +49,12 @@
           <span class="icon">
             <img :src="user.gender_icon" alt="">
           </span> 
-          <span>{{user.gender}}</span>
+          <span>{{user.profile.gender}}</span>
         </div>
       </div>
       <div class="b_user_card_user_status">
         <img src="../assets/img/runner.svg" alt="">
-        <div class="b_user_card_status">{{user.status}}</div>
+        <div class="b_user_card_status">{{user.role}}</div>
       </div>
       <div
         :class="['b_user_card_arrow', {active: user.isActive}]"

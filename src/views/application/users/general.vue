@@ -258,9 +258,11 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+
 import InputComponent from '../../../components/forms/InputComponent.vue'
 import UserCard from '../../../components/UserCard.vue'
-import CONSTANTS from '../../../consts/index'
 
 import members from '../../../assets/img/members.svg'
 import runner from '../../../assets/img/runner.svg'
@@ -269,11 +271,23 @@ import timer from '../../../assets/img/timer.svg'
 import tShirt from '../../../assets/img/t-shirt.svg'
 import searchIcon from '../../../assets/img/search.svg'
 
+import CONSTANTS from '../../../consts/index'
+
 export default {
   name: 'RatingPage',
   components: {
     InputComponent,
     UserCard,
+  },
+  setup() {
+    const route = useRoute()
+    const users = ref([])
+    users.value = route.meta.usersData.data.results
+    console.log(route.meta.usersData.data)
+
+    return {
+      users
+    }
   },
   data() {
     return {
@@ -358,9 +372,9 @@ export default {
     }
   },
   computed: {
-    users() {
-      return CONSTANTS.users_page.users
-    },
+    // users() {
+    //   return CONSTANTS.users_page.users
+    // },
     searchIcon() {
       return searchIcon
     },
