@@ -100,6 +100,11 @@ export default {
       border-radius: 6px;
       padding: 8px 12px;
       resize: none;
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 24px;
     }
   }
   .b-text-area__error-message {

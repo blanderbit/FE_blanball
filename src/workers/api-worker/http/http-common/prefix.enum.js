@@ -20,6 +20,7 @@ export const EndpointsEnum = {
     GetAllMyEvents: '/events/client/my/events/list',
     DeclineOrAcceptInvites: '/events/client/accept/or/decline/invites/to/events',
     DeclineOrAcceptParticipations: '/events/client/accept/or/decline/participations',
+    getPlannedUserEvents: '/events/client/user/planned/events/list/'
   },
   Users: {
     getMyProfile: '/authentication/client/me',

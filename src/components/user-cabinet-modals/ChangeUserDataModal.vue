@@ -2,7 +2,6 @@
   <Transition>
     <div 
       class="b-change-data__wrapper" 
-      @click="closeModal"
     >
       <div class="b-change-data">
         <div class="b-change-data__title-block">
