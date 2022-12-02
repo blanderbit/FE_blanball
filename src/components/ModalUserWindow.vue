@@ -2,6 +2,7 @@
   <Transition>
     <div class="b_modal_user_wrapper" @click.self="$emit('close-modal')">
       <div class="b_modal_user_modal-window">
+        <slot name="top-buttons"></slot>
         <slot name="user-content"></slot>
       </div>
     </div>
@@ -36,7 +37,6 @@ export default {
       background: #fff;
       padding: 36px 28px;
       height: 90%;
-      overflow: hidden;
       @media (min-width: 992px) and (max-width: 1200px) {
         width: 980px;
       }

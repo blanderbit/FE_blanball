@@ -80,9 +80,6 @@
           </div>
           <div class="b-user-card__birthday-line">
             <div v-if="!isEditMode" class="b-user-card__birth-date">
-              <!-- {{ userData.day }}
-              {{ userData.month }} 
-              {{ userData.year }} -->
               {{ birthDate }}
               <div class="b-user-card__title">
                 {{ $t('profile.birth-date') }}
@@ -277,8 +274,7 @@ export default {
   components: {
     InputComponent,
     Dropdown,
-    TextAreaComponent,
-    // Form,
+    TextAreaComponent
   },
   props: {
     userData: {
@@ -297,7 +293,6 @@ export default {
   emits: [],
   setup(props, context) {
     const currentTab = ref(0)
-    // const myForm = ref(null)
 
     const mockData = computed(() => {
       return {
@@ -313,18 +308,6 @@ export default {
         district: CONSTANTS.profile.district,
       }
     })
-    // const formValues = ref({
-    //   last_name: props.userData.last_name,
-    //   name: props.userData.name,
-    //   about_me: props.userData.about_me,
-    //   day: getBirthDay(props.userData.birthday),
-    //   month: getBirthMonth(props.userData.birthday),
-    //   year: getBirthYear(props.userData.birthday),
-    //   height: props.userData.height,
-    //   weight: props.userData.weight,
-    //   working_leg: getWorkingLeg(props.userData.working_leg),
-    //   position: props.userData.position
-    // })
 
     const icons = computed(() => {
       return {
@@ -333,23 +316,8 @@ export default {
         editIcon: edit,
       }
     })
-    // const schema = computed(() => {
-    //   return yup.object({
-    //     last_name: yup.string().required(),
-    //     name: yup.string().required(),
-    //     about_me: yup.string().required(),
-    //     day: yup.string().required(),
-    //     month: yup.string().required(),
-    //     year: yup.string().required(),
-    //     height: yup.string().required(),
-    //     weight: yup.string().required(),
-    //     working_leg: yup.string().required(),
-    //     position: yup.string().required(),
-    //   })
-    // })
 
     const birthDate = computed(() => {
-      console.log(props.userData)
       return `${dayjs(props.userData.birthday)
         .locale(dayjsUkrLocale)
         .format('D MMMM YYYY')} p.`
@@ -364,9 +332,6 @@ export default {
       currentTab,
       icons,
       birthDate,
-      // schema,
-      // formValues,
-      // myForm,
       mockData
     }
   }
