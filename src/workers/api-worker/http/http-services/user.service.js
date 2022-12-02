@@ -33,4 +33,10 @@ export class UserService {
       payload
     )
   }
+
+  static getAllUsers() {
+    return AxiosInstance.get(
+      EndpointsEnum.Users.getAllUsers
+    )
+  }
 }
