@@ -124,8 +124,25 @@
 
     <ModalUserWindow
       v-if="isModalActive.public_profile"
-      @close-modal="toggleModal('public_profile')"
     >
+      <template #top-buttons>
+        <div class="b-player-page__outer-btns">
+          <div 
+            class="b-player-page__continue"
+            @click="toggleModal('public_profile')"
+          >
+            <span>Продовжити редагування</span>
+            <img src="../../../assets/img/arrow-left-small.svg" alt="">
+          </div>
+          <div
+            @click="toggleModal('public_profile')"
+            class="b-player-page__exit"
+          >
+            <span>Зберегти та вийти</span>
+            <img src="../../../assets/img/cross-white.svg" alt="">
+          </div>
+        </div>
+      </template>
       <template #user-content>
         <PlayerPageComponent 
           :page-mode="'public'"
@@ -356,7 +373,13 @@ export default {
       }
     })
 
-    userInfo.value = route.meta.usersData.data
+    userInfo.value = {
+      ...route.meta.usersData.data,
+      profile: {
+        ...route.meta.usersData.data.profile,
+        working_leg: getWorkingLeg(route.meta.usersData.data.profile.working_leg)
+      }
+    }
     userRating.value = route.meta.usersData.data.raiting
     userPhone.value = route.meta.usersData.data.phone
     userEmail.value = route.meta.usersData.data.email
@@ -448,7 +471,7 @@ export default {
             },
             ...profileData
           },
-          "get_planned_events": "10d"
+          "get_planned_events": "1y"
         }
         API.UserService.updateProfileData(payload)
         .then(() => {
@@ -559,6 +582,45 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.b-player-page__outer-btns {
+  position: absolute;
+  top: -30px;
+  right: 0;
+  display: flex;
+  align-items: center;
+  .b-player-page__continue {
+    margin-right: 24px;
+    display: flex;
+    align-items: center;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 24px;
+    color: #E2E2E9;
+    cursor: pointer;
+    span {
+      margin-right: 10px;
+    }
+  }
+  .b-player-page__exit {
+    display: flex;
+    align-items: center;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 24px;
+    color: #FFFFFF;
+    padding: 2px 8px;
+    background: #6F6F77;
+    border-radius: 6px;
+    cursor: pointer;
+    span {
+      margin-right: 10px;
+    }
+  }
+}
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.8s ease;

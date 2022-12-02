@@ -23,7 +23,7 @@ export const ErrorInterceptor = (error) => {
   }
 
   const errorMessageType = TypeRequestMessageWorker(error)?.[0];
-debugger
+
   toast.error(
     i18n.global.t(
       `responseMessageTypes.${errorMessageType.errorType}`,

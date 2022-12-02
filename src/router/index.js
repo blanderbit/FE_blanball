@@ -314,7 +314,7 @@ const router = createRouter({
                     path: ROUTES.APPLICATION.USERS.GENERAL.relative,
                     name: ROUTES.APPLICATION.USERS.GENERAL.name,
                     beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-                        // usersData: () => $api.UsersRequest.getAll(to.query),
+                        usersData: () => API.UserService.getAllUsers(),
                     })),
                     component: () => import('../views/application/users/general.vue'),
                     meta: {

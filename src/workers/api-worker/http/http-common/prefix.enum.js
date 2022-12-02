@@ -20,13 +20,15 @@ export const EndpointsEnum = {
     GetAllMyEvents: '/events/client/my/events/list',
     DeclineOrAcceptInvites: '/events/client/accept/or/decline/invites/to/events',
     DeclineOrAcceptParticipations: '/events/client/accept/or/decline/participations',
+    getPlannedUserEvents: '/events/client/user/planned/events/list/'
   },
   Users: {
     getMyProfile: '/authentication/client/me',
     deleteMyProfile: '/authentication/client/me',
     sendApproveCode: '/authentication/client/check/code',
     changePassword: '/authentication/client/request-change/password',
-    updateProfileData: '/authentication/client/me/update'
+    updateProfileData: '/authentication/client/me/update',
+    getAllUsers: '/authentication/client/users/list'
   },
   Reviews: {
     getUserReviews: '/reviews/client/user/reviews/list/'

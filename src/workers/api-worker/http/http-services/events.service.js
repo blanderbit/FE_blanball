@@ -44,4 +44,10 @@ export class EventService {
       )
     )
   }
+
+  static getPlannedUserEvents(userId) {
+    return AxiosInstance.get(
+      EndpointsEnum.Events.getPlannedUserEvents + userId,
+    )
+  }
 }
