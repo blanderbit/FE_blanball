@@ -196,7 +196,12 @@
 
       watch(
         () => context.isMenuOpened,
-        () => !context.isMenuOpened && emit('closed')
+        () => {
+          if(!context.isMenuOpened){
+            emit('closed');
+            selectedList.value = [];
+          }
+        }
       );
 
       const arrowPosition = computed(() => {
