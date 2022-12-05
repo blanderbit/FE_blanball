@@ -340,6 +340,9 @@
 </script>
 
 <style lang="scss" scoped>
+  #vs4__listbox {
+    background: red;
+  }
   form {
     height: 100%;
   }

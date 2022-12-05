@@ -1,15 +1,16 @@
 <template>
   <div>
     <v-select
-        :options="options"
-        :label="displayName || 'value'"
-        append-to-body
-        :class="{'b-form-error': modelErrorMessage}"
-        :calculate-position="withPopper"
-        @update:modelValue="setNewValue($event)"
-        maxHeight="100px"
-        @open="modelHandlers.blur()"
-        v-model="dropdownModelValue">
+      :options="options"
+      :label="displayName || 'value'"
+      append-to-body
+      :class="{'b-form-error': modelErrorMessage}"
+      :calculate-position="withPopper"
+      @update:modelValue="setNewValue($event)"
+      maxHeight="100px"
+      @open="modelHandlers.blur()"
+      v-model="dropdownModelValue"
+    >
     </v-select>
     <p class="b-input__error-message">{{ modelErrorMessage }}</p>
   </div>
@@ -29,14 +30,6 @@ export default {
     insideTitle: {
       type: Boolean,
       default: false
-    },
-    outsideTitle: {
-      type: Boolean,
-      default: false
-    },
-    outsideTitleLeft: {
-      type: String,
-      default: ''
     },
     mainTitle: {
       type: String,
@@ -70,6 +63,7 @@ export default {
   },
   emits: ['new-value'],
   setup(props, {emit}) {
+    console.log(props.options[0].value)
     const wrapper = ref(null);
     const isOpened = ref(false);
     const dropdownModelValue = ref(null);
@@ -80,10 +74,17 @@ export default {
         modelHandlers
     } = CustomModelWorker(props);
 
+    modelHandlers.value.input[0](props.options[0]?.[props.displayValue]);
+    modelHandlers.value.input[1](props.options[0]?.[props.displayValue], true);
+
     watch(
       () => modelValue.value,
       () => {
-        dropdownModelValue.value = props.options.find(item => item[props.displayValue] === modelValue.value)
+        console.log('watch modelValue')
+        dropdownModelValue.value = props.options.find(item => {
+          return item[props.displayValue] === modelValue.value
+        })
+        console.log(dropdownModelValue.value)
       },
       {
         immediate: true
@@ -137,6 +138,7 @@ export default {
     }
 
     function setNewValue(val) {
+      console.log('setNewValue', val)
       modelHandlers.value.input[0](val?.[props.displayValue]);
       modelHandlers.value.input[1](val?.[props.displayValue], true);
       emit('new-value',val?.[props.displayValue] )
@@ -157,11 +159,29 @@ export default {
 }
 </script>
 
-<style >
+<style lang="scss" scoped >
   @import "forms.scss";
   /*::v-deep {*/
 
   /*}*/
+
+
+::v-deep {
+  .vs__clear {
+    display: none;
+  }
+  .vs__dropdown-menu {
+    width: 500px;
+  }
+}
+
+::v-deep {
+  #vs3__listbox {
+    --vs-dropdown-min-width: auto;
+  }
+}
+
+
 
   .b-input__error-message {
     font-family: 'Inter';

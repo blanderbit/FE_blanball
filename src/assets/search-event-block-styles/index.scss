@@ -29,8 +29,12 @@
             margin-right: 6px;
           }
         }
-        .b-main-search__dropdown-wrapper {
+        .b-main-search__dropdown-wrapper-game {
           margin-right: 4px;
+          width: 140px;
+        }
+        .b-main-search__dropdown-wrapper-tournament {
+          width: 160px;
         }
       }
       .b-main-search__right-block {
@@ -85,8 +89,13 @@
       .b-main-search__left-side {
         display: flex;
         align-items: center;
-        .b-main-search__dropdown-wrapper {
+        .b-main-search__dropdown-wrapper-gender {
           margin-right: 4px;
+          width: 132px;
+        }
+        .b-main-search__dropdown-wrapper-cities {
+          margin-right: 4px;
+          width: 180px;
         }
         .b-main-search__calendar {
           margin-right: 4px;

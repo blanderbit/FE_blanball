@@ -22,7 +22,6 @@
       <div class="b-register-step__date-block">
         <div class="b-register-step__dropdown">
           <Dropdown 
-            :outside-title="true"
             :main-title="$t('register.day')"
             :options="mockData.days"
             display-name="value"
@@ -32,7 +31,6 @@
         </div>
         <div class="b-register-step__dropdown">
           <Dropdown 
-            :outside-title="true"
             :main-title="$t('register.month')"
             :options="mockData.months"
             display-name="value"
@@ -42,7 +40,6 @@
         </div>
         <div class="b-register-step__dropdown">
           <Dropdown 
-            :outside-title="true"
             :main-title="$t('register.year')"
             :options="mockData.years"
             display-name="value"
