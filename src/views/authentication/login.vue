@@ -72,6 +72,8 @@ export default {
     }
   }
   .b-login__central-block {
+    box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+    border-radius: 12px;
     height: 555px;
     width: 992px;
     display: flex;

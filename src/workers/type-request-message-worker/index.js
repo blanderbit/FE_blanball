@@ -70,7 +70,6 @@ const excludeColumnParameter = (key) => {
 };
 
 const excludeOneRowParam = (typeInitial, typeCounted) => {
-  debugger
   return typeInitial?.replace(typeCounted, '');
 };
 

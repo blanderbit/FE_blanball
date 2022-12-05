@@ -56,7 +56,6 @@
         PositionMapBus.emit('update:coords', dataForEmit)
       };
       PositionMapBus.on('update:map:by:coords', (e) => {
-        debugger
         setDataAboutPosition({
           lat: +e.data.coordinates?.lat,
           lng: +e.data.coordinates?.lon,
