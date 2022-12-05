@@ -35,6 +35,7 @@ export default {
 
 <style lang="scss" scoped>
 .b-reset {
+
   position: relative;
   height: 100vh;
   display: flex;
@@ -76,6 +77,8 @@ export default {
     }
   }
   .b-reset__central-block {
+    box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+    border-radius: 12px;
     height: 555px;
     width: 992px;
     display: flex;

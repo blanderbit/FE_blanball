@@ -40,8 +40,8 @@
           <code-input
               @complete="completed = true"
               :fields="5"
-              :fieldWidth="56"
-              :fieldHeight="56"
+              :fieldWidth="70"
+              :fieldHeight="40"
               :required="true"
               name="verify_code"
           />
@@ -116,7 +116,7 @@
       CodeInput
     },
     setup() {
-      const currentStep = ref(2);
+      const currentStep = ref(1);
       const loading = ref(false);
       const state = ref({});
       const router = useRouter();
@@ -358,5 +358,8 @@
         cursor: pointer;
       }
     }
+  }
+  ::v-deep .code-input input {
+    width: 20%!important;
   }
 </style>
