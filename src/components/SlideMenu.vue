@@ -7,8 +7,8 @@
     >
     </div>
     <div
-      class="b_slide_menu_wrapper"
-      :style="{
+        class="b_slide_menu_wrapper"
+        :style="{
         right: isMenuOpened ? '-464px' : '0px'
       }"
     >
@@ -20,7 +20,8 @@
           <div class="b_slide_menu_logo">
             <img src="../assets/img/logo-sidebar.svg" alt="">
           </div>
-          <div class="b_slide_menu_items d-flex justify-content-between align-items-center mb-2" v-if="notifications.length">
+          <div class="b_slide_menu_items d-flex justify-content-between align-items-center mb-2"
+               v-if="notifications.length">
             <div class="d-flex align-items-center" :style="{opacity: selectedList.length ? '1' : '0'}">
               <img src="../assets/img/cross.svg" height="10" alt="" class="me-2" @click="clearSelectedList"/>
               <div class="d-flex">
@@ -30,32 +31,36 @@
                 / {{totalNotificationsCount}}
               </div>
             </div>
-            <button  @click="selectable = !selectable,clearSelectedList()">
+            <button @click="selectable = !selectable,clearSelectedList()">
               <span v-if="!selectable">Выбрать записи</span>
               <span v-else>Отменить выбор</span>
             </button>
           </div>
-          <div v-if="selectable && notifications.length" class="d-flex mb-2">
-            <button @click="HandleAction.deleteAll()" class="d-flex align-items-center">
+          <div class="d-flex mb-2">
+            <button v-if="notifications.length" @click="HandleAction.deleteAll()" class="d-flex align-items-center">
               <img src="../assets/img/notifications/trash.svg" alt="" height="16">
               Удалить все
             </button>
-            <button @click="HandleAction.readAll()" class="d-flex align-items-center" v-if="notReadNotificationCount">
+            <button v-if="notifications.length && notReadNotificationCount" @click="HandleAction.readAll()"
+                    class="d-flex align-items-center">
               <img src="../assets/img/notifications/double-check.svg" height="16" alt="">
               Прочитать все
             </button>
-            <button @click="HandleAction.deleteSelected()" class="d-flex align-items-center" v-if="selectedList.length">
+            <button v-if="selectable && notifications.length && selectedList.length"
+                    @click="HandleAction.deleteSelected()" class="d-flex align-items-center">
               <img src="../assets/img/notifications/trash.svg" height="16" alt="">
               Удалить
             </button>
-            <button @click="HandleAction.readSelected()" class="d-flex align-items-center"  v-if="selectedList.length">
+            <button v-if="selectable && notifications.length && selectedList.length"
+                    @click="HandleAction.readSelected()" class="d-flex align-items-center">
               <img src="../assets/img/notifications/double-check.svg" height="16" alt="">
               Прочитать
             </button>
           </div>
           <div class="d-flex">
             <div class="b-notifications-title me-1"> {{$t('slide_menu.notifications')}}</div>
-            <div class="b-notification-unreaded d-flex align-items-center justify-content-center me-1" v-if="notReadNotificationCount">
+            <div class="b-notification-unreaded d-flex align-items-center justify-content-center me-1"
+                 v-if="notReadNotificationCount">
               {{ notReadNotificationCount }}
             </div>
           </div>
@@ -87,7 +92,7 @@
               <template #after>
                 <InfiniteLoading
                     :identifier="triggerForRestart"
-                    ref="scrollbar"  @infinite="$emit('loadingInfinite',$event)">
+                    ref="scrollbar" @infinite="$emit('loadingInfinite',$event)">
                   <template #complete>
                     <empty-list
                         v-if="!notifications.length"
@@ -98,8 +103,8 @@
                          v-if="notifications.length && blockScrollToTopIfExist">
                       <div>Ви досягли кінця списку</div>
                       <button
-                        class="b-button-scroll__to-first-element d-flex justify-content-between"
-                        @click="scrollToFirstElement()">
+                          class="b-button-scroll__to-first-element d-flex justify-content-between"
+                          @click="scrollToFirstElement()">
                         Вгору
                         <img src="../assets/img/arrow_up.svg">
                       </button>
@@ -112,14 +117,9 @@
           </ul>
         </div>
         <div class="b_slide_menu_bottom-block">
-          <div class="b_slide_menu_top-line">
-            <div class="b_slide_menu_left-part">
-              <div class="b_slide_menu_position">тренер</div>
-              <div class="b_slide_menu_name">Юлія Кісліцина</div>
-            </div>
-            <div class="b_slide_menu_right-part" @click="logOut()">
-              <img src="../assets/img/exit-icon.svg" alt="">
-            </div>
+          <div class="b_slide_menu_top-line d-flex justify-content-between">
+            <div class="b_slide_menu_name">Юлія Кісліцина</div>
+            <div class="b_slide_menu_position">тренер</div>
           </div>
           <div class="b_slide_menu_bottom-line">
             {{$t('slide_menu.version')}}
@@ -138,12 +138,10 @@
   import Notifications from './sitebar-notifications/Notifications.vue';
   import Notification from './Notification.vue';
   import EmptyList from './EmptyList.vue';
-  import { useRouter } from "vue-router";
   import sidebarArrowBack from '../assets/img/sidebar-arrow-back.svg'
   import sidebarArrow from '../assets/img/sidebar-arrow.svg'
   import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue'
   import { ROUTES } from "../router";
-  import { TokenWorker } from "../workers/token-worker";
   import { NewNotifications } from "../workers/web-socket-worker/not-includes-to-socket/new_notifications";
   import { API } from "../workers/api-worker/api.worker";
   import { v4 as uuid } from "uuid";
@@ -172,7 +170,7 @@
         type: Number,
         default: 0
       },
-      isMenuOpened:{
+      isMenuOpened: {
         type: Boolean,
         default: false
       }
@@ -185,7 +183,6 @@
       'update:isMenuOpened'
     ],
     setup(context, {emit}) {
-      const router = useRouter();
       const notificationList = ref();
       const selectable = ref(false);
       const blockScrollToTopIfExist = ref(false);
@@ -197,7 +194,7 @@
       watch(
         () => context.isMenuOpened,
         () => {
-          if(!context.isMenuOpened){
+          if (!context.isMenuOpened) {
             emit('closed');
             selectedList.value = [];
           }
@@ -216,11 +213,6 @@
         emit('update:isMenuOpened', !context.isMenuOpened)
       }
 
-      function logOut() {
-        TokenWorker.clearToken();
-        router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute)
-      }
-
       const getNewNotificationInstance = computed(() => {
         newNotificationInstance.value.countOfNewNotifications = context.newNotifications;
         return newNotificationInstance.value;
@@ -229,7 +221,7 @@
       const emptyListMessages = computed(() => {
         return {
           title: "Немає повідомлень для відображення",
-          description:"Вам ще не надходили сповіщення від інших користувачів"
+          description: "Вам ще не надходили сповіщення від інших користувачів"
         }
       });
 
@@ -249,12 +241,12 @@
           clearSelectedList();
         },
         deleteSelected: () => {
-          if(!selectedList.value) return;
+          if (!selectedList.value) return;
           API.NotificationService.deleteNotifications(selectedList.value);
           clearSelectedList();
         },
         readSelected: () => {
-          if(!selectedList.value) return;
+          if (!selectedList.value) return;
           API.NotificationService.readNotifications(selectedList.value);
           clearSelectedList();
         },
@@ -264,7 +256,6 @@
         clientVersion,
         arrowPosition,
         toggleMenu,
-        logOut,
         getNewNotificationInstance,
         emptyListMessages,
         routeObject,
@@ -381,31 +372,27 @@
         padding: 16px 11px;
         border-top: 1px solid #DFDEED;
         .b_slide_menu_top-line {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
+          width: 100%;
           margin-bottom: 8px;
-          .b_slide_menu_left-part {
-            .b_slide_menu_position {
-              background: #E9F6FF;
-              border-radius: 4px;
-              font-family: 'Inter';
-              font-style: normal;
-              font-weight: 400;
-              font-size: 12px;
-              line-height: 20px;
-              color: #1C4FC5;
-              width: fit-content;
-              padding: 1px 4px;
-            }
-            .b_slide_menu_name {
-              font-family: 'Inter';
-              font-style: normal;
-              font-weight: 500;
-              font-size: 12px;
-              line-height: 24px;
-              color: #262541;
-            }
+          .b_slide_menu_position {
+            background: #E9F6FF;
+            border-radius: 4px;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 20px;
+            color: #1C4FC5;
+            width: fit-content;
+            padding: 1px 4px;
+          }
+          .b_slide_menu_name {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 12px;
+            line-height: 24px;
+            color: #262541;
           }
         }
         .b_slide_menu_bottom-line {

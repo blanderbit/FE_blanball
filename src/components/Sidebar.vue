@@ -39,11 +39,13 @@
       </div>
       <div class="b_sidebar_bottom-block">
         <div class="b_sidebar_picture-bottom">
-          <img
-              src="../assets/img/my-profile-pic.svg"
-              alt=""
+          <avatar
+              full-name="Yaroslav Makovskyi"
               @click="goToProfile"
-          />
+          ></avatar>
+          <div @click="logOut" class="b_sidebar_logout d-flex justify-content-center align-items-center">
+            <img src="../assets/img/exit-icon.svg" alt="">
+          </div>
         </div>
       </div>
     </div>
@@ -55,6 +57,7 @@
   import { useRouter } from 'vue-router'
 
   import SlideMenu from '../components/SlideMenu.vue'
+  import Avatar from './../components/Avatar.vue'
 
   import { createNotificationFromData } from "../workers/utils-worker";
   import { AuthWebSocketWorkerInstance } from "./../workers/web-socket-worker";
@@ -68,11 +71,13 @@
   import notificationUnread from '../assets/img/notificationUnread.svg'
   import record from '../assets/img/record.svg'
   import members from '../assets/img/members.svg'
+  import { TokenWorker } from "../workers/token-worker";
 
   export default {
     name: 'MainSidebar',
     components: {
       SlideMenu,
+      Avatar
     },
     setup() {
       const notReadNotificationCount = ref(0);
@@ -81,7 +86,7 @@
       const isMenuOpened = ref(false);
       const menuItems = computed(() => [
         {
-          img: notReadNotificationCount.value ? notificationUnread :  notification,
+          img: notReadNotificationCount.value ? notificationUnread : notification,
           action: () => isMenuOpened.value = true
         },
         {
@@ -94,11 +99,11 @@
           url: '/application/users/general',
           action: () => isMenuOpened.value = false
         },
-       ]);
+      ]);
 
       const getNotificationsCount = async () => API.NotificationService
-          .getNotificationsCount()
-          .then(item => notReadNotificationCount.value = item.data.not_read_notifications_count || 0);
+        .getNotificationsCount()
+        .then(item => notReadNotificationCount.value = item.data.not_read_notifications_count || 0);
 
       const {
         paginationElements,
@@ -117,7 +122,7 @@
           skipids.value = []
         }
 
-        paginationLoad({pageNumber, $state,forceUpdate})
+        paginationLoad({pageNumber, $state, forceUpdate})
       };
 
       const handleMessageInSidebar = (instanceType) => {
@@ -152,7 +157,10 @@
       });
 
       getNotificationsCount();
-
+      const logOut = () => {
+        TokenWorker.clearToken();
+        router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute)
+      }
       return {
         paginationElements,
         paginationTotalCount,
@@ -163,7 +171,8 @@
         isMenuOpened,
         loadDataNotifications,
         paginationClearData,
-        goToProfile
+        goToProfile,
+        logOut
       }
     }
   }
@@ -188,6 +197,23 @@
       align-items: center;
       z-index: 2;
       background: #ffffff;
+      .b_sidebar_picture-bottom {
+        background: #EFEFF6;
+        border-radius: 24px;
+        padding: 4px;
+        .b-avatar {
+          cursor: pointer;
+        }
+        .b_sidebar_logout {
+          margin-top: 6px;
+          width: 40px;
+          height: 40px;
+          background: #FFFFFF;
+          border: 1px solid #EFEFF6;
+          border-radius: 24px;
+          cursor: pointer;
+        }
+      }
       .b_sidebar_top-block {
         .b_sidebar_picture-top {
           padding-bottom: 30px;
