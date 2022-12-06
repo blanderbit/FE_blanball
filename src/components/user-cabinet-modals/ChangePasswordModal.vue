@@ -18,23 +18,15 @@
             <InputComponent :title="$t('modals.change_password.new-pass')" :title-width="0" :type="['password', 'text']"
               :outside-title="true" :has-icon="true" :icon="[eyeCrossed, eyeOpened]" name="new_password" />
           </div>
-          <p v-if="modalChangeStep === 2 && seconds > 0" class="sms-text">
-            {{ $t('modals.change_password.sms-code') }}
-            {{ userEmail }}
-            {{ $t('modals.change_password.during') }}
-            <!-- {{seconds}} -->
+
+          <div v-if="modalChangeStep === 2">
             <Counter 
-              :start-time="30" 
-              @second-tick="val => seconds = val" 
+              :start-time="30"
+              :email="userEmail"
+              @resend-code-action="resendCode(data)" 
             />
-            {{ $t('modals.change_password.seconds') }}
-          </p>
-          <p v-if="modalChangeStep === 2 && seconds === 0" class="sms-text">
-            {{ $t('modals.change_password.sms-not-came') }}
-            <span @click="resendCode(data)">
-              {{ $t('modals.change_password.send-again') }}
-            </span>
-          </p>
+          </div>
+
           <div v-show="modalChangeStep === 2" class="sms-code-block">
             <CodeInput :fields="5" :fieldWidth="48" :fieldHeight="40" :required="true" name="password_code"
               @complete="completed = true" />
@@ -107,6 +99,7 @@ export default {
     }
 
     function resendCode(formData) {
+      console.log('resend code')
       const newPassword = formData.controlledValues.new_password
       const oldPassword = formData.controlledValues.old_password
       const payload = {

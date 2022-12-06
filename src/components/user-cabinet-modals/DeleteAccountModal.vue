@@ -41,13 +41,11 @@
             {{ $t('modals.delete_acc.title-second') }}
           </div>
           <div class="description-text">
-            {{ $t('modals.delete_acc.text-second') }}
-            {{userEmail}}
-            {{ $t('modals.delete_acc.during') }}
             <Counter 
               :start-time="30"
+              :email="userEmail"
+              @resend-code-action="sendCodeForDeleteAcc" 
             />
-            {{ $t('modals.delete_acc.seconds') }}
           </div>
           <Form v-slot="data" :validation-schema="schema">
             <div class="code-input-field">
@@ -137,7 +135,6 @@ export default {
     }
 
     function deleteAcc(formData) {
-      console.log(formData.controlledValues)
       API.UserService.sendApproveCode(formData.controlledValues)
         .then(() => {
           localStorage.removeItem('token')

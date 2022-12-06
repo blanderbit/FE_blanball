@@ -1,6 +1,24 @@
 <template>
   <span class="b-counter">
-    {{ seconds }}
+    <p 
+      v-if="seconds > 0" 
+      class="sms-text"
+    >
+      {{ $t('modals.change_password.sms-code') }}
+      {{ email }}
+      {{ $t('modals.change_password.during') }}
+      {{ seconds }}
+      {{ $t('modals.change_password.seconds') }}
+    </p>
+    <p 
+      v-if="seconds === 0" 
+      class="sms-text"
+    >
+      {{ $t('modals.change_password.sms-not-came') }}
+      <span @click="$emit('resendCodeAction')">
+        {{ $t('modals.change_password.send-again') }}
+      </span>
+    </p>
   </span>
 </template>
 
@@ -13,17 +31,20 @@ export default {
     startTime: {
       type: Number,
       default: 30
+    },
+    email: {
+      type: String,
+      default: ''
     }
   },
-  emits: ['secondTick'],
-  setup(props, {emit}) {
+  emits: ['resendCodeAction'],
+  setup(props) {
     const seconds = ref(props.startTime)
     const interval = ref()
 
     interval.value = setInterval(() => {
       if (seconds.value !== 0) {
         seconds.value--
-        emit('secondTick', seconds.value)
       }
     }, 1000)
 
