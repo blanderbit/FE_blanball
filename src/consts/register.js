@@ -2187,9 +2187,5 @@ export default {
     id: k,
     value: 2000 + k
   })),
-  cities: ['Воркута', 'Колыма', 'Магадан', 'Махачкала']
-          .map((item, idx) => ({ id: idx, value: item })),
-  district: ['Степок', 'Погребок', 'Ромашка', 'Грибок']
-            .map((item, idx) => ({ id: idx, value: item })),
   jsonCityRegions
 }

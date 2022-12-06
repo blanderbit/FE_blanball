@@ -64,7 +64,7 @@ export default {
   .b_header_search-block {
     .b_header_search-input {
       width: 220px;
-      height: 40px;
+      height: 44px;
     }
   }
 }

@@ -1,5 +1,6 @@
 import { AuthWebSocketWorkerInstance } from "../web-socket-worker";
 import { MessageActionDataTypes, MessageActionTypes } from "../../workers/web-socket-worker/message.action.types";
+import { DETAILS_TYPE_ENUM_VALUES } from "../type-request-message-worker";
 
 export const AxiosQuery = (params) => {
   params = typeof params === 'object' ? params : {};
@@ -16,12 +17,26 @@ export const AxiosQuery = (params) => {
   }
 };
 
-export const AxiosParams = (functionResult) => {
-  const resultFromFunction = functionResult();
-  const allParameters = {};
-  if (resultFromFunction.meta.includes('AxiosQuery')) {
-    allParameters.params = resultFromFunction.data
+export const AxiosSkipErrorMessageType = (enumList = []) => {
+  debugger
+  enumList = enumList.filter(enumKey => DETAILS_TYPE_ENUM_VALUES.includes(enumKey));
+  return {
+    meta: 'AxiosSkipErrorMessageType',
+    data: enumList
   }
+};
+
+export const AxiosParams = (...results) => {
+  const allParameters = {};
+
+  results.forEach((resultFromFunction) => {
+    debugger
+    if (resultFromFunction.meta.includes('AxiosQuery')) {
+      allParameters.params = resultFromFunction.data
+    } else if (resultFromFunction.meta.includes('AxiosSkipErrorMessageType')) {
+      allParameters.skipErrorMessageType = resultFromFunction.data
+    }
+  });
 
   return allParameters;
 };

@@ -116,18 +116,17 @@
       CodeInput
     },
     setup() {
-      const currentStep = ref(2);
+      const currentStep = ref(1);
       const loading = ref(false);
       const state = ref({});
       const router = useRouter();
-      const toast = useToast();
 
       const eyeCrossed = computed(() => {
         return eyeCross
-      })
+      });
       const eyeOpened = computed(() => {
         return eyeOpen
-      })
+      });
 
       let schema = computed(() => {
         if (currentStep.value === 1) {
@@ -151,8 +150,6 @@
         return yup.object({})
       });
 
-      const handleSuccess = (result) => toast.success(result.data.success);
-      const handleError = (result) => toast.error(result?.message || 'Упс, что то пошло не так');
       const handleBackClick = () => {
         if (currentStep.value === 1) {
           return router.back()
@@ -169,13 +166,9 @@
 
         loading.value = true;
 
-        try {
-          const result = await API.AuthorizationService.ResetPasswordRequest(formData.values);
-          currentStep.value = currentStep.value + 1;
-          handleSuccess(result);
-        } catch (e) {
-          handleError(e);
-        }
+        await API.AuthorizationService.ResetPasswordRequest(formData.values);
+        currentStep.value = currentStep.value + 1;
+
         loading.value = false;
       };
 
@@ -185,6 +178,9 @@
         if (!valid) {
           return false
         }
+        await API.AuthorizationService.VerifyCode({
+          verify_code: formData.controlledValues.verify_code
+        });
 
         state.value = formData.controlledValues;
         currentStep.value = currentStep.value + 1;
@@ -198,16 +194,11 @@
 
         loading.value = true;
 
-        try {
-          const result = await API.AuthorizationService.ResetComplete({
-            new_password: formData.values.new_password,
-            verify_code: state.value.verify_code
-          });
-          router.push(ROUTES.AUTHENTICATIONS.LOGIN);
-          handleSuccess(result);
-        } catch (e) {
-          handleError(e);
-        }
+        await API.AuthorizationService.ResetComplete({
+          new_password: formData.values.new_password,
+          verify_code: state.value.verify_code
+        });
+        router.push(ROUTES.AUTHENTICATIONS.LOGIN);
 
         loading.value = false;
       };

@@ -8,7 +8,9 @@ import { i18n } from "../main";
 const toast = useToast();
 
 export const ErrorInterceptor = (error) => {
+
   const getJsonErrorData = error.toJSON();
+  const skipErrorMessageType = error.response.config.skipErrorMessageType || [];
   error = error?.response?.data || getJsonErrorData;
 
   if (error?.status === 401 || getJsonErrorData?.status === 401) {
@@ -22,18 +24,23 @@ export const ErrorInterceptor = (error) => {
     );
   }
 
-  const errorMessageType = TypeRequestMessageWorker(error)?.[0];
+  const errorMessageType = TypeRequestMessageWorker(error)
+    .filter(item => !skipErrorMessageType?.includes(item.errorType))[0];
 
-  toast.error(
-    i18n.global.t(
-      `responseMessageTypes.${errorMessageType.errorType}`,
-      {
-        field: i18n.global.t(
-          `responseMessageTypes.fields.${errorMessageType.field}`,
-        )
-      }
-    )
-  );
+  if(errorMessageType) {
+    toast.error(
+      i18n.global.t(
+        `responseMessageTypes.${errorMessageType.errorType}`,
+        {
+          field: i18n.global.t(
+            `responseMessageTypes.fields.${errorMessageType.field}`,
+          )
+        }
+      )
+    );
+  }
+
   error.errorMessageType = errorMessageType;
+
   return Promise.reject(error)
 };
