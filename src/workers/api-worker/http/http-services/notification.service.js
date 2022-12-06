@@ -1,6 +1,7 @@
 import { AxiosInstance } from "../../../../plugins/axios.plugin";
 import { EndpointsEnum } from "../http-common/prefix.enum";
-import { AxiosParams, AxiosQuery } from "../../../utils-worker";
+import { AxiosParams, AxiosQuery, AxiosSkipErrorMessageType } from "../../../utils-worker";
+import { DETAILS_TYPE_ENUM } from "../../../type-request-message-worker";
 
 export class NotificationService {
   static readNotifications(ids) {
@@ -16,10 +17,13 @@ export class NotificationService {
     return AxiosInstance.get(
       EndpointsEnum.Notification.Index,
       AxiosParams(
-        AxiosQuery.bind(null, {
+        AxiosQuery({
           page,
           skipids: skipids?.join(',')
-        })
+        }),
+        AxiosSkipErrorMessageType([
+          DETAILS_TYPE_ENUM.INVALID_PAGE
+        ])
       )
     )
   }

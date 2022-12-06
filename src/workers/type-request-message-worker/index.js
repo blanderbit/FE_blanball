@@ -60,6 +60,12 @@ export const DETAILS_TYPE_ENUM = {
   MAX_VALUE: 'filed:_max_value',
 };
 
+export const DETAILS_TYPE_ENUM_VALUES = Object
+  .values(DETAILS_TYPE_ENUM);
+
+export const DETAILS_TYPE_ENUM_KEYS = Object
+  .keys(DETAILS_TYPE_ENUM);
+
 const excludeColumnParameter = (key) => {
   const elements = key?.split(':') || [key];
 
@@ -74,8 +80,7 @@ const excludeOneRowParam = (typeInitial, typeCounted) => {
 };
 
 const detectMessageByKey = (type) => {
-  const foundKey = Object
-    .keys(DETAILS_TYPE_ENUM)
+  const foundKey = DETAILS_TYPE_ENUM_KEYS
     .find(key => {
       return type.includes(excludeColumnParameter(DETAILS_TYPE_ENUM[key]).type)
     });

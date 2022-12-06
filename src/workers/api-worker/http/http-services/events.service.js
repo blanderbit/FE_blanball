@@ -27,7 +27,7 @@ export class EventService {
     return AxiosInstance.get(
       EndpointsEnum.Events.GetAllEvents,
       AxiosParams(
-        AxiosQuery.bind(null, {
+        AxiosQuery({
           page: pageNumber
         })
       )
@@ -38,7 +38,7 @@ export class EventService {
     return AxiosInstance.get(
       EndpointsEnum.Events.GetAllMyEvents,
       AxiosParams(
-        AxiosQuery.bind(null, {
+        AxiosQuery({
           page: pageNumber
         })
       )
