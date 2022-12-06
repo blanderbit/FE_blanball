@@ -43,7 +43,11 @@
           <div class="description-text">
             {{ $t('modals.delete_acc.text-second') }}
             {{userEmail}}
-            {{ $t('modals.delete_acc.during-seconds') }}
+            {{ $t('modals.delete_acc.during') }}
+            <Counter 
+              :start-time="30"
+            />
+            {{ $t('modals.delete_acc.seconds') }}
           </div>
           <Form v-slot="data" :validation-schema="schema">
             <div class="code-input-field">
@@ -82,6 +86,7 @@ import { Form } from '@system.it.flumx.com/vee-validate'
 import * as yup from "yup"
 
 import ModalWindow from '../../components/ModalWindow.vue'
+import Counter from '../../components/Counter.vue'
 import CodeInput from '../forms/CodeInput.vue'
 
 import { API } from "../../workers/api-worker/api.worker"
@@ -93,7 +98,8 @@ export default {
   components: {
     ModalWindow,
     CodeInput,
-    Form
+    Form,
+    Counter
   },
   props: {
     userEmail: {
