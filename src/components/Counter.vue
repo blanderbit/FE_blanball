@@ -1,22 +1,22 @@
 <template>
   <span class="b-counter">
     <p 
-      v-if="seconds > 0" 
-      class="sms-text"
+      v-if="seconds" 
+      class="b-counter__sms-text"
     >
-      {{ $t('modals.change_password.sms-code') }}
+      {{ counterText }}
       {{ email }}
-      {{ $t('modals.change_password.during') }}
+      {{ $t('counter.during') }}
       {{ seconds }}
-      {{ $t('modals.change_password.seconds') }}
+      {{ $t('counter.seconds') }}
     </p>
     <p 
-      v-if="seconds === 0" 
-      class="sms-text"
+      v-else
+      class="b-counter__sms-text"
     >
-      {{ $t('modals.change_password.sms-not-came') }}
+      {{ $t('counter.sms-not-came') }}
       <span @click="$emit('resendCodeAction')">
-        {{ $t('modals.change_password.send-again') }}
+        {{ $t('counter.send-again') }}
       </span>
     </p>
   </span>
@@ -31,6 +31,10 @@ export default {
     startTime: {
       type: Number,
       default: 30
+    },
+    counterText: {
+      type: String,
+      default: ''
     },
     email: {
       type: String,
@@ -60,6 +64,20 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.b-counter {
+  &__sms-text {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 20px;
+    color: #575775;
+    margin-bottom: 4px;
+    span {
+      border-bottom: 1px solid #575775;
+      cursor: pointer;
+    }
+  }
+}
 </style>

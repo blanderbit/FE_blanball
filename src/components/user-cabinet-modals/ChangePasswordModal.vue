@@ -8,28 +8,54 @@
         <img src="../../assets/img/key.svg" alt="" />
       </template>
       <template #change-password>
-        <Form v-slot="data" :validation-schema="schema">
+        <Form 
+          v-slot="data" 
+          :validation-schema="schema"
+        >
           <div class="inut-wrapper">
-            <InputComponent :title="$t('modals.change_password.current-pass')" :title-width="0"
-              :type="['password', 'text']" :outside-title="true" :has-icon="true" :icon="[eyeCrossed, eyeOpened]"
-              name="old_password" />
+            <InputComponent 
+              :title="$t('modals.change_password.current-pass')" 
+              :title-width="0"
+              :type="['password', 'text']" 
+              :outside-title="true" 
+              :has-icon="true" 
+              :icon="[eyeCrossed, eyeOpened]"
+              name="old_password" 
+            />
           </div>
           <div class="inut-wrapper">
-            <InputComponent :title="$t('modals.change_password.new-pass')" :title-width="0" :type="['password', 'text']"
-              :outside-title="true" :has-icon="true" :icon="[eyeCrossed, eyeOpened]" name="new_password" />
+            <InputComponent 
+              :title="$t('modals.change_password.new-pass')" 
+              :title-width="0" 
+              :type="['password', 'text']"
+              :outside-title="true" 
+              :has-icon="true" 
+              :icon="[eyeCrossed, eyeOpened]" 
+              name="new_password" 
+            />
           </div>
 
           <div v-if="modalChangeStep === 2">
             <Counter 
               :start-time="30"
+              :counter-text="$t('modals.change_password.sms-code')"
               :email="userEmail"
               @resend-code-action="resendCode(data)" 
             />
           </div>
 
-          <div v-show="modalChangeStep === 2" class="sms-code-block">
-            <CodeInput :fields="5" :fieldWidth="48" :fieldHeight="40" :required="true" name="password_code"
-              @complete="completed = true" />
+          <div 
+            v-show="modalChangeStep === 2" 
+            class="sms-code-block"
+          >
+            <CodeInput 
+              :fields="5" 
+              :fieldWidth="48" 
+              :fieldHeight="40" 
+              :required="true" 
+              name="password_code"
+              @complete="completed = true" 
+            />
           </div>
           <div v-if="errorMessage.length > 0" class="error-message">
             *{{ errorMessage }}

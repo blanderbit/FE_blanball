@@ -16,6 +16,7 @@ import Versions from './versions'
 import Page404 from './404'
 import Works from './works'
 import ResponseMessageTypes from './response.message.types'
+import Counter from './counter'
 
 export const UA_LANGUAGE = {
   events: EventsPage,
@@ -35,5 +36,6 @@ export const UA_LANGUAGE = {
   versions: Versions,
   page_404: Page404,
   works: Works,
-  responseMessageTypes: ResponseMessageTypes
+  responseMessageTypes: ResponseMessageTypes,
+  counter: Counter
 }

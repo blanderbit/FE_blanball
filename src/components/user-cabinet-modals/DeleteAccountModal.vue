@@ -43,6 +43,7 @@
           <div class="description-text">
             <Counter 
               :start-time="30"
+              :counter-text="$t('modals.delete_acc.text-second')"
               :email="userEmail"
               @resend-code-action="sendCodeForDeleteAcc" 
             />
