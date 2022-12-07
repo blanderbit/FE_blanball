@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="rate-plan-tab">
-      Rate-plan
+      {{ $t('profile.rate-plan') }}
     </div>
   </div>
 </template>

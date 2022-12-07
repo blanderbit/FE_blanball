@@ -4,9 +4,7 @@
       <div class="b_modal_modal-window">
         <div class="b_modal_window-title" :style="{'background': titleColor}">
           <div class="b_modal_text">
-            <slot name="title">
-              Modal name
-            </slot>
+            <slot name="title"></slot>
           </div>
           <div class="b_modal_icon">
             <slot name="title-icon"></slot>

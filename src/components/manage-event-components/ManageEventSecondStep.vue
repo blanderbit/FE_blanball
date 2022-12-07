@@ -181,9 +181,6 @@ export default {
         emit('setEventData', 'payment', newVal)
       }
     })
-    onMounted(() => {
-      console.log(props.filteredTeams)
-    })
 
     return {
       isOpened,

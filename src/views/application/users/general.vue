@@ -283,7 +283,6 @@ export default {
     const route = useRoute()
     const users = ref([])
     users.value = route.meta.usersData.data.results
-    console.log(route.meta.usersData.data)
 
     return {
       users

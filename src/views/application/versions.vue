@@ -3,7 +3,9 @@
     <Loading 
       :is-loading="loading" 
     />
-    <div class="b-versions__title-level1 title-customs">Тут буде написано що саме ми додали до наявного функціоналу</div>
+    <div class="b-versions__title-level1 title-customs">
+      {{ $t('versions.title') }}
+    </div>
     <div class="b-versions__container d-flex justify-content-between">
       <div class="b-versions__left-side">
         <div 

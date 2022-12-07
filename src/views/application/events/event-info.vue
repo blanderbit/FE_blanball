@@ -3,13 +3,13 @@
     <div class="b-event-info__main-body">
       <div class="b-event-info__header-block">
         <div class="b-event-info__left-part">
-          <div class="b-event-info__title">{{ $t('my_events.title') }}</div>
+          <div class="b-event-info__title">{{ $t('my_events.friendly-match') }}</div>
           <div class="b-event-info__subtitle">{{ $t('my_events.subtitle') }}</div>
         </div>
         <div class="b-event-info__right-part">
           <router-link :to="ALL_ROUTES.APPLICATION.EVENTS.CREATE.absolute">
             <GreenBtn 
-              :text="$t('buttons.take-part-applications')"
+              :text="$t('buttons.applications')"
               :width="168"
               :height="40"
             />
@@ -43,7 +43,7 @@
             </div>
           </div>
           <div class="b-event-info__title">
-            {{ $t('my_events.description-title') }}
+            {{ $t('my_events.description-event') }}
           </div>
           <div class="b-event-info__description">
             Donec a eros justo. Fusce egestas tristique ultrices. Nam tempor, augue nec tincidunt molestie, massa nunc varius arcu, at scelerisque elit erat a magna. Donec quis erat at libero ultrices mollis. In hac habitasse platea dictumst. Vivamus vehicula leo dui, at porta nisi facilisis finibus. In euismod augue vitae nisi ultricies, non aliquet urna tincidunt. Integer in nisi eget nulla commodo faucibus efficitur quis massa. Praesent felis est, finibus et nisi ac, hendrerit venenatis libero. Donec consectetur faucibus ipsum id gravida.
