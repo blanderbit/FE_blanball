@@ -206,7 +206,7 @@
               :title-width="0"
               :outside-title="true"
               :height="40"
-              name="position"
+              name="phone"
             />
           </div>
           <!-- <div class="b-user-card__area-line">
