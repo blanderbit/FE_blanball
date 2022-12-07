@@ -7,14 +7,18 @@
             <img src="../assets/img/sort-arrows.svg" alt="" />
             {{$t('events.new-first')}}
           </div>
-          <div class="b-main-search__dropdown-wrapper">
-            <Dropdown :options="sportTypeDropdown" :width="140" :height="32" />
+          <div class="b-main-search__dropdown-wrapper-game">
+            <Dropdown 
+              :options="sportTypeDropdown"
+              display-value="value"
+            />
           </div>
-          <Dropdown :options="sportTypeDropdown" :width="160" :height="32">
-            <template #drop-icon>
-              <img src="../assets/img/cup.svg" alt="" />
-            </template>
-          </Dropdown>
+          <div class="b-main-search__dropdown-wrapper-tournament">
+            <Dropdown 
+              :options="sportTypeDropdown" 
+              display-value="value"
+            />
+          </div>
         </div>
         <div class="b-main-search__right-block">
           <div class="b-main-search__search-input-desktop">
@@ -42,8 +46,11 @@
       </div>
       <div class="b-main-search__second-line">
         <div class="b-main-search__left-side">
-          <div class="b-main-search__dropdown-wrapper">
-            <Dropdown :options="genderDropdown" :width="132" :height="32">
+          <div class="b-main-search__dropdown-wrapper-gender">
+            <Dropdown 
+              :options="genderDropdown"
+              display-value="value"
+            >
               <template #drop-icon>
                 <img src="../assets/img/male-icon.svg" alt="" />
               </template>
@@ -85,11 +92,11 @@
               </template>
             </v-date-picker>
           </div>
-          <div class="b-main-search__dropdown-wrapper">
-            <Dropdown :options="citiesDropdown" :width="180" :height="32">
-              <template #drop-icon>
-                <img src="../assets/img/location-point.svg" alt="" />
-              </template>
+          <div class="b-main-search__dropdown-wrapper-cities">
+            <Dropdown 
+              :options="citiesDropdown"
+              display-value="value"
+            >
             </Dropdown>
           </div>
         </div>
