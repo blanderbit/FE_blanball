@@ -6,7 +6,7 @@
     <!--&gt;-->
       <!--<div class="b-login-step__left-part">-->
         <!--<img src="../../assets/img/warning-black.svg" alt="" />-->
-        <!--{{ $t('login.error-label') }}-->
+        <!--{{ $t('login.load-error') }}-->
       <!--</div>-->
       <!--<div class="b-login-step__right-part">-->
         <!--{{ $t('login.check-network') }}-->

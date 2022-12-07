@@ -19,5 +19,9 @@ export default {
   'history': 'Історія участі у заходах',
   'about-yourself': 'Про себе:',
   'kg': 'кг',
-  'sm': 'см'
+  'sm': 'см',
+  'write-email': 'Написати e-mail',
+  'call': 'Подзвонити',
+  'play-characteristics': 'Ігрові характеристики',
+  'feedbacks': 'Відгуки'
 }

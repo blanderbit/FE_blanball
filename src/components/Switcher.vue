@@ -44,14 +44,11 @@ export default {
     }
   },
   setup(props) {
-    watch(() => props.isEditMode, () => console.log('edit mode', props.isEditMode))
     const { modelValue, modelErrorMessage, modelHandlers } = CustomModelWorker(props)
 
     function valueChange(val) {
-      console.log(val)
       modelHandlers.value.input[0](val)
       modelHandlers.value.input[1](val, false)
-      console.log(modelValue)
     }
 
     return {

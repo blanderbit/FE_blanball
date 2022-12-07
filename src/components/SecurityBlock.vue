@@ -43,7 +43,7 @@
       </div>
       <div class="b-security__email-input">
         <InputComponent
-          :title="'E-mail'"
+          :title="$t('profile.e-mail')"
           :placeholder="userEmail"
           :title-width="0"
           :outside-title="true"

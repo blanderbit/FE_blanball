@@ -131,7 +131,6 @@ export default {
     }
 
     function deleteAcc(formData) {
-      console.log(formData.controlledValues)
       API.UserService.sendApproveCode(formData.controlledValues)
         .then(() => {
           localStorage.removeItem('token')

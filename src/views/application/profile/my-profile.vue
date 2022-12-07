@@ -1,76 +1,8 @@
 <template>
   <div class="b-user-cabinet">
     <!-- Modals delete -->
-    <Transition>
-      <ModalWindow
-        v-if="isModalActive.phone"
-        @close-modal="toggleModal('phone')"
-      >
-        <template #title>
-          {{ $t('modals.change_number.title') }}
-        </template>
-        <template #title-icon>
-          <img src="../../../assets/img/add-phone.svg" alt="" />
-        </template>
-        <template #change-phone-number>
-          <div v-if="modalChangePhone.first" class="change-phone-screen-1">
-            <div class="current-number">(617) 623-2338</div>
-            <p class="description-text">
-              {{ $t('modals.change_number.main-text') }}
-            </p>
-            <div class="btns-block">
-              <div class="cancle-btn" @click="toggleModal('phone')">
-                {{ $t('modals.change_number.leave-email') }}
-              </div>
-              <div class="save-btn" @click="toggleModalPage">
-                {{ $t('modals.change_number.change-number-title') }}
-              </div>
-            </div>
-          </div>
-          <div v-if="modalChangePhone.second" class="change-phone-screen-2">
-            <div class="current-number">
-              <div class="inut-wrapper">
-                <InputComponent
-                  :title="$t('modals.change_number.current-number')"
-                  :placeholder="'+38 066 825 07 77'"
-                  :title-width="138"
-                  :input-type="'number'"
-                  :inside-title="true"
-                  :is-disabled="true"
-                />
-              </div>
-            </div>
-            <div class="new-number">
-              <div class="inut-wrapper">
-                <InputComponent
-                  :title="$t('modals.change_number.new-number')"
-                  :placeholder="'(050) 623-78 95'"
-                  :title-width="138"
-                  :input-type="'number'"
-                  :inside-title="true"
-                />
-              </div>
-            </div>
-            <p class="sms-text">
-              {{ $t('modals.change_number.sms-code') }}
-            </p>
-            <div class="sms-code-block">
-            <!-- Past Code Input -->
-            </div>
-            <div class="btns-block">
-              <div class="cancle-btn" @click="toggleModal('phone')">
-                {{ $t('buttons.cancel-editing') }}
-              </div>
-              <div class="save-btn" @click="toggleModal('phone')">
-                {{ $t('buttons.save-changes') }}
-              </div>
-            </div>
-          </div>
-        </template>
-      </ModalWindow>
-    </Transition>
 
-    <Transition>
+    <!-- <Transition>
       <ModalWindow
         v-if="isModalActive.email"
         @close-modal="toggleModal('email')"
@@ -108,7 +40,7 @@
           </div>
         </template>
       </ModalWindow>
-    </Transition>
+    </Transition> -->
 
     <DeleteAccountModal
       v-if="isModalActive.delete_acc"
@@ -131,14 +63,14 @@
             class="b-player-page__continue"
             @click="toggleModal('public_profile')"
           >
-            <span>Продовжити редагування</span>
+            <span>{{ $t('buttons.keep-editing') }}</span>
             <img src="../../../assets/img/arrow-left-small.svg" alt="">
           </div>
           <div
             @click="toggleModal('public_profile')"
             class="b-player-page__exit"
           >
-            <span>Зберегти та вийти</span>
+            <span>{{ $t('buttons.save-and-out') }}</span>
             <img src="../../../assets/img/cross-white.svg" alt="">
           </div>
         </div>
@@ -158,12 +90,15 @@
       @save-decline-changes="saveDeclineUserDataChanges"
     />
     <!-- Modals delete -->
+
     <div class="b-user-cabinet__title-block">
       <div class="b-user-cabinet__titles">
         <div class="b-user-cabinet__title">
           {{ $t('profile.title') }}
         </div>
-        <div class="b-user-cabinet__subtitle">{{ $t('profile.change-personal-data') }}</div>
+        <div class="b-user-cabinet__subtitle">
+          {{ $t('profile.change-personal-data') }}
+        </div>
       </div>
       <div
         class="b-user-cabinet__buttons"
@@ -317,7 +252,6 @@ export default {
       }
     })
 
-    console.log(route.meta.usersData.data)
     const formValues = ref({
       last_name: route.meta.usersData.data.profile.last_name,
       name: route.meta.usersData.data.profile.name,
@@ -342,11 +276,6 @@ export default {
       change_password: false,
       public_profile: false,
       change_data: false
-    })
-
-    const modalChangePhone = reactive({
-        first: true,
-        second: false
     })
 
     const schema = computed(() => {
@@ -475,7 +404,6 @@ export default {
         }
         API.UserService.updateProfileData(payload)
         .then(() => {
-          console.log('data successfully sent')
           getMyProfile()
         })
         .catch(e => console.log('mistake happened', e))
@@ -487,7 +415,6 @@ export default {
     function getMyProfile() {
       API.UserService.getMyProfile()
         .then(res => {
-          console.log('data successfully received')
           formValues.value = {
             last_name: res.data.profile.last_name,
             name: res.data.profile.name,
@@ -528,13 +455,6 @@ export default {
 
     function toggleModal(val) {
       switch (val) {
-        case 'phone':
-        isModalActive.phone = !isModalActive.phone
-          modalChangePhone.value = {
-            first: true,
-            second: false,
-          }
-          break
         case 'email':
           isModalActive.email = !isModalActive.email
           break
@@ -569,7 +489,6 @@ export default {
       changeDataModalConfig,
       mockData,
       isModalActive,
-      modalChangePhone,
       checkboxData,
       userData,
       schema,
