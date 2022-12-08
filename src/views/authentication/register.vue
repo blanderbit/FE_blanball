@@ -1,101 +1,90 @@
 <template>
-  <div class="b-register">
-    <div class="b-register__background-tab">
-      <img :src="backgroundTab" alt="background image tablet"/>
-    </div>
-    <div class="b-register__background-mob">
-      <img :src="backgroundMob" alt="background image mobile"/>
-    </div>
-    <div class="b-register__central-block">
-      <div class="b-register__left-part">
-        <Form v-slot="data" :validation-schema="schema" :initial-values="initialValues">
-          <Transition>
-            <Step_1
-                v-if="currentStep === 1"
-                @increment-step="handleRegister(data)"
-                @decrement-step="backToRoute"
-            />
-          </Transition>
-          <Transition>
-            <Step_2
-                v-if="currentStep === 2"
-                @increment-step="handleRegister(data)"
-                @decrement-step="currentStep--"
-            />
-          </Transition>
-          <Transition>
-            <Step_3
-                v-if="currentStep === 3"
-                @increment-step="handleUpdate(data)"
-            />
-          </Transition>
-          <Transition>
-            <Step_4
-                v-if="currentStep === 4"
-                @increment-step="handleUpdate(data)"
-                @decrement-step="currentStep--"
-            />
-          </Transition>
-          <Transition>
-            <Step_5
-                v-if="currentStep === 5"
-                @increment-step="handleUpdate(data)"
-                @decrement-step="currentStep--"
-            />
-          </Transition>
-          <Transition>
-            <Step_6
-                v-if="currentStep === 6"
-                @increment-step="handleUpdate(data)"
-                @decrement-step="currentStep--"
-            />
-          </Transition>
-          <Transition>
-            <Step_7
-                v-if="currentStep === 7"
-                @increment-step="currentStep++"
-                @decrement-step="currentStep--"
-            />
-          </Transition>
-          <Transition>
-            <Step_8
-                v-if="currentStep === 8"
-                @increment-step="currentStep++"
-                @decrement-step="currentStep--"
-            />
-          </Transition>
-          <Transition>
-            <Step_9
-                v-if="currentStep === 9"
-                @increment-step="currentStep++"
-                @decrement-step="currentStep--"
-            />
-          </Transition>
-          <Transition>
-            <Step_10
-                v-if="currentStep === 10"
-                @increment-step="goToEvents()"
-                @decrement-step="currentStep--"
-            />
-          </Transition>
-        </Form>
-      </div>
-      <div class="b-register__right-part" :style="rightSideStyle" v-show="currentStep !== 6">
-        <div class="b-register__google-play-block" >
-          <img src="../../assets/img/google-play.svg" alt=""/>
-          <span>
-            {{ $t('register.load-app') }}
-          </span>
-        </div>
-        <!--<template v-else>-->
-        <!--</template>-->
-      </div>
-      <div class="b-register__right-part" v-if="currentStep === 6" style="height: 600px;">
-        <position-map></position-map>
-      </div>
+  <AuthenticationMain
+    :background-tab="backgroundTab"
+    :background-mob="backgroundMob"
+    :right-side-style="rightSideStyle"
+    :current-step="currentStep"
+  >
+    <template #main-content>
+      <Form 
+        v-slot="data"
+        :validation-schema="schema"
+        :initial-values="initialValues"
+      >
+        <Transition>
+          <Step_1
+              v-if="currentStep === 1"
+              @increment-step="handleRegister(data)"
+              @decrement-step="backToRoute"
+          />
+        </Transition>
+        <Transition>
+          <Step_2
+              v-if="currentStep === 2"
+              @increment-step="handleRegister(data)"
+              @decrement-step="currentStep--"
+          />
+        </Transition>
+        <Transition>
+          <Step_3
+              v-if="currentStep === 3"
+              @increment-step="handleUpdate(data)"
+          />
+        </Transition>
+        <Transition>
+          <Step_4
+              v-if="currentStep === 4"
+              @increment-step="handleUpdate(data)"
+              @decrement-step="currentStep--"
+          />
+        </Transition>
+        <Transition>
+          <Step_5
+              v-if="currentStep === 5"
+              @increment-step="handleUpdate(data)"
+              @decrement-step="currentStep--"
+          />
+        </Transition>
+        <Transition>
+          <Step_6
+              v-if="currentStep === 6"
+              @increment-step="handleUpdate(data)"
+              @decrement-step="currentStep--"
+          />
+        </Transition>
+        <Transition>
+          <Step_7
+              v-if="currentStep === 7"
+              @increment-step="currentStep++"
+              @decrement-step="currentStep--"
+          />
+        </Transition>
+        <Transition>
+          <Step_8
+              v-if="currentStep === 8"
+              @increment-step="currentStep++"
+              @decrement-step="currentStep--"
+          />
+        </Transition>
+        <Transition>
+          <Step_9
+              v-if="currentStep === 9"
+              @increment-step="currentStep++"
+              @decrement-step="currentStep--"
+          />
+        </Transition>
+        <Transition>
+          <Step_10
+              v-if="currentStep === 10"
+              @increment-step="goToEvents()"
+              @decrement-step="currentStep--"
+          />
+        </Transition>
+      </Form>
+    </template>
+  </AuthenticationMain>
 
-    </div>
-  </div>
+
 </template>
 
 <script>
@@ -114,7 +103,7 @@
   import Step_8 from '../../components/register-components/Step-8.vue'
   import Step_9 from '../../components/register-components/Step-9.vue'
   import Step_10 from '../../components/register-components/Step-10.vue'
-  import PositionMap from '../../components/maps/PositionMap.vue'
+  import AuthenticationMain from '../../components/AuthenticationMain.vue'
 
   import imageStep_1 from '../../assets/img/registration-back-1.svg'
   import imageStep_2 from '../../assets/img/registration-back-2.svg'
@@ -151,10 +140,9 @@
       Step_9,
       Step_10,
       Form,
-      PositionMap
+      AuthenticationMain
     },
     setup() {
-
       const router = useRouter();
       const currentStep = ref(1);
       const context = useForm();
@@ -354,105 +342,5 @@
   .v-enter,
   .v-leave-to {
     opacity: 0;
-  }
-
-  .b-register {
-    position: relative;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    @media (min-width: 576px) and (max-width: 992px) {
-      padding-top: 132px;
-      overflow: hidden;
-    }
-    @media (max-width: 576px) {
-      padding-top: 140px;
-    }
-    .b-register__background-tab {
-      display: none;
-      position: absolute;
-      z-index: -1;
-      top: 0;
-      left: 0;
-      width: 100%;
-      @media (min-width: 576px) and (max-width: 992px) {
-        display: block;
-      }
-      img {
-        width: 100%;
-      }
-    }
-    .b-register__background-mob {
-      display: none;
-      position: absolute;
-      z-index: -1;
-      top: 0;
-      left: 0;
-      @media (max-width: 576px) {
-        display: block;
-        width: 100%;
-      }
-      img {
-        width: 100%;
-      }
-    }
-    .b-register__central-block {
-      height: 555px;
-      width: 992px;
-      display: flex;
-      margin: 0 auto;
-      position: relative;
-      overflow: hidden;
-      @media (min-width: 992px) and (max-width: 1200px) {
-        width: 890px;
-      }
-      @media (min-width: 576px) and (max-width: 992px) {
-        width: 464px;
-        box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
-        border-radius: 8px;
-      }
-      @media (max-width: 576px) {
-        border-radius: 28px 28px 0px 0px;
-        width: 100%;
-      }
-      .b-register__left-part {
-        width: 432px;
-        @media (max-width: 992px) {
-          width: 100%;
-        }
-      }
-      .b-register__right-part {
-        background-image: var(--back-picture);
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        width: 560px;
-        position: relative;
-        @media (max-width: 992px) {
-          display: none;
-        }
-        .b-register__google-play-block {
-          position: absolute;
-          left: 0;
-          bottom: 0;
-          display: flex;
-          align-items: center;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 12px;
-          line-height: 20px;
-          color: #575775;
-          padding: 24px;
-          img {
-            margin-right: 12px;
-          }
-          span {
-            width: 280px;
-          }
-        }
-      }
-    }
   }
 </style>

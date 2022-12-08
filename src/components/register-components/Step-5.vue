@@ -31,13 +31,13 @@
 
         <InputComponent
             :outside-title="true"
-            :title="$t('register.weight')"
+            :title="$t('register.height')"
             :placeholder="'height'"
             :title-width="0"
             name="height"
         ></InputComponent>
         <InputComponent
-            :outside-title="weight"
+            :outside-title="true"
             :title="$t('register.weight')"
             :placeholder="'weight'"
             :title-width="0"
