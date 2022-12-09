@@ -53,24 +53,20 @@
           <InputComponent
               :title="'Новий пароль'"
               :title-width="0"
-              :type="['password', 'text']"
+              :type="'password'"
               :outside-title="true"
-              :has-icon="true"
               :placeholder="'********'"
               name="new_password"
-              :icon="[eyeCrossed, eyeOpened]"
           />
         </div>
         <div class="b-reset-step__input" v-if="currentStep === 3">
           <InputComponent
               :title="'Повторіть пароль'"
               :title-width="0"
-              :type="['password', 'text']"
+              :type="'password'"
               :outside-title="true"
-              :has-icon="true"
               :placeholder="'********'"
               name="confirm_new_password"
-              :icon="[eyeCrossed, eyeOpened]"
           />
         </div>
       </div>

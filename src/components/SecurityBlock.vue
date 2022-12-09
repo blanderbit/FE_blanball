@@ -47,8 +47,7 @@
           :placeholder="userEmail"
           :title-width="0"
           :outside-title="true"
-          :has-icon="true"
-          :icon="[sortArrowHorizontal]"
+          :icon="sortArrowHorizontal"
           @icon-click="toggleModalWindow"
           name="change_email"
         />

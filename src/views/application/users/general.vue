@@ -10,8 +10,7 @@
             <InputComponent
               :title-width="0"
               :placeholder="'Пошук користувачів'"
-              :has-icon="true"
-              :icon="[searchIcon]"
+              :icon="searchIcon"
             />
           </div>
         </div>

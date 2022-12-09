@@ -34,22 +34,18 @@
         <InputComponent 
           :placeholder="$t('register.create-password')" 
           :title-width="0"
-          :type="['password', 'text']"
+          :type="'password'"
           :outside-title="true"
           name="password"
-          :has-icon="true"
-          :icon="[eyeCrossed, eyeOpened]"
         />
       </div>
       <div class="b-register-step__input">
         <InputComponent 
           :placeholder="$t('register.repeat-password')" 
           :title-width="0"
-          :type="['password', 'text']"
+          :type="'password'"
           :outside-title="true"
-          :has-icon="true"
           name="re_password"
-          :icon="[eyeCrossed, eyeOpened]"
         />
       </div>
     </div>

@@ -16,10 +16,8 @@
             <InputComponent 
               :title="$t('modals.change_password.current-pass')" 
               :title-width="0"
-              :type="['password', 'text']" 
+              :type="'password'" 
               :outside-title="true" 
-              :has-icon="true" 
-              :icon="[eyeCrossed, eyeOpened]"
               name="old_password" 
             />
           </div>
@@ -27,10 +25,8 @@
             <InputComponent 
               :title="$t('modals.change_password.new-pass')" 
               :title-width="0" 
-              :type="['password', 'text']"
+              :type="'password'"
               :outside-title="true" 
-              :has-icon="true" 
-              :icon="[eyeCrossed, eyeOpened]" 
               name="new_password" 
             />
           </div>
