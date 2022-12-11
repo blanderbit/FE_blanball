@@ -50,10 +50,7 @@
             :placeholder="$t('events.what-prize')"
             :title-width="0"
             :v-model="eventData.date"
-            :has-icon="true"
-            :icon="[
-              '../../../assets/img/aim.svg'
-            ]"
+            :icon="icons.aim"
           />
         </div>
         <div class="title-outfit">
@@ -77,10 +74,10 @@
               id="radio-outfit2" 
               name="outfit" 
               type="radio"
-              :value="$t('events.clothes-available')"
+              :value="$t('events.manijki-available')"
             >
             <label for="radio-outfit2" class="radio-label">
-              {{$t('events.clothes-available')}}
+              {{$t('events.manijki-available')}}
             </label>
           </div>
         </div>
@@ -349,7 +346,7 @@
 </template>
 
 <script>
-import { computed, onMounted, reactive } from 'vue'
+import { computed, reactive } from 'vue'
 
 import Dropdown from '../../../components/forms/Dropdown.vue'
 import InputComponent from '../../../components/forms/InputComponent.vue'
@@ -358,6 +355,8 @@ import WhiteBtn from '../../../components/WhiteBtn.vue'
 import Switcher from '../../../components/Switcher.vue'
 import ManageEventFirstStep from '../../../components/manage-event-components/ManageEventFirstStep.vue'
 import ManageEventSecondStep from '../../../components/manage-event-components/ManageEventSecondStep.vue'
+
+import AimIcon from '../../../assets/img/aim.svg'
 
 import CONSTANTS from '../../../consts/index'
 
@@ -385,6 +384,12 @@ export default {
         'border-radius': '100px'
     })
 
+    const icons = computed(() => {
+      return {
+        aim: AimIcon
+      }
+    })
+
     const mockData = computed(() => {
       return {
         type_of_event_dropdown: CONSTANTS.manage_event.type_of_event_dropdown,
@@ -394,8 +399,6 @@ export default {
       }
     })
     const filteredTeams = computed(() => {
-      console.log(mockData.value)
-
       if (currentCategory === 'Всі') {
         return mockData.value.teams
       } else {
@@ -420,15 +423,12 @@ export default {
       })
     }
 
-    onMounted(() => {
-      console.log(filteredTeams.value)
-    })
-
     return {
       mockData,
       filteredTeams,
       labelStyle,
       emptyLabelStyle,
+      icons,
       chooseCategory
     }
   },
@@ -466,7 +466,6 @@ export default {
                               .find(item => item.id === id).isChosen = false
     },
     setFormValue(key, value, labelsId) {
-      console.log(key, value, labelsId)
       if (key === 'labels') {
         this.eventData.labels[labelsId].text = value
         return

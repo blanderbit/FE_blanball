@@ -2,7 +2,7 @@
   <div class="b-register-step">
     <div class="b-register-step__top-part">
       <div class="b-register-step__title">
-        {{$t('register.feel-profile')}}
+        {{$t('register.fill-profile')}}
       </div>
       <div class="b-register-step__subtitle">
         {{$t('register.app-description3')}}

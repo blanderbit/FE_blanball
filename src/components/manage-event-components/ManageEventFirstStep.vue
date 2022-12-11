@@ -53,10 +53,7 @@
           :title="$t('events.date')"
           :placeholder="'02.09.2022'"
           :title-width="0"
-          :has-icon="true"
-          :icon="[
-            '../../assets/img/calendar.svg'
-          ]"
+          :icon="icons.calendar"
           @new-value="this.$emit('setEventData', 'date', $event)"
         />
       </div>
@@ -66,10 +63,7 @@
           :title="$t('events.time')"
           :placeholder="'17:00'"
           :title-width="0"
-          :has-icon="true"
-          :icon="[
-            '../../assets/img/watch.svg'
-          ]"
+          :icon="icons.watch"
           @new-value="this.$emit('setEventData', 'time', $event)"
         />
       </div>
@@ -78,10 +72,7 @@
       <InputComponent
         :placeholder="$t('events.place')"
         :title-width="0"
-        :has-icon="true"
-        :icon="[
-          '../../assets/img/location-point.svg'
-        ]"
+        :icon="icons.location"
         @new-value="this.$emit('setEventData', 'place', $event)"
       />
     </div>
@@ -92,10 +83,14 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 
 import Dropdown from '../forms/Dropdown.vue'
 import InputComponent from '../forms/InputComponent.vue'
+
+import CalendarPic from '../../assets/img/calendar.svg'
+import WatchPic from '../../assets/img/watch.svg'
+import LocationPic from '../../assets/img/location-point.svg'
 
 export default {
   components: {
@@ -116,6 +111,14 @@ export default {
   setup(props, {emit}) {
     const secondLabel = ref(null)
 
+    const icons = computed(() => {
+      return {
+        calendar: CalendarPic,
+        watch: WatchPic,
+        location: LocationPic
+      }
+    })
+
     watch(secondLabel, (newVal, oldVal) => {
       if (!(newVal === oldVal)) {
         emit('setEventData', 'labels', newVal, 1)
@@ -123,7 +126,8 @@ export default {
     })
 
     return {
-      secondLabel
+      secondLabel,
+      icons
     }
   }
 }

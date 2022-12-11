@@ -3,8 +3,8 @@
     <div class="b-events-page__main-body">
       <div class="b-events-page__header-block">
         <div class="b-events-page__left-part">
-          <div class="b-events-page__title">{{ $t('events.title') }}</div>
-          <div class="b-events-page__subtitle">{{ $t('events.subtitle') }}</div>
+          <div class="b-events-page__title">{{ $t('events.future-events') }}</div>
+          <div class="b-events-page__subtitle">{{ $t('events.renew-your-data') }}</div>
           <div class="b-events-page__event-switcher">
             <div
               class="b-events-page__general-events"

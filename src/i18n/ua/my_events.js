@@ -1,7 +1,7 @@
 export default {
-  'title': 'Дружній матч',
+  'friendly-match': 'Дружній матч',
   'subtitle': 'Оновіть своє фото та персональні дані',
-  'description-title': 'Опис події',
+  'description-event': 'Опис події',
   'already-accepted': 'Вже підтвердили участь',
   'share': 'Поділитися',
   'form1': 'Форма №1',

@@ -1,76 +1,11 @@
 <template>
   <div class="b-user-cabinet">
+    <Loading
+      :is-loading="isLoading"
+    />
     <!-- Modals delete -->
-    <Transition>
-      <ModalWindow
-        v-if="isModalActive.phone"
-        @close-modal="toggleModal('phone')"
-      >
-        <template #title>
-          {{ $t('modals.change_number.title') }}
-        </template>
-        <template #title-icon>
-          <img src="../../../assets/img/add-phone.svg" alt="" />
-        </template>
-        <template #change-phone-number>
-          <div v-if="modalChangePhone.first" class="change-phone-screen-1">
-            <div class="current-number">(617) 623-2338</div>
-            <p class="description-text">
-              {{ $t('modals.change_number.main-text') }}
-            </p>
-            <div class="btns-block">
-              <div class="cancle-btn" @click="toggleModal('phone')">
-                {{ $t('modals.change_number.leave-email') }}
-              </div>
-              <div class="save-btn" @click="toggleModalPage">
-                {{ $t('modals.change_number.change-number-title') }}
-              </div>
-            </div>
-          </div>
-          <div v-if="modalChangePhone.second" class="change-phone-screen-2">
-            <div class="current-number">
-              <div class="inut-wrapper">
-                <InputComponent
-                  :title="$t('modals.change_number.current-number')"
-                  :placeholder="'+38 066 825 07 77'"
-                  :title-width="138"
-                  :input-type="'number'"
-                  :inside-title="true"
-                  :is-disabled="true"
-                />
-              </div>
-            </div>
-            <div class="new-number">
-              <div class="inut-wrapper">
-                <InputComponent
-                  :title="$t('modals.change_number.new-number')"
-                  :placeholder="'(050) 623-78 95'"
-                  :title-width="138"
-                  :input-type="'number'"
-                  :inside-title="true"
-                />
-              </div>
-            </div>
-            <p class="sms-text">
-              {{ $t('modals.change_number.sms-code') }}
-            </p>
-            <div class="sms-code-block">
-            <!-- Past Code Input -->
-            </div>
-            <div class="btns-block">
-              <div class="cancle-btn" @click="toggleModal('phone')">
-                {{ $t('buttons.cancel-editing') }}
-              </div>
-              <div class="save-btn" @click="toggleModal('phone')">
-                {{ $t('buttons.save-changes') }}
-              </div>
-            </div>
-          </div>
-        </template>
-      </ModalWindow>
-    </Transition>
 
-    <Transition>
+    <!-- <Transition>
       <ModalWindow
         v-if="isModalActive.email"
         @close-modal="toggleModal('email')"
@@ -108,7 +43,7 @@
           </div>
         </template>
       </ModalWindow>
-    </Transition>
+    </Transition> -->
 
     <DeleteAccountModal
       v-if="isModalActive.delete_acc"
@@ -131,14 +66,14 @@
             class="b-player-page__continue"
             @click="toggleModal('public_profile')"
           >
-            <span>Продовжити редагування</span>
+            <span>{{ $t('buttons.keep-editing') }}</span>
             <img src="../../../assets/img/arrow-left-small.svg" alt="">
           </div>
           <div
             @click="toggleModal('public_profile')"
             class="b-player-page__exit"
           >
-            <span>Зберегти та вийти</span>
+            <span>{{ $t('buttons.save-and-out') }}</span>
             <img src="../../../assets/img/cross-white.svg" alt="">
           </div>
         </div>
@@ -158,12 +93,15 @@
       @save-decline-changes="saveDeclineUserDataChanges"
     />
     <!-- Modals delete -->
+
     <div class="b-user-cabinet__title-block">
       <div class="b-user-cabinet__titles">
         <div class="b-user-cabinet__title">
           {{ $t('profile.title') }}
         </div>
-        <div class="b-user-cabinet__subtitle">{{ $t('profile.change-personal-data') }}</div>
+        <div class="b-user-cabinet__subtitle">
+          {{ $t('profile.change-personal-data') }}
+        </div>
       </div>
       <div
         class="b-user-cabinet__buttons"
@@ -260,6 +198,7 @@ import PlayerPageComponent from '../../../components/PlayerPageComponent.vue'
 import RatingCard from '../../../components/RatingCard.vue'
 import UserDetailsCard from '../../../components/UserDetailsCard.vue'
 import SecurityBlock from '../../../components/SecurityBlock.vue'
+import Loading from '../../../workers/loading-worker/Loading.vue'
 
 import DeleteAccountModal from '../../../components/user-cabinet-modals/DeleteAccountModal.vue'
 import ChangePasswordModal from '../../../components/user-cabinet-modals/ChangePasswordModal.vue'
@@ -291,7 +230,8 @@ export default {
     DeleteAccountModal,
     ChangePasswordModal,
     ChangeUserDataModal,
-    Form
+    Form,
+    Loading
   },
   setup(props) {
     const { t } = useI18n()
@@ -307,6 +247,7 @@ export default {
     const isEditModeProfile = ref(false)
     const changeDataModalConfig = ref(null)
     const myForm = ref(null)
+    const isLoading = ref(false)
 
     const mockData = computed(() => {
       return {
@@ -317,7 +258,6 @@ export default {
       }
     })
 
-    console.log(route.meta.usersData.data)
     const formValues = ref({
       last_name: route.meta.usersData.data.profile.last_name,
       name: route.meta.usersData.data.profile.name,
@@ -329,8 +269,9 @@ export default {
       weight: route.meta.usersData.data.profile.weight,
       working_leg: getWorkingLeg(route.meta.usersData.data.profile.working_leg),
       position: route.meta.usersData.data.profile.position,
-      phone: route.meta.usersData.data.configuration.phone,
-      email: route.meta.usersData.data.configuration.email,
+      phone: route.meta.usersData.data.phone,
+      config_phone: route.meta.usersData.data.configuration.phone,
+      config_email: route.meta.usersData.data.configuration.email,
       show_reviews: route.meta.usersData.data.configuration.show_reviews
     })
     
@@ -342,11 +283,6 @@ export default {
       change_password: false,
       public_profile: false,
       change_data: false
-    })
-
-    const modalChangePhone = reactive({
-        first: true,
-        second: false
     })
 
     const schema = computed(() => {
@@ -362,7 +298,8 @@ export default {
         working_leg: yup.string().required(),
         position: yup.string().required(),
         phone: yup.string().required(),
-        email: yup.string().required(),
+        config_phone: yup.string().required(),
+        config_email: yup.string().required(),
         show_reviews: yup.string().required(),
       })
     })
@@ -446,7 +383,7 @@ export default {
     function saveDeclineUserDataChanges(val) {
       if (val === EDIT_BUTTON_ACTIONS.SAVE) {
         const refProfileData = { ...myForm.value.getControledValues() }
-        const { day, month, year, working_leg } = refProfileData
+        const { day, month, year, working_leg, config_email, config_phone, show_reviews } = refProfileData
         const profileData = {
           ...refProfileData,
           birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
@@ -456,12 +393,16 @@ export default {
         delete profileData.day
         delete profileData.month
         delete profileData.year
+        delete profileData.phone
+        delete profileData.config_email
+        delete profileData.config_phone
+        delete profileData.show_reviews
 
         const payload = {
           "configuration": {
-            "email": profileData.email,
-            "phone": profileData.phone,
-            "show_reviews": profileData.show_reviews
+            "email": config_email,
+            "phone": config_phone,
+            "show_reviews": show_reviews
           },
           "profile": {
             "place": {
@@ -475,7 +416,7 @@ export default {
         }
         API.UserService.updateProfileData(payload)
         .then(() => {
-          console.log('data successfully sent')
+          closeChangeUserDataModal()
           getMyProfile()
         })
         .catch(e => console.log('mistake happened', e))
@@ -483,11 +424,11 @@ export default {
         closeChangeUserDataModal()
       }
     }
-
+    
     function getMyProfile() {
+      isLoading.value = true
       API.UserService.getMyProfile()
         .then(res => {
-          console.log('data successfully received')
           formValues.value = {
             last_name: res.data.profile.last_name,
             name: res.data.profile.name,
@@ -499,8 +440,9 @@ export default {
             weight: res.data.profile.weight,
             working_leg: getWorkingLeg(res.data.profile.working_leg),
             position: res.data.profile.position,
-            phone: res.data.configuration.phone,
-            email: res.data.configuration.email,
+            phone: res.data.phone,
+            config_phone: res.data.configuration.phone,
+            config_email: res.data.configuration.email,
             show_reviews: res.data.configuration.show_reviews
           }
           userInfo.value = res.data
@@ -508,6 +450,7 @@ export default {
             ...res.data.profile,
             working_leg: getWorkingLeg(res.data.profile.working_leg)
           }
+          isLoading.value = false
         })
     }
 
@@ -528,13 +471,6 @@ export default {
 
     function toggleModal(val) {
       switch (val) {
-        case 'phone':
-        isModalActive.phone = !isModalActive.phone
-          modalChangePhone.value = {
-            first: true,
-            second: false,
-          }
-          break
         case 'email':
           isModalActive.email = !isModalActive.email
           break
@@ -569,13 +505,13 @@ export default {
       changeDataModalConfig,
       mockData,
       isModalActive,
-      modalChangePhone,
       checkboxData,
       userData,
       schema,
       formValues,
       myForm,
-      userInfo
+      userInfo,
+      isLoading
     }
   }
 }

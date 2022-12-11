@@ -37,12 +37,12 @@
           </div>
           <div class="b-player-page__line mt-8">
             <div class="b-player-page__title">
-              Кваліфікація
+              {{$t('player_page.qualification')}}
             </div>
             <div
               class="b_player-qualification"
             >
-              Підтверджено
+              {{$t('player_page.approved')}}
             </div>
           </div>
           <div class="b-player-page__line">
@@ -53,11 +53,11 @@
           <div class="b-player-page__line">
             <div class="b-player-page__send-email">
               <img src="../assets/img/envelop-black.svg" alt="">
-              Написати e-mail
+              {{$t('player_page.write-email')}}
             </div>
             <div class="b-player-page__call">
               <img src="../assets/img/phone-arrow.svg" alt="">
-              Подзвонити
+              {{$t('player_page.call')}}
             </div>
           </div>
         </div>
@@ -74,7 +74,7 @@
         <div class="b-player-page__features-reviews-block">
           <div class="b-player-page__play-features">
             <div class="b-player-page__main-titles-text">
-              Ігрові характеристики
+              {{$t('player_page.play-characteristics')}}
             </div>
             <div class="b-player-page__play-blocks">
               <div 
@@ -98,7 +98,7 @@
             <div class="b-player-page__title-line">
               <div class="b-player-page__left-side">
                 <div class="b-player-page__main-titles-text">
-                  Відгуки
+                  {{$t('player_page.feedbacks')}}
                 </div>
                 <div class="b-player-page__small-text">
                   {{reviewQuantity}} оцінок
@@ -117,8 +117,8 @@
               >
                 <div class="b-player-page__name-date-line">
                   <div class="b-player-page__name">
-                    {{ item.last_name || 'Арагац'}}
-                    {{ item.name || 'Андрюшевич' }}
+                    {{ item.last_name }}
+                    {{ item.name }}
                   </div>
                   <div class="b-player-page__small-text">
                     {{ item.date }}
@@ -136,7 +136,7 @@
 
           <div class="b-player-page__play-events">
             <div class="b-player-page__main-titles-text">
-              Заплановані події
+              {{$t('player_page.planned-events')}}
             </div>
             <div class="b-player-page__event-blocks">
               <div
@@ -149,7 +149,7 @@
                     {{ item.name }}
                   </div>
                   <div class="b-player-page__position">
-                    Гравець
+                    {{$t('player_page.player')}}
                   </div>
                 </div>
                 <div class="b-player-page__labels-line">
@@ -174,7 +174,7 @@
 
           <div class="b-player-page__play-history">
             <div class="b-player-page__main-titles-text">
-              Історія участі у заходах
+              {{$t('player_page.history')}}
             </div>
             <img src="../assets/img/arrow-right.svg" alt="">
           </div>
@@ -221,7 +221,6 @@ export default {
     }
   },
   setup(props) {
-    console.log(props.userData)
     const userId = ref(props.userData.id)
     const reviewQuantity = ref(0)
     const userReviews = ref([])
@@ -261,7 +260,6 @@ export default {
 
     API.ReviewService.getUserReviews(userId.value)
       .then(res => {
-        console.log(res)
         reviewQuantity.value = res.data.page_size || 0
         userReviews.value = res.data.results.map(item => {
           return {
@@ -271,19 +269,16 @@ export default {
                     .format('D MMMM')}`
           }
         }) || []
-        console.log(userReviews.value)
         getMyPlannedEvents()
         loading.value = false
       })
       .catch(res => {
-        console.log('some mistake', res)
         loading.value = false
       })
     
     function getMyPlannedEvents() {
       API.EventService.getPlannedUserEvents(userId.value)
         .then(res => {
-          console.log('events', res)
           myPlannedEvents.value = res.data.map(item => {
             return {
               ...item,
@@ -295,7 +290,6 @@ export default {
                     .format('D MMMM')}`
             }
           })
-          console.log(myPlannedEvents.value)
         })
         .catch(res => console.log('some mistake', res))
     }

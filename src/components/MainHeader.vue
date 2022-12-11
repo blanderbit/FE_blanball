@@ -15,10 +15,7 @@
         <InputComponent 
           :title-width="0"
           :placeholder="$t('header.search-events')"
-          :has-icon="true"
-          :icon="[
-            searchIcon
-          ]"
+          :icon="searchIcon"
         />
       </div>
     </div>

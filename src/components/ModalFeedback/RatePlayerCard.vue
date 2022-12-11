@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 
 import StarRating from 'vue-star-rating'
 
@@ -44,9 +44,6 @@ export default {
     }
   },
   setup(props) {
-    onMounted(() => {
-      console.log(props.player)
-    })
 
     const rating = ref(3)
 

@@ -76,8 +76,7 @@
       <InputComponent
         :placeholder="'+38 025 67 98'"
         :title-width="0"
-        :has-icon="true"
-        :icon="['../../assets/img/sort-arrows-horizontal.svg']"
+        :icon="icons.arrow"
       />
     </div>
     <div class="title">{{$t('events.invite-users')}}</div>
@@ -85,9 +84,8 @@
       <InputComponent
         :placeholder="$t('events.search-users')"
         :title-width="30"
-        :has-icon="true"
-        :icon-left="'../../assets/img/add-user.svg'"
-        :icon="['../../assets/img/search.svg']"
+        :icon-left="icons.addUser"
+        :icon="icons.search"
       />
     </div>
     <div class="search-users-block">
@@ -147,9 +145,13 @@
 </template>
 
 <script>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, computed } from 'vue'
 import InputComponent from '../forms/InputComponent.vue'
 import Switcher from '../../components/Switcher.vue'
+
+import HorizontalArrow from '../../assets/img/sort-arrows-horizontal.svg'
+import AddUser from '../../assets/img/add-user.svg'
+import Search from '../../assets/img/search.svg'
 
 export default {
   props: {
@@ -171,6 +173,14 @@ export default {
     const isOpened = ref(null)
     const payment = ref(null)
 
+    const icons = computed(() => {
+      return {
+        arrow: HorizontalArrow,
+        addUser: AddUser,
+        search: Search
+      }
+    })
+
     watch(isOpened, (newVal, oldVal) => {
       if (!(newVal === oldVal)) {
         emit('setEventData', 'isOpened', newVal)
@@ -181,13 +191,11 @@ export default {
         emit('setEventData', 'payment', newVal)
       }
     })
-    onMounted(() => {
-      console.log(props.filteredTeams)
-    })
 
     return {
       isOpened,
       payment,
+      icons
     }
   },
 }

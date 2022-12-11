@@ -2187,5 +2187,10 @@ export default {
     id: k,
     value: 2000 + k
   })),
-  jsonCityRegions
+  jsonCityRegions,
+  authBlockTypes: {
+    login: 'login',
+    register: 'register',
+    reset: 'reset'
+  }
 }

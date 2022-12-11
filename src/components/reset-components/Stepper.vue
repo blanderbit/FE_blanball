@@ -2,7 +2,9 @@
   <Form v-slot="data" :validation-schema="schema">
     <div class="b-reset-step">
       <div class="b-reset-step__top-part">
-        <div class="b-reset-step__title">Відновлення доступу</div>
+        <div class="b-reset-step__title">
+          {{ $t('reset.renew-access') }}
+        </div>
         <div class="b-reset-step__progress-line">
           <div class="b-reset-step__sections">
             <div
@@ -18,23 +20,22 @@
           </div>
         </div>
         <div class="b-reset-step__subtitle" v-if="currentStep === 1">
-          Лист із кодом-підтвердження надійде на вказану адресу, введіть його у
-          відведене поле
+          {{ $t('reset.letter-code') }}
         </div>
         <div class="b-reset-step__subtitle" v-if="currentStep === 2">
-          Придумайте новий надійний пароль. Зміни вступлять у силу одразу після збереження
+          {{ $t('reset.new-password') }}
         </div>
         <div class="b-reset-step__input" v-if="currentStep === 1">
           <InputComponent
-              :outside-title="true"
-              :title="`Пошта`"
-              :placeholder="'example@email.com'"
-              :title-width="0"
-              name="email"
+            :outside-title="true"
+            :title="$t('reset.post')"
+            :placeholder="'example@email.com'"
+            :title-width="0"
+            name="email"
           />
         </div>
         <div class="b-reset-step__code-title mb-2" v-if="currentStep === 2">
-          Повідомлення прийде протягом 30 сек
+          {{ $t('reset.message-30sec') }}
         </div>
         <div class="b-reset-step__sms-code-block" v-if="currentStep === 2">
           <code-input
@@ -47,30 +48,26 @@
           />
         </div>
         <div class="b-reset-step__subtitle" v-if="currentStep === 3">
-          Придумайте новий надійний пароль. Зміни вступлять у силу одразу після збереження
+          {{ $t('reset.new-password') }}
         </div>
         <div class="b-reset-step__input" v-if="currentStep === 3">
           <InputComponent
-              :title="'Новий пароль'"
+              :title="$t('reset.enter-new-password')"
               :title-width="0"
-              :type="['password', 'text']"
+              :type="'password'"
               :outside-title="true"
-              :has-icon="true"
               :placeholder="'********'"
               name="new_password"
-              :icon="[eyeCrossed, eyeOpened]"
           />
         </div>
         <div class="b-reset-step__input" v-if="currentStep === 3">
           <InputComponent
-              :title="'Повторіть пароль'"
+              :title="$t('reset.repeat-new-password')"
               :title-width="0"
-              :type="['password', 'text']"
+              :type="'password'"
               :outside-title="true"
-              :has-icon="true"
               :placeholder="'********'"
               name="confirm_new_password"
-              :icon="[eyeCrossed, eyeOpened]"
           />
         </div>
       </div>
@@ -79,14 +76,14 @@
             class="b-reset-step__cancel-button"
             @click="handleBackClick()"
         >
-          Скасувати
+          {{ $t('reset.cancel') }}
         </div>
         <GreenBtn
-            :text="'Скинути пароль'"
-            :width="155"
-            :loading="loading"
-            :height="40"
-            @click-function="handleNextClick(data)"
+          :text="$t('reset.drop-password')"
+          :width="155"
+          :loading="loading"
+          :height="40"
+          @click-function="handleNextClick(data)"
         />
       </div>
     </div>

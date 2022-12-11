@@ -10,6 +10,8 @@ export default {
   'back': 'Назад',
   'download-template': 'Завантажити шаблон',
   'save-as-template': 'Зберегти як шаблон',
-  'take-part-applications': 'Заявки на участь',
-  'edit-profile': 'Редагувати профіль'
+  'applications': 'Заявки на участь',
+  'edit-profile': 'Редагувати профіль',
+  'keep-editing': 'Продовжити редагування',
+  'save-and-out': 'Зберегти та вийти'
 }
