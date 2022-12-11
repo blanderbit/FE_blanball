@@ -121,7 +121,6 @@ export default {
     }
 
     function resendCode(formData) {
-      console.log('resend code')
       const newPassword = formData.controlledValues.new_password
       const oldPassword = formData.controlledValues.old_password
       const payload = {

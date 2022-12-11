@@ -13,7 +13,7 @@
           <Switcher 
             :id="'phone'"
             :is-edit-mode="isEditMode"
-            name="phone"
+            name="config_phone"
           />
         </div>
         <div class="b-security__personal-settings">
@@ -21,11 +21,11 @@
           <Switcher 
             :id="'email'"
             :is-edit-mode="isEditMode"
-            name="email"
+            name="config_email"
           />
         </div>
         <div class="b-security__personal-settings">
-          <p>{{ $t('profile.my-feedbacks') }} <span>(Деякі)</span></p>
+          <p>{{ $t('profile.my-feedbacks') }} <span>{{ $t('profile.some') }}</span></p>
           <Switcher 
             :id="'feedback'"
             :is-edit-mode="isEditMode"

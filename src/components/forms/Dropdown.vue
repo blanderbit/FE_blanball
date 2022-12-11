@@ -63,7 +63,6 @@ export default {
   },
   emits: ['new-value'],
   setup(props, {emit}) {
-    console.log(props.options[0].value)
     const wrapper = ref(null);
     const isOpened = ref(false);
     const dropdownModelValue = ref(null);
@@ -80,11 +79,9 @@ export default {
     watch(
       () => modelValue.value,
       () => {
-        console.log('watch modelValue')
         dropdownModelValue.value = props.options.find(item => {
           return item[props.displayValue] === modelValue.value
         })
-        console.log(dropdownModelValue.value)
       },
       {
         immediate: true
@@ -138,7 +135,6 @@ export default {
     }
 
     function setNewValue(val) {
-      console.log('setNewValue', val)
       modelHandlers.value.input[0](val?.[props.displayValue]);
       modelHandlers.value.input[1](val?.[props.displayValue], true);
       emit('new-value',val?.[props.displayValue] )
