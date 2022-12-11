@@ -24,6 +24,8 @@ export default {
   'women': 'Жінки',
   'your-skills': 'Ваші спортивні навички',
   'great': 'Чудово!',
+  'weight': 'Вага, кг',
+  'height': 'Зріст, см',
   'your-football-experience': 'А як щодо вашого досвіду у футболі?',
   'you-played-football': 'Ви раніше займалися футболом?',
   'along': 'Самостійно',

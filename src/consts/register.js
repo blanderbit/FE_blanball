@@ -2191,5 +2191,10 @@ export default {
           .map((item, idx) => ({ id: idx, value: item })),
   district: ['Степок', 'Погребок', 'Ромашка', 'Грибок']
             .map((item, idx) => ({ id: idx, value: item })),
-  jsonCityRegions
+  jsonCityRegions,
+  authBlockTypes: {
+    login: 'login',
+    register: 'register',
+    reset: 'reset'
+  }
 }
