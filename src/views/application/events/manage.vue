@@ -50,10 +50,7 @@
             :placeholder="$t('events.what-prize')"
             :title-width="0"
             :v-model="eventData.date"
-            :has-icon="true"
-            :icon="[
-              '../../../assets/img/aim.svg'
-            ]"
+            :icon="icons.aim"
           />
         </div>
         <div class="title-outfit">
@@ -359,6 +356,8 @@ import Switcher from '../../../components/Switcher.vue'
 import ManageEventFirstStep from '../../../components/manage-event-components/ManageEventFirstStep.vue'
 import ManageEventSecondStep from '../../../components/manage-event-components/ManageEventSecondStep.vue'
 
+import AimIcon from '../../../assets/img/aim.svg'
+
 import CONSTANTS from '../../../consts/index'
 
 export default {
@@ -383,6 +382,12 @@ export default {
         height: '18px',
         background: '#EFEFF6',
         'border-radius': '100px'
+    })
+
+    const icons = computed(() => {
+      return {
+        aim: AimIcon
+      }
     })
 
     const mockData = computed(() => {
@@ -423,6 +428,7 @@ export default {
       filteredTeams,
       labelStyle,
       emptyLabelStyle,
+      icons,
       chooseCategory
     }
   },

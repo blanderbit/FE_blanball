@@ -181,9 +181,8 @@
               :title="$t('profile.game-position')"
               :title-width="0"
               :outside-title="true"
-              :hasIcon="true"
               :height="40"
-              :icon="[icons.sortIcon]"
+              :icon="icons.sortIcon"
               name="position"
             />
           </div>

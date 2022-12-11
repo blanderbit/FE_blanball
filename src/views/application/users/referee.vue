@@ -10,8 +10,7 @@
             <InputComponent
               :title-width="0"
               :placeholder="$t('users.users-search')"
-              :has-icon="true"
-              :icon="['../../../assets/img/search.svg']"
+              :icon="SearchIcon"
             />
           </div>
         </div>
@@ -252,6 +251,8 @@
 
 <script>
 import InputComponent from '../../../components/forms/InputComponent.vue'
+
+import SearchIcon from '../../../assets/img/search.svg'
 
 export default {
   name: 'RatingPage',
