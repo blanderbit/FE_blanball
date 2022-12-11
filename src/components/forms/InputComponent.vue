@@ -19,7 +19,7 @@
         <span>{{ title }}</span>
       </div>
       <div 
-        v-if="hasIcon" 
+        v-if="rightIcon.length" 
         class="b-input__icon" 
         @click="iconClickAction"
       >
@@ -31,12 +31,15 @@
       >
         <img :src="iconLeft" alt="" />
       </div>
-      <slot name="input" :type="inputType"
-            :placeholder="placeholder"
-            :on="modelHandlers"
-            :value="modelValue"
-            :style="inputStyle"
-            :disabled="isDisabled">
+      <slot 
+        name="input" 
+        :type="inputType"
+        :placeholder="placeholder"
+        :on="modelHandlers"
+        :value="modelValue"
+        :style="inputStyle"
+        :disabled="isDisabled"
+      >
         <input
             :type="inputType"
             :placeholder="placeholder"
@@ -53,10 +56,16 @@
 </template>
 
 <script>
-import { useField } from '@system.it.flumx.com/vee-validate'
-import { computed, toRef } from 'vue'
-import { modes } from '../../workers/custom-model-worker/interactionModes'
+import { computed, ref, onMounted } from 'vue'
 import { CustomModelWorker } from "../../workers/custom-model-worker/index";
+
+import eyeCross from '../../assets/img/eye-crossed.svg'
+import eyeOpen from '../../assets/img/eye-opened.svg'
+
+const PASSWORD_TYPES = {
+  PASSWORD: 'password',
+  TEXT: 'text'
+}
 
 // TODO vue 3 fully, validate message
 export default {
@@ -67,16 +76,12 @@ export default {
       default: false,
     },
     icon: {
-      type: Array,
-      default: () => [],
+      type: String,
+      default: '',
     },
     iconLeft: {
       type: String,
       default: '',
-    },
-    hasIcon: {
-      type: Boolean,
-      default: false,
     },
     insideTitle: {
       type: Boolean,
@@ -99,8 +104,8 @@ export default {
       default: 108,
     },
     type: {
-      type: Array,
-      default: () => ['text'],
+      type: String,
+      default: 'text',
     },
     height: {
       type: Number,
@@ -115,59 +120,62 @@ export default {
       default: 'aggressive',
     },
   },
-  setup(props) {
+  emits: ['iconClick'],
+  setup(props, {emit}) {
     const {
         modelValue,
         modelErrorMessage,
         modelHandlers
     } = CustomModelWorker(props);
 
+    const inputType = ref(null)
+    const rightIcon = ref('')
+
+    const inputStyle = computed(() => {
+      return {
+        'padding-left': 10 + props.titleWidth + 'px',
+        'padding-right': rightIcon.value.length ? '52px' : '10px',
+      }
+    })
+    const inputWrapper = computed(() => {
+      return {
+        height: props.height ? props.height + 2 + 'px' : '100%',
+      }
+    })
+
+    function iconClickAction() {
+      if (props.type === PASSWORD_TYPES.PASSWORD) {
+        if (inputType.value === PASSWORD_TYPES.PASSWORD) {
+          rightIcon.value = eyeOpen
+          inputType.value = PASSWORD_TYPES.TEXT
+        } else {
+          rightIcon.value = eyeCross
+          inputType.value = PASSWORD_TYPES.PASSWORD
+        }
+      } else {
+        emit('icon-click')
+      }
+    }
+
+    onMounted(() => {
+      if (props.type === PASSWORD_TYPES.PASSWORD) {
+        rightIcon.value = eyeCross
+        inputType.value = props.type
+      } else {
+        rightIcon.value = props.icon
+      }
+    })
+
     return {
+      iconClickAction,
       modelValue,
       modelErrorMessage,
-      modelHandlers
+      modelHandlers,
+      inputType,
+      rightIcon,
+      inputStyle,
+      inputWrapper
     }
-  },
-  data() {
-    return {
-      mainValue: '',
-      iconCount: 0,
-      inputType: null,
-    }
-  },
-  computed: {
-    inputStyle() {
-      return {
-        'padding-left': 10 + this.titleWidth + 'px',
-        'padding-right': this.hasIcon ? '52px' : '10px',
-      }
-    },
-    inputWrapper() {
-      return {
-        height: this.height ? this.height + 2 + 'px' : '100%',
-      }
-    },
-    rightIcon() {
-      return this.icon[this.iconCount]
-    }
-  },
-  watch: {
-    mainValue(newVal, oldVal) {
-      this.$emit('new-value', newVal)
-    },
-  },
-  methods: {
-    iconClickAction() {
-      if (this.type[0] === 'password') {
-        this.iconCount = this.iconCount === 0 ? 1 : 0
-        this.inputType = this.inputType === 'password' ? 'text' : 'password'
-      } else {
-        this.$emit('icon-click')
-      }
-    },
-  },
-  mounted() {
-    this.inputType = this.type[0]
   }
 }
 </script>

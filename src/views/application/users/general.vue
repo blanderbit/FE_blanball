@@ -10,8 +10,7 @@
             <InputComponent
               :title-width="0"
               :placeholder="'Пошук користувачів'"
-              :has-icon="true"
-              :icon="[searchIcon]"
+              :icon="searchIcon"
             />
           </div>
         </div>
@@ -283,7 +282,6 @@ export default {
     const route = useRoute()
     const users = ref([])
     users.value = route.meta.usersData.data.results
-    console.log(route.meta.usersData.data)
 
     return {
       users

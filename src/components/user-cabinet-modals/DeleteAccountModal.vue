@@ -41,9 +41,12 @@
             {{ $t('modals.delete_acc.title-second') }}
           </div>
           <div class="description-text">
-            {{ $t('modals.delete_acc.text-second') }}
-            {{userEmail}}
-            {{ $t('modals.delete_acc.during-seconds') }}
+            <Counter 
+              :start-time="30"
+              :counter-text="$t('modals.delete_acc.text-second')"
+              :email="userEmail"
+              @resend-code-action="sendCodeForDeleteAcc" 
+            />
           </div>
           <Form v-slot="data" :validation-schema="schema">
             <div class="code-input-field">
@@ -82,6 +85,7 @@ import { Form } from '@system.it.flumx.com/vee-validate'
 import * as yup from "yup"
 
 import ModalWindow from '../../components/ModalWindow.vue'
+import Counter from '../../components/Counter.vue'
 import CodeInput from '../forms/CodeInput.vue'
 
 import { API } from "../../workers/api-worker/api.worker"
@@ -93,7 +97,8 @@ export default {
   components: {
     ModalWindow,
     CodeInput,
-    Form
+    Form,
+    Counter
   },
   props: {
     userEmail: {
@@ -131,7 +136,6 @@ export default {
     }
 
     function deleteAcc(formData) {
-      console.log(formData.controlledValues)
       API.UserService.sendApproveCode(formData.controlledValues)
         .then(() => {
           localStorage.removeItem('token')

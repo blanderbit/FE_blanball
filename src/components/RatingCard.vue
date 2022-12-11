@@ -2,7 +2,7 @@
   <div class="b-rating-card">
     <div class="b-rating-card__top-table">
       <div class="b-rating-card__title">
-        {{ $t('profile.your-rate') }}
+        {{ $t('profile.my-rate') }}
       </div>
       <div class="b-rating-card__subtitle">
         {{ $t('profile.sub-rate') }}

@@ -86,30 +86,24 @@
               </div>
             </div>
             <div v-else class="b-user-card__dropdowns">
-              <Dropdown
-                :outside-title="true"
-                :main-title="$t('profile.day')"
-                :options="mockData.days"
-                :width="96"
-                :height="40"
-                name="day"
-              />
-              <Dropdown
-                :outside-title="true"
-                :main-title="$t('profile.month')"
-                :options="mockData.months"
-                :width="168"
-                :height="40"
-                name="month"
-              />
-              <Dropdown
-                :outside-title="true"
-                :main-title="$t('profile.year')"
-                :options="mockData.years"
-                :width="120"
-                :height="40"
-                name="year"
-              />
+              <div class="b-user-card__dropdown-days">
+                <Dropdown
+                  :options="mockData.days"
+                  name="day"
+                />
+              </div>
+              <div class="b-user-card__dropdown-months">
+                <Dropdown
+                  :options="mockData.months"
+                  name="month"
+                />
+              </div>
+              <div class="b-user-card__dropdown-years">
+                <Dropdown
+                  :options="mockData.years"
+                  name="year"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -162,15 +156,15 @@
                 </div>
                 <div class="b-user-card__title">{{$t('profile.main-leg')}}</div>
               </div>
-              <Dropdown
+              <div 
                 v-if="isEditMode"
-                :outside-title="true"
-                :main-title="$t('profile.main-leg')"
-                :options="mockData.mainLag"
-                :width="200"
-                :height="40"
-                name="working_leg"
-              />
+                class="b-user-card__dropdown-main-leg"
+              >
+                <Dropdown
+                  :options="mockData.mainLag"
+                  name="working_leg"
+                />
+              </div>
             </div>
           </div>
           <div class="b-user-card__position">
@@ -187,9 +181,8 @@
               :title="$t('profile.game-position')"
               :title-width="0"
               :outside-title="true"
-              :hasIcon="true"
               :height="40"
-              :icon="[icons.sortIcon]"
+              :icon="icons.sortIcon"
               name="position"
             />
           </div>
@@ -212,7 +205,7 @@
               :title-width="0"
               :outside-title="true"
               :height="40"
-              name="position"
+              name="phone"
             />
           </div>
           <!-- <div class="b-user-card__area-line">
@@ -500,6 +493,15 @@ export default {
           .b-user-card__dropdowns {
             display: flex;
             justify-content: space-between;
+            .b-user-card__dropdown-days {
+              width: 96px;
+            }
+            .b-user-card__dropdown-months {
+              width: 168px;
+            }
+            .b-user-card__dropdown-years {
+              width: 120px;
+            }
           }
         }
         .b-user-card__body-features {
@@ -508,6 +510,16 @@ export default {
           .b-user-card__height,
           .b-user-card__weight {
             width: 92px;
+          }
+          .b-user-card__main-leg {
+            .b-user-card__dropdown-main-leg {
+              width: 200px;
+              ::v-deep {
+                .vs__dropdown-toggle {
+                  height: 40px;
+                }
+              }
+            }
           }
         }
         .b-user-card__position {

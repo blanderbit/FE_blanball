@@ -90,8 +90,7 @@
         <div class="b-register-step__input">
           <InputComponent
             :is-disabled="true"
-            :icon="[clip]"
-            :has-icon="true"
+            :icon="clip"
             :outside-title="true"
             :title="$t('register.document')"
             :title-width="0"

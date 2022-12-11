@@ -4,7 +4,7 @@ export default {
   'my-profile': 'Мій профіль',
   'rate-plan': 'Тарифний план',
   'notifications': 'Сповіщення',
-  'your-rate': 'Мій рейтинг',
+  'my-rate': 'Мій рейтинг',
   'sub-rate': 'Складається на основі оцінок інших користувачів',
   'generally': 'Узагальнено',
   'detailed': 'Детально',

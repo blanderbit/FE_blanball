@@ -13,7 +13,7 @@
           <Switcher 
             :id="'phone'"
             :is-edit-mode="isEditMode"
-            name="phone"
+            name="config_phone"
           />
         </div>
         <div class="b-security__personal-settings">
@@ -21,11 +21,11 @@
           <Switcher 
             :id="'email'"
             :is-edit-mode="isEditMode"
-            name="email"
+            name="config_email"
           />
         </div>
         <div class="b-security__personal-settings">
-          <p>{{ $t('profile.my-feedbacks') }} <span>(Деякі)</span></p>
+          <p>{{ $t('profile.my-feedbacks') }} <span>{{ $t('profile.some') }}</span></p>
           <Switcher 
             :id="'feedback'"
             :is-edit-mode="isEditMode"
@@ -43,12 +43,11 @@
       </div>
       <div class="b-security__email-input">
         <InputComponent
-          :title="'E-mail'"
+          :title="$t('profile.e-mail')"
           :placeholder="userEmail"
           :title-width="0"
           :outside-title="true"
-          :has-icon="true"
-          :icon="[sortArrowHorizontal]"
+          :icon="sortArrowHorizontal"
           @icon-click="toggleModalWindow"
           name="change_email"
         />
