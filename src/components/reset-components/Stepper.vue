@@ -175,7 +175,7 @@
         if (!valid) {
           return false
         }
-        await API.AuthorizationService.VerifyCode({
+        await API.AuthorizationService.VerifyCodeResetPassword({
           verify_code: formData.controlledValues.verify_code
         });
 
