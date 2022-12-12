@@ -140,9 +140,10 @@
       <div class="user-cards-wrapper">
         <div class="users-cards">
           <SmartList
-              :list="paginationElements"
-              ref="refList"
-              v-model:scrollbar-existing="blockScrollToTopIfExist">
+            :list="paginationElements"
+            ref="refList"
+            v-model:scrollbar-existing="blockScrollToTopIfExist"
+          >
             <template #smartListItem="slotProps">
               <UserCard
                   :key="slotProps.index"
@@ -152,8 +153,16 @@
               <!--  @update:expanding="slotProps.smartListItem.metadata.expanding = $event"-->
             </template>
             <template #after>
-              <InfiniteLoading ref="scrollbar" @infinite="loadDataPaginationData(paginationPage + 1, $event)">
+              <InfiniteLoading 
+                ref="scrollbar" 
+                @infinite="loadDataPaginationData(paginationPage + 1, $event)"
+              >
                 <template #complete>
+                  <EmptyList
+                    v-if="!paginationElements.length"
+                    :title="emptyListMessages.title"
+                    :description="emptyListMessages.title"
+                  />
                   <!--<empty-list-->
                       <!--v-if="!paginationElements.length"-->
                       <!--:title="emptyListMessages.title"-->
@@ -176,7 +185,6 @@
               </InfiniteLoading>
             </template>
           </SmartList>
-
         </div>
       </div>
     </div>
@@ -290,13 +298,14 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 import InputComponent from '../../../components/forms/InputComponent.vue'
 import UserCard from '../../../components/UserCard.vue'
 import SmartList from '../../../components/smart-list/SmartList.vue'
-import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue'
+import EmptyList from '../../../components/EmptyList.vue';
+
 import members from '../../../assets/img/members.svg'
 import runner from '../../../assets/img/runner.svg'
 import ball from '../../../assets/img/ball.svg'
@@ -304,12 +313,16 @@ import timer from '../../../assets/img/timer.svg'
 import tShirt from '../../../assets/img/t-shirt.svg'
 import searchIcon from '../../../assets/img/search.svg'
 
+import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue'
 import { PaginationWorker } from "../../../workers/pagination-worker";
-import { API } from "../../../workers/api-worker/api.worker";
+import { API } from "../../../workers/api-worker/api.worker"
+
+import CONSTANTS from '../../../consts/index'
 
 export default {
   name: 'RatingPage',
   components: {
+    EmptyList,
     InputComponent,
     UserCard,
     SmartList,
@@ -334,6 +347,13 @@ export default {
       }
     });
 
+    const emptyListMessages = computed(() => {
+      return {
+        title: CONSTANTS.no_data_notifications.noUsers.title,
+        description: CONSTANTS.no_data_notifications.noUsers.description
+      }
+    });
+
     paginationPage.value = 1;
     paginationElements.value = route.meta.usersData.data.results;
 
@@ -346,6 +366,7 @@ export default {
       paginationPage,
       paginationTotalCount,
       refList,
+      emptyListMessages,
       blockScrollToTopIfExist,
       loadDataPaginationData,
       scrollToFirstElement: () => {

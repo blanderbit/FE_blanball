@@ -91,13 +91,17 @@
               </template>
               <template #after>
                 <InfiniteLoading
-                    :identifier="triggerForRestart"
-                    ref="scrollbar" @infinite="$emit('loadingInfinite',$event)">
+                  :identifier="triggerForRestart"
+                  ref="scrollbar" 
+                  @infinite="$emit('loadingInfinite',$event)"
+                >
                   <template #complete>
                     <empty-list
                         v-if="!notifications.length"
                         :title="emptyListMessages.title"
-                        :description="emptyListMessages.title">
+                        :description="emptyListMessages.description"
+                        :is-notification="true"
+                    >
                     </empty-list>
                     <div class="b-return-top d-flex justify-content-between align-items-center my-3"
                          v-if="notifications.length && blockScrollToTopIfExist">
@@ -145,6 +149,7 @@
   import { NewNotifications } from "../workers/web-socket-worker/not-includes-to-socket/new_notifications";
   import { API } from "../workers/api-worker/api.worker";
   import { v4 as uuid } from "uuid";
+  import CONSTANTS from '../consts/index'
 
   export default {
     components: {
@@ -220,8 +225,8 @@
 
       const emptyListMessages = computed(() => {
         return {
-          title: "Немає повідомлень для відображення",
-          description: "Вам ще не надходили сповіщення від інших користувачів"
+          title: CONSTANTS.no_data_notifications.noNotifications.title,
+          description: CONSTANTS.no_data_notifications.noNotifications.description
         }
       });
 
