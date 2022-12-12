@@ -87,18 +87,9 @@ export default {
   setup() {
     const tick = computed(() => {
       return tickWhite
-    })
-    const eyeCrossed = computed(() => {
-      return eyeCross
-    })
-    const eyeOpened = computed(() => {
-      return eyeOpen
-    })
-
+    }) // TODO
     return {
       tick,
-      eyeCrossed,
-      eyeOpened
     }
   },
 }

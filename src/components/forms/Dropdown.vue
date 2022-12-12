@@ -4,6 +4,7 @@
       :options="options"
       :label="displayName || 'value'"
       append-to-body
+      taggable="taggable"
       :class="{'b-form-error': modelErrorMessage}"
       :calculate-position="withPopper"
       @update:modelValue="setNewValue($event)"
@@ -43,6 +44,11 @@ export default {
       type: String,
       default: 'value'
     },
+    value: Object | String,
+    taggable: {
+      type: Boolean,
+      default: false
+    },
     options: {
       type: Array,
       default: () => []
@@ -81,7 +87,19 @@ export default {
       () => {
         dropdownModelValue.value = props.options.find(item => {
           return item[props.displayValue] === modelValue.value
-        })
+        }) || modelValue.value;
+      },
+      {
+        immediate: true
+      }
+    );
+
+    watch(
+      () => props.value,
+      () => {
+        dropdownModelValue.value = props.options.find(item => {
+          return item[props.displayValue] === props.value
+        }) || props.value;
       },
       {
         immediate: true

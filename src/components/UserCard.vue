@@ -1,114 +1,118 @@
 <template>
-  <div 
-    class="b_user_card"
-    :style="cardStyle"
-  >
-    <div class="b_user_card_top-line">
-      <div class="b_user_card_picture_name">
-        <div class="b_user_card_picture">
-          <img :src="user.img" alt="">
-        </div>
-        <div class="b_user_card_name_pnz">
-          <div class="b_user_card_top_line_name_rating">
-            <div class="b_user_card_name">{{user.profile.name}} {{user.profile.last_name}}</div>
-            <div class="b_user_card_team_rating_mob">
-              <star-rating 
-                :rating="user.raiting || 0"
-                :star-size="14"
-                :show-rating="false"
-                :read-only="true"
-                :active-color="'#148783'"
-              >
-              </star-rating>
+  <collapsible-panel v-model:expanding="expanding">
+    <!--TODO сделать так что бы работал експанлдбл как на нотификациях, логика уже есть, нужно сделать
+     так что бы был тайтл и был контент у строки -->
+    <template #title>
+      <div
+          class="b_user_card"
+      >
+        <div class="b_user_card_top-line">
+          <div class="b_user_card_picture_name">
+            <div class="b_user_card_picture">
+              <avatar
+                  :link="userData.profile.avatar_url"
+                  :full-name="userData.profile.name + ' ' + userData.profile.last_name"
+              ></avatar>
+            </div>
+            <div class="b_user_card_name_pnz">
+              <div class="b_user_card_top_line_name_rating">
+                <div class="b_user_card_name">{{userData.profile.name}} {{userData.profile.last_name}}</div>
+                <div class="b_user_card_team_rating_mob">
+                  <star-rating
+                      :rating="userData.raiting || 0"
+                      :star-size="14"
+                      :show-rating="false"
+                      :read-only="true"
+                      :active-color="'#148783'"
+                  >
+                  </star-rating>
+                </div>
+              </div>
+
             </div>
           </div>
-          <div class="b_user_card_pnz">
-            {{user.profile.position}} <span>{{user.profile.position}}</span>
+          <div class="b_user_card_rating_team">
+            <div class="b_user_card_top_line_rating_status">
+              <div class="b_user_card_team_rating">
+                <star-rating
+                    :rating="userData.raiting || 0"
+                    :star-size="14"
+                    :show-rating="false"
+                    :read-only="true"
+                    :active-color="'#148783'"
+                >
+                </star-rating>
+              </div>
+              <div class="b_user_card_team_status">
+                <div class="b_user_card_team">Какая-то команда</div>
+                <div class="b_user_card_status_mob">{{userData.role}}</div>
+              </div>
+            </div>
+            <div class="b_user_card_bottom-line">
+              <span class="title">{{$t('users.gender')}}</span>
+              <span class="icon">
+                <img :src="userData.gender_icon" alt="">
+              </span>
+              <span>{{userData.profile.gender}}</span>
+            </div>
           </div>
+          <div class="b_user_card_user_status">
+            <img src="../assets/img/runner.svg" alt="">
+            <div class="b_user_card_status">{{userData.role}}</div>
+          </div>
+          <!--<div-->
+          <!--:class="['b_user_card_arrow', {active: userData.isActive}]"-->
+          <!--&gt;-->
+          <!--<img src="../assets/img/arrow-down.svg" alt="">-->
+          <!--</div>-->
         </div>
       </div>
-      <div class="b_user_card_rating_team">
-        <div class="b_user_card_top_line_rating_status">
-          <div class="b_user_card_team_rating">
-            <star-rating 
-              :rating="user.raiting || 0"
-              :star-size="14"
-              :show-rating="false"
-              :read-only="true"
-              :active-color="'#148783'"
-            >
-            </star-rating>
-          </div>
-          <div class="b_user_card_team_status">
-            <div class="b_user_card_team">Какая-то команда</div>
-            <div class="b_user_card_status_mob">{{user.role}}</div>
-          </div>
-        </div>
-        <div class="b_user_card_bottom-line">
-          <span class="title">{{$t('users.gender')}}</span>
-          <span class="icon">
-            <img :src="user.gender_icon" alt="">
-          </span> 
-          <span>{{user.profile.gender}}</span>
-        </div>
+    </template>
+
+    <template #content>
+      <div class="b_user_card_pnz">
+        {{userData.profile.position}} <span>{{userData.profile.position}}</span>
       </div>
-      <div class="b_user_card_user_status">
-        <img src="../assets/img/runner.svg" alt="">
-        <div class="b_user_card_status">{{user.role}}</div>
-      </div>
-      <div
-        :class="['b_user_card_arrow', {active: user.isActive}]"
-        @click="toggleUserCard(user.id)"
-      >
-        <img src="../assets/img/arrow-down.svg" alt="">
-      </div>
-    </div>
-  </div>
+    </template>
+  </collapsible-panel>
 </template>
 
 <script>
-import CONSTANTS from '../consts'
-import StarRating from 'vue-star-rating'
+  import CONSTANTS from '../consts'
+  import StarRating from 'vue-star-rating'
+  import Avatar from './../components/Avatar.vue'
+  import CollapsiblePanel from './../components/collapsible/CollapsiblePanel.vue'
 
-export default {
-  name: "UserCard",
-  components: {
-    StarRating
-  },
-  props: {
-    userData: {
-      type: Object,
-      default: () => {}
-    }
-  },
-  data() {
-    return {
-      rating: 3,
-      isCardActive: false
-    }
-  },
-  computed: {
-    cardStyle() {
-      return {
-        height: this.isCardActive ? 'auto' : '50px'
+  export default {
+    name: "UserCard",
+    components: {
+      StarRating,
+      Avatar,
+      CollapsiblePanel
+    },
+    props: {
+      userData: {
+        type: Object,
+        default: () => {
+        }
       }
     },
-    user() {
+    data() {
       return {
-        ...this.userData,
-        isActive: this.isCardActive
+        rating: 3,
       }
     },
-    starStyle() {
-      return CONSTANTS.star_style
-    }
-  },
-  methods: {
-    toggleUserCard() {
-      this.isCardActive = !this.isCardActive
+    computed: {
+      expanding: {
+        set() {
+          this.$emit('update:expanding', !this.userData?.metadata?.expanding);
+        },
+        get() {
+          return !!this.userData?.metadata?.expanding
+        }
+      }
     }
   }
-}
 </script>
 
 <style lang="scss" scoped>
@@ -119,6 +123,7 @@ export default {
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 8px;
     overflow: hidden;
+    width: 100%;
 
     &_top-line {
       display: flex;
@@ -126,7 +131,7 @@ export default {
       justify-content: space-between;
     }
 
-    &_picture_name { 
+    &_picture_name {
       display: flex;
       align-items: flex-start;
       @media (max-width: 768px) {
@@ -137,7 +142,7 @@ export default {
           display: block;
         }
       }
-      .b_user_card_name_pnz { 
+      .b_user_card_name_pnz {
         margin-left: 12px;
         font-family: 'Inter';
         font-style: normal;
@@ -157,10 +162,10 @@ export default {
           }
           .b_user_card_team_rating_mob {
             display: none;
-              @media (max-width: 768px) {
-                height: auto;
-                display: block;
-              }
+            @media (max-width: 768px) {
+              height: auto;
+              display: block;
+            }
           }
         }
 
@@ -189,21 +194,21 @@ export default {
       }
     }
 
-    &_rating_team { 
+    &_rating_team {
       .b_user_card_top_line_rating_status {
         display: flex;
         align-items: center;
         height: 32px;
         .b_user_card_team_rating {
           // .star-rating {
-            @media (max-width: 768px) {
-              display: none;
-            }
+          @media (max-width: 768px) {
+            display: none;
+          }
           // }
 
         }
         .b_user_card_team_status {
-          .b_user_card_team { 
+          .b_user_card_team {
             font-family: 'Inter';
             font-style: normal;
             font-weight: 400;
@@ -278,7 +283,7 @@ export default {
       }
     }
 
-    &_user_status { 
+    &_user_status {
       display: flex;
       align-items: center;
       height: 32px;
@@ -286,7 +291,7 @@ export default {
         display: none;
       }
 
-      .b_user_card_status { 
+      .b_user_card_status {
         font-family: 'Inter';
         font-style: normal;
         font-weight: 400;
@@ -296,7 +301,7 @@ export default {
         margin-left: 8px;
       }
     }
-    &_arrow { 
+    &_arrow {
       height: 32px;
       cursor: pointer;
       display: flex;

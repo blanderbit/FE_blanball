@@ -10,7 +10,7 @@ const toast = useToast();
 export const ErrorInterceptor = (error) => {
 
   const getJsonErrorData = error.toJSON();
-  const skipErrorMessageType = error.response.config.skipErrorMessageType || [];
+  const skipErrorMessageType = error?.response?.config?.skipErrorMessageType || [];
   error = error?.response?.data || getJsonErrorData;
 
   if (error?.status === 401 || getJsonErrorData?.status === 401) {

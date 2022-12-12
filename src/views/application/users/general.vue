@@ -139,11 +139,44 @@
       </div>
       <div class="user-cards-wrapper">
         <div class="users-cards">
-          <UserCard
-            v-for="user of users"
-            :key="user.id"
-            :user-data="user"
-          />
+          <SmartList
+              :list="paginationElements"
+              ref="refList"
+              v-model:scrollbar-existing="blockScrollToTopIfExist">
+            <template #smartListItem="slotProps">
+              <UserCard
+                  :key="slotProps.index"
+                  :user-data="slotProps.smartListItem"
+
+              />
+              <!--  @update:expanding="slotProps.smartListItem.metadata.expanding = $event"-->
+            </template>
+            <template #after>
+              <InfiniteLoading ref="scrollbar" @infinite="loadDataPaginationData(paginationPage + 1, $event)">
+                <template #complete>
+                  <!--<empty-list-->
+                      <!--v-if="!paginationElements.length"-->
+                      <!--:title="emptyListMessages.title"-->
+                      <!--:description="emptyListMessages.title">-->
+                  <!--</empty-list> TODO добавить значения в компонент пустого списка-->
+                  <!--<div class="b-return-top d-flex justify-content-between align-items-center my-3"-->
+                       <!--v-if="paginationElements.length && blockScrollToTopIfExist">-->
+                    <!--<div>Ви досягли кінця списку</div>-->
+                    <!--<button-->
+                        <!--class="b-button-scroll__to-first-element d-flex justify-content-between"-->
+                        <!--@click="scrollToFirstElement()">-->
+                      <!--Вгору-->
+                      <!--<img src="../assets/img/arrow_up.svg">-->
+                    <!--</button>-->
+                  <!--</div>-->
+                  <!--<div v-if="!blockScrollToTopIfExist"></div>
+                  TODO сделать компонент вверх, на основе функционала который в нотификациях
+                  -->
+                </template>
+              </InfiniteLoading>
+            </template>
+          </SmartList>
+
         </div>
       </div>
     </div>
@@ -262,7 +295,8 @@ import { useRoute } from 'vue-router'
 
 import InputComponent from '../../../components/forms/InputComponent.vue'
 import UserCard from '../../../components/UserCard.vue'
-
+import SmartList from '../../../components/smart-list/SmartList.vue'
+import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue'
 import members from '../../../assets/img/members.svg'
 import runner from '../../../assets/img/runner.svg'
 import ball from '../../../assets/img/ball.svg'
@@ -270,21 +304,53 @@ import timer from '../../../assets/img/timer.svg'
 import tShirt from '../../../assets/img/t-shirt.svg'
 import searchIcon from '../../../assets/img/search.svg'
 
-import CONSTANTS from '../../../consts/index'
+import { PaginationWorker } from "../../../workers/pagination-worker";
+import { API } from "../../../workers/api-worker/api.worker";
 
 export default {
   name: 'RatingPage',
   components: {
     InputComponent,
     UserCard,
+    SmartList,
+    InfiniteLoading
   },
   setup() {
-    const route = useRoute()
-    const users = ref([])
-    users.value = route.meta.usersData.data.results
+    const route = useRoute();
+    const refList = ref();
+    const blockScrollToTopIfExist = ref(false);
+    const {
+      paginationElements,
+      paginationPage,
+      paginationTotalCount,
+      paginationLoad
+    } = PaginationWorker({
+      paginationDataRequest: (page) => API.UserService.getAllUsers({page}),
+      dataTransformation: (item) => {
+        item.metadata = {
+          expanding: false
+        };
+        return item;
+      }
+    });
+
+    paginationPage.value = 1;
+    paginationElements.value = route.meta.usersData.data.results;
+
+    const loadDataPaginationData = (pageNumber, $state) => {
+      paginationLoad({pageNumber, $state, forceUpdate: paginationPage.value === 1})
+    };
 
     return {
-      users
+      paginationElements,
+      paginationPage,
+      paginationTotalCount,
+      refList,
+      blockScrollToTopIfExist,
+      loadDataPaginationData,
+      scrollToFirstElement: () => {
+        refList.value.scrollToFirstElement()
+      }
     }
   },
   data() {
@@ -1135,9 +1201,10 @@ export default {
       }
     }
     .user-cards-wrapper {
-      height: 70vh;
-      overflow-y: scroll;
+      height: calc(100vh - 90px - 36px - 31px - 80px - 36px);
+      /*overflow-y: scroll;*/
       .users-cards {
+        height: calc(100% - 20px);
         margin-top: 20px;
       }
     }

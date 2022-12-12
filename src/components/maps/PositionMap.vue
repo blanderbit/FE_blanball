@@ -37,6 +37,7 @@
       });
 
       const marker = ref({});
+      let map;
 
       function placeMarker(map, location) {
         return new google.maps.Marker({
@@ -49,7 +50,7 @@
         const dataForEmit = {
           lat: data?.lat,
           lng: data?.lng,
-          place: await API.LocationService.GetPlaceByCoords(data || state.value.centerOfCountry)
+          place: (await API.LocationService.GetPlaceByCoords(data || state.value.centerOfCountry))?.data?.data
         };
 
         emit('update:coords', dataForEmit);
@@ -63,7 +64,9 @@
         marker.value.setPosition({
           lat: +e.data.coordinates?.lat,
           lng: +e.data.coordinates?.lon,
-        })
+        });
+        const myLatlng = new google.maps.LatLng(+e.data.coordinates?.lat, +e.data.coordinates?.lon);
+        map.setCenter(myLatlng);
       });
 
       const createMap = (crd) => {
@@ -72,7 +75,7 @@
           lng: crd.longitude
         } : state.value.centerOfCountry;
 
-        const map = new google.maps.Map(document.getElementById("map"), {
+        map = new google.maps.Map(document.getElementById("map"), {
           center: state.userCenter,
           zoom: 12,
           overviewMapControlOptions: {

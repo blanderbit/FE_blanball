@@ -18,7 +18,6 @@ export const AxiosQuery = (params) => {
 };
 
 export const AxiosSkipErrorMessageType = (enumList = []) => {
-  debugger
   enumList = enumList.filter(enumKey => DETAILS_TYPE_ENUM_VALUES.includes(enumKey));
   return {
     meta: 'AxiosSkipErrorMessageType',
@@ -30,7 +29,6 @@ export const AxiosParams = (...results) => {
   const allParameters = {};
 
   results.forEach((resultFromFunction) => {
-    debugger
     if (resultFromFunction.meta.includes('AxiosQuery')) {
       allParameters.params = resultFromFunction.data
     } else if (resultFromFunction.meta.includes('AxiosSkipErrorMessageType')) {

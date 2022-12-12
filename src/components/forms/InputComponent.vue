@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, onMounted, watch } from 'vue'
 import { CustomModelWorker } from "../../workers/custom-model-worker/index";
 
 import eyeCross from '../../assets/img/eye-crossed.svg'
@@ -90,6 +90,10 @@ export default {
     outsideTitle: {
       type: Boolean,
       default: false,
+    },
+    value: {
+      type: String,
+      default: '',
     },
     title: {
       type: String,
@@ -159,12 +163,12 @@ export default {
 
     onMounted(() => {
       if (props.type === PASSWORD_TYPES.PASSWORD) {
-        rightIcon.value = eyeCross
+        rightIcon.value = eyeCross;
         inputType.value = props.type
       } else {
         rightIcon.value = props.icon
       }
-    })
+    });
 
     return {
       iconClickAction,

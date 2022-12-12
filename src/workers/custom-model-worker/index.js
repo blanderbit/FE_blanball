@@ -1,8 +1,9 @@
 import { useField } from '@system.it.flumx.com/vee-validate';
-import { computed, toRef } from 'vue';
+import { computed, toRef, watch } from 'vue';
 import { modes } from "./interactionModes";
 
 export const CustomModelWorker = (props) => {
+
   const {
     meta: modelMeta,
     value: modelValue,
@@ -40,6 +41,14 @@ export const CustomModelWorker = (props) => {
 
     return on
   });
+
+  watch(
+    () => props.value,
+    () => {
+      modelHandlers.value.input[0](props.value);
+      modelHandlers.value.input[1](props.value, false)
+    }
+  );
 
   return {
     modelMeta,

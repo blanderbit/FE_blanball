@@ -1,5 +1,7 @@
 import { AxiosInstance } from "../../../../plugins/axios.plugin";
 import { EndpointsEnum } from "../http-common/prefix.enum";
+import { AxiosParams, AxiosQuery, AxiosSkipErrorMessageType } from "../../../utils-worker";
+import { DETAILS_TYPE_ENUM } from "../../../type-request-message-worker";
 export class UserService {
   static getMyProfile() {
     return AxiosInstance.get(
@@ -34,9 +36,15 @@ export class UserService {
     )
   }
 
-  static getAllUsers() {
+  static getAllUsers(options) {
+    const { page } = options || {};
     return AxiosInstance.get(
-      EndpointsEnum.Users.getAllUsers
+      EndpointsEnum.Users.getAllUsers,
+      AxiosParams(
+        AxiosQuery({
+          page
+        }),
+      )
     )
   }
 }
