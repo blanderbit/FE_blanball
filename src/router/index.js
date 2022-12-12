@@ -137,7 +137,7 @@ const router = createRouter({
     {
       path: ROUTES.AUTHENTICATIONS.index.path,
       name: ROUTES.AUTHENTICATIONS.index.name,
-      // beforeEnter: routerResolverByLoginPage,
+      beforeEnter: routerResolverByLoginPage,
       component: () => import('../views/authentication/index.vue'),
       children: [
         {
@@ -149,7 +149,7 @@ const router = createRouter({
         {
           path: ROUTES.AUTHENTICATIONS.REGISTER.relative,
           name: ROUTES.AUTHENTICATIONS.REGISTER.name,
-          // beforeEnter: routerResolverByLoginPage,
+          beforeEnter: routerResolverByLoginPage,
           component: () => import('../views/authentication/register.vue')
         },
         {

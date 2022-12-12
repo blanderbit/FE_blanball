@@ -24,6 +24,10 @@ export class AuthorizationService {
     return AxiosInstance.post(EndpointsEnum.Authorization.VerifyCode, data)
   }
 
+  static VerifyCodeResetPassword(data) {
+    return AxiosInstance.post(EndpointsEnum.Authorization.VerifyCodeResetPassword, data)
+  }
+
   static ResetComplete(data) {
     return AxiosInstance.post(EndpointsEnum.Authorization.ResetComplete, data)
   }
