@@ -72,6 +72,9 @@
   import record from '../assets/img/record.svg'
   import members from '../assets/img/members.svg'
   import { TokenWorker } from "../workers/token-worker";
+  const findDublicates = (list, newList) => {
+    return newList.filter(item => list.length ? !list.find(oldItem => oldItem.notification_id === item.notification_id) : true)
+  }
 
   export default {
     name: 'MainSidebar',
@@ -96,7 +99,7 @@
         },
         {
           img: members,
-          url: '/application/users/general',
+          url: '/application/smart-list/general',
           action: () => isMenuOpened.value = false
         },
       ]);
@@ -113,7 +116,8 @@
         paginationLoad
       } = PaginationWorker({
         paginationDataRequest: (page) => API.NotificationService.getNotifications({page, skipids: skipids.value}),
-        dataTransformation: (item) => createNotificationFromData(item)
+        dataTransformation: (item) => createNotificationFromData(item),
+        beforeConcat: (elements, newList) => findDublicates(elements, newList)
       });
 
       const loadDataNotifications = (pageNumber, $state, forceUpdate) => {

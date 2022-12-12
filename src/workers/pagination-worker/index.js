@@ -1,11 +1,7 @@
 import { ref } from 'vue';
 
-const findDublicates = (list, newList) => {
-  return newList.filter(item => list.length ? !list.find(oldItem => oldItem.notification_id === item.notification_id) : true)
-}
-
 export const PaginationWorker = (options) => {
-  const {paginationDataRequest, dataTransformation} = options || {};
+  const {paginationDataRequest, dataTransformation, beforeConcat} = options || {};
 
   const paginationElements = ref([]);
   const paginationPage = ref(0);
@@ -31,6 +27,7 @@ export const PaginationWorker = (options) => {
     if ($state?.loading) $state.loading();
 
     paginationPage.value = pageNumber;
+
     await paginationDataRequest(pageNumber)
       .then((result) => {
         if (dataTransformation) {
@@ -38,12 +35,9 @@ export const PaginationWorker = (options) => {
             .map(dataTransformation);
         }
 
-        if (pageNumber === 1) { // if it`s first page we not need try to find dublicates
-          paginationElements.value = result.data.results
-        } else {
-          paginationElements.value = paginationElements.value
-            .concat(findDublicates(paginationElements.value, result.data.results));
-        }
+        paginationElements.value = beforeConcat
+          ? paginationElements.value.concat(beforeConcat(paginationElements.value, result.data.results))
+          : paginationElements.value.concat(result.data.results);
 
         paginationTotalCount.value = result.data.total_count;
         paginationIsNextPage.value = !!result.data.next;

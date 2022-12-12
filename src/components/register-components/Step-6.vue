@@ -24,6 +24,8 @@
             :outside-title="true"
             :main-title="$t('register.city')"
             :options="mockData.district"
+            :value="region"
+            taggable
             @new-value="changeRegions"
             display-name="name"
             display-value="name"
@@ -35,6 +37,8 @@
             :outside-title="true"
             :main-title="$t('register.city')"
             :options="mockData.cities"
+            :value="city"
+            taggable
             @new-value="changeCity"
             display-name="name"
             display-value="name"
@@ -45,8 +49,9 @@
         <InputComponent
             :title="$t('register.weight')"
             :placeholder="'Address'"
+            :value="address"
             :title-width="0"
-            @input="changeAddress()"
+            @input="changeAddress($event)"
             name="address"
         ></InputComponent>
       </div>
@@ -103,23 +108,37 @@ export default {
       return tickIcon
     })
 
-    async function getCorrdsByName(str) {
+    async function getCoordsByName(str) {
       return await API.LocationService.GetPlaceByAddress(str)
     }
+    PositionMapBus.on('update:coords', (e) => {
+      debugger
+      console.log(e.place);
+      region.value = e.place.state;
+      city.value = e.place.city;
+      address.value = `${e.place.neighbourhood || ''} ${e.place.road || ''} ${e.place.house_number || ''} ${e.place.postcode || ''}`;
+    })
+    let timeout;
     return {
       mockData,
       tick,
+      region,
+      city,
+      address,
       async changeRegions(e) {
         region.value = e;
-        PositionMapBus.emit('update:map:by:coords', await getCorrdsByName(region.value))
+        PositionMapBus.emit('update:map:by:coords', await getCoordsByName(region.value))
       },
       async changeCity(e) {
         city.value = e;
-        PositionMapBus.emit('update:map:by:coords', await getCorrdsByName(`${region.value} ${region.value}`))
+        PositionMapBus.emit('update:map:by:coords', await getCoordsByName(`${region.value} ${city.value}`))
       },
       async changeAddress(e) {
-        address.value = e;
-        PositionMapBus.emit('update:map:by:coords', await getCorrdsByName(`${region.value} ${region.value} ${address.value}`))
+        address.value = e.target.value;
+        clearTimeout(timeout);
+        timeout = setTimeout(async () => {
+          PositionMapBus.emit('update:map:by:coords', await getCoordsByName(`${region.value} ${city.value} ${address.value}`))
+        }, 500)
       }
     }
   },

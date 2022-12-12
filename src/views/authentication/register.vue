@@ -144,16 +144,18 @@
     },
     setup() {
       const router = useRouter();
-      const currentStep = ref(1);
+      const currentStep = ref(6);
       const context = useForm();
       const initialValues = ref({
-        // email: "Yariktest@gmai.com",
-        // password: "2363796z",
-        // phone: "+380683242344",
-        // profile: {name: "Yariktest", last_name: "Yariktest"},
-        // re_password: "2363796z"
+        email: "Yariktest@gmai.com",
+        password: "2363796z",
+        phone: "+380683242344",
+        profile: {name: "Yariktest", last_name: "Yariktest"},
+        re_password: "2363796z"
       });
-      let profileValues = {};
+      let profileValues = {
+        profile: {}
+      };
       let schema = computed(() => {
         if (currentStep.value === 1) {
           return yup.object({

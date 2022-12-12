@@ -90,37 +90,37 @@ export const ROUTES = {
     },
     USERS: {
       relative: 'users',
-      absolute: '/application/users',
-      name: 'application-users',
+      absolute: '/application/smart-list',
+      name: 'application-smart-list',
       GENERAL: {
-        relative: 'users/general',
-        absolute: '/application/users/general',
-        name: 'application-users-general'
+        relative: 'smart-list/general',
+        absolute: '/application/smart-list/general',
+        name: 'application-smart-list-general'
       },
       PLAYERS: {
-        relative: 'users/players',
-        absolute: '/application/users/players',
-        name: 'application-users-players'
+        relative: 'smart-list/players',
+        absolute: '/application/smart-list/players',
+        name: 'application-smart-list-players'
       },
       REFEREE: {
-        relative: 'users/referee',
-        absolute: '/application/users/referee',
-        name: 'application-users-referee'
+        relative: 'smart-list/referee',
+        absolute: '/application/smart-list/referee',
+        name: 'application-smart-list-referee'
       },
       TEAMS: {
-        relative: 'users/teams',
-        absolute: '/application/users/teams',
-        name: 'application-users-teams'
+        relative: 'smart-list/teams',
+        absolute: '/application/smart-list/teams',
+        name: 'application-smart-list-teams'
       },
       TRAINERS: {
-        relative: 'users/trainers',
-        absolute: '/application/users/trainers',
-        name: 'application-users-trainers'
+        relative: 'smart-list/trainers',
+        absolute: '/application/smart-list/trainers',
+        name: 'application-smart-list-trainers'
       },
       GET_ONE: {
-        relative: 'users/:id',
+        relative: 'smart-list/:id',
         absolute: (userId) => `/application/users/${userId}`,
-        name: 'application-users'
+        name: 'application-smart-list'
       }
     }
   },
@@ -137,7 +137,7 @@ const router = createRouter({
     {
       path: ROUTES.AUTHENTICATIONS.index.path,
       name: ROUTES.AUTHENTICATIONS.index.name,
-      beforeEnter: routerResolverByLoginPage,
+      // beforeEnter: routerResolverByLoginPage,
       component: () => import('../views/authentication/index.vue'),
       children: [
         {
@@ -149,7 +149,7 @@ const router = createRouter({
         {
           path: ROUTES.AUTHENTICATIONS.REGISTER.relative,
           name: ROUTES.AUTHENTICATIONS.REGISTER.name,
-          beforeEnter: routerResolverByLoginPage,
+          // beforeEnter: routerResolverByLoginPage,
           component: () => import('../views/authentication/register.vue')
         },
         {
@@ -348,7 +348,7 @@ const router = createRouter({
           meta: {
             breadcrumbs: [
               {name: 'Main', path: '/'},
-              {name: 'Users', path: '/application/users'},
+              {name: 'Users', path: '/application/smart-list'},
               {name: 'Show profile', path: ''},
             ]
           }

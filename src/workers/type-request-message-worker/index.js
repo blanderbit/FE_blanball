@@ -105,4 +105,5 @@ export const TypeRequestMessageWorker = (result = {}) => {
       }
     }) || []
   }
+  return [];
 };

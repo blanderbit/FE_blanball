@@ -42,7 +42,7 @@ const startObserver = params => {
         params.firstload = true;
       }
     },
-    {root: params.parentEl, rootMargin, threshold: 0.1}
+    {root: params.parentEl, rootMargin, threshold: 0.2}
   );
   observer.observe(params.infiniteLoading.value);
 };

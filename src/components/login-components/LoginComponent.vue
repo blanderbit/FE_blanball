@@ -146,7 +146,7 @@
           );
 
           TokenWorker.setToken(apiRequestResult.data.tokens.access);
-debugger
+
           if(data.values.save_credentials) {
             localStorage.setItem('password', data.controlledValues.password);
             localStorage.setItem('email', data.controlledValues.email);
