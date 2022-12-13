@@ -4,20 +4,20 @@
      так что бы был тайтл и был контент у строки -->
     <template #title>
       <div
-          class="b_user_card"
+          class="b-user-card"
       >
-        <div class="b_user_card_top-line">
-          <div class="b_user_card_picture_name">
-            <div class="b_user_card_picture">
+        <div class="b-user-card__top-line">
+          <div class="b-user-card__picture-name">
+            <div class="b-user-card__picture">
               <avatar
                   :link="userData.profile.avatar_url"
                   :full-name="userData.profile.name + ' ' + userData.profile.last_name"
               ></avatar>
             </div>
-            <div class="b_user_card_name_pnz">
-              <div class="b_user_card_top_line_name_rating">
-                <div class="b_user_card_name">{{userData.profile.name}} {{userData.profile.last_name}}</div>
-                <div class="b_user_card_team_rating_mob">
+            <div class="b-user-card__name-pnz">
+              <div class="b-user-card__top-line-name-rating">
+                <div class="b-user-card__name">{{userData.profile.name}} {{userData.profile.last_name}}</div>
+                <div class="b-user-card__team-rating-mob">
                   <star-rating
                       :rating="userData.raiting || 0"
                       :star-size="14"
@@ -31,9 +31,9 @@
 
             </div>
           </div>
-          <div class="b_user_card_rating_team">
-            <div class="b_user_card_top_line_rating_status">
-              <div class="b_user_card_team_rating">
+          <div class="b-user-card__rating-team">
+            <div class="b-user-card__top-line-rating-status">
+              <div class="b-user-card__team-rating">
                 <star-rating
                     :rating="userData.raiting || 0"
                     :star-size="14"
@@ -43,22 +43,25 @@
                 >
                 </star-rating>
               </div>
-              <div class="b_user_card_team_status">
-                <div class="b_user_card_team">Какая-то команда</div>
-                <div class="b_user_card_status_mob">{{userData.role}}</div>
+              <div class="b-user-card__team-status">
+                <div class="b-user-card__team">Какая-то команда</div>
+                <div class="b-user-card__status-mob">{{userData.role}}</div>
               </div>
             </div>
-            <div class="b_user_card_bottom-line">
+            <!-- <div class="b-user-card__bottom-line">
               <span class="title">{{$t('users.gender')}}</span>
               <span class="icon">
-                <img :src="userData.gender_icon" alt="">
+                <img :src="userData .gender_icon" alt="">
               </span>
               <span>{{userData.profile.gender}}</span>
-            </div>
+            </div> -->
           </div>
-          <div class="b_user_card_user_status">
-            <img src="../assets/img/runner.svg" alt="">
-            <div class="b_user_card_status">{{userData.role}}</div>
+          <div class="b-user-card__user-status">
+            <img src="../assets/img/runner.svg" alt="runner icon">
+            <div class="b-user-card__status">{{userData.role}}</div>
+          </div>
+          <div class="b-user-card__add-to-friends-btn">
+            {{$t('users.add-to-friends')}}
           </div>
           <!--<div-->
           <!--:class="['b_user_card_arrow', {active: userData.isActive}]"-->
@@ -70,18 +73,32 @@
     </template>
 
     <template #content>
-      <div class="b_user_card_pnz">
-        {{userData.profile.position}} <span>{{userData.profile.position}}</span>
+      <div class="b-user-card__flipping-part">
+        <div class="b-user-card__pnz">
+          {{userData.profile.position}} 
+          <span>
+            {{ userPosition[userData.profile.position] }}
+          </span>
+        </div>
+        <div class="b-user-card__gender">
+          <span class="title">{{$t('users.gender')}}</span>
+          <span class="icon">
+            <img src="../assets/img/unisex-icon2.svg" alt="gender icon">
+          </span>
+          <span>{{userData.profile.gender}}</span>
+        </div>
       </div>
     </template>
   </collapsible-panel>
 </template>
 
 <script>
-  import CONSTANTS from '../consts'
   import StarRating from 'vue-star-rating'
+
   import Avatar from './../components/Avatar.vue'
   import CollapsiblePanel from './../components/collapsible/CollapsiblePanel.vue'
+
+  import CONSTANTS from '../consts/index'
 
   export default {
     name: "UserCard",
@@ -97,12 +114,10 @@
         }
       }
     },
-    data() {
-      return {
-        rating: 3,
-      }
-    },
     computed: {
+      userPosition() {
+        return CONSTANTS.users_page.user_position
+      },
       expanding: {
         set() {
           this.$emit('update:expanding', !this.userData?.metadata?.expanding);
@@ -116,33 +131,36 @@
 </script>
 
 <style lang="scss" scoped>
-  .b_user_card {
+  .b-user-card {
     padding: 8px 12px;
-    background: #FFFFFF;
-    border-bottom: 1px solid #EFEFF6;
-    box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
-    border-radius: 8px;
-    overflow: hidden;
+    /* background: #FFFFFF; */
+    /* border-bottom: 1px solid #EFEFF6; */
+    /* box-shadow: 2px 2px 10px rgb(56 56 251 / 10%); */
+    /* border-radius: 8px; */
+    /* overflow: hidden; */
     width: 100%;
+    @media (max-width: 768px) {
+      padding: 8px 12px 8px 0;
+    }
 
-    &_top-line {
+    &__top-line {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: space-between;
     }
 
-    &_picture_name {
+    &__picture-name {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       @media (max-width: 768px) {
         position: relative;
       }
-      .b_user_card_picture {
+      .b-user-card__picture {
         img {
           display: block;
         }
       }
-      .b_user_card_name_pnz {
+      .b-user-card__name-pnz {
         margin-left: 12px;
         font-family: 'Inter';
         font-style: normal;
@@ -150,9 +168,8 @@
         font-size: 14px;
         line-height: 20px;
         color: #262541;
-        .b_user_card_top_line_name_rating {
-          height: 32px;
-          .b_user_card_name {
+        .b-user-card__top-line-name-rating {
+          .b-user-card__name {
             display: flex;
             align-items: center;
             @media (max-width: 768px) {
@@ -160,7 +177,7 @@
               line-height: 16px;
             }
           }
-          .b_user_card_team_rating_mob {
+          .b-user-card__team-rating-mob {
             display: none;
             @media (max-width: 768px) {
               height: auto;
@@ -169,7 +186,7 @@
           }
         }
 
-        .b_user_card_pnz {
+        .b-user-card__pnz {
           margin-top: 6px;
           font-family: 'Inter';
           font-style: normal;
@@ -194,12 +211,12 @@
       }
     }
 
-    &_rating_team {
-      .b_user_card_top_line_rating_status {
+    &__rating-team {
+      .b-user-card__top-line-rating-status {
         display: flex;
         align-items: center;
         height: 32px;
-        .b_user_card_team_rating {
+        .b-user-card__team-rating {
           // .star-rating {
           @media (max-width: 768px) {
             display: none;
@@ -207,8 +224,8 @@
           // }
 
         }
-        .b_user_card_team_status {
-          .b_user_card_team {
+        .b-user-card__team-status {
+          .b-user-card__team {
             font-family: 'Inter';
             font-style: normal;
             font-weight: 400;
@@ -222,7 +239,7 @@
               line-height: 16px;
             }
           }
-          .b_user_card_status_mob {
+          .b-user-card__status-mob {
             display: none;
             @media (max-width: 768px) {
               display: block;
@@ -237,10 +254,113 @@
         }
 
       }
-      .b_user_card_bottom-line {
+      // .b-user-card__bottom-line {
+      //   display: flex;
+      //   align-items: center;
+      //   margin-top: 6px;
+      //   @media (max-width: 768px) {
+      //   }
+      //   .title {
+      //     font-family: 'Inter';
+      //     font-style: normal;
+      //     font-weight: 500;
+      //     font-size: 12px;
+      //     line-height: 20px;
+      //     color: #262541;
+      //     @media (max-width: 768px) {
+      //       display: none;
+      //     }
+      //   }
+      //   .icon {
+      //     display: none;
+      //     width: 20px;
+      //     height: 20px;
+      //     background: #F7F7FC;
+      //     border-radius: 4px;
+      //     @media (max-width: 768px) {
+      //       display: flex;
+      //     }
+      //     img {
+      //       margin: auto;
+      //       width: 10px;
+      //     }
+      //   }
+      //   span {
+      //     font-family: 'Inter';
+      //     font-style: normal;
+      //     font-weight: 400;
+      //     font-size: 12px;
+      //     line-height: 20px;
+      //     color: #575775;
+      //     @media (max-width: 768px) {
+      //       font-weight: 500;
+      //       color: #262541;
+      //     }
+      //   }
+      // }
+    }
+
+    &__user-status {
+      display: flex;
+      align-items: center;
+      height: 32px;
+      @media (max-width: 768px) {
+        display: none;
+      }
+
+      .b-user-card__status {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 16px;
+        color: #262541;
+        margin-left: 8px;
+      }
+    }
+    &__add-to-friends-btn {
+      padding: 2px 12px;
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 24px;
+      text-align: center;
+      color: #262541;
+      border: 1px solid #575775;
+      border-radius: 6px;
+      cursor: pointer;
+      @media (max-width: 1200px) {
+        display: none;
+      }
+    }
+    &__flipping-part {
+      display: flex;
+      margin-left: 60px;
+      @media (max-width: 768px) {
+        margin-left: 0;
+      }
+      .b-user-card__pnz {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 20px;
+        color: #262541;
+        margin-right: 34px;
+        span {
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 12px;
+          line-height: 20px;
+          color: #575775;
+        }
+      }
+
+      .b-user-card__gender {
         display: flex;
         align-items: center;
-        margin-top: 6px;
         @media (max-width: 768px) {
         }
         .title {
@@ -250,22 +370,16 @@
           font-size: 12px;
           line-height: 20px;
           color: #262541;
+          margin-right: 3px;
           @media (max-width: 768px) {
             display: none;
           }
         }
         .icon {
           display: none;
-          width: 20px;
-          height: 20px;
-          background: #F7F7FC;
-          border-radius: 4px;
+          margin-right: 4px;
           @media (max-width: 768px) {
-            display: flex;
-          }
-          img {
-            margin: auto;
-            width: 10px;
+            display: inherit;
           }
         }
         span {
@@ -281,34 +395,7 @@
           }
         }
       }
-    }
 
-    &_user_status {
-      display: flex;
-      align-items: center;
-      height: 32px;
-      @media (max-width: 768px) {
-        display: none;
-      }
-
-      .b_user_card_status {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 13px;
-        line-height: 16px;
-        color: #262541;
-        margin-left: 8px;
-      }
-    }
-    &_arrow {
-      height: 32px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      &.active {
-        transform: rotate(180deg);
-      }
     }
   }
 </style>

@@ -112,8 +112,6 @@ export default {
       return await API.LocationService.GetPlaceByAddress(str)
     }
     PositionMapBus.on('update:coords', (e) => {
-      debugger
-      console.log(e.place);
       region.value = e.place.state;
       city.value = e.place.city;
       address.value = `${e.place.neighbourhood || ''} ${e.place.road || ''} ${e.place.house_number || ''} ${e.place.postcode || ''}`;
