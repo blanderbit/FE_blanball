@@ -17,6 +17,5 @@ export default {
   'filters': 'Фільтри',
   'chose-date': 'Обрати дату',
   'planned-events': 'Заплановані події',
-  'your-events': 'Заходи у яких ви запланували участь',
-  'add-to-friends': 'Додати у друзі'
+  'your-events': 'Заходи у яких ви запланували участь'
 }

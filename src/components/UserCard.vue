@@ -60,9 +60,6 @@
             <img src="../assets/img/runner.svg" alt="runner icon">
             <div class="b-user-card__status">{{userData.role}}</div>
           </div>
-          <div class="b-user-card__add-to-friends-btn">
-            {{$t('users.add-to-friends')}}
-          </div>
           <!--<div-->
           <!--:class="['b_user_card_arrow', {active: userData.isActive}]"-->
           <!--&gt;-->
@@ -316,22 +313,6 @@
         line-height: 16px;
         color: #262541;
         margin-left: 8px;
-      }
-    }
-    &__add-to-friends-btn {
-      padding: 2px 12px;
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 13px;
-      line-height: 24px;
-      text-align: center;
-      color: #262541;
-      border: 1px solid #575775;
-      border-radius: 6px;
-      cursor: pointer;
-      @media (max-width: 1200px) {
-        display: none;
       }
     }
     &__flipping-part {
