@@ -10,8 +10,8 @@
           <div class="b_user_card_picture_name">
             <div class="b_user_card_picture">
               <avatar
-                  :link="userData.profile.avatar_url"
-                  :full-name="userData.profile.name + ' ' + userData.profile.last_name"
+                :link="userData.profile.avatar_url"
+                :full-name="userData.profile.name + ' ' + userData.profile.last_name"
               ></avatar>
             </div>
             <div class="b_user_card_name_pnz">
@@ -19,11 +19,11 @@
                 <div class="b_user_card_name">{{userData.profile.name}} {{userData.profile.last_name}}</div>
                 <div class="b_user_card_team_rating_mob">
                   <star-rating
-                      :rating="userData.raiting || 0"
-                      :star-size="14"
-                      :show-rating="false"
-                      :read-only="true"
-                      :active-color="'#148783'"
+                    :rating="userData.raiting || 0"
+                    :star-size="14"
+                    :show-rating="false"
+                    :read-only="true"
+                    :active-color="'#148783'"
                   >
                   </star-rating>
                 </div>
@@ -71,7 +71,8 @@
 
     <template #content>
       <div class="b_user_card_pnz">
-        {{userData.profile.position}} <span>{{userData.profile.position}}</span>
+        {{userData.profile.position}} 
+        <span>{{userData.profile.position}}</span>
       </div>
     </template>
   </collapsible-panel>

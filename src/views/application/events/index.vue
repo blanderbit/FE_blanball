@@ -37,7 +37,11 @@
           :cities-dropdown="mockData.cities_dropdown"
         />
         <div class="b-events-page__all-events-block">
-          <div class="b-events-page__cards-event-wrapper" ref="scrollComponent">
+          <div 
+            v-if="eventCards"
+            class="b-events-page__cards-event-wrapper" 
+            ref="scrollComponent"
+          >
             <SmallLoader :is-active="isLoaderActive" />
             <EventCard
               v-for="card of eventCards"
@@ -46,6 +50,11 @@
               @go-to-event-page="goToEventPage(card.id)"
             />
           </div>
+          <EmptyList
+            v-else
+            :title="emptyListMessages.title"
+            :description="emptyListMessages.title"
+          />
         </div>
       </div>
     </div>
@@ -69,6 +78,7 @@ import SmallLoader from '../../../components/SmallLoader.vue'
 import SearchBlockEvents from '../../../components/SearchBlockEvents.vue'
 import MyEventCard from '../../../components/MyEventCard.vue'
 import RightSidebar from '../../../components/RightSidebar.vue'
+import EmptyList from '../../../components/EmptyList.vue'
 
 import CONSTANTS from '../../../consts/index'
 
@@ -85,6 +95,8 @@ export default {
   name: 'EventsPage',
   components: {
     GreenBtn,
+    Dropdown,
+    EmptyList,
     InputComponent,
     ContextMenu,
     EventCard,
@@ -111,6 +123,13 @@ export default {
         cities_dropdown: CONSTANTS.event_page.cities_dropdown
       }
     })
+
+    const emptyListMessages = computed(() => {
+      return {
+        title: "Немає повідомлень для відображення",
+        description: "Вам ще не надходили сповіщення від інших користувачів"
+      }
+    });
 
     function getDate(date) {
       return dayjs(date).locale(dayjsUkrLocale).format('D MMMM')
@@ -180,6 +199,7 @@ export default {
     })
 
     return {
+      emptyListMessages,
       scrollComponent,
       eventCards,
       isLoaderActive,

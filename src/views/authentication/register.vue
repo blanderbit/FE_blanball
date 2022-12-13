@@ -144,7 +144,7 @@
     },
     setup() {
       const router = useRouter();
-      const currentStep = ref(6);
+      const currentStep = ref(1);
       const context = useForm();
       const initialValues = ref({
         email: "Yariktest@gmai.com",
