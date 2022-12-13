@@ -163,24 +163,13 @@
                     :title="emptyListMessages.title"
                     :description="emptyListMessages.title"
                   />
-                  <!--<empty-list-->
-                      <!--v-if="!paginationElements.length"-->
-                      <!--:title="emptyListMessages.title"-->
-                      <!--:description="emptyListMessages.title">-->
-                  <!--</empty-list> TODO добавить значения в компонент пустого списка-->
-                  <!--<div class="b-return-top d-flex justify-content-between align-items-center my-3"-->
-                       <!--v-if="paginationElements.length && blockScrollToTopIfExist">-->
-                    <!--<div>Ви досягли кінця списку</div>-->
-                    <!--<button-->
-                        <!--class="b-button-scroll__to-first-element d-flex justify-content-between"-->
-                        <!--@click="scrollToFirstElement()">-->
-                      <!--Вгору-->
-                      <!--<img src="../assets/img/arrow_up.svg">-->
-                    <!--</button>-->
-                  <!--</div>-->
-                  <!--<div v-if="!blockScrollToTopIfExist"></div>
-                  TODO сделать компонент вверх, на основе функционала который в нотификациях
-                  -->
+
+                  <ScrollToTop 
+                    :element-length="paginationElements"
+                    :is-scroll-top-exist="blockScrollToTopIfExist"
+                    @scroll-button-clicked="scrollToFirstElement()"
+                  />
+                 
                 </template>
               </InfiniteLoading>
             </template>
@@ -304,7 +293,8 @@ import { useRoute } from 'vue-router'
 import InputComponent from '../../../components/forms/InputComponent.vue'
 import UserCard from '../../../components/UserCard.vue'
 import SmartList from '../../../components/smart-list/SmartList.vue'
-import EmptyList from '../../../components/EmptyList.vue';
+import EmptyList from '../../../components/EmptyList.vue'
+import ScrollToTop from '../../../components/ScrollToTop.vue'
 
 import members from '../../../assets/img/members.svg'
 import runner from '../../../assets/img/runner.svg'
@@ -326,7 +316,8 @@ export default {
     InputComponent,
     UserCard,
     SmartList,
-    InfiniteLoading
+    InfiniteLoading,
+    ScrollToTop
   },
   setup() {
     const route = useRoute();

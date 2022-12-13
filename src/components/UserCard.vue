@@ -129,7 +129,7 @@
 
 <style lang="scss" scoped>
   .b-user-card {
-    padding: 8px 12px;
+    padding: 8px 12px 8px 0;
     /* background: #FFFFFF; */
     /* border-bottom: 1px solid #EFEFF6; */
     /* box-shadow: 2px 2px 10px rgb(56 56 251 / 10%); */
@@ -141,9 +141,12 @@
     }
 
     &__top-line {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      @media (max-width: 768px) {
+        display: flex;
+        justify-content: space-between;
+      }
     }
 
     &__picture-name {
@@ -303,6 +306,7 @@
     &__user-status {
       display: flex;
       align-items: center;
+      justify-content: flex-end;
       height: 32px;
       @media (max-width: 768px) {
         display: none;
