@@ -121,7 +121,6 @@
 import { computed, ref } from 'vue'
 
 import GreenBtn from '../GreenBtn.vue'
-import Dropdown from '../forms/Dropdown.vue'
 import InputComponent from '../forms/InputComponent.vue'
 
 import arrowRight from '../../assets/img/arrow-right-white.svg'
@@ -131,7 +130,6 @@ export default {
   name: 'Step5',
   components: {
     GreenBtn,
-    Dropdown,
     InputComponent,
   },
   setup() {

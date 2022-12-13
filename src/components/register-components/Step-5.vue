@@ -45,7 +45,7 @@
         ></InputComponent>
         <Dropdown
             :outside-title="true"
-            :main-title="'Ударна нога'"
+            :main-title="$t('register.main-leg')"
             :options="mockData.main_lag"
             :width="200"
             :height="40"
@@ -55,7 +55,7 @@
         />
         <Dropdown
             :outside-title="true"
-            :main-title="'Позиция'"
+            :main-title="$t('register.position')"
             :options="mockData.position"
             :width="200"
             :height="40"

@@ -71,7 +71,6 @@ import dayjsUkrLocale from 'dayjs/locale/uk'
 import { useI18n } from 'vue-i18n'
 
 import GreenBtn from '../../../components/GreenBtn.vue'
-import Dropdown from '../../../components/forms/Dropdown.vue'
 import InputComponent from '../../../components/forms/InputComponent.vue'
 import ContextMenu from '../../../components/ContextMenuModal.vue'
 import EventCard from '../../../components/event-components/EventCard.vue'

@@ -88,18 +88,21 @@
             <div v-else class="b-user-card__dropdowns">
               <div class="b-user-card__dropdown-days">
                 <Dropdown
+                  :main-title="$t('profile.day')"
                   :options="mockData.days"
                   name="day"
                 />
               </div>
               <div class="b-user-card__dropdown-months">
                 <Dropdown
+                  :main-title="$t('profile.month')"
                   :options="mockData.months"
                   name="month"
                 />
               </div>
               <div class="b-user-card__dropdown-years">
                 <Dropdown
+                  :main-title="$t('profile.year')"
                   :options="mockData.years"
                   name="year"
                 />
@@ -161,6 +164,7 @@
                 class="b-user-card__dropdown-main-leg"
               >
                 <Dropdown
+                  :main-title="$t('profile.main-leg')"
                   :options="mockData.mainLag"
                   name="working_leg"
                 />
@@ -176,13 +180,15 @@
                 {{ $t('profile.game-position') }}
               </div>
             </div>
-            <InputComponent
+            <Dropdown
               v-else
-              :title="$t('profile.game-position')"
-              :title-width="0"
               :outside-title="true"
+              :main-title="$t('profile.game-position')"
+              :options="mockData.position"
+              :width="200"
               :height="40"
-              :icon="icons.sortIcon"
+              display-name="value"
+              display-value="value"
               name="position"
             />
           </div>
@@ -299,6 +305,7 @@ export default {
         mainLag: CONSTANTS.profile.mainLeg,
         cities: CONSTANTS.profile.cities,
         district: CONSTANTS.profile.district,
+        position: CONSTANTS.profile.position
       }
     })
 

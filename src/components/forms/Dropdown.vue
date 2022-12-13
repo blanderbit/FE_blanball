@@ -1,6 +1,12 @@
 <template>
-  <div>
+  <div class="b-dropdown">
+    <div class="b-dropdown__title">
+      <span>
+        {{ mainTitle }}
+      </span>
+    </div>
     <v-select
+      :placeholder="modelValue"
       :options="options"
       :label="displayName || 'value'"
       append-to-body
@@ -28,13 +34,9 @@ export default {
     vSelect
   },
   props: {
-    insideTitle: {
-      type: Boolean,
-      default: false
-    },
     mainTitle: {
       type: String,
-      default: 'Title'
+      default: ''
     },
     displayName: {
       type: String,
@@ -218,4 +220,23 @@ export default {
     border-bottom-style: none;
     box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.15);
   }
+
+  .b-dropdown {
+    position: relative;
+    .b-dropdown__title {
+      position: absolute;
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+      color: #575775;
+      background: #FFFFFF;
+      padding: 0px 4px;
+      left: 8px;
+      top: -8px;
+      z-index: 1;
+    }
+  }
+
 </style>
