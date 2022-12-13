@@ -165,6 +165,9 @@
         font-size: 14px;
         line-height: 20px;
         color: #262541;
+        @media (max-width: 576px) {
+          width: 110px;
+        }
         .b-user-card__top-line-name-rating {
           .b-user-card__name {
             display: flex;
