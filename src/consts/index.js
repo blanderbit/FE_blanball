@@ -9,6 +9,7 @@ import EventPage from './event-page'
 import ManageEvent from './manage-event'
 import Dates from './dates'
 import Profile from './profile'
+import NoDataNotifications from './no-data-notifications'
 
 export default {
   users_page: UsersPage,
@@ -21,5 +22,6 @@ export default {
   event_page: EventPage,
   manage_event: ManageEvent,
   dates: Dates,
-  profile: Profile
+  profile: Profile,
+  no_data_notifications: NoDataNotifications
 }

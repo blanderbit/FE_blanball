@@ -10,8 +10,8 @@
           <div class="b-user-card__picture-name">
             <div class="b-user-card__picture">
               <avatar
-                  :link="userData.profile.avatar_url"
-                  :full-name="userData.profile.name + ' ' + userData.profile.last_name"
+                :link="userData.profile.avatar_url"
+                :full-name="userData.profile.name + ' ' + userData.profile.last_name"
               ></avatar>
             </div>
             <div class="b-user-card__name-pnz">
@@ -19,11 +19,11 @@
                 <div class="b-user-card__name">{{userData.profile.name}} {{userData.profile.last_name}}</div>
                 <div class="b-user-card__team-rating-mob">
                   <star-rating
-                      :rating="userData.raiting || 0"
-                      :star-size="14"
-                      :show-rating="false"
-                      :read-only="true"
-                      :active-color="'#148783'"
+                    :rating="userData.raiting || 0"
+                    :star-size="14"
+                    :show-rating="false"
+                    :read-only="true"
+                    :active-color="'#148783'"
                   >
                   </star-rating>
                 </div>

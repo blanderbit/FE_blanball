@@ -43,7 +43,11 @@
           :gender-dropdown="mockData.gender_dropdown"
           :cities-dropdown="mockData.cities_dropdown"
         />
-        <div class="b-events-page__my-events-block" ref="scrollComponent">
+        <div 
+          v-if="eventCards"
+          class="b-events-page__my-events-block" 
+          ref="scrollComponent"
+        >
           <MyEventCard
             v-for="card of eventCards"
             :key="card.id"
@@ -51,6 +55,11 @@
             @card-right-click="myCardRightClick"
           />
         </div>
+        <EmptyList
+          v-else
+          :title="emptyListMessages.title"
+          :description="emptyListMessages.title"
+        />
       </div>
     </div>
 
@@ -66,7 +75,6 @@ import dayjsUkrLocale from 'dayjs/locale/uk'
 import { useI18n } from 'vue-i18n'
 
 import GreenBtn from '../../../components/GreenBtn.vue'
-import Dropdown from '../../../components/forms/Dropdown.vue'
 import InputComponent from '../../../components/forms/InputComponent.vue'
 import ContextMenu from '../../../components/ContextMenuModal.vue'
 import EventCard from '../../../components/event-components/EventCard.vue'
@@ -74,6 +82,7 @@ import SmallLoader from '../../../components/SmallLoader.vue'
 import SearchBlockEvents from '../../../components/SearchBlockEvents.vue'
 import MyEventCard from '../../../components/MyEventCard.vue'
 import RightSidebar from '../../../components/RightSidebar.vue'
+import EmptyList from '../../../components/EmptyList.vue'
 
 import CONSTANTS from '../../../consts/index'
 
@@ -90,7 +99,6 @@ export default {
   name: 'EventsPage',
   components: {
     GreenBtn,
-    Dropdown,
     InputComponent,
     ContextMenu,
     EventCard,
@@ -98,6 +106,7 @@ export default {
     SearchBlockEvents,
     MyEventCard,
     RightSidebar,
+    EmptyList
   },
   setup() {
     const scrollComponent = ref(null)
@@ -123,6 +132,13 @@ export default {
         menu_text: CONSTANTS.event_page.menu_text,
       }
     })
+
+    const emptyListMessages = computed(() => {
+      return {
+        title: "Немає повідомлень для відображення",
+        description: "Вам ще не надходили сповіщення від інших користувачів"
+      }
+    });
 
     function switchEvents() {
       router.push(ROUTES.APPLICATION.EVENTS.absolute)
@@ -202,6 +218,7 @@ export default {
       eventCards,
       isLoaderActive,
       mockData,
+      emptyListMessages,
       myCardRightClick,
       goToEventPage,
       goToCreateEvent,
