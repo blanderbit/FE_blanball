@@ -161,7 +161,9 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss">
-
+html {
+  overflow: hidden
+}
 * {
   margin: 0;
   padding: 0;

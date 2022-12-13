@@ -167,6 +167,7 @@ export default {
 
 <style scoped lang="scss">
 .b-versions {
+  overflow-y: scroll;
   &__title-level1 {
     font-weight: 700;
     font-size: 20px;
