@@ -259,20 +259,20 @@ export default {
     })
 
     const formValues = ref({
-      last_name: route.meta.usersData.data.profile.last_name,
-      name: route.meta.usersData.data.profile.name,
-      about_me: route.meta.usersData.data.profile.about_me,
-      day: getBirthDay(route.meta.usersData.data.profile.birthday),
-      month: getBirthMonth(route.meta.usersData.data.profile.birthday),
-      year: getBirthYear(route.meta.usersData.data.profile.birthday),
-      height: route.meta.usersData.data.profile.height,
-      weight: route.meta.usersData.data.profile.weight,
-      working_leg: getWorkingLeg(route.meta.usersData.data.profile.working_leg),
-      position: route.meta.usersData.data.profile.position,
-      phone: route.meta.usersData.data.phone,
-      config_phone: route.meta.usersData.data.configuration.phone,
-      config_email: route.meta.usersData.data.configuration.email,
-      show_reviews: route.meta.usersData.data.configuration.show_reviews
+      last_name: route.meta.usersData.data.profile?.last_name,
+      name: route.meta.usersData.data.profile?.name,
+      about_me: route.meta.usersData.data.profile?.about_me,
+      day: getBirthDay(route.meta.usersData.data.profile?.birthday),
+      month: getBirthMonth(route.meta.usersData.data.profile?.birthday),
+      year: getBirthYear(route.meta.usersData.data.profile?.birthday),
+      height: route.meta.usersData.data.profile?.height,
+      weight: route.meta.usersData.data.profile?.weight,
+      working_leg: getWorkingLeg(route.meta.usersData.data.profile?.working_leg),
+      position: route.meta.usersData.data.profile?.position,
+      phone: route.meta.usersData.data?.phone,
+      config_phone: route.meta.usersData.data.configuration?.phone,
+      config_email: route.meta.usersData.data.configuration?.email,
+      show_reviews: route.meta.usersData.data.configuration?.show_reviews
     })
     
     const checkboxData = reactive({})
@@ -311,24 +311,24 @@ export default {
     })
 
     userInfo.value = {
-      ...route.meta.usersData.data,
+      ...route.meta.usersData?.data,
       profile: {
-        ...route.meta.usersData.data.profile,
-        working_leg: getWorkingLeg(route.meta.usersData.data.profile.working_leg)
+        ...route.meta.usersData.data?.profile,
+        working_leg: getWorkingLeg(route.meta.usersData.data.profile?.working_leg)
       }
     }
-    userRating.value = route.meta.usersData.data.raiting
-    userPhone.value = route.meta.usersData.data.phone
-    userEmail.value = route.meta.usersData.data.email
+    userRating.value = route.meta.usersData.data?.raiting
+    userPhone.value = route.meta.usersData.data?.phone
+    userEmail.value = route.meta.usersData.data?.email
     userData.value = {
-      ...route.meta.usersData.data.profile,
-      working_leg: getWorkingLeg(route.meta.usersData.data.profile.working_leg)
+      ...route.meta.usersData.data?.profile,
+      working_leg: getWorkingLeg(route.meta.usersData.data.profile?.working_leg)
     }
 
     checkboxData.value = {
-      checkboxPhone: route.meta.usersData.data.configuration.phone,
-      checkboxEmail: route.meta.usersData.data.configuration.email,
-      checkboxReviews: route.meta.usersData.data.configuration.show_reviews
+      checkboxPhone: route.meta.usersData.data.configuration?.phone,
+      checkboxEmail: route.meta.usersData.data.configuration?.email,
+      checkboxReviews: route.meta.usersData.data.configuration?.show_reviews
     }
 
     function getBirthDay(val) {
@@ -387,7 +387,7 @@ export default {
         const profileData = {
           ...refProfileData,
           birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
-          gender: route.meta.usersData.data.profile.gender,
+          gender: route.meta.usersData.data.profile?.gender,
           working_leg: getWorkingLeg(working_leg),
         }
         delete profileData.day
@@ -430,25 +430,25 @@ export default {
       API.UserService.getMyProfile()
         .then(res => {
           formValues.value = {
-            last_name: res.data.profile.last_name,
-            name: res.data.profile.name,
-            about_me: res.data.profile.about_me,
-            day: getBirthDay(res.data.profile.birthday),
-            month: getBirthMonth(res.data.profile.birthday),
-            year: getBirthYear(res.data.profile.birthday),
-            height: res.data.profile.height,
-            weight: res.data.profile.weight,
-            working_leg: getWorkingLeg(res.data.profile.working_leg),
-            position: res.data.profile.position,
-            phone: res.data.phone,
-            config_phone: res.data.configuration.phone,
-            config_email: res.data.configuration.email,
-            show_reviews: res.data.configuration.show_reviews
+            last_name: res.data.profile?.last_name,
+            name: res.data.profile?.name,
+            about_me: res.data.profile?.about_me,
+            day: getBirthDay(res.data.profile?.birthday),
+            month: getBirthMonth(res.data.profile?.birthday),
+            year: getBirthYear(res.data.profile?.birthday),
+            height: res.data.profile?.height,
+            weight: res.data.profile?.weight,
+            working_leg: getWorkingLeg(res.data.profile?.working_leg),
+            position: res.data.profile?.position,
+            phone: res.data?.phone,
+            config_phone: res.data.configuration?.phone,
+            config_email: res.data.configuration?.email,
+            show_reviews: res.data.configuration?.show_reviews
           }
           userInfo.value = res.data
           userData.value = {
-            ...res.data.profile,
-            working_leg: getWorkingLeg(res.data.profile.working_leg)
+            ...res.data?.profile,
+            working_leg: getWorkingLeg(res.data.profile?.working_leg)
           }
           isLoading.value = false
         })
