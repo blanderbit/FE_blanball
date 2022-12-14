@@ -28,7 +28,6 @@
         {{$t('register.you-played-football')}}
       </div>
       <div class="b-register-step__experience-block">
-
         <InputComponent
             :outside-title="true"
             :title="$t('register.height')"

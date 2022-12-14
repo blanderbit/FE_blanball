@@ -95,7 +95,6 @@ export default {
   name: 'EventsPage',
   components: {
     GreenBtn,
-    Dropdown,
     EmptyList,
     InputComponent,
     ContextMenu,

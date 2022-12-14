@@ -30,13 +30,11 @@
           <InputComponent
               :title="`Пароль`"
               :title-width="0"
-              :type="['password', 'text']"
+              :type="'password'"
               :outside-title="true"
               :placeholder="'********'"
-              :has-icon="true"
               name="password"
               :height="40"
-              :icon="[eyeCrossed, eyeOpened]"
           />
         </div>
 
