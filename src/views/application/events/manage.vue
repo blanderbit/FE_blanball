@@ -348,7 +348,6 @@
 <script>
 import { computed, reactive } from 'vue'
 
-import Dropdown from '../../../components/forms/Dropdown.vue'
 import InputComponent from '../../../components/forms/InputComponent.vue'
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
@@ -363,7 +362,6 @@ import CONSTANTS from '../../../consts/index'
 export default {
   name: 'CreateEventPage',
   components: {
-    Dropdown,
     InputComponent,
     GreenBtn,
     WhiteBtn,

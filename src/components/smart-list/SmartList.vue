@@ -108,9 +108,14 @@
 </script>
 
 <style scoped lang="scss">
-
   .scroller {
     height: 100%;
   }
-
+  ::v-deep {
+    .vcp--expandable {
+      background: #FFFFFF;
+      border-bottom: 1px solid #EFEFF6;
+      box-shadow: 2px 2px 10px rgb(56 56 251 / 10%);
+    }
+  }
 </style>

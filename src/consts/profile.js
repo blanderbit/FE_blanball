@@ -27,7 +27,7 @@ export default {
     { value: 'RF' },
     { value: 'CF' },
     { value: 'LF' },
-    { value: 'ST' },
+    { value: 'ST' }
   ],
   cities: [
     { value: 'Sinaya' },

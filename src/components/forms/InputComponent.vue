@@ -225,6 +225,7 @@ export default {
       left: 8px;
       top: -8px;
       background: #ffffff;
+      color: #575775;
       border-radius: 4px;
       font-family: 'Inter';
       font-style: normal;

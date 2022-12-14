@@ -16,7 +16,11 @@
 </template>
 
 <script>
+  import { computed } from 'vue'
+
   import EmptyNotificationsSvg from '../assets/img/no-records/empty-notifications.svg'
+  import NoData from '../assets/img/no-records/no_data.svg'
+
   export default {
     name: "EmptyList",
     props: {
@@ -28,11 +32,20 @@
         type: String,
         require: true
       },
-      imageLink: {
-        type: String,
+      isNotification: {
+        type: Boolean,
         require: false,
-        default: EmptyNotificationsSvg
+        default: false
       },
+    },
+    setup({isNotification}) {
+      const imageLink = computed(() => {
+        return isNotification ? EmptyNotificationsSvg : NoData
+      })
+
+      return {
+        imageLink
+      }
     }
   }
 </script>
