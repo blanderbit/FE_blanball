@@ -29,7 +29,8 @@ export const EndpointsEnum = {
     sendApproveCode: '/authentication/client/check/code',
     changePassword: '/authentication/client/request-change/password',
     updateProfileData: '/authentication/client/me/update',
-    getAllUsers: '/authentication/client/users/list'
+    getAllUsers: '/authentication/client/users/list',
+    changeUserEmail: '/authentication/client/request-change/email'
   },
   Reviews: {
     getUserReviews: '/reviews/client/user/reviews/list/'

@@ -5,45 +5,12 @@
     />
     <!-- Modals delete -->
 
-    <!-- <Transition>
-      <ModalWindow
-        v-if="isModalActive.email"
-        @close-modal="toggleModal('email')"
-      >
-        <template #title>
-          {{ $t('modals.change_login.title') }}
-        </template>
-        <template #title-icon>
-          <img src="../../../assets/img/envelop.svg" alt="" />
-        </template>
-        <template #change-login>
-          <div class="inut-wrapper">
-            <InputComponent
-              :title="$t('modals.change_login.current-email')"
-              :placeholder="'stefa.kalyna@gmail.com'"
-              :outside-title="true"
-              :title-width="0"
-            />
-          </div>
-          <div class="inut-wrapper">
-            <InputComponent
-              :title="$t('modals.change_login.new-email')"
-              :placeholder="'stefa.kalyna@gmail.com'"
-              :outside-title="true"
-              :title-width="0"
-            />
-          </div>
-          <div class="btns-block">
-            <div class="cancle-btn" @click="toggleModal('email')">
-              {{ $t('buttons.cancel-editing') }}
-            </div>
-            <div class="save-btn" @click="toggleModal('email')">
-              {{ $t('buttons.save-changes') }}
-            </div>
-          </div>
-        </template>
-      </ModalWindow>
-    </Transition> -->
+    <ChangeEmailModal
+      v-if="isModalActive.email"
+      :user-email="userEmail"
+      @close-modal="toggleModal"
+      @email="getMyProfile"
+    />
 
     <DeleteAccountModal
       v-if="isModalActive.delete_acc"
@@ -203,6 +170,7 @@ import Loading from '../../../workers/loading-worker/Loading.vue'
 import DeleteAccountModal from '../../../components/user-cabinet-modals/DeleteAccountModal.vue'
 import ChangePasswordModal from '../../../components/user-cabinet-modals/ChangePasswordModal.vue'
 import ChangeUserDataModal from '../../../components/user-cabinet-modals/ChangeUserDataModal.vue'
+import ChangeEmailModal from '../../../components/user-cabinet-modals/ChangeEmailModal.vue'
 
 import edit from '../../../assets/img/edit-white.svg'
 
@@ -231,7 +199,8 @@ export default {
     ChangePasswordModal,
     ChangeUserDataModal,
     Form,
-    Loading
+    Loading,
+    ChangeEmailModal
   },
   setup(props) {
     const { t } = useI18n()
@@ -427,6 +396,7 @@ export default {
     }
     
     function getMyProfile() {
+      console.log('getMyProfile')
       isLoading.value = true
       API.UserService.getMyProfile()
         .then(res => {
@@ -451,6 +421,7 @@ export default {
             ...res.data?.profile,
             working_leg: getWorkingLeg(res.data.profile?.working_leg)
           }
+          userEmail.value = res.data?.email
           isLoading.value = false
         })
     }
@@ -498,6 +469,7 @@ export default {
       toggleModal,
       saveDataEdit,
       cancelDataEdit,
+      getMyProfile,
       userRating,
       userPhone,
       userEmail,

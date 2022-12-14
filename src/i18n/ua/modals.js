@@ -2,7 +2,9 @@ export default {
   change_login: {
     'title': 'Зміна логіну облікового запису',
     'current-email': 'Поточний E-mail',
-    'new-email': 'Новий E-mail'
+    'new-email': 'Новий E-mail',
+    'email': 'E-mail',
+    'code-message': 'Лист із кодом підтвердження прийде за адресою'
   },
   delete_acc: {
     'title': 'Видалення акаунту',
