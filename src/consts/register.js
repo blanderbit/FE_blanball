@@ -2185,7 +2185,7 @@ export default {
   })),
   years: Array.from({ length: 23 }, (v,k) => ({
     id: k,
-    value: 2000 + k
+    value: `${2000 + k}`
   })),
   jsonCityRegions,
   authBlockTypes: {

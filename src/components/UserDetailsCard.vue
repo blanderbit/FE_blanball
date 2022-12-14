@@ -16,11 +16,13 @@
           </div>
           <div class="b-user-card__labels">
             <div
-              v-for="label in mockData.labels"
+              v-for="label in labels"
               :key="label"
               class="b-user-card__label"
             >
-              # {{ label.title }}
+              <span v-if="label">
+                # {{ label }}
+              </span>
             </div>
           </div>
         </div>
@@ -291,7 +293,15 @@ export default {
   },
   emits: [],
   setup(props, context) {
+    console.log(props.userData)
     const currentTab = ref(0)
+
+    const labels = ref([
+      props.userData.age ? `${props.userData.age} років` : null ,
+      props.userData.gender ,
+      props.userData.role ,
+      props.userData.position
+    ])
 
     const mockData = computed(() => {
       return {
@@ -332,7 +342,8 @@ export default {
       currentTab,
       icons,
       birthDate,
-      mockData
+      mockData,
+      labels
     }
   }
 }
@@ -395,18 +406,21 @@ export default {
           display: flex;
           flex-wrap: wrap;
           .b-user-card__label {
-            margin-top: 4px;
-            margin-right: 4px;
-            background: #148581;
-            border-radius: 100px;
-            padding: 0 8px;
-            height: 20px;
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 500;
-            font-size: 12px;
-            line-height: 20px;
-            color: #ffffff;
+            span {
+              display: block;
+              margin-top: 4px;
+              margin-right: 4px;
+              background: #148581;
+              border-radius: 100px;
+              padding: 0 8px;
+              height: 20px;
+              font-family: 'Inter';
+              font-style: normal;
+              font-weight: 500;
+              font-size: 12px;
+              line-height: 20px;
+              color: #ffffff;
+            }
           }
         }
       }

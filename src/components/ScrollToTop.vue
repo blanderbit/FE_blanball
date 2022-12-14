@@ -4,7 +4,7 @@
       class="b-scroll-top__return-top my-3"
       v-if="elementLength.length && isScrollTopExist"
     >
-      <div>{{ $t('scroll_top_component.end-reached') }}</div>
+      <div class="b-scroll-top__scroll-text">{{ $t('scroll_top_component.end-reached') }}</div>
       <button
         class="b-scroll-top__to-first-element"
         @click="$emit('scrollButtonClicked')"
@@ -22,8 +22,8 @@ export default {
   name: 'ScrollToTop',
   props: {
     elementLength: {
-      type: Number,
-      default: 0
+      type: Array,
+      default: () => []
     },
     isScrollTopExist: {
       type: Boolean
@@ -40,9 +40,33 @@ export default {
     justify-content: space-between;
     align-items: center;
   }
+  &__scroll-text {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 20px;
+    color: #575775;
+  }
   &__to-first-element {
     display: flex;
     justify-content: space-between;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 24px;
+    color: #575775;
+    padding: 2px 12px;
+    background: #EFEFF6;
+    border-radius: 6px;
+    border: none;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 10px;
+    img {
+      margin-left: 12px;
+    }
   }
 }
 </style>
