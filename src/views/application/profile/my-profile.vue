@@ -70,47 +70,18 @@
           {{ $t('profile.change-personal-data') }}
         </div>
       </div>
-      <div
-        class="b-user-cabinet__buttons"
-      >
-        <div
-          v-if="isEditModeProfile"
-          class="b-user-cabinet__save-cancel-btns"
-        >
-          <div class="b-user-cabinet__btns-line">
-            <div class="b-user-cabinet__btn-wrapper">
-              <WhiteBtn 
-                :text="$t('buttons.cancel')" 
-                :width="98"
-                @click-function="cancelDataEdit"
-              />
-            </div>
-            <GreenBtn
-              :text="$t('buttons.save')"
-              :width="89"
-              @click-function="saveDataEdit"
-            />
-          </div>
-          <div 
-            class="b-user-cabinet__look-preview"
-            @click="toggleModal('public_profile')"
-          >
-          {{ $t('profile.how-profile-looks') }}
-          </div>
-        </div>
-        <div
-          v-else
-          class="b-user-cabinet__edit-button"
-        >
-          <GreenBtn
-            :text="$t('buttons.edit-profile')"
-            :width="197"
-            :height="40"
-            :icon-right="icons.editIcon"
-            @click-function="toggleEditMode"
-          />
-        </div>
-      </div>
+
+      <ButtonsBlock 
+        v-if="windowWidth > 768"
+        :cancel-btn-width="'auto'"
+        :save-btn-width="'auto'"
+        :is-edit-mode-profile="isEditModeProfile"
+        @cancel-data-edit="cancelDataEdit"
+        @save-data-edit="saveDataEdit"
+        @toggle-modal="toggleModal"
+        @toggle-edit-mode="toggleEditMode"
+      />
+
     </div>
     <div class="b-user-cabinet__tab-block">
       <div
@@ -144,13 +115,24 @@
           :checkbox-data="checkboxData"
           :is-edit-mode="isEditModeProfile"
         />
+        <ButtonsBlock
+          v-if="windowWidth <= 768"
+          :is-edit-mode-profile="isEditModeProfile"
+          :edit-btn-width="'auto'"
+          :cancel-btn-width="'auto'"
+          :save-btn-width="'auto'"
+          @cancel-data-edit="cancelDataEdit"
+          @save-data-edit="saveDataEdit"
+          @toggle-modal="toggleModal"
+          @toggle-edit-mode="toggleEditMode"
+        />
       </Form>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, computed, reactive } from 'vue'
+import { ref, computed, reactive, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Form } from '@system.it.flumx.com/vee-validate'
@@ -167,12 +149,11 @@ import UserDetailsCard from '../../../components/UserDetailsCard.vue'
 import SecurityBlock from '../../../components/SecurityBlock.vue'
 import Loading from '../../../workers/loading-worker/Loading.vue'
 
-import DeleteAccountModal from '../../../components/user-cabinet-modals/DeleteAccountModal.vue'
-import ChangePasswordModal from '../../../components/user-cabinet-modals/ChangePasswordModal.vue'
-import ChangeUserDataModal from '../../../components/user-cabinet-modals/ChangeUserDataModal.vue'
-import ChangeEmailModal from '../../../components/user-cabinet-modals/ChangeEmailModal.vue'
-
-import edit from '../../../assets/img/edit-white.svg'
+import DeleteAccountModal from '../../../components/user-cabinet/DeleteAccountModal.vue'
+import ChangePasswordModal from '../../../components/user-cabinet/ChangePasswordModal.vue'
+import ChangeUserDataModal from '../../../components/user-cabinet/ChangeUserDataModal.vue'
+import ChangeEmailModal from '../../../components/user-cabinet/ChangeEmailModal.vue'
+import ButtonsBlock from '../../../components/user-cabinet/ButtonsBlock.vue'
 
 import { API } from "../../../workers/api-worker/api.worker"
 import { ROUTES } from "../../../router"
@@ -200,7 +181,8 @@ export default {
     ChangeUserDataModal,
     Form,
     Loading,
-    ChangeEmailModal
+    ChangeEmailModal,
+    ButtonsBlock
   },
   setup(props) {
     const { t } = useI18n()
@@ -217,6 +199,15 @@ export default {
     const changeDataModalConfig = ref(null)
     const myForm = ref(null)
     const isLoading = ref(false)
+    const windowWidth = ref(window.innerWidth)
+
+    onMounted(() => {
+      window.addEventListener('resize', onResize);
+    })
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', onResize); 
+    })
     
     const mockData = computed(() => {
       return {
@@ -273,12 +264,6 @@ export default {
       })
     })
 
-    const icons = computed(() => {
-      return {
-        editIcon: edit
-      }
-    })
-
     userInfo.value = {
       ...route.meta.usersData?.data,
       profile: {
@@ -301,6 +286,9 @@ export default {
       checkboxReviews: route.meta.usersData?.data.configuration?.show_reviews
     }
 
+    function onResize() {
+      windowWidth.value = window.innerWidth
+    }
     function getBirthDay(val) {
       return val?.split('-')[2]
     }
@@ -396,7 +384,6 @@ export default {
     }
     
     function getMyProfile() {
-      console.log('getMyProfile')
       isLoading.value = true
       API.UserService.getMyProfile()
         .then(res => {
@@ -473,7 +460,6 @@ export default {
       userRating,
       userPhone,
       userEmail,
-      icons,
       isEditModeProfile,
       changeDataModalConfig,
       mockData,
@@ -484,7 +470,8 @@ export default {
       formValues,
       myForm,
       userInfo,
-      isLoading
+      isLoading,
+      windowWidth
     }
   }
 }
@@ -541,6 +528,9 @@ export default {
 }
 .b-user-cabinet {
   overflow-y: scroll;
+  @media (max-width: 768px) {
+    padding-bottom: 10px;
+  }
 }
 .b-user-cabinet__user-cabinet::-webkit-scrollbar {
   display: none;
@@ -568,31 +558,6 @@ export default {
     font-size: 13px;
     color: #575775;
     margin-top: 4px;
-  }
-  .b-user-cabinet__buttons {
-    // display: flex;
-    @media (max-width: 768px) {
-      display: none;
-    }
-    .b-user-cabinet__save-cancel-btns {
-      .b-user-cabinet__btns-line {
-        display: flex;
-        justify-content: flex-end;
-        .b-user-cabinet__btn-wrapper {
-          margin-right: 12px;
-        }
-      }
-      .b-user-cabinet__look-preview {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 12px;
-        line-height: 20px;
-        color: #575775;
-        margin-top: 4px;
-        cursor: pointer;
-      }
-    }
   }
 }
 .b-user-cabinet__tab-block {

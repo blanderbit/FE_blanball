@@ -4,9 +4,9 @@
     :style="btnStyle"
     @click="$emit('click-function')"
   >
-    <img v-if="icon" :src="icon" alt="">
+    <img class="b-green-btn__left-icon" v-if="icon" :src="icon" alt="">
     {{ text }}
-    <img v-if="iconRight" :src="iconRight" alt="">
+    <img class="b-green-btn__right-icon" v-if="iconRight" :src="iconRight" alt="">
     <loading :is-loading="loading"></loading>
   </div>
 </template>
@@ -65,7 +65,9 @@ export default {
         width: props.width ? props.width + 'px' : '100%',
         height: props.height + 'px',
         background: props.backgroundColor,
-        'justify-content': props.iconRight || props.icon ? 'space-around' : 'center'
+        // 'justify-content': props.iconRight || props.icon ? 'space-around' : 'center'
+        'justify-content': 'center'
+
       }
     })
 
@@ -101,8 +103,11 @@ export default {
   font-size: 14px;
   cursor: pointer;
   user-select: none;
-  img {
-    margin-right: 8px;
+  &__left-icon {
+    margin-right: 10px;
+  }
+  &__right-icon {
+    margin-left: 10px;
   }
 }
 

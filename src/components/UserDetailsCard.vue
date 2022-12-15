@@ -293,7 +293,6 @@ export default {
   },
   emits: [],
   setup(props, context) {
-    console.log(props.userData)
     const currentTab = ref(0)
 
     const labels = ref([
