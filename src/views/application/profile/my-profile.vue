@@ -539,7 +539,9 @@ export default {
 .v-leave-to {
   opacity: 0;
 }
-.b-user-cabinet {}
+.b-user-cabinet {
+  overflow-y: scroll;
+}
 .b-user-cabinet__user-cabinet::-webkit-scrollbar {
   display: none;
 }
