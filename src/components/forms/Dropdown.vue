@@ -189,6 +189,24 @@ export default {
   .vs__dropdown-menu {
     width: 500px;
   }
+  .vs__search, .vs__dropdown-menu, .v-select {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 24px;
+    color: #575775;
+  }
+  .style-chooser .vs__search::placeholder,
+  .style-chooser .vs__dropdown-toggle,
+  .style-chooser .vs__dropdown-menu {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 24px;
+    color: #575775;
+  }
 }
 
 ::v-deep {
