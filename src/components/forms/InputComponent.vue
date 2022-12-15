@@ -263,7 +263,7 @@ export default {
     }
     ::v-deep input {
       width: 100%;
-      height: 40px;
+      height: 100%;
       border: none;
       outline: none;
       border-radius: 6px;
