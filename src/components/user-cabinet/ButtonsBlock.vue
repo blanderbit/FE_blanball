@@ -95,9 +95,16 @@ export default {
   .b-user-cabinet__buttons {
     order: 4;
     .b-user-cabinet__save-cancel-btns {
+      @media (max-width: 768px) {
+        display: flex;
+        flex-direction: column;
+      }
       .b-user-cabinet__btns-line {
         display: flex;
         justify-content: space-between;
+        @media (max-width: 768px) {
+          order: 2;
+        }
         .b-user-cabinet__btn-cancel {
           margin-right: 12px;
           width: 50%;
@@ -115,6 +122,12 @@ export default {
         color: #575775;
         margin-top: 4px;
         cursor: pointer;
+        border-bottom: 1px dashed #DFDEED;
+        @media (max-width: 768px) {
+          order: 1;
+          text-align: center;
+          margin-bottom: 10px;
+        }
       }
     }
   }
