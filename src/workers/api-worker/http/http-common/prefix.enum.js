@@ -33,7 +33,8 @@ export const EndpointsEnum = {
     changeUserEmail: '/authentication/client/request-change/email'
   },
   Reviews: {
-    getUserReviews: '/reviews/client/user/reviews/list/'
+    getUserReviews: '/reviews/client/user/reviews/list/',
+    getMyReviews: '/reviews/client/my/reviews/list'
   },
   Versions: {
     getAllVersions: '/versions/client/versions/list',
