@@ -87,11 +87,21 @@
       <div
         v-for="tab in mockData.tabs"
         :key="tab.id"
-        :class="['b-user-cabinet__tab-element', { active: tab.isActive }]"
-        @click="changeTab(tab.id, tab.url)"
+        :class="[
+          'b-user-cabinet__tab-element', 
+          { active: tab.isActive, disabled: tab.isDisabled }
+        ]"
+        @click="changeTab(tab.id, tab.url, tab.isDisabled)"
+        @mouseenter="switchTabLabel(tab.isDisabled)"
+        @mouseleave="switchTabLabel(tab.isDisabled)"
       >
         <img :src="tab.img" :alt="tab.name" />
         {{ tab.name }}
+        <TabLabel 
+          v-if="tab.isDisabled && isTabLabel" 
+          :title="$t('profile.coming-soon-title')"
+          :text="$t('profile.coming-soon-text')"
+        />
       </div>
     </div>
     <div class="b-user-cabinet__my-profile-tab">
@@ -147,14 +157,14 @@ import PlayerPageComponent from '../../../components/PlayerPageComponent.vue'
 import RatingCard from '../../../components/RatingCard.vue'
 import UserDetailsCard from '../../../components/UserDetailsCard.vue'
 import SecurityBlock from '../../../components/SecurityBlock.vue'
-import Loading from '../../../workers/loading-worker/Loading.vue'
-
+import TabLabel from '../../../components/TabLabel.vue'
 import DeleteAccountModal from '../../../components/user-cabinet/DeleteAccountModal.vue'
 import ChangePasswordModal from '../../../components/user-cabinet/ChangePasswordModal.vue'
 import ChangeUserDataModal from '../../../components/user-cabinet/ChangeUserDataModal.vue'
 import ChangeEmailModal from '../../../components/user-cabinet/ChangeEmailModal.vue'
 import ButtonsBlock from '../../../components/user-cabinet/ButtonsBlock.vue'
 
+import Loading from '../../../workers/loading-worker/Loading.vue'
 import { API } from "../../../workers/api-worker/api.worker"
 import { ROUTES } from "../../../router"
 import CONSTANTS from '../../../consts'
@@ -182,7 +192,8 @@ export default {
     Form,
     Loading,
     ChangeEmailModal,
-    ButtonsBlock
+    ButtonsBlock,
+    TabLabel
   },
   setup(props) {
     const { t } = useI18n()
@@ -200,6 +211,7 @@ export default {
     const myForm = ref(null)
     const isLoading = ref(false)
     const windowWidth = ref(window.innerWidth)
+    const isTabLabel = ref(false)
 
     onMounted(() => {
       window.addEventListener('resize', onResize);
@@ -286,6 +298,11 @@ export default {
       checkboxReviews: route.meta.usersData?.data.configuration?.show_reviews
     }
 
+    function switchTabLabel(isDisabled) {
+      if (isDisabled) {
+        isTabLabel.value = !isTabLabel.value
+      }
+    }
     function onResize() {
       windowWidth.value = window.innerWidth
     }
@@ -414,7 +431,8 @@ export default {
     }
 
 
-    function changeTab(id, url) {
+    function changeTab(id, url, isDisabled) {
+      if (isDisabled) return
       mockData.tabs = mockData.tabs
         .map((item) => ({ ...item, isActive: false }))
         .map((item) => {
@@ -471,7 +489,9 @@ export default {
       myForm,
       userInfo,
       isLoading,
-      windowWidth
+      windowWidth,
+      isTabLabel,
+      switchTabLabel
     }
   }
 }
@@ -564,7 +584,6 @@ export default {
   display: flex;
   border-bottom: 1px solid #dfdeed;
   margin-top: 28px;
-  cursor: pointer;
   .b-user-cabinet__tab-element {
     display: flex;
     align-items: center;
@@ -576,12 +595,18 @@ export default {
     font-size: 13px;
     color: #262541;
     user-select: none;
+    cursor: pointer;
+    position: relative;
     img {
       margin-right: 8px;
     }
     &.active {
       border-bottom: 2px solid #262541;
     }
+    &.disabled {
+      color: #7F7DB5;
+    }
+
   }
 }
 .b-user-cabinet__my-profile-tab {

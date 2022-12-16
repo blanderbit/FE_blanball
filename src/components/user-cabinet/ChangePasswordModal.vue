@@ -171,7 +171,7 @@ export default {
           })
           .catch(e => {
             console.log('change password error', e.data.error)
-            errorMessage.value = 'Щось там на сэрвэри пишло не так'
+            errorMessage.value = t('modals.change_password.server-error')
           })
       }
     }
