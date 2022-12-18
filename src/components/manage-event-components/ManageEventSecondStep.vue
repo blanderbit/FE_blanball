@@ -88,70 +88,29 @@
         :icon="icons.search"
       />
     </div>
-    <div class="search-users-block">
-      <div class="title">{{$t('events.search-among')}}</div>
-      <div class="tegs-block">
-        <div
-          v-for="tag in tags"
-          :key="tag.id"
-          :class="['teg', { active: tag.isActive }]"
-          @click="this.$emit('chooseCategory', tag.id)"
-        >
-          {{ tag.text }}
-        </div>
-      </div>
-      <div class="users-window">
-        <div
-          v-for="team of filteredTeams"
-          :key="team.id"
-          class="category-block"
-        >
-          <div class="category-name">
-            {{ team.category_name }}
-          </div>
-          <div class="users-list">
-            <div
-              v-for="user of team.users"
-              :key="user.id"
-              :class="['user', { taken: user.isChosen }]"
-            >
-              <div class="user-data">
-                <div class="user-img">
-                  <img :src="user.img" alt="" />
-                </div>
-                <div class="user-name">
-                  {{ user.name }}
-                </div>
-              </div>
-              <div
-                v-if="!user.isChosen"
-                class="add-user"
-                @click="inviteUser(team.id, user.id)"
-              >
-                <img
-                  :class="{ taken: user.isChosen }"
-                  src="../../assets/img/plus.svg"
-                  alt=""
-                />
-              </div>
-              <div v-else class="invited">{{$t('events.requested')}}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="show-more-results">{{$t('events.show-more')}}</div>
-    </div>
+
+    <SearchBlockAll 
+      :tags="tags"
+      :filtered-teams="filteredTeams"
+      :list-item-icon="icons.plus"
+      @chose-tab-category="$emit('choseCategory')"
+      @item-list-click="inviteUser"
+    />
+
   </div>
 </template>
 
 <script>
 import { ref, watch, computed } from 'vue'
+
 import InputComponent from '../forms/InputComponent.vue'
 import Switcher from '../../components/Switcher.vue'
+import SearchBlockAll from '../SearchBlockAll.vue'
 
 import HorizontalArrow from '../../assets/img/sort-arrows-horizontal.svg'
 import AddUser from '../../assets/img/add-user.svg'
 import Search from '../../assets/img/search.svg'
+import PlusIcon from '../../assets/img/plus.svg'
 
 export default {
   props: {
@@ -167,8 +126,9 @@ export default {
   components: {
     InputComponent,
     Switcher,
+    SearchBlockAll
   },
-  emit: ['chooseCategory'],
+  emit: ['choseCategory'],
   setup(props, { emit }) {
     const isOpened = ref(null)
     const payment = ref(null)
@@ -177,7 +137,8 @@ export default {
       return {
         arrow: HorizontalArrow,
         addUser: AddUser,
-        search: Search
+        search: Search,
+        plus: PlusIcon
       }
     })
 
@@ -350,121 +311,6 @@ export default {
       font-size: 13px;
       line-height: 20px;
       color: #262541;
-    }
-  }
-  .search-users-block {
-    padding: 12px;
-    height: 418px;
-    background: #ffffff;
-    box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
-    border-radius: 6px;
-    margin-top: 8px;
-    .title {
-      margin: 0;
-    }
-    .tegs-block {
-      display: flex;
-      flex-wrap: wrap;
-      border-bottom: 1px solid #dfdeed;
-      padding-bottom: 14px;
-      margin-top: 8px;
-      .teg {
-        padding: 2px 6px;
-        border-radius: 4px;
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 12px;
-        line-height: 20px;
-        text-align: center;
-        color: #8a8aa8;
-        cursor: pointer;
-        &.active {
-          color: #262541;
-          background: #f0f0f4;
-        }
-      }
-    }
-    .users-window {
-      overflow: hidden;
-      height: 268px;
-      .category-block {
-        .category-name {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 500;
-          font-size: 12px;
-          line-height: 20px;
-          color: #8a8aa8;
-          margin: 8px 0;
-        }
-        .users-list {
-          .user {
-            padding: 4px;
-            border-radius: 0px 6px 6px 0px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            &.taken {
-              border: 1px solid #e2e2e9;
-              img {
-                opacity: 0.5;
-              }
-            }
-            .user-data {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              .user-img {
-                img {
-                  display: block;
-                }
-              }
-              .user-name {
-                margin-left: 8px;
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 400;
-                font-size: 12px;
-                line-height: 20px;
-                color: #262541;
-                user-select: none;
-              }
-            }
-            .add-user {
-              cursor: pointer;
-              img {
-                margin-right: 12px;
-              }
-            }
-            .invited {
-              font-family: 'Inter';
-              font-style: normal;
-              font-weight: 400;
-              font-size: 12px;
-              line-height: 20px;
-              color: #8a8aa8;
-            }
-            &:hover {
-              background: #f0f0f4;
-              .add-user img {
-                filter: invert(61%) sepia(21%) saturate(354%) hue-rotate(202deg)
-                  brightness(87%) contrast(90%);
-              }
-            }
-          }
-        }
-      }
-    }
-    .show-more-results {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 12px;
-      line-height: 20px;
-      color: #8a8aa8;
-      margin-top: 12px;
-      cursor: pointer;
     }
   }
 }

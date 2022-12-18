@@ -41,15 +41,15 @@
         :disabled="isDisabled"
       >
         <input
-            :type="inputType"
-            :placeholder="placeholder"
-            v-on="modelHandlers"
-            :value="modelValue"
-            :style="inputStyle"
-            :disabled="isDisabled"
+          :type="inputType"
+          :placeholder="placeholder"
+          v-on="modelHandlers"
+          :value="modelValue"
+          :style="inputStyle"
+          :disabled="isDisabled"
+          @click="$emit('onClickAction', $event)"
         />
       </slot>
-
     </div>
     <p class="b-input__error-message">{{ modelErrorMessage }}</p>
   </div>
@@ -124,7 +124,7 @@ export default {
       default: 'aggressive',
     },
   },
-  emits: ['iconClick'],
+  emits: ['iconClick', 'onClickAction'],
   setup(props, {emit}) {
     const {
         modelValue,
