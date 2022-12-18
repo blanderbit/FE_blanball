@@ -3,7 +3,11 @@
     <Loading
       :is-loading="isLoading"
     />
-    <!-- Modals delete -->
+
+    <EditAvatarModal
+      v-if="isModalActive.edit_avatar"
+      @close-modal="toggleModal"
+    />
 
     <ChangeEmailModal
       v-if="isModalActive.email"
@@ -59,7 +63,6 @@
       @close-modal="closeChangeUserDataModal"
       @save-decline-changes="saveDeclineUserDataChanges"
     />
-    <!-- Modals delete -->
 
     <div class="b-user-cabinet__title-block">
       <div class="b-user-cabinet__titles">
@@ -118,6 +121,7 @@
           :user-data="userData"
           :phone="userPhone"
           :is-edit-mode="isEditModeProfile"
+          @openEditPictureModal="toggleModal"
         />
         <SecurityBlock
           @toggle-modal="toggleModal"
@@ -163,6 +167,7 @@ import ChangePasswordModal from '../../../components/user-cabinet/ChangePassword
 import ChangeUserDataModal from '../../../components/user-cabinet/ChangeUserDataModal.vue'
 import ChangeEmailModal from '../../../components/user-cabinet/ChangeEmailModal.vue'
 import ButtonsBlock from '../../../components/user-cabinet/ButtonsBlock.vue'
+import EditAvatarModal from '../../../components/user-cabinet/EditAvatarModal.vue'
 
 import Loading from '../../../workers/loading-worker/Loading.vue'
 import { API } from "../../../workers/api-worker/api.worker"
@@ -193,7 +198,8 @@ export default {
     Loading,
     ChangeEmailModal,
     ButtonsBlock,
-    TabLabel
+    TabLabel,
+    EditAvatarModal
   },
   setup(props) {
     const { t } = useI18n()
@@ -254,7 +260,8 @@ export default {
       delete_acc: false,
       change_password: false,
       public_profile: false,
-      change_data: false
+      change_data: false,
+      edit_avatar: false
     })
 
     const schema = computed(() => {
@@ -448,6 +455,9 @@ export default {
 
     function toggleModal(val) {
       switch (val) {
+        case 'edit_avatar':
+          isModalActive.edit_avatar = !isModalActive.edit_avatar
+          break
         case 'email':
           isModalActive.email = !isModalActive.email
           break

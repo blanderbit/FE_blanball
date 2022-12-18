@@ -25,5 +25,11 @@ export default {
   change_user_data: {
     'main-text': 'Бажаєте подивитись як виглядатиме ваш профіль для інших користувачів?',
     'cancel-changes': 'Скасувати зміни'
+  },
+  edit_avatar: {
+    'another-pic': 'Інше фото',
+    'rotate': 'Перевернути',
+    'cut': 'Обрізати',
+    'chose-another-pic': 'Обрати інше фото',
   }
 }
