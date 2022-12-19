@@ -32,6 +32,7 @@
           :placeholder="$t('header.search-events')"
           :icon="icons.search"
           @on-click-action="showSearchBlock"
+          @send-input-coordinates="setInputCoordinates"
         />
       </div>
     </div>
@@ -39,7 +40,7 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 
 import BreadCrumbs from './Breadcrumbs.vue'
 import InputComponent from './forms/InputComponent.vue'
@@ -63,6 +64,14 @@ export default {
     const clientX = ref(0)
     const clientY = ref(0)
     const modalSearchWidth = ref(369)
+    const inputWidth = ref(0)
+    const screenWidth = ref(window.innerWidth)
+
+    if (screenWidth.value < 576) {
+      modalSearchWidth.value = '100%'
+      clientX.value = 0
+    }
+
     const icons = computed(() => {
       return {
         search: searchIcon,
@@ -79,19 +88,39 @@ export default {
 
     function showSearchBlock(e) {
       isSearchBlock.value = true
-      console.log(e)
-      const inputWidth = modalSearchWidth.value - e.target.parentNode.clientWidth
-      clientX.value = e.target.parentNode.offsetLeft - inputWidth
+      inputWidth.value = modalSearchWidth.value - e.target.parentNode.clientWidth
+      clientX.value = e.target.parentNode.offsetLeft - inputWidth.value
       clientY.value = e.target.parentNode.offsetHeight + 20
-
+    }
+    function setInputCoordinates({x,y}) {
+      clientX.value = x - inputWidth.value
+      clientY.value = y + 20
     }
     function closeSearchBlock() {
       isSearchBlock.value = false
     }
+    function setScreenWidth() {
+      screenWidth.value = window.innerWidth
+      if (screenWidth.value < 576) {
+        modalSearchWidth.value = '100%'
+        clientX.value = 0
+      } else {
+        modalSearchWidth.value = 369
+      }
+    }
+
+    onMounted(() => {
+      window.addEventListener('resize', setScreenWidth)
+    })
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', setScreenWidth)
+    })
 
     return {
       showSearchBlock,
       closeSearchBlock,
+      setInputCoordinates,
       icons,
       isSearchBlock,
       clientX,

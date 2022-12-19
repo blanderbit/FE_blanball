@@ -83,8 +83,10 @@ export default {
   emits: ['choseTabCategory', 'itemListClick'],
   setup(props) {
     const windowStyle = computed(() => {
-      return {
-        width: `${props.width}px`
+      if (String(props.width).split('').includes('%')) {
+        return { width: props.width }
+      } else {
+        return { width: `${props.width}px` }
       }
     })
 

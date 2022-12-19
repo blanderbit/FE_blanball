@@ -48,6 +48,7 @@
           :style="inputStyle"
           :disabled="isDisabled"
           @click="$emit('onClickAction', $event)"
+          ref="input"
         />
       </slot>
     </div>
@@ -56,7 +57,7 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, watch } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import { CustomModelWorker } from "../../workers/custom-model-worker/index";
 
 import eyeCross from '../../assets/img/eye-crossed.svg'
@@ -124,7 +125,7 @@ export default {
       default: 'aggressive',
     },
   },
-  emits: ['iconClick', 'onClickAction'],
+  emits: ['iconClick', 'onClickAction', 'sendInputCoordinates'],
   setup(props, {emit}) {
     const {
         modelValue,
@@ -134,6 +135,7 @@ export default {
 
     const inputType = ref(null)
     const rightIcon = ref('')
+    const input = ref(null)
 
     const inputStyle = computed(() => {
       return {
@@ -161,6 +163,13 @@ export default {
       }
     }
 
+    function resizeFunction() {
+      emit('sendInputCoordinates', {
+        x: input.value.parentNode.offsetLeft, 
+        y: input.value.parentNode.offsetHeight
+      })
+    }
+
     onMounted(() => {
       if (props.type === PASSWORD_TYPES.PASSWORD) {
         rightIcon.value = eyeCross;
@@ -168,7 +177,12 @@ export default {
       } else {
         rightIcon.value = props.icon
       }
-    });
+      window.addEventListener('resize', resizeFunction)
+    })
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', resizeFunction)
+    })
 
     return {
       iconClickAction,
@@ -178,7 +192,8 @@ export default {
       inputType,
       rightIcon,
       inputStyle,
-      inputWrapper
+      inputWrapper,
+      input
     }
   }
 }

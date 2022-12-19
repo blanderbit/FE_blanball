@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from 'vue'
+import { computed } from 'vue'
 
 export default {
   name: 'SearchModal',
@@ -30,7 +30,6 @@ export default {
   },
   emits: ['closeModal'],
   setup(props) {
-    console.log(props.clientX)
     const frameStyle = computed(() => {
       return {
         left: `${props.clientX}px`,
@@ -57,6 +56,7 @@ export default {
 
   &__window-frame {
     position: absolute;
+    width: inherit;
   }
 }
 </style>
