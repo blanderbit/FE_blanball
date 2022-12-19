@@ -171,7 +171,6 @@ import EditAvatarModal from '../../../components/user-cabinet/EditAvatarModal.vu
 
 import Loading from '../../../workers/loading-worker/Loading.vue'
 import { API } from "../../../workers/api-worker/api.worker"
-import { ROUTES } from "../../../router"
 import CONSTANTS from '../../../consts'
 
 const EDIT_BUTTON_ACTIONS = {

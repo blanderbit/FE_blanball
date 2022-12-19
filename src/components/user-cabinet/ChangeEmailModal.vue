@@ -89,7 +89,7 @@ import InputComponent from '../../components/forms/InputComponent.vue'
 
 import { API } from "../../workers/api-worker/api.worker"
 
-import { ROUTES } from "../../router"
+import { ROUTES } from "../../router/router.const"
 
 export default {
   name: 'ChangeEmailModal',
