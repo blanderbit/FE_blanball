@@ -107,17 +107,13 @@ export default {
   ],
   sport_type_dropdown: [
     {
-      id: 0,
-      value: 'Футбол'
-    },
-    {
       id: 1,
-      value: 'Хокей'
+      value: 'Football'
     },
     {
       id: 2,
-      value: 'Баскетбол'
-    }
+      value: 'Futsal'
+    },
   ],
   gender_dropdown: [
     {

@@ -9,7 +9,7 @@ import {
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { WebSocketTypes } from "../../web.socket.types";
-import { ROUTES } from "../../../../router";
+import { ROUTES } from "../../../../router/router.const";
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.LeftFeedback)

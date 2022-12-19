@@ -65,13 +65,13 @@
   import { PaginationWorker } from "../workers/pagination-worker";
   import { NotificationsBus } from "../workers/event-bus-worker";
 
-  import { ROUTES } from '../router'
 
   import notification from '../assets/img/Notification.svg'
   import notificationUnread from '../assets/img/notificationUnread.svg'
   import record from '../assets/img/record.svg'
   import members from '../assets/img/members.svg'
   import { TokenWorker } from "../workers/token-worker";
+  import { ROUTES } from "../router/router.const";
   const findDublicates = (list, newList) => {
     return newList.filter(item => list.length ? !list.find(oldItem => oldItem.notification_id === item.notification_id) : true)
   }

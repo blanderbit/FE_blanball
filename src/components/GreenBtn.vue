@@ -91,6 +91,7 @@ export default {
 
 <style lang="scss" scoped>
 .b-green-btn {
+  box-shadow: 0px 4px 12px rgba(42, 145, 141, 0.2);
   position: relative;
   border-radius: 6px;
   color: #fff;

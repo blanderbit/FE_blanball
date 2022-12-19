@@ -107,7 +107,7 @@ import Settings from '../assets/img/Settings.svg'
 import SettingsWhite from '../assets/img/Settings-white.svg'
 
 import CONSTANTS from '../consts/index'
-import { ROUTES } from '../router/index'
+import { ROUTES } from "../router/router.const";
 
 export default {
   name: 'MobileMenu',
