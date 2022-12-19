@@ -2,7 +2,9 @@ export default {
   change_login: {
     'title': 'Зміна логіну облікового запису',
     'current-email': 'Поточний E-mail',
-    'new-email': 'Новий E-mail'
+    'new-email': 'Новий E-mail',
+    'email': 'E-mail',
+    'code-message': 'Лист із кодом підтвердження прийде за адресою'
   },
   delete_acc: {
     'title': 'Видалення акаунту',
@@ -17,9 +19,17 @@ export default {
     'current-pass': 'Ваш поточний пароль',
     'new-pass': 'Придумайте новий пароль',
     'sms-code': 'Лист із кодом підтвердження прийде за адресою',
+    'wrong-old-pass': 'Ви ввели неправильний старий пароль',
+    'server-error': 'Проблема на серверi'
   },
   change_user_data: {
     'main-text': 'Бажаєте подивитись як виглядатиме ваш профіль для інших користувачів?',
     'cancel-changes': 'Скасувати зміни'
+  },
+  edit_avatar: {
+    'another-pic': 'Інше фото',
+    'rotate': 'Перевернути',
+    'cut': 'Обрізати',
+    'chose-another-pic': 'Обрати інше фото',
   }
 }

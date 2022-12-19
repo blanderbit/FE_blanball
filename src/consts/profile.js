@@ -1,7 +1,7 @@
 import { ROUTES } from '../router/index'
 
 import userIcon from '../assets/img/user-icon.svg'
-import database from '../assets/img/database.svg'
+import databaseDisabled from '../assets/img/database-disabled.svg'
 import notification from '../assets/img/notification-small.svg'
 
 
@@ -48,21 +48,16 @@ export default {
       img: userIcon,
       url: ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute,
       isActive: true,
+      isDisabled: false
     },
     {
       id: 1,
       name: 'profile.rate-plan',
-      img: database,
+      img: databaseDisabled,
       url: ROUTES.APPLICATION.PROFILE.RATE_PLAN.absolute,
       isActive: false,
-    },
-    {
-      id: 2,
-      name: 'profile.notifications',
-      img: notification,
-      url: ROUTES.APPLICATION.PROFILE.NOTIFICATIONS.absolute,
-      isActive: false,
-    },
+      isDisabled: true
+    }
   ],
   tabTitles: [
     { id: 0, title: 'Про мене', width: '119px' },

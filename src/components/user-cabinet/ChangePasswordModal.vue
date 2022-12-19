@@ -30,6 +30,12 @@
               name="new_password" 
             />
           </div>
+          <!-- <div
+            v-if="errorMessage"
+            class="error-message"
+          >
+            {{ $t('modals.change_password.wrong-old-pass') }}
+          </div> -->
 
           <div v-if="modalChangeStep === 2">
             <Counter 
@@ -53,7 +59,7 @@
               @complete="completed = true" 
             />
           </div>
-          <div v-if="errorMessage.length > 0" class="error-message">
+          <div v-if="errorMessage.length" class="error-message">
             *{{ errorMessage }}
           </div>
           <div class="btns-block">
@@ -74,6 +80,7 @@
 import { computed, ref, watch, onBeforeUnmount } from 'vue'
 import { Form } from '@system.it.flumx.com/vee-validate'
 import * as yup from "yup"
+import { useI18n } from 'vue-i18n'
 
 import ModalWindow from '../../components/ModalWindow.vue'
 import Counter from '../../components/Counter.vue'
@@ -103,12 +110,15 @@ export default {
     Counter
   },
   setup(props, context) {
+    const { t } = useI18n()
     const modalChangeStep = ref(1)
     const errorMessage = ref('')
     const seconds = ref(secondsToCount)
 
     const schema = computed(() => {
       return yup.object({
+        old_password: yup.string().required().min(8),
+        new_password: yup.string().required().min(8),
         password_code: yup.string().required().min(5),
       })
     })
@@ -137,12 +147,18 @@ export default {
       const passCode = formData.controlledValues.password_code
 
       if (modalChangeStep.value === 1 && newPassword && oldPassword) {
-        modalChangeStep.value = 2
         const payload = {
           new_password: newPassword,
           old_password: oldPassword,
         }
         API.UserService.changePassword(payload)
+        .then(() => {
+          errorMessage.value = ''
+          modalChangeStep.value = 2
+        })
+        .catch(e => {
+          errorMessage.value = t('modals.change_password.wrong-old-pass')
+        })
       }
       if (modalChangeStep.value === 2 && passCode) {
         const payload = {
@@ -150,11 +166,12 @@ export default {
         }
         API.UserService.sendApproveCode(payload)
           .then(() => {
+            errorMessage.value = ''
             closeModal()
           })
           .catch(e => {
             console.log('change password error', e.data.error)
-            errorMessage.value = 'Щось там на сэрвэри пишло не так'
+            errorMessage.value = t('modals.change_password.server-error')
           })
       }
     }
@@ -168,7 +185,8 @@ export default {
       eyeCrossed,
       eyeOpened,
       errorMessage,
-      seconds
+      seconds,
+      errorMessage
     }
   }
 }
