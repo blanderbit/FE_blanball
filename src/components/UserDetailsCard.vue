@@ -5,6 +5,23 @@
         <div class="b-user-card__picture-block">
           <div class="b-user-card__profile-picture">
             <img src="../assets/img/user-photo.png" alt="" />
+            <div 
+              v-if="isEditMode"
+              class="b-user-card__add-pic-icon"
+            >
+              <label for="my_file">
+                <input 
+                  type="file" 
+                  id="my_file" 
+                  style="display: none;" 
+                  @change="onFileSelected"
+                />
+                <img 
+                  src="../assets/img/add-user-pic2.svg" 
+                  alt="add user picture"
+                >
+              </label>
+            </div>
           </div>
         </div>
         <div class="b-user-card__text-block">
@@ -16,11 +33,13 @@
           </div>
           <div class="b-user-card__labels">
             <div
-              v-for="label in mockData.labels"
+              v-for="label in labels"
               :key="label"
               class="b-user-card__label"
             >
-              # {{ label.title }}
+              <span v-if="label">
+                # {{ label }}
+              </span>
             </div>
           </div>
         </div>
@@ -289,9 +308,17 @@ export default {
       default: false,
     }
   },
-  emits: [],
-  setup(props, context) {
+  emits: ['openEditPictureModal'],
+  setup(props, {emit}) {
     const currentTab = ref(0)
+    const userPicture = ref(null)
+
+    const labels = ref([
+      props.userData.age ? `${props.userData.age} років` : null ,
+      props.userData.gender ,
+      props.userData.role ,
+      props.userData.position
+    ])
 
     const mockData = computed(() => {
       return {
@@ -327,12 +354,21 @@ export default {
       currentTab.value = id
     }
 
+    function onFileSelected(e) {
+      if (e.target.files[0]) {
+        userPicture.value = e.target.files[0]
+        emit('openEditPictureModal', 'edit_avatar')
+      }
+    }
+
     return {
       changeUserTab,
+      onFileSelected,
       currentTab,
       icons,
       birthDate,
-      mockData
+      mockData,
+      labels    
     }
   }
 }
@@ -371,6 +407,20 @@ export default {
         img {
           display: block;
         }
+        .b-user-card__add-pic-icon {
+          position: absolute;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          label {
+            display: block;
+            cursor: pointer;
+          }
+        }
       }
       .b-user-card__text-block {
         flex-basis: 100%;
@@ -395,18 +445,21 @@ export default {
           display: flex;
           flex-wrap: wrap;
           .b-user-card__label {
-            margin-top: 4px;
-            margin-right: 4px;
-            background: #148581;
-            border-radius: 100px;
-            padding: 0 8px;
-            height: 20px;
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 500;
-            font-size: 12px;
-            line-height: 20px;
-            color: #ffffff;
+            span {
+              display: block;
+              margin-top: 4px;
+              margin-right: 4px;
+              background: #148581;
+              border-radius: 100px;
+              padding: 0 8px;
+              height: 20px;
+              font-family: 'Inter';
+              font-style: normal;
+              font-weight: 500;
+              font-size: 12px;
+              line-height: 20px;
+              color: #ffffff;
+            }
           }
         }
       }

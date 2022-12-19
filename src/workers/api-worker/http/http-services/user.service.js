@@ -51,4 +51,11 @@ export class UserService {
       )
     )
   }
+
+  static changeUserEmail(payload) {
+    return AxiosInstance.post(
+      EndpointsEnum.Users.changeUserEmail,
+      payload
+    )
+  }
 }

@@ -1,8 +1,15 @@
 <template>
   <div>
     <div class="b_modal_wrapper" @click.self="$emit('close-modal')">
-      <div class="b_modal_modal-window">
-        <div class="b_modal_window-title" :style="{'background': titleColor}">
+      <div 
+        class="b_modal_modal-window"
+        :style="windowStyle"
+      >
+        <div
+          v-if="isTitleShown"
+          class="b_modal_window-title" 
+          :style="{'background': titleColor}"
+        >
           <div class="b_modal_text">
             <slot name="title"></slot>
           </div>
@@ -16,6 +23,7 @@
           <slot name="delete-account"></slot>
           <slot name="change-password"></slot>
           <slot name="version-modal"></slot>
+          <slot name="edit-avatar"></slot>
         </div>
       </div>
     </div>
@@ -23,9 +31,15 @@
 </template>
 
 <script>
+import { computed } from 'vue'
+
 export default {
   name: 'modal-window',
   props: {
+    isTitleShown: {
+      type: Boolean,
+      default: true
+    },
     titleColor: {
       type: String,
       default: '#148783'
@@ -33,6 +47,16 @@ export default {
     titleName: {
       type: String,
       default: 'Modal'
+    }
+  },
+  setup(props) {
+    const windowStyle = computed(() => {
+      return {
+        'padding': props.isTitleShown ? '80px 20px 20px 20px' : '20px'
+      }
+    })
+    return {
+      windowStyle
     }
   }
 }

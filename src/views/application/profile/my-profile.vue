@@ -3,47 +3,18 @@
     <Loading
       :is-loading="isLoading"
     />
-    <!-- Modals delete -->
 
-    <!-- <Transition>
-      <ModalWindow
-        v-if="isModalActive.email"
-        @close-modal="toggleModal('email')"
-      >
-        <template #title>
-          {{ $t('modals.change_login.title') }}
-        </template>
-        <template #title-icon>
-          <img src="../../../assets/img/envelop.svg" alt="" />
-        </template>
-        <template #change-login>
-          <div class="inut-wrapper">
-            <InputComponent
-              :title="$t('modals.change_login.current-email')"
-              :placeholder="'stefa.kalyna@gmail.com'"
-              :outside-title="true"
-              :title-width="0"
-            />
-          </div>
-          <div class="inut-wrapper">
-            <InputComponent
-              :title="$t('modals.change_login.new-email')"
-              :placeholder="'stefa.kalyna@gmail.com'"
-              :outside-title="true"
-              :title-width="0"
-            />
-          </div>
-          <div class="btns-block">
-            <div class="cancle-btn" @click="toggleModal('email')">
-              {{ $t('buttons.cancel-editing') }}
-            </div>
-            <div class="save-btn" @click="toggleModal('email')">
-              {{ $t('buttons.save-changes') }}
-            </div>
-          </div>
-        </template>
-      </ModalWindow>
-    </Transition> -->
+    <EditAvatarModal
+      v-if="isModalActive.edit_avatar"
+      @close-modal="toggleModal"
+    />
+
+    <ChangeEmailModal
+      v-if="isModalActive.email"
+      :user-email="userEmail"
+      @close-modal="toggleModal"
+      @email="getMyProfile"
+    />
 
     <DeleteAccountModal
       v-if="isModalActive.delete_acc"
@@ -92,7 +63,6 @@
       @close-modal="closeChangeUserDataModal"
       @save-decline-changes="saveDeclineUserDataChanges"
     />
-    <!-- Modals delete -->
 
     <div class="b-user-cabinet__title-block">
       <div class="b-user-cabinet__titles">
@@ -103,57 +73,38 @@
           {{ $t('profile.change-personal-data') }}
         </div>
       </div>
-      <div
-        class="b-user-cabinet__buttons"
-      >
-        <div
-          v-if="isEditModeProfile"
-          class="b-user-cabinet__save-cancel-btns"
-        >
-          <div class="b-user-cabinet__btns-line">
-            <div class="b-user-cabinet__btn-wrapper">
-              <WhiteBtn 
-                :text="$t('buttons.cancel')" 
-                :width="98"
-                @click-function="cancelDataEdit"
-              />
-            </div>
-            <GreenBtn
-              :text="$t('buttons.save')"
-              :width="89"
-              @click-function="saveDataEdit"
-            />
-          </div>
-          <div 
-            class="b-user-cabinet__look-preview"
-            @click="toggleModal('public_profile')"
-          >
-          {{ $t('profile.how-profile-looks') }}
-          </div>
-        </div>
-        <div
-          v-else
-          class="b-user-cabinet__edit-button"
-        >
-          <GreenBtn
-            :text="$t('buttons.edit-profile')"
-            :width="197"
-            :height="40"
-            :icon-right="icons.editIcon"
-            @click-function="toggleEditMode"
-          />
-        </div>
-      </div>
+
+      <ButtonsBlock 
+        v-if="windowWidth > 768"
+        :cancel-btn-width="'auto'"
+        :save-btn-width="'auto'"
+        :is-edit-mode-profile="isEditModeProfile"
+        @cancel-data-edit="cancelDataEdit"
+        @save-data-edit="saveDataEdit"
+        @toggle-modal="toggleModal"
+        @toggle-edit-mode="toggleEditMode"
+      />
+
     </div>
     <div class="b-user-cabinet__tab-block">
       <div
         v-for="tab in mockData.tabs"
         :key="tab.id"
-        :class="['b-user-cabinet__tab-element', { active: tab.isActive }]"
-        @click="changeTab(tab.id, tab.url)"
+        :class="[
+          'b-user-cabinet__tab-element', 
+          { active: tab.isActive, disabled: tab.isDisabled }
+        ]"
+        @click="changeTab(tab.id, tab.url, tab.isDisabled)"
+        @mouseenter="switchTabLabel(tab.isDisabled)"
+        @mouseleave="switchTabLabel(tab.isDisabled)"
       >
         <img :src="tab.img" :alt="tab.name" />
         {{ tab.name }}
+        <TabLabel 
+          v-if="tab.isDisabled && isTabLabel" 
+          :title="$t('profile.coming-soon-title')"
+          :text="$t('profile.coming-soon-text')"
+        />
       </div>
     </div>
     <div class="b-user-cabinet__my-profile-tab">
@@ -170,6 +121,7 @@
           :user-data="userData"
           :phone="userPhone"
           :is-edit-mode="isEditModeProfile"
+          @openEditPictureModal="toggleModal"
         />
         <SecurityBlock
           @toggle-modal="toggleModal"
@@ -177,13 +129,24 @@
           :checkbox-data="checkboxData"
           :is-edit-mode="isEditModeProfile"
         />
+        <ButtonsBlock
+          v-if="windowWidth <= 768"
+          :is-edit-mode-profile="isEditModeProfile"
+          :edit-btn-width="'auto'"
+          :cancel-btn-width="'auto'"
+          :save-btn-width="'auto'"
+          @cancel-data-edit="cancelDataEdit"
+          @save-data-edit="saveDataEdit"
+          @toggle-modal="toggleModal"
+          @toggle-edit-mode="toggleEditMode"
+        />
       </Form>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, computed, reactive } from 'vue'
+import { ref, computed, reactive, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Form } from '@system.it.flumx.com/vee-validate'
@@ -198,15 +161,17 @@ import PlayerPageComponent from '../../../components/PlayerPageComponent.vue'
 import RatingCard from '../../../components/RatingCard.vue'
 import UserDetailsCard from '../../../components/UserDetailsCard.vue'
 import SecurityBlock from '../../../components/SecurityBlock.vue'
+import TabLabel from '../../../components/TabLabel.vue'
+import DeleteAccountModal from '../../../components/user-cabinet/DeleteAccountModal.vue'
+import ChangePasswordModal from '../../../components/user-cabinet/ChangePasswordModal.vue'
+import ChangeUserDataModal from '../../../components/user-cabinet/ChangeUserDataModal.vue'
+import ChangeEmailModal from '../../../components/user-cabinet/ChangeEmailModal.vue'
+import ButtonsBlock from '../../../components/user-cabinet/ButtonsBlock.vue'
+import EditAvatarModal from '../../../components/user-cabinet/EditAvatarModal.vue'
+
 import Loading from '../../../workers/loading-worker/Loading.vue'
-
-import DeleteAccountModal from '../../../components/user-cabinet-modals/DeleteAccountModal.vue'
-import ChangePasswordModal from '../../../components/user-cabinet-modals/ChangePasswordModal.vue'
-import ChangeUserDataModal from '../../../components/user-cabinet-modals/ChangeUserDataModal.vue'
-
-import edit from '../../../assets/img/edit-white.svg'
-
 import { API } from "../../../workers/api-worker/api.worker"
+import { ROUTES } from "../../../router"
 import CONSTANTS from '../../../consts'
 
 const EDIT_BUTTON_ACTIONS = {
@@ -230,11 +195,15 @@ export default {
     ChangePasswordModal,
     ChangeUserDataModal,
     Form,
-    Loading
+    Loading,
+    ChangeEmailModal,
+    ButtonsBlock,
+    TabLabel,
+    EditAvatarModal
   },
   setup(props) {
     const { t } = useI18n()
-
+    
     const route = useRoute()
     const router = useRouter()
 
@@ -247,7 +216,17 @@ export default {
     const changeDataModalConfig = ref(null)
     const myForm = ref(null)
     const isLoading = ref(false)
+    const windowWidth = ref(window.innerWidth)
+    const isTabLabel = ref(false)
 
+    onMounted(() => {
+      window.addEventListener('resize', onResize);
+    })
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', onResize); 
+    })
+    
     const mockData = computed(() => {
       return {
         user_info: CONSTANTS.users_page.userInfo,
@@ -258,20 +237,20 @@ export default {
     })
 
     const formValues = ref({
-      last_name: route.meta.usersData.data.profile.last_name,
-      name: route.meta.usersData.data.profile.name,
-      about_me: route.meta.usersData.data.profile.about_me,
-      day: getBirthDay(route.meta.usersData.data.profile.birthday),
-      month: getBirthMonth(route.meta.usersData.data.profile.birthday),
-      year: getBirthYear(route.meta.usersData.data.profile.birthday),
-      height: route.meta.usersData.data.profile.height,
-      weight: route.meta.usersData.data.profile.weight,
-      working_leg: getWorkingLeg(route.meta.usersData.data.profile.working_leg),
-      position: route.meta.usersData.data.profile.position,
-      phone: route.meta.usersData.data.phone,
-      config_phone: route.meta.usersData.data.configuration.phone,
-      config_email: route.meta.usersData.data.configuration.email,
-      show_reviews: route.meta.usersData.data.configuration.show_reviews
+      last_name: route.meta.usersData?.data.profile?.last_name,
+      name: route.meta.usersData?.data.profile?.name,
+      about_me: route.meta.usersData?.data.profile?.about_me,
+      day: getBirthDay(route.meta.usersData?.data.profile?.birthday),
+      month: getBirthMonth(route.meta.usersData?.data.profile?.birthday),
+      year: getBirthYear(route.meta.usersData?.data.profile?.birthday),
+      height: route.meta.usersData?.data.profile?.height,
+      weight: route.meta.usersData?.data.profile?.weight,
+      working_leg: getWorkingLeg(route.meta.usersData?.data.profile?.working_leg),
+      position: route.meta.usersData?.data.profile?.position,
+      phone: route.meta.usersData?.data?.phone,
+      config_phone: route.meta.usersData?.data.configuration?.phone,
+      config_email: route.meta.usersData?.data.configuration?.email,
+      show_reviews: route.meta.usersData?.data.configuration?.show_reviews
     })
     
     const checkboxData = reactive({})
@@ -281,7 +260,8 @@ export default {
       delete_acc: false,
       change_password: false,
       public_profile: false,
-      change_data: false
+      change_data: false,
+      edit_avatar: false
     })
 
     const schema = computed(() => {
@@ -303,41 +283,44 @@ export default {
       })
     })
 
-    const icons = computed(() => {
-      return {
-        editIcon: edit
-      }
-    })
-
     userInfo.value = {
-      ...route.meta.usersData.data,
+      ...route.meta.usersData?.data,
       profile: {
-        ...route.meta.usersData.data.profile,
-        working_leg: getWorkingLeg(route.meta.usersData.data.profile.working_leg)
+        ...route.meta.usersData?.data?.profile,
+        working_leg: getWorkingLeg(route.meta.usersData?.data.profile?.working_leg)
       }
     }
-    userRating.value = route.meta.usersData.data.raiting
-    userPhone.value = route.meta.usersData.data.phone
-    userEmail.value = route.meta.usersData.data.email
+    userRating.value = route.meta.usersData?.data?.raiting
+    userPhone.value = route.meta.usersData?.data?.phone
+    userEmail.value = route.meta.usersData?.data?.email
     userData.value = {
-      ...route.meta.usersData.data.profile,
-      working_leg: getWorkingLeg(route.meta.usersData.data.profile.working_leg)
-    };
+      ...route.meta.usersData?.data?.profile,
+      working_leg: getWorkingLeg(route.meta.usersData?.data.profile?.working_leg),
+      role: route.meta.usersData?.data?.role,
+    }
 
     checkboxData.value = {
-      checkboxPhone: route.meta.usersData.data.configuration.phone,
-      checkboxEmail: route.meta.usersData.data.configuration.email,
-      checkboxReviews: route.meta.usersData.data.configuration.show_reviews
-    };
+      checkboxPhone: route.meta.usersData?.data.configuration?.phone,
+      checkboxEmail: route.meta.usersData?.data.configuration?.email,
+      checkboxReviews: route.meta.usersData?.data.configuration?.show_reviews
+    }
 
+    function switchTabLabel(isDisabled) {
+      if (isDisabled) {
+        isTabLabel.value = !isTabLabel.value
+      }
+    }
+    function onResize() {
+      windowWidth.value = window.innerWidth
+    }
     function getBirthDay(val) {
-      return val?.split('-')?.[2]
+      return val?.split('-')[2]
     }
     function getBirthMonth(val) {
-      return mockData.value.monthFromNumber[val?.split('-')?.[1]]
+      return mockData.value.monthFromNumber[val?.split('-')[1]]
     }
     function getBirthYear(val) {
-      return val?.split('-')?.[0]
+      return val?.split('-')[0]
     }
     function getWorkingLeg(val) {
       switch(val) {
@@ -386,7 +369,7 @@ export default {
         const profileData = {
           ...refProfileData,
           birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
-          gender: route.meta.usersData.data.profile.gender,
+          gender: route.meta.usersData?.data.profile?.gender,
           working_leg: getWorkingLeg(working_leg),
         }
         delete profileData.day
@@ -429,32 +412,34 @@ export default {
       API.UserService.getMyProfile()
         .then(res => {
           formValues.value = {
-            last_name: res.data.profile.last_name,
-            name: res.data.profile.name,
-            about_me: res.data.profile.about_me,
-            day: getBirthDay(res.data.profile.birthday),
-            month: getBirthMonth(res.data.profile.birthday),
-            year: getBirthYear(res.data.profile.birthday),
-            height: res.data.profile.height,
-            weight: res.data.profile.weight,
-            working_leg: getWorkingLeg(res.data.profile.working_leg),
-            position: res.data.profile.position,
-            phone: res.data.phone,
-            config_phone: res.data.configuration.phone,
-            config_email: res.data.configuration.email,
-            show_reviews: res.data.configuration.show_reviews
+            last_name: res.data.profile?.last_name,
+            name: res.data.profile?.name,
+            about_me: res.data.profile?.about_me,
+            day: getBirthDay(res.data.profile?.birthday),
+            month: getBirthMonth(res.data.profile?.birthday),
+            year: getBirthYear(res.data.profile?.birthday),
+            height: res.data.profile?.height,
+            weight: res.data.profile?.weight,
+            working_leg: getWorkingLeg(res.data.profile?.working_leg),
+            position: res.data.profile?.position,
+            phone: res.data?.phone,
+            config_phone: res.data.configuration?.phone,
+            config_email: res.data.configuration?.email,
+            show_reviews: res.data.configuration?.show_reviews
           }
           userInfo.value = res.data
           userData.value = {
-            ...res.data.profile,
-            working_leg: getWorkingLeg(res.data.profile.working_leg)
+            ...res.data?.profile,
+            working_leg: getWorkingLeg(res.data.profile?.working_leg)
           }
+          userEmail.value = res.data?.email
           isLoading.value = false
         })
     }
 
 
-    function changeTab(id, url) {
+    function changeTab(id, url, isDisabled) {
+      if (isDisabled) return
       mockData.tabs = mockData.tabs
         .map((item) => ({ ...item, isActive: false }))
         .map((item) => {
@@ -470,6 +455,9 @@ export default {
 
     function toggleModal(val) {
       switch (val) {
+        case 'edit_avatar':
+          isModalActive.edit_avatar = !isModalActive.edit_avatar
+          break
         case 'email':
           isModalActive.email = !isModalActive.email
           break
@@ -496,10 +484,10 @@ export default {
       toggleModal,
       saveDataEdit,
       cancelDataEdit,
+      getMyProfile,
       userRating,
       userPhone,
       userEmail,
-      icons,
       isEditModeProfile,
       changeDataModalConfig,
       mockData,
@@ -510,7 +498,10 @@ export default {
       formValues,
       myForm,
       userInfo,
-      isLoading
+      isLoading,
+      windowWidth,
+      isTabLabel,
+      switchTabLabel
     }
   }
 }
@@ -565,7 +556,12 @@ export default {
 .v-leave-to {
   opacity: 0;
 }
-.b-user-cabinet {}
+.b-user-cabinet {
+  overflow-y: scroll;
+  @media (max-width: 768px) {
+    padding-bottom: 10px;
+  }
+}
 .b-user-cabinet__user-cabinet::-webkit-scrollbar {
   display: none;
 }
@@ -593,37 +589,11 @@ export default {
     color: #575775;
     margin-top: 4px;
   }
-  .b-user-cabinet__buttons {
-    // display: flex;
-    @media (max-width: 768px) {
-      display: none;
-    }
-    .b-user-cabinet__save-cancel-btns {
-      .b-user-cabinet__btns-line {
-        display: flex;
-        justify-content: flex-end;
-        .b-user-cabinet__btn-wrapper {
-          margin-right: 12px;
-        }
-      }
-      .b-user-cabinet__look-preview {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 12px;
-        line-height: 20px;
-        color: #575775;
-        margin-top: 4px;
-        cursor: pointer;
-      }
-    }
-  }
 }
 .b-user-cabinet__tab-block {
   display: flex;
   border-bottom: 1px solid #dfdeed;
   margin-top: 28px;
-  cursor: pointer;
   .b-user-cabinet__tab-element {
     display: flex;
     align-items: center;
@@ -635,12 +605,18 @@ export default {
     font-size: 13px;
     color: #262541;
     user-select: none;
+    cursor: pointer;
+    position: relative;
     img {
       margin-right: 8px;
     }
     &.active {
       border-bottom: 2px solid #262541;
     }
+    &.disabled {
+      color: #7F7DB5;
+    }
+
   }
 }
 .b-user-cabinet__my-profile-tab {

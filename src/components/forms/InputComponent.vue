@@ -200,6 +200,12 @@ export default {
     position: relative;
     border-radius: 6px;
     width: 100%;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 24px;
+    color: #262541;
     .b-input__icon {
       display: flex;
       height: 100%;
@@ -264,7 +270,7 @@ export default {
     }
     ::v-deep input {
       width: 100%;
-      height: 40px;
+      height: 100%;
       border: none;
       outline: none;
       border-radius: 6px;
