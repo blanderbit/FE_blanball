@@ -91,10 +91,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    value: {
-      type: String,
-      default: '',
-    },
+    modelValue: Object | String,
     title: {
       type: String,
       default: '',
@@ -124,14 +121,24 @@ export default {
       default: 'aggressive',
     },
   },
-  emits: ['iconClick'],
+  emits: ['iconClick', 'update:modelValue'],
   setup(props, {emit}) {
     const {
         modelValue,
         modelErrorMessage,
         modelHandlers
-    } = CustomModelWorker(props);
+    } = CustomModelWorker(props, emit);
 
+    watch(
+      () => props.modelValue,
+      () => {
+        modelHandlers.value.input[0](props.modelValue);
+        modelHandlers.value.input[1](props.modelValue, true);
+      },
+      {
+        immediate: true
+      }
+    );
     const inputType = ref(null)
     const rightIcon = ref('')
 

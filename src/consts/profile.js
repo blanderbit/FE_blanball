@@ -1,9 +1,8 @@
-import { ROUTES } from '../router/index'
 
 import userIcon from '../assets/img/user-icon.svg'
 import database from '../assets/img/database.svg'
 import notification from '../assets/img/notification-small.svg'
-
+import { ROUTES } from "../router/router.const";
 
 export default {
   mainLeg: [

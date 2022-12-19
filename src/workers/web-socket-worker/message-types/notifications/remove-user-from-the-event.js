@@ -7,10 +7,10 @@ import {
   NotificationSetImage
 } from "../../type.decorator";
 
-import { ROUTES } from "../../../../router";
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { WebSocketTypes } from "../../web.socket.types";
 import { NotificationImage } from "../../../../assets/img/notifications/notification.images";
+import { ROUTES } from "../../../../router/router.const";
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.UserRemoveFromEvent)

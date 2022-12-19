@@ -9,8 +9,8 @@ import { VersionsService } from "./http/http-services/versions.service";
 export class API {
   static AuthorizationService = AuthorizationService;
   static NotificationService = NotificationService;
-  static EventService = EventService;
-  static UserService = UserService;
+  static EventService = new EventService();
+  static UserService = new UserService();
   static ReviewService = ReviewService;
   static LocationService = LocationService;
   static VersionsService = VersionsService;

@@ -2,7 +2,7 @@ import { useField } from '@system.it.flumx.com/vee-validate';
 import { computed, toRef, watch } from 'vue';
 import { modes } from "./interactionModes";
 
-export const CustomModelWorker = (props) => {
+export const CustomModelWorker = (props, emit) => {
 
   const {
     meta: modelMeta,
@@ -21,7 +21,12 @@ export const CustomModelWorker = (props) => {
   const modelHandlers = computed(() => {
     const on = {
       blur: modelHandleBlur,
-      input: [(e) => modelHandleChange(e, false)],
+      input: [
+        (e) => {
+          if(emit) emit('update:modelValue', e?.target?.value || e);
+          modelHandleChange(e, false)
+        }
+      ],
     };
 
     // Get list of validation events based on the current mode
@@ -43,10 +48,10 @@ export const CustomModelWorker = (props) => {
   });
 
   watch(
-    () => props.value,
+    () => props.modelValue,
     () => {
-      modelHandlers.value.input[0](props.value);
-      modelHandlers.value.input[1](props.value, false)
+      modelHandlers.value.input[0](props.modelValue);
+      modelHandlers.value.input[1](props.modelValue, false)
     }
   );
 

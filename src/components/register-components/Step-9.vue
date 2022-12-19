@@ -1,141 +1,150 @@
 <template>
-  <div class="b-register-step">
-    <div class="b-register-step__top-part">
-      <div class="b-register-step__title">
-        {{$t('register.affect-on-rates')}}
+  <step-wrapper
+      :returnButton="stepConfig.returnButton"
+      :nextButton="stepConfig.nextButton"
+      :title="stepConfig.title"
+      :subTitle="stepConfig.subTitle"
+      :stepperLines="stepConfig.stepperLines"
+  >
+    <template #content>
+      <div class="b-register-step__small-title mb-3">
+        {{$t('register.you-played-params')}}
       </div>
-      <div class="b-register-step__subtitle">
-        {{$t('register.you-can-leave-feedback')}}
+
+      <div class="b-sport-info d-flex justify-content-between align-baseline mb-3">
+        <InputComponent
+            :outside-title="true"
+            :title="$t('register.height')"
+            :placeholder="'height'"
+            :title-width="0"
+            name="height"
+        ></InputComponent>
+        <InputComponent
+            :outside-title="true"
+            :title="$t('register.weight')"
+            :placeholder="'weight'"
+            :title-width="0"
+            name="weight"
+        ></InputComponent>
+        <Dropdown
+            :outside-title="true"
+            :main-title="$t('register.main-leg')"
+            :options="mockData.main_lag"
+            :width="200"
+            :height="40"
+            display-name="value"
+            display-value="id"
+            name="working_leg"
+        />
       </div>
-      <div class="b-register-step__info-block">
-        <img src="../../assets/img/info-icon.svg" alt="">
-        {{$t('register.honest-game')}}
+      <div class="b-register-step__small-title mb-3">
+        {{$t('register.you-played-position')}}
       </div>
-    </div>
-    <div class="b-register-step__buttons">
-      <div 
-        class="b-register-step__back-btn" 
-        @click="finishOnBoarding"
-      >
-      {{$t('register.skip')}}
+      <div class="b-register-step__dropdown">
+        <Dropdown
+            :outside-title="true"
+            :main-title="$t('register.position')"
+            :options="mockData.position"
+            :width="200"
+            :height="40"
+            display-name="value"
+            display-value="value"
+            name="position"
+        />
       </div>
-      <GreenBtn
-        :text="$t('register.continue')"
-        :width="156"
-        :height="40"
-        :icon-right="arrow"
-        :is-icon-and-text-apart="true"
-        @click-function="$emit('incrementStep')"
-      />
-    </div>
-  </div>
+
+    </template>
+  </step-wrapper>
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useRouter } from 'vue-router'
+  import { computed, ref } from 'vue'
 
-import GreenBtn from '../GreenBtn.vue'
+  import GreenBtn from '../GreenBtn.vue'
+  import Dropdown from '../forms/Dropdown.vue'
+  import InputComponent from '../forms/InputComponent.vue'
 
-import arrowIcon from '../../assets/img/arrow-right-white.svg'
+  import arrowRight from '../../assets/img/arrow-right-white.svg'
+  import clipIcon from '../../assets/img/clip.svg'
+  import CONSTANTS from "../../consts";
+  import { useI18n } from 'vue-i18n'
+  import StepWrapper from './StepWrapper.vue'
 
-import { ROUTES } from '../../router'
+  export default {
+    name: 'Step9',
+    components: {
+      GreenBtn,
+      Dropdown,
+      InputComponent,
+      StepWrapper
+    },
+    setup() {
+      const profesionaLevel = ref('');
+      const clip = computed(() => {
+        return clipIcon
+      });
+      const arrow_right = computed(() => {
+        return arrowRight
+      });
+      const isDocumentNeeded = computed(() => {
+        return profesionaLevel.value === 'Професійно'
+      });
 
-export default {
-  name: 'Step9',
-  components: {
-    GreenBtn,
-  },
-  setup() {
-    const arrow = computed(() => {
-      return arrowIcon
-    })
-    const router = useRouter()
-
-    function finishOnBoarding() {
-      router.push(ROUTES.APPLICATION.EVENTS.absolute)
-    }
-
-    return {
-      arrow,
-      finishOnBoarding
-    }
-  },
-}
+      const mockData = computed(() => {
+        return {
+          main_lag: CONSTANTS.profile.mainLeg,
+          position: CONSTANTS.profile.position,
+        }
+      })
+      const {t} = useI18n();
+      const stepConfig = computed(() => {
+        return {
+          title: t('register.sportData'),
+          returnButton: {
+            exist: true,
+            text: t('register.return')
+          },
+          nextButton: {
+            exist: true,
+            text: t('register.next')
+          },
+          stepperLines: {
+            exist: true,
+            count: 4,
+            active: 3
+          }
+        }
+      });
+      return {
+        arrow_right,
+        clip,
+        profesionaLevel,
+        isDocumentNeeded,
+        mockData,
+        stepConfig
+      }
+    },
+  }
 </script>
 
 <style lang="scss" scoped>
-.b-register-step {
-  padding: 44px 24px 72px 24px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background: #ffffff;
-  border-radius: 28px 28px 0px 0px;
-  @media (max-width: 576px) {
-    padding: 44px 16px 72px 16px;
-  }
-  @media (min-width: 576px) {
-    border-radius: 8px;
-  }
-  .b-register-step__top-part {
-    .b-register-step__title {
-      font-family: 'Exo 2';
-      font-style: normal;
-      font-weight: 700;
-      font-size: 22px;
-      line-height: 32px;
-      color: #262541;
-      margin-bottom: 24px;
-      @media (max-width: 576px) {
-        text-align: center;
-      }
-    }
-    .b-register-step__subtitle {
-      font-family: 'Exo 2';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 20px;
-      color: #575775;
-      margin-bottom: 20px;
-    }
-    .b-register-step__info-block {
-      padding: 6px 6px 6px 38px;
-      background: #F7F7FE;
-      border: 1px solid #DFDEED;
-      border-radius: 6px;
-      margin-top: 28px;
-      position: relative;
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 13px;
-      line-height: 20px;
-      color: #262541;
-      img {
-        position: absolute;
-        top: 7px;
-        left: 7px;
-      }
-    }
+
+  .b-register-step__small-title {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 10px;
+    color: #262541;
   }
 
-  .b-register-step__buttons {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    .b-register-step__back-btn {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 24px;
-      text-align: center;
-      color: #575775;
-      cursor: pointer;
+  ::v-deep {
+    .b-input__input-component {
+      width: 20%;
+    }
+    .b-sport-info .b-dropdown {
+      width: 55%;
     }
   }
-}
 </style>

@@ -35,11 +35,26 @@
     </div>
     <div class="labels">
       <div 
-        v-for="item in card.labels"
-        :key="item"
         class="label"
       >
-        {{ item }}
+        {{ card.gender }}
+      </div>
+      <div
+        class="label"
+      >
+        {{ card.type }}
+      </div>
+      <div
+          v-if="card.need_ball"
+        class="label"
+      >
+       Need ball
+      </div>
+      <div
+          v-if="card.need_form"
+          class="label"
+      >
+        Need form
       </div>
     </div>
     <div class="bottom-block">
@@ -92,24 +107,24 @@ export default {
   position: relative;
   padding: 20px 16px;
   isolation: isolate;
-  width: 328px;
   background: #ffffff;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 6px;
   margin-bottom: 16px;
   height: fit-content;
-  @media (min-width: 1200px) and (max-width: 1400px) {
-    width: 408px;
-  }
-  @media (min-width: 992px) and (max-width: 1199px) {
-    width: 320px;
-  }
-  @media (min-width: 768px) and (max-width: 991px) {
-    width: 344px;
-  }
-  @media (max-width: 768px) {
-    width: 100%;
-  }
+  width: 100%;
+  /*@media (min-width: 1200px) and (max-width: 1400px) {*/
+    /*width: 408px;*/
+  /*}*/
+  /*@media (min-width: 992px) and (max-width: 1199px) {*/
+    /*width: 320px;*/
+  /*}*/
+  /*@media (min-width: 768px) and (max-width: 991px) {*/
+    /*width: 344px;*/
+  /*}*/
+  /*@media (max-width: 768px) {*/
+    /*width: 100%;*/
+  /*}*/
   &:before {
     content: '';
     display: block;

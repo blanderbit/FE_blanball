@@ -207,7 +207,6 @@ import ChangeUserDataModal from '../../../components/user-cabinet-modals/ChangeU
 import edit from '../../../assets/img/edit-white.svg'
 
 import { API } from "../../../workers/api-worker/api.worker"
-import { ROUTES } from "../../../router"
 import CONSTANTS from '../../../consts'
 
 const EDIT_BUTTON_ACTIONS = {
@@ -323,22 +322,22 @@ export default {
     userData.value = {
       ...route.meta.usersData.data.profile,
       working_leg: getWorkingLeg(route.meta.usersData.data.profile.working_leg)
-    }
+    };
 
     checkboxData.value = {
       checkboxPhone: route.meta.usersData.data.configuration.phone,
       checkboxEmail: route.meta.usersData.data.configuration.email,
       checkboxReviews: route.meta.usersData.data.configuration.show_reviews
-    }
+    };
 
     function getBirthDay(val) {
-      return val.split('-')[2]
+      return val?.split('-')?.[2]
     }
     function getBirthMonth(val) {
-      return mockData.value.monthFromNumber[val.split('-')[1]]
+      return mockData.value.monthFromNumber[val?.split('-')?.[1]]
     }
     function getBirthYear(val) {
-      return val.split('-')[0]
+      return val?.split('-')?.[0]
     }
     function getWorkingLeg(val) {
       switch(val) {

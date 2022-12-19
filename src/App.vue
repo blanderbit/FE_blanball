@@ -18,10 +18,9 @@
   import { VersionDetectorWorker } from "./workers/version-detector-worker";
   import { API } from "./workers/api-worker/api.worker";
 
-  import { ROUTES } from "./router";
   import { WebSocketTypes } from "./workers/web-socket-worker/web.socket.types";
+  import { ROUTES } from "./router/router.const";
 
-  import ModalVersion from "./components/ModalVersion.vue";
 
   const router = useRouter();
   const isModalActive = ref(false)

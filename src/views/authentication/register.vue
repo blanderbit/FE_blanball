@@ -14,70 +14,77 @@
         <Transition>
           <Step_1
               v-if="currentStep === 1"
-              @increment-step="handleRegister(data)"
-              @decrement-step="backToRoute"
+              @next="handleRegister(data)"
+              @back="backToRoute"
           />
         </Transition>
         <Transition>
           <Step_2
               v-if="currentStep === 2"
-              @increment-step="handleRegister(data)"
-              @decrement-step="currentStep--"
+              @next="handleRegister(data)"
+              @back="currentStep--"
           />
         </Transition>
         <Transition>
           <Step_3
               v-if="currentStep === 3"
-              @increment-step="handleUpdate(data)"
+              @next="currentStep++"
+              @back="finishOnBoarding()"
+
           />
         </Transition>
         <Transition>
           <Step_4
               v-if="currentStep === 4"
-              @increment-step="handleUpdate(data)"
-              @decrement-step="currentStep--"
+              @next="currentStep++"
+              @back="finishOnBoarding()"
           />
         </Transition>
         <Transition>
           <Step_5
               v-if="currentStep === 5"
-              @increment-step="handleUpdate(data)"
-              @decrement-step="currentStep--"
+              @next="currentStep++"
+              @back="finishOnBoarding()"
           />
         </Transition>
         <Transition>
           <Step_6
               v-if="currentStep === 6"
-              @increment-step="handleUpdate(data)"
-              @decrement-step="currentStep--"
+              @next="currentStep++"
+              @back="finishOnBoarding()"
           />
         </Transition>
         <Transition>
           <Step_7
               v-if="currentStep === 7"
-              @increment-step="currentStep++"
-              @decrement-step="currentStep--"
+              @next="currentStep++"
           />
         </Transition>
         <Transition>
           <Step_8
               v-if="currentStep === 8"
-              @increment-step="currentStep++"
-              @decrement-step="currentStep--"
+              @next="handleUpdate(data)"
+              @back="currentStep--"
           />
         </Transition>
         <Transition>
           <Step_9
               v-if="currentStep === 9"
-              @increment-step="currentStep++"
-              @decrement-step="currentStep--"
+              @next="handleUpdate(data)"
+              @back="currentStep--"
           />
         </Transition>
         <Transition>
           <Step_10
               v-if="currentStep === 10"
-              @increment-step="goToEvents()"
-              @decrement-step="currentStep--"
+              @next="handleUpdate(data)"
+              @back="currentStep--"
+          />
+        </Transition>
+        <Transition>
+          <Step_11
+              v-if="currentStep === 11"
+              @next="goToEvents()"
           />
         </Transition>
       </Form>
@@ -103,6 +110,7 @@
   import Step_8 from '../../components/register-components/Step-8.vue'
   import Step_9 from '../../components/register-components/Step-9.vue'
   import Step_10 from '../../components/register-components/Step-10.vue'
+  import Step_11 from '../../components/register-components/Step-11.vue'
   import AuthenticationMain from '../../components/AuthenticationMain.vue'
 
   import imageStep_1 from '../../assets/img/registration-back-1.svg'
@@ -123,8 +131,18 @@
   import { API } from "../../workers/api-worker/api.worker";
   import { TokenWorker } from "../../workers/token-worker";
   import { PositionMapBus } from "../../workers/event-bus-worker";
-  import { ROUTES } from "../../router";
   import { useForm } from "@system.it.flumx.com/vee-validate";
+  import { ROUTES } from "../../router/router.const";
+  yup.addMethod(yup.string, "userName", function (errorMessage) {
+    return this.test(`UserName`, errorMessage, function (value) {
+      const { path, createError } = this;
+const reg = /^[a-zа-яё\d]{1}[a-zа-яё\d-]*[a-zа-яё\d]{1}$/i;
+      return (
+        reg.exec(value) ||
+        createError({ path, message: errorMessage })
+      );
+    });
+  });
 
   export default {
     name: 'register',
@@ -139,20 +157,14 @@
       Step_8,
       Step_9,
       Step_10,
+      Step_11,
       Form,
       AuthenticationMain
     },
     setup() {
       const router = useRouter();
-      const currentStep = ref(1);
-      const context = useForm();
-      const initialValues = ref({
-        email: "Yariktest@gmai.com",
-        password: "2363796z",
-        phone: "+380683242344",
-        profile: {name: "Yariktest", last_name: "Yariktest"},
-        re_password: "2363796z"
-      });
+      const currentStep = ref(8);
+      const initialValues = ref({});
       let profileValues = {
         profile: {}
       };
@@ -164,7 +176,7 @@
               .min(19, 'Invalid phone number')
             ,
             profile: yup.object({
-              name: yup.string().required(),
+              name: yup.string().required().userName('Invalid username, please write right name'),
               last_name: yup.string().required(),
             })
           });
@@ -178,7 +190,7 @@
             ),
           });
         }
-        if (currentStep.value === 4) {
+        if (currentStep.value === 8) {
           return yup.object({
             day: yup.string().required(),
             month: yup.string().required(),
@@ -186,7 +198,7 @@
             gender: yup.string().required(),
           });
         }
-        if (currentStep.value === 5) {
+        if (currentStep.value === 9) {
           return yup.object({
             height: yup.number().required().min(145).max(250),
             weight: yup.number().required().min(30).max(200),
@@ -194,7 +206,7 @@
             working_leg: yup.string().required(),
           });
         }
-        if (currentStep.value === 6) {
+        if (currentStep.value === 10) {
           return yup.object({
             region: yup.string().required(),
             city: yup.string().required(),
@@ -208,13 +220,13 @@
       });
       const rightSideStyle = computed(() => {
         switch (currentStep.value) {
-          case 4:
+          case 8:
             return {'--back-picture': `url(${imageStep_2})`};
             break;
-          case 5:
+          case 9:
             return {'--back-picture': `url(${imageStep_3})`};
             break;
-          case 6:
+          case 10:
             return {'--back-picture': `url(${imageStep_4})`};
             break;
           default:
@@ -223,13 +235,13 @@
       })
       const backgroundTab = computed(() => {
         switch (currentStep.value) {
-          case 4:
+          case 8:
             return imageStepTab_2
             break;
-          case 5:
+          case 9:
             return imageStepTab_3
             break;
-          case 6:
+          case 10:
             return imageStepTab_4
             break;
           default:
@@ -238,13 +250,13 @@
       })
       const backgroundMob = computed(() => {
         switch (currentStep.value) {
-          case 4:
+          case 8:
             return imageStepMob_2
             break;
-          case 5:
+          case 9:
             return imageStepMob_3
             break;
-          case 6:
+          case 10:
             return imageStepMob_4
             break;
           default:
@@ -266,6 +278,9 @@
           place_name: e.place,
         })
       });
+      function finishOnBoarding() {
+        currentStep.value = 7
+      }
       return {
         currentStep,
         rightSideStyle,
@@ -273,6 +288,7 @@
         backgroundMob,
         schema,
         initialValues,
+        finishOnBoarding,
         async handleRegister (data) {
           const { valid } = await data.validate();
           if(!valid) return;
@@ -294,11 +310,11 @@
         async handleUpdate(data) {
           const { valid } = await data.validate();
           if(!valid) return;
-          if (currentStep.value === 6 && (!initialValues.value.lat || !initialValues.value.lon) ) {
+          if (currentStep.value === 10 && (!initialValues.value.lat || !initialValues.value.lon) ) {
             return
           }
           initialValues.value = merge(initialValues.value, data.controlledValues);
-          const actionsSteps = [4,5,6];
+          const actionsSteps = [8,9,10];
           if (actionsSteps.includes(currentStep.value)) {
             try {
               profileValues.profile = {
