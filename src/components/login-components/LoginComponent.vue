@@ -104,8 +104,8 @@
       });
 
       const initialValues = ref({
-        email: localStorage.getItem('email'),
-        password: localStorage.getItem('password')
+        // email: localStorage.getItem('email'),
+        // password: localStorage.getItem('password')
       });
 
       const schema = yup.object({
