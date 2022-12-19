@@ -58,6 +58,16 @@ export const DETAILS_TYPE_ENUM = {
   UNIQUE: 'filed:_unique',
   MIN_VALUE: 'filed:_min_value',
   MAX_VALUE: 'filed:_max_value',
+  BLANK: 'field:_blank',
+
+
+  AUTHENTICATION_CREDENTIALS_WERE_NOT_PROVIDED: 'authentication_credentials_were_not_provided.',
+  AUTHENTICATION_TOKEN_NOT_VALID: 'detail_token_not_valid',
+  BAD_AUTHENTICATION_TOKEN: 'code_token_not_valid',
+  AVATAR_MAX_SIZE_1_MB: 'avatar_max_size_1mb',
+  PROFILE_AVATAR_UPDATED: 'profile_avatar_updated',
+  CODE_IS_VALID: 'code_is_valid',
+  METHOD_NOT_ALLOWED: 'method_get_not_allowed.',
 };
 
 export const DETAILS_TYPE_ENUM_VALUES = Object
@@ -92,7 +102,7 @@ export const TypeRequestMessageWorker = (result = {}) => {
   if(result?.status === 'success') {
     return [result.message].map((detail) => {
       return {
-        errorType: detectMessageByKey(detail)
+        errorType: detectMessageByKey(detail)?.toLowerCase()
       }
     })
   } else if (result?.status === 'error'){
@@ -100,7 +110,7 @@ export const TypeRequestMessageWorker = (result = {}) => {
       const detectedType = detectMessageByKey(error.detail);
       const excludedColumnParameter = excludeColumnParameter(DETAILS_TYPE_ENUM[detectedType]);
       return {
-        errorType: detectedType,
+        errorType: detectedType?.toLowerCase(),
         field: excludedColumnParameter.field && excludeOneRowParam(error.detail, excludedColumnParameter.type)
       }
     }) || []

@@ -99,11 +99,11 @@
   import { API } from "../../workers/api-worker/api.worker";
   import * as yup from "yup";
   import { Form } from '@system.it.flumx.com/vee-validate'
-  import { ROUTES } from "../../router";
   import { useToast } from 'vue-toastification'
   import CodeInput from "../forms/CodeInput.vue";
   import eyeCross from '../../assets/img/eye-crossed.svg'
   import eyeOpen from '../../assets/img/eye-opened.svg'
+  import { ROUTES } from "../../router/router.const";
   export default {
     name: 'Step1',
     components: {
@@ -230,13 +230,13 @@
   }
 
   .b-reset-step {
-    padding: 44px 24px 72px 24px;
-    height: 100%;
+    padding: 44px 24px;
     display: flex;
+    height: 100%;
     flex-direction: column;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
     @media (max-width: 576px) {
-      padding: 44px 16px 72px 16px;
+      padding: 44px 16px;
     }
     .b-reset-step__top-part {
       .b-reset-step__title {
@@ -333,8 +333,9 @@
       }
     }
     .b-reset-step__buttons {
+      flex-grow: 2;
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: space-between;
       .b-reset-step__cancel-button {
         font-family: 'Inter';

@@ -48,7 +48,7 @@
           :title-width="0"
           :outside-title="true"
           :icon="sortArrowHorizontal"
-          @icon-click="toggleModalWindow"
+          @icon-click="toggleModalWindow('email')"
           name="change_email"
         />
       </div>

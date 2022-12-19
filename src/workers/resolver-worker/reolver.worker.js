@@ -2,7 +2,7 @@ import 'regenerator-runtime/runtime'
 import { resolverFunctions } from "./resolver.functions";
 import { finishSpinner, startSpinner } from "../loading-worker/loading.worker.js";
 import { VueResolver } from "./vue.resolver.js";
-import { ROUTES } from "../../router";
+import { ROUTES } from "../../router/router.const";
 
 
 export const routerAuthResolver = new VueResolver()

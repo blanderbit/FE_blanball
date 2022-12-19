@@ -13,5 +13,8 @@ export default {
   'applications': 'Заявки на участь',
   'edit-profile': 'Редагувати профіль',
   'keep-editing': 'Продовжити редагування',
-  'save-and-out': 'Зберегти та вийти'
+  'save-and-out': 'Зберегти та вийти',
+  'return': 'Повернутися назад',
+  'approve': "Підтвердити",
+  'decline': 'Відмінити'
 }

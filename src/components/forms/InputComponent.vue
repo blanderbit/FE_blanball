@@ -92,10 +92,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    value: {
-      type: String,
-      default: '',
-    },
+    modelValue: Object | String,
     title: {
       type: String,
       default: '',
@@ -131,8 +128,18 @@ export default {
         modelValue,
         modelErrorMessage,
         modelHandlers
-    } = CustomModelWorker(props);
+    } = CustomModelWorker(props, emit);
 
+    watch(
+      () => props.modelValue,
+      () => {
+        modelHandlers.value.input[0](props.modelValue);
+        modelHandlers.value.input[1](props.modelValue, true);
+      },
+      {
+        immediate: true
+      }
+    );
     const inputType = ref(null)
     const rightIcon = ref('')
     const input = ref(null)
@@ -208,6 +215,12 @@ export default {
     position: relative;
     border-radius: 6px;
     width: 100%;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 24px;
+    color: #262541;
     .b-input__icon {
       display: flex;
       height: 100%;
@@ -272,7 +285,7 @@ export default {
     }
     ::v-deep input {
       width: 100%;
-      height: 40px;
+      height: 100%;
       border: none;
       outline: none;
       border-radius: 6px;

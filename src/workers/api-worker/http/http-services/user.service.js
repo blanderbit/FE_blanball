@@ -1,50 +1,61 @@
 import { AxiosInstance } from "../../../../plugins/axios.plugin";
 import { EndpointsEnum } from "../http-common/prefix.enum";
 import { AxiosParams, AxiosQuery, AxiosSkipErrorMessageType } from "../../../utils-worker";
+import { FilterParamsDecorator } from "../filter/filter.utils";
+import { filterConfigForUsers } from "../filter/filter.config";
 import { DETAILS_TYPE_ENUM } from "../../../type-request-message-worker";
+
 export class UserService {
-  static getMyProfile() {
+  getMyProfile() {
     return AxiosInstance.get(
       EndpointsEnum.Users.getMyProfile
     )
   }
 
-  static deleteMyProfile() {
+  deleteMyProfile() {
     return AxiosInstance.delete(
       EndpointsEnum.Users.deleteMyProfile
     )
   }
 
-  static sendApproveCode(verificationCode) {
+  sendApproveCode(verificationCode) {
     return AxiosInstance.post(
       EndpointsEnum.Users.sendApproveCode,
       verificationCode
     )
   }
 
-  static changePassword(passwordsData) {
+  changePassword(passwordsData) {
     return AxiosInstance.post(
       EndpointsEnum.Users.changePassword,
       passwordsData
     )
   }
 
-  static updateProfileData(payload) {
+  updateProfileData(payload) {
     return AxiosInstance.put(
       EndpointsEnum.Users.updateProfileData,
       payload
     )
   }
 
-  static getAllUsers(options) {
-    const { page } = options || {};
+  @FilterParamsDecorator(filterConfigForUsers)
+  getAllUsers(options) {
     return AxiosInstance.get(
       EndpointsEnum.Users.getAllUsers,
       AxiosParams(
-        AxiosQuery({
-          page
-        }),
+        AxiosQuery(options),
+        AxiosSkipErrorMessageType([
+          DETAILS_TYPE_ENUM.INVALID_PAGE
+        ])
       )
+    )
+  }
+
+  static changeUserEmail(payload) {
+    return AxiosInstance.post(
+      EndpointsEnum.Users.changeUserEmail,
+      payload
     )
   }
 }

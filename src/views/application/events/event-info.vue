@@ -127,7 +127,7 @@ import RightSidebar from '../../../components/RightSidebar.vue'
 import EventInfoUsersTable from '../../../components/EventInfoUsersTable.vue'
 
 import CONSTANTS from '../../../consts/index'
-import { ROUTES } from '../../../router/index'
+import { ROUTES } from "../../../router/router.const";
 
 export default {
   name: 'EventsPage',
