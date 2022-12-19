@@ -32,24 +32,45 @@
       </div>
       <transition>
         <div v-if="rateStatus" class="b-rating-card__cards-block">
-          <div
-            v-for="item in mockData.rateBlock"
-            :key="item.id"
-            class="b-rating-card__card"
-            :style="{ 'border-top': item.id !== 0 && '1px dashed #DFDEED' }"
-          >
-            <div class="b-rating-card__top-line">
-              <div class="b-rating-card__name">
-                {{ item.name }}
+          <div v-if="usersReviews">
+            <div
+              v-for="(item, idx) in usersReviews"
+              :key="item.id"
+              class="b-rating-card__card"
+              :style="{ 'border-top': idx !== 0 && '1px dashed #DFDEED' }"
+            >
+              <div class="b-rating-card__top-line">
+                <div class="b-rating-card__name">
+                  {{ item.author.name }}
+                  {{ item.author.last_name }}
+                </div>
+                <div class="b-rating-card__rate">
+                  <star-rating
+                    :rating="item.stars"
+                    :star-size="14"
+                    :show-rating="false"
+                    :read-only="true"
+                    :active-color="'#148783'"
+                  >
+                  </star-rating>
+                </div>
               </div>
-              <div class="b-rating-card__rate">
-                <!-- rating stars -->
+              <div class="b-rating-card__bottom-line">
+                <div class="b-rating-card__date">
+                  {{ item.date }}
+                </div>
               </div>
             </div>
-            <div class="b-rating-card__bottom-line">
-              <div class="b-rating-card__date">
-                {{ item.date }}
-              </div>
+          </div>
+          <div 
+            v-else
+            class="b-rating-card__no-reviews-block"
+          >
+            <div class="b-rating-card__no-data-title">
+              {{ $t('profile.no-review') }}
+            </div>
+            <div class="b-rating-card__no-data-text">
+              {{ $t('profile.add-to-event') }}
             </div>
           </div>
         </div>
@@ -60,12 +81,21 @@
 
 <script>
 import { ref, computed } from 'vue'
+import StarRating from 'vue-star-rating'
+import dayjs from 'dayjs'
+import dayjsUkrLocale from 'dayjs/locale/uk'
+
 import ReviewDetailsComponent from '../components/ReviewDetails.vue'
+
+import { API } from "../workers/api-worker/api.worker"
+
+import CONSTANTS from '../consts/index'
 
 export default {
   name: 'RatingCard',
   components: {
-    ReviewDetailsComponent
+    ReviewDetailsComponent,
+    StarRating
   },
   props: {
     ratingScale: {
@@ -75,6 +105,8 @@ export default {
   },
   setup() {
     const rateStatus = ref(false)
+    const usersReviews = ref(true)
+    const isLoader = ref(false)
 
     const mockData = computed(() => {
       return {
@@ -84,11 +116,34 @@ export default {
 
     function switchRate(val) {
       rateStatus.value = val
+
+      if (val) {
+        API.ReviewService.getMyReviews()
+          .then(res => {
+            if (res.data.results.length) {
+              usersReviews.value = res.data.results.map(item => {
+                return {
+                  ...item,
+                  author: {
+                    name: 'Говнюк',
+                    last_name: 'Борисович'
+                  },
+                  date: `${dayjs(item.time_created).locale(dayjsUkrLocale).format('D.MM.YYYY')}`
+                }
+              })
+            } else {
+              usersReviews.value = false
+            }
+          })
+          .catch(e => console.log('some mistake', e))
+          
+      }
     }
 
     return {
       switchRate,
       rateStatus,
+      usersReviews,
       mockData
     }
   }
@@ -102,6 +157,7 @@ export default {
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 8px;
     padding: 20px 16px;
+    position: relative;
     @media (max-width: 768px) {
       width: 100%;
       min-width: 100%;
@@ -169,10 +225,12 @@ export default {
           border-radius: 0px 6px 6px 0px;
           flex-basis: 50%;
           cursor: pointer;
+          transform: translateX()
         }
       }
       .b-rating-card__cards-block {
         margin-top: 20px;
+        position: relative;
         .b-rating-card__card {
           padding-top: 8px;
           margin-bottom: 8px;
@@ -202,6 +260,25 @@ export default {
               color: #575775;
             }
           }
+        }
+      }
+      .b-rating-card__no-reviews-block {
+        .b-rating-card__no-data-title {
+          font-family: 'Exo 2';
+          font-style: normal;
+          font-weight: 800;
+          font-size: 20px;
+          line-height: 28px;
+          color: #262541;
+        }
+        .b-rating-card__no-data-text {
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 20px;
+          color: #575775;
+          margin-top: 12px;
         }
       }
     }

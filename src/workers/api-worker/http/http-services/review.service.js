@@ -7,4 +7,10 @@ export class ReviewService {
       EndpointsEnum.Reviews.getUserReviews + payload
     )
   }
+
+  static getMyReviews() {
+    return AxiosInstance.get(
+      EndpointsEnum.Reviews.getMyReviews
+    )
+  }
 }

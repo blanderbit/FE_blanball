@@ -86,7 +86,7 @@ import * as yup from "yup"
 
 import ModalWindow from '../../components/ModalWindow.vue'
 import Counter from '../../components/Counter.vue'
-import CodeInput from '../forms/CodeInput.vue'
+import CodeInput from '../../components/forms/CodeInput.vue'
 
 import { API } from "../../workers/api-worker/api.worker"
 
