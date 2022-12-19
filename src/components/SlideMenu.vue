@@ -103,7 +103,7 @@
                         :is-notification="true"
                     >
                     </empty-list>
-                    <ScrollToTop 
+                    <ScrollToTop
                       :element-length="notifications"
                       :is-scroll-top-exist="blockScrollToTopIfExist"
                       @scroll-button-clicked="scrollToFirstElement()"
@@ -134,7 +134,6 @@
 
 <script>
   import { ref, inject, computed, watch } from 'vue';
-  import { ROUTES } from "../router";
   import { v4 as uuid } from "uuid"
 
   import Notifications from './sitebar-notifications/Notifications.vue'
@@ -150,6 +149,7 @@
   import { API } from "../workers/api-worker/api.worker"
 
   import CONSTANTS from '../consts/index'
+  import { ROUTES } from "../router/router.const";
 
   export default {
     components: {

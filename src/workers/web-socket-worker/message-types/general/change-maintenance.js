@@ -7,8 +7,8 @@ import {
 } from "../../type.decorator";
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
-import { ROUTES } from "../../../../router/index";
 import { WebSocketTypes } from "../../web.socket.types";
+import { ROUTES } from "../../../../router/router.const";
 
 @SetMessageType(WebSocketTypes.ChangeMaintenance)
 @GeneralWebSocketMessage()

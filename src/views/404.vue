@@ -30,7 +30,6 @@
 import {useRouter} from 'vue-router'
 import GreenBtn from '../components/GreenBtn.vue'
 
-import {ROUTES} from '../router/index'
 
 export default {
   name: '404',

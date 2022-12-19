@@ -89,8 +89,7 @@ import Counter from '../../components/Counter.vue'
 import CodeInput from '../../components/forms/CodeInput.vue'
 
 import { API } from "../../workers/api-worker/api.worker"
-
-import { ROUTES } from "../../router"
+import { ROUTES } from "../../router/router.const";
 
 export default {
   name: 'DeleteAccountModal',
@@ -131,7 +130,7 @@ export default {
       modalDeleteAcc.value = {
         first: false,
         second: true,
-      },
+      };
       API.UserService.deleteMyProfile()
     }
 
