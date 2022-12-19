@@ -19,7 +19,7 @@
         <span>{{ title }}</span>
       </div>
       <div 
-        v-if="rightIcon.length" 
+        v-if="rightIcon?.length"
         class="b-input__icon" 
         @click="iconClickAction"
       >
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { CustomModelWorker } from "../../workers/custom-model-worker/index";
 
 import eyeCross from '../../assets/img/eye-crossed.svg'
@@ -135,9 +135,6 @@ export default {
       () => {
         modelHandlers.value.input[0](props.modelValue);
         modelHandlers.value.input[1](props.modelValue, true);
-      },
-      {
-        immediate: true
       }
     );
     const inputType = ref(null)
@@ -147,7 +144,7 @@ export default {
     const inputStyle = computed(() => {
       return {
         'padding-left': 10 + props.titleWidth + 'px',
-        'padding-right': rightIcon.value.length ? '52px' : '10px',
+        'padding-right': rightIcon.value?.length ? '52px' : '10px',
       }
     })
     const inputWrapper = computed(() => {
