@@ -49,7 +49,6 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  // background: #00000052;
   width: 100%;
   height: 100%;
   z-index: 999;
