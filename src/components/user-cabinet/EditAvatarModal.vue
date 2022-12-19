@@ -87,7 +87,7 @@ import GreenBtn from '../GreenBtn.vue'
 import SaveIcon from '../../assets/img/save-icon.svg'
 import { API } from "../../workers/api-worker/api.worker"
 
-import { ROUTES } from "../../router"
+import { ROUTES } from "../../router/router.const"
 
 export default {
   name: 'EditAvatarModal',
