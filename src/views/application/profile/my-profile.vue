@@ -6,7 +6,9 @@
 
     <EditAvatarModal
       v-if="isModalActive.edit_avatar"
+      :user-image="userAvatar"
       @close-modal="toggleModal"
+      @get-profile-data="getMyProfile"
     />
 
     <ChangeEmailModal
@@ -73,7 +75,6 @@
           {{ $t('profile.change-personal-data') }}
         </div>
       </div>
-
       <ButtonsBlock 
         v-if="windowWidth > 768"
         :cancel-btn-width="'auto'"
@@ -121,7 +122,7 @@
           :user-data="userData"
           :phone="userPhone"
           :is-edit-mode="isEditModeProfile"
-          @openEditPictureModal="toggleModal"
+          @openEditPictureModal="openEditPictureModal"
         />
         <SecurityBlock
           @toggle-modal="toggleModal"
@@ -218,6 +219,7 @@ export default {
     const isLoading = ref(false)
     const windowWidth = ref(window.innerWidth)
     const isTabLabel = ref(false)
+    const userAvatar = ref('')
 
     onMounted(() => {
       window.addEventListener('resize', onResize);
@@ -476,6 +478,13 @@ export default {
       }
     }
 
+    function openEditPictureModal(modal, picture) {
+      userAvatar.value = picture
+      toggleModal(modal)
+    }
+
+    
+
     return {
       toggleEditMode,
       saveDeclineUserDataChanges,
@@ -484,6 +493,8 @@ export default {
       toggleModal,
       saveDataEdit,
       cancelDataEdit,
+      switchTabLabel,
+      openEditPictureModal,
       getMyProfile,
       userRating,
       userPhone,
@@ -501,7 +512,7 @@ export default {
       isLoading,
       windowWidth,
       isTabLabel,
-      switchTabLabel
+      userAvatar
     }
   }
 }

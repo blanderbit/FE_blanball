@@ -44,7 +44,7 @@ export default {
   name: 'ReviewDetailsComponent',
   props: {
     userRate: {
-      type: String,
+      type: [String, Number],
       default: '0'
     }
   },

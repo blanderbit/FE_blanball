@@ -20,6 +20,7 @@ import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import Maska from "./workers/phone-maska-worker";
 import "../src/components/maps/map.init";
 import "vue-select/dist/vue-select.css";
+import 'cropperjs/dist/cropper.css';
 export const i18n = createI18n({
   locale: 'ua',
   allowComposition: true,

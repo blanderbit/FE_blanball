@@ -10,42 +10,43 @@
 
             <div class="b-edit-avatar__right-side">
               <div class="b-edit-avatar__crop-pic">
-                <img src="../../assets/img/user-pic-edit-big.png" alt="">
+                <img :src="userSrcImage" ref="cropImg" alt="">
               </div>
             </div>
 
             <div class="b-edit-avatar__left-side">
               <div class="b-edit-avatar__edited-pic">
-                <img src="../../assets/img/user-pic-edit-small.png" alt="">
+                <img :src="cropedImage" alt="">
               </div>
 
               <div class="b-edit-avatar__main-functions">
                 <div class="b-edit-avatar__another-pic">
-                  <img src="../../assets/img/add-picture.svg" alt="">
-                  <span class="b-edit-avatar__desk-text">
-                    {{ $t('modals.edit_avatar.another-pic') }}
-                  </span>
-                  <span class="b-edit-avatar__mob-text">
-                    {{ $t('modals.edit_avatar.chose-another-pic') }}
-                  </span>
+
+                  <label for="my_file">
+                    <input 
+                      type="file" 
+                      id="my_file" 
+                      style="display: none;" 
+                      @change="onFileSelected"
+                    />
+                    <img src="../../assets/img/add-picture.svg" alt="">
+                    <span class="b-edit-avatar__desk-text">
+                      {{ $t('modals.edit_avatar.another-pic') }}
+                    </span>
+                    <span class="b-edit-avatar__mob-text">
+                      {{ $t('modals.edit_avatar.chose-another-pic') }}
+                    </span>
+                  </label>
+
                 </div>
                 <div class="b-edit-avatar__left-mob-part">
                   <div 
                     class="b-edit-avatar__rotate"
-                    :style="btnStyle"
+                    @click="rotateImage"
                   >
                     <img src="../../assets/img/rotate-picture.svg" alt="">
                     <span>
                       {{ $t('modals.edit_avatar.rotate') }}
-                    </span>
-                  </div>
-                  <div 
-                    class="b-edit-avatar__cut"
-                    :style="btnStyle"
-                  >
-                    <img src="../../assets/img/cut-picture.svg" alt="">
-                    <span>
-                      {{ $t('modals.edit_avatar.cut') }}
                     </span>
                   </div>
                 </div>
@@ -65,6 +66,7 @@
               :icon="iconSave"
               :width="125"
               :text="$t('buttons.save')"
+              @click-function="setAvatar"
             />
           </div>
         </div>
@@ -74,17 +76,19 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
+import { computed, ref, watch, watchEffect, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Form } from '@system.it.flumx.com/vee-validate'
 import * as yup from "yup"
 import { useI18n } from 'vue-i18n'
+import Cropper from 'cropperjs';
 
 import ModalWindow from '../ModalWindow.vue'
 import InputComponent from '../forms/InputComponent.vue'
 import GreenBtn from '../GreenBtn.vue'
 
 import SaveIcon from '../../assets/img/save-icon.svg'
+
 import { API } from "../../workers/api-worker/api.worker"
 
 import { ROUTES } from "../../router"
@@ -97,51 +101,115 @@ export default {
     Form,
     GreenBtn
   },
-  props: {
-  },
-  emits: ['closeModal'],
-  setup(props, context) {
-    // const { t } = useI18n();
-    // const schema = computed(() => {
-    //   return yup.object({
-    //     verify_code: yup.string().required().min(5),
-    //     email: yup.string().required()
-    //   })
-    // })
-    const windowWidth = ref(window.innerWidth)
+  props: ['userImage'],
+  emits: ['closeModal', 'getProfileData'],
+  setup(props, { emit }) {
+    const cropImg = ref(null)
+    const cropedImage = ref('')
+    const userSrcImage = ref(null)
+    const selectedFile = ref(null)
+    const fileReader = new FileReader()
+    const formData = new FormData();
+    const base = ref(null)
+
+    let cropper = null
+
+    userSrcImage.value = props.userImage
+
+
+
     const iconSave = computed(() => SaveIcon)
-    const btnStyle = computed(() => {
-      if (windowWidth.value < 576) {
-        return {
-        }
+    function closeModal() {
+      userSrcImage.value = null
+      selectedFile.value = null
+      emit('closeModal', 'edit_avatar')
+    }
+    function getCroppedImage() {
+      cropper
+        .getCroppedCanvas()
+        .toBlob(blob => {
+          cropedImage.value = URL.createObjectURL(blob)
+        }, 'image/jpeg')
+    }
+    function rotateImage() {
+      cropper.rotate(-90)
+    }
+    function onFileSelected(event) {
+      selectedFile.value = event.target.files[0]
+    }
+    function setAvatar() {
+      console.log(cropedImage.value)
+      formData.append("avatar", cropedImage.value)
+
+      API.AuthorizationService.AddAvatar(formData)
+        .then(() => {
+          emit('closeModal', 'edit_avatar')
+          emit('getProfileData')
+        })
+    }
+
+    fileReader.onload = (event) => {
+      userSrcImage.value = event.target.result
+    }
+
+    watchEffect(() => {
+      if(selectedFile.value) {
+        fileReader.readAsDataURL(selectedFile.value)
       }
     })
 
-    function closeModal() {
-      context.emit('closeModal', 'edit_avatar')
-    }
-    function onResize() {
-      windowWidth.value = window.innerWidth
-    }
+    watch(
+      userSrcImage,
+      () => {
+        if(userSrcImage.value) {
+          cropper.replace(userSrcImage.value)
+        }
+      }
+    )
 
     onMounted(() => {
-      window.addEventListener('resize', onResize)
+      cropImg.value.addEventListener('ready', function () {
+        getCroppedImage()
+      });
+      cropImg.value.addEventListener('cropend', function (event) {
+        getCroppedImage()
+      });
+      cropImg.value.addEventListener('crop', function (event) {
+        getCroppedImage()
+      });
+      cropper = new Cropper(cropImg.value, {
+        aspectRatio: 1,
+        minCropBoxWidth: 50,
+        minCropBoxHeight: 50,
+        viewMode: 2,
+        dragMode: 'crop',
+        rotatable: true,
+        background: false,
+        cropBoxMovable: true,
+        cropBoxResizable: true,
+      })
     })
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize)
+    onUnmounted(() => {
+      cropper.destroy()
     })
 
 
     return {
       closeModal,
+      setAvatar,
+      onFileSelected,
+      rotateImage,
       iconSave,
-      btnStyle
+      cropImg,
+      cropedImage,
+      userSrcImage
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+
 .b-edit-avatar { 
   &__main-part {
     display: flex;
@@ -154,6 +222,10 @@ export default {
       .b-edit-avatar__crop-pic { 
         overflow: hidden;
         height: 248px;
+        width: 196px;
+        @media (max-width: 576px) {
+          width: 100%;
+        }
         img { 
           @media (max-width: 576px) {
             width: 100%;
@@ -163,13 +235,20 @@ export default {
     }
     .b-edit-avatar__left-side {
       .b-edit-avatar__edited-pic {
+        width: 140px;
+        height: 132px;
+        overflow: hidden;
         @media (max-width: 576px) {
           display: none;
         }
+        img {
+          display: block;
+          height: 100%;
+          margin: 0 auto;
+        }
       }
       .b-edit-avatar__another-pic,
-      .b-edit-avatar__rotate,
-      .b-edit-avatar__cut {
+      .b-edit-avatar__rotate {
         display: flex;
         align-items: center;
         font-family: 'Inter';
@@ -204,20 +283,25 @@ export default {
           align-items: center;
         }
         .b-edit-avatar__another-pic {
-          .b-edit-avatar__desk-text {
-            @media (max-width: 576px) {
-              display: none;
+          label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            .b-edit-avatar__desk-text {
+              @media (max-width: 576px) {
+                display: none;
+              }
             }
-          }
-          .b-edit-avatar__mob-text {
-            display: none;
-            @media (max-width: 576px) {
-              display: block;
-            }
-          }
-          img {
-            @media (max-width: 576px) {
+            .b-edit-avatar__mob-text {
               display: none;
+              @media (max-width: 576px) {
+                display: block;
+              }
+            }
+            img {
+              @media (max-width: 576px) {
+                display: none;
+              }
             }
           }
         }
@@ -228,8 +312,7 @@ export default {
           .b-edit-avatar__rotate {
             margin-right: 8px;
           }
-          .b-edit-avatar__rotate,
-          .b-edit-avatar__cut {
+          .b-edit-avatar__rotate {
             @media (max-width: 576px) {
               border: 1px solid #DFDEED;
               padding: 9px 17px;
