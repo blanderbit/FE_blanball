@@ -249,7 +249,8 @@ export default {
       phone: route.meta.usersData?.data?.phone,
       config_phone: route.meta.usersData?.data.configuration?.phone,
       config_email: route.meta.usersData?.data.configuration?.email,
-      show_reviews: route.meta.usersData?.data.configuration?.show_reviews
+      show_reviews: route.meta.usersData?.data.configuration?.show_reviews,
+      // phone: route.meta.usersData?.data.phone
     })
     
     const checkboxData = reactive({})
@@ -364,7 +365,8 @@ export default {
     function saveDeclineUserDataChanges(val) {
       if (val === EDIT_BUTTON_ACTIONS.SAVE) {
         const refProfileData = { ...myForm.value.getControledValues() }
-        const { day, month, year, working_leg, config_email, config_phone, show_reviews } = refProfileData
+        console.log(refProfileData)
+        const { day, month, year, working_leg, config_email, config_phone, show_reviews, phone } = refProfileData
         const profileData = {
           ...refProfileData,
           birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
@@ -393,7 +395,8 @@ export default {
             },
             ...profileData
           },
-          "get_planned_events": "1y"
+          "get_planned_events": "1y",
+          "phone": phone
         }
         API.UserService.updateProfileData(payload)
         .then(() => {
