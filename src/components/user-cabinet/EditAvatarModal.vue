@@ -108,15 +108,12 @@ export default {
     const cropedImage = ref('')
     const userSrcImage = ref(null)
     const selectedFile = ref(null)
+    const blobFile = ref(null)
     const fileReader = new FileReader()
-    const formData = new FormData();
-    const base = ref(null)
 
     let cropper = null
 
     userSrcImage.value = props.userImage
-
-
 
     const iconSave = computed(() => SaveIcon)
     function closeModal() {
@@ -128,6 +125,7 @@ export default {
       cropper
         .getCroppedCanvas()
         .toBlob(blob => {
+          blobFile.value = blob
           cropedImage.value = URL.createObjectURL(blob)
         }, 'image/jpeg')
     }
@@ -137,15 +135,21 @@ export default {
     function onFileSelected(event) {
       selectedFile.value = event.target.files[0]
     }
+    
     function setAvatar() {
-      console.log(cropedImage.value)
-      formData.append("avatar", cropedImage.value)
+      console.log(blobFile.value)
+      const formData = new FormData();
+      
+      const myAvatar = new File([blobFile.value], "my_avatar.jpg", {type:"image/jpg", lastModified:new Date().getTime()})
 
+      console.log(myAvatar)
+      formData.append("avatar", myAvatar)
       API.AuthorizationService.AddAvatar(formData)
         .then(() => {
           emit('closeModal', 'edit_avatar')
           emit('getProfileData')
         })
+        .catch(e => console.log(e))
     }
 
     fileReader.onload = (event) => {

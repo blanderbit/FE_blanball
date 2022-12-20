@@ -426,8 +426,13 @@ export default {
       .b-user-card__profile-picture {
         position: relative;
         margin-right: 12px;
+        width: 52px;
+        height: 52px;
+        overflow: hidden;
+        border-radius: 8px;
         img {
           display: block;
+          width: 100%;
         }
         .b-user-card__add-pic-icon {
           position: absolute;
