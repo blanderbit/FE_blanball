@@ -1,50 +1,50 @@
 <template>
   <div class="b-auth">
     <div
-      v-if="backgroundTab"
-      class="b-auth__background-tab"
+        v-if="backgroundTab"
+        class="b-auth__background-tab"
     >
-      <img 
-        :src="backgroundTab" 
-        alt="background image tablet"
+      <img
+          :src="backgroundTab"
+          alt="background image tablet"
       />
     </div>
-    <div 
-      v-if="backgroundMob"
-      class="b-auth__background-mob"
+    <div
+        v-if="backgroundMob"
+        class="b-auth__background-mob"
     >
-      <img 
-        :src="backgroundMob" 
-        alt="background image mobile"
+      <img
+          :src="backgroundMob"
+          alt="background image mobile"
       />
     </div>
 
     <div class="b-auth__central-block">
       <img
-        v-if="blockType === mockData.LOGIN"
-        src="../assets/img/ball-colored.svg"
-        alt="ball-big"
-        class="b-auth__ball-big"
+          v-if="blockType === mockData.LOGIN"
+          src="../assets/img/ball-colored.svg"
+          alt="ball-big"
+          class="b-auth__ball-big"
       />
       <img
-        v-if="blockType === mockData.LOGIN"
-        src="../assets/img/ball-colored.svg"
-        alt="ball-small"
-        class="b-auth__ball-small"
+          v-if="blockType === mockData.LOGIN"
+          src="../assets/img/ball-colored.svg"
+          alt="ball-small"
+          class="b-auth__ball-small"
       />
       <div class="b-auth__left-part">
         <slot name="main-content"></slot>
       </div>
 
-      <div 
-        class="b-auth__right-part" 
-        :style="rightSideStyle" 
-        v-show="currentStep !== 6"
+      <div
+          class="b-auth__right-part"
+          :style="rightSideStyle"
+          v-show="currentStep !== 10"
       >
-        <div class="b-auth__google-play-block" >
-          <img 
-            src="../assets/img/google-play.svg" 
-            alt=""
+        <div class="b-auth__google-play-block">
+          <img
+              src="../assets/img/google-play.svg"
+              alt=""
           />
           <span>
             {{ $t('register.load-app') }}
@@ -53,10 +53,10 @@
         <!--<template v-else>-->
         <!--</template>-->
       </div>
-      <div 
-        class="b-auth__right-part" 
-        v-if="currentStep === 6" 
-        style="height: 600px"
+      <div
+          class="b-auth__right-part"
+          v-if="currentStep === 10"
+          style="height: 600px"
       >
         <position-map></position-map>
       </div>
@@ -86,7 +86,8 @@
       },
       rightSideStyle: {
         type: Object,
-        default: () => {}
+        default: () => {
+        }
       },
       currentStep: {
         type: Number,
@@ -124,6 +125,10 @@
     }
     @media (max-width: 576px) {
       padding-top: 140px;
+    }
+    @media (max-width: 420px) {
+      padding-top: 0;
+      display: block;
     }
     .b-auth__background-tab {
       display: none;
@@ -172,14 +177,22 @@
       @media (max-width: 576px) {
         border-radius: 28px 28px 0px 0px;
         width: 100%;
+        @media (max-width: 410px) {
+          height: 100%;
+          box-shadow: none;
+          /*> div {*/
+            /*padding: 0 24px;*/
+          /*}*/
+        }
       }
       .b-auth__ball-big {
         position: absolute;
-        width: 80px;
+        width: 100px;
         top: -30px;
         left: -30px;
         @media (min-width: 576px) {
           display: none;
+
         }
       }
       .b-auth__ball-small {
@@ -196,6 +209,12 @@
         @media (max-width: 992px) {
           width: 100%;
         }
+
+        @media (min-width: 320px) and (max-width: 576px) {
+          margin-top: 200px;
+          border-radius: 28px 28px 0px 0px;
+        }
+
       }
       .b-auth__right-part {
         background-image: var(--back-picture);

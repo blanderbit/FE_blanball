@@ -1,17 +1,6 @@
 <template>
   <div class="b-login-step">
-    <!--<div TODO will delete -->
-    <!--class="b-login-step__wrong-credentials-message-top"-->
-    <!--:style="warningTopStyle"-->
-    <!--&gt;-->
-    <!--<div class="b-login-step__left-part">-->
-    <!--<img src="../../assets/img/warning-black.svg" alt="" />-->
-    <!--{{ $t('login.error-label') }}-->
-    <!--</div>-->
-    <!--<div class="b-login-step__right-part">-->
-    <!--{{ $t('login.check-network') }}-->
-    <!--</div>-->
-    <!--</div>-->
+
     <Form v-slot="data" :validation-schema="schema" :initial-values="initialValues">
       <div class="b-login-step__top-part">
         <div class="b-login-step__main-title">{{ $t('login.app-name') }}</div>
@@ -30,9 +19,10 @@
           <InputComponent
               :title="`Пароль`"
               :title-width="0"
-              :type="'password'"
               :outside-title="true"
               :placeholder="'********'"
+              :has-icon="true"
+              :type="'password'"
               name="password"
               :height="40"
           />
@@ -45,7 +35,7 @@
           <div class="b-login-step__check-block">
             <checkbox v-model:checked="data.values.save_credentials">
               <template #label>
-                <span>{{ $t('login.remember-login') }}</span>
+                <span>{{ $t('login.remember-me') }}</span>
               </template>
             </checkbox>
           </div>
@@ -56,9 +46,9 @@
       </div>
       <div
           v-if="showInvalidCredentials"
-          class="b-login-step__wrong-credentials-message d-flex align-items-center"
+          class="b-login-step__wrong-credentials-message d-flex align-baseline"
       >
-        <img src="../../assets/img/warning-black.svg" alt=""/> {{ $t('login.wrong-credentials') }}
+        <img src="../../assets/img/warning-red.svg" class="m-2" alt=""/> {{ $t('login.wrong-credentials') }}
       </div>
       <div class="b-login-step__buttons">
         <GreenBtn
@@ -88,8 +78,8 @@
   import * as yup from 'yup'
   import { Form } from '@system.it.flumx.com/vee-validate'
   import { API } from '../../workers/api-worker/api.worker'
-  import { ROUTES } from '../../router'
   import { TokenWorker } from '../../workers/token-worker'
+  import { ROUTES } from "../../router/router.const";
 
   export default {
     name: 'Step1',
@@ -112,16 +102,10 @@
           top: showInvalidCredentials.value ? '20px' : '-50px',
         }
       });
-      const eyeCrossed = computed(() => {
-        return eyeCross
-      })
-      const eyeOpened = computed(() => {
-        return eyeOpen
-      });
 
       const initialValues = ref({
-        email: localStorage.getItem('email'),
-        password: localStorage.getItem('password')
+        // email: localStorage.getItem('email'),
+        // password: localStorage.getItem('password')
       });
 
       const schema = yup.object({
@@ -172,8 +156,6 @@
       const openRegisterPage = () => router.push(ROUTES.AUTHENTICATIONS.REGISTER.absolute);
 
       return {
-        eyeCrossed,
-        eyeOpened,
         schema,
         initialValues,
         showInvalidCredentials,
@@ -190,9 +172,7 @@
   .b-login-step {
     padding: 44px 24px 72px 24px;
     height: 100%;
-    @media (max-width: 576px) {
-      padding: 44px 0px 72px 0px;
-    }
+
     .b-login-step__wrong-credentials-message-top {
       padding: 8px;
       position: absolute;

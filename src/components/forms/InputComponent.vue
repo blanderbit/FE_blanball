@@ -19,7 +19,7 @@
         <span>{{ title }}</span>
       </div>
       <div 
-        v-if="rightIcon.length" 
+        v-if="rightIcon?.length"
         class="b-input__icon" 
         @click="iconClickAction"
       >
@@ -41,22 +41,23 @@
         :disabled="isDisabled"
       >
         <input
-            :type="inputType"
-            :placeholder="placeholder"
-            v-on="modelHandlers"
-            :value="modelValue"
-            :style="inputStyle"
-            :disabled="isDisabled"
+          :type="inputType"
+          :placeholder="placeholder"
+          v-on="modelHandlers"
+          :value="modelValue"
+          :style="inputStyle"
+          :disabled="isDisabled"
+          @click="$emit('onClickAction', $event)"
+          ref="input"
         />
       </slot>
-
     </div>
     <p class="b-input__error-message">{{ modelErrorMessage }}</p>
   </div>
 </template>
 
 <script>
-import { computed, ref, onMounted, watch } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { CustomModelWorker } from "../../workers/custom-model-worker/index";
 
 import eyeCross from '../../assets/img/eye-crossed.svg'
@@ -91,10 +92,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    value: {
-      type: String,
-      default: '',
-    },
+    modelValue: Object | String,
     title: {
       type: String,
       default: '',
@@ -124,21 +122,29 @@ export default {
       default: 'aggressive',
     },
   },
-  emits: ['iconClick'],
+  emits: ['iconClick', 'onClickAction', 'sendInputCoordinates'],
   setup(props, {emit}) {
     const {
         modelValue,
         modelErrorMessage,
         modelHandlers
-    } = CustomModelWorker(props);
+    } = CustomModelWorker(props, emit);
 
+    watch(
+      () => props.modelValue,
+      () => {
+        modelHandlers.value.input[0](props.modelValue);
+        modelHandlers.value.input[1](props.modelValue, true);
+      }
+    );
     const inputType = ref(null)
     const rightIcon = ref('')
+    const input = ref(null)
 
     const inputStyle = computed(() => {
       return {
         'padding-left': 10 + props.titleWidth + 'px',
-        'padding-right': rightIcon.value.length ? '52px' : '10px',
+        'padding-right': rightIcon.value?.length ? '52px' : '10px',
       }
     })
     const inputWrapper = computed(() => {
@@ -161,6 +167,13 @@ export default {
       }
     }
 
+    function resizeFunction() {
+      emit('sendInputCoordinates', {
+        x: input.value.parentNode.offsetLeft, 
+        y: input.value.parentNode.offsetHeight
+      })
+    }
+
     onMounted(() => {
       if (props.type === PASSWORD_TYPES.PASSWORD) {
         rightIcon.value = eyeCross;
@@ -168,7 +181,12 @@ export default {
       } else {
         rightIcon.value = props.icon
       }
-    });
+      window.addEventListener('resize', resizeFunction)
+    })
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', resizeFunction)
+    })
 
     return {
       iconClickAction,
@@ -178,7 +196,8 @@ export default {
       inputType,
       rightIcon,
       inputStyle,
-      inputWrapper
+      inputWrapper,
+      input
     }
   }
 }

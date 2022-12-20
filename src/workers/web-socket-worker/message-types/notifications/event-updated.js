@@ -9,8 +9,8 @@ import {
 
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { WebSocketTypes } from "../../web.socket.types";
-import { ROUTES } from "../../../../router";
 import { NotificationImage } from "../../../../assets/img/notifications/notification.images";
+import { ROUTES } from "../../../../router/router.const";
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.EventUpdated)

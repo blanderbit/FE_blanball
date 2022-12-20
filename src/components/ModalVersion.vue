@@ -31,7 +31,7 @@
 
 <script>
   import { useRouter } from "vue-router";
-  import { ROUTES } from "../router";
+  import { ROUTES } from "../router/router.const";
 
   export default {
     name: 'ModalVersion',

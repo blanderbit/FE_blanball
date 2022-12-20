@@ -7,9 +7,9 @@ import {
   NotificationSetUserImage
 } from "../../type.decorator";
 
-import { ROUTES } from "../../../../router";
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { WebSocketTypes } from "../../web.socket.types";
+import { ROUTES } from "../../../../router/router.const";
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.NewUserOnTheEvent)

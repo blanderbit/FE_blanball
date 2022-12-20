@@ -6,7 +6,7 @@
       </span>
     </div>
     <v-select
-      :placeholder="modelValue"
+      :placeholder="'test placeholder'"
       :options="options"
       :label="displayName || 'value'"
       append-to-body
@@ -18,6 +18,7 @@
       @open="modelHandlers.blur()"
       v-model="dropdownModelValue"
     >
+
     </v-select>
     <p class="b-input__error-message">{{ modelErrorMessage }}</p>
   </div>
@@ -46,7 +47,7 @@ export default {
       type: String,
       default: 'value'
     },
-    value: Object | String,
+    modelValue: Object | String,
     taggable: {
       type: Boolean,
       default: false
@@ -69,27 +70,25 @@ export default {
     },
     name: String
   },
-  emits: ['new-value'],
+  emits: ['new-value', 'update:modelValue'],
   setup(props, {emit}) {
     const wrapper = ref(null);
     const isOpened = ref(false);
     const dropdownModelValue = ref(null);
-    const currentValue = ref(props.options[0].value);
+    const currentValue = ref(props.modelValue || props.options[0].value);
     const {
-        modelValue,
+        modelValue: staticModelValue,
         modelErrorMessage,
         modelHandlers
     } = CustomModelWorker(props);
 
-    modelHandlers.value.input[0](props.options[0]?.[props.displayValue]);
-    modelHandlers.value.input[1](props.options[0]?.[props.displayValue], true);
 
     watch(
-      () => modelValue.value,
+      () => staticModelValue.value,
       () => {
         dropdownModelValue.value = props.options.find(item => {
-          return item[props.displayValue] === modelValue.value
-        }) || modelValue.value;
+          return item[props.displayValue] === staticModelValue.value
+        }) || staticModelValue.value ? {value: staticModelValue.value} : null;
       },
       {
         immediate: true
@@ -97,11 +96,11 @@ export default {
     );
 
     watch(
-      () => props.value,
+      () => props.modelValue,
       () => {
         dropdownModelValue.value = props.options.find(item => {
-          return item[props.displayValue] === props.value
-        }) || props.value;
+          return item[props.displayValue] === props.modelValue
+        }) || props.modelValue ? {value: props.modelValue} : null;
       },
       {
         immediate: true
@@ -158,12 +157,13 @@ export default {
       modelHandlers.value.input[0](val?.[props.displayValue]);
       modelHandlers.value.input[1](val?.[props.displayValue], true);
       emit('new-value',val?.[props.displayValue] )
+      emit('update:modelValue',val?.[props.displayValue] )
     }
 
     return {
       setNewValue,
       withPopper,
-      modelValue,
+      staticModelValue,
       modelErrorMessage,
       modelHandlers,
       isOpened,
@@ -212,6 +212,25 @@ export default {
 ::v-deep {
   #vs3__listbox {
     --vs-dropdown-min-width: auto;
+  }
+  .vs__selected {
+    overflow-x: hidden;
+    width: 75%;
+    white-space: nowrap;
+    display: inline-block;
+    text-overflow: ellipsis;
+    margin: 9px 2px 0;
+  }
+
+  .vs--searchable.b-form-error {
+    border-radius: 6px;
+  }
+
+  .vs--searchable .vs__dropdown-toggle, .vs__selected-options {
+    height: 40px;
+  }
+  .vs__dropdown-toggle {
+    border-color: #dfdeed;
   }
 }
 

@@ -1,9 +1,10 @@
 import { TokenWorker } from "../workers/token-worker";
-import router, { ROUTES } from "../router";
+import router from "../router";
 import { resolverFunctions } from "../workers/resolver-worker/resolver.functions";
 import { useToast } from "vue-toastification";
 import { TypeRequestMessageWorker } from "../workers/type-request-message-worker";
 import { i18n } from "../main";
+import { ROUTES } from "../router/router.const";
 
 const toast = useToast();
 

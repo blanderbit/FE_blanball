@@ -47,7 +47,6 @@ export default {
   ALL_NOTIFICATIONS_READED: 'все нотификации пользователя были успешно прочитаны',
   CANT_UPDATE_MAINTENANCE: 'не возможно обновить конфигурацию тех работ',
   CANT_GET_MAINTENANCE: 'не возможно получить текущее значение тех работ ',
-
   CANT_LEAVE_REVIEW_ABOUT_YOURSELF: 'Не возможно оставить отзыв самому себе',
 
   INVALID_PAGE: 'Такой страницы не существует!',
@@ -56,8 +55,18 @@ export default {
   DOES_NOT_EXIST: 'Поле "{field}" не найдено!',
   INVALID_CHOICE: 'Поле "{field}" Выбрано с неправильным значением!',
   UNIQUE: 'Поле "{field}" уникальное!',
-  MIN_VALUE: 'Поле "{field}" вы ввели меньше минимальног значения!',
+  MIN_VALUE: 'Поле "{field}" вы ввели меньше минимального значения!',
   MAX_VALUE: 'Поле "{field}" вы ввели больше максимального значения!',
+  BLANK: 'Поле "{field}" не может быть пустым!',
+
+  AUTHENTICATION_CREDENTIALS_WERE_NOT_PROVIDED: 'Не предоставлены учетные данные для аутентификации',
+  AUTHENTICATION_TOKEN_NOT_VALID: 'Не валидный токен аутентификации',
+  BAD_AUTHENTICATION_TOKEN: 'Не валидный токен аутентификации',
+  AVATAR_MAX_SIZE_1_MB: 'Загруженное фото привышает лимит в 1мб',
+  PROFILE_AVATAR_UPDATED: 'Автар профиля успешно обновлен',
+  CODE_IS_VALID: 'Код для сброса пароля валидный',
+  METHOD_NOT_ALLOWED: 'Метод http запроса запрещен',
+
 
   fields: {
     phone: 'Телефон',

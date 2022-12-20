@@ -1,9 +1,13 @@
 import { AxiosInstance } from "../../../../plugins/axios.plugin";
 import { EndpointsEnum } from "../http-common/prefix.enum";
-import { AxiosParams, AxiosQuery } from "../../../utils-worker";
+import { AxiosParams, AxiosQuery, AxiosSkipErrorMessageType } from "../../../utils-worker";
+import { FilterParamsDecorator } from "../filter/filter.utils";
+import { filterConfigForEvents, filterConfigForUsers } from "../filter/filter.config";
+import { DETAILS_TYPE_ENUM } from "../../../type-request-message-worker";
+
 
 export class EventService {
-  static declineOrAcceptInvites(id, isAccept) {
+  declineOrAcceptInvites(id, isAccept) {
     return AxiosInstance.post(
       EndpointsEnum.Events.DeclineOrAcceptInvites,
       {
@@ -13,7 +17,7 @@ export class EventService {
     )
   }
 
-  static declineOrAcceptParticipations(id, isAccept) {
+  declineOrAcceptParticipations(id, isAccept) {
     return AxiosInstance.post(
       EndpointsEnum.Events.DeclineOrAcceptParticipations,
       {
@@ -23,29 +27,33 @@ export class EventService {
     )
   }
 
-  static getAllEvents(pageNumber) { // TODO should add filters
+  @FilterParamsDecorator(filterConfigForEvents)
+  getAllEvents(options) {
     return AxiosInstance.get(
       EndpointsEnum.Events.GetAllEvents,
       AxiosParams(
-        AxiosQuery({
-          page: pageNumber
-        })
+        AxiosQuery(options),
+        AxiosSkipErrorMessageType([
+          DETAILS_TYPE_ENUM.INVALID_PAGE
+        ])
       )
     )
   }
 
-  static getAllMyEvents(pageNumber) {
+  @FilterParamsDecorator(filterConfigForEvents)
+  getAllMyEvents(options) {
     return AxiosInstance.get(
       EndpointsEnum.Events.GetAllMyEvents,
       AxiosParams(
-        AxiosQuery({
-          page: pageNumber
-        })
+        AxiosQuery(options),
+        AxiosSkipErrorMessageType([
+          DETAILS_TYPE_ENUM.INVALID_PAGE
+        ])
       )
     )
   }
 
-  static getPlannedUserEvents(userId) {
+  getPlannedUserEvents(userId) {
     return AxiosInstance.get(
       EndpointsEnum.Events.getPlannedUserEvents + userId,
     )

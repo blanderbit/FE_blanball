@@ -15,7 +15,7 @@
         :tags="mockData.tags"
         :filtered-teams="filteredTeams"
         @set-event-data="setFormValue"
-        @choose-category="chooseCategory"
+        @chose-category="choseCategory"
       />
       
       <div 
@@ -397,19 +397,19 @@ export default {
       }
     })
     const filteredTeams = computed(() => {
-      if (currentCategory === 'Всі') {
+      if (currentCategory() === 'Всі') {
         return mockData.value.teams
       } else {
-        return [mockData.value.teams.find(item => item.category_name === currentCategory)]
+        return [mockData.value.teams.find(item => item.category_name === currentCategory())]
       }
     })
 
     function currentCategory() {
-      return mockData.tags.find(item => item.isActive).text
+      return mockData.value.tags.find(item => item.isActive).text
     }
-    function chooseCategory(id) {
-      mockData.tags = mockData.tags.map(item => ({...item, isActive: false}))
-      mockData.tags = mockData.tags.map(item => {
+    function choseCategory(id) {
+      mockData.value.tags = mockData.value.tags.map(item => ({...item, isActive: false}))
+      mockData.value.tags = mockData.value.tags.map(item => {
         if (item.id === id) {
           return {
             ...item,
@@ -427,7 +427,7 @@ export default {
       labelStyle,
       emptyLabelStyle,
       icons,
-      chooseCategory
+      choseCategory
     }
   },
   data() {
@@ -495,6 +495,7 @@ export default {
     display: flex;
     align-items: flex-start;
     flex-wrap: wrap;
+    overflow-y: scroll;
     .create-event-block {
       width: 360px;
       padding: 20px;
