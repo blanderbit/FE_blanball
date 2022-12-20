@@ -137,12 +137,10 @@ export default {
     }
     
     function setAvatar() {
-      console.log(blobFile.value)
       const formData = new FormData();
       
       const myAvatar = new File([blobFile.value], "my_avatar.jpg", {type:"image/jpg", lastModified:new Date().getTime()})
 
-      console.log(myAvatar)
       formData.append("avatar", myAvatar)
       API.AuthorizationService.AddAvatar(formData)
         .then(() => {

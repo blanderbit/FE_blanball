@@ -317,15 +317,14 @@ export default {
   },
   emits: ['openEditPictureModal'],
   setup(props, {emit}) {
-    console.log(props.userData)
     const currentTab = ref(0)
     const selectedFile = ref(null)
     const imageSrc = ref(null)
     const fileReader = new FileReader()
     const labels = ref([
       props.userData.age ? `${props.userData.age} років` : null ,
-      props.userData.gender ,
-      props.userData.role ,
+      props.userData.gender,
+      props.userData.role,
       props.userData.position
     ])
 
