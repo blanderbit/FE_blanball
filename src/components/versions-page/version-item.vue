@@ -7,14 +7,12 @@
         <div class="b-version-item__element">Version {{ version }}</div>
         <div class="b-version-item__date d-flex">
             <div>{{ date }}</div>
-            <!-- <img src="../../assets/img/arrow-right.svg"> -->
+            <img src="../../assets/img/arrow-right.svg">
         </div>
     </div>
 </template>
 
 <script>
-    import dayJs from 'dayjs'
-
     export default {
         name: "version-item",
         props: {
