@@ -77,10 +77,7 @@
 
 <script>
 import { computed, ref, watch, watchEffect, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
 import { Form } from '@system.it.flumx.com/vee-validate'
-import * as yup from "yup"
-import { useI18n } from 'vue-i18n'
 import Cropper from 'cropperjs';
 
 import ModalWindow from '../ModalWindow.vue'
@@ -90,8 +87,6 @@ import GreenBtn from '../GreenBtn.vue'
 import SaveIcon from '../../assets/img/save-icon.svg'
 
 import { API } from "../../workers/api-worker/api.worker"
-
-import { ROUTES } from "../../router/router.const"
 
 export default {
   name: 'EditAvatarModal',
