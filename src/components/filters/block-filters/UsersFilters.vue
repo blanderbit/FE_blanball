@@ -4,30 +4,31 @@
       <div class="b-users-filters__first-line d-flex justify-content-between">
         <div class="b-users-filters__left-part d-flex">
           <dropdown
-              main-title="ordering"
-              :options="ordering"
-              display-name="value"
-              display-value="value"
-              v-model="transformedFilters.ordering"
-              name="year"
+            main-title="ordering"
+            :options="ordering"
+            display-name="value"
+            display-value="value"
+            v-model="transformedFilters.ordering"
+            name="sorting"
           >
           </dropdown>
           <dropdown
-              main-title="positions"
-              :options="positions"
-              display-name="value"
-              display-value="value"
-              v-model="transformedFilters.profile__position"
-              name="year"
+            main-title="positions"
+            :options="positions"
+            display-name="value"
+            display-value="value"
+            v-model="transformedFilters.profile__position"
+            name="year"
           >
           </dropdown>
           <dropdown
-              main-title="$t('register.year')"
-              :options="gender"
-              display-name="value"
-              display-value="value"
-              v-model="transformedFilters.profile__gender"
-              name="year">
+            :main-title="$t('register.year')"
+            :options="gender"
+            display-name="value"
+            display-value="value"
+            v-model="transformedFilters.profile__gender"
+            name="year"
+          >
           </dropdown>
 
         </div>

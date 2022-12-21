@@ -24,7 +24,6 @@
           @update:value="setFilters"
           @clearFilters="clearFilters"
       >
-
       </users-filters>
       <div class="user-cards-wrapper">
         <div class="users-cards">
@@ -494,6 +493,7 @@
           position: relative;
           overflow-x: scroll;
           margin-top: 24px;
+          margin-bottom: 35px;
         }
         .tab-block {
           display: flex;
