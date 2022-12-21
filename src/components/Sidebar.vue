@@ -70,6 +70,8 @@
   import notificationUnread from '../assets/img/notificationUnread.svg'
   import record from '../assets/img/record.svg'
   import members from '../assets/img/members.svg'
+  import medal from '../assets/img/medal.svg'
+  import settings from '../assets/img/Settings.svg'
   import { TokenWorker } from "../workers/token-worker";
   import { ROUTES } from "../router/router.const";
   const findDublicates = (list, newList) => {
@@ -98,10 +100,20 @@
           action: () => isMenuOpened.value = false
         },
         {
+          img: medal,
+          url: '',
+          action: () => isMenuOpened.value = false
+        },
+        {
           img: members,
           url: '/application/smart-list/general',
           action: () => isMenuOpened.value = false
         },
+        {
+          img: settings,
+          url: '',
+          action: () => isMenuOpened.value = false
+        }
       ]);
 
       const getNotificationsCount = async () => API.NotificationService
