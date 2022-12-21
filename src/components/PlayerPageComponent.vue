@@ -117,8 +117,8 @@
               >
                 <div class="b-player-page__name-date-line">
                   <div class="b-player-page__name">
-                    {{ item.last_name }}
-                    {{ item.name }}
+                    {{ item.author.profile?.last_name }}
+                    {{ item.author.profile?.name }}
                   </div>
                   <div class="b-player-page__small-text">
                     {{ item.date }}
@@ -260,8 +260,8 @@ export default {
 
     API.ReviewService.getUserReviews(userId.value)
       .then(res => {
-        reviewQuantity.value = res.data.page_size || 0
-        userReviews.value = res.data.results.map(item => {
+        reviewQuantity.value = res.data?.page_size || 0
+        userReviews.value = res.data?.results.map(item => {
           return {
             ...item,
             date: `${dayjs(item.time_created)
