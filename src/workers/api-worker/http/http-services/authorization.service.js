@@ -35,4 +35,8 @@ export class AuthorizationService {
   static Register(data) {
     return AxiosInstance.post(EndpointsEnum.Authorization.Register, data)
   }
+
+  static AddAvatar(data) {
+    return AxiosInstance.put(EndpointsEnum.Authorization.AddAvatar, data)
+  }
 }
