@@ -98,7 +98,7 @@ export default {
       default: '',
     },
     placeholder: {
-      type: String,
+      type: [String, Number],
       default: '',
     },
     titleWidth: {

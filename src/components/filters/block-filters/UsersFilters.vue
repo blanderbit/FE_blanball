@@ -66,7 +66,7 @@
   import ModalPositionMap from '../../maps/ModalPositionMap.vue'
   import Slider from '@vueform/slider'
   import {cloneDeep, isEqual} from 'lodash'
-  import { TransformedFiltersWorker } from "./transformed.filters.worker";
+  import {   } from "./transformed.filters.worker";
   import CONSTANTS from "../../../consts";
   export default {
     name: "UsersFilters",

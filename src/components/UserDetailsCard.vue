@@ -4,7 +4,11 @@
       <div class="b-user-card__top-part">
         <div class="b-user-card__picture-block">
           <div class="b-user-card__profile-picture">
-            <img src="../assets/img/user-photo.png" alt="" />
+            <img v-if="userData.avatar_url" :src="userData.avatar_url" alt="" />
+            <Avatar
+              v-else
+              :full-name="fullUserName"
+            />
             <div 
               v-if="isEditMode"
               class="b-user-card__add-pic-icon"
@@ -272,13 +276,15 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, watchEffect } from 'vue'
 import dayjs from 'dayjs'
 import dayjsUkrLocale from 'dayjs/locale/uk'
 
 import InputComponent from './forms/InputComponent.vue'
 import TextAreaComponent from '../components/TextAreaComponent.vue'
 import Dropdown from './forms/Dropdown.vue'
+import Avatar from '../components/Avatar.vue'
+
 
 import sortArrowHorizontally from '../assets/img/sort-arrows-horizontal.svg'
 import tick from '../assets/img/tick.svg'
@@ -292,7 +298,8 @@ export default {
   components: {
     InputComponent,
     Dropdown,
-    TextAreaComponent
+    TextAreaComponent,
+    Avatar
   },
   props: {
     userData: {
@@ -311,14 +318,17 @@ export default {
   emits: ['openEditPictureModal'],
   setup(props, {emit}) {
     const currentTab = ref(0)
-    const userPicture = ref(null)
-
+    const selectedFile = ref(null)
+    const imageSrc = ref(null)
+    const fileReader = new FileReader()
     const labels = ref([
       props.userData.age ? `${props.userData.age} років` : null ,
-      props.userData.gender ,
-      props.userData.role ,
+      props.userData.gender,
+      props.userData.role,
       props.userData.position
     ])
+
+    const fullUserName = computed(() => `${props.userData.name} ${props.userData.last_name}`)
 
     const mockData = computed(() => {
       return {
@@ -355,11 +365,21 @@ export default {
     }
 
     function onFileSelected(e) {
-      if (e.target.files[0]) {
-        userPicture.value = e.target.files[0]
-        emit('openEditPictureModal', 'edit_avatar')
-      }
+      selectedFile.value = e.target.files[0]
     }
+
+    fileReader.onload = (event) => {
+      imageSrc.value = event.target.result
+      emit('openEditPictureModal', 'edit_avatar', imageSrc.value)
+    }
+
+    watchEffect(() => {
+      if(selectedFile.value) {
+        fileReader.readAsDataURL(selectedFile.value)
+      } else {
+        imageSrc.value = null
+      }
+    })
 
     return {
       changeUserTab,
@@ -368,7 +388,8 @@ export default {
       icons,
       birthDate,
       mockData,
-      labels    
+      labels,
+      fullUserName
     }
   }
 }
@@ -404,8 +425,13 @@ export default {
       .b-user-card__profile-picture {
         position: relative;
         margin-right: 12px;
+        width: 52px;
+        height: 52px;
+        overflow: hidden;
+        border-radius: 8px;
         img {
           display: block;
+          width: 100%;
         }
         .b-user-card__add-pic-icon {
           position: absolute;

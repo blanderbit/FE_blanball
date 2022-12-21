@@ -68,11 +68,11 @@ export default {
       default: 197
     },
     cancelBtnWidth: {
-      type: Number,
+      type: [Number, String],
       default: 98
     },
     saveBtnWidth: {
-      type: Number,
+      type: [Number, String],
       default: 89
     },
   },

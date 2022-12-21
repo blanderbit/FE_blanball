@@ -17,8 +17,6 @@
 </template>
 
 <script>
-    import dayJs from 'dayjs'
-
     export default {
         name: "version-item",
         props: {

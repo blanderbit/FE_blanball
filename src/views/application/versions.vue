@@ -126,7 +126,7 @@ export default {
     const versionNumber = ref()
     const loading = ref(false)
 
-    versions.value = route.meta.allVersions.results
+    versions.value = route.meta.allVersions?.results
 
     versions.value = versions.value.map(item => {
       return {
