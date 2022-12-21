@@ -365,7 +365,6 @@ export default {
     function saveDeclineUserDataChanges(val) {
       if (val === EDIT_BUTTON_ACTIONS.SAVE) {
         const refProfileData = { ...myForm.value.getControledValues() }
-        console.log(refProfileData)
         const { day, month, year, working_leg, config_email, config_phone, show_reviews, phone } = refProfileData
         const profileData = {
           ...refProfileData,
@@ -435,6 +434,7 @@ export default {
             working_leg: getWorkingLeg(res.data.profile?.working_leg)
           }
           userEmail.value = res.data?.email
+          userPhone.value = res.data?.phone
           isLoading.value = false
         })
     }
