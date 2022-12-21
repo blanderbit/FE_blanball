@@ -136,7 +136,7 @@ export default {
       }
     })
 
-    const currentVersionId = versions.value[versions.value.length - 1].id
+    const currentVersionId = versions.value[versions.value.length - 1]?.id
 
     if (currentVersionId) {
       gerVersion(currentVersionId)
@@ -154,7 +154,7 @@ export default {
     }
 
     return {
-      gerVersion,
+      // gerVersion,
       versions,
       currentVersion,
       versionNumber,
