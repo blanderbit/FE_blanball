@@ -5,5 +5,6 @@ export default {
   'smth-new': 'Щось нове',
   'fixes': 'Виправлення',
   'improvments': 'Покращення',
-  'history': 'Історія оновлень Blanball'
+  'history': 'Історія оновлень Blanball',
+  'new': 'Нове'
 }

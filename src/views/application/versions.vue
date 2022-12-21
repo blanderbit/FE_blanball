@@ -154,7 +154,7 @@ export default {
     }
 
     return {
-      gerVersion,
+      // gerVersion,
       versions,
       currentVersion,
       versionNumber,
