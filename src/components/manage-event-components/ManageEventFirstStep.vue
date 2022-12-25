@@ -3,6 +3,7 @@
     <Dropdown
       :outside-title="true"
       :main-title="$t('events.event-type')"
+      :placeholder="$t('events.event-type')"
       :options="typeOfEventDropdown"
       :width="320"
       :height="40"
@@ -41,6 +42,7 @@
     <Dropdown
       :outside-title="true"
       :main-title="$t('events.sport-type')"
+      :placeholder="$t('events.sport-type')"
       :options="typeOfSportDropdown"
       :width="320"
       :height="40"

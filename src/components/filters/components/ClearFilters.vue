@@ -18,7 +18,7 @@
     width: 32px;
     min-width: 32px;
     height: 32px;
-    background: #EFEFF6;
+    border: 1px solid #DFDEED;
     border-radius: 6px;
     display: flex;
     margin-right: 8px;

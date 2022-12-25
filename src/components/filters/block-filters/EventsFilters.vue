@@ -10,6 +10,8 @@
             <!--</div>-->
             <div class="b-main-search__dropdown-wrapper-game">
               <Dropdown
+                  :main-title="$t('events.gender')"
+                  :placeholder="$t('events.gender')"
                   :options="gender"
                   display-value="value"
                   v-model="transformedFilters.gender"
@@ -17,6 +19,8 @@
             </div>
             <div class="b-main-search__dropdown-wrapper-tournament">
               <Dropdown
+                  :main-title="$t('events.game-type')"
+                  :placeholder="$t('events.game-type')"
                   :options="sportTypeDropdown"
                   display-value="value"
                   v-model="transformedFilters.type"
