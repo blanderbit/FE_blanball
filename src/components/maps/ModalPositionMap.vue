@@ -1,119 +1,247 @@
 <template>
-  <div id="map" style="height: 100%; width: 100%"></div>
+ <div>
+   <div @click="activeModal = true">
+     {{region || city || address ? `${region} ${city} ${address}`: 'selectPosition'}}
+   </div>
+   <ModalWindow v-if="activeModal" :isTitleShown="false">
+     <Form
+         v-slot="data"
+         :validation-schema="schema"
+     >
+       <div class="b-modal-position__block">
+         <Dropdown
+             :outside-title="true"
+             :main-title="$t('register.city')"
+             :options="mockData.district"
+             v-model="region"
+             taggable
+             @new-value="changeRegions"
+             display-name="name"
+             display-value="name"
+             name="region"
+         />
+       </div>
+       <div class="b-modal-position__block">
+         <Dropdown
+             :outside-title="true"
+             :main-title="$t('register.city')"
+             :options="mockData.cities"
+             v-model="city"
+             taggable
+             @new-value="changeCity"
+             display-name="name"
+             display-value="name"
+             name="city"
+         />
+       </div>
+       <div class="b-modal-position__block">
+         <InputComponent
+             :title="$t('register.weight')"
+             :placeholder="'Address'"
+             v-model="address"
+             :title-width="0"
+             @input="changeAddress($event)"
+             name="address"
+         ></InputComponent>
+       </div>
+       <div class="b-modal-position__block">
+         <InputComponent
+             :title="$t('register.weight')"
+             :placeholder="'dist'"
+             v-model="dist"
+             :title-width="0"
+             name="dist"
+             :immediate="true"
+         ></InputComponent>
+       </div>
+
+       <div
+           class="b-modal-position__block b-modal-position__map"
+       >
+         <position-map :coords="coords" @update:coords="updateCoords"></position-map>
+       </div>
+       <div class="d-flex justify-content-between align-items-center">
+         <div class="b-modal-position__clear" @click="activeModal = false">
+           Скасувати
+         </div>
+         <GreenBtn
+             :text="'Зберегти'"
+             :width="140"
+             :height="40"
+             @click-function="save(data)"
+         />
+       </div>
+     </Form>
+   </ModalWindow>
+ </div>
 </template>
 
 <script>
-  import { onMounted, ref, watch } from 'vue';
-  import { PositionMapBackgroundStyle, PositionMapStyles } from "./map.styles";
-  import { API } from "../../workers/api-worker/api.worker";
+  import PositionMap from './PositionMap.vue';
+  import Dropdown from './../forms/Dropdown.vue';
+  import InputComponent from './../forms/InputComponent.vue';
+  import * as yup from "yup";
+  import {ref, computed, watch} from "vue";
+  import CONSTANTS from "../../consts";
+  import ModalWindow from "../ModalWindow.vue";
+  import { Form } from '@system.it.flumx.com/vee-validate'
   import { PositionMapBus } from "../../workers/event-bus-worker";
-  const Restrictions = {
-    Ukraine: {
-      east: 40.2275801,
-      north: 52.3791473,
-      south: 44.184598,
-      west: 22.137059
-    }// //https://gist.github.com/graydon/11198540
-  };
-
-  const getRestrictionCenter = (restriction) => {
-    return {
-      lat: ((restriction.north - restriction.south) / 2) + restriction.south,
-      lng:((restriction.east - restriction.west) / 2) + restriction.west
-    }
-  };
-
+  import { API } from "../../workers/api-worker/api.worker";
+  import GreenBtn from '../../components/GreenBtn.vue'
   export default {
-    name: "PositionMap",
-    props: {
-      coords: {
-        type: Object
-      }
+    components: {
+      ModalWindow,
+      PositionMap,
+      Dropdown,
+      InputComponent,
+      Form,
+      GreenBtn
     },
-    setup(props, {emit}) {
-      const state = ref({
-        centerOfCountry: getRestrictionCenter(Restrictions.Ukraine),
-        userCenter: {},
+    props: {
+      modelValue: Object,
+      default: () => ({
+
+      })
+    },
+    emits: [
+      'update:modelValue'
+    ],
+    setup(props,  {emit}) {
+      const region = ref('');
+      const city = ref('');
+      const address = ref('');
+      const dist = ref(300);
+      const coords = ref({
+
       });
-
-      const marker = ref({});
-      let map;
-
-      function placeMarker(map, location) {
-        return new google.maps.Marker({
-          position: location,
-          map: map
-        });
-      }
-
-      const setDataAboutPosition = async (data) => {
-        const dataForEmit = {
-          lat: data?.lat,
-          lng: data?.lng,
-          place: (await API.LocationService.GetPlaceByCoords(data || state.value.centerOfCountry))?.data?.data
-        };
-
-        emit('update:coords', dataForEmit);
-        PositionMapBus.emit('update:coords', dataForEmit)
-      };
-      PositionMapBus.on('update:map:by:coords', (e) => {
-        setDataAboutPosition({
-          lat: +e.data.coordinates?.lat,
-          lng: +e.data.coordinates?.lon,
-        });
-        marker.value.setPosition({
-          lat: +e.data.coordinates?.lat,
-          lng: +e.data.coordinates?.lon,
-        });
-        const myLatlng = new google.maps.LatLng(+e.data.coordinates?.lat, +e.data.coordinates?.lon);
-        map.setCenter(myLatlng);
-      });
-
-      const createMap = (crd) => {
-        state.userCenter = crd ? {
-          lat: crd.latitude,
-          lng: crd.longitude
-        } : state.value.centerOfCountry;
-
-        map = new google.maps.Map(document.getElementById("map"), {
-          center: state.userCenter,
-          zoom: 12,
-          overviewMapControlOptions: {
-            opened: false,
-          },
-          restriction: {
-            latLngBounds: Restrictions.Ukraine,
-            strictBounds: true
-          },
-          styles: PositionMapStyles
-        });
-
-        map.data.setStyle(PositionMapBackgroundStyle);
-
-        marker.value = placeMarker(map, state.userCenter);
-        setDataAboutPosition(state.userCenter);
-
-        google.maps.event.addListener(map, 'click', function (event) {
-          marker.value.setPosition(event.latLng);
-          setDataAboutPosition(event.latLng.toJSON())
-        });
-      };
+      const activeModal = ref(false);
+      const schema = yup.object({
+        region: yup.string().required(),
+        city: yup.string().required(),
+        address: yup.string().required(),
+      })
 
       watch(
-        () => props.coords,
-        () => marker.value.setPosition(event.latLng)
-      );
+        () => props.modelValue,
+        () => {
+          if(!props.modelValue) return
+          const [Sregion,  SCity, SAddress] = props.modelValue.place?.split?.(',') || [];
+          region.value =Sregion
+          city.value =SCity
+          address.value =SAddress
+          dist.value = props.modelValue.dist?.toString()
+          coords.value = {
+            lat: props.modelValue.lat,
+            lng: props.modelValue.lng
+          }
+        },
+        {
+          immediate: true
+        }
+      )
+      watch(
+        () => activeModal.value,
+        () => {
 
-      onMounted(() => {
-        navigator.geolocation.getCurrentPosition(
-          (pos) => createMap(pos.coords),
-          () => createMap()
-        )
-      })
+          if(!activeModal.value) return
+
+
+          PositionMapBus.emit('update:map:by:coords', {
+            data: {
+              coordinates: {
+                lat: props.modelValue.lat,
+                lon: props.modelValue.lng
+              }
+            }
+          })
+        },
+        {
+          immediate: true
+        }
+      )
+      const mockData = computed(() => {
+        return {
+          cities: CONSTANTS.register.jsonCityRegions.find(item => item.name.includes(region.value))?.cities || [],
+          district: CONSTANTS.register.jsonCityRegions,
+        }
+      });
+
+      function updateCoords (e) {
+
+        coords.value = {
+          lat: e.lat,
+          lng: e.lng,
+        };
+        region.value = e.place.state;
+        city.value = e.place.city || e.place.town|| e.place.village;
+        address.value = `${e.place.neighbourhood || ''} ${e.place.road || ''} ${e.place.house_number || ''} ${e.place.postcode || ''}`;
+      }
+
+      async function getCoordsByName(str) {
+        return await API.LocationService.GetPlaceByAddress(str)
+      }
+
+      let timeout;
+      return {
+        schema,
+        mockData,
+        region,
+        city,
+        address,
+        dist,
+        async changeRegions(e) {
+          region.value = e;
+          city.value = '';
+          address.value = '';
+          PositionMapBus.emit('update:map:by:coords', await getCoordsByName(region.value))
+        },
+        async changeCity(e) {
+          city.value = e;
+          address.value = ''
+          PositionMapBus.emit('update:map:by:coords', await getCoordsByName(`${region.value} ${city.value}`))
+        },
+        async changeAddress(e) {
+          address.value = e.target.value;
+          clearTimeout(timeout);
+          timeout = setTimeout(async () => {
+            PositionMapBus.emit('update:map:by:coords', await getCoordsByName(`${region.value} ${city.value} ${address.value}`))
+          }, 500)
+        },
+        updateCoords,
+        activeModal,
+        coords,
+        async save(data) {
+          const { valid } = await data.validate();
+          debugger
+          if(!valid) return;
+          emit('update:modelValue', {
+            ...coords.value,
+            dist: dist.value,
+            place: `${region.value},${city.value},${address.value}`
+          });
+          activeModal.value = false
+        }
+      }
     }
   }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+  .b-modal-position__block {
+    margin-bottom: 15px;
+  }
 
+  .b-modal-position__map {
+    height: 300px
+  }
+
+  .b-modal-position__clear {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+    color: #575775;
+  }
 </style>

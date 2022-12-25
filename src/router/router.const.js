@@ -83,37 +83,37 @@ export const ROUTES = {
     },
     USERS: {
       relative: 'users',
-      absolute: '/application/smart-list',
-      name: 'application-smart-list',
+      absolute: '/application/users',
+      name: 'application-users',
       GENERAL: {
-        relative: 'smart-list/general',
+        relative: 'users/general',
         absolute: '/application/smart-list/general',
-        name: 'application-smart-list-general'
+        name: 'application-users-general'
       },
       PLAYERS: {
-        relative: 'smart-list/players',
+        relative: 'users/players',
         absolute: '/application/smart-list/players',
-        name: 'application-smart-list-players'
+        name: 'application-users-players'
       },
       REFEREE: {
-        relative: 'smart-list/referee',
+        relative: 'users/referee',
         absolute: '/application/smart-list/referee',
-        name: 'application-smart-list-referee'
+        name: 'application-users-referee'
       },
       TEAMS: {
-        relative: 'smart-list/teams',
+        relative: 'users/teams',
         absolute: '/application/smart-list/teams',
-        name: 'application-smart-list-teams'
+        name: 'application-users-teams'
       },
       TRAINERS: {
-        relative: 'smart-list/trainers',
+        relative: 'users/trainers',
         absolute: '/application/smart-list/trainers',
-        name: 'application-smart-list-trainers'
+        name: 'application-users-trainers'
       },
       GET_ONE: {
-        relative: 'smart-list/:id',
-        absolute: (userId) => `/application/users/${userId}`,
-        name: 'application-smart-list'
+        relative: 'users/public/:userId',
+        absolute: (userId) => `/application/users/public/${userId}`,
+        name: 'application-users-one'
       }
     }
   },

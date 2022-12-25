@@ -81,7 +81,6 @@ export default {
     const wrapper = ref(null);
     const isOpened = ref(false);
     const dropdownModelValue = ref(null);
-    const currentValue = ref(props.modelValue || props.options[0].value);
     const {
         modelValue: staticModelValue,
         modelErrorMessage,
@@ -89,25 +88,31 @@ export default {
     } = CustomModelWorker(props);
     const icon = computed(() => SearchIcon)
 
-    
+    function selectValue (e) {
+      dropdownModelValue.value = props.options.find(item => {
+        return item[props.displayValue] === e
+      }) || e ? {value: e, name: e} : null;
+
+      modelHandlers.value.input[0](e);
+      modelHandlers.value.input[1](e, true);
+    }
+
     watch(
       () => staticModelValue.value,
       () => {
-        dropdownModelValue.value = props.options.find(item => {
-          return item[props.displayValue] === staticModelValue.value
-        }) || staticModelValue.value ? {value: staticModelValue.value} : null;
+        selectValue(staticModelValue.value);
       },
       {
         immediate: true
       }
     );
-
+    if(props.modelValue) {
+      selectValue(props.modelValue);
+    }
     watch(
       () => props.modelValue,
       () => {
-        dropdownModelValue.value = props.options.find(item => {
-          return item[props.displayValue] === props.modelValue
-        }) || props.modelValue ? {value: props.modelValue} : null;
+        selectValue(props.modelValue);
       },
       {
         immediate: true
@@ -163,7 +168,7 @@ export default {
     function setNewValue(val) {
       modelHandlers.value.input[0](val?.[props.displayValue]);
       modelHandlers.value.input[1](val?.[props.displayValue], true);
-      emit('new-value',val?.[props.displayValue] )
+      emit('new-value',val?.[props.displayValue] );
       emit('update:modelValue',val?.[props.displayValue] )
     }
 
@@ -174,7 +179,6 @@ export default {
       modelErrorMessage,
       modelHandlers,
       isOpened,
-      currentValue,
       wrapper,
       dropdownModelValue,
       icon

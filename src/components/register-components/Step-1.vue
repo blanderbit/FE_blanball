@@ -24,6 +24,7 @@
             :title="$t('register.name')"
             :placeholder="'Олександра'"
             :title-width="0"
+            :height="40"
             name="profile.name"
         />
       </div>
@@ -33,6 +34,7 @@
             :title="$t('register.last_name')"
             :placeholder="'Білозерська'"
             :title-width="0"
+            :height="40"
             name="profile.last_name"
         />
       </div>
@@ -42,6 +44,7 @@
             :title="$t('register.phone-number')"
             :placeholder="'+38 (0ХХ) ХХХ ХХ ХХ'"
             :title-width="0"
+            :height="40"
             name="phone"
         >
           <template #input="slotProps">

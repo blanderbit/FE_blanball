@@ -37,6 +37,7 @@
                   :key="slotProps.index"
                   :user-data="slotProps.smartListItem"
                   @update:expanding="slotProps.smartListItem.metadata.expanding = $event"
+                  @openUserProfile="openUserProfile(slotProps.smartListItem.id)"
               />
             </template>
             <template #after>
@@ -61,116 +62,11 @@
               </InfiniteLoading>
             </template>
           </SmartList>
-
         </div>
       </div>
     </div>
 
-    <div class="right-sidebar">
-      <div class="title-block">
-        <div class="title">{{ $t('events.planned-events') }}</div>
-        <div class="subtitle">{{ $t('events.your-events') }}</div>
-      </div>
-
-      <div class="cards-block">
-        <div class="card">
-          <div class="close">&times;</div>
-          <div class="top-line">
-            <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.svg" alt=""/>
-            </div>
-            <div class="text-data">
-              <div class="top-line name">{{ $t('events.friendly-match') }}</div>
-              <div class="bottom-line">
-                <div class="time">12:00 – 14:00</div>
-                <div class="date">16 {{ $t('events.months.June') }}</div>
-              </div>
-            </div>
-          </div>
-          <div class="address">
-            <img src="../../../assets/img/location-point.svg" alt=""/>
-            <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
-          </div>
-          <div class="labels">
-            <div class="label">{{ $t('events.football') }}</div>
-            <div class="label">{{ $t('events.men') }}</div>
-            <div class="label">...</div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="close">&times;</div>
-          <div class="top-line">
-            <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.svg" alt=""/>
-            </div>
-            <div class="text-data">
-              <div class="top-line name">{{ $t('events.friendly-match') }}</div>
-              <div class="bottom-line">
-                <div class="time">12:00 – 14:00</div>
-                <div class="date">16 {{ $t('events.months.June') }}</div>
-              </div>
-            </div>
-          </div>
-          <div class="address">
-            <img src="../../../assets/img/location-point.svg" alt=""/>
-            <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
-          </div>
-          <div class="labels">
-            <div class="label">{{ $t('events.football') }}</div>
-            <div class="label">{{ $t('events.men') }}</div>
-            <div class="label">...</div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="close">&times;</div>
-          <div class="top-line">
-            <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.svg" alt=""/>
-            </div>
-            <div class="text-data">
-              <div class="top-line name">{{ $t('events.friendly-match') }}</div>
-              <div class="bottom-line">
-                <div class="time">12:00 – 14:00</div>
-                <div class="date">16 {{ $t('events.months.June') }}</div>
-              </div>
-            </div>
-          </div>
-          <div class="address">
-            <img src="../../../assets/img/location-point.svg" alt=""/>
-            <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
-          </div>
-          <div class="labels">
-            <div class="label">{{ $t('events.football') }}</div>
-            <div class="label">{{ $t('events.men') }}</div>
-            <div class="label">...</div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="close">&times;</div>
-          <div class="top-line">
-            <div class="icon-pic">
-              <img src="../../../assets/img/hands-shake.svg" alt=""/>
-            </div>
-            <div class="text-data">
-              <div class="top-line name">{{ $t('events.friendly-match') }}</div>
-              <div class="bottom-line">
-                <div class="time">12:00 – 14:00</div>
-                <div class="date">16 {{ $t('events.months.June') }}</div>
-              </div>
-            </div>
-          </div>
-          <div class="address">
-            <img src="../../../assets/img/location-point.svg" alt=""/>
-            <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
-          </div>
-          <div class="labels">
-            <div class="label">{{ $t('events.football') }}</div>
-            <div class="label">{{ $t('events.men') }}</div>
-            <div class="label">...</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <RightSidebar></RightSidebar>
   </div>
 </template>
 
@@ -183,7 +79,7 @@
   import SmartList from '../../../components/smart-list/SmartList.vue'
   import EmptyList from '../../../components/EmptyList.vue'
   import ScrollToTop from '../../../components/ScrollToTop.vue'
-
+  import RightSidebar from '../../../components/RightSidebar.vue'
   import members from '../../../assets/img/members.svg'
   import runner from '../../../assets/img/runner.svg'
   import ball from '../../../assets/img/ball.svg'
@@ -199,6 +95,7 @@
   import CONSTANTS from '../../../consts/index'
   import { FilterPatch } from "../../../workers/api-worker/http/filter/filter.patch";
   import UsersFilters from '../../../components/filters/block-filters/UsersFilters.vue'
+  import { ROUTES } from "../../../router/router.const";
 
   export default {
     name: 'RatingPage',
@@ -209,7 +106,8 @@
       InfiniteLoading,
       ScrollToTop,
       EmptyList,
-      UsersFilters
+      UsersFilters,
+      RightSidebar
     },
     setup() {
       const route = useRoute();
@@ -318,6 +216,9 @@
         loadDataPaginationData,
         scrollToFirstElement: () => {
           refList.value.scrollToFirstElement()
+        },
+        openUserProfile: (userId) => {
+          router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId))
         },
         setFilters,
         clearFilters

@@ -57,10 +57,11 @@
         PositionMapBus.emit('update:coords', dataForEmit)
       };
       PositionMapBus.on('update:map:by:coords', (e) => {
-        setDataAboutPosition({
-          lat: +e.data.coordinates?.lat,
-          lng: +e.data.coordinates?.lon,
-        });
+        // console.log(e)
+        // setDataAboutPosition({
+        //   lat: +e.data.coordinates?.lat,
+        //   lng: +e.data.coordinates?.lon,
+        // });
         marker.value.setPosition({
           lat: +e.data.coordinates?.lat,
           lng: +e.data.coordinates?.lon,
@@ -71,8 +72,8 @@
 
       const createMap = (crd) => {
         state.userCenter = crd ? {
-          lat: crd.latitude,
-          lng: crd.longitude
+          lat: crd.lat,
+          lng: crd.lng
         } : state.value.centerOfCountry;
 
         map = new google.maps.Map(document.getElementById("map"), {
@@ -85,7 +86,14 @@
             latLngBounds: Restrictions.Ukraine,
             strictBounds: true
           },
-          styles: PositionMapStyles
+          styles: PositionMapStyles,
+          panControl: false,
+          zoomControl: true,
+          mapTypeControl: false,
+          scaleControl: false,
+          streetViewControl: false,
+          overviewMapControl: false,
+          rotateControl: false
         });
 
         map.data.setStyle(PositionMapBackgroundStyle);
@@ -105,10 +113,15 @@
       );
 
       onMounted(() => {
-        navigator.geolocation.getCurrentPosition(
-          (pos) => createMap(pos.coords),
-          () => createMap()
-        )
+        if(props.coords.lat && props.coords.lng) {
+          createMap(props.coords)
+        }else {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => createMap({ lat: pos.coords.latitude,
+              lng: pos.coords.longitude}),
+            () => createMap()
+          )
+        }
       })
     }
   }

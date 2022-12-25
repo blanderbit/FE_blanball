@@ -22,7 +22,7 @@ export const EndpointsEnum = {
     GetAllMyEvents: '/events/client/my/events/list',
     DeclineOrAcceptInvites: '/events/client/accept/or/decline/invites/to/events',
     DeclineOrAcceptParticipations: '/events/client/accept/or/decline/participations',
-    getPlannedUserEvents: '/events/client/user/planned/events/list/'
+    getPlannedUserEvents: (userId) => `/events/client/user/planned/events/list/${userId}`
   },
   Users: {
     getMyProfile: '/authentication/client/me',
@@ -31,7 +31,8 @@ export const EndpointsEnum = {
     changePassword: '/authentication/client/request-change/password',
     updateProfileData: '/authentication/client/me/update',
     getAllUsers: '/authentication/client/users/list',
-    changeUserEmail: '/authentication/client/request-change/email'
+    changeUserEmail: '/authentication/client/request-change/email',
+    userPublicProfile: (userId) => `/authentication/client/profile/${userId}`
   },
   Reviews: {
     getUserReviews: '/reviews/client/user/reviews/list/',

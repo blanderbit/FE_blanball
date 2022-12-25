@@ -36,7 +36,7 @@
         :type="inputType"
         :placeholder="placeholder"
         :on="modelHandlers"
-        :value="modelValue"
+        :value="staticModelValue"
         :style="inputStyle"
         :disabled="isDisabled"
       >
@@ -44,7 +44,7 @@
           :type="inputType"
           :placeholder="placeholder"
           v-on="modelHandlers"
-          :value="modelValue"
+          :value="staticModelValue"
           :style="inputStyle"
           :disabled="isDisabled"
           @click="$emit('onClickAction', $event)"
@@ -111,30 +111,40 @@ export default {
     },
     height: {
       type: Number,
-      default: null,
+      default: 40,
     },
     name: {
       type: String,
       required: true,
+    },
+    immediate: {
+      type: Boolean,
+      default: false,
     },
     mode: {
       type: String,
       default: 'aggressive',
     },
   },
-  emits: ['iconClick', 'onClickAction', 'sendInputCoordinates'],
+  emits: ['iconClick', 'onClickAction', 'sendInputCoordinates', 'update:modelValue'],
   setup(props, {emit}) {
     const {
-        modelValue,
+        modelValue: staticModelValue,
         modelErrorMessage,
         modelHandlers
     } = CustomModelWorker(props, emit);
-
+    if(props.modelValue) {
+      modelHandlers.value.input[0](props.modelValue);
+      modelHandlers.value.input[1](props.modelValue, true);
+    }
     watch(
       () => props.modelValue,
       () => {
         modelHandlers.value.input[0](props.modelValue);
         modelHandlers.value.input[1](props.modelValue, true);
+      },
+      {
+        immediate: props.immediate
       }
     );
     const inputType = ref(null)
@@ -190,7 +200,7 @@ export default {
 
     return {
       iconClickAction,
-      modelValue,
+      staticModelValue,
       modelErrorMessage,
       modelHandlers,
       inputType,

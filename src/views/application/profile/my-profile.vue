@@ -53,8 +53,8 @@
       </template>
       <template #user-content>
         <PlayerPageComponent 
-          :page-mode="'public'"
-          :user-data="userInfo"
+          :page-mode="''"
+          :user-data="restData"
         />
       </template>
     </ModalUserWindow>
@@ -219,6 +219,7 @@ export default {
     const windowWidth = ref(window.innerWidth)
     const isTabLabel = ref(false)
     const userAvatar = ref('')
+    const restData = ref()
 
     onMounted(() => {
       window.addEventListener('resize', onResize);
@@ -236,7 +237,7 @@ export default {
         numberFromMonth: CONSTANTS.users_page.months.numberFromMonth
       }
     })
-
+    restData.value = route.meta.usersData?.data
     const formValues = ref({
       last_name: route.meta.usersData?.data.profile?.last_name,
       name: route.meta.usersData?.data.profile?.name,
@@ -374,6 +375,7 @@ export default {
           gender: route.meta.usersData?.data.profile?.gender,
           working_leg: getWorkingLeg(working_leg),
         }
+
         delete profileData.day
         delete profileData.month
         delete profileData.year
@@ -399,6 +401,8 @@ export default {
           "get_planned_events": "1y",
           "phone": phone
         }
+
+
         API.UserService.updateProfileData(payload)
         .then(() => {
           closeChangeUserDataModal()
@@ -409,7 +413,7 @@ export default {
         closeChangeUserDataModal()
       }
     }
-    
+
     function getMyProfile() {
       isLoading.value = true
       API.UserService.getMyProfile()
@@ -435,6 +439,7 @@ export default {
             ...res.data?.profile,
             working_leg: getWorkingLeg(res.data.profile?.working_leg)
           }
+          restData.value =res.data
           userEmail.value = res.data?.email
           userPhone.value = res.data?.phone
           isLoading.value = false
@@ -469,6 +474,39 @@ export default {
           isModalActive.delete_acc = !isModalActive.delete_acc
           break
         case 'public_profile':
+          const refProfileData = { ...myForm.value.getControledValues() }
+          const { day, month, year, working_leg, config_email, config_phone, show_reviews } = refProfileData
+          const profileData = {
+            ...refProfileData,
+            birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
+            gender: route.meta.usersData?.data.profile?.gender,
+            working_leg: getWorkingLeg(working_leg),
+          }
+          delete profileData.day
+          delete profileData.month
+          delete profileData.year
+          delete profileData.phone
+          delete profileData.config_email
+          delete profileData.config_phone
+          delete profileData.show_reviews
+          debugger
+          restData.value= {
+            ...restData.value,
+            "configuration": {
+              "email": config_email,
+              "phone": config_phone,
+              "show_reviews": show_reviews
+            },
+            "profile": {
+              "place": {
+                "place_name": "string",
+                "lat": 90,
+                "lon": 180
+              },
+              ...profileData
+            },
+            "get_planned_events": "1y"
+          }
           isModalActive.public_profile = !isModalActive.public_profile
           break
         case 'change_data':
@@ -485,7 +523,7 @@ export default {
       toggleModal(modal)
     }
 
-    
+
 
     return {
       toggleEditMode,
@@ -495,7 +533,6 @@ export default {
       toggleModal,
       saveDataEdit,
       cancelDataEdit,
-      switchTabLabel,
       openEditPictureModal,
       getMyProfile,
       userRating,
@@ -514,6 +551,8 @@ export default {
       isLoading,
       windowWidth,
       isTabLabel,
+      switchTabLabel,
+      restData,
       userAvatar
     }
   }

@@ -58,4 +58,10 @@ export class UserService {
       payload
     )
   }
+
+  getUserPublicProfile(userId) {
+    return AxiosInstance.get(
+      EndpointsEnum.Users.userPublicProfile(userId)
+    )
+  }
 }

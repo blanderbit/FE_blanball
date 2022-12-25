@@ -1,5 +1,6 @@
 <template>
   <div class="b-events-page">
+
     <div class="b-events-page__main-body" ref="mainEventsBlock">
       <div class="b-events-page__header-block">
         <div class="b-events-page__left-part">
@@ -49,8 +50,6 @@
                   :card="slotProps.smartListItem"
                   @go-to-event-page="goToEventPage(slotProps.smartListItem.id)"
               />
-
-              <!--  @update:expanding="slotProps.smartListItem.metadata.expanding = $event"-->
             </template>
             <template #after>
               <InfiniteLoading
@@ -83,7 +82,7 @@
 </template>
 
 <script>
-  import { ref, onMounted, onUnmounted, computed } from 'vue'
+  import { ref, computed } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import dayjs from 'dayjs'
   import dayjsUkrLocale from 'dayjs/locale/uk'
@@ -109,12 +108,7 @@
   import { PaginationWorker } from "../../../workers/pagination-worker";
   import { FilterPatch } from "../../../workers/api-worker/http/filter/filter.patch";
   import { v4 as uuid } from "uuid";
-  import FilterBlock from '../../../components/filters/FilterBlock.vue'
   import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue'
-  const COLORS = {
-    green: '#148581',
-    grey: '#DFDEED',
-  };
 
   export default {
     name: 'EventsPage',
@@ -240,7 +234,7 @@
             value: null,
           },
           point: {
-            type: Number,
+            type: String,
             value: null,
           },
           type: {
@@ -253,6 +247,10 @@
             type: String,
           },
           ordering: {
+            type: String,
+            value: ''
+          },
+          place: {
             type: String,
             value: ''
           },

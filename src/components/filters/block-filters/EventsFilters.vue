@@ -101,23 +101,8 @@
               >
               </Dropdown>
             </div>
+            <ModalPositionMap v-model="transformedFilters.location"></ModalPositionMap>
           </div>
-          <!--<div class="b-main-search__right-side">-->
-            <!--<div class="b-main-search__free-pay-games">-->
-              <!--<div-->
-                  <!--:class="[-->
-                <!--'b-main-search__grey-block',-->
-                <!--plan === 'free' ? 'right' : 'left',-->
-              <!--]"-->
-              <!--&gt;</div>-->
-              <!--<div class="b-main-search__all" @click="changePlanSearch('all')">-->
-                <!--{{ $t('events.all') }}-->
-              <!--</div>-->
-              <!--<div class="b-main-search__free" @click="changePlanSearch('free')">-->
-                <!--{{ $t('events.free') }}-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
         </div>
       </div>
       <div class="b-main-search__search-block-mob">
@@ -178,7 +163,6 @@
 
 
   import { computed, reactive, watch, ref } from 'vue'
-
   import Dropdown from '../../forms/Dropdown.vue'
   import FilterBlock from '../FilterBlock.vue'
   import InputComponent from '../../forms/InputComponent.vue'
@@ -216,7 +200,7 @@
           status: '',
           ordering: '',
           dist: '',
-          point: []
+          point: ''
         })
       }
     },
@@ -234,6 +218,7 @@
         props,
         emit,
         setupTransformedCallback() {
+          const [lng, lat] = props.modelValue?.point?.value?.split?.(',') || [];
           return {
             gender: props.modelValue.gender.value,
             type: props.modelValue.type.value,
@@ -245,14 +230,17 @@
             },
             ordering: props.modelValue.ordering.value,
             search: props.modelValue.search.value,
-            place: {
-              dist: props.modelValue?.dist?.value,
-              point: props.modelValue?.point?.value
+            location: {
+              dist: props.modelValue?.dist?.value && parseFloat(props.modelValue?.dist?.value),
+              lat: lat && parseFloat(lat),
+              lng: lng && parseFloat(lng),
+              place: props.modelValue?.place.value
             },
             status: props.modelValue.status.value
           }
         },
         updateRealDataFromTransformed(transformedFilters){
+          debugger
           return  {
             gender: transformedFilters.gender,
             type: transformedFilters.type,
@@ -263,8 +251,9 @@
             status: transformedFilters.status,
             search: transformedFilters.search,
             ordering: transformedFilters.ordering,
-            dist: transformedFilters.place.dist,
-            point: transformedFilters.place.point
+            dist: transformedFilters.location.dist,
+            point: `${transformedFilters.location.lng},${transformedFilters.location.lat}`,
+            place: transformedFilters.location.place
           }
         }
       });

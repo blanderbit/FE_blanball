@@ -5,16 +5,49 @@
       <div class="b-right-sidebar__subtitle">{{ $t('events.your-events') }}</div>
     </div>
     <div class="b-right-sidebar__cards-block">
-      <SmallEventCard 
-        v-for="item in 4"
-        :key="item"
-      />
+      <SimpleListWrapper :requestForGetData="getPlanedEvents">
+        <template #default="{ smartListItem: item }">
+          <SmallEventCard
+              :item="item"
+          />
+        </template>
+        <template #emptyList>
+          Указать верстку что пустой список для запланированых ивентов TODO
+        </template>
+      </SimpleListWrapper>
     </div>
   </div>
 </template>
 
 <script setup>
 import SmallEventCard from './SmallEventCard.vue'
+import SimpleListWrapper from './simple-list/SimpleListWrapper.vue'
+import dayjs from 'dayjs'
+import dayjsUkrLocale from 'dayjs/locale/uk'
+import { API } from "../workers/api-worker/api.worker";
+const getPlanedEvents = (page) => { // TODO DUBLICATE
+  return API.EventService.getPlannedUserEvents(
+    113,
+    {
+      page
+    }
+  ).then(result => ({
+    data: {
+      results: result.data.map((i, index) => {
+        i.id = index;
+        i.time = `${dayjs(i.time_created)
+          .locale(dayjsUkrLocale)
+          .format('hh : mm')}`;
+        i.date = `${dayjs(i.time_created)
+          .locale(dayjsUkrLocale)
+          .format('D MMMM')}`;
+        return {
+          ...i
+        }
+      })
+    }
+  }))
+}
 </script>
 
 <style lang="scss" scoped>

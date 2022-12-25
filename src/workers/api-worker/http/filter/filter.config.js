@@ -26,8 +26,9 @@ export const filterConfigForEvents = {
   ordering: new Enum(['id', '-id']), // TODO add date in backend
   skipids: Number,
   duration: Number,
-  dist: Number,
-  point: Number,
+  dist: String,
+  point: String,
+  place: String,
   date_and_time_after: String,
   date_and_time_before: String
 }; // TODO Add search by members list
