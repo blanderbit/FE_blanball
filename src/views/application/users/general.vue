@@ -24,7 +24,6 @@
           @update:value="setFilters"
           @clearFilters="clearFilters"
       >
-
       </users-filters>
       <div class="user-cards-wrapper">
         <div class="users-cards">
@@ -489,6 +488,7 @@
         }
       }
       .tab-block-wrapper {
+        margin-bottom: 35px;
         @media (max-width: 576px) {
           height: 36px;
           position: relative;

@@ -1,6 +1,6 @@
 {
   "name": "fe-blanball-latest",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "scripts": {
     "dev": "vite --port 4172",
     "build": "vite build",
@@ -21,6 +21,7 @@
     "bootstrap": "^5.2.1",
     "cropperjs": "^1.5.13",
     "dayjs": "^1.11.5",
+    "device-detector-js": "^3.0.3",
     "dotenv": "^16.0.3",
     "maska": "^1.5.1",
     "pinia": "^2.0.21",

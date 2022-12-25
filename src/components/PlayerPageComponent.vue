@@ -109,7 +109,17 @@
                 <img src="../assets/img/star.svg" alt="">
               </div>
             </div>
-            <div class="b-player-page__feedback-blocks">
+            <div 
+              v-if="!isFeedbackShown"
+              class="b-player-page__feedback-hidden"
+            >
+              <img src="../assets/img/information.svg" alt="">
+              {{$t('player_page.feedback-hidden')}}
+            </div>
+            <div
+              v-else
+              class="b-player-page__feedback-blocks"
+            >
               <div
                 v-for="item in userReviews" 
                 :key="item.id"
@@ -221,6 +231,7 @@ export default {
     }
   },
   setup(props) {
+    console.log(props.userData)
     const userId = ref(props.userData.id)
     const reviewQuantity = ref(0)
     const userReviews = ref([])
@@ -255,6 +266,9 @@ export default {
     ])
     const userRating = computed(() => {
       return props.userData.raiting || 0
+    })
+    const isFeedbackShown = computed(() => {
+      return props.userData.configuration?.show_reviews
     })
     
 
@@ -300,7 +314,8 @@ export default {
       userReviews,
       playFeatures,
       loading,
-      myPlannedEvents
+      myPlannedEvents,
+      isFeedbackShown
     }
   },
   data() {
@@ -582,6 +597,22 @@ export default {
           font-size: 12px;
           line-height: 20px;
           color: #575775;
+        }
+        .b-player-page__feedback-hidden {
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 12px;
+          line-height: 20px;
+          color: #6F6F77;
+          display: flex;
+          align-items: flex-start;
+          border-top: 1px solid #DFDEED;
+          margin-top: 12px;
+          padding-top: 16px;
+          img {
+            margin-right: 9px;
+          }
         }
         .b-player-page__feedback-blocks {
           border-top: 1px solid #EFEFF6;
