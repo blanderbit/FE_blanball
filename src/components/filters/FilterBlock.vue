@@ -26,6 +26,9 @@
       left: -16px;
       width: calc(100% + 16px + 16px);
       height: 200px;
+      @media (max-width: 768px) {
+        display: none;
+      }
     }
   }
 </style>

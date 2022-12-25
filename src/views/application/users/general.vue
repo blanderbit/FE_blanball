@@ -488,12 +488,12 @@
         }
       }
       .tab-block-wrapper {
+        margin-bottom: 35px;
         @media (max-width: 576px) {
           height: 36px;
           position: relative;
           overflow-x: scroll;
           margin-top: 24px;
-          margin-bottom: 35px;
         }
         .tab-block {
           display: flex;

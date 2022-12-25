@@ -6,7 +6,7 @@
       </span>
     </div>
     <v-select
-      :placeholder="'test placeholder'"
+      :placeholder="placeholder"
       :options="options"
       :label="displayName || 'value'"
       append-to-body
@@ -18,17 +18,19 @@
       @open="modelHandlers.blur()"
       v-model="dropdownModelValue"
     >
-
     </v-select>
     <p class="b-input__error-message">{{ modelErrorMessage }}</p>
   </div>
 </template>
 
 <script>
-import { ref, watch } from 'vue'
-import { CustomModelWorker } from "../../workers/custom-model-worker/index"
+import { ref, watch, computed } from 'vue'
 import vSelect from "vue-select";
 import { createPopper } from '@popperjs/core'
+
+import { CustomModelWorker } from "../../workers/custom-model-worker/index"
+import SearchIcon from '../../assets/img/search.svg'
+
 export default {
   name: 'dropdown-component',
   components: {
@@ -68,6 +70,10 @@ export default {
       type: String,
       default: 'aggressive',
     },
+    placeholder: {
+      type: String,
+      default: 'test placeholder',
+    },
     name: String
   },
   emits: ['new-value', 'update:modelValue'],
@@ -81,8 +87,9 @@ export default {
         modelErrorMessage,
         modelHandlers
     } = CustomModelWorker(props);
+    const icon = computed(() => SearchIcon)
 
-
+    
     watch(
       () => staticModelValue.value,
       () => {
@@ -169,7 +176,8 @@ export default {
       isOpened,
       currentValue,
       wrapper,
-      dropdownModelValue
+      dropdownModelValue,
+      icon
     }
   }
 }
@@ -188,6 +196,12 @@ export default {
   }
   .vs__dropdown-menu {
     width: 500px;
+  }
+  .vs__search {
+    margin: 0;
+  }
+  .v-select {
+    height: 100%;
   }
   .vs__search, .vs__dropdown-menu, .v-select {
     font-family: 'Inter';
@@ -227,10 +241,12 @@ export default {
   }
 
   .vs--searchable .vs__dropdown-toggle, .vs__selected-options {
-    height: 40px;
+    height: 100%;
   }
-  .vs__dropdown-toggle {
+  .vs--searchable .vs__dropdown-toggle {
     border-color: #dfdeed;
+    height: 100%;
+    padding: 0;
   }
 }
 
@@ -260,6 +276,7 @@ export default {
 
   .b-dropdown {
     position: relative;
+    height: 100%;
     .b-dropdown__title {
       position: absolute;
       font-family: 'Inter';

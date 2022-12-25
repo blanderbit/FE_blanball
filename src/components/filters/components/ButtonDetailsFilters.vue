@@ -6,13 +6,16 @@
        @click="$emit('update:active', !active)">
     <img
         class="b-main-search__set-filter"
-        src="../../../assets/img/cross.svg"
+        :src="icon"
         alt=""
     />
   </div>
 </template>
 
 <script>
+  import { computed } from 'vue'
+  import CrossIcon from "../../../assets/img/cross.svg"
+  import SettingsIcon from "../../../assets/img/set-filter.svg"
 
   export default {
     name: "ButtonDetailsFilters",
@@ -23,6 +26,15 @@
       active: {
         type: Boolean,
         default: false,
+      }
+    },
+    setup(props) {
+      const icon = computed(() => {
+        return props.active ? CrossIcon : SettingsIcon
+      })
+
+      return {
+        icon
       }
     }
   }

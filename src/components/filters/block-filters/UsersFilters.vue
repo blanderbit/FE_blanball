@@ -1,53 +1,102 @@
 <template>
   <filter-block>
+    <ModalFilters 
+      v-if="isModalFiltersActive"
+      v-model:dropdown-position="transformedFilters.profile__position"
+      v-model:range-slider="transformedFilters.profile__age"
+      v-model:gender="transformedFilters.profile__gender"
+      @close-modal="isModalFiltersActive = false"
+      @set-modal-window-filters="setModalFilters"
+    />
     <div class="b-users-filters">
-      <div class="b-users-filters__first-line d-flex justify-content-between">
+      <div class="b-users-filters__first-line">
         <div class="b-users-filters__left-part d-flex">
-          <dropdown
-            main-title="ordering"
-            :options="ordering"
-            display-name="value"
-            display-value="value"
-            v-model="transformedFilters.ordering"
-            name="sorting"
-          >
-          </dropdown>
-          <dropdown
-            main-title="positions"
-            :options="positions"
-            display-name="value"
-            display-value="value"
-            v-model="transformedFilters.profile__position"
-            name="year"
-          >
-          </dropdown>
-          <dropdown
-            :main-title="$t('register.year')"
-            :options="gender"
-            display-name="value"
-            display-value="value"
-            v-model="transformedFilters.profile__gender"
-            name="year"
-          >
-          </dropdown>
-
+          <div class="b-users-filters__dropdown-sorting">
+            <dropdown
+              :options="ordering"
+              :placeholder="$t('users.sorting')"
+              display-name="value"
+              display-value="value"
+              v-model="transformedFilters.ordering"
+              name="sorting"
+            >
+            </dropdown>
+          </div>
+          <div class="b-users-filters__dropdown-position">
+            <dropdown
+              :options="positions"
+              :placeholder="$t('users.position')"
+              display-name="value"
+              display-value="value"
+              v-model="transformedFilters.profile__position"
+              name="position"
+            >
+            </dropdown>
+          </div>
+          <div class="b-users-filters__dropdown-gender">
+            <dropdown
+              :options="gender"
+              :placeholder="$t('users.gender')"
+              display-name="value"
+              display-value="value"
+              v-model="transformedFilters.profile__gender"
+              name="gender"
+            >
+            </dropdown>
+          </div>
         </div>
         <div class="b-users-filters__right-part d-flex">
-          <input-component
-              placeholder="search"
+          <div class="b-users-filters__input">
+            <input-component
+              :placeholder="$t('users.users-search')"
               :title-width="0"
+              :icon="icons.search"
               v-model="transformedFilters.search"
               name="search"
-          ></input-component>
+            ></input-component>
+          </div>
           <clear-filters @clear="$emit('clearFilters')"></clear-filters>
-          <button-details-filters v-model:active="activeFilters"></button-details-filters>
+          <button-details-filters 
+            v-model:active="activeFilters"
+          ></button-details-filters>
         </div>
       </div>
       <div class="b-users-filters__second-line" v-if="activeFilters">
-        <slider :min="6" :max="80" v-model="transformedFilters.profile__age"></slider>
-        <checkbox v-model:checked="transformedFilters.is_online"></checkbox>
+        <div class="b-users-filters__age-filter-wrapp">
+          <RangeFilter 
+            v-model:age-range="transformedFilters.profile__age"
+          />
+        </div>
+        <!-- <checkbox v-model:checked="transformedFilters.is_online"></checkbox> -->
         <!--<modal-position-map></modal-position-map>-->
-
+      </div>
+      <div class="b-users-filters__mob-line">
+        <div class="b-users-filters__sorting">
+          <div class="b-users-filters__icon">
+            <img src="../../../assets/img/sort-arrows.svg" alt="">
+          </div>
+          <div class="b-users-filters__text-block">
+            <div class="b-users-filters__title">{{ $t('users.sorting') }}</div>
+            <div class="b-users-filters__text">{{ $t('users.new-first') }}</div>
+          </div>
+        </div>
+        <div class="b-users-filters__fitering">
+          <div 
+            class="b-users-filters__icon"
+            @click="isModalFiltersActive = true"
+          >
+            <img src="../../../assets/img/set-filter.svg" alt="">
+          </div>
+          <div class="b-users-filters__text-block">
+            <div class="b-users-filters__title">{{ $t('users.filters') }}</div>
+            <div class="b-users-filters__text">{{ $t('users.found') }} 15</div>
+          </div>
+        </div>
+        <div class="b-users-filters__calendar">
+          <div class="b-users-filters__icon">
+            <img src="../../../assets/img/calendar.svg" alt="">
+          </div>
+        </div>
       </div>
     </div>
   </filter-block>
@@ -56,8 +105,10 @@
 <script>
 
 
-  import { computed, reactive, watch, ref } from 'vue'
+  import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
+  // import DeviceDetector from "device-detector-js"
 
+  import RangeFilter from '../../filters/components/RangeFilter.vue'
   import Dropdown from '../../forms/Dropdown.vue'
   import FilterBlock from '../FilterBlock.vue'
   import InputComponent from '../../forms/InputComponent.vue'
@@ -65,21 +116,26 @@
   import ButtonDetailsFilters from '../components/ButtonDetailsFilters.vue'
   import ClearFilters from '../components/ClearFilters.vue'
   import ModalPositionMap from '../../maps/ModalPositionMap.vue'
-  import Slider from '@vueform/slider'
   import {cloneDeep, isEqual} from 'lodash'
-  import { TransformedFiltersWorker } from "./transformed.filters.worker";
+  import { TransformedFiltersWorker } from "./transformed.filters.worker"
+  import ModalFilters from '../ModalFilters.vue'
+
+  import SearchIcon from '../../../assets/img/search.svg'
+
   import CONSTANTS from "../../../consts";
+
   export default {
     name: "UsersFilters",
     components: {
       Checkbox,
       Dropdown,
       InputComponent,
-      Slider,
       ButtonDetailsFilters,
       ClearFilters,
       ModalPositionMap,
-      FilterBlock
+      FilterBlock,
+      RangeFilter,
+      ModalFilters
     },
     props: {
       modelValue: {
@@ -99,6 +155,20 @@
     },
     emits: ['update:value', 'clearFilters'],
     setup(props, {emit}) {
+      // const deviceDetector = new DeviceDetector();
+      // const userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36";
+      // const device = deviceDetector.parse(userAgent);
+
+      // console.log(device);
+
+      const sendDataFromModal = ref(false)
+      const windowWidth = ref(window.innerWidth)
+      const isModalFiltersActive = ref(false)
+      const icons = computed(() => {
+        return {
+          search: SearchIcon
+        }
+      })
       const positions = computed(() => CONSTANTS.profile.position);
       const ordering = computed(() => [
         {value: 'id'},
@@ -116,6 +186,8 @@
       const { activeFilters, transformedFilters } = TransformedFiltersWorker({
         props,
         emit,
+        windowWidth,
+        sendDataFromModal,
         setupTransformedCallback() {
           return {
             profile__gender: props.modelValue.profile__gender.value,
@@ -142,26 +214,122 @@
             dist: transformedFilters.place.dist,
             point: transformedFilters.place.point
           }
+        },
+        checkSliderValues(value) {
+          return value[0] > 6 || value[1] < 80
         }
       });
 
+      function onResize() {
+        windowWidth.value = window.innerWidth
+      }
+      function setModalFilters() {
+        sendDataFromModal.value = true
+      }
+
+      onMounted(() => {
+        window.addEventListener('resize', onResize);
+      })
+
+      onBeforeUnmount(() => {
+        window.removeEventListener('resize', onResize); 
+      })
+
       return {
+        setModalFilters,
         ordering,
         gender,
         positions,
         activeFilters,
-        transformedFilters
+        transformedFilters,
+        icons,
+        isModalFiltersActive
       }
     }
   }
 </script>
 
 <style scoped lang="scss">
-
-
   .b-users-filters {
     * {
       z-index: 10;
+    }
+    &__first-line {
+      display: flex;
+      justify-content: space-between;
+      @media (max-width: 768px) {
+        display: none;
+      }
+      .b-users-filters__left-part {
+        .b-users-filters__dropdown-sorting,
+        .b-users-filters__dropdown-position,
+        .b-users-filters__dropdown-gender {
+          width: 132px;
+          height: 32px;
+          margin-right: 20px;
+        }
+      }
+      .b-users-filters__right-part {
+        .b-users-filters__input {
+          margin-right: 8px;
+        }
+      }
+    }
+    &__second-line {
+      margin-top: 30px;
+      @media (max-width: 768px) {
+        display: none;
+      }
+      .b-users-filters__age-filter-wrapp {
+        width: 300px;
+      }
+    }
+    &__mob-line {
+      display: none;
+      justify-content: space-between;
+      @media (max-width: 768px) {
+        display: flex;
+      }
+      .b-users-filters__sorting,
+      .b-users-filters__fitering {
+        width: 132px;
+      }
+      .b-users-filters__sorting,
+      .b-users-filters__fitering,
+      .b-users-filters__calendar { 
+        display: flex;
+
+        .b-users-filters__icon { 
+          width: 36px;
+          min-width: 36px;
+          height: 36px;
+          background: #FAFAFA;
+          border-radius: 6px;
+          margin-right: 4px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .b-users-filters__text-block { 
+          .b-users-filters__title { 
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 13px;
+            line-height: 20px;
+            color: #262541;
+          }
+          .b-users-filters__text { 
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 20px;
+            color: #575775;
+          }
+        }
+      }
     }
   }
 </style>

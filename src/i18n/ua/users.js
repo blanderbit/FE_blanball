@@ -6,9 +6,9 @@ export default {
   'referee': 'Рефері',
   'teams': 'Команди',
   'gender': 'Стать:',
-  'men': 'Чоловіки',
-  'women': 'Жінки',
-  'all': 'Всі',
+  'men': 'чол',
+  'women': 'жін',
+  'all': 'всі',
   'sorting': 'Сортування',
   'new-first': 'Cпочатку нові',
   'found': 'знайдено',
@@ -17,5 +17,10 @@ export default {
   'filters': 'Фільтри',
   'chose-date': 'Обрати дату',
   'planned-events': 'Заплановані події',
-  'your-events': 'Заходи у яких ви запланували участь'
+  'your-events': 'Заходи у яких ви запланували участь',
+  'sorting': 'Сортування',
+  'position': 'Позицiя',
+  'gender': 'Стать',
+  'age-area': 'Віковий діапазон',
+  'game-type': 'Тип гри'
 }
