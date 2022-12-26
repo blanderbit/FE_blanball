@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div 
-      class="b_modal_wrapper" 
+    <div
+      class="b_modal_wrapper"
       @click.self="$emit('close-modal')"
     >
       <div 
@@ -27,6 +27,7 @@
           <slot name="change-password"></slot>
           <slot name="version-modal"></slot>
           <slot name="edit-avatar"></slot>
+          <slot name="default"></slot>
           <slot name="modal-filter"></slot>
         </div>
       </div>

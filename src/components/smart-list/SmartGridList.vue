@@ -122,7 +122,9 @@
         () => context.list,
         () => {
           nextTick(() => {
-            emit('update:scrollbar-existing', scroller.value.$el.scrollHeight > scroller.value.$el.clientHeight)
+            setTimeout(() => {
+              emit('update:scrollbar-existing', scroller.value.$el.scrollHeight > scroller.value.$el.clientHeight)
+            }, 0)
           })
         },
         {

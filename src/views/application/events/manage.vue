@@ -1,26 +1,26 @@
 <template>
   <div class="create-events-page">
     <div class="create-event-block">
-
-      <ManageEventFirstStep 
-        v-if="currentStep === 1"
-        :type-of-event-dropdown="mockData.type_of_event_dropdown"
-        :type-of-sport-dropdown="mockData.type_of_sport_dropdown"
-        @dropdown-form-value="setFormValue"
-        @set-event-data="setFormValue"
+      <SelectionSuitModal @close-modal="closeModal"></SelectionSuitModal>
+      <ManageEventFirstStep
+          v-if="currentStep === 1"
+          :type-of-event-dropdown="mockData.type_of_event_dropdown"
+          :type-of-sport-dropdown="mockData.type_of_sport_dropdown"
+          @dropdown-form-value="setFormValue"
+          @set-event-data="setFormValue"
       />
 
-      <ManageEventSecondStep 
-        v-if="currentStep === 2"
-        :tags="mockData.tags"
-        :filtered-teams="filteredTeams"
-        @set-event-data="setFormValue"
-        @chose-category="choseCategory"
+      <ManageEventSecondStep
+          v-if="currentStep === 2"
+          :tags="mockData.tags"
+          :filtered-teams="filteredTeams"
+          @set-event-data="setFormValue"
+          @chose-category="choseCategory"
       />
-      
-      <div 
-        v-if="currentStep === 3"
-        class="third-step"
+
+      <div
+          v-if="currentStep === 3"
+          class="third-step"
       >
         <div class="title-block">
           <span>{{$t('events.additional-info')}}</span>
@@ -30,7 +30,7 @@
         </div>
         <div class="text-area-wrapper">
           <textarea
-            placeholder="Опис подіїї"
+              placeholder="Опис подіїї"
           ></textarea>
           <div class="icon">
             <img src="../../../assets/img/aim.svg" alt="">
@@ -43,14 +43,14 @@
               VIP
             </span>
           </div>
-          <Switcher :id="'contacts'" />
+          <Switcher :id="'contacts'"/>
         </div>
         <div class="input">
           <InputComponent
-            :placeholder="$t('events.what-prize')"
-            :title-width="0"
-            :v-model="eventData.date"
-            :icon="icons.aim"
+              :placeholder="$t('events.what-prize')"
+              :title-width="0"
+              :v-model="eventData.date"
+              :icon="icons.aim"
           />
         </div>
         <div class="title-outfit">
@@ -58,23 +58,23 @@
         </div>
         <div class="radio-btn-wrapper">
           <div class="radio">
-            <input 
-              id="radio-outfit"
-              name="outfit" 
-              type="radio"
-              :value="$t('events.yes')"
-              checked
-             >
+            <input
+                id="radio-outfit"
+                name="outfit"
+                type="radio"
+                :value="$t('events.yes')"
+                checked
+            >
             <label for="radio-outfit" class="radio-label">
               {{ $t('events.yes') }}
             </label>
           </div>
           <div class="radio">
-            <input 
-              id="radio-outfit2" 
-              name="outfit" 
-              type="radio"
-              :value="$t('events.manijki-available')"
+            <input
+                id="radio-outfit2"
+                name="outfit"
+                type="radio"
+                :value="$t('events.manijki-available')"
             >
             <label for="radio-outfit2" class="radio-label">
               {{$t('events.manijki-available')}}
@@ -87,29 +87,29 @@
         <div class="outfit-colors">
           <div class="input">
             <InputComponent
-              :placeholder="'Input'"
-              :title-width="0"
-              :outside-title="true"
-              :title="$t('events.team1')"
+                :placeholder="'Input'"
+                :title-width="0"
+                :outside-title="true"
+                :title="$t('events.team1')"
             />
           </div>
           <div class="input">
             <InputComponent
-              :placeholder="'Input'"
-              :title-width="0"
-              :outside-title="true"
-              :title="$t('events.team2')"
+                :placeholder="'Input'"
+                :title-width="0"
+                :outside-title="true"
+                :title="$t('events.team2')"
             />
           </div>
         </div>
       </div>
-       
+
       <div class="progress-line">
         <div class="sections">
           <div
-            v-for="item of 3"
-            :key="item"
-            :class="['section', { 
+              v-for="item of 3"
+              :key="item"
+              :class="['section', {
               active : item <= currentStep
             }]"
           ></div>
@@ -117,16 +117,16 @@
       </div>
       <div class="buttons-block">
         <WhiteBtn
-          :text="$t('buttons.back')"
-          :width="140"
-          :main-color="'#262541'"
-          @click-function="changeStep('-')"
+            :text="$t('buttons.back')"
+            :width="140"
+            :main-color="'#262541'"
+            @click-function="changeStep('-')"
         />
         <GreenBtn
-          :text="$t('buttons.next')"
-          :width="160"
-          :icon-right="'../../../assets/img/arrow-right.svg'"
-          @click-function="changeStep('+')"
+            :text="$t('buttons.next')"
+            :width="160"
+            :icon-right="'../../../assets/img/arrow-right.svg'"
+            @click-function="changeStep('+')"
         />
       </div>
     </div>
@@ -134,23 +134,23 @@
     <div class="tablet-block">
       <div class="save-template-block">
         <GreenBtn
-          :text="$t('buttons.save')"
-          :width="103"
-          :background-color="'#575775'"
-          :height="28"
-          :icon="'../../../assets/img/save-icon.svg'"
-          :font-styles="{'font-size': '13px'}"
+            :text="$t('buttons.save')"
+            :width="103"
+            :background-color="'#575775'"
+            :height="28"
+            :icon="'../../../assets/img/save-icon.svg'"
+            :font-styles="{'font-size': '13px'}"
         />
         <WhiteBtn
-          :text="$t('buttons.download-template')"
-          :width="177"
-          :height="28"
-          :font-styles="{
+            :text="$t('buttons.download-template')"
+            :width="177"
+            :height="28"
+            :font-styles="{
             'font-size': '13px',
             'font-weight': 400
           }"
-          :main-color="'#575775'"
-          :icon="'../../../assets/img/download-cloud.svg'"
+            :main-color="'#575775'"
+            :icon="'../../../assets/img/download-cloud.svg'"
         />
         <div class="close-btn">
           <img src="../../../assets/img/cross.svg" alt="">
@@ -171,9 +171,9 @@
       </div>
     </div>
 
-    <div 
-      v-if="currentStep === 1"
-      class="preview-mob-block"
+    <div
+        v-if="currentStep === 1"
+        class="preview-mob-block"
     >
       <div class="left-block">
         <div class="img-icon">
@@ -186,9 +186,9 @@
       </div>
     </div>
 
-    <div 
-      v-if="currentStep === 2 || currentStep === 3"
-      class="preview-mob-block-second"
+    <div
+        v-if="currentStep === 2 || currentStep === 3"
+        class="preview-mob-block-second"
     >
       <div class="btn btn-previous">
         <span>{{ $t('buttons.preview') }}</span>
@@ -211,7 +211,7 @@
             <div class="left-block">
               <div class="col-1">
                 <div class="card-icon">
-                  <img src="../../../assets/img/hands-shake.svg" alt="" />
+                  <img src="../../../assets/img/hands-shake.svg" alt=""/>
                 </div>
               </div>
               <div class="col-2">
@@ -237,11 +237,11 @@
           </div>
           <div class="text-area"></div>
           <div class="labels">
-            <div 
-              v-for="label in eventData.labels"
-              :key="label.id"
-              class="label"
-              :style="
+            <div
+                v-for="label in eventData.labels"
+                :key="label.id"
+                class="label"
+                :style="
                 label.text.length ?  
                 labelStyle :
                 emptyLabelStyle
@@ -270,33 +270,33 @@
               </div>
             </div>
             <div class="right-side">
-              <GreenBtn 
-                :text="eventData.isOpened"
-                :width="115"
-                :height="32"
+              <GreenBtn
+                  :text="eventData.isOpened"
+                  :width="115"
+                  :height="32"
               />
             </div>
           </div>
         </div>
       </div>
       <div
-        v-if="currentStep === 2" 
-        class="chosen-ppl"
+          v-if="currentStep === 2"
+          class="chosen-ppl"
       >
         <div class="title">
           {{ $t('events.invited-people') }}
         </div>
-        <div 
-          @click="deleteAll"
-          class="delete-all"
+        <div
+            @click="deleteAll"
+            class="delete-all"
         >
           {{ $t('events.delete-all') }}
         </div>
         <div class="users-list">
-          <div 
-            v-for="user of chosenUsers"
-            :key="user.id"
-            class="user"
+          <div
+              v-for="user of chosenUsers"
+              :key="user.id"
+              class="user"
           >
             <div class="user-data">
               <div class="user-img">
@@ -306,9 +306,9 @@
                 {{ user.name }}
               </div>
             </div>
-            <div 
-              class="delete-user"
-              @click="deleteFromChosen(user.id, user.category)"
+            <div
+                class="delete-user"
+                @click="deleteFromChosen(user.id, user.category)"
             >
               <img src="../../../assets/img/cross.svg" alt="">
             </div>
@@ -324,21 +324,21 @@
       <div class="btns-block">
         <div class="white-btn-wrapper">
           <WhiteBtn
-            :text="$t('buttons.download-template')"
-            :width="208"
-            :height="40"
-            :main-color="'#262541'"
-            :font-styles="{ 'font-weight': 400 }"
-            :icon="'../../../assets/img/download-cloud.svg'"
+              :text="$t('buttons.download-template')"
+              :width="208"
+              :height="40"
+              :main-color="'#262541'"
+              :font-styles="{ 'font-weight': 400 }"
+              :icon="'../../../assets/img/download-cloud.svg'"
           />
         </div>
         <GreenBtn
-          :text="$t('buttons.save-as-template')"
-          :icon="'../../../assets/img/save-icon.svg'"
-          :width="208"
-          :height="40"
-          :background-color="'#575775'"
-          :font-styles="{ 'font-weight': 400 }"
+            :text="$t('buttons.save-as-template')"
+            :icon="'../../../assets/img/save-icon.svg'"
+            :width="208"
+            :height="40"
+            :background-color="'#575775'"
+            :font-styles="{ 'font-weight': 400 }"
         />
       </div>
     </div>
@@ -346,148 +346,156 @@
 </template>
 
 <script>
-import { computed, reactive } from 'vue'
+  import { computed, reactive } from 'vue'
 
-import InputComponent from '../../../components/forms/InputComponent.vue'
-import GreenBtn from '../../../components/GreenBtn.vue'
-import WhiteBtn from '../../../components/WhiteBtn.vue'
-import Switcher from '../../../components/Switcher.vue'
-import ManageEventFirstStep from '../../../components/manage-event-components/ManageEventFirstStep.vue'
-import ManageEventSecondStep from '../../../components/manage-event-components/ManageEventSecondStep.vue'
+  import InputComponent from '../../../components/forms/InputComponent.vue'
+  import GreenBtn from '../../../components/GreenBtn.vue'
+  import WhiteBtn from '../../../components/WhiteBtn.vue'
+  import Switcher from '../../../components/Switcher.vue'
+  import SelectionSuitModal from '../../../components/suit/SelectionSuitModal.vue'
+  import ManageEventFirstStep from '../../../components/manage-event-components/ManageEventFirstStep.vue'
+  import ManageEventSecondStep from '../../../components/manage-event-components/ManageEventSecondStep.vue'
 
-import AimIcon from '../../../assets/img/aim.svg'
+  import AimIcon from '../../../assets/img/aim.svg'
 
-import CONSTANTS from '../../../consts/index'
+  import CONSTANTS from '../../../consts/index'
 
-export default {
-  name: 'CreateEventPage',
-  components: {
-    InputComponent,
-    GreenBtn,
-    WhiteBtn,
-    Switcher,
-    ManageEventFirstStep,
-    ManageEventSecondStep
-  },
-  setup() {
-    const labelStyle = reactive({
-      padding: '0px 8px',
-      border: '1px solid #EFEFF6',
-      'border-radius': '100px'
-    })
-    const emptyLabelStyle = reactive({
+  export default {
+    name: 'CreateEventPage',
+    components: {
+      InputComponent,
+      GreenBtn,
+      WhiteBtn,
+      Switcher,
+      ManageEventFirstStep,
+      ManageEventSecondStep,
+      SelectionSuitModal
+    },
+    setup() {
+      const labelStyle = reactive({
+        padding: '0px 8px',
+        border: '1px solid #EFEFF6',
+        'border-radius': '100px'
+      })
+      const emptyLabelStyle = reactive({
         width: '70px',
         height: '18px',
         background: '#EFEFF6',
         'border-radius': '100px'
-    })
+      })
 
-    const icons = computed(() => {
-      return {
-        aim: AimIcon
-      }
-    })
-
-    const mockData = computed(() => {
-      return {
-        type_of_event_dropdown: CONSTANTS.manage_event.type_of_event_dropdown,
-        type_of_sport_dropdown: CONSTANTS.manage_event.type_of_sport_dropdown,
-        tags: CONSTANTS.manage_event.tags,
-        teams: CONSTANTS.manage_event.teams
-      }
-    })
-    const filteredTeams = computed(() => {
-      if (currentCategory() === 'Всі') {
-        return mockData.value.teams
-      } else {
-        return [mockData.value.teams.find(item => item.category_name === currentCategory())]
-      }
-    })
-
-    function currentCategory() {
-      return mockData.value.tags.find(item => item.isActive).text
-    }
-    function choseCategory(id) {
-      mockData.value.tags = mockData.value.tags.map(item => ({...item, isActive: false}))
-      mockData.value.tags = mockData.value.tags.map(item => {
-        if (item.id === id) {
-          return {
-            ...item,
-            isActive: true
-          }
-        } else {
-          return item
+      const icons = computed(() => {
+        return {
+          aim: AimIcon
         }
       })
-    }
 
-    return {
-      mockData,
-      filteredTeams,
-      labelStyle,
-      emptyLabelStyle,
-      icons,
-      choseCategory
-    }
-  },
-  data() {
-    return {
-      chosenUsers: [],
-      currentStep: 1,
-      eventData: {
-        labels: [
-          {
-            id: 0,
-            text: ''
-          },
-          {
-            id: 1,
-            text: ''
+      const mockData = computed(() => {
+        return {
+          type_of_event_dropdown: CONSTANTS.manage_event.type_of_event_dropdown,
+          type_of_sport_dropdown: CONSTANTS.manage_event.type_of_sport_dropdown,
+          tags: CONSTANTS.manage_event.tags,
+          teams: CONSTANTS.manage_event.teams
+        }
+      })
+      const filteredTeams = computed(() => {
+        if (currentCategory() === 'Всі') {
+          return mockData.value.teams
+        } else {
+          return [mockData.value.teams.find(item => item.category_name === currentCategory())]
+        }
+      });
+
+      function currentCategory() {
+        return mockData.value.tags.find(item => item.isActive).text
+      }
+
+      function choseCategory(id) {
+        mockData.value.tags = mockData.value.tags.map(item => ({...item, isActive: false}))
+        mockData.value.tags = mockData.value.tags.map(item => {
+          if (item.id === id) {
+            return {
+              ...item,
+              isActive: true
+            }
+          } else {
+            return item
           }
-        ],
-        date: '',
-        title: '',
-        time: '',
-        place: '',
-        payment: '',
-        isOpened: ''
+        })
       }
-    }
-  },
-  methods: {
-    deleteAll() {
-      this.chosenUsers = []
-    },
-    deleteFromChosen(id, category) {
-      this.chosenUsers = this.chosenUsers.filter(i => i.id !== id)
-      this.teams.find(item => item.category_name === category).users
-                              .find(item => item.id === id).isChosen = false
-    },
-    setFormValue(key, value, labelsId) {
-      if (key === 'labels') {
-        this.eventData.labels[labelsId].text = value
-        return
+
+      function closeModal() {
+        VersionHandling.closeVersionModal()
       }
-      this.eventData[key] = value
-    },
-    changeStep(val) {
-      switch(val) {
-        case '+': this.currentStep++
-        break;
-        case '-': this.currentStep--
-        break;
+      return {
+        mockData,
+        filteredTeams,
+        labelStyle,
+        emptyLabelStyle,
+        icons,
+        choseCategory
       }
     },
-    inviteUser(teamId, userId) {
-      this.teams.find(item => item.id === teamId).users
-                .find(item => item.id === userId).isChosen = true
-                
-      const team = this.teams.find(i => i.id === teamId)
-      const user = team.users.find(i => i.id === userId)
-      this.chosenUsers.push(user)
+    data() {
+      return {
+        chosenUsers: [],
+        currentStep: 1,
+        eventData: {
+          labels: [
+            {
+              id: 0,
+              text: ''
+            },
+            {
+              id: 1,
+              text: ''
+            }
+          ],
+          date: '',
+          title: '',
+          time: '',
+          place: '',
+          payment: '',
+          isOpened: ''
+        }
+      }
+    },
+    methods: {
+      deleteAll() {
+        this.chosenUsers = []
+      },
+      deleteFromChosen(id, category) {
+        this.chosenUsers = this.chosenUsers.filter(i => i.id !== id)
+        this.teams.find(item => item.category_name === category).users
+          .find(item => item.id === id).isChosen = false
+      },
+      setFormValue(key, value, labelsId) {
+        if (key === 'labels') {
+          this.eventData.labels[labelsId].text = value
+          return
+        }
+        this.eventData[key] = value
+      },
+      changeStep(val) {
+        switch (val) {
+          case '+':
+            this.currentStep++
+            break;
+          case '-':
+            this.currentStep--
+            break;
+        }
+      },
+      inviteUser(teamId, userId) {
+        this.teams.find(item => item.id === teamId).users
+          .find(item => item.id === userId).isChosen = true
+
+        const team = this.teams.find(i => i.id === teamId)
+        const user = team.users.find(i => i.id === userId)
+        this.chosenUsers.push(user)
+      }
     }
   }
-}
 </script>
 
 <style lang="scss" scoped>
@@ -553,7 +561,7 @@ export default {
                 height: 13px;
                 position: relative;
                 top: 0px;
-                margin-left: 12px; 
+                margin-left: 12px;
                 vertical-align: top;
                 cursor: pointer;
                 text-align: center;
@@ -605,7 +613,6 @@ export default {
         margin-top: 16px;
       }
       // delete
-
 
       .third-step {
         .title-block {
@@ -750,7 +757,7 @@ export default {
       width: 320px;
       @media (max-width: 992px) {
         display: block;
-      }      
+      }
       @media (max-width: 768px) {
         order: 1;
         margin-bottom: 16px;
@@ -829,8 +836,6 @@ export default {
         }
       }
     }
-
-
 
     .preview-mob-block-second {
       display: none;
@@ -1012,11 +1017,11 @@ export default {
                   padding: 0px 4px;
                   border-radius: 4px;
                   background: #EFEFF6;
-                  color:  #262541;
+                  color: #262541;
                   width: fit-content;
                   &.active {
                     background: #71BA12;
-                    color:  #fff;
+                    color: #fff;
                   }
                 }
                 .date {

@@ -7,7 +7,7 @@
       </div>
       <div class="b-small-event-card__text-data">
         <div class="b-small-event-card__top-line b_small_event_card_name">
-          {{ $t('events.friendly-match') }}
+          {{ item.name }}
         </div>
         <div class="b-small-event-card__bottom-line">
           <div class="b-small-event-card__time">12:00 – 14:00</div>
@@ -17,18 +17,29 @@
         </div>
       </div>
     </div>
-    <div class="b-small-event-card__address">
-      <img src="../assets/img/location-point.svg" alt="" />
-      <p>Запоріжжя, Центральна, стадіон «Торпеда»</p>
-    </div>
+    <PlaceDetector :place="item.place"></PlaceDetector>
     <div class="b-small-event-card__labels">
-      <div class="b-small-event-card__label">{{ $t('events.football') }}</div>
-      <div class="b-small-event-card__label">{{ $t('events.men') }}</div>
+      <div class="b-small-event-card__label">{{ item.type }}</div>
+      <div class="b-small-event-card__label">{{ item.gender  }}</div>
       <div class="b-small-event-card__label">...</div>
     </div>
   </div>
 </template>
-
+<script>
+  import PlaceDetector from './../components/maps/PlaceDetector.vue'
+  export default {
+    name: 'SmallEventCard',
+    components: {
+      PlaceDetector
+    },
+    props: {
+      item: {
+        type: Object,
+        default: () => {}
+      }
+    }
+  }
+</script>
 <style lang="scss" scoped>
 .b-small-event-card {
   position: relative;

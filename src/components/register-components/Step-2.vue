@@ -24,6 +24,7 @@
             :title="$t('register.email')"
             :placeholder="'elektron@mail.com'"
             :title-width="0"
+            :height="40"
             name="email"
         />
       </div>
@@ -32,6 +33,7 @@
             :placeholder="$t('register.create-password')"
             :title-width="0"
             :type="'password'"
+            :height="40"
             :outside-title="true"
             name="password"
         />
@@ -41,6 +43,7 @@
             :placeholder="$t('register.repeat-password')"
             :title-width="0"
             :type="'password'"
+            :height="40"
             :outside-title="true"
             name="re_password"
         />

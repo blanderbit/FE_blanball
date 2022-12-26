@@ -1,8 +1,8 @@
 <template>
-  <div class="b-avatar" v-if="link">
+  <div class="b-avatar" v-if="link" @click.stop="$emit('clickByAvatar')">
     <img  :src="link"/>
   </div>
-  <div class="b-avatar b-avatar-words d-flex justify-content-center align-items-center " v-else>
+  <div class="b-avatar b-avatar-words d-flex justify-content-center align-items-center " @click.stop="$emit('clickByAvatar')" v-else>
     {{ shortFullName }}
   </div>
 </template>
@@ -18,6 +18,7 @@
         type: String
       }
     },
+    emits: ['clickByAvatar'],
     computed: {
       shortFullName() {
         if(!this.fullName) return;

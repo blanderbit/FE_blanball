@@ -106,7 +106,7 @@
         },
         {
           img: members,
-          url: '/application/smart-list/general',
+          url: '/application/users/general',
           action: () => isMenuOpened.value = false
         },
         {
