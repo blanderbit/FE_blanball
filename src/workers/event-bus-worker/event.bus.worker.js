@@ -20,6 +20,7 @@ export class EventBus {
   }
 
   emit(eventName, data) {
+    console.log(this.events)
     if (this.events[eventName]) {
       this.events[eventName].forEach((fn) => {
         fn(data);

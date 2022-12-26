@@ -2,16 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { routerResolverByLoginPage, routerAuthResolver } from "../workers/resolver-worker/reolver.worker"
 import { API } from "../workers/api-worker/api.worker";
 import { filterConfigForEvents, filterConfigForUsers } from "../workers/api-worker/http/filter/filter.config";
-import {
-  transpileInterseptorQueryToConfig,
-  transpileQueryToConfig
-} from "../workers/api-worker/http/filter/filter.utils";
+import { transpileInterseptorQueryToConfig } from "../workers/api-worker/http/filter/filter.utils";
 import { ROUTES } from "./router.const";
-
-const CONSTANTS = {
-  first_page_events: 1
-}
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -170,7 +162,6 @@ const router = createRouter({
               )
             )
           })),
-
           component: () => import('../views/application/users/general.vue'),
           meta: {
             breadcrumbs: [
@@ -238,14 +229,14 @@ const router = createRouter({
         {
           path: ROUTES.APPLICATION.USERS.GET_ONE.relative,
           name: ROUTES.APPLICATION.USERS.GET_ONE.name,
-          beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-            // usersData: () => $api.UsersRequest.getAll(to.query),
+          beforeEnter: routerAuthResolver.routeInterceptor((to) => ( {
+            publicUserData: () => API.UserService.getUserPublicProfile(to.params.userId),
           })),
           component: () => import('../views/application/users/profile.vue'),
           meta: {
             breadcrumbs: [
               {name: 'Main', path: '/'},
-              {name: 'Users', path: '/application/smart-list'},
+              {name: 'Users', path: '/application/users'},
               {name: 'Show profile', path: ''},
             ]
           }

@@ -1,11 +1,12 @@
 <template>
-  <div class="b-dropdown">
+  <div class="b-dropdown" >
     <div class="b-dropdown__title">
       <span>
         {{ mainTitle }}
       </span>
     </div>
     <v-select
+      :style="{height: height + 'px'}"
       :placeholder="placeholder"
       :options="options"
       :label="displayName || 'value'"
@@ -49,6 +50,14 @@ export default {
     vSelect
   },
   props: {
+    checkValueInitially: {
+      type: Boolean,
+      default: false
+    },
+    checkValueImmediate: {
+      type: Boolean,
+      default: false
+    },
     mainTitle: {
       type: String,
       default: ''
@@ -76,7 +85,7 @@ export default {
     },
     height: {
       type: Number,
-      default: null
+      default: 40
     },
     mode: {
       type: String,
@@ -93,7 +102,6 @@ export default {
     const wrapper = ref(null);
     const isOpened = ref(false);
     const dropdownModelValue = ref(null);
-    const currentValue = ref(props.modelValue || props.options[0].value);
     const {
         modelValue: staticModelValue,
         modelErrorMessage,
@@ -101,33 +109,37 @@ export default {
     } = CustomModelWorker(props);
     const icon = computed(() => SearchIcon)
 
+    function selectValue (e) {
+      dropdownModelValue.value = props.options.find(item => {
+        return item[props.displayValue] === e
+      }) || e ? {value: e, name: e} : null;
+
+      modelHandlers.value.input[0](e);
+      modelHandlers.value.input[1](e, true);
+    }
+
     watch(
-      () => staticModelValue.value,
+      () => props.options,
       () => {
-        dropdownModelValue.value = props.options.find(item => {
-          return item[props.displayValue] === staticModelValue.value
-        })
-        if (!dropdownModelValue.value) {
-          dropdownModelValue.value = staticModelValue.value ? {value: staticModelValue.value} : null;
-        }
+        selectValue(props.modelValue);
       },
       {
-        immediate: true
+        immediate: props.checkValueImmediate
       }
     );
+
+    if(props.checkValueInitially) {
+      selectValue(props.modelValue);
+    }
+
 
     watch(
       () => props.modelValue,
       () => {
-        dropdownModelValue.value = props.options.find(item => {
-          return item[props.displayValue] === props.modelValue
-        })
-        if (!dropdownModelValue.value) {
-          dropdownModelValue.value = props.modelValue ? {value: props.modelValue} : null;
-        }
+        selectValue(props.modelValue);
       },
       {
-        immediate: true
+        immediate: props.checkValueImmediate
       }
     );
     const withPopper = (dropdownList, component, context) => {
@@ -148,7 +160,7 @@ export default {
        * above.
        */
       const popper = createPopper(component.$refs.toggle, dropdownList, {
-        placement: 'bottom',
+        placement: 'auto-end',
         modifiers: [
           {
             name: 'offset',
@@ -161,10 +173,10 @@ export default {
             enabled: true,
             phase: 'write',
             fn({ state }) {
-              component.$el.classList.toggle(
-                'drop-up',
-                state.placement === 'top'
-              )
+              // component.$el.classList.toggle(
+              //   'drop-up',
+              //   state.placement === 'top'
+              // )
             },
           },
         ],
@@ -180,7 +192,7 @@ export default {
     function setNewValue(val) {
       modelHandlers.value.input[0](val?.[props.displayValue]);
       modelHandlers.value.input[1](val?.[props.displayValue], true);
-      emit('new-value',val?.[props.displayValue] )
+      emit('new-value',val?.[props.displayValue] );
       emit('update:modelValue',val?.[props.displayValue] )
     }
 
@@ -191,7 +203,6 @@ export default {
       modelErrorMessage,
       modelHandlers,
       isOpened,
-      currentValue,
       wrapper,
       dropdownModelValue,
       icon

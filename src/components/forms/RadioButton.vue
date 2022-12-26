@@ -6,11 +6,11 @@
         type="radio"
         :value="value"
         v-on="modelHandlers"
-        :checked="modelValue === value"
+        :checked="modelValue === staticModelValue || modelValue === value"
     >
     <label :for="id" class="b-radio-label">
       {{title}}
-      <img :src="url" alt="">
+      <img v-if="url" :src="url" alt="">
     </label>
   </div>
 </template>
@@ -23,6 +23,10 @@
     name: "RadioButton",
     props: {
       title: {
+        type: String,
+        default: '',
+      },
+      modelValue: {
         type: String,
         default: '',
       },
@@ -44,15 +48,16 @@
         required: true
       },
     },
-    setup(props) {
+    emits: ['update:modelValue'],
+    setup(props, {emit}) {
       const {
-        modelValue,
+        modelValue: staticModelValue,
         modelErrorMessage,
         modelHandlers
-      } = CustomModelWorker(props);
+      } = CustomModelWorker(props, emit);
 
       return {
-        modelValue,
+        staticModelValue,
         modelErrorMessage,
         modelHandlers,
         id: ref(uuid())

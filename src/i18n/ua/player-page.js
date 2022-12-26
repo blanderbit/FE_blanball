@@ -23,5 +23,6 @@ export default {
   'write-email': 'Написати e-mail',
   'call': 'Подзвонити',
   'play-characteristics': 'Ігрові характеристики',
-  'feedbacks': 'Відгуки'
+  'feedbacks': 'Відгуки',
+  'feedback-hidden': 'Зміст відгуків прихований налаштуваннями конфіденційності'
 }

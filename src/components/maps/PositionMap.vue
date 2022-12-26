@@ -28,6 +28,10 @@
     props: {
       coords: {
         type: Object
+      },
+      disableChangeCoords: {
+        type: Boolean,
+        default: false
       }
     },
     setup(props, {emit}) {
@@ -47,20 +51,26 @@
       }
 
       const setDataAboutPosition = async (data) => {
-        const dataForEmit = {
-          lat: data?.lat,
-          lng: data?.lng,
-          place: (await API.LocationService.GetPlaceByCoords(data || state.value.centerOfCountry))?.data?.data
-        };
+        emit('update:coords:loading');
+        PositionMapBus.emit('update:coords:loading')
+        try {
+          const dataForEmit = {
+            lat: data?.lat,
+            lng: data?.lng,
+            place: (await API.LocationService.GetPlaceByCoords(data || state.value.centerOfCountry))?.data?.data
+          };
 
-        emit('update:coords', dataForEmit);
-        PositionMapBus.emit('update:coords', dataForEmit)
+          emit('update:coords', dataForEmit);
+          PositionMapBus.emit('update:coords', dataForEmit)
+        } catch (e) {
+          emit('update:coords-error');
+          PositionMapBus.emit('update:coords-error')
+        }
+
+        emit('map-loaded');
+        PositionMapBus.emit('map-loaded')
       };
       PositionMapBus.on('update:map:by:coords', (e) => {
-        setDataAboutPosition({
-          lat: +e.data.coordinates?.lat,
-          lng: +e.data.coordinates?.lon,
-        });
         marker.value.setPosition({
           lat: +e.data.coordinates?.lat,
           lng: +e.data.coordinates?.lon,
@@ -69,10 +79,10 @@
         map.setCenter(myLatlng);
       });
 
-      const createMap = (crd) => {
+      const createMap = async  (crd) => {
         state.userCenter = crd ? {
-          lat: crd.latitude,
-          lng: crd.longitude
+          lat: crd.lat,
+          lng: crd.lng
         } : state.value.centerOfCountry;
 
         map = new google.maps.Map(document.getElementById("map"), {
@@ -85,18 +95,32 @@
             latLngBounds: Restrictions.Ukraine,
             strictBounds: true
           },
-          styles: PositionMapStyles
+          styles: PositionMapStyles,
+          panControl: false,
+          zoomControl: true,
+          mapTypeControl: false,
+          scaleControl: false,
+          streetViewControl: false,
+          overviewMapControl: false,
+          rotateControl: false
         });
 
         map.data.setStyle(PositionMapBackgroundStyle);
 
         marker.value = placeMarker(map, state.userCenter);
-        setDataAboutPosition(state.userCenter);
+        await setDataAboutPosition(state.userCenter);
 
-        google.maps.event.addListener(map, 'click', function (event) {
-          marker.value.setPosition(event.latLng);
-          setDataAboutPosition(event.latLng.toJSON())
-        });
+        if(!props.disableChangeCoords) {
+          google.maps.event.addListener(map, 'click', function (event) {
+            marker.value.setPosition(event.latLng);
+            setDataAboutPosition(event.latLng.toJSON())
+          });
+        }
+
+        if(crd.currentPosition) return;
+
+        emit('map-loaded');
+        PositionMapBus.emit('map-loaded')
       };
 
       watch(
@@ -105,10 +129,15 @@
       );
 
       onMounted(() => {
-        navigator.geolocation.getCurrentPosition(
-          (pos) => createMap(pos.coords),
-          () => createMap()
-        )
+        if(props?.coords?.lat && props?.coords?.lng) {
+          createMap(props.coords)
+        }else {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => createMap({ currentPosition: true, lat: pos.coords.latitude,
+              lng: pos.coords.longitude}),
+            () => createMap()
+          )
+        }
       })
     }
   }

@@ -13,10 +13,7 @@
             </div>
             <div class="time">{{ card.time }}</div>
           </div>
-          <div class="address desk-address">
-            <img src="../../assets/img/location-point.svg" alt="" />
-            <p>{{ card.place }}</p>
-          </div>
+          <PlaceDetector v-if="device.mobile" :place="card.place"></PlaceDetector>
         </div>
       </div>
       <div class="right-side">
@@ -26,10 +23,7 @@
         <div class="time">{{ card.time }}</div>
       </div>
     </div>
-    <div class="address mob-address">
-      <img src="../../assets/img/location-point.svg" alt="" />
-      <p>{{ card.place }}</p>
-    </div>
+    <PlaceDetector v-if="!device.mobile" :place="card.place"></PlaceDetector>
     <div class="main-text">
       {{ card.full_disc }}
     </div>
@@ -88,7 +82,9 @@
 
 <script>
 import GreenBtn from '../../components/GreenBtn.vue'
+import {useDevice} from 'next-vue-device-detector'
 
+import PlaceDetector from '../../components/maps/PlaceDetector.vue'
 export default {
   props: {
     card: {
@@ -97,7 +93,14 @@ export default {
     }
   },
   components: {
-    GreenBtn
+    GreenBtn,
+    PlaceDetector
+  },
+  setup() {
+    const device = useDevice()
+    return {
+      device
+    }
   }
 }
 </script>
