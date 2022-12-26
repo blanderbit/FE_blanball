@@ -121,6 +121,10 @@
   import ModalFilters from '../ModalFilters.vue'
 
   import SearchIcon from '../../../assets/img/search.svg'
+  import MaleIcon from '../../../assets/img/female-icon.svg'
+  import FemaleIcon from '../../../assets/img/male-icon.svg'
+  import UnisexIcon from '../../../assets/img/unisex.svg'
+
 
   import CONSTANTS from "../../../consts";
 
@@ -166,7 +170,10 @@
       const isModalFiltersActive = ref(false)
       const icons = computed(() => {
         return {
-          search: SearchIcon
+          search: SearchIcon,
+          female: FemaleIcon,
+          male: MaleIcon,
+          unisex: UnisexIcon
         }
       })
       const positions = computed(() => CONSTANTS.profile.position);
@@ -179,9 +186,18 @@
         {value: '-raiting'},
       ]);
       const gender = computed(() => [
-        {value: 'Man'},
-        {value: 'Woman'},
-        {value: 'All'}
+        {
+          value: 'Woman',
+          iconSrc: icons.value.female
+        },
+        {
+          value: 'Man',
+          iconSrc: icons.value.male
+        },
+        {
+          value: 'All',
+          iconSrc: icons.value.unisex
+        }
       ]);
 
       const { activeFilters, transformedFilters } = TransformedFiltersWorker({
@@ -235,6 +251,8 @@
       onBeforeUnmount(() => {
         window.removeEventListener('resize', onResize); 
       })
+
+      console.log(transformedFilters.value.profile__gender)
 
       return {
         setModalFilters,
