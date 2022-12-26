@@ -92,7 +92,7 @@ export default {
         title: t('register.title'),
         returnButton: {
           exist: true,
-          text: t('register.return')
+          text: t('register.return_to_login')
         },
         nextButton: {
           exist: true,

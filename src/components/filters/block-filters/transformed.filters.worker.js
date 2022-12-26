@@ -6,9 +6,7 @@ export const TransformedFiltersWorker = (config) => {
     checkSliderValues, 
     setupTransformedCallback, 
     updateRealDataFromTransformed,
-    windowWidth,
-    // sendDataFromModal,
-    props, 
+    props,
     emit 
   } = config;
 
@@ -33,18 +31,13 @@ export const TransformedFiltersWorker = (config) => {
   );
 
   let timeout;
-  let isChangesInModal = ref(false);
   watch(
     () => cloneDeep(transformedFilters.value),
     (a, b) => {
       if (isEqual(a, b)) {
         return
       }
-      if (windowWidth.value < 768) {
-        isChangesInModal.value = true
-      } else {
-        updateRealData()
-      }
+      updateRealData()
     },
     {
       deep: true
@@ -65,6 +58,7 @@ export const TransformedFiltersWorker = (config) => {
   function updateRealData() {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
+      debugger
       emit('update:value', updateRealDataFromTransformed(transformedFilters.value))
     }, 500)
   }

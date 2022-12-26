@@ -21,6 +21,7 @@ export const EndpointsEnum = {
     GetAllEvents: '/events/client/events/list',
     GetAllMyEvents: '/events/client/my/events/list',
     DeclineOrAcceptInvites: '/events/client/accept/or/decline/invites/to/events',
+    PopularEventsList: '/events/client/popular/events/list',
     DeclineOrAcceptParticipations: '/events/client/accept/or/decline/participations',
     getPlannedUserEvents: (userId) => `/events/client/user/planned/events/list/${userId}`
   },

@@ -1,5 +1,6 @@
 <template>
   <div class="b-register-step">
+    <loading :is-loading="loading"></loading>
     <slot name="images"></slot>
     <div class="b-register-step__top-part">
       <div class="b-register-step__title" v-if="title">
@@ -33,6 +34,7 @@
         </div>
         <GreenBtn
           :text="nextButton?.text"
+          :disabled="nextButton?.disabled"
           :width="155"
           :height="40"
           v-if="nextButton?.exist"
@@ -49,12 +51,14 @@
 
   import {computed} from 'vue'
   import GreenBtn from '../GreenBtn.vue'
+  import Loading from '../../workers/loading-worker/Loading.vue'
 
   import ArrowRight from '../../assets/img/arrow-right-white.svg'
   export default {
     name: 'StepWrapper',
     components: {
       GreenBtn,
+      Loading
     },
     props: {
       stepperLines: {
@@ -72,6 +76,10 @@
       title: {
         type: String,
         default: ''
+      },
+      loading: {
+        type: Boolean,
+        default: false
       },
       subTitle: {
         type: String,

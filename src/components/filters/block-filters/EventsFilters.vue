@@ -231,7 +231,7 @@
             ordering: props.modelValue.ordering.value,
             search: props.modelValue.search.value,
             location: {
-              dist: props.modelValue?.dist?.value && parseFloat(props.modelValue?.dist?.value),
+              dist: props.modelValue?.dist?.value,
               lat: lat && parseFloat(lat),
               lng: lng && parseFloat(lng),
               place: props.modelValue?.place.value
@@ -240,7 +240,6 @@
           }
         },
         updateRealDataFromTransformed(transformedFilters){
-          debugger
           return  {
             gender: transformedFilters.gender,
             type: transformedFilters.type,
@@ -251,8 +250,8 @@
             status: transformedFilters.status,
             search: transformedFilters.search,
             ordering: transformedFilters.ordering,
-            dist: transformedFilters.location.dist,
-            point: `${transformedFilters.location.lng},${transformedFilters.location.lat}`,
+            dist: transformedFilters.location?.dist ,
+            point: transformedFilters.location.lng && transformedFilters.location.lat ? `${transformedFilters.location.lng},${transformedFilters.location.lat}` : null,
             place: transformedFilters.location.place
           }
         }

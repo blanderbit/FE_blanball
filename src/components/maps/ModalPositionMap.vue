@@ -1,9 +1,12 @@
 <template>
  <div>
    <div @click="activeModal = true">
-     {{region || city || address ? `${region} ${city} ${address}`: 'selectPosition'}}
+     {{region || city  ? `${region} ${city}`: 'selectPosition'}}
    </div>
    <ModalWindow v-if="activeModal" :isTitleShown="false">
+     <Loading
+         :is-loading="loading"
+     />
      <Form
          v-slot="data"
          :validation-schema="schema"
@@ -34,16 +37,7 @@
              name="city"
          />
        </div>
-       <div class="b-modal-position__block">
-         <InputComponent
-             :title="$t('register.weight')"
-             :placeholder="'Address'"
-             v-model="address"
-             :title-width="0"
-             @input="changeAddress($event)"
-             name="address"
-         ></InputComponent>
-       </div>
+
        <div class="b-modal-position__block">
          <InputComponent
              :title="$t('register.weight')"
@@ -58,7 +52,7 @@
        <div
            class="b-modal-position__block b-modal-position__map"
        >
-         <position-map :coords="coords" @update:coords="updateCoords"></position-map>
+         <position-map @map-loaded="loading = false" :coords="coords" @update:coords="updateCoords"></position-map>
        </div>
        <div class="d-flex justify-content-between align-items-center">
          <div class="b-modal-position__clear" @click="activeModal = false">
@@ -68,6 +62,7 @@
              :text="'Зберегти'"
              :width="140"
              :height="40"
+             :disabled="nextButton"
              @click-function="save(data)"
          />
        </div>
@@ -88,6 +83,7 @@
   import { PositionMapBus } from "../../workers/event-bus-worker";
   import { API } from "../../workers/api-worker/api.worker";
   import GreenBtn from '../../components/GreenBtn.vue'
+  import Loading from '../../workers/loading-worker/Loading.vue'
   export default {
     components: {
       ModalWindow,
@@ -95,7 +91,8 @@
       Dropdown,
       InputComponent,
       Form,
-      GreenBtn
+      GreenBtn,
+      Loading
     },
     props: {
       modelValue: Object,
@@ -109,31 +106,33 @@
     setup(props,  {emit}) {
       const region = ref('');
       const city = ref('');
-      const address = ref('');
       const dist = ref(300);
+      const nextButton = ref(false);
       const coords = ref({
 
       });
+      const loading = ref(true);
       const activeModal = ref(false);
       const schema = yup.object({
         region: yup.string().required(),
         city: yup.string().required(),
-        address: yup.string().required(),
       })
 
+      function setValue() {
+        if(!props.modelValue) return
+        const [Sregion,  SCity] = props.modelValue.place?.split?.(',') || [];
+        region.value = Sregion ? new String(Sregion) : ''
+        city.value = SCity ? new String(SCity) : ''
+        dist.value = props.modelValue.dist?.toString()
+        coords.value = {
+          lat: props.modelValue.lat,
+          lng: props.modelValue.lng
+        }
+      }
       watch(
         () => props.modelValue,
         () => {
-          if(!props.modelValue) return
-          const [Sregion,  SCity, SAddress] = props.modelValue.place?.split?.(',') || [];
-          region.value =Sregion
-          city.value =SCity
-          address.value =SAddress
-          dist.value = props.modelValue.dist?.toString()
-          coords.value = {
-            lat: props.modelValue.lat,
-            lng: props.modelValue.lng
-          }
+          setValue()
         },
         {
           immediate: true
@@ -154,6 +153,7 @@
               }
             }
           })
+          setValue()
         },
         {
           immediate: true
@@ -174,7 +174,7 @@
         };
         region.value = e.place.state;
         city.value = e.place.city || e.place.town|| e.place.village;
-        address.value = `${e.place.neighbourhood || ''} ${e.place.road || ''} ${e.place.house_number || ''} ${e.place.postcode || ''}`;
+        nextButton.value = !region.value || !city.value
       }
 
       async function getCoordsByName(str) {
@@ -187,37 +187,48 @@
         mockData,
         region,
         city,
-        address,
         dist,
+        loading,
+        nextButton,
         async changeRegions(e) {
           region.value = e;
           city.value = '';
-          address.value = '';
-          PositionMapBus.emit('update:map:by:coords', await getCoordsByName(region.value))
+          loading.value = true
+          try {
+            PositionMapBus.emit('update:map:by:coords', await getCoordsByName(region.value))
+            nextButton.value = !region.value || !city.value
+
+          } catch (e) {
+            nextButton.value = true
+
+          }
+
+          loading.value = false
+
         },
         async changeCity(e) {
           city.value = e;
-          address.value = ''
-          PositionMapBus.emit('update:map:by:coords', await getCoordsByName(`${region.value} ${city.value}`))
-        },
-        async changeAddress(e) {
-          address.value = e.target.value;
-          clearTimeout(timeout);
-          timeout = setTimeout(async () => {
-            PositionMapBus.emit('update:map:by:coords', await getCoordsByName(`${region.value} ${city.value} ${address.value}`))
-          }, 500)
+          loading.value = true
+          try {
+            PositionMapBus.emit('update:map:by:coords', await getCoordsByName(`${region.value} ${city.value}`))
+            nextButton.value = !region.value || !city.value
+
+          } catch (e) {
+            nextButton.value = true
+          }
+          loading.value = false
         },
         updateCoords,
         activeModal,
         coords,
         async save(data) {
           const { valid } = await data.validate();
-          debugger
           if(!valid) return;
+          debugger
           emit('update:modelValue', {
             ...coords.value,
             dist: dist.value,
-            place: `${region.value},${city.value},${address.value}`
+            place: `${region.value},${city.value}`
           });
           activeModal.value = false
         }

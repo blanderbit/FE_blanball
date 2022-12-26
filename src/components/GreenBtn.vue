@@ -2,7 +2,7 @@
   <div
     class="b-green-btn"
     :style="btnStyle"
-    @click="$emit('click-function')"
+    @click="!disabled && $emit('click-function')"
   >
     <img class="b-green-btn__left-icon" v-if="icon" :src="icon" alt="">
     {{ text }}
@@ -52,6 +52,10 @@ export default {
       type: Boolean,
       default: false
     },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     loading: {
       type: Boolean,
       default: false
@@ -64,9 +68,9 @@ export default {
         ...props.fontStyles,
         width: props.width ? props.width + 'px' : '100%',
         height: props.height + 'px',
-        background: props.backgroundColor,
+        background: !props.disabled ? props.backgroundColor : '#EFEFF6',
         // 'justify-content': props.iconRight || props.icon ? 'space-around' : 'center'
-        'justify-content': 'center'
+        'justify-content': 'center',
 
       }
     })

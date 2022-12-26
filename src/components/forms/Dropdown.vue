@@ -1,11 +1,12 @@
 <template>
-  <div class="b-dropdown">
+  <div class="b-dropdown" >
     <div class="b-dropdown__title">
       <span>
         {{ mainTitle }}
       </span>
     </div>
     <v-select
+      :style="{height: height + 'px'}"
       :placeholder="placeholder"
       :options="options"
       :label="displayName || 'value'"
@@ -37,6 +38,14 @@ export default {
     vSelect
   },
   props: {
+    checkValueInitially: {
+      type: Boolean,
+      default: false
+    },
+    checkValueImmediate: {
+      type: Boolean,
+      default: false
+    },
     mainTitle: {
       type: String,
       default: ''
@@ -64,7 +73,7 @@ export default {
     },
     height: {
       type: Number,
-      default: null
+      default: 40
     },
     mode: {
       type: String,
@@ -98,24 +107,27 @@ export default {
     }
 
     watch(
-      () => staticModelValue.value,
+      () => props.options,
       () => {
-        selectValue(staticModelValue.value);
+        selectValue(props.modelValue);
       },
       {
-        immediate: true
+        immediate: props.checkValueImmediate
       }
     );
-    if(props.modelValue) {
+
+    if(props.checkValueInitially) {
       selectValue(props.modelValue);
     }
+
+
     watch(
       () => props.modelValue,
       () => {
         selectValue(props.modelValue);
       },
       {
-        immediate: true
+        immediate: props.checkValueImmediate
       }
     );
     const withPopper = (dropdownList, component, context) => {
@@ -136,7 +148,7 @@ export default {
        * above.
        */
       const popper = createPopper(component.$refs.toggle, dropdownList, {
-        placement: 'bottom',
+        placement: 'auto-end',
         modifiers: [
           {
             name: 'offset',
@@ -149,10 +161,10 @@ export default {
             enabled: true,
             phase: 'write',
             fn({ state }) {
-              component.$el.classList.toggle(
-                'drop-up',
-                state.placement === 'top'
-              )
+              // component.$el.classList.toggle(
+              //   'drop-up',
+              //   state.placement === 'top'
+              // )
             },
           },
         ],

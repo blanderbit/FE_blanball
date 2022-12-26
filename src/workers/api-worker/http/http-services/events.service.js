@@ -58,4 +58,9 @@ export class EventService {
       EndpointsEnum.Events.getPlannedUserEvents(userId),
     )
   }
+  getPopularEventsListEvents() {
+    return AxiosInstance.get(
+      EndpointsEnum.Events.PopularEventsList,
+    )
+  }
 }

@@ -1,11 +1,11 @@
 <template>
   <div class="b-right-sidebar">
     <div class="b-right-sidebar__title-block">
-      <div class="b-right-sidebar__title">{{ $t('events.planned-events') }}</div>
-      <div class="b-right-sidebar__subtitle">{{ $t('events.your-events') }}</div>
+      <div class="b-right-sidebar__title">{{ randomElement.title }}</div>
+      <div class="b-right-sidebar__subtitle">{{ randomElement.subTitle }}</div>
     </div>
     <div class="b-right-sidebar__cards-block">
-      <SimpleListWrapper :requestForGetData="getPlanedEvents">
+      <SimpleListWrapper :requestForGetData="randomElement.request">
         <template #default="{ smartListItem: item }">
           <SmallEventCard
               :item="item"
@@ -25,6 +25,9 @@ import SimpleListWrapper from './simple-list/SimpleListWrapper.vue'
 import dayjs from 'dayjs'
 import dayjsUkrLocale from 'dayjs/locale/uk'
 import { API } from "../workers/api-worker/api.worker";
+import { useI18n } from "vue-i18n";
+import { computed } from "vue";
+const {t} = useI18n();
 const getPlanedEvents = (page) => { // TODO DUBLICATE
   return API.EventService.getPlannedUserEvents(
     113,
@@ -48,6 +51,43 @@ const getPlanedEvents = (page) => { // TODO DUBLICATE
     }
   }))
 }
+
+const getPopularEvents = (page) => { // TODO DUBLICATE
+  return API.EventService.getPopularEventsListEvents(
+    113,
+    {
+      page
+    }
+  ).then(result => ({
+    data: {
+      results: result.data.map((i, index) => {
+        i.id = index;
+        i.time = `${dayjs(i.time_created)
+          .locale(dayjsUkrLocale)
+          .format('hh : mm')}`;
+        i.date = `${dayjs(i.time_created)
+          .locale(dayjsUkrLocale)
+          .format('D MMMM')}`;
+        return {
+          ...i
+        }
+      })
+    }
+  }))
+}
+
+const randomElement = computed(() => [
+  {
+    title: t('events.planned-events'),
+    subTitle: t('events.your-events'),
+    request: getPlanedEvents
+  },
+  {
+    title: t('events.popular-events'),
+    subTitle: t('events.your-popular-events'),
+    request: getPopularEvents
+  }
+].getRandomElement());
 </script>
 
 <style lang="scss" scoped>

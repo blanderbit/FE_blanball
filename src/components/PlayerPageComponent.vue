@@ -117,7 +117,7 @@
                 <img src="../assets/img/information.svg" alt="">
                 {{$t('player_page.feedback-hidden')}}
               </div>
-              <SimpleListWrapper :requestForGetData="getReviews">
+              <SimpleListWrapper v-else :requestForGetData="getReviews">
                 <template #default="{ smartListItem: item }">
                   <div
                       :key="item.id"
