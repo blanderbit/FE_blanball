@@ -5,7 +5,7 @@ export const filterConfigForUsers = {
   page: Number,
   profile__age: Number,
   profile__position: new Enum(CONSTANTS.profile.position.map(({value}) => value)),
-  profile__gender: new Enum(['Man', 'Woman']),
+  profile__gender: new Enum(['Man', 'Woman', '']),
   is_online: Boolean, // TODO add in client
   search: String,
   ordering: new Enum(['id','profile__age', 'raiting', '-id', '-profile__age', '-raiting']),
@@ -18,7 +18,7 @@ export const filterConfigForUsers = {
 
 export const filterConfigForEvents = {
   page: Number,
-  gender: new Enum(['Man', 'Woman']),
+  gender: new Enum(['Man', 'Woman', '']),
   type: new Enum(['Football', 'Futsal']),
   need_ball: Boolean,
   search: String,

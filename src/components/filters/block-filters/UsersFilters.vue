@@ -180,7 +180,8 @@
       ]);
       const gender = computed(() => [
         {value: 'Man'},
-        {value: 'Woman'}
+        {value: 'Woman'},
+        {value: 'All'}
       ]);
 
       const { activeFilters, transformedFilters } = TransformedFiltersWorker({
