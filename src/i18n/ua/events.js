@@ -20,6 +20,8 @@ export default {
   'fans': 'Вболівальники',
   'planned-events': 'Заплановані події',
   'your-events': 'Заходи у яких ви запланували участь',
+  'popular-events': 'Найкращі події',
+  'your-popular-events': 'Найпопулярніщі івенки, де ви можете приняти участь',
   'need-uniform': 'Потрібна форма',
   'do-not-need-uniform': 'Не потрібна форма',
   'gender': 'Стать',

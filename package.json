@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@blanderbit/vue-resolver": "^0.1.2",
+    "@mcistudio/vue-colorpicker": "^2.0.0",
     "@popperjs/core": "^2.11.6",
     "@rollup/plugin-babel": "^6.0.2",
     "@system.it.flumx.com/vee-validate": "^0.0.1",
@@ -24,6 +25,7 @@
     "device-detector-js": "^3.0.3",
     "dotenv": "^16.0.3",
     "maska": "^1.5.1",
+    "next-vue-device-detector": "^0.0.1",
     "pinia": "^2.0.21",
     "uuid": "^8.3.2",
     "v-calendar": "^3.0.0-alpha.8",

@@ -163,7 +163,7 @@ const reg = /^[a-zа-яё\d]{1}[a-zа-яё\d-]*[a-zа-яё\d]{1}$/i;
     },
     setup() {
       const router = useRouter();
-      const currentStep = ref(8);
+      const currentStep = ref(1);
       const initialValues = ref({});
       let profileValues = {
         profile: {}

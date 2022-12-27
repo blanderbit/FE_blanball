@@ -10,6 +10,7 @@
           <div class="b-user-card__picture-name">
             <div class="b-user-card__picture">
               <avatar
+                @clickByAvatar="$emit('openUserProfile')"
                 :link="userData.profile.avatar_url"
                 :full-name="userData.profile.name + ' ' + userData.profile.last_name"
               ></avatar>
@@ -111,6 +112,7 @@
         }
       }
     },
+    emits: ['openUserProfile'],
     computed: {
       userPosition() {
         return CONSTANTS.users_page.user_position
@@ -123,7 +125,8 @@
           return !!this.userData?.metadata?.expanding
         }
       }
-    }
+    },
+
   }
 </script>
 

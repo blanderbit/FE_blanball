@@ -22,6 +22,8 @@ import "../src/components/maps/map.init";
 import "vue-select/dist/vue-select.css";
 import 'cropperjs/dist/cropper.css';
 import "@vueform/slider/themes/default.css";
+import '@mcistudio/vue-colorpicker/dist/style.css'
+import { createDeviceDetector } from "next-vue-device-detector";
 export const i18n = createI18n({
   locale: 'ua',
   allowComposition: true,
@@ -29,6 +31,15 @@ export const i18n = createI18n({
     ua: UA_LANGUAGE
   }
 });
+Object.defineProperty(
+  Object.prototype,
+  'getRandomElement',
+  {
+    value: function() {
+      return this[Math.floor(Math.random() * this.length)];
+    }
+  }
+);
 
 createLoader();
 
@@ -42,4 +53,5 @@ app
   .use(VCalendar, {})
   .use(Toast)
   .use(Maska)
+  .use(createDeviceDetector())
   .mount('#app');

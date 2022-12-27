@@ -6,15 +6,14 @@ export const TransformedFiltersWorker = (config) => {
     checkSliderValues, 
     setupTransformedCallback, 
     updateRealDataFromTransformed,
-    windowWidth,
-    sendDataFromModal,
-    props, 
+    props,
     emit 
   } = config;
 
   if(!setupTransformedCallback || !updateRealDataFromTransformed || !props || !props?.modelValue|| !emit) {
     throw  new Error('TransformedFiltersWorker need emplement checkSliderValues, setupTransformedCallback, updateRealDataFromTransformed, props, props.modelValue, emit')
   }
+
   const activeFilters = ref(false);
 
   const transformedFilters = ref(setupTransformedCallback(activeFilters));
@@ -32,38 +31,34 @@ export const TransformedFiltersWorker = (config) => {
   );
 
   let timeout;
-  let isChangesInModal = ref(false);
   watch(
     () => cloneDeep(transformedFilters.value),
     (a, b) => {
       if (isEqual(a, b)) {
         return
       }
-      if (windowWidth.value < 768) {
-        isChangesInModal.value = true
-      } else {
-        updateRealData()
-      }
+      updateRealData()
     },
     {
       deep: true
     }
   );
-  watch(
-    () => sendDataFromModal.value, 
-    (a, b) => {
-    if (a && isChangesInModal.value) {
-      updateRealData()
-      sendDataFromModal.value = false
-      isChangesInModal.value = false
-    } else {
-      sendDataFromModal.value = false
-    }
-  })
+  // watch(
+  //   () => sendDataFromModal.value,
+  //   (a, b) => {
+  //   if (a && isChangesInModal.value) {
+  //     updateRealData()
+  //     sendDataFromModal.value = false
+  //     isChangesInModal.value = false
+  //   } else {
+  //     sendDataFromModal.value = false
+  //   }
+  // })
 
   function updateRealData() {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
+      debugger
       emit('update:value', updateRealDataFromTransformed(transformedFilters.value))
     }, 500)
   }
