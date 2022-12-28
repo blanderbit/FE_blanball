@@ -5,6 +5,7 @@ export const TransformedFiltersWorker = (config) => {
   const { 
     setupTransformedCallback, 
     updateRealDataFromTransformed,
+    ifSecondLineWasUsed,
     props,
     emit,
     isMobile
@@ -15,12 +16,13 @@ export const TransformedFiltersWorker = (config) => {
   }
 
   const activeFilters = ref(false);
-
+  activeFilters.value = ifSecondLineWasUsed && ifSecondLineWasUsed()
   const transformedFilters = ref(setupTransformedCallback(activeFilters));
 
   watch(
     () => props.modelValue,
     () => {
+      console.log(props.modelValue)
       transformedFilters.value = setupTransformedCallback(activeFilters)
     },
     {
@@ -44,18 +46,6 @@ export const TransformedFiltersWorker = (config) => {
     }
   );
 
-  // watch(
-  //   () => sendDataFromModal.value,
-  //   (a, b) => {
-  //   if (a && isChangesInModal.value) {
-  //     updateRealData()
-  //     sendDataFromModal.value = false
-  //     isChangesInModal.value = false
-  //   } else {
-  //     sendDataFromModal.value = false
-  //   }
-  // })
-
   function updateRealData() {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
@@ -64,8 +54,8 @@ export const TransformedFiltersWorker = (config) => {
   }
 
   return {
+    updateRealData,
     transformedFilters,
-    activeFilters,
-    updateRealData
+    activeFilters
   }
 };

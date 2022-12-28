@@ -4,7 +4,9 @@
       :outside-title="true"
       :main-title="$t('events.event-type')"
       :placeholder="$t('events.event-type')"
-      :options="typeOfEventDropdown"
+      :options="mockData.typeOfEventDropdown"
+      display-name="name"
+      display-value="value"
       :width="320"
       :height="40"
       @new-value="$emit('dropdown-form-value', 'title', $event)"
@@ -43,7 +45,9 @@
       :outside-title="true"
       :main-title="$t('events.sport-type')"
       :placeholder="$t('events.sport-type')"
-      :options="typeOfSportDropdown"
+      :options="mockData.typeOfSportDropdown"
+      display-name="name"
+      display-value="value"
       :width="320"
       :height="40"
       @new-value="$emit('dropdown-form-value', 'labels', $event, 0)"
@@ -94,20 +98,12 @@ import CalendarPic from '../../assets/img/calendar.svg'
 import WatchPic from '../../assets/img/watch.svg'
 import LocationPic from '../../assets/img/location-point.svg'
 
+import CONSTANTS from '../../consts/index'
+
 export default {
   components: {
     Dropdown,
     InputComponent
-  },
-  props: {
-    typeOfEventDropdown: {
-      type: Array,
-      default: () => []
-    },
-    typeOfSportDropdown: {
-      type: Array,
-      default: () => []
-    }
   },
   emit: ['setEventData'],
   setup(props, {emit}) {
@@ -120,6 +116,12 @@ export default {
         location: LocationPic
       }
     })
+    const mockData = computed(() => {
+      return {
+        typeOfEventDropdown: CONSTANTS.manage_event.type_of_event_dropdown,
+        typeOfSportDropdown: CONSTANTS.manage_event.type_of_sport_dropdown,
+      }
+    })
 
     watch(secondLabel, (newVal, oldVal) => {
       if (!(newVal === oldVal)) {
@@ -129,7 +131,8 @@ export default {
 
     return {
       secondLabel,
-      icons
+      icons,
+      mockData
     }
   }
 }

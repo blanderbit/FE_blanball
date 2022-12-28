@@ -58,7 +58,7 @@
 }
 
 .vs__dropdown-option--selected {
-    background: var(--vs-dropdown-option--deselect-bg);
+    background: #F0F0F4;
     color: var(--vs-dropdown-option--deselect-color)
 }
 

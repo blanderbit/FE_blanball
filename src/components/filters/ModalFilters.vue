@@ -15,10 +15,11 @@
           </div>
           <div class="b-modal-filters__game-type-input">
             <Dropdown
+              :check-value-immediate="true"
               :main-title="$t('users.position')"
               :options="positions"
               :placeholder="$t('users.position')"
-              display-name="value"
+              display-name="name"
               display-value="value"
               v-model="dropdownData"
               name="position"

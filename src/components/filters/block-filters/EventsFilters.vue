@@ -13,7 +13,9 @@
                   :main-title="$t('events.gender')"
                   :placeholder="$t('events.gender')"
                   :options="gender"
+                  :height="36"
                   display-value="value"
+                  display-name="name"
                   v-model="transformedFilters.gender"
               />
             </div>
@@ -22,7 +24,9 @@
                   :main-title="$t('events.game-type')"
                   :placeholder="$t('events.game-type')"
                   :options="sportTypeDropdown"
+                  :height="36"
                   display-value="value"
+                  display-name="name"
                   v-model="transformedFilters.type"
               />
             </div>
@@ -175,6 +179,11 @@
   import CONSTANTS from "../../../consts";
   import dayjs from 'dayjs'
   import dayjsUkrLocale from 'dayjs/locale/uk'
+
+  import MaleIcon from '../../../assets/img/female-icon.svg'
+  import FemaleIcon from '../../../assets/img/male-icon.svg'
+  import UnisexIcon from '../../../assets/img/unisex.svg'
+
   export default {
     name: "UsersFilters",
     components: {
@@ -206,14 +215,19 @@
     },
     emits: ['update:value', 'clearFilters'],
     setup(props, {emit}) {
+      const icons = computed(() => {
+        return {
+          female: FemaleIcon,
+          male: MaleIcon,
+          unisex: UnisexIcon
+        }
+      })
       const ordering = computed(() => [
         {value: 'id'},
         {value: '-id'},
       ]);
-      const gender = computed(() => [
-        {value: 'Man'},
-        {value: 'Woman'}
-      ]);
+      const gender = computed(() => CONSTANTS.users_page.gender);
+
       const { activeFilters, transformedFilters } = TransformedFiltersWorker({
         props,
         emit,

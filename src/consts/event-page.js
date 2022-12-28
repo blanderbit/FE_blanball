@@ -108,11 +108,13 @@ export default {
   sport_type_dropdown: [
     {
       id: 1,
-      value: 'Football'
+      value: 'Football',
+      name: 'Футбол'
     },
     {
       id: 2,
-      value: 'Futsal'
+      value: 'Futsal',
+      name: 'Футсал'
     },
   ],
   gender_dropdown: [

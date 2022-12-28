@@ -45,6 +45,7 @@
         <InputComponent
           :title="$t('profile.e-mail')"
           :placeholder="userEmail"
+          :isDisabled="true"
           :title-width="0"
           :outside-title="true"
           :icon="sortArrowHorizontal"

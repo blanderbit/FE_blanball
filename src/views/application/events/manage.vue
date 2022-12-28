@@ -4,8 +4,6 @@
       <SelectionSuitModal @close-modal="closeModal"></SelectionSuitModal>
       <ManageEventFirstStep
           v-if="currentStep === 1"
-          :type-of-event-dropdown="mockData.type_of_event_dropdown"
-          :type-of-sport-dropdown="mockData.type_of_sport_dropdown"
           @dropdown-form-value="setFormValue"
           @set-event-data="setFormValue"
       />
@@ -392,8 +390,6 @@
 
       const mockData = computed(() => {
         return {
-          type_of_event_dropdown: CONSTANTS.manage_event.type_of_event_dropdown,
-          type_of_sport_dropdown: CONSTANTS.manage_event.type_of_sport_dropdown,
           tags: CONSTANTS.manage_event.tags,
           teams: CONSTANTS.manage_event.teams
         }

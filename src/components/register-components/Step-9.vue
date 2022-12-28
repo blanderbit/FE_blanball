@@ -15,18 +15,19 @@
         <InputComponent
             :outside-title="true"
             :title="$t('register.height')"
-            :placeholder="'height'"
+            :placeholder="$t('register.height')"
             :title-width="0"
             name="height"
         ></InputComponent>
         <InputComponent
             :outside-title="true"
             :title="$t('register.weight')"
-            :placeholder="'weight'"
+            :placeholder="$t('register.weight')"
             :title-width="0"
             name="weight"
         ></InputComponent>
         <Dropdown
+            :placeholder="$t('register.main-leg')"
             :outside-title="true"
             :main-title="$t('register.main-leg')"
             :options="mockData.main_lag"
@@ -42,12 +43,13 @@
       </div>
       <div class="b-register-step__dropdown">
         <Dropdown
+            :placeholder="$t('register.position')"
             :outside-title="true"
             :main-title="$t('register.position')"
             :options="mockData.position"
             :width="200"
             :height="40"
-            display-name="value"
+            display-name="name"
             display-value="value"
             name="position"
         />

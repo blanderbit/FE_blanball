@@ -6,6 +6,7 @@
       </span>
     </div>
     <v-select
+      :searchable="false"
       :style="{height: height + 'px'}"
       :placeholder="placeholder"
       :options="options"
@@ -19,16 +20,26 @@
       @open="modelHandlers.blur()"
       v-model="dropdownModelValue"
     >
-      <template #option="{ value, iconSrc }">
+      <template #option="options">
         <div class="b-dropdown__custom-option">
-          <img :src="iconSrc" alt="">
-          {{ value }}
+          <img 
+            v-if="options.iconSrc" 
+            :src="options.iconSrc" 
+            alt="icon"
+          >
+          {{ options[displayName] }}
         </div>
       </template>
-      <template #selected-option="{ value, iconSrc }">
+      <template #selected-option="options">
         <div class="b-dropdown__custom-option">
-          <img :src="iconSrc" alt="">
-          {{ value }}
+          <img 
+            v-if="options.iconSrc" 
+            :src="options.iconSrc" 
+            alt="icon"
+          >
+          <span>
+            {{ options[displayName] }}
+          </span>
         </div>
       </template>
     </v-select>
@@ -110,9 +121,10 @@ export default {
     const icon = computed(() => SearchIcon)
 
     function selectValue (e) {
+      console.log(props.options, e)
       dropdownModelValue.value = props.options.find(item => {
         return item[props.displayValue] === e
-      }) || e ? {value: e, name: e} : null;
+      }) || (e ? {value: e, name: e} : null);
 
       modelHandlers.value.input[0](e);
       modelHandlers.value.input[1](e, true);
@@ -131,7 +143,6 @@ export default {
     if(props.checkValueInitially) {
       selectValue(props.modelValue);
     }
-
 
     watch(
       () => props.modelValue,
@@ -196,6 +207,8 @@ export default {
       emit('update:modelValue',val?.[props.displayValue] )
     }
 
+    console.log(dropdownModelValue.value)
+
     return {
       setNewValue,
       withPopper,
@@ -213,20 +226,17 @@ export default {
 
 <style lang="scss" scoped >
   @import "forms.scss";
-  /*::v-deep {*/
-
-  /*}*/
-
-
+  
 ::v-deep {
   .vs__clear {
     display: none;
   }
-  .vs__dropdown-menu {
-    width: 500px;
-  }
   .vs__search {
     margin: 0;
+    padding: 0;
+  }
+  .vs--unsearchable:not(.vs--disabled) .vs__search {
+    padding: 4px;
   }
   .v-select {
     height: 100%;
@@ -238,6 +248,10 @@ export default {
     font-size: 13px;
     line-height: 24px;
     color: #575775;
+  }
+  .v-select .vs__dropdown-toggle {
+    padding: 0;
+    height: 100%;
   }
   .style-chooser .vs__search::placeholder,
   .style-chooser .vs__dropdown-toggle,
@@ -255,9 +269,13 @@ export default {
   #vs3__listbox {
     --vs-dropdown-min-width: auto;
   }
+  .vs__selected-options {
+    overflow: hidden;
+    flex-wrap: nowrap;
+  }
   .vs__selected {
     overflow-x: hidden;
-    width: 75%;
+    width: 100%;
     white-space: nowrap;
     display: inline-block;
     text-overflow: ellipsis;
@@ -280,8 +298,6 @@ export default {
   }
 }
 
-
-
   .b-input__error-message {
     font-family: 'Inter';
     font-style: normal;
@@ -290,7 +306,6 @@ export default {
     line-height: 20px;
     color: #F32929;
   }
-
   .v-select.drop-up.vs--open .vs__dropdown-toggle {
     border-radius: 0 0 4px 4px;
     border-top-color: transparent;
@@ -327,6 +342,13 @@ export default {
       height: 100%;
       img {
         margin-right: 5px;
+        display: block;
+        width: 12px;
+      }
+      span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
   }

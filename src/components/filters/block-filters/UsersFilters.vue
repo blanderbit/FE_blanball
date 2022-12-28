@@ -13,9 +13,10 @@
         <div class="b-users-filters__left-part d-flex">
           <div class="b-users-filters__dropdown-sorting">
             <dropdown
+              :check-value-immediate="true"
               :options="ordering"
               :placeholder="$t('users.sorting')"
-              display-name="value"
+              display-name="name"
               display-value="value"
               v-model="transformedFilters.ordering"
               name="sorting"
@@ -24,9 +25,10 @@
           </div>
           <div class="b-users-filters__dropdown-position">
             <dropdown
+              :check-value-immediate="true"
               :options="positions"
               :placeholder="$t('users.position')"
-              display-name="value"
+              display-name="name"
               display-value="value"
               v-model="transformedFilters.profile__position"
               name="position"
@@ -35,9 +37,10 @@
           </div>
           <div class="b-users-filters__dropdown-gender">
             <dropdown
+              :check-value-immediate="true"
               :options="gender"
               :placeholder="$t('users.gender')"
-              display-name="value"
+              display-name="name"
               display-value="value"
               v-model="transformedFilters.profile__gender"
               name="gender"
@@ -107,6 +110,7 @@
 
   import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
   import { useDevice } from 'next-vue-device-detector'
+  import { useI18n } from 'vue-i18n'
 
   import RangeFilter from '../../filters/components/RangeFilter.vue'
   import Dropdown from '../../forms/Dropdown.vue'
@@ -121,10 +125,8 @@
   import ModalFilters from '../ModalFilters.vue'
 
   import SearchIcon from '../../../assets/img/search.svg'
-  import MaleIcon from '../../../assets/img/female-icon.svg'
-  import FemaleIcon from '../../../assets/img/male-icon.svg'
-  import UnisexIcon from '../../../assets/img/unisex.svg'
-
+  import ArrowTopIcon from '../../../assets/img/arrow-top.svg'
+  import ArrowDownIcon from '../../../assets/img/arrow-down2.svg'
 
   import CONSTANTS from "../../../consts";
 
@@ -159,42 +161,57 @@
     },
     emits: ['update:value', 'clearFilters'],
     setup(props, {emit}) {
+      const { t } = useI18n()
       const isMobile = useDevice().mobile
 
       const isModalFiltersActive = ref(false)
       const icons = computed(() => {
         return {
           search: SearchIcon,
-          female: FemaleIcon,
-          male: MaleIcon,
-          unisex: UnisexIcon
+          arrowDown: ArrowDownIcon,
+          arrowTop: ArrowTopIcon
         }
       })
       const positions = computed(() => CONSTANTS.profile.position);
+      const gender = computed(() => CONSTANTS.users_page.gender);
       const ordering = computed(() => [
-        {value: 'id'},
-        {value: 'profile__age'},
-        {value: 'raiting'},
-        {value: '-id'},
-        {value: '-profile__age'},
-        {value: '-raiting'},
-      ]);
-      const gender = computed(() => [
         {
-          value: 'Woman',
-          iconSrc: icons.value.female
+          value: 'id',
+          name: 'айди',
+          iconSrc: icons.value.arrowTop
         },
         {
-          value: 'Man',
-          iconSrc: icons.value.male
+          value: 'profile__age',
+          name: 'возраст',
+          iconSrc: icons.value.arrowTop
         },
         {
-          value: 'All',
-          iconSrc: icons.value.unisex
-        }
+          value: 'raiting',
+          name: 'рейтинг',
+          iconSrc: icons.value.arrowTop
+        },
+        {
+          value: '-id',
+          name: 'айди',
+          iconSrc: icons.value.arrowDown
+        },
+        {
+          value: '-profile__age',
+          name: 'возраст',
+          iconSrc: icons.value.arrowDown
+        },
+        {
+          value: '-raiting',
+          name: 'рейтинг',
+          iconSrc: icons.value.arrowDown
+        },
       ]);
 
-      const { activeFilters, transformedFilters, updateRealData } = TransformedFiltersWorker({
+      const { 
+        activeFilters, 
+        transformedFilters, 
+        updateRealData 
+      } = TransformedFiltersWorker({
         props,
         emit,
         isMobile,
@@ -225,10 +242,17 @@
             point: transformedFilters.place.point
           }
         },
-        checkSliderValues(value) {
-          return value[0] > 6 || value[1] < 80
+        ifSecondLineWasUsed() {
+          return !(
+            props.modelValue.profile__age_min.value === props.modelValue.profile__age_min.default &&
+            props.modelValue.profile__age_max.value === props.modelValue.profile__age_max.default
+          )
         }
       });
+
+      console.log(
+
+      )
 
 
       function setModalFilters() {
