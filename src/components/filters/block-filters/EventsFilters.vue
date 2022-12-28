@@ -63,7 +63,12 @@
             </div>
             <div class="b-main-search__calendar">
               <img src="../../../assets/img/calendar.svg" alt="" />
-              <v-date-picker locale="ukr" :model-config="calendar.modelConfig" v-model="transformedFilters.date_and_time" is-range>
+              <v-date-picker 
+                locale="ukr" 
+                :model-config="calendar.modelConfig" 
+                v-model="transformedFilters.date_and_time" 
+                is-range
+              >
                 <template v-slot="{ inputValue, inputEvents }">
                   <div class="flex justify-center items-center">
                     <input

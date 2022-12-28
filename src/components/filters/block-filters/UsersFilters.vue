@@ -75,13 +75,23 @@
       </div>
       <div class="b-users-filters__mob-line">
         <div class="b-users-filters__sorting">
-          <div class="b-users-filters__icon">
+          <!-- <div class="b-users-filters__icon">
             <img src="../../../assets/img/sort-arrows.svg" alt="">
           </div>
           <div class="b-users-filters__text-block">
             <div class="b-users-filters__title">{{ $t('users.sorting') }}</div>
             <div class="b-users-filters__text">{{ $t('users.new-first') }}</div>
-          </div>
+          </div> -->
+          <dropdown
+            :check-value-immediate="true"
+            :options="ordering"
+            :placeholder="$t('users.sorting')"
+            display-name="name"
+            display-value="value"
+            v-model="transformedFilters.ordering"
+            name="sorting"
+          >
+          </dropdown>
         </div>
         <div class="b-users-filters__fitering">
           <div 
@@ -93,11 +103,6 @@
           <div class="b-users-filters__text-block">
             <div class="b-users-filters__title">{{ $t('users.filters') }}</div>
             <div class="b-users-filters__text">{{ $t('users.found') }} 15</div>
-          </div>
-        </div>
-        <div class="b-users-filters__calendar">
-          <div class="b-users-filters__icon">
-            <img src="../../../assets/img/calendar.svg" alt="">
           </div>
         </div>
       </div>
@@ -161,9 +166,17 @@
     },
     emits: ['update:value', 'clearFilters'],
     setup(props, {emit}) {
-      const { windowWidth, onResize } = useWindowWidth()
+      const { isMobile, onResize } = useWindowWidth()
 
       const isModalFiltersActive = ref(false)
+      const  calendar = ref( {
+        inputMask: 'YYYY-MM-DD',
+        modelConfig: {
+          type: 'string',
+          mask: 'YYYY-MM-DD', // Uses 'iso' if missing
+        },
+      })
+
       const icons = computed(() => {
         return {
           search: SearchIcon,
@@ -213,7 +226,7 @@
       } = TransformedFiltersWorker({
         props,
         emit,
-        windowWidth,
+        isMobile,
         setupTransformedCallback() {
           return {
             profile__gender: props.modelValue.profile__gender.value,
@@ -269,7 +282,8 @@
         activeFilters,
         transformedFilters,
         icons,
-        isModalFiltersActive
+        isModalFiltersActive,
+        calendar
       }
     }
   }
@@ -316,13 +330,13 @@
       @media (max-width: 768px) {
         display: flex;
       }
-      .b-users-filters__sorting,
+      .b-users-filters__sorting {
+        width: 160px;
+      }
       .b-users-filters__fitering {
         width: 132px;
       }
-      .b-users-filters__sorting,
-      .b-users-filters__fitering,
-      .b-users-filters__calendar { 
+      .b-users-filters__fitering { 
         display: flex;
 
         .b-users-filters__icon { 
@@ -335,6 +349,7 @@
           display: flex;
           justify-content: center;
           align-items: center;
+          position: relative;
         }
 
         .b-users-filters__text-block { 

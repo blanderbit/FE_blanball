@@ -121,7 +121,6 @@ export default {
     const icon = computed(() => SearchIcon)
 
     function selectValue (e) {
-      console.log(props.options, e)
       dropdownModelValue.value = props.options.find(item => {
         return item[props.displayValue] === e
       }) || (e ? {value: e, name: e} : null);
@@ -206,8 +205,6 @@ export default {
       emit('new-value',val?.[props.displayValue] );
       emit('update:modelValue',val?.[props.displayValue] )
     }
-
-    console.log(dropdownModelValue.value)
 
     return {
       setNewValue,

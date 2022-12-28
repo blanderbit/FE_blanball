@@ -76,7 +76,7 @@
         </div>
       </div>
       <ButtonsBlock 
-        v-if="windowWidth > 768"
+        v-if="!isMobile"
         :cancel-btn-width="'auto'"
         :save-btn-width="'auto'"
         :is-edit-mode-profile="isEditModeProfile"
@@ -131,7 +131,7 @@
           :is-edit-mode="isEditModeProfile"
         />
         <ButtonsBlock
-          v-if="windowWidth <= 768"
+          v-if="isMobile"
           :is-edit-mode-profile="isEditModeProfile"
           :edit-btn-width="'auto'"
           :cancel-btn-width="'auto'"
@@ -208,7 +208,7 @@ export default {
     
     const route = useRoute()
     const router = useRouter()
-    const { windowWidth, onResize } = useWindowWidth()
+    const { isMobile, onResize } = useWindowWidth()
 
     const userInfo = ref(null)
     const userRating = ref(null)
@@ -548,7 +548,7 @@ export default {
       myForm,
       userInfo,
       isLoading,
-      windowWidth,
+      isMobile,
       isTabLabel,
       switchTabLabel,
       restData,
