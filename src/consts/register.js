@@ -2174,11 +2174,11 @@ const lastAvailableYear = fullYear - 6;
 
 export default {
   days: new Array(31).fill('l').map((i, k) => ({
-    id: `${k > 9 ? k+1 : '0' + (k+1)}`,
+    id: `${k >= 8 ? k+1 : '0' + (k+1)}`,
     value: k + 1
   })),
   months: Array.from({ length: 12 }, (v,k) => ({
-    id: `${k > 9 ? k+1 : '0' + (k+1)}`,
+    id: `${k > 8 ? k+1 : '0' + (k+1)}`,
     value: monthNames[k]
   })),
   years: Array.from({ length: 80 }, (v,k) => ({
