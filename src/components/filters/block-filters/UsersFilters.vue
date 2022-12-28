@@ -109,8 +109,6 @@
 
 
   import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
-  import { useDevice } from 'next-vue-device-detector'
-  import { useI18n } from 'vue-i18n'
 
   import RangeFilter from '../../filters/components/RangeFilter.vue'
   import Dropdown from '../../forms/Dropdown.vue'
@@ -129,6 +127,8 @@
   import ArrowDownIcon from '../../../assets/img/arrow-down2.svg'
 
   import CONSTANTS from "../../../consts";
+
+  import useWindowWidth from '../../../utils/widthScreen'
 
   export default {
     name: "UsersFilters",
@@ -161,8 +161,7 @@
     },
     emits: ['update:value', 'clearFilters'],
     setup(props, {emit}) {
-      const { t } = useI18n()
-      const isMobile = useDevice().mobile
+      const { windowWidth, onResize } = useWindowWidth()
 
       const isModalFiltersActive = ref(false)
       const icons = computed(() => {
@@ -214,7 +213,7 @@
       } = TransformedFiltersWorker({
         props,
         emit,
-        isMobile,
+        windowWidth,
         setupTransformedCallback() {
           return {
             profile__gender: props.modelValue.profile__gender.value,
@@ -250,14 +249,16 @@
         }
       });
 
-      console.log(
+      onMounted(() => {
+        window.addEventListener('resize', onResize);
+      })
 
-      )
-
+      onBeforeUnmount(() => {
+        window.removeEventListener('resize', onResize); 
+      })
 
       function setModalFilters() {
-        updateRealData(
-        )
+        updateRealData()
       }
 
       return {

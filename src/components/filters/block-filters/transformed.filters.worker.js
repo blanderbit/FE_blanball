@@ -8,7 +8,7 @@ export const TransformedFiltersWorker = (config) => {
     ifSecondLineWasUsed,
     props,
     emit,
-    isMobile
+    windowWidth,
   } = config;
 
   if(!setupTransformedCallback || !updateRealDataFromTransformed || !props || !props?.modelValue|| !emit) {
@@ -37,7 +37,7 @@ export const TransformedFiltersWorker = (config) => {
       if (isEqual(a, b)) {
         return
       }
-      if (!isMobile) {
+      if (!windowWidth) {
         updateRealData()
       }
     },
