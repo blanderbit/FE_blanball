@@ -51,16 +51,17 @@
             name="address"
         ></InputComponent>
       </div>
-
+      <RegisterModalPositionMap v-if="windowWidth <= 768"></RegisterModalPositionMap>
     </template>
   </step-wrapper>
 </template>
 
 <script>
-  import { computed, ref } from 'vue'
+  import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 
   import Dropdown from '../forms/Dropdown.vue'
   import InputComponent from '../forms/InputComponent.vue'
+  import RegisterModalPositionMap from '../maps/RegisterModalPositionMap.vue'
   import tickIcon from '../../assets/img/tick-white.svg'
 
   import CONSTANTS from '../../consts/index'
@@ -68,13 +69,15 @@
   import { API } from "../../workers/api-worker/api.worker";
   import { useI18n } from 'vue-i18n'
   import StepWrapper from './StepWrapper.vue'
+  import { useDevice } from "next-vue-device-detector";
 
   export default {
     name: 'Step10',
     components: {
       Dropdown,
       InputComponent,
-      StepWrapper
+      StepWrapper,
+      RegisterModalPositionMap
     },
     setup() {
       const region = ref('');
@@ -82,6 +85,18 @@
       const address = ref('');
       const nextButton = ref(false);
       const loading = ref(true);
+      const windowWidth = ref(window.innerWidth)
+      function onResize() {
+        windowWidth.value = window.innerWidth
+      }
+      onMounted(() => {
+        window.addEventListener('resize', onResize);
+      })
+
+      onBeforeUnmount(() => {
+        window.removeEventListener('resize', onResize);
+      })
+
       const mockData = computed(() => {
         return {
           cities: CONSTANTS.register.jsonCityRegions.find(item => item.name.includes(region.value))?.cities || [],
@@ -101,14 +116,16 @@
       })
       PositionMapBus.on('update:coords', (e) => {
         region.value = e.place.state;
-        city.value = e.place.city || e.place.town|| e.place.village;
+        city.value = e.place.city || e.place.town || e.place.village;
         address.value = `${e.place.neighbourhood || ''} ${e.place.road || ''} ${e.place.house_number || ''} ${e.place.postcode || ''}`;
-        loading.value = false
+        debugger
+        loading.value = false;
         nextButton.value = !region.value || !city.value || !address.value
       })
       let timeout;
 
       const {t} = useI18n();
+      const device = useDevice();
       const stepConfig = computed(() => ({
         title: t('register.locations'),
         subTitle: t('register.which-areas'),
@@ -132,7 +149,7 @@
         nextButton.value = true;
         region.value = '';
         city.value = '';
-        address.value ='';
+        address.value = '';
       });
       PositionMapBus.on('map-loaded', () => {
         loading.value = false
@@ -146,6 +163,8 @@
         stepConfig,
         nextButton,
         loading,
+        device,
+        windowWidth,
         async changeRegions(e) {
           region.value = e;
           city.value = '';
@@ -153,10 +172,10 @@
           loading.value = true
           try {
             PositionMapBus.emit('update:map:by:coords', await getCoordsByName(region.value))
-            nextButton.value = true
+            nextButton.value = !region.value || !city.value || !address.value
 
           } catch (e) {
-            nextButton.value = false
+            nextButton.value = true
           }
           loading.value = false
 
@@ -168,10 +187,10 @@
           try {
             PositionMapBus.emit('update:map:by:coords', await getCoordsByName(`${region.value} ${city.value}`))
 
-            nextButton.value = true
+            nextButton.value = !region.value || !city.value || !address.value
 
           } catch (e) {
-            nextButton.value = false
+            nextButton.value = true
           }
           loading.value = false
         },
@@ -183,10 +202,10 @@
             try {
               PositionMapBus.emit('update:map:by:coords', await getCoordsByName(`${region.value} ${city.value} ${address.value}`))
 
-              nextButton.value = true
+              nextButton.value = !region.value || !city.value || !address.value
 
             } catch (e) {
-              nextButton.value = false
+              nextButton.value = true
             }
             loading.value = false
           }, 500)
@@ -199,94 +218,25 @@
 </script>
 
 <style lang="scss" scoped>
-  .b-register-step {
-    padding: 44px 24px 72px 24px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background: #ffffff;
-    border-radius: 28px 28px 0px 0px;
-    @media (max-width: 576px) {
-      padding: 44px 16px 72px 16px;
-    }
-    @media (min-width: 576px) {
-      border-radius: 8px;
-    }
-    .b-register-step__top-part {
-      .b-register-step__title {
-        font-family: 'Exo 2';
-        font-style: normal;
-        font-weight: 700;
-        font-size: 22px;
-        line-height: 32px;
-        color: #262541;
-        @media (max-width: 576px) {
-          text-align: center;
-        }
-      }
-      .b-register-step__progress-line {
-        margin-top: 16px;
-        margin-bottom: 28px;
-        .b-register-step__sections {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          @media (max-width: 576px) {
-            width: 266px;
-            margin: 0 auto;
-          }
-          .b-register-step__section {
-            width: 33%;
-            height: 4px;
-            background: #efeff6;
-            border-radius: 2px;
-            &.active {
-              background: #1ab2ad;
-            }
-          }
-        }
-      }
-      .b-register-step__subtitle {
-        font-family: 'Exo 2';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 20px;
-        color: #575775;
-        margin-bottom: 20px;
-      }
-      .b-register-step__small-title {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 14px;
-        line-height: 20px;
-        color: #262541;
-      }
-      .b-register-step__dropdown {
-        width: 384px;
-        margin-bottom: 15px;
-        @media (max-width: 992px) {
-          width: 100%;
-        }
-      }
-    }
 
-    .b-register-step__buttons {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      .b-register-step__back-btn {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 24px;
-        text-align: center;
-        color: #575775;
-        cursor: pointer;
-      }
+  .b-register-step__title {
+    font-family: 'Exo 2';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 32px;
+    color: #262541;
+    @media (max-width: 576px) {
+      text-align: center;
     }
   }
+
+  .b-register-step__dropdown {
+    width: 384px;
+    margin-bottom: 15px;
+    @media (max-width: 992px) {
+      width: 100%;
+    }
+  }
+
 </style>
