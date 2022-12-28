@@ -206,7 +206,6 @@
         paginationClearData
       } = PaginationWorker({
         paginationDataRequest: (page) => {
-          debugger
           return API.EventService.getAllEvents({
             ...getRawFilters(),
             page

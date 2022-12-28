@@ -489,7 +489,7 @@ export default {
           delete profileData.config_email
           delete profileData.config_phone
           delete profileData.show_reviews
-          debugger
+
           restData.value= {
             ...restData.value,
             "configuration": {

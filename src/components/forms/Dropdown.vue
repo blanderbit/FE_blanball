@@ -19,6 +19,18 @@
       @open="modelHandlers.blur()"
       v-model="dropdownModelValue"
     >
+      <template #option="{ value, iconSrc }">
+        <div class="b-dropdown__custom-option">
+          <img :src="iconSrc" alt="">
+          {{ value }}
+        </div>
+      </template>
+      <template #selected-option="{ value, iconSrc }">
+        <div class="b-dropdown__custom-option">
+          <img :src="iconSrc" alt="">
+          {{ value }}
+        </div>
+      </template>
     </v-select>
     <p class="b-input__error-message">{{ modelErrorMessage }}</p>
   </div>
@@ -249,9 +261,11 @@ export default {
     white-space: nowrap;
     display: inline-block;
     text-overflow: ellipsis;
-    margin: 9px 2px 0;
+    margin: 0;
   }
-
+  .vs--single.vs--open .vs__selected {
+    height: 100%;
+  }
   .vs--searchable.b-form-error {
     border-radius: 6px;
   }
@@ -293,7 +307,7 @@ export default {
   .b-dropdown {
     position: relative;
     height: 100%;
-    .b-dropdown__title {
+    &__title {
       position: absolute;
       font-family: 'Inter';
       font-style: normal;
@@ -306,6 +320,14 @@ export default {
       left: 8px;
       top: -8px;
       z-index: 1;
+    }
+    &__custom-option {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      img {
+        margin-right: 5px;
+      }
     }
   }
 

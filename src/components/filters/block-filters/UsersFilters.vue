@@ -106,7 +106,7 @@
 
 
   import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
-  // import DeviceDetector from "device-detector-js"
+  import { useDevice } from 'next-vue-device-detector'
 
   import RangeFilter from '../../filters/components/RangeFilter.vue'
   import Dropdown from '../../forms/Dropdown.vue'
@@ -121,6 +121,10 @@
   import ModalFilters from '../ModalFilters.vue'
 
   import SearchIcon from '../../../assets/img/search.svg'
+  import MaleIcon from '../../../assets/img/female-icon.svg'
+  import FemaleIcon from '../../../assets/img/male-icon.svg'
+  import UnisexIcon from '../../../assets/img/unisex.svg'
+
 
   import CONSTANTS from "../../../consts";
 
@@ -155,18 +159,15 @@
     },
     emits: ['update:value', 'clearFilters'],
     setup(props, {emit}) {
-      // const deviceDetector = new DeviceDetector();
-      // const userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36";
-      // const device = deviceDetector.parse(userAgent);
+      const isMobile = useDevice().mobile
 
-      // console.log(device);
-
-      const sendDataFromModal = ref(false)
-      const windowWidth = ref(window.innerWidth)
       const isModalFiltersActive = ref(false)
       const icons = computed(() => {
         return {
-          search: SearchIcon
+          search: SearchIcon,
+          female: FemaleIcon,
+          male: MaleIcon,
+          unisex: UnisexIcon
         }
       })
       const positions = computed(() => CONSTANTS.profile.position);
@@ -179,15 +180,24 @@
         {value: '-raiting'},
       ]);
       const gender = computed(() => [
-        {value: 'Man'},
-        {value: 'Woman'}
+        {
+          value: 'Woman',
+          iconSrc: icons.value.female
+        },
+        {
+          value: 'Man',
+          iconSrc: icons.value.male
+        },
+        {
+          value: 'All',
+          iconSrc: icons.value.unisex
+        }
       ]);
 
-      const { activeFilters, transformedFilters } = TransformedFiltersWorker({
+      const { activeFilters, transformedFilters, updateRealData } = TransformedFiltersWorker({
         props,
         emit,
-        windowWidth,
-        sendDataFromModal,
+        isMobile,
         setupTransformedCallback() {
           return {
             profile__gender: props.modelValue.profile__gender.value,
@@ -220,20 +230,11 @@
         }
       });
 
-      function onResize() {
-        windowWidth.value = window.innerWidth
-      }
+
       function setModalFilters() {
-        sendDataFromModal.value = true
+        updateRealData(
+        )
       }
-
-      onMounted(() => {
-        window.addEventListener('resize', onResize);
-      })
-
-      onBeforeUnmount(() => {
-        window.removeEventListener('resize', onResize); 
-      })
 
       return {
         setModalFilters,
