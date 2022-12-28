@@ -55,7 +55,7 @@
       </div>
       <div
           class="b-auth__right-part"
-          v-if="currentStep === 10"
+          v-if="currentStep === 10 && windowWidth > 768"
           style="height: 600px"
       >
         <position-map></position-map>
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-  import { computed } from 'vue'
+  import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
   import PositionMap from './maps/PositionMap.vue'
   import CONSTANTS from '../consts/index'
 
@@ -105,8 +105,20 @@
         }
       })
 
+      const windowWidth = ref(window.innerWidth)
+      function onResize() {
+        windowWidth.value = window.innerWidth
+      }
+      onMounted(() => {
+        window.addEventListener('resize', onResize);
+      })
+
+      onBeforeUnmount(() => {
+        window.removeEventListener('resize', onResize);
+      })
       return {
-        mockData
+        mockData,
+        windowWidth
       }
     },
   }
