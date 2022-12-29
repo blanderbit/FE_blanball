@@ -67,6 +67,10 @@ export default {
   'invited-people': 'Люди, яких ви запросили',
   'delete-all': 'Видалити всіх',
   'template-managing': 'Управління шаблонами',
+  'planned': 'Запланованi',
+  'active': 'Активнi',
+  'finished': 'Завершенi',
+  'select-position': 'Оберiть локацiю',
   months: {
     'January':	'Січень',
     'February':	'Лютий',

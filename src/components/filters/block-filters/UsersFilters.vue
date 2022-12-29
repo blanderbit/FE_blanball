@@ -16,6 +16,7 @@
               :check-value-immediate="true"
               :options="ordering"
               :placeholder="$t('users.sorting')"
+              :height="32"
               display-name="name"
               display-value="value"
               v-model="transformedFilters.ordering"
@@ -28,6 +29,7 @@
               :check-value-immediate="true"
               :options="positions"
               :placeholder="$t('users.position')"
+              :height="32"
               display-name="name"
               display-value="value"
               v-model="transformedFilters.profile__position"
@@ -40,6 +42,7 @@
               :check-value-immediate="true"
               :options="gender"
               :placeholder="$t('users.gender')"
+              :height="32"
               display-name="name"
               display-value="value"
               v-model="transformedFilters.profile__gender"
@@ -52,6 +55,7 @@
           <div class="b-users-filters__input">
             <input-component
               :placeholder="$t('users.users-search')"
+              :height="32"
               :title-width="0"
               :icon="icons.search"
               v-model="transformedFilters.search"

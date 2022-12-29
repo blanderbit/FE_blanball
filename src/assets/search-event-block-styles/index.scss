@@ -15,6 +15,18 @@
       .b-main-search__left-block {
         display: flex;
         align-items: center;
+        .b-main-search__soring-button {
+          display: flex;
+          align-items: center;
+          margin-right: 20px;
+          cursor: pointer;
+          img {
+            display: block;
+            width: 15px;
+            height: 15px;
+            margin-right: 6px;
+          }
+        }
         .b-main-search__old-new-filter {
           display: flex;
           align-items: center;
@@ -29,17 +41,18 @@
             margin-right: 6px;
           }
         }
-        .b-main-search__dropdown-wrapper-game {
-          margin-right: 4px;
-          width: 140px;
-        }
         .b-main-search__dropdown-wrapper-tournament {
+          margin-right: 4px;
           width: 160px;
+        }
+        .b-main-search__dropdown-wrapper-gender {
+          margin-right: 4px;
+          width: 132px;
         }
       }
       .b-main-search__right-block {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         .b-main-search__search-input-desktop {
           width: 220px;
           height: 32px;
@@ -77,10 +90,6 @@
       .b-main-search__left-side {
         display: flex;
         align-items: center;
-        .b-main-search__dropdown-wrapper-gender {
-          margin-right: 4px;
-          width: 132px;
-        }
         .b-main-search__dropdown-wrapper-cities {
           margin-right: 4px;
           width: 180px;
@@ -193,45 +202,6 @@
                 }
               }
             }
-          }
-        }
-      }
-      .b-main-search__right-side {
-        .b-main-search__free-pay-games {
-          display: flex;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 13px;
-          line-height: 20px;
-          text-align: center;
-          padding: 4px;
-          width: 186px;
-          height: 32px;
-          border: 1px solid #F0F0F4;
-          border-radius: 6px;
-          position: relative;
-          .b-main-search__grey-block {
-            position: absolute;
-            top: 4px;
-            background: #EFEFF6;
-            border-radius: 4px;
-            height: 23px;
-            width: 88px;
-            z-index: -1;
-            &.right {
-              transition: all 0.6s ease;
-              right: 4px;      
-            }
-            &.left {
-              transition: all 0.6s ease;
-              left: 4px;
-            }
-          }
-          .b-main-search__all, .b-main-search__free {
-            flex-basis: 50%;
-            user-select: none;
-            cursor: pointer;
           }
         }
       }

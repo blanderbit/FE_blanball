@@ -39,7 +39,7 @@ export const TransformedFiltersWorker = (config) => {
       if (a.ordering !== b.ordering) {
         updateRealData()
       }
-      if (!isMobile.value) {
+      if (!isMobile?.value) {
         updateRealData()
       }
     },

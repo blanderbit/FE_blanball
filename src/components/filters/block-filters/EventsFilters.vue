@@ -8,37 +8,45 @@
               <!--<img src="../../../assets/img/sort-arrows.svg" alt="" />-->
               <!--{{$t('events.new-first')}}-->
             <!--</div>-->
-            <div class="b-main-search__dropdown-wrapper-game">
-              <Dropdown
-                  :main-title="$t('events.gender')"
-                  :placeholder="$t('events.gender')"
-                  :options="gender"
-                  :height="36"
-                  display-value="value"
-                  display-name="name"
-                  v-model="transformedFilters.gender"
-              />
+            <div 
+              class="b-main-search__soring-button"
+              @click="sortingButtonClick"
+            >
+              <img :src="sortingBtnData.icon" alt="">
+              <span>
+                {{ sortingBtnData.title }}
+              </span>
             </div>
             <div class="b-main-search__dropdown-wrapper-tournament">
               <Dropdown
-                  :main-title="$t('events.game-type')"
                   :placeholder="$t('events.game-type')"
                   :options="sportTypeDropdown"
-                  :height="36"
+                  :height="32"
                   display-value="value"
                   display-name="name"
                   v-model="transformedFilters.type"
+              />
+            </div>
+            <div class="b-main-search__dropdown-wrapper-gender">
+              <Dropdown
+                  :placeholder="$t('events.gender')"
+                  :options="gender"
+                  :height="32"
+                  display-value="value"
+                  display-name="name"
+                  v-model="transformedFilters.gender"
               />
             </div>
           </div>
           <div class="b-main-search__right-block">
             <div class="b-main-search__search-input-desktop">
               <InputComponent
-                  :title-width="0"
-                  :placeholder="$t('events.search-events')"
-                  :icon="searchIcon"
-                  name="search"
-                  v-model="transformedFilters.search"
+                :title-width="0"
+                :placeholder="$t('events.search-events')"
+                :height="32"
+                :icon="icons.search"
+                name="search"
+                v-model="transformedFilters.search"
               />
             </div>
             <div class="b-main-search__search-input-tablet">
@@ -50,17 +58,6 @@
         </div>
         <div class="b-main-search__second-line" v-if="activeFilters">
           <div class="b-main-search__left-side">
-            <div class="b-main-search__dropdown-wrapper-gender">
-              <Dropdown
-                  :options="ordering"
-                  display-value="value"
-                  v-model="transformedFilters.ordering"
-              >
-                <template #drop-icon>
-                  <img src="../../../assets/img/male-icon.svg" alt="" />
-                </template>
-              </Dropdown>
-            </div>
             <div class="b-main-search__calendar">
               <img src="../../../assets/img/calendar.svg" alt="" />
               <v-date-picker 
@@ -104,12 +101,17 @@
             </div>
             <div class="b-main-search__dropdown-wrapper-cities">
               <Dropdown
-                  :options="statusDropdown"
-                  display-value="value"
-                  v-model="transformedFilters.status"
+                :options="statusDropdown"
+                :placeholder="'Статус події'"
+                :height="32"
+                display-value="value"
+                display-name="name"
+                v-model="transformedFilters.status"
               >
               </Dropdown>
             </div>
+          </div>
+          <div class="b-main-search__right-side">
             <ModalPositionMap v-model="transformedFilters.location"></ModalPositionMap>
           </div>
         </div>
@@ -171,7 +173,8 @@
 <script>
 
 
-  import { computed, reactive, watch, ref } from 'vue'
+  import { computed, reactive, watch, ref, onMounted, onBeforeUnmount } from 'vue'
+
   import Dropdown from '../../forms/Dropdown.vue'
   import FilterBlock from '../FilterBlock.vue'
   import InputComponent from '../../forms/InputComponent.vue'
@@ -182,12 +185,14 @@
   import {cloneDeep, isEqual} from 'lodash'
   import { TransformedFiltersWorker } from "./transformed.filters.worker";
   import CONSTANTS from "../../../consts";
-  import dayjs from 'dayjs'
-  import dayjsUkrLocale from 'dayjs/locale/uk'
+  import useWindowWidth from '../../../utils/widthScreen'
 
   import MaleIcon from '../../../assets/img/female-icon.svg'
   import FemaleIcon from '../../../assets/img/male-icon.svg'
   import UnisexIcon from '../../../assets/img/unisex.svg'
+  import SearchIcon from '../../../assets/img/search.svg'
+  import arrowsUpIcon from '../../../assets/img/sort-arrows.svg'
+  import arrowsDownIcon from '../../../assets/img/sort-arrows-down.svg'
 
   export default {
     name: "UsersFilters",
@@ -220,22 +225,31 @@
     },
     emits: ['update:value', 'clearFilters'],
     setup(props, {emit}) {
+      const { isMobile, onResize } = useWindowWidth()
       const icons = computed(() => {
         return {
           female: FemaleIcon,
           male: MaleIcon,
-          unisex: UnisexIcon
+          unisex: UnisexIcon,
+          search: SearchIcon,
+          arrowUp: arrowsUpIcon,
+          arrowDown: arrowsDownIcon
         }
       })
       const ordering = computed(() => [
         {value: 'id'},
         {value: '-id'},
       ]);
+      const sortingBtnData = computed(() => {
+        return transformedFilters.value.ordering === ordering.value[0].value ?
+                {title: 'А-Я', icon: arrowsUpIcon} : {title: 'Я-А', icon: arrowsDownIcon}
+      })
       const gender = computed(() => CONSTANTS.users_page.gender);
 
       const { activeFilters, transformedFilters } = TransformedFiltersWorker({
         props,
         emit,
+        isMobile,
         setupTransformedCallback() {
           const [lng, lat] = props.modelValue?.point?.value?.split?.(',') || [];
           return {
@@ -279,9 +293,18 @@
       const sportTypeDropdown = CONSTANTS.event_page.sport_type_dropdown;
       const genderDropdown = CONSTANTS.event_page.gender_dropdown;
       const statusDropdown = [
-        {value: 'Planned'},
-        {value: 'Active'},
-        {value: 'Finished'}
+        {
+          value: 'Planned',
+          name: 'Запланованi'
+        },
+        {
+          value: 'Active',
+          name: 'Активнi'
+        },
+        {
+          value: 'Finished',
+          name: 'Завершенi'
+        }
       ];
 
       const  calendar = ref( {
@@ -291,7 +314,21 @@
           mask: 'YYYY-MM-DD', // Uses 'iso' if missing
         },
       })
+
+      onMounted(() => {
+        window.addEventListener('resize', onResize);
+      })
+
+      onBeforeUnmount(() => {
+        window.removeEventListener('resize', onResize); 
+      })
+
+      function sortingButtonClick() {
+        transformedFilters.value.ordering = transformedFilters.value.ordering === 'id' ? '-id' : 'id'
+      }
+
       return {
+        sortingButtonClick,
         ordering,
         gender,
         activeFilters,
@@ -299,7 +336,9 @@
         sportTypeDropdown,
         genderDropdown,
         statusDropdown,
-        calendar
+        calendar,
+        icons,
+        sortingBtnData
       }
     }
   }
