@@ -36,23 +36,25 @@
         <slot name="main-content"></slot>
       </div>
 
-      <div
+      <Transition>
+        <div
           class="b-auth__right-part"
           :style="rightSideStyle"
           v-show="currentStep !== 10"
-      >
-        <div class="b-auth__google-play-block">
-          <img
+        >
+          <div class="b-auth__google-play-block">
+            <img
               src="../assets/img/google-play.svg"
               alt=""
-          />
-          <span>
-            {{ $t('register.load-app') }}
-          </span>
+            />
+            <span>
+              {{ $t('register.load-app') }}
+            </span>
+          </div>
+          <!--<template v-else>-->
+          <!--</template>-->
         </div>
-        <!--<template v-else>-->
-        <!--</template>-->
-      </div>
+      </Transition>
       <div
           class="b-auth__right-part"
           v-if="currentStep === 10 && windowWidth > 768"
@@ -125,6 +127,15 @@
 </script>
 
 <style lang="scss" scoped>
+  .v-enter-active,
+  .v-leave-active {
+    transition: opacity 0.8s ease;
+  }
+
+  .v-enter,
+  .v-leave-to {
+    opacity: 0;
+  }
   .b-auth {
     position: relative;
     height: 100vh;

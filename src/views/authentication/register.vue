@@ -117,6 +117,9 @@
   import imageStep_2 from '../../assets/img/registration-back-2.svg'
   import imageStep_3 from '../../assets/img/registration-back-3.svg'
   import imageStep_4 from '../../assets/img/registration-back-4.svg'
+  import onboardingStep_2 from '../../assets/img/onboarding-step-2.svg'
+  import onboardingStep_3 from '../../assets/img/onboarding-step-3.svg'
+  import onboardingStep_4 from '../../assets/img/onboarding-step-4.svg'
 
   import imageStepTab_1 from '../../assets/img/registration-back-tab1.svg'
   import imageStepTab_2 from '../../assets/img/registration-back-tab2.svg'
@@ -127,6 +130,10 @@
   import imageStepMob_2 from '../../assets/img/registration-back-mob2.svg'
   import imageStepMob_3 from '../../assets/img/registration-back-mob3.svg'
   import imageStepMob_4 from '../../assets/img/registration-back-mob4.svg'
+  import onboardingStepMob_2 from '../../assets/img/onboarding-step-mob2.svg'
+  import onboardingStepMob_3 from '../../assets/img/onboarding-step-mob3.svg'
+  import onboardingStepMob_4 from '../../assets/img/onboarding-step-mob4.svg'
+
   import * as yup from "yup";
   import { API } from "../../workers/api-worker/api.worker";
   import { TokenWorker } from "../../workers/token-worker";
@@ -220,6 +227,15 @@ const reg = /^[a-zа-яё\d]{1}[a-zа-яё\d-]*[a-zа-яё\d]{1}$/i;
       });
       const rightSideStyle = computed(() => {
         switch (currentStep.value) {
+          case 4: 
+            return {'--back-picture': `url(${onboardingStep_2})`}; 
+            break;
+          case 5: 
+            return {'--back-picture': `url(${onboardingStep_3})`}; 
+            break;
+          case 6: 
+            return {'--back-picture': `url(${onboardingStep_4})`}; 
+            break;
           case 8:
             return {'--back-picture': `url(${imageStep_2})`};
             break;
@@ -235,6 +251,15 @@ const reg = /^[a-zа-яё\d]{1}[a-zа-яё\d-]*[a-zа-яё\d]{1}$/i;
       })
       const backgroundTab = computed(() => {
         switch (currentStep.value) {
+          case 4: 
+            return onboardingStep_2
+            break;
+          case 5: 
+            return onboardingStep_3
+            break;
+          case 6: 
+            return onboardingStep_4
+            break;
           case 8:
             return imageStepTab_2
             break;
@@ -250,6 +275,15 @@ const reg = /^[a-zа-яё\d]{1}[a-zа-яё\d-]*[a-zа-яё\d]{1}$/i;
       })
       const backgroundMob = computed(() => {
         switch (currentStep.value) {
+          case 4: 
+            return onboardingStepMob_2
+            break;
+          case 5: 
+            return onboardingStepMob_3
+            break;
+          case 6: 
+            return onboardingStepMob_4
+            break;
           case 8:
             return imageStepMob_2
             break;
