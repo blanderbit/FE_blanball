@@ -1,5 +1,15 @@
 <template>
   <filter-block>
+    <ModalFilters 
+      v-if="isModalFiltersActive"
+      v-model:dropdown-game-type="transformedFilters.type"
+      v-model:gender="transformedFilters.gender"
+      v-model:status="transformedFilters.status"
+      v-model:location="transformedFilters.location"
+      @close-modal="isModalFiltersActive = false"
+      @set-modal-window-filters="setModalFilters"
+      @clearFilters="$emit('clearFilters')"
+    />
     <div class="b-main-search__wrapper">
       <div class="b-main-search__search-block">
         <div class="b-main-search__first-line">
@@ -19,16 +29,18 @@
             </div>
             <div class="b-main-search__dropdown-wrapper-tournament">
               <Dropdown
-                  :placeholder="$t('events.game-type')"
-                  :options="sportTypeDropdown"
-                  :height="32"
-                  display-value="value"
-                  display-name="name"
-                  v-model="transformedFilters.type"
+                :check-value-immediate="true"
+                :placeholder="$t('events.game-type')"
+                :options="sportTypeDropdown"
+                :height="32"
+                display-value="value"
+                display-name="name"
+                v-model="transformedFilters.type"
               />
             </div>
             <div class="b-main-search__dropdown-wrapper-gender">
               <Dropdown
+                  :check-value-immediate="true"
                   :placeholder="$t('events.gender')"
                   :options="gender"
                   :height="32"
@@ -66,34 +78,34 @@
                 v-model="transformedFilters.date_and_time" 
                 is-range
               >
-                <template v-slot="{ inputValue, inputEvents }">
+                <template v-slot="options">
                   <div class="flex justify-center items-center">
                     <input
-                        :value="inputValue.start"
-                        v-on="inputEvents.start"
+                        :value="options.inputValue.start"
+                        v-on="options.inputEvents.start"
                         class="
-                      input-left
-                      border
-                      px-2
-                      py-1
-                      w-32
-                      rounded
-                      focus:outline-none focus:border-indigo-300
-                    "
+                          input-left
+                          border
+                          px-2
+                          py-1
+                          w-32
+                          rounded
+                          focus:outline-none focus:border-indigo-300
+                        "
                     />
                     -
                     <input
-                        :value="inputValue.end"
-                        v-on="inputEvents.end"
+                        :value="options.inputValue.end"
+                        v-on="options.inputEvents.end"
                         class="
-                      input-right
-                      border
-                      px-2
-                      py-1
-                      w-32
-                      rounded
-                      focus:outline-none focus:border-indigo-300
-                    "
+                          input-right
+                          border
+                          px-2
+                          py-1
+                          w-32
+                          rounded
+                          focus:outline-none focus:border-indigo-300
+                        "
                     />
                   </div>
                 </template>
@@ -101,14 +113,14 @@
             </div>
             <div class="b-main-search__dropdown-wrapper-cities">
               <Dropdown
+                :check-value-immediate="true"
                 :options="statusDropdown"
                 :placeholder="'Статус події'"
                 :height="32"
                 display-value="value"
                 display-name="name"
                 v-model="transformedFilters.status"
-              >
-              </Dropdown>
+              />
             </div>
           </div>
           <div class="b-main-search__right-side">
@@ -117,50 +129,35 @@
         </div>
       </div>
       <div class="b-main-search__search-block-mob">
-        <div class="b-main-search__filters-block">
-          <div class="b-main-search__sorting-block sort-item">
-            <div class="b-main-search__icon">
-              <img src="../../../assets/img/sort-arrows.svg" alt="" />
-            </div>
-            <div class="b-main-search__text">
-              <div class="b-main-search__title">{{ $t('events.sorting') }}</div>
-              <div class="b-main-search__terms">{{ $t('events.first-new') }}</div>
-            </div>
-          </div>
-          <div class="b-main-search__filtering-block sort-item">
-            <div class="b-main-search__icon">
-              <img src="../../../assets/img/set-filter.svg" alt="" />
-            </div>
-            <div class="b-main-search__text">
-              <div class="b-main-search__title">{{ $t('events.filters') }}</div>
-              <div class="b-main-search__terms">
-                {{ $t('events.found') }} 15 {{ $t('events.advertisments') }}
-              </div>
+        <div class="b-main-search__filters-block d-flex justify-content-between">
+          <div class="b-main-search__left-part">
+            <div 
+              class="b-main-search__soring-button"
+              @click="sortingButtonClick"
+            >
+              <img :src="sortingBtnData.icon" alt="">
+              <span>
+                {{ sortingBtnData.title }}
+              </span>
             </div>
           </div>
-          <div class="b-main-search__calendar-block sort-item">
-            <div class="b-main-search__icon">
-              <img src="../../../assets/img/calendar.svg" alt="" />
+          <div class="b-main-search__right-part d-flex">
+            <div class="b-main-search__search-input me-2">
+              <InputComponent
+                :title-width="0"
+                :placeholder="$t('events.search-events')"
+                :height="32"
+                :icon="icons.search"
+                name="search"
+                v-model="transformedFilters.search"
+              />
             </div>
-            <div class="b-main-search__text">
-              <div class="b-main-search__title">
-                {{ $t('events.chose-date') }}
-              </div>
-              <div class="b-main-search__terms">19, 23 черв. 2022</div>
-            </div>
-          </div>
-        </div>
-        <div class="b-main-search__dates-block">
-          <div class="b-main-search__months">
-            <div class="b-main-search__wrapper">
-              <div class="b-main-search__arrow arrow-left">
-                <img src="../../../assets/img/arrow-left.svg" alt="" />
-              </div>
-              <div class="b-main-search__main-part">
-                {{ $t('events.months.June') }} 2022
-              </div>
-              <div class="b-main-search__arrow arrow-right">
-                <img src="../../../assets/img/arrow-right.svg" alt="" />
+            <div 
+              class="b-main-search__filtering-block sort-item d-flex align-items-center"
+              @click="isModalFiltersActive = true"
+            >
+              <div class="b-main-search__icon">
+                <img src="../../../assets/img/set-filter.svg" alt="" />
               </div>
             </div>
           </div>
@@ -186,6 +183,7 @@
   import { TransformedFiltersWorker } from "./transformed.filters.worker";
   import CONSTANTS from "../../../consts";
   import useWindowWidth from '../../../utils/widthScreen'
+  import ModalFilters from '../ModalEventsFilters.vue'
 
   import MaleIcon from '../../../assets/img/female-icon.svg'
   import FemaleIcon from '../../../assets/img/male-icon.svg'
@@ -195,7 +193,7 @@
   import arrowsDownIcon from '../../../assets/img/sort-arrows-down.svg'
 
   export default {
-    name: "UsersFilters",
+    name: "EventsFilters",
     components: {
       Dropdown,
       InputComponent,
@@ -203,7 +201,8 @@
       ButtonDetailsFilters,
       ClearFilters,
       ModalPositionMap,
-      FilterBlock
+      FilterBlock,
+      ModalFilters
     },
     props: {
       modelValue: {
@@ -225,6 +224,10 @@
     },
     emits: ['update:value', 'clearFilters'],
     setup(props, {emit}) {
+      const data = new Date()
+      const modalSearchWindowWidth = ref(65)
+      const isModalFiltersActive = ref(false)
+      const todaysDate = `${data.getFullYear()}-${data.getMonth() + 1}-${data.getDate()}`
       const { isMobile, onResize } = useWindowWidth()
       const icons = computed(() => {
         return {
@@ -246,7 +249,11 @@
       })
       const gender = computed(() => CONSTANTS.users_page.gender);
 
-      const { activeFilters, transformedFilters } = TransformedFiltersWorker({
+      const { 
+        activeFilters, 
+        updateRealData, 
+        transformedFilters 
+      } = TransformedFiltersWorker({
         props,
         emit,
         isMobile,
@@ -287,25 +294,20 @@
             point: transformedFilters.location.lng && transformedFilters.location.lat ? `${transformedFilters.location.lng},${transformedFilters.location.lat}` : null,
             place: transformedFilters.location.place
           }
+        },
+        ifSecondLineWasUsed() {
+          return !!(
+            props.modelValue.date_and_time_after.value !== todaysDate ||
+            props.modelValue.date_and_time_before.value !== todaysDate ||
+            props.modelValue.status.value ||
+            props.modelValue.place.value
+          )
         }
       });
 
       const sportTypeDropdown = CONSTANTS.event_page.sport_type_dropdown;
       const genderDropdown = CONSTANTS.event_page.gender_dropdown;
-      const statusDropdown = [
-        {
-          value: 'Planned',
-          name: 'Запланованi'
-        },
-        {
-          value: 'Active',
-          name: 'Активнi'
-        },
-        {
-          value: 'Finished',
-          name: 'Завершенi'
-        }
-      ];
+      const statusDropdown = CONSTANTS.event_page.status_ropdown;
 
       const  calendar = ref( {
         inputMask: 'YYYY-MM-DD',
@@ -326,9 +328,13 @@
       function sortingButtonClick() {
         transformedFilters.value.ordering = transformedFilters.value.ordering === 'id' ? '-id' : 'id'
       }
+      function setModalFilters() {
+        updateRealData()
+      }
 
       return {
         sortingButtonClick,
+        setModalFilters,
         ordering,
         gender,
         activeFilters,
@@ -338,7 +344,8 @@
         statusDropdown,
         calendar,
         icons,
-        sortingBtnData
+        sortingBtnData,
+        isModalFiltersActive
       }
     }
   }

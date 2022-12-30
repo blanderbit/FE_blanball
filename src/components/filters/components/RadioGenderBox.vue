@@ -50,6 +50,9 @@ export default {
   setup(props, {emit}) {
     const genderRadio = ref(props.gender)
 
+    watch(() => props.gender, (newData) => {
+      genderRadio.value = newData
+    })
     watch(() => genderRadio.value, () => {
       emit('update:gender', genderRadio.value)
     })

@@ -7,6 +7,7 @@
       v-model:gender="transformedFilters.profile__gender"
       @close-modal="isModalFiltersActive = false"
       @set-modal-window-filters="setModalFilters"
+      @clearFilters="$emit('clearFilters')"
     />
     <div class="b-users-filters">
       <div class="b-users-filters__first-line">
@@ -129,7 +130,7 @@
   import ModalPositionMap from '../../maps/ModalPositionMap.vue'
   import {cloneDeep, isEqual} from 'lodash'
   import { TransformedFiltersWorker } from "./transformed.filters.worker"
-  import ModalFilters from '../ModalFilters.vue'
+  import ModalFilters from '../ModalUsersFilters.vue'
 
   import SearchIcon from '../../../assets/img/search.svg'
   import ArrowTopIcon from '../../../assets/img/arrow-top.svg'
@@ -259,10 +260,17 @@
           }
         },
         ifSecondLineWasUsed() {
-          return !(
-            props.modelValue.profile__age_min.value === props.modelValue.profile__age_min.default &&
-            props.modelValue.profile__age_max.value === props.modelValue.profile__age_max.default
-          )
+          if (
+            props.modelValue.profile__age_min.value ||
+            props.modelValue.profile__age_max.value
+          ) {
+            return !(
+              props.modelValue.profile__age_min.value === props.modelValue.profile__age_min.default &&
+              props.modelValue.profile__age_max.value === props.modelValue.profile__age_max.default
+            )
+          } else {
+            return false
+          }
         }
       });
 

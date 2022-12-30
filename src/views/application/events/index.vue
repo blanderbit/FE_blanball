@@ -129,6 +129,8 @@
       EventsFilters
     },
     setup() {
+      const data = new Date()
+      const todaysDate = `${data.getFullYear()}-${data.getMonth() + 1}-${data.getDate()}`
       const scrollComponent = ref(null);
       const route = useRoute();
       const router = useRouter();
@@ -242,9 +244,13 @@
           },
           date_and_time_after: {
             type: String,
+            value: todaysDate,
+            default: todaysDate
           },
           date_and_time_before: {
             type: String,
+            value: todaysDate,
+            default: todaysDate
           },
           ordering: {
             type: String,

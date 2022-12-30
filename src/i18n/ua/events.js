@@ -71,6 +71,7 @@ export default {
   'active': 'Активнi',
   'finished': 'Завершенi',
   'select-position': 'Оберiть локацiю',
+  'event-status': 'Статус події',
   months: {
     'January':	'Січень',
     'February':	'Лютий',

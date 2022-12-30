@@ -23,7 +23,7 @@ const filterParseFromUrl = (config, query) => {
   Object
     .keys(config)
     .forEach(key => {
-      if (config[key]) {
+      if (config[key] && query[key]) {
         config[key].value = query[key]
       }
     });

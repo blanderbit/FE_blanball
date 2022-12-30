@@ -108,7 +108,7 @@ export default {
     {
       value: 'Woman',
       iconSrc: FemaleIcon,
-      name: 'Всі'
+      name: 'Жінки'
     },
     {
       value: 'Man',
@@ -118,7 +118,7 @@ export default {
     {
       value: 'All',
       iconSrc: UnisexIcon,
-      name: 'Жінки'
+      name: 'Всі'
     }
   ]
 }

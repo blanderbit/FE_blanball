@@ -262,7 +262,7 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     img {
       margin-right: 10px;
     }

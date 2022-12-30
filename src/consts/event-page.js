@@ -199,5 +199,19 @@ export default {
       text: 'Закріпити',
       img: pin
     }
+  ],
+  status_ropdown: [
+    {
+      value: 'Planned',
+      name: 'Запланованi'
+    },
+    {
+      value: 'Active',
+      name: 'Активнi'
+    },
+    {
+      value: 'Finished',
+      name: 'Завершенi'
+    }
   ]
 }

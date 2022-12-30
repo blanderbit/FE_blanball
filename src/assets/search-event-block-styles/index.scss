@@ -4,6 +4,18 @@
   @media (max-width: 992px) {
     padding: 0;
   }
+  .b-main-search__soring-button {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    cursor: pointer;
+    img {
+      display: block;
+      width: 15px;
+      height: 15px;
+      margin-right: 6px;
+    }
+  }
   .b-main-search__search-block {
     @media (max-width: 992px) {
       display: none;
@@ -15,18 +27,6 @@
       .b-main-search__left-block {
         display: flex;
         align-items: center;
-        .b-main-search__soring-button {
-          display: flex;
-          align-items: center;
-          margin-right: 20px;
-          cursor: pointer;
-          img {
-            display: block;
-            width: 15px;
-            height: 15px;
-            margin-right: 6px;
-          }
-        }
         .b-main-search__old-new-filter {
           display: flex;
           align-items: center;
@@ -215,6 +215,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      .b-main-search__sorting-block
       .b-main-search__icon {
         display: flex;
         width: 36px;
@@ -260,128 +261,6 @@
         }
         .b-main-search__icon {
           margin-right: 4px;
-        }
-      }
-      .b-main-search__calendar-block {
-        .b-main-search__icon {
-          width: 32px;
-          min-width: 32px;
-          height: 32px;
-          @media (min-width: 768px) {
-            width: 36px;
-            min-width: 36px;
-            height: 36px;
-            background: #EFEFF6;
-          }
-        }
-        .b-main-search__text {
-          @media (max-width: 768px) {
-            display: none;
-          }
-        }
-      }
-    }
-    .b-main-search__dates-block {
-      .b-main-search__months {
-        .b-main-search__wrapper {
-          display: flex;
-          justify-content: flex-end;
-          align-items: center;
-          margin-top: 8px;
-          .b-main-search__arrow {
-            display: flex;
-            width: 24px;
-            height: 24px;
-            background: #FAFAFA;
-            border-radius: 6px;
-            img {
-              margin: auto;
-            }
-          }
-          .b-main-search__main-part {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 500;
-            font-size: 14px;
-            line-height: 24px;
-            text-align: center;
-            color: #262541;
-            margin: 0 16px;
-          }
-        }
-      }
-      .b-main-search__dates-wrapper {
-        position: relative;
-        height: 60px;
-        overflow: hidden;
-        .b-main-search__dates {
-          position: absolute;
-          top: 0;
-          left: 0;
-          margin-top: 8px;
-          display: flex;
-          align-items: flex-start;
-          .b-main-search__week {
-            display: flex;
-            align-items: flex-start;
-            position: relative;
-            margin: 0 12px;
-            &:after {
-              content: '';
-              display: block;
-              width: 1px;
-              height: 12px;
-              background: #000;
-              position: absolute;
-              right: -12px;
-              top: 50%;
-              margin-top: -6px;
-            }
-            .b-main-search__date-item {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              justify-content: center;
-              width: 36px;
-              min-width: 3px;
-              height: 51px;
-              border-radius: 4px 4px 0px 0px;
-              margin-right: 6px;
-              &:last-child {
-                margin: 0;
-              }
-              &.b-main-search__active {
-                background: #FFDAEA;
-                border-bottom: 2px solid #C3305C;
-                .b-main-search__day {
-                  color: #C3305C;
-                }
-                .b-main-search__number {
-                  font-weight: 500;
-                  color: #C3305C;
-                }
-              }
-              .b-main-search__day {
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 400;
-                font-size: 12px;
-                line-height: 16px;
-                text-align: center;
-                color: #575775;
-              }
-              .b-main-search__number {
-                margin-top: 2px;
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 400;
-                font-size: 13px;
-                line-height: 20px;
-                text-align: center;
-                color: #262541;
-              }
-            }
-          }
         }
       }
     }
