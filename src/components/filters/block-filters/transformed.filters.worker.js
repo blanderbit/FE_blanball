@@ -23,6 +23,7 @@ export const TransformedFiltersWorker = (config) => {
     () => props.modelValue,
     () => {
       console.log('props.modelValue')
+      debugger
       transformedFilters.value = setupTransformedCallback(activeFilters)
     },
     {
@@ -35,6 +36,7 @@ export const TransformedFiltersWorker = (config) => {
     () => cloneDeep(transformedFilters.value),
     (a, b) => {
       console.log('transformedFilters.value', typeof a.search)
+      debugger
       if (isEqual(a, b)) {
         return
       }

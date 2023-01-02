@@ -258,6 +258,7 @@
         emit,
         isMobile,
         setupTransformedCallback() {
+          debugger
           const [lng, lat] = props.modelValue?.point?.value?.split?.(',') || [];
           return {
             gender: props.modelValue.gender.value,
@@ -280,6 +281,7 @@
           }
         },
         updateRealDataFromTransformed(transformedFilters){
+          debugger
           return  {
             gender: transformedFilters.gender,
             type: transformedFilters.type,
