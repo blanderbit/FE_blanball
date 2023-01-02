@@ -275,6 +275,15 @@ const reg = /^[a-zа-яё\d]{1}[a-zа-яё\d-]*[a-zа-яё\d]{1}$/i;
       })
       const backgroundMob = computed(() => {
         switch (currentStep.value) {
+          case 1: 
+            return ''
+            break;
+          case 2: 
+            return ''
+            break;
+          case 3: 
+            return imageStepMob_1
+            break;
           case 4: 
             return onboardingStepMob_2
             break;

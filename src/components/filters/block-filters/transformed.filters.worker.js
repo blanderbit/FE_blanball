@@ -58,7 +58,6 @@ export const TransformedFiltersWorker = (config) => {
   function updateRealData() {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
-      debugger
       emit('update:value', updateRealDataFromTransformed(transformedFilters.value))
     }, 500)
   }

@@ -1,5 +1,8 @@
 <template>
-  <div class="b-auth">
+  <div 
+    class="b-auth" 
+    :style="authBlockStyles"
+  >
     <div
         v-if="backgroundTab"
         class="b-auth__background-tab"
@@ -9,16 +12,17 @@
           alt="background image tablet"
       />
     </div>
-    <div
+    <Transition>
+      <div
         v-if="backgroundMob"
         class="b-auth__background-mob"
-    >
-      <img
+      >
+        <img
           :src="backgroundMob"
           alt="background image mobile"
-      />
-    </div>
-
+        />
+      </div>
+    </Transition>
     <div class="b-auth__central-block">
       <img
           v-if="blockType === mockData.LOGIN"
@@ -100,14 +104,22 @@
         default: ''
       }
     },
-    setup() {
+    setup(props) {
+      const windowWidth = ref(window.innerWidth)
       const mockData = computed(() => {
         return {
           LOGIN: CONSTANTS.register.authBlockTypes.login
         }
       })
 
-      const windowWidth = ref(window.innerWidth)
+      const authBlockStyles = computed(() => {
+        if (windowWidth.value < 576) {
+          return { 'align-items': props.currentStep < 3 ? 'flex-start' : 'flex-end' }
+        } else {
+          return { 'align-items': 'center' }
+        }
+      })
+
       function onResize() {
         windowWidth.value = window.innerWidth
       }
@@ -120,7 +132,8 @@
       })
       return {
         mockData,
-        windowWidth
+        windowWidth,
+        authBlockStyles  
       }
     },
   }
@@ -141,18 +154,16 @@
     height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
     @media (min-width: 576px) and (max-width: 992px) {
       padding-top: 132px;
       overflow: hidden;
     }
     @media (max-width: 576px) {
       padding-top: 140px;
-    }
-    @media (max-width: 420px) {
       padding-top: 0;
-      display: block;
+      // display: block;
     }
+
     .b-auth__background-tab {
       display: none;
       position: absolute;
@@ -200,13 +211,12 @@
       @media (max-width: 576px) {
         border-radius: 28px 28px 0px 0px;
         width: 100%;
-        @media (max-width: 410px) {
-          height: 100%;
-          box-shadow: none;
-          /*> div {*/
-            /*padding: 0 24px;*/
-          /*}*/
-        }
+        box-shadow: none;
+
+        // @media (max-width: 410px) {
+        //   height: 100%;
+        //   box-shadow: none;
+        // }
       }
       .b-auth__ball-big {
         position: absolute;
@@ -234,7 +244,6 @@
         }
 
         @media (min-width: 320px) and (max-width: 576px) {
-          margin-top: 200px;
           border-radius: 28px 28px 0px 0px;
         }
 
@@ -243,7 +252,7 @@
         background-image: var(--back-picture);
         background-size: cover;
         background-repeat: no-repeat;
-        background-position: center;
+        background-position: 0 0;
         width: 560px;
         position: relative;
         @media (max-width: 992px) {
