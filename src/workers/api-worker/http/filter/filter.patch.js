@@ -23,7 +23,6 @@ const filterParseFromUrl = (config, query) => {
   Object
     .keys(config)
     .forEach(key => {
-      debugger
       if (config[key]) {
         config[key].value = query[key]
       }
@@ -49,14 +48,13 @@ const FilterPatch = (config) => {
     router,
     transpilledQuery
   } = config;
-  debugger
   const filters = ref(filterParseFromUrl(
     filtersConfig,
     router.currentRoute.value.meta.transpilledQuery || transpilledQuery || {}
   ));
-  debugger
+  
   const updateQuery = $updateQuery(config);
-  debugger
+  
   const updateFilter = () => {
     updateQuery(getValuesFromFilter(filters.value));
     if (typeof afterUpdateFiltersCallBack === 'function') {
