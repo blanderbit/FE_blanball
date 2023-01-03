@@ -106,7 +106,6 @@
 
 
   import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
-  // import DeviceDetector from "device-detector-js"
 
   import RangeFilter from '../../filters/components/RangeFilter.vue'
   import Dropdown from '../../forms/Dropdown.vue'
@@ -155,12 +154,6 @@
     },
     emits: ['update:value', 'clearFilters'],
     setup(props, {emit}) {
-      // const deviceDetector = new DeviceDetector();
-      // const userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36";
-      // const device = deviceDetector.parse(userAgent);
-
-      // console.log(device);
-
       const sendDataFromModal = ref(false)
       const windowWidth = ref(window.innerWidth)
       const isModalFiltersActive = ref(false)

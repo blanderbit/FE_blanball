@@ -52,9 +52,9 @@ const FilterPatch = (config) => {
     filtersConfig,
     router.currentRoute.value.meta.transpilledQuery || transpilledQuery || {}
   ));
-
+  
   const updateQuery = $updateQuery(config);
-
+  
   const updateFilter = () => {
     updateQuery(getValuesFromFilter(filters.value));
     if (typeof afterUpdateFiltersCallBack === 'function') {
