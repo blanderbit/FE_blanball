@@ -43,6 +43,47 @@
           <div class="b-modal-filters__location">
             <ModalPositionMap v-model="locationData"></ModalPositionMap>
           </div>
+          <div class="b-modal-filters__calendar">
+            <img src="../../assets/img/calendar.svg" alt="" />
+            <v-date-picker 
+              locale="ukr" 
+              :model-config="calendar.modelConfig" 
+              v-model="dateAndTimeData" 
+              is-range
+            >
+              <template v-slot="options">
+                <div class="flex justify-center items-center">
+                  <input
+                      :value="options.inputValue.start"
+                      v-on="options.inputEvents.start"
+                      class="
+                        input-left
+                        border
+                        px-2
+                        py-1
+                        w-32
+                        rounded
+                        focus:outline-none focus:border-indigo-300
+                      "
+                  />
+                  -
+                  <input
+                      :value="options.inputValue.end"
+                      v-on="options.inputEvents.end"
+                      class="
+                        input-right
+                        border
+                        px-2
+                        py-1
+                        w-32
+                        rounded
+                        focus:outline-none focus:border-indigo-300
+                      "
+                  />
+                </div>
+              </template>
+            </v-date-picker>
+          </div>
           <div class="b-modal-filters__btns-block">
             <div 
               class="b-modal-filters__cancel-btn"
@@ -75,7 +116,8 @@ import ClearFilters from './components/ClearFilters.vue'
 
 import tickIcon from '../../assets/img/tick-white.svg'
 
-import CONSTANTS from "../../consts/index";
+import CONSTANTS from "../../consts/index"
+import useTodaysDate from '../../utils/todaysDate'
 
 export default {
   name: 'ModalUsersFilters',
@@ -103,6 +145,10 @@ export default {
     location: {
       type: Object,
       default: ''
+    },
+    dateAndTime: {
+      type: Object,
+      default: () => {}
     }
   },
   emits: [
@@ -112,18 +158,28 @@ export default {
     'update:dropdownGameType',
     'update:gender',
     'update:status',
-    'update:location'
+    'update:location',
+    'update:dateAndTime'
   ],
   setup(props, { emit }) {
     const gameTypeData = ref(props.dropdownGameType)
     const gameStatusData = ref(props.status)
     const genderData = ref(props.gender)
     const locationData = ref(props.location)
+    const dateAndTimeData = ref(props.dateAndTime)
 
     const sportTypeDropdown = CONSTANTS.event_page.sport_type_dropdown;
     const statusDropdown = CONSTANTS.event_page.status_ropdown;
 
     const icon = computed(() => tickIcon)
+
+    const  calendar = ref( {
+      inputMask: 'YYYY-MM-DD',
+      modelConfig: {
+        type: 'string',
+        mask: 'YYYY-MM-DD', // Uses 'iso' if missing
+      },
+    })
     
     watch(() => genderData.value, (newVal) => {
       emit('update:gender', newVal)
@@ -137,6 +193,9 @@ export default {
     watch(() => locationData.value, (newVal) => {
       emit('update:location', newVal)
     })
+    watch(() => dateAndTimeData.value, (newVal) => {
+      emit('update:dateAndTime', newVal)
+    })
 
     function setFilters() {
       emit('setModalWindowFilters')
@@ -148,6 +207,10 @@ export default {
       gameTypeData.value = ''
       locationData.value = {}
       genderData.value = ''
+      dateAndTimeData.value = {
+        start: useTodaysDate(), 
+        end: useTodaysDate()
+      }
     }
 
     return {
@@ -159,7 +222,9 @@ export default {
       gameStatusData,
       gameTypeData,
       locationData,
-      genderData
+      genderData,
+      dateAndTimeData,
+      calendar
     }
   }
 }
@@ -183,6 +248,117 @@ export default {
     line-height: 20px;
     color: #575775;
     margin-bottom: 16px;
+  }
+  &__calendar {
+    margin-top: 12px;
+    margin-right: 4px;
+    border: 1px solid #dfdeed;
+    border-radius: 6px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    padding: 0 13px;
+    input {
+      height: 32px;
+      width: 100px;
+      padding: 4px 12px;
+      background: #ffffff;
+      border-radius: 6px;
+      outline: none;
+    }
+    .input-left {
+      border-radius: 6px 0 0 6px;
+      border: transparent;
+    }
+    .input-right {
+      border-left: 1px solid transparent;
+      border-right: 1px solid transparent;
+      border-top: 1px solid transparent;
+      border-bottom: 1px solid transparent;
+      border-radius: 0 6px 6px 0;
+    }
+    img {
+      display: inline;
+    }
+    &:deep .vc-popover-content-wrapper {
+      .vc-popover-content {
+        .vc-pane {
+          .vc-header {
+            width: 160px;
+            padding: 17px 16px 0;
+            .vc-title {
+              font-family: 'Inter';
+              font-style: normal;
+              font-weight: 400;
+              font-size: 12px;
+              line-height: 16px;
+              text-align: center;
+              color: #808181;
+            }
+          }
+          .vc-weeks {
+            .vc-weekday {
+              font-family: 'Inter';
+              font-style: normal;
+              font-weight: 500;
+              font-size: 14px;
+              line-height: 16px;
+              text-align: center;
+              color: #0a3435;
+            }
+            .vc-day {
+              span {
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 16px;
+                text-align: center;
+                color: #0a3435;
+                &:hover {
+                  background-color: transparent;
+                }
+              }
+              .vc-highlights {
+                & + span {
+                  color: #148783 !important;
+                  font-family: 'Inter';
+                  font-style: normal;
+                  font-weight: 400 !important;
+                  font-size: 14px;
+                  line-height: 16px;
+                  text-align: center;
+                }
+                .vc-day-layer {
+                  .vc-highlight {
+                    background: #e9fcfb !important;
+                    border-radius: 6px !important;
+                  }
+                  .vc-highlight.vc-highlight-base-start {
+                    background: #e9fcfb !important;
+                  }
+                  .vc-highlight.vc-highlight-base-middle {
+                    background: #e9fcfb !important;
+                  }
+                  .vc-highlight.vc-highlight-base-end {
+                    background: #e9fcfb !important;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .vc-arrows-container {
+          width: 160px;
+          .is-left {
+            width: 12px;
+          }
+          .is-right {
+            width: 12px;
+          }
+        }
+      }
+    }
   }
   &__game-type-input {
     width: 100%;

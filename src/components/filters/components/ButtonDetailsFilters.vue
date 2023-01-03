@@ -42,9 +42,9 @@
 
 <style scoped lang="scss">
   .b-button-details__filters {
-    width: 36px;
-    min-width: 36px;
-    height: 36px;
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
     background: #EFEFF6;
     border-radius: 6px;
     display: flex;
