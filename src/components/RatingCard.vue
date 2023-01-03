@@ -125,8 +125,8 @@ export default {
                 return {
                   ...item,
                   author: {
-                    name: 'Говнюк',
-                    last_name: 'Борисович'
+                    name: item.author.profile?.name,
+                    last_name: item.author.profile?.last_name,
                   },
                   date: `${dayjs(item.time_created).locale(dayjsUkrLocale).format('D.MM.YYYY')}`
                 }
