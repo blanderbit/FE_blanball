@@ -238,7 +238,7 @@
         coords,
         async save(data) {
           const { valid } = await data.validate();
-          if(!valid) return;
+          if(!valid) return;  
           emit('update:modelValue', {
             ...coords.value,
             dist: dist.value,

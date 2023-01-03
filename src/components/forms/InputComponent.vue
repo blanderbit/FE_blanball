@@ -262,7 +262,7 @@ export default {
     .b-input__outer-title {
       padding: 0px 4px;
       position: absolute;
-      left: 8px;
+      left: 2px;
       top: -8px;
       background: #ffffff;
       color: #575775;
