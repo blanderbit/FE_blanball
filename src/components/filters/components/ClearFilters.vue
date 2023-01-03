@@ -15,9 +15,9 @@
 
 <style scoped lang="scss">
   .b-clear-filters {
-    width: 36px;
-    min-width: 36px;
-    height: 36px;
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
     border: 1px solid #DFDEED;
     border-radius: 6px;
     display: flex;

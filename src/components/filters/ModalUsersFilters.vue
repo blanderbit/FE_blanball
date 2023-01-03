@@ -106,10 +106,6 @@ export default {
 
     const positions = computed(() => CONSTANTS.profile.position)
     const icon = computed(() => tickIcon)
-    
-    watch(() => props.rangeSlider, (newVal) => {
-      console.log(newVal)
-    })
 
     watch(() => genderData.value, (newVal) => {
       emit('update:gender', newVal)

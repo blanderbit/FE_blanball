@@ -6,6 +6,7 @@
       v-model:gender="transformedFilters.gender"
       v-model:status="transformedFilters.status"
       v-model:location="transformedFilters.location"
+      v-model:date-and-time="transformedFilters.date_and_time"
       @close-modal="isModalFiltersActive = false"
       @set-modal-window-filters="setModalFilters"
       @clearFilters="$emit('clearFilters')"
@@ -60,9 +61,6 @@
                 name="search"
                 v-model="transformedFilters.search"
               />
-            </div>
-            <div class="b-main-search__search-input-tablet">
-              <img src="../../../assets/img/search.svg" alt="" />
             </div>
             <clear-filters @clear="$emit('clearFilters')"></clear-filters>
             <button-details-filters v-model:active="activeFilters"></button-details-filters>
@@ -156,9 +154,24 @@
               class="b-main-search__filtering-block sort-item d-flex align-items-center"
               @click="isModalFiltersActive = true"
             >
-              <div class="b-main-search__icon">
+              <div class="b-main-search__icon d-flex align-items-center justify-content-center">
                 <img src="../../../assets/img/set-filter.svg" alt="" />
               </div>
+
+
+              <div class="b-main-search__text-block">
+                <div class="b-main-search__title">
+                  {{  $t('events.filters')  }}
+                </div>
+                <div class="b-main-search__subtitle">
+                  {{ $t('events.found') }}
+                  15
+                  {{ $t('events.advertisments') }}
+                </div>
+              </div>
+
+
+
             </div>
           </div>
         </div>
@@ -184,6 +197,7 @@
   import CONSTANTS from "../../../consts";
   import useWindowWidth from '../../../utils/widthScreen'
   import ModalFilters from '../ModalEventsFilters.vue'
+  import useTodaysDate from '../../../utils/todaysDate'
 
   import MaleIcon from '../../../assets/img/female-icon.svg'
   import FemaleIcon from '../../../assets/img/male-icon.svg'
@@ -224,11 +238,9 @@
     },
     emits: ['update:value', 'clearFilters'],
     setup(props, {emit}) {
-      const data = new Date()
-      const modalSearchWindowWidth = ref(65)
       const isModalFiltersActive = ref(false)
-      const todaysDate = `${data.getFullYear()}-${data.getMonth() + 1}-${data.getDate()}`
-      const { isMobile, onResize } = useWindowWidth()
+      const todaysDate = useTodaysDate()
+      const { isMobile, isTablet, onResize } = useWindowWidth()
       const icons = computed(() => {
         return {
           female: FemaleIcon,
@@ -257,6 +269,7 @@
         props,
         emit,
         isMobile,
+        isTablet,
         setupTransformedCallback() {
           const [lng, lat] = props.modelValue?.point?.value?.split?.(',') || [];
           return {
@@ -309,7 +322,7 @@
       const genderDropdown = CONSTANTS.event_page.gender_dropdown;
       const statusDropdown = CONSTANTS.event_page.status_ropdown;
 
-      const  calendar = ref( {
+      const calendar = ref( {
         inputMask: 'YYYY-MM-DD',
         modelConfig: {
           type: 'string',

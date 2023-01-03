@@ -90,6 +90,7 @@
           <dropdown
             :check-value-immediate="true"
             :options="ordering"
+            :height="32"
             :placeholder="$t('users.sorting')"
             display-name="name"
             display-value="value"
@@ -106,8 +107,14 @@
             <img src="../../../assets/img/set-filter.svg" alt="">
           </div>
           <div class="b-users-filters__text-block">
-            <div class="b-users-filters__title">{{ $t('users.filters') }}</div>
-            <div class="b-users-filters__text">{{ $t('users.found') }} 15</div>
+            <div class="b-users-filters__title">
+              {{ $t('users.filters') }}
+            </div>
+            <div class="b-users-filters__text">
+              {{ $t('users.found') }} 
+              15
+              {{ $t('users.advertisments') }} 
+            </div>
           </div>
         </div>
       </div>
@@ -171,10 +178,7 @@
     },
     emits: ['update:value', 'clearFilters'],
     setup(props, {emit}) {
-
-      const { isMobile, onResize } = useWindowWidth()
-      const sendDataFromModal = ref(false)
-      const windowWidth = ref(window.innerWidth)
+      const { isMobile, isTablet, onResize } = useWindowWidth()
       const isModalFiltersActive = ref(false)
       const  calendar = ref( {
         inputMask: 'YYYY-MM-DD',
@@ -234,6 +238,7 @@
         props,
         emit,
         isMobile,
+        isTablet,
         setupTransformedCallback() {
           return {
             profile__gender: props.modelValue.profile__gender.value,
@@ -311,7 +316,7 @@
     &__first-line {
       display: flex;
       justify-content: space-between;
-      @media (max-width: 768px) {
+      @media (max-width: 992px) {
         display: none;
       }
       .b-users-filters__left-part {
@@ -341,17 +346,18 @@
     &__mob-line {
       display: none;
       justify-content: space-between;
-      @media (max-width: 768px) {
+      @media (min-width: 576px) and (max-width: 992px) {
+        justify-content: flex-start;
+      }
+      @media (max-width: 992px) {
         display: flex;
       }
       .b-users-filters__sorting {
         width: 160px;
       }
-      .b-users-filters__fitering {
-        width: 132px;
-      }
       .b-users-filters__fitering { 
         display: flex;
+        width: 180px;
 
         .b-users-filters__icon { 
           width: 36px;

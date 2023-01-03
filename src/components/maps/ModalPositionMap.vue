@@ -20,7 +20,8 @@
        <div class="b-modal-position__block">
          <Dropdown
              :outside-title="true"
-             :main-title="$t('register.city')"
+             :placeholder="$t('register.district')"
+             :main-title="$t('register.district')"
              :options="mockData.district"
              v-model="region"
              taggable
@@ -33,6 +34,7 @@
        <div class="b-modal-position__block">
          <Dropdown
              :outside-title="true"
+             :placeholder="$t('register.city')"
              :main-title="$t('register.city')"
              :options="mockData.cities"
              v-model="city"

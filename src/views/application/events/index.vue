@@ -98,7 +98,7 @@
   import RightSidebar from '../../../components/RightSidebar.vue'
   import EmptyList from '../../../components/EmptyList.vue'
   import SmartGridList from '../../../components/smart-list/SmartGridList.vue'
-
+  
   import CONSTANTS from '../../../consts/index'
   import ScrollToTop from '../../../components/ScrollToTop.vue'
   import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue'
@@ -109,7 +109,8 @@
   import { FilterPatch } from "../../../workers/api-worker/http/filter/filter.patch";
   import { v4 as uuid } from "uuid";
   import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue'
-
+  import useTodaysDate from '../../../utils/todaysDate'
+  
   export default {
     name: 'EventsPage',
     components: {
@@ -129,8 +130,7 @@
       EventsFilters
     },
     setup() {
-      const data = new Date()
-      const todaysDate = `${data.getFullYear()}-${data.getMonth() + 1}-${data.getDate()}`
+      const todaysDate = useTodaysDate()
       const scrollComponent = ref(null);
       const route = useRoute();
       const router = useRouter();

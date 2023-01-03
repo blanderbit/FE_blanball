@@ -9,6 +9,7 @@ export const TransformedFiltersWorker = (config) => {
     props,
     emit,
     isMobile,
+    isTablet,
   } = config;
 
   if(!setupTransformedCallback || !updateRealDataFromTransformed || !props || !props?.modelValue|| !emit) {
@@ -17,6 +18,7 @@ export const TransformedFiltersWorker = (config) => {
 
   const activeFilters = ref(false);
   activeFilters.value = ifSecondLineWasUsed && ifSecondLineWasUsed()
+
   const transformedFilters = ref(setupTransformedCallback(activeFilters));
 
   watch(
@@ -36,10 +38,10 @@ export const TransformedFiltersWorker = (config) => {
       if (isEqual(a, b)) {
         return
       }
-      if (a.ordering !== b.ordering) {
+      if (a.ordering !== b.ordering || a.search !== b.search) {
         updateRealData()
       }
-      if (!isMobile?.value) {
+      if (!(isMobile.value || isTablet.value)) {
         updateRealData()
       }
     },
