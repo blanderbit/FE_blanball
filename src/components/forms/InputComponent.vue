@@ -126,7 +126,12 @@ export default {
       default: 'aggressive',
     },
   },
-  emits: ['iconClick', 'onClickAction', 'sendInputCoordinates', 'update:modelValue'],
+  emits: [
+    'iconClick', 
+    'onClickAction', 
+    'sendInputCoordinates', 
+    'update:modelValue'
+  ],
   setup(props, {emit}) {
     const {
         modelValue: staticModelValue,
@@ -154,7 +159,7 @@ export default {
     const inputStyle = computed(() => {
       return {
         'padding-left': 10 + props.titleWidth + 'px',
-        'padding-right': rightIcon.value?.length ? '52px' : '10px',
+        'padding-right': rightIcon.value?.length ? '50px' : '10px',
       }
     })
     const inputWrapper = computed(() => {
@@ -257,7 +262,7 @@ export default {
     .b-input__outer-title {
       padding: 0px 4px;
       position: absolute;
-      left: 8px;
+      left: 2px;
       top: -8px;
       background: #ffffff;
       color: #575775;

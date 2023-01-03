@@ -6,27 +6,86 @@ import { ROUTES } from "../router/router.const";
 
 export default {
   mainLeg: [
-    { value: 'Права', id: 'Right'  },
-    { value: 'Ліва', id: 'Left'}
+    {
+      value: 'Права',
+      name: 'Права',
+      id: 'Right'  
+    },
+    {
+      value: 'Ліва',
+      name: 'Ліва',
+      id: 'Left'
+    }
   ],
   position: [
-    { value: 'GK' },
-    { value: 'LB' },
-    { value: 'RB' },
-    { value: 'CB' },
-    { value: 'LWB' },
-    { value: 'RWB' },
-    { value: 'CDM' },
-    { value: 'CM' },
-    { value: 'CAM' },
-    { value: 'RM' },
-    { value: 'LM' },
-    { value: 'RW' },
-    { value: 'LW' },
-    { value: 'RF' },
-    { value: 'CF' },
-    { value: 'LF' },
-    { value: 'ST' }
+    { 
+      value: 'GK',
+      name: 'вратарь'
+    },
+    { 
+      value: 'LB',
+      name: 'левый защитник'
+    },
+    { 
+      value: 'RB',
+      name: 'правый защитник'
+    },
+    { 
+      value: 'CB',
+      name: 'центральный защитник'
+    },
+    { 
+      value: 'LWB',
+      name: 'левый фланговый защитник'
+    },
+    { 
+      value: 'RWB',
+      name: 'правый фланговый защитник'
+    },
+    { 
+      value: 'CDM',
+      name: 'опорный полузащитник'
+    },
+    { 
+      value: 'CM',
+      name: 'центральный полузащитник'
+    },
+    { 
+      value: 'CAM',
+      name: 'атакующий полузащитник'
+    },
+    { 
+      value: 'RM',
+      name: 'правый крайний полузащитник'
+    },
+    { 
+      value: 'LM',
+      name: 'левый крайний полузащитник'
+    },
+    { 
+      value: 'RW',
+      name: 'правый фланговый атакующий'
+    },
+    { 
+      value: 'LW',
+      name: 'левый фланговый атакующий'
+    },
+    { 
+      value: 'RF',
+      name: 'правый форвард'
+    },
+    { 
+      value: 'CF',
+      name: 'центральный форвард'
+    },
+    { 
+      value: 'LF',
+      name: 'левый форвард'
+    },
+    { 
+      value: 'ST',
+      name: 'форвард-страйкер'
+    }
   ],
   cities: [
     { value: 'Sinaya' },

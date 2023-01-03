@@ -108,11 +108,13 @@ export default {
   sport_type_dropdown: [
     {
       id: 1,
-      value: 'Football'
+      value: 'Football',
+      name: 'Футбол'
     },
     {
       id: 2,
-      value: 'Futsal'
+      value: 'Futsal',
+      name: 'Футсал'
     },
   ],
   gender_dropdown: [
@@ -196,6 +198,20 @@ export default {
       id: 2,
       text: 'Закріпити',
       img: pin
+    }
+  ],
+  status_ropdown: [
+    {
+      value: 'Planned',
+      name: 'Запланованi'
+    },
+    {
+      value: 'Active',
+      name: 'Активнi'
+    },
+    {
+      value: 'Finished',
+      name: 'Завершенi'
     }
   ]
 }

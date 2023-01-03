@@ -15,12 +15,13 @@
           </div>
           <div class="b-modal-filters__game-type-input">
             <Dropdown
+              :check-value-immediate="true"
               :main-title="$t('users.position')"
               :options="positions"
               :placeholder="$t('users.position')"
-              display-name="value"
+              display-name="name"
               display-value="value"
-              v-model="dropdownData"
+              v-model="positionData"
               name="position"
             />
           </div>
@@ -37,7 +38,7 @@
           <div class="b-modal-filters__btns-block">
             <div 
               class="b-modal-filters__cancel-btn"
-              @click="$emit('closeModal')"
+              @click="clearAllData"
             >
               {{ $t('buttons.clear') }}
             </div>
@@ -68,7 +69,7 @@ import tickIcon from '../../assets/img/tick-white.svg'
 import CONSTANTS from "../../consts/index";
 
 export default {
-  name: 'ModalFilters',
+  name: 'ModalUsersFilters',
   components: {
     ModalWindow,
     GreenBtn,
@@ -93,25 +94,26 @@ export default {
   emits: [
     'closeModal', 
     'setModalWindowFilters',
+    'clearFilters',
     'update:dropdownPosition', 
     'update:rangeSlider', 
     'update:gender'
   ],
   setup(props, { emit }) {
-    const dropdownData = ref(props.dropdownPosition)
+    const positionData = ref(props.dropdownPosition)
     const ageRangeData = ref(props.rangeSlider)
     const genderData = ref(props.gender)
 
     const positions = computed(() => CONSTANTS.profile.position)
     const icon = computed(() => tickIcon)
-    
+
     watch(() => genderData.value, (newVal) => {
       emit('update:gender', newVal)
     })
     watch(() => ageRangeData.value, (newVal) => {
       emit('update:rangeSlider', newVal)
     })
-    watch(() => dropdownData.value, (newVal) => {
+    watch(() => positionData.value, (newVal) => {
       emit('update:dropdownPosition', newVal)
     })
 
@@ -119,12 +121,19 @@ export default {
       emit('setModalWindowFilters')
       emit('closeModal')
     }
+    function clearAllData() {
+      emit('clearFilters')
+      positionData.value = ''
+      // ageRangeData.value = []
+      genderData.value = ''
+    }
 
     return {
       setFilters,
+      clearAllData,
       positions,
       icon,
-      dropdownData,
+      positionData,
       ageRangeData,
       genderData
     }

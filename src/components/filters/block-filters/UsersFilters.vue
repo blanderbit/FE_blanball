@@ -7,15 +7,18 @@
       v-model:gender="transformedFilters.profile__gender"
       @close-modal="isModalFiltersActive = false"
       @set-modal-window-filters="setModalFilters"
+      @clearFilters="$emit('clearFilters')"
     />
     <div class="b-users-filters">
       <div class="b-users-filters__first-line">
         <div class="b-users-filters__left-part d-flex">
           <div class="b-users-filters__dropdown-sorting">
             <dropdown
+              :check-value-immediate="true"
               :options="ordering"
               :placeholder="$t('users.sorting')"
-              display-name="value"
+              :height="32"
+              display-name="name"
               display-value="value"
               v-model="transformedFilters.ordering"
               name="sorting"
@@ -24,9 +27,11 @@
           </div>
           <div class="b-users-filters__dropdown-position">
             <dropdown
+              :check-value-immediate="true"
               :options="positions"
               :placeholder="$t('users.position')"
-              display-name="value"
+              :height="32"
+              display-name="name"
               display-value="value"
               v-model="transformedFilters.profile__position"
               name="position"
@@ -35,9 +40,11 @@
           </div>
           <div class="b-users-filters__dropdown-gender">
             <dropdown
+              :check-value-immediate="true"
               :options="gender"
               :placeholder="$t('users.gender')"
-              display-name="value"
+              :height="32"
+              display-name="name"
               display-value="value"
               v-model="transformedFilters.profile__gender"
               name="gender"
@@ -49,6 +56,7 @@
           <div class="b-users-filters__input">
             <input-component
               :placeholder="$t('users.users-search')"
+              :height="32"
               :title-width="0"
               :icon="icons.search"
               v-model="transformedFilters.search"
@@ -72,13 +80,24 @@
       </div>
       <div class="b-users-filters__mob-line">
         <div class="b-users-filters__sorting">
-          <div class="b-users-filters__icon">
+          <!-- <div class="b-users-filters__icon">
             <img src="../../../assets/img/sort-arrows.svg" alt="">
           </div>
           <div class="b-users-filters__text-block">
             <div class="b-users-filters__title">{{ $t('users.sorting') }}</div>
             <div class="b-users-filters__text">{{ $t('users.new-first') }}</div>
-          </div>
+          </div> -->
+          <dropdown
+            :check-value-immediate="true"
+            :options="ordering"
+            :height="32"
+            :placeholder="$t('users.sorting')"
+            display-name="name"
+            display-value="value"
+            v-model="transformedFilters.ordering"
+            name="sorting"
+          >
+          </dropdown>
         </div>
         <div class="b-users-filters__fitering">
           <div 
@@ -88,13 +107,14 @@
             <img src="../../../assets/img/set-filter.svg" alt="">
           </div>
           <div class="b-users-filters__text-block">
-            <div class="b-users-filters__title">{{ $t('users.filters') }}</div>
-            <div class="b-users-filters__text">{{ $t('users.found') }} 15</div>
-          </div>
-        </div>
-        <div class="b-users-filters__calendar">
-          <div class="b-users-filters__icon">
-            <img src="../../../assets/img/calendar.svg" alt="">
+            <div class="b-users-filters__title">
+              {{ $t('users.filters') }}
+            </div>
+            <div class="b-users-filters__text">
+              {{ $t('users.found') }} 
+              15
+              {{ $t('users.advertisments') }} 
+            </div>
           </div>
         </div>
       </div>
@@ -106,7 +126,6 @@
 
 
   import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
-  import { useDevice } from 'next-vue-device-detector'
 
   import RangeFilter from '../../filters/components/RangeFilter.vue'
   import Dropdown from '../../forms/Dropdown.vue'
@@ -118,15 +137,15 @@
   import ModalPositionMap from '../../maps/ModalPositionMap.vue'
   import {cloneDeep, isEqual} from 'lodash'
   import { TransformedFiltersWorker } from "./transformed.filters.worker"
-  import ModalFilters from '../ModalFilters.vue'
+  import ModalFilters from '../ModalUsersFilters.vue'
 
   import SearchIcon from '../../../assets/img/search.svg'
-  import MaleIcon from '../../../assets/img/female-icon.svg'
-  import FemaleIcon from '../../../assets/img/male-icon.svg'
-  import UnisexIcon from '../../../assets/img/unisex.svg'
-
+  import ArrowTopIcon from '../../../assets/img/arrow-top.svg'
+  import ArrowDownIcon from '../../../assets/img/arrow-down2.svg'
 
   import CONSTANTS from "../../../consts";
+
+  import useWindowWidth from '../../../utils/widthScreen'
 
   export default {
     name: "UsersFilters",
@@ -159,45 +178,67 @@
     },
     emits: ['update:value', 'clearFilters'],
     setup(props, {emit}) {
-      const isMobile = useDevice().mobile
-
+      const { isMobile, isTablet, onResize } = useWindowWidth()
       const isModalFiltersActive = ref(false)
+      const  calendar = ref( {
+        inputMask: 'YYYY-MM-DD',
+        modelConfig: {
+          type: 'string',
+          mask: 'YYYY-MM-DD', // Uses 'iso' if missing
+        },
+      })
+
       const icons = computed(() => {
         return {
           search: SearchIcon,
-          female: FemaleIcon,
-          male: MaleIcon,
-          unisex: UnisexIcon
+          arrowDown: ArrowDownIcon,
+          arrowTop: ArrowTopIcon
         }
       })
       const positions = computed(() => CONSTANTS.profile.position);
+      const gender = computed(() => CONSTANTS.users_page.gender);
       const ordering = computed(() => [
-        {value: 'id'},
-        {value: 'profile__age'},
-        {value: 'raiting'},
-        {value: '-id'},
-        {value: '-profile__age'},
-        {value: '-raiting'},
-      ]);
-      const gender = computed(() => [
         {
-          value: 'Woman',
-          iconSrc: icons.value.female
+          value: 'id',
+          name: 'айди',
+          iconSrc: icons.value.arrowTop
         },
         {
-          value: 'Man',
-          iconSrc: icons.value.male
+          value: 'profile__age',
+          name: 'возраст',
+          iconSrc: icons.value.arrowTop
         },
         {
-          value: 'All',
-          iconSrc: icons.value.unisex
-        }
+          value: 'raiting',
+          name: 'рейтинг',
+          iconSrc: icons.value.arrowTop
+        },
+        {
+          value: '-id',
+          name: 'айди',
+          iconSrc: icons.value.arrowDown
+        },
+        {
+          value: '-profile__age',
+          name: 'возраст',
+          iconSrc: icons.value.arrowDown
+        },
+        {
+          value: '-raiting',
+          name: 'рейтинг',
+          iconSrc: icons.value.arrowDown
+        },
       ]);
 
-      const { activeFilters, transformedFilters, updateRealData } = TransformedFiltersWorker({
+      const { 
+        activeFilters, 
+        transformedFilters, 
+        updateRealData 
+      } = TransformedFiltersWorker({
         props,
         emit,
         isMobile,
+        isTablet,
         setupTransformedCallback() {
           return {
             profile__gender: props.modelValue.profile__gender.value,
@@ -225,15 +266,31 @@
             point: transformedFilters.place.point
           }
         },
-        checkSliderValues(value) {
-          return value[0] > 6 || value[1] < 80
+        ifSecondLineWasUsed() {
+          if (
+            props.modelValue.profile__age_min.value ||
+            props.modelValue.profile__age_max.value
+          ) {
+            return !(
+              props.modelValue.profile__age_min.value === props.modelValue.profile__age_min.default &&
+              props.modelValue.profile__age_max.value === props.modelValue.profile__age_max.default
+            )
+          } else {
+            return false
+          }
         }
       });
 
+      onMounted(() => {
+        window.addEventListener('resize', onResize);
+      })
+
+      onBeforeUnmount(() => {
+        window.removeEventListener('resize', onResize); 
+      })
 
       function setModalFilters() {
-        updateRealData(
-        )
+        updateRealData()
       }
 
       return {
@@ -244,7 +301,8 @@
         activeFilters,
         transformedFilters,
         icons,
-        isModalFiltersActive
+        isModalFiltersActive,
+        calendar
       }
     }
   }
@@ -258,7 +316,7 @@
     &__first-line {
       display: flex;
       justify-content: space-between;
-      @media (max-width: 768px) {
+      @media (max-width: 992px) {
         display: none;
       }
       .b-users-filters__left-part {
@@ -288,17 +346,18 @@
     &__mob-line {
       display: none;
       justify-content: space-between;
-      @media (max-width: 768px) {
+      @media (min-width: 576px) and (max-width: 992px) {
+        justify-content: flex-start;
+      }
+      @media (max-width: 992px) {
         display: flex;
       }
-      .b-users-filters__sorting,
-      .b-users-filters__fitering {
-        width: 132px;
+      .b-users-filters__sorting {
+        width: 160px;
       }
-      .b-users-filters__sorting,
-      .b-users-filters__fitering,
-      .b-users-filters__calendar { 
+      .b-users-filters__fitering { 
         display: flex;
+        width: 180px;
 
         .b-users-filters__icon { 
           width: 36px;
@@ -310,6 +369,7 @@
           display: flex;
           justify-content: center;
           align-items: center;
+          position: relative;
         }
 
         .b-users-filters__text-block { 

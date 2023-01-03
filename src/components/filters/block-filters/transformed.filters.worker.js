@@ -5,9 +5,11 @@ export const TransformedFiltersWorker = (config) => {
   const { 
     setupTransformedCallback, 
     updateRealDataFromTransformed,
+    ifSecondLineWasUsed,
     props,
     emit,
-    isMobile
+    isMobile,
+    isTablet,
   } = config;
 
   if(!setupTransformedCallback || !updateRealDataFromTransformed || !props || !props?.modelValue|| !emit) {
@@ -15,6 +17,7 @@ export const TransformedFiltersWorker = (config) => {
   }
 
   const activeFilters = ref(false);
+  activeFilters.value = ifSecondLineWasUsed && ifSecondLineWasUsed()
 
   const transformedFilters = ref(setupTransformedCallback(activeFilters));
 
@@ -35,7 +38,10 @@ export const TransformedFiltersWorker = (config) => {
       if (isEqual(a, b)) {
         return
       }
-      if (!isMobile) {
+      if (a.ordering !== b.ordering || a.search !== b.search) {
+        updateRealData()
+      }
+      if (!(isMobile.value || isTablet.value)) {
         updateRealData()
       }
     },
@@ -43,18 +49,6 @@ export const TransformedFiltersWorker = (config) => {
       deep: true
     }
   );
-
-  // watch(
-  //   () => sendDataFromModal.value,
-  //   (a, b) => {
-  //   if (a && isChangesInModal.value) {
-  //     updateRealData()
-  //     sendDataFromModal.value = false
-  //     isChangesInModal.value = false
-  //   } else {
-  //     sendDataFromModal.value = false
-  //   }
-  // })
 
   function updateRealData() {
     clearTimeout(timeout);
@@ -64,8 +58,8 @@ export const TransformedFiltersWorker = (config) => {
   }
 
   return {
+    updateRealData,
     transformedFilters,
-    activeFilters,
-    updateRealData
+    activeFilters
   }
 };

@@ -4,33 +4,40 @@ export default {
   type_of_event_dropdown: [
     {
       id: 0,
-      value: 'Дружній матч'
+      name: 'Дружній матч',
+      value: 'Friendly match'
     },
     {
       id: 1,
-      value: 'Не дружній матч'
+      name: 'Не дружній матч',
+      value: 'Not friendly match'
     },
     {
       id: 2,
-      value: 'Ворожий матч'
+      name: 'Ворожий матч',
+      value: 'Enemy match'
     }
   ],
   type_of_sport_dropdown: [
     {
       id: 0,
-      value: 'Футбол'
+      name: 'Футбол',
+      value: 'Football'
     },
     {
       id: 1,
-      value: 'Литрбол'
+      name: 'Литрбол',
+      value: 'Litreball'
     },
     {
       id: 2,
-      value: 'Метание кизяков'
+      name: 'Метание кизяков',
+      value: 'Shit throughing'
     },
     {
       id: 3,
-      value: 'Плевки в длину'
+      name: 'Плевки в длину',
+      value: 'Long spitting'
     }
   ],
   tags: [

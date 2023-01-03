@@ -1,7 +1,13 @@
 <template>
  <div>
-   <div @click="activeModal = true">
-     {{region || city  ? `${region} ${city}`: 'selectPosition'}}
+   <div 
+    class="b-modal-position__address-text"
+    @click="activeModal = true"
+   >
+      <img :src="icons.tick" alt="">
+      <span>
+        {{region || city  ? `${region} ${city}`: $t('events.select-position')}}
+      </span>
    </div>
    <ModalWindow v-if="activeModal" :isTitleShown="false">
      <Loading
@@ -14,7 +20,8 @@
        <div class="b-modal-position__block">
          <Dropdown
              :outside-title="true"
-             :main-title="$t('register.city')"
+             :placeholder="$t('register.district')"
+             :main-title="$t('register.district')"
              :options="mockData.district"
              v-model="region"
              taggable
@@ -27,6 +34,7 @@
        <div class="b-modal-position__block">
          <Dropdown
              :outside-title="true"
+             :placeholder="$t('register.city')"
              :main-title="$t('register.city')"
              :options="mockData.cities"
              v-model="city"
@@ -84,6 +92,8 @@
   import { API } from "../../workers/api-worker/api.worker";
   import GreenBtn from '../../components/GreenBtn.vue'
   import Loading from '../../workers/loading-worker/Loading.vue'
+  import tickIcon from '../../assets/img/location-point.svg'
+
   export default {
     components: {
       ModalWindow,
@@ -116,6 +126,12 @@
       const schema = yup.object({
         region: yup.string().required(),
         city: yup.string().required(),
+      })
+
+      const icons = computed(() => {
+        return {
+          tick: tickIcon
+        }
       })
 
       function setValue() {
@@ -190,6 +206,7 @@
         dist,
         loading,
         nextButton,
+        icons,
         async changeRegions(e) {
           region.value = e;
           city.value = '';
@@ -223,7 +240,7 @@
         coords,
         async save(data) {
           const { valid } = await data.validate();
-          if(!valid) return;
+          if(!valid) return;  
           emit('update:modelValue', {
             ...coords.value,
             dist: dist.value,
@@ -237,6 +254,28 @@
 </script>
 
 <style scoped lang="scss">
+  .b-modal-position__address-text {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 24px;
+    color: #262541;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    img {
+      margin-right: 10px;
+    }
+    span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 120px;
+      display: block;
+    }
+  }
   .b-modal-position__block {
     margin-bottom: 15px;
   }
