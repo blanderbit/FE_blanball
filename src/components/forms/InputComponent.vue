@@ -121,10 +121,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    isStratching: {
-      type: Boolean,
-      default: false
-    },
     mode: {
       type: String,
       default: 'aggressive',

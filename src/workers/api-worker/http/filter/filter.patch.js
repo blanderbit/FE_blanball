@@ -1,10 +1,8 @@
 import { watch, ref } from 'vue'
 import {cloneDeep, isEqual} from 'lodash'
 const $updateQuery = (queryConfig) => {
-  debugger
-  const {router} = queryConfig;
-  console.log(queryConfig)
 
+  const {router} = queryConfig;
   return (query) => {
     query = Object.keys(query)
       .filter(item => !!query[item])
@@ -12,7 +10,6 @@ const $updateQuery = (queryConfig) => {
         ...prev,
         [cur]: query[cur]
       }), {});
-      debugger
     return router
       .replace({
         path: router.currentRoute.value.path,
@@ -26,8 +23,7 @@ const filterParseFromUrl = (config, query) => {
   Object
     .keys(config)
     .forEach(key => {
-      debugger
-      if (config[key]) {
+      if (config[key] && query[key]) {
         config[key].value = query[key]
       }
     });
@@ -35,7 +31,6 @@ const filterParseFromUrl = (config, query) => {
 };
 
 const getValuesFromFilter = (values) => {
-  debugger
   return Object
     .keys(values)
     .reduce((acc, cur) => {
@@ -57,7 +52,6 @@ const FilterPatch = (config) => {
     filtersConfig,
     router.currentRoute.value.meta.transpilledQuery || transpilledQuery || {}
   ));
-  debugger
 
   const updateQuery = $updateQuery(config);
 
