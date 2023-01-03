@@ -108,14 +108,14 @@ export default {
       isActive: true,
       isDisabled: false
     },
-    {
-      id: 1,
-      name: 'profile.rate-plan',
-      img: databaseDisabled,
-      url: ROUTES.APPLICATION.PROFILE.RATE_PLAN.absolute,
-      isActive: false,
-      isDisabled: true
-    }
+    // {
+    //   id: 1,
+    //   name: 'profile.rate-plan',
+    //   img: databaseDisabled,
+    //   url: ROUTES.APPLICATION.PROFILE.RATE_PLAN.absolute,
+    //   isActive: false,
+    //   isDisabled: true
+    // }
   ],
   tabTitles: [
     { id: 0, title: 'Про мене', width: '119px' },

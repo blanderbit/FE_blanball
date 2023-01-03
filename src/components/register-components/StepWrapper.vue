@@ -12,6 +12,9 @@
           <div
               v-for="item of stepperLines?.count"
               :key="item"
+              :style="{
+                width: `${one_step_percent}%`
+              }"
               :class="[
               'b-register-step__section',
               {
@@ -86,10 +89,12 @@
         default: ''
       }
     },
-    setup() {
+    setup(props) {
       const arrow_right = computed(() => ArrowRight);
+      const one_step_percent = computed(() => (100 / props.stepperLines?.count) - 1);
       return {
-        arrow_right
+        arrow_right,
+        one_step_percent
       }
     }
   }

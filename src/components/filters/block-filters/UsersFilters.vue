@@ -179,7 +179,8 @@
     emits: ['update:value', 'clearFilters'],
     setup(props, {emit}) {
       const { isMobile, isTablet, onResize } = useWindowWidth()
-
+      const sendDataFromModal = ref(false)
+      const windowWidth = ref(window.innerWidth)
       const isModalFiltersActive = ref(false)
       const  calendar = ref( {
         inputMask: 'YYYY-MM-DD',
