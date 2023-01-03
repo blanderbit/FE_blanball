@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import Slider from '@vueform/slider'
 
 export default {
@@ -44,6 +44,12 @@ export default {
 
     minAge.value = props.ageRange[0]
     maxAge.value = props.ageRange[1]
+
+    watch(() => props.ageRange, (newVal) => {
+      rangeValue.value = newVal
+      minAge.value = newVal[0]
+      maxAge.value = newVal[1]
+    })
 
     function onSliderDrag(event) {
       minAge.value = event[0]
@@ -111,7 +117,7 @@ export default {
     font-size: 13px;
     line-height: 16px;
     color: #575775;
-    width: 76px;
+    min-width: 76px;
   }
 }
 </style>

@@ -20,7 +20,7 @@
         </div>
       </div>
       <users-filters
-          :modelValue="filters"
+          :model-value="filters"
           @update:value="setFilters"
           @clearFilters="clearFilters"
       >

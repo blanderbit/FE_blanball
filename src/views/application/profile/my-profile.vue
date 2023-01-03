@@ -76,7 +76,7 @@
         </div>
       </div>
       <ButtonsBlock 
-        v-if="windowWidth > 768"
+        v-if="!isMobile"
         :cancel-btn-width="'auto'"
         :save-btn-width="'auto'"
         :is-edit-mode-profile="isEditModeProfile"
@@ -131,7 +131,7 @@
           :is-edit-mode="isEditModeProfile"
         />
         <ButtonsBlock
-          v-if="windowWidth <= 768"
+          v-if="isMobile"
           :is-edit-mode-profile="isEditModeProfile"
           :edit-btn-width="'auto'"
           :cancel-btn-width="'auto'"
@@ -174,6 +174,8 @@ import Loading from '../../../workers/loading-worker/Loading.vue'
 import { API } from "../../../workers/api-worker/api.worker"
 import CONSTANTS from '../../../consts'
 
+import useWindowWidth from '../../../utils/widthScreen'
+
 const EDIT_BUTTON_ACTIONS = {
   SAVE: 'save',
   CANCEL: 'cancel'
@@ -206,6 +208,7 @@ export default {
     
     const route = useRoute()
     const router = useRouter()
+    const { isMobile, onResize } = useWindowWidth()
 
     const userInfo = ref(null)
     const userRating = ref(null)
@@ -216,18 +219,9 @@ export default {
     const changeDataModalConfig = ref(null)
     const myForm = ref(null)
     const isLoading = ref(false)
-    const windowWidth = ref(window.innerWidth)
     const isTabLabel = ref(false)
     const userAvatar = ref('')
     const restData = ref()
-
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    })
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize); 
-    })
     
     const mockData = computed(() => {
       return {
@@ -308,13 +302,18 @@ export default {
       checkboxReviews: route.meta.usersData?.data.configuration?.show_reviews
     }
 
+    onMounted(() => {
+      window.addEventListener('resize', onResize);
+    })
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', onResize); 
+    })
+
     function switchTabLabel(isDisabled) {
       if (isDisabled) {
         isTabLabel.value = !isTabLabel.value
       }
-    }
-    function onResize() {
-      windowWidth.value = window.innerWidth
     }
     function getBirthDay(val) {
       return val?.split('-')[2]
@@ -549,7 +548,7 @@ export default {
       myForm,
       userInfo,
       isLoading,
-      windowWidth,
+      isMobile,
       isTabLabel,
       switchTabLabel,
       restData,

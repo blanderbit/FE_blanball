@@ -6,6 +6,7 @@
       </span>
     </div>
     <v-select
+      :searchable="false"
       :style="{height: height + 'px'}"
       :placeholder="placeholder"
       :options="options"
@@ -19,6 +20,28 @@
       @open="modelHandlers.blur()"
       v-model="dropdownModelValue"
     >
+      <template #option="options">
+        <div class="b-dropdown__custom-option">
+          <img 
+            v-if="options.iconSrc" 
+            :src="options.iconSrc" 
+            alt="icon"
+          >
+          {{ options[displayName] }}
+        </div>
+      </template>
+      <template #selected-option="options">
+        <div class="b-dropdown__custom-option">
+          <img 
+            v-if="options.iconSrc" 
+            :src="options.iconSrc" 
+            alt="icon"
+          >
+          <span>
+            {{ options[displayName] }}
+          </span>
+        </div>
+      </template>
     </v-select>
     <p class="b-input__error-message">{{ modelErrorMessage }}</p>
   </div>
@@ -100,7 +123,7 @@ export default {
     function selectValue (e) {
       dropdownModelValue.value = props.options.find(item => {
         return item[props.displayValue] === e
-      }) || e ? {value: e, name: e} : null;
+      }) || (e ? {value: e, name: e} : null);
 
       modelHandlers.value.input[0](e);
       modelHandlers.value.input[1](e, true);
@@ -119,7 +142,6 @@ export default {
     if(props.checkValueInitially) {
       selectValue(props.modelValue);
     }
-
 
     watch(
       () => props.modelValue,
@@ -201,20 +223,17 @@ export default {
 
 <style lang="scss" scoped >
   @import "forms.scss";
-  /*::v-deep {*/
-
-  /*}*/
-
-
+  
 ::v-deep {
   .vs__clear {
     display: none;
   }
-  .vs__dropdown-menu {
-    width: 500px;
-  }
   .vs__search {
     margin: 0;
+    padding: 0;
+  }
+  .vs--unsearchable:not(.vs--disabled) .vs__search {
+    padding: 4px;
   }
   .v-select {
     height: 100%;
@@ -226,6 +245,10 @@ export default {
     font-size: 13px;
     line-height: 24px;
     color: #575775;
+  }
+  .v-select .vs__dropdown-toggle {
+    padding: 0;
+    height: 100%;
   }
   .style-chooser .vs__search::placeholder,
   .style-chooser .vs__dropdown-toggle,
@@ -243,15 +266,21 @@ export default {
   #vs3__listbox {
     --vs-dropdown-min-width: auto;
   }
+  .vs__selected-options {
+    overflow: hidden;
+    flex-wrap: nowrap;
+  }
   .vs__selected {
     overflow-x: hidden;
-    width: 75%;
+    width: 100%;
     white-space: nowrap;
     display: inline-block;
     text-overflow: ellipsis;
-    margin: 9px 2px 0;
+    margin: 0;
   }
-
+  .vs--single.vs--open .vs__selected {
+    height: 100%;
+  }
   .vs--searchable.b-form-error {
     border-radius: 6px;
   }
@@ -266,8 +295,6 @@ export default {
   }
 }
 
-
-
   .b-input__error-message {
     font-family: 'Inter';
     font-style: normal;
@@ -276,7 +303,6 @@ export default {
     line-height: 20px;
     color: #F32929;
   }
-
   .v-select.drop-up.vs--open .vs__dropdown-toggle {
     border-radius: 0 0 4px 4px;
     border-top-color: transparent;
@@ -293,7 +319,7 @@ export default {
   .b-dropdown {
     position: relative;
     height: 100%;
-    .b-dropdown__title {
+    &__title {
       position: absolute;
       font-family: 'Inter';
       font-style: normal;
@@ -306,6 +332,21 @@ export default {
       left: 8px;
       top: -8px;
       z-index: 1;
+    }
+    &__custom-option {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      img {
+        margin-right: 5px;
+        display: block;
+        width: 12px;
+      }
+      span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   }
 

@@ -1,5 +1,8 @@
 import user from '../assets/img/user.png'
 import maleIcon from '../assets/img/male-icon.svg'
+import MaleIcon from '../assets/img/female-icon.svg'
+import FemaleIcon from '../assets/img/male-icon.svg'
+import UnisexIcon from '../assets/img/unisex.svg'
 
 export default {
   user_position: {
@@ -100,5 +103,22 @@ export default {
       'Листопада' : '11',
       'Грудня' : '12'
     }
-  }
+  },
+  gender: [
+    {
+      value: 'Woman',
+      iconSrc: FemaleIcon,
+      name: 'Жінки'
+    },
+    {
+      value: 'Man',
+      iconSrc: MaleIcon,
+      name: 'Чоловіки'
+    },
+    {
+      value: 'All',
+      iconSrc: UnisexIcon,
+      name: 'Всі'
+    }
+  ]
 }

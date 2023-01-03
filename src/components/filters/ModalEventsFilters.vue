@@ -15,18 +15,13 @@
           </div>
           <div class="b-modal-filters__game-type-input">
             <Dropdown
-              :main-title="$t('users.position')"
-              :options="positions"
-              :placeholder="$t('users.position')"
-              display-name="value"
+              :check-value-immediate="true"
+              :options="sportTypeDropdown"
+              :placeholder="$t('events.game-type')"
+              display-name="name"
               display-value="value"
-              v-model="dropdownData"
+              v-model="gameTypeData"
               name="position"
-            />
-          </div>
-          <div class="b-modal-filters__age-range">
-            <RangeFilter 
-              v-model:age-range="ageRangeData"
             />
           </div>
           <div class="b-modal-filters__gender">
@@ -34,10 +29,24 @@
               v-model:gender="genderData"
             />
           </div>
+          <div class="b-modal-filters__status-event">
+            <Dropdown
+              :check-value-immediate="true"
+              :options="statusDropdown"
+              :placeholder="$t('events.event-status')"
+              :height="32"
+              display-value="value"
+              display-name="name"
+              v-model="gameStatusData"
+            />
+          </div>
+          <div class="b-modal-filters__location">
+            <ModalPositionMap v-model="locationData"></ModalPositionMap>
+          </div>
           <div class="b-modal-filters__btns-block">
             <div 
               class="b-modal-filters__cancel-btn"
-              @click="$emit('closeModal')"
+              @click="clearAllData"
             >
               {{ $t('buttons.clear') }}
             </div>
@@ -60,72 +69,96 @@ import { computed, ref, watch } from 'vue'
 import ModalWindow from '../ModalWindow.vue'
 import Dropdown from '../forms/Dropdown.vue'
 import GreenBtn from '../GreenBtn.vue'
-import RangeFilter from './components/RangeFilter.vue'
 import RadioGenderBox from './components/RadioGenderBox.vue'
+import ModalPositionMap from '../maps/ModalPositionMap.vue'
+import ClearFilters from './components/ClearFilters.vue'
 
 import tickIcon from '../../assets/img/tick-white.svg'
 
 import CONSTANTS from "../../consts/index";
 
 export default {
-  name: 'ModalFilters',
+  name: 'ModalUsersFilters',
   components: {
     ModalWindow,
     GreenBtn,
     Dropdown,
-    RangeFilter,
-    RadioGenderBox
+    RadioGenderBox,
+    ClearFilters,
+    ModalPositionMap
   },
   props: {
-    dropdownPosition: {
+    dropdownGameType: {
       type: String,
       default: ''
     },
-    rangeSlider: {
-      type: Array,
-      default: () => []
-    },
     gender: {
       type: String,
+      default: ''
+    },
+    status: {
+      type: String,
+      default: ''
+    },
+    location: {
+      type: Object,
       default: ''
     }
   },
   emits: [
     'closeModal', 
     'setModalWindowFilters',
-    'update:dropdownPosition', 
-    'update:rangeSlider', 
-    'update:gender'
+    'clearFilters',
+    'update:dropdownGameType',
+    'update:gender',
+    'update:status',
+    'update:location'
   ],
   setup(props, { emit }) {
-    const dropdownData = ref(props.dropdownPosition)
-    const ageRangeData = ref(props.rangeSlider)
+    const gameTypeData = ref(props.dropdownGameType)
+    const gameStatusData = ref(props.status)
     const genderData = ref(props.gender)
+    const locationData = ref(props.location)
 
-    const positions = computed(() => CONSTANTS.profile.position)
+    const sportTypeDropdown = CONSTANTS.event_page.sport_type_dropdown;
+    const statusDropdown = CONSTANTS.event_page.status_ropdown;
+
     const icon = computed(() => tickIcon)
     
     watch(() => genderData.value, (newVal) => {
       emit('update:gender', newVal)
     })
-    watch(() => ageRangeData.value, (newVal) => {
-      emit('update:rangeSlider', newVal)
+    watch(() => gameTypeData.value, (newVal) => {
+      emit('update:dropdownGameType', newVal)
     })
-    watch(() => dropdownData.value, (newVal) => {
-      emit('update:dropdownPosition', newVal)
+    watch(() => gameStatusData.value, (newVal) => {
+      emit('update:status', newVal)
+    })
+    watch(() => locationData.value, (newVal) => {
+      emit('update:location', newVal)
     })
 
     function setFilters() {
       emit('setModalWindowFilters')
       emit('closeModal')
     }
+    function clearAllData() {
+      emit('clearFilters')
+      gameStatusData.value = ''
+      gameTypeData.value = ''
+      locationData.value = {}
+      genderData.value = ''
+    }
 
     return {
       setFilters,
-      positions,
+      clearAllData,
+      statusDropdown,
+      sportTypeDropdown,
       icon,
-      dropdownData,
-      ageRangeData,
+      gameStatusData,
+      gameTypeData,
+      locationData,
       genderData
     }
   }
@@ -154,13 +187,13 @@ export default {
   &__game-type-input {
     width: 100%;
     height: 40px;
-    margin-bottom: 16px;
-  }
-  &__age-range {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
   &__gender {
-
+    margin-bottom: 12px;
+  }
+  &__status-event {
+    margin-bottom: 12px;
   }
   &__btns-block {
     display: flex;

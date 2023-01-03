@@ -111,22 +111,31 @@
             <div v-else class="b-user-card__dropdowns">
               <div class="b-user-card__dropdown-days">
                 <Dropdown
+                  :placeholder="$t('profile.day')"
                   :main-title="$t('profile.day')"
                   :options="mockData.days"
+                  display-name="name"
+                  display-value="value"
                   name="day"
                 />
               </div>
               <div class="b-user-card__dropdown-months">
                 <Dropdown
+                  :placeholder="$t('profile.month')"
                   :main-title="$t('profile.month')"
                   :options="mockData.months"
+                  display-name="name"
+                  display-value="value"
                   name="month"
                 />
               </div>
               <div class="b-user-card__dropdown-years">
                 <Dropdown
+                  :placeholder="$t('profile.year')"
                   :main-title="$t('profile.year')"
                   :options="mockData.years"
+                  display-name="name"
+                  display-value="value"
                   name="year"
                 />
               </div>
@@ -188,7 +197,10 @@
               >
                 <Dropdown
                   :main-title="$t('profile.main-leg')"
+                  :placeholder="$t('profile.main-leg')"
                   :options="mockData.mainLag"
+                  display-name="name"
+                  display-value="value"
                   name="working_leg"
                 />
               </div>
@@ -206,11 +218,12 @@
             <Dropdown
               v-else
               :outside-title="true"
+              :placeholder="$t('profile.game-position')"
               :main-title="$t('profile.game-position')"
               :options="mockData.position"
               :width="200"
               :height="40"
-              display-name="value"
+              display-name="name"
               display-value="value"
               name="position"
             />

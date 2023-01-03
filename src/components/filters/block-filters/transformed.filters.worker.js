@@ -3,22 +3,21 @@ import { cloneDeep, isEqual } from 'lodash'
 
 export const TransformedFiltersWorker = (config) => {
   const { 
-    checkSliderValues, 
     setupTransformedCallback, 
     updateRealDataFromTransformed,
+    ifSecondLineWasUsed,
     props,
-    emit 
+    emit,
+    isMobile,
   } = config;
 
   if(!setupTransformedCallback || !updateRealDataFromTransformed || !props || !props?.modelValue|| !emit) {
-    throw  new Error('TransformedFiltersWorker need emplement checkSliderValues, setupTransformedCallback, updateRealDataFromTransformed, props, props.modelValue, emit')
+    throw  new Error('TransformedFiltersWorker need emplement setupTransformedCallback, updateRealDataFromTransformed, props, props.modelValue, emit')
   }
 
   const activeFilters = ref(false);
-
+  activeFilters.value = ifSecondLineWasUsed && ifSecondLineWasUsed()
   const transformedFilters = ref(setupTransformedCallback(activeFilters));
-
-  activeFilters.value = checkSliderValues && checkSliderValues(transformedFilters.value.profile__age)
 
   watch(
     () => props.modelValue,
@@ -37,23 +36,17 @@ export const TransformedFiltersWorker = (config) => {
       if (isEqual(a, b)) {
         return
       }
-      updateRealData()
+      if (a.ordering !== b.ordering) {
+        updateRealData()
+      }
+      if (!isMobile?.value) {
+        updateRealData()
+      }
     },
     {
       deep: true
     }
   );
-  // watch(
-  //   () => sendDataFromModal.value,
-  //   (a, b) => {
-  //   if (a && isChangesInModal.value) {
-  //     updateRealData()
-  //     sendDataFromModal.value = false
-  //     isChangesInModal.value = false
-  //   } else {
-  //     sendDataFromModal.value = false
-  //   }
-  // })
 
   function updateRealData() {
     clearTimeout(timeout);
@@ -63,6 +56,7 @@ export const TransformedFiltersWorker = (config) => {
   }
 
   return {
+    updateRealData,
     transformedFilters,
     activeFilters
   }

@@ -1,8 +1,8 @@
 import { watch, ref } from 'vue'
 import {cloneDeep, isEqual} from 'lodash'
 const $updateQuery = (queryConfig) => {
-  const {router} = queryConfig;
 
+  const {router} = queryConfig;
   return (query) => {
     query = Object.keys(query)
       .filter(item => !!query[item])
@@ -23,7 +23,7 @@ const filterParseFromUrl = (config, query) => {
   Object
     .keys(config)
     .forEach(key => {
-      if (config[key]) {
+      if (config[key] && query[key]) {
         config[key].value = query[key]
       }
     });
