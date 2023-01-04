@@ -2,7 +2,6 @@
   <Transition>
     <ModalWindow
       :title-color="'#C10B0B'"
-      @close-modal="closeModal"
     >
       <template #title>
         {{ $t('modals.delete_acc.title') }}
