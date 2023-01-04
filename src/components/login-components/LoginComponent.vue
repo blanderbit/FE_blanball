@@ -275,6 +275,7 @@
           font-size: 12px;
           line-height: 20px;
           color: #262541;
+          vertical-align: bottom;
         }
         ::v-deep .indicator {
           border: 1px solid #575775;
