@@ -9,7 +9,7 @@
           <InputComponent
               :outside-title="true"
               :title="`Логін`"
-              :placeholder="'elektron@mail.com'"
+              :placeholder="'example@email.com'"
               :title-width="0"
               :height="40"
               name="email"
