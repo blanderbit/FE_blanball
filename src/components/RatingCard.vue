@@ -158,24 +158,13 @@ export default {
     border-radius: 8px;
     padding: 20px 16px;
     position: relative;
-    @media (max-width: 768px) {
-      width: 100%;
-      min-width: 100%;
-    }
     @media (min-width: 1400px) {
-      margin-right: 16px;
+      flex-basis: 360px;
     }
-    @media (min-width: 992px) {
-      width: 320px;
-      min-width: 320px;
+    @media (min-width: 1200px) and (max-width: 1400px) {
+      flex-basis: 312px;
     }
-    @media (max-width: 992px) {
-      width: 100%;
-      min-width: 100%;
-      order: 2;
-      margin-bottom: 10px;
-      margin-right: 0;
-    }
+
     .b-rating-card__top-table {
       .b-rating-card__title {
         font-family: 'Exo 2';
