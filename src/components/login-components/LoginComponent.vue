@@ -66,8 +66,9 @@
 </template>
 
 <script>
-  import { computed, ref } from 'vue'
+  import { computed, ref, reactive } from 'vue'
   import { useRouter } from 'vue-router'
+  import { useI18n } from 'vue-i18n'
 
   import GreenBtn from '../GreenBtn.vue'
   import InputComponent from '../forms/InputComponent.vue'
@@ -82,7 +83,7 @@
   import { ROUTES } from "../../router/router.const";
 
   export default {
-    name: 'Step1',
+    name: 'LoginComponent',
     components: {
       GreenBtn,
       InputComponent,
@@ -91,6 +92,7 @@
     },
     setup() {
       const router = useRouter()
+      const { t } = useI18n();
 
       const isWrongCreds = ref(false);
       const showInvalidCredentials = computed(() => {
@@ -108,10 +110,20 @@
         // password: localStorage.getItem('password')
       });
 
+      const validEmail = computed(() => t('login.check-email'))
+      const requiredEmail = computed(() => t('login.email-must-be'))
+      const passwordLength = computed(() => t('login.password-error'))
+
       const schema = yup.object({
-        email: yup.string().email().required(),
+        email: yup
+          .string()
+          .email(validEmail)
+          .required(requiredEmail),
         save_credentials: yup.boolean(),
-        password: yup.string().required().min(8), // TODO implement password options
+        password: yup
+          .string()
+          .required()
+          .min(8, passwordLength), // TODO implement password options
       });
 
 

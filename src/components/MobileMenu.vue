@@ -14,7 +14,10 @@
           {{$t('menu.guest-account')}}
         </div>
       </div>
-      <div class="b-mob-menu__logout-icon">
+      <div 
+        class="b-mob-menu__logout-icon" 
+        @click="logOut"
+      >
         <img src="../assets/img/logout-icon.svg" alt="" />
       </div>
     </div>
@@ -108,6 +111,7 @@ import SettingsWhite from '../assets/img/Settings-white.svg'
 
 import CONSTANTS from '../consts/index'
 import { ROUTES } from "../router/router.const";
+import { TokenWorker } from "../workers/token-worker";
 
 export default {
   name: 'MobileMenu',
@@ -265,6 +269,11 @@ export default {
       })
     }
 
+    const logOut = () => {
+      TokenWorker.clearToken();
+      router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute)
+    }
+
     return {
       topMenu,
       bottomMenu,
@@ -273,6 +282,7 @@ export default {
       mobMenuStyle,
       lineMenuClick,
       closeMobMenu,
+      logOut
     }
   },
 }
