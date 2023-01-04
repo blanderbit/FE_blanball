@@ -1,6 +1,6 @@
 <template>
   <Transition>
-    <ModalWindow @close-modal="closeModal">
+    <ModalWindow>
       <template #title>
         {{ $t('modals.change_password.title') }}
       </template>
