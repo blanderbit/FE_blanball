@@ -115,7 +115,8 @@
         :initial-values="formValues"
         ref="myForm"
       >
-        <RatingCard 
+        <RatingCard
+          v-if="!isMobTabletSize"
           :rating-scale="userRating" 
         />
         <UserDetailsCard
@@ -124,12 +125,18 @@
           :is-edit-mode="isEditModeProfile"
           @openEditPictureModal="openEditPictureModal"
         />
-        <SecurityBlock
-          @toggle-modal="toggleModal"
-          :user-email="userEmail"
-          :checkbox-data="checkboxData"
-          :is-edit-mode="isEditModeProfile"
-        />
+        <div class="b-user-cabinet__mobile-tablet-block">
+          <RatingCard 
+            v-if="isMobTabletSize"
+            :rating-scale="userRating" 
+          />
+          <SecurityBlock
+            @toggle-modal="toggleModal"
+            :user-email="userEmail"
+            :checkbox-data="checkboxData"
+            :is-edit-mode="isEditModeProfile"
+          />
+        </div>
         <ButtonsBlock
           v-if="isMobile"
           :is-edit-mode-profile="isEditModeProfile"
@@ -208,7 +215,12 @@ export default {
     
     const route = useRoute()
     const router = useRouter()
-    const { isMobile, onResize } = useWindowWidth()
+    const {
+      onResize,
+      isBetweenTabletAndDesktop, 
+      isMobile,
+      isTablet 
+    } = useWindowWidth()
 
     const userInfo = ref(null)
     const userRating = ref(null)
@@ -223,6 +235,9 @@ export default {
     const userAvatar = ref('')
     const restData = ref()
     
+    const isMobTabletSize = computed(() => {
+      return isBetweenTabletAndDesktop.value || isMobile.value || isTablet.value
+    })
     const mockData = computed(() => {
       return {
         user_info: CONSTANTS.users_page.userInfo,
@@ -522,14 +537,15 @@ export default {
       toggleModal(modal)
     }
 
-
-
+    
+    
     return {
       toggleEditMode,
       saveDeclineUserDataChanges,
       changeTab,
       closeChangeUserDataModal,
       toggleModal,
+      switchTabLabel,
       saveDataEdit,
       cancelDataEdit,
       openEditPictureModal,
@@ -550,7 +566,7 @@ export default {
       isLoading,
       isMobile,
       isTabLabel,
-      switchTabLabel,
+      isMobTabletSize,
       restData,
       userAvatar
     }
@@ -676,11 +692,22 @@ export default {
     flex-wrap: wrap;
     justify-content: space-between;
     margin-top: 24px;
-    @media (min-width: 1400px) {
-      justify-content: flex-start;
+    @media (min-width: 1200px) {
+      justify-content: space-between;
     }
-    @media (max-width: 992px) {
-      flex-direction: column;
+    @media (max-width: 768px) {
+      display: block;
+    }
+    .b-user-cabinet__mobile-tablet-block {
+      @media (min-width: 1400px) {
+        flex-basis: 372px;
+      }
+      @media (min-width: 1200px) and (max-width: 1400px) {
+        flex-basis: 320px;
+      }
+      @media (min-width: 768px) and (max-width: 1200px) {
+        flex-basis: 49%;
+      }
     }
   }
 }

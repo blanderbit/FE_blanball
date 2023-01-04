@@ -118,25 +118,7 @@ export default {
   border-radius: 8px;
   padding: 20px 16px;
   height: fit-content;
-  @media (max-width: 768px) {
-    width: 100%;
-    min-width: 100%;
-  }
-  @media (min-width: 1200px) {
-    width: 320px;
-    min-width: 320px;
-  }
-  @media (min-width: 992px) and (max-width: 1199px) {
-    width: 344px;
-    min-width: 344px;
-    margin-top: 28px;
-  }
-  @media (max-width: 992px) {
-    width: 100%;
-    min-width: 100%;
-    order: 3;
-    margin-bottom: 10px;
-  }
+
   .b-security__email-input {
     height: 40px;
     margin-bottom: 12px;

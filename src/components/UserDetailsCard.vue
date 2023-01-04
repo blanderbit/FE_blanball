@@ -54,9 +54,9 @@
         <div
           v-for="item in mockData.tabTitles"
           :key="item.id"
-          class="b-user-card__tab-title"
+          class="b-user-card__tab-title d-flex justify-content-center align-items-center"
           :style="{
-            'flex-basis': item.width,
+            'flex-basis' : item.id === 1 ? '50%' : '33.3333%',
             'margin-right': item.id !== 2 ? '4px' : 0,
             background: currentTab === item.id ? '#FFFFFF' : '#F9F9FC',
             color: currentTab === item.id ? '#262541' : '#575775',
@@ -68,7 +68,16 @@
         </div>
       </div>
       <div class="b-user-card__main-tab-body">
-        <div v-show="currentTab === 0" class="b-user-card__tab-body">
+        <div 
+          v-show="currentTab === 0 || isMobTabletSize" 
+          class="b-user-card__tab-body"
+        >
+          <div
+            v-if="isMobTabletSize"
+            class="b-user-card__mob-title"
+          >
+            {{ $t('profile.about-me') }}
+          </div>
           <div v-if="isEditMode" class="b-user-card__name-line">
             <div class="b-user-card__input-surname">
               <InputComponent
@@ -143,7 +152,13 @@
           </div>
         </div>
 
-        <div v-show="currentTab === 1" class="b-user-card__tab-body">
+        <div v-show="currentTab === 1 || isMobTabletSize" class="b-user-card__tab-body">
+          <div
+            v-if="isMobTabletSize"
+            class="b-user-card__mob-title"
+          >
+            {{ $t('profile.game-features') }}
+          </div>
           <div class="b-user-card__body-features">
             <div class="b-user-card__height">
               <div v-if="!isEditMode" class="b-user-card__to-show">
@@ -209,7 +224,7 @@
           <div class="b-user-card__position">
             <div v-if="!isEditMode" class="b-user-card__to-show">
               <div class="b-user-card__data">
-                {{ userData.position }}
+                {{ userPosition }}
               </div>
               <div class="b-user-card__title">
                 {{ $t('profile.game-position') }}
@@ -230,7 +245,13 @@
           </div>
         </div>
 
-        <div v-if="currentTab === 2" class="b-user-card__tab-body">
+        <div v-if="currentTab === 2 || isMobTabletSize" class="b-user-card__tab-body">
+          <div
+            v-if="isMobTabletSize"
+            class="b-user-card__mob-title"
+          >
+            {{ $t('profile.contacts') }}
+          </div>
           <div class="b-user-card__phone">
             <div v-if="!isEditMode" class="b-user-card__to-show">
               <div class="b-user-card__data">
@@ -289,7 +310,7 @@
 </template>
 
 <script>
-import { ref, computed, watchEffect } from 'vue'
+import { ref, computed, watchEffect, onMounted, onBeforeUnmount } from 'vue'
 import dayjs from 'dayjs'
 import dayjsUkrLocale from 'dayjs/locale/uk'
 
@@ -298,13 +319,13 @@ import TextAreaComponent from '../components/TextAreaComponent.vue'
 import Dropdown from './forms/Dropdown.vue'
 import Avatar from '../components/Avatar.vue'
 
-
 import sortArrowHorizontally from '../assets/img/sort-arrows-horizontal.svg'
 import tick from '../assets/img/tick.svg'
 import edit from '../assets/img/edit.svg'
 
 import { API } from "../workers/api-worker/api.worker"
 import CONSTANTS from "../consts"
+import useWindowWidth from '../utils/widthScreen'
 
 export default {
   name: 'UserDetailsCard',
@@ -330,6 +351,12 @@ export default {
   },
   emits: ['openEditPictureModal'],
   setup(props, {emit}) {
+    const { 
+      onResize,
+      isBetweenTabletAndDesktop, 
+      isMobile,
+      isTablet 
+    } = useWindowWidth()
     const currentTab = ref(0)
     const selectedFile = ref(null)
     const imageSrc = ref(null)
@@ -340,6 +367,14 @@ export default {
       props.userData.role,
       props.userData.position
     ])
+
+    const userPosition = computed(() => {
+      return CONSTANTS.profile.position.find(item => item.value === props.userData?.position).name
+    })
+
+    const isMobTabletSize = computed(() => {
+      return isBetweenTabletAndDesktop.value || isMobile.value || isTablet.value
+    })
 
     const fullUserName = computed(() => `${props.userData.name} ${props.userData.last_name}`)
 
@@ -373,6 +408,14 @@ export default {
         .format('D MMMM YYYY')} p.`
     })
 
+    onMounted(() => {
+      window.addEventListener('resize', onResize);
+    })
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', onResize); 
+    })
+
     function changeUserTab(id) {
       currentTab.value = id
     }
@@ -402,7 +445,9 @@ export default {
       birthDate,
       mockData,
       labels,
-      fullUserName
+      fullUserName,
+      isMobTabletSize,
+      userPosition
     }
   }
 }
@@ -414,25 +459,27 @@ export default {
   background: #eeeef3;
   border-radius: 8px;
   height: fit-content;
+  @media (max-width: 1200px) {
+    background: none;
+  }
   @media (min-width: 1400px) {
-    margin-right: 16px;
+    flex-basis: 508px;
   }
-  @media (min-width: 992px) {
-    width: 464px;
-    min-width: 464px;
+  @media (min-width: 1200px) and (max-width: 1400px) {
+    flex-basis: 440px;
   }
-  @media (max-width: 992px) {
-    width: 100%;
-    min-width: 100%;
-    order: 1;
-    margin-bottom: 10px;
-    margin-right: 0;
-  }
+  @media (min-width: 768px) and (max-width: 1200px) {
+      flex-basis: 49%;
+    }
+
   .b-user-card__top-table {
     background: #ffffff;
     border-radius: 8px;
     padding: 16px 16px;
     margin-bottom: 16px;
+    @media (max-width: 1200px) {
+      box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+    }
     .b-user-card__top-part {
       display: flex;
       .b-user-card__profile-picture {
@@ -505,24 +552,48 @@ export default {
     }
   }
   .b-user-card__tabs-block {
+    @media (max-width: 1200px) {
+      box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+    }
     .b-user-card__tab-titles {
       display: flex;
       justify-content: space-between;
+      @media (max-width: 1200px) {
+        display: none;
+      }
       .b-user-card__tab-title {
         border-radius: 4px 4px 0px 0px;
-        padding: 8px 0;
-        padding-left: 16px;
+        padding: 0 4px;
         cursor: pointer;
         font-family: 'Inter';
         font-style: normal;
         font-size: 14px;
         line-height: 20px;
+        height: 36px;
       }
     }
     .b-user-card__main-tab-body {
       padding: 24px 16px;
       background: #fff;
+      @media (max-width: 1200px) {
+        padding: 12px;
+      }
       .b-user-card__tab-body {
+        &:nth-child(1) {
+          .b-user-card__mob-title {
+            margin-top: 0;
+          }
+        }
+        .b-user-card__mob-title {
+          font-family: 'Exo 2';
+          font-style: normal;
+          font-weight: 700;
+          font-size: 16px;
+          line-height: 24px;
+          color: #262541;
+          margin-bottom: 12px;
+          margin-top: 16px;
+        }
         .b-user-card__to-show {
           .b-user-card__data {
             font-family: 'Inter';
@@ -544,11 +615,22 @@ export default {
         .b-user-card__name-line {
           display: flex;
           justify-content: space-between;
+          margin-bottom: 16px;
+          @media (max-width: 1200px) {
+            display: block;
+          }
           .b-user-card__input-surname,
           .b-user-card__input-name {
             width: 196px;
+            @media (max-width: 1200px) {
+              width: 100%;
+            }
           }
-          margin-bottom: 16px;
+          .b-user-card__input-name {
+            @media (max-width: 1200px) {
+              margin-top: 12px;
+            }
+          }
         }
         .b-user-card__textarea-line {
           .b-user-card__about-me {
@@ -610,7 +692,13 @@ export default {
           .b-user-card__weight {
             width: 92px;
           }
+          .b-user-card__weight {
+            padding-left: 16px;
+            border-left: 1px solid #EFEFF6;
+          }
           .b-user-card__main-leg {
+            padding-left: 16px;
+            border-left: 1px solid #EFEFF6;
             .b-user-card__dropdown-main-leg {
               width: 200px;
               ::v-deep {
