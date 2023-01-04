@@ -1,0 +1,1 @@
+import{d as e}from"./index.a87692b6.js";function r(){var i=e(window.innerWidth<768),n=e(window.innerWidth>576&&window.innerWidth<992);function o(){i.value=window.innerWidth<768,n.value=window.innerWidth>576&&window.innerWidth<992}return{onResize:o,isMobile:i,isTablet:n}}export{r as u};

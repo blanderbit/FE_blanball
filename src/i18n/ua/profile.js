@@ -17,7 +17,7 @@ export default {
   'set-personal-details': 'Налаштуйте видимість ваших даних',
   'phone-number': 'Номер телефону',
   'e-mail': 'E-mail',
-  'my-feedbacks': 'Відгуки про мене',
+  'my-feedbacks': 'Показувати відгуки',
   'personal-details': 'Особиста інформація',
   'some': '(Деякі)',
   'how-profile-looks': 'Як виглядатиме мій профіль для інших?',
