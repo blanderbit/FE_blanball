@@ -25,7 +25,7 @@
           />
         </div>
         <div class="b-security__personal-settings">
-          <p>{{ $t('profile.my-feedbacks') }} <span>{{ $t('profile.some') }}</span></p>
+          <p>{{ $t('profile.my-feedbacks') }} </p>
           <Switcher 
             :id="'feedback'"
             :is-edit-mode="isEditMode"
