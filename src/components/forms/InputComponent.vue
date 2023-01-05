@@ -52,7 +52,7 @@
         />
       </slot>
     </div>
-    <p class="b-input__error-message">{{ modelErrorMessage }}</p>
+    <p class="b-input__error-message">{{ t(modelErrorMessage || '') }}</p>
   </div>
 </template>
 
@@ -62,7 +62,7 @@ import { CustomModelWorker } from "../../workers/custom-model-worker/index";
 
 import eyeCross from '../../assets/img/eye-crossed.svg'
 import eyeOpen from '../../assets/img/eye-opened.svg'
-
+import { useI18n } from 'vue-i18n'
 const PASSWORD_TYPES = {
   PASSWORD: 'password',
   TEXT: 'text'
@@ -203,6 +203,8 @@ export default {
       window.removeEventListener('resize', resizeFunction)
     })
 
+
+    const { t } = useI18n();
     return {
       iconClickAction,
       staticModelValue,
@@ -212,7 +214,8 @@ export default {
       rightIcon,
       inputStyle,
       inputWrapper,
-      input
+      input,
+      t
     }
   }
 }

@@ -43,7 +43,7 @@
         </div>
       </template>
     </v-select>
-    <p class="b-input__error-message">{{ modelErrorMessage }}</p>
+    <p class="b-input__error-message">{{ t(modelErrorMessage || '') }}</p>
   </div>
 </template>
 
@@ -54,7 +54,7 @@ import { createPopper } from '@popperjs/core'
 
 import { CustomModelWorker } from "../../workers/custom-model-worker/index"
 import SearchIcon from '../../assets/img/search.svg'
-
+import { useI18n } from 'vue-i18n'
 export default {
   name: 'dropdown-component',
   components: {
@@ -206,6 +206,7 @@ export default {
       emit('update:modelValue',val?.[props.displayValue] )
     }
 
+    const { t } = useI18n();
     return {
       setNewValue,
       withPopper,
@@ -215,7 +216,8 @@ export default {
       isOpened,
       wrapper,
       dropdownModelValue,
-      icon
+      icon,
+      t
     }
   }
 }

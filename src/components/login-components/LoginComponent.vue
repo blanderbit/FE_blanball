@@ -1,7 +1,7 @@
 <template>
   <div class="b-login-step">
 
-    <Form v-slot="data" :validation-schema="schema" :initial-values="initialValues">
+    <Form v-slot="data" :validation-schema="schema" :initial-values="initialValues" @submit="disableSubmit">
       <div class="b-login-step__top-part">
         <div class="b-login-step__main-title">{{ $t('login.app-name') }}</div>
         <div class="b-login-step__title">{{ $t('login.authorization') }}</div>
@@ -66,16 +66,13 @@
 </template>
 
 <script>
-  import { computed, ref, reactive } from 'vue'
+  import { computed, ref } from 'vue'
   import { useRouter } from 'vue-router'
-  import { useI18n } from 'vue-i18n'
 
   import GreenBtn from '../GreenBtn.vue'
   import InputComponent from '../forms/InputComponent.vue'
   import Checkbox from '../forms/Checkbox.vue'
 
-  import eyeCross from '../../assets/img/eye-crossed.svg'
-  import eyeOpen from '../../assets/img/eye-opened.svg'
   import * as yup from 'yup'
   import { Form } from '@system.it.flumx.com/vee-validate'
   import { API } from '../../workers/api-worker/api.worker'
@@ -91,8 +88,7 @@
       Checkbox
     },
     setup() {
-      const router = useRouter()
-      const { t } = useI18n();
+      const router = useRouter();
 
       const isWrongCreds = ref(false);
       const showInvalidCredentials = computed(() => {
@@ -105,25 +101,26 @@
         }
       });
 
-      const initialValues = ref({
-        // email: localStorage.getItem('email'),
-        // password: localStorage.getItem('password')
-      });
+      const initialValues = ref({});
 
-      const validEmail = computed(() => t('login.check-email'))
-      const requiredEmail = computed(() => t('login.email-must-be'))
-      const passwordLength = computed(() => t('login.password-error'))
+      if(localStorage.getItem('email')) {
+        initialValues.value.email = localStorage.getItem('email')
+      }
+
+      if(localStorage.getItem('password')) {
+        initialValues.value.password = localStorage.getItem('password')
+      }
 
       const schema = yup.object({
         email: yup
           .string()
-          .email(validEmail)
-          .required(requiredEmail),
+          .email('errors.email')
+          .required('errors.required'),
         save_credentials: yup.boolean(),
         password: yup
           .string()
-          .required()
-          .min(8, passwordLength), // TODO implement password options
+          .required('errors.required')
+          .min(8, 'errors.password-error'),
       });
 
 
@@ -174,7 +171,11 @@
         warningTopStyle,
         handleLogin,
         openResetPasswordModal,
-        openRegisterPage
+        openRegisterPage,
+        disableSubmit: (e) => {
+          e.stopPropagation()
+          e.preventDefault()
+        }
       }
     },
   }

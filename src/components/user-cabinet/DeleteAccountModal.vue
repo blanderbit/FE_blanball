@@ -47,7 +47,7 @@
               @resend-code-action="sendCodeForDeleteAcc" 
             />
           </div>
-          <Form v-slot="data" :validation-schema="schema">
+          <Form v-slot="data" :validation-schema="schema" @submit="disableSubmit">
             <div class="code-input-field">
               <CodeInput
                 :fields="5"
@@ -113,7 +113,7 @@ export default {
     })
     const schema = computed(() => {
       return yup.object({
-        verify_code: yup.string().required().min(5),
+        verify_code: yup.string().required('errors.required').min(5, 'errors.min5'),
       })
     })
 
@@ -149,7 +149,11 @@ export default {
       closeModal,
       deleteAcc,
       modalDeleteAcc,
-      schema
+      schema,
+      disableSubmit: (e) => {
+        e.stopPropagation()
+        e.preventDefault()
+      }
     }
   }
 }

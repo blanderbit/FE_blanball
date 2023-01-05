@@ -41,25 +41,6 @@
           />
         </div>
       </div>
-      <div class="b-register-step__small-title">
-        {{$t('register.you-identified-as')}}
-      </div>
-      <div class="b-register-step__gender-block mb-3">
-        <div class="radio-btn-wrapper">
-          <radio-button
-              name="gender"
-              :title="$t('register.men')"
-              value="Man"
-              :url="icons.MaleIcon"
-          ></radio-button>
-          <radio-button
-              name="gender"
-              :title="$t('register.women')"
-              value="Woman"
-              :url="icons.FemaleIcon"
-          ></radio-button>
-        </div>
-      </div>
 
       <div class="b-register-step__small-subtitle">
         {{$t('register.you_must_have_6_or_more_years')}}
@@ -73,29 +54,20 @@
 
   import GreenBtn from '../GreenBtn.vue'
   import Dropdown from '../forms/Dropdown.vue'
-  import RadioButton from '../forms/RadioButton.vue'
 
   import CONSTANTS from '../../consts/index'
   import StepWrapper from './StepWrapper.vue'
   import { useI18n } from 'vue-i18n'
-  import MaleIcon from '../../assets/img/male-icon.svg';
-  import FemaleIcon from '../../assets/img/female-icon.svg';
 
   export default {
     name: 'Step8',
     components: {
       GreenBtn,
       Dropdown,
-      RadioButton,
       StepWrapper
     },
     setup() {
-      const icons = computed(() => {
-        return {
-          MaleIcon,
-          FemaleIcon
-        }
-      })
+
       const mockData = computed(() => {
         return {
           days: CONSTANTS.register.days,
@@ -124,7 +96,6 @@
         }
       });
       return {
-        icons,
         mockData,
         genderRadio,
         stepConfig
@@ -177,13 +148,4 @@
     }
   }
 
-  .b-register-step__gender-block {
-    margin-top: 12px;
-    .radio-btn-wrapper {
-      $color1: #f4f4f4;
-      $color2: #148783;
-      display: flex;
-      align-items: center;
-    }
-  }
 </style>
