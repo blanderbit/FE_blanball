@@ -20,6 +20,8 @@
                   id="my_file" 
                   style="display: none;" 
                   @change="onFileSelected"
+                  @click="clearFileInputValue"
+                  ref="fileInput"
                 />
                 <img 
                   src="../assets/img/add-user-pic2.svg" 
@@ -370,6 +372,7 @@ export default {
       props.userData.role,
       props.userData.position
     ])
+    const fileInput = ref(null)
 
     const userPosition = computed(() => {
       return CONSTANTS.profile.position.find(item => item.value === props.userData?.position).name
@@ -422,7 +425,9 @@ export default {
     function changeUserTab(id) {
       currentTab.value = id
     }
-
+    function clearFileInputValue() {
+      fileInput.value.value = ''
+    }
     function onFileSelected(e) {
       const isValidFormat = IMAGE_TYPES.includes(e.target.files[0].type)
       if (isValidFormat) {
@@ -446,6 +451,7 @@ export default {
     return {
       changeUserTab,
       onFileSelected,
+      clearFileInputValue,
       currentTab,
       icons,
       birthDate,
@@ -453,7 +459,8 @@ export default {
       labels,
       fullUserName,
       isMobTabletSize,
-      userPosition
+      userPosition,
+      fileInput
     }
   }
 }
@@ -495,6 +502,9 @@ export default {
         height: 52px;
         overflow: hidden;
         border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         img {
           display: block;
           width: 100%;
