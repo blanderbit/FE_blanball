@@ -15,7 +15,8 @@
             >
               <label for="my_file">
                 <input 
-                  type="file" 
+                  type="file"
+                  accept="image/png, image/jpeg"
                   id="my_file" 
                   style="display: none;" 
                   @change="onFileSelected"
@@ -327,6 +328,8 @@ import { API } from "../workers/api-worker/api.worker"
 import CONSTANTS from "../consts"
 import useWindowWidth from '../utils/widthScreen'
 
+const IMAGE_TYPES = ["image/jpeg", "image/png"]
+
 export default {
   name: 'UserDetailsCard',
   components: {
@@ -421,7 +424,10 @@ export default {
     }
 
     function onFileSelected(e) {
-      selectedFile.value = e.target.files[0]
+      const isValidFormat = IMAGE_TYPES.includes(e.target.files[0].type)
+      if (isValidFormat) {
+        selectedFile.value = e.target.files[0]
+      }
     }
 
     fileReader.onload = (event) => {

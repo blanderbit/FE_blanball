@@ -91,7 +91,7 @@ export default {
 <style lang="scss" scoped>
   .b-review-details {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     margin-top: 12px;
     margin-bottom: 12px;
     .b-review-details__lines {
@@ -101,6 +101,7 @@ export default {
       min-width: 250px;
       height: 36px;
       clip-path: polygon(0 88%, 100% 0, 100% 100%, 0 100%);
+      margin-left: 12px;
       .b-review-details__block {
         display: flex;
         justify-content: space-between;
