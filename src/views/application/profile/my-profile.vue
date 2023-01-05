@@ -116,7 +116,7 @@
         ref="myForm"
       >
         <RatingCard
-          v-if="!isMobTabletSize"
+          v-if="!isTabletSize"
           :rating-scale="userRating" 
         />
         <UserDetailsCard
@@ -127,7 +127,7 @@
         />
         <div class="b-user-cabinet__mobile-tablet-block">
           <RatingCard 
-            v-if="isMobTabletSize"
+            v-if="isTabletSize"
             :rating-scale="userRating" 
           />
           <SecurityBlock
@@ -235,8 +235,8 @@ export default {
     const userAvatar = ref('')
     const restData = ref()
     
-    const isMobTabletSize = computed(() => {
-      return isBetweenTabletAndDesktop.value || isMobile.value || isTablet.value
+    const isTabletSize = computed(() => {
+      return isBetweenTabletAndDesktop.value || isTablet.value
     })
     const mockData = computed(() => {
       return {
@@ -566,7 +566,7 @@ export default {
       isLoading,
       isMobile,
       isTabLabel,
-      isMobTabletSize,
+      isTabletSize,
       restData,
       userAvatar
     }
