@@ -10,7 +10,7 @@
           </div>
           <div 
             class="b-change-data__close"
-            @click="closeModal"
+            @click="closeModal(false)"
           >
             &times;
           </div>
@@ -23,7 +23,6 @@
             <GreenBtn
               :text="config.button_1"
               :width="config.btn_with_1"
-              :background-color="'#575775'"
               :font-styles="{
                 'font-size': '13px'
               }"
@@ -41,7 +40,10 @@
             />
           </div>
         </div>
-        <div class="b-change-data__cancel-changes">
+        <div
+          @click="$emit('saveDeclineChanges', config.btn_cancel_changes)"
+          class="b-change-data__cancel-changes"
+        >
           {{ $t('modals.change_user_data.cancel-changes') }}
         </div>
       </div>
@@ -71,8 +73,8 @@ export default {
   },
   emits: ['closeModal', 'saveChanges', 'saveDeclineChanges'],
   setup(props, context) {
-    function closeModal() {
-      context.emit('closeModal', 'change_data')
+    function closeModal(isEditMode) {
+      context.emit('closeModal', isEditMode)
     }
 
     return {
@@ -129,7 +131,6 @@ export default {
     }
     .b-change-data__btns-block { 
       display: flex;
-      justify-content: flex-end;
       .b-change-data__second-btn {
         margin-left: 8px;
       }

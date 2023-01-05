@@ -263,7 +263,6 @@ export default {
       config_phone: route.meta.usersData?.data.configuration?.phone,
       config_email: route.meta.usersData?.data.configuration?.email,
       show_reviews: route.meta.usersData?.data.configuration?.show_reviews,
-      // phone: route.meta.usersData?.data.phone
     })
     
     const checkboxData = reactive({})
@@ -360,6 +359,7 @@ export default {
         button_1: 'Перейти до демонстрації',
         button_2: 'Просто зберегти',
         btn_action: EDIT_BUTTON_ACTIONS.SAVE,
+        btn_cancel_changes: EDIT_BUTTON_ACTIONS.CANCEL,
         btn_with_1: 189,
         btn_with_2: 132
       }
@@ -371,6 +371,7 @@ export default {
         button_1: 'Ні, не виходити',
         button_2: 'Так, вийти',
         btn_action: EDIT_BUTTON_ACTIONS.CANCEL,
+        btn_cancel_changes: EDIT_BUTTON_ACTIONS.CANCEL,
         btn_with_1: 124,
         btn_with_2: 90
       }
@@ -398,7 +399,7 @@ export default {
         delete profileData.config_email
         delete profileData.config_phone
         delete profileData.show_reviews
-
+        
         const payload = {
           "configuration": {
             "email": config_email,
@@ -420,12 +421,12 @@ export default {
 
         API.UserService.updateProfileData(payload)
         .then(() => {
-          closeChangeUserDataModal()
+          closeChangeUserDataModal(true)
           getMyProfile()
         })
         .catch(e => console.log('mistake happened', e))
       } else {
-        closeChangeUserDataModal()
+        closeChangeUserDataModal(true)
       }
     }
 
@@ -472,9 +473,11 @@ export default {
       router.push(url)
     }
 
-    function closeChangeUserDataModal() {
+    function closeChangeUserDataModal(isEditMode) {
       toggleModal('change_data')
-      toggleEditMode()
+      if (isEditMode) {
+        toggleEditMode()
+      }
     }
 
     function toggleModal(val) {

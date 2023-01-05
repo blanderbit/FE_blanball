@@ -625,9 +625,11 @@ export default {
           @media (max-width: 1200px) {
             display: block;
           }
+          .b-user-card__input-surname {
+            margin-right: 8px;
+          }
           .b-user-card__input-surname,
           .b-user-card__input-name {
-            width: 196px;
             @media (max-width: 1200px) {
               width: 100%;
             }
@@ -681,13 +683,15 @@ export default {
             display: flex;
             justify-content: space-between;
             .b-user-card__dropdown-days {
-              width: 96px;
+              flex-basis: 30%;
+              margin-right: 8px;
             }
             .b-user-card__dropdown-months {
-              width: 168px;
+              flex-basis: 40%;
+              margin-right: 8px;
             }
             .b-user-card__dropdown-years {
-              width: 120px;
+              flex-basis: 30%;
             }
           }
         }
@@ -696,17 +700,16 @@ export default {
           justify-content: space-between;
           .b-user-card__height,
           .b-user-card__weight {
-            width: 92px;
+            flex-basis: 30%;
+            margin-right: 8px;
           }
           .b-user-card__weight {
-            padding-left: 16px;
             border-left: 1px solid #EFEFF6;
           }
           .b-user-card__main-leg {
-            padding-left: 16px;
+            flex-basis: 40%;
             border-left: 1px solid #EFEFF6;
             .b-user-card__dropdown-main-leg {
-              width: 200px;
               ::v-deep {
                 .vs__dropdown-toggle {
                   height: 40px;
