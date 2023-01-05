@@ -1,5 +1,5 @@
 <template>
-  <Form v-slot="data" :validation-schema="schema">
+  <Form v-slot="data" :validation-schema="schema" @submit="disableSubmit">
     <div class="b-reset-step">
       <div class="b-reset-step__top-part">
         <div class="b-reset-step__title">
@@ -128,18 +128,18 @@
       let schema = computed(() => {
         if (currentStep.value === 1) {
           return yup.object({
-            email: yup.string().email().required(),
+            email: yup.string().email('errors.email').required('errors.required'),
           });
         }
         if (currentStep.value === 2) {
           return yup.object({
-            verify_code: yup.string().required().min(5),
+            verify_code: yup.string().required('errors.required').min(5, 'errors.min5'),
           });
         }
         if (currentStep.value === 3) {
           return yup.object({
-            new_password: yup.string().required().min(8),
-            confirm_new_password: yup.string().required().min(8).when('new_password', (password, field) =>
+            new_password: yup.string().required('errors.required').min(8, 'errors.min8'),
+            confirm_new_password: yup.string().required('errors.required').min(8, 'errors.min8').when('new_password', (password, field) =>
               password ? field.required().oneOf([yup.ref('new_password')]) : field
             ),
           });
@@ -218,7 +218,11 @@
         schema,
         currentStep,
         eyeCrossed,
-        eyeOpened
+        eyeOpened,
+        disableSubmit: (e) => {
+          e.stopPropagation()
+          e.preventDefault()
+        }
       }
     },
   }

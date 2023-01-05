@@ -44,7 +44,7 @@
       </template>
     </div>
 
-    <p class="b-code-input__error-message">{{ modelErrorMessage }}</p>
+    <p class="b-code-input__error-message">{{ t(modelErrorMessage || '') }}</p>
   </div>
 </template>
 
@@ -59,7 +59,8 @@
     onBeforeUnmount,
   } from 'vue'
   import { CustomModelWorker } from '../../workers/custom-model-worker/index'
-
+  import { useI18n } from 'vue-i18n'
+  const { t } = useI18n();
   const props = defineProps({
     className: String,
     fields: {

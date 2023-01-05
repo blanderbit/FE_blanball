@@ -113,6 +113,7 @@
         v-slot="data"
         :validation-schema="schema"
         :initial-values="formValues"
+        @submit="disableSubmit"
         ref="myForm"
       >
         <RatingCard
@@ -278,20 +279,20 @@ export default {
 
     const schema = computed(() => {
       return yup.object({
-        last_name: yup.string().required(),
-        name: yup.string().required(),
-        about_me: yup.string().required(),
-        day: yup.string().required(),
-        month: yup.string().required(),
-        year: yup.string().required(),
-        height: yup.string().required(),
-        weight: yup.string().required(),
-        working_leg: yup.string().required(),
-        position: yup.string().required(),
-        phone: yup.string().required(),
-        config_phone: yup.string().required(),
-        config_email: yup.string().required(),
-        show_reviews: yup.string().required(),
+        last_name: yup.string().required('errors.required'),
+        name: yup.string().required('errors.required'),
+        about_me: yup.string().required('errors.required'),
+        day: yup.string().required('errors.required'),
+        month: yup.string().required('errors.required'),
+        year: yup.string().required('errors.required'),
+        height: yup.string().required('errors.required'),
+        weight: yup.string().required('errors.required'),
+        working_leg: yup.string().required('errors.required'),
+        position: yup.string().required('errors.required'),
+        phone: yup.string().required('errors.required'),
+        config_phone: yup.string().required('errors.required'),
+        config_email: yup.string().required('errors.required'),
+        show_reviews: yup.string().required('errors.required'),
       })
     })
 
@@ -568,7 +569,11 @@ export default {
       isTabLabel,
       isMobTabletSize,
       restData,
-      userAvatar
+      userAvatar,
+      disableSubmit: (e) => {
+        e.stopPropagation()
+        e.preventDefault()
+      }
     }
   }
 }

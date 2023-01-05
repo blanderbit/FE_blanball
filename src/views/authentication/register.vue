@@ -8,6 +8,7 @@
     <template #main-content>
       <Form 
         v-slot="data"
+        @submit="disableSubmit"
         :validation-schema="schema"
         :initial-values="initialValues"
       >
@@ -138,12 +139,12 @@
   import { API } from "../../workers/api-worker/api.worker";
   import { TokenWorker } from "../../workers/token-worker";
   import { PositionMapBus } from "../../workers/event-bus-worker";
-  import { useForm } from "@system.it.flumx.com/vee-validate";
   import { ROUTES } from "../../router/router.const";
   yup.addMethod(yup.string, "userName", function (errorMessage) {
     return this.test(`UserName`, errorMessage, function (value) {
       const { path, createError } = this;
-const reg = /^[a-zа-яё\d]{1}[a-zа-яё\d-]*[a-zа-яё\d]{1}$/i;
+      // const reg = /^[a-zа-яієїґ\'\d]{1}[a-zа-яієїґ\'\d-]*[a-zа-яієїґ\'\d]{1}$/i;
+      const reg = /^[А-Яа-яієїґЇІЄҐ\'\d]{1}[А-Яа-яієїґЇІЄҐ\'\d-]*[А-Яа-яієїґЇІЄҐ\'\d]{1}$/i;
       return (
         reg.exec(value) ||
         createError({ path, message: errorMessage })
@@ -178,49 +179,49 @@ const reg = /^[a-zа-яё\d]{1}[a-zа-яё\d-]*[a-zа-яё\d]{1}$/i;
       let schema = computed(() => {
         if (currentStep.value === 1) {
           return yup.object({
-            phone: yup.string()
-              .required()
-              .min(19, 'Invalid phone number')
-            ,
+            gender: yup.string().required('errors.required'),
             profile: yup.object({
-              name: yup.string().required().userName('Invalid username, please write right name'),
-              last_name: yup.string().required(),
+              name: yup.string().required('errors.required').userName('errors.invalid-name'),
+              last_name: yup.string().required('errors.required').userName('errors.invalid-name'),
             })
           });
         }
         if (currentStep.value === 2) {
           return yup.object({
-            email: yup.string().required().email(),
-            password: yup.string().required().min(8),
-            re_password: yup.string().required().min(8).when('password', (password, field) =>
-              password ? field.required().oneOf([yup.ref('password')]) : field
-            ),
+            email: yup.string().required('errors.required').email('errors.email'),
+            password: yup.string().required('errors.required').min(8, 'errors.min8'),
+            re_password: yup.string()
+              .required('errors.required')
+              .min(8, 'errors.min8')
+              .when('password', (password, field) =>
+                password ? field.required('errors.required').oneOf([yup.ref('password')]) : field
+              ),
+            phone: yup.string()
+              .required('errors.required')
+              .min(19, 'errors.invalid-phone')
+            ,
           });
         }
         if (currentStep.value === 8) {
           return yup.object({
-            day: yup.string().required(),
-            month: yup.string().required(),
-            year: yup.string().required(),
-            gender: yup.string().required(),
+            day: yup.string().required('errors.required'),
+            month: yup.string().required('errors.required'),
+            year: yup.string().required('errors.required'),
           });
         }
         if (currentStep.value === 9) {
           return yup.object({
-            height: yup.number().required().min(145).max(250),
-            weight: yup.number().required().min(30).max(200),
-            position: yup.string().required(),
-            working_leg: yup.string().required(),
+            height: yup.number().required('errors.required').min(145, 'errors.min145').max(250, 'errors.max250'),
+            weight: yup.number().required('errors.required').min(30, 'errors.min30').max(200, 'errors.max250'),
+            position: yup.string().required('errors.required'),
+            working_leg: yup.string().required('errors.required'),
           });
         }
         if (currentStep.value === 10) {
           return yup.object({
-            region: yup.string().required(),
-            city: yup.string().required(),
-            address: yup.string().required(),
-            // lat: yup.string().required(),
-            // lon: yup.string().required(),
-            // place_name: yup.string().required(),
+            region: yup.string().required('errors.required'),
+            city: yup.string().required('errors.required'),
+            address: yup.string().required('errors.required'),
           });
         }
         return yup.object({})
@@ -229,22 +230,16 @@ const reg = /^[a-zа-яё\d]{1}[a-zа-яё\d-]*[a-zа-яё\d]{1}$/i;
         switch (currentStep.value) {
           case 4: 
             return {'--back-picture': `url(${onboardingStep_2})`}; 
-            break;
-          case 5: 
+          case 5:
             return {'--back-picture': `url(${onboardingStep_3})`}; 
-            break;
-          case 6: 
+          case 6:
             return {'--back-picture': `url(${onboardingStep_4})`}; 
-            break;
           case 8:
             return {'--back-picture': `url(${imageStep_2})`};
-            break;
           case 9:
             return {'--back-picture': `url(${imageStep_3})`};
-            break;
           case 10:
             return {'--back-picture': `url(${imageStep_4})`};
-            break;
           default:
             return {'--back-picture': `url(${imageStep_1})`};
         }
@@ -252,58 +247,43 @@ const reg = /^[a-zа-яё\d]{1}[a-zа-яё\d-]*[a-zа-яё\d]{1}$/i;
       const backgroundTab = computed(() => {
         switch (currentStep.value) {
           case 4: 
-            return onboardingStep_2
-            break;
-          case 5: 
-            return onboardingStep_3
-            break;
-          case 6: 
-            return onboardingStep_4
-            break;
+            return onboardingStep_2;
+          case 5:
+            return onboardingStep_3;
+          case 6:
+            return onboardingStep_4;
           case 8:
-            return imageStepTab_2
-            break;
+            return imageStepTab_2;
           case 9:
-            return imageStepTab_3
-            break;
+            return imageStepTab_3;
           case 10:
-            return imageStepTab_4
-            break;
+            return imageStepTab_4;
           default:
-            return imageStepTab_1
+            return imageStepTab_1;
         }
       })
       const backgroundMob = computed(() => {
         switch (currentStep.value) {
           case 1: 
-            return ''
-            break;
-          case 2: 
-            return ''
-            break;
-          case 3: 
-            return imageStepMob_1
-            break;
-          case 4: 
-            return onboardingStepMob_2
-            break;
-          case 5: 
-            return onboardingStepMob_3
-            break;
-          case 6: 
-            return onboardingStepMob_4
-            break;
+            return '';
+          case 2:
+            return '';
+          case 3:
+            return imageStepMob_1;
+          case 4:
+            return onboardingStepMob_2;
+          case 5:
+            return onboardingStepMob_3;
+          case 6:
+            return onboardingStepMob_4;
           case 8:
-            return imageStepMob_2
-            break;
+            return imageStepMob_2;
           case 9:
-            return imageStepMob_3
-            break;
+            return imageStepMob_3;
           case 10:
-            return imageStepMob_4
-            break;
+            return imageStepMob_4;
           default:
-            return imageStepMob_1
+            return imageStepMob_1;
         }
       })
       function getNumber(str){
@@ -378,10 +358,14 @@ const reg = /^[a-zа-яё\d]{1}[a-zа-яё\d-]*[a-zа-яё\d]{1}$/i;
           currentStep.value++
         },
         backToRoute() {
-          router.back()
+          router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute)
         },
         goToEvents() {
           router.push(ROUTES.APPLICATION.EVENTS.absolute)
+        },
+        disableSubmit: (e) => {
+          e.stopPropagation()
+          e.preventDefault()
         }
       }
     },

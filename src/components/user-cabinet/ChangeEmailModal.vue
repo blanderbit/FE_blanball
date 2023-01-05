@@ -20,7 +20,7 @@
             :is-disabled="true"
           />
         </div>
-        <Form v-slot="data" :validation-schema="schema">
+        <Form v-slot="data" :validation-schema="schema" @submit="disableSubmit">
           <div class="inut-wrapper">
             <InputComponent
               :title="
@@ -75,7 +75,6 @@
 
 <script>
 import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
 import { Form } from '@system.it.flumx.com/vee-validate'
 import * as yup from "yup"
 import { useI18n } from 'vue-i18n'
@@ -86,8 +85,6 @@ import CodeInput from '../../components/forms/CodeInput.vue'
 import InputComponent from '../../components/forms/InputComponent.vue'
 
 import { API } from "../../workers/api-worker/api.worker"
-
-import { ROUTES } from "../../router/router.const"
 
 export default {
   name: 'ChangeEmailModal',
@@ -115,8 +112,8 @@ export default {
 
     const schema = computed(() => {
       return yup.object({
-        verify_code: yup.string().required().min(5),
-        email: yup.string().required()
+        verify_code: yup.string().required('errors.required').min(5, 'errors.min5'),
+        email: yup.string().required('errors.required')
       })
     })
 
@@ -184,7 +181,11 @@ export default {
       modalSteps,
       schema,
       cancelBtnTitle,
-      saveBtnTitle
+      saveBtnTitle,
+      disableSubmit: (e) => {
+        e.stopPropagation()
+        e.preventDefault()
+      }
     }
   }
 }

@@ -15,6 +15,7 @@
      />
      <Form
          v-slot="data"
+         @submit="disableSubmit"
          :validation-schema="schema"
      >
        <div class="b-modal-position__block">
@@ -124,15 +125,15 @@
       const loading = ref(true);
       const activeModal = ref(false);
       const schema = yup.object({
-        region: yup.string().required(),
-        city: yup.string().required(),
-      })
+        region: yup.string().required('errors.required'),
+        city: yup.string().required('errors.required'),
+      });
 
       const icons = computed(() => {
         return {
           tick: tickIcon
         }
-      })
+      });
 
       function setValue() {
         if(!props.modelValue) return
@@ -247,6 +248,10 @@
             place: `${region.value},${city.value}`
           });
           activeModal.value = false
+        },
+        disableSubmit: (e) => {
+          e.stopPropagation()
+          e.preventDefault()
         }
       }
     }
