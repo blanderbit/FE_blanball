@@ -1,12 +1,15 @@
 <template>
-  <div class="b-radio" :class="{'b-form-error': modelErrorMessage}">
+  <div class="b-radio" :class="{
+     'b-form-error': modelErrorMessage,
+     'b-radio-selected': modelValue === staticModelValue || modelValue === value || staticModelValue === value
+   }">
     <input
         :id="id"
         :name="name"
         type="radio"
         :value="value"
         v-on="modelHandlers"
-        :checked="modelValue === staticModelValue || modelValue === value"
+        :checked="modelValue === staticModelValue || modelValue === value || staticModelValue === value"
     >
     <label :for="id" class="b-radio-label">
       {{title}}
@@ -146,5 +149,9 @@
         }
       }
     }
+  }
+
+  .b-radio-selected {
+    border: 1px solid #148783;
   }
 </style>

@@ -48,6 +48,28 @@
             name="re_password"
         />
       </div>
+      <div class="b-register-step__input">
+        <InputComponent
+            :outside-title="true"
+            :title="$t('register.phone-number')"
+            :placeholder="UkraineMask"
+            :title-width="0"
+            :height="40"
+            name="phone"
+        >
+          <template #input="slotProps">
+            <input
+                :type="slotProps.type"
+                :placeholder="slotProps.placeholder"
+                v-on="slotProps.on"
+                :value="slotProps.value"
+                :style="slotProps.style"
+                :disabled="slotProps.disabled"
+                v-maska="stepConfig.UkraineMask"
+            />
+          </template>
+        </InputComponent>
+      </div>
     </template>
   </step-wrapper>
 </template>
@@ -75,6 +97,7 @@ export default {
 
     const stepConfig = computed(() => {
       return {
+        UkraineMask: '+38 (0##) ### ## ##',
         title: t('register.create-account'),
         returnButton: {
           exist: true,

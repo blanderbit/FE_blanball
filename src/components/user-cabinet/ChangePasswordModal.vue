@@ -9,7 +9,8 @@
       </template>
       <template #change-password>
         <Form 
-          v-slot="data" 
+          v-slot="data"
+          @submit="disableSubmit"
           :validation-schema="schema"
         >
           <div class="inut-wrapper">
@@ -117,9 +118,9 @@ export default {
 
     const schema = computed(() => {
       return yup.object({
-        old_password: yup.string().required().min(8),
-        new_password: yup.string().required().min(8),
-        password_code: yup.string().required().min(5),
+        old_password: yup.string().required('errors.required').min(8, 'errors.min8'),
+        new_password: yup.string().required('errors.required').min(8, 'errors.min8'),
+        password_code: yup.string().required('errors.required').min(5, 'errors.min5'),
       })
     })
     const eyeCrossed = computed(() => eyeCross)
@@ -186,7 +187,10 @@ export default {
       eyeOpened,
       errorMessage,
       seconds,
-      errorMessage
+      disableSubmit: (e) => {
+        e.stopPropagation()
+        e.preventDefault()
+      }
     }
   }
 }

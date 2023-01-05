@@ -17,7 +17,6 @@ export const CustomModelWorker = (props, emit) => {
       validateOnValueUpdate: false,
     }
   );
-
   const modelHandlers = computed(() => {
     const on = {
       blur: modelHandleBlur,

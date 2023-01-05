@@ -28,7 +28,7 @@
             name="profile.name"
         />
       </div>
-      <div class="b-register-step__input">
+      <div class="b-register-step__input mb-2">
         <InputComponent
             :outside-title="true"
             :title="$t('register.last_name')"
@@ -38,27 +38,25 @@
             name="profile.last_name"
         />
       </div>
-      <div class="b-register-step__input">
-        <InputComponent
-            :outside-title="true"
-            :title="$t('register.phone-number')"
-            :placeholder="'+38 (0ХХ) ХХХ ХХ ХХ'"
-            :title-width="0"
-            :height="40"
-            name="phone"
-        >
-          <template #input="slotProps">
-            <input
-                :type="slotProps.type"
-                :placeholder="slotProps.placeholder"
-                v-on="slotProps.on"
-                :value="slotProps.value"
-                :style="slotProps.style"
-                :disabled="slotProps.disabled"
-                v-maska="stepConfig.UkraineMask"
-            />
-          </template>
-        </InputComponent>
+      <div class="b-register-step__small-title">
+        {{$t('register.gender')}}
+        <span class="b-marked-message">{{$t('register.gender-just-one-time')}}</span>
+      </div>
+      <div class="b-register-step__gender-block mb-3">
+        <div class="radio-btn-wrapper">
+          <radio-button
+              name="gender"
+              :title="$t('register.men')"
+              value="Man"
+              :url="icons.MaleIcon"
+          ></radio-button>
+          <radio-button
+              name="gender"
+              :title="$t('register.women')"
+              value="Woman"
+              :url="icons.FemaleIcon"
+          ></radio-button>
+        </div>
       </div>
     </template>
   </step-wrapper>
@@ -73,22 +71,29 @@ import InputComponent from '../forms/InputComponent.vue'
 import StepWrapper from './StepWrapper.vue'
 
 import arrowRight from '../../assets/img/arrow-right-white.svg'
+import RadioButton from '../forms/RadioButton.vue'
+import MaleIcon from '../../assets/img/male-icon.svg';
+import FemaleIcon from '../../assets/img/female-icon.svg';
 
 export default {
   name: 'Step1',
   components: {
     GreenBtn,
     InputComponent,
-    StepWrapper
+    StepWrapper,
+    RadioButton
   },
   setup() {
     const { t } = useI18n();
-
+    const icons = computed(() => {
+      return {
+        MaleIcon,
+        FemaleIcon
+      }
+    });
     const arrow_right = computed(() => arrowRight);
-    const UkraineMasks = computed(() => '+38 (0##) ### ## ##');
     const stepConfig = computed(() => {
       return {
-        UkraineMask: '+38 (0##) ### ## ##',
         title: t('register.title'),
         returnButton: {
           exist: true,
@@ -106,8 +111,8 @@ export default {
     });
     return {
       arrow_right,
-      UkraineMasks,
-      stepConfig
+      stepConfig,
+      icons
     }
   },
 }
@@ -138,5 +143,33 @@ export default {
     @media (min-width: 576px) {
       display: none;
     }
+  }
+  .b-register-step__gender-block {
+    margin-top: 12px;
+    .radio-btn-wrapper {
+      $color1: #f4f4f4;
+      $color2: #148783;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  ::v-deep {
+    .b-radio-label {
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 24px;
+    }
+  }
+
+  .b-marked-message {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    color: #575775;
+    background: #EFEFF6;
+    border-radius: 4px;
+    padding: 0px 2px;
   }
 </style>
