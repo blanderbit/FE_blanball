@@ -144,6 +144,14 @@ export default {
       display: none;
     }
   }
+  .b-register-step__small-title {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #262541;
+  }
   .b-register-step__gender-block {
     margin-top: 12px;
     .radio-btn-wrapper {
