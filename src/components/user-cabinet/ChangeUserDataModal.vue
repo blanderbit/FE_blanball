@@ -26,6 +26,7 @@
               :font-styles="{
                 'font-size': '13px'
               }"
+              @click-function="greenBtnFunction"
             />
           </div>
           <div class="b-change-data__second-btn">
@@ -36,12 +37,13 @@
               :font-styles="{
                 'font-size': '13px'
               }"
-              @click-function="$emit('saveDeclineChanges', config.btn_action)"
+              @click-function="$emit(config.right_btn_action, true)"
             />
           </div>
         </div>
         <div
-          @click="$emit('saveDeclineChanges', config.btn_cancel_changes)"
+          v-if="config.btn_cancel_changes"
+          @click="$emit('declineChanges', true)"
           class="b-change-data__cancel-changes"
         >
           {{ $t('modals.change_user_data.cancel-changes') }}
@@ -71,14 +73,18 @@ export default {
       default: () => {}
     }
   },
-  emits: ['closeModal', 'saveChanges', 'saveDeclineChanges'],
+  emits: ['closeModal', 'showPreview', 'saveChanges', 'declineChanges'],
   setup(props, context) {
     function closeModal(isEditMode) {
       context.emit('closeModal', isEditMode)
     }
+    function greenBtnFunction() {
+      context.emit(props.config.left_btn_action, false)
+    }
 
     return {
-      closeModal
+      closeModal,
+      greenBtnFunction
     }
   }
 }
