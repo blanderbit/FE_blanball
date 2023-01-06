@@ -162,6 +162,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Form } from '@system.it.flumx.com/vee-validate'
 import * as yup from 'yup'
+import { useToast } from "vue-toastification";
 
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
@@ -215,6 +216,7 @@ export default {
   },
   setup(props) {
     const { t } = useI18n()
+    const toast = useToast()
     
     const route = useRoute()
     const router = useRouter()
@@ -437,7 +439,6 @@ export default {
 
       API.UserService.updateProfileData(payload)
       .then(() => {
-        // closeChangeUserDataModal(true)
         getMyProfile()
       })
       .catch(e => console.log('mistake happened', e))
@@ -472,6 +473,7 @@ export default {
           userEmail.value = res.data?.email
           userPhone.value = res.data?.phone
           isLoading.value = false
+          toast.success(t('profile.data-updated'))
         })
     }
 

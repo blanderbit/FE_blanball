@@ -41,5 +41,6 @@ export default {
   'coming-soon-text': 'Ми вже працюємо над наступним оновленням',
   'about-me': 'Про мене',
   'game-features' : 'Ігрові характеристики',
-  'contacts': 'Контакти'
+  'contacts': 'Контакти',
+  'data-updated': 'Даннi успiшно оновленi'
 }
