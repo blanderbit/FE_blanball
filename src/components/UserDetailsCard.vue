@@ -32,8 +32,8 @@
         <div class="b-user-card__text-block">
           <div class="b-user-card__name-line-wrapper">
             <div class="b-user-card__user-name">
-              {{ userData.name }}
-              {{ userData.last_name }}
+              {{ userData.name || $t('profile.no-name') }}
+              {{ userData.last_name || $t('profile.no-last-name') }}
             </div>
           </div>
           <div class="b-user-card__labels">
@@ -101,7 +101,7 @@
           </div>
           <div class="b-user-card__textarea-line">
             <div v-if="!isEditMode" class="b-user-card__about-me">
-              {{ userData.about_me }}
+              {{ userData.about_me || $t('profile.no-about_me') }}
               <div class="b-user-card__title">{{ $t('profile.about-myself') }}</div>
             </div>
             <TextAreaComponent
@@ -113,7 +113,7 @@
           </div>
           <div class="b-user-card__birthday-line">
             <div v-if="!isEditMode" class="b-user-card__birth-date">
-              {{ birthDate }}
+              {{ birthDate || $t('profile.no-birthday')}}
               <div class="b-user-card__title">
                 {{ $t('profile.birth-date') }}
               </div>
@@ -164,7 +164,7 @@
             <div class="b-user-card__height">
               <div v-if="!isEditMode" class="b-user-card__to-show">
                 <div class="b-user-card__data">
-                  {{ userData.height }} 
+                  {{ userData.height || $t('profile.no-height') }} 
                   {{$t('profile.sm')}}
                 </div>
                 <div class="b-user-card__title">{{$t('profile.height')}}</div>
@@ -181,7 +181,7 @@
             <div class="b-user-card__weight">
               <div v-if="!isEditMode" class="b-user-card__to-show">
                 <div class="b-user-card__data">
-                  {{ userData.weight }} 
+                  {{ userData.weight || $t('profile.no-weight') }} 
                   {{ $t('profile.kg') }}
                 </div>
                 <div class="b-user-card__title">
@@ -203,7 +203,7 @@
                 class="b-user-card__to-show"
               >
                 <div class="b-user-card__data">
-                  {{ userData.working_leg }}
+                  {{ userData.working_leg || $t('profile.no-working-leg') }}
                 </div>
                 <div class="b-user-card__title">{{$t('profile.main-leg')}}</div>
               </div>
@@ -225,7 +225,7 @@
           <div class="b-user-card__position">
             <div v-if="!isEditMode" class="b-user-card__to-show">
               <div class="b-user-card__data">
-                {{ userPosition }}
+                {{ userPosition || $t('profile.no-position') }}
               </div>
               <div class="b-user-card__title">
                 {{ $t('profile.game-position') }}
@@ -256,7 +256,7 @@
           <div class="b-user-card__phone">
             <div v-if="!isEditMode" class="b-user-card__to-show">
               <div class="b-user-card__data">
-                {{ phone }}
+                {{ phone || $t('profile.no-phone') }}
               </div>
               <div class="b-user-card__title">
                 {{ $t('profile.phone') }}

@@ -467,7 +467,8 @@ export default {
           userInfo.value = res.data
           userData.value = {
             ...res.data?.profile,
-            working_leg: getWorkingLeg(res.data.profile?.working_leg)
+            working_leg: getWorkingLeg(res.data.profile?.working_leg),
+            role: res.data?.role,
           }
           restData.value =res.data
           userEmail.value = res.data?.email
