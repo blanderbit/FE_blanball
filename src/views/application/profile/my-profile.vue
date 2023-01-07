@@ -43,7 +43,7 @@
             <img src="../../../assets/img/arrow-left-small.svg" alt="">
           </div>
           <div
-            @click="toggleModal('public_profile')"
+            @click="saveDataFromPreviewWindow"
             class="b-player-page__exit"
           >
             <span>{{ $t('buttons.save-and-out') }}</span>
@@ -63,7 +63,9 @@
       v-if="isModalActive.change_data"
       :config="changeDataModalConfig"
       @close-modal="closeChangeUserDataModal"
-      @save-decline-changes="saveDeclineUserDataChanges"
+      @save-changes="handleSaveDataChanges"
+      @decline-changes="declineUserDataChanges"
+      @show-preview="showPreview"
     />
 
     <div class="b-user-cabinet__title-block">
@@ -160,6 +162,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Form } from '@system.it.flumx.com/vee-validate'
 import * as yup from 'yup'
+import { useToast } from "vue-toastification";
 
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
@@ -213,6 +216,7 @@ export default {
   },
   setup(props) {
     const { t } = useI18n()
+    const toast = useToast()
     
     const route = useRoute()
     const router = useRouter()
@@ -263,7 +267,6 @@ export default {
       config_phone: route.meta.usersData?.data.configuration?.phone,
       config_email: route.meta.usersData?.data.configuration?.email,
       show_reviews: route.meta.usersData?.data.configuration?.show_reviews,
-      // phone: route.meta.usersData?.data.phone
     })
     
     const checkboxData = reactive({})
@@ -359,9 +362,11 @@ export default {
         title: 'Подивитись зі сторони',
         button_1: 'Перейти до демонстрації',
         button_2: 'Просто зберегти',
-        btn_action: EDIT_BUTTON_ACTIONS.SAVE,
+        btn_cancel_changes: EDIT_BUTTON_ACTIONS.CANCEL,
+        right_btn_action: 'saveChanges',
+        left_btn_action: 'showPreview',
         btn_with_1: 189,
-        btn_with_2: 132
+        btn_with_2: 132,
       }
     }
     function cancelDataEdit() {
@@ -370,63 +375,73 @@ export default {
         title: 'Вийти без збереження змін?',
         button_1: 'Ні, не виходити',
         button_2: 'Так, вийти',
-        btn_action: EDIT_BUTTON_ACTIONS.CANCEL,
+        right_btn_action: 'declineChanges',
+        left_btn_action: 'closeModal',
         btn_with_1: 124,
-        btn_with_2: 90
+        btn_with_2: 90,
       }
+    }
+
+    function showPreview() {
+      closeChangeUserDataModal(false)
+      toggleModal('public_profile')
     }
 
     function toggleEditMode() {
       isEditModeProfile.value = !isEditModeProfile.value
     }
 
-    function saveDeclineUserDataChanges(val) {
-      if (val === EDIT_BUTTON_ACTIONS.SAVE) {
-        const refProfileData = { ...myForm.value.getControledValues() }
-        const { day, month, year, working_leg, config_email, config_phone, show_reviews, phone } = refProfileData
-        const profileData = {
-          ...refProfileData,
-          birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
-          gender: route.meta.usersData?.data.profile?.gender,
-          working_leg: getWorkingLeg(working_leg),
-        }
+    function declineUserDataChanges(val = true) {
+      closeChangeUserDataModal(val)
+    }
 
-        delete profileData.day
-        delete profileData.month
-        delete profileData.year
-        delete profileData.phone
-        delete profileData.config_email
-        delete profileData.config_phone
-        delete profileData.show_reviews
+    function handleSaveDataChanges() {
+      saveUserDataChanges()
+      closeChangeUserDataModal(true)
+    }
 
-        const payload = {
-          "configuration": {
-            "email": config_email,
-            "phone": config_phone,
-            "show_reviews": show_reviews
-          },
-          "profile": {
-            "place": {
-              "place_name": "string",
-              "lat": 90,
-              "lon": 180
-            },
-            ...profileData
-          },
-          "get_planned_events": "1y",
-          "phone": phone
-        }
-
-
-        API.UserService.updateProfileData(payload)
-        .then(() => {
-          closeChangeUserDataModal()
-          getMyProfile()
-        })
-        .catch(e => console.log('mistake happened', e))
-      } else {
-        closeChangeUserDataModal()
+    function saveUserDataChanges() {
+      const refProfileData = { ...myForm.value.getControledValues() }
+      const { day, month, year, working_leg, config_email, config_phone, show_reviews, phone } = refProfileData
+      const profileData = {
+        ...refProfileData,
+        birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
+        gender: route.meta.usersData?.data.profile?.gender,
+        working_leg: getWorkingLeg(working_leg),
       }
+
+      delete profileData.day
+      delete profileData.month
+      delete profileData.year
+      delete profileData.phone
+      delete profileData.config_email
+      delete profileData.config_phone
+      delete profileData.show_reviews
+      
+      const payload = {
+        "configuration": {
+          "email": config_email,
+          "phone": config_phone,
+          "show_reviews": show_reviews
+        },
+        "profile": {
+          "place": {
+            "place_name": "string",
+            "lat": 90,
+            "lon": 180
+          },
+          ...profileData
+        },
+        "get_planned_events": "1y",
+        "phone": phone
+      }
+
+
+      API.UserService.updateProfileData(payload)
+      .then(() => {
+        getMyProfile()
+      })
+      .catch(e => console.log('mistake happened', e))
     }
 
     function getMyProfile() {
@@ -459,6 +474,7 @@ export default {
           userEmail.value = res.data?.email
           userPhone.value = res.data?.phone
           isLoading.value = false
+          toast.success(t('profile.data-updated'))
         })
     }
 
@@ -473,9 +489,11 @@ export default {
       router.push(url)
     }
 
-    function closeChangeUserDataModal() {
+    function closeChangeUserDataModal(isEditMode) {
       toggleModal('change_data')
-      toggleEditMode()
+      if (isEditMode) {
+        toggleEditMode()
+      }
     }
 
     function toggleModal(val) {
@@ -539,11 +557,19 @@ export default {
       toggleModal(modal)
     }
 
+    function saveDataFromPreviewWindow() {
+      toggleModal('public_profile')
+      saveUserDataChanges()
+      toggleEditMode()
+    }
     
     
     return {
       toggleEditMode,
-      saveDeclineUserDataChanges,
+      saveDataFromPreviewWindow,
+      saveUserDataChanges,
+      handleSaveDataChanges,
+      declineUserDataChanges,
       changeTab,
       closeChangeUserDataModal,
       toggleModal,
@@ -552,6 +578,7 @@ export default {
       cancelDataEdit,
       openEditPictureModal,
       getMyProfile,
+      showPreview,
       userRating,
       userPhone,
       userEmail,
