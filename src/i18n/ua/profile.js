@@ -42,7 +42,7 @@ export default {
   'about-me': 'Про мене',
   'game-features' : 'Ігрові характеристики',
   'contacts': 'Контакти',
-  'data-updated': 'Даннi успiшно оновленi'
+  'data-updated': 'Даннi успiшно оновленi',
   'no-name': "Iм'я не вказано",
   'no-last-name': 'Прiзвище не вказано',
   'no-about_me': 'Немае данних про себе',

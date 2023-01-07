@@ -35,7 +35,8 @@
           <div class="b-login-step__check-block">
             <checkbox v-model:checked="data.values.save_credentials">
               <template #label>
-                <span>{{ $t('login.remember-me') }}</span>
+                <span class="remember-me__desktop">{{ $t('login.remember-me') }}</span>
+                <span class="remember-me__mobile">{{ $t('login.remember-me-short') }}</span>
               </template>
             </checkbox>
           </div>
@@ -182,6 +183,16 @@
 </script>
 
 <style lang="scss" scoped>
+  .remember-me__desktop {
+    @media (max-width: 576px) {
+      display: none;
+    }
+  }
+  .remember-me__mobile {
+    @media (min-width: 576px) {
+      display: none;
+    }
+  }
   .b-login-step {
     padding: 44px 24px 72px 24px;
     height: 100%;

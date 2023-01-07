@@ -10,6 +10,7 @@
             <avatar
                 :link="userData.profile.avatar_url"
                 :full-name="userData.profile.name + ' ' + userData.profile.last_name"
+                avatarType="square"
             ></avatar>
           </div>
           <div class="b-player-page__line">

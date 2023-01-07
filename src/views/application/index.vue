@@ -63,9 +63,9 @@ import { notificationButtonHandlerMessage } from "../../workers/utils-worker";
 import { MessageActionTypes } from '../../workers/web-socket-worker/message.action.types'
 import { API } from '../../workers/api-worker/api.worker';
 
-const isVerifyModalActive = ref(false)
-const userEmail = ref('')
-const isUserVerified = ref(false)
+const isVerifyModalActive = ref(false);
+const userEmail = ref('');
+const isUserVerified = ref(false);
 const isMobMenuActive = ref(false);
 const modals = ref({
     review: {
@@ -74,17 +74,17 @@ const modals = ref({
     }
 });
 
-const route = useRoute()
+const route = useRoute();
 const router = useRouter();
 const toast = useToast();
 const audio = new Audio(message_audio);
 let timeout;
 
-isUserVerified.value = route.meta.usersData?.data?.is_verified
-userEmail.value = route.meta.usersData?.data?.email
+isUserVerified.value = route.meta.usersData?.data?.is_verified;
+userEmail.value = route.meta.usersData?.data?.email;
 
 const handleVerifyEmailClick = () => {
-  isVerifyModalActive.value = true
+  isVerifyModalActive.value = true;
   API.AuthorizationService.VerifyEmail()
 }
 

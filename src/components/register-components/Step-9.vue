@@ -17,6 +17,7 @@
             :title="$t('register.height')"
             :placeholder="$t('register.height')"
             :title-width="0"
+            type="number"
             name="height"
         ></InputComponent>
         <InputComponent
@@ -24,6 +25,7 @@
             :title="$t('register.weight')"
             :placeholder="$t('register.weight')"
             :title-width="0"
+            type="number"
             name="weight"
         ></InputComponent>
         <Dropdown
