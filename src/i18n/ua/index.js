@@ -19,6 +19,7 @@ import ResponseMessageTypes from './response.message.types'
 import Counter from './counter'
 import ScrollTopComponent from './scroll_top_component'
 import Errors from './errors'
+import Notifications from './notifications'
 
 export const UA_LANGUAGE = {
   events: EventsPage,
@@ -41,5 +42,6 @@ export const UA_LANGUAGE = {
   responseMessageTypes: ResponseMessageTypes,
   counter: Counter,
   scroll_top_component: ScrollTopComponent,
-  errors: Errors
+  errors: Errors,
+  notifications: Notifications
 };

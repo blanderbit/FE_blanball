@@ -1,5 +1,25 @@
 <template>
   <div class="main-wrapper">
+    <VerifyEmailModal
+      v-if="isVerifyModalActive"
+      :user-email="userEmail"
+      @close-modal="isVerifyModalActive = false"
+      @email-verified="isUserVerified = true"
+    />
+    <div
+      v-if="!isUserVerified"
+      class="b_header_validate-email-block"
+    >
+      <span class="b_header_text">
+        {{ $t('header.approve-your-email') }}: {{userEmail}}
+      </span>
+      <span 
+        class="b_header_verify-btn"
+        @click="handleVerifyEmailClick"
+      >
+        {{ $t('header.approve-email') }}
+      </span>
+    </div>
     <mobile-menu
       :isMenuActive="isMobMenuActive"
       @close-menu="isMobMenuActive = false"
@@ -22,7 +42,7 @@
 
 <script setup>
 import { ref, onBeforeUnmount } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import { v4 as uuid } from "uuid";
 
@@ -30,6 +50,7 @@ import Sidebar from './../../components/Sidebar.vue'
 import MainHeader from './../../components/MainHeader.vue'
 import MobileMenu from '../../components/MobileMenu.vue'
 import Notification from '../../components/Notification.vue'
+import VerifyEmailModal from '../../components/user-cabinet/VerifyEmailModal.vue'
 
 import ModalFeedback from '../../components/ModalFeedback/index.vue'
 
@@ -40,7 +61,11 @@ import { TokenWorker } from '../../workers/token-worker'
 import { notificationButtonHandlerMessage } from "../../workers/utils-worker";
 
 import { MessageActionTypes } from '../../workers/web-socket-worker/message.action.types'
+import { API } from '../../workers/api-worker/api.worker';
 
+const isVerifyModalActive = ref(false)
+const userEmail = ref('')
+const isUserVerified = ref(false)
 const isMobMenuActive = ref(false);
 const modals = ref({
     review: {
@@ -49,10 +74,19 @@ const modals = ref({
     }
 });
 
+const route = useRoute()
 const router = useRouter();
 const toast = useToast();
 const audio = new Audio(message_audio);
 let timeout;
+
+isUserVerified.value = route.meta.usersData?.data?.is_verified
+userEmail.value = route.meta.usersData?.data?.email
+
+const handleVerifyEmailClick = () => {
+  isVerifyModalActive.value = true
+  API.AuthorizationService.VerifyEmail()
+}
 
 const handlerAction = async (item, notificationInstance) => {
   clearTimeout(timeout);
@@ -118,6 +152,7 @@ const getToastOptions = (notificationInstance, toastId) => {
       icon: false,
       rtl: false,
       toastClassName: [notificationInstance.getPushNotificationTheme()],
+      userEmail
     },
   }
 };
@@ -178,6 +213,39 @@ html {
   // overflow: hidden;
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
+  }
+  .b_header_validate-email-block {
+    padding: 6px 8px;
+    background: #272643;
+    border-radius: 6px;
+    position: absolute;
+    left: 50%;
+    z-index: 3;
+    transform: translate(-50%, 10px);
+    text-align: center;
+    .b_header_text {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 20px;
+      color: #FFFFFF;
+    }
+    .b_header_verify-btn {
+      padding: 2px 8px;
+      background: #454461;
+      border-radius: 4px;
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 13px;
+      line-height: 24px;
+      text-align: center;
+      color: #FFFFFF;
+      display: inline-block;
+      cursor: pointer;
+      margin-left: 12px;
+    }
   }
   .main-block {
     height: 100%;
