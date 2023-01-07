@@ -245,6 +245,7 @@ export default {
       right: 0;
       background: #fff;
       border-radius: 6px;
+      cursor: pointer;
       img {
         margin: auto;
       }
@@ -258,6 +259,7 @@ export default {
       left: 0;
       background: #fff;
       border-radius: 6px;
+      cursor: pointer;
       img {
         margin: auto;
       }
