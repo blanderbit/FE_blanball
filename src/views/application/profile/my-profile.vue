@@ -263,7 +263,6 @@ export default {
       config_phone: route.meta.usersData?.data.configuration?.phone,
       config_email: route.meta.usersData?.data.configuration?.email,
       show_reviews: route.meta.usersData?.data.configuration?.show_reviews,
-      // phone: route.meta.usersData?.data.phone
     })
     
     const checkboxData = reactive({})
