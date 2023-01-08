@@ -43,6 +43,7 @@ export default {
   'game-features' : 'Ігрові характеристики',
   'contacts': 'Контакти',
   'data-updated': 'Даннi успiшно оновленi',
+  'some-mistake': 'Сталася помилка',
   'no-name': "Iм'я не вказано",
   'no-last-name': 'Прiзвище не вказано',
   'no-about_me': 'Немае данних про себе',

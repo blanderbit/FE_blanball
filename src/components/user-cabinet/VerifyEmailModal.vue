@@ -38,7 +38,7 @@
             />
           </div>
           <div class="btns-block">
-            <div class="cancle-btn" @click="closeModal">
+            <div class="cancle-btn" @click="$emit('closeModal')">
               {{ $t('buttons.return') }}
             </div>
             <div class="save-btn" @click="saveClick(data)">
@@ -82,7 +82,6 @@ export default {
   },
   emits: ['closeModal', 'emailVerified'],
   setup(props, context) {
-    const repeatEmail = ref('')
     const toast = useToast()
     const { t } = useI18n()
 
@@ -92,6 +91,9 @@ export default {
         email: yup.string().required('errors.required')
       })
     })
+
+    API.AuthorizationService.VerifyEmail()
+      .catch(e => console.log('some mistake happened', e))
 
     function saveClick(data) {
       const payload = {verify_code: data.controlledValues.verify_code} 

@@ -375,7 +375,7 @@ export default {
     const fileInput = ref(null)
 
     const userPosition = computed(() => {
-      return CONSTANTS.profile.position.find(item => item.value === props.userData?.position).name
+      return CONSTANTS.profile.position.find(item => item.value === props.userData?.position)?.name
     })
 
     const isMobTabletSize = computed(() => {
