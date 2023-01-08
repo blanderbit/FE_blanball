@@ -66,7 +66,7 @@ import { API } from '../../workers/api-worker/api.worker';
 
 const isVerifyModalActive = ref(false);
 const userEmail = ref('');
-const isUserVerified = ref(false);
+const isUserVerified = ref(true);
 const isMobMenuActive = ref(false);
 const modals = ref({
     review: {

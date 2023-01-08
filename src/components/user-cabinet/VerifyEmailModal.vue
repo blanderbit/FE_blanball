@@ -96,7 +96,7 @@ export default {
       .catch(e => console.log('some mistake happened', e))
 
     function saveClick(data) {
-      const payload = {verify_code: data.controlledValues.verify_code} 
+      const payload = {verify_code: data.controlledValues?.verify_code} 
       API.AuthorizationService.VerifyCode(payload)
         .then(() => {
           context.emit('closeModal')
