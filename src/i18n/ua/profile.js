@@ -22,6 +22,7 @@ export default {
   'some': '(Деякі)',
   'how-profile-looks': 'Як виглядатиме мій профіль для інших?',
   'birth-date': 'Дата народження',
+  'no-birth-date': 'Дата народження не вказана',
   'surname': 'Прізвище',
   'name': `Ім'я`,
   'words-about-myself': 'Декілька слів про себе',
