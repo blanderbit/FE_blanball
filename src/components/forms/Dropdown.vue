@@ -252,6 +252,9 @@ export default {
     padding: 0;
     height: 100%;
   }
+  .v-select.vs--open.vs--single.vs--unsearchable .vs__dropdown-toggle {
+    border-bottom: var(--vs-border-width) var(--vs-border-style) var(--vs-border-color);
+  }
   .style-chooser .vs__search::placeholder,
   .style-chooser .vs__dropdown-toggle,
   .style-chooser .vs__dropdown-menu {
@@ -309,6 +312,7 @@ export default {
     border-radius: 0 0 4px 4px;
     border-top-color: transparent;
     border-bottom-color: rgba(60, 60, 60, 0.26);
+    background: red;
   }
 
   [data-popper-placement='top'] {

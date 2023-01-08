@@ -22,7 +22,7 @@ export const CustomModelWorker = (props, emit) => {
       blur: modelHandleBlur,
       input: [
         (e) => {
-          if(emit) emit('update:modelValue', e?.target?.value || e);
+          if(emit) emit('update:modelValue',(typeof e?.target?.value === 'string' ? e?.target?.value : null) || e);
           modelHandleChange(e, false)
         }
       ],

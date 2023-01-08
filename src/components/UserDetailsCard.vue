@@ -20,6 +20,8 @@
                   id="my_file" 
                   style="display: none;" 
                   @change="onFileSelected"
+                  @click="clearFileInputValue"
+                  ref="fileInput"
                 />
                 <img 
                   src="../assets/img/add-user-pic2.svg" 
@@ -370,6 +372,7 @@ export default {
       props.userData?.role,
       props.userData?.position
     ])
+    const fileInput = ref(null)
 
     const userPosition = computed(() => {
       return CONSTANTS.profile.position.find(item => item.value === props.userData?.position)?.name
@@ -422,7 +425,9 @@ export default {
     function changeUserTab(id) {
       currentTab.value = id
     }
-
+    function clearFileInputValue() {
+      fileInput.value.value = ''
+    }
     function onFileSelected(e) {
       const isValidFormat = IMAGE_TYPES.includes(e.target.files[0].type)
       if (isValidFormat) {
@@ -446,6 +451,7 @@ export default {
     return {
       changeUserTab,
       onFileSelected,
+      clearFileInputValue,
       currentTab,
       icons,
       birthDate,
@@ -453,7 +459,8 @@ export default {
       labels,
       fullUserName,
       isMobTabletSize,
-      userPosition
+      userPosition,
+      fileInput
     }
   }
 }
@@ -495,6 +502,9 @@ export default {
         height: 52px;
         overflow: hidden;
         border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         img {
           display: block;
           width: 100%;
@@ -625,9 +635,11 @@ export default {
           @media (max-width: 1200px) {
             display: block;
           }
+          .b-user-card__input-surname {
+            margin-right: 8px;
+          }
           .b-user-card__input-surname,
           .b-user-card__input-name {
-            width: 196px;
             @media (max-width: 1200px) {
               width: 100%;
             }
@@ -681,13 +693,15 @@ export default {
             display: flex;
             justify-content: space-between;
             .b-user-card__dropdown-days {
-              width: 96px;
+              flex-basis: 30%;
+              margin-right: 8px;
             }
             .b-user-card__dropdown-months {
-              width: 168px;
+              flex-basis: 40%;
+              margin-right: 8px;
             }
             .b-user-card__dropdown-years {
-              width: 120px;
+              flex-basis: 30%;
             }
           }
         }
@@ -696,17 +710,16 @@ export default {
           justify-content: space-between;
           .b-user-card__height,
           .b-user-card__weight {
-            width: 92px;
+            flex-basis: 30%;
+            margin-right: 8px;
           }
           .b-user-card__weight {
-            padding-left: 16px;
             border-left: 1px solid #EFEFF6;
           }
           .b-user-card__main-leg {
-            padding-left: 16px;
+            flex-basis: 40%;
             border-left: 1px solid #EFEFF6;
             .b-user-card__dropdown-main-leg {
-              width: 200px;
               ::v-deep {
                 .vs__dropdown-toggle {
                   height: 40px;

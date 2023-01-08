@@ -31,5 +31,8 @@ export default {
     'rotate': 'Перевернути',
     'cut': 'Обрізати',
     'chose-another-pic': 'Обрати інше фото',
+  },
+  verify_email: {
+    'title': 'Пiдтвердити поштову адресу'
   }
 }

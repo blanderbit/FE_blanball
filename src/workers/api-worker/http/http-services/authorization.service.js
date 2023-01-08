@@ -39,4 +39,8 @@ export class AuthorizationService {
   static AddAvatar(data) {
     return AxiosInstance.put(EndpointsEnum.Authorization.AddAvatar, data)
   }
+
+  static VerifyEmail() {
+    return AxiosInstance.get(EndpointsEnum.Authorization.VerifyEmail)
+  }
 }
