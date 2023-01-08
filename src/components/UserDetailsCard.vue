@@ -365,21 +365,21 @@ export default {
     const imageSrc = ref(null)
     const fileReader = new FileReader()
     const labels = ref([
-      props.userData.age ? `${props.userData.age} років` : null ,
-      props.userData.gender,
-      props.userData.role,
-      props.userData.position
+      props.userData?.age ? `${props.userData?.age} років` : null ,
+      props.userData?.gender,
+      props.userData?.role,
+      props.userData?.position
     ])
 
     const userPosition = computed(() => {
-      return CONSTANTS.profile.position.find(item => item.value === props.userData?.position).name
+      return CONSTANTS.profile.position.find(item => item.value === props.userData?.position)?.name
     })
 
     const isMobTabletSize = computed(() => {
       return isBetweenTabletAndDesktop.value || isMobile.value || isTablet.value
     })
 
-    const fullUserName = computed(() => `${props.userData.name} ${props.userData.last_name}`)
+    const fullUserName = computed(() => `${props.userData?.name} ${props.userData?.last_name}`)
 
     const mockData = computed(() => {
       return {
@@ -406,7 +406,7 @@ export default {
     })
 
     const birthDate = computed(() => {
-      return `${dayjs(props.userData.birthday)
+      return `${dayjs(props.userData?.birthday)
         .locale(dayjsUkrLocale)
         .format('D MMMM YYYY')} p.`
     })

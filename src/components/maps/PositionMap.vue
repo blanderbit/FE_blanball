@@ -117,7 +117,7 @@
           });
         }
 
-        if(crd.currentPosition) return;
+        if(crd?.currentPosition) return;
 
         emit('map-loaded');
         PositionMapBus.emit('map-loaded')
