@@ -112,8 +112,8 @@
             </div>
             <div class="b-player-page__feedback-blocks" style="height: 400px">
               <div
-                  v-if="!isFeedbackShown"
-                  class="b-player-page__feedback-hidden"
+                v-if="!isFeedbackShown"
+                class="b-player-page__block-hidden"
               >
                 <img src="../assets/img/information.svg" alt="">
                 {{$t('player_page.feedback-hidden')}}
@@ -147,7 +147,17 @@
         </div>
 
         <div class="b-player-page__events-history-block flex-grow-1">
-          <div class="b-player-page__play-events"  >
+          <div
+            v-if="!isEventsShown"
+            class="b-player-page__block-hidden"
+          >
+            <img src="../assets/img/information.svg" alt="">
+            {{$t('player_page.events-hidden')}}
+          </div>
+          <div
+            v-if="isEventsShown"
+            class="b-player-page__play-events"
+          >
             <div class="b-player-page__main-titles-text">
               {{$t('player_page.planned-events')}}
             </div>
@@ -278,6 +288,9 @@
       const isFeedbackShown = computed(() => {
         return props.userData.configuration?.show_reviews
       })
+      const isEventsShown = computed(() => {
+        return props.userData.configuration?.planned_events
+      })
 
       const getPlanedEvents = (page) => {
         return API.EventService.getPlannedUserEvents(
@@ -329,9 +342,10 @@
         reviewQuantity,
         playFeatures,
         loading,
+        isEventsShown,
+        isFeedbackShown,
         getReviews,
         getPlanedEvents,
-        isFeedbackShown
       }
     },
     computed: {
@@ -350,7 +364,22 @@
   .mr-16 {
     margin-right: 16px;
   }
-
+  .b-player-page__block-hidden {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    color: #6F6F77;
+    display: flex;
+    align-items: flex-start;
+    border-top: 1px solid #DFDEED;
+    margin-top: 12px;
+    padding-top: 16px;
+    img {
+      margin-right: 9px;
+    }
+  }
   .b-player-page {
     position: relative;
     padding: 80px 20px 20px 20px;
@@ -575,22 +604,6 @@
             font-size: 12px;
             line-height: 20px;
             color: #575775;
-          }
-          .b-player-page__feedback-hidden {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 20px;
-            color: #6F6F77;
-            display: flex;
-            align-items: flex-start;
-            border-top: 1px solid #DFDEED;
-            margin-top: 12px;
-            padding-top: 16px;
-            img {
-              margin-right: 9px;
-            }
           }
           .b-player-page__feedback-blocks {
             border-top: 1px solid #EFEFF6;
