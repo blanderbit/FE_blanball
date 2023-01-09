@@ -30,7 +30,11 @@ export default {
         nextButton: {
           exist: true,
           text: t('register.adjust')
-        }
+        },
+        returnButton: {
+          exist: true,
+          text: t('register.skip-and-go-to-events')
+        },
       }
     });
 

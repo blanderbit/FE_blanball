@@ -2,7 +2,6 @@
   <Transition>
     <ModalWindow
       :is-title-shown="false"
-      @close-modal="closeModal"
     >
       <template #edit-avatar>
         <div class="b-edit-avatar">

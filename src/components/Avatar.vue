@@ -1,8 +1,12 @@
 <template>
-  <div class="b-avatar" v-if="link" @click.stop="$emit('clickByAvatar')">
-    <img  :src="link"/>
+  <div class="b-avatar"
+       :class="[`b-avatar-${avatarType}`]"
+       :style="{
+        backgroundImage: `url(${link})`
+       }"
+       v-if="link" @click.stop="$emit('clickByAvatar')">
   </div>
-  <div class="b-avatar b-avatar-words d-flex justify-content-center align-items-center " @click.stop="$emit('clickByAvatar')" v-else>
+  <div class="b-avatar b-avatar-words d-flex justify-content-center align-items-center " :class="[`b-avatar-${avatarType}`]" @click.stop="$emit('clickByAvatar')" v-else>
     {{ shortFullName }}
   </div>
 </template>
@@ -16,6 +20,10 @@
       },
       fullName: {
         type: String
+      },
+      avatarType: {
+        type: String,
+        default: 'circle' // square
       }
     },
     emits: ['clickByAvatar'],
@@ -30,10 +38,17 @@
 
 <style scoped lang="scss">
   .b-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    overflow: hidden;
+    &-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+    &-square {
+      width: 100%;
+      height: 164px;
+      border-radius: 4px;
+    }
     &-words {
       border: 1px solid #262541;
       color: #262541;

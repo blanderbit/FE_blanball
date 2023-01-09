@@ -15,10 +15,13 @@
             >
               <label for="my_file">
                 <input 
-                  type="file" 
+                  type="file"
+                  accept="image/png, image/jpeg"
                   id="my_file" 
                   style="display: none;" 
                   @change="onFileSelected"
+                  @click="clearFileInputValue"
+                  ref="fileInput"
                 />
                 <img 
                   src="../assets/img/add-user-pic2.svg" 
@@ -31,8 +34,8 @@
         <div class="b-user-card__text-block">
           <div class="b-user-card__name-line-wrapper">
             <div class="b-user-card__user-name">
-              {{ userData.name }}
-              {{ userData.last_name }}
+              {{ userData.name || $t('profile.no-name') }}
+              {{ userData.last_name || $t('profile.no-last-name') }}
             </div>
           </div>
           <div class="b-user-card__labels">
@@ -100,7 +103,7 @@
           </div>
           <div class="b-user-card__textarea-line">
             <div v-if="!isEditMode" class="b-user-card__about-me">
-              {{ userData.about_me }}
+              {{ userData.about_me || $t('profile.no-about_me') }}
               <div class="b-user-card__title">{{ $t('profile.about-myself') }}</div>
             </div>
             <TextAreaComponent
@@ -112,7 +115,7 @@
           </div>
           <div class="b-user-card__birthday-line">
             <div v-if="!isEditMode" class="b-user-card__birth-date">
-              {{ birthDate }}
+              {{ birthDate || $t('profile.no-birthday')}}
               <div class="b-user-card__title">
                 {{ $t('profile.birth-date') }}
               </div>
@@ -163,7 +166,7 @@
             <div class="b-user-card__height">
               <div v-if="!isEditMode" class="b-user-card__to-show">
                 <div class="b-user-card__data">
-                  {{ userData.height }} 
+                  {{ userData.height || $t('profile.no-height') }} 
                   {{$t('profile.sm')}}
                 </div>
                 <div class="b-user-card__title">{{$t('profile.height')}}</div>
@@ -180,7 +183,7 @@
             <div class="b-user-card__weight">
               <div v-if="!isEditMode" class="b-user-card__to-show">
                 <div class="b-user-card__data">
-                  {{ userData.weight }} 
+                  {{ userData.weight || $t('profile.no-weight') }} 
                   {{ $t('profile.kg') }}
                 </div>
                 <div class="b-user-card__title">
@@ -198,11 +201,11 @@
             </div>
             <div class="b-user-card__main-leg">
               <div
-                v-if="!isEditMode && userData.working_leg"
+                v-if="!isEditMode"
                 class="b-user-card__to-show"
               >
                 <div class="b-user-card__data">
-                  {{ userData.working_leg }}
+                  {{ userData.working_leg || $t('profile.no-working-leg') }}
                 </div>
                 <div class="b-user-card__title">{{$t('profile.main-leg')}}</div>
               </div>
@@ -224,7 +227,7 @@
           <div class="b-user-card__position">
             <div v-if="!isEditMode" class="b-user-card__to-show">
               <div class="b-user-card__data">
-                {{ userPosition }}
+                {{ userPosition || $t('profile.no-position') }}
               </div>
               <div class="b-user-card__title">
                 {{ $t('profile.game-position') }}
@@ -255,7 +258,7 @@
           <div class="b-user-card__phone">
             <div v-if="!isEditMode" class="b-user-card__to-show">
               <div class="b-user-card__data">
-                {{ phone }}
+                {{ phone || $t('profile.no-phone') }}
               </div>
               <div class="b-user-card__title">
                 {{ $t('profile.phone') }}
@@ -313,6 +316,7 @@
 import { ref, computed, watchEffect, onMounted, onBeforeUnmount } from 'vue'
 import dayjs from 'dayjs'
 import dayjsUkrLocale from 'dayjs/locale/uk'
+import { useI18n } from 'vue-i18n'
 
 import InputComponent from './forms/InputComponent.vue'
 import TextAreaComponent from '../components/TextAreaComponent.vue'
@@ -326,6 +330,8 @@ import edit from '../assets/img/edit.svg'
 import { API } from "../workers/api-worker/api.worker"
 import CONSTANTS from "../consts"
 import useWindowWidth from '../utils/widthScreen'
+
+const IMAGE_TYPES = ["image/jpeg", "image/png"]
 
 export default {
   name: 'UserDetailsCard',
@@ -357,26 +363,29 @@ export default {
       isMobile,
       isTablet 
     } = useWindowWidth()
+    const { t } = useI18n()
+
     const currentTab = ref(0)
     const selectedFile = ref(null)
     const imageSrc = ref(null)
     const fileReader = new FileReader()
     const labels = ref([
-      props.userData.age ? `${props.userData.age} років` : null ,
-      props.userData.gender,
-      props.userData.role,
-      props.userData.position
+      props.userData?.age ? `${props.userData?.age} років` : null ,
+      props.userData?.gender,
+      props.userData?.role,
+      props.userData?.position
     ])
+    const fileInput = ref(null)
 
     const userPosition = computed(() => {
-      return CONSTANTS.profile.position.find(item => item.value === props.userData?.position).name
+      return CONSTANTS.profile.position.find(item => item.value === props.userData?.position)?.name
     })
 
     const isMobTabletSize = computed(() => {
       return isBetweenTabletAndDesktop.value || isMobile.value || isTablet.value
     })
 
-    const fullUserName = computed(() => `${props.userData.name} ${props.userData.last_name}`)
+    const fullUserName = computed(() => `${props.userData?.name} ${props.userData?.last_name}`)
 
     const mockData = computed(() => {
       return {
@@ -403,9 +412,13 @@ export default {
     })
 
     const birthDate = computed(() => {
-      return `${dayjs(props.userData.birthday)
+      if (props.userData?.birthday) {
+        return `${dayjs(props.userData?.birthday)
         .locale(dayjsUkrLocale)
         .format('D MMMM YYYY')} p.`
+      } else {
+        return t('profile.no-birth-date')
+      }
     })
 
     onMounted(() => {
@@ -419,9 +432,14 @@ export default {
     function changeUserTab(id) {
       currentTab.value = id
     }
-
+    function clearFileInputValue() {
+      fileInput.value.value = ''
+    }
     function onFileSelected(e) {
-      selectedFile.value = e.target.files[0]
+      const isValidFormat = IMAGE_TYPES.includes(e.target.files[0].type)
+      if (isValidFormat) {
+        selectedFile.value = e.target.files[0]
+      }
     }
 
     fileReader.onload = (event) => {
@@ -440,6 +458,7 @@ export default {
     return {
       changeUserTab,
       onFileSelected,
+      clearFileInputValue,
       currentTab,
       icons,
       birthDate,
@@ -447,7 +466,8 @@ export default {
       labels,
       fullUserName,
       isMobTabletSize,
-      userPosition
+      userPosition,
+      fileInput
     }
   }
 }
@@ -489,6 +509,9 @@ export default {
         height: 52px;
         overflow: hidden;
         border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         img {
           display: block;
           width: 100%;
@@ -619,9 +642,11 @@ export default {
           @media (max-width: 1200px) {
             display: block;
           }
+          .b-user-card__input-surname {
+            margin-right: 8px;
+          }
           .b-user-card__input-surname,
           .b-user-card__input-name {
-            width: 196px;
             @media (max-width: 1200px) {
               width: 100%;
             }
@@ -675,13 +700,15 @@ export default {
             display: flex;
             justify-content: space-between;
             .b-user-card__dropdown-days {
-              width: 96px;
+              flex-basis: 30%;
+              margin-right: 8px;
             }
             .b-user-card__dropdown-months {
-              width: 168px;
+              flex-basis: 40%;
+              margin-right: 8px;
             }
             .b-user-card__dropdown-years {
-              width: 120px;
+              flex-basis: 30%;
             }
           }
         }
@@ -690,17 +717,16 @@ export default {
           justify-content: space-between;
           .b-user-card__height,
           .b-user-card__weight {
-            width: 92px;
+            flex-basis: 30%;
+            margin-right: 8px;
           }
           .b-user-card__weight {
-            padding-left: 16px;
             border-left: 1px solid #EFEFF6;
           }
           .b-user-card__main-leg {
-            padding-left: 16px;
+            flex-basis: 40%;
             border-left: 1px solid #EFEFF6;
             .b-user-card__dropdown-main-leg {
-              width: 200px;
               ::v-deep {
                 .vs__dropdown-toggle {
                   height: 40px;

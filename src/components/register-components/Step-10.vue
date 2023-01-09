@@ -8,7 +8,7 @@
       :stepperLines="stepConfig.stepperLines"
   >
     <template #content>
-      <div class="b-register-step__small-title mb-sm-3">
+      <div class="b-register-step__small-title mb-3">
         {{$t('register.your-city')}}
       </div>
       <div class="b-register-step__dropdown">
@@ -51,7 +51,7 @@
             name="address"
         ></InputComponent>
       </div>
-      <RegisterModalPositionMap v-if="windowWidth <= 768"></RegisterModalPositionMap>
+      <RegisterModalPositionMap v-if="isMobile"></RegisterModalPositionMap>
     </template>
   </step-wrapper>
 </template>
@@ -70,6 +70,7 @@
   import { useI18n } from 'vue-i18n'
   import StepWrapper from './StepWrapper.vue'
   import { useDevice } from "next-vue-device-detector";
+  import useWindowWidth from '../../utils/widthScreen'
 
   export default {
     name: 'Step10',
@@ -80,15 +81,13 @@
       RegisterModalPositionMap
     },
     setup() {
+      const { onResize, isMobile } = useWindowWidth()
       const region = ref('');
       const city = ref('');
       const address = ref('');
       const nextButton = ref(false);
       const loading = ref(true);
-      const windowWidth = ref(window.innerWidth)
-      function onResize() {
-        windowWidth.value = window.innerWidth
-      }
+
       onMounted(() => {
         window.addEventListener('resize', onResize);
       })
@@ -163,7 +162,7 @@
         nextButton,
         loading,
         device,
-        windowWidth,
+        isMobile,
         async changeRegions(e) {
           region.value = e;
           city.value = '';

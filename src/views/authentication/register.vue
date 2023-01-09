@@ -58,6 +58,7 @@
         <Transition>
           <Step_7
               v-if="currentStep === 7"
+              @back="goToEvents()"
               @next="currentStep++"
           />
         </Transition>
@@ -194,7 +195,7 @@
               .required('errors.required')
               .min(8, 'errors.min8')
               .when('password', (password, field) =>
-                password ? field.required('errors.required').oneOf([yup.ref('password')]) : field
+                password ? field.required('errors.required').oneOf([yup.ref('password')], 'errors.same-password') : field
               ),
             phone: yup.string()
               .required('errors.required')
@@ -211,8 +212,18 @@
         }
         if (currentStep.value === 9) {
           return yup.object({
-            height: yup.number().required('errors.required').min(145, 'errors.min145').max(250, 'errors.max250'),
-            weight: yup.number().required('errors.required').min(30, 'errors.min30').max(200, 'errors.max250'),
+            height: yup
+              .number()
+              .typeError('errors.type-number')
+              .required('errors.required')
+              .min(145, 'errors.min145')
+              .max(250, 'errors.max250'),
+            weight: yup
+              .number()
+              .typeError('errors.type-number')
+              .required('errors.required')
+              .min(30, 'errors.min30')
+              .max(200, 'errors.max250'),
             position: yup.string().required('errors.required'),
             working_leg: yup.string().required('errors.required'),
           });

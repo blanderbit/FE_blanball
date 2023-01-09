@@ -75,6 +75,7 @@
   import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
   import PositionMap from './maps/PositionMap.vue'
   import CONSTANTS from '../consts/index'
+  import useWindowWidth from '../utils/widthScreen'
 
   export default {
     name: 'Auth',
@@ -105,7 +106,7 @@
       }
     },
     setup(props) {
-      const windowWidth = ref(window.innerWidth)
+      const { windowWidth, isMobileSmall, onResize } = useWindowWidth()
       const mockData = computed(() => {
         return {
           LOGIN: CONSTANTS.register.authBlockTypes.login
@@ -113,16 +114,13 @@
       })
 
       const authBlockStyles = computed(() => {
-        if (windowWidth.value < 576) {
+        if (isMobileSmall.value) {
           return { 'align-items': props.currentStep < 3 ? 'flex-start' : 'flex-end' }
         } else {
           return { 'align-items': 'center' }
         }
       })
 
-      function onResize() {
-        windowWidth.value = window.innerWidth
-      }
       onMounted(() => {
         window.addEventListener('resize', onResize);
       })

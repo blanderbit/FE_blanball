@@ -22,7 +22,7 @@
         <InputComponent
             :outside-title="true"
             :title="$t('register.email')"
-            :placeholder="'elektron@mail.com'"
+            :placeholder="'example@email.com'"
             :title-width="0"
             :height="40"
             name="email"
@@ -30,7 +30,8 @@
       </div>
       <div class="b-register-step__input">
         <InputComponent
-            :placeholder="$t('register.create-password')"
+            placeholder="********"
+            :title="$t('register.create-password')"
             :title-width="0"
             :type="'password'"
             :height="40"
@@ -40,8 +41,9 @@
       </div>
       <div class="b-register-step__input">
         <InputComponent
-            :placeholder="$t('register.repeat-password')"
+            placeholder="********"
             :title-width="0"
+            :title="$t('register.repeat-password')"
             :type="'password'"
             :height="40"
             :outside-title="true"
@@ -52,7 +54,7 @@
         <InputComponent
             :outside-title="true"
             :title="$t('register.phone-number')"
-            :placeholder="UkraineMask"
+            :placeholder="stepConfig.UkraineMask"
             :title-width="0"
             :height="40"
             name="phone"

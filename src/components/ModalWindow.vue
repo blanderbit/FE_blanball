@@ -1,35 +1,34 @@
 <template>
-  <div>
-    <div
-      class="b_modal_wrapper"
-      @click.self="$emit('close-modal')"
+  <div
+    class="b_modal_wrapper"
+    @click.self="$emit('close-modal')"
+  >
+    <div 
+      class="b_modal_modal-window"
+      :style="windowStyle"
     >
-      <div 
-        class="b_modal_modal-window"
-        :style="windowStyle"
+      <div
+        v-if="isTitleShown"
+        class="b_modal_window-title" 
+        :style="{'background': titleColor}"
       >
-        <div
-          v-if="isTitleShown"
-          class="b_modal_window-title" 
-          :style="{'background': titleColor}"
-        >
-          <div class="b_modal_text">
-            <slot name="title"></slot>
-          </div>
-          <div class="b_modal_icon">
-            <slot name="title-icon"></slot>
-          </div>
+        <div class="b_modal_text">
+          <slot name="title"></slot>
         </div>
-        <div class="b_modal_modals-container">
-          <slot name="change-phone-number"></slot>
-          <slot name="change-login"></slot>
-          <slot name="delete-account"></slot>
-          <slot name="change-password"></slot>
-          <slot name="version-modal"></slot>
-          <slot name="edit-avatar"></slot>
-          <slot name="default"></slot>
-          <slot name="modal-filter"></slot>
+        <div class="b_modal_icon">
+          <slot name="title-icon"></slot>
         </div>
+      </div>
+      <div class="b_modal_modals-container">
+        <slot name="change-phone-number"></slot>
+        <slot name="change-login"></slot>
+        <slot name="delete-account"></slot>
+        <slot name="change-password"></slot>
+        <slot name="version-modal"></slot>
+        <slot name="edit-avatar"></slot>
+        <slot name="default"></slot>
+        <slot name="modal-filter"></slot>
+        <slot name="verify-email"></slot>
       </div>
     </div>
   </div>
@@ -112,7 +111,6 @@ export default {
     }
     .inut-wrapper {
       width: 360px;
-      height: 40px;
       margin-bottom: 16px;
     }
     .current-number {
