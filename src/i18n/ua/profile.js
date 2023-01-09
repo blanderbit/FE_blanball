@@ -52,5 +52,6 @@ export default {
   'no-phone': 'Телефон не вказан',
   'no-position': 'Позицiя не вказана',
   'no-weight': 'Вага не вказана',
-  'no-working-leg': 'Нога не вказана'
+  'no-working-leg': 'Нога не вказана',
+  'no-role': 'Роль не вказана'
 }
