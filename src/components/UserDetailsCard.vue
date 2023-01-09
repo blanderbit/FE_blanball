@@ -201,7 +201,7 @@
             </div>
             <div class="b-user-card__main-leg">
               <div
-                v-if="!isEditMode && userData.working_leg"
+                v-if="!isEditMode"
                 class="b-user-card__to-show"
               >
                 <div class="b-user-card__data">
@@ -316,6 +316,7 @@
 import { ref, computed, watchEffect, onMounted, onBeforeUnmount } from 'vue'
 import dayjs from 'dayjs'
 import dayjsUkrLocale from 'dayjs/locale/uk'
+import { useI18n } from 'vue-i18n'
 
 import InputComponent from './forms/InputComponent.vue'
 import TextAreaComponent from '../components/TextAreaComponent.vue'
@@ -362,27 +363,29 @@ export default {
       isMobile,
       isTablet 
     } = useWindowWidth()
+    const { t } = useI18n()
+
     const currentTab = ref(0)
     const selectedFile = ref(null)
     const imageSrc = ref(null)
     const fileReader = new FileReader()
     const labels = ref([
-      props.userData.age ? `${props.userData.age} років` : null ,
-      props.userData.gender,
-      props.userData.role,
-      props.userData.position
+      props.userData?.age ? `${props.userData?.age} років` : null ,
+      props.userData?.gender,
+      props.userData?.role,
+      props.userData?.position
     ])
     const fileInput = ref(null)
 
     const userPosition = computed(() => {
-      return CONSTANTS.profile.position.find(item => item.value === props.userData?.position).name
+      return CONSTANTS.profile.position.find(item => item.value === props.userData?.position)?.name
     })
 
     const isMobTabletSize = computed(() => {
       return isBetweenTabletAndDesktop.value || isMobile.value || isTablet.value
     })
 
-    const fullUserName = computed(() => `${props.userData.name} ${props.userData.last_name}`)
+    const fullUserName = computed(() => `${props.userData?.name} ${props.userData?.last_name}`)
 
     const mockData = computed(() => {
       return {
@@ -409,9 +412,13 @@ export default {
     })
 
     const birthDate = computed(() => {
-      return `${dayjs(props.userData.birthday)
+      if (props.userData?.birthday) {
+        return `${dayjs(props.userData?.birthday)
         .locale(dayjsUkrLocale)
         .format('D MMMM YYYY')} p.`
+      } else {
+        return t('profile.no-birth-date')
+      }
     })
 
     onMounted(() => {
