@@ -22,6 +22,7 @@ export default {
   'some': '(Деякі)',
   'how-profile-looks': 'Як виглядатиме мій профіль для інших?',
   'birth-date': 'Дата народження',
+  'no-birth-date': 'Дата народження не вказана',
   'surname': 'Прізвище',
   'name': `Ім'я`,
   'words-about-myself': 'Декілька слів про себе',
@@ -54,5 +55,6 @@ export default {
   'no-position': 'Позицiя не вказана',
   'no-weight': 'Вага не вказана',
   'no-working-leg': 'Нога не вказана',
-  'no-place': 'Адреса не зазначена'
+  'no-place': 'Адреса не зазначена',
+  'no-role': 'Роль не вказана'
 }

@@ -48,6 +48,9 @@
       width: 100%;
       height: 164px;
       border-radius: 4px;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
     }
     &-words {
       border: 1px solid #262541;

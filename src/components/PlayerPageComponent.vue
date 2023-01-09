@@ -15,7 +15,7 @@
           </div>
           <div class="b-player-page__line">
             <div class="b-player-page__surname">
-              {{ userData.profile.last_name }}
+              {{ userData.profile.last_name || $t('profile.no-last-name') }}
             </div>
             <star-rating
                 :rating="userData.raiting"
@@ -28,12 +28,12 @@
           </div>
           <div class="b-player-page__line">
             <div class="b-player-page__name">
-              {{ userData.profile.name }}
+              {{ userData.profile.name || $t('profile.no-name') }}
             </div>
             <div
                 class="b-player-page__label"
             >
-              {{$t('player_page.player')}}
+              {{ userData.role || $t('profile.no-role') }}
             </div>
           </div>
           <div class="b-player-page__line mt-8">
@@ -65,7 +65,7 @@
         <div class="b-player-page__about-line">
           <div class="b-player-page__title">{{$t('player_page.about-yourself')}}</div>
           <div class="b-player-page__text">
-            {{ userData.profile.about_me }}
+            {{ userData.profile.about_me || $t('profile.no-about_me') }}
           </div>
         </div>
       </div>
@@ -97,18 +97,18 @@
           </div>
           <div class="b-player-page__play-reviews">
             <div class="b-player-page__title-line">
-              <div class="b-player-page__left-side d-flex align-items-center">
+              <div class="b-player-page__left-side">
                 <div class="b-player-page__main-titles-text me-1">
                   {{$t('player_page.feedbacks')}}
                 </div>
                 <div class="b-player-page__small-text">
-                  {{reviewQuantity}} оцінок
+                  {{ reviewQuantity }} оцінок
                 </div>
               </div>
-              <!--<div class="b-player-page__right-side">-->
-                <!--{{userRating}}-->
-                <!--<img src="../assets/img/star.svg" alt="">-->
-              <!--</div>-->
+              <!-- <div class="b-player-page__right-side">
+                5
+                <img src="../assets/img/star.svg" alt="">
+              </div> -->
             </div>
             <div class="b-player-page__feedback-blocks" style="height: 400px">
               <div
@@ -260,25 +260,25 @@
           id: 3,
           title: 'Ігрова позиція',
           img: fitWeight,
-          featureName: props.userData.profile.position
+          featureName: props.userData.profile?.position
         },
         {
           id: 1,
           title: 'Вага',
           img: fitWeight,
-          featureName: props.userData.profile.weight
+          featureName: props.userData.profile?.weight
         },
         {
           id: 2,
           title: 'Ударна нога',
           img: measureTape,
-          featureName: props.userData.profile.working_leg
+          featureName: props.userData.profile?.working_leg
         },
         {
           id: 0,
           title: 'Зріст',
           img: measureTape,
-          featureName: props.userData.profile.height
+          featureName: props.userData.profile?.height
         }
 
       ])
@@ -333,6 +333,7 @@
                   .format('D MMMM')}`
               }
             }) || [];
+            reviewQuantity.value = res.data.results.length
             return res;
           })
       }

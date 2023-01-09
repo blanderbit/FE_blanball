@@ -53,7 +53,7 @@
       </template>
       <template #user-content>
         <PlayerPageComponent 
-          :page-mode="''"
+          :page-mode="'public'"
           :user-data="restData"
         />
       </template>
@@ -248,7 +248,7 @@ export default {
         user_info: CONSTANTS.users_page.userInfo,
         tabs: CONSTANTS.profile.tabs.map(item => ({...item, name: t(item.name)})),
         monthFromNumber: CONSTANTS.users_page.months.monthFromNumber,
-        numberFromMonth: CONSTANTS.users_page.months.numberFromMonth
+        numberFromMonth: CONSTANTS.users_page.months.numberFromMonth,
       }
     })
     restData.value = {
@@ -523,12 +523,13 @@ export default {
           break
         case 'public_profile':
           const refProfileData = { ...myForm.value.getControledValues() }
-          const { day, month, year, working_leg, config_email, planned_events, config_phone, show_reviews } = refProfileData
+          const { day, month, year, working_leg, config_email, planned_events, config_phone, show_reviews, position } = refProfileData
           const profileData = {
             ...refProfileData,
             birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
-            gender: route.meta.usersData?.data.profile?.gender,
-            working_leg: getWorkingLeg(working_leg),
+            gender: route.meta.usersData.data?.profile?.gender,
+            avatar_url: route.meta.usersData.data?.profile?.avatar_url,
+            position: getUserPositionText(position)
           }
           delete profileData.day
           delete profileData.month
@@ -564,6 +565,14 @@ export default {
         case 'change_password':
           isModalActive.change_password = !isModalActive.change_password
           break
+      }
+    }
+
+    function getUserPositionText(position) {
+      if (position) {
+        return CONSTANTS.profile.position.find(item => item.value === position)?.name
+      } else {
+        return t('profile.no-position')
       }
     }
 
