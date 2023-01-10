@@ -4,7 +4,7 @@
       <img :src="backPic" alt="">
     </div>
     <div class="b-player-page__main-block">
-      <div class="b-player-page__user-card me-3">
+      <div class="b-player-page__user-card">
         <div class="b-player-page__top-line">
           <div class="b-player-page__picture">
             <avatar
@@ -15,10 +15,10 @@
           </div>
           <div class="b-player-page__line">
             <div class="b-player-page__surname">
-              {{ userData.profile.last_name }}
+              {{ userData.profile.last_name || $t('profile.no-last-name') }}
             </div>
             <star-rating
-                :rating="userData.raiting"
+                :rating="userRating"
                 :star-size="14"
                 :show-rating="false"
                 :read-only="true"
@@ -28,12 +28,12 @@
           </div>
           <div class="b-player-page__line">
             <div class="b-player-page__name">
-              {{ userData.profile.name }}
+              {{ userData.profile.name || $t('profile.no-name') }}
             </div>
             <div
                 class="b-player-page__label"
             >
-              {{$t('player_page.player')}}
+              {{ userData.role || $t('profile.no-role') }}
             </div>
           </div>
           <div class="b-player-page__line mt-8">
@@ -65,7 +65,7 @@
         <div class="b-player-page__about-line">
           <div class="b-player-page__title">{{$t('player_page.about-yourself')}}</div>
           <div class="b-player-page__text">
-            {{ userData.profile.about_me }}
+            {{ userData.profile.about_me || $t('profile.no-about_me') }}
           </div>
         </div>
       </div>
@@ -97,23 +97,23 @@
           </div>
           <div class="b-player-page__play-reviews">
             <div class="b-player-page__title-line">
-              <div class="b-player-page__left-side d-flex align-items-center">
+              <div class="b-player-page__left-side">
                 <div class="b-player-page__main-titles-text me-1">
                   {{$t('player_page.feedbacks')}}
                 </div>
                 <div class="b-player-page__small-text">
-                  {{reviewQuantity}} оцінок
+                  {{ reviewQuantity }} оцінок
                 </div>
               </div>
-              <!--<div class="b-player-page__right-side">-->
-                <!--{{userRating}}-->
-                <!--<img src="../assets/img/star.svg" alt="">-->
-              <!--</div>-->
+              <div class="b-player-page__right-side">
+                {{userRating}}
+                <img src="../assets/img/star.svg" alt="">
+              </div>
             </div>
             <div class="b-player-page__feedback-blocks" style="height: 400px">
               <div
-                  v-if="!isFeedbackShown"
-                  class="b-player-page__feedback-hidden"
+                v-if="!isFeedbackShown"
+                class="b-player-page__block-hidden"
               >
                 <img src="../assets/img/information.svg" alt="">
                 {{$t('player_page.feedback-hidden')}}
@@ -147,16 +147,26 @@
         </div>
 
         <div class="b-player-page__events-history-block flex-grow-1">
-          <div class="b-player-page__play-events"  >
+          <div
+            v-if="!isEventsShown"
+            class="b-player-page__block-hidden"
+          >
+            <img src="../assets/img/information.svg" alt="">
+            {{$t('player_page.events-hidden')}}
+          </div>
+          <div
+            v-if="isEventsShown"
+            class="b-player-page__play-events"
+          >
             <div class="b-player-page__main-titles-text">
               {{$t('player_page.planned-events')}}
             </div>
-            <div class="b-player-page__event-blocks" style="height: 400px">
+            <div class="b-player-page__event-blocks">
               <SimpleListWrapper :requestForGetData="getPlanedEvents">
                 <template #default="{ smartListItem: item }">
                   <div
-                      :key="item.id"
-                      class="b-player-page__event-block"
+                    :key="item.id"
+                    class="b-player-page__event-block"
                   >
                     <div class="b-player-page__title-line">
                       <div class="b-player-page__title">
@@ -250,57 +260,64 @@
           id: 3,
           title: 'Ігрова позиція',
           img: fitWeight,
-          featureName: props.userData.profile.position
+          featureName: props.userData.profile?.position
         },
         {
           id: 1,
           title: 'Вага',
           img: fitWeight,
-          featureName: props.userData.profile.weight
+          featureName: props.userData.profile?.weight
         },
         {
           id: 2,
           title: 'Ударна нога',
           img: measureTape,
-          featureName: props.userData.profile.working_leg
+          featureName: props.userData.profile?.working_leg
         },
         {
           id: 0,
           title: 'Зріст',
           img: measureTape,
-          featureName: props.userData.profile.height
+          featureName: props.userData.profile?.height
         }
 
       ])
+
       const userRating = computed(() => {
-        return props.userData.raiting || 0
+        return Math.round(props.userData.raiting) || 0
       })
       const isFeedbackShown = computed(() => {
         return props.userData.configuration?.show_reviews
       })
+      const isEventsShown = computed(() => {
+        return props.userData.configuration?.planned_events
+      })
 
       const getPlanedEvents = (page) => {
+        console.log(page)
         return API.EventService.getPlannedUserEvents(
           props.userData.id,
           {
             page
           }
-        ).then(result => ({
-          data: {
-            results: result.data.map((i, index) => {
-              i.id = index;
-              i.time = `${dayjs(i.time_created)
-                .locale(dayjsUkrLocale)
-                .format('hh : mm')}`;
-              i.date = `${dayjs(i.time_created)
-                .locale(dayjsUkrLocale)
-                .format('D MMMM')}`;
-              return {
-                ...i
-              }
-            })
+        ).then(result => {
+          return {
+            data: {
+              results: result.data.map((i, index) => {
+                i.id = index;
+                i.time = `${dayjs(i.date_and_time)
+                  .locale(dayjsUkrLocale)
+                  .format('hh : mm')}`;
+                i.date = `${dayjs(i.date_and_time)
+                  .locale(dayjsUkrLocale)
+                  .format('D MMMM')}`;
+                return {
+                  ...i
+                }
+              })
+            }
           }
-        }))
+        })
       }
 
 
@@ -320,6 +337,7 @@
                   .format('D MMMM')}`
               }
             }) || [];
+            reviewQuantity.value = res.data.results.length
             return res;
           })
       }
@@ -329,9 +347,10 @@
         reviewQuantity,
         playFeatures,
         loading,
+        isEventsShown,
+        isFeedbackShown,
         getReviews,
         getPlanedEvents,
-        isFeedbackShown
       }
     },
     computed: {
@@ -350,13 +369,29 @@
   .mr-16 {
     margin-right: 16px;
   }
-
+  .b-player-page__block-hidden {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    color: #6F6F77;
+    display: flex;
+    align-items: flex-start;
+    border-top: 1px solid #DFDEED;
+    margin-top: 12px;
+    padding-top: 16px;
+    img {
+      margin-right: 9px;
+    }
+  }
   .b-player-page {
     position: relative;
     padding: 80px 20px 20px 20px;
-    height: calc(100vh - 90px);
+    // height: calc(100vh - 90px);
+    height: 100%;
     @media (max-width: 1200px) {
-      padding: 60px 16px 28px 16px;
+      padding: 60px 0px 0px 0px;
     }
     .b-player-page__back-image {
       position: absolute;
@@ -377,20 +412,23 @@
       align-items: flex-start;
       justify-content: space-between;
       height: 100%;
-      // overflow-y: scroll;
-      // overflow-x: auto;
-      @media (max-width: 1200px) {
+      @media (max-width: 768px) {
         flex-direction: column;
         align-items: center;
+        overflow-y: scroll;
       }
       .b-player-page__user-card {
         padding: 24px;
-        width: 324px;
+        flex-basis: 324px;
         background: #ffffff;
         box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
         border-radius: 6px;
+        margin-right: 16px;
         @media (max-width: 1200px) {
-          width: 100%;
+          flex-basis: 344px;
+        }
+        @media (max-width: 768px) {
+          margin-right: 0;
         }
         .b-player-page__top-line {
           .b-player-page__picture {
@@ -472,6 +510,9 @@
               line-height: 16px;
               color: #575775;
             }
+            .b-player-page__send-email {
+              margin-right: 8px;
+            }
             .b-player-page__send-email,
             .b-player-page__call {
               padding: 6px 8px;
@@ -487,6 +528,9 @@
               cursor: pointer;
               img {
                 margin-right: 9px;
+              }
+              @media (max-width: 768px) {
+                flex-basis: 50%
               }
             }
           }
@@ -536,11 +580,18 @@
           background: #FFFFFF;
           box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
           border-radius: 12px;
-          padding-bottom: 55px;
+          padding-bottom: 15px;
           display: grid;
           grid-template-columns: 400px 1fr;
           height: 100%;
           overflow-y: scroll;
+          @media (max-width: 1200px) {
+            grid-template-columns: 1fr;
+            flex-basis: 342px;
+          }
+          @media (max-width: 768px) {
+            overflow-y: unset;
+          }
         }
 
         &__features-reviews-block {
@@ -576,22 +627,6 @@
             line-height: 20px;
             color: #575775;
           }
-          .b-player-page__feedback-hidden {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 20px;
-            color: #6F6F77;
-            display: flex;
-            align-items: flex-start;
-            border-top: 1px solid #DFDEED;
-            margin-top: 12px;
-            padding-top: 16px;
-            img {
-              margin-right: 9px;
-            }
-          }
           .b-player-page__feedback-blocks {
             border-top: 1px solid #EFEFF6;
             .b-player-page__feedback-block {
@@ -619,6 +654,10 @@
           padding-top: 20px;
           margin-top: 16px;
           margin-bottom: 8px;
+          img {
+            display: block;
+            width: 40px;
+          }
         }
         &__play-block {
           display: flex;
@@ -644,6 +683,10 @@
           .b-player-page__event-blocks {
             border-top: 1px solid #DFDEED;
             margin-top: 16px;
+            height: 400px;
+            @media (max-width: 1200px) {
+              height: 200px;
+            }
           }
           .b-player-page__event-block {
             margin-top: 22px;

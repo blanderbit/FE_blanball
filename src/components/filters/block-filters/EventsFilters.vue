@@ -273,23 +273,23 @@
         setupTransformedCallback() {
           const [lng, lat] = props.modelValue?.point?.value?.split?.(',') || [];
           return {
-            gender: props.modelValue.gender.value,
-            type: props.modelValue.type.value,
-            need_ball: props.modelValue.need_ball.value,
-            duration: props.modelValue.duration.value,
+            gender: props.modelValue?.gender?.value,
+            type: props.modelValue?.type?.value,
+            need_ball: props.modelValue?.need_ball?.value,
+            duration: props.modelValue?.duration?.value,
             date_and_time: {
-              start: props.modelValue.date_and_time_after.value,
-              end: props.modelValue.date_and_time_before.value
+              start: props.modelValue?.date_and_time_after?.value,
+              end: props.modelValue?.date_and_time_before?.value
             },
-            ordering: props.modelValue.ordering.value,
-            search: props.modelValue.search.value,
+            ordering: props.modelValue?.ordering?.value,
+            search: props.modelValue?.search?.value,
             location: {
               dist: props.modelValue?.dist?.value,
               lat: lat && parseFloat(lat),
               lng: lng && parseFloat(lng),
-              place: props.modelValue?.place.value
+              place: props.modelValue?.place?.value
             },
-            status: props.modelValue.status.value
+            status: props.modelValue?.status?.value
           }
         },
         updateRealDataFromTransformed(transformedFilters){

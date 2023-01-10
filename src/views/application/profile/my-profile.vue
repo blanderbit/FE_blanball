@@ -53,7 +53,7 @@
       </template>
       <template #user-content>
         <PlayerPageComponent 
-          :page-mode="''"
+          :page-mode="'public'"
           :user-data="restData"
         />
       </template>
@@ -260,10 +260,16 @@ export default {
         user_info: CONSTANTS.users_page.userInfo,
         tabs: CONSTANTS.profile.tabs.map(item => ({...item, name: t(item.name)})),
         monthFromNumber: CONSTANTS.users_page.months.monthFromNumber,
-        numberFromMonth: CONSTANTS.users_page.months.numberFromMonth
+        numberFromMonth: CONSTANTS.users_page.months.numberFromMonth,
       }
     })
-    restData.value = route.meta.usersData?.data
+    restData.value = {
+      ...route.meta.usersData?.data,
+      configuration: {
+        ...route.meta.usersData?.data?.configuration,
+        planned_events: true
+      }
+    }
     const formValues = ref({
       last_name: route.meta.usersData?.data.profile?.last_name,
       name: route.meta.usersData?.data.profile?.name,
@@ -279,6 +285,7 @@ export default {
       config_phone: route.meta.usersData?.data.configuration?.phone,
       config_email: route.meta.usersData?.data.configuration?.email,
       show_reviews: route.meta.usersData?.data.configuration?.show_reviews,
+      planned_events: true
     })
     
     const checkboxData = reactive({})
@@ -327,6 +334,7 @@ export default {
         config_phone: yup.boolean().required('errors.required'),
         config_email: yup.boolean().required('errors.required'),
         show_reviews: yup.boolean().required('errors.required'),
+        planned_events: yup.string().required('errors.required')
       })
     })
 
@@ -504,7 +512,13 @@ export default {
             working_leg: getWorkingLeg(res.data.profile?.working_leg),
             role: res.data?.role,
           }
-          restData.value =res.data
+          restData.value = {
+            ...res.data,
+            configuration: {
+              ...res.data?.configuration,
+              planned_events: true
+            }
+          }
           userEmail.value = res.data?.email
           userPhone.value = res.data?.phone
           isLoading.value = false
@@ -548,12 +562,13 @@ export default {
           break
         case 'public_profile':
           const refProfileData = { ...myForm.value.getControledValues() }
-          const { day, month, year, working_leg, config_email, config_phone, show_reviews } = refProfileData
+          const { day, month, year, working_leg, config_email, planned_events, config_phone, show_reviews, position } = refProfileData
           const profileData = {
             ...refProfileData,
             birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
-            gender: route.meta.usersData?.data.profile?.gender,
-            working_leg: getWorkingLeg(working_leg),
+            gender: route.meta.usersData.data?.profile?.gender,
+            avatar_url: route.meta.usersData.data?.profile?.avatar_url,
+            position: getUserPositionText(position)
           }
           delete profileData.day
           delete profileData.month
@@ -568,7 +583,8 @@ export default {
             "configuration": {
               "email": config_email,
               "phone": config_phone,
-              "show_reviews": show_reviews
+              "show_reviews": show_reviews,
+              "planned_events": planned_events
             },
             "profile": {
               "place": {
@@ -588,6 +604,14 @@ export default {
         case 'change_password':
           isModalActive.change_password = !isModalActive.change_password
           break
+      }
+    }
+
+    function getUserPositionText(position) {
+      if (position) {
+        return CONSTANTS.profile.position.find(item => item.value === position)?.name
+      } else {
+        return t('profile.no-position')
       }
     }
 
