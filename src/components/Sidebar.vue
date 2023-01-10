@@ -55,6 +55,8 @@
 <script>
   import { ref, computed, onBeforeUnmount } from 'vue'
   import { useRouter } from 'vue-router'
+  import { useUserDataStore } from '../stores/userData'
+  import { useEventDataStore } from '../stores/eventsData'
 
   import SlideMenu from '../components/SlideMenu.vue'
   import Avatar from './../components/Avatar.vue'
@@ -85,6 +87,8 @@
       Avatar
     },
     setup() {
+      const userStore = useUserDataStore()
+      const eventStore = useEventDataStore()
       const notReadNotificationCount = ref(0);
       const skipids = ref([]);
       const router = useRouter();
@@ -174,6 +178,8 @@
 
       getNotificationsCount();
       const logOut = () => {
+        userStore.user = {}
+        eventStore.events = {}
         TokenWorker.clearToken();
         router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute)
       }

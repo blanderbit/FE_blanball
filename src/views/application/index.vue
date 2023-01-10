@@ -81,17 +81,8 @@ const store = useUserDataStore()
 const audio = new Audio(message_audio);
 let timeout;
 
-API.UserService.getMyProfile()
-  .then(res => {
-    store.$patch({
-      user: res?.data || {}
-    })
-    isUserVerified.value = res.data?.is_verified
-    userEmail.value = res.data?.email || ''
-  })
-  .catch(e => {
-    console.log('some mistake happened', e)
-  })
+isUserVerified.value = store.user?.is_verified
+userEmail.value = store.user?.email || ''
 
 const handlerAction = async (item, notificationInstance) => {
   clearTimeout(timeout);
