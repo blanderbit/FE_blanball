@@ -45,6 +45,7 @@ export default {
   'contacts': 'Контакти',
   'planed-events': 'Заплановані події',
   'data-updated': 'Даннi успiшно оновленi',
+  'some-mistake': 'Сталася помилка',
   'location': 'Місце знаходження',
   'no-name': "Iм'я не вказано",
   'no-last-name': 'Прiзвище не вказано',

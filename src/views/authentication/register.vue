@@ -182,22 +182,36 @@
           return yup.object({
             gender: yup.string().required('errors.required'),
             profile: yup.object({
-              name: yup.string().required('errors.required').userName('errors.invalid-name'),
-              last_name: yup.string().required('errors.required').userName('errors.invalid-name'),
+              name: yup
+                .string()
+                .required('errors.required')
+                .userName('errors.invalid-name'),
+              last_name: yup
+                .string()
+                .required('errors.required')
+                .userName('errors.invalid-name'),
             })
           });
         }
         if (currentStep.value === 2) {
           return yup.object({
-            email: yup.string().required('errors.required').email('errors.email'),
-            password: yup.string().required('errors.required').min(8, 'errors.min8'),
-            re_password: yup.string()
+            email: yup
+              .string()
+              .required('errors.required')
+              .email('errors.email'),
+            password: yup
+              .string()
+              .required('errors.required')
+              .min(8, 'errors.min8'),
+            re_password: yup
+              .string()
               .required('errors.required')
               .min(8, 'errors.min8')
               .when('password', (password, field) =>
                 password ? field.required('errors.required').oneOf([yup.ref('password')], 'errors.same-password') : field
               ),
-            phone: yup.string()
+            phone: yup
+              .string()
               .required('errors.required')
               .min(19, 'errors.invalid-phone')
             ,

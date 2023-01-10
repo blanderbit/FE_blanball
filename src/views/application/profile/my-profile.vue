@@ -187,6 +187,18 @@ import CONSTANTS from '../../../consts'
 
 import useWindowWidth from '../../../utils/widthScreen'
 
+yup.addMethod(yup.string, "userName", function (errorMessage) {
+  return this.test(`UserName`, errorMessage, function (value) {
+    const { path, createError } = this;
+    // const reg = /^[a-zа-яієїґ\'\d]{1}[a-zа-яієїґ\'\d-]*[a-zа-яієїґ\'\d]{1}$/i;
+    const reg = /^[А-Яа-яієїґЇІЄҐ\'\d]{1}[А-Яа-яієїґЇІЄҐ\'\d-]*[А-Яа-яієїґЇІЄҐ\'\d]{1}$/i;
+    return (
+      reg.exec(value) ||
+      createError({ path, message: errorMessage })
+    );
+  });
+});
+
 const EDIT_BUTTON_ACTIONS = {
   SAVE: 'save',
   CANCEL: 'cancel'
@@ -289,20 +301,39 @@ export default {
 
     const schema = computed(() => {
       return yup.object({
-        last_name: yup.string().required('errors.required'),
-        name: yup.string().required('errors.required'),
-        about_me: yup.string().required('errors.required'),
+        last_name: yup
+          .string()
+          .required('errors.required')
+          .userName('errors.invalid-name'),
+        name: yup
+          .string()
+          .required('errors.required')
+          .userName('errors.invalid-name'),
+        about_me: yup.string().required('errors.required').max(100),
         day: yup.string().required('errors.required'),
         month: yup.string().required('errors.required'),
         year: yup.string().required('errors.required'),
-        height: yup.string().required('errors.required'),
-        weight: yup.string().required('errors.required'),
+        height: yup
+          .number()
+          .typeError('errors.type-number')
+          .required('errors.required')
+          .min(145, 'errors.min145')
+          .max(250, 'errors.max250'),
+        weight: yup
+          .number()
+          .typeError('errors.type-number')
+          .required('errors.required')
+          .min(30, 'errors.min30')
+          .max(200, 'errors.max250'),
         working_leg: yup.string().required('errors.required'),
         position: yup.string().required('errors.required'),
-        phone: yup.string().required('errors.required'),
-        config_phone: yup.string().required('errors.required'),
-        config_email: yup.string().required('errors.required'),
-        show_reviews: yup.string().required('errors.required'),
+        phone: yup
+          .string()
+          .required('errors.required')
+          .min(19, 'errors.invalid-phone'),
+        config_phone: yup.boolean().required('errors.required'),
+        config_email: yup.boolean().required('errors.required'),
+        show_reviews: yup.boolean().required('errors.required'),
         planned_events: yup.string().required('errors.required')
       })
     })
@@ -449,7 +480,10 @@ export default {
       .then(() => {
         getMyProfile()
       })
-      .catch(e => console.log('mistake happened', e))
+      .catch(e => {
+        console.log('mistake happened', e)
+        toast.error(t('profile.some-mistake'))
+      })
     }
 
     function getMyProfile() {
@@ -489,6 +523,11 @@ export default {
           userPhone.value = res.data?.phone
           isLoading.value = false
           toast.success(t('profile.data-updated'))
+        })
+        .catch(e => {
+          isLoading.value = false
+          console.log('some mistake happened', e)
+          toast.error(t('profile.some-mistake'))
         })
     }
 
