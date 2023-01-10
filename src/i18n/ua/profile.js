@@ -43,7 +43,9 @@ export default {
   'about-me': 'Про мене',
   'game-features' : 'Ігрові характеристики',
   'contacts': 'Контакти',
+  'planed-events': 'Заплановані події',
   'data-updated': 'Даннi успiшно оновленi',
+  'location': 'Місце знаходження',
   'no-name': "Iм'я не вказано",
   'no-last-name': 'Прiзвище не вказано',
   'no-about_me': 'Немае данних про себе',
@@ -53,5 +55,6 @@ export default {
   'no-position': 'Позицiя не вказана',
   'no-weight': 'Вага не вказана',
   'no-working-leg': 'Нога не вказана',
+  'no-place': 'Адреса не зазначена',
   'no-role': 'Роль не вказана'
 }

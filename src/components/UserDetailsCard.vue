@@ -274,17 +274,18 @@
               name="phone"
             />
           </div>
-          <!-- <div class="b-user-card__area-line">
+          <div class="b-user-card__area-line">
             <div v-if="!isEditMode" class="b-user-card__to-show">
               <div class="b-user-card__data">
-                {{userData.location}}
+                {{userData.place || $t('profile.no-place') }}
               </div>
               <div class="b-user-card__title">
-                Місце знаходження
+                {{ $t('profile.location') }}
               </div>
             </div>
             <div v-else class="b-user-card__dropdowns">
-              <Dropdown
+              Edit Location
+              <!-- <Dropdown
                 :outside-title="true"
                 :main-title="'Місто'"
                 :options="mockData.cities"
@@ -303,9 +304,9 @@
                 @new-value="
                   $emit('dropdown-form-value', 'labels', $event, 0)
                 "
-              />
+              /> -->
             </div>
-          </div> -->
+          </div>
         </div>
       </div>
     </div>
