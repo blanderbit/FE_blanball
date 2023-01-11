@@ -1,12 +1,12 @@
 <template>
   <div class="b_breadcrumbs">
-    <ul>
-      <li v-for="(item, idx) in breadcrumbs" :key="item.name">
-        <router-link :to="idx + 1 === breadcrumbs.length ? '' : item.path">
+    <ul v-if="breadcrumbs.i18n">
+      <li v-for="(item, idx) in getBreadcrumbsList" :key="item.name">
+        <router-link :to="idx + 1 === getBreadcrumbsList.length ? '' : item.path">
           {{ item.name }}
         </router-link>
         <img
-          v-if="!(idx + 1 === breadcrumbs.length)"
+          v-if="!(idx + 1 === getBreadcrumbsList.length)"
           src="../assets/img/arrow-right.svg"
           alt=""
         />
@@ -17,9 +17,12 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-const { breadcrumbs } = useRouter().currentRoute.value.meta
-
+const { tm } = useI18n();
+const { breadcrumbs } = useRouter().currentRoute.value.meta;
+const getBreadcrumbsList = computed(() => tm(breadcrumbs.i18n))
 </script>
 
 <style lang="scss" scoped>

@@ -20,9 +20,11 @@ import Counter from './counter'
 import ScrollTopComponent from './scroll_top_component'
 import Errors from './errors'
 import Notifications from './notifications'
+import Breadcrumbs from './breadcrumbs'
 
 export const UA_LANGUAGE = {
   events: EventsPage,
+  breadcrumbs: Breadcrumbs,
   profile: ProfilePage,
   modals: Modals,
   buttons: Buttons,

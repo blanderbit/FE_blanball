@@ -218,7 +218,7 @@
       });
 
       paginationPage.value = 1;
-      paginationElements.value = eventStore.events.results.map(handlingIncomeData);
+      paginationElements.value = router.currentRoute.value.meta.eventData.data.results.map(handlingIncomeData);
       const {
         getRawFilters,
         updateFilter,

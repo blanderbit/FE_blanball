@@ -87,18 +87,6 @@ export default {
       name: 'форвард-страйкер'
     }
   ],
-  cities: [
-    { value: 'Sinaya' },
-    { value: 'Bucharest' },
-    { value: 'Stanbul' },
-    { value: 'Tbilisi' }
-  ],
-  district: [
-    { value: 'Бабурка' },
-    { value: 'Космос' },
-    { value: 'Шевчик' },
-    { value: 'Бородок' }
-  ],
   tabs: [
     {
       id: 0,
