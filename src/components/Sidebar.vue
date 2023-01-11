@@ -6,6 +6,7 @@
         :notReadNotificationCount="notReadNotificationCount"
         :newNotifications="skipids.length"
         :total-notifications-count="paginationTotalCount"
+        @close="isMenuOpened = false"
         @closed="paginationClearData()"
         @loadingInfinite="loadDataNotifications(paginationPage + 1, $event)"
         @reLoading="loadDataNotifications(1, null, true)"
@@ -161,7 +162,10 @@
         getNotificationsCount();
       };
 
-      const goToProfile = () => router.push(ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute);
+      const goToProfile = () => {
+        router.push(ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute);
+        isMenuOpened.value = false;
+      };
 
       AuthWebSocketWorkerInstance
         .registerCallback(handleMessageInSidebar);
@@ -217,7 +221,7 @@
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      z-index: 2;
+      z-index: 12;
       background: #ffffff;
       .b_sidebar_picture-bottom {
         background: #EFEFF6;

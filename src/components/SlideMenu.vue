@@ -122,7 +122,7 @@
           </div>
           <div class="b_slide_menu_bottom-line">
             {{$t('slide_menu.version')}}
-            <router-link :to="routeObject.APPLICATION.VERSION.absolute">
+            <router-link :to="routeObject.APPLICATION.VERSION.absolute" @click="$emit('close')">
               {{clientVersion}}
             </router-link>
           </div>
@@ -183,6 +183,7 @@
     },
     emits: [
       'closed',
+      'close',
       'reLoading',
       'loading',
       'loadingInfinite',
@@ -333,7 +334,7 @@
       background: #FCFCFC;
       box-shadow: 2px 2px 10px rgb(56 56 251 / 10%);
       border-radius: 6px;
-      z-index: 2;
+      z-index: 11;
       display: flex;
       flex-direction: column;
       justify-content: space-between;

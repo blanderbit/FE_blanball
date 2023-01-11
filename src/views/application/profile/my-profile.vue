@@ -358,15 +358,15 @@ export default {
       checkboxPhone: route.meta.usersData?.data.configuration?.phone,
       checkboxEmail: route.meta.usersData?.data.configuration?.email,
       checkboxReviews: route.meta.usersData?.data.configuration?.show_reviews
-    }
+    };
 
     onMounted(() => {
       window.addEventListener('resize', onResize);
-    })
+    });
 
     onBeforeUnmount(() => {
       window.removeEventListener('resize', onResize); 
-    })
+    });
 
     function switchTabLabel(isDisabled) {
       if (isDisabled) {
