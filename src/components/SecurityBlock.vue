@@ -32,6 +32,14 @@
             name="show_reviews"
           />
         </div>
+        <div class="b-security__personal-settings">
+          <p>{{ $t('profile.planed-events') }} </p>
+          <Switcher 
+            :id="'events'"
+            :is-edit-mode="isEditMode"
+            name="planned_events"
+          />
+        </div>
       </div>
     </div>
     <div class="b-security__top-table">

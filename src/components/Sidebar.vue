@@ -6,6 +6,7 @@
         :notReadNotificationCount="notReadNotificationCount"
         :newNotifications="skipids.length"
         :total-notifications-count="paginationTotalCount"
+        @close="isMenuOpened = false"
         @closed="paginationClearData()"
         @loadingInfinite="loadDataNotifications(paginationPage + 1, $event)"
         @reLoading="loadDataNotifications(1, null, true)"
@@ -55,6 +56,8 @@
 <script>
   import { ref, computed, onBeforeUnmount } from 'vue'
   import { useRouter } from 'vue-router'
+  import { useUserDataStore } from '../stores/userData'
+  import { useEventDataStore } from '../stores/eventsData'
 
   import SlideMenu from '../components/SlideMenu.vue'
   import Avatar from './../components/Avatar.vue'
@@ -85,6 +88,8 @@
       Avatar
     },
     setup() {
+      const userStore = useUserDataStore()
+      const eventStore = useEventDataStore()
       const notReadNotificationCount = ref(0);
       const skipids = ref([]);
       const router = useRouter();
@@ -157,7 +162,10 @@
         getNotificationsCount();
       };
 
-      const goToProfile = () => router.push(ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute);
+      const goToProfile = () => {
+        router.push(ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute);
+        isMenuOpened.value = false;
+      };
 
       AuthWebSocketWorkerInstance
         .registerCallback(handleMessageInSidebar);
@@ -174,6 +182,8 @@
 
       getNotificationsCount();
       const logOut = () => {
+        userStore.user = {}
+        eventStore.events = {}
         TokenWorker.clearToken();
         router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute)
       }
@@ -211,7 +221,7 @@
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      z-index: 2;
+      z-index: 12;
       background: #ffffff;
       .b_sidebar_picture-bottom {
         background: #EFEFF6;
