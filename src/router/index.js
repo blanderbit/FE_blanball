@@ -4,6 +4,21 @@ import { API } from "../workers/api-worker/api.worker";
 import { filterConfigForEvents, filterConfigForUsers } from "../workers/api-worker/http/filter/filter.config";
 import { transpileInterseptorQueryToConfig } from "../workers/api-worker/http/filter/filter.utils";
 import { ROUTES } from "./router.const";
+import { useUserDataStore } from '../stores/userData'
+
+const usersData = () => {
+  const userStore = useUserDataStore();
+  if (!Object.keys(userStore.user).length) {
+    return API.UserService.getMyProfile()
+      .then(res => {
+        userStore.$patch({
+          user: res.data
+        });
+        return res
+      })
+  }
+};
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -43,28 +58,27 @@ const router = createRouter({
           path: ROUTES.APPLICATION.VERSION.relative,
           name: ROUTES.APPLICATION.VERSION.name,
           beforeEnter: routerAuthResolver.routeInterceptor(() => ({
-            allVersions: () => API.VersionsService.getAllVersions()
+            allVersions: () => API.VersionsService.getAllVersions(),
+            usersData
           })),
           component: () => import('../views/application/versions.vue'),
           meta: {
-            breadcrumbs: [
-              {name: 'Main', path: '/'},
-              {name: 'Versions'}
-            ]
+            breadcrumbs: {
+              i18n: 'breadcrumbs.versions'
+            }
           }
         },
         {
           path: ROUTES.APPLICATION.PROFILE.MY_PROFILE.relative,
           name: ROUTES.APPLICATION.PROFILE.MY_PROFILE.name,
           beforeEnter: routerAuthResolver.routeInterceptor(() => ({
-            usersData: () => API.UserService.getMyProfile(),
+            usersData
           })),
           component: () => import('../views/application/profile/my-profile.vue'),
           meta: {
-            breadcrumbs: [
-              {name: 'Main', path: '/'},
-              {name: 'Profile'}
-            ]
+            breadcrumbs: {
+              i18n: 'breadcrumbs.profile'
+            }
           }
         },
         {
@@ -76,15 +90,14 @@ const router = createRouter({
                 filterConfigForEvents,
                 to
               )
-            )
+            ),
+            usersData
           })),
           component: () => import('../views/application/events/my-events.vue'),
           meta: {
-            breadcrumbs: [
-              {name: 'Main', path: '/'},
-              {name: 'Events', path: '/application/events'},
-              {name: 'My events'}
-            ]
+            breadcrumbs:  {
+              i18n: 'breadcrumbs.myEvents'
+            }
           }
         },
         {
@@ -96,149 +109,86 @@ const router = createRouter({
                 filterConfigForEvents,
                 to
               )
-            )
+            ),
+            usersData
           })),
           component: () => import('../views/application/events/index.vue'),
           meta: {
-            breadcrumbs: [
-              {name: 'Main', path: '/'},
-              {name: 'Events'}
-            ]
+            breadcrumbs: {
+              i18n: 'breadcrumbs.events'
+            }
           }
         },
         {
           path: ROUTES.APPLICATION.EVENTS.CREATE.relative,
           name: ROUTES.APPLICATION.EVENTS.CREATE.name,
           beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-            // usersData: () => $api.UsersRequest.getAll(to.query),
+            usersData
           })),
           component: () => import('../views/application/events/manage.vue'),
           meta: {
-            breadcrumbs: [
-              {name: 'Main', path: '/'},
-              {name: 'Events', path: '/application/events'},
-              {name: 'Event creation'}
-            ]
+            breadcrumbs: {
+              i18n: 'breadcrumbs.createOneEvent'
+            }
           }
         },
         {
           path: ROUTES.APPLICATION.EVENTS.EDIT.relative,
           name: ROUTES.APPLICATION.EVENTS.EDIT.name,
           beforeEnter: routerAuthResolver.routeInterceptor(() => ({
-            // usersData: () => $api.UsersRequest.getAll(to.query),
+            usersData
           })),
           component: () => import('../views/application/events/manage.vue'),
           meta: {
-            breadcrumbs: [
-              {name: 'Main', path: '/'},
-              {name: 'Events', path: '/application/events'},
-              {name: 'Event edit'},
-            ]
+            breadcrumbs: {
+              i18n: 'breadcrumbs.editOneEvent'
+            }
           }
         },
         {
           path: ROUTES.APPLICATION.EVENTS.GET_ONE.relative,
           name: ROUTES.APPLICATION.EVENTS.GET_ONE.name,
           beforeEnter: routerAuthResolver.routeInterceptor(() => ({
-            // usersData: () => $api.UsersRequest.getAll(to.query),
+            usersData
           })),
           component: () => import('../views/application/events/event-info.vue'),
           meta: {
-            breadcrumbs: [
-              {name: 'Main', path: '/'},
-              {name: 'Events', path: '/application/events'},
-              {name: 'Event '},
-            ]
+            breadcrumbs: {
+              i18n: 'breadcrumbs.getOneEvent'
+            }
           }
         },
         {
           path: ROUTES.APPLICATION.USERS.GENERAL.relative,
           name: ROUTES.APPLICATION.USERS.GENERAL.name,
           beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-            usersData: () => API.UserService.getAllUsers(
+            allUsersData: () => API.UserService.getAllUsers(
               transpileInterseptorQueryToConfig(
                 filterConfigForUsers,
                 to
               )
-            )
+            ),
+            usersData
           })),
           component: () => import('../views/application/users/general.vue'),
           meta: {
-            breadcrumbs: [
-              {name: 'Main', path: '/'},
-              {name: 'Users' },
-            ]
-          }
-        },
-        { // TODO
-          path: ROUTES.APPLICATION.USERS.PLAYERS.relative,
-          name: ROUTES.APPLICATION.USERS.PLAYERS.name,
-          beforeEnter: routerAuthResolver.routeInterceptor(() => ({
-            // usersData: () => $api.UsersRequest.getAll(to.query),
-          })),
-          component: () => import('../views/application/users/players.vue'),
-          meta: {
-            breadcrumbs: [
-              {name: 'Main', path: '/'},
-              {name: 'Users'},
-            ]
-          }
-        },
-        { // TODO
-          path: ROUTES.APPLICATION.USERS.REFEREE.relative,
-          name: ROUTES.APPLICATION.USERS.REFEREE.name,
-          beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-            // usersData: () => $api.UsersRequest.getAll(to.query),
-          })),
-          component: () => import('../views/application/users/referee.vue'),
-          meta: {
-            breadcrumbs: [
-              {name: 'Main', path: '/'},
-              {name: 'Users'},
-            ]
-          }
-        },
-        { // TODO
-          path: ROUTES.APPLICATION.USERS.TEAMS.relative,
-          name: ROUTES.APPLICATION.USERS.TEAMS.name,
-          beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-            // usersData: () => $api.UsersRequest.getAll(to.query),
-          })),
-          component: () => import('../views/application/users/teams.vue'),
-          meta: {
-            breadcrumbs: [
-              {name: 'Main', path: '/'},
-              {name: 'Users'},
-            ]
-          }
-        },
-        {// TODO
-          path: ROUTES.APPLICATION.USERS.TRAINERS.relative,
-          name: ROUTES.APPLICATION.USERS.TRAINERS.name,
-          beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-            // usersData: () => $api.UsersRequest.getAll(to.query),
-          })),
-          component: () => import('../views/application/users/trainers.vue'),
-          meta: {
-            breadcrumbs: [
-              {name: 'Main', path: '/'},
-              {name: 'Users'},
-            ]
+            breadcrumbs: {
+              i18n: 'breadcrumbs.users'
+            }
           }
         },
         {
           path: ROUTES.APPLICATION.USERS.GET_ONE.relative,
           name: ROUTES.APPLICATION.USERS.GET_ONE.name,
-          beforeEnter: routerAuthResolver.routeInterceptor((to) => ( {
+          beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
             publicUserData: () => API.UserService.getUserPublicProfile(to.params.userId),
+            usersData
           })),
           component: () => import('../views/application/users/profile.vue'),
           meta: {
-            breadcrumbs: [
-              {name: 'Main', path: '/'},
-              {name: 'Users', path: '/application/users'},
-              {name: 'Show profile', path: ''},
-            ]
+            breadcrumbs: {
+              i18n: 'breadcrumbs.userProfile'
+            }
           }
         },
       ]

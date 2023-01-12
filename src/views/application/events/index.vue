@@ -83,10 +83,11 @@
 
 <script>
   import { ref, computed } from 'vue'
-  import { useRoute, useRouter } from 'vue-router'
+  import { useRouter } from 'vue-router'
   import dayjs from 'dayjs'
   import dayjsUkrLocale from 'dayjs/locale/uk'
   import { useI18n } from 'vue-i18n'
+  import { useEventDataStore } from '../../../stores/eventsData'
 
   import GreenBtn from '../../../components/GreenBtn.vue'
   import InputComponent from '../../../components/forms/InputComponent.vue'
@@ -131,9 +132,9 @@
       EventsFilters
     },
     setup() {
+      const eventStore = useEventDataStore()
       const todaysDate = useTodaysDate()
       const scrollComponent = ref(null);
-      const route = useRoute();
       const router = useRouter();
       const eventCards = ref([]);
       const {t} = useI18n();
@@ -220,7 +221,7 @@
       });
 
       paginationPage.value = 1;
-      paginationElements.value = route.meta.eventData.data.results.map(handlingIncomeData);
+      paginationElements.value = router.currentRoute.value.meta.eventData.data.results.map(handlingIncomeData);
       const {
         getRawFilters,
         updateFilter,

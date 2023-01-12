@@ -187,6 +187,18 @@ import CONSTANTS from '../../../consts'
 
 import useWindowWidth from '../../../utils/widthScreen'
 
+yup.addMethod(yup.string, "userName", function (errorMessage) {
+  return this.test(`UserName`, errorMessage, function (value) {
+    const { path, createError } = this;
+    // const reg = /^[a-zа-яієїґ\'\d]{1}[a-zа-яієїґ\'\d-]*[a-zа-яієїґ\'\d]{1}$/i;
+    const reg = /^[А-Яа-яієїґЇІЄҐ\'\d]{1}[А-Яа-яієїґЇІЄҐ\'\d-]*[А-Яа-яієїґЇІЄҐ\'\d]{1}$/i;
+    return (
+      reg.exec(value) ||
+      createError({ path, message: errorMessage })
+    );
+  });
+});
+
 const EDIT_BUTTON_ACTIONS = {
   SAVE: 'save',
   CANCEL: 'cancel'
@@ -251,7 +263,13 @@ export default {
         numberFromMonth: CONSTANTS.users_page.months.numberFromMonth,
       }
     })
-    restData.value = route.meta.usersData?.data
+    restData.value = {
+      ...route.meta.usersData?.data,
+      configuration: {
+        ...route.meta.usersData?.data?.configuration,
+        planned_events: true
+      }
+    }
     const formValues = ref({
       last_name: route.meta.usersData?.data.profile?.last_name,
       name: route.meta.usersData?.data.profile?.name,
@@ -267,6 +285,7 @@ export default {
       config_phone: route.meta.usersData?.data.configuration?.phone,
       config_email: route.meta.usersData?.data.configuration?.email,
       show_reviews: route.meta.usersData?.data.configuration?.show_reviews,
+      planned_events: true
     })
     
     const checkboxData = reactive({})
@@ -282,20 +301,40 @@ export default {
 
     const schema = computed(() => {
       return yup.object({
-        last_name: yup.string().required('errors.required'),
-        name: yup.string().required('errors.required'),
-        about_me: yup.string().required('errors.required'),
+        last_name: yup
+          .string()
+          .required('errors.required')
+          .userName('errors.invalid-name'),
+        name: yup
+          .string()
+          .required('errors.required')
+          .userName('errors.invalid-name'),
+        about_me: yup.string().required('errors.required').max(100),
         day: yup.string().required('errors.required'),
         month: yup.string().required('errors.required'),
         year: yup.string().required('errors.required'),
-        height: yup.string().required('errors.required'),
-        weight: yup.string().required('errors.required'),
+        height: yup
+          .number()
+          .typeError('errors.type-number')
+          .required('errors.required')
+          .min(145, 'errors.min145')
+          .max(250, 'errors.max250'),
+        weight: yup
+          .number()
+          .typeError('errors.type-number')
+          .required('errors.required')
+          .min(30, 'errors.min30')
+          .max(200, 'errors.max250'),
         working_leg: yup.string().required('errors.required'),
         position: yup.string().required('errors.required'),
-        phone: yup.string().required('errors.required'),
-        config_phone: yup.string().required('errors.required'),
-        config_email: yup.string().required('errors.required'),
-        show_reviews: yup.string().required('errors.required'),
+        phone: yup
+          .string()
+          .required('errors.required')
+          .min(19, 'errors.invalid-phone'),
+        config_phone: yup.boolean().required('errors.required'),
+        config_email: yup.boolean().required('errors.required'),
+        show_reviews: yup.boolean().required('errors.required'),
+        planned_events: yup.string().required('errors.required')
       })
     })
 
@@ -319,15 +358,15 @@ export default {
       checkboxPhone: route.meta.usersData?.data.configuration?.phone,
       checkboxEmail: route.meta.usersData?.data.configuration?.email,
       checkboxReviews: route.meta.usersData?.data.configuration?.show_reviews
-    }
+    };
 
     onMounted(() => {
       window.addEventListener('resize', onResize);
-    })
+    });
 
     onBeforeUnmount(() => {
       window.removeEventListener('resize', onResize); 
-    })
+    });
 
     function switchTabLabel(isDisabled) {
       if (isDisabled) {
@@ -441,7 +480,10 @@ export default {
       .then(() => {
         getMyProfile()
       })
-      .catch(e => console.log('mistake happened', e))
+      .catch(e => {
+        console.log('mistake happened', e)
+        toast.error(t('profile.some-mistake'))
+      })
     }
 
     function getMyProfile() {
@@ -470,11 +512,22 @@ export default {
             working_leg: getWorkingLeg(res.data.profile?.working_leg),
             role: res.data?.role,
           }
-          restData.value =res.data
+          restData.value = {
+            ...res.data,
+            configuration: {
+              ...res.data?.configuration,
+              planned_events: true
+            }
+          }
           userEmail.value = res.data?.email
           userPhone.value = res.data?.phone
           isLoading.value = false
           toast.success(t('profile.data-updated'))
+        })
+        .catch(e => {
+          isLoading.value = false
+          console.log('some mistake happened', e)
+          toast.error(t('profile.some-mistake'))
         })
     }
 
@@ -509,7 +562,7 @@ export default {
           break
         case 'public_profile':
           const refProfileData = { ...myForm.value.getControledValues() }
-          const { day, month, year, config_email, config_phone, show_reviews, position } = refProfileData
+          const { day, month, year, working_leg, config_email, planned_events, config_phone, show_reviews, position } = refProfileData
           const profileData = {
             ...refProfileData,
             birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
@@ -530,7 +583,8 @@ export default {
             "configuration": {
               "email": config_email,
               "phone": config_phone,
-              "show_reviews": show_reviews
+              "show_reviews": show_reviews,
+              "planned_events": planned_events
             },
             "profile": {
               "place": {

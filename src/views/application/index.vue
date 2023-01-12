@@ -15,7 +15,7 @@
       </span>
       <span 
         class="b_header_verify-btn"
-        @click="handleVerifyEmailClick"
+        @click="isVerifyModalActive = true"
       >
         {{ $t('header.approve-email') }}
       </span>
@@ -42,9 +42,10 @@
 
 <script setup>
 import { ref, onBeforeUnmount } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import { v4 as uuid } from "uuid";
+import { useUserDataStore } from '@/stores/userData'
 
 import Sidebar from './../../components/Sidebar.vue'
 import MainHeader from './../../components/MainHeader.vue'
@@ -65,7 +66,7 @@ import { API } from '../../workers/api-worker/api.worker';
 
 const isVerifyModalActive = ref(false);
 const userEmail = ref('');
-const isUserVerified = ref(false);
+const isUserVerified = ref(true);
 const isMobMenuActive = ref(false);
 const modals = ref({
     review: {
@@ -74,19 +75,14 @@ const modals = ref({
     }
 });
 
-const route = useRoute();
 const router = useRouter();
 const toast = useToast();
+const store = useUserDataStore()
 const audio = new Audio(message_audio);
 let timeout;
 
-isUserVerified.value = route.meta.usersData?.data?.is_verified;
-userEmail.value = route.meta.usersData?.data?.email;
-
-const handleVerifyEmailClick = () => {
-  isVerifyModalActive.value = true;
-  API.AuthorizationService.VerifyEmail()
-}
+isUserVerified.value = store.user?.is_verified
+userEmail.value = store.user?.email || ''
 
 const handlerAction = async (item, notificationInstance) => {
   clearTimeout(timeout);

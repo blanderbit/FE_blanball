@@ -147,7 +147,7 @@
       });
 
       paginationPage.value = 1;
-      paginationElements.value = route.meta.usersData.data.results;
+      paginationElements.value = route.meta.allUsersData.data.results;
 
       const {
         getRawFilters,
