@@ -30,7 +30,7 @@
           <GreenBtn
             :text="$t('buttons.create-event')"
             :width="168"
-            :icon="'../../../assets/img/plus.svg'"
+            :icon="iconPlus"
             :height="40"
             @click-function="goToCreateEvent"
           />
@@ -106,7 +106,6 @@ import EmptyList from '../../../components/EmptyList.vue'
 
 import CONSTANTS from '../../../consts/index'
 
-
 import { API } from "../../../workers/api-worker/api.worker";
 import { ROUTES } from "../../../router/router.const";
 import SmartGridList from '../../../components/smart-list/SmartGridList.vue'
@@ -118,6 +117,8 @@ import FilterBlock from '../../../components/filters/FilterBlock.vue'
 
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue'
 import { v4 as uuid } from "uuid";
+import Plus from '../../../assets/img/plus.svg'
+
 const COLORS = {
   green: '#148581',
   grey: '#DFDEED',
@@ -166,6 +167,8 @@ export default {
         menu_text: CONSTANTS.event_page.menu_text,
       }
     })
+
+    const iconPlus = computed(() => Plus)
 
     const emptyListMessages = computed(() => {
       return {
@@ -332,6 +335,7 @@ export default {
       eventCards,
       isLoaderActive,
       mockData,
+      iconPlus,
       emptyListMessages,
       myCardRightClick,
       goToEventPage,

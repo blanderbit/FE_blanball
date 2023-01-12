@@ -22,11 +22,11 @@
         </div>
         <div class="b-events-page__right-part">
           <GreenBtn
-              :text="$t('buttons.create-event')"
-              :width="168"
-              :icon="'../../../assets/img/plus.svg'"
-              :height="40"
-              @click-function="goToCreateEvent"
+            :text="$t('buttons.create-event')"
+            :width="168"
+            :icon="iconPlus"
+            :height="40"
+            @click-function="goToCreateEvent"
           />
         </div>
       </div>
@@ -110,6 +110,7 @@
   import { v4 as uuid } from "uuid";
   import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue'
   import useTodaysDate from '../../../utils/todaysDate'
+  import Plus from '../../../assets/img/plus.svg'
   
   export default {
     name: 'EventsPage',
@@ -147,6 +148,8 @@
           cities_dropdown: CONSTANTS.event_page.cities_dropdown
         }
       })
+
+      const iconPlus = computed(() => Plus)
 
       const emptyListMessages = computed(() => {
         return {
@@ -322,6 +325,7 @@
         goToEventPage,
         goToCreateEvent,
         refList,
+        iconPlus,
         blockScrollToTopIfExist,
         triggerForRestart,
         paginationElements,

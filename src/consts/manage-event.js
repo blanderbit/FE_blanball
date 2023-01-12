@@ -9,13 +9,8 @@ export default {
     },
     {
       id: 1,
-      name: 'Не дружній матч',
-      value: 'Not friendly match'
-    },
-    {
-      id: 2,
-      name: 'Ворожий матч',
-      value: 'Enemy match'
+      name: 'Тренировка',
+      value: 'Training'
     }
   ],
   type_of_sport_dropdown: [
@@ -23,21 +18,6 @@ export default {
       id: 0,
       name: 'Футбол',
       value: 'Football'
-    },
-    {
-      id: 1,
-      name: 'Литрбол',
-      value: 'Litreball'
-    },
-    {
-      id: 2,
-      name: 'Метание кизяков',
-      value: 'Shit throughing'
-    },
-    {
-      id: 3,
-      name: 'Плевки в длину',
-      value: 'Long spitting'
     }
   ],
   tags: [

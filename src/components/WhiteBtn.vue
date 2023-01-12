@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+
 export default {
   props: {
     icon: {
@@ -21,7 +23,7 @@ export default {
       required: true,
     },
     width: {
-      type: Number,
+      type: [ Number, String ],
       default: null,
     },
     height: {
@@ -36,21 +38,31 @@ export default {
       type: Object,
       default: () => {},
     },
-  },
-  computed: {
-    btnWidth() {
-      return this.width ? this.width + 'px' : '100%'
+    isBorder: {
+      type: Boolean,
+      default: true
     },
-    styles() {
+  },
+  setup(props) {
+    const btnWidth = computed(() => {
+      return props.width ? props.width + 'px' : '100%'
+    })
+
+    const styles = computed(() => {
       return {
-        ...this.fontStyles,
-        width: this.btnWidth,
-        color: this.mainColor,
-        border: `1px solid ${this.mainColor}`,
-        height: this.height + 'px',
+        ...props.fontStyles,
+        width: btnWidth.value,
+        color: props.mainColor,
+        border: `${props.isBorder ? `1px solid ${props.mainColor}` : 'none'}`,
+        height: props.height + 'px',
       }
-    },
-  },
+    })
+
+    return {
+      btnWidth,
+      styles
+    }
+  }
 }
 </script>
 

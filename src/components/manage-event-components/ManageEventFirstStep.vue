@@ -1,6 +1,6 @@
 <template>
-  <div class="first-step">
-    <Dropdown
+  <div class="b-event-m-1st">
+    <!-- <Dropdown
       :outside-title="true"
       :main-title="$t('events.event-type')"
       :placeholder="$t('events.event-type')"
@@ -9,80 +9,94 @@
       display-value="value"
       :width="320"
       :height="40"
-      @new-value="$emit('dropdown-form-value', 'title', $event)"
-    />
-    <div class="title">{{ $t('events.gender') }}</div>
-    <div class="radio-btn-wrapper">
-      <div class="radio">
-        <input 
-          id="radio-1" 
-          v-model="secondLabel"
-          name="radio" 
-          type="radio"
-          :value="$t('events.men')"
-          checked
-          >
-        <label for="radio-1" class="radio-label">
-          <img src="../../assets/img/male-icon.svg" alt="">
-          {{ $t('events.men') }}
-        </label>
+      name="type"
+    /> -->
+    <p>{{ $t('events.friendly-match') }}</p>
+    <div class="b-event-m-1st__title mt-3 mb-2">
+      {{ $t('events.gender') }}
+    </div>
+    <div class="b-event-m-1st__radio-btn-wrapper">
+      <div class="radio-cover">
+        <radio-button
+          name="gender"
+          :title="$t('events.men')"
+          value="Man"
+          :width="'auto'"
+        ></radio-button>
       </div>
-      <div class="radio">
-        <input 
-          id="radio-2" 
-          v-model="secondLabel"
-          name="radio" 
-          type="radio"
-          :value="$t('events.women')"
-        >
-        <label for="radio-2" class="radio-label">
-          <img src="../../assets/img/female-icon.svg" alt="">
-          {{ $t('events.women') }}
-        </label>
+      <div class="radio-cover">
+        <radio-button
+          name="gender"
+          :title="$t('events.women')"
+          value="Woman"
+          :width="'auto'"
+        ></radio-button>
+      </div>
+      <div class="radio-cover">
+        <radio-button
+          name="gender"
+          :title="$t('events.all')"
+          value="All"
+          :width="'auto'"
+        ></radio-button>
       </div>
     </div>
-    <Dropdown
-      :outside-title="true"
-      :main-title="$t('events.sport-type')"
-      :placeholder="$t('events.sport-type')"
-      :options="mockData.typeOfSportDropdown"
-      display-name="name"
-      display-value="value"
-      :width="320"
-      :height="40"
-      @new-value="$emit('dropdown-form-value', 'labels', $event, 0)"
-    />
-    <div class="time-and-date">
-      <div class="input">
-        <InputComponent
-          :outside-title="true"
-          :title="$t('events.date')"
-          :placeholder="'02.09.2022'"
-          :title-width="0"
-          :icon="icons.calendar"
-          @new-value="this.$emit('setEventData', 'date', $event)"
-        />
-      </div>
-      <div class="input">
+    <div class="b-event-m-1st__sport-type mt-3">
+      <Dropdown
+        :outside-title="true"
+        :main-title="$t('events.sport-type')"
+        :placeholder="$t('events.sport-type')"
+        :options="mockData.typeOfSportDropdown"
+        display-name="name"
+        display-value="value"
+        :width="320"
+        :height="40"
+        name="type"
+      />
+    </div>
+    <div class="b-event-m-1st__time-and-date mt-3">
+      <!-- <div class="b-event-m-1st__input-calendar">
+        <div class="b-event-m-1st__label">
+          {{ $t('events.date') }}
+        </div>
+        <v-date-picker
+          locale="ukr" 
+          :model-config="calendar.modelConfig" 
+          v-model="initialDate"
+        >
+          <template #default="options">
+            {{options}}
+            <div class="b-event-m-1st__calendar-cover">
+              <input 
+                class="py-1 border rounded" 
+                :value="options.inputValue" 
+                v-on="options.inputEvents" 
+              />
+            </div>
+          </template>
+        </v-date-picker>
+        <img src="../../assets/img/calendar.svg" alt="" />
+      </div> -->
+      <div class="b-event-m-1st__input-time">
         <InputComponent
           :outside-title="true"
           :title="$t('events.time')"
           :placeholder="'17:00'"
           :title-width="0"
           :icon="icons.watch"
-          @new-value="this.$emit('setEventData', 'time', $event)"
+          name="time"
         />
       </div>
     </div>
-    <div class="input-location">
+    <div class="b-event-m-1st__input-location">
       <InputComponent
         :placeholder="$t('events.place')"
         :title-width="0"
         :icon="icons.location"
-        @new-value="this.$emit('setEventData', 'place', $event)"
+        name="location"
       />
     </div>
-    <div class="event-map">
+    <div class="b-event-m-1st__event-map">
       <img src="../../assets/img/map-manage-event.svg" alt="">
     </div>
   </div>
@@ -93,27 +107,49 @@ import { ref, watch, computed } from 'vue';
 
 import Dropdown from '../forms/Dropdown.vue'
 import InputComponent from '../forms/InputComponent.vue'
+import RadioButton from '../forms/RadioButton.vue'
+import { cloneDeep, isEqual } from 'lodash'
 
 import CalendarPic from '../../assets/img/calendar.svg'
 import WatchPic from '../../assets/img/watch.svg'
 import LocationPic from '../../assets/img/location-point.svg'
+import UniPic from '../../assets/img/unisex.svg'
+import MalePic from '../../assets/img/male-icon.svg'
+import FemalePic from '../../assets/img/female-icon.svg'
 
 import CONSTANTS from '../../consts/index'
 
 export default {
   components: {
     Dropdown,
-    InputComponent
+    InputComponent,
+    RadioButton
   },
-  emit: ['setEventData'],
+  props: {
+    formData: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  emit: ['update:formData'],
   setup(props, {emit}) {
-    const secondLabel = ref(null)
+    const initialDate = ref(new Date())
 
+    const calendar = ref( {
+      inputMask: 'YYYY-MM-DD',
+      modelConfig: {
+        type: 'string',
+        mask: 'YYYY-MM-DD', // Uses 'iso' if missing
+      },
+    })
     const icons = computed(() => {
       return {
         calendar: CalendarPic,
         watch: WatchPic,
-        location: LocationPic
+        location: LocationPic,
+        unisexIcon: UniPic,
+        maleIcon: MalePic,
+        femaleIcon: FemalePic
       }
     })
     const mockData = computed(() => {
@@ -123,131 +159,93 @@ export default {
       }
     })
 
-    watch(secondLabel, (newVal, oldVal) => {
-      if (!(newVal === oldVal)) {
-        emit('setEventData', 'labels', newVal, 1)
-      }
-    })
-
     return {
-      secondLabel,
       icons,
-      mockData
+      mockData,
+      initialDate,
+      calendar
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .first-step {
-    .time-and-date {
+  .b-event-m-1st {
+    .b-event-m-1st__time-and-date {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      .input {
+      .b-event-m-1st__input-calendar {
+        flex-basis: 50%;
+        margin-right: 12px;
+        border: 1px solid #dfdeed;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        padding: 0 12px;
         width: 154px;
-        height: 40px;
-        margin-top: 16px;
+        min-width: 154px;
+        position: relative;
+        .b-event-m-1st__label {
+          position: absolute;
+          left: 2px;
+          top: -8px;
+          padding: 0px 4px;
+          background: #FFFFFF;
+          border-radius: 4px;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 12px;
+          line-height: 16px;
+          color: #575775;
+        }
+        .b-event-m-1st__calendar-cover {
+          width: 100%;
+          input {
+            height: 40px;
+            border: transparent;
+            width: 100%;
+          }
+        }
+      }
+      .b-event-m-1st__input-time {
+        flex-basis: 50%;
       }
     }
-    .input-location {
+    .b-event-m-1st__input-location {
       width: 100%;
       height: 40px;
       margin-top: 16px;
     }
-    .title {
+    .b-event-m-1st__title {
       font-family: 'Inter';
       font-style: normal;
       font-weight: 500;
       font-size: 13px;
       line-height: 20px;
       color: #262541;
-      margin-bottom: 8px;
     }
-    .radio-btn-wrapper {
+    .b-event-m-1st__radio-btn-wrapper {
+      margin-top: 12px;
       $color1: #f4f4f4;
       $color2: #148783;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      .radio {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        padding: 6px 12px;
-        background: #FFFFFF;
-        border: 1px solid #DFDEED;
-        border-radius: 6px;
-        min-width: 154px;
-        input[type="radio"] {
-          position: absolute;
-          opacity: 0;
-          + .radio-label {
-            display: flex;
-            align-items: center;
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 13px;
-            line-height: 24px;
-            text-transform: capitalize;
-            color: #262541;
-            img {
-              margin-right: 4px;
-            }
-            &:after {
-              content: '';
-              border-radius: 100%;
-              border: 1px solid #262541;
-              display: inline-block;
-              width: 13px;
-              height: 13px;
-              position: relative;
-              top: 0px;
-              margin-left: 12px; 
-              vertical-align: top;
-              cursor: pointer;
-              text-align: center;
-              transition: all 250ms ease;
-            }
-          }
-          &:checked {
-            + .radio-label {
-              &:after {
-                border: 1px solid $color2;
-                background-color: $color2;
-                box-shadow: inset 0 0 0 3px $color1;
-              }
-            }
-          }
-          &:focus {
-            + .radio-label {
-              &:before {
-                outline: none;
-                border-color: $color2;
-              }
-            }
-          }
-          &:disabled {
-            + .radio-label {
-              &:before {
-                box-shadow: inset 0 0 0 4px $color1;
-                border-color: darken($color1, 25%);
-                background: darken($color1, 25%);
-              }
-            }
-          }
-          + .radio-label {
-            &:empty {
-              &:before {
-                margin-right: 0;
-              }
+      .radio-cover {
+        flex-basis: 30%;
+        ::v-deep {
+          .b-radio {
+            margin-right: 0;
+            .b-radio-label::before {
+              margin-right: 10px;
             }
           }
         }
       }
     }
-    .event-map {
+    .b-event-m-1st__event-map {
       margin-top: 16px;
     }
   }
