@@ -6,6 +6,9 @@ export const useUserDataStore = defineStore('userData', {
   }),
   getters: {
     getUser: (state) => state.user,
+    getUserFullName: state => {
+      return `${state.user.profile.name} ${state.user.profile.last_name}`
+    }
   },
   actions: {
     // increment() {

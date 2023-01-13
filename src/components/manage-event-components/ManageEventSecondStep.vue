@@ -1,5 +1,5 @@
 <template>
-  <div class="second-step">
+  <div class="second-step" :style="stepStyle">
     <div class="title-block">
       <span>{{ $t('events.confidentiality') }}</span>
       <div class="vip-only">{{ $t('events.vip-only') }}</div>
@@ -7,38 +7,27 @@
     <div class="subtitle">
       {{ $t('events.agree-to-get-requests') }}
     </div>
-    <div class="radio-btn-wrapper">
+    <!-- <div class="radio-btn-wrapper">
       <div class="radio">
-        <input
-          id="radio-3"
-          v-model="isOpened"
-          name="openness"
-          type="radio"
-          :value="$t('events.join')"
-          checked
-        />
-        <label for="radio-3" class="radio-label">
-          <img src="../../assets/img/lock-closed.svg" alt="" />
-          {{$t('events.free')}}
-        </label>
+        <radio-button
+          name="privacy"
+          :title="$t('events.free')"
+          value="Opened"
+          :width="'auto'"
+        ></radio-button>
       </div>
       <div class="radio">
-        <input
-          id="radio-4"
-          v-model="isOpened"
-          name="openness"
-          type="radio"
-          :value="$t('events.apply')"
-        />
-        <label for="radio-4" class="radio-label">
-          <img src="../../assets/img/lock-opened.svg" alt="" />
-          {{ $t('events.closed') }}
-        </label>
+        <radio-button
+          name="privacy"
+          :title="$t('events.closed')"
+          value="Closed"
+          :width="'auto'"
+        ></radio-button>
       </div>
-    </div>
+    </div> -->
     <div class="title">{{ $t('events.is-event-free') }}</div>
     <div class="radio-btn-wrapper">
-      <div class="radio">
+      <!-- <div class="radio">
         <input
           id="radio-5"
           v-model="payment"
@@ -58,44 +47,44 @@
           :value="$t('events.payed')"
         />
         <label for="radio-6" class="radio-label"> {{ $t('events.payed') }} </label>
-      </div>
+      </div> -->
     </div>
-    <div v-if="payment === $t('events.payed')" class="input">
+    <!-- <div v-if="payment === $t('events.payed')" class="input">
       <InputComponent
         :outside-title="true"
         :title="$t('events.payed')"
         :placeholder="'45₴'"
         :title-width="0"
       />
-    </div>
+    </div> -->
     <div class="contact-switcher">
       <span>{{$t('events.show-my-contacts')}}</span>
-      <Switcher :id="'contacts'" />
+      <!-- <Switcher :id="'contacts'" /> -->
     </div>
     <div class="input">
-      <InputComponent
+      <!-- <InputComponent
         :placeholder="'+38 025 67 98'"
         :title-width="0"
         :icon="icons.arrow"
-      />
+      /> -->
     </div>
     <div class="title">{{$t('events.invite-users')}}</div>
     <div class="input">
-      <InputComponent
+      <!-- <InputComponent
         :placeholder="$t('events.search-users')"
         :title-width="30"
         :icon-left="icons.addUser"
         :icon="icons.search"
-      />
+      /> -->
     </div>
 
-    <SearchBlockAll 
+    <!-- <SearchBlockAll 
       :tags="tags"
       :filtered-teams="filteredTeams"
       :list-item-icon="icons.plus"
       @chose-tab-category="$emit('choseCategory')"
       @item-list-click="inviteUser"
-    />
+    /> -->
 
   </div>
 </template>
@@ -106,6 +95,7 @@ import { ref, watch, computed } from 'vue'
 import InputComponent from '../forms/InputComponent.vue'
 import Switcher from '../../components/Switcher.vue'
 import SearchBlockAll from '../SearchBlockAll.vue'
+import RadioButton from '../forms/RadioButton.vue'
 
 import HorizontalArrow from '../../assets/img/sort-arrows-horizontal.svg'
 import AddUser from '../../assets/img/add-user.svg'
@@ -122,11 +112,16 @@ export default {
       type: Array,
       default: () => [],
     },
+    currentStep: {
+      type: Number,
+      default: null
+    }
   },
   components: {
     InputComponent,
     Switcher,
-    SearchBlockAll
+    SearchBlockAll,
+    RadioButton
   },
   emit: ['choseCategory'],
   setup(props, { emit }) {
@@ -140,6 +135,12 @@ export default {
         search: Search,
         plus: PlusIcon
       }
+    })
+
+    const stepStyle = computed(() => {
+      return props.currentStep === 2 ? 
+            { height : 'auto' } :
+            { height : '0px' }
     })
 
     watch(isOpened, (newVal, oldVal) => {
@@ -156,7 +157,8 @@ export default {
     return {
       isOpened,
       payment,
-      icons
+      icons,
+      stepStyle
     }
   },
 }
@@ -164,6 +166,7 @@ export default {
 
 <style lang="scss" scoped>
 .second-step {
+  overflow: hidden;
   .input {
     width: 100%;
     height: 40px;

@@ -9,6 +9,9 @@
       :validation-schema="schema"
       @submit="disableSubmit"
     >
+      <pre>
+        {{data.values}}
+      </pre>
       <div class="b-manage-event__page-title">
         <span>
           {{$t('events.event-creation')}}
@@ -28,15 +31,17 @@
 
         <div class="b-manage-event__create-event-block">
           <ManageEventFirstStep
-            v-if="currentStep === 1"
+            :currentStep="currentStep"
+            @update-date="setNewDate"
+            @update-location="setLocation"
           />
-          <!-- <ManageEventSecondStep
-              v-if="currentStep === 2"
-              :tags="mockData.tags"
-              :filtered-teams="filteredTeams"
-              @chose-category="choseCategory"
+          <ManageEventSecondStep
+            :currentStep="currentStep"
+            :tags="mockData.tags"
+            :filtered-teams="filteredTeams"
+            @chose-category="choseCategory"
           />
-          <ManageEventThirdStep
+          <!-- <ManageEventThirdStep
             v-if="currentStep === 3"
           /> -->
 
@@ -70,6 +75,8 @@
 
         <PreviewBlock
           :form-data="data.values"
+          :start-date="startDate"
+          :user-location="userLocation"
         />
 
         <div class="b-manage-event__btns-desktop-block">
@@ -92,7 +99,6 @@
   import { useRouter } from 'vue-router'
   import { Form } from '@system.it.flumx.com/vee-validate'
   import * as yup from 'yup'
-  import { cloneDeep, isEqual } from 'lodash'
 
   import InputComponent from '../../../components/forms/InputComponent.vue'
   import GreenBtn from '../../../components/GreenBtn.vue'
@@ -125,21 +131,18 @@
     setup() {
       const router = useRouter()
       const currentStep = ref(1)
+      const startDate = ref('')
+      const userLocation = ref('')
       const isSuitModalActive = ref(false)
-
-      // const filterData = ref({
-      //   gender: '',
-      //   type: '',
-      //   time: '',
-      //   location: ''
-      // })
 
       const schema = computed(() => {
         return yup.object({
           gender: yup.string().required('errors.required'),
           type: yup.string().required('errors.required'),
           time: yup.string().required('errors.required'),
-          location: yup.string().required('errors.required')
+          location: yup.string().required('errors.required'),
+          date: yup.string().required('errors.required'),
+          privacy: yup.string().required('errors.required')
         })
       })
 
@@ -203,16 +206,26 @@
       function cancelEventCreation() {
         console.log('cancelEventCreation')
       }
+      function setNewDate(e) {
+        startDate.value = e
+      }
+      function setLocation(e) {
+        userLocation.value = e?.place
+      }
       return {
         currentStep,
         mockData,
         filteredTeams,
         icons,
         schema,
+        startDate,
+        userLocation,
         choseCategory,
         changeStep,
         saveEvent,
-        cancelEventCreation
+        cancelEventCreation,
+        setNewDate,
+        setLocation
       }
     },
     data() {

@@ -36,7 +36,7 @@
               <div class="b-event-preview__address">
                 <img src="../../assets/img/location-point.svg" alt="">
                 <p>
-                  {{ formData.location || '' }}
+                  {{ userLocation || '' }}
                 </p>
               </div>
             </div>
@@ -44,7 +44,7 @@
           <div class="b-event-preview__right-block">
             <div class="b-event-preview__col-3">
               <div class="b-event-preview__date">
-                {{ formData.date || '' }}
+                {{ startDate || '' }}
               </div>
               <div class="b-event-preview__time">
                 {{ formData.time || '' }}
@@ -54,25 +54,22 @@
         </div>
         <div class="b-event-preview__text-area"></div>
         <div class="b-event-preview__labels">
-          <!-- <div
-              v-for="label in eventData.labels"
-              :key="label.id"
-              class="b-event-preview__label"
-              :style="
-              label.text.length ?  
+          <div
+            v-for="label in labels"
+            :key="label.text"
+            class="b-event-preview__label"
+            :style="
+              label.text?.length ?  
               labelStyle :
               emptyLabelStyle
             "
           >
             {{ label.text }}
-          </div> -->
-          {{ formData.type || 'Football' }}
-          gender
-          GK
+          </div>
         </div>
         <div class="b-event-preview__bottom-part">
           <div class="b-event-preview__left-block">
-            В’ячеслав Залізняк
+            {{ fullUserName }}
           </div>
           <div class="b-event-preview__right-block">
             payment
@@ -104,6 +101,7 @@
 
 <script>
 import { reactive, ref, computed } from 'vue'
+  import { useUserDataStore } from '../../stores/userData'
 
 import GreenBtn from '../../components/GreenBtn.vue'
 
@@ -116,29 +114,35 @@ export default {
     formData: {
       type: Object,
       default: () => {}
+    },
+    startDate: {
+      type: String,
+      default: ''
+    },
+    userLocation: {
+      type: String,
+      default: ''
     }
   },
-  setup() {
+  setup(props) {
+    const store = useUserDataStore()
     const isPreviewActive = ref(false)
-    const eventData = reactive({
-      title: 'title',
-      place: 'place',
-      date: 'date',
-      time: 'time',
-      labels: [
+
+    const fullUserName = computed(() => store.getUserFullName)
+    const labels = computed(() => {
+      return [
         {
-          id: 0,
-          text: 'label1'
+          text: props.formData.type
         },
         {
-          id: 1,
-          text: 'label1'
+          text: props.formData.gender
+        },
+        {
+          text: 'Need form'
         }
-      ],
-      payment: 'payment',
-      isOpened: 'isOpened'
-
+      ]
     })
+
     const labelStyle = reactive({
       padding: '0px 8px',
       border: '1px solid #EFEFF6',
@@ -161,11 +165,12 @@ export default {
 
     return {
       togglePreviewWindow,
-      eventData,
       labelStyle,
       emptyLabelStyle,
       isPreviewActive,
-      wrapperStyle
+      wrapperStyle,
+      fullUserName,
+      labels
     }
   }
 }

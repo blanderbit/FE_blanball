@@ -1,5 +1,5 @@
 <template>
-  <div class="b-event-m-1st">
+  <div class="b-event-m-1st" :style="stepStyle">
     <!-- <Dropdown
       :outside-title="true"
       :main-title="$t('events.event-type')"
@@ -55,7 +55,7 @@
       />
     </div>
     <div class="b-event-m-1st__time-and-date mt-3">
-      <!-- <div class="b-event-m-1st__input-calendar">
+      <div class="b-event-m-1st__input-calendar">
         <div class="b-event-m-1st__label">
           {{ $t('events.date') }}
         </div>
@@ -65,18 +65,18 @@
           v-model="initialDate"
         >
           <template #default="options">
-            {{options}}
             <div class="b-event-m-1st__calendar-cover">
               <input 
                 class="py-1 border rounded" 
                 :value="options.inputValue" 
-                v-on="options.inputEvents" 
+                v-on="options.inputEvents"
+                name="date"
               />
             </div>
           </template>
         </v-date-picker>
         <img src="../../assets/img/calendar.svg" alt="" />
-      </div> -->
+      </div>
       <div class="b-event-m-1st__input-time">
         <InputComponent
           :outside-title="true"
@@ -89,12 +89,13 @@
       </div>
     </div>
     <div class="b-event-m-1st__input-location">
-      <InputComponent
+      <!-- <InputComponent
         :placeholder="$t('events.place')"
         :title-width="0"
         :icon="icons.location"
         name="location"
-      />
+      /> -->
+      <ModalPositionMap v-model="userLocation"></ModalPositionMap>
     </div>
     <div class="b-event-m-1st__event-map">
       <img src="../../assets/img/map-manage-event.svg" alt="">
@@ -108,7 +109,7 @@ import { ref, watch, computed } from 'vue';
 import Dropdown from '../forms/Dropdown.vue'
 import InputComponent from '../forms/InputComponent.vue'
 import RadioButton from '../forms/RadioButton.vue'
-import { cloneDeep, isEqual } from 'lodash'
+import ModalPositionMap from '../maps/ModalPositionMap.vue'
 
 import CalendarPic from '../../assets/img/calendar.svg'
 import WatchPic from '../../assets/img/watch.svg'
@@ -123,17 +124,35 @@ export default {
   components: {
     Dropdown,
     InputComponent,
-    RadioButton
+    RadioButton,
+    ModalPositionMap
   },
   props: {
     formData: {
       type: Object,
       default: () => {}
+    },
+    currentStep: {
+      type: Number,
+      default: null
     }
   },
-  emit: ['update:formData'],
+  emit: ['updateDate'],
   setup(props, {emit}) {
     const initialDate = ref(new Date())
+    const userLocation = ref('')
+
+    const stepStyle = computed(() => {
+      return props.currentStep === 1 ? 
+            { height : 'auto' } :
+            { height : '0px' }
+    })
+    watch(() => initialDate.value, () => {
+      emit('updateDate', initialDate.value)
+    })
+    watch(() => userLocation.value, () => {
+      emit('updateLocation', userLocation.value)
+    })
 
     const calendar = ref( {
       inputMask: 'YYYY-MM-DD',
@@ -163,7 +182,9 @@ export default {
       icons,
       mockData,
       initialDate,
-      calendar
+      calendar,
+      userLocation,
+      stepStyle
     }
   }
 }
@@ -171,6 +192,7 @@ export default {
 
 <style lang="scss" scoped>
   .b-event-m-1st {
+    overflow: hidden;
     .b-event-m-1st__time-and-date {
       display: flex;
       align-items: center;
