@@ -1,27 +1,28 @@
 <template>
-  <div class="third-step">
+  <div class="third-step" :style="stepStyle">
     <div class="title-block">
       <span>{{$t('events.additional-info')}}</span>
     </div>
     <div class="subtitle">
       {{$t('events.add-comment')}}
     </div>
-    <div class="text-area-wrapper">
-      <textarea
-          placeholder="Опис подіїї"
-      ></textarea>
-      <div class="icon">
-        <img src="../../../assets/img/aim.svg" alt="">
-      </div>
-    </div>
-    <div class="contact-switcher">
+    <TextAreaComponent
+      :placeholder="$t('events.event-description')"
+      name="description"
+    />
+    <!-- <div class="contact-switcher">
       <div class="title-prize">
         {{$t('events.prize')}}
         <span>
           VIP
         </span>
       </div>
-      <Switcher :id="'contacts'"/>
+      <Switcher 
+        :id="'prise'"
+        :is-edit-mode="true"
+        name="is_phone_shown"
+        @get-value="showHidePhone"
+      />
     </div>
     <div class="input">
       <InputComponent
@@ -29,12 +30,28 @@
           :title-width="0"
           :icon="icons.aim"
       />
-    </div>
+    </div> -->
     <div class="title-outfit">
       {{$t('events.need-clothes')}}
     </div>
     <div class="radio-btn-wrapper">
       <div class="radio">
+        <radio-button
+          name="need_form"
+          :title="$t('events.yes')"
+          value="true"
+          :width="'auto'"
+        ></radio-button>
+      </div>
+      <div class="radio">
+        <radio-button
+          name="need_form"
+          :title="$t('events.manijki-available')"
+          value="false"
+          :width="'auto'"
+        ></radio-button>
+      </div>
+      <!-- <div class="radio">
         <input
             id="radio-outfit"
             name="outfit"
@@ -56,13 +73,13 @@
         <label for="radio-outfit2" class="radio-label">
           {{$t('events.manijki-available')}}
         </label>
-      </div>
+      </div> -->
     </div>
     <div class="title-outfit">
       {{$t('events.enter-colors')}}
     </div>
     <div class="outfit-colors">
-      <div class="input">
+      <!-- <div class="input">
         <InputComponent
             :placeholder="'Input'"
             :title-width="0"
@@ -77,7 +94,7 @@
             :outside-title="true"
             :title="$t('events.team2')"
         />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -85,7 +102,9 @@
 <script>
 import { computed } from 'vue'
 import Switcher from '../../components/Switcher.vue'
+import RadioButton from '../../components/forms/RadioButton.vue'
 import InputComponent from '../../components/forms/InputComponent.vue'
+import TextAreaComponent from '../TextAreaComponent.vue'
 
 import AimIcon from '../../assets/img/aim.svg'
 
@@ -93,107 +112,134 @@ export default {
   name: 'ManageEventThirdStep',
   components: {
     Switcher,
-    InputComponent
+    InputComponent,
+    RadioButton,
+    TextAreaComponent
   },
-  setup() {
+  props: {
+    currentStep: {
+      type: Number,
+      default: null
+    }
+  },
+  setup(props) {
     const icons = computed(() => {
       return {
         aim: AimIcon
       }
     })
 
+    const stepStyle = computed(() => {
+      return props.currentStep === 3 ? 
+            { height : 'auto' } :
+            { height : '0px' }
+    })
+
     return {
-      icons
+      icons,
+      stepStyle
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.radio-btn-wrapper {
-  $color1: #f4f4f4;
-  $color2: #148783;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  .radio {
+
+.third-step {
+  overflow: hidden;
+
+
+  .radio-btn-wrapper {
+    $color1: #f4f4f4;
+    $color2: #148783;
     display: flex;
-    flex-direction: row;
     align-items: center;
-    padding: 6px 12px;
-    background: #FFFFFF;
-    border: 1px solid #DFDEED;
-    border-radius: 6px;
-    min-width: 154px;
-    input[type="radio"] {
-      position: absolute;
-      opacity: 0;
-      + .radio-label {
-        display: flex;
-        align-items: center;
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 13px;
-        line-height: 24px;
-        text-transform: capitalize;
-        color: #262541;
-        img {
-          margin-right: 4px;
-        }
-        &:after {
-          content: '';
-          border-radius: 100%;
-          border: 1px solid #262541;
-          display: inline-block;
-          width: 13px;
-          height: 13px;
-          position: relative;
-          top: 0px;
-          margin-left: 12px;
-          vertical-align: top;
-          cursor: pointer;
-          text-align: center;
-          transition: all 250ms ease;
+    justify-content: space-between;
+    .radio {
+      &:first-child {
+        margin-right: 8px;
+      }
+      flex-basis: 50%;
+      ::v-deep {
+        .b-radio {
+          margin-right: 0;
+          .b-radio-label::before {
+            margin-right: 10px;
+          }
         }
       }
-      &:checked {
+      input[type='radio'] {
+        position: absolute;
+        opacity: 0;
         + .radio-label {
+          display: flex;
+          align-items: center;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 13px;
+          line-height: 24px;
+          text-transform: capitalize;
+          color: #262541;
+          img {
+            margin-right: 4px;
+          }
           &:after {
-            border: 1px solid $color2;
-            background-color: $color2;
-            box-shadow: inset 0 0 0 3px $color1;
+            content: '';
+            border-radius: 100%;
+            border: 1px solid #262541;
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            position: relative;
+            top: 0px;
+            margin-left: 12px;
+            vertical-align: top;
+            cursor: pointer;
+            text-align: center;
+            transition: all 250ms ease;
           }
         }
-      }
-      &:focus {
+        &:checked {
+          + .radio-label {
+            &:after {
+              border: 1px solid $color2;
+              background-color: $color2;
+              box-shadow: inset 0 0 0 3px $color1;
+            }
+          }
+        }
+        &:focus {
+          + .radio-label {
+            &:before {
+              outline: none;
+              border-color: $color2;
+            }
+          }
+        }
+        &:disabled {
+          + .radio-label {
+            &:before {
+              box-shadow: inset 0 0 0 4px $color1;
+              border-color: darken($color1, 25%);
+              background: darken($color1, 25%);
+            }
+          }
+        }
         + .radio-label {
-          &:before {
-            outline: none;
-            border-color: $color2;
-          }
-        }
-      }
-      &:disabled {
-        + .radio-label {
-          &:before {
-            box-shadow: inset 0 0 0 4px $color1;
-            border-color: darken($color1, 25%);
-            background: darken($color1, 25%);
-          }
-        }
-      }
-      + .radio-label {
-        &:empty {
-          &:before {
-            margin-right: 0;
+          &:empty {
+            &:before {
+              margin-right: 0;
+            }
           }
         }
       }
     }
   }
-}
-.third-step {
+
+
+
+
   .title-block {
     display: flex;
     align-items: center;
@@ -216,36 +262,6 @@ export default {
     line-height: 20px;
     color: #575775;
     margin-bottom: 20px;
-  }
-  .text-area-wrapper {
-    position: relative;
-    textarea {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 13px;
-      line-height: 24px;
-      color: #575775;
-      padding: 8px 35px 8px 12px;
-      height: 88px;
-      width: 100%;
-      resize: none;
-      border: 1px solid #DFDEED;
-      border-radius: 6px;
-      outline: none;
-    }
-    .icon {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      border-radius: 6px;
-      img {
-        margin: auto;
-      }
-    }
   }
   .title {
     margin-top: 20px;

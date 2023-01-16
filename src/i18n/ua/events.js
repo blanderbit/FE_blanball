@@ -73,6 +73,7 @@ export default {
   'select-position': 'Оберiть локацiю',
   'event-status': 'Статус події',
   'event-creation': 'Створення події',
+  'event-description': 'Опис події',
   months: {
     'January':	'Січень',
     'February':	'Лютий',

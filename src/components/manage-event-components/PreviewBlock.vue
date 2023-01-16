@@ -52,7 +52,9 @@
             </div>
           </div>
         </div>
-        <div class="b-event-preview__text-area"></div>
+        <div class="b-event-preview__text-area">
+          {{ formData.description || '' }}
+        </div>
         <div class="b-event-preview__labels">
           <div
             v-for="label in labels"
@@ -72,7 +74,7 @@
             {{ fullUserName }}
           </div>
           <div class="b-event-preview__right-block">
-            payment
+            {{ formData.price || '' }}
           </div>
         </div>
         <div class="b-event-preview__bottom-line">
@@ -101,7 +103,7 @@
 
 <script>
 import { reactive, ref, computed } from 'vue'
-  import { useUserDataStore } from '../../stores/userData'
+import { useUserDataStore } from '../../stores/userData'
 
 import GreenBtn from '../../components/GreenBtn.vue'
 
@@ -372,6 +374,8 @@ export default {
         height: 80px;
         background: #EFEFF6;
         border-radius: 6px;
+        padding: 10px;
+        overflow-y: scroll;
       }
       .b-event-preview__labels {
         display: flex;

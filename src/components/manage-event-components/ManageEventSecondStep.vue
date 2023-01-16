@@ -2,102 +2,110 @@
   <div class="second-step" :style="stepStyle">
     <div class="title-block">
       <span>{{ $t('events.confidentiality') }}</span>
-      <div class="vip-only">{{ $t('events.vip-only') }}</div>
     </div>
     <div class="subtitle">
       {{ $t('events.agree-to-get-requests') }}
     </div>
-    <!-- <div class="radio-btn-wrapper">
+    <div class="radio-btn-wrapper">
       <div class="radio">
         <radio-button
-          name="privacy"
           :title="$t('events.free')"
-          value="Opened"
+          value="true"
           :width="'auto'"
+          :is-disabled="true"
         ></radio-button>
       </div>
       <div class="radio">
         <radio-button
-          name="privacy"
           :title="$t('events.closed')"
-          value="Closed"
+          value="false"
           :width="'auto'"
+          :is-disabled="true"
         ></radio-button>
       </div>
-    </div> -->
+    </div>
     <div class="title">{{ $t('events.is-event-free') }}</div>
     <div class="radio-btn-wrapper">
-      <!-- <div class="radio">
-        <input
-          id="radio-5"
-          v-model="payment"
-          name="payment"
-          type="radio"
-          :value="$t('events.for-free')"
-          checked
-        />
-        <label for="radio-5" class="radio-label"> {{ $t('events.for-free') }} </label>
+      <div class="radio">
+        <radio-button
+          name="is_price"
+          :title="$t('events.for-free')"
+          value="false"
+          :width="'auto'"
+          @get-radio-value="getRadioValue"
+        ></radio-button>
       </div>
       <div class="radio">
-        <input
-          id="radio-6"
-          v-model="payment"
-          name="payment"
-          type="radio"
-          :value="$t('events.payed')"
-        />
-        <label for="radio-6" class="radio-label"> {{ $t('events.payed') }} </label>
-      </div> -->
+        <radio-button
+          name="is_price"
+          :title="$t('events.payed')"
+          value="true"
+          :width="'auto'"
+          @get-radio-value="getRadioValue"
+        ></radio-button>
+      </div>
     </div>
-    <!-- <div v-if="payment === $t('events.payed')" class="input">
+    <div v-show="isEventPayment" class="input">
       <InputComponent
         :outside-title="true"
         :title="$t('events.payed')"
         :placeholder="'45₴'"
         :title-width="0"
+        name="price"
       />
-    </div> -->
+    </div>
     <div class="contact-switcher">
       <span>{{$t('events.show-my-contacts')}}</span>
-      <!-- <Switcher :id="'contacts'" /> -->
+      <Switcher 
+        :id="'contacts'"
+        :is-edit-mode="true"
+        name="is_phone_shown"
+        @get-value="showHidePhone"
+      />
     </div>
-    <div class="input">
-      <!-- <InputComponent
-        :placeholder="'+38 025 67 98'"
+    <div 
+      class="input"
+      v-show="isPhoneShown"
+    >
+      <InputComponent
+        :placeholder="userPhoneNumber"
         :title-width="0"
-        :icon="icons.arrow"
-      /> -->
+        name="contact_number"
+      >
+      </InputComponent>
     </div>
     <div class="title">{{$t('events.invite-users')}}</div>
     <div class="input">
-      <!-- <InputComponent
+      <InputComponent
         :placeholder="$t('events.search-users')"
         :title-width="30"
         :icon-left="icons.addUser"
         :icon="icons.search"
-      /> -->
+        name="user_search"
+      />
     </div>
 
-    <!-- <SearchBlockAll 
+    <SearchBlockAll 
       :tags="tags"
       :filtered-teams="filteredTeams"
       :list-item-icon="icons.plus"
       @chose-tab-category="$emit('choseCategory')"
       @item-list-click="inviteUser"
-    /> -->
+    />
 
   </div>
 </template>
 
 <script>
 import { ref, watch, computed } from 'vue'
+import { useUserDataStore } from '../../stores/userData'
 
 import InputComponent from '../forms/InputComponent.vue'
 import Switcher from '../../components/Switcher.vue'
 import SearchBlockAll from '../SearchBlockAll.vue'
 import RadioButton from '../forms/RadioButton.vue'
 
-import HorizontalArrow from '../../assets/img/sort-arrows-horizontal.svg'
+import HorArrow from '../../assets/img/sort-arrows-down.svg'
 import AddUser from '../../assets/img/add-user.svg'
 import Search from '../../assets/img/search.svg'
 import PlusIcon from '../../assets/img/plus.svg'
@@ -125,17 +133,20 @@ export default {
   },
   emit: ['choseCategory'],
   setup(props, { emit }) {
-    const isOpened = ref(null)
-    const payment = ref(null)
+    const store = useUserDataStore()
+    const isEventPayment = ref(false)
+    const isPhoneShown = ref(false)
 
     const icons = computed(() => {
       return {
-        arrow: HorizontalArrow,
+        arrow: HorArrow,
         addUser: AddUser,
         search: Search,
         plus: PlusIcon
       }
     })
+
+    const userPhoneNumber = computed(() => store.getUserPhone)
 
     const stepStyle = computed(() => {
       return props.currentStep === 2 ? 
@@ -143,22 +154,22 @@ export default {
             { height : '0px' }
     })
 
-    watch(isOpened, (newVal, oldVal) => {
-      if (!(newVal === oldVal)) {
-        emit('setEventData', 'isOpened', newVal)
-      }
-    })
-    watch(payment, (newVal, oldVal) => {
-      if (!(newVal === oldVal)) {
-        emit('setEventData', 'payment', newVal)
-      }
-    })
+    function getRadioValue(val) {
+      isEventPayment.value = val === 'true' ? true : false
+    }
+
+    function showHidePhone(val) {
+      isPhoneShown.value = val
+    }
 
     return {
-      isOpened,
-      payment,
       icons,
-      stepStyle
+      isEventPayment,
+      stepStyle,
+      isPhoneShown,
+      userPhoneNumber,
+      showHidePhone,
+      getRadioValue
     }
   },
 }
@@ -179,14 +190,18 @@ export default {
     align-items: center;
     justify-content: space-between;
     .radio {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      padding: 6px 12px;
-      background: #ffffff;
-      border: 1px solid #dfdeed;
-      border-radius: 6px;
-      min-width: 154px;
+      &:first-child {
+        margin-right: 8px;
+      }
+      flex-basis: 50%;
+      ::v-deep {
+        .b-radio {
+          margin-right: 0;
+          .b-radio-label::before {
+            margin-right: 10px;
+          }
+        }
+      }
       input[type='radio'] {
         position: absolute;
         opacity: 0;
@@ -265,20 +280,7 @@ export default {
       font-weight: 700;
       font-size: 16px;
       line-height: 24px;
-      color: #262541;
-    }
-    .vip-only {
-      width: 93px;
-      height: 20px;
-      background: #efeff6;
-      border-radius: 4px;
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 12px;
-      line-height: 20px;
-      color: #575775;
-      text-align: center;
+      color: #7F7DB5;
     }
   }
   .subtitle {
@@ -288,7 +290,7 @@ export default {
     font-weight: 400;
     font-size: 13px;
     line-height: 20px;
-    color: #575775;
+    color: #7F7DB5;
     margin-bottom: 20px;
   }
   .title {

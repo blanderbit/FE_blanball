@@ -9,6 +9,8 @@
         type="radio"
         :value="value"
         v-on="modelHandlers"
+        :disabled="isDisabled" 
+        v-validate="{ rules: 'required', disabled: checked }"
         :checked="modelValue === staticModelValue || modelValue === value || staticModelValue === value"
     >
     <label 
@@ -25,7 +27,8 @@
 <script>
   import { CustomModelWorker } from "../../workers/custom-model-worker";
   import { v4 as uuid } from "uuid";
-  import { ref, computed } from "vue";
+  import { ref, computed, watch } from "vue";
+import { booleanTypeAnnotation } from "@babel/types";
   export default {
     name: "RadioButton",
     props: {
@@ -58,18 +61,27 @@
         type: String,
         default: '120px',
       },
+      isDisabled: {
+        type: Boolean,
+        default: false
+      }
     },
-    emits: ['update:modelValue'],
+    emits: ['update:modelValue', 'getRadioValue'],
     setup(props, {emit}) {
       const {
         modelValue: staticModelValue,
         modelErrorMessage,
         modelHandlers
       } = CustomModelWorker(props, emit);
+      
+      watch(() => staticModelValue.value, (newVal) => {
+          emit('getRadioValue', newVal)
+      })
 
       const labelStyle = computed(() => {
         return {
-          width: props.width
+          width: props.width,
+          color: `${props.isDisabled ? '#7F7DB5' : '#262541' }`
         }
       })
 
@@ -109,7 +121,6 @@
         font-size: 13px;
         line-height: 24px;
         text-transform: capitalize;
-        color: #262541;
         justify-content: space-between;
         img {
           margin-right: 4px;

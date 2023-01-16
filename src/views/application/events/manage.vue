@@ -41,9 +41,9 @@
             :filtered-teams="filteredTeams"
             @chose-category="choseCategory"
           />
-          <!-- <ManageEventThirdStep
-            v-if="currentStep === 3"
-          /> -->
+          <ManageEventThirdStep
+            :currentStep="currentStep"
+          />
 
           <div class="b-manage-event__progress-line">
             <div class="b-manage-event__sections">
@@ -65,7 +65,7 @@
               @click-function="changeStep('-')"
             />
             <GreenBtn
-              :text="$t('buttons.next')"
+              :text="greenBtnText"
               :width="160"
               :icon-right="icons.arrowRight"
               @click-function="changeStep('+')"
@@ -98,6 +98,7 @@
   import { computed, reactive, ref, watch } from 'vue'
   import { useRouter } from 'vue-router'
   import { Form } from '@system.it.flumx.com/vee-validate'
+  import { useI18n } from 'vue-i18n'
   import * as yup from 'yup'
 
   import InputComponent from '../../../components/forms/InputComponent.vue'
@@ -130,6 +131,7 @@
     },
     setup() {
       const router = useRouter()
+      const { t } = useI18n()
       const currentStep = ref(1)
       const startDate = ref('')
       const userLocation = ref('')
@@ -142,8 +144,24 @@
           time: yup.string().required('errors.required'),
           location: yup.string().required('errors.required'),
           date: yup.string().required('errors.required'),
-          privacy: yup.string().required('errors.required')
+          privacy: yup.string().required('errors.required'),
+          payment: yup.string().required('errors.required'),
+          is_price: yup.string().required('errors.required'),
+          price: yup.string().required('errors.required'),
+          is_phone_shown: yup.string().required('errors.required'),
+          contact_number: yup.string().required('errors.required'),
+          user_search: yup.string(),
+          description: yup
+            .string()
+            .required('errors.required')
+            .min(45, 'errors.min45')
+            .max(200, 'errors.min200'),
+          need_form: yup.string().required('errors.required')
         })
+      })
+
+      const greenBtnText = computed(() => {
+        return currentStep.value !== 3 ? t('buttons.next') : t('buttons.publish')
       })
 
       const icons = computed(() => {
@@ -220,6 +238,7 @@
         schema,
         startDate,
         userLocation,
+        greenBtnText,
         choseCategory,
         changeStep,
         saveEvent,
@@ -253,6 +272,13 @@
 
 <style lang="scss" scoped>
   .b-manage-event {
+    overflow: hidden;
+    form {
+      overflow: hidden;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
     &__page-title {
       font-family: 'Exo 2';
       font-style: normal;
@@ -285,19 +311,23 @@
       display: flex;
       justify-content: space-between;
       margin-top: 20px;
+      height: 100%;
+      overflow: hidden;
       .b-manage-event__create-event-block {
         width: 420px;
         padding: 20px;
         background: #FFFFFF;
         box-shadow: 2px 6px 10px rgba(56, 56, 251, 0.1);
         border-radius: 0px 6px 6px 0px;
+        height: 100%;
+        overflow-y: scroll;
         @media (min-width: 1200px) and (max-width: 1400px) {
           width: 360px;
         }
         @media (min-width: 768px) and (max-width: 1199px) {
-          flex-basis: 50%;
           margin-right: 16px;
-          width: auto;
+          width: 450px;
+          min-width: 350px;
         }
         @media (max-width: 768px) {
           width: 100%;
@@ -327,6 +357,9 @@
           justify-content: space-between;
           align-items: center;
           margin-top: 20px;
+          @media (max-width: 768px) {
+            margin-bottom: 50px;
+          }
         }
       }
       .b-manage-event__btns-desktop-block {
