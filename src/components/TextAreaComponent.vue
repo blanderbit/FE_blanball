@@ -4,6 +4,9 @@
       <div v-if="title" class="b-text-area__outer-title">
         <span>{{ title }}</span>
       </div>
+      <div class="b-text-area__min-max-label">
+        45 / 200
+      </div>
       <textarea
         :value="modelValue"
         :placeholder="placeholder"
@@ -79,6 +82,20 @@ export default {
     position: relative;
     border-radius: 6px;
     width: 100%;
+    .b-text-area__min-max-label {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 12px;
+      color: #575775;
+      padding: 0px 2px;
+      position: absolute;
+      right: 8px;
+      bottom: -8px;
+      background: #F9F9FC;
+      border: 1px solid #E2E2E9;
+      border-radius: 4px;
+    }
     .b-text-area__outer-title {
       padding: 0px 4px;
       position: absolute;

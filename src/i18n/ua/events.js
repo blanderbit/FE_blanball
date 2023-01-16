@@ -24,7 +24,7 @@ export default {
   'your-popular-events': 'Найпопулярніщі івенки, де ви можете приняти участь',
   'need-uniform': 'Потрібна форма',
   'do-not-need-uniform': 'Не потрібна форма',
-  'gender': 'Стать',
+  'gender': 'Гендер учасників події',
   'event-type': 'Тип події',
   'game-type': 'Тип гри',
   'sport-type': 'Вид спорту',
@@ -72,6 +72,8 @@ export default {
   'finished': 'Завершенi',
   'select-position': 'Оберiть локацiю',
   'event-status': 'Статус події',
+  'event-creation': 'Створення події',
+  'event-description': 'Опис події',
   months: {
     'January':	'Січень',
     'February':	'Лютий',

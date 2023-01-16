@@ -43,12 +43,14 @@ export default {
       required: true,
     }
   },
-  setup(props) {
+  emits: ['getValue'],
+  setup(props, {emit}) {
     const { modelValue, modelErrorMessage, modelHandlers } = CustomModelWorker(props)
 
     function valueChange(val) {
       modelHandlers.value.input[0](val)
       modelHandlers.value.input[1](val, false)
+      emit('getValue', val)
     }
 
     return {
