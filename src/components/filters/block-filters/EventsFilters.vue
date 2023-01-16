@@ -157,8 +157,6 @@
               <div class="b-main-search__icon d-flex align-items-center justify-content-center">
                 <img src="../../../assets/img/set-filter.svg" alt="" />
               </div>
-
-
               <div class="b-main-search__text-block">
                 <div class="b-main-search__title">
                   {{  $t('events.filters')  }}
@@ -169,9 +167,6 @@
                   {{ $t('events.advertisments') }}
                 </div>
               </div>
-
-
-
             </div>
           </div>
         </div>

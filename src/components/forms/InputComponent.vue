@@ -243,7 +243,7 @@ export default {
       position: absolute;
       top: 0;
       right: 0;
-      background: #fff;
+      // background: #fff;
       border-radius: 6px;
       cursor: pointer;
       img {
