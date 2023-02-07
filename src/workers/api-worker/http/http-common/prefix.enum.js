@@ -43,5 +43,8 @@ export const EndpointsEnum = {
   Versions: {
     getAllVersions: '/versions/client/versions/list',
     getCurrentVersion: '/versions/admin/version/'
+  },
+  BugReports: {
+    createBugReport: '/bugs/client/create/bug'
   }
 };

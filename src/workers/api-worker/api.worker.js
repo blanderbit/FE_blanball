@@ -5,6 +5,7 @@ import { UserService } from "./http/http-services/user.service";
 import { ReviewService } from "./http/http-services/review.service";
 import { LocationService } from "./http/http-services/location.service";
 import { VersionsService } from "./http/http-services/versions.service";
+import { BugReportsService } from "./http/http-services/bug-reports.service";
 
 export class API {
   static AuthorizationService = AuthorizationService;
@@ -14,4 +15,5 @@ export class API {
   static ReviewService = ReviewService;
   static LocationService = LocationService;
   static VersionsService = VersionsService;
+  static BugReportsService = BugReportsService;
 }

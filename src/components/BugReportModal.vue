@@ -3,73 +3,133 @@
         <div class="b-bug-report-modal__modal-window">
             <div class="b-bug-report-modal__top-side">
                 <span class="b-bug-report-modal__title">
-                    Повідомити про промилку на сайті
+                    {{ $t('modals.bug_report.title') }}
                 </span>
                 <img src="../assets/img/white-warning-icon.svg" alt="warning">
             </div>
+            <Form v-slot="data" :validation-schema="schema" @submit="disableSubmit">
+
             <div class="b-bug-report-modal__main-side">
-                <InputComponent
-              :placeholder="'Не вдається долучитися до події'"
+
+            <InputComponent
+              :placeholder="$t('modals.bug_report.input-placeholder')"
               :height="40"
               :outsideTitle="true"
               :title-width="0"
-              :title="'Із чим пов`язана помилка?'"
-              v-model="bugReportTitle"
+              :title="$t('modals.bug_report.input-title')"
               name="title"/>
 
               <TextAreaComponent
               :height="100"
-              class="b-bug-report-modal__body-input"
-              :title="'Коли та де ви зіштовхнулися із помилкою?'"
-              v-model="bugReportBody"
-              name="about_me"
+              :textareaIcon="addFileIcon"
+              class="b-bug-report-modal__description-input"
+              :title="$t('modals.bug_report.text-area-title')"
+              @icon-click="afterLoadImage"
+              name="description"
             />
+
+            <div v-for="i in uploadedImages" class="b-bug-report-modal__uploaded-images">
+                    <span class="b-bug-report-modal__uploaded-images-title">{{ i.name }}</span>
+                    <img class="b-bug-report-modal-remove__image" src="../assets/img/cross.svg" alt="cross">
+                </div>
             </div>
+
             <div class="b-bug-report-modal__bottom-side">
-                <div class="b-bug-report-modal__close-button">
+
+                <div @click="$emit('close-modal')" class="b-bug-report-modal__close-button">
                     {{ $t('buttons.close-this-window') }}
                 </div>
-                <div class="b-bug-report-modal__submit-button">
+                <div  @click="createBugReport(data)" class="b-bug-report-modal__submit-button">
                     {{ $t('buttons.send-feedback') }}
                 </div>
             </div>
+        </Form>
         </div>
     </div>
-</template>
+</template> 
 
 <script>
-import { ref } from "vue"
+import { ref, watch } from "vue"
+
+import { useToast } from "vue-toastification"
+import { useI18n } from "vue-i18n"
 
 import InputComponent from './forms/InputComponent.vue'
 import TextAreaComponent from './TextAreaComponent.vue'
 
+import { Form } from '@system.it.flumx.com/vee-validate'
+
+import { API } from '../workers/api-worker/api.worker';
+
+import * as yup from 'yup'
+
 import addFileIcon from '../assets/img/add-file-icon.svg'
+
+const schema = yup.object({
+    title: yup
+        .string()
+        .required('errors.required')
+        .max(255, 'errors.max255'),
+});
 
 export default {
     components: {
         InputComponent,
         TextAreaComponent,
+
+        Form,
     },
-    setup() {
-        const bugReportTitle = ref('')
-        const bugReportBody = ref('')
+    emits: ['close-modal'],
+    setup(_, { emit }) {
+
+        const uploadedImages = ref([])
+ 
+        const afterLoadImage = (image) => { 
+            uploadedImages.value.push(image)
+        }
+
+        const toast = useToast()
+        const {t} = useI18n()
+
+        const createBugReport = async (data) => {
+
+            const { valid } = await data.validate();
+
+            if (!valid) {
+                return false
+            }
+
+            const formData = new FormData()
+            formData.append('title', 'fdfdfdfddfd')
+            formData.append('images', uploadedImages)
+
+            await API.BugReportsService.CreateBugReport(formData)
+            emit('close-modal')
+            toast.success(t('notifications.bug-report-created'))
+        }
 
         return {
-            bugReportTitle,
-            bugReportBody,
             addFileIcon,
-            TextAreaComponent,
+            schema,
+            uploadedImages,
+
+            createBugReport,
+            afterLoadImage,
+            disableSubmit: (e) => {
+                e.stopPropagation()
+                e.preventDefault()
+            }
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-.b-bug-report-modal__body-input::v-deep(.b-input__icon) {
+.b-bug-report-modal__description-input::v-deep(.b-input__icon) {
     height: 10% !important;
     margin-top: 10px;
 }
-.b-bug-report-modal__body-input {
+.b-bug-report-modal__description-input {
 
     &::v-deep(span) {
         font-family: 'Inter';
@@ -139,6 +199,24 @@ export default {
             @media (max-width: 450px) {
                 padding: 15px;
             }
+
+            .b-bug-report-modal__uploaded-images {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                .b-bug-report-modal__uploaded-images-title {
+                    font-family: 'Inter';
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 12px;
+                    line-height: 20px;
+                    color: #262541;
+                }
+                .b-bug-report-modal-remove__image {
+                    cursor: pointer;
+                }
+            }
         }
         .b-bug-report-modal__bottom-side {
             display: flex;
@@ -151,6 +229,7 @@ export default {
                 padding: 15px;
             }
 
+    
             .b-bug-report-modal__close-button {
                 font-family: 'Inter';
                 font-style: normal;

@@ -14,13 +14,20 @@
         v-on="modelHandlers"
       >
       </textarea>
+      <label v-if="textareaIcon">
+        <input type="file" @change="onFileSelected" />
+        <img
+        v-if="textareaIcon"
+        class="b-text-area__icon"
+        :src="textareaIcon" alt="icon">
+      </label>
     </div>
     <p class="b-text-area__error-message">{{ modelErrorMessage }}</p>
   </div>
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { CustomModelWorker } from "../workers/custom-model-worker"
 
 export default {
@@ -42,6 +49,9 @@ export default {
       type: Number,
       default: null,
     },
+    textareaIcon: {
+      type: String
+    },
     name: {
       type: String,
       required: true,
@@ -51,12 +61,22 @@ export default {
       default: 'aggressive',
     }
   },
-  setup(props) {
+  emits: ['icon-click'],
+  setup(props, {emit}) {
     const {
         modelValue,
         modelErrorMessage,
         modelHandlers
     } = CustomModelWorker(props)
+
+    const IMAGE_TYPES = ["image/jpeg", "image/png"]
+
+    function onFileSelected(e) {
+      const isValidFormat = IMAGE_TYPES.includes(e.target.files[0].type)
+      if (isValidFormat) {
+        emit('icon-click', e.target.files[0])
+      }
+    }
 
     const inputWrapper = computed(() => {
       return {
@@ -68,7 +88,8 @@ export default {
       modelValue,
       modelErrorMessage,
       modelHandlers,
-      inputWrapper
+      inputWrapper,
+      onFileSelected,
     }
   }
 }
@@ -95,6 +116,12 @@ export default {
       background: #F9F9FC;
       border: 1px solid #E2E2E9;
       border-radius: 4px;
+    }
+    .b-text-area__icon {
+      position: absolute; 
+      right: 10px; 
+      top: 10px;
+      cursor: pointer;
     }
     .b-text-area__outer-title {
       padding: 0px 4px;
@@ -132,5 +159,8 @@ export default {
     line-height: 20px;
     color: #f32929;
   }
+}
+input[type="file"] {
+    display: none;
 }
 </style>

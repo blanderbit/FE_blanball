@@ -1,4 +1,7 @@
 <template>
+  <BugReportModal 
+      v-if="isBugReportModalOpened"
+      @close-modal="closeBugReportModal"/>
   <div class="b_sidebar_wrapper">
     <SlideMenu
         v-model:is-menu-opened="isMenuOpened"
@@ -24,6 +27,7 @@
                 :key="index"
                 :class="[
                     'b_sidebar_menu-item',
+                    item.class
                 ]"
                 @click="item.action && item.action()"
             >
@@ -61,6 +65,7 @@
 
   import SlideMenu from '../components/SlideMenu.vue'
   import Avatar from './../components/Avatar.vue'
+  import BugReportModal from './BugReportModal.vue'
 
   import { createNotificationFromData } from "../workers/utils-worker";
   import { AuthWebSocketWorkerInstance } from "./../workers/web-socket-worker";
@@ -75,6 +80,8 @@
   import members from '../assets/img/members.svg'
   import medal from '../assets/img/medal.svg'
   import settings from '../assets/img/Settings.svg'
+  import bugReport from '../assets/img/warning-black.svg'
+
   import { TokenWorker } from "../workers/token-worker";
   import { ROUTES } from "../router/router.const";
   const findDublicates = (list, newList) => {
@@ -85,7 +92,8 @@
     name: 'MainSidebar',
     components: {
       SlideMenu,
-      Avatar
+      Avatar,
+      BugReportModal,
     },
     setup() {
       const userStore = useUserDataStore()
@@ -94,6 +102,7 @@
       const skipids = ref([]);
       const router = useRouter();
       const isMenuOpened = ref(false);
+      const isBugReportModalOpened = ref(false)
       const menuItems = computed(() => [
         {
           img: notReadNotificationCount.value ? notificationUnread : notification,
@@ -118,12 +127,21 @@
           img: settings,
           url: '',
           action: () => isMenuOpened.value = false
+        },
+        {
+          img: bugReport,
+          url: '',
+          class: 'b-bug-report__icon',
+          action: () => isBugReportModalOpened.value = true
         }
       ]);
 
       const getNotificationsCount = async () => API.NotificationService
         .getNotificationsCount()
         .then(item => notReadNotificationCount.value = item.data.not_read_notifications_count || 0);
+
+
+      const closeBugReportModal = () => isBugReportModalOpened.value = false
 
       const {
         paginationElements,
@@ -195,10 +213,12 @@
         skipids,
         menuItems,
         isMenuOpened,
+        isBugReportModalOpened,
         loadDataNotifications,
         paginationClearData,
         goToProfile,
-        logOut
+        logOut,
+        closeBugReportModal,
       }
     }
   }
@@ -298,6 +318,14 @@
           transform: rotate(0deg);
         }
       }
+    }
+  }
+  .b-bug-report__icon {
+    margin-top: 20px;
+
+
+    a:hover {
+     background: #FFF4EC;
     }
   }
 </style>
