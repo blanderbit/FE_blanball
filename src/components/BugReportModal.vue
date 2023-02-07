@@ -17,21 +17,20 @@
               v-model="bugReportTitle"
               name="title"/>
 
-              <InputComponent
+              <TextAreaComponent
               :height="100"
-              :outsideTitle="true"
-              :title-width="0"
-              :icon="addFileIcon"
+              class="b-bug-report-modal__body-input"
               :title="'Коли та де ви зіштовхнулися із помилкою?'"
               v-model="bugReportBody"
-              name="body"/>
+              name="about_me"
+            />
             </div>
             <div class="b-bug-report-modal__bottom-side">
                 <div class="b-bug-report-modal__close-button">
-                    Закрити це вікно
+                    {{ $t('buttons.close-this-window') }}
                 </div>
                 <div class="b-bug-report-modal__submit-button">
-                    Надіслати відгук
+                    {{ $t('buttons.send-feedback') }}
                 </div>
             </div>
         </div>
@@ -42,12 +41,14 @@
 import { ref } from "vue"
 
 import InputComponent from './forms/InputComponent.vue'
+import TextAreaComponent from './TextAreaComponent.vue'
 
 import addFileIcon from '../assets/img/add-file-icon.svg'
 
 export default {
     components: {
-        InputComponent
+        InputComponent,
+        TextAreaComponent,
     },
     setup() {
         const bugReportTitle = ref('')
@@ -57,12 +58,37 @@ export default {
             bugReportTitle,
             bugReportBody,
             addFileIcon,
+            TextAreaComponent,
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
+.b-bug-report-modal__body-input::v-deep(.b-input__icon) {
+    height: 10% !important;
+    margin-top: 10px;
+}
+.b-bug-report-modal__body-input {
+
+    &::v-deep(span) {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 16px;
+        color: #575775;
+    }
+
+    &::v-deep(textarea::-webkit-scrollbar) {
+        display: none;
+    }
+
+    &::v-deep(.b-text-area__min-max-label) {
+        display: none;
+    }
+}
+
 .b-bug-report-modal__wrapper {
     position: fixed;
     top: 0;
@@ -84,6 +110,10 @@ export default {
         border-radius: 6px;
         background: #fff;
 
+        @media (max-width: 450px) {
+            width: 350px;
+        }
+
         .b-bug-report-modal__top-side {
             background: #4C4A82;
             display: flex;
@@ -104,12 +134,22 @@ export default {
             padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
+
+            @media (max-width: 450px) {
+                padding: 15px;
+            }
         }
         .b-bug-report-modal__bottom-side {
             display: flex;
             justify-content: space-between;
             padding: 20px;
+
+            @media (max-width: 450px) {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
 
             .b-bug-report-modal__close-button {
                 font-family: 'Inter';
@@ -119,6 +159,7 @@ export default {
                 line-height: 24px;
                 text-align: center;
                 color: #575775;
+                cursor: pointer;
             }
             .b-bug-report-modal__submit-button {
                 padding: 4px 16px;
@@ -131,6 +172,11 @@ export default {
                 line-height: 24px;
                 text-align: center;
                 color: #FFFFFF;
+                cursor: pointer;
+
+                @media (max-width: 450px) {
+                    padding: 10px;
+                }
             }
         }
     }

@@ -7,7 +7,7 @@
       @email-verified="isUserVerified = true"
     />
 
-    <!-- <BugReportModal/> -->
+    <BugReportModal/>
     <div
       v-if="!isUserVerified"
       class="b_header_validate-email-block"

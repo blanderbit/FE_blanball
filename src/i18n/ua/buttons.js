@@ -19,5 +19,7 @@ export default {
   'decline': 'Відмінити',
   'clear': 'Очистити',
   'apply': 'Застосувати',
-  'publish': 'Опублікувати'
+  'publish': 'Опублікувати',
+  'close-this-window': 'Закрити це вікно',
+  'send-feedback': 'Надіслати відгук'
 }
