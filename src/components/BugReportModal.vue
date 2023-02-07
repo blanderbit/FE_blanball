@@ -29,8 +29,14 @@
             />
 
             <div v-for="i in uploadedImages" class="b-bug-report-modal__uploaded-images">
-                    <span class="b-bug-report-modal__uploaded-images-title">{{ i.name }}</span>
-                    <img class="b-bug-report-modal-remove__image" src="../assets/img/cross.svg" alt="cross">
+                    <div class="b-bug-report-modal__uploaded-image">
+                        <img src="../assets/img/uploaded-image.svg" alt="uploaded-imag">
+                        <span class="b-bug-report-modal__uploaded-images-title">{{ i.name }}</span>
+                    </div>
+                    <img @click="removeUploadedImage(i.name)" 
+                        class="b-bug-report-modal-remove__image" 
+                        src="../assets/img/cross.svg"
+                        alt="cross">
                 </div>
             </div>
 
@@ -49,7 +55,7 @@
 </template> 
 
 <script>
-import { ref, watch } from "vue"
+import { ref } from "vue"
 
 import { useToast } from "vue-toastification"
 import { useI18n } from "vue-i18n"
@@ -81,15 +87,20 @@ export default {
     },
     emits: ['close-modal'],
     setup(_, { emit }) {
-
         const uploadedImages = ref([])
- 
-        const afterLoadImage = (image) => { 
-            uploadedImages.value.push(image)
-        }
-
         const toast = useToast()
         const {t} = useI18n()
+
+ 
+        const afterLoadImage = (image) => {
+            uploadedImages.value.push(image)
+        }
+        const removeUploadedImage = (fileName) => {
+            uploadedImages.value.pop(
+                uploadedImages.value.filter(
+                    (value) => value.name === fileName
+            ));
+        }
 
         const createBugReport = async (data) => {
 
@@ -100,9 +111,11 @@ export default {
             }
 
             const formData = new FormData()
-            formData.append('title', 'fdfdfdfddfd')
-            formData.append('images', uploadedImages)
-
+            formData.append('title', data.values.title)
+            formData.append('description', data.values.description)
+            for (let i in Object.values(uploadedImages.value)) {
+                formData.append('images', Object.values(uploadedImages.value)[i])
+            }
             await API.BugReportsService.CreateBugReport(formData)
             emit('close-modal')
             toast.success(t('notifications.bug-report-created'))
@@ -115,6 +128,7 @@ export default {
 
             createBugReport,
             afterLoadImage,
+            removeUploadedImage,
             disableSubmit: (e) => {
                 e.stopPropagation()
                 e.preventDefault()
@@ -205,6 +219,12 @@ export default {
                 justify-content: space-between;
                 align-items: center;
 
+                .b-bug-report-modal__uploaded-image {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+
                 .b-bug-report-modal__uploaded-images-title {
                     font-family: 'Inter';
                     font-style: normal;
@@ -212,6 +232,10 @@ export default {
                     font-size: 12px;
                     line-height: 20px;
                     color: #262541;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: 90%;
+                    word-break: break-word;
                 }
                 .b-bug-report-modal-remove__image {
                     cursor: pointer;

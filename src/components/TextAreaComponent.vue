@@ -70,6 +70,7 @@ export default {
     } = CustomModelWorker(props)
 
     const IMAGE_TYPES = ["image/jpeg", "image/png"]
+    
 
     function onFileSelected(e) {
       const isValidFormat = IMAGE_TYPES.includes(e.target.files[0].type)
