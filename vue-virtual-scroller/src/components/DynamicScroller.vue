@@ -17,7 +17,7 @@
           item: itemWithSize.item,
           index,
           active,
-          itemWithSize
+          itemWithSize,
         }"
       />
     </template>
@@ -45,9 +45,9 @@ export default {
     RecycleScroller,
   },
 
-  provide () {
+  provide() {
     if (typeof ResizeObserver !== 'undefined') {
-      this.$_resizeObserver = new ResizeObserver(entries => {
+      this.$_resizeObserver = new ResizeObserver((entries) => {
         requestAnimationFrame(() => {
           if (!Array.isArray(entries)) {
             return
@@ -55,7 +55,11 @@ export default {
           for (const entry of entries) {
             if (entry.target && entry.target.$_vs_onResize) {
               const resizeObserverSize = entry.borderBoxSize[0]
-              entry.target.$_vs_onResize(entry.target.$_vs_id, resizeObserverSize.inlineSize, resizeObserverSize.blockSize)
+              entry.target.$_vs_onResize(
+                entry.target.$_vs_id,
+                resizeObserverSize.inlineSize,
+                resizeObserverSize.blockSize
+              )
             }
           }
         })
@@ -80,12 +84,9 @@ export default {
     },
   },
 
-  emits: [
-    'resize',
-    'visible',
-  ],
+  emits: ['resize', 'visible'],
 
-  data () {
+  data() {
     return {
       vscrollData: {
         active: true,
@@ -99,7 +100,7 @@ export default {
   computed: {
     simpleArray,
 
-    itemsWithSize () {
+    itemsWithSize() {
       const result = []
       const { items, keyField, simpleArray } = this
       const sizes = this.vscrollData.sizes
@@ -122,28 +123,29 @@ export default {
   },
 
   watch: {
-    items () {
+    items() {
       this.forceUpdate()
     },
 
     simpleArray: {
-      handler (value) {
+      handler(value) {
         this.vscrollData.simpleArray = value
       },
       immediate: true,
     },
 
-    direction (value) {
+    direction(value) {
       this.forceUpdate(true)
     },
 
-    itemsWithSize (next, prev) {
+    itemsWithSize(next, prev) {
       const scrollTop = this.$el.scrollTop
 
       // Calculate total diff between prev and next sizes
       // over current scroll top. Then add it to scrollTop to
       // avoid jumping the contents that the user is seeing.
-      let prevActiveTop = 0; let activeTop = 0
+      let prevActiveTop = 0
+      let activeTop = 0
       const length = Math.min(next.length, prev.length)
       for (let i = 0; i < length; i++) {
         if (prevActiveTop >= scrollTop) {
@@ -162,27 +164,27 @@ export default {
     },
   },
 
-  beforeCreate () {
+  beforeCreate() {
     this.$_updates = []
     this.$_undefinedSizes = 0
     this.$_undefinedMap = {}
     this.$_events = mitt()
   },
 
-  activated () {
+  activated() {
     this.vscrollData.active = true
   },
 
-  deactivated () {
+  deactivated() {
     this.vscrollData.active = false
   },
 
-  unmounted () {
+  unmounted() {
     this.$_events.all.clear()
   },
 
   methods: {
-    onScrollerResize () {
+    onScrollerResize() {
       const scroller = this.$refs.scroller
       if (scroller) {
         this.forceUpdate()
@@ -190,29 +192,33 @@ export default {
       this.$emit('resize')
     },
 
-    onScrollerVisible () {
+    onScrollerVisible() {
       this.$_events.emit('vscroll:update', { force: false })
       this.$emit('visible')
     },
 
-    forceUpdate (clear = false) {
+    forceUpdate(clear = false) {
       if (clear || this.simpleArray) {
         this.vscrollData.sizes = {}
       }
       this.$_events.emit('vscroll:update', { force: true })
     },
 
-    scrollToItem (index) {
+    scrollToItem(index) {
       const scroller = this.$refs.scroller
       if (scroller) scroller.scrollToItem(index)
     },
 
-    getItemSize (item, index = undefined) {
-      const id = this.simpleArray ? (index != null ? index : this.items.indexOf(item)) : item[this.keyField]
+    getItemSize(item, index = undefined) {
+      const id = this.simpleArray
+        ? index != null
+          ? index
+          : this.items.indexOf(item)
+        : item[this.keyField]
       return this.vscrollData.sizes[id] || 0
     },
 
-    scrollToBottom () {
+    scrollToBottom() {
       if (this.$_scrollingToBottom) return
       this.$_scrollingToBottom = true
       const el = this.$el

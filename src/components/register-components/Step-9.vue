@@ -1,154 +1,154 @@
 <template>
   <step-wrapper
-      :returnButton="stepConfig.returnButton"
-      :nextButton="stepConfig.nextButton"
-      :title="stepConfig.title"
-      :subTitle="stepConfig.subTitle"
-      :stepperLines="stepConfig.stepperLines"
+    :returnButton="stepConfig.returnButton"
+    :nextButton="stepConfig.nextButton"
+    :title="stepConfig.title"
+    :subTitle="stepConfig.subTitle"
+    :stepperLines="stepConfig.stepperLines"
   >
     <template #content>
       <div class="b-register-step__small-title mb-3">
-        {{$t('register.you-played-params')}}
+        {{ $t('register.you-played-params') }}
       </div>
 
-      <div class="b-sport-info d-flex justify-content-between align-baseline mb-3">
+      <div
+        class="b-sport-info d-flex justify-content-between align-baseline mb-3"
+      >
         <InputComponent
-            :outside-title="true"
-            :title="$t('register.height')"
-            :placeholder="$t('register.height')"
-            :title-width="0"
-            type="number"
-            name="height"
+          :outside-title="true"
+          :title="$t('register.height')"
+          :placeholder="$t('register.height')"
+          :title-width="0"
+          type="number"
+          name="height"
         ></InputComponent>
         <InputComponent
-            :outside-title="true"
-            :title="$t('register.weight')"
-            :placeholder="$t('register.weight')"
-            :title-width="0"
-            type="number"
-            name="weight"
+          :outside-title="true"
+          :title="$t('register.weight')"
+          :placeholder="$t('register.weight')"
+          :title-width="0"
+          type="number"
+          name="weight"
         ></InputComponent>
         <Dropdown
-            :placeholder="$t('register.main-leg')"
-            :outside-title="true"
-            :main-title="$t('register.main-leg')"
-            :options="mockData.main_lag"
-            :width="200"
-            :height="40"
-            display-name="value"
-            display-value="id"
-            name="working_leg"
+          :placeholder="$t('register.main-leg')"
+          :outside-title="true"
+          :main-title="$t('register.main-leg')"
+          :options="mockData.main_lag"
+          :width="200"
+          :height="40"
+          display-name="value"
+          display-value="id"
+          name="working_leg"
         />
       </div>
       <div class="b-register-step__small-title mb-3">
-        {{$t('register.you-played-position')}}
+        {{ $t('register.you-played-position') }}
       </div>
       <div class="b-register-step__dropdown">
         <Dropdown
-            :placeholder="$t('register.position')"
-            :outside-title="true"
-            :main-title="$t('register.position')"
-            :options="mockData.position"
-            :width="200"
-            :height="40"
-            display-name="name"
-            display-value="value"
-            name="position"
+          :placeholder="$t('register.position')"
+          :outside-title="true"
+          :main-title="$t('register.position')"
+          :options="mockData.position"
+          :width="200"
+          :height="40"
+          display-name="name"
+          display-value="value"
+          name="position"
         />
       </div>
-
     </template>
   </step-wrapper>
 </template>
 
 <script>
-  import { computed, ref } from 'vue'
+import { computed, ref } from 'vue'
 
-  import GreenBtn from '../GreenBtn.vue'
-  import Dropdown from '../forms/Dropdown.vue'
-  import InputComponent from '../forms/InputComponent.vue'
+import GreenBtn from '../GreenBtn.vue'
+import Dropdown from '../forms/Dropdown.vue'
+import InputComponent from '../forms/InputComponent.vue'
 
-  import arrowRight from '../../assets/img/arrow-right-white.svg'
-  import clipIcon from '../../assets/img/clip.svg'
-  import CONSTANTS from "../../consts";
-  import { useI18n } from 'vue-i18n'
-  import StepWrapper from './StepWrapper.vue'
+import arrowRight from '../../assets/img/arrow-right-white.svg'
+import clipIcon from '../../assets/img/clip.svg'
+import CONSTANTS from '../../consts'
+import { useI18n } from 'vue-i18n'
+import StepWrapper from './StepWrapper.vue'
 
-  export default {
-    name: 'Step9',
-    components: {
-      GreenBtn,
-      Dropdown,
-      InputComponent,
-      StepWrapper
-    },
-    setup() {
-      const profesionaLevel = ref('');
-      const clip = computed(() => {
-        return clipIcon
-      });
-      const arrow_right = computed(() => {
-        return arrowRight
-      });
-      const isDocumentNeeded = computed(() => {
-        return profesionaLevel.value === 'Професійно'
-      });
+export default {
+  name: 'Step9',
+  components: {
+    GreenBtn,
+    Dropdown,
+    InputComponent,
+    StepWrapper,
+  },
+  setup() {
+    const profesionaLevel = ref('')
+    const clip = computed(() => {
+      return clipIcon
+    })
+    const arrow_right = computed(() => {
+      return arrowRight
+    })
+    const isDocumentNeeded = computed(() => {
+      return profesionaLevel.value === 'Професійно'
+    })
 
-      const mockData = computed(() => {
-        return {
-          main_lag: CONSTANTS.profile.mainLeg,
-          position: CONSTANTS.profile.position,
-        }
-      })
-      const {t} = useI18n();
-      const stepConfig = computed(() => {
-        return {
-          title: t('register.sportData'),
-          returnButton: {
-            exist: true,
-            text: t('register.return')
-          },
-          nextButton: {
-            exist: true,
-            text: t('register.next')
-          },
-          stepperLines: {
-            exist: true,
-            count: 4,
-            active: 3
-          }
-        }
-      });
+    const mockData = computed(() => {
       return {
-        arrow_right,
-        clip,
-        profesionaLevel,
-        isDocumentNeeded,
-        mockData,
-        stepConfig
+        main_lag: CONSTANTS.profile.mainLeg,
+        position: CONSTANTS.profile.position,
       }
-    },
-  }
+    })
+    const { t } = useI18n()
+    const stepConfig = computed(() => {
+      return {
+        title: t('register.sportData'),
+        returnButton: {
+          exist: true,
+          text: t('register.return'),
+        },
+        nextButton: {
+          exist: true,
+          text: t('register.next'),
+        },
+        stepperLines: {
+          exist: true,
+          count: 4,
+          active: 3,
+        },
+      }
+    })
+    return {
+      arrow_right,
+      clip,
+      profesionaLevel,
+      isDocumentNeeded,
+      mockData,
+      stepConfig,
+    }
+  },
+}
 </script>
 
 <style lang="scss" scoped>
+.b-register-step__small-title {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 10px;
+  color: #262541;
+}
 
-  .b-register-step__small-title {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 20px;
-    margin-bottom: 10px;
-    color: #262541;
+::v-deep {
+  .b-input__input-component {
+    width: 20%;
   }
-
-  ::v-deep {
-    .b-input__input-component {
-      width: 20%;
-    }
-    .b-sport-info .b-dropdown {
-      width: 55%;
-    }
+  .b-sport-info .b-dropdown {
+    width: 55%;
   }
+}
 </style>

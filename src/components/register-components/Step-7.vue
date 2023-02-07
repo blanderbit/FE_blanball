@@ -1,10 +1,10 @@
 <template>
   <step-wrapper
-      :returnButton="stepConfig.returnButton"
-      :nextButton="stepConfig.nextButton"
-      :subTitle="stepConfig.subTitle"
-      :title="stepConfig.title"
-      :stepperLines="stepConfig.stepperLines"
+    :returnButton="stepConfig.returnButton"
+    :nextButton="stepConfig.nextButton"
+    :subTitle="stepConfig.subTitle"
+    :title="stepConfig.title"
+    :stepperLines="stepConfig.stepperLines"
   >
   </step-wrapper>
 </template>
@@ -17,11 +17,10 @@ export default {
   name: 'Step6',
 
   components: {
-    StepWrapper
+    StepWrapper,
   },
   setup() {
-
-    const { t } = useI18n();
+    const { t } = useI18n()
 
     const stepConfig = computed(() => {
       return {
@@ -29,22 +28,20 @@ export default {
         subTitle: t('register.tell-about-yourself'),
         nextButton: {
           exist: true,
-          text: t('register.adjust')
+          text: t('register.adjust'),
         },
         returnButton: {
           exist: true,
-          text: t('register.skip-and-go-to-events')
+          text: t('register.skip-and-go-to-events'),
         },
       }
-    });
+    })
 
     return {
-      stepConfig
+      stepConfig,
     }
   },
 }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

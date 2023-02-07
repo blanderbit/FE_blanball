@@ -1,26 +1,20 @@
 <template>
-  <div 
-    @click.self="$emit('closeModalClick')"
-    class="b-version-modal"
-  >
+  <div @click.self="$emit('closeModalClick')" class="b-version-modal">
     <div class="b-version-modal__window">
       <div class="b-version-modal__left-side">
-        <img src="../assets/img/logo-modal-versions.svg" alt="">
+        <img src="../assets/img/logo-modal-versions.svg" alt="" />
       </div>
       <div class="b-version-modal__right-side">
-        <div class="b-version-modal__name">Blanball </div>
-        <div class="b-version-modal__title">Нова версія Blanball вже доступна!</div>
+        <div class="b-version-modal__name">Blanball</div>
+        <div class="b-version-modal__title">
+          Нова версія Blanball вже доступна!
+        </div>
         <div class="b-version-modal__description">
           Перейдіть на сторінку версій щоби ознайомитися із деталями оновлення
         </div>
         <div class="b-version-modal__buttons">
-          <div class="b-version-modal__download">
-            Завантажити оновлення
-          </div>
-          <div 
-            class="b-version-modal__whats-new"
-            @click="showVersionsPage"
-          >
+          <div class="b-version-modal__download">Завантажити оновлення</div>
+          <div class="b-version-modal__whats-new" @click="showVersionsPage">
             Що нового?
           </div>
         </div>
@@ -30,24 +24,24 @@
 </template>
 
 <script>
-  import { useRouter } from "vue-router";
-  import { ROUTES } from "../router/router.const";
+import { useRouter } from 'vue-router'
+import { ROUTES } from '../router/router.const'
 
-  export default {
-    name: 'ModalVersion',
-    emits: ['closeModalClick'],
-    setup(props, context) {
-      const router = useRouter();
+export default {
+  name: 'ModalVersion',
+  emits: ['closeModalClick'],
+  setup(props, context) {
+    const router = useRouter()
 
-      function showVersionsPage() {
-        context.emit('closeModalClick')
-        router.push(ROUTES.APPLICATION.VERSION.absolute)
-      }
-      return {
-        showVersionsPage
-      }
+    function showVersionsPage() {
+      context.emit('closeModalClick')
+      router.push(ROUTES.APPLICATION.VERSION.absolute)
     }
-  }
+    return {
+      showVersionsPage,
+    }
+  },
+}
 </script>
 
 <style lang="scss" scoped>
@@ -67,23 +61,22 @@
     transform: translate(-50%, -50%);
     width: 420px;
     padding: 18px;
-    background: #FCFCFC;
+    background: #fcfcfc;
     display: flex;
 
     .b-version-modal__left-side {
-
-      img {}
+      img {
+      }
     }
 
     .b-version-modal__right-side {
-
       .b-version-modal__name {
         font-family: 'Inter';
         font-style: normal;
         font-weight: 400;
         font-size: 14px;
         line-height: 20px;
-        color: #8A8AA8;
+        color: #8a8aa8;
         margin-bottom: 8px;
       }
 
@@ -120,7 +113,7 @@
           text-align: center;
           color: #575775;
           padding: 2px 12px;
-          background: #EFEFF6;
+          background: #efeff6;
           border-radius: 6px;
           cursor: pointer;
         }
@@ -132,7 +125,7 @@
           line-height: 24px;
           text-align: center;
           color: #424257;
-          border: 1px solid #E2E2E9;
+          border: 1px solid #e2e2e9;
           border-radius: 6px;
           padding: 2px 12px;
           cursor: pointer;

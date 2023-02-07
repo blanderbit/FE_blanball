@@ -20,11 +20,11 @@
             />
           </div>
           <div class="description-text">
-            <Counter 
+            <Counter
               :start-time="30"
               :counter-text="$t('modals.change_login.code-message')"
               :email="userEmail"
-              @resend-code-action="sendEmailAgain" 
+              @resend-code-action="sendEmailAgain"
             />
           </div>
           <div class="code-input-field">
@@ -54,8 +54,8 @@
 <script>
 import { computed, ref } from 'vue'
 import { Form } from '@system.it.flumx.com/vee-validate'
-import * as yup from "yup"
-import { useToast } from "vue-toastification"
+import * as yup from 'yup'
+import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
 
 import ModalWindow from '../../components/ModalWindow.vue'
@@ -63,7 +63,7 @@ import Counter from '../../components/Counter.vue'
 import CodeInput from '../../components/forms/CodeInput.vue'
 import InputComponent from '../../components/forms/InputComponent.vue'
 
-import { API } from "../../workers/api-worker/api.worker"
+import { API } from '../../workers/api-worker/api.worker'
 
 export default {
   name: 'VerifyEmailModal',
@@ -72,13 +72,13 @@ export default {
     InputComponent,
     Counter,
     CodeInput,
-    Form
+    Form,
   },
   props: {
     userEmail: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   emits: ['closeModal', 'emailVerified'],
   setup(props, context) {
@@ -87,16 +87,20 @@ export default {
 
     const schema = computed(() => {
       return yup.object({
-        verify_code: yup.string().required('errors.required').min(5, 'errors.min5'),
-        email: yup.string().required('errors.required')
+        verify_code: yup
+          .string()
+          .required('errors.required')
+          .min(5, 'errors.min5'),
+        email: yup.string().required('errors.required'),
       })
     })
 
-    API.AuthorizationService.VerifyEmail()
-      .catch(e => console.log('some mistake happened', e))
+    API.AuthorizationService.VerifyEmail().catch((e) =>
+      console.log('some mistake happened', e)
+    )
 
     function saveClick(data) {
-      const payload = {verify_code: data.controlledValues?.verify_code} 
+      const payload = { verify_code: data.controlledValues?.verify_code }
       API.AuthorizationService.VerifyCode(payload)
         .then(() => {
           context.emit('closeModal')
@@ -112,16 +116,13 @@ export default {
       API.AuthorizationService.VerifyEmail()
     }
 
-
     return {
       saveClick,
       sendEmailAgain,
-      schema
+      schema,
     }
-  }
+  },
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

@@ -1,32 +1,39 @@
-import { AuthWebSocketWorkerInstance } from "../web-socket-worker";
-import { MessageActionDataTypes, MessageActionTypes } from "../../workers/web-socket-worker/message.action.types";
-import { DETAILS_TYPE_ENUM_VALUES } from "../type-request-message-worker";
+import { AuthWebSocketWorkerInstance } from '../web-socket-worker'
+import {
+  MessageActionDataTypes,
+  MessageActionTypes,
+} from '../../workers/web-socket-worker/message.action.types'
+import { DETAILS_TYPE_ENUM_VALUES } from '../type-request-message-worker'
 
 export const AxiosQuery = (params) => {
-  params = typeof params === 'object' ? params : {};
-  const filteredObject =  Object
-    .keys(params)
-    .filter(key => params[key])
-    .reduce((acc, key) => ({
-      ...acc,
-      [key]: params[key],
-    }), {});
+  params = typeof params === 'object' ? params : {}
+  const filteredObject = Object.keys(params)
+    .filter((key) => params[key])
+    .reduce(
+      (acc, key) => ({
+        ...acc,
+        [key]: params[key],
+      }),
+      {}
+    )
   return {
     meta: 'AxiosQuery',
-    data: filteredObject
+    data: filteredObject,
   }
-};
+}
 
 export const AxiosSkipErrorMessageType = (enumList = []) => {
-  enumList = enumList.filter(enumKey => DETAILS_TYPE_ENUM_VALUES.includes(enumKey));
+  enumList = enumList.filter((enumKey) =>
+    DETAILS_TYPE_ENUM_VALUES.includes(enumKey)
+  )
   return {
     meta: 'AxiosSkipErrorMessageType',
-    data: enumList
+    data: enumList,
   }
-};
+}
 
 export const AxiosParams = (...results) => {
-  const allParameters = {};
+  const allParameters = {}
 
   results.forEach((resultFromFunction) => {
     if (resultFromFunction.meta.includes('AxiosQuery')) {
@@ -34,49 +41,53 @@ export const AxiosParams = (...results) => {
     } else if (resultFromFunction.meta.includes('AxiosSkipErrorMessageType')) {
       allParameters.skipErrorMessageType = resultFromFunction.data
     }
-  });
+  })
 
-  return allParameters;
-};
-
+  return allParameters
+}
 
 export const createQueryStringFromObject = (objQuery) => {
   if (typeof objQuery !== 'object') {
-    return '';
+    return ''
   }
 
-  const elements = Object
-    .keys(objQuery)
-    .map((key) => `${key}=${objQuery[key]}`);
+  const elements = Object.keys(objQuery).map((key) => `${key}=${objQuery[key]}`)
 
-  return elements.length ? '?' + elements.join('&') : '';
-};
+  return elements.length ? '?' + elements.join('&') : ''
+}
 
-
-const fakeFunc = () => {};
-export const checkIfFunction = (method) => typeof method === 'function' ? method : fakeFunc;
+const fakeFunc = () => {}
+export const checkIfFunction = (method) =>
+  typeof method === 'function' ? method : fakeFunc
 
 export const createNotificationFromData = (message) => {
-  message.notification_id = message.id;
-  const constructor = AuthWebSocketWorkerInstance?.messages?.find(item => item.messageType === message.message_type);
+  message.notification_id = message.id
+  const constructor = AuthWebSocketWorkerInstance?.messages?.find(
+    (item) => item.messageType === message.message_type
+  )
 
   if (constructor) {
     return new constructor(message)
   }
-};
+}
 
-export const notificationButtonHandlerMessage = async ({ button, notificationInstance, activeNotification, router }) => {
-  activeNotification.value = notificationInstance.notification_id;
+export const notificationButtonHandlerMessage = async ({
+  button,
+  notificationInstance,
+  activeNotification,
+  router,
+}) => {
+  activeNotification.value = notificationInstance.notification_id
   if (button.actionType === MessageActionDataTypes.Url) {
     router.push(button.action)
   }
 
   if (button.actionType === MessageActionDataTypes.UrlCallback) {
-    router.push(button.action({router, notificationInstance}))
+    router.push(button.action({ router, notificationInstance }))
   }
 
   if (button.actionType === MessageActionDataTypes.Callback) {
-    await button.action({notificationInstance})
+    await button.action({ notificationInstance })
   }
 
   if (
@@ -89,4 +100,4 @@ export const notificationButtonHandlerMessage = async ({ button, notificationIns
     notificationInstance.readAfterActiveActionCallBack(notificationInstance)
   }
   activeNotification.value = 0
-};
+}

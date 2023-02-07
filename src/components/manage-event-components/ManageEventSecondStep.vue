@@ -55,18 +55,15 @@
       />
     </div>
     <div class="contact-switcher">
-      <span>{{$t('events.show-my-contacts')}}</span>
-      <Switcher 
+      <span>{{ $t('events.show-my-contacts') }}</span>
+      <Switcher
         :id="'contacts'"
         :is-edit-mode="true"
         name="is_phone_shown"
         @get-value="showHidePhone"
       />
     </div>
-    <div 
-      class="input"
-      v-show="isPhoneShown"
-    >
+    <div class="input" v-show="isPhoneShown">
       <InputComponent
         :placeholder="userPhoneNumber"
         :title-width="0"
@@ -74,7 +71,7 @@
       >
       </InputComponent>
     </div>
-    <div class="title">{{$t('events.invite-users')}}</div>
+    <div class="title">{{ $t('events.invite-users') }}</div>
     <div class="input">
       <InputComponent
         :placeholder="$t('events.search-users')"
@@ -85,14 +82,13 @@
       />
     </div>
 
-    <SearchBlockAll 
+    <SearchBlockAll
       :tags="tags"
       :filtered-teams="filteredTeams"
       :list-item-icon="icons.plus"
       @chose-tab-category="$emit('choseCategory')"
       @item-list-click="inviteUser"
     />
-
   </div>
 </template>
 
@@ -122,14 +118,14 @@ export default {
     },
     currentStep: {
       type: Number,
-      default: null
-    }
+      default: null,
+    },
   },
   components: {
     InputComponent,
     Switcher,
     SearchBlockAll,
-    RadioButton
+    RadioButton,
   },
   emit: ['choseCategory'],
   setup(props, { emit }) {
@@ -142,16 +138,14 @@ export default {
         arrow: HorArrow,
         addUser: AddUser,
         search: Search,
-        plus: PlusIcon
+        plus: PlusIcon,
       }
     })
 
     const userPhoneNumber = computed(() => store.getUserPhone)
 
     const stepStyle = computed(() => {
-      return props.currentStep === 2 ? 
-            { height : 'auto' } :
-            { height : '0px' }
+      return props.currentStep === 2 ? { height: 'auto' } : { height: '0px' }
     })
 
     function getRadioValue(val) {
@@ -169,7 +163,7 @@ export default {
       isPhoneShown,
       userPhoneNumber,
       showHidePhone,
-      getRadioValue
+      getRadioValue,
     }
   },
 }
@@ -280,7 +274,7 @@ export default {
       font-weight: 700;
       font-size: 16px;
       line-height: 24px;
-      color: #7F7DB5;
+      color: #7f7db5;
     }
   }
   .subtitle {
@@ -290,7 +284,7 @@ export default {
     font-weight: 400;
     font-size: 13px;
     line-height: 20px;
-    color: #7F7DB5;
+    color: #7f7db5;
     margin-bottom: 20px;
   }
   .title {

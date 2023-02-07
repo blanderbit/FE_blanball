@@ -4,9 +4,7 @@
       <div v-if="title" class="b-text-area__outer-title">
         <span>{{ title }}</span>
       </div>
-      <div class="b-text-area__min-max-label">
-        45 / 200
-      </div>
+      <div class="b-text-area__min-max-label">45 / 200</div>
       <textarea
         :value="modelValue"
         :placeholder="placeholder"
@@ -17,9 +15,11 @@
       <label v-if="textareaIcon">
         <input type="file" @change="onFileSelected" />
         <img
-        v-if="textareaIcon"
-        class="b-text-area__icon"
-        :src="textareaIcon" alt="icon">
+          v-if="textareaIcon"
+          class="b-text-area__icon"
+          :src="textareaIcon"
+          alt="icon"
+        />
       </label>
     </div>
     <p class="b-text-area__error-message">{{ modelErrorMessage }}</p>
@@ -28,7 +28,7 @@
 
 <script>
 import { computed, ref } from 'vue'
-import { CustomModelWorker } from "../workers/custom-model-worker"
+import { CustomModelWorker } from '../workers/custom-model-worker'
 
 export default {
   name: 'InputComponent',
@@ -50,7 +50,7 @@ export default {
       default: null,
     },
     textareaIcon: {
-      type: String
+      type: String,
     },
     name: {
       type: String,
@@ -59,18 +59,14 @@ export default {
     mode: {
       type: String,
       default: 'aggressive',
-    }
+    },
   },
   emits: ['icon-click'],
-  setup(props, {emit}) {
-    const {
-        modelValue,
-        modelErrorMessage,
-        modelHandlers
-    } = CustomModelWorker(props)
+  setup(props, { emit }) {
+    const { modelValue, modelErrorMessage, modelHandlers } =
+      CustomModelWorker(props)
 
-    const IMAGE_TYPES = ["image/jpeg", "image/png"]
-    
+    const IMAGE_TYPES = ['image/jpeg', 'image/png']
 
     function onFileSelected(e) {
       const isValidFormat = IMAGE_TYPES.includes(e.target.files[0].type)
@@ -92,7 +88,7 @@ export default {
       inputWrapper,
       onFileSelected,
     }
-  }
+  },
 }
 </script>
 
@@ -114,13 +110,13 @@ export default {
       position: absolute;
       right: 8px;
       bottom: -8px;
-      background: #F9F9FC;
-      border: 1px solid #E2E2E9;
+      background: #f9f9fc;
+      border: 1px solid #e2e2e9;
       border-radius: 4px;
     }
     .b-text-area__icon {
-      position: absolute; 
-      right: 10px; 
+      position: absolute;
+      right: 10px;
       top: 10px;
       cursor: pointer;
     }
@@ -161,7 +157,7 @@ export default {
     color: #f32929;
   }
 }
-input[type="file"] {
-    display: none;
+input[type='file'] {
+  display: none;
 }
 </style>

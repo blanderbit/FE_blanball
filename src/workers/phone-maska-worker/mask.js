@@ -1,12 +1,17 @@
 import defaultTokens from './tokens'
 
-export default function mask (value, mask, tokens = defaultTokens, masked = true) {
-  return (processMask(mask).length > 1)
+export default function mask(
+  value,
+  mask,
+  tokens = defaultTokens,
+  masked = true
+) {
+  return processMask(mask).length > 1
     ? dynamic(mask)(value, mask, tokens, masked)
     : process(value, mask, tokens, masked)
 }
 
-function processMask (mask) {
+function processMask(mask) {
   try {
     return JSON.parse(mask)
   } catch {
@@ -14,11 +19,11 @@ function processMask (mask) {
   }
 }
 
-function dynamic (mask) {
+function dynamic(mask) {
   const masks = processMask(mask).sort((a, b) => a.length - b.length)
 
   return function (value, mask, tokens, masked = true) {
-    const processed = masks.map(m => process(value, m, tokens, false))
+    const processed = masks.map((m) => process(value, m, tokens, false))
     const last = processed.pop()
 
     for (const i in masks) {
@@ -30,18 +35,21 @@ function dynamic (mask) {
     return '' // empty masks
   }
 
-  function checkMask (variant, mask, tokens) {
+  function checkMask(variant, mask, tokens) {
     for (const tok in tokens) {
       if (tokens[tok].escape) {
         mask = mask.replace(new RegExp(tok + '.{1}', 'g'), '')
       }
     }
 
-    return (mask.split('').filter(el => tokens[el] && tokens[el].pattern).length >= variant.length)
+    return (
+      mask.split('').filter((el) => tokens[el] && tokens[el].pattern).length >=
+      variant.length
+    )
   }
 }
 
-function process (value, mask, tokens, masked = true) {
+function process(value, mask, tokens, masked = true) {
   let im = 0
   let iv = 0
   let ret = ''
@@ -87,7 +95,8 @@ function process (value, mask, tokens, masked = true) {
   }
 
   // fix mask that ends with parenthesis
-  while (masked && im < mask.length) { // eslint-disable-line no-unmodified-loop-condition
+  while (masked && im < mask.length) {
+    // eslint-disable-line no-unmodified-loop-condition
     const maskCharRest = mask[im]
     if (tokens[maskCharRest]) {
       rest = ''
@@ -105,7 +114,7 @@ function process (value, mask, tokens, masked = true) {
  * @param {String} value
  * @param {'uppercase' | 'lowercase' | 'transform'} token
  */
-function tokenTransform (value, token) {
+function tokenTransform(value, token) {
   if (token.transform) {
     value = token.transform(value)
   }

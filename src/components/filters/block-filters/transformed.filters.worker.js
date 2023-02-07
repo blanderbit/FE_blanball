@@ -2,24 +2,32 @@ import { watch, ref } from 'vue'
 import { cloneDeep, isEqual } from 'lodash'
 
 export const TransformedFiltersWorker = (config) => {
-  const { 
-    setupTransformedCallback, 
+  const {
+    setupTransformedCallback,
     updateRealDataFromTransformed,
     ifSecondLineWasUsed,
     props,
     emit,
     isMobile,
     isTablet,
-  } = config;
+  } = config
 
-  if(!setupTransformedCallback || !updateRealDataFromTransformed || !props || !props?.modelValue|| !emit) {
-    throw  new Error('TransformedFiltersWorker need emplement setupTransformedCallback, updateRealDataFromTransformed, props, props.modelValue, emit')
+  if (
+    !setupTransformedCallback ||
+    !updateRealDataFromTransformed ||
+    !props ||
+    !props?.modelValue ||
+    !emit
+  ) {
+    throw new Error(
+      'TransformedFiltersWorker need emplement setupTransformedCallback, updateRealDataFromTransformed, props, props.modelValue, emit'
+    )
   }
 
-  const activeFilters = ref(false);
+  const activeFilters = ref(false)
   activeFilters.value = ifSecondLineWasUsed && ifSecondLineWasUsed()
 
-  const transformedFilters = ref(setupTransformedCallback(activeFilters));
+  const transformedFilters = ref(setupTransformedCallback(activeFilters))
 
   watch(
     () => props.modelValue,
@@ -27,11 +35,11 @@ export const TransformedFiltersWorker = (config) => {
       transformedFilters.value = setupTransformedCallback(activeFilters)
     },
     {
-      deep: true
+      deep: true,
     }
-  );
+  )
 
-  let timeout;
+  let timeout
   watch(
     () => cloneDeep(transformedFilters.value),
     (a, b) => {
@@ -47,20 +55,23 @@ export const TransformedFiltersWorker = (config) => {
       }
     },
     {
-      deep: true
+      deep: true,
     }
-  );
+  )
 
   function updateRealData() {
-    clearTimeout(timeout);
+    clearTimeout(timeout)
     timeout = setTimeout(() => {
-      emit('update:value', updateRealDataFromTransformed(transformedFilters.value))
+      emit(
+        'update:value',
+        updateRealDataFromTransformed(transformedFilters.value)
+      )
     }, 500)
   }
 
   return {
     updateRealData,
     transformedFilters,
-    activeFilters
+    activeFilters,
   }
-};
+}

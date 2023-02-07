@@ -2,10 +2,10 @@
   <div class="b_switch_wrapper">
     <div v-if="!isEditMode" class="b_switch_block"></div>
     <label class="b_switch" :for="id">
-      <input 
+      <input
         type="checkbox"
-        :id="id" 
-        :checked="modelValue" 
+        :id="id"
+        :checked="modelValue"
         @input="valueChange($event.target.checked)"
       />
       <div class="b_switch_slider round"></div>
@@ -14,25 +14,24 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue';
+import { ref, watch } from 'vue'
 import { CustomModelWorker } from '../workers/custom-model-worker'
 
 export default {
   name: 'switch-component',
-  components: {
-  },
+  components: {},
   props: {
     id: {
       type: String,
-      required: true
+      required: true,
     },
     initialValue: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isEditMode: {
       type: Boolean,
-      default: false
+      default: false,
     },
     mode: {
       type: String,
@@ -41,11 +40,12 @@ export default {
     name: {
       type: String,
       required: true,
-    }
+    },
   },
   emits: ['getValue'],
-  setup(props, {emit}) {
-    const { modelValue, modelErrorMessage, modelHandlers } = CustomModelWorker(props)
+  setup(props, { emit }) {
+    const { modelValue, modelErrorMessage, modelHandlers } =
+      CustomModelWorker(props)
 
     function valueChange(val) {
       modelHandlers.value.input[0](val)
@@ -56,14 +56,14 @@ export default {
     return {
       modelValue,
       modelHandlers,
-      valueChange
+      valueChange,
     }
-  }
+  },
 }
 </script>
 
 <style scoped>
-.b_switch_wrapper{
+.b_switch_wrapper {
   position: relative;
   display: inherit;
 }
@@ -96,25 +96,25 @@ export default {
   position: absolute;
   right: 0;
   top: 0;
-  transition: .4s;
+  transition: 0.4s;
 }
 
 .b_switch_slider:before {
   background-color: #fff;
   bottom: 2px;
-  content: "";
+  content: '';
   height: 16px;
   left: 2px;
   position: absolute;
-  transition: .4s;
+  transition: 0.4s;
   width: 16px;
 }
 
-input:checked+.b_switch_slider {
+input:checked + .b_switch_slider {
   background-color: #148783;
 }
 
-input:checked+.b_switch_slider:before {
+input:checked + .b_switch_slider:before {
   transform: translateX(20px);
 }
 

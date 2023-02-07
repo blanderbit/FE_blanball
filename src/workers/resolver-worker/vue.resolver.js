@@ -1,4 +1,3 @@
-
 /**
  *
  *  METHOD_HOOK_ENUM
@@ -19,13 +18,13 @@
  */
 
 const METHOD_HOOK_ENUM = {
-  BEFORE_INTERCEPT : '_beforeIntercept',
-  AFTER_INTERCEPT : '_afterIntercept',
+  BEFORE_INTERCEPT: '_beforeIntercept',
+  AFTER_INTERCEPT: '_afterIntercept',
   RESOLVER_FIRST_WORKER: '_resolverFirstWorker',
   RESOLVER_SECOND_WORKER: '_resolverSecondWorker',
   RESOLVER_FIRST_WORKER_ERROR: '_resolverFirstWorkerError',
   RESOLVER_SECOND_WORKER_ERROR: '_resolverSecondWorkerError',
-};
+}
 
 /**
  *
@@ -40,8 +39,8 @@ const METHOD_HOOK_ENUM = {
 const JS_TYPES_ENUM = {
   OBJECT: 'object',
   FUNCTION: 'function',
-  BOOLEAN: "boolean"
-};
+  BOOLEAN: 'boolean',
+}
 
 /**
  *
@@ -73,9 +72,8 @@ const JS_TYPES_ENUM = {
  *  @return {(varA | varB)}
  */
 
-const checkIfExistType = (varA, varB, type) => typeof varA === type
-  ? varA
-  : varB;
+const checkIfExistType = (varA, varB, type) =>
+  typeof varA === type ? varA : varB
 
 /**
  *  isObject
@@ -101,11 +99,8 @@ const checkIfExistType = (varA, varB, type) => typeof varA === type
  *  @return {(varA | varB)}
  */
 
-const isObject = (varA, varB) => checkIfExistType(
-  varA,
-  varB,
-  JS_TYPES_ENUM.OBJECT
-);
+const isObject = (varA, varB) =>
+  checkIfExistType(varA, varB, JS_TYPES_ENUM.OBJECT)
 
 /**
  *  isFunction
@@ -136,11 +131,8 @@ const isObject = (varA, varB) => checkIfExistType(
  *  @return {(varA | varB)}
  */
 
-const isFunction = (varA, varB) => checkIfExistType(
-  varA,
-  varB,
-  JS_TYPES_ENUM.FUNCTION
-);
+const isFunction = (varA, varB) =>
+  checkIfExistType(varA, varB, JS_TYPES_ENUM.FUNCTION)
 
 /**
  *  VueResolver
@@ -153,7 +145,6 @@ const isFunction = (varA, varB) => checkIfExistType(
  */
 
 export class VueResolver {
-
   /**
    *
    *  _defFunction
@@ -170,7 +161,7 @@ export class VueResolver {
    *  @private
    */
 
-  _defFunction = (ret) => ret ? ret :{};
+  _defFunction = (ret) => (ret ? ret : {})
 
   /**
    *
@@ -185,7 +176,7 @@ export class VueResolver {
    *  @private
    */
 
-  _defFunctionPromise = () => Promise.resolve(true);
+  _defFunctionPromise = () => Promise.resolve(true)
 
   /**
    *
@@ -200,7 +191,7 @@ export class VueResolver {
    *  @private
    */
 
-  _beforeIntercept = this._defFunction;
+  _beforeIntercept = this._defFunction
 
   /**
    *
@@ -214,7 +205,7 @@ export class VueResolver {
    *  @private
    */
 
-  _afterIntercept = this._defFunction;
+  _afterIntercept = this._defFunction
 
   /**
    *
@@ -230,7 +221,7 @@ export class VueResolver {
    *  @private
    */
 
-  _resolverFirstWorker = this._defFunctionPromise;
+  _resolverFirstWorker = this._defFunctionPromise
 
   /**
    *
@@ -246,7 +237,7 @@ export class VueResolver {
    *  @private
    */
 
-  _resolverSecondWorker = this._defaultSecondWorker;
+  _resolverSecondWorker = this._defaultSecondWorker
 
   /**
    *
@@ -261,7 +252,7 @@ export class VueResolver {
    * @private
    */
 
-  _resolverFirstWorkerError = this._defFunction;
+  _resolverFirstWorkerError = this._defFunction
 
   /**
    *
@@ -275,7 +266,7 @@ export class VueResolver {
    * @private
    */
 
-  _resolverSecondWorkerError = this._defFunction;
+  _resolverSecondWorkerError = this._defFunction
 
   /**
    *  This callback type is called `requestCallback` and is displayed as a global symbol.
@@ -315,15 +306,8 @@ export class VueResolver {
    *  @return { Function | Promise }
    */
 
-  routeInterceptor(
-    resolverCallback,
-    customFunctions
-  ) {
-
-    customFunctions = isObject(
-      customFunctions,
-      {}
-    );
+  routeInterceptor(resolverCallback, customFunctions) {
+    customFunctions = isObject(customFunctions, {})
 
     const {
       resolverSecondWorker,
@@ -331,107 +315,99 @@ export class VueResolver {
       resolveFirstWorkerError,
       beforeIntercept,
       afterIntercept,
-      resolveSecondWorkerError
-    } = customFunctions;
+      resolveSecondWorkerError,
+    } = customFunctions
 
     return async (to, from, nextStandard) => {
-      let calledNext = false;
-      const next = (...e) => { // TODO will be great move it before this function
-        if(!calledNext) {
-          nextStandard(...e);
-          calledNext = true;
+      let calledNext = false
+      const next = (...e) => {
+        // TODO will be great move it before this function
+        if (!calledNext) {
+          nextStandard(...e)
+          calledNext = true
         }
-      };
+      }
 
       const standardDataParams = {
         to,
-        from
-      };
+        from,
+      }
 
       const standardDataParamsWithNext = {
         ...standardDataParams,
-        next
-      };
+        next,
+      }
 
       isFunction(
         beforeIntercept,
         this[METHOD_HOOK_ENUM.BEFORE_INTERCEPT]
-      )(standardDataParams);
+      )(standardDataParams)
 
       const resultAsyncCheck = await isFunction(
         resolverFirstWorker,
         this[METHOD_HOOK_ENUM.RESOLVER_FIRST_WORKER]
-      )(standardDataParamsWithNext);
+      )(standardDataParamsWithNext)
 
-      if (typeof resultAsyncCheck !== JS_TYPES_ENUM.BOOLEAN || !resultAsyncCheck) {
+      if (
+        typeof resultAsyncCheck !== JS_TYPES_ENUM.BOOLEAN ||
+        !resultAsyncCheck
+      ) {
         const firstWorkerError = {
           ...standardDataParamsWithNext,
-          error: 'FIRST_WORKER_ERROR'
-        };
+          error: 'FIRST_WORKER_ERROR',
+        }
         isFunction(
           resolveFirstWorkerError,
           this[METHOD_HOOK_ENUM.RESOLVER_FIRST_WORKER_ERROR]
-        )(firstWorkerError);
-
+        )(firstWorkerError)
 
         isFunction(
           afterIntercept,
           this[METHOD_HOOK_ENUM.AFTER_INTERCEPT]
-        )(firstWorkerError);
+        )(firstWorkerError)
 
         return next(false)
       }
 
       if (typeof resolverCallback === JS_TYPES_ENUM.FUNCTION) {
         try {
-          let objRequests = resolverCallback(to, from);
+          let objRequests = resolverCallback(to, from)
 
+          objRequests = isObject(objRequests, {})
 
-          objRequests = isObject(
-            objRequests,
-            {}
-          );
+          const result = await isFunction(
+            resolverSecondWorker,
+            this[METHOD_HOOK_ENUM.RESOLVER_SECOND_WORKER]
+          )(objRequests)
 
-          const result = await (
-            isFunction(
-              resolverSecondWorker,
-              this[METHOD_HOOK_ENUM.RESOLVER_SECOND_WORKER]
-            )(objRequests)
-          );
-
-          Object
-            .keys(result)
-            .forEach((item) => to.meta[ item ] = result[ item ]);
-
-        } catch ( error ) {
-
+          Object.keys(result).forEach((item) => (to.meta[item] = result[item]))
+        } catch (error) {
           const paramsWithError = {
             ...standardDataParams,
             error: 'SECOND_WORKER_ERROR',
-            errorDetails: error
-          };
+            errorDetails: error,
+          }
 
           isFunction(
             resolveSecondWorkerError,
             this[METHOD_HOOK_ENUM.RESOLVER_SECOND_WORKER_ERROR]
-          )(paramsWithError);
-
+          )(paramsWithError)
 
           isFunction(
             afterIntercept,
             this[METHOD_HOOK_ENUM.AFTER_INTERCEPT]
-          )(paramsWithError);
+          )(paramsWithError)
 
-          return next(false);
+          return next(false)
         }
       }
 
       isFunction(
         afterIntercept,
         this[METHOD_HOOK_ENUM.AFTER_INTERCEPT]
-      )(standardDataParamsWithNext);
+      )(standardDataParamsWithNext)
 
-      return next(true);
+      return next(true)
     }
   }
 
@@ -449,29 +425,25 @@ export class VueResolver {
    *  @private
    */
 
-  async _defaultSecondWorker (objRequests) {
-    const objData = {};
-    const arrayRequests = Object
-      .keys(objRequests)
-      .map((key, index) => {
-        objData[ index ] = key;
-        return typeof objRequests[ key ] === JS_TYPES_ENUM.FUNCTION
-          ? objRequests[ key ]()
-          : Promise.resolve(null);
-      });
+  async _defaultSecondWorker(objRequests) {
+    const objData = {}
+    const arrayRequests = Object.keys(objRequests).map((key, index) => {
+      objData[index] = key
+      return typeof objRequests[key] === JS_TYPES_ENUM.FUNCTION
+        ? objRequests[key]()
+        : Promise.resolve(null)
+    })
 
-    let result = [];
+    let result = []
 
-    result = await Promise.all(arrayRequests);
+    result = await Promise.all(arrayRequests)
 
-    Object
-      .keys(objData)
-      .forEach(i => {
-        objData[ objData[ i ] ] = result[ i ];
-        delete objData[ i ];
-      });
+    Object.keys(objData).forEach((i) => {
+      objData[objData[i]] = result[i]
+      delete objData[i]
+    })
 
-    return objData;
+    return objData
   }
 
   /**
@@ -485,10 +457,7 @@ export class VueResolver {
    */
 
   registerBeforeIntercept(fn) {
-    return this.registerMethod(
-      METHOD_HOOK_ENUM.BEFORE_INTERCEPT,
-      fn
-    );
+    return this.registerMethod(METHOD_HOOK_ENUM.BEFORE_INTERCEPT, fn)
   }
 
   /**
@@ -501,10 +470,7 @@ export class VueResolver {
    */
 
   registerAfterIntercept(fn) {
-    return this.registerMethod(
-      METHOD_HOOK_ENUM.AFTER_INTERCEPT,
-      fn
-    );
+    return this.registerMethod(METHOD_HOOK_ENUM.AFTER_INTERCEPT, fn)
   }
 
   /**
@@ -518,10 +484,7 @@ export class VueResolver {
    */
 
   registerResolverFirstWorker(fn) {
-    return this.registerMethod(
-      METHOD_HOOK_ENUM.RESOLVER_FIRST_WORKER,
-      fn
-    );
+    return this.registerMethod(METHOD_HOOK_ENUM.RESOLVER_FIRST_WORKER, fn)
   }
 
   /**
@@ -535,12 +498,8 @@ export class VueResolver {
    */
 
   registerResolverSecondWorker(fn) {
-    return this.registerMethod(
-      METHOD_HOOK_ENUM.RESOLVER_SECOND_WORKER,
-      fn
-    );
+    return this.registerMethod(METHOD_HOOK_ENUM.RESOLVER_SECOND_WORKER, fn)
   }
-
 
   /**
    *
@@ -553,12 +512,8 @@ export class VueResolver {
    */
 
   registerResolverFirstWorkerError(fn) {
-    return this.registerMethod(
-      METHOD_HOOK_ENUM.RESOLVER_FIRST_WORKER_ERROR,
-      fn
-    );
+    return this.registerMethod(METHOD_HOOK_ENUM.RESOLVER_FIRST_WORKER_ERROR, fn)
   }
-
 
   /**
    *
@@ -574,7 +529,7 @@ export class VueResolver {
     return this.registerMethod(
       METHOD_HOOK_ENUM.RESOLVER_SECOND_WORKER_ERROR,
       fn
-    );
+    )
   }
 
   /**
@@ -593,11 +548,11 @@ export class VueResolver {
 
   registerMethod(name, callBack) {
     if (typeof callBack !== JS_TYPES_ENUM.FUNCTION || !name) {
-      return this;
+      return this
     }
 
-    this[name] = callBack;
+    this[name] = callBack
 
-    return this;
+    return this
   }
 }

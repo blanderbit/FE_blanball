@@ -5,19 +5,13 @@
         <div class="b-main-search__left-block">
           <div class="b-main-search__old-new-filter">
             <img src="../assets/img/sort-arrows.svg" alt="" />
-            {{$t('events.new-first')}}
+            {{ $t('events.new-first') }}
           </div>
           <div class="b-main-search__dropdown-wrapper-game">
-            <Dropdown 
-              :options="sportTypeDropdown"
-              display-value="value"
-            />
+            <Dropdown :options="sportTypeDropdown" display-value="value" />
           </div>
           <div class="b-main-search__dropdown-wrapper-tournament">
-            <Dropdown 
-              :options="sportTypeDropdown" 
-              display-value="value"
-            />
+            <Dropdown :options="sportTypeDropdown" display-value="value" />
           </div>
         </div>
         <div class="b-main-search__right-block">
@@ -46,10 +40,7 @@
       <div class="b-main-search__second-line">
         <div class="b-main-search__left-side">
           <div class="b-main-search__dropdown-wrapper-gender">
-            <Dropdown 
-              :options="genderDropdown"
-              display-value="value"
-            >
+            <Dropdown :options="genderDropdown" display-value="value">
               <template #drop-icon>
                 <img src="../assets/img/male-icon.svg" alt="" />
               </template>
@@ -63,39 +54,20 @@
                   <input
                     :value="inputValue.start"
                     v-on="inputEvents.start"
-                    class="
-                      input-left
-                      border
-                      px-2
-                      py-1
-                      w-32
-                      rounded
-                      focus:outline-none focus:border-indigo-300
-                    "
+                    class="input-left border px-2 py-1 w-32 rounded focus:outline-none focus:border-indigo-300"
                   />
                   -
                   <input
                     :value="inputValue.end"
                     v-on="inputEvents.end"
-                    class="
-                      input-right
-                      border
-                      px-2
-                      py-1
-                      w-32
-                      rounded
-                      focus:outline-none focus:border-indigo-300
-                    "
+                    class="input-right border px-2 py-1 w-32 rounded focus:outline-none focus:border-indigo-300"
                   />
                 </div>
               </template>
             </v-date-picker>
           </div>
           <div class="b-main-search__dropdown-wrapper-cities">
-            <Dropdown 
-              :options="citiesDropdown"
-              display-value="value"
-            >
+            <Dropdown :options="citiesDropdown" display-value="value">
             </Dropdown>
           </div>
         </div>

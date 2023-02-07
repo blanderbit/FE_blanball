@@ -1,14 +1,17 @@
-import { InitialMessage } from "../notifications/initial.message";
+import { InitialMessage } from '../notifications/initial.message'
 
 import {
   GeneralWebSocketMessage,
   SetActions,
-  SetMessageType
-} from "../../type.decorator";
+  SetMessageType,
+} from '../../type.decorator'
 
-import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
-import { WebSocketTypes } from "../../web.socket.types";
-import { ROUTES } from "../../../../router/router.const";
+import {
+  MessageActionTypes,
+  MessageActionDataTypes,
+} from '../../message.action.types'
+import { WebSocketTypes } from '../../web.socket.types'
+import { ROUTES } from '../../../../router/router.const'
 
 @SetMessageType(WebSocketTypes.ChangeMaintenance)
 @GeneralWebSocketMessage()
@@ -23,17 +26,17 @@ import { ROUTES } from "../../../../router/router.const";
     type: MessageActionTypes.Close,
     action: ROUTES.WORKS.absolute,
     actionType: MessageActionDataTypes.Url,
-    buttonType: 'stroked'
-  }
+    buttonType: 'stroked',
+  },
 ])
 export class ChangeMaintenanceMessage extends InitialMessage {
   createTexts(data) {
     return [
       data.maintenance.type
         ? 'Мы извиняемся за временные неудобства; В скоре работа приложения будет востановленная;'
-        : "Мы закончили технические работы. Спасибо за ожидание, приятного пользования!"
+        : 'Мы закончили технические работы. Спасибо за ожидание, приятного пользования!',
     ]
-  };
+  }
 
   createTitle(data) {
     return data.maintenance.type
@@ -41,4 +44,3 @@ export class ChangeMaintenanceMessage extends InitialMessage {
       : 'Закончились технические работы'
   }
 }
-

@@ -16,18 +16,18 @@ export default {
   props: {
     title: {
       type: String,
-      default: ''
+      default: '',
     },
     text: {
       type: String,
-      default: ''
-    }
-  }
+      default: '',
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-.b-tab-label { 
+.b-tab-label {
   &__label {
     display: block;
     position: absolute;
@@ -41,31 +41,31 @@ export default {
     padding: 4px 6px;
     z-index: 1;
   }
-  &__label-corner { 
-    width: 0; 
-    height: 0; 
+  &__label-corner {
+    width: 0;
+    height: 0;
     border-top: 10px solid transparent;
-    border-bottom: 10px solid transparent; 
+    border-bottom: 10px solid transparent;
     border-right: 10px solid #262541;
     position: absolute;
     left: -8px;
     top: 2px;
   }
-  &__label-title { 
+  &__label-title {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 600;
     font-size: 12px;
     line-height: 16px;
-    color: #FFFFFF;
+    color: #ffffff;
   }
-  &__label-text { 
+  &__label-text {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 449;
     font-size: 12px;
     line-height: 16px;
-    color: #EFEFEF;
+    color: #efefef;
   }
 }
 </style>

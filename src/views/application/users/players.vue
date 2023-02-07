@@ -45,7 +45,7 @@
                   />
                   <label for="radio-1" class="radio-label">
                     <img src="../../../assets/img/male-icon.svg" alt="" />
-                    {{$t('users.men')}}
+                    {{ $t('users.men') }}
                   </label>
                 </div>
                 <div class="radio">
@@ -122,7 +122,7 @@
               <div class="text">
                 <div class="title">{{ $t('users.filters') }}</div>
                 <div class="terms">
-                  {{$t('users.found')}} 15 {{$t('users.advertisments')}}
+                  {{ $t('users.found') }} 15 {{ $t('users.advertisments') }}
                 </div>
               </div>
             </div>

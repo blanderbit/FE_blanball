@@ -2,7 +2,9 @@
   <div class="b_breadcrumbs">
     <ul v-if="breadcrumbs.i18n">
       <li v-for="(item, idx) in getBreadcrumbsList" :key="item.name">
-        <router-link :to="idx + 1 === getBreadcrumbsList.length ? '' : item.path">
+        <router-link
+          :to="idx + 1 === getBreadcrumbsList.length ? '' : item.path"
+        >
           {{ item.name }}
         </router-link>
         <img
@@ -20,8 +22,8 @@ import { useRouter } from 'vue-router'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-const { tm } = useI18n();
-const { breadcrumbs } = useRouter().currentRoute.value.meta;
+const { tm } = useI18n()
+const { breadcrumbs } = useRouter().currentRoute.value.meta
 const getBreadcrumbsList = computed(() => tm(breadcrumbs.i18n))
 </script>
 
