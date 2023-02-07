@@ -6,6 +6,8 @@
       @close-modal="isVerifyModalActive = false"
       @email-verified="isUserVerified = true"
     />
+
+    <!-- <BugReportModal/> -->
     <div
       v-if="!isUserVerified"
       class="b_header_validate-email-block"
@@ -52,6 +54,8 @@ import MainHeader from './../../components/MainHeader.vue'
 import MobileMenu from '../../components/MobileMenu.vue'
 import Notification from '../../components/Notification.vue'
 import VerifyEmailModal from '../../components/user-cabinet/VerifyEmailModal.vue'
+
+import BugReportModal from '../../components/BugReportModal.vue';
 
 import ModalFeedback from '../../components/ModalFeedback/index.vue'
 
