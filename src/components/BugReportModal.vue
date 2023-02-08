@@ -102,6 +102,7 @@ export default {
     const afterLoadImage = (image) => {
       uploadedImages.value.push(image)
     }
+
     const removeUploadedImage = (fileName) => {
       uploadedImages.value.pop(
         uploadedImages.value.filter((value) => value.name === fileName)
@@ -115,13 +116,18 @@ export default {
         return false
       }
 
-      const formData = new FormData()
-      formData.append('title', data.values.title)
-      formData.append('description', data.values.description)
-      for (let i in Object.values(uploadedImages.value)) {
-        formData.append('images', Object.values(uploadedImages.value)[i])
+      const createFormData = () => {
+        const formData = new FormData()
+        formData.append('title', data.values.title)
+        formData.append('description', data.values.description)
+        Object.values(uploadedImages.value).forEach(element => {
+          formData.append('images', element)
+        });
+
+        return formData
       }
-      await API.BugReportsService.CreateBugReport(formData)
+
+      await API.BugReportsService.CreateBugReport(createFormData())
       emit('close-modal')
       toast.success(t('notifications.bug-report-created'))
     }
@@ -225,8 +231,11 @@ export default {
 
         .b-bug-report-modal__uploaded-image {
           display: flex;
-          align-items: center;
           gap: 10px;
+
+          img {
+            max-height: 20px;
+          }
         }
 
         .b-bug-report-modal__uploaded-images-title {
