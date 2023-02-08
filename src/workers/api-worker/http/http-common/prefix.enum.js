@@ -33,7 +33,6 @@ export const EndpointsEnum = {
     changePassword: '/authentication/client/request-change/password',
     updateProfileData: '/authentication/client/me/update',
     getAllUsers: '/authentication/client/users/list',
-    getRelevantUsers: '/authentication/client/users/relevant/list',
     changeUserEmail: '/authentication/client/request-change/email',
     userPublicProfile: (userId) => `/authentication/client/profile/${userId}`
   },

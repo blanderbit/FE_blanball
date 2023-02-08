@@ -18,17 +18,17 @@ export default {
   ],
   createOneEvent: [
     {name: 'Головна', path: '/'},
-    {name: 'Івент', path: '/application/events'},
+    {name: 'Ивенти', path: '/application/events'},
     {name: 'Створення івенту '},
   ],
   getOneEvent: [
     {name: 'Головна', path: '/'},
-    {name: 'Івенти', path: '/application/events'},
-    {name: 'Івент '},
+    {name: 'Ивенти', path: '/application/events'},
+    {name: 'Ивент '},
   ],
   editOneEvent:  [
     {name: 'Головна', path: '/'},
-    {name: 'Івенти', path: '/application/events'},
+    {name: 'Ивенти', path: '/application/events'},
     {name: 'Редагування івента'},
   ],
   users: [
@@ -37,7 +37,7 @@ export default {
   ],
   userProfile: [
     {name: 'Головна', path: '/'},
-    {name: 'Користувачі', path: '/application/users/general'},
+    {name: 'Користувачі', path: '/application/users'},
     {name: 'Профіль користувача'},
   ]
 };

@@ -36,6 +36,26 @@ export default {
       text: 'Події',
       isActive: false
     },
+    {
+      id: 3,
+      text: 'Організатори',
+      isActive: false
+    },
+    {
+      id: 4,
+      text: 'Тренери',
+      isActive: false
+    },
+    {
+      id: 5,
+      text: 'Рефері',
+      isActive: false
+    },
+    {
+      id: 6,
+      text: 'Команди',
+      isActive: false
+    }
   ],
   teams: [
     {
