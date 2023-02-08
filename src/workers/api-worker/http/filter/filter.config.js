@@ -16,6 +16,11 @@ export const filterConfigForUsers = {
   profile__age_max:Number
 };
 
+export const filterConfigForRelevantUsers = {
+  page: Number,
+  search: String,
+};
+
 export const filterConfigForEvents = {
   page: Number,
   gender: new Enum(['Man', 'Woman', '']),
