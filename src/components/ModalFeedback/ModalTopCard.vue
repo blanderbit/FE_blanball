@@ -94,6 +94,7 @@ export default {
         transform: props.isOpened ? 'rotate(-180deg)' : 'rotate(-90deg)'
       }
     })
+
     const lastTitleStyle = computed(() => {
       return {
         'font-weight': 700,

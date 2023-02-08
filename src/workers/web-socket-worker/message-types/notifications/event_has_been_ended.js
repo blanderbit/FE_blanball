@@ -10,7 +10,9 @@ import {
 import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
 import { WebSocketTypes } from "../../web.socket.types";
 import { NotificationImage } from "../../../../assets/img/notifications/notification.images";
+import { NotificationsBus } from '../../../event-bus-worker' 
 
+// FIXME NOTIFICATIONS
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.EventHasBeenEnded)
 @NotificationSetImage(NotificationImage.NotificationSuccess)
@@ -23,8 +25,7 @@ import { NotificationImage } from "../../../../assets/img/notifications/notifica
     type: MessageActionTypes.Action,
     text: 'Оставить отзыв',
     action: ({notificationInstance, modals}) => {
-      modals.review.data = notificationInstance;
-      modals.review.active = true
+      NotificationsBus.emit('openEventReviewModal', notificationInstance)
     },
     actionType: MessageActionDataTypes.Callback,
     buttonType: 'stroked'

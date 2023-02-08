@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="isActive">
     <div
       class="b-modal-feedback__modal-wrapper"
       @click.self="$emit('close-modal')"
@@ -11,9 +11,9 @@
             <ModalTopCard
               :step="step"
               :is-opened="isCardTopOpened"
-              @cancel-click="currentStep--"
+              @cancel-click="cancelClick"
               @next-click="currentStep++"
-              @cross-click="$emit('close-modal')"
+              @cross-click="closeModal"
               @arrow-click="toggleCard"
             />
             <ModalBottomCard
@@ -43,13 +43,34 @@ export default {
     ModalTopCard,
     ModalBottomCard,
   },
-  setup() {
+  props: {
+    isActive: {
+      type: Boolean,
+      default: false
+    }
+  },
+  setup(_, { emit }) {
     const isCardTopOpened = ref(true)
 
     const steps = computed(() => {
       return CONSTANTS.modal_feedback.steps
     })
+
     const currentStep = ref(0)
+
+    const closeModal = () => {
+      currentStep.value = 0
+      isCardTopOpened.value = true
+      emit('close-modal')
+    }
+
+    const cancelClick = () => {
+      if (currentStep.value === 0) {
+        closeModal()
+      } else {
+        currentStep.value--
+      }
+    }
 
     function toggleCard() {
       isCardTopOpened.value = !isCardTopOpened.value
@@ -60,6 +81,8 @@ export default {
       currentStep,
       isCardTopOpened,
       toggleCard,
+      cancelClick,
+      closeModal,
     }
   },
 }

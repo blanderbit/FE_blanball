@@ -34,8 +34,8 @@
       </div>
     </div>
     <ModalFeedback
-        v-if="modals.review.active"
-        @close-modal="toggleModal"
+        :isActive="isCreateReviewModalActive"
+        @close-modal="closeEventReviewModal"
     />
   </div>
 </template>
@@ -60,6 +60,7 @@ import message_audio from '../../assets/message_audio.mp3'
 import { AuthWebSocketWorkerInstance } from './../../workers/web-socket-worker'
 import { TokenWorker } from '../../workers/token-worker'
 import { notificationButtonHandlerMessage } from "../../workers/utils-worker";
+import { NotificationsBus } from '../../workers/event-bus-worker' 
 
 import { MessageActionTypes } from '../../workers/web-socket-worker/message.action.types'
 import { API } from '../../workers/api-worker/api.worker';
@@ -68,11 +69,18 @@ const isVerifyModalActive = ref(false);
 const userEmail = ref('');
 const isUserVerified = ref(true);
 const isMobMenuActive = ref(false);
-const modals = ref({
-    review: {
-        data: {},
-        active: false
-    }
+const isCreateReviewModalActive = ref(false)
+
+const closeEventReviewModal = () => {
+  isCreateReviewModalActive.value = false
+}
+
+const openEventReviewModal = () => {
+  isCreateReviewModalActive.value = true
+}
+
+NotificationsBus.on('openEventReviewModal', (data) => {
+  openEventReviewModal()
 });
 
 const router = useRouter();
@@ -84,12 +92,12 @@ let timeout;
 isUserVerified.value = store.user?.is_verified
 userEmail.value = store.user?.email || ''
 
-const handlerAction = async (item, notificationInstance) => {
+const handlerAction = async (button, notificationInstance) => {
   clearTimeout(timeout);
   await notificationButtonHandlerMessage({
-    item,
+    button,
     notificationInstance,
-    router
+    router,
   })
 };
 
@@ -119,6 +127,7 @@ const getToastOptions = (notificationInstance, toastId) => {
       },
       listeners: {
         handlerAction: async (item) => {
+          debugger
           toggleToastProgress(notificationInstance, toastId, true);
           await handlerAction(item, notificationInstance);
           toggleToastProgress(notificationInstance, toastId, false);
