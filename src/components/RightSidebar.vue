@@ -30,7 +30,6 @@ import { computed } from "vue";
 const {t} = useI18n();
 const getPlanedEvents = (page) => { // TODO DUBLICATE
   return API.EventService.getPlannedUserEvents(
-    113,
     {
       page
     }
@@ -54,7 +53,6 @@ const getPlanedEvents = (page) => { // TODO DUBLICATE
 
 const getPopularEvents = (page) => { // TODO DUBLICATE
   return API.EventService.getPopularEventsListEvents(
-    113,
     {
       page
     }
