@@ -34,10 +34,12 @@
 <script>
 import { API } from '../../workers/api-worker/api.worker'
 
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, onBeforeUnmount } from 'vue'
 
 import ModalTopCard from './ModalTopCard.vue'
 import ModalBottomCard from './ModalBottomCard.vue'
+
+import { NotificationsBus } from '../../workers/event-bus-worker'
 
 import CONSTANTS from '../../consts/index'
 
@@ -74,6 +76,10 @@ export default {
     })
 
     const currentStep = ref(0)
+
+    onBeforeUnmount(() => {
+        NotificationsBus.off('openEventReviewModal');
+    });
 
 
     const createEventReview = async (comment) => {

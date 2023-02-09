@@ -146,6 +146,7 @@ export default {
     const schema = computed(() => {
       return yup.object({
         emoji: yup.string().emojiRequired('errors.required'),
+        comment: yup.string().max(200 , 'errors.max200')
       })
     })
 

@@ -12,9 +12,9 @@ import { WebSocketTypes } from "../../web.socket.types";
 import { NotificationImage } from "../../../../assets/img/notifications/notification.images";
 import { NotificationsBus } from '../../../event-bus-worker' 
 
-// FIXME NOTIFICATIONS
+
 @AuthWebSocketMessage()
-@SetMessageType(WebSocketTypes.InviteUserToEvent)
+@SetMessageType(WebSocketTypes.EventHasBeenEnded)
 @NotificationSetImage(NotificationImage.NotificationSuccess)
 @SetActions([
   {
