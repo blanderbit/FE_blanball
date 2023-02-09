@@ -4,11 +4,7 @@ import { h } from 'vue'
 export default {
   name: 'DynamicScrollerItem',
 
-  inject: [
-    'vscrollData',
-    'vscrollParent',
-    'vscrollResizeObserver',
-  ],
+  inject: ['vscrollData', 'vscrollParent', 'vscrollResizeObserver'],
 
   props: {
     // eslint-disable-next-line vue/require-prop-types
@@ -50,23 +46,24 @@ export default {
     },
   },
 
-  emits: [
-    'resize',
-  ],
+  emits: ['resize'],
 
   computed: {
-    id () {
+    id() {
       if (this.vscrollData.simpleArray) return this.index
       // eslint-disable-next-line no-prototype-builtins
-      if (this.vscrollData.keyField in this.item) return this.item[this.vscrollData.keyField]
-      throw new Error(`keyField '${this.vscrollData.keyField}' not found in your item. You should set a valid keyField prop on your Scroller`)
+      if (this.vscrollData.keyField in this.item)
+        return this.item[this.vscrollData.keyField]
+      throw new Error(
+        `keyField '${this.vscrollData.keyField}' not found in your item. You should set a valid keyField prop on your Scroller`
+      )
     },
 
-    size () {
+    size() {
       return this.vscrollData.sizes[this.id] || 0
     },
 
-    finalActive () {
+    finalActive() {
       return this.active && this.vscrollData.active
     },
   },
@@ -74,7 +71,7 @@ export default {
   watch: {
     watchData: 'updateWatchData',
 
-    id (value, oldValue) {
+    id(value, oldValue) {
       this.$el.$_vs_id = this.id
       if (!this.size) {
         this.onDataUpdate()
@@ -91,7 +88,7 @@ export default {
       }
     },
 
-    finalActive (value) {
+    finalActive(value) {
       if (!this.size) {
         if (value) {
           if (!this.vscrollParent.$_undefinedMap[this.id]) {
@@ -118,7 +115,7 @@ export default {
     },
   },
 
-  created () {
+  created() {
     if (this.$isServer) return
 
     this.$_forceNextVScrollUpdate = null
@@ -133,20 +130,20 @@ export default {
     }
   },
 
-  mounted () {
+  mounted() {
     if (this.finalActive) {
       this.updateSize()
       this.observeSize()
     }
   },
 
-  beforeUnmount () {
+  beforeUnmount() {
     this.vscrollParent.$_events.off('vscroll:update', this.onVscrollUpdate)
     this.unobserveSize()
   },
 
   methods: {
-    updateSize () {
+    updateSize() {
       if (this.finalActive) {
         if (this.$_pendingSizeUpdate !== this.id) {
           this.$_pendingSizeUpdate = this.id
@@ -159,20 +156,24 @@ export default {
       }
     },
 
-    updateWatchData () {
+    updateWatchData() {
       if (this.watchData && !this.vscrollResizeObserver) {
-        this.$_watchData = this.$watch('item', () => {
-          this.onDataUpdate()
-        }, {
-          deep: true,
-        })
+        this.$_watchData = this.$watch(
+          'item',
+          () => {
+            this.onDataUpdate()
+          },
+          {
+            deep: true,
+          }
+        )
       } else if (this.$_watchData) {
         this.$_watchData()
         this.$_watchData = null
       }
     },
 
-    onVscrollUpdate ({ force }) {
+    onVscrollUpdate({ force }) {
       // If not active, sechedule a size update when it becomes active
       if (!this.finalActive && force) {
         this.$_pendingVScrollUpdate = this.id
@@ -183,11 +184,11 @@ export default {
       }
     },
 
-    onDataUpdate () {
+    onDataUpdate() {
       this.updateSize()
     },
 
-    computeSize (id) {
+    computeSize(id) {
       this.$nextTick(() => {
         if (this.id === id) {
           const width = this.$el.offsetWidth
@@ -198,14 +199,16 @@ export default {
       })
     },
 
-    applyWidthHeight (width, height) {
-      const size = ~~(this.vscrollParent.direction === 'vertical' ? height : width)
+    applyWidthHeight(width, height) {
+      const size = ~~(this.vscrollParent.direction === 'vertical'
+        ? height
+        : width)
       if (size && this.size !== size) {
         this.applySize(size)
       }
     },
 
-    applySize (size) {
+    applySize(size) {
       if (this.vscrollParent.$_undefinedMap[this.id]) {
         this.vscrollParent.$_undefinedSizes--
         this.vscrollParent.$_undefinedMap[this.id] = undefined
@@ -214,7 +217,7 @@ export default {
       if (this.emitResize) this.$emit('resize', this.id)
     },
 
-    observeSize () {
+    observeSize() {
       if (!this.vscrollResizeObserver) return
       if (this.$_sizeObserved) return
       this.vscrollResizeObserver.observe(this.$el)
@@ -223,7 +226,7 @@ export default {
       this.$_sizeObserved = true
     },
 
-    unobserveSize () {
+    unobserveSize() {
       if (!this.vscrollResizeObserver) return
       if (!this.$_sizeObserved) return
       this.vscrollResizeObserver.unobserve(this.$el)
@@ -231,14 +234,14 @@ export default {
       this.$_sizeObserved = false
     },
 
-    onResize (id, width, height) {
+    onResize(id, width, height) {
       if (this.id === id) {
         this.applyWidthHeight(width, height)
       }
     },
   },
 
-  render () {
+  render() {
     return h(this.tag, this.$slots.default())
   },
 }

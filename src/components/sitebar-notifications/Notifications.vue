@@ -1,28 +1,28 @@
 <template>
   <DynamicScroller
-      :items="notifications"
-      :min-item-size="84"
-      key-field="notification_id"
-      class="scroller"
-      ref="scroller"
+    :items="notifications"
+    :min-item-size="84"
+    key-field="notification_id"
+    class="scroller"
+    ref="scroller"
   >
     <template #before>
       <slot name="before"></slot>
     </template>
     <template v-slot="{ item, index, active, itemWithSize }">
       <DynamicScrollerItem
-          :item="item"
-          :active="active"
-          :sizeDependencies="[notifications.length, item.metadata.expanding]"
-          :data-index="index"
+        :item="item"
+        :active="active"
+        :sizeDependencies="[notifications.length, item.metadata.expanding]"
+        :data-index="index"
       >
         <Notification
-            :notificationInstance="item"
-            :selectable="selectable"
-            :active="activeNotification === item.notification_id"
-            :checked="selectedList.includes(item.notification_id)"
-            @handler-action="handlerAction($event, item)"
-            @selected="handleSelected($event)"
+          :notificationInstance="item"
+          :selectable="selectable"
+          :active="activeNotification === item.notification_id"
+          :checked="selectedList.includes(item.notification_id)"
+          @handler-action="handlerAction($event, item)"
+          @selected="handleSelected($event)"
         >
         </Notification>
       </DynamicScrollerItem>
@@ -34,108 +34,106 @@
 </template>
 
 <script>
+import Notification from '../Notification.vue'
+import { useRouter } from 'vue-router'
+import { ref, watch, nextTick } from 'vue'
+import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller'
+import { notificationButtonHandlerMessage } from '../../workers/utils-worker'
 
-  import Notification from '../Notification.vue'
-  import { useRouter } from 'vue-router'
-  import { ref, watch, nextTick } from "vue";
-  import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller'
-  import { notificationButtonHandlerMessage } from "../../workers/utils-worker";
-
-  export default {
-    name: "Notifications",
-    components: {
-      Notification,
-      DynamicScroller,
-      DynamicScrollerItem
+export default {
+  name: 'Notifications',
+  components: {
+    Notification,
+    DynamicScroller,
+    DynamicScrollerItem,
+  },
+  props: {
+    notifications: {
+      type: Array,
+      default: () => [],
     },
-    props: {
-      notifications: {
-        type: Array,
-        default: () => []
-      },
-      selectedList: {
-        type: Array,
-        default: () => []
-      },
-      selectable: {
-        type: Boolean,
-        default: false
+    selectedList: {
+      type: Array,
+      default: () => [],
+    },
+    selectable: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  emits: ['update:selected-list', 'update:scrollbar-existing'],
+  setup(context, { emit, expose }) {
+    let activeNotification = ref(0)
+    let list = ref([])
+    let scroller = ref()
+    const router = useRouter()
+
+    watch(
+      () => context.selectedList,
+      () => {
+        const array = [...context.selectedList]
+        list.value = Array.isArray(array) ? (!array.length ? [] : array) : []
+        scroller.value.forceUpdate()
       }
-    },
-    emits: [
-      'update:selected-list',
-      'update:scrollbar-existing'
-    ],
-    setup(context, {emit, expose}) {
-      let activeNotification = ref(0);
-      let list = ref([]);
-      let scroller = ref();
-      const router = useRouter();
+    )
 
-      watch(
-        () => context.selectedList,
-        () => {
-          const array = [...context.selectedList];
-          list.value = Array.isArray(array) ? !array.length ? [] : array : [];
-          scroller.value.forceUpdate()
-        }
-      );
-
-      watch(
-        () => context.notifications,
-        () => {
-          nextTick(() => {
-            emit('update:scrollbar-existing', scroller.value.$el.scrollHeight > scroller.value.$el.clientHeight)
-          })
-        },
-        {
-          immediate: true
-        }
-      );
-
-      const handlerAction = async (button, notificationInstance) => {
-        await notificationButtonHandlerMessage({
-          button,
-          notificationInstance,
-          router,
-          activeNotification
+    watch(
+      () => context.notifications,
+      () => {
+        nextTick(() => {
+          emit(
+            'update:scrollbar-existing',
+            scroller.value.$el.scrollHeight > scroller.value.$el.clientHeight
+          )
         })
-      };
-
-
-      const handleSelected = (e) => {
-        if (e.selected) {
-          list.value.push(e.notification.notification_id);
-        } else {
-          const index = list.value.findIndex(item => item === e.notification.notification_id);
-          list.value.splice(index, 1);
-        }
-        emit('update:selected-list', list.value);
-      };
-
-
-      expose({
-        scrollToItem: (index) => scroller.value.scrollToItem(index),
-        scrollToFirstElement: () => scroller.value.scrollToItem(0)
-      });
-
-      return {
-        activeNotification,
-        handlerAction,
-        handleSelected,
-        scroller
+      },
+      {
+        immediate: true,
       }
+    )
+
+    const handlerAction = async (button, notificationInstance) => {
+      await notificationButtonHandlerMessage({
+        button,
+        notificationInstance,
+        router,
+        activeNotification,
+      })
     }
-  }
+
+    const handleSelected = (e) => {
+      if (e.selected) {
+        list.value.push(e.notification.notification_id)
+      } else {
+        const index = list.value.findIndex(
+          (item) => item === e.notification.notification_id
+        )
+        list.value.splice(index, 1)
+      }
+      emit('update:selected-list', list.value)
+    }
+
+    expose({
+      scrollToItem: (index) => scroller.value.scrollToItem(index),
+      scrollToFirstElement: () => scroller.value.scrollToItem(0),
+    })
+
+    return {
+      activeNotification,
+      handlerAction,
+      handleSelected,
+      scroller,
+    }
+  },
+}
 </script>
 
 <style scoped lang="scss">
+.scroller {
+  height: 100%;
+}
 
-  .scroller {
-    height: 100%;
-  }
-
-  .notification-wrapper {
-    position: relative;
-  }
+.notification-wrapper {
+  position: relative;
+}
 </style>

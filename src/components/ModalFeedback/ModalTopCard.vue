@@ -2,71 +2,52 @@
   <div class="b-modal-top-card">
     <div class="b-modal-top-card__arrow-cross-block">
       <div
-        v-if="step.id !== 4" 
+        v-if="step.id !== 4"
         class="b-modal-top-card__arrow"
         :style="arrowStyle"
         @click="$emit('arrowClick')"
       >
-        <img src="../../assets/img/arrow-down.svg" alt="">
+        <img src="../../assets/img/arrow-down.svg" alt="" />
       </div>
-      <div
-        v-else
-        class="b-modal-top-card__cross"
-        @click="$emit('crossClick')"
-      >
-        <img src="../../assets/img/cross.svg" alt="">
+      <div v-else class="b-modal-top-card__cross" @click="$emit('crossClick')">
+        <img src="../../assets/img/cross.svg" alt="" />
       </div>
     </div>
     <div class="b-modal-top-card__title-wrapper">
       <img
         v-if="step.id === 4"
-        src="../../assets/img/cloud-hands.svg" 
+        src="../../assets/img/cloud-hands.svg"
         alt="cloud-hands"
-      >
+      />
       <div
         class="b-modal-top-card__title"
         :style="step.id === 4 && lastTitleStyle"
       >
-        {{step.title}}
+        {{ step.title }}
       </div>
     </div>
-    <div 
-      class="b-modal-top-card__main-block"
-      :style="mainBlockCardStyle"
-    >
+    <div class="b-modal-top-card__main-block" :style="mainBlockCardStyle">
       <div class="b-modal-top-card__subtitle">
-        {{step.subtitle}}
+        {{ step.subtitle }}
       </div>
       <div class="b-modal-top-card__last-subtitle">
-        {{step.last_subtitle}}
+        {{ step.last_subtitle }}
       </div>
-      <div 
-        v-if="step.emojies"
-        class="b-modal-top-card__emotions"
-      >
+      <div v-if="step.emojies" class="b-modal-top-card__emotions">
         <div
           v-for="emoji in step.emojies"
           :key="emoji"
           class="b-modal-top-card__emoji"
         >
-          <img :src="emoji" alt="">
+          <img :src="emoji" alt="" />
         </div>
       </div>
-      <div
-        v-if="step.buttons"
-        class="b-modal-top-card__btns-block"
-      >
-        <div 
-          class="b-modal-top-card__cancel-btn"
-          @click="$emit('cancelClick')"
-        >
-          {{step.buttons.cancel}}
+      <div v-if="step.buttons" class="b-modal-top-card__btns-block">
+        <div class="b-modal-top-card__cancel-btn" @click="$emit('cancelClick')">
+          {{ step.buttons.cancel }}
         </div>
-        <div 
-          class="b-modal-top-card__next-btn"
-          @click="$emit('nextClick')"
-        >
-          {{step.buttons.next}}
+        <div class="b-modal-top-card__next-btn" @click="$emit('nextClick')">
+          {{ step.buttons.next }}
         </div>
       </div>
     </div>
@@ -81,17 +62,17 @@ export default {
   props: {
     step: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     isOpened: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   setup(props) {
     const arrowStyle = computed(() => {
       return {
-        transform: props.isOpened ? 'rotate(-180deg)' : 'rotate(-90deg)'
+        transform: props.isOpened ? 'rotate(-180deg)' : 'rotate(-90deg)',
       }
     })
     const lastTitleStyle = computed(() => {
@@ -99,12 +80,12 @@ export default {
         'font-weight': 700,
         'font-size': '24px',
         'line-height': '28px',
-        color: '#262541'
+        color: '#262541',
       }
     })
     const mainBlockCardStyle = computed(() => {
       return {
-        height: props.isOpened ? 'auto' : 0
+        height: props.isOpened ? 'auto' : 0,
       }
     })
 
@@ -113,14 +94,14 @@ export default {
       mainBlockCardStyle,
       arrowStyle,
     }
-  }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 .b-modal-top-card {
   padding: 20px;
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 6px;
   margin-bottom: 8px;
@@ -166,15 +147,15 @@ export default {
       font-weight: 400;
       font-size: 14px;
       line-height: 20px;
-      color: #262541
+      color: #262541;
     }
-    .b-modal-top-card__emotions { 
+    .b-modal-top-card__emotions {
       display: flex;
       justify-content: center;
       align-items: center;
       margin-bottom: 28px;
 
-      .b-modal-top-card__emoji { 
+      .b-modal-top-card__emoji {
         margin-right: 12px;
         position: relative;
         cursor: pointer;
@@ -195,16 +176,15 @@ export default {
           height: 100%;
           background: rgba(255, 255, 255, 0.493);
         }
-        img { 
-
+        img {
         }
       }
     }
-    .b-modal-top-card__btns-block { 
+    .b-modal-top-card__btns-block {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      .b-modal-top-card__cancel-btn { 
+      .b-modal-top-card__cancel-btn {
         font-family: 'Inter';
         font-style: normal;
         font-weight: 400;
@@ -214,9 +194,9 @@ export default {
         cursor: pointer;
       }
 
-      .b-modal-top-card__next-btn { 
+      .b-modal-top-card__next-btn {
         padding: 4px 16px;
-        background: #D3F8F7;
+        background: #d3f8f7;
         border-radius: 6px;
         font-family: 'Inter';
         font-style: normal;

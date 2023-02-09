@@ -15,9 +15,9 @@
         <div class="b-error-page__text">
           {{ $t('page_404.main-text') }}
         </div>
-        <GreenBtn 
-          :text="$t('page_404.return')" 
-          :width="202" 
+        <GreenBtn
+          :text="$t('page_404.return')"
+          :width="202"
           :height="40"
           @click-function="goToMainPage"
         />
@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import {useRouter} from 'vue-router'
+import { useRouter } from 'vue-router'
 import GreenBtn from '../components/GreenBtn.vue'
-import { ROUTES } from "../router/router.const"
+import { ROUTES } from '../router/router.const'
 
 export default {
   name: '404',
@@ -40,13 +40,13 @@ export default {
     const router = useRouter()
 
     function goToMainPage() {
-        router.push(ROUTES.APPLICATION.EVENTS.absolute)
+      router.push(ROUTES.APPLICATION.EVENTS.absolute)
     }
 
     return {
-        goToMainPage
+      goToMainPage,
     }
-  }
+  },
 }
 </script>
 

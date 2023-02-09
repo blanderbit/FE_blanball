@@ -44,46 +44,46 @@ export default {
   name: 'ButtonsBlock',
   components: {
     GreenBtn,
-    WhiteBtn
+    WhiteBtn,
   },
   props: {
     saveBtnText: {
       type: String,
-      default: ''
+      default: '',
     },
     whiteBtnWidth: {
       type: Number,
-      default: null
+      default: null,
     },
     greenBtnWidth: {
       type: Number,
-      default: null
+      default: null,
     },
     greenBtnHeight: {
       type: Number,
-      default: 40
-    }
+      default: 40,
+    },
   },
   emits: ['saveBtnClick', 'cancelBtnClick'],
   setup() {
     const icons = computed(() => {
       return {
         iconCloud: Cloud,
-        iconSave: Save
+        iconSave: Save,
       }
     })
 
     return {
-      icons
+      icons,
     }
-  }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 .b-manage-tem-btns {
   @media (max-width: 1200px) {
-    background: #F9F9FC;
+    background: #f9f9fc;
     border-radius: 8px;
     padding: 10px 12px;
   }

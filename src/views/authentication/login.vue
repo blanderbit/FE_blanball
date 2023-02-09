@@ -25,26 +25,26 @@ export default {
   name: 'login',
   components: {
     LoginComponent,
-    AuthenticationMain
+    AuthenticationMain,
   },
   setup() {
     const mockData = computed(() => {
       return {
-        LOGIN: CONSTANTS.register.authBlockTypes.login
+        LOGIN: CONSTANTS.register.authBlockTypes.login,
       }
     })
     const backgroundTab = computed(() => {
       return bgTabPicture
     })
     const rightSideStyle = computed(() => {
-      return {'--back-picture': `url(${rightSidePicture})`}
+      return { '--back-picture': `url(${rightSidePicture})` }
     })
 
     return {
       mockData,
       backgroundTab,
-      rightSideStyle
+      rightSideStyle,
     }
-  }
+  },
 }
 </script>

@@ -8,27 +8,23 @@
         <img src="../../assets/img/key.svg" alt="" />
       </template>
       <template #change-password>
-        <Form 
-          v-slot="data"
-          @submit="disableSubmit"
-          :validation-schema="schema"
-        >
+        <Form v-slot="data" @submit="disableSubmit" :validation-schema="schema">
           <div class="inut-wrapper">
-            <InputComponent 
-              :title="$t('modals.change_password.current-pass')" 
+            <InputComponent
+              :title="$t('modals.change_password.current-pass')"
               :title-width="0"
-              :type="'password'" 
-              :outside-title="true" 
-              name="old_password" 
+              :type="'password'"
+              :outside-title="true"
+              name="old_password"
             />
           </div>
           <div class="inut-wrapper">
-            <InputComponent 
-              :title="$t('modals.change_password.new-pass')" 
-              :title-width="0" 
+            <InputComponent
+              :title="$t('modals.change_password.new-pass')"
+              :title-width="0"
               :type="'password'"
-              :outside-title="true" 
-              name="new_password" 
+              :outside-title="true"
+              name="new_password"
             />
           </div>
           <!-- <div
@@ -39,25 +35,22 @@
           </div> -->
 
           <div v-if="modalChangeStep === 2">
-            <Counter 
+            <Counter
               :start-time="30"
               :counter-text="$t('modals.change_password.sms-code')"
               :email="userEmail"
-              @resend-code-action="resendCode(data)" 
+              @resend-code-action="resendCode(data)"
             />
           </div>
 
-          <div 
-            v-show="modalChangeStep === 2" 
-            class="sms-code-block"
-          >
-            <CodeInput 
-              :fields="5" 
-              :fieldWidth="48" 
-              :fieldHeight="40" 
-              :required="true" 
+          <div v-show="modalChangeStep === 2" class="sms-code-block">
+            <CodeInput
+              :fields="5"
+              :fieldWidth="48"
+              :fieldHeight="40"
+              :required="true"
               name="password_code"
-              @complete="completed = true" 
+              @complete="completed = true"
             />
           </div>
           <div v-if="errorMessage.length" class="error-message">
@@ -80,7 +73,7 @@
 <script>
 import { computed, ref, watch, onBeforeUnmount } from 'vue'
 import { Form } from '@system.it.flumx.com/vee-validate'
-import * as yup from "yup"
+import * as yup from 'yup'
 import { useI18n } from 'vue-i18n'
 
 import ModalWindow from '../../components/ModalWindow.vue'
@@ -91,7 +84,7 @@ import InputComponent from '../forms/InputComponent.vue'
 import eyeCross from '../../assets/img/eye-crossed.svg'
 import eyeOpen from '../../assets/img/eye-opened.svg'
 
-import { API } from "../../workers/api-worker/api.worker"
+import { API } from '../../workers/api-worker/api.worker'
 
 const secondsToCount = 30
 
@@ -100,15 +93,15 @@ export default {
   props: {
     userEmail: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   components: {
     Form,
     ModalWindow,
     CodeInput,
     InputComponent,
-    Counter
+    Counter,
   },
   setup(props, context) {
     const { t } = useI18n()
@@ -118,9 +111,18 @@ export default {
 
     const schema = computed(() => {
       return yup.object({
-        old_password: yup.string().required('errors.required').min(8, 'errors.min8'),
-        new_password: yup.string().required('errors.required').min(8, 'errors.min8'),
-        password_code: yup.string().required('errors.required').min(5, 'errors.min5'),
+        old_password: yup
+          .string()
+          .required('errors.required')
+          .min(8, 'errors.min8'),
+        new_password: yup
+          .string()
+          .required('errors.required')
+          .min(8, 'errors.min8'),
+        password_code: yup
+          .string()
+          .required('errors.required')
+          .min(5, 'errors.min5'),
       })
     })
     const eyeCrossed = computed(() => eyeCross)
@@ -153,24 +155,24 @@ export default {
           old_password: oldPassword,
         }
         API.UserService.changePassword(payload)
-        .then(() => {
-          errorMessage.value = ''
-          modalChangeStep.value = 2
-        })
-        .catch(e => {
-          errorMessage.value = t('modals.change_password.wrong-old-pass')
-        })
+          .then(() => {
+            errorMessage.value = ''
+            modalChangeStep.value = 2
+          })
+          .catch((e) => {
+            errorMessage.value = t('modals.change_password.wrong-old-pass')
+          })
       }
       if (modalChangeStep.value === 2 && passCode) {
         const payload = {
-          verify_code: passCode
+          verify_code: passCode,
         }
         API.UserService.sendApproveCode(payload)
           .then(() => {
             errorMessage.value = ''
             closeModal()
           })
-          .catch(e => {
+          .catch((e) => {
             console.log('change password error', e.data.error)
             errorMessage.value = t('modals.change_password.server-error')
           })
@@ -190,12 +192,10 @@ export default {
       disableSubmit: (e) => {
         e.stopPropagation()
         e.preventDefault()
-      }
+      },
     }
-  }
+  },
 }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

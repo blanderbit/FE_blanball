@@ -44,7 +44,12 @@ let Utils = {
         rgb.b = 0
       }
     }
-    return { r: Math.round(rgb.r), g: Math.round(rgb.g), b: Math.round(rgb.b), a: hsb.a }
+    return {
+      r: Math.round(rgb.r),
+      g: Math.round(rgb.g),
+      b: Math.round(rgb.b),
+      a: hsb.a,
+    }
   },
   hsba2rgba(hsba) {
     const c = this.hsb2rgb(hsba)

@@ -1,14 +1,12 @@
 <template>
   <div class="b-versions">
-    <Loading 
-      :is-loading="loading" 
-    />
+    <Loading :is-loading="loading" />
     <div class="b-versions__title-level1 title-customs">
       {{ $t('versions.title') }}
     </div>
     <div class="b-versions__container d-flex justify-content-between">
       <div class="b-versions__left-side">
-        <div 
+        <div
           v-if="currentVersion?.images.length > 0"
           class="b-versions__images d-flex"
         >
@@ -21,17 +19,15 @@
         </div>
         <div class="b-versions__important-changes">
           <div class="b-versions__title-level3">
-            {{ $t('versions.whats-new') }} 
-            {{versionNumber}}
+            {{ $t('versions.whats-new') }}
+            {{ versionNumber }}
             <span class="b-versions__type-of-version">
-              {{versionType}}
+              {{ versionType }}
             </span>
-        </div>
+          </div>
           <div
             class="b-versions__change-element"
-            v-for="(
-              item, index
-            ) of currentVersion?.what_new"
+            v-for="(item, index) of currentVersion?.what_new"
             :key="'what_new' + index"
           >
             {{ item }}
@@ -82,12 +78,9 @@
       </div>
       <div class="b-versions__right-side">
         <div class="b-versions__title-level3">
-            {{ $t('versions.history') }}
+          {{ $t('versions.history') }}
         </div>
-        <template 
-          v-for="(item, index) in versions" 
-          :key="'versions' + index"
-        >
+        <template v-for="(item, index) in versions" :key="'versions' + index">
           <version-item
             :version="item.version"
             :date="item.date"
@@ -107,7 +100,7 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import dayjs from 'dayjs'
 import dayjsUkrLocale from 'dayjs/locale/uk'
-import { API } from "../../workers/api-worker/api.worker"
+import { API } from '../../workers/api-worker/api.worker'
 import Loading from '../../workers/loading-worker/Loading.vue'
 
 import VersionItem from '../../components/versions-page/version-item.vue'
@@ -116,7 +109,7 @@ export default {
   name: 'VersionsPage',
   components: {
     VersionItem,
-    Loading
+    Loading,
   },
   setup() {
     const route = useRoute()
@@ -128,11 +121,12 @@ export default {
 
     versions.value = route.meta.allVersions?.results
 
-    versions.value = versions.value.map(item => {
+    versions.value = versions.value.map((item) => {
       return {
         ...item,
-        date: dayjs(item.created_at).locale(dayjsUkrLocale).format('DD MM YYYY')
-
+        date: dayjs(item.created_at)
+          .locale(dayjsUkrLocale)
+          .format('DD MM YYYY'),
       }
     })
 
@@ -144,12 +138,11 @@ export default {
 
     function gerVersion(id) {
       loading.value = true
-      API.VersionsService.getCurrentVersion(id)
-      .then(res => {
-          versionType.value = res.type
-          versionNumber.value = res.version
-          currentVersion.value = res.data
-          loading.value = false
+      API.VersionsService.getCurrentVersion(id).then((res) => {
+        versionType.value = res.type
+        versionNumber.value = res.version
+        currentVersion.value = res.data
+        loading.value = false
       })
     }
 
@@ -159,9 +152,9 @@ export default {
       currentVersion,
       versionNumber,
       versionType,
-      loading
+      loading,
     }
-  }
+  },
 }
 </script>
 
@@ -234,7 +227,7 @@ export default {
     font-size: 12px;
     line-height: 20px;
     text-align: center;
-    color: #FFFFFF;
+    color: #ffffff;
     padding: 0px 6px;
     background: #575775;
     border-radius: 4px;

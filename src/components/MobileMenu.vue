@@ -1,7 +1,7 @@
 <template>
   <div class="b-mob-menu" :style="mobMenuStyle">
     <div class="b-mob-menu__logo-block">
-      <div class="b-mob-menu__logo">{{$t('menu.blanball')}}</div>
+      <div class="b-mob-menu__logo">{{ $t('menu.blanball') }}</div>
       <div class="b-mob-menu__close" @click="closeMobMenu">&times;</div>
     </div>
     <div class="b-mob-menu__user-data">
@@ -11,13 +11,10 @@
       <div class="b-mob-menu__text-block">
         <div class="b-mob-menu__user-name">Стефанія Калиновська</div>
         <div class="b-mob-menu__account-type">
-          {{$t('menu.guest-account')}}
+          {{ $t('menu.guest-account') }}
         </div>
       </div>
-      <div 
-        class="b-mob-menu__logout-icon" 
-        @click="logOut"
-      >
+      <div class="b-mob-menu__logout-icon" @click="logOut">
         <img src="../assets/img/logout-icon.svg" alt="" />
       </div>
     </div>
@@ -110,8 +107,8 @@ import Settings from '../assets/img/Settings.svg'
 import SettingsWhite from '../assets/img/Settings-white.svg'
 
 import CONSTANTS from '../consts/index'
-import { ROUTES } from "../router/router.const";
-import { TokenWorker } from "../workers/token-worker";
+import { ROUTES } from '../router/router.const'
+import { TokenWorker } from '../workers/token-worker'
 
 export default {
   name: 'MobileMenu',
@@ -270,7 +267,7 @@ export default {
     }
 
     const logOut = () => {
-      TokenWorker.clearToken();
+      TokenWorker.clearToken()
       router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute)
     }
 
@@ -282,7 +279,7 @@ export default {
       mobMenuStyle,
       lineMenuClick,
       closeMobMenu,
-      logOut
+      logOut,
     }
   },
 }

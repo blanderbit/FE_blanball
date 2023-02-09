@@ -4,7 +4,7 @@ if (typeof window !== 'undefined') {
   supportsPassive = false
   try {
     const opts = Object.defineProperty({}, 'passive', {
-      get () {
+      get() {
         supportsPassive = true
       },
     })

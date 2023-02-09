@@ -23,5 +23,5 @@ export default {
   manage_event: ManageEvent,
   dates: Dates,
   profile: Profile,
-  no_data_notifications: NoDataNotifications
+  no_data_notifications: NoDataNotifications,
 }

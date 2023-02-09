@@ -1,13 +1,9 @@
-<template>
-  
-</template>
+<template></template>
 
 <script>
-  export default {
-    name: "SelectionSuitModal"
-  }
+export default {
+  name: 'SelectionSuitModal',
+}
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

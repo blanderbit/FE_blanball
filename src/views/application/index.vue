@@ -6,17 +6,12 @@
       @close-modal="isVerifyModalActive = false"
       @email-verified="isUserVerified = true"
     />
-    <div
-      v-if="!isUserVerified"
-      class="b_header_validate-email-block"
-    >
+
+    <div v-if="!isUserVerified" class="b_header_validate-email-block">
       <span class="b_header_text">
-        {{ $t('header.approve-your-email') }}: {{userEmail}}
+        {{ $t('header.approve-your-email') }}: {{ userEmail }}
       </span>
-      <span 
-        class="b_header_verify-btn"
-        @click="isVerifyModalActive = true"
-      >
+      <span class="b_header_verify-btn" @click="isVerifyModalActive = true">
         {{ $t('header.approve-email') }}
       </span>
     </div>
@@ -33,10 +28,7 @@
         </div>
       </div>
     </div>
-    <ModalFeedback
-        v-if="modals.review.active"
-        @close-modal="toggleModal"
-    />
+    <ModalFeedback v-if="modals.review.active" @close-modal="toggleModal" />
   </div>
 </template>
 
@@ -44,7 +36,7 @@
 import { ref, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
-import { v4 as uuid } from "uuid";
+import { v4 as uuid } from 'uuid'
 import { useUserDataStore } from '@/stores/userData'
 
 import Sidebar from './../../components/Sidebar.vue'
@@ -53,82 +45,84 @@ import MobileMenu from '../../components/MobileMenu.vue'
 import Notification from '../../components/Notification.vue'
 import VerifyEmailModal from '../../components/user-cabinet/VerifyEmailModal.vue'
 
+import BugReportModal from '../../components/BugReportModal.vue'
+
 import ModalFeedback from '../../components/ModalFeedback/index.vue'
 
 import message_audio from '../../assets/message_audio.mp3'
 
 import { AuthWebSocketWorkerInstance } from './../../workers/web-socket-worker'
 import { TokenWorker } from '../../workers/token-worker'
-import { notificationButtonHandlerMessage } from "../../workers/utils-worker";
+import { notificationButtonHandlerMessage } from '../../workers/utils-worker'
 
 import { MessageActionTypes } from '../../workers/web-socket-worker/message.action.types'
-import { API } from '../../workers/api-worker/api.worker';
+import { API } from '../../workers/api-worker/api.worker'
 
-const isVerifyModalActive = ref(false);
-const userEmail = ref('');
-const isUserVerified = ref(true);
-const isMobMenuActive = ref(false);
+const isVerifyModalActive = ref(false)
+const userEmail = ref('')
+const isUserVerified = ref(true)
+const isMobMenuActive = ref(false)
 const modals = ref({
-    review: {
-        data: {},
-        active: false
-    }
-});
+  review: {
+    data: {},
+    active: false,
+  },
+})
 
-const router = useRouter();
-const toast = useToast();
+const router = useRouter()
+const toast = useToast()
 const store = useUserDataStore()
-const audio = new Audio(message_audio);
-let timeout;
+const audio = new Audio(message_audio)
+let timeout
 
 isUserVerified.value = store.user?.is_verified
 userEmail.value = store.user?.email || ''
 
 const handlerAction = async (item, notificationInstance) => {
-  clearTimeout(timeout);
+  clearTimeout(timeout)
   await notificationButtonHandlerMessage({
     item,
     notificationInstance,
-    router
+    router,
   })
-};
+}
 
 const toggleToastProgress = (notificationInstance, toastId, active) => {
-  const toastDataOptions = getToastOptions(notificationInstance, toastId);
-  toastDataOptions.componentOptions.props.active = active;
+  const toastDataOptions = getToastOptions(notificationInstance, toastId)
+  toastDataOptions.componentOptions.props.active = active
 
   toast.update(toastId, {
     content: toastDataOptions.componentOptions,
     options: toastDataOptions.options,
   })
-};
+}
 
 const getToastOptions = (notificationInstance, toastId) => {
   const close = notificationInstance.actions.find(
     (item) => item.type === MessageActionTypes.Close
-  );
+  )
   notificationInstance.actions = notificationInstance.actions.filter(
     (item) => item.type !== MessageActionTypes.Close
-  );
+  )
   return {
     componentOptions: {
       component: Notification,
       props: {
         notificationInstance,
-        notificationType: 'notification-push'
+        notificationType: 'notification-push',
       },
       listeners: {
         handlerAction: async (item) => {
-          toggleToastProgress(notificationInstance, toastId, true);
-          await handlerAction(item, notificationInstance);
-          toggleToastProgress(notificationInstance, toastId, false);
+          toggleToastProgress(notificationInstance, toastId, true)
+          await handlerAction(item, notificationInstance)
+          toggleToastProgress(notificationInstance, toastId, false)
           toast.dismiss(toastId)
         },
         handlerClose: async () => {
           if (close) {
-            toggleToastProgress(notificationInstance, toastId, true);
-            await handlerAction(close, notificationInstance);
-            toggleToastProgress(notificationInstance, toastId, false);
+            toggleToastProgress(notificationInstance, toastId, true)
+            await handlerAction(close, notificationInstance)
+            toggleToastProgress(notificationInstance, toastId, false)
           }
 
           toast.dismiss(toastId)
@@ -148,53 +142,45 @@ const getToastOptions = (notificationInstance, toastId) => {
       icon: false,
       rtl: false,
       toastClassName: [notificationInstance.getPushNotificationTheme()],
-      userEmail
+      userEmail,
     },
   }
-};
+}
 
 const createToastFromInstanceType = (notificationInstance) => {
-  const toastDataOptions = getToastOptions(
-    notificationInstance,
-    uuid()
-  );
+  const toastDataOptions = getToastOptions(notificationInstance, uuid())
 
   const toastId = toast(
     toastDataOptions.componentOptions,
     toastDataOptions.options
-  );
+  )
 
   if (notificationInstance.timeForClose) {
     timeout = setTimeout(() => {
       toast.dismiss(toastId)
-    }, notificationInstance.timeForClose )
+    }, notificationInstance.timeForClose)
   }
-};
+}
 
 const handleNewMessage = (instanceType) => {
   if (instanceType.pushNotification) {
-    createToastFromInstanceType(instanceType);
+    createToastFromInstanceType(instanceType)
     audio.play()
-  };
-};
+  }
+}
 
-AuthWebSocketWorkerInstance
-  .registerCallback(handleNewMessage)
-  .connect({
-    token: TokenWorker.getToken()
-  });
+AuthWebSocketWorkerInstance.registerCallback(handleNewMessage).connect({
+  token: TokenWorker.getToken(),
+})
 
 onBeforeUnmount(() => {
-  AuthWebSocketWorkerInstance
-    .destroyCallback(handleNewMessage)
-    .disconnect()
-});
-
+  AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect()
+})
 </script>
 
 <style lang="scss">
 html {
-  overflow: hidden
+  overflow: hidden;
 }
 * {
   margin: 0;
@@ -225,7 +211,7 @@ html {
       font-weight: 500;
       font-size: 12px;
       line-height: 20px;
-      color: #FFFFFF;
+      color: #ffffff;
     }
     .b_header_verify-btn {
       padding: 2px 8px;
@@ -237,7 +223,7 @@ html {
       font-size: 13px;
       line-height: 24px;
       text-align: center;
-      color: #FFFFFF;
+      color: #ffffff;
       display: inline-block;
       cursor: pointer;
       margin-left: 12px;
@@ -254,5 +240,3 @@ html {
   }
 }
 </style>
-
-

@@ -1,16 +1,11 @@
 <template>
-  <div>
-    
-  </div>
+  <div></div>
 </template>
 
 <script>
-  export default {
-    name: "SuitForm",
-
-  }
+export default {
+  name: 'SuitForm',
+}
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

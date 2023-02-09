@@ -1,23 +1,22 @@
+const passive = () => []
 
-const passive = () => [];
+const lazy = ({ meta, errorMessage }) => {
+  return ['change']
+}
 
-const lazy = ({meta, errorMessage}) => {
-  return ['change'];
-};
+const aggressive = () => ['input']
 
-const aggressive = () => ['input'];
-
-const eager = ({meta, errorMessage}) => {
+const eager = ({ meta, errorMessage }) => {
   if (errorMessage.value) {
-    return ['input'];
+    return ['input']
   }
 
-  return ['change'];
-};
+  return ['change']
+}
 
 export const modes = {
   passive,
   lazy,
   aggressive,
   eager,
-};
+}

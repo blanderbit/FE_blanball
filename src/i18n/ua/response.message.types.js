@@ -8,7 +8,8 @@ export default {
   SENT_CODE_TO_EMAIL: 'было отправлено письмо с кодом на почту',
   ACCOUNT_ALREADY_VERIFIED: 'аккаунт уже верифицирован',
   INVALID_CONFIGURATION: 'Неверно введенные данные в "Конфедициальность"',
-  INVALID_GET_PLANED_EVENTS: 'не правильно введенные данные в поле "Конфедициальность - запланированные события" - при изменении профиля',
+  INVALID_GET_PLANED_EVENTS:
+    'не правильно введенные данные в поле "Конфедициальность - запланированные события" - при изменении профиля',
   AGE_OVER_80_YEARS: 'возраст пользователя больше 80 лет',
   AGE_LESS_6_YEARS: 'возраст пользователя меньше 6 лет ',
   WRONG_OLD_PASSWORD: 'не правильный старый пароль аккаунта',
@@ -29,22 +30,29 @@ export default {
   SENT_INVITE: 'приглашение на событие было успешно отправлено',
   ALREADY_SENT_REQUEST_TO_PARTICIPATE: 'запрос на участие уже отправлен',
   AUTHOR_CANT_ENTER_HIS_EVENT: 'автор не может зайти на свое событие',
-  BAD_EVENT_DATE_AND_TIME: 'не валидная дата начала события, дата начала должна быть больше чем текущая дата + 1 час',
+  BAD_EVENT_DATE_AND_TIME:
+    'не валидная дата начала события, дата начала должна быть больше чем текущая дата + 1 час',
   ALREADY_LIKE_MEMBER: 'уже участвуешь на событии как игрок',
   ALREADY_LIKE_FAN: 'уже участвуешь на событии как зритель',
   NOT_IN_EVENT_FANS_LIST: 'нету в списке зрителей',
   NOT_IN_EVENT_MEMBERS_LIST: 'нету в списке участников',
-  AUTHOR_CANNOT_BE_INVITED_TO_HIS_EVENT: 'автор не может быть приглашен на свое же  событие',
+  AUTHOR_CANNOT_BE_INVITED_TO_HIS_EVENT:
+    'автор не может быть приглашен на свое же  событие',
   NO_PLACE: 'на событии нету места для участия',
-  NO_PERMISSIONS_TO_INVITE: 'нету прав для приглашение пользователей на это событие',
-  THIS_USER_CANT_BE_INVITED: 'этот пользователь не может быть приглашен на это событие',
-  PRICE_DESCRIPTION_REQUIRED: 'при наличии стоимости события, описание к стоимости обязательно',
+  NO_PERMISSIONS_TO_INVITE:
+    'нету прав для приглашение пользователей на это событие',
+  THIS_USER_CANT_BE_INVITED:
+    'этот пользователь не может быть приглашен на это событие',
+  PRICE_DESCRIPTION_REQUIRED:
+    'при наличии стоимости события, описание к стоимости обязательно',
   CANT_INVITE_YOURSELF: 'нельзя пригласить самого себя на событие',
   NOTHING_FOUND_FOR_REQUEST: 'по запросу с координатами ничего не найдено',
 
   MAINTENANCE_UPDATE: 'Конфигурация тех работ была успешно обновлен',
-  ALL_NOTIFICATIONS_DELETED: 'все нотификации пользователя были успешно удалены',
-  ALL_NOTIFICATIONS_READED: 'все нотификации пользователя были успешно прочитаны',
+  ALL_NOTIFICATIONS_DELETED:
+    'все нотификации пользователя были успешно удалены',
+  ALL_NOTIFICATIONS_READED:
+    'все нотификации пользователя были успешно прочитаны',
   CANT_UPDATE_MAINTENANCE: 'не возможно обновить конфигурацию тех работ',
   CANT_GET_MAINTENANCE: 'не возможно получить текущее значение тех работ ',
   CANT_LEAVE_REVIEW_ABOUT_YOURSELF: 'Не возможно оставить отзыв самому себе',
@@ -59,7 +67,8 @@ export default {
   MAX_VALUE: 'Поле "{field}" вы ввели больше максимального значения!',
   BLANK: 'Поле "{field}" не может быть пустым!',
 
-  AUTHENTICATION_CREDENTIALS_WERE_NOT_PROVIDED: 'Не предоставлены учетные данные для аутентификации',
+  AUTHENTICATION_CREDENTIALS_WERE_NOT_PROVIDED:
+    'Не предоставлены учетные данные для аутентификации',
   AUTHENTICATION_TOKEN_NOT_VALID: 'Не валидный токен аутентификации',
   BAD_AUTHENTICATION_TOKEN: 'Не валидный токен аутентификации',
   AVATAR_MAX_SIZE_1_MB: 'Загруженное фото привышает лимит в 1мб',
@@ -67,29 +76,28 @@ export default {
   CODE_IS_VALID: 'Код для сброса пароля валидный',
   METHOD_NOT_ALLOWED: 'Метод http запроса запрещен',
 
-
   fields: {
     phone: 'Телефон',
     email: 'Почта',
-    "password": "Пароль",
-    "re_password": "Подтвердите пароль",
-    "get_planned_events": "Запланирвоанные события",
-    "configuration": "Конфидециальность",
-    "profile": {
-      "place": {
-        "place_name": "Адресс",
-        "lat": "Адресс",
-        "lon": "Адресс"
+    password: 'Пароль',
+    re_password: 'Подтвердите пароль',
+    get_planned_events: 'Запланирвоанные события',
+    configuration: 'Конфидециальность',
+    profile: {
+      place: {
+        place_name: 'Адресс',
+        lat: 'Адресс',
+        lon: 'Адресс',
       },
-      "name": "Имя",
-      "last_name": "Фамилия",
-      "gender": "Пол",
-      "birthday": "Дата рождения",
-      "height": "Рост",
-      "weight": "Вес",
-      "position": "Позиция на поле",
-      "about_me": "О мне",
-      "working_leg": "Рабочая нога"
-    }
-  }
+      name: 'Имя',
+      last_name: 'Фамилия',
+      gender: 'Пол',
+      birthday: 'Дата рождения',
+      height: 'Рост',
+      weight: 'Вес',
+      position: 'Позиция на поле',
+      about_me: 'О мне',
+      working_leg: 'Рабочая нога',
+    },
+  },
 }

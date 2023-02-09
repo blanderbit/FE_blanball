@@ -1,34 +1,30 @@
 <template>
   <Transition>
-    <ModalWindow
-      :is-title-shown="false"
-    >
+    <ModalWindow :is-title-shown="false">
       <template #edit-avatar>
         <div class="b-edit-avatar">
           <div class="b-edit-avatar__main-part">
-
             <div class="b-edit-avatar__right-side">
               <div class="b-edit-avatar__crop-pic">
-                <img :src="userSrcImage" ref="cropImg" alt="">
+                <img :src="userSrcImage" ref="cropImg" alt="" />
               </div>
             </div>
 
             <div class="b-edit-avatar__left-side">
               <div class="b-edit-avatar__edited-pic">
-                <img :src="cropedImage" alt="">
+                <img :src="cropedImage" alt="" />
               </div>
 
               <div class="b-edit-avatar__main-functions">
                 <div class="b-edit-avatar__another-pic">
-
                   <label for="my_file">
-                    <input 
-                      type="file" 
-                      id="my_file" 
-                      style="display: none;" 
+                    <input
+                      type="file"
+                      id="my_file"
+                      style="display: none"
                       @change="onFileSelected"
                     />
-                    <img src="../../assets/img/add-picture.svg" alt="">
+                    <img src="../../assets/img/add-picture.svg" alt="" />
                     <span class="b-edit-avatar__desk-text">
                       {{ $t('modals.edit_avatar.another-pic') }}
                     </span>
@@ -36,14 +32,10 @@
                       {{ $t('modals.edit_avatar.chose-another-pic') }}
                     </span>
                   </label>
-
                 </div>
                 <div class="b-edit-avatar__left-mob-part">
-                  <div 
-                    class="b-edit-avatar__rotate"
-                    @click="rotateImage"
-                  >
-                    <img src="../../assets/img/rotate-picture.svg" alt="">
+                  <div class="b-edit-avatar__rotate" @click="rotateImage">
+                    <img src="../../assets/img/rotate-picture.svg" alt="" />
                     <span>
                       {{ $t('modals.edit_avatar.rotate') }}
                     </span>
@@ -51,17 +43,13 @@
                 </div>
               </div>
             </div>
-
           </div>
 
           <div class="b-edit-avatar__btns-block">
-            <div 
-              class="b-edit-avatar__cancel-btn"
-              @click="closeModal"
-            >
+            <div class="b-edit-avatar__cancel-btn" @click="closeModal">
               {{ $t('buttons.decline') }}
             </div>
-            <GreenBtn 
+            <GreenBtn
               :icon="iconSave"
               :width="125"
               :text="$t('buttons.save')"
@@ -77,7 +65,7 @@
 <script>
 import { computed, ref, watch, watchEffect, onMounted, onUnmounted } from 'vue'
 import { Form } from '@system.it.flumx.com/vee-validate'
-import Cropper from 'cropperjs';
+import Cropper from 'cropperjs'
 
 import ModalWindow from '../ModalWindow.vue'
 import InputComponent from '../forms/InputComponent.vue'
@@ -85,7 +73,7 @@ import GreenBtn from '../GreenBtn.vue'
 
 import SaveIcon from '../../assets/img/save-icon.svg'
 
-import { API } from "../../workers/api-worker/api.worker"
+import { API } from '../../workers/api-worker/api.worker'
 
 export default {
   name: 'EditAvatarModal',
@@ -93,7 +81,7 @@ export default {
     ModalWindow,
     InputComponent,
     Form,
-    GreenBtn
+    GreenBtn,
   },
   props: ['userImage'],
   emits: ['closeModal', 'getProfileData'],
@@ -116,12 +104,10 @@ export default {
       emit('closeModal', 'edit_avatar')
     }
     function getCroppedImage() {
-      cropper
-        .getCroppedCanvas()
-        .toBlob(blob => {
-          blobFile.value = blob
-          cropedImage.value = URL.createObjectURL(blob)
-        }, 'image/jpeg')
+      cropper.getCroppedCanvas().toBlob((blob) => {
+        blobFile.value = blob
+        cropedImage.value = URL.createObjectURL(blob)
+      }, 'image/jpeg')
     }
     function rotateImage() {
       cropper.rotate(-90)
@@ -129,19 +115,22 @@ export default {
     function onFileSelected(event) {
       selectedFile.value = event.target.files[0]
     }
-    
-    function setAvatar() {
-      const formData = new FormData();
-      
-      const myAvatar = new File([blobFile.value], "my_avatar.jpg", {type:"image/jpg", lastModified:new Date().getTime()})
 
-      formData.append("avatar", myAvatar)
+    function setAvatar() {
+      const formData = new FormData()
+
+      const myAvatar = new File([blobFile.value], 'my_avatar.jpg', {
+        type: 'image/jpg',
+        lastModified: new Date().getTime(),
+      })
+
+      formData.append('avatar', myAvatar)
       API.AuthorizationService.AddAvatar(formData)
         .then(() => {
           emit('closeModal', 'edit_avatar')
           emit('getProfileData')
         })
-        .catch(e => console.log(e))
+        .catch((e) => console.log(e))
     }
 
     fileReader.onload = (event) => {
@@ -149,30 +138,27 @@ export default {
     }
 
     watchEffect(() => {
-      if(selectedFile.value) {
+      if (selectedFile.value) {
         fileReader.readAsDataURL(selectedFile.value)
       }
     })
 
-    watch(
-      userSrcImage,
-      () => {
-        if(userSrcImage.value) {
-          cropper.replace(userSrcImage.value)
-        }
+    watch(userSrcImage, () => {
+      if (userSrcImage.value) {
+        cropper.replace(userSrcImage.value)
       }
-    )
+    })
 
     onMounted(() => {
       cropImg.value.addEventListener('ready', function () {
         getCroppedImage()
-      });
+      })
       cropImg.value.addEventListener('cropend', function (event) {
         getCroppedImage()
-      });
+      })
       cropImg.value.addEventListener('crop', function (event) {
         getCroppedImage()
-      });
+      })
       cropper = new Cropper(cropImg.value, {
         aspectRatio: 1,
         minCropBoxWidth: 50,
@@ -189,7 +175,6 @@ export default {
       cropper.destroy()
     })
 
-
     return {
       closeModal,
       setAvatar,
@@ -198,15 +183,14 @@ export default {
       iconSave,
       cropImg,
       cropedImage,
-      userSrcImage
+      userSrcImage,
     }
-  }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-
-.b-edit-avatar { 
+.b-edit-avatar {
   &__main-part {
     display: flex;
     justify-content: space-between;
@@ -214,15 +198,15 @@ export default {
     @media (max-width: 576px) {
       display: block;
     }
-    .b-edit-avatar__right-side { 
-      .b-edit-avatar__crop-pic { 
+    .b-edit-avatar__right-side {
+      .b-edit-avatar__crop-pic {
         overflow: hidden;
         height: 248px;
         width: 196px;
         @media (max-width: 576px) {
           width: 100%;
         }
-        img { 
+        img {
           @media (max-width: 576px) {
             width: 100%;
           }
@@ -310,7 +294,7 @@ export default {
           }
           .b-edit-avatar__rotate {
             @media (max-width: 576px) {
-              border: 1px solid #DFDEED;
+              border: 1px solid #dfdeed;
               padding: 9px 17px;
               border-radius: 6px;
             }
@@ -324,7 +308,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px solid #EFEFF6;
+    border-top: 1px solid #efeff6;
     padding-top: 20px;
     .b-edit-avatar__cancel-btn {
       font-family: 'Inter';

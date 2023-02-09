@@ -25,9 +25,7 @@
             />
           </div>
           <div class="b-modal-filters__gender">
-            <RadioGenderBox
-              v-model:gender="genderData"
-            />
+            <RadioGenderBox v-model:gender="genderData" />
           </div>
           <div class="b-modal-filters__status-event">
             <Dropdown
@@ -45,50 +43,31 @@
           </div>
           <div class="b-modal-filters__calendar">
             <img src="../../assets/img/calendar.svg" alt="" />
-            <v-date-picker 
-              locale="ukr" 
-              :model-config="calendar.modelConfig" 
-              v-model="dateAndTimeData" 
+            <v-date-picker
+              locale="ukr"
+              :model-config="calendar.modelConfig"
+              v-model="dateAndTimeData"
               is-range
             >
               <template v-slot="options">
                 <div class="flex justify-center items-center">
                   <input
-                      :value="options.inputValue.start"
-                      v-on="options.inputEvents.start"
-                      class="
-                        input-left
-                        border
-                        px-2
-                        py-1
-                        w-32
-                        rounded
-                        focus:outline-none focus:border-indigo-300
-                      "
+                    :value="options.inputValue.start"
+                    v-on="options.inputEvents.start"
+                    class="input-left border px-2 py-1 w-32 rounded focus:outline-none focus:border-indigo-300"
                   />
                   -
                   <input
-                      :value="options.inputValue.end"
-                      v-on="options.inputEvents.end"
-                      class="
-                        input-right
-                        border
-                        px-2
-                        py-1
-                        w-32
-                        rounded
-                        focus:outline-none focus:border-indigo-300
-                      "
+                    :value="options.inputValue.end"
+                    v-on="options.inputEvents.end"
+                    class="input-right border px-2 py-1 w-32 rounded focus:outline-none focus:border-indigo-300"
                   />
                 </div>
               </template>
             </v-date-picker>
           </div>
           <div class="b-modal-filters__btns-block">
-            <div 
-              class="b-modal-filters__cancel-btn"
-              @click="clearAllData"
-            >
+            <div class="b-modal-filters__cancel-btn" @click="clearAllData">
               {{ $t('buttons.clear') }}
             </div>
             <GreenBtn
@@ -116,7 +95,7 @@ import ClearFilters from './components/ClearFilters.vue'
 
 import tickIcon from '../../assets/img/tick-white.svg'
 
-import CONSTANTS from "../../consts/index"
+import CONSTANTS from '../../consts/index'
 import useTodaysDate from '../../utils/todaysDate'
 
 export default {
@@ -127,39 +106,39 @@ export default {
     Dropdown,
     RadioGenderBox,
     ClearFilters,
-    ModalPositionMap
+    ModalPositionMap,
   },
   props: {
     dropdownGameType: {
       type: String,
-      default: ''
+      default: '',
     },
     gender: {
       type: String,
-      default: ''
+      default: '',
     },
     status: {
       type: String,
-      default: ''
+      default: '',
     },
     location: {
       type: Object,
-      default: ''
+      default: '',
     },
     dateAndTime: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   emits: [
-    'closeModal', 
+    'closeModal',
     'setModalWindowFilters',
     'clearFilters',
     'update:dropdownGameType',
     'update:gender',
     'update:status',
     'update:location',
-    'update:dateAndTime'
+    'update:dateAndTime',
   ],
   setup(props, { emit }) {
     const gameTypeData = ref(props.dropdownGameType)
@@ -168,34 +147,49 @@ export default {
     const locationData = ref(props.location)
     const dateAndTimeData = ref(props.dateAndTime)
 
-    const sportTypeDropdown = CONSTANTS.event_page.sport_type_dropdown;
-    const statusDropdown = CONSTANTS.event_page.status_ropdown;
+    const sportTypeDropdown = CONSTANTS.event_page.sport_type_dropdown
+    const statusDropdown = CONSTANTS.event_page.status_ropdown
 
     const icon = computed(() => tickIcon)
 
-    const  calendar = ref( {
+    const calendar = ref({
       inputMask: 'YYYY-MM-DD',
       modelConfig: {
         type: 'string',
         mask: 'YYYY-MM-DD', // Uses 'iso' if missing
       },
     })
-    
-    watch(() => genderData.value, (newVal) => {
-      emit('update:gender', newVal)
-    })
-    watch(() => gameTypeData.value, (newVal) => {
-      emit('update:dropdownGameType', newVal)
-    })
-    watch(() => gameStatusData.value, (newVal) => {
-      emit('update:status', newVal)
-    })
-    watch(() => locationData.value, (newVal) => {
-      emit('update:location', newVal)
-    })
-    watch(() => dateAndTimeData.value, (newVal) => {
-      emit('update:dateAndTime', newVal)
-    })
+
+    watch(
+      () => genderData.value,
+      (newVal) => {
+        emit('update:gender', newVal)
+      }
+    )
+    watch(
+      () => gameTypeData.value,
+      (newVal) => {
+        emit('update:dropdownGameType', newVal)
+      }
+    )
+    watch(
+      () => gameStatusData.value,
+      (newVal) => {
+        emit('update:status', newVal)
+      }
+    )
+    watch(
+      () => locationData.value,
+      (newVal) => {
+        emit('update:location', newVal)
+      }
+    )
+    watch(
+      () => dateAndTimeData.value,
+      (newVal) => {
+        emit('update:dateAndTime', newVal)
+      }
+    )
 
     function setFilters() {
       emit('setModalWindowFilters')
@@ -208,8 +202,8 @@ export default {
       locationData.value = {}
       genderData.value = ''
       dateAndTimeData.value = {
-        start: useTodaysDate(), 
-        end: useTodaysDate()
+        start: useTodaysDate(),
+        end: useTodaysDate(),
       }
     }
 
@@ -224,9 +218,9 @@ export default {
       locationData,
       genderData,
       dateAndTimeData,
-      calendar
+      calendar,
     }
-  }
+  },
 }
 </script>
 
@@ -388,8 +382,4 @@ export default {
     }
   }
 }
-
-
-
-
 </style>

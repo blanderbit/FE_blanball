@@ -1,17 +1,12 @@
 <template>
   <Transition>
-    <div 
-      class="b-change-data__wrapper" 
-    >
+    <div class="b-change-data__wrapper">
       <div class="b-change-data">
         <div class="b-change-data__title-block">
           <div class="b-change-data__title">
-            {{config.title}}
+            {{ config.title }}
           </div>
-          <div 
-            class="b-change-data__close"
-            @click="closeModal(false)"
-          >
+          <div class="b-change-data__close" @click="closeModal(false)">
             &times;
           </div>
         </div>
@@ -24,18 +19,18 @@
               :text="config.button_1"
               :width="config.btn_with_1"
               :font-styles="{
-                'font-size': '13px'
+                'font-size': '13px',
               }"
               @click-function="greenBtnFunction"
             />
           </div>
           <div class="b-change-data__second-btn">
-            <WhiteBtn 
+            <WhiteBtn
               :text="config.button_2"
               :width="config.btn_with_2"
               :main-color="'#C5C5D3'"
               :font-styles="{
-                'font-size': '13px'
+                'font-size': '13px',
               }"
               @click-function="$emit(config.right_btn_action, true)"
             />
@@ -61,17 +56,17 @@ export default {
   name: 'ChangeUserDataModal',
   components: {
     GreenBtn,
-    WhiteBtn
+    WhiteBtn,
   },
   props: {
     title: {
       type: String,
-      default: ''
+      default: '',
     },
     config: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   emits: ['closeModal', 'showPreview', 'saveChanges', 'declineChanges'],
   setup(props, context) {
@@ -84,22 +79,22 @@ export default {
 
     return {
       closeModal,
-      greenBtnFunction
+      greenBtnFunction,
     }
-  }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-.b-change-data__wrapper { 
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.514);
-    z-index: 999;
-  .b-change-data { 
+.b-change-data__wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.514);
+  z-index: 999;
+  .b-change-data {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -110,19 +105,19 @@ export default {
     padding: 16px;
     font-family: 'Inter';
     font-style: normal;
-    .b-change-data__title-block { 
+    .b-change-data__title-block {
       display: flex;
       justify-content: space-between;
-      .b-change-data__title { 
+      .b-change-data__title {
         font-weight: 600;
         font-size: 14px;
         line-height: 20px;
-        color: #FFFFFF;
+        color: #ffffff;
       }
 
-      .b-change-data__close { 
+      .b-change-data__close {
         line-height: 20px;
-        color: #FFFFFF;
+        color: #ffffff;
         font-size: 22px;
         cursor: pointer;
       }
@@ -133,20 +128,20 @@ export default {
       font-weight: 400;
       font-size: 13px;
       line-height: 20px;
-      color: #DFDEED;
+      color: #dfdeed;
     }
-    .b-change-data__btns-block { 
+    .b-change-data__btns-block {
       display: flex;
       .b-change-data__second-btn {
         margin-left: 8px;
       }
     }
 
-    .b-change-data__cancel-changes { 
+    .b-change-data__cancel-changes {
       font-weight: 400;
       font-size: 13px;
       line-height: 24px;
-      color: #E2E2E9;
+      color: #e2e2e9;
       margin-top: 14px;
       cursor: pointer;
     }

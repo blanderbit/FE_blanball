@@ -26,20 +26,13 @@
             />
           </div>
           <div class="b-modal-filters__age-range">
-            <RangeFilter 
-              v-model:age-range="ageRangeData"
-            />
+            <RangeFilter v-model:age-range="ageRangeData" />
           </div>
           <div class="b-modal-filters__gender">
-            <RadioGenderBox
-              v-model:gender="genderData"
-            />
+            <RadioGenderBox v-model:gender="genderData" />
           </div>
           <div class="b-modal-filters__btns-block">
-            <div 
-              class="b-modal-filters__cancel-btn"
-              @click="clearAllData"
-            >
+            <div class="b-modal-filters__cancel-btn" @click="clearAllData">
               {{ $t('buttons.clear') }}
             </div>
             <GreenBtn
@@ -66,7 +59,7 @@ import RadioGenderBox from './components/RadioGenderBox.vue'
 
 import tickIcon from '../../assets/img/tick-white.svg'
 
-import CONSTANTS from "../../consts/index";
+import CONSTANTS from '../../consts/index'
 
 export default {
   name: 'ModalUsersFilters',
@@ -75,29 +68,29 @@ export default {
     GreenBtn,
     Dropdown,
     RangeFilter,
-    RadioGenderBox
+    RadioGenderBox,
   },
   props: {
     dropdownPosition: {
       type: String,
-      default: ''
+      default: '',
     },
     rangeSlider: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     gender: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   emits: [
-    'closeModal', 
+    'closeModal',
     'setModalWindowFilters',
     'clearFilters',
-    'update:dropdownPosition', 
-    'update:rangeSlider', 
-    'update:gender'
+    'update:dropdownPosition',
+    'update:rangeSlider',
+    'update:gender',
   ],
   setup(props, { emit }) {
     const positionData = ref(props.dropdownPosition)
@@ -107,15 +100,24 @@ export default {
     const positions = computed(() => CONSTANTS.profile.position)
     const icon = computed(() => tickIcon)
 
-    watch(() => genderData.value, (newVal) => {
-      emit('update:gender', newVal)
-    })
-    watch(() => ageRangeData.value, (newVal) => {
-      emit('update:rangeSlider', newVal)
-    })
-    watch(() => positionData.value, (newVal) => {
-      emit('update:dropdownPosition', newVal)
-    })
+    watch(
+      () => genderData.value,
+      (newVal) => {
+        emit('update:gender', newVal)
+      }
+    )
+    watch(
+      () => ageRangeData.value,
+      (newVal) => {
+        emit('update:rangeSlider', newVal)
+      }
+    )
+    watch(
+      () => positionData.value,
+      (newVal) => {
+        emit('update:dropdownPosition', newVal)
+      }
+    )
 
     function setFilters() {
       emit('setModalWindowFilters')
@@ -135,9 +137,9 @@ export default {
       icon,
       positionData,
       ageRangeData,
-      genderData
+      genderData,
     }
-  }
+  },
 }
 </script>
 
@@ -169,7 +171,6 @@ export default {
     margin-bottom: 16px;
   }
   &__gender {
-
   }
   &__btns-block {
     display: flex;
@@ -188,8 +189,4 @@ export default {
     }
   }
 }
-
-
-
-
 </style>

@@ -1,15 +1,8 @@
 <template>
-  <div 
-    class="b-search-modal"
-    @click.self="$emit('closeModal')"
-  >
-    <div 
-      class="b-search-modal__window-frame"
-      :style="frameStyle"
-    >
+  <div class="b-search-modal" @click.self="$emit('closeModal')">
+    <div class="b-search-modal__window-frame" :style="frameStyle">
       <slot name="frame-data"></slot>
     </div>
-
   </div>
 </template>
 
@@ -21,26 +14,26 @@ export default {
   props: {
     clientX: {
       type: Number,
-      default: 0
+      default: 0,
     },
     clientY: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
   emits: ['closeModal'],
   setup(props) {
     const frameStyle = computed(() => {
       return {
         left: `${props.clientX}px`,
-        top: `${props.clientY}px`
+        top: `${props.clientY}px`,
       }
     })
 
     return {
-      frameStyle
+      frameStyle,
     }
-  }
+  },
 }
 </script>
 

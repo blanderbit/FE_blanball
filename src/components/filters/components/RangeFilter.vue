@@ -5,19 +5,17 @@
     </div>
     <div class="b-range-filter__left-side">
       <div class="b-range-filter__slider">
-        <slider 
+        <slider
           class="filter-style"
-          :min="6" 
-          :max="80" 
+          :min="6"
+          :max="80"
           v-model="rangeValue"
           :tooltips="false"
           @change="onSliderDrag"
         ></slider>
       </div>
     </div>
-    <div class="b-range-filter__right-side">
-      {{ minAge }} - {{ maxAge }}
-    </div>
+    <div class="b-range-filter__right-side">{{ minAge }} - {{ maxAge }}</div>
   </div>
 </template>
 
@@ -27,16 +25,16 @@ import Slider from '@vueform/slider'
 
 export default {
   components: {
-    Slider
+    Slider,
   },
   emits: ['update:ageRange'],
   props: {
     ageRange: {
       type: Array,
-      default: () => [6, 80]
-    }
+      default: () => [6, 80],
+    },
   },
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     const minAge = ref(null)
     const maxAge = ref(null)
     const rangeValue = ref(null)
@@ -45,11 +43,14 @@ export default {
     minAge.value = props.ageRange[0]
     maxAge.value = props.ageRange[1]
 
-    watch(() => props.ageRange, (newVal) => {
-      rangeValue.value = newVal
-      minAge.value = newVal[0]
-      maxAge.value = newVal[1]
-    })
+    watch(
+      () => props.ageRange,
+      (newVal) => {
+        rangeValue.value = newVal
+        minAge.value = newVal[0]
+        maxAge.value = newVal[1]
+      }
+    )
 
     function onSliderDrag(event) {
       minAge.value = event[0]
@@ -61,9 +62,9 @@ export default {
       onSliderDrag,
       minAge,
       maxAge,
-      rangeValue
+      rangeValue,
     }
-  }
+  },
 }
 </script>
 
@@ -71,8 +72,8 @@ export default {
 .filter-style {
   --slider-connect-bg: #148783;
   --slider-height: 2px;
-  --slider-handle-border: 4px solid #1AB2AD;
-  --slider-handle-shadow: 0.5px 0.5px 2px 1px #E9FCFB;
+  --slider-handle-border: 4px solid #1ab2ad;
+  --slider-handle-shadow: 0.5px 0.5px 2px 1px #e9fcfb;
 }
 .b-range-filter__slider-wrapper {
   display: flex;
@@ -88,27 +89,27 @@ export default {
     line-height: 16px;
     color: #262541;
     padding: 0px 4px;
-    background: #F9F9FC;
+    background: #f9f9fc;
     border-radius: 4px;
     z-index: 11;
   }
   .b-range-filter__left-side {
-    background: #FFFFFF;
+    background: #ffffff;
     padding: 0 12px;
     width: 100%;
     display: flex;
     align-items: center;
-    border: 1px solid #DFDEED;
+    border: 1px solid #dfdeed;
     border-radius: 6px 0 0 6px;
     .b-range-filter__slider {
       width: 100%;
     }
   }
   .b-range-filter__right-side {
-    border-top: 1px solid #DFDEED;
-    border-right: 1px solid #DFDEED;
-    border-bottom: 1px solid #DFDEED;
-    background: #FFFFFF;
+    border-top: 1px solid #dfdeed;
+    border-right: 1px solid #dfdeed;
+    border-bottom: 1px solid #dfdeed;
+    background: #ffffff;
     padding: 6px 12px;
     border-radius: 0 6px 6px 0;
     font-family: 'Inter';
