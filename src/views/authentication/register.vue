@@ -207,9 +207,7 @@
               .string()
               .required('errors.required')
               .min(8, 'errors.min8')
-              .when('password', (password, field) =>
-                password ? field.required('errors.required').oneOf([yup.ref('password')], 'errors.same-password') : field
-              ),
+              .oneOf([yup.ref('new_password'), null], 'errors.same-password'),
             phone: yup
               .string()
               .required('errors.required')

@@ -23,7 +23,7 @@
           {{ $t('reset.letter-code') }}
         </div>
         <div class="b-reset-step__subtitle" v-if="currentStep === 2">
-          {{ $t('reset.new-password') }}
+          {{ $t('reset.write-code') }}
         </div>
         <div class="b-reset-step__input" v-if="currentStep === 1">
           <InputComponent
@@ -99,6 +99,7 @@
 <script>
   import { ref, computed } from 'vue'
   import { useRouter } from 'vue-router'
+  import { useI18n } from 'vue-i18n'
 
   import GreenBtn from '../GreenBtn.vue'
   import InputComponent from '../forms/InputComponent.vue'
@@ -111,6 +112,8 @@
   import eyeCross from '../../assets/img/eye-crossed.svg'
   import eyeOpen from '../../assets/img/eye-opened.svg'
   import { ROUTES } from "../../router/router.const";
+
+
   export default {
     name: 'Step1',
     components: {
@@ -126,6 +129,8 @@
       const userEmail = ref('')
       const state = ref({});
       const router = useRouter();
+      const toast = useToast();
+      const { t } = useI18n()
 
       const eyeCrossed = computed(() => {
         return eyeCross
@@ -148,9 +153,11 @@
         if (currentStep.value === 3) {
           return yup.object({
             new_password: yup.string().required('errors.required').min(8, 'errors.min8'),
-            confirm_new_password: yup.string().required('errors.required').min(8, 'errors.min8').when('new_password', (password, field) =>
-              password ? field.required().oneOf([yup.ref('new_password')]) : field
-            ),
+            confirm_new_password: yup
+              .string()
+              .required('errors.required')
+              .min(8, 'errors.min8')
+              .oneOf([yup.ref('new_password'), null], 'errors.same-password')
           });
         }
         return yup.object({})
@@ -204,8 +211,9 @@
           new_password: formData.values.new_password,
           verify_code: state.value.verify_code
         });
+        toast.success(t('notifications.password-reset'))
         router.push(ROUTES.AUTHENTICATIONS.LOGIN);
-
+  
         loading.value = false;
       };
 
