@@ -16,16 +16,16 @@
           @itemListClick="getItemDetail"
         >
         <template v-slot:users>
-          <div class="b-modal-items__container" v-for="i in relevantUsersList">
-            <div  @click="openUserProfile(i.id)"  class="b-user b-modal-item  w-100">
+          <div class="b-modal-items__container" v-for="user in relevantUsersList">
+            <div  @click="openUserProfile(user.id)"  class="b-user b-modal-item  w-100">
               <avatar
                 class="b-user__image"
-                :link="i.profile.avatar_url"
-                :full-name="`${i.profile.name} ${i.profile.last_name}`"
+                :link="user.profile.avatar_url"
+                :full-name="`${user.profile.name} ${user.profile.last_name}`"
               ></avatar>
               <div class="b-user-main-info__container">
                 <div class="b-user__name">
-                {{ i.profile.name }} {{ i.profile.last_name }}
+                {{ user.profile.name }} {{ user.profile.last_name }}
               </div>
                 <img
                   class="b-show-user-profile__button" 

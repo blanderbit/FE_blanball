@@ -218,6 +218,7 @@
 
 <script>
   import { computed, ref } from 'vue'
+  import { useRoute } from 'vue-router'
   import StarRating from 'vue-star-rating'
   import dayjs from 'dayjs'
   import dayjsUkrLocale from 'dayjs/locale/uk'
@@ -255,6 +256,7 @@
     },
     setup(props) {
       const reviewQuantity = ref(0);
+      const route = useRoute()
       const playFeatures = ref([
         {
           id: 3,
@@ -293,8 +295,8 @@
         return props.userData.configuration?.planned_events
       })
 
+
       const getPlanedEvents = (page) => {
-        console.log(page)
         return API.EventService.getPlannedUserEvents(
           props.userData.id,
           {

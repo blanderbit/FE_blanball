@@ -186,6 +186,8 @@ const router = createRouter({
           })),
           component: () => import('../views/application/users/profile.vue'),
           meta: {
+            publicUserData: () => API.UserService.getUserPublicProfile(to.params.userId),
+            usersData,
             breadcrumbs: {
               i18n: 'breadcrumbs.userProfile'
             }
