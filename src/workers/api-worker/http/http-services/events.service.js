@@ -53,6 +53,12 @@ export class EventService {
     )
   }
 
+  getOneEvent(eventId) {
+    return AxiosInstance.get(
+      EndpointsEnum.Events.getOneEvent(eventId),
+    )
+  }
+
   getPlannedUserEvents(userId) {
     return AxiosInstance.get(
       EndpointsEnum.Events.getPlannedUserEvents(userId),

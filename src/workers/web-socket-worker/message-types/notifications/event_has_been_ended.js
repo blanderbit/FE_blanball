@@ -14,7 +14,7 @@ import { NotificationsBus } from '../../../event-bus-worker'
 
 // FIXME NOTIFICATIONS
 @AuthWebSocketMessage()
-@SetMessageType(WebSocketTypes.EventHasBeenEnded)
+@SetMessageType(WebSocketTypes.InviteUserToEvent)
 @NotificationSetImage(NotificationImage.NotificationSuccess)
 @SetActions([
   {
@@ -24,7 +24,7 @@ import { NotificationsBus } from '../../../event-bus-worker'
   {
     type: MessageActionTypes.Action,
     text: 'Оставить отзыв',
-    action: ({notificationInstance, modals}) => {
+    action: ({notificationInstance}) => {
       NotificationsBus.emit('openEventReviewModal', notificationInstance)
     },
     actionType: MessageActionDataTypes.Callback,

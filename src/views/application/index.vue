@@ -35,6 +35,10 @@
     </div>
     <ModalFeedback
         :isActive="isCreateReviewModalActive"
+        :eventData="endedEventData"
+        :animationActive="modalFeedBackAnimation"
+        :selectedEmojies="selectedEmojies"
+        @emojiSelection="emojiSelection"
         @close-modal="closeEventReviewModal"
     />
   </div>
@@ -70,18 +74,41 @@ const userEmail = ref('');
 const isUserVerified = ref(true);
 const isMobMenuActive = ref(false);
 const isCreateReviewModalActive = ref(false)
+const endedEventData = ref({})
+const selectedEmojies = ref([])
+const modalFeedBackAnimation = ref(false)
 
 const closeEventReviewModal = () => {
   isCreateReviewModalActive.value = false
+  modalFeedBackAnimation.value = false
 }
 
 const openEventReviewModal = () => {
+  if (isCreateReviewModalActive.value) {
+    modalFeedBackAnimation.value = true
+    setTimeout(() => {modalFeedBackAnimation.value = false}, 500)
+  }
   isCreateReviewModalActive.value = true
 }
 
-NotificationsBus.on('openEventReviewModal', (data) => {
+NotificationsBus.on('openEventReviewModal', async (data) => {
+  const respone = await API.EventService.getOneEvent(data.data.event.id)
+  endedEventData.value = respone.data
   openEventReviewModal()
 });
+
+
+const emojiSelection = (emoji) => {
+  for (let i = 0; i < selectedEmojies.value.length; i++) {
+    if (selectedEmojies.value[i].step === emoji.step) {
+      // Update the existing object
+      selectedEmojies.value[i] = emoji;
+      return
+    }
+  }
+  selectedEmojies.value.push(emoji);
+}
+
 
 const router = useRouter();
 const toast = useToast();
@@ -127,7 +154,6 @@ const getToastOptions = (notificationInstance, toastId) => {
       },
       listeners: {
         handlerAction: async (item) => {
-          debugger
           toggleToastProgress(notificationInstance, toastId, true);
           await handlerAction(item, notificationInstance);
           toggleToastProgress(notificationInstance, toastId, false);

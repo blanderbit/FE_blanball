@@ -34,5 +34,8 @@ export default {
   },
   verify_email: {
     'title': 'Пiдтвердити поштову адресу'
-  }
+  },
+  event_feedback: {
+    'your-comment': 'Ваш коментар'
+  },
 }
