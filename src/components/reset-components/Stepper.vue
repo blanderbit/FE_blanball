@@ -30,12 +30,18 @@
             :outside-title="true"
             :title="$t('reset.post')"
             :placeholder="'example@email.com'"
+            v-model="userEmail"
             :title-width="0"
             name="email"
           />
         </div>
         <div class="b-reset-step__code-title mb-2" v-if="currentStep === 2">
-          {{ $t('reset.message-30sec') }}
+          <Counter 
+              :start-time="30"
+              :counter-text="$t('reset.message-30sec')"
+              :email="userEmail"
+              @resendCodeAction="resendResetVerifyCode()"
+            />
         </div>
         <div class="b-reset-step__sms-code-block" v-if="currentStep === 2">
           <code-input
@@ -96,6 +102,7 @@
 
   import GreenBtn from '../GreenBtn.vue'
   import InputComponent from '../forms/InputComponent.vue'
+  import Counter from '../Counter.vue'
   import { API } from "../../workers/api-worker/api.worker";
   import * as yup from "yup";
   import { Form } from '@system.it.flumx.com/vee-validate'
@@ -110,11 +117,13 @@
       GreenBtn,
       InputComponent,
       Form,
-      CodeInput
+      CodeInput,
+      Counter,
     },
     setup() {
       const currentStep = ref(1);
       const loading = ref(false);
+      const userEmail = ref('')
       const state = ref({});
       const router = useRouter();
 
@@ -200,6 +209,10 @@
         loading.value = false;
       };
 
+      const resendResetVerifyCode = async () => {
+        await API.AuthorizationService.ResetPasswordRequest({"email": userEmail.value});
+      }
+
       async function handleNextClick(formData) {
         switch (currentStep.value) {
           case 1:
@@ -214,8 +227,10 @@
       return {
         handleNextClick,
         handleBackClick,
+        resendResetVerifyCode,
         loading,
         schema,
+        userEmail,
         currentStep,
         eyeCrossed,
         eyeOpened,
@@ -293,6 +308,7 @@
         line-height: 20px;
         text-align: right;
         color: #575775;
+        text-align: left;
       }
       .b-reset-step__sms-code-block {
         display: flex;
