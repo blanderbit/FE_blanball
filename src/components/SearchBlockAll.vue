@@ -1,13 +1,12 @@
 <template>
   <div
-    ref="fff"
     class="b-search-block"
     :style="windowStyle"
   >
     <div class="b-search-block__window">
       {{ height }}
       <Spinner v-if="isSpinnerActive"/>
-      <slot v-if="!isSpinnerActive" name="users">
+      <slot v-else name="users">
       </slot>
     </div>
   </div>

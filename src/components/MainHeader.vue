@@ -11,9 +11,9 @@
           :width="modalSearchWidth"
           :loading="loading"
           :tags="relevantTags"
-          @itemListClick="getItemDetail"
           :filtered-users="paginationElements"
           :list-item-icon="icons.arrow"
+          @itemListClick="getItemDetail"
         >
         <template v-slot:users>
           <div class="b-modal-items__container" v-for="i in relevantUsersList">
@@ -21,7 +21,7 @@
               <avatar
                 class="b-user__image"
                 :link="i.profile.avatar_url"
-                :full-name="i.profile.name + ' ' + i.profile.last_name"
+                :full-name="`${i.profile.name} ${i.profile.last_name}`"
               ></avatar>
               <div class="b-user-main-info__container">
                 <div class="b-user__name">
@@ -34,7 +34,7 @@
               </div>
             </div>
           </div>
-          <span class="b-modal-no__results" v-if="relevantUsersList.length === 0">
+          <span class="b-modal-no__results" v-if="!relevantUsersList.length">
             {{ $t('errors.no-results') }}
           </span>
         </template>
@@ -68,7 +68,7 @@
 
 <script>
 import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import BreadCrumbs from './Breadcrumbs.vue'
 import InputComponent from './forms/InputComponent.vue'
 import SearchModal from './SearchModal.vue'
@@ -109,20 +109,14 @@ export default {
     let searchTimeout
 
     const openUserProfile =  (userId) => {
-      try {
-        router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId))
-        isSearchBlock.value = false
-      } catch (e) {
-        console.log(e)
-      }
+      router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId))
+      isSearchBlock.value = false
     }
 
     watch(searchValue, (searchValue, previous) => {
       clearTimeout(searchTimeout)
-      function searhNews() {
-        getRelevantUsers({ 'search': searchValue })
-      }
-      searchTimeout = setTimeout(searhNews, 500);
+      const relevantSearch = () => getRelevantUsers({'search': searchValue})
+      searchTimeout = setTimeout(relevantSearch, 500);
     })
 
     const getRelevantUsers =  async (options) => {
