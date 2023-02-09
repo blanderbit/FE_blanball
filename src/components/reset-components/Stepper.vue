@@ -179,10 +179,10 @@
 
         loading.value = true;
 
-        await API.AuthorizationService.ResetPasswordRequest(formData.values);
+        await API.AuthorizationService.ResetPasswordRequest(formData.values).finally(
+          () => {loading.value = false}
+        )
         currentStep.value = currentStep.value + 1;
-
-        loading.value = false;
       };
 
       const handleResetVerifyCode = async (formData) => {
@@ -210,7 +210,7 @@
         await API.AuthorizationService.ResetComplete({
           new_password: formData.values.new_password,
           verify_code: state.value.verify_code
-        });
+        })
         toast.success(t('notifications.password-reset'))
         router.push(ROUTES.AUTHENTICATIONS.LOGIN);
   
