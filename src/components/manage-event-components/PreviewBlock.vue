@@ -1,20 +1,19 @@
 <template>
-  <div 
-    class="b-event-preview"
-    :style="wrapperStyle"
-  >
-    <div :class="['b-event-preview__preview-block', {active: isPreviewActive}]">
+  <div class="b-event-preview" :style="wrapperStyle">
+    <div
+      :class="['b-event-preview__preview-block', { active: isPreviewActive }]"
+    >
       <div class="b-event-preview__preview-header">
         <div class="b-event-preview__title-block">
           <div class="b-event-preview__title">
-            <img src="../../assets/img/img-icon.svg" alt="">
+            <img src="../../assets/img/img-icon.svg" alt="" />
             {{ $t('events.poster-preview') }}
           </div>
-          <div 
+          <div
             class="b-event-preview__switch-arrow"
             @click="togglePreviewWindow"
           >
-            <img src="../../assets/img/arrow-down.svg" alt="">
+            <img src="../../assets/img/arrow-down.svg" alt="" />
           </div>
         </div>
         <div class="b-event-preview__subtitle">
@@ -26,7 +25,7 @@
           <div class="b-event-preview__left-block">
             <div class="b-event-preview__col-1">
               <div class="b-event-preview__card-icon">
-                <img src="../../assets/img/hands-shake.svg" alt=""/>
+                <img src="../../assets/img/hands-shake.svg" alt="" />
               </div>
             </div>
             <div class="b-event-preview__col-2">
@@ -34,7 +33,7 @@
                 {{ $t('events.friendly-match') }}
               </div>
               <div class="b-event-preview__address">
-                <img src="../../assets/img/location-point.svg" alt="">
+                <img src="../../assets/img/location-point.svg" alt="" />
                 <p>
                   {{ userLocation || '' }}
                 </p>
@@ -60,11 +59,7 @@
             v-for="label in labels"
             :key="label.text"
             class="b-event-preview__label"
-            :style="
-              label.text?.length ?  
-              labelStyle :
-              emptyLabelStyle
-            "
+            :style="label.text?.length ? labelStyle : emptyLabelStyle"
           >
             {{ label.text }}
           </div>
@@ -80,8 +75,12 @@
         <div class="b-event-preview__bottom-line">
           <div class="b-event-preview__left-side">
             <div class="b-event-preview__titles">
-              <div class="b-event-preview__players">{{ $t('events.players') }}:</div>
-              <div class="b-event-preview__visitors">{{ $t('events.fans') }}:</div>
+              <div class="b-event-preview__players">
+                {{ $t('events.players') }}:
+              </div>
+              <div class="b-event-preview__visitors">
+                {{ $t('events.fans') }}:
+              </div>
             </div>
             <div class="b-event-preview__date">
               <div class="b-event-preview__players-date">10 / 22</div>
@@ -89,16 +88,12 @@
             </div>
           </div>
           <div class="b-event-preview__right-side">
-            <GreenBtn
-              :text="$t('events.join')"
-              :width="115"
-              :height="32"
-            />
+            <GreenBtn :text="$t('events.join')" :width="115" :height="32" />
           </div>
         </div>
       </div>
     </div>
-  </div>  
+  </div>
 </template>
 
 <script>
@@ -110,21 +105,21 @@ import GreenBtn from '../../components/GreenBtn.vue'
 export default {
   name: 'PreviewBlock',
   components: {
-    GreenBtn
+    GreenBtn,
   },
   props: {
     formData: {
       type: Object,
-      default: () => {}
+      default: () => {},
     },
     startDate: {
       type: String,
-      default: ''
+      default: '',
     },
     userLocation: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   setup(props) {
     const store = useUserDataStore()
@@ -134,31 +129,31 @@ export default {
     const labels = computed(() => {
       return [
         {
-          text: props.formData.type
+          text: props.formData.type,
         },
         {
-          text: props.formData.gender
+          text: props.formData.gender,
         },
         {
-          text: 'Need form'
-        }
+          text: 'Need form',
+        },
       ]
     })
 
     const labelStyle = reactive({
       padding: '0px 8px',
       border: '1px solid #EFEFF6',
-      'border-radius': '100px'
+      'border-radius': '100px',
     })
     const emptyLabelStyle = reactive({
       width: '70px',
       height: '18px',
       background: '#EFEFF6',
-      'border-radius': '100px'
+      'border-radius': '100px',
     })
 
     const wrapperStyle = computed(() => {
-      return isPreviewActive.value ? { top : 0 } : {}
+      return isPreviewActive.value ? { top: 0 } : {}
     })
 
     function togglePreviewWindow() {
@@ -172,9 +167,9 @@ export default {
       isPreviewActive,
       wrapperStyle,
       fullUserName,
-      labels
+      labels,
     }
-  }
+  },
 }
 </script>
 
@@ -190,7 +185,7 @@ export default {
   }
   .b-event-preview__preview-block {
     padding: 24px 44px;
-    background: #F9F9FC;
+    background: #f9f9fc;
     border-radius: 12px;
     width: 564px;
     overflow: hidden;
@@ -218,11 +213,11 @@ export default {
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
-      background: #F9F9FC;
+      background: #f9f9fc;
     }
     .b-event-preview__preview-header {
       @media (max-width: 1199px) {
-        background: #F9F9FC;
+        background: #f9f9fc;
         padding: 13px;
         margin-bottom: 8px;
       }
@@ -272,7 +267,7 @@ export default {
     }
     .b-event-preview__form-block {
       padding: 20px 16px;
-      background: #FFFFFF;
+      background: #ffffff;
       box-shadow: 2px 2px 10px rgba(56, 56, 251, 0);
       border-radius: 6px;
       .b-event-preview__top-line {
@@ -291,7 +286,7 @@ export default {
               min-width: 48px;
               width: 48px;
               height: 48px;
-              background: #EFEFF6;
+              background: #efeff6;
               border-radius: 4px;
             }
           }
@@ -319,14 +314,14 @@ export default {
             }
             .b-event-preview__address {
               display: flex;
-              background: #FAFAFA;
+              background: #fafafa;
               padding: 0px 4px;
               margin-top: 4px;
               img {
                 margin-right: 5px;
               }
               p {
-                font-family: "Inter";
+                font-family: 'Inter';
                 font-style: normal;
                 font-weight: 400;
                 font-size: 12px;
@@ -364,7 +359,7 @@ export default {
               font-size: 12px;
               line-height: 20px;
               text-align: right;
-              color: #4C4A82;
+              color: #4c4a82;
             }
           }
         }
@@ -372,7 +367,7 @@ export default {
       .b-event-preview__text-area {
         margin-top: 12px;
         height: 80px;
-        background: #EFEFF6;
+        background: #efeff6;
         border-radius: 6px;
         padding: 10px;
         overflow-y: scroll;
@@ -394,7 +389,7 @@ export default {
         }
       }
       .b-event-preview__bottom-part {
-        border-top: 1px dashed #DFDEED;
+        border-top: 1px dashed #dfdeed;
         padding-top: 12px;
         display: flex;
         justify-content: space-between;
@@ -410,17 +405,20 @@ export default {
           .b-event-preview__titles {
             margin-right: 30px;
           }
-          .b-event-preview__titles, .b-event-preview__date {
+          .b-event-preview__titles,
+          .b-event-preview__date {
             font-family: 'Inter';
             font-style: normal;
             font-weight: 400;
             font-size: 12px;
             line-height: 20px;
           }
-          .b-event-preview__players, .b-event-preview__players-date {
+          .b-event-preview__players,
+          .b-event-preview__players-date {
             color: #262541;
           }
-          .b-event-preview__visitors, .b-event-preview__visitors-date {
+          .b-event-preview__visitors,
+          .b-event-preview__visitors-date {
             color: #575775;
           }
         }

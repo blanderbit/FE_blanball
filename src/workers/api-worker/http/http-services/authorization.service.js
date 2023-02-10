@@ -1,23 +1,22 @@
-import { AxiosInstance } from "../../../../plugins/axios.plugin";
-import { EndpointsEnum } from "../http-common/prefix.enum";
-import { AxiosParams, AxiosSkipErrorMessageType } from "../../../utils-worker";
-import { DETAILS_TYPE_ENUM } from "../../../type-request-message-worker";
+import { AxiosInstance } from '../../../../plugins/axios.plugin'
+import { EndpointsEnum } from '../http-common/prefix.enum'
+import { AxiosParams, AxiosSkipErrorMessageType } from '../../../utils-worker'
+import { DETAILS_TYPE_ENUM } from '../../../type-request-message-worker'
 
 export class AuthorizationService {
   static login(data) {
     return AxiosInstance.post(
       EndpointsEnum.Authorization.Login,
       data,
-      AxiosParams(
-        AxiosSkipErrorMessageType([
-          DETAILS_TYPE_ENUM.INVALID_PAGE
-        ])
-      )
+      AxiosParams(AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_PAGE]))
     )
   }
 
   static ResetPasswordRequest(data) {
-    return AxiosInstance.post(EndpointsEnum.Authorization.ResetPasswordRequest, data)
+    return AxiosInstance.post(
+      EndpointsEnum.Authorization.ResetPasswordRequest,
+      data
+    )
   }
 
   static VerifyCode(data) {
@@ -25,7 +24,10 @@ export class AuthorizationService {
   }
 
   static VerifyCodeResetPassword(data) {
-    return AxiosInstance.post(EndpointsEnum.Authorization.VerifyCodeResetPassword, data)
+    return AxiosInstance.post(
+      EndpointsEnum.Authorization.VerifyCodeResetPassword,
+      data
+    )
   }
 
   static ResetComplete(data) {

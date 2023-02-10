@@ -8,10 +8,7 @@
         <img src="../../assets/img/envelop.svg" alt="" />
       </template>
       <template #change-login>
-        <div 
-          v-if="modalSteps.first"
-          class="inut-wrapper"
-        >
+        <div v-if="modalSteps.first" class="inut-wrapper">
           <InputComponent
             :title="$t('modals.change_login.current-email')"
             :placeholder="userEmail"
@@ -24,9 +21,9 @@
           <div class="inut-wrapper">
             <InputComponent
               :title="
-                modalSteps.first ? 
-                $t('modals.change_login.new-email') : 
-                $t('modals.change_login.email')
+                modalSteps.first
+                  ? $t('modals.change_login.new-email')
+                  : $t('modals.change_login.email')
               "
               :placeholder="'example@panda.com'"
               :outside-title="true"
@@ -35,21 +32,15 @@
               name="email"
             />
           </div>
-          <div 
-            v-if="modalSteps.second"
-            class="description-text"
-          >
-            <Counter 
+          <div v-if="modalSteps.second" class="description-text">
+            <Counter
               :start-time="30"
               :counter-text="$t('modals.change_login.code-message')"
               :email="userEmail"
-              @resend-code-action="sendEmailAgain" 
+              @resend-code-action="sendEmailAgain"
             />
           </div>
-          <div 
-            v-show="modalSteps.second"
-            class="code-input-field"
-          >
+          <div v-show="modalSteps.second" class="code-input-field">
             <CodeInput
               :fields="5"
               :fieldWidth="48"
@@ -76,7 +67,7 @@
 <script>
 import { computed, ref } from 'vue'
 import { Form } from '@system.it.flumx.com/vee-validate'
-import * as yup from "yup"
+import * as yup from 'yup'
 import { useI18n } from 'vue-i18n'
 
 import ModalWindow from '../../components/ModalWindow.vue'
@@ -84,7 +75,7 @@ import Counter from '../../components/Counter.vue'
 import CodeInput from '../../components/forms/CodeInput.vue'
 import InputComponent from '../../components/forms/InputComponent.vue'
 
-import { API } from "../../workers/api-worker/api.worker"
+import { API } from '../../workers/api-worker/api.worker'
 
 export default {
   name: 'ChangeEmailModal',
@@ -93,17 +84,17 @@ export default {
     InputComponent,
     Counter,
     CodeInput,
-    Form
+    Form,
   },
   props: {
     userEmail: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   emits: ['closeModal', 'email'],
   setup(props, context) {
-    const { t } = useI18n();
+    const { t } = useI18n()
     const modalSteps = ref({
       first: true,
       second: false,
@@ -112,27 +103,30 @@ export default {
 
     const schema = computed(() => {
       return yup.object({
-        verify_code: yup.string().required('errors.required').min(5, 'errors.min5'),
-        email: yup.string().required('errors.required')
+        verify_code: yup
+          .string()
+          .required('errors.required')
+          .min(5, 'errors.min5'),
+        email: yup.string().required('errors.required'),
       })
     })
 
     const cancelBtnTitle = computed(() => {
-      return modalSteps.value.first ?
-      t('buttons.cancel-editing') :
-      t('buttons.return')
+      return modalSteps.value.first
+        ? t('buttons.cancel-editing')
+        : t('buttons.return')
     })
 
     const saveBtnTitle = computed(() => {
-      return modalSteps.value.first ?
-      t('buttons.save-changes') :
-      t('buttons.approve')
+      return modalSteps.value.first
+        ? t('buttons.save-changes')
+        : t('buttons.approve')
     })
 
     function setSteps(first, second) {
       modalSteps.value = {
         first,
-        second
+        second,
       }
     }
     function cancelClick() {
@@ -151,11 +145,10 @@ export default {
         sendCodeForChangingEmail(payload)
       } else {
         payload = { verify_code: data.controlledValues.verify_code }
-        API.UserService.sendApproveCode(payload)
-          .then(() => {
-            closeModal()
-            context.emit('email')
-          })
+        API.UserService.sendApproveCode(payload).then(() => {
+          closeModal()
+          context.emit('email')
+        })
       }
     }
     function sendEmailAgain() {
@@ -168,9 +161,7 @@ export default {
       setSteps(true, false)
       context.emit('closeModal', 'email')
     }
-    function sendCodeForChangeEmail() {
-
-    }
+    function sendCodeForChangeEmail() {}
 
     return {
       closeModal,
@@ -185,12 +176,10 @@ export default {
       disableSubmit: (e) => {
         e.stopPropagation()
         e.preventDefault()
-      }
+      },
     }
-  }
+  },
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

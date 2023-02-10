@@ -7,54 +7,56 @@
   >
     <template #images>
       <img
-          src="../../assets/img/ball-colored.svg"
-          alt="ball-big"
-          class="b-register-step__ball-big"
+        src="../../assets/img/ball-colored.svg"
+        alt="ball-big"
+        class="b-register-step__ball-big"
       />
       <img
-          src="../../assets/img/ball-colored.svg"
-          alt="ball-small"
-          class="b-register-step__ball-small"
+        src="../../assets/img/ball-colored.svg"
+        alt="ball-small"
+        class="b-register-step__ball-small"
       />
     </template>
     <template #content>
       <div class="b-register-step__input">
         <InputComponent
-            :outside-title="true"
-            :title="$t('register.name')"
-            :placeholder="'Олександра'"
-            :title-width="0"
-            :height="40"
-            name="profile.name"
+          :outside-title="true"
+          :title="$t('register.name')"
+          :placeholder="'Олександра'"
+          :title-width="0"
+          :height="40"
+          name="profile.name"
         />
       </div>
       <div class="b-register-step__input mb-2">
         <InputComponent
-            :outside-title="true"
-            :title="$t('register.last_name')"
-            :placeholder="'Білозерська'"
-            :title-width="0"
-            :height="40"
-            name="profile.last_name"
+          :outside-title="true"
+          :title="$t('register.last_name')"
+          :placeholder="'Білозерська'"
+          :title-width="0"
+          :height="40"
+          name="profile.last_name"
         />
       </div>
       <div class="b-register-step__small-title">
-        {{$t('register.gender')}}
-        <span class="b-marked-message">{{$t('register.gender-just-one-time')}}</span>
+        {{ $t('register.gender') }}
+        <span class="b-marked-message">{{
+          $t('register.gender-just-one-time')
+        }}</span>
       </div>
       <div class="b-register-step__gender-block mb-3">
         <div class="radio-btn-wrapper">
           <radio-button
-              name="gender"
-              :title="$t('register.men')"
-              value="Man"
-              :url="icons.MaleIcon"
+            name="gender"
+            :title="$t('register.men')"
+            value="Man"
+            :url="icons.MaleIcon"
           ></radio-button>
           <radio-button
-              name="gender"
-              :title="$t('register.women')"
-              value="Woman"
-              :url="icons.FemaleIcon"
+            name="gender"
+            :title="$t('register.women')"
+            value="Woman"
+            :url="icons.FemaleIcon"
           ></radio-button>
         </div>
       </div>
@@ -72,8 +74,8 @@ import StepWrapper from './StepWrapper.vue'
 
 import arrowRight from '../../assets/img/arrow-right-white.svg'
 import RadioButton from '../forms/RadioButton.vue'
-import MaleIcon from '../../assets/img/male-icon.svg';
-import FemaleIcon from '../../assets/img/female-icon.svg';
+import MaleIcon from '../../assets/img/male-icon.svg'
+import FemaleIcon from '../../assets/img/female-icon.svg'
 
 export default {
   name: 'Step1',
@@ -81,27 +83,27 @@ export default {
     GreenBtn,
     InputComponent,
     StepWrapper,
-    RadioButton
+    RadioButton,
   },
   setup() {
-    const { t } = useI18n();
+    const { t } = useI18n()
     const icons = computed(() => {
       return {
         MaleIcon,
-        FemaleIcon
+        FemaleIcon,
       }
-    });
-    const arrow_right = computed(() => arrowRight);
+    })
+    const arrow_right = computed(() => arrowRight)
     const stepConfig = computed(() => {
       return {
         title: t('register.title'),
         returnButton: {
           exist: true,
-          text: t('register.return_to_login')
+          text: t('register.return_to_login'),
         },
         nextButton: {
           exist: true,
-          text: t('register.next')
+          text: t('register.next'),
         },
         stepperLines: {
           count: 2,
@@ -109,76 +111,76 @@ export default {
           exist: true,
         }
       }
-    });
+    })
     return {
       arrow_right,
       stepConfig,
-      icons
+      icons,
     }
   },
 }
 </script>
 
 <style lang="scss" scoped>
-  .b-register-step__input {
-    width: 384px;
-    margin-top: 12px;
-    @media (max-width: 992px) {
-      width: 100%;
-    }
+.b-register-step__input {
+  width: 384px;
+  margin-top: 12px;
+  @media (max-width: 992px) {
+    width: 100%;
   }
+}
 
-  .b-register-step__ball-big {
-    position: absolute;
-    width: 80px;
-    top: -30px;
-    left: -30px;
-    @media (min-width: 576px) {
-      display: none;
-    }
+.b-register-step__ball-big {
+  position: absolute;
+  width: 80px;
+  top: -30px;
+  left: -30px;
+  @media (min-width: 576px) {
+    display: none;
   }
-  .b-register-step__ball-small {
-    position: absolute;
-    top: 0;
-    right: 0;
-    @media (min-width: 576px) {
-      display: none;
-    }
+}
+.b-register-step__ball-small {
+  position: absolute;
+  top: 0;
+  right: 0;
+  @media (min-width: 576px) {
+    display: none;
   }
-  .b-register-step__small-title {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 20px;
-    color: #262541;
+}
+.b-register-step__small-title {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #262541;
+}
+.b-register-step__gender-block {
+  margin-top: 12px;
+  .radio-btn-wrapper {
+    $color1: #f4f4f4;
+    $color2: #148783;
+    display: flex;
+    align-items: center;
   }
-  .b-register-step__gender-block {
-    margin-top: 12px;
-    .radio-btn-wrapper {
-      $color1: #f4f4f4;
-      $color2: #148783;
-      display: flex;
-      align-items: center;
-    }
-  }
+}
 
-  ::v-deep {
-    .b-radio-label {
-      font-weight: 400;
-      font-size: 13px;
-      line-height: 24px;
-    }
-  }
-
-  .b-marked-message {
-    font-style: normal;
+::v-deep {
+  .b-radio-label {
     font-weight: 400;
-    font-size: 12px;
-    line-height: 16px;
-    color: #575775;
-    background: #EFEFF6;
-    border-radius: 4px;
-    padding: 0px 2px;
+    font-size: 13px;
+    line-height: 24px;
   }
+}
+
+.b-marked-message {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #575775;
+  background: #efeff6;
+  border-radius: 4px;
+  padding: 0px 2px;
+}
 </style>

@@ -4,61 +4,66 @@
     :style="btnStyle"
     @click="!disabled && $emit('click-function')"
   >
-    <img class="b-green-btn__left-icon" v-if="icon" :src="icon" alt="">
+    <img class="b-green-btn__left-icon" v-if="icon" :src="icon" alt="" />
     {{ text }}
-    <img class="b-green-btn__right-icon" v-if="iconRight" :src="iconRight" alt="">
+    <img
+      class="b-green-btn__right-icon"
+      v-if="iconRight"
+      :src="iconRight"
+      alt=""
+    />
     <loading :is-loading="loading"></loading>
   </div>
 </template>
 
 <script>
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue'
 import Loading from './../workers/loading-worker/Loading.vue'
 
 export default {
   components: {
-      Loading
+    Loading,
   },
   props: {
     text: {
       type: String,
-      required: true
+      required: true,
     },
     width: {
       type: Number,
-      default: null
+      default: null,
     },
     height: {
       type: Number,
-      default: 32
+      default: 32,
     },
     icon: {
       type: String,
-      default: null
+      default: null,
     },
     iconRight: {
       type: String,
-      default: null
+      default: null,
     },
     backgroundColor: {
       type: String,
-      default: '#148783'
+      default: '#148783',
     },
     fontStyles: {
       type: Object,
-      default: () => {}
+      default: () => {},
     },
     isIconAndTextApart: {
       type: Boolean,
-      default: false
+      default: false,
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     loading: {
       type: Boolean,
-      default: false
+      default: false,
     },
   },
   setup(props) {
@@ -71,13 +76,15 @@ export default {
         background: !props.disabled ? props.backgroundColor : '#EFEFF6',
         // 'justify-content': props.iconRight || props.icon ? 'space-around' : 'center'
         'justify-content': 'center',
-
       }
     })
 
-    watch(() => props.loading, (value) => {
-      value ? start() : finish()
-    })
+    watch(
+      () => props.loading,
+      (value) => {
+        value ? start() : finish()
+      }
+    )
 
     function start() {
       loading.value = true
@@ -87,9 +94,9 @@ export default {
     }
 
     return {
-      btnStyle
+      btnStyle,
     }
-  }
+  },
 }
 </script>
 
@@ -135,7 +142,8 @@ export default {
     height: 100%;
     background: transparent;
     .spiner {
-      .lds-ring, .lds-ring div {
+      .lds-ring,
+      .lds-ring div {
         width: 25px;
         height: 25px;
       }

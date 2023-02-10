@@ -1,16 +1,19 @@
-import { InitialMessage } from "./initial.message";
+import { InitialMessage } from './initial.message'
 
 import {
   SetActions,
   SetMessageType,
   SetPushNotificationTheme,
   AuthWebSocketMessage,
-  NotificationSetUserImage
-} from "../../type.decorator";
+  NotificationSetUserImage,
+} from '../../type.decorator'
 
-import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
-import { WebSocketTypes } from "../../web.socket.types";
-import { ROUTES } from "../../../../router/router.const";
+import {
+  MessageActionTypes,
+  MessageActionDataTypes,
+} from '../../message.action.types'
+import { WebSocketTypes } from '../../web.socket.types'
+import { ROUTES } from '../../../../router/router.const'
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.ResponseToInviteForEvent)
@@ -21,9 +24,9 @@ export class ResponseToInviteForParticipationMessage extends InitialMessage {
     return [
       data.invite.response
         ? `Юзер ${data.sender.name} подтвердил свое участие на ивенте;`
-        : `Юзер ${data.sender.name} отклонил свое участие на ивенте;`
+        : `Юзер ${data.sender.name} отклонил свое участие на ивенте;`,
     ]
-  };
+  }
 
   createTitle(data) {
     return data.invite.response
@@ -36,17 +39,18 @@ export class ResponseToInviteForParticipationMessage extends InitialMessage {
       {
         type: MessageActionTypes.ActionClose,
         text: 'Понятно',
-      }
-    ];
+      },
+    ]
 
     if (this.data.invite.response) {
       this.actions.push({
         type: MessageActionTypes.Action,
         text: 'Просмотреть ивент',
-        action: () => ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(this.data.event.id),
+        action: () =>
+          ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(this.data.event.id),
         actionType: MessageActionDataTypes.UrlCallback,
-        buttonType: 'stroked'
-      });
+        buttonType: 'stroked',
+      })
       SetPushNotificationTheme('success')(this)
     } else {
       this.actions.push({
@@ -54,8 +58,8 @@ export class ResponseToInviteForParticipationMessage extends InitialMessage {
         text: 'Найти юзеров',
         action: ROUTES.APPLICATION.USERS.absolute,
         actionType: MessageActionDataTypes.Url,
-        buttonType: 'stroked'
-      });
+        buttonType: 'stroked',
+      })
       SetPushNotificationTheme('error')(this)
     }
   }

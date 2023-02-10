@@ -1,19 +1,13 @@
 <template>
   <span class="b-counter">
-    <p 
-      v-if="seconds" 
-      class="b-counter__sms-text"
-    >
+    <p v-if="seconds" class="b-counter__sms-text">
       {{ counterText }}
       {{ email }}
       {{ $t('counter.during') }}
       {{ seconds }}
       {{ $t('counter.seconds') }}
     </p>
-    <p 
-      v-else
-      class="b-counter__sms-text"
-    >
+    <p v-else class="b-counter__sms-text">
       {{ $t('counter.sms-not-came') }}
       <span @click="resendCodeMethod">
         {{ $t('counter.send-again') }}
@@ -30,16 +24,16 @@ export default {
   props: {
     startTime: {
       type: Number,
-      default: 30
+      default: 30,
     },
     counterText: {
       type: String,
-      default: ''
+      default: '',
     },
     email: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   emits: ['resendCodeAction'],
   setup(props, { emit }) {
@@ -66,7 +60,7 @@ export default {
       seconds,
       resendCodeMethod,
     }
-  }
+  },
 }
 </script>
 

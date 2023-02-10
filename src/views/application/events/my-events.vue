@@ -10,18 +10,17 @@
     <div class="b-events-page__main-body" ref="mainEventsBlock">
       <div class="b-events-page__header-block">
         <div class="b-events-page__left-part">
-          <div class="b-events-page__title">{{ $t('events.future-events') }}</div>
-          <div class="b-events-page__subtitle">{{ $t('events.renew-your-data') }}</div>
+          <div class="b-events-page__title">
+            {{ $t('events.future-events') }}
+          </div>
+          <div class="b-events-page__subtitle">
+            {{ $t('events.renew-your-data') }}
+          </div>
           <div class="b-events-page__event-switcher">
-            <div
-              class="b-events-page__general-events"
-              @click="switchEvents"
-            >
+            <div class="b-events-page__general-events" @click="switchEvents">
               {{ $t('events.general-events') }}
             </div>
-            <div
-              class="b-events-page__my-events"
-            >
+            <div class="b-events-page__my-events">
               {{ $t('events.my-events') }}
             </div>
           </div>
@@ -39,51 +38,51 @@
 
       <div class="b-events-page__main-search-block">
         <events-filters
-            :modelValue="filters"
-            @update:value="setFilters"
-            @clearFilters="clearFilters"
+          :modelValue="filters"
+          @update:value="setFilters"
+          @clearFilters="clearFilters"
         ></events-filters>
         <SmartGridList
-            :list="paginationElements"
-            ref="refList"
-            :detectSizesForCards="detectSizesForCards"
-            v-model:scrollbar-existing="blockScrollToTopIfExist"
+          :list="paginationElements"
+          ref="refList"
+          :detectSizesForCards="detectSizesForCards"
+          v-model:scrollbar-existing="blockScrollToTopIfExist"
         >
           <template #smartGridListItem="slotProps">
             <MyEventCard
-                :key="slotProps.index"
-                :card="slotProps.smartListItem"
-                @card-right-click="myCardRightClick"
-                @go-to-event-page="goToEventPage(slotProps.smartListItem.id)"
+              :key="slotProps.index"
+              :card="slotProps.smartListItem"
+              @card-right-click="myCardRightClick"
+              @go-to-event-page="goToEventPage(slotProps.smartListItem.id)"
             />
 
             <!--  @update:expanding="slotProps.smartListItem.metadata.expanding = $event"-->
           </template>
           <template #after>
             <InfiniteLoading
-                :identifier="triggerForRestart"
-                ref="scrollbar"
-                @infinite="loadDataPaginationData(paginationPage + 1, $event)">
+              :identifier="triggerForRestart"
+              ref="scrollbar"
+              @infinite="loadDataPaginationData(paginationPage + 1, $event)"
+            >
               <template #complete>
                 <EmptyList
-                    v-if="!paginationElements.length"
-                    :title="emptyListMessages.title"
-                    :description="emptyListMessages.title"
+                  v-if="!paginationElements.length"
+                  :title="emptyListMessages.title"
+                  :description="emptyListMessages.title"
                 />
 
                 <ScrollToTop
-                    :element-length="paginationElements"
-                    :is-scroll-top-exist="blockScrollToTopIfExist"
-                    @scroll-button-clicked="scrollToFirstElement()"
+                  :element-length="paginationElements"
+                  :is-scroll-top-exist="blockScrollToTopIfExist"
+                  @scroll-button-clicked="scrollToFirstElement()"
                 />
-
               </template>
             </InfiniteLoading>
           </template>
         </SmartGridList>
       </div>
     </div>
-  <RightSidebar />
+    <RightSidebar />
   </div>
 </template>
 
@@ -106,17 +105,17 @@ import EmptyList from '../../../components/EmptyList.vue'
 
 import CONSTANTS from '../../../consts/index'
 
-import { API } from "../../../workers/api-worker/api.worker";
-import { ROUTES } from "../../../router/router.const";
+import { API } from '../../../workers/api-worker/api.worker'
+import { ROUTES } from '../../../router/router.const'
 import SmartGridList from '../../../components/smart-list/SmartGridList.vue'
 import ScrollToTop from '../../../components/ScrollToTop.vue'
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue'
-import { PaginationWorker } from "../../../workers/pagination-worker";
-import { FilterPatch } from "../../../workers/api-worker/http/filter/filter.patch";
+import { PaginationWorker } from '../../../workers/pagination-worker'
+import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patch'
 import FilterBlock from '../../../components/filters/FilterBlock.vue'
 
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue'
-import { v4 as uuid } from "uuid";
+import { v4 as uuid } from 'uuid'
 import Plus from '../../../assets/img/plus.svg'
 
 const COLORS = {
@@ -140,7 +139,7 @@ export default {
     InfiniteLoading,
     ScrollToTop,
     FilterBlock,
-    EventsFilters
+    EventsFilters,
   },
   setup() {
     const scrollComponent = ref(null)
@@ -172,10 +171,10 @@ export default {
 
     const emptyListMessages = computed(() => {
       return {
-        title: "Немає повідомлень для відображення",
-        description: "Вам ще не надходили сповіщення від інших користувачів"
+        title: 'Немає повідомлень для відображення',
+        description: 'Вам ще не надходили сповіщення від інших користувачів',
       }
-    });
+    })
 
     function switchEvents() {
       router.push(ROUTES.APPLICATION.EVENTS.absolute)
@@ -187,7 +186,6 @@ export default {
     function getTime(time) {
       return dayjs(time).locale(dayjsUkrLocale).format('HH:mm')
     }
-
 
     function handlingIncomeData(item) {
       return {
@@ -204,7 +202,6 @@ export default {
       }
     }
 
-
     function myCardRightClick(e) {
       contextMenuX.value = e.clientX
       contextMenuY.value = e.clientY
@@ -219,117 +216,129 @@ export default {
       router.push('/application/events/create')
     }
 
-
-    const refList = ref();
-    const blockScrollToTopIfExist = ref(false);
-    const triggerForRestart = ref(false);
+    const refList = ref()
+    const blockScrollToTopIfExist = ref(false)
+    const triggerForRestart = ref(false)
 
     const restartInfiniteScroll = () => {
       triggerForRestart.value = uuid()
-    };
+    }
 
     const {
       paginationElements,
       paginationPage,
       paginationTotalCount,
       paginationLoad,
-      paginationClearData
+      paginationClearData,
     } = PaginationWorker({
       paginationDataRequest: (page) => {
         return API.EventService.getAllMyEvents({
           ...getRawFilters(),
-          page
+          page,
         })
       },
-      dataTransformation: handlingIncomeData
-    });
+      dataTransformation: handlingIncomeData,
+    })
 
-    paginationPage.value = 1;
-    paginationElements.value = route.meta.eventData.data.results.map(handlingIncomeData);
+    paginationPage.value = 1
+    paginationElements.value =
+      route.meta.eventData.data.results.map(handlingIncomeData)
 
-    const {
-      getRawFilters,
-      updateFilter,
-      filters,
-      clearFilters,
-      setFilters
-    } = FilterPatch({
-      router,
-      filters: {
-        duration: {
-          type: Number,
-          value: null,
+    const { getRawFilters, updateFilter, filters, clearFilters, setFilters } =
+      FilterPatch({
+        router,
+        filters: {
+          duration: {
+            type: Number,
+            value: null,
+          },
+          dist: {
+            type: Number,
+            value: null,
+          },
+          point: {
+            type: Number,
+            value: null,
+          },
+          type: {
+            type: String,
+          },
+          date_and_time_after: {
+            type: String,
+          },
+          date_and_time_before: {
+            type: String,
+          },
+          ordering: {
+            type: String,
+            value: '',
+          },
+          status: {
+            type: String,
+            value: '',
+          },
+          gender: {
+            type: String,
+            value: '',
+          },
+          search: {
+            type: String,
+            value: '',
+          },
+          need_ball: {
+            type: Boolean,
+            value: false,
+          },
         },
-        dist: {
-          type: Number,
-          value: null,
+        afterUpdateFiltersCallBack: () => {
+          restartInfiniteScroll()
+          paginationClearData()
         },
-        point: {
-          type: Number,
-          value: null,
-        },
-        type: {
-          type: String,
-        },
-        date_and_time_after: {
-          type: String,
-        },
-        date_and_time_before: {
-          type: String,
-        },
-        ordering: {
-          type: String,
-          value: ''
-        },
-        status: {
-          type: String,
-          value: ''
-        },
-        gender: {
-          type: String,
-          value: ''
-        },
-        search: {
-          type: String,
-          value: ''
-        },
-        need_ball: {
-          type: Boolean,
-          value: false
-        }
-      },
-      afterUpdateFiltersCallBack: () => {
-        restartInfiniteScroll();
-        paginationClearData();
-      }
-    });
+      })
 
-    const detectSizesForCards = ({itemWidth, itemCount, itemHeight, itemMinHeight}) => {
-      itemHeight.value = 100;
+    const detectSizesForCards = ({
+      itemWidth,
+      itemCount,
+      itemHeight,
+      itemMinHeight,
+    }) => {
+      itemHeight.value = 100
       if (window.matchMedia('(min-width: 1400px)').matches) {
-        itemWidth.value = mainEventsBlock.value.clientWidth / 3;
-        itemCount.value = 3;
-      } else if (window.matchMedia('(min-width: 1200px) and (max-width: 1400px)').matches) {
-        itemWidth.value = mainEventsBlock.value.clientWidth / 2;
-        itemCount.value = 2;
-      } else if (window.matchMedia('(min-width: 992px) and (max-width: 1199px)').matches) {
-        itemWidth.value = mainEventsBlock.value.clientWidth / 2;
-        itemCount.value = 2;
-      } else if (window.matchMedia('(min-width: 768px) and (max-width: 991px)').matches) {
-        itemWidth.value = mainEventsBlock.value.clientWidth / 2;
-        itemCount.value = 2;
-      } else if (window.matchMedia('(min-width: 576px) and (max-width: 768px)').matches) {
-        itemWidth.value = mainEventsBlock.value.clientWidth;
+        itemWidth.value = mainEventsBlock.value.clientWidth / 3
+        itemCount.value = 3
+      } else if (
+        window.matchMedia('(min-width: 1200px) and (max-width: 1400px)').matches
+      ) {
+        itemWidth.value = mainEventsBlock.value.clientWidth / 2
+        itemCount.value = 2
+      } else if (
+        window.matchMedia('(min-width: 992px) and (max-width: 1199px)').matches
+      ) {
+        itemWidth.value = mainEventsBlock.value.clientWidth / 2
+        itemCount.value = 2
+      } else if (
+        window.matchMedia('(min-width: 768px) and (max-width: 991px)').matches
+      ) {
+        itemWidth.value = mainEventsBlock.value.clientWidth / 2
+        itemCount.value = 2
+      } else if (
+        window.matchMedia('(min-width: 576px) and (max-width: 768px)').matches
+      ) {
+        itemWidth.value = mainEventsBlock.value.clientWidth
         itemCount.value = 1
       } else if (window.matchMedia('(max-width: 576px)').matches) {
-        itemWidth.value = mainEventsBlock.value.clientWidth;
-        itemCount.value = 1;
+        itemWidth.value = mainEventsBlock.value.clientWidth
+        itemCount.value = 1
       }
-    };
+    }
 
     const loadDataPaginationData = (pageNumber, $state) => {
-      paginationLoad({pageNumber, $state, forceUpdate: paginationPage.value === 1})
-    };
+      paginationLoad({
+        pageNumber,
+        $state,
+        forceUpdate: paginationPage.value === 1,
+      })
+    }
     return {
       scrollComponent,
       eventCards,
@@ -424,9 +433,9 @@ export default {
             width: 100px;
             height: 28px;
             border-radius: 6px 0px 0px 6px;
-            border-top: 1px solid #F0F0F4;
-            border-left: 1px solid #F0F0F4;
-            border-bottom: 1px solid #F0F0F4;
+            border-top: 1px solid #f0f0f4;
+            border-left: 1px solid #f0f0f4;
+            border-bottom: 1px solid #f0f0f4;
             cursor: pointer;
           }
           .b-events-page__my-events {

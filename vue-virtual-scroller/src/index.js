@@ -6,13 +6,9 @@ import DynamicScrollerItem from './components/DynamicScrollerItem.vue'
 
 export { default as IdState } from './mixins/IdState'
 
-export {
-  RecycleScroller,
-  DynamicScroller,
-  DynamicScrollerItem,
-}
+export { RecycleScroller, DynamicScroller, DynamicScrollerItem }
 
-function registerComponents (app, prefix) {
+function registerComponents(app, prefix) {
   app.component(`${prefix}recycle-scroller`, RecycleScroller)
   app.component(`${prefix}RecycleScroller`, RecycleScroller)
   app.component(`${prefix}dynamic-scroller`, DynamicScroller)
@@ -24,11 +20,15 @@ function registerComponents (app, prefix) {
 const plugin = {
   // eslint-disable-next-line no-undef
   version: VERSION,
-  install (app, options) {
-    const finalOptions = Object.assign({}, {
-      installComponents: true,
-      componentsPrefix: '',
-    }, options)
+  install(app, options) {
+    const finalOptions = Object.assign(
+      {},
+      {
+        installComponents: true,
+        componentsPrefix: '',
+      },
+      options
+    )
 
     for (const key in finalOptions) {
       if (typeof finalOptions[key] !== 'undefined') {

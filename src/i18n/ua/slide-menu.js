@@ -1,5 +1,5 @@
 export default {
-  'notifications': 'Сповіщення',
-  'link': 'Посилання',
-  'version': 'Blanball.version'
+  notifications: 'Сповіщення',
+  link: 'Посилання',
+  version: 'Blanball.version',
 }

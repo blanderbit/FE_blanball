@@ -1,8 +1,6 @@
 <template>
   <div class="b-user-cabinet">
-    <Loading
-      :is-loading="isLoading"
-    />
+    <Loading :is-loading="isLoading" />
 
     <EditAvatarModal
       v-if="isModalActive.edit_avatar"
@@ -24,42 +22,34 @@
       @close-modal="toggleModal"
     />
 
-    <ChangePasswordModal 
+    <ChangePasswordModal
       v-if="isModalActive.change_password"
       :user-email="userEmail"
       @close-modal="toggleModal"
     />
 
-    <ModalUserWindow
-      v-if="isModalActive.public_profile"
-    >
+    <ModalUserWindow v-if="isModalActive.public_profile">
       <template #top-buttons>
         <div class="b-player-page__outer-btns">
-          <div 
+          <div
             class="b-player-page__continue"
             @click="toggleModal('public_profile')"
           >
             <span>{{ $t('buttons.keep-editing') }}</span>
-            <img src="../../../assets/img/arrow-left-small.svg" alt="">
+            <img src="../../../assets/img/arrow-left-small.svg" alt="" />
           </div>
-          <div
-            @click="saveDataFromPreviewWindow"
-            class="b-player-page__exit"
-          >
+          <div @click="saveDataFromPreviewWindow" class="b-player-page__exit">
             <span>{{ $t('buttons.save-and-out') }}</span>
-            <img src="../../../assets/img/cross-white.svg" alt="">
+            <img src="../../../assets/img/cross-white.svg" alt="" />
           </div>
         </div>
       </template>
       <template #user-content>
-        <PlayerPageComponent 
-          :page-mode="'public'"
-          :user-data="restData"
-        />
+        <PlayerPageComponent :page-mode="'public'" :user-data="restData" />
       </template>
     </ModalUserWindow>
 
-    <ChangeUserDataModal 
+    <ChangeUserDataModal
       v-if="isModalActive.change_data"
       :config="changeDataModalConfig"
       @close-modal="closeChangeUserDataModal"
@@ -77,7 +67,7 @@
           {{ $t('profile.change-personal-data') }}
         </div>
       </div>
-      <ButtonsBlock 
+      <ButtonsBlock
         v-if="!isMobile"
         :cancel-btn-width="'auto'"
         :save-btn-width="'auto'"
@@ -87,15 +77,14 @@
         @toggle-modal="toggleModal"
         @toggle-edit-mode="toggleEditMode"
       />
-
     </div>
     <div class="b-user-cabinet__tab-block">
       <div
         v-for="tab in mockData.tabs"
         :key="tab.id"
         :class="[
-          'b-user-cabinet__tab-element', 
-          { active: tab.isActive, disabled: tab.isDisabled }
+          'b-user-cabinet__tab-element',
+          { active: tab.isActive, disabled: tab.isDisabled },
         ]"
         @click="changeTab(tab.id, tab.url, tab.isDisabled)"
         @mouseenter="switchTabLabel(tab.isDisabled)"
@@ -103,8 +92,8 @@
       >
         <img :src="tab.img" :alt="tab.name" />
         {{ tab.name }}
-        <TabLabel 
-          v-if="tab.isDisabled && isTabLabel" 
+        <TabLabel
+          v-if="tab.isDisabled && isTabLabel"
           :title="$t('profile.coming-soon-title')"
           :text="$t('profile.coming-soon-text')"
         />
@@ -118,10 +107,7 @@
         @submit="disableSubmit"
         ref="myForm"
       >
-        <RatingCard
-          v-if="!isTabletSize"
-          :rating-scale="userRating" 
-        />
+        <RatingCard v-if="!isTabletSize" :rating-scale="userRating" />
         <UserDetailsCard
           :user-data="userData"
           :phone="userPhone"
@@ -129,10 +115,7 @@
           @openEditPictureModal="openEditPictureModal"
         />
         <div class="b-user-cabinet__mobile-tablet-block">
-          <RatingCard 
-            v-if="isTabletSize"
-            :rating-scale="userRating" 
-          />
+          <RatingCard v-if="isTabletSize" :rating-scale="userRating" />
           <SecurityBlock
             @toggle-modal="toggleModal"
             :user-email="userEmail"
@@ -183,26 +166,24 @@ import ButtonsBlock from '../../../components/user-cabinet/ButtonsBlock.vue'
 import EditAvatarModal from '../../../components/user-cabinet/EditAvatarModal.vue'
 
 import Loading from '../../../workers/loading-worker/Loading.vue'
-import { API } from "../../../workers/api-worker/api.worker"
+import { API } from '../../../workers/api-worker/api.worker'
 import CONSTANTS from '../../../consts'
 
 import useWindowWidth from '../../../utils/widthScreen'
 
-yup.addMethod(yup.string, "userName", function (errorMessage) {
+yup.addMethod(yup.string, 'userName', function (errorMessage) {
   return this.test(`UserName`, errorMessage, function (value) {
-    const { path, createError } = this;
+    const { path, createError } = this
     // const reg = /^[a-zа-яієїґ\'\d]{1}[a-zа-яієїґ\'\d-]*[a-zа-яієїґ\'\d]{1}$/i;
-    const reg = /^[А-Яа-яієїґЇІЄҐ\'\d]{1}[А-Яа-яієїґЇІЄҐ\'\d-]*[А-Яа-яієїґЇІЄҐ\'\d]{1}$/i;
-    return (
-      reg.exec(value) ||
-      createError({ path, message: errorMessage })
-    );
-  });
-});
+    const reg =
+      /^[А-Яа-яієїґЇІЄҐ\'\d]{1}[А-Яа-яієїґЇІЄҐ\'\d-]*[А-Яа-яієїґЇІЄҐ\'\d]{1}$/i
+    return reg.exec(value) || createError({ path, message: errorMessage })
+  })
+})
 
 const EDIT_BUTTON_ACTIONS = {
   SAVE: 'save',
-  CANCEL: 'cancel'
+  CANCEL: 'cancel',
 }
 
 export default {
@@ -225,7 +206,7 @@ export default {
     ChangeEmailModal,
     ButtonsBlock,
     TabLabel,
-    EditAvatarModal
+    EditAvatarModal,
   },
   setup(props) {
     const { t } = useI18n()
@@ -234,12 +215,8 @@ export default {
     
     const route = useRoute()
     const router = useRouter()
-    const {
-      onResize,
-      isBetweenTabletAndDesktop, 
-      isMobile,
-      isTablet 
-    } = useWindowWidth()
+    const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
+      useWindowWidth()
 
     const userInfo = ref(null)
     const userRating = ref(null)
@@ -253,14 +230,17 @@ export default {
     const isTabLabel = ref(false)
     const userAvatar = ref('')
     const restData = ref()
-    
+
     const isTabletSize = computed(() => {
       return isBetweenTabletAndDesktop.value || isTablet.value
     })
     const mockData = computed(() => {
       return {
         user_info: CONSTANTS.users_page.userInfo,
-        tabs: CONSTANTS.profile.tabs.map(item => ({...item, name: t(item.name)})),
+        tabs: CONSTANTS.profile.tabs.map((item) => ({
+          ...item,
+          name: t(item.name),
+        })),
         monthFromNumber: CONSTANTS.users_page.months.monthFromNumber,
         numberFromMonth: CONSTANTS.users_page.months.numberFromMonth,
       }
@@ -289,7 +269,7 @@ export default {
       show_reviews: store.user.profile.show_reviews,
       planned_events: true
     })
-    
+
     const checkboxData = reactive({})
     const isModalActive = reactive({
       phone: false,
@@ -298,7 +278,7 @@ export default {
       change_password: false,
       public_profile: false,
       change_data: false,
-      edit_avatar: false
+      edit_avatar: false,
     })
 
     const schema = computed(() => {
@@ -336,7 +316,7 @@ export default {
         config_phone: yup.boolean().required('errors.required'),
         config_email: yup.boolean().required('errors.required'),
         show_reviews: yup.boolean().required('errors.required'),
-        planned_events: yup.string().required('errors.required')
+        planned_events: yup.string().required('errors.required'),
       })
     })
 
@@ -363,12 +343,12 @@ export default {
     };
 
     onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
+      window.addEventListener('resize', onResize)
+    })
 
     onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize); 
-    });
+      window.removeEventListener('resize', onResize)
+    })
 
     function switchTabLabel(isDisabled) {
       if (isDisabled) {
@@ -385,15 +365,19 @@ export default {
       return val?.split('-')[0]
     }
     function getWorkingLeg(val) {
-      switch(val) {
-        case 'Left': return 'Ліва'
-          break;
-        case 'Right': return 'Права'
-          break;
-        case 'Ліва': return 'Left'
-          break;
-        case 'Права': return 'Right'
-          break;
+      switch (val) {
+        case 'Left':
+          return 'Ліва'
+          break
+        case 'Right':
+          return 'Права'
+          break
+        case 'Ліва':
+          return 'Left'
+          break
+        case 'Права':
+          return 'Right'
+          break
       }
     }
 
@@ -443,7 +427,16 @@ export default {
 
     function saveUserDataChanges() {
       const refProfileData = { ...myForm.value.getControledValues() }
-      const { day, month, year, working_leg, config_email, config_phone, show_reviews, phone } = refProfileData
+      const {
+        day,
+        month,
+        year,
+        working_leg,
+        config_email,
+        config_phone,
+        show_reviews,
+        phone,
+      } = refProfileData
       const profileData = {
         ...refProfileData,
         birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
@@ -458,40 +451,39 @@ export default {
       delete profileData.config_email
       delete profileData.config_phone
       delete profileData.show_reviews
-      
+
       const payload = {
-        "configuration": {
-          "email": config_email,
-          "phone": config_phone,
-          "show_reviews": show_reviews
+        configuration: {
+          email: config_email,
+          phone: config_phone,
+          show_reviews: show_reviews,
         },
-        "profile": {
-          "place": {
-            "place_name": "string",
-            "lat": 90,
-            "lon": 180
+        profile: {
+          place: {
+            place_name: 'string',
+            lat: 90,
+            lon: 180,
           },
-          ...profileData
+          ...profileData,
         },
-        "get_planned_events": "1y",
-        "phone": phone
+        get_planned_events: '1y',
+        phone: phone,
       }
 
-
       API.UserService.updateProfileData(payload)
-      .then(() => {
-        getMyProfile()
-      })
-      .catch(e => {
-        console.log('mistake happened', e)
-        toast.error(t('profile.some-mistake'))
-      })
+        .then(() => {
+          getMyProfile()
+        })
+        .catch((e) => {
+          console.log('mistake happened', e)
+          toast.error(t('profile.some-mistake'))
+        })
     }
 
     function getMyProfile() {
       isLoading.value = true
       API.UserService.getMyProfile()
-        .then(res => {
+        .then((res) => {
           formValues.value = {
             last_name: res.data.profile?.last_name,
             name: res.data.profile?.name,
@@ -506,7 +498,7 @@ export default {
             phone: res.data?.phone,
             config_phone: res.data.configuration?.phone,
             config_email: res.data.configuration?.email,
-            show_reviews: res.data.configuration?.show_reviews
+            show_reviews: res.data.configuration?.show_reviews,
           }
           userInfo.value = res.data
           userData.value = {
@@ -518,21 +510,20 @@ export default {
             ...res.data,
             configuration: {
               ...res.data?.configuration,
-              planned_events: true
-            }
+              planned_events: true,
+            },
           }
           userEmail.value = res.data?.email
           userPhone.value = res.data?.phone
           isLoading.value = false
           toast.success(t('profile.data-updated'))
         })
-        .catch(e => {
+        .catch((e) => {
           isLoading.value = false
           console.log('some mistake happened', e)
           toast.error(t('profile.some-mistake'))
         })
     }
-
 
     function changeTab(id, url, isDisabled) {
       if (isDisabled) return
@@ -564,7 +555,17 @@ export default {
           break
         case 'public_profile':
           const refProfileData = { ...myForm.value.getControledValues() }
-          const { day, month, year, working_leg, config_email, planned_events, config_phone, show_reviews, position } = refProfileData
+          const {
+            day,
+            month,
+            year,
+            working_leg,
+            config_email,
+            planned_events,
+            config_phone,
+            show_reviews,
+            position,
+          } = refProfileData
           const profileData = {
             ...refProfileData,
             birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
@@ -580,23 +581,23 @@ export default {
           delete profileData.config_phone
           delete profileData.show_reviews
 
-          restData.value= {
+          restData.value = {
             ...restData.value,
-            "configuration": {
-              "email": config_email,
-              "phone": config_phone,
-              "show_reviews": show_reviews,
-              "planned_events": planned_events
+            configuration: {
+              email: config_email,
+              phone: config_phone,
+              show_reviews: show_reviews,
+              planned_events: planned_events,
             },
-            "profile": {
-              "place": {
-                "place_name": "string",
-                "lat": 90,
-                "lon": 180
+            profile: {
+              place: {
+                place_name: 'string',
+                lat: 90,
+                lon: 180,
               },
-              ...profileData
+              ...profileData,
             },
-            "get_planned_events": "1y"
+            get_planned_events: '1y',
           }
           isModalActive.public_profile = !isModalActive.public_profile
           break
@@ -611,7 +612,9 @@ export default {
 
     function getUserPositionText(position) {
       if (position) {
-        return CONSTANTS.profile.position.find(item => item.value === position)?.name
+        return CONSTANTS.profile.position.find(
+          (item) => item.value === position
+        )?.name
       } else {
         return t('profile.no-position')
       }
@@ -627,8 +630,7 @@ export default {
       saveUserDataChanges()
       toggleEditMode()
     }
-    
-    
+
     return {
       toggleEditMode,
       saveDataFromPreviewWindow,
@@ -666,9 +668,9 @@ export default {
       disableSubmit: (e) => {
         e.stopPropagation()
         e.preventDefault()
-      }
+      },
     }
-  }
+  },
 }
 </script>
 
@@ -688,7 +690,7 @@ export default {
     font-weight: 400;
     font-size: 13px;
     line-height: 24px;
-    color: #E2E2E9;
+    color: #e2e2e9;
     cursor: pointer;
     span {
       margin-right: 10px;
@@ -702,9 +704,9 @@ export default {
     font-weight: 500;
     font-size: 13px;
     line-height: 24px;
-    color: #FFFFFF;
+    color: #ffffff;
     padding: 2px 8px;
-    background: #6F6F77;
+    background: #6f6f77;
     border-radius: 6px;
     cursor: pointer;
     span {
@@ -779,9 +781,8 @@ export default {
       border-bottom: 2px solid #262541;
     }
     &.disabled {
-      color: #7F7DB5;
+      color: #7f7db5;
     }
-
   }
 }
 .b-user-cabinet__my-profile-tab {

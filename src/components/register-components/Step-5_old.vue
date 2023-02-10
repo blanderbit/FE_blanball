@@ -2,7 +2,7 @@
   <div class="b-register-step">
     <div class="b-register-step__top-part">
       <div class="b-register-step__title">
-        {{$t('register.your-skills')}}
+        {{ $t('register.your-skills') }}
       </div>
       <div class="b-register-step__progress-line">
         <div class="b-register-step__sections">
@@ -18,14 +18,14 @@
       </div>
       <div class="b-register-step__subtitle">
         <span>
-          {{$t('register.great')}}
+          {{ $t('register.great') }}
         </span>
         <span>
-          {{$t('register.your-football-experience')}}
+          {{ $t('register.your-football-experience') }}
         </span>
       </div>
       <div class="b-register-step__small-title">
-        {{$t('register.you-played-football')}}
+        {{ $t('register.you-played-football') }}
       </div>
       <div class="b-register-step__experience-block">
         <div class="radio-btn-wrapper">
@@ -39,19 +39,19 @@
               checked
             />
             <label for="radio-1" class="radio-label">
-              {{$t('register.along')}} 
+              {{ $t('register.along') }}
             </label>
           </div>
           <div class="radio">
-            <input 
-              id="radio-2" 
-              name="gender" 
-              type="radio" 
+            <input
+              id="radio-2"
+              name="gender"
+              type="radio"
               :value="$t('register.professionally')"
               v-model="profesionaLevel"
             />
-            <label for="radio-2" class="radio-label"> 
-              {{$t('register.professionally')}} 
+            <label for="radio-2" class="radio-label">
+              {{ $t('register.professionally') }}
             </label>
           </div>
           <div class="radio">
@@ -63,7 +63,7 @@
               v-model="profesionaLevel"
             />
             <label for="radio-3" class="radio-label">
-              {{$t('register.amateurishly')}} 
+              {{ $t('register.amateurishly') }}
             </label>
           </div>
           <div class="radio">
@@ -75,17 +75,17 @@
               v-model="profesionaLevel"
             />
             <label for="radio-4" class="radio-label">
-              {{$t('register.not-engaged')}} 
+              {{ $t('register.not-engaged') }}
             </label>
           </div>
         </div>
       </div>
-      <div 
+      <div
         class="b-register-step__confirm-qualification"
         v-if="isDocumentNeeded"
       >
         <div class="b-register-step__small-title">
-          {{$t('register.add-document')}}
+          {{ $t('register.add-document') }}
         </div>
         <div class="b-register-step__input">
           <InputComponent
@@ -99,11 +99,8 @@
       </div>
     </div>
     <div class="b-register-step__buttons">
-      <div 
-        class="b-register-step__back-btn"
-        @click="$emit('decrementStep')"
-      >
-        {{$t('register.return')}}
+      <div class="b-register-step__back-btn" @click="$emit('decrementStep')">
+        {{ $t('register.return') }}
       </div>
       <GreenBtn
         :text="$t('register.next')"
@@ -148,7 +145,7 @@ export default {
       arrow_right,
       clip,
       profesionaLevel,
-      isDocumentNeeded
+      isDocumentNeeded,
     }
   },
 }

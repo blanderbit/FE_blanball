@@ -1,11 +1,9 @@
-import { AxiosInstance } from "../../../../plugins/axios.plugin";
-import { EndpointsEnum } from "../http-common/prefix.enum";
+import { AxiosInstance } from '../../../../plugins/axios.plugin'
+import { EndpointsEnum } from '../http-common/prefix.enum'
 
 export class VersionsService {
   static getAllVersions() {
-    return AxiosInstance.get(
-      EndpointsEnum.Versions.getAllVersions
-    )
+    return AxiosInstance.get(EndpointsEnum.Versions.getAllVersions)
   }
 
   static getCurrentVersion(currentVersion) {

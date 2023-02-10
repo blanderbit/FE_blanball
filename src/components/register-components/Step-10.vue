@@ -1,54 +1,54 @@
 <template>
   <step-wrapper
-      :returnButton="stepConfig.returnButton"
-      :nextButton="stepConfig.nextButton"
-      :title="stepConfig.title"
-      :subTitle="stepConfig.subTitle"
-      :loading="loading"
-      :stepperLines="stepConfig.stepperLines"
+    :returnButton="stepConfig.returnButton"
+    :nextButton="stepConfig.nextButton"
+    :title="stepConfig.title"
+    :subTitle="stepConfig.subTitle"
+    :loading="loading"
+    :stepperLines="stepConfig.stepperLines"
   >
     <template #content>
       <div class="b-register-step__small-title mb-3">
-        {{$t('register.your-city')}}
+        {{ $t('register.your-city') }}
       </div>
       <div class="b-register-step__dropdown">
         <Dropdown
-            :outside-title="true"
-            :main-title="$t('register.district')"
-            :options="mockData.district"
-            :model-value="region"
-            :height="40"
-            taggable
-            @new-value="changeRegions"
-            display-name="name"
-            display-value="name"
-            name="region"
+          :outside-title="true"
+          :main-title="$t('register.district')"
+          :options="mockData.district"
+          :model-value="region"
+          :height="40"
+          taggable
+          @new-value="changeRegions"
+          display-name="name"
+          display-value="name"
+          name="region"
         />
       </div>
       <div class="b-register-step__dropdown">
         <Dropdown
-            :outside-title="true"
-            :main-title="$t('register.city')"
-            :options="mockData.cities"
-            :model-value="city"
-            :height="40"
-            taggable
-            @new-value="changeCity"
-            display-name="name"
-            display-value="name"
-            name="city"
+          :outside-title="true"
+          :main-title="$t('register.city')"
+          :options="mockData.cities"
+          :model-value="city"
+          :height="40"
+          taggable
+          @new-value="changeCity"
+          display-name="name"
+          display-value="name"
+          name="city"
         />
       </div>
       <div class="b-register-step__dropdown">
         <InputComponent
-            :title="$t('register.address')"
-            :placeholder="'Address'"
-            :model-value="address"
-            :title-width="0"
-            outsideTitle
-            :height="40"
-            @input="changeAddress($event)"
-            name="address"
+          :title="$t('register.address')"
+          :placeholder="'Address'"
+          :model-value="address"
+          :title-width="0"
+          outsideTitle
+          :height="40"
+          @input="changeAddress($event)"
+          name="address"
         ></InputComponent>
       </div>
       <RegisterModalPositionMap v-if="isMobile"></RegisterModalPositionMap>
@@ -57,184 +57,192 @@
 </template>
 
 <script>
-  import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 
-  import Dropdown from '../forms/Dropdown.vue'
-  import InputComponent from '../forms/InputComponent.vue'
-  import RegisterModalPositionMap from '../maps/RegisterModalPositionMap.vue'
-  import tickIcon from '../../assets/img/tick-white.svg'
+import Dropdown from '../forms/Dropdown.vue'
+import InputComponent from '../forms/InputComponent.vue'
+import RegisterModalPositionMap from '../maps/RegisterModalPositionMap.vue'
+import tickIcon from '../../assets/img/tick-white.svg'
 
-  import CONSTANTS from '../../consts/index'
-  import { PositionMapBus } from "../../workers/event-bus-worker";
-  import { API } from "../../workers/api-worker/api.worker";
-  import { useI18n } from 'vue-i18n'
-  import StepWrapper from './StepWrapper.vue'
-  import { useDevice } from "next-vue-device-detector";
-  import useWindowWidth from '../../utils/widthScreen'
+import CONSTANTS from '../../consts/index'
+import { PositionMapBus } from '../../workers/event-bus-worker'
+import { API } from '../../workers/api-worker/api.worker'
+import { useI18n } from 'vue-i18n'
+import StepWrapper from './StepWrapper.vue'
+import { useDevice } from 'next-vue-device-detector'
+import useWindowWidth from '../../utils/widthScreen'
 
-  export default {
-    name: 'Step10',
-    components: {
-      Dropdown,
-      InputComponent,
-      StepWrapper,
-      RegisterModalPositionMap
-    },
-    setup() {
-      const { onResize, isMobile } = useWindowWidth()
-      const region = ref('');
-      const city = ref('');
-      const address = ref('');
-      const nextButton = ref(false);
-      const loading = ref(true);
+export default {
+  name: 'Step10',
+  components: {
+    Dropdown,
+    InputComponent,
+    StepWrapper,
+    RegisterModalPositionMap,
+  },
+  setup() {
+    const { onResize, isMobile } = useWindowWidth()
+    const region = ref('')
+    const city = ref('')
+    const address = ref('')
+    const nextButton = ref(false)
+    const loading = ref(true)
 
-      onMounted(() => {
-        window.addEventListener('resize', onResize);
-      })
+    onMounted(() => {
+      window.addEventListener('resize', onResize)
+    })
 
-      onBeforeUnmount(() => {
-        window.removeEventListener('resize', onResize);
-      })
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', onResize)
+    })
 
-      const mockData = computed(() => {
-        return {
-          cities: CONSTANTS.register.jsonCityRegions.find(item => item.name.includes(region.value))?.cities || [],
-          district: CONSTANTS.register.jsonCityRegions,
-        }
-      });
-      const tick = computed(() => {
-        return tickIcon
-      })
-
-      async function getCoordsByName(str) {
-        return await API.LocationService.GetPlaceByAddress(str)
-      }
-
-      PositionMapBus.on('update:coords:loading', (e) => {
-        loading.value = true
-      })
-      PositionMapBus.on('update:coords', (e) => {
-        region.value = e.place.state;
-        city.value = e.place.city || e.place.town || e.place.village;
-        address.value = `${e.place.neighbourhood || ''} ${e.place.road || ''} ${e.place.house_number || ''} ${e.place.postcode || ''}`;
-        loading.value = false;
-        nextButton.value = !region.value || !city.value || !address.value
-      })
-      let timeout;
-
-      const {t} = useI18n();
-      const device = useDevice();
-      const stepConfig = computed(() => ({
-        title: t('register.locations'),
-        subTitle: t('register.which-areas'),
-        returnButton: {
-          exist: true,
-          text: t('register.return')
-        },
-        nextButton: {
-          exist: true,
-          text: t('register.next'),
-          disabled: nextButton.value
-        },
-        stepperLines: {
-          exist: true,
-          count: 4,
-          active: 4
-        }
-      }));
-
-      PositionMapBus.on('update:coords-error', () => {
-        nextButton.value = true;
-        region.value = '';
-        city.value = '';
-        address.value = '';
-      });
-      PositionMapBus.on('map-loaded', () => {
-        loading.value = false
-      });
+    const mockData = computed(() => {
       return {
-        mockData,
-        tick,
-        region,
-        city,
-        address,
-        stepConfig,
-        nextButton,
-        loading,
-        device,
-        isMobile,
-        async changeRegions(e) {
-          region.value = e;
-          city.value = '';
-          address.value = '';
-          loading.value = true
-          try {
-            PositionMapBus.emit('update:map:by:coords', await getCoordsByName(region.value))
-            nextButton.value = !region.value || !city.value || !address.value
-
-          } catch (e) {
-            nextButton.value = true
-          }
-          loading.value = false
-
-        },
-        async changeCity(e) {
-          city.value = e;
-          address.value = '';
-          loading.value = true
-          try {
-            PositionMapBus.emit('update:map:by:coords', await getCoordsByName(`${region.value} ${city.value}`))
-
-            nextButton.value = !region.value || !city.value || !address.value
-
-          } catch (e) {
-            nextButton.value = true
-          }
-          loading.value = false
-        },
-        async changeAddress(e) {
-          address.value = e.target.value;
-          clearTimeout(timeout);
-          timeout = setTimeout(async () => {
-            loading.value = true
-            try {
-              PositionMapBus.emit('update:map:by:coords', await getCoordsByName(`${region.value} ${city.value} ${address.value}`))
-
-              nextButton.value = !region.value || !city.value || !address.value
-
-            } catch (e) {
-              nextButton.value = true
-            }
-            loading.value = false
-          }, 500)
-
-
-        }
+        cities:
+          CONSTANTS.register.jsonCityRegions.find((item) =>
+            item.name.includes(region.value)
+          )?.cities || [],
+        district: CONSTANTS.register.jsonCityRegions,
       }
-    },
-  }
+    })
+    const tick = computed(() => {
+      return tickIcon
+    })
+
+    async function getCoordsByName(str) {
+      return await API.LocationService.GetPlaceByAddress(str)
+    }
+
+    PositionMapBus.on('update:coords:loading', (e) => {
+      loading.value = true
+    })
+    PositionMapBus.on('update:coords', (e) => {
+      region.value = e.place.state
+      city.value = e.place.city || e.place.town || e.place.village
+      address.value = `${e.place.neighbourhood || ''} ${e.place.road || ''} ${
+        e.place.house_number || ''
+      } ${e.place.postcode || ''}`
+      loading.value = false
+      nextButton.value = !region.value || !city.value || !address.value
+    })
+    let timeout
+
+    const { t } = useI18n()
+    const device = useDevice()
+    const stepConfig = computed(() => ({
+      title: t('register.locations'),
+      subTitle: t('register.which-areas'),
+      returnButton: {
+        exist: true,
+        text: t('register.return'),
+      },
+      nextButton: {
+        exist: true,
+        text: t('register.next'),
+        disabled: nextButton.value,
+      },
+      stepperLines: {
+        exist: true,
+        count: 4,
+        active: 4,
+      },
+    }))
+
+    PositionMapBus.on('update:coords-error', () => {
+      nextButton.value = true
+      region.value = ''
+      city.value = ''
+      address.value = ''
+    })
+    PositionMapBus.on('map-loaded', () => {
+      loading.value = false
+    })
+    return {
+      mockData,
+      tick,
+      region,
+      city,
+      address,
+      stepConfig,
+      nextButton,
+      loading,
+      device,
+      isMobile,
+      async changeRegions(e) {
+        region.value = e
+        city.value = ''
+        address.value = ''
+        loading.value = true
+        try {
+          PositionMapBus.emit(
+            'update:map:by:coords',
+            await getCoordsByName(region.value)
+          )
+          nextButton.value = !region.value || !city.value || !address.value
+        } catch (e) {
+          nextButton.value = true
+        }
+        loading.value = false
+      },
+      async changeCity(e) {
+        city.value = e
+        address.value = ''
+        loading.value = true
+        try {
+          PositionMapBus.emit(
+            'update:map:by:coords',
+            await getCoordsByName(`${region.value} ${city.value}`)
+          )
+
+          nextButton.value = !region.value || !city.value || !address.value
+        } catch (e) {
+          nextButton.value = true
+        }
+        loading.value = false
+      },
+      async changeAddress(e) {
+        address.value = e.target.value
+        clearTimeout(timeout)
+        timeout = setTimeout(async () => {
+          loading.value = true
+          try {
+            PositionMapBus.emit(
+              'update:map:by:coords',
+              await getCoordsByName(
+                `${region.value} ${city.value} ${address.value}`
+              )
+            )
+
+            nextButton.value = !region.value || !city.value || !address.value
+          } catch (e) {
+            nextButton.value = true
+          }
+          loading.value = false
+        }, 500)
+      },
+    }
+  },
+}
 </script>
 
 <style lang="scss" scoped>
-
-  .b-register-step__title {
-    font-family: 'Exo 2';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 22px;
-    line-height: 32px;
-    color: #262541;
-    @media (max-width: 576px) {
-      text-align: center;
-    }
+.b-register-step__title {
+  font-family: 'Exo 2';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 32px;
+  color: #262541;
+  @media (max-width: 576px) {
+    text-align: center;
   }
+}
 
-  .b-register-step__dropdown {
-    width: 384px;
-    margin-bottom: 15px;
-    @media (max-width: 992px) {
-      width: 100%;
-    }
+.b-register-step__dropdown {
+  width: 384px;
+  margin-bottom: 15px;
+  @media (max-width: 992px) {
+    width: 100%;
   }
-
+}
 </style>

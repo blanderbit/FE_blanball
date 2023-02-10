@@ -34,7 +34,8 @@ export const DETAILS_TYPE_ENUM = {
   ALREADY_LIKE_FAN: 'already_like_fan',
   NOT_IN_EVENT_FANS_LIST: 'not_in_event_fans_list',
   NOT_IN_EVENT_MEMBERS_LIST: 'not_in_event_members_list',
-  AUTHOR_CANNOT_BE_INVITED_TO_HIS_EVENT: 'author_cannot_be_invited_to_his_event',
+  AUTHOR_CANNOT_BE_INVITED_TO_HIS_EVENT:
+    'author_cannot_be_invited_to_his_event',
   NO_PLACE: 'no_place',
   NO_PERMISSIONS_TO_INVITE: 'no_permissions_to_invite',
   THIS_USER_CANT_BE_INVITED: 'this_user_cannot_be_invited',
@@ -60,60 +61,63 @@ export const DETAILS_TYPE_ENUM = {
   MAX_VALUE: 'filed:_max_value',
   BLANK: 'field:_blank',
 
-
-  AUTHENTICATION_CREDENTIALS_WERE_NOT_PROVIDED: 'authentication_credentials_were_not_provided.',
+  AUTHENTICATION_CREDENTIALS_WERE_NOT_PROVIDED:
+    'authentication_credentials_were_not_provided.',
   AUTHENTICATION_TOKEN_NOT_VALID: 'detail_token_not_valid',
   BAD_AUTHENTICATION_TOKEN: 'code_token_not_valid',
   AVATAR_MAX_SIZE_1_MB: 'avatar_max_size_1mb',
   PROFILE_AVATAR_UPDATED: 'profile_avatar_updated',
   CODE_IS_VALID: 'code_is_valid',
   METHOD_NOT_ALLOWED: 'method_get_not_allowed.',
-};
+}
 
-export const DETAILS_TYPE_ENUM_VALUES = Object
-  .values(DETAILS_TYPE_ENUM);
+export const DETAILS_TYPE_ENUM_VALUES = Object.values(DETAILS_TYPE_ENUM)
 
-export const DETAILS_TYPE_ENUM_KEYS = Object
-  .keys(DETAILS_TYPE_ENUM);
+export const DETAILS_TYPE_ENUM_KEYS = Object.keys(DETAILS_TYPE_ENUM)
 
 const excludeColumnParameter = (key) => {
-  const elements = key?.split(':') || [key];
+  const elements = key?.split(':') || [key]
 
   return {
     field: elements.length > 1 && elements[0],
-    type: elements.length > 1 ? elements[1] : key
+    type: elements.length > 1 ? elements[1] : key,
   }
-};
+}
 
 const excludeOneRowParam = (typeInitial, typeCounted) => {
-  return typeInitial?.replace(typeCounted, '');
-};
+  return typeInitial?.replace(typeCounted, '')
+}
 
 const detectMessageByKey = (type) => {
-  const foundKey = DETAILS_TYPE_ENUM_KEYS
-    .find(key => {
-      return type.includes(excludeColumnParameter(DETAILS_TYPE_ENUM[key]).type)
-    });
+  const foundKey = DETAILS_TYPE_ENUM_KEYS.find((key) => {
+    return type.includes(excludeColumnParameter(DETAILS_TYPE_ENUM[key]).type)
+  })
 
-  return foundKey || 'FE:DETAIL_NOT_FOUND';
-};
+  return foundKey || 'FE:DETAIL_NOT_FOUND'
+}
 
 export const TypeRequestMessageWorker = (result = {}) => {
-  if(result?.status === 'success') {
+  if (result?.status === 'success') {
     return [result.message].map((detail) => {
       return {
-        errorType: detectMessageByKey(detail)?.toLowerCase()
+        errorType: detectMessageByKey(detail)?.toLowerCase(),
       }
     })
-  } else if (result?.status === 'error'){
-    return result?.data?.errors?.map((error) => {
-      const detectedType = detectMessageByKey(error.detail);
-      const excludedColumnParameter = excludeColumnParameter(DETAILS_TYPE_ENUM[detectedType]);
-      return {
-        errorType: detectedType?.toLowerCase(),
-        field: excludedColumnParameter.field && excludeOneRowParam(error.detail, excludedColumnParameter.type)
-      }
-    }) || []
+  } else if (result?.status === 'error') {
+    return (
+      result?.data?.errors?.map((error) => {
+        const detectedType = detectMessageByKey(error.detail)
+        const excludedColumnParameter = excludeColumnParameter(
+          DETAILS_TYPE_ENUM[detectedType]
+        )
+        return {
+          errorType: detectedType?.toLowerCase(),
+          field:
+            excludedColumnParameter.field &&
+            excludeOneRowParam(error.detail, excludedColumnParameter.type),
+        }
+      }) || []
+    )
   }
-  return [];
-};
+  return []
+}

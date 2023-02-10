@@ -67,29 +67,28 @@ export default {
   code_is_valid: 'Код для сброса пароля валидный',
   method_not_allowed: 'Метод http запроса запрещен',
 
-
   fields: {
     phone: 'Телефон',
     email: 'Почта',
-    "password": "Пароль",
-    "re_password": "Подтвердите пароль",
-    "get_planned_events": "Запланирвоанные события",
-    "configuration": "Конфидециальность",
-    "profile": {
-      "place": {
-        "place_name": "Адресс",
-        "lat": "Адресс",
-        "lon": "Адресс"
+    password: 'Пароль',
+    re_password: 'Подтвердите пароль',
+    get_planned_events: 'Запланирвоанные события',
+    configuration: 'Конфидециальность',
+    profile: {
+      place: {
+        place_name: 'Адресс',
+        lat: 'Адресс',
+        lon: 'Адресс',
       },
-      "name": "Имя",
-      "last_name": "Фамилия",
-      "gender": "Пол",
-      "birthday": "Дата рождения",
-      "height": "Рост",
-      "weight": "Вес",
-      "position": "Позиция на поле",
-      "about_me": "О мне",
-      "working_leg": "Рабочая нога"
-    }
-  }
+      name: 'Имя',
+      last_name: 'Фамилия',
+      gender: 'Пол',
+      birthday: 'Дата рождения',
+      height: 'Рост',
+      weight: 'Вес',
+      position: 'Позиция на поле',
+      about_me: 'О мне',
+      working_leg: 'Рабочая нога',
+    },
+  },
 }

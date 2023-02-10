@@ -1,69 +1,78 @@
-@import "./../../node_modules/vue-toastification/dist/index.css";
+@import './../../node_modules/vue-toastification/dist/index.css';
 
 .Vue-Toastification__toast {
-    background: #262541;
-    width: 320px;
-    padding: 16px;
+  background: #262541;
+  width: 320px;
+  padding: 16px;
 }
 
 .Vue-Toastification__toast--success {
-    background: #F4FDE8;
-    border: 1px solid #71BA12;
-    color: #262541;
+  background: #f4fde8;
+  border: 1px solid #71ba12;
+  color: #262541;
 }
 .Vue-Toastification__toast--error {
-    background: #FFEEEE;
-    border: 1px solid #F43E3E;
-    color: #262541;
+  background: #ffeeee;
+  border: 1px solid #f43e3e;
+  color: #262541;
 }
 .Vue-Toastification__toast--warning {
-    background: #FFF4EC;
-    border: 1px solid #F6803C;
-    color: #262541;
+  background: #fff4ec;
+  border: 1px solid #f6803c;
+  color: #262541;
 }
 .Vue-Toastification__toast--info {
-    background: #F7F7FE;
-    border: 1px solid #BFBEDA;
-    color: #262541;
+  background: #f7f7fe;
+  border: 1px solid #bfbeda;
+  color: #262541;
 }
 
-
 .Vue-Toastification__close-button {
-    color: #575775;
+  color: #575775;
 }
 
 .notification-success {
-    background: radial-gradient(240.34% 150.94% at 34.38% 36.36%, rgba(10, 230, 244, 0.3) 0%, rgba(10, 224, 185, 0) 100%), #262541;
+  background: radial-gradient(
+      240.34% 150.94% at 34.38% 36.36%,
+      rgba(10, 230, 244, 0.3) 0%,
+      rgba(10, 224, 185, 0) 100%
+    ),
+    #262541;
 }
 
 .notification-error {
-    background: radial-gradient(240.34% 150.94% at 34.38% 36.36%, rgba(224, 10, 48, 0.3) 0%, rgba(224, 10, 48, 0) 100%), #262541;;
+  background: radial-gradient(
+      240.34% 150.94% at 34.38% 36.36%,
+      rgba(224, 10, 48, 0.3) 0%,
+      rgba(224, 10, 48, 0) 100%
+    ),
+    #262541;
 }
 
 :root {
-    --vs-controls-color: #664cc3;
-    --vs-border-color: #664cc3;
+  --vs-controls-color: #664cc3;
+  --vs-border-color: #664cc3;
 
-    --vs-dropdown-bg: #282c34;
-    --vs-dropdown-color: #cc99cd;
-    --vs-dropdown-option-color: #cc99cd;
+  --vs-dropdown-bg: #282c34;
+  --vs-dropdown-color: #cc99cd;
+  --vs-dropdown-option-color: #cc99cd;
 
-    --vs-selected-bg: #664cc3;
-    --vs-selected-color: #eeeeee;
+  --vs-selected-bg: #664cc3;
+  --vs-selected-color: #eeeeee;
 
-    --vs-search-input-color: #eeeeee;
+  --vs-search-input-color: #eeeeee;
 
-    --vs-dropdown-option--active-bg: #664cc3;
-    --vs-dropdown-option--active-color: #eeeeee;
+  --vs-dropdown-option--active-bg: #664cc3;
+  --vs-dropdown-option--active-color: #eeeeee;
 }
 
 .vs__dropdown-option--selected {
-    background: #F0F0F4;
-    color: var(--vs-dropdown-option--deselect-color)
+  background: #f0f0f4;
+  color: var(--vs-dropdown-option--deselect-color);
 }
 
 .opacity-bar,
 .grad-bar,
-.hue-bar{
-    position: relative;
+.hue-bar {
+  position: relative;
 }
