@@ -221,22 +221,6 @@ export default {
       }),
     },
   },
-  emits: ['update:value', 'clearFilters'],
-  setup(props, { emit }) {
-    const isModalFiltersActive = ref(false)
-    const todaysDate = useTodaysDate()
-    const { isMobile, isTablet, onResize } = useWindowWidth()
-    const icons = computed(() => {
-      return {
-        female: FemaleIcon,
-        male: MaleIcon,
-        unisex: UnisexIcon,
-        search: SearchIcon,
-        arrowUp: arrowsUpIcon,
-        arrowDown: arrowsDownIcon,
-      }
-    })
-    },
     emits: ['update:value', 'clearFilters'],
     setup(props, {emit}) {
       const isModalFiltersActive = ref(false)

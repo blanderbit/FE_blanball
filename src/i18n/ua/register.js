@@ -46,6 +46,7 @@ export default {
   city: 'Місто/село/містечко',
   district: 'Область',
   address: 'Адресса',
+  'address-placeholder': 'Володимирська, 60',
   'add-district': 'Додати район',
   optionally: 'Опціонально',
   finish: 'Завершити',

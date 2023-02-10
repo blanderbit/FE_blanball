@@ -42,7 +42,7 @@
       </div>
       <div class="b_sidebar_bottom-block">
         <div class="b_sidebar_picture-bottom">
-          <avatar full-name="Yaroslav Makovskyi" @click="goToProfile"></avatar>
+          <avatar :full-name="userFullName" @click="goToProfile"></avatar>
           <div
             @click="logOut"
             class="b_sidebar_logout d-flex justify-content-center align-items-center"
@@ -103,6 +103,7 @@ export default {
     const eventStore = useEventDataStore()
     const notReadNotificationCount = ref(0)
     const skipids = ref([])
+    const userFullName = ref(`${userStore.user.profile.name} ${userStore.user.profile.last_name}`)
     const router = useRouter()
     const isMenuOpened = ref(false)
     const isBugReportModalOpened = ref(false)
@@ -224,6 +225,7 @@ export default {
       skipids,
       menuItems,
       isMenuOpened,
+      userFullName,
       isBugReportModalOpened,
       loadDataNotifications,
       paginationClearData,

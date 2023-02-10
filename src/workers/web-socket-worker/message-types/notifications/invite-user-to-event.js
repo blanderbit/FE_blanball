@@ -15,8 +15,9 @@ import { WebSocketTypes } from '../../web.socket.types'
 import { API } from '../../../api-worker/api.worker'
 
 
+// FIXME NOTIFICATIONS
 @AuthWebSocketMessage()
-@SetMessageType(WebSocketTypes.InviteUserToEvent)
+@SetMessageType(WebSocketTypes.ChangeMaintenance)
 @NotificationSetUserImage()
 @SetActions([
   {

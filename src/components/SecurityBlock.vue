@@ -65,7 +65,7 @@
         class="b-security__change-pass-btn"
         @click="toggleModalWindow('change_password')"
       >
-        {{ $t('profile.change-password') }}
+        <span>{{ $t('profile.change-password') }}</span>
         <img src="../assets/img/lock.svg" alt="" />
       </div>
     </div>

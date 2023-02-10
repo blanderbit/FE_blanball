@@ -30,6 +30,7 @@ export const ErrorInterceptor = (error) => {
     (item) => !skipErrorMessageType?.includes(item.errorType)
   )[0]
 
+
   if (errorMessageType) {
     toast.error(
       i18n.global.t(`responseMessageTypes.${errorMessageType.errorType}`, {

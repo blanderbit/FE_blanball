@@ -13,8 +13,9 @@ import { NotificationImage } from "../../../../assets/img/notifications/notifica
 import { NotificationsBus } from '../../../event-bus-worker' 
 
 
+// FIXME NOTIFICATIONS
 @AuthWebSocketMessage()
-@SetMessageType(WebSocketTypes.EventHasBeenEnded)
+@SetMessageType(WebSocketTypes.InviteUserToEvent)
 @NotificationSetImage(NotificationImage.NotificationSuccess)
 @SetActions([
   {

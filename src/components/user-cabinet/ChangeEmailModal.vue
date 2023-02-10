@@ -107,7 +107,7 @@ export default {
           .string()
           .required('errors.required')
           .min(5, 'errors.min5'),
-        email: yup.string().required('errors.required'),
+        email: yup.string().required('errors.required').email('errors.email'),
       })
     })
 
@@ -136,7 +136,14 @@ export default {
         setSteps(true, false)
       }
     }
-    function saveClick(data) {
+    async function saveClick(data) {
+      const { valid } = await data.validate()
+
+      console.log(data)
+      if (!valid) {
+        return false
+      }
+
       let payload
       if (modalSteps.value.first) {
         setSteps(false, true)

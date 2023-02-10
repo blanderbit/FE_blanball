@@ -7,10 +7,14 @@
         :style="arrowStyle"
         @click="$emit('arrowClick')"
       >
-        <img src="../../assets/img/arrow-down.svg" alt="" />
+        <img src="../../assets/img/arrow-down.svg" alt="">
       </div>
-      <div v-else class="b-modal-top-card__cross" @click="$emit('crossClick')">
-        <img src="../../assets/img/cross.svg" alt="" />
+      <div
+        v-else
+        class="b-modal-top-card__cross"
+        @click="$emit('crossClick')"
+      >
+        <img src="../../assets/img/cross.svg" alt="">
       </div>
     </div>
     <div class="b-modal-top-card__title-wrapper">
@@ -18,12 +22,12 @@
         v-if="step.id === 5"
         src="../../assets/img/cloud-hands.svg" 
         alt="cloud-hands"
-      />
+      >
       <div
         class="b-modal-top-card__title"
         :style="step.id === 5 && lastTitleStyle"
       >
-        {{ step.title }}
+        {{step.title}}
       </div>
     </div>
     <Form
@@ -36,10 +40,10 @@
       :style="mainBlockCardStyle"
     >
       <div class="b-modal-top-card__subtitle">
-        {{ step.subtitle }}
+        {{step.subtitle}}
       </div>
       <div class="b-modal-top-card__last-subtitle">
-        {{ step.last_subtitle }}
+        {{step.last_subtitle}}
       </div>
 
       <Emotions
@@ -80,29 +84,24 @@
 
 <script>
 import { computed, ref } from 'vue'
-
 import GreenBtn from '../GreenBtn.vue'
 import TextAreaComponent from '../TextAreaComponent.vue'
 import Emotions from '../forms/Emotions.vue';
-
 import { Form, ErrorMessage } from "@system.it.flumx.com/vee-validate";
-
 import * as yup from "yup";
-
 export default {
   name: 'ModalTopCard',
   components: {
     GreenBtn,
     TextAreaComponent,
     Emotions,
-
     Form,
     ErrorMessage,
   },
   props: {
     step: {
       type: Object,
-      default: () => ({}),
+      default: () => ({})
     },
     isOpened: {
       type: Boolean,
@@ -113,51 +112,38 @@ export default {
     }
   },
   setup(props, { emit }) {
-
     const eventComment = ref('')
-
     const arrowStyle = computed(() => {
       return {
-        transform: props.isOpened ? 'rotate(-180deg)' : 'rotate(-90deg)',
+        transform: props.isOpened ? 'rotate(-180deg)' : 'rotate(-90deg)'
       }
     })
-
     const emojiSelect = (emoji) => {
       emit('emojiSelect', emoji)
     }
-
-
     yup.addMethod(yup.string, "emojiRequired", function (errorMessage) {
       return this.test(`test-emoji-required`, errorMessage, function (value) {
         const { path, createError } = this;
         const emoji = props.selectedEmojies.filter((value) => value.step === props.step.id)
-
         return (
           ([0, 4].includes(props.step.id) ? true : !!emoji?.length) || createError({ path, errorMessage })
         );
       });
     });
-
-
     const schema = computed(() => {
       return yup.object({
         emoji: yup.string().emojiRequired('errors.required'),
         comment: yup.string().max(200 , 'errors.max200')
       })
     })
-
-
     const goToTheNextStep = async (data) => {
       const { valid } = await data.validate()
-
       if (!valid) {
         return false
       }
       emit('nextClick', eventComment.value)
     }
-
   
-
     const greenButtonWidth = computed(() => {
       if ([0, 4].includes(props.step.id)) {
         return {
@@ -168,21 +154,19 @@ export default {
         'width': '100px'
       }
     })
-
     const lastTitleStyle = computed(() => {
       return {
         'font-weight': 700,
         'font-size': '24px',
         'line-height': '28px',
-        color: '#262541',
+        color: '#262541'
       }
     })
     const mainBlockCardStyle = computed(() => {
       return {
-        height: props.isOpened ? 'auto' : 0,
+        height: props.isOpened ? 'auto' : 0
       }
     })
-
     return {
       lastTitleStyle,
       mainBlockCardStyle,
@@ -191,21 +175,19 @@ export default {
       schema,
       eventComment,
       emojiSelect,
-
       goToTheNextStep,
       disableSubmit: (e) => {
           e.stopPropagation()
           e.preventDefault()
       },
     }
-  },
+  }
 }
 </script>
-
 <style lang="scss" scoped>
 .b-modal-top-card {
   padding: 20px;
-  background: #ffffff;
+  background: #FFFFFF;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 6px;
   margin-bottom: 8px;
@@ -251,7 +233,7 @@ export default {
       font-weight: 400;
       font-size: 14px;
       line-height: 20px;
-      color: #262541;
+      color: #262541
     }
     .b-modal-top-card__btns-block { 
       display: flex;
@@ -267,8 +249,7 @@ export default {
         color: #575775;
         cursor: pointer;
       }
-
-      .b-modal-top-card__next-btn {
+      .b-modal-top-card__next-btn { 
         padding: 4px 16px;
       }
     }

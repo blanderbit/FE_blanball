@@ -18,9 +18,7 @@
 
 <script>
 import { useI18n } from "vue-i18n";
-
 import { CustomModelWorker } from "../../workers/custom-model-worker";
-
 export default {
     props: {
         selectedEmojies: {
@@ -46,8 +44,6 @@ export default {
             modelErrorMessage,
             modelHandlers
         } = CustomModelWorker(props, emit);
-
-
         function selectEmoji(e, emoji) {
             emit('emojiSelect', emoji)
             modelHandlers.value.input[0](e);
@@ -68,28 +64,23 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-
     .b-selected__emoji {
         &::before {
             background: transparent !important;
         }
     }
-
     .b-emoji {
         margin-right: 12px;
         position: relative;
         cursor: pointer;
-
         &:last-child {
             margin-right: 0;
         }
-
         &:hover {
             &::before {
                 background: transparent;
             }
         }
-
         &::before {
             content: '';
             position: absolute;

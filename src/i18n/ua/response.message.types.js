@@ -66,6 +66,7 @@ export default {
   profile_avatar_updated: 'Автар профиля успешно обновлен',
   code_is_valid: 'Код для сброса пароля валидный',
   method_not_allowed: 'Метод http запроса запрещен',
+  email_already_in_use: 'Имейл уже используется',
 
   fields: {
     phone: 'Телефон',
@@ -74,6 +75,9 @@ export default {
     re_password: 'Подтвердите пароль',
     get_planned_events: 'Запланирвоанные события',
     configuration: 'Конфидециальность',
+    user: 'Пользователь',
+    event: 'Ивент',
+    notification: 'Нотификация',
     profile: {
       place: {
         place_name: 'Адресс',

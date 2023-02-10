@@ -13,6 +13,7 @@
             <InputComponent
               :title="$t('modals.change_password.current-pass')"
               :title-width="0"
+              :placeholder="'*********'"
               :type="'password'"
               :outside-title="true"
               name="old_password"
@@ -22,6 +23,7 @@
             <InputComponent
               :title="$t('modals.change_password.new-pass')"
               :title-width="0"
+              :placeholder="'*********'"
               :type="'password'"
               :outside-title="true"
               name="new_password"
@@ -54,7 +56,7 @@
             />
           </div>
           <div v-if="errorMessage.length" class="error-message">
-            *{{ errorMessage }}
+            {{ errorMessage }}
           </div>
           <div class="btns-block">
             <div class="cancle-btn" @click="closeModal">

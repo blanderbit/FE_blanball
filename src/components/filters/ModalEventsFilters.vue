@@ -96,7 +96,6 @@ import ClearFilters from './components/ClearFilters.vue'
 import tickIcon from '../../assets/img/tick-white.svg'
 
 import CONSTANTS from '../../consts/index'
-import useTodaysDate from '../../utils/todaysDate'
 
 export default {
   name: 'ModalUsersFilters',

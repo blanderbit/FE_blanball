@@ -3,7 +3,7 @@
     <div class="b-modal-bottom-card" :style="bottomCardStyle">
       <div class="b-modal-bottom-card__title-line">
         <div class="b-modal-bottom-card__title">
-          {{ $t('modal_feedback.evaluate_game') }}
+          {{$t('modal_feedback.evaluate_game')}}
         </div>
         <div
           class="b-modal-bottom-card__arrow"
@@ -14,7 +14,7 @@
         </div>
         <div class="b-modal-bottom-card__send-complain" v-if="isOpened">
           <img src="../../assets/img/warning-red.svg" alt="" />
-          {{ $t('modal_feedback.complain') }}
+          {{$t('modal_feedback.complain')}}
         </div>
       </div>
       <div v-if="isOpened" class="b-modal-bottom-card__players-viewport">
@@ -41,11 +41,8 @@
 
 <script>
 import { computed } from 'vue'
-
 import RatePlayerCard from '../ModalFeedback/RatePlayerCard.vue'
-
 import CONSTANTS from '../../consts/index'
-
 export default {
   name: 'ModalBottomCard',
   components: {
@@ -72,7 +69,6 @@ export default {
     const players = computed(() => {
       return CONSTANTS.modal_feedback.players
     })
-
     return {
       bottomCardStyle,
       arrowStyle,

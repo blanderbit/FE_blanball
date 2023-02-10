@@ -8,9 +8,9 @@
         <div class="b-reset-step__progress-line">
           <div class="b-reset-step__sections">
             <div
-              v-for="item of 3"
-              :key="item"
-              :class="[
+                v-for="item of 3"
+                :key="item"
+                :class="[
                 'b-reset-step__section',
                 {
                   active: item <= currentStep,
@@ -45,12 +45,12 @@
         </div>
         <div class="b-reset-step__sms-code-block" v-if="currentStep === 2">
           <code-input
-            @complete="completed = true"
-            :fields="5"
-            :fieldWidth="70"
-            :fieldHeight="40"
-            :required="true"
-            name="verify_code"
+              @complete="completed = true"
+              :fields="5"
+              :fieldWidth="70"
+              :fieldHeight="40"
+              :required="true"
+              name="verify_code"
           />
         </div>
         <div class="b-reset-step__subtitle" v-if="currentStep === 3">
@@ -58,27 +58,30 @@
         </div>
         <div class="b-reset-step__input" v-if="currentStep === 3">
           <InputComponent
-            :title="$t('reset.enter-new-password')"
-            :title-width="0"
-            :type="'password'"
-            :outside-title="true"
-            :placeholder="'********'"
-            name="new_password"
+              :title="$t('reset.enter-new-password')"
+              :title-width="0"
+              :type="'password'"
+              :outside-title="true"
+              :placeholder="'********'"
+              name="new_password"
           />
         </div>
         <div class="b-reset-step__input" v-if="currentStep === 3">
           <InputComponent
-            :title="$t('reset.repeat-new-password')"
-            :title-width="0"
-            :type="'password'"
-            :outside-title="true"
-            :placeholder="'********'"
-            name="confirm_new_password"
+              :title="$t('reset.repeat-new-password')"
+              :title-width="0"
+              :type="'password'"
+              :outside-title="true"
+              :placeholder="'********'"
+              name="confirm_new_password"
           />
         </div>
       </div>
       <div class="b-reset-step__buttons">
-        <div class="b-reset-step__cancel-button" @click="handleBackClick()">
+        <div
+            class="b-reset-step__cancel-button"
+            @click="handleBackClick()"
+        >
           {{ $t('reset.cancel') }}
         </div>
         <GreenBtn
@@ -96,9 +99,10 @@
 <script>
   import { ref, computed } from 'vue'
   import { useRouter } from 'vue-router'
-
+  import { useI18n } from 'vue-i18n'
   import GreenBtn from '../GreenBtn.vue'
   import InputComponent from '../forms/InputComponent.vue'
+  import Counter from '../Counter.vue'
   import { API } from "../../workers/api-worker/api.worker";
   import * as yup from "yup";
   import { Form } from '@system.it.flumx.com/vee-validate'
@@ -113,21 +117,23 @@
       GreenBtn,
       InputComponent,
       Form,
-      CodeInput
+      CodeInput,
+      Counter,
     },
     setup() {
       const currentStep = ref(1);
       const loading = ref(false);
+      const userEmail = ref('')
       const state = ref({});
       const router = useRouter();
-
-    const eyeCrossed = computed(() => {
-      return eyeCross
-    })
-    const eyeOpened = computed(() => {
-      return eyeOpen
-    })
-
+      const toast = useToast();
+      const { t } = useI18n()
+      const eyeCrossed = computed(() => {
+        return eyeCross
+      });
+      const eyeOpened = computed(() => {
+        return eyeOpen
+      });
       let schema = computed(() => {
         if (currentStep.value === 1) {
           return yup.object({
@@ -142,83 +148,78 @@
         if (currentStep.value === 3) {
           return yup.object({
             new_password: yup.string().required('errors.required').min(8, 'errors.min8'),
-            confirm_new_password: yup.string().required('errors.required').min(8, 'errors.min8').when('new_password', (password, field) =>
-              password ? field.required().oneOf([yup.ref('new_password')]) : field
-            ),
+            confirm_new_password: yup
+              .string()
+              .required('errors.required')
+              .min(8, 'errors.min8')
+              .oneOf([yup.ref('new_password'), null], 'errors.same-password')
           });
         }
         return yup.object({})
       });
-
-    const handleBackClick = () => {
-      if (currentStep.value === 1) {
-        return router.back()
-      }
-      currentStep.value = currentStep.value - 1
-    }
-
-    const handleResetPasswordRequest = async (formData) => {
-      const { valid } = await formData.validate()
-
-      if (!valid) {
-        return false
-      }
-
-      loading.value = true
-
-        await API.AuthorizationService.ResetPasswordRequest(formData.values);
-        currentStep.value = currentStep.value + 1;
-
-        loading.value = false;
+      const handleBackClick = () => {
+        if (currentStep.value === 1) {
+          return router.back()
+        }
+        currentStep.value = currentStep.value - 1
       };
-
-    const handleResetVerifyCode = async (formData) => {
-      const { valid } = await formData.validate()
-
-      if (!valid) {
-        return false
-      }
-      await API.AuthorizationService.VerifyCodeResetPassword({
-        verify_code: formData.controlledValues.verify_code,
-      })
-
-      state.value = formData.controlledValues
-      currentStep.value = currentStep.value + 1
-    }
-
-    const handleResetResetComplete = async (formData) => {
-      const { valid } = await formData.validate()
-      if (!valid) {
-        return false
-      }
-
-      loading.value = true
-
+      const handleResetPasswordRequest = async (formData) => {
+        const { valid } = await formData.validate();
+        if (!valid) {
+          return false
+        }
+        loading.value = true;
+        await API.AuthorizationService.ResetPasswordRequest(formData.values).finally(
+          () => {loading.value = false}
+        )
+        currentStep.value = currentStep.value + 1;
+      };
+      const handleResetVerifyCode = async (formData) => {
+        const { valid } = await formData.validate();
+        if (!valid) {
+          return false
+        }
+        await API.AuthorizationService.VerifyCodeResetPassword({
+          verify_code: formData.controlledValues.verify_code
+        });
+        state.value = formData.controlledValues;
+        currentStep.value = currentStep.value + 1;
+      };
+      const handleResetResetComplete = async (formData) => {
+        const { valid } = await formData.validate();
+        if (!valid) {
+          return false
+        }
+        loading.value = true;
         await API.AuthorizationService.ResetComplete({
           new_password: formData.values.new_password,
           verify_code: state.value.verify_code
-        });
+        })
+        toast.success(t('notifications.password-reset'))
         router.push(ROUTES.AUTHENTICATIONS.LOGIN);
-
+  
         loading.value = false;
       };
-
-    async function handleNextClick(formData) {
-      switch (currentStep.value) {
-        case 1:
-          return await handleResetPasswordRequest(formData)
-        case 2:
-          return await handleResetVerifyCode(formData)
-        case 3:
-          return await handleResetResetComplete(formData)
+      const resendResetVerifyCode = async () => {
+        await API.AuthorizationService.ResetPasswordRequest({"email": userEmail.value});
       }
-    }
-
+      async function handleNextClick(formData) {
+        switch (currentStep.value) {
+          case 1:
+            return await handleResetPasswordRequest(formData);
+          case 2:
+            return await handleResetVerifyCode(formData);
+          case 3:
+            return await handleResetResetComplete(formData);
+        }
+      }
       return {
         handleNextClick,
         handleBackClick,
+        resendResetVerifyCode,
         loading,
         schema,
+        userEmail,
         currentStep,
         eyeCrossed,
         eyeOpened,
@@ -232,10 +233,9 @@
 </script>
 
 <style lang="scss" scoped>
-form {
-  height: 100%;
-}
-
+  form {
+    height: 100%;
+  }
   .b-reset-step {
     padding: 44px 24px;
     display: flex;
@@ -296,6 +296,7 @@ form {
         line-height: 20px;
         text-align: right;
         color: #575775;
+        text-align: left;
       }
       .b-reset-step__sms-code-block {
         display: flex;
@@ -321,41 +322,40 @@ form {
           @media (max-width: 576px) {
             margin-right: 6px;
           }
-
-        /* Firefox */
-        &[type='number'] {
-          -moz-appearance: textfield;
-        }
-        @media (max-width: 576px) {
-          width: 60px;
+          /* Firefox */
+          &[type='number'] {
+            -moz-appearance: textfield;
+          }
+          @media (max-width: 576px) {
+            width: 60px;
+          }
         }
       }
     }
-  }
-  .b-reset-step__input {
-    width: 384px;
-    margin-top: 12px;
-    @media (max-width: 992px) {
-      width: 100%;
+    .b-reset-step__input {
+      width: 384px;
+      margin-top: 12px;
+      @media (max-width: 992px) {
+        width: 100%;
+      }
+    }
+    .b-reset-step__buttons {
+      flex-grow: 2;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      .b-reset-step__cancel-button {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 24px;
+        color: #575775;
+        cursor: pointer;
+      }
     }
   }
-  .b-reset-step__buttons {
-    flex-grow: 2;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    .b-reset-step__cancel-button {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 24px;
-      color: #575775;
-      cursor: pointer;
-    }
+  ::v-deep .code-input input {
+    width: 20%!important;
   }
-}
-::v-deep .code-input input {
-  width: 20% !important;
-}
 </style>

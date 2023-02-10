@@ -28,7 +28,7 @@
     </div>
     <PlaceDetector v-if="!device.mobile" :place="card.place"></PlaceDetector>
     <div class="main-text">
-      {{ card.full_disc }}
+      {{ card.description }}
     </div>
     <div class="labels">
       <div class="label">
@@ -44,7 +44,7 @@
       <div class="top-line">
         <div class="name">{{ card.name }}</div>
         <div class="price">
-          {{ card.price === 0 ? $t('events.for-free') : card.price }}
+          {{ !card.price ? $t('events.for-free') : `${card.price}₴` }}
         </div>
       </div>
       <div class="bottom-line">
@@ -57,14 +57,14 @@
             <div class="players-date">
               {{ card.count_current_users }} / {{ card.amount_members }}
             </div>
-            <div class="visitors-date">{{ card.count_fans }}</div>
+            <div class="visitors-date">{{ card.count_current_fans }} / Ꝏ</div>
           </div>
         </div>
         <div class="right-side">
           <GreenBtn
-            :text="'Долучитися'"
-            :width="115"
-            :height="32"
+            :text="card.privacy ? $t('events.apply') : $t('events.join')"
+            :width="120"
+            :height="35"
             @click-function="$emit('goToEventPage')"
           />
         </div>
@@ -246,6 +246,8 @@ export default {
     font-size: 12px;
     line-height: 20px;
     color: #393762;
+    width: 100%;
+    word-break: break-word;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
