@@ -24,7 +24,7 @@
               @click="sortingButtonClick"
             >
               <img :src="sortingBtnData.icon" alt="">
-              <span>
+              <span class="b-main-search__soring-title">
                 {{ sortingBtnData.title }}
               </span>
             </div>
@@ -252,7 +252,7 @@
       ]);
       const sortingBtnData = computed(() => {
         return transformedFilters.value.ordering === ordering.value[0].value ?
-                {title: 'А-Я', icon: arrowsUpIcon} : {title: 'Я-А', icon: arrowsDownIcon}
+          {title: 'Cпочатку нові', icon: arrowsUpIcon} : {title: 'Cпочатку старі', icon: arrowsDownIcon}
       })
       const gender = computed(() => CONSTANTS.users_page.gender);
 
