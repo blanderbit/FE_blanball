@@ -13,7 +13,6 @@
           :tags="relevantTags"
           :filtered-users="paginationElements"
           :list-item-icon="icons.arrow"
-          @itemListClick="getItemDetail"
         >
         <template v-slot:users>
           <div class="b-modal-items__container" v-for="user in relevantUsersList">
@@ -87,7 +86,9 @@ export default {
     BreadCrumbs,
     InputComponent,
     SearchModal,
-    SearchBlockAll
+    SearchBlockAll,
+    Avatar,
+    SmallLoader,
   },
   setup() {
     const isSearchBlock = ref(false)
@@ -179,7 +180,6 @@ export default {
       showSearchBlock,
       closeSearchBlock,
       setInputCoordinates,
-      getItemDetail,
       openUserProfile,
       icons,
       searchValue,
