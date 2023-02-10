@@ -110,7 +110,6 @@
   import { FilterPatch } from "../../../workers/api-worker/http/filter/filter.patch";
   import { v4 as uuid } from "uuid";
   import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue'
-  import useTodaysDate from '../../../utils/todaysDate'
   import Plus from '../../../assets/img/plus.svg'
   
   export default {
@@ -133,7 +132,6 @@
     },
     setup() {
       const eventStore = useEventDataStore()
-      const todaysDate = useTodaysDate()
       const scrollComponent = ref(null);
       const router = useRouter();
       const eventCards = ref([]);
@@ -248,13 +246,9 @@
           },
           date_and_time_after: {
             type: String,
-            value: todaysDate,
-            default: todaysDate
           },
           date_and_time_before: {
             type: String,
-            value: todaysDate,
-            default: todaysDate
           },
           ordering: {
             type: String,
