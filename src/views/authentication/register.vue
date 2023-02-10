@@ -207,7 +207,7 @@
               .string()
               .required('errors.required')
               .min(8, 'errors.min8')
-              .oneOf([yup.ref('new_password'), null], 'errors.same-password'),
+              .oneOf([yup.ref('re_password'), null], 'errors.same-password'),
             phone: yup
               .string()
               .required('errors.required')

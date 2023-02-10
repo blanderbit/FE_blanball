@@ -111,7 +111,8 @@ export default {
         },
         stepperLines: {
           count: 2,
-          active: 2
+          active: 2,
+          exist: true,
         }
       }
     });
