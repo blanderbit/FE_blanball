@@ -1,6 +1,7 @@
 export default {
   'title': 'Створення облікового запису',
   'name': "Ваше ім'я",
+  'address-placeholder': 'Володимирська, 60',
   'last_name': "Ваша Фамілія",
   'phone-number': 'Ваш номер телефону',
   'next': 'Далі',

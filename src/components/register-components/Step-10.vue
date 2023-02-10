@@ -42,7 +42,7 @@
       <div class="b-register-step__dropdown">
         <InputComponent
             :title="$t('register.address')"
-            :placeholder="'Address'"
+            :placeholder="$t('register.address-placeholder')"
             :model-value="address"
             :title-width="0"
             outsideTitle
