@@ -13,7 +13,10 @@
             </div>
             <div class="time">{{ card.time }}</div>
           </div>
-          <PlaceDetector v-if="device.mobile" :place="card.place"></PlaceDetector>
+          <PlaceDetector
+            v-if="device.mobile"
+            :place="card.place"
+          ></PlaceDetector>
         </div>
       </div>
       <div class="right-side">
@@ -28,33 +31,21 @@
       {{ card.full_disc }}
     </div>
     <div class="labels">
-      <div 
-        class="label"
-      >
+      <div class="label">
         {{ card.gender }}
       </div>
-      <div
-        class="label"
-      >
+      <div class="label">
         {{ card.type }}
       </div>
-      <div
-          v-if="card.need_ball"
-        class="label"
-      >
-       Need ball
-      </div>
-      <div
-          v-if="card.need_form"
-          class="label"
-      >
-        Need form
-      </div>
+      <div v-if="card.need_ball" class="label">Need ball</div>
+      <div v-if="card.need_form" class="label">Need form</div>
     </div>
     <div class="bottom-block">
       <div class="top-line">
         <div class="name">{{ card.name }}</div>
-        <div class="price">{{ card.price === 0 ? $t('events.for-free') : card.price }}</div>
+        <div class="price">
+          {{ card.price === 0 ? $t('events.for-free') : card.price }}
+        </div>
       </div>
       <div class="bottom-line">
         <div class="left-side">
@@ -63,7 +54,9 @@
             <div class="visitors">{{ $t('events.fans') }}:</div>
           </div>
           <div class="date">
-            <div class="players-date">{{ card.count_current_users }} / {{card.amount_members}}</div>
+            <div class="players-date">
+              {{ card.count_current_users }} / {{ card.amount_members }}
+            </div>
             <div class="visitors-date">{{ card.count_fans }}</div>
           </div>
         </div>
@@ -82,26 +75,26 @@
 
 <script>
 import GreenBtn from '../../components/GreenBtn.vue'
-import {useDevice} from 'next-vue-device-detector'
+import { useDevice } from 'next-vue-device-detector'
 
 import PlaceDetector from '../../components/maps/PlaceDetector.vue'
 export default {
   props: {
     card: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   components: {
     GreenBtn,
-    PlaceDetector
+    PlaceDetector,
   },
   setup() {
     const device = useDevice()
     return {
-      device
+      device,
     }
-  }
+  },
 }
 </script>
 
@@ -117,16 +110,16 @@ export default {
   height: fit-content;
   width: 100%;
   /*@media (min-width: 1200px) and (max-width: 1400px) {*/
-    /*width: 408px;*/
+  /*width: 408px;*/
   /*}*/
   /*@media (min-width: 992px) and (max-width: 1199px) {*/
-    /*width: 320px;*/
+  /*width: 320px;*/
   /*}*/
   /*@media (min-width: 768px) and (max-width: 991px) {*/
-    /*width: 344px;*/
+  /*width: 344px;*/
   /*}*/
   /*@media (max-width: 768px) {*/
-    /*width: 100%;*/
+  /*width: 100%;*/
   /*}*/
   &:before {
     content: '';

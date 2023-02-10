@@ -51,7 +51,7 @@ export default {
       windowStyle,
       isSpinnerActive,
     }
-  }
+  },
 }
 </script>
 

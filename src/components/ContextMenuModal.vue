@@ -1,18 +1,9 @@
 <template>
-  <div 
-    class="b-context-modal__wrapper"
-    @click="wrapperClick"
-  >
-    <div 
-      class="b-context-modal"
-      :style="contextWindowStyle"
-    >
+  <div class="b-context-modal__wrapper" @click="wrapperClick">
+    <div class="b-context-modal" :style="contextWindowStyle">
       <ul>
-        <li 
-          v-for="item in menuText"
-          :key="item.id"
-        >
-          <img :src="item.img" alt="">
+        <li v-for="item in menuText" :key="item.id">
+          <img :src="item.img" alt="" />
           <span>{{ item.text }}</span>
         </li>
       </ul>
@@ -29,25 +20,25 @@ export default {
     clientX: {
       type: Number,
       default: null,
-      require: true
+      require: true,
     },
     clientY: {
       type: Number,
       default: null,
-      require: true
+      require: true,
     },
     menuText: {
       type: Array,
       dafault: () => [],
-      require: true
-    }
+      require: true,
+    },
   },
   emits: ['close-modal'],
   setup(props, context) {
     const contextWindowStyle = computed(() => {
       return {
         top: props.clientY + 'px',
-        left: props.clientX + 'px'
+        left: props.clientX + 'px',
       }
     })
     function wrapperClick() {
@@ -56,9 +47,9 @@ export default {
 
     return {
       contextWindowStyle,
-      wrapperClick
+      wrapperClick,
     }
-  }
+  },
 }
 </script>
 
@@ -88,7 +79,7 @@ export default {
           margin-right: 10px;
         }
         &:hover {
-          background: #E3FBFA;
+          background: #e3fbfa;
         }
       }
     }

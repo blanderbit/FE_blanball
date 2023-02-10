@@ -7,12 +7,7 @@ const config = Object.assign({}, base, {
     format: 'es',
     sourcemap: true,
   },
-  external: [
-    ...base.external,
-    'mitt',
-    'vue-observe-visibility',
-    'vue-resize',
-  ],
+  external: [...base.external, 'mitt', 'vue-observe-visibility', 'vue-resize'],
 })
 
 export default config

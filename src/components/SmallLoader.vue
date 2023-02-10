@@ -28,14 +28,17 @@ export default {
   setup(props) {
     const loading = ref(props.isActive)
 
-    watch(() => props.isActive, (newData, oldData) => {
-      loading.value = newData
-    })
+    watch(
+      () => props.isActive,
+      (newData, oldData) => {
+        loading.value = newData
+      }
+    )
 
     return {
-      loading
+      loading,
     }
-  }
+  },
 }
 </script>
 

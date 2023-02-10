@@ -2,48 +2,44 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createI18n } from 'vue-i18n'
 
-import VCalendar from 'v-calendar';
-import Toast from "vue-toastification";
+import VCalendar from 'v-calendar'
+import Toast from 'vue-toastification'
 
 import App from './App.vue'
 import router from './router'
 import pkg from '../package'
 
-import { UA_LANGUAGE } from "./i18n/ua";
+import { UA_LANGUAGE } from './i18n/ua'
 
-import { createLoader } from "./workers/loading-worker/loading.worker";
+import { createLoader } from './workers/loading-worker/loading.worker'
 
 import './assets/main.css'
-import 'v-calendar/dist/style.css';
-import 'vue3-virtual-scroller/dist/vue3-virtual-scroller.css';
-import 'bootstrap/dist/css/bootstrap-grid.min.css';
-import Maska from "./workers/phone-maska-worker";
-import "../src/components/maps/map.init";
-import "vue-select/dist/vue-select.css";
-import 'cropperjs/dist/cropper.css';
-import "@vueform/slider/themes/default.css";
+import 'v-calendar/dist/style.css'
+import 'vue3-virtual-scroller/dist/vue3-virtual-scroller.css'
+import 'bootstrap/dist/css/bootstrap-grid.min.css'
+import Maska from './workers/phone-maska-worker'
+import '../src/components/maps/map.init'
+import 'vue-select/dist/vue-select.css'
+import 'cropperjs/dist/cropper.css'
+import '@vueform/slider/themes/default.css'
 import '@mcistudio/vue-colorpicker/dist/style.css'
-import { createDeviceDetector } from "next-vue-device-detector";
+import { createDeviceDetector } from 'next-vue-device-detector'
 export const i18n = createI18n({
   locale: 'ua',
   allowComposition: true,
   messages: {
-    ua: UA_LANGUAGE
-  }
-});
-Object.defineProperty(
-  Object.prototype,
-  'getRandomElement',
-  {
-    value: function() {
-      return this[Math.floor(Math.random() * this.length)];
-    }
-  }
-);
+    ua: UA_LANGUAGE,
+  },
+})
+Object.defineProperty(Object.prototype, 'getRandomElement', {
+  value: function () {
+    return this[Math.floor(Math.random() * this.length)]
+  },
+})
 
-createLoader();
+createLoader()
 
-const app = createApp(App);
+const app = createApp(App)
 
 app
   .provide('clientVersion', pkg.version)
@@ -54,4 +50,4 @@ app
   .use(Toast)
   .use(Maska)
   .use(createDeviceDetector())
-  .mount('#app');
+  .mount('#app')

@@ -1,16 +1,12 @@
 <template>
-  <div 
-    class="b_white-btn" 
-    :style="styles" 
-    @click="$emit('click-function')"
-  >
+  <div class="b_white-btn" :style="styles" @click="$emit('click-function')">
     <img v-if="icon" :src="icon" alt="" />
     {{ text }}
   </div>
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed } from 'vue'
 
 export default {
   props: {
@@ -23,7 +19,7 @@ export default {
       required: true,
     },
     width: {
-      type: [ Number, String ],
+      type: [Number, String],
       default: null,
     },
     height: {
@@ -40,7 +36,7 @@ export default {
     },
     isBorder: {
       type: Boolean,
-      default: true
+      default: true,
     },
   },
   setup(props) {
@@ -60,9 +56,9 @@ export default {
 
     return {
       btnWidth,
-      styles
+      styles,
     }
-  }
+  },
 }
 </script>
 

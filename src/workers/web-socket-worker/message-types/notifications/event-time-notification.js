@@ -1,16 +1,16 @@
-import { InitialMessage } from "./initial.message";
-import * as dayjs from "dayjs";
+import { InitialMessage } from './initial.message'
+import * as dayjs from 'dayjs'
 
 import {
   SetActions,
   SetMessageType,
   AuthWebSocketMessage,
-  NotificationSetImage
-} from "../../type.decorator";
+  NotificationSetImage,
+} from '../../type.decorator'
 
-import { MessageActionTypes } from "../../message.action.types";
-import { WebSocketTypes } from "../../web.socket.types";
-import { NotificationImage } from "../../../../assets/img/notifications/notification.images";
+import { MessageActionTypes } from '../../message.action.types'
+import { WebSocketTypes } from '../../web.socket.types'
+import { NotificationImage } from '../../../../assets/img/notifications/notification.images'
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.EventTimeNotification)
@@ -18,29 +18,29 @@ import { NotificationImage } from "../../../../assets/img/notifications/notifica
 @SetActions([
   {
     type: MessageActionTypes.ActionClose,
-    text: 'Понятно'
-  }
+    text: 'Понятно',
+  },
 ])
 export class EventTimeNotificationMessage extends InitialMessage {
   createTexts(data) {
     const start_time = dayjs
       .duration({
-        minutes: data.start.start_time
+        minutes: data.start.start_time,
       })
-      .format('MM.DD HH:mm');
+      .format('MM.DD HH:mm')
 
     const time_to_start = dayjs
       .duration({
-        minutes: data.start.time_to_start
+        minutes: data.start.time_to_start,
       })
-      .asHours();
+      .asHours()
 
     return [
-      `Напоминаем, ${data.recipient.name} - событие начинается в ${start_time}, время до старта ${time_to_start}`
+      `Напоминаем, ${data.recipient.name} - событие начинается в ${start_time}, время до старта ${time_to_start}`,
     ]
-  };
+  }
 
   createTitle() {
-    return 'Напоминание о старте события.';
+    return 'Напоминание о старте события.'
   }
 }

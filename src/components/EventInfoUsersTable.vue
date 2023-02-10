@@ -1,15 +1,9 @@
 <template>
-  <div 
-    class="b-users-table"
-    :style="tableStyle"
-  >
-    <div 
-      class="b-users-table__table-label"
-      :style="labelStyle"
-    >
-      {{tableTitle}}
+  <div class="b-users-table" :style="tableStyle">
+    <div class="b-users-table__table-label" :style="labelStyle">
+      {{ tableTitle }}
     </div>
-    <SmallPlayerCard 
+    <SmallPlayerCard
       v-for="player of data"
       :key="player.id"
       :data-player="player"
@@ -26,35 +20,35 @@ export default {
   props: {
     data: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     tableTitleText: {
       type: String,
-      default: ''
+      default: '',
     },
     tableColor: {
       type: String,
-      default: '#000'
-    }
+      default: '#000',
+    },
   },
   components: {
-    SmallPlayerCard
+    SmallPlayerCard,
   },
   setup(props) {
     const tableTitle = ref(props.tableTitleText)
     const tableStyle = reactive({
-      border: `1px solid ${props.tableColor}`
+      border: `1px solid ${props.tableColor}`,
     })
     const labelStyle = reactive({
-      background: props.tableColor
+      background: props.tableColor,
     })
 
     return {
       tableTitle,
       tableStyle,
-      labelStyle
+      labelStyle,
     }
-  }
+  },
 }
 </script>
 
@@ -82,7 +76,7 @@ export default {
     font-size: 14px;
     line-height: 20px;
     text-align: center;
-    color: #FFFFFF;
+    color: #ffffff;
   }
 }
 </style>

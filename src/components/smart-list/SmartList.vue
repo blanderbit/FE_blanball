@@ -1,27 +1,22 @@
 <template>
   <DynamicScroller
-      :items="list"
-      :min-item-size="50"
-      :key-field="keyField"
-      class="scroller"
-      ref="scroller"
+    :items="list"
+    :min-item-size="50"
+    :key-field="keyField"
+    class="scroller"
+    ref="scroller"
   >
     <template #before>
       <slot name="before"></slot>
     </template>
     <template v-slot="{ item, index, active, itemWithSize }">
       <DynamicScrollerItem
-          :item="item"
-          :active="active"
-          :sizeDependencies="[list.length, item?.metadata?.expanding]"
-          :data-index="index"
+        :item="item"
+        :active="active"
+        :sizeDependencies="[list.length, item?.metadata?.expanding]"
+        :data-index="index"
       >
-        <slot
-            name="smartListItem"
-            :index="index"
-            :smartListItem="item"
-        >
-        </slot>
+        <slot name="smartListItem" :index="index" :smartListItem="item"> </slot>
       </DynamicScrollerItem>
     </template>
     <template #after>
@@ -31,90 +26,89 @@
 </template>
 
 <script>
+import Notification from '../Notification.vue'
+import { useRouter } from 'vue-router'
+import { ref, watch, nextTick } from 'vue'
+import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller'
 
-  import Notification from '../Notification.vue'
-  import { useRouter } from 'vue-router'
-  import { ref, watch, nextTick } from "vue";
-  import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller'
-
-  export default {
-    name: "Notifications",
-    components: {
-      Notification,
-      DynamicScroller,
-      DynamicScrollerItem
+export default {
+  name: 'Notifications',
+  components: {
+    Notification,
+    DynamicScroller,
+    DynamicScrollerItem,
+  },
+  props: {
+    list: {
+      type: Array,
+      default: () => [],
     },
-    props: {
-      list: {
-        type: Array,
-        default: () => []
-      },
-      selectedList: {
-        type: Array,
-        default: () => []
-      },
-      selectable: {
-        type: Boolean,
-        default: false
-      },
-      keyField: {
-        type: String,
-        default: 'id'
-      }
+    selectedList: {
+      type: Array,
+      default: () => [],
     },
-    emits: [
-      'update:selected-list',
-      'update:scrollbar-existing'
-    ],
-    setup(context, {emit, expose}) {
-      let activeNotification = ref(0);
-      let list = ref([]);
-      let scroller = ref();
-      const router = useRouter();
+    selectable: {
+      type: Boolean,
+      default: false,
+    },
+    keyField: {
+      type: String,
+      default: 'id',
+    },
+  },
+  emits: ['update:selected-list', 'update:scrollbar-existing'],
+  setup(context, { emit, expose }) {
+    let activeNotification = ref(0)
+    let list = ref([])
+    let scroller = ref()
+    const router = useRouter()
 
-      watch(
-        () => context.selectedList,
-        () => {
-          const array = [...context.selectedList];
-          list.value = Array.isArray(array) ? !array.length ? [] : array : [];
-          scroller.value.forceUpdate()
-        }
-      );
-
-      watch(
-        () => context.list,
-        () => {
-          nextTick(() => {
-            emit('update:scrollbar-existing', scroller.value.$el.scrollHeight > scroller.value.$el.clientHeight)
-          })
-        },
-        {
-          immediate: true
-        }
-      );
-
-      expose({
-        scrollToItem: (index) => scroller.value.scrollToItem(index),
-        scrollToFirstElement: () => scroller.value.scrollToItem(0)
-      });
-
-      return {
-        activeNotification,
-        scroller
+    watch(
+      () => context.selectedList,
+      () => {
+        const array = [...context.selectedList]
+        list.value = Array.isArray(array) ? (!array.length ? [] : array) : []
+        scroller.value.forceUpdate()
       }
+    )
+
+    watch(
+      () => context.list,
+      () => {
+        nextTick(() => {
+          emit(
+            'update:scrollbar-existing',
+            scroller.value.$el.scrollHeight > scroller.value.$el.clientHeight
+          )
+        })
+      },
+      {
+        immediate: true,
+      }
+    )
+
+    expose({
+      scrollToItem: (index) => scroller.value.scrollToItem(index),
+      scrollToFirstElement: () => scroller.value.scrollToItem(0),
+    })
+
+    return {
+      activeNotification,
+      scroller,
     }
-  }
+  },
+}
 </script>
 
 <style scoped lang="scss">
-  .scroller {
-    height: 100%;
+.scroller {
+  height: 100%;
+}
+::v-deep {
+  .vcp--expandable {
+    background: #ffffff;
+    border-bottom: 1px solid #efeff6;
+    box-shadow: 2px 2px 10px rgb(56 56 251 / 10%);
   }
-  ::v-deep {
-    .vcp--expandable {
-      background: #FFFFFF;
-      border-bottom: 1px solid #EFEFF6;
-      box-shadow: 2px 2px 10px rgb(56 56 251 / 10%);
-    }
-  }
+}
 </style>

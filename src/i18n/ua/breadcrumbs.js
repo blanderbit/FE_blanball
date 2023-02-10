@@ -1,21 +1,12 @@
 export default {
-  versions: [
-    {name: 'Головна', path: '/'},
-    {name: 'Версії'}
+  versions: [{ name: 'Головна', path: '/' }, { name: 'Версії' }],
+  profile: [{ name: 'Головна', path: '/' }, { name: 'Профіль' }],
+  myEvents: [
+    { name: 'Головна', path: '/' },
+    { name: 'Івенти', path: '/application/events' },
+    { name: 'Мої івенти' },
   ],
-  profile: [
-    {name: 'Головна', path: '/'},
-    {name: 'Профіль'}
-  ],
-  myEvents:[
-    {name: 'Головна', path: '/'},
-    {name: 'Івенти', path: '/application/events'},
-    {name: 'Мої івенти'}
-  ],
-  events:[
-    {name: 'Головна', path: '/'},
-    {name: 'Івенти'}
-  ],
+  events: [{ name: 'Головна', path: '/' }, { name: 'Івенти' }],
   createOneEvent: [
     {name: 'Головна', path: '/'},
     {name: 'Івент', path: '/application/events'},
@@ -35,6 +26,7 @@ export default {
     {name: 'Головна', path: '/'},
     {name: 'Користувачі'},
   ],
+  users: [{ name: 'Головна', path: '/' }, { name: 'Користувачі' }],
   userProfile: [
     {name: 'Головна', path: '/'},
     {name: 'Користувачі', path: '/application/users/general'},

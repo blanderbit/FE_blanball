@@ -1,16 +1,10 @@
 <template>
-  <div
-    class="b_modal_wrapper"
-    @click.self="$emit('close-modal')"
-  >
-    <div 
-      class="b_modal_modal-window"
-      :style="windowStyle"
-    >
+  <div class="b_modal_wrapper" @click.self="$emit('close-modal')">
+    <div class="b_modal_modal-window" :style="windowStyle">
       <div
         v-if="isTitleShown"
-        class="b_modal_window-title" 
-        :style="{'background': titleColor}"
+        class="b_modal_window-title"
+        :style="{ background: titleColor }"
       >
         <div class="b_modal_text">
           <slot name="title"></slot>
@@ -42,32 +36,32 @@ export default {
   props: {
     isTitleShown: {
       type: Boolean,
-      default: true
+      default: true,
     },
     titleColor: {
       type: String,
-      default: '#148783'
+      default: '#148783',
     },
     titleName: {
       type: String,
-      default: 'Modal'
+      default: 'Modal',
     },
     windowWidth: {
       type: Number,
-      default: 400
-    }
+      default: 400,
+    },
   },
   setup(props) {
     const windowStyle = computed(() => {
       return {
-        'padding': props.isTitleShown ? '80px 20px 20px 20px' : '20px',
-        'width': `${props.windowWidth}px`
+        padding: props.isTitleShown ? '80px 20px 20px 20px' : '20px',
+        width: `${props.windowWidth}px`,
       }
     })
     return {
-      windowStyle
+      windowStyle,
     }
-  }
+  },
 }
 </script>
 
@@ -147,8 +141,8 @@ export default {
         padding: 8px;
         width: 48px;
         height: 40px;
-        background: #FFFFFF;
-        border: 1px solid #DFDEED;
+        background: #ffffff;
+        border: 1px solid #dfdeed;
         border-radius: 6px;
         margin-right: 4px;
         outline: none;
@@ -160,7 +154,7 @@ export default {
         }
 
         /* Firefox */
-        &[type=number] {
+        &[type='number'] {
           -moz-appearance: textfield;
         }
       }
@@ -171,7 +165,7 @@ export default {
       font-weight: 400;
       font-size: 12px;
       line-height: 20px;
-      color: #F32929;
+      color: #f32929;
     }
     .btns-block {
       display: flex;
@@ -195,7 +189,7 @@ export default {
         font-size: 14px;
         line-height: 24px;
         text-align: center;
-        color: #C10B0B;
+        color: #c10b0b;
         padding: 4px 0;
         cursor: pointer;
       }
@@ -212,7 +206,7 @@ export default {
       }
       .save-btn {
         padding: 4px 16px;
-        background: #D3F8F7;
+        background: #d3f8f7;
         border-radius: 6px;
         font-family: 'Inter';
         font-style: normal;

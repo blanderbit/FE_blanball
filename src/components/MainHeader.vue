@@ -7,7 +7,7 @@
       @close-modal="closeSearchBlock"
     >
       <template #frame-data>
-        <SearchBlockAll 
+        <SearchBlockAll
           :width="modalSearchWidth"
           :loading="loading"
           :tags="relevantTags"
@@ -41,19 +41,16 @@
       </SearchBlockAll>
       </template>
     </SearchModal>
-    <div 
-      class="b_header_mob-menu-icon"
-      @click="$emit('menuIconClick')"
-    >
-      <img src="../assets/img/mob-menu-icon.svg" alt="">
+    <div class="b_header_mob-menu-icon" @click="$emit('menuIconClick')">
+      <img src="../assets/img/mob-menu-icon.svg" alt="" />
     </div>
     <BreadCrumbs />
     <div class="b_header_logo">
-      <img src="../assets/img/logo-header.svg" alt="">
+      <img src="../assets/img/logo-header.svg" alt="" />
     </div>
     <div class="b_header_search-block">
       <div class="b_header_search-input">
-        <InputComponent 
+        <InputComponent
           :title-width="0"
           :placeholder="$t('header.search-events')"
           :icon="icons.search"
@@ -90,9 +87,7 @@ export default {
     BreadCrumbs,
     InputComponent,
     SearchModal,
-    SearchBlockAll,
-    Avatar,
-    SmallLoader,
+    SearchBlockAll
   },
   setup() {
     const isSearchBlock = ref(false)
@@ -134,21 +129,25 @@ export default {
     const icons = computed(() => {
       return {
         search: searchIcon,
-        arrow: arrowIcon
+        arrow: arrowIcon,
       }
     })
 
-    function getItemDetail(data) {
-      router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(data.user_id))
-    }
+    const mockData = computed(() => {
+      return {
+        tags: CONSTANTS.manage_event.tags,
+        teams: CONSTANTS.manage_event.teams
+      }
+    })
 
     function showSearchBlock(e) {
       isSearchBlock.value = true
-      inputWidth.value = modalSearchWidth.value - e.target.parentNode.clientWidth
+      inputWidth.value =
+        modalSearchWidth.value - e.target.parentNode.clientWidth
       clientX.value = e.target.parentNode.offsetLeft - inputWidth.value
       clientY.value = e.target.parentNode.offsetHeight + 20
     }
-    function setInputCoordinates({x,y}) {
+    function setInputCoordinates({ x, y }) {
       clientX.value = x - inputWidth.value
       clientY.value = y + 20
     }
@@ -189,10 +188,10 @@ export default {
       loading,
       clientX,
       clientY,
-      relevantTags,
-      modalSearchWidth,
+      mockData,
+      modalSearchWidth
     }
-  }
+  },
 }
 </script>
 
