@@ -21,6 +21,7 @@ import ScrollTopComponent from './scroll_top_component'
 import Errors from './errors'
 import Notifications from './notifications'
 import Breadcrumbs from './breadcrumbs'
+import Hashtags from './hashtags'
 
 export const UA_LANGUAGE = {
   events: EventsPage,
@@ -35,6 +36,7 @@ export const UA_LANGUAGE = {
   register: Register,
   reset: Reset,
   header: Header,
+  hashtags: Hashtags,
   menu: Menu,
   player_page: PlayerPage,
   slide_menu: SlideMenu,
