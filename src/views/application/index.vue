@@ -28,7 +28,14 @@
         </div>
       </div>
     </div>
-    <ModalFeedback v-if="modals.review.active" @close-modal="toggleModal" />
+    <ModalFeedback
+        :isActive="isCreateReviewModalActive"
+        :eventData="endedEventData"
+        :animationActive="modalFeedBackAnimation"
+        :selectedEmojies="selectedEmojies"
+        @emojiSelection="emojiSelection"
+        @close-modal="closeEventReviewModal"
+    />
   </div>
 </template>
 
@@ -53,24 +60,55 @@ import message_audio from '../../assets/message_audio.mp3'
 
 import { AuthWebSocketWorkerInstance } from './../../workers/web-socket-worker'
 import { TokenWorker } from '../../workers/token-worker'
-import { notificationButtonHandlerMessage } from '../../workers/utils-worker'
+import { notificationButtonHandlerMessage } from "../../workers/utils-worker";
+import { NotificationsBus } from '../../workers/event-bus-worker' 
 
 import { MessageActionTypes } from '../../workers/web-socket-worker/message.action.types'
 import { API } from '../../workers/api-worker/api.worker'
 
-const isVerifyModalActive = ref(false)
-const userEmail = ref('')
-const isUserVerified = ref(true)
-const isMobMenuActive = ref(false)
-const modals = ref({
-  review: {
-    data: {},
-    active: false,
-  },
-})
+const isVerifyModalActive = ref(false);
+const userEmail = ref('');
+const isUserVerified = ref(true);
+const isMobMenuActive = ref(false);
+const isCreateReviewModalActive = ref(false)
+const endedEventData = ref({})
+const selectedEmojies = ref([])
+const modalFeedBackAnimation = ref(false)
 
-const router = useRouter()
-const toast = useToast()
+const closeEventReviewModal = () => {
+  isCreateReviewModalActive.value = false
+  modalFeedBackAnimation.value = false
+}
+
+const openEventReviewModal = () => {
+  if (isCreateReviewModalActive.value) {
+    modalFeedBackAnimation.value = true
+    setTimeout(() => {modalFeedBackAnimation.value = false}, 500)
+  }
+  isCreateReviewModalActive.value = true
+}
+
+NotificationsBus.on('openEventReviewModal', async (data) => {
+  const respone = await API.EventService.getOneEvent(data.data.event.id)
+  endedEventData.value = respone.data
+  openEventReviewModal()
+});
+
+
+const emojiSelection = (emoji) => {
+  for (let i = 0; i < selectedEmojies.value.length; i++) {
+    if (selectedEmojies.value[i].step === emoji.step) {
+      // Update the existing object
+      selectedEmojies.value[i] = emoji;
+      return
+    }
+  }
+  selectedEmojies.value.push(emoji);
+}
+
+
+const router = useRouter();
+const toast = useToast();
 const store = useUserDataStore()
 const audio = new Audio(message_audio)
 let timeout
@@ -78,10 +116,10 @@ let timeout
 isUserVerified.value = store.user?.is_verified
 userEmail.value = store.user?.email || ''
 
-const handlerAction = async (item, notificationInstance) => {
-  clearTimeout(timeout)
+const handlerAction = async (button, notificationInstance) => {
+  clearTimeout(timeout);
   await notificationButtonHandlerMessage({
-    item,
+    button,
     notificationInstance,
     router,
   })

@@ -71,13 +71,10 @@ export const createNotificationFromData = (message) => {
   }
 }
 
-export const notificationButtonHandlerMessage = async ({
-  button,
-  notificationInstance,
-  activeNotification,
-  router,
-}) => {
-  activeNotification.value = notificationInstance.notification_id
+export const notificationButtonHandlerMessage = async ({ button, notificationInstance, activeNotification, router }) => {
+  if (activeNotification) {
+    activeNotification.value = notificationInstance.notification_id;
+  }
   if (button.actionType === MessageActionDataTypes.Url) {
     router.push(button.action)
   }
@@ -99,5 +96,7 @@ export const notificationButtonHandlerMessage = async ({
   ) {
     notificationInstance.readAfterActiveActionCallBack(notificationInstance)
   }
-  activeNotification.value = 0
-}
+  if (activeNotification) {
+    activeNotification.value = 0;
+  }
+};

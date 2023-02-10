@@ -85,11 +85,17 @@ export default {
 <style lang="scss" scoped>
 .b-modal-bottom-card {
   overflow-y: scroll;
-  padding: 20px 20px 0 20px;
+  padding: 20px;
   background: #ffffff;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 6px;
   transition: all 0.3s ease;
+  
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+  &::-webkit-scrollbar { 
+    display: none;
+  }
   .b-modal-bottom-card__title-line {
     display: flex;
     justify-content: space-between;

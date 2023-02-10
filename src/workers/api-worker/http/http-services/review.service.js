@@ -9,4 +9,11 @@ export class ReviewService {
   static getMyReviews() {
     return AxiosInstance.get(EndpointsEnum.Reviews.getMyReviews)
   }
+
+  static createEventReview(eventReviewData) {
+    return AxiosInstance.post(
+      EndpointsEnum.Reviews.createEventReview,
+      eventReviewData
+    )
+  }
 }

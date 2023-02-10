@@ -34,7 +34,10 @@ export default {
     'chose-another-pic': 'Обрати інше фото',
   },
   verify_email: {
-    title: 'Пiдтвердити поштову адресу',
+    'title': 'Пiдтвердити поштову адресу'
+  },
+  event_feedback: {
+    'your-comment': 'Ваш коментар'
   },
   bug_report: {
     title: 'Повідомити про промилку на сайті',

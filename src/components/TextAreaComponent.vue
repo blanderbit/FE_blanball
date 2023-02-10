@@ -4,7 +4,9 @@
       <div v-if="title" class="b-text-area__outer-title">
         <span>{{ title }}</span>
       </div>
-      <div class="b-text-area__min-max-label">45 / 200</div>
+      <div class="b-text-area__min-max-label">
+        {{ modelValue ? modelValue.length : 0 }} / {{ maxTextValue }}
+      </div>
       <textarea
         :value="modelValue"
         :placeholder="placeholder"
@@ -22,7 +24,7 @@
         />
       </label>
     </div>
-    <p class="b-text-area__error-message">{{ modelErrorMessage }}</p>
+    <p class="b-text-area__error-message">{{ modelErrorMessage ? $t(modelErrorMessage) : '' }}</p>
   </div>
 </template>
 
@@ -41,6 +43,7 @@ export default {
       type: String,
       default: '',
     },
+    modelValue: Object | String,
     placeholder: {
       type: String,
       default: '',
@@ -59,6 +62,10 @@ export default {
     mode: {
       type: String,
       default: 'aggressive',
+    },
+    maxTextValue: {
+      type: Number,
+      default: 200,
     },
   },
   emits: ['icon-click'],

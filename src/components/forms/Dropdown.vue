@@ -35,7 +35,7 @@
         </div>
       </template>
     </v-select>
-    <p class="b-input__error-message">{{ t(modelErrorMessage || '') }}</p>
+    <p class="b-input__error-message">{{ modelErrorMessage ? t(modelErrorMessage) : '' }}</p>
   </div>
 </template>
 

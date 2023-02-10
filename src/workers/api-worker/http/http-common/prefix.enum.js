@@ -22,8 +22,8 @@ export const EndpointsEnum = {
   Events: {
     GetAllEvents: '/events/client/events/list',
     GetAllMyEvents: '/events/client/my/events/list',
-    DeclineOrAcceptInvites:
-      '/events/client/accept/or/decline/invites/to/events',
+    getOneEvent: (eventId) => `/events/client/event/${eventId}`,
+    DeclineOrAcceptInvites: '/events/client/accept/or/decline/invites/to/events',
     PopularEventsList: '/events/client/popular/events/list',
     DeclineOrAcceptParticipations:
       '/events/client/accept/or/decline/participations',
@@ -43,6 +43,7 @@ export const EndpointsEnum = {
   Reviews: {
     getUserReviews: '/reviews/client/user/reviews/list/',
     getMyReviews: '/reviews/client/my/reviews/list',
+    createEventReview: '/reviews/client/review/event/review/create'
   },
   Versions: {
     getAllVersions: '/versions/client/versions/list',

@@ -14,6 +14,7 @@ import {
 import { WebSocketTypes } from '../../web.socket.types'
 import { API } from '../../../api-worker/api.worker'
 
+
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.InviteUserToEvent)
 @NotificationSetUserImage()
