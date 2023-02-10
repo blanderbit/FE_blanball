@@ -38,7 +38,9 @@
               :key="label"
               class="b-user-card__label"
             >
-              <span v-if="label"> # {{ label }} </span>
+              <span v-if="label">
+                # {{ $t(label) }}
+              </span>
             </div>
           </div>
         </div>
@@ -259,6 +261,7 @@
               :outside-title="true"
               :height="40"
               name="phone"
+              v-maska="'+38 (0##) ### ## ##'"
             />
           </div>
           <div class="b-user-card__area-line">
@@ -354,10 +357,10 @@ export default {
     const imageSrc = ref(null)
     const fileReader = new FileReader()
     const labels = ref([
-      props.userData?.age ? `${props.userData?.age} років` : null,
-      props.userData?.gender,
-      props.userData?.role,
-      props.userData?.position,
+      props.userData?.age ? `${props.userData?.age} років` : null ,
+      `hashtags.${props.userData?.gender}`,
+      `hashtags.${props.userData?.role}`,
+      `hashtags.${props.userData?.position}`
     ])
     const fileInput = ref(null)
 

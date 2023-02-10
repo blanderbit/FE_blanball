@@ -27,12 +27,6 @@
         <div class="b-tech-works__subtitle">
           {{ $t('works.we-are-fixing') }}
         </div>
-        <div class="b-tech-works__not-have-account">
-          {{ $t('works.no-account') }}
-        </div>
-        <div class="b-tech-works__register-link">
-          {{ $t('works.register') }}
-        </div>
       </div>
       <div class="b-tech-works__right-side">
         <img src="../../assets/img/tech-works-back.svg" alt="" />
@@ -136,7 +130,6 @@ export default {}
         color: #575775;
         padding-bottom: 28px;
         margin-bottom: 12px;
-        border-bottom: 1px solid #dfdeed;
         @media (max-width: 768px) {
           font-size: 12px;
         }

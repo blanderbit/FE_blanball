@@ -23,8 +23,8 @@
               class="b-main-search__soring-button"
               @click="sortingButtonClick"
             >
-              <img :src="sortingBtnData.icon" alt="" />
-              <span>
+              <img :src="sortingBtnData.icon" alt="">
+              <span class="b-main-search__soring-title">
                 {{ sortingBtnData.title }}
               </span>
             </div>
@@ -236,13 +236,31 @@ export default {
         arrowDown: arrowsDownIcon,
       }
     })
-    const ordering = computed(() => [{ value: 'id' }, { value: '-id' }])
-    const sortingBtnData = computed(() => {
-      return transformedFilters.value.ordering === ordering.value[0].value
-        ? { title: 'А-Я', icon: arrowsUpIcon }
-        : { title: 'Я-А', icon: arrowsDownIcon }
-    })
-    const gender = computed(() => CONSTANTS.users_page.gender)
+    },
+    emits: ['update:value', 'clearFilters'],
+    setup(props, {emit}) {
+      const isModalFiltersActive = ref(false)
+      const todaysDate = useTodaysDate()
+      const { isMobile, isTablet, onResize } = useWindowWidth()
+      const icons = computed(() => {
+        return {
+          female: FemaleIcon,
+          male: MaleIcon,
+          unisex: UnisexIcon,
+          search: SearchIcon,
+          arrowUp: arrowsUpIcon,
+          arrowDown: arrowsDownIcon
+        }
+      })
+      const ordering = computed(() => [
+        {value: 'id'},
+        {value: '-id'},
+      ]);
+      const sortingBtnData = computed(() => {
+        return transformedFilters.value.ordering === ordering.value[0].value ?
+          {title: 'Cпочатку нові', icon: arrowsUpIcon} : {title: 'Cпочатку старі', icon: arrowsDownIcon}
+      })
+      const gender = computed(() => CONSTANTS.users_page.gender);
 
     const { activeFilters, updateRealData, transformedFilters } =
       TransformedFiltersWorker({

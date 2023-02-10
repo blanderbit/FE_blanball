@@ -1,90 +1,90 @@
 import userIcon from '../assets/img/user-icon.svg'
 import databaseDisabled from '../assets/img/database-disabled.svg'
 import notification from '../assets/img/notification-small.svg'
-import { ROUTES } from '../router/router.const'
+import { ROUTES } from "../router/router.const";
 
 export default {
   mainLeg: [
     {
       value: 'Права',
       name: 'Права',
-      id: 'Right',
+      id: 'Right'  
     },
     {
       value: 'Ліва',
       name: 'Ліва',
-      id: 'Left',
-    },
+      id: 'Left'
+    }
   ],
   position: [
-    {
+    { 
       value: 'GK',
-      name: 'вратарь',
+      name: 'Вратарь'
     },
-    {
+    { 
       value: 'LB',
-      name: 'левый защитник',
+      name: 'Левый защитник'
     },
-    {
+    { 
       value: 'RB',
-      name: 'правый защитник',
+      name: 'Правый защитник'
     },
-    {
+    { 
       value: 'CB',
-      name: 'центральный защитник',
+      name: 'Центральный защитник'
     },
-    {
+    { 
       value: 'LWB',
-      name: 'левый фланговый защитник',
+      name: 'Левый фланговый защитник'
     },
-    {
+    { 
       value: 'RWB',
-      name: 'правый фланговый защитник',
+      name: 'Правый фланговый защитник'
     },
-    {
+    { 
       value: 'CDM',
-      name: 'опорный полузащитник',
+      name: 'Опорный полузащитник'
     },
-    {
+    { 
       value: 'CM',
-      name: 'центральный полузащитник',
+      name: 'Центральный полузащитник'
     },
-    {
+    { 
       value: 'CAM',
-      name: 'атакующий полузащитник',
+      name: 'Атакующий полузащитник'
     },
-    {
+    { 
       value: 'RM',
-      name: 'правый крайний полузащитник',
+      name: 'Правый крайний полузащитник'
     },
-    {
+    { 
       value: 'LM',
-      name: 'левый крайний полузащитник',
+      name: 'Левый крайний полузащитник'
     },
-    {
+    { 
       value: 'RW',
-      name: 'правый фланговый атакующий',
+      name: 'Правый фланговый атакующий'
     },
-    {
+    { 
       value: 'LW',
-      name: 'левый фланговый атакующий',
+      name: 'Левый фланговый атакующий'
     },
-    {
+    { 
       value: 'RF',
-      name: 'правый форвард',
+      name: 'Правый форвард'
     },
-    {
+    { 
       value: 'CF',
-      name: 'центральный форвард',
+      name: 'Центральный форвард'
     },
-    {
+    { 
       value: 'LF',
-      name: 'левый форвард',
+      name: 'Левый форвард'
     },
-    {
+    { 
       value: 'ST',
-      name: 'форвард-страйкер',
-    },
+      name: 'Форвард страйкер'
+    }
   ],
   tabs: [
     {
@@ -93,7 +93,7 @@ export default {
       img: userIcon,
       url: ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute,
       isActive: true,
-      isDisabled: false,
+      isDisabled: false
     },
     // {
     //   id: 1,
@@ -114,5 +114,5 @@ export default {
     { title: 'asdf' },
     { title: 'as' },
     { title: 'asdfk' },
-  ],
+  ]
 }

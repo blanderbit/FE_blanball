@@ -41,7 +41,8 @@
 
 <script>
 import { ref, watch, computed } from 'vue'
-import vSelect from 'vue-select'
+import vSelect from "vue-select";
+import OpenIndicator from './OpenIndicator.vue'
 import { createPopper } from '@popperjs/core'
 
 import { CustomModelWorker } from '../../workers/custom-model-worker/index'
@@ -51,6 +52,7 @@ export default {
   name: 'dropdown-component',
   components: {
     vSelect,
+    OpenIndicator,
   },
   props: {
     checkValueInitially: {
@@ -122,6 +124,7 @@ export default {
       modelHandlers.value.input[1](e, true)
     }
 
+    vSelect.props.components.default = () => ({ OpenIndicator });
     watch(
       () => props.options,
       () => {
