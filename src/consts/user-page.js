@@ -6,23 +6,23 @@ import UnisexIcon from '../assets/img/unisex.svg'
 
 export default {
   user_position: {
-    'GK': 'Position is GK',
-    'LB': 'Position is LB',
-    'RB': 'Position is RB',
-    'CB': 'Position is CB',
-    'LWB': 'Position is LWB',
-    'RWB': 'Position is RWB',
-    'CDM': 'Position is CDM',
-    'CM': 'Position is CM',
-    'CAM': 'Position is CAM',
-    'RM': 'Position is RM',
-    'LM': 'Position is LM',
-    'RW': 'Position is RW',
-    'LW': 'Position is LW',
-    'RF': 'Position is RF',
-    'CF': 'Position is CF',
-    'LF': 'Position is LF',
-    'ST': 'Position is ST'
+    GK: 'Position is GK',
+    LB: 'Position is LB',
+    RB: 'Position is RB',
+    CB: 'Position is CB',
+    LWB: 'Position is LWB',
+    RWB: 'Position is RWB',
+    CDM: 'Position is CDM',
+    CM: 'Position is CM',
+    CAM: 'Position is CAM',
+    RM: 'Position is RM',
+    LM: 'Position is LM',
+    RW: 'Position is RW',
+    LW: 'Position is LW',
+    RF: 'Position is RF',
+    CF: 'Position is CF',
+    LF: 'Position is LF',
+    ST: 'Position is ST',
   },
   rateBlock: [
     {
@@ -57,7 +57,7 @@ export default {
       pnz: 'Правий напівзахисник',
       gender: 'Чоловіча',
       gender_icon: maleIcon,
-      isActive: false
+      isActive: false,
     }
   }),
   userInfo: {
@@ -72,7 +72,7 @@ export default {
     main_leg: 'Права',
     position: 'Правий напівзахисник',
     phone: '+380 (95) 390 86 50',
-    location: 'Львів, Залізничний р-н.'
+    location: 'Львів, Залізничний р-н.',
   },
   months: {
     monthFromNumber: {
@@ -85,40 +85,40 @@ export default {
       '07': 'Липня',
       '08': 'Серпня',
       '09': 'Вересня',
-      '10': 'Жовтня',
-      '11': 'Листопада',
-      '12': 'Грудня'
+      10: 'Жовтня',
+      11: 'Листопада',
+      12: 'Грудня',
     },
     numberFromMonth: {
-      'Січня' : '01',
-      'Лютого' : '02',
-      'Березня' : '03',
-      'Квітня' : '04',
-      'Травня' : '05',
-      'Червня' : '06',
-      'Липня' : '07',
-      'Серпня' : '08',
-      'Вересня' : '09',
-      'Жовтня' : '10',
-      'Листопада' : '11',
-      'Грудня' : '12'
-    }
+      Січня: '01',
+      Лютого: '02',
+      Березня: '03',
+      Квітня: '04',
+      Травня: '05',
+      Червня: '06',
+      Липня: '07',
+      Серпня: '08',
+      Вересня: '09',
+      Жовтня: '10',
+      Листопада: '11',
+      Грудня: '12',
+    },
   },
   gender: [
     {
       value: 'Woman',
       iconSrc: FemaleIcon,
-      name: 'Жінки'
+      name: 'Жінки',
     },
     {
       value: 'Man',
       iconSrc: MaleIcon,
-      name: 'Чоловіки'
+      name: 'Чоловіки',
     },
     {
       value: 'All',
       iconSrc: UnisexIcon,
-      name: 'Всі'
-    }
-  ]
+      name: 'Всі',
+    },
+  ],
 }

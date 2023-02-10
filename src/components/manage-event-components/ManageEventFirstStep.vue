@@ -60,15 +60,15 @@
           {{ $t('events.date') }}
         </div>
         <v-date-picker
-          locale="ukr" 
-          :model-config="calendar.modelConfig" 
+          locale="ukr"
+          :model-config="calendar.modelConfig"
           v-model="initialDate"
         >
           <template #default="options">
             <div class="b-event-m-1st__calendar-cover">
-              <input 
-                class="py-1 border rounded" 
-                :value="options.inputValue" 
+              <input
+                class="py-1 border rounded"
+                :value="options.inputValue"
                 v-on="options.inputEvents"
                 name="date"
               />
@@ -98,13 +98,13 @@
       <ModalPositionMap v-model="userLocation"></ModalPositionMap>
     </div>
     <div class="b-event-m-1st__event-map">
-      <img src="../../assets/img/map-manage-event.svg" alt="">
+      <img src="../../assets/img/map-manage-event.svg" alt="" />
     </div>
   </div>
 </template>
 
 <script>
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed } from 'vue'
 
 import Dropdown from '../forms/Dropdown.vue'
 import InputComponent from '../forms/InputComponent.vue'
@@ -125,36 +125,40 @@ export default {
     Dropdown,
     InputComponent,
     RadioButton,
-    ModalPositionMap
+    ModalPositionMap,
   },
   props: {
     formData: {
       type: Object,
-      default: () => {}
+      default: () => {},
     },
     currentStep: {
       type: Number,
-      default: null
-    }
+      default: null,
+    },
   },
   emit: ['updateDate'],
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     const initialDate = ref(new Date())
     const userLocation = ref('')
 
     const stepStyle = computed(() => {
-      return props.currentStep === 1 ? 
-            { height : 'auto' } :
-            { height : '0px' }
+      return props.currentStep === 1 ? { height: 'auto' } : { height: '0px' }
     })
-    watch(() => initialDate.value, () => {
-      emit('updateDate', initialDate.value)
-    })
-    watch(() => userLocation.value, () => {
-      emit('updateLocation', userLocation.value)
-    })
+    watch(
+      () => initialDate.value,
+      () => {
+        emit('updateDate', initialDate.value)
+      }
+    )
+    watch(
+      () => userLocation.value,
+      () => {
+        emit('updateLocation', userLocation.value)
+      }
+    )
 
-    const calendar = ref( {
+    const calendar = ref({
       inputMask: 'YYYY-MM-DD',
       modelConfig: {
         type: 'string',
@@ -168,7 +172,7 @@ export default {
         location: LocationPic,
         unisexIcon: UniPic,
         maleIcon: MalePic,
-        femaleIcon: FemalePic
+        femaleIcon: FemalePic,
       }
     })
     const mockData = computed(() => {
@@ -184,91 +188,91 @@ export default {
       initialDate,
       calendar,
       userLocation,
-      stepStyle
+      stepStyle,
     }
-  }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-  .b-event-m-1st {
-    overflow: hidden;
-    .b-event-m-1st__time-and-date {
+.b-event-m-1st {
+  overflow: hidden;
+  .b-event-m-1st__time-and-date {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .b-event-m-1st__input-calendar {
+      flex-basis: 50%;
+      margin-right: 12px;
+      border: 1px solid #dfdeed;
+      border-radius: 6px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      .b-event-m-1st__input-calendar {
-        flex-basis: 50%;
-        margin-right: 12px;
-        border: 1px solid #dfdeed;
-        border-radius: 6px;
-        display: flex;
-        align-items: center;
-        padding: 0 12px;
-        width: 154px;
-        min-width: 154px;
-        position: relative;
-        .b-event-m-1st__label {
-          position: absolute;
-          left: 2px;
-          top: -8px;
-          padding: 0px 4px;
-          background: #FFFFFF;
-          border-radius: 4px;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 12px;
-          line-height: 16px;
-          color: #575775;
-        }
-        .b-event-m-1st__calendar-cover {
+      padding: 0 12px;
+      width: 154px;
+      min-width: 154px;
+      position: relative;
+      .b-event-m-1st__label {
+        position: absolute;
+        left: 2px;
+        top: -8px;
+        padding: 0px 4px;
+        background: #ffffff;
+        border-radius: 4px;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 16px;
+        color: #575775;
+      }
+      .b-event-m-1st__calendar-cover {
+        width: 100%;
+        input {
+          height: 40px;
+          border: transparent;
           width: 100%;
-          input {
-            height: 40px;
-            border: transparent;
-            width: 100%;
-          }
-        }
-      }
-      .b-event-m-1st__input-time {
-        flex-basis: 50%;
-      }
-    }
-    .b-event-m-1st__input-location {
-      width: 100%;
-      height: 40px;
-      margin-top: 16px;
-    }
-    .b-event-m-1st__title {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 500;
-      font-size: 13px;
-      line-height: 20px;
-      color: #262541;
-    }
-    .b-event-m-1st__radio-btn-wrapper {
-      margin-top: 12px;
-      $color1: #f4f4f4;
-      $color2: #148783;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      .radio-cover {
-        flex-basis: 30%;
-        ::v-deep {
-          .b-radio {
-            margin-right: 0;
-            .b-radio-label::before {
-              margin-right: 10px;
-            }
-          }
         }
       }
     }
-    .b-event-m-1st__event-map {
-      margin-top: 16px;
+    .b-event-m-1st__input-time {
+      flex-basis: 50%;
     }
   }
+  .b-event-m-1st__input-location {
+    width: 100%;
+    height: 40px;
+    margin-top: 16px;
+  }
+  .b-event-m-1st__title {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 20px;
+    color: #262541;
+  }
+  .b-event-m-1st__radio-btn-wrapper {
+    margin-top: 12px;
+    $color1: #f4f4f4;
+    $color2: #148783;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .radio-cover {
+      flex-basis: 30%;
+      ::v-deep {
+        .b-radio {
+          margin-right: 0;
+          .b-radio-label::before {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+  .b-event-m-1st__event-map {
+    margin-top: 16px;
+  }
+}
 </style>

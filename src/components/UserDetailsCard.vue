@@ -5,28 +5,22 @@
         <div class="b-user-card__picture-block">
           <div class="b-user-card__profile-picture">
             <img v-if="userData.avatar_url" :src="userData.avatar_url" alt="" />
-            <Avatar
-              v-else
-              :full-name="fullUserName"
-            />
-            <div 
-              v-if="isEditMode"
-              class="b-user-card__add-pic-icon"
-            >
+            <Avatar v-else :full-name="fullUserName" />
+            <div v-if="isEditMode" class="b-user-card__add-pic-icon">
               <label for="my_file">
-                <input 
+                <input
                   type="file"
                   accept="image/png, image/jpeg"
-                  id="my_file" 
-                  style="display: none;" 
+                  id="my_file"
+                  style="display: none"
                   @change="onFileSelected"
                   @click="clearFileInputValue"
                   ref="fileInput"
                 />
-                <img 
-                  src="../assets/img/add-user-pic2.svg" 
+                <img
+                  src="../assets/img/add-user-pic2.svg"
                   alt="add user picture"
-                >
+                />
               </label>
             </div>
           </div>
@@ -44,9 +38,7 @@
               :key="label"
               class="b-user-card__label"
             >
-              <span v-if="label">
-                # {{ label }}
-              </span>
+              <span v-if="label"> # {{ label }} </span>
             </div>
           </div>
         </div>
@@ -59,7 +51,7 @@
           :key="item.id"
           class="b-user-card__tab-title d-flex justify-content-center align-items-center"
           :style="{
-            'flex-basis' : item.id === 1 ? '50%' : '33.3333%',
+            'flex-basis': item.id === 1 ? '50%' : '33.3333%',
             'margin-right': item.id !== 2 ? '4px' : 0,
             background: currentTab === item.id ? '#FFFFFF' : '#F9F9FC',
             color: currentTab === item.id ? '#262541' : '#575775',
@@ -71,14 +63,11 @@
         </div>
       </div>
       <div class="b-user-card__main-tab-body">
-        <div 
-          v-show="currentTab === 0 || isMobTabletSize" 
+        <div
+          v-show="currentTab === 0 || isMobTabletSize"
           class="b-user-card__tab-body"
         >
-          <div
-            v-if="isMobTabletSize"
-            class="b-user-card__mob-title"
-          >
+          <div v-if="isMobTabletSize" class="b-user-card__mob-title">
             {{ $t('profile.about-me') }}
           </div>
           <div v-if="isEditMode" class="b-user-card__name-line">
@@ -104,7 +93,9 @@
           <div class="b-user-card__textarea-line">
             <div v-if="!isEditMode" class="b-user-card__about-me">
               {{ userData.about_me || $t('profile.no-about_me') }}
-              <div class="b-user-card__title">{{ $t('profile.about-myself') }}</div>
+              <div class="b-user-card__title">
+                {{ $t('profile.about-myself') }}
+              </div>
             </div>
             <TextAreaComponent
               v-else
@@ -115,7 +106,7 @@
           </div>
           <div class="b-user-card__birthday-line">
             <div v-if="!isEditMode" class="b-user-card__birth-date">
-              {{ birthDate || $t('profile.no-birthday')}}
+              {{ birthDate || $t('profile.no-birthday') }}
               <div class="b-user-card__title">
                 {{ $t('profile.birth-date') }}
               </div>
@@ -155,21 +146,21 @@
           </div>
         </div>
 
-        <div v-show="currentTab === 1 || isMobTabletSize" class="b-user-card__tab-body">
-          <div
-            v-if="isMobTabletSize"
-            class="b-user-card__mob-title"
-          >
+        <div
+          v-show="currentTab === 1 || isMobTabletSize"
+          class="b-user-card__tab-body"
+        >
+          <div v-if="isMobTabletSize" class="b-user-card__mob-title">
             {{ $t('profile.game-features') }}
           </div>
           <div class="b-user-card__body-features">
             <div class="b-user-card__height">
               <div v-if="!isEditMode" class="b-user-card__to-show">
                 <div class="b-user-card__data">
-                  {{ userData.height || $t('profile.no-height') }} 
-                  {{$t('profile.sm')}}
+                  {{ userData.height || $t('profile.no-height') }}
+                  {{ $t('profile.sm') }}
                 </div>
-                <div class="b-user-card__title">{{$t('profile.height')}}</div>
+                <div class="b-user-card__title">{{ $t('profile.height') }}</div>
               </div>
               <InputComponent
                 v-else
@@ -183,7 +174,7 @@
             <div class="b-user-card__weight">
               <div v-if="!isEditMode" class="b-user-card__to-show">
                 <div class="b-user-card__data">
-                  {{ userData.weight || $t('profile.no-weight') }} 
+                  {{ userData.weight || $t('profile.no-weight') }}
                   {{ $t('profile.kg') }}
                 </div>
                 <div class="b-user-card__title">
@@ -200,19 +191,15 @@
               />
             </div>
             <div class="b-user-card__main-leg">
-              <div
-                v-if="!isEditMode"
-                class="b-user-card__to-show"
-              >
+              <div v-if="!isEditMode" class="b-user-card__to-show">
                 <div class="b-user-card__data">
                   {{ userData.working_leg || $t('profile.no-working-leg') }}
                 </div>
-                <div class="b-user-card__title">{{$t('profile.main-leg')}}</div>
+                <div class="b-user-card__title">
+                  {{ $t('profile.main-leg') }}
+                </div>
               </div>
-              <div 
-                v-if="isEditMode"
-                class="b-user-card__dropdown-main-leg"
-              >
+              <div v-if="isEditMode" class="b-user-card__dropdown-main-leg">
                 <Dropdown
                   :main-title="$t('profile.main-leg')"
                   :placeholder="$t('profile.main-leg')"
@@ -248,11 +235,11 @@
           </div>
         </div>
 
-        <div v-if="currentTab === 2 || isMobTabletSize" class="b-user-card__tab-body">
-          <div
-            v-if="isMobTabletSize"
-            class="b-user-card__mob-title"
-          >
+        <div
+          v-if="currentTab === 2 || isMobTabletSize"
+          class="b-user-card__tab-body"
+        >
+          <div v-if="isMobTabletSize" class="b-user-card__mob-title">
             {{ $t('profile.contacts') }}
           </div>
           <div class="b-user-card__phone">
@@ -277,7 +264,7 @@
           <div class="b-user-card__area-line">
             <div v-if="!isEditMode" class="b-user-card__to-show">
               <div class="b-user-card__data">
-                {{userData.place || $t('profile.no-place') }}
+                {{ userData.place || $t('profile.no-place') }}
               </div>
               <div class="b-user-card__title">
                 {{ $t('profile.location') }}
@@ -328,11 +315,11 @@ import sortArrowHorizontally from '../assets/img/sort-arrows-horizontal.svg'
 import tick from '../assets/img/tick.svg'
 import edit from '../assets/img/edit.svg'
 
-import { API } from "../workers/api-worker/api.worker"
-import CONSTANTS from "../consts"
+import { API } from '../workers/api-worker/api.worker'
+import CONSTANTS from '../consts'
 import useWindowWidth from '../utils/widthScreen'
 
-const IMAGE_TYPES = ["image/jpeg", "image/png"]
+const IMAGE_TYPES = ['image/jpeg', 'image/png']
 
 export default {
   name: 'UserDetailsCard',
@@ -340,7 +327,7 @@ export default {
     InputComponent,
     Dropdown,
     TextAreaComponent,
-    Avatar
+    Avatar,
   },
   props: {
     userData: {
@@ -354,16 +341,12 @@ export default {
     isEditMode: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   emits: ['openEditPictureModal'],
-  setup(props, {emit}) {
-    const { 
-      onResize,
-      isBetweenTabletAndDesktop, 
-      isMobile,
-      isTablet 
-    } = useWindowWidth()
+  setup(props, { emit }) {
+    const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
+      useWindowWidth()
     const { t } = useI18n()
 
     const currentTab = ref(0)
@@ -371,22 +354,26 @@ export default {
     const imageSrc = ref(null)
     const fileReader = new FileReader()
     const labels = ref([
-      props.userData?.age ? `${props.userData?.age} років` : null ,
+      props.userData?.age ? `${props.userData?.age} років` : null,
       props.userData?.gender,
       props.userData?.role,
-      props.userData?.position
+      props.userData?.position,
     ])
     const fileInput = ref(null)
 
     const userPosition = computed(() => {
-      return CONSTANTS.profile.position.find(item => item.value === props.userData?.position)?.name
+      return CONSTANTS.profile.position.find(
+        (item) => item.value === props.userData?.position
+      )?.name
     })
 
     const isMobTabletSize = computed(() => {
       return isBetweenTabletAndDesktop.value || isMobile.value || isTablet.value
     })
 
-    const fullUserName = computed(() => `${props.userData?.name} ${props.userData?.last_name}`)
+    const fullUserName = computed(
+      () => `${props.userData?.name} ${props.userData?.last_name}`
+    )
 
     const mockData = computed(() => {
       return {
@@ -400,7 +387,7 @@ export default {
         mainLag: CONSTANTS.profile.mainLeg,
         cities: CONSTANTS.profile.cities,
         district: CONSTANTS.profile.district,
-        position: CONSTANTS.profile.position
+        position: CONSTANTS.profile.position,
       }
     })
 
@@ -415,19 +402,19 @@ export default {
     const birthDate = computed(() => {
       if (props.userData?.birthday) {
         return `${dayjs(props.userData?.birthday)
-        .locale(dayjsUkrLocale)
-        .format('D MMMM YYYY')} p.`
+          .locale(dayjsUkrLocale)
+          .format('D MMMM YYYY')} p.`
       } else {
         return t('profile.no-birth-date')
       }
     })
 
     onMounted(() => {
-      window.addEventListener('resize', onResize);
+      window.addEventListener('resize', onResize)
     })
 
     onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize); 
+      window.removeEventListener('resize', onResize)
     })
 
     function changeUserTab(id) {
@@ -449,7 +436,7 @@ export default {
     }
 
     watchEffect(() => {
-      if(selectedFile.value) {
+      if (selectedFile.value) {
         fileReader.readAsDataURL(selectedFile.value)
       } else {
         imageSrc.value = null
@@ -468,9 +455,9 @@ export default {
       fullUserName,
       isMobTabletSize,
       userPosition,
-      fileInput
+      fileInput,
     }
-  }
+  },
 }
 </script>
 
@@ -490,8 +477,8 @@ export default {
     flex-basis: 440px;
   }
   @media (min-width: 768px) and (max-width: 1200px) {
-      flex-basis: 49%;
-    }
+    flex-basis: 49%;
+  }
 
   .b-user-card__top-table {
     background: #ffffff;
@@ -722,11 +709,11 @@ export default {
             margin-right: 8px;
           }
           .b-user-card__weight {
-            border-left: 1px solid #EFEFF6;
+            border-left: 1px solid #efeff6;
           }
           .b-user-card__main-leg {
             flex-basis: 40%;
-            border-left: 1px solid #EFEFF6;
+            border-left: 1px solid #efeff6;
             .b-user-card__dropdown-main-leg {
               ::v-deep {
                 .vs__dropdown-toggle {

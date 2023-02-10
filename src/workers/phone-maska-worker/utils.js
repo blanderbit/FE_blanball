@@ -1,6 +1,6 @@
 /* global HTMLInputElement */
 
-function event (name, inputType = null) {
+function event(name, inputType = null) {
   const event = document.createEvent('Event')
   event.initEvent(name, true, true)
   if (inputType) {
@@ -10,16 +10,22 @@ function event (name, inputType = null) {
   return event
 }
 
-function findInputElement (el) {
-  return (el instanceof HTMLInputElement) ? el : el.querySelector('input') || el
+function findInputElement(el) {
+  return el instanceof HTMLInputElement ? el : el.querySelector('input') || el
 }
 
-function fixInputSelection (el, position, digit) {
-  while (position && position < el.value.length && el.value.charAt(position - 1) !== digit) {
+function fixInputSelection(el, position, digit) {
+  while (
+    position &&
+    position < el.value.length &&
+    el.value.charAt(position - 1) !== digit
+  ) {
     position++
   }
 
-  const selectionRange = el.type ? el.type.match(/^(text|search|password|tel|url)$/i) : !el.type
+  const selectionRange = el.type
+    ? el.type.match(/^(text|search|password|tel|url)$/i)
+    : !el.type
   if (selectionRange && el === document.activeElement) {
     el.setSelectionRange(position, position)
     setTimeout(function () {
@@ -28,13 +34,8 @@ function fixInputSelection (el, position, digit) {
   }
 }
 
-function isString (val) {
+function isString(val) {
   return Object.prototype.toString.call(val) === '[object String]'
 }
 
-export {
-  event,
-  findInputElement,
-  fixInputSelection,
-  isString
-}
+export { event, findInputElement, fixInputSelection, isString }

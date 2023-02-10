@@ -90,7 +90,7 @@ export default {
         label: 'НПЗ',
         name: 'Дмитро Горбачевський',
         rate: 3,
-        color: '#D62953'
+        color: '#D62953',
       }
     }),
     team_2: new Array(11).fill('l').map((item, idx) => {
@@ -99,8 +99,8 @@ export default {
         label: 'НПЗ',
         name: 'Дмитро Горбачевський',
         rate: 3,
-        color: '#2946E1'
+        color: '#2946E1',
       }
-    })
-  }
+    }),
+  },
 }

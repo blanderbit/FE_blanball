@@ -45,7 +45,7 @@
                   />
                   <label for="radio-1" class="radio-label">
                     <img src="../../../assets/img/male-icon.svg" alt="" />
-                    {{$t('users.men')}}
+                    {{ $t('users.men') }}
                   </label>
                 </div>
                 <div class="radio">
@@ -58,7 +58,7 @@
                   />
                   <label for="radio-2" class="radio-label">
                     <img src="../../../assets/img/female-icon.svg" alt="" />
-                    {{$t('users.women')}}
+                    {{ $t('users.women') }}
                   </label>
                 </div>
                 <div class="radio">
@@ -71,7 +71,7 @@
                   />
                   <label for="radio-3" class="radio-label">
                     <img src="../../../assets/img/unisex.svg" alt="" />
-                    {{$t('users.all')}}
+                    {{ $t('users.all') }}
                   </label>
                 </div>
               </div>
@@ -84,8 +84,8 @@
               <div class="old-new-filter">
                 <img src="../../../assets/img/sort-arrows.svg" alt="" />
                 <div class="text-block">
-                  {{$t('users.sorting')}}
-                  <span>{{$t('users.new-first')}}</span>
+                  {{ $t('users.sorting') }}
+                  <span>{{ $t('users.new-first') }}</span>
                 </div>
               </div>
               <div class="search-input-tablet">
@@ -122,7 +122,7 @@
               <div class="text">
                 <div class="title">{{ $t('events.filters') }}</div>
                 <div class="terms">
-                  {{$t('users.found')}} 15 {{$t('users.advertisments')}}
+                  {{ $t('users.found') }} 15 {{ $t('users.advertisments') }}
                 </div>
               </div>
             </div>

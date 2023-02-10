@@ -26,6 +26,6 @@ export const props = {
   },
 }
 
-export function simpleArray () {
+export function simpleArray() {
   return this.items.length && typeof this.items[0] !== 'object'
 }

@@ -5,7 +5,7 @@
     :right-side-style="rightSideStyle"
   >
     <template #main-content>
-      <Stepper/>
+      <Stepper />
     </template>
   </AuthenticationMain>
 </template>
@@ -24,20 +24,20 @@ export default {
   name: 'reset',
   components: {
     Stepper,
-    AuthenticationMain
+    AuthenticationMain,
   },
   setup() {
     const backgroundTab = computed(() => backTab)
     const backgroundMob = computed(() => backMob)
     const rightSideStyle = computed(() => {
-      return {'--back-picture': `url(${rightSidePicture})`}
+      return { '--back-picture': `url(${rightSidePicture})` }
     })
 
     return {
       backgroundTab,
       backgroundMob,
-      rightSideStyle
+      rightSideStyle,
     }
-  }
+  },
 }
 </script>

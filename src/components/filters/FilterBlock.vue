@@ -6,29 +6,29 @@
 </template>
 
 <script>
-  export default {
-    name: "FilterBlock"
-  }
+export default {
+  name: 'FilterBlock',
+}
 </script>
 
 <style scoped lang="scss">
-  .b-filters {
-    &__wrapper {
-      position: relative;
-    }
+.b-filters {
+  &__wrapper {
+    position: relative;
+  }
 
-    &__background {
-      background: #F9F9FC;
-      position: absolute;
-      border-radius: 8px;
-      top: -20px;
-      padding: 20px 16px;
-      left: -16px;
-      width: calc(100% + 16px + 16px);
-      height: 200px;
-      @media (max-width: 768px) {
-        display: none;
-      }
+  &__background {
+    background: #f9f9fc;
+    position: absolute;
+    border-radius: 8px;
+    top: -20px;
+    padding: 20px 16px;
+    left: -16px;
+    width: calc(100% + 16px + 16px);
+    height: 200px;
+    @media (max-width: 768px) {
+      display: none;
     }
   }
+}
 </style>

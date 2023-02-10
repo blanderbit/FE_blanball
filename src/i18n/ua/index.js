@@ -45,5 +45,5 @@ export const UA_LANGUAGE = {
   counter: Counter,
   scroll_top_component: ScrollTopComponent,
   errors: Errors,
-  notifications: Notifications
-};
+  notifications: Notifications,
+}

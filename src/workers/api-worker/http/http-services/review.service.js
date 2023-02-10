@@ -1,17 +1,13 @@
-import { AxiosInstance } from "../../../../plugins/axios.plugin";
-import { EndpointsEnum } from "../http-common/prefix.enum";
+import { AxiosInstance } from '../../../../plugins/axios.plugin'
+import { EndpointsEnum } from '../http-common/prefix.enum'
 
 export class ReviewService {
   static getUserReviews(payload) {
-    return AxiosInstance.get(
-      EndpointsEnum.Reviews.getUserReviews + payload
-    )
+    return AxiosInstance.get(EndpointsEnum.Reviews.getUserReviews + payload)
   }
 
   static getMyReviews() {
-    return AxiosInstance.get(
-      EndpointsEnum.Reviews.getMyReviews
-    )
+    return AxiosInstance.get(EndpointsEnum.Reviews.getMyReviews)
   }
 
   static createEventReview(eventReviewData) {

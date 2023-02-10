@@ -7,14 +7,10 @@
         :style="arrowStyle"
         @click="$emit('arrowClick')"
       >
-        <img src="../../assets/img/arrow-down.svg" alt="">
+        <img src="../../assets/img/arrow-down.svg" alt="" />
       </div>
-      <div
-        v-else
-        class="b-modal-top-card__cross"
-        @click="$emit('crossClick')"
-      >
-        <img src="../../assets/img/cross.svg" alt="">
+      <div v-else class="b-modal-top-card__cross" @click="$emit('crossClick')">
+        <img src="../../assets/img/cross.svg" alt="" />
       </div>
     </div>
     <div class="b-modal-top-card__title-wrapper">
@@ -22,12 +18,12 @@
         v-if="step.id === 5"
         src="../../assets/img/cloud-hands.svg" 
         alt="cloud-hands"
-      >
+      />
       <div
         class="b-modal-top-card__title"
         :style="step.id === 5 && lastTitleStyle"
       >
-        {{step.title}}
+        {{ step.title }}
       </div>
     </div>
     <Form
@@ -40,10 +36,10 @@
       :style="mainBlockCardStyle"
     >
       <div class="b-modal-top-card__subtitle">
-        {{step.subtitle}}
+        {{ step.subtitle }}
       </div>
       <div class="b-modal-top-card__last-subtitle">
-        {{step.last_subtitle}}
+        {{ step.last_subtitle }}
       </div>
 
       <Emotions
@@ -106,7 +102,7 @@ export default {
   props: {
     step: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     isOpened: {
       type: Boolean,
@@ -122,7 +118,7 @@ export default {
 
     const arrowStyle = computed(() => {
       return {
-        transform: props.isOpened ? 'rotate(-180deg)' : 'rotate(-90deg)'
+        transform: props.isOpened ? 'rotate(-180deg)' : 'rotate(-90deg)',
       }
     })
 
@@ -178,12 +174,12 @@ export default {
         'font-weight': 700,
         'font-size': '24px',
         'line-height': '28px',
-        color: '#262541'
+        color: '#262541',
       }
     })
     const mainBlockCardStyle = computed(() => {
       return {
-        height: props.isOpened ? 'auto' : 0
+        height: props.isOpened ? 'auto' : 0,
       }
     })
 
@@ -202,14 +198,14 @@ export default {
           e.preventDefault()
       },
     }
-  }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 .b-modal-top-card {
   padding: 20px;
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 6px;
   margin-bottom: 8px;
@@ -255,7 +251,7 @@ export default {
       font-weight: 400;
       font-size: 14px;
       line-height: 20px;
-      color: #262541
+      color: #262541;
     }
     .b-modal-top-card__btns-block { 
       display: flex;
@@ -272,7 +268,7 @@ export default {
         cursor: pointer;
       }
 
-      .b-modal-top-card__next-btn { 
+      .b-modal-top-card__next-btn {
         padding: 4px 16px;
       }
     }

@@ -20,25 +20,25 @@
     <PlaceDetector :place="item.place"></PlaceDetector>
     <div class="b-small-event-card__labels">
       <div class="b-small-event-card__label">{{ item.type }}</div>
-      <div class="b-small-event-card__label">{{ item.gender  }}</div>
+      <div class="b-small-event-card__label">{{ item.gender }}</div>
       <div class="b-small-event-card__label">...</div>
     </div>
   </div>
 </template>
 <script>
-  import PlaceDetector from './../components/maps/PlaceDetector.vue'
-  export default {
-    name: 'SmallEventCard',
-    components: {
-      PlaceDetector
+import PlaceDetector from './../components/maps/PlaceDetector.vue'
+export default {
+  name: 'SmallEventCard',
+  components: {
+    PlaceDetector,
+  },
+  props: {
+    item: {
+      type: Object,
+      default: () => {},
     },
-    props: {
-      item: {
-        type: Object,
-        default: () => {}
-      }
-    }
-  }
+  },
+}
 </script>
 <style lang="scss" scoped>
 .b-small-event-card {

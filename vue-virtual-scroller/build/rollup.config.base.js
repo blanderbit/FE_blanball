@@ -23,11 +23,14 @@ export default {
       },
     }),
     css({
-      output: styles => {
+      output: (styles) => {
         const file = require.resolve('vue-resize/dist/vue-resize.css')
         styles += fs.readFileSync(file, { encoding: 'utf8' })
         fs.ensureDirSync('dist')
-        fs.writeFileSync('dist/vue-virtual-scroller.css', new CleanCSS().minify(styles).styles)
+        fs.writeFileSync(
+          'dist/vue-virtual-scroller.css',
+          new CleanCSS().minify(styles).styles
+        )
       },
     }),
     babel({
@@ -44,7 +47,5 @@ export default {
   watch: {
     include: 'src/**',
   },
-  external: [
-    'vue',
-  ],
+  external: ['vue'],
 }

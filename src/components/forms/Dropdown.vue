@@ -1,5 +1,5 @@
 <template>
-  <div class="b-dropdown" >
+  <div class="b-dropdown">
     <div class="b-dropdown__title">
       <span>
         {{ mainTitle }}
@@ -7,13 +7,13 @@
     </div>
     <v-select
       :searchable="false"
-      :style="{height: height + 'px'}"
+      :style="{ height: height + 'px' }"
       :placeholder="placeholder"
       :options="options"
       :label="displayName || 'value'"
       append-to-body
       taggable="taggable"
-      :class="{'b-form-error': modelErrorMessage}"
+      :class="{ 'b-form-error': modelErrorMessage }"
       :calculate-position="withPopper"
       @update:modelValue="setNewValue($event)"
       maxHeight="100px"
@@ -22,21 +22,13 @@
     >
       <template #option="options">
         <div class="b-dropdown__custom-option">
-          <img 
-            v-if="options.iconSrc" 
-            :src="options.iconSrc" 
-            alt="icon"
-          >
+          <img v-if="options.iconSrc" :src="options.iconSrc" alt="icon" />
           {{ options[displayName] }}
         </div>
       </template>
       <template #selected-option="options">
         <div class="b-dropdown__custom-option">
-          <img 
-            v-if="options.iconSrc" 
-            :src="options.iconSrc" 
-            alt="icon"
-          >
+          <img v-if="options.iconSrc" :src="options.iconSrc" alt="icon" />
           <span>
             {{ options[displayName] }}
           </span>
@@ -49,54 +41,54 @@
 
 <script>
 import { ref, watch, computed } from 'vue'
-import vSelect from "vue-select";
+import vSelect from 'vue-select'
 import { createPopper } from '@popperjs/core'
 
-import { CustomModelWorker } from "../../workers/custom-model-worker/index"
+import { CustomModelWorker } from '../../workers/custom-model-worker/index'
 import SearchIcon from '../../assets/img/search.svg'
 import { useI18n } from 'vue-i18n'
 export default {
   name: 'dropdown-component',
   components: {
-    vSelect
+    vSelect,
   },
   props: {
     checkValueInitially: {
       type: Boolean,
-      default: false
+      default: false,
     },
     checkValueImmediate: {
       type: Boolean,
-      default: false
+      default: false,
     },
     mainTitle: {
       type: String,
-      default: ''
+      default: '',
     },
     displayName: {
       type: String,
-      default: 'value'
+      default: 'value',
     },
     displayValue: {
       type: String,
-      default: 'value'
+      default: 'value',
     },
     modelValue: Object | String,
     taggable: {
       type: Boolean,
-      default: false
+      default: false,
     },
     options: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     width: {
       type: Number,
-      default: null
+      default: null,
     },
     height: {
       type: Number,
-      default: 40
+      default: 40,
     },
     mode: {
       type: String,
@@ -106,58 +98,59 @@ export default {
       type: String,
       default: 'test placeholder',
     },
-    name: String
+    name: String,
   },
   emits: ['new-value', 'update:modelValue'],
-  setup(props, {emit}) {
-    const wrapper = ref(null);
-    const isOpened = ref(false);
-    const dropdownModelValue = ref(null);
+  setup(props, { emit }) {
+    const wrapper = ref(null)
+    const isOpened = ref(false)
+    const dropdownModelValue = ref(null)
     const {
-        modelValue: staticModelValue,
-        modelErrorMessage,
-        modelHandlers
-    } = CustomModelWorker(props);
+      modelValue: staticModelValue,
+      modelErrorMessage,
+      modelHandlers,
+    } = CustomModelWorker(props)
     const icon = computed(() => SearchIcon)
 
-    function selectValue (e) {
-      dropdownModelValue.value = props.options.find(item => {
-        return item[props.displayValue] === e
-      }) || (e ? {value: e, name: e} : null);
+    function selectValue(e) {
+      dropdownModelValue.value =
+        props.options.find((item) => {
+          return item[props.displayValue] === e
+        }) || (e ? { value: e, name: e } : null)
 
-      modelHandlers.value.input[0](e);
-      modelHandlers.value.input[1](e, true);
+      modelHandlers.value.input[0](e)
+      modelHandlers.value.input[1](e, true)
     }
 
     watch(
       () => props.options,
       () => {
-        selectValue(props.modelValue);
+        selectValue(props.modelValue)
       },
       {
-        immediate: props.checkValueImmediate
+        immediate: props.checkValueImmediate,
       }
-    );
+    )
 
-    if(props.checkValueInitially) {
-      selectValue(props.modelValue);
+    if (props.checkValueInitially) {
+      selectValue(props.modelValue)
     }
 
     watch(
       () => props.modelValue,
       () => {
-        selectValue(props.modelValue);
+        selectValue(props.modelValue)
       },
       {
-        immediate: props.checkValueImmediate
+        immediate: props.checkValueImmediate,
       }
-    );
+    )
     const withPopper = (dropdownList, component, context) => {
       /**
        * We need to explicitly define the dropdown width since
        * it is usually inherited from the parent with CSS.
        */
-      dropdownList.style.width = context.width;
+      dropdownList.style.width = context.width
 
       /**
        * Here we position the dropdownList relative to the $refs.toggle Element.
@@ -190,7 +183,7 @@ export default {
             },
           },
         ],
-      });
+      })
 
       /**
        * To prevent memory leaks Popper needs to be destroyed.
@@ -200,13 +193,13 @@ export default {
     }
 
     function setNewValue(val) {
-      modelHandlers.value.input[0](val?.[props.displayValue]);
-      modelHandlers.value.input[1](val?.[props.displayValue], true);
-      emit('new-value',val?.[props.displayValue] );
-      emit('update:modelValue',val?.[props.displayValue] )
+      modelHandlers.value.input[0](val?.[props.displayValue])
+      modelHandlers.value.input[1](val?.[props.displayValue], true)
+      emit('new-value', val?.[props.displayValue])
+      emit('update:modelValue', val?.[props.displayValue])
     }
 
-    const { t } = useI18n();
+    const { t } = useI18n()
     return {
       setNewValue,
       withPopper,
@@ -217,15 +210,15 @@ export default {
       wrapper,
       dropdownModelValue,
       icon,
-      t
+      t,
     }
-  }
+  },
 }
 </script>
 
-<style lang="scss" scoped >
-  @import "forms.scss";
-  
+<style lang="scss" scoped>
+@import 'forms.scss';
+
 ::v-deep {
   .vs__clear {
     display: none;
@@ -240,7 +233,9 @@ export default {
   .v-select {
     height: 100%;
   }
-  .vs__search, .vs__dropdown-menu, .v-select {
+  .vs__search,
+  .vs__dropdown-menu,
+  .v-select {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
@@ -253,7 +248,8 @@ export default {
     height: 100%;
   }
   .v-select.vs--open.vs--single.vs--unsearchable .vs__dropdown-toggle {
-    border-bottom: var(--vs-border-width) var(--vs-border-style) var(--vs-border-color);
+    border-bottom: var(--vs-border-width) var(--vs-border-style)
+      var(--vs-border-color);
   }
   .style-chooser .vs__search::placeholder,
   .style-chooser .vs__dropdown-toggle,
@@ -290,7 +286,8 @@ export default {
     border-radius: 6px;
   }
 
-  .vs--searchable .vs__dropdown-toggle, .vs__selected-options {
+  .vs--searchable .vs__dropdown-toggle,
+  .vs__selected-options {
     height: 100%;
   }
   .vs--searchable .vs__dropdown-toggle {
@@ -300,60 +297,59 @@ export default {
   }
 }
 
-  .b-input__error-message {
+.b-input__error-message {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  color: #f32929;
+}
+.v-select.drop-up.vs--open .vs__dropdown-toggle {
+  border-radius: 0 0 4px 4px;
+  border-top-color: transparent;
+  border-bottom-color: rgba(60, 60, 60, 0.26);
+  background: red;
+}
+
+[data-popper-placement='top'] {
+  border-radius: 4px 4px 0 0;
+  border-top-style: solid;
+  border-bottom-style: none;
+  box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.b-dropdown {
+  position: relative;
+  height: 100%;
+  &__title {
+    position: absolute;
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
     font-size: 12px;
-    line-height: 20px;
-    color: #F32929;
+    line-height: 16px;
+    color: #575775;
+    background: #ffffff;
+    padding: 0px 4px;
+    left: 8px;
+    top: -8px;
+    z-index: 1;
   }
-  .v-select.drop-up.vs--open .vs__dropdown-toggle {
-    border-radius: 0 0 4px 4px;
-    border-top-color: transparent;
-    border-bottom-color: rgba(60, 60, 60, 0.26);
-    background: red;
-  }
-
-  [data-popper-placement='top'] {
-    border-radius: 4px 4px 0 0;
-    border-top-style: solid;
-    border-bottom-style: none;
-    box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.15);
-  }
-
-  .b-dropdown {
-    position: relative;
+  &__custom-option {
+    display: flex;
+    align-items: center;
     height: 100%;
-    &__title {
-      position: absolute;
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 12px;
-      line-height: 16px;
-      color: #575775;
-      background: #FFFFFF;
-      padding: 0px 4px;
-      left: 8px;
-      top: -8px;
-      z-index: 1;
+    img {
+      margin-right: 5px;
+      display: block;
+      width: 12px;
     }
-    &__custom-option {
-      display: flex;
-      align-items: center;
-      height: 100%;
-      img {
-        margin-right: 5px;
-        display: block;
-        width: 12px;
-      }
-      span {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
+    span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
-
+}
 </style>
