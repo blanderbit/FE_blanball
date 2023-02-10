@@ -22,15 +22,16 @@ import SmallEventCard from './SmallEventCard.vue'
 import SimpleListWrapper from './simple-list/SimpleListWrapper.vue'
 import dayjs from 'dayjs'
 import dayjsUkrLocale from 'dayjs/locale/uk'
-import { API } from '../workers/api-worker/api.worker'
-import { useI18n } from 'vue-i18n'
-import { computed } from 'vue'
-const { t } = useI18n()
-const getPlanedEvents = (page) => {
-  // TODO DUBLICATE
-  return API.EventService.getPlannedUserEvents(113, {
-    page,
-  }).then((result) => ({
+import { API } from "../workers/api-worker/api.worker";
+import { useI18n } from "vue-i18n";
+import { computed } from "vue";
+const {t} = useI18n();
+const getPlanedEvents = (page) => { // TODO DUBLICATE
+  return API.EventService.getPlannedUserEvents(
+    {
+      page
+    }
+  ).then(result => ({
     data: {
       results: result.data.map((i, index) => {
         i.id = index
@@ -48,11 +49,12 @@ const getPlanedEvents = (page) => {
   }))
 }
 
-const getPopularEvents = (page) => {
-  // TODO DUBLICATE
-  return API.EventService.getPopularEventsListEvents(113, {
-    page,
-  }).then((result) => ({
+const getPopularEvents = (page) => { // TODO DUBLICATE
+  return API.EventService.getPopularEventsListEvents(
+    {
+      page
+    }
+  ).then(result => ({
     data: {
       results: result.data.map((i, index) => {
         i.id = index

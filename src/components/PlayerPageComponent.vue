@@ -199,10 +199,11 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
-import StarRating from 'vue-star-rating'
-import dayjs from 'dayjs'
-import dayjsUkrLocale from 'dayjs/locale/uk'
+  import { computed, ref } from 'vue'
+  import { useRoute } from 'vue-router'
+  import StarRating from 'vue-star-rating'
+  import dayjs from 'dayjs'
+  import dayjsUkrLocale from 'dayjs/locale/uk'
 
 import publicPageBack from '../assets/img/public-page-back.svg'
 import userPageBack from '../assets/img/user-page-back.svg'

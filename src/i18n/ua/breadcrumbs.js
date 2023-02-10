@@ -8,24 +8,28 @@ export default {
   ],
   events: [{ name: 'Головна', path: '/' }, { name: 'Івенти' }],
   createOneEvent: [
-    { name: 'Головна', path: '/' },
-    { name: 'Ивенти', path: '/application/events' },
-    { name: 'Створення івенту ' },
+    {name: 'Головна', path: '/'},
+    {name: 'Івент', path: '/application/events'},
+    {name: 'Створення івенту '},
   ],
   getOneEvent: [
-    { name: 'Головна', path: '/' },
-    { name: 'Ивенти', path: '/application/events' },
-    { name: 'Ивент ' },
+    {name: 'Головна', path: '/'},
+    {name: 'Івенти', path: '/application/events'},
+    {name: 'Івент '},
   ],
-  editOneEvent: [
-    { name: 'Головна', path: '/' },
-    { name: 'Ивенти', path: '/application/events' },
-    { name: 'Редагування івента' },
+  editOneEvent:  [
+    {name: 'Головна', path: '/'},
+    {name: 'Івенти', path: '/application/events'},
+    {name: 'Редагування івента'},
+  ],
+  users: [
+    {name: 'Головна', path: '/'},
+    {name: 'Користувачі'},
   ],
   users: [{ name: 'Головна', path: '/' }, { name: 'Користувачі' }],
   userProfile: [
-    { name: 'Головна', path: '/' },
-    { name: 'Користувачі', path: '/application/users' },
-    { name: 'Профіль користувача' },
-  ],
-}
+    {name: 'Головна', path: '/'},
+    {name: 'Користувачі', path: '/application/users/general'},
+    {name: 'Профіль користувача'},
+  ]
+};
