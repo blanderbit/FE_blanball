@@ -114,8 +114,8 @@
           },
           stepperLines: {
             exist: true,
-            count: 4,
-            active: 3
+            count: 3,
+            active: 2
           }
         }
       });
