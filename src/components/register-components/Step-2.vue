@@ -99,7 +99,7 @@ export default {
 
     const stepConfig = computed(() => {
       return {
-        UkraineMask: '+38 (0##) ### ## ##',
+        UkraineMask: '+38 (0XX) XXX XX XX',
         title: t('register.create-account'),
         returnButton: {
           exist: true,
@@ -112,7 +112,8 @@ export default {
         stepperLines: {
           count: 2,
           active: 2,
-        },
+          exist: true,
+        }
       }
     })
     return {

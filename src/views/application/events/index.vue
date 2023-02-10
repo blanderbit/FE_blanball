@@ -86,7 +86,6 @@ import dayjs from 'dayjs'
 import dayjsUkrLocale from 'dayjs/locale/uk'
 import { useI18n } from 'vue-i18n'
 import { useEventDataStore } from '../../../stores/eventsData'
-
 import GreenBtn from '../../../components/GreenBtn.vue'
 import InputComponent from '../../../components/forms/InputComponent.vue'
 import ContextMenu from '../../../components/ContextMenuModal.vue'
@@ -97,7 +96,6 @@ import MyEventCard from '../../../components/MyEventCard.vue'
 import RightSidebar from '../../../components/RightSidebar.vue'
 import EmptyList from '../../../components/EmptyList.vue'
 import SmartGridList from '../../../components/smart-list/SmartGridList.vue'
-
 import CONSTANTS from '../../../consts/index'
 import ScrollToTop from '../../../components/ScrollToTop.vue'
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue'
@@ -110,7 +108,6 @@ import { v4 as uuid } from 'uuid'
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue'
 import useTodaysDate from '../../../utils/todaysDate'
 import Plus from '../../../assets/img/plus.svg'
-
 export default {
   name: 'EventsPage',
   components: {
@@ -138,7 +135,6 @@ export default {
     const { t } = useI18n()
     const isLoaderActive = ref(false)
     const mainEventsBlock = ref()
-
     const mockData = computed(() => {
       return {
         event_cards: CONSTANTS.event_page.event_cards,
@@ -147,24 +143,19 @@ export default {
         cities_dropdown: CONSTANTS.event_page.cities_dropdown,
       }
     })
-
     const iconPlus = computed(() => Plus)
-
     const emptyListMessages = computed(() => {
       return {
         title: 'Немає повідомлень для відображення',
         description: 'Вам ще не надходили сповіщення від інших користувачів',
       }
     })
-
     function getDate(date) {
       return dayjs(date).locale(dayjsUkrLocale).format('D MMMM')
     }
-
     function getTime(time) {
       return dayjs(time).locale(dayjsUkrLocale).format('HH:mm')
     }
-
     function handlingIncomeData(item) {
       return {
         ...item,
@@ -179,27 +170,21 @@ export default {
         ],
       }
     }
-
     function goToEventPage(id) {
       router.push(ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(id))
     }
-
     function goToCreateEvent() {
       router.push(ROUTES.APPLICATION.EVENTS.CREATE.absolute)
     }
-
     function switchToMyEvents() {
       router.push(ROUTES.APPLICATION.MY_EVENTS.absolute)
     }
-
     const refList = ref()
     const blockScrollToTopIfExist = ref(false)
     const triggerForRestart = ref(false)
-
     const restartInfiniteScroll = () => {
       triggerForRestart.value = uuid()
     }
-
     const {
       paginationElements,
       paginationPage,
@@ -215,7 +200,6 @@ export default {
       },
       dataTransformation: handlingIncomeData,
     })
-
     paginationPage.value = 1
     paginationElements.value =
       router.currentRoute.value.meta.eventData.data.results.map(
@@ -280,7 +264,6 @@ export default {
           paginationClearData()
         },
       })
-
     const detectSizesForCards = ({
       itemWidth,
       itemCount,
@@ -316,7 +299,6 @@ export default {
         itemCount.value = 1
       }
     }
-
     const loadDataPaginationData = (pageNumber, $state) => {
       paginationLoad({
         pageNumber,
@@ -324,7 +306,6 @@ export default {
         forceUpdate: paginationPage.value === 1,
       })
     }
-
     return {
       emptyListMessages,
       scrollComponent,
@@ -357,7 +338,6 @@ export default {
 
 <style lang="scss" scoped>
 @import 'v-calendar/dist/style.css';
-
 .b-events-page {
   display: grid;
   grid-template-columns: 1fr 256px;

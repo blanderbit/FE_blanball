@@ -95,7 +95,6 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { merge, cloneDeep } from 'lodash'
 import { Form } from '@system.it.flumx.com/vee-validate'
-
 import Step_1 from '../../components/register-components/Step-1.vue'
 import Step_2 from '../../components/register-components/Step-2.vue'
 import Step_3 from '../../components/register-components/Step-3.vue'
@@ -108,7 +107,6 @@ import Step_9 from '../../components/register-components/Step-9.vue'
 import Step_10 from '../../components/register-components/Step-10.vue'
 import Step_11 from '../../components/register-components/Step-11.vue'
 import AuthenticationMain from '../../components/AuthenticationMain.vue'
-
 import imageStep_1 from '../../assets/img/registration-back-1.svg'
 import imageStep_2 from '../../assets/img/registration-back-2.svg'
 import imageStep_3 from '../../assets/img/registration-back-3.svg'
@@ -116,12 +114,10 @@ import imageStep_4 from '../../assets/img/registration-back-4.svg'
 import onboardingStep_2 from '../../assets/img/onboarding-step-2.svg'
 import onboardingStep_3 from '../../assets/img/onboarding-step-3.svg'
 import onboardingStep_4 from '../../assets/img/onboarding-step-4.svg'
-
 import imageStepTab_1 from '../../assets/img/registration-back-tab1.svg'
 import imageStepTab_2 from '../../assets/img/registration-back-tab2.svg'
 import imageStepTab_3 from '../../assets/img/registration-back-tab3.svg'
 import imageStepTab_4 from '../../assets/img/registration-back-tab4.svg'
-
 import imageStepMob_1 from '../../assets/img/registration-back-mob1.svg'
 import imageStepMob_2 from '../../assets/img/registration-back-mob2.svg'
 import imageStepMob_3 from '../../assets/img/registration-back-mob3.svg'
@@ -129,7 +125,6 @@ import imageStepMob_4 from '../../assets/img/registration-back-mob4.svg'
 import onboardingStepMob_2 from '../../assets/img/onboarding-step-mob2.svg'
 import onboardingStepMob_3 from '../../assets/img/onboarding-step-mob3.svg'
 import onboardingStepMob_4 from '../../assets/img/onboarding-step-mob4.svg'
-
 import * as yup from 'yup'
 import { API } from '../../workers/api-worker/api.worker'
 import { TokenWorker } from '../../workers/token-worker'
@@ -144,7 +139,6 @@ yup.addMethod(yup.string, 'userName', function (errorMessage) {
     return reg.exec(value) || createError({ path, message: errorMessage })
   })
 })
-
 export default {
   name: 'register',
   components: {
@@ -400,7 +394,6 @@ export default {
   },
 }
 </script>
-
 <style lang="scss" scoped>
 #vs4__listbox {
   background: red;
@@ -412,7 +405,6 @@ form {
 .v-leave-active {
   transition: opacity 0.8s ease;
 }
-
 .v-enter,
 .v-leave-to {
   opacity: 0;

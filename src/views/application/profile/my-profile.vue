@@ -145,7 +145,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Form } from '@system.it.flumx.com/vee-validate'
 import * as yup from 'yup'
-import { useToast } from 'vue-toastification'
+import { useToast } from "vue-toastification";
+import { useUserDataStore } from '@/stores/userData'
 
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
@@ -210,7 +211,8 @@ export default {
   setup(props) {
     const { t } = useI18n()
     const toast = useToast()
-
+    const store = useUserDataStore()
+    
     const route = useRoute()
     const router = useRouter()
     const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
@@ -244,30 +246,28 @@ export default {
       }
     })
     restData.value = {
-      ...route.meta.usersData?.data,
+      ...store.user,
       configuration: {
-        ...route.meta.usersData?.data?.configuration,
-        planned_events: true,
-      },
+        ...store.user.configuration,
+        planned_events: true
+      }
     }
     const formValues = ref({
-      last_name: route.meta.usersData?.data.profile?.last_name,
-      name: route.meta.usersData?.data.profile?.name,
-      about_me: route.meta.usersData?.data.profile?.about_me,
-      day: getBirthDay(route.meta.usersData?.data.profile?.birthday),
-      month: getBirthMonth(route.meta.usersData?.data.profile?.birthday),
-      year: getBirthYear(route.meta.usersData?.data.profile?.birthday),
-      height: route.meta.usersData?.data.profile?.height,
-      weight: route.meta.usersData?.data.profile?.weight,
-      working_leg: getWorkingLeg(
-        route.meta.usersData?.data.profile?.working_leg
-      ),
-      position: route.meta.usersData?.data.profile?.position,
-      phone: route.meta.usersData?.data?.phone,
-      config_phone: route.meta.usersData?.data.configuration?.phone,
-      config_email: route.meta.usersData?.data.configuration?.email,
-      show_reviews: route.meta.usersData?.data.configuration?.show_reviews,
-      planned_events: true,
+      last_name: store.user.profile.last_name,
+      name: store.user.profile.name,
+      about_me: store.user.profile.about_me,
+      day: getBirthDay(store.user.profile.birthday),
+      month: getBirthMonth(store.user.profile.birthday),
+      year: getBirthYear(store.user.profile.birthday),
+      height: store.user.profile.height,
+      weight: store.user.profile.weight,
+      working_leg: getWorkingLeg(store.user.profile.working_leg),
+      position: store.user.profile.position,
+      phone: store.user.profile.phone,
+      config_phone: store.user.profile.phone,
+      config_email: store.user.profile.email,
+      show_reviews: store.user.profile.show_reviews,
+      planned_events: true
     })
 
     const checkboxData = reactive({})
@@ -321,30 +321,26 @@ export default {
     })
 
     userInfo.value = {
-      ...route.meta.usersData?.data,
+      ...store.user,
       profile: {
-        ...route.meta.usersData?.data?.profile,
-        working_leg: getWorkingLeg(
-          route.meta.usersData?.data.profile?.working_leg
-        ),
-      },
+        ...store.user.profile,
+        working_leg: getWorkingLeg(store.user.profile.working_leg)
+      }
     }
-    userRating.value = route.meta.usersData?.data?.raiting
-    userPhone.value = route.meta.usersData?.data?.phone
-    userEmail.value = route.meta.usersData?.data?.email
+    userRating.value = store.user.raiting
+    userPhone.value = store.user.phone
+    userEmail.value = store.user.email
     userData.value = {
-      ...route.meta.usersData?.data?.profile,
-      working_leg: getWorkingLeg(
-        route.meta.usersData?.data.profile?.working_leg
-      ),
-      role: route.meta.usersData?.data?.role,
+      ...store.user.profile,
+      working_leg: getWorkingLeg(store.user.profile.working_leg),
+      role: store.user.role,
     }
 
     checkboxData.value = {
-      checkboxPhone: route.meta.usersData?.data.configuration?.phone,
-      checkboxEmail: route.meta.usersData?.data.configuration?.email,
-      checkboxReviews: route.meta.usersData?.data.configuration?.show_reviews,
-    }
+      checkboxPhone: store.user.configuration.phone,
+      checkboxEmail: store.user.configuration.email,
+      checkboxReviews: store.user.configuration.show_reviews
+    };
 
     onMounted(() => {
       window.addEventListener('resize', onResize)
@@ -444,7 +440,7 @@ export default {
       const profileData = {
         ...refProfileData,
         birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
-        gender: route.meta.usersData?.data.profile?.gender,
+        gender: store.user.profile.gender,
         working_leg: getWorkingLeg(working_leg),
       }
 
@@ -573,9 +569,9 @@ export default {
           const profileData = {
             ...refProfileData,
             birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
-            gender: route.meta.usersData.data?.profile?.gender,
-            avatar_url: route.meta.usersData.data?.profile?.avatar_url,
-            position: getUserPositionText(position),
+            gender: store.user.profile.gender,
+            avatar_url: store.user.profile.avatar_url,
+            position: getUserPositionText(position)
           }
           delete profileData.day
           delete profileData.month

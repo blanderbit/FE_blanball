@@ -108,7 +108,8 @@ export default {
         stepperLines: {
           count: 2,
           active: 1,
-        },
+          exist: true,
+        }
       }
     })
     return {

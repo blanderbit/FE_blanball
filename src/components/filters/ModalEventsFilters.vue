@@ -202,8 +202,8 @@ export default {
       locationData.value = {}
       genderData.value = ''
       dateAndTimeData.value = {
-        start: useTodaysDate(),
-        end: useTodaysDate(),
+        start: '', 
+        end: ''
       }
     }
 

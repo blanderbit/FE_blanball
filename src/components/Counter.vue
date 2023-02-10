@@ -9,7 +9,7 @@
     </p>
     <p v-else class="b-counter__sms-text">
       {{ $t('counter.sms-not-came') }}
-      <span @click="$emit('resendCodeAction')">
+      <span @click="resendCodeMethod">
         {{ $t('counter.send-again') }}
       </span>
     </p>
@@ -36,9 +36,14 @@ export default {
     },
   },
   emits: ['resendCodeAction'],
-  setup(props) {
+  setup(props, { emit }) {
     const seconds = ref(props.startTime)
     const interval = ref()
+
+    const resendCodeMethod = () => {
+      emit('resendCodeAction')
+      seconds.value = props.startTime
+    }
 
     interval.value = setInterval(() => {
       if (seconds.value !== 0) {
@@ -53,6 +58,7 @@ export default {
 
     return {
       seconds,
+      resendCodeMethod,
     }
   },
 }
