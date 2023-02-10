@@ -135,9 +135,6 @@
         font-size: 22px;
         line-height: 32px;
         color: #262541;
-        @media (max-width: 576px) {
-          text-align: center;
-        }
       }
       .b-register-step__progress-line {
         margin-top: 16px;
