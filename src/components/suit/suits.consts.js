@@ -1,3 +1,1 @@
-export const SuitEnums = {
-
-};
+export const SuitEnums = {}

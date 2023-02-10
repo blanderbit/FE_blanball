@@ -1,16 +1,18 @@
 <template>
   <div class="b-scroll-top">
-    <div 
+    <div
       class="b-scroll-top__return-top my-3"
       v-if="elementLength.length && isScrollTopExist"
     >
-      <div class="b-scroll-top__scroll-text">{{ $t('scroll_top_component.end-reached') }}</div>
+      <div class="b-scroll-top__scroll-text">
+        {{ $t('scroll_top_component.end-reached') }}
+      </div>
       <button
         class="b-scroll-top__to-first-element"
         @click="$emit('scrollButtonClicked')"
       >
         {{ $t('scroll_top_component.up') }}
-        <img src="../assets/img/arrow_up.svg">
+        <img src="../assets/img/arrow_up.svg" />
       </button>
     </div>
     <div v-if="!isScrollTopExist"></div>
@@ -23,13 +25,13 @@ export default {
   props: {
     elementLength: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     isScrollTopExist: {
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
-  emits: ['scrollButtonClicked']
+  emits: ['scrollButtonClicked'],
 }
 </script>
 
@@ -58,7 +60,7 @@ export default {
     line-height: 24px;
     color: #575775;
     padding: 2px 12px;
-    background: #EFEFF6;
+    background: #efeff6;
     border-radius: 6px;
     border: none;
     align-items: center;

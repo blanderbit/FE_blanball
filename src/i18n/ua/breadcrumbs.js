@@ -1,43 +1,35 @@
 export default {
-  versions: [
-    {name: 'Головна', path: '/'},
-    {name: 'Версії'}
+  versions: [{ name: 'Головна', path: '/' }, { name: 'Версії' }],
+  profile: [{ name: 'Головна', path: '/' }, { name: 'Профіль' }],
+  myEvents: [
+    { name: 'Головна', path: '/' },
+    { name: 'Івенти', path: '/application/events' },
+    { name: 'Мої івенти' },
   ],
-  profile: [
-    {name: 'Головна', path: '/'},
-    {name: 'Профіль'}
-  ],
-  myEvents:[
-    {name: 'Головна', path: '/'},
-    {name: 'Івенти', path: '/application/events'},
-    {name: 'Мої івенти'}
-  ],
-  events:[
-    {name: 'Головна', path: '/'},
-    {name: 'Івенти'}
-  ],
+  events: [{ name: 'Головна', path: '/' }, { name: 'Івенти' }],
   createOneEvent: [
     {name: 'Головна', path: '/'},
-    {name: 'Ивенти', path: '/application/events'},
+    {name: 'Івент', path: '/application/events'},
     {name: 'Створення івенту '},
   ],
   getOneEvent: [
     {name: 'Головна', path: '/'},
-    {name: 'Ивенти', path: '/application/events'},
-    {name: 'Ивент '},
+    {name: 'Івенти', path: '/application/events'},
+    {name: 'Івент '},
   ],
   editOneEvent:  [
     {name: 'Головна', path: '/'},
-    {name: 'Ивенти', path: '/application/events'},
+    {name: 'Івенти', path: '/application/events'},
     {name: 'Редагування івента'},
   ],
   users: [
     {name: 'Головна', path: '/'},
     {name: 'Користувачі'},
   ],
+  users: [{ name: 'Головна', path: '/' }, { name: 'Користувачі' }],
   userProfile: [
     {name: 'Головна', path: '/'},
-    {name: 'Користувачі', path: '/application/users'},
+    {name: 'Користувачі', path: '/application/users/general'},
     {name: 'Профіль користувача'},
   ]
 };

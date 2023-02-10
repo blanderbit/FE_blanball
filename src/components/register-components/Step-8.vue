@@ -51,14 +51,11 @@
 
 <script>
   import { computed, ref } from 'vue'
-
   import GreenBtn from '../GreenBtn.vue'
   import Dropdown from '../forms/Dropdown.vue'
-
   import CONSTANTS from '../../consts/index'
   import StepWrapper from './StepWrapper.vue'
   import { useI18n } from 'vue-i18n'
-
   export default {
     name: 'Step8',
     components: {
@@ -67,7 +64,6 @@
       StepWrapper
     },
     setup() {
-
       const mockData = computed(() => {
         return {
           days: CONSTANTS.register.days,
@@ -105,11 +101,9 @@
 </script>
 
 <style lang="scss" scoped>
-
   ::v-deep {
     .b-radio {
       width: 40%;
-
     }
     .b-radio input[type=radio] + .b-radio-label {
       width: 100%;
@@ -131,7 +125,6 @@
     line-height: 20px;
     color: #575775;
   }
-
   .b-register-step__date-block {
     display: flex;
     align-items: baseline;
@@ -147,5 +140,4 @@
       }
     }
   }
-
 </style>

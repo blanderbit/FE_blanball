@@ -1,94 +1,102 @@
-import { w3cwebsocket } from 'websocket';
+import { w3cwebsocket } from 'websocket'
 
-import { createQueryStringFromObject } from "../utils-worker";
+import { createQueryStringFromObject } from '../utils-worker'
 
 export class WebSocketWorker {
-  messages = [];
-  callbacks = [];
-  options = {};
-  instance;
+  messages = []
+  callbacks = []
+  options = {}
+  instance
 
   constructor(options) {
-    this.options = options;
+    this.options = options
   }
 
   connect(params) {
     if (this.instance) {
-      console.warn('WebSocketWorker connect - have instance');
-      return;
+      console.warn('WebSocketWorker connect - have instance')
+      return
     }
     this.instance = new w3cwebsocket(
       this.options.SOCKET_URL + createQueryStringFromObject(params),
       this.options.SOCKET_ECHO_PROTOCOL
-    );
+    )
 
     this.instance.onerror = (e) => {
-      console.log('Connection Error', e);
-    };
+      console.log('Connection Error', e)
+    }
 
     this.instance.onopen = (e) => {
-      console.log('WebSocket Client Connected');
-    };
+      console.log('WebSocket Client Connected')
+    }
 
     this.instance.onclose = (e) => {
-      console.log('echo-protocol Client Closed');
-    };
+      console.log('echo-protocol Client Closed')
+    }
 
     this.instance.onmessage = (e) => {
-      this._createElementAndCallHandler(this._parseSocketData(e.data).message);
-    };
+      this._createElementAndCallHandler(this._parseSocketData(e.data).message)
+    }
 
-    window.createElementAndCallHandler = this._createElementAndCallHandler.bind(this)
+    window.createElementAndCallHandler =
+      this._createElementAndCallHandler.bind(this)
   }
 
   disconnect() {
-    this.instance.close();
+    this.instance.close()
     this.instance = null
   }
 
-  registerCallback(callback) { // callback should be unique
+  registerCallback(callback) {
+    // callback should be unique
     if (typeof callback !== 'function') {
-      console.warn('registerCallback is not a function');
-      return this;
+      console.warn('registerCallback is not a function')
+      return this
     }
 
-    if (this.callbacks.find(func => func.name === callback.name)) {
-      console.warn('registerCallback already use');
-      return this;
+    if (this.callbacks.find((func) => func.name === callback.name)) {
+      console.warn('registerCallback already use')
+      return this
     }
 
-    this.callbacks.push(callback);
+    this.callbacks.push(callback)
 
-    return this;
+    return this
   }
 
   destroyCallback(destroyCallback) {
     if (typeof destroyCallback !== 'function') {
-      console.warn('destroyCallback is not a function');
-      return this;
+      console.warn('destroyCallback is not a function')
+      return this
     }
 
-    const index = this.callbacks.findIndex(func => func.name === destroyCallback.name);
+    const index = this.callbacks.findIndex(
+      (func) => func.name === destroyCallback.name
+    )
     if (index > -1) {
-      this.callbacks.splice(index, 1);
-      console.log('destroyCallback destroyed successfully');
+      this.callbacks.splice(index, 1)
+      console.log('destroyCallback destroyed successfully')
     }
-    return this;
+    return this
   }
 
   _handleCallback(element) {
-    this.callbacks.forEach(item => item(element))
+    this.callbacks.forEach((item) => item(element))
   }
 
   _createElementAndCallHandler(message) {
     if (!message) {
-      console.warn('_createElementAndCallHandler = message false');
-      return;
+      console.warn('_createElementAndCallHandler = message false')
+      return
     }
-    const constructor = this.messages.find(item => item.messageType === message.message_type || item.messageType === message.new_message_type);// TODO delete new_message_type
+    const constructor = this.messages.find(
+      (item) =>
+        item.messageType === message.message_type ||
+        item.messageType === message.new_message_type
+    ) // TODO delete new_message_type
     if (!constructor) {
-      console.warn('_createElementAndCallHandler = socket type not found');
-      return;
+      console.warn('_createElementAndCallHandler = socket type not found')
+      return
     }
     this._handleCallback(new constructor(message))
   }
@@ -97,7 +105,7 @@ export class WebSocketWorker {
     try {
       return JSON.parse(e)
     } catch (e) {
-      console.warn('e => something wrong parseSocketData', e);
+      console.warn('e => something wrong parseSocketData', e)
       return false
     }
   }
@@ -105,14 +113,14 @@ export class WebSocketWorker {
 
 export class AuthWebSocketWorker extends WebSocketWorker {
   constructor(options) {
-    super(options);
-    this.messages = AuthWebSocketWorker.messages || this.messages;
+    super(options)
+    this.messages = AuthWebSocketWorker.messages || this.messages
   }
 }
 
 export class GeneralWebSocketWorker extends WebSocketWorker {
   constructor(options) {
-    super(options);
-    this.messages = GeneralWebSocketWorker.messages || this.messages;
+    super(options)
+    this.messages = GeneralWebSocketWorker.messages || this.messages
   }
 }

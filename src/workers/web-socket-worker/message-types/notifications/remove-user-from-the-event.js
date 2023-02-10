@@ -1,16 +1,19 @@
-import { InitialMessage } from "./initial.message";
+import { InitialMessage } from './initial.message'
 
 import {
   SetActions,
   SetMessageType,
   AuthWebSocketMessage,
-  NotificationSetImage
-} from "../../type.decorator";
+  NotificationSetImage,
+} from '../../type.decorator'
 
-import { MessageActionTypes, MessageActionDataTypes } from "../../message.action.types";
-import { WebSocketTypes } from "../../web.socket.types";
-import { NotificationImage } from "../../../../assets/img/notifications/notification.images";
-import { ROUTES } from "../../../../router/router.const";
+import {
+  MessageActionTypes,
+  MessageActionDataTypes,
+} from '../../message.action.types'
+import { WebSocketTypes } from '../../web.socket.types'
+import { NotificationImage } from '../../../../assets/img/notifications/notification.images'
+import { ROUTES } from '../../../../router/router.const'
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.UserRemoveFromEvent)
@@ -18,25 +21,25 @@ import { ROUTES } from "../../../../router/router.const";
 @SetActions([
   {
     type: MessageActionTypes.ActionClose,
-    text: 'Понятно'
+    text: 'Понятно',
   },
   {
     type: MessageActionTypes.Action,
     text: 'Найти ивенты',
     action: ROUTES.APPLICATION.EVENTS.absolute,
     actionType: MessageActionDataTypes.Url,
-    buttonType: 'stroked'
-  }
+    buttonType: 'stroked',
+  },
 ])
 export class RemoveUserFromTheEventMessage extends InitialMessage {
   createTexts(data) {
     return [
       `${data.recipient.name} - вас удалили с события. По причине - "${data.reason.text}"`,
-      `Для того что бы подобрать другое событие нажмите кнопку "${this.actions[1].text}"`
+      `Для того что бы подобрать другое событие нажмите кнопку "${this.actions[1].text}"`,
     ]
-  };
+  }
 
   createTitle() {
-    return 'Вы удалены с ивента!';
+    return 'Вы удалены с ивента!'
   }
 }

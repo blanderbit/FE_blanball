@@ -1,19 +1,21 @@
 <template>
-  <div>
+  <div v-if="isActive">
     <div
       class="b-modal-feedback__modal-wrapper"
-      @click.self="$emit('close-modal')"
     >
-      <div class="b-modal-feedback">
+      <div :class="['b-modal-feedback', 
+      {'b-modal-feedback__animation': animation}]">
         <!-- <div class="b-modal-feedback__windows-row"> -->
         <template v-for="step in steps" :key="step.id">
           <div v-if="currentStep === step.id" class="b-modal-feedback__window">
             <ModalTopCard
               :step="step"
               :is-opened="isCardTopOpened"
-              @cancel-click="currentStep--"
-              @next-click="currentStep++"
-              @cross-click="$emit('close-modal')"
+              :selectedEmojies="selectedEmojies"
+              @emojiSelect="emojiSelect"
+              @cancel-click="cancelClick"
+              @next-click="nextClick"
+              @cross-click="closeModal"
               @arrow-click="toggleCard"
             />
             <ModalBottomCard
@@ -30,10 +32,14 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import { API } from '../../workers/api-worker/api.worker'
+
+import { computed, ref, watch, onBeforeUnmount } from 'vue'
 
 import ModalTopCard from './ModalTopCard.vue'
 import ModalBottomCard from './ModalBottomCard.vue'
+
+import { NotificationsBus } from '../../workers/event-bus-worker'
 
 import CONSTANTS from '../../consts/index'
 
@@ -43,13 +49,71 @@ export default {
     ModalTopCard,
     ModalBottomCard,
   },
-  setup() {
+  props: {
+    isActive: {
+      type: Boolean,
+      default: false
+    },
+    eventData: Object,
+    selectedEmojies: {
+      type: Array
+    },
+    animationActive: {
+      type: Boolean,
+      default: false
+    },
+  },
+  setup(props, { emit }) {
     const isCardTopOpened = ref(true)
+    const animation = ref(props.animationActive)
+
+    watch(() => props.animationActive, (value) => {
+      animation.value = value
+    })
 
     const steps = computed(() => {
-      return CONSTANTS.modal_feedback.steps
+      return CONSTANTS.modal_feedback.steps(props.eventData)
     })
+
     const currentStep = ref(0)
+
+    onBeforeUnmount(() => {
+        NotificationsBus.off('openEventReviewModal');
+    });
+
+
+    const createEventReview = async (comment) => {
+      API.ReviewService.createEventReview({
+        'event': props.eventData.id,
+        'stars': 4,
+        'text': comment
+      })
+    }
+
+    const nextClick = (eventReviewComment) => {
+      if (currentStep.value === 4) {
+        createEventReview(eventReviewComment)
+      }
+      currentStep.value++
+    }
+
+    const emojiSelect = (emoji) => {
+      emit('emojiSelection', emoji)
+    }
+
+    const closeModal = () => {
+      currentStep.value = 0
+      isCardTopOpened.value = true
+      emit('close-modal')
+    }
+
+    const cancelClick = () => {
+      if (currentStep.value === 0) {
+        closeModal()
+      } else {
+        currentStep.value--
+      }
+    }
 
     function toggleCard() {
       isCardTopOpened.value = !isCardTopOpened.value
@@ -60,6 +124,11 @@ export default {
       currentStep,
       isCardTopOpened,
       toggleCard,
+      cancelClick,
+      closeModal,
+      emojiSelect,
+      animation,
+      nextClick,
     }
   },
 }
@@ -74,15 +143,19 @@ export default {
   height: 100%;
   // background: rgba(255, 255, 255, 0.514);
   z-index: 999;
+
+  .b-modal-feedback__animation {
+    animation: shake 0.5s linear;
+  }
   .b-modal-feedback {
     position: absolute;
-    left: 50%;
-    bottom: 76px;
+    right: 0;
+    bottom: 40px;
     display: flex;
     flex-direction: column;
+    margin-right: 32px;
     // width: 400px;
     // height: 310px;
-    transform: translateX(-50%);
     // .b-modal-feedback__windows-row {
     //   height: 100%;
     //   display: flex;
@@ -92,6 +165,24 @@ export default {
     //     width: 100%;
     //   }
     // }
+  }
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
   }
 }
 </style>

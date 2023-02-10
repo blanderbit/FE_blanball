@@ -63,17 +63,14 @@
 
 <script>
   import { computed, ref } from 'vue'
-
   import GreenBtn from '../GreenBtn.vue'
   import Dropdown from '../forms/Dropdown.vue'
   import InputComponent from '../forms/InputComponent.vue'
-
   import arrowRight from '../../assets/img/arrow-right-white.svg'
   import clipIcon from '../../assets/img/clip.svg'
   import CONSTANTS from "../../consts";
   import { useI18n } from 'vue-i18n'
   import StepWrapper from './StepWrapper.vue'
-
   export default {
     name: 'Step9',
     components: {
@@ -93,7 +90,6 @@
       const isDocumentNeeded = computed(() => {
         return profesionaLevel.value === 'Професійно'
       });
-
       const mockData = computed(() => {
         return {
           main_lag: CONSTANTS.profile.mainLeg,
@@ -132,7 +128,6 @@
 </script>
 
 <style lang="scss" scoped>
-
   .b-register-step__small-title {
     font-family: 'Inter';
     font-style: normal;
@@ -142,7 +137,6 @@
     margin-bottom: 10px;
     color: #262541;
   }
-
   ::v-deep {
     .b-input__input-component {
       width: 20%;

@@ -14,12 +14,12 @@
           <div>
             <span>
               {{ $t('works.at-server') }}
-            </span> 
+            </span>
             BlanBall
           </div>
           <div>
             {{ $t('works.is-going') }}
-            <span> 
+            <span>
               {{ $t('works.technical-works') }}
             </span>
           </div>

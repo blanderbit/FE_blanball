@@ -3,7 +3,7 @@ import tokens from './tokens'
 import { event, findInputElement, fixInputSelection, isString } from './utils'
 
 export default class Maska {
-  constructor (el, opts = {}) {
+  constructor(el, opts = {}) {
     if (!el) throw new Error('Maska: no element for mask')
 
     if (opts.preprocessor != null && typeof opts.preprocessor !== 'function') {
@@ -21,18 +21,25 @@ export default class Maska {
     this._opts = {
       mask: opts.mask,
       tokens: { ...tokens, ...opts.tokens },
-      preprocessor: opts.preprocessor
+      preprocessor: opts.preprocessor,
     }
-    this._el = isString(el) ? document.querySelectorAll(el) : !el.length ? [el] : el
+    this._el = isString(el)
+      ? document.querySelectorAll(el)
+      : !el.length
+      ? [el]
+      : el
     this.inputEvent = (e) => this.updateValue(e.target, e)
 
     this.init()
   }
 
-  init () {
+  init() {
     for (let i = 0; i < this._el.length; i++) {
       const el = findInputElement(this._el[i])
-      if (this._opts.mask && (!el.dataset.mask || el.dataset.mask !== this._opts.mask)) {
+      if (
+        this._opts.mask &&
+        (!el.dataset.mask || el.dataset.mask !== this._opts.mask)
+      ) {
         el.dataset.mask = this._opts.mask
       }
       setTimeout(() => this.updateValue(el), 0)
@@ -44,7 +51,7 @@ export default class Maska {
     }
   }
 
-  destroy () {
+  destroy() {
     for (let i = 0; i < this._el.length; i++) {
       const el = findInputElement(this._el[i])
       el.removeEventListener('input', this.inputEvent)
@@ -54,7 +61,7 @@ export default class Maska {
     }
   }
 
-  updateValue (el, evt) {
+  updateValue(el, evt) {
     if (!el || !el.type) return
 
     const wrongNum = el.type.match(/^number$/i) && el.validity.badInput
@@ -68,7 +75,12 @@ export default class Maska {
     const oldValue = el.value
     const digit = oldValue[position - 1]
 
-    el.dataset.maskRawValue = mask(el.value, el.dataset.mask, this._opts.tokens, false)
+    el.dataset.maskRawValue = mask(
+      el.value,
+      el.dataset.mask,
+      this._opts.tokens,
+      false
+    )
     let elValue = el.value
 
     if (this._opts.preprocessor) {
@@ -88,13 +100,20 @@ export default class Maska {
     }
   }
 
-  beforeInput (e) {
-    if (e && e.target && e.target.type && e.target.type.match(/^number$/i) && e.data && isNaN(e.target.value + e.data)) {
+  beforeInput(e) {
+    if (
+      e &&
+      e.target &&
+      e.target.type &&
+      e.target.type.match(/^number$/i) &&
+      e.data &&
+      isNaN(e.target.value + e.data)
+    ) {
       e.preventDefault()
     }
   }
 
-  dispatch (name, el, evt) {
+  dispatch(name, el, evt) {
     el.dispatchEvent(event(name, (evt && evt.inputType) || null))
   }
 }

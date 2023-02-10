@@ -10,7 +10,7 @@
       <div class="b-security__settings-block">
         <div class="b-security__personal-settings">
           <p>{{ $t('profile.phone-number') }}</p>
-          <Switcher 
+          <Switcher
             :id="'phone'"
             :is-edit-mode="isEditMode"
             name="config_phone"
@@ -18,23 +18,23 @@
         </div>
         <div class="b-security__personal-settings">
           <p>{{ $t('profile.e-mail') }}</p>
-          <Switcher 
+          <Switcher
             :id="'email'"
             :is-edit-mode="isEditMode"
             name="config_email"
           />
         </div>
         <div class="b-security__personal-settings">
-          <p>{{ $t('profile.my-feedbacks') }} </p>
-          <Switcher 
+          <p>{{ $t('profile.my-feedbacks') }}</p>
+          <Switcher
             :id="'feedback'"
             :is-edit-mode="isEditMode"
             name="show_reviews"
           />
         </div>
         <div class="b-security__personal-settings">
-          <p>{{ $t('profile.planed-events') }} </p>
-          <Switcher 
+          <p>{{ $t('profile.planed-events') }}</p>
+          <Switcher
             :id="'events'"
             :is-edit-mode="isEditMode"
             name="planned_events"
@@ -61,12 +61,18 @@
           name="change_email"
         />
       </div>
-      <div class="b-security__change-pass-btn" @click="toggleModalWindow('change_password')">
+      <div
+        class="b-security__change-pass-btn"
+        @click="toggleModalWindow('change_password')"
+      >
         {{ $t('profile.change-password') }}
         <img src="../assets/img/lock.svg" alt="" />
       </div>
     </div>
-    <div class="b-security__delete-account" @click="toggleModalWindow('delete_acc')">
+    <div
+      class="b-security__delete-account"
+      @click="toggleModalWindow('delete_acc')"
+    >
       {{ $t('profile.delete-account') }}
     </div>
   </div>
@@ -84,21 +90,21 @@ export default {
   name: 'SecurityBlock',
   components: {
     Switcher,
-    InputComponent
+    InputComponent,
   },
   props: {
     userEmail: {
       type: String,
-      default: ''
+      default: '',
     },
     checkboxData: {
       type: Object,
-      default: () => {}
+      default: () => {},
     },
     isEditMode: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   emits: ['toggleModal'],
   setup(props, context) {
@@ -113,7 +119,7 @@ export default {
     return {
       toggleModalWindow,
       sortArrowHorizontal,
-      checkboxForm
+      checkboxForm,
     }
   },
 }

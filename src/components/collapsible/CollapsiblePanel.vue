@@ -1,23 +1,17 @@
 <template>
   <section
-      ref="panelRef"
-      class="vcp"
-      :class="{
+    ref="panelRef"
+    class="vcp"
+    :class="{
       'vcp--expanded': isExpanded,
       'vcp--expandable': body.hasContent,
     }"
   >
-    <header
-        class="vcp__header"
-        @click="toggle"
-    >
+    <header class="vcp__header" @click="toggle">
       <div class="vcp__header-title">
-        <slot name="title"/>
+        <slot name="title" />
       </div>
-      <div
-          v-if="body.hasContent"
-          class="vcp__header-icon"
-      >
+      <div v-if="body.hasContent" class="vcp__header-icon">
         <slot name="icon">
           <span v-html="toggleIcon"></span>
         </slot>
@@ -25,23 +19,16 @@
     </header>
 
     <transition
-        :data-key="body.dataKey"
-        name="slide"
-        @before-enter="collapse"
-        @enter="expand"
-        @before-leave="expand"
-        @leave="collapse"
+      :data-key="body.dataKey"
+      name="slide"
+      @before-enter="collapse"
+      @enter="expand"
+      @before-leave="expand"
+      @leave="collapse"
     >
-      <div
-          v-if="isExpanded"
-          ref="bodyRef"
-          class="vcp__body"
-      >
-        <div
-            ref="bodyContentRef"
-            class="vcp__body-content"
-        >
-          <slot name="content"/>
+      <div v-if="isExpanded" ref="bodyRef" class="vcp__body">
+        <div ref="bodyContentRef" class="vcp__body-content">
+          <slot name="content" />
         </div>
       </div>
     </transition>
@@ -49,160 +36,160 @@
 </template>
 
 <script lang="ts">
-  import {
-    computed,
-    defineComponent,
-    nextTick,
-    onUpdated,
-    ref,
-    onMounted,
-    watch
-  } from 'vue'
-  import { toggleIcon } from './vue-collapsible-panel.constant'
-  import { useCollapsiblePanelStore } from './composables/vue-collapsible-panel.store'
-  import { v4 as uuid } from "uuid";
+import {
+  computed,
+  defineComponent,
+  nextTick,
+  onUpdated,
+  ref,
+  onMounted,
+  watch,
+} from 'vue'
+import { toggleIcon } from './vue-collapsible-panel.constant'
+import { useCollapsiblePanelStore } from './composables/vue-collapsible-panel.store'
+import { v4 as uuid } from 'uuid'
 
-  export default defineComponent({
-    name: 'CollapsiblePanel',
-    props: {
-      expanding: {
-        type: Boolean,
-        default: true,
-      },
+export default defineComponent({
+  name: 'CollapsiblePanel',
+  props: {
+    expanding: {
+      type: Boolean,
+      default: true,
     },
-    setup(props, context) {
-      const idPanel = `panel-${uuid()}`
-      const panelRef = ref()
-      const bodyRef = ref()
-      const bodyContentRef = ref()
-      const {
-        panelExpanded,
-        togglePanelExpandedStatus,
-        setPanelExpandedStatus,
-      } = useCollapsiblePanelStore()
+  },
+  setup(props, context) {
+    const idPanel = `panel-${uuid()}`
+    const panelRef = ref()
+    const bodyRef = ref()
+    const bodyContentRef = ref()
+    const { panelExpanded, togglePanelExpandedStatus, setPanelExpandedStatus } =
+      useCollapsiblePanelStore()
 
-      const body = computed(
-        () => ({
-          hasContent: context.slots.content,
-          dataKey: uuid(),
-        }),
+    const body = computed(() => ({
+      hasContent: context.slots.content,
+      dataKey: uuid(),
+    }))
+
+    const idGroup = computed(() => {
+      return panelRef.value?.parentElement?.getAttribute('data-id-group') || ''
+    })
+
+    const isExpanded = computed(
+      () => panelExpanded(idGroup.value, idPanel).value && body.value.hasContent
+    )
+
+    const toggle = () => {
+      if (!body.value.hasContent) return
+
+      context.emit(
+        'update:expanding',
+        togglePanelExpandedStatus(idGroup.value, idPanel)
       )
+    }
 
-      const idGroup = computed(() => {
-        return panelRef.value?.parentElement?.getAttribute('data-id-group') || ''
-      })
+    const collapse = (element: HTMLElement) => {
+      element.style.height = '0'
+    }
 
-      const isExpanded = computed(
-        () => panelExpanded(idGroup.value, idPanel).value && body.value.hasContent,
-      )
+    const expand = (element: HTMLElement) => {
+      element.style.height = `${element.scrollHeight}px`
+    }
 
-      const toggle = () => {
-        if (!body.value.hasContent) return
+    const updateBodyHeight = async (): Promise<void> => {
+      await nextTick()
 
-        context.emit('update:expanding', togglePanelExpandedStatus(idGroup.value, idPanel))
-      }
+      if (!bodyRef.value || !bodyContentRef.value) return
 
-      const collapse = (element: HTMLElement) => {
-        element.style.height = '0'
+      bodyRef.value.style.height = `${Math.min(
+        bodyContentRef.value.scrollHeight,
+        bodyRef.value.scrollHeight
+      )}px`
+    }
 
-      }
+    onMounted(() => {
+      setPanelExpandedStatus(idGroup.value, idPanel, props.expanding)
+    })
 
-      const expand = (element: HTMLElement) => {
-        element.style.height = `${element.scrollHeight}px`
-      }
+    watch(
+      () => props.expanding,
+      () => setPanelExpandedStatus(idGroup.value, idPanel, props.expanding)
+    )
 
-      const updateBodyHeight = async (): Promise<void> => {
-        await nextTick()
+    onUpdated(() => {
+      updateBodyHeight()
+    })
 
-        if (!bodyRef.value || !bodyContentRef.value) return
-
-        bodyRef.value.style.height = `${Math.min(bodyContentRef.value.scrollHeight, bodyRef.value.scrollHeight)}px`
-      }
-
-      onMounted(() => {
-        setPanelExpandedStatus(idGroup.value, idPanel, props.expanding)
-      })
-
-      watch(
-        () => props.expanding,
-        () => setPanelExpandedStatus(idGroup.value, idPanel, props.expanding)
-      )
-
-      onUpdated(() => {
-        updateBodyHeight()
-      })
-
-      return {
-        body,
-        panelRef,
-        bodyRef,
-        bodyContentRef,
-        isExpanded,
-        collapse,
-        expand,
-        toggle,
-        toggleIcon,
-      }
-    },
-  })
+    return {
+      body,
+      panelRef,
+      bodyRef,
+      bodyContentRef,
+      isExpanded,
+      collapse,
+      expand,
+      toggle,
+      toggleIcon,
+    }
+  },
+})
 </script>
 
 <style lang="scss" scoped>
-  .vcp {
-    $root: &;
-    $timing-function: cubic-bezier(.5, .25, 0, 1);
+.vcp {
+  $root: &;
+  $timing-function: cubic-bezier(0.5, 0.25, 0, 1);
 
-    &__header {
-      display: flex;
-      padding: 12px;
-      pointer-events: none;
+  &__header {
+    display: flex;
+    padding: 12px;
+    pointer-events: none;
 
-      #{$root}--expandable & {
-        pointer-events: auto;
-        cursor: pointer;
-      }
-    }
-
-    &__header-title {
-      display: flex;
-      align-items: center;
-      flex: 1;
-    }
-
-    &__header-icon {
-      display: flex;
-      align-items: center;
-      transition: transform .3s $timing-function;
-
-      #{$root}--expanded & {
-        transform-origin: center;
-        transform: rotate(180deg);
-      }
-
-      > span {
-        display: flex;
-        height: 24px;
-        width: 24px;
-      }
-
-      ::v-deep(svg) {
-        height: 100%;
-        width: 100%;
-      }
-    }
-
-    &__body {
-      overflow: hidden;
-      transition: all .3s $timing-function;
-    }
-
-    &__body-content {
-      padding: 12px;
+    #{$root}--expandable & {
+      pointer-events: auto;
+      cursor: pointer;
     }
   }
 
-  .slide-enter-from,
-  .slide-leave-to {
-    opacity: .25;
+  &__header-title {
+    display: flex;
+    align-items: center;
+    flex: 1;
   }
+
+  &__header-icon {
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s $timing-function;
+
+    #{$root}--expanded & {
+      transform-origin: center;
+      transform: rotate(180deg);
+    }
+
+    > span {
+      display: flex;
+      height: 24px;
+      width: 24px;
+    }
+
+    ::v-deep(svg) {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  &__body {
+    overflow: hidden;
+    transition: all 0.3s $timing-function;
+  }
+
+  &__body-content {
+    padding: 12px;
+  }
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  opacity: 0.25;
+}
 </style>

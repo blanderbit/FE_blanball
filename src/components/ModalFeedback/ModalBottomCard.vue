@@ -3,7 +3,7 @@
     <div class="b-modal-bottom-card" :style="bottomCardStyle">
       <div class="b-modal-bottom-card__title-line">
         <div class="b-modal-bottom-card__title">
-          {{$t('modal_feedback.evaluate_game')}}
+          {{ $t('modal_feedback.evaluate_game') }}
         </div>
         <div
           class="b-modal-bottom-card__arrow"
@@ -14,7 +14,7 @@
         </div>
         <div class="b-modal-bottom-card__send-complain" v-if="isOpened">
           <img src="../../assets/img/warning-red.svg" alt="" />
-          {{$t('modal_feedback.complain')}}
+          {{ $t('modal_feedback.complain') }}
         </div>
       </div>
       <div v-if="isOpened" class="b-modal-bottom-card__players-viewport">
@@ -85,11 +85,17 @@ export default {
 <style lang="scss" scoped>
 .b-modal-bottom-card {
   overflow-y: scroll;
-  padding: 20px 20px 0 20px;
+  padding: 20px;
   background: #ffffff;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 6px;
   transition: all 0.3s ease;
+  
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+  &::-webkit-scrollbar { 
+    display: none;
+  }
   .b-modal-bottom-card__title-line {
     display: flex;
     justify-content: space-between;

@@ -58,12 +58,10 @@
 
 <script>
   import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
-
   import Dropdown from '../forms/Dropdown.vue'
   import InputComponent from '../forms/InputComponent.vue'
   import RegisterModalPositionMap from '../maps/RegisterModalPositionMap.vue'
   import tickIcon from '../../assets/img/tick-white.svg'
-
   import CONSTANTS from '../../consts/index'
   import { PositionMapBus } from "../../workers/event-bus-worker";
   import { API } from "../../workers/api-worker/api.worker";
@@ -71,7 +69,6 @@
   import StepWrapper from './StepWrapper.vue'
   import { useDevice } from "next-vue-device-detector";
   import useWindowWidth from '../../utils/widthScreen'
-
   export default {
     name: 'Step10',
     components: {
@@ -87,15 +84,12 @@
       const address = ref('');
       const nextButton = ref(false);
       const loading = ref(true);
-
       onMounted(() => {
         window.addEventListener('resize', onResize);
       })
-
       onBeforeUnmount(() => {
         window.removeEventListener('resize', onResize);
       })
-
       const mockData = computed(() => {
         return {
           cities: CONSTANTS.register.jsonCityRegions.find(item => item.name.includes(region.value))?.cities || [],
@@ -105,11 +99,9 @@
       const tick = computed(() => {
         return tickIcon
       })
-
       async function getCoordsByName(str) {
         return await API.LocationService.GetPlaceByAddress(str)
       }
-
       PositionMapBus.on('update:coords:loading', (e) => {
         loading.value = true
       })
@@ -121,7 +113,6 @@
         nextButton.value = !region.value || !city.value || !address.value
       })
       let timeout;
-
       const {t} = useI18n();
       const device = useDevice();
       const stepConfig = computed(() => ({
@@ -142,7 +133,6 @@
           active: 3
         }
       }));
-
       PositionMapBus.on('update:coords-error', () => {
         nextButton.value = true;
         region.value = '';
@@ -171,12 +161,10 @@
           try {
             PositionMapBus.emit('update:map:by:coords', await getCoordsByName(region.value))
             nextButton.value = !region.value || !city.value || !address.value
-
           } catch (e) {
             nextButton.value = true
           }
           loading.value = false
-
         },
         async changeCity(e) {
           city.value = e;
@@ -184,9 +172,7 @@
           loading.value = true
           try {
             PositionMapBus.emit('update:map:by:coords', await getCoordsByName(`${region.value} ${city.value}`))
-
             nextButton.value = !region.value || !city.value || !address.value
-
           } catch (e) {
             nextButton.value = true
           }
@@ -199,16 +185,12 @@
             loading.value = true
             try {
               PositionMapBus.emit('update:map:by:coords', await getCoordsByName(`${region.value} ${city.value} ${address.value}`))
-
               nextButton.value = !region.value || !city.value || !address.value
-
             } catch (e) {
               nextButton.value = true
             }
             loading.value = false
           }, 500)
-
-
         }
       }
     },
@@ -216,7 +198,6 @@
 </script>
 
 <style lang="scss" scoped>
-
   .b-register-step__title {
     font-family: 'Exo 2';
     font-style: normal;
@@ -228,7 +209,6 @@
       text-align: center;
     }
   }
-
   .b-register-step__dropdown {
     width: 384px;
     margin-bottom: 15px;
@@ -236,5 +216,4 @@
       width: 100%;
     }
   }
-
 </style>

@@ -71,7 +71,7 @@
                   />
                   <label for="radio-3" class="radio-label">
                     <img src="../../../assets/img/unisex.svg" alt="" />
-                    {{$t('users.all')}}
+                    {{ $t('users.all') }}
                   </label>
                 </div>
               </div>
@@ -84,8 +84,8 @@
               <div class="old-new-filter">
                 <img src="../../../assets/img/sort-arrows.svg" alt="" />
                 <div class="text-block">
-                  {{$t('users.sorting')}}
-                  <span>{{$t('users.new-first')}}</span>
+                  {{ $t('users.sorting') }}
+                  <span>{{ $t('users.new-first') }}</span>
                 </div>
               </div>
               <div class="search-input-tablet">

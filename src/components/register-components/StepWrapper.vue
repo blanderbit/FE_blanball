@@ -49,13 +49,10 @@
     </div>
   </div>
 </template>
-
 <script>
-
   import {computed} from 'vue'
   import GreenBtn from '../GreenBtn.vue'
   import Loading from '../../workers/loading-worker/Loading.vue'
-
   import ArrowRight from '../../assets/img/arrow-right-white.svg'
   export default {
     name: 'StepWrapper',
@@ -99,7 +96,6 @@
     }
   }
 </script>
-
 <style lang="scss" scoped>
   .b-register-step__subtitle {
     font-family: 'Exo 2';
@@ -126,7 +122,6 @@
     @media (min-width: 576px) {
       border-radius: 8px;
     }
-
     .b-register-step__top-part {
       .b-register-step__title {
         font-family: 'Exo 2';

@@ -7,9 +7,7 @@
       <div class="b-rating-card__subtitle">
         {{ $t('profile.sub-rate') }}
       </div>
-      <ReviewDetailsComponent 
-        :user-rate="ratingScale" 
-      />
+      <ReviewDetailsComponent :user-rate="ratingScale" />
       <div class="b-rating-card__btns-block">
         <div
           class="b-rating-card__left-btn"
@@ -62,10 +60,7 @@
               </div>
             </div>
           </div>
-          <div 
-            v-else
-            class="b-rating-card__no-reviews-block"
-          >
+          <div v-else class="b-rating-card__no-reviews-block">
             <div class="b-rating-card__no-data-title">
               {{ $t('profile.no-review') }}
             </div>
@@ -87,7 +82,7 @@ import dayjsUkrLocale from 'dayjs/locale/uk'
 
 import ReviewDetailsComponent from '../components/ReviewDetails.vue'
 
-import { API } from "../workers/api-worker/api.worker"
+import { API } from '../workers/api-worker/api.worker'
 
 import CONSTANTS from '../consts/index'
 
@@ -95,13 +90,13 @@ export default {
   name: 'RatingCard',
   components: {
     ReviewDetailsComponent,
-    StarRating
+    StarRating,
   },
   props: {
     ratingScale: {
       type: Number,
-      default: null
-    }
+      default: null,
+    },
   },
   setup() {
     const rateStatus = ref(false)
@@ -119,24 +114,25 @@ export default {
 
       if (val) {
         API.ReviewService.getMyReviews()
-          .then(res => {
+          .then((res) => {
             if (res.data.results.length) {
-              usersReviews.value = res.data.results.map(item => {
+              usersReviews.value = res.data.results.map((item) => {
                 return {
                   ...item,
                   author: {
                     name: item.author.profile?.name,
                     last_name: item.author.profile?.last_name,
                   },
-                  date: `${dayjs(item.time_created).locale(dayjsUkrLocale).format('D.MM.YYYY')}`
+                  date: `${dayjs(item.time_created)
+                    .locale(dayjsUkrLocale)
+                    .format('D.MM.YYYY')}`,
                 }
               })
             } else {
               usersReviews.value = false
             }
           })
-          .catch(e => console.log('some mistake', e))
-          
+          .catch((e) => console.log('some mistake', e))
       }
     }
 
@@ -144,132 +140,132 @@ export default {
       switchRate,
       rateStatus,
       usersReviews,
-      mockData
+      mockData,
     }
-  }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-  .b-rating-card {
-    height: fit-content;
-    background: #ffffff;
-    box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
-    border-radius: 8px;
-    padding: 20px 16px;
-    position: relative;
-    @media (min-width: 1400px) {
-      flex-basis: 360px;
-    }
-    @media (min-width: 1200px) and (max-width: 1400px) {
-      flex-basis: 312px;
-    }
+.b-rating-card {
+  height: fit-content;
+  background: #ffffff;
+  box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+  border-radius: 8px;
+  padding: 20px 16px;
+  position: relative;
+  @media (min-width: 1400px) {
+    flex-basis: 360px;
+  }
+  @media (min-width: 1200px) and (max-width: 1400px) {
+    flex-basis: 312px;
+  }
 
-    .b-rating-card__top-table {
-      .b-rating-card__title {
+  .b-rating-card__top-table {
+    .b-rating-card__title {
+      font-family: 'Exo 2';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 24px;
+      color: #262541;
+    }
+    .b-rating-card__subtitle {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 20px;
+      color: #575775;
+    }
+    .b-rating-card__scale-block {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 12px;
+      margin-bottom: 12px;
+    }
+    .b-rating-card__btns-block {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 13px;
+      display: flex;
+      .b-rating-card__left-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 32px;
+        color: #262541;
+        border-radius: 6px 0px 0px 6px;
+        flex-basis: 50%;
+        cursor: pointer;
+      }
+      .b-rating-card__right-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 32px;
+        color: #575775;
+        border-radius: 0px 6px 6px 0px;
+        flex-basis: 50%;
+        cursor: pointer;
+        transform: translateX();
+      }
+    }
+    .b-rating-card__cards-block {
+      margin-top: 20px;
+      position: relative;
+      .b-rating-card__card {
+        padding-top: 8px;
+        margin-bottom: 8px;
+        .b-rating-card__top-line {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .b-rating-card__name {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 13px;
+            line-height: 20px;
+            color: #262541;
+          }
+        }
+        .b-rating-card__bottom-line {
+          display: flex;
+          justify-content: flex-start;
+          .b-rating-card__date {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 20px;
+            text-align: center;
+            color: #575775;
+          }
+        }
+      }
+    }
+    .b-rating-card__no-reviews-block {
+      .b-rating-card__no-data-title {
         font-family: 'Exo 2';
         font-style: normal;
-        font-weight: 700;
-        font-size: 16px;
-        line-height: 24px;
+        font-weight: 800;
+        font-size: 20px;
+        line-height: 28px;
         color: #262541;
       }
-      .b-rating-card__subtitle {
+      .b-rating-card__no-data-text {
         font-family: 'Inter';
         font-style: normal;
         font-weight: 400;
-        font-size: 13px;
+        font-size: 14px;
         line-height: 20px;
         color: #575775;
-      }
-      .b-rating-card__scale-block {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
         margin-top: 12px;
-        margin-bottom: 12px;
-      }
-      .b-rating-card__btns-block {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 13px;
-        display: flex;
-        .b-rating-card__left-btn {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 32px;
-          color: #262541;
-          border-radius: 6px 0px 0px 6px;
-          flex-basis: 50%;
-          cursor: pointer;
-        }
-        .b-rating-card__right-btn {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 32px;
-          color: #575775;
-          border-radius: 0px 6px 6px 0px;
-          flex-basis: 50%;
-          cursor: pointer;
-          transform: translateX()
-        }
-      }
-      .b-rating-card__cards-block {
-        margin-top: 20px;
-        position: relative;
-        .b-rating-card__card {
-          padding-top: 8px;
-          margin-bottom: 8px;
-          .b-rating-card__top-line {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            .b-rating-card__name {
-              font-family: 'Inter';
-              font-style: normal;
-              font-weight: 500;
-              font-size: 13px;
-              line-height: 20px;
-              color: #262541;
-            }
-          }
-          .b-rating-card__bottom-line {
-            display: flex;
-            justify-content: flex-start;
-            .b-rating-card__date {
-              font-family: 'Inter';
-              font-style: normal;
-              font-weight: 400;
-              font-size: 12px;
-              line-height: 20px;
-              text-align: center;
-              color: #575775;
-            }
-          }
-        }
-      }
-      .b-rating-card__no-reviews-block {
-        .b-rating-card__no-data-title {
-          font-family: 'Exo 2';
-          font-style: normal;
-          font-weight: 800;
-          font-size: 20px;
-          line-height: 28px;
-          color: #262541;
-        }
-        .b-rating-card__no-data-text {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 14px;
-          line-height: 20px;
-          color: #575775;
-          margin-top: 12px;
-        }
       }
     }
   }
+}
 </style>

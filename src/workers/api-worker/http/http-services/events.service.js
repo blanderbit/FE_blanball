@@ -1,20 +1,23 @@
-import { AxiosInstance } from "../../../../plugins/axios.plugin";
-import { EndpointsEnum } from "../http-common/prefix.enum";
-import { AxiosParams, AxiosQuery, AxiosSkipErrorMessageType } from "../../../utils-worker";
-import { FilterParamsDecorator } from "../filter/filter.utils";
-import { filterConfigForEvents, filterConfigForUsers } from "../filter/filter.config";
-import { DETAILS_TYPE_ENUM } from "../../../type-request-message-worker";
-
+import { AxiosInstance } from '../../../../plugins/axios.plugin'
+import { EndpointsEnum } from '../http-common/prefix.enum'
+import {
+  AxiosParams,
+  AxiosQuery,
+  AxiosSkipErrorMessageType,
+} from '../../../utils-worker'
+import { FilterParamsDecorator } from '../filter/filter.utils'
+import {
+  filterConfigForEvents,
+  filterConfigForUsers,
+} from '../filter/filter.config'
+import { DETAILS_TYPE_ENUM } from '../../../type-request-message-worker'
 
 export class EventService {
   declineOrAcceptInvites(id, isAccept) {
-    return AxiosInstance.post(
-      EndpointsEnum.Events.DeclineOrAcceptInvites,
-      {
-        ids: [id],
-        type: isAccept
-      }
-    )
+    return AxiosInstance.post(EndpointsEnum.Events.DeclineOrAcceptInvites, {
+      ids: [id],
+      type: isAccept,
+    })
   }
 
   declineOrAcceptParticipations(id, isAccept) {
@@ -22,7 +25,7 @@ export class EventService {
       EndpointsEnum.Events.DeclineOrAcceptParticipations,
       {
         ids: [id],
-        type: isAccept
+        type: isAccept,
       }
     )
   }
@@ -33,9 +36,7 @@ export class EventService {
       EndpointsEnum.Events.GetAllEvents,
       AxiosParams(
         AxiosQuery(options),
-        AxiosSkipErrorMessageType([
-          DETAILS_TYPE_ENUM.INVALID_PAGE
-        ])
+        AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_PAGE])
       )
     )
   }
@@ -46,21 +47,21 @@ export class EventService {
       EndpointsEnum.Events.GetAllMyEvents,
       AxiosParams(
         AxiosQuery(options),
-        AxiosSkipErrorMessageType([
-          DETAILS_TYPE_ENUM.INVALID_PAGE
-        ])
+        AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_PAGE])
       )
     )
   }
 
-  getPlannedUserEvents(userId) {
+  getOneEvent(eventId) {
     return AxiosInstance.get(
-      EndpointsEnum.Events.getPlannedUserEvents(userId),
+      EndpointsEnum.Events.getOneEvent(eventId),
     )
   }
+
+  getPlannedUserEvents(userId) {
+    return AxiosInstance.get(EndpointsEnum.Events.getPlannedUserEvents(userId))
+  }
   getPopularEventsListEvents() {
-    return AxiosInstance.get(
-      EndpointsEnum.Events.PopularEventsList,
-    )
+    return AxiosInstance.get(EndpointsEnum.Events.PopularEventsList)
   }
 }

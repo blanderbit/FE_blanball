@@ -1,10 +1,10 @@
 <template>
   <div class="third-step" :style="stepStyle">
     <div class="title-block">
-      <span>{{$t('events.additional-info')}}</span>
+      <span>{{ $t('events.additional-info') }}</span>
     </div>
     <div class="subtitle">
-      {{$t('events.add-comment')}}
+      {{ $t('events.add-comment') }}
     </div>
     <TextAreaComponent
       :placeholder="$t('events.event-description')"
@@ -32,7 +32,7 @@
       />
     </div> -->
     <div class="title-outfit">
-      {{$t('events.need-clothes')}}
+      {{ $t('events.need-clothes') }}
     </div>
     <div class="radio-btn-wrapper">
       <div class="radio">
@@ -76,7 +76,7 @@
       </div> -->
     </div>
     <div class="title-outfit">
-      {{$t('events.enter-colors')}}
+      {{ $t('events.enter-colors') }}
     </div>
     <div class="outfit-colors">
       <!-- <div class="input">
@@ -114,40 +114,36 @@ export default {
     Switcher,
     InputComponent,
     RadioButton,
-    TextAreaComponent
+    TextAreaComponent,
   },
   props: {
     currentStep: {
       type: Number,
-      default: null
-    }
+      default: null,
+    },
   },
   setup(props) {
     const icons = computed(() => {
       return {
-        aim: AimIcon
+        aim: AimIcon,
       }
     })
 
     const stepStyle = computed(() => {
-      return props.currentStep === 3 ? 
-            { height : 'auto' } :
-            { height : '0px' }
+      return props.currentStep === 3 ? { height: 'auto' } : { height: '0px' }
     })
 
     return {
       icons,
-      stepStyle
+      stepStyle,
     }
-  }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-
 .third-step {
   overflow: hidden;
-
 
   .radio-btn-wrapper {
     $color1: #f4f4f4;
@@ -237,9 +233,6 @@ export default {
     }
   }
 
-
-
-
   .title-block {
     display: flex;
     align-items: center;
@@ -304,7 +297,7 @@ export default {
         line-height: 20px;
         color: #575775;
         padding: 0px 4px;
-        background: #EFEFF6;
+        background: #efeff6;
         border-radius: 4px;
       }
     }

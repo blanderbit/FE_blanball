@@ -5,7 +5,7 @@
         <span>{{ title }}</span>
       </div>
       <div class="b-text-area__min-max-label">
-        45 / 200
+        {{ modelValue ? modelValue.length : 0 }} / {{ maxTextValue }}
       </div>
       <textarea
         :value="modelValue"
@@ -14,14 +14,23 @@
         v-on="modelHandlers"
       >
       </textarea>
+      <label v-if="textareaIcon">
+        <input type="file" @change="onFileSelected" />
+        <img
+          v-if="textareaIcon"
+          class="b-text-area__icon"
+          :src="textareaIcon"
+          alt="icon"
+        />
+      </label>
     </div>
-    <p class="b-text-area__error-message">{{ modelErrorMessage }}</p>
+    <p class="b-text-area__error-message">{{ modelErrorMessage ? $t(modelErrorMessage) : '' }}</p>
   </div>
 </template>
 
 <script>
-import { computed } from 'vue'
-import { CustomModelWorker } from "../workers/custom-model-worker"
+import { computed, ref } from 'vue'
+import { CustomModelWorker } from '../workers/custom-model-worker'
 
 export default {
   name: 'InputComponent',
@@ -34,6 +43,7 @@ export default {
       type: String,
       default: '',
     },
+    modelValue: Object | String,
     placeholder: {
       type: String,
       default: '',
@@ -42,6 +52,9 @@ export default {
       type: Number,
       default: null,
     },
+    textareaIcon: {
+      type: String,
+    },
     name: {
       type: String,
       required: true,
@@ -49,14 +62,25 @@ export default {
     mode: {
       type: String,
       default: 'aggressive',
-    }
+    },
+    maxTextValue: {
+      type: Number,
+      default: 200,
+    },
   },
-  setup(props) {
-    const {
-        modelValue,
-        modelErrorMessage,
-        modelHandlers
-    } = CustomModelWorker(props)
+  emits: ['icon-click'],
+  setup(props, { emit }) {
+    const { modelValue, modelErrorMessage, modelHandlers } =
+      CustomModelWorker(props)
+
+    const IMAGE_TYPES = ['image/jpeg', 'image/png']
+
+    function onFileSelected(e) {
+      const isValidFormat = IMAGE_TYPES.includes(e.target.files[0].type)
+      if (isValidFormat) {
+        emit('icon-click', e.target.files[0])
+      }
+    }
 
     const inputWrapper = computed(() => {
       return {
@@ -68,9 +92,10 @@ export default {
       modelValue,
       modelErrorMessage,
       modelHandlers,
-      inputWrapper
+      inputWrapper,
+      onFileSelected,
     }
-  }
+  },
 }
 </script>
 
@@ -92,9 +117,15 @@ export default {
       position: absolute;
       right: 8px;
       bottom: -8px;
-      background: #F9F9FC;
-      border: 1px solid #E2E2E9;
+      background: #f9f9fc;
+      border: 1px solid #e2e2e9;
       border-radius: 4px;
+    }
+    .b-text-area__icon {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      cursor: pointer;
     }
     .b-text-area__outer-title {
       padding: 0px 4px;
@@ -132,5 +163,8 @@ export default {
     line-height: 20px;
     color: #f32929;
   }
+}
+input[type='file'] {
+  display: none;
 }
 </style>

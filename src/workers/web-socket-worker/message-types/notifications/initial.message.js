@@ -1,70 +1,66 @@
-import { API } from "../../../api-worker/api.worker";
+import { API } from '../../../api-worker/api.worker'
 
 import {
   PushNotification,
   ReadAfterActiveAction,
   SetPushNotificationTheme,
   TimeForCloseIfInactive,
-  Notification
-} from "../../type.decorator";
+  Notification,
+} from '../../type.decorator'
 import dayjs from 'dayjs'
 
 import relativeTime from 'dayjs/plugin/relativeTime'
 import updateLocale from 'dayjs/plugin/updateLocale'
 
-dayjs.extend(relativeTime);
-dayjs.extend(updateLocale);
-
+dayjs.extend(relativeTime)
+dayjs.extend(updateLocale)
 
 dayjs.updateLocale('uk', {
   relativeTime: {
-    future: "через %s",
-    past: "%s назад",
+    future: 'через %s',
+    past: '%s назад',
     s: 'несколько мекунд',
-    m: "минута",
-    mm: "%d минут",
-    h: "час",
-    hh: "%d часов",
-    d: "день",
-    dd: "%d дней",
-    M: "месяц",
-    MM: "%d месяцев",
-    y: "год",
-    yy: "%d годов"
-  }
-});
+    m: 'минута',
+    mm: '%d минут',
+    h: 'час',
+    hh: '%d часов',
+    d: 'день',
+    dd: '%d дней',
+    M: 'месяц',
+    MM: '%d месяцев',
+    y: 'год',
+    yy: '%d годов',
+  },
+})
 
 @PushNotification()
 @Notification()
 @TimeForCloseIfInactive(15000)
-@ReadAfterActiveAction((instance) => API.NotificationService
-  .readNotifications([
-    instance.notification_id
-  ])
+@ReadAfterActiveAction((instance) =>
+  API.NotificationService.readNotifications([instance.notification_id])
 )
 @SetPushNotificationTheme('standard')
 export class InitialMessage {
-  date;
-  texts;
-  title;
-  isRead;
-  notification_id;
-  textsAfterAction;
-  metadata = {};
+  date
+  texts
+  title
+  isRead
+  notification_id
+  textsAfterAction
+  metadata = {}
 
   get profileImage() {
-    return this.data?.sender?.avatar;
+    return this.data?.sender?.avatar
   }
 
   get sender() {
-    return this.fullName || "Blanball";
+    return this.fullName || 'Blanball'
   }
 
   get fullName() {
-    return [
-      this?.data?.sender?.name,
-      this.data?.sender?.last_name
-    ].filter(_ => !!_).join(' ')
+    return [this?.data?.sender?.name, this.data?.sender?.last_name]
+      .filter((_) => !!_)
+      .join(' ')
   }
 
   get parseDate() {
@@ -72,12 +68,12 @@ export class InitialMessage {
   }
 
   constructor(message) {
-    this.data = message?.data;
-    this.date = message?.date_time || message?.time_created;
-    this.isRead = message?.type === 'Read';
-    this.notification_id = message?.notification_id;
-    this.texts = this.createTexts(message?.data);
-    this.title = this.createTitle(message?.data);
+    this.data = message?.data
+    this.date = message?.date_time || message?.time_created
+    this.isRead = message?.type === 'Read'
+    this.notification_id = message?.notification_id
+    this.texts = this.createTexts(message?.data)
+    this.title = this.createTitle(message?.data)
     this.onInit()
   }
 
@@ -89,17 +85,13 @@ export class InitialMessage {
     return ''
   }
 
-  onInit() {
+  onInit() {}
 
-  }
-
-  onUpdate() {
-
-  }
+  onUpdate() {}
 
   update(data) {
-    this.texts = this.createTexts(data);
-    this.title = this.createTitle(data);
+    this.texts = this.createTexts(data)
+    this.title = this.createTitle(data)
     this.onUpdate()
   }
 }

@@ -1,14 +1,11 @@
 <template>
   <div class="b-input__input-component">
-    <div 
+    <div
       class="b-input__wrapper"
-      :class="{'b-form-error': modelErrorMessage}"
+      :class="{ 'b-form-error': modelErrorMessage }"
       :style="inputWrapper"
     >
-      <div 
-        v-if="outsideTitle" 
-        class="b-input__outer-title"
-      >
+      <div v-if="outsideTitle" class="b-input__outer-title">
         <span>{{ title }}</span>
       </div>
       <div
@@ -18,21 +15,18 @@
       >
         <span>{{ title }}</span>
       </div>
-      <div 
+      <div
         v-if="rightIcon?.length"
-        class="b-input__icon" 
+        class="b-input__icon"
         @click="iconClickAction"
       >
         <img :src="rightIcon" alt="" />
       </div>
-      <div 
-        v-if="iconLeft.length" 
-        class="b-input__icon-left"
-      >
+      <div v-if="iconLeft.length" class="b-input__icon-left">
         <img :src="iconLeft" alt="" />
       </div>
-      <slot 
-        name="input" 
+      <slot
+        name="input"
         :type="inputType"
         :placeholder="placeholder"
         :on="modelHandlers"
@@ -52,20 +46,20 @@
         />
       </slot>
     </div>
-    <p class="b-input__error-message">{{ t(modelErrorMessage || '') }}</p>
+    <p class="b-input__error-message">{{ modelErrorMessage ? t(modelErrorMessage) : '' }}</p>
   </div>
 </template>
 
 <script>
 import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue'
-import { CustomModelWorker } from "../../workers/custom-model-worker/index";
+import { CustomModelWorker } from '../../workers/custom-model-worker/index'
 
 import eyeCross from '../../assets/img/eye-crossed.svg'
 import eyeOpen from '../../assets/img/eye-opened.svg'
 import { useI18n } from 'vue-i18n'
 const PASSWORD_TYPES = {
   PASSWORD: 'password',
-  TEXT: 'text'
+  TEXT: 'text',
 }
 
 // TODO vue 3 fully, validate message
@@ -127,31 +121,31 @@ export default {
     },
   },
   emits: [
-    'iconClick', 
-    'onClickAction', 
-    'sendInputCoordinates', 
-    'update:modelValue'
+    'iconClick',
+    'onClickAction',
+    'sendInputCoordinates',
+    'update:modelValue',
   ],
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     const {
-        modelValue: staticModelValue,
-        modelErrorMessage,
-        modelHandlers
-    } = CustomModelWorker(props, emit);
-    if(props.modelValue) {
-      modelHandlers.value.input[0](props.modelValue);
-      modelHandlers.value.input[1](props.modelValue, true);
+      modelValue: staticModelValue,
+      modelErrorMessage,
+      modelHandlers,
+    } = CustomModelWorker(props, emit)
+    if (props.modelValue) {
+      modelHandlers.value.input[0](props.modelValue)
+      modelHandlers.value.input[1](props.modelValue, true)
     }
     watch(
       () => props.modelValue,
       () => {
-        modelHandlers.value.input[0](props.modelValue);
-        modelHandlers.value.input[1](props.modelValue, true);
+        modelHandlers.value.input[0](props.modelValue)
+        modelHandlers.value.input[1](props.modelValue, true)
       },
       {
-        immediate: props.immediate
+        immediate: props.immediate,
       }
-    );
+    )
     const inputType = ref(null)
     const rightIcon = ref('')
     const input = ref(null)
@@ -184,14 +178,14 @@ export default {
 
     function resizeFunction() {
       emit('sendInputCoordinates', {
-        x: input.value.parentNode.offsetLeft, 
-        y: input.value.parentNode.offsetHeight
+        x: input.value.parentNode.offsetLeft,
+        y: input.value.parentNode.offsetHeight,
       })
     }
 
     onMounted(() => {
       if (props.type === PASSWORD_TYPES.PASSWORD) {
-        rightIcon.value = eyeCross;
+        rightIcon.value = eyeCross
         inputType.value = props.type
       } else {
         rightIcon.value = props.icon
@@ -203,8 +197,7 @@ export default {
       window.removeEventListener('resize', resizeFunction)
     })
 
-
-    const { t } = useI18n();
+    const { t } = useI18n()
     return {
       iconClickAction,
       staticModelValue,
@@ -215,14 +208,14 @@ export default {
       inputStyle,
       inputWrapper,
       input,
-      t
+      t,
     }
-  }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import "forms.scss";
+@import 'forms.scss';
 .b-input__input-component {
   height: 100%;
   .b-input__wrapper {
@@ -322,7 +315,7 @@ export default {
     font-weight: 400;
     font-size: 12px;
     line-height: 20px;
-    color: #F32929;
+    color: #f32929;
   }
 }
 </style>

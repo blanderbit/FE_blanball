@@ -1,7 +1,7 @@
 import Maska from './maska'
 import { isString } from './utils'
 
-function getOpts (mask) {
+function getOpts(mask) {
   const opts = {}
 
   if (mask.mask) {
@@ -15,11 +15,16 @@ function getOpts (mask) {
   return opts
 }
 
-function needUpdate (mask) {
+function needUpdate(mask) {
   return !(
     (isString(mask.value) && mask.value === mask.oldValue) ||
-    (Array.isArray(mask.value) && JSON.stringify(mask.value) === JSON.stringify(mask.oldValue)) ||
-    (mask.value && mask.value.mask && mask.oldValue && mask.oldValue.mask && mask.value.mask === mask.oldValue.mask)
+    (Array.isArray(mask.value) &&
+      JSON.stringify(mask.value) === JSON.stringify(mask.oldValue)) ||
+    (mask.value &&
+      mask.value.mask &&
+      mask.oldValue &&
+      mask.oldValue.mask &&
+      mask.value.mask === mask.oldValue.mask)
   )
 }
 

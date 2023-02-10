@@ -1,37 +1,22 @@
 <template>
   <div class="b-radio-btns">
-    <input 
-      type="radio" 
-      id="men" 
-      :value="'Man'" 
-      v-model="genderRadio" 
-    />
+    <input type="radio" id="men" :value="'Man'" v-model="genderRadio" />
     <label for="men">
       <img src="../../../assets/img/male-icon.svg" alt="" />
       {{ $t('users.men') }}
     </label>
 
-    <input 
-      type="radio" 
-      id="women" 
-      :value="'Woman'" 
-      v-model="genderRadio" 
-    />
+    <input type="radio" id="women" :value="'Woman'" v-model="genderRadio" />
     <label for="women">
       <img src="../../../assets/img/female-icon.svg" alt="" />
       {{ $t('users.women') }}
     </label>
 
-    <input 
-      type="radio" 
-      id="all" 
-      :value="'All'" 
-      v-model="genderRadio" 
-    />
+    <input type="radio" id="all" :value="'All'" v-model="genderRadio" />
     <label for="all">
       <img src="../../../assets/img/unisex.svg" alt="" />
-      {{$t('users.all')
-    }}</label>
+      {{ $t('users.all') }}</label
+    >
   </div>
 </template>
 
@@ -43,55 +28,61 @@ export default {
   props: {
     gender: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   emits: ['update:gender'],
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     const genderRadio = ref(props.gender)
 
-    watch(() => props.gender, (newData) => {
-      genderRadio.value = newData
-    })
-    watch(() => genderRadio.value, () => {
-      emit('update:gender', genderRadio.value)
-    })
+    watch(
+      () => props.gender,
+      (newData) => {
+        genderRadio.value = newData
+      }
+    )
+    watch(
+      () => genderRadio.value,
+      () => {
+        emit('update:gender', genderRadio.value)
+      }
+    )
 
     return {
-      genderRadio
+      genderRadio,
     }
-  }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-  .b-radio-btns {
-    display: flex;
-    input[type="radio"] {
-      display: none;
-      +label {
-        padding: 8px 6px;
-        border: 1px solid #DFDEED;
-        border-radius: 6px;
-        margin-right: 8px;
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 13px;
-        line-height: 24px;
-        color: #575775;
-        min-width: 60px;
-        width: 60px;
-        display: flex;
-        align-items: center;
-        img {
-          margin-right: 6px;
-        }
-      }
-      &:checked + label {
-        border: 1px solid #148581;
-        color: #148581;
+.b-radio-btns {
+  display: flex;
+  input[type='radio'] {
+    display: none;
+    + label {
+      padding: 8px 6px;
+      border: 1px solid #dfdeed;
+      border-radius: 6px;
+      margin-right: 8px;
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 24px;
+      color: #575775;
+      min-width: 60px;
+      width: 60px;
+      display: flex;
+      align-items: center;
+      img {
+        margin-right: 6px;
       }
     }
+    &:checked + label {
+      border: 1px solid #148581;
+      color: #148581;
+    }
   }
+}
 </style>
