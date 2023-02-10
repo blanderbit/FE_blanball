@@ -45,7 +45,7 @@
               class="b-user-card__label"
             >
               <span v-if="label">
-                # {{ label }}
+                # {{ $t(label) }}
               </span>
             </div>
           </div>
@@ -372,9 +372,9 @@ export default {
     const fileReader = new FileReader()
     const labels = ref([
       props.userData?.age ? `${props.userData?.age} років` : null ,
-      props.userData?.gender,
-      props.userData?.role,
-      props.userData?.position
+      `hashtags.${props.userData?.gender}`,
+      `hashtags.${props.userData?.role}`,
+      `hashtags.${props.userData?.position}`
     ])
     const fileInput = ref(null)
 
