@@ -138,8 +138,8 @@
         },
         stepperLines: {
           exist: true,
-          count: 4,
-          active: 4
+          count: 3,
+          active: 3
         }
       }));
 

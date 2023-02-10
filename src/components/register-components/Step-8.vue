@@ -90,8 +90,8 @@
           },
           stepperLines: {
             exist: true,
-            count: 4,
-            active: 2
+            count: 3,
+            active: 1
           }
         }
       });
