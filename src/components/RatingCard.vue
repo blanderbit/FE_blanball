@@ -19,11 +19,11 @@
           {{ $t('profile.generally') }}
         </div>
         <div
-          class="b-rating-card__right-btn"
+          :class="['b-rating-card__right-btn', {'b-rating-card__right-btn__disabled': !ratingScale}]"
           :style="{
             border: `1px solid ${rateStatus ? '#148581' : '#DFDEED'}`,
           }"
-          @click="switchRate(true)"
+          @click="ratingScale ? switchRate(true) : null"
         >
           {{ $t('profile.detailed') }}
         </div>
@@ -211,6 +211,11 @@ export default {
         flex-basis: 50%;
         cursor: pointer;
         transform: translateX();
+
+        &__disabled {
+          color: #A8A8BD;
+          cursor: default;
+        }
       }
     }
     .b-rating-card__cards-block {
