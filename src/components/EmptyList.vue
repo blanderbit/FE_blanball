@@ -57,17 +57,19 @@ export default {
   border-radius: 12px;
 
   &__title {
+    font-family: 'Exo 2';
     font-style: normal;
     font-weight: 800;
-    font-size: 20px;
-    line-height: 28px;
+    font-size: 16px;
+    line-height: 20px;
     color: #262541;
     margin-bottom: 12px;
   }
   &__description {
+    font-family: 'Inter';
     font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
+    font-weight: 500;
+    font-size: 12px;
     line-height: 20px;
     color: #575775;
   }

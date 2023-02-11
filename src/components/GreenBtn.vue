@@ -1,6 +1,6 @@
 <template>
   <div
-    class="b-green-btn"
+    :class="['b-green-btn', {'b-green-btn__animated': animation}]"
     :style="btnStyle"
     @click="!disabled && $emit('click-function')"
   >
@@ -65,6 +65,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    animation: {
+      type: Boolean,
+      default: false
+    }
   },
   setup(props) {
     const loading = ref(false)
@@ -101,10 +105,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.b-green-btn__animated {
+  &:hover {
+      &:before {
+        content: "";
+        display: block;
+        position: absolute;
+        opacity: 30%;
+        left: -100%;
+        width: 32px;
+        height: 100%;
+        background: #c6c7c7;
+        filter: blur(6px);
+        animation: blink 5s ease-in-out infinite;
+      }
+    }
+}
 .b-green-btn {
   box-shadow: 0px 4px 12px rgba(42, 145, 141, 0.2);
   position: relative;
   border-radius: 6px;
+  overflow: hidden;
   color: #fff;
   height: 32px;
   display: flex;
@@ -115,6 +136,8 @@ export default {
   font-size: 14px;
   cursor: pointer;
   user-select: none;
+
+
   &__left-icon {
     margin-right: 10px;
   }
@@ -152,6 +175,18 @@ export default {
         border-color: white transparent transparent transparent;
       }
     }
+  }
+}
+
+@keyframes blink {
+  0% {
+    left: -100%;
+  }
+  50% {
+    left: 100%;
+  }
+  100% {
+    left: -100%;
   }
 }
 </style>

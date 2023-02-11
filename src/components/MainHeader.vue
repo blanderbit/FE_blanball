@@ -1,7 +1,7 @@
 <template>
   <div class="b_header">
     <SearchModal
-      v-if="isSearchBlock"
+      v-if="isSearchBlock && searchValue" 
       :client-x="clientX"
       :client-y="clientY"
       @close-modal="closeSearchBlock"
@@ -98,7 +98,6 @@ export default {
     const modalSearchWidth = ref(369)
     const inputWidth = ref(0)
     const screenWidth = ref(window.innerWidth)
-    const relevantTags = ref(CONSTANTS.manage_event.tags)
     const relevantUsersList = ref([])
     const searchValue = ref('')
     const loading = ref(false)
@@ -173,8 +172,6 @@ export default {
     onBeforeUnmount(() => {
       window.removeEventListener('resize', setScreenWidth)
     })
-
-    getRelevantUsers()
 
     return {
       showSearchBlock,

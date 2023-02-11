@@ -2,7 +2,7 @@
   <div class="event-card">
     <div class="top-title">
       <div class="left-side">
-        <div class="card-icon">
+          <div class="card-icon">
           <img src="../../assets/img/hands-shake.svg" alt="" />
         </div>
         <div class="text-block">
@@ -13,10 +13,6 @@
             </div>
             <div class="time">{{ card.time }}</div>
           </div>
-          <PlaceDetector
-            v-if="device.mobile"
-            :place="card.place"
-          ></PlaceDetector>
         </div>
       </div>
       <div class="right-side">
@@ -26,19 +22,23 @@
         <div class="time">{{ card.time }}</div>
       </div>
     </div>
-    <PlaceDetector v-if="!device.mobile" :place="card.place"></PlaceDetector>
+    <PlaceDetector
+      class="event-place"
+      v-if="!device.mobile" 
+      :place="card.place">
+    </PlaceDetector>
     <div class="main-text">
       {{ card.description }}
     </div>
     <div class="labels">
       <div class="label">
-        {{ card.gender }}
+        {{ $t(`events.${card.gender}`) }}
       </div>
       <div class="label">
-        {{ card.type }}
+        {{ $t(`events.${card.type}`) }}
       </div>
-      <div v-if="card.need_ball" class="label">Need ball</div>
-      <div v-if="card.need_form" class="label">Need form</div>
+      <div v-if="card.need_ball" class="label">{{ $t('hashtags.need_ball') }}</div>
+      <div v-if="card.need_form" class="label">{{ $t('hashtags.need_form') }}</div>
     </div>
     <div class="bottom-block">
       <div class="top-line">
@@ -62,6 +62,7 @@
         </div>
         <div class="right-side">
           <GreenBtn
+            :animation="true"
             :text="card.privacy ? $t('events.apply') : $t('events.join')"
             :width="120"
             :height="35"
@@ -101,7 +102,7 @@ export default {
 <style lang="scss" scoped>
 .event-card {
   position: relative;
-  padding: 20px 16px;
+  padding: 15px 15px;
   isolation: isolate;
   background: #ffffff;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
@@ -109,18 +110,7 @@ export default {
   margin-bottom: 16px;
   height: fit-content;
   width: 100%;
-  /*@media (min-width: 1200px) and (max-width: 1400px) {*/
-  /*width: 408px;*/
-  /*}*/
-  /*@media (min-width: 992px) and (max-width: 1199px) {*/
-  /*width: 320px;*/
-  /*}*/
-  /*@media (min-width: 768px) and (max-width: 991px) {*/
-  /*width: 344px;*/
-  /*}*/
-  /*@media (max-width: 768px) {*/
-  /*width: 100%;*/
-  /*}*/
+  
   &:before {
     content: '';
     display: block;
@@ -129,12 +119,6 @@ export default {
     left: 0;
     width: 100%;
     height: 6px;
-    background: linear-gradient(
-      90.37deg,
-      #4a7deb -29.39%,
-      #8978ee 37.85%,
-      #d243c5 97.19%
-    );
     border-radius: 6px 6px 0px 0px;
   }
   .address {
@@ -262,6 +246,7 @@ export default {
       margin-right: 4px;
       font-family: 'Inter';
       font-style: normal;
+      text-align: center;
       font-weight: 400;
       font-size: 12px;
       line-height: 20px;
@@ -307,6 +292,10 @@ export default {
         align-items: center;
         .titles {
           margin-right: 30px;
+
+          @media (max-width: 400px) {
+            margin-right: 10px;
+          }
         }
         .titles,
         .date {
@@ -329,5 +318,12 @@ export default {
       }
     }
   }
+}
+.event-place::v-deep(.b-place-detector) {
+  background: #EFEFF6;
+  border-radius: 4px;
+  margin-top: 10px;
+  width: fit-content;
+  max-width: 100%;
 }
 </style>

@@ -18,5 +18,8 @@ export default {
     RF: 'ПФ',
     CF: 'ЦФ',
     LF: 'ЛФ',
-    ST: 'ФС'
+    ST: 'ФС',
+    Football: 'Футбол',
+    'need_ball': 'Потрібна форма',
+    'need_form': 'Потрібна форма',
 }

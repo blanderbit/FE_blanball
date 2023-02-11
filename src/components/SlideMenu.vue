@@ -163,7 +163,7 @@
         </div>
         <div class="b_slide_menu_bottom-block">
           <div class="b_slide_menu_top-line d-flex justify-content-between">
-            <div class="b_slide_menu_name">Юлія Кісліцина</div>
+            <div class="b_slide_menu_name">{{ userFullName }}</div>
             <div class="b_slide_menu_position">тренер</div>
           </div>
           <div class="b_slide_menu_bottom-line">
@@ -172,7 +172,7 @@
               :to="routeObject.APPLICATION.VERSION.absolute"
               @click="$emit('close')"
             >
-              {{ clientVersion }}
+              <span>{{ clientVersion }}</span>
             </router-link>
           </div>
         </div>
@@ -192,6 +192,8 @@ import ScrollToTop from './ScrollToTop.vue'
 
 import sidebarArrowBack from '../assets/img/sidebar-arrow-back.svg'
 import sidebarArrow from '../assets/img/sidebar-arrow.svg'
+
+import { useUserDataStore } from '../stores/userData'
 
 import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue'
 import { NewNotifications } from '../workers/web-socket-worker/not-includes-to-socket/new_notifications'
@@ -244,8 +246,11 @@ export default {
     const blockScrollToTopIfExist = ref(false)
     const triggerForRestart = ref('')
     const selectedList = ref([])
+    const store = useUserDataStore()
     const newNotificationInstance = ref(new NewNotifications())
     const clientVersion = ref(inject('clientVersion'))
+
+    const userFullName = ref(`${store.user.profile.name} ${store.user.profile.last_name}`)
 
     watch(
       () => context.isMenuOpened,
@@ -317,6 +322,7 @@ export default {
       getNewNotificationInstance,
       emptyListMessages,
       routeObject,
+      userFullName,
       selectedList,
       HandleAction,
       triggerForRestart,
@@ -448,7 +454,7 @@ export default {
           font-family: 'Inter';
           font-style: normal;
           font-weight: 500;
-          font-size: 12px;
+          font-size: 13px;
           line-height: 24px;
           color: #262541;
         }
@@ -461,6 +467,15 @@ export default {
         font-size: 12px;
         line-height: 16px;
         color: #8a8aa8;
+
+        span {
+          text-decoration: none;
+          font-style: normal;
+          font-weight: 600;
+          font-size: 12px;
+          line-height: 16px;
+          color: #8a8aa8;
+        }
       }
     }
   }

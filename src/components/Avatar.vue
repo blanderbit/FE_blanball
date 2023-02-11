@@ -1,13 +1,15 @@
 <template>
-  <div
-    class="b-avatar"
+  <object class="b-avatar"
     :class="[`b-avatar-${avatarType}`]"
+    :data="avatarType === 'circle' ? link : null"
+    onerror="this.style.display='none'"
     :style="{
       backgroundImage: `url(${link})`,
     }"
     v-if="link"
-    @click.stop="$emit('clickByAvatar')"
-  ></div>
+    @click.stop="$emit('clickByAvatar')" data="avatar.jpg" type="image/jpeg">
+    <img src="default.jpg" />
+  </object>
   <div
     class="b-avatar b-avatar-words d-flex justify-content-center align-items-center"
     :class="[`b-avatar-${avatarType}`]"
@@ -63,8 +65,12 @@ export default {
     background-position: center center;
   }
   &-words {
-    border: 1px solid #262541;
-    color: #262541;
+      color: #148783;
+      min-width: 100%;
+      font-family: 'Exo 2';
+      font-style: normal;
+      font-weight: 700;
+      background: #C8EBE7;
   }
 
   img {
