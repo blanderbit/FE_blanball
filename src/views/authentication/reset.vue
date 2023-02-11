@@ -41,3 +41,11 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+::v-deep(.b-auth__left-part) {
+
+  @media (max-width: 576px) {
+    margin-top: 170px; 
+  }
+} 
+</style>

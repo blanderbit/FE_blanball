@@ -174,7 +174,7 @@ export default {
   }
   .b-auth__central-block {
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
-    height: 555px;
+    height: 650px;
     width: 992px;
     display: flex;
     margin: 0 auto;

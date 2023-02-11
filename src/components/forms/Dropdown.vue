@@ -29,7 +29,7 @@
       <template #selected-option="options">
         <div class="b-dropdown__custom-option">
           <img v-if="options.iconSrc" :src="options.iconSrc" alt="icon" />
-          <span>
+          <span class="b-dropdown__custom-option-text">
             {{ options[displayName] }}
           </span>
         </div>
@@ -269,6 +269,7 @@ export default {
 ::v-deep {
   #vs3__listbox {
     --vs-dropdown-min-width: auto;
+    
   }
   .vs__selected-options {
     overflow: hidden;
@@ -284,6 +285,7 @@ export default {
   }
   .vs--single.vs--open .vs__selected {
     height: 100%;
+    width: 100%;
   }
   .vs--searchable.b-form-error {
     border-radius: 6px;
@@ -321,10 +323,9 @@ export default {
   border-bottom-style: none;
   box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.15);
 }
-
 .b-dropdown {
   position: relative;
-  height: 100%;
+  text-align: left;
   &__title {
     position: absolute;
     font-family: 'Inter';
@@ -343,6 +344,13 @@ export default {
     display: flex;
     align-items: center;
     height: 100%;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    color: #262541;
+
     img {
       margin-right: 5px;
       display: block;
