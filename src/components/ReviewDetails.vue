@@ -28,6 +28,7 @@ import emoji_2 from '../assets/img/emojies/2.svg'
 import emoji_3 from '../assets/img/emojies/3.svg'
 import emoji_4 from '../assets/img/emojies/4.svg'
 import emoji_5 from '../assets/img/emojies/5.svg'
+import noReviews from '../assets/img/no-records/no-reviews.svg'
 
 const COLORS = {
   0: '#DFDEED',
@@ -86,7 +87,7 @@ export default {
           return emoji_1
           break
         default:
-          return emoji_1
+          return noReviews
       }
     })
 

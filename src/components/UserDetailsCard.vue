@@ -358,9 +358,9 @@ export default {
     const fileReader = new FileReader()
     const labels = ref([
       props.userData?.age ? `${props.userData?.age} років` : null ,
-      `hashtags.${props.userData?.gender}`,
-      `hashtags.${props.userData?.role}`,
-      `hashtags.${props.userData?.position}`
+      props.userData?.gender ? `hashtags.${props.userData?.gender}` : null ,
+      props.userData?.role ? `hashtags.${props.userData?.role}` : null ,
+      props.userData?.position ?  `hashtags.${props.userData?.position}` : null 
     ])
     const fileInput = ref(null)
 
