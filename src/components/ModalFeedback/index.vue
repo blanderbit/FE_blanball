@@ -118,14 +118,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.b-modal-feedback__modal-wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  // background: rgba(255, 255, 255, 0.514);
-  z-index: 999;
   .b-modal-feedback__animation {
     animation: shake 0.5s linear;
   }
@@ -136,19 +128,7 @@ export default {
     display: flex;
     flex-direction: column;
     margin-right: 32px;
-    // width: 400px;
-    // height: 310px;
-    // .b-modal-feedback__windows-row {
-    //   height: 100%;
-    //   display: flex;
-    //   align-items: flex-end;
-    //   .b-modal-feedback__window {
-    //     padding: 10px 0;
-    //     width: 100%;
-    //   }
-    // }
   }
-}
 @keyframes shake {
   10%, 90% {
     transform: translate3d(-1px, 0, 0);

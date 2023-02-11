@@ -73,6 +73,8 @@ import GreenBtn from '../GreenBtn.vue'
 
 import SaveIcon from '../../assets/img/save-icon.svg'
 
+import { useUserDataStore } from '../../stores/userData'
+
 import { API } from '../../workers/api-worker/api.worker'
 
 export default {
@@ -90,6 +92,7 @@ export default {
     const cropedImage = ref('')
     const userSrcImage = ref(null)
     const selectedFile = ref(null)
+    const userDataStore = useUserDataStore()
     const blobFile = ref(null)
     const fileReader = new FileReader()
 
@@ -131,6 +134,11 @@ export default {
           emit('getProfileData')
         })
         .catch((e) => console.log(e))
+      API.UserService.getMyProfile().then((value) => {
+        userDataStore.$patch({
+          user: value.data,
+        })
+      })
     }
 
     fileReader.onload = (event) => {

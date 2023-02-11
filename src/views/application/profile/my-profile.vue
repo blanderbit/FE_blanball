@@ -570,7 +570,7 @@ export default {
             ...refProfileData,
             birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
             gender: store.user.profile.gender,
-            avatar_url: store.user.profile.avatar_url,
+            avatar_url: store.getUserAvatar,
             position: getUserPositionText(position)
           }
           delete profileData.day
@@ -622,6 +622,7 @@ export default {
 
     function openEditPictureModal(modal, picture) {
       userAvatar.value = picture
+      console.log(userAvatar.value)
       toggleModal(modal)
     }
 
