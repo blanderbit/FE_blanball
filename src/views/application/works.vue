@@ -4,9 +4,6 @@
       <div class="b-tech-works__text">
         {{ $t('works.site-is-broken') }}
       </div>
-      <div class="b-tech-works__button">
-        {{ $t('works.found-mistake') }}
-      </div>
     </div>
     <div class="b-tech-works__main-part">
       <div class="b-tech-works__left-side">
@@ -73,19 +70,6 @@ export default {}
       line-height: 20px;
       color: #8a8aa8;
       margin-right: 119px;
-    }
-    .b-tech-works__button {
-      padding: 2px 8px;
-      background: #575775;
-      border-radius: 4px;
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 500;
-      font-size: 13px;
-      line-height: 24px;
-      text-align: center;
-      color: #ffffff;
-      min-width: 143px;
     }
   }
   .b-tech-works__main-part {
