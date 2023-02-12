@@ -83,6 +83,7 @@ import GreenBtn from '../../components/GreenBtn.vue'
 import { useDevice } from 'next-vue-device-detector'
 
 import PlaceDetector from '../../components/maps/PlaceDetector.vue'
+import WhiteBtn from "../WhiteBtn.vue"
 export default {
   props: {
     card: {
@@ -93,7 +94,8 @@ export default {
   components: {
     GreenBtn,
     PlaceDetector,
-  },
+    WhiteBtn
+},
   setup(props) {
     const device = useDevice()
 
