@@ -63,6 +63,7 @@
         </div>
         <div class="right-side">
           <GreenBtn
+            :disabled="card.status !== 'Planned'"
             :animation="true"
             :text="card.privacy ? $t('events.apply') : $t('events.join')"
             :width="120"
@@ -277,6 +278,7 @@ export default {
   .bottom-block {
     margin-top: 12px;
     border-top: 1px dashed #dfdeed;
+
     .top-line {
       display: flex;
       justify-content: space-between;
@@ -288,6 +290,12 @@ export default {
         font-weight: 500;
         font-size: 12px;
         line-height: 20px;
+        max-width: 100%;
+        word-break: break-word;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
         color: #393762;
       }
       .price {

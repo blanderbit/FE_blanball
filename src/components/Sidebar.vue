@@ -56,7 +56,9 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeUnmount } from 'vue'
+import { storeToRefs } from "pinia";
+
+import { ref, computed, onBeforeUnmount, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserDataStore } from '../stores/userData'
 import { useEventDataStore } from '../stores/eventsData'
@@ -103,11 +105,17 @@ export default {
     const eventStore = useEventDataStore()
     const notReadNotificationCount = ref(0)
     const skipids = ref([])
-    const userFullName = ref(`${userStore.user.profile.name} ${userStore.user.profile.last_name}`)
-    const userAvatar = ref(userStore.user.profile.avatar_url)
+    const { user } = storeToRefs(userStore)
+    const userFullName =  computed(() => `${userStore.user.profile.name} ${userStore.user.profile.last_name}`)
+    const userAvatar = ref(user.value.profile.avatar_url)
     const router = useRouter()
     const isMenuOpened = ref(false)
     const isBugReportModalOpened = ref(false)
+
+    watch(() => user, (newData, oldData) => {
+      console.log(newData)
+    })
+
     const menuItems = computed(() => [
       {
         img: notReadNotificationCount.value ? notificationUnread : notification,

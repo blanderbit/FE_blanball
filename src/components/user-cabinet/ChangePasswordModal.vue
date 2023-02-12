@@ -175,8 +175,7 @@ export default {
             closeModal()
           })
           .catch((e) => {
-            console.log('change password error', e.data.error)
-            errorMessage.value = t('modals.change_password.server-error')
+            errorMessage.value = t('modals.change_password.bad-verify-code')
           })
       }
     }

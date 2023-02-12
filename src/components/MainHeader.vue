@@ -110,7 +110,10 @@ export default {
 
     watch(searchValue, (searchValue, previous) => {
       clearTimeout(searchTimeout)
-      const relevantSearch = () => getRelevantUsers({'search': searchValue})
+      loading.value = true
+      const relevantSearch = () =>  {
+        getRelevantUsers({'search': searchValue})
+      }
       searchTimeout = setTimeout(relevantSearch, 500);
     })
 
