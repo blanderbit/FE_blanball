@@ -138,7 +138,7 @@ const onValueChange = (e) => {
   }
 
   let next
-  const value = e.target.value
+  const value = e.target.value.toUpperCase()
   values.value = Object.assign([], values.value)
   if (value.length > 1) {
     let nextIndex = value.length + index - 1

@@ -5,6 +5,7 @@ export default {
     'new-email': 'Новий E-mail',
     email: 'E-mail',
     'code-message': 'Лист із кодом підтвердження прийде за адресою',
+    'email-already-used': 'Цей імейл вже зайнятий'
   },
   delete_acc: {
     title: 'Видалення акаунту',
