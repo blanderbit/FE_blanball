@@ -4,6 +4,7 @@
       v-if="isModalFiltersActive"
       v-model:dropdown-game-type="transformedFilters.type"
       v-model:gender="transformedFilters.gender"
+      v-model:search="transformedFilters.search"
       v-model:status="transformedFilters.status"
       v-model:location="transformedFilters.location"
       v-model:date-and-time="transformedFilters.date_and_time"
@@ -124,7 +125,7 @@
               @click="sortingButtonClick"
             >
               <img :src="sortingBtnData.icon" alt="" />
-              <span>
+              <span class="b-main-search__soring-title">
                 {{ sortingBtnData.title }}
               </span>
             </div>
@@ -152,11 +153,6 @@
               <div class="b-main-search__text-block">
                 <div class="b-main-search__title">
                   {{ $t('events.filters') }}
-                </div>
-                <div class="b-main-search__subtitle">
-                  {{ $t('events.found') }}
-                  15
-                  {{ $t('events.advertisments') }}
                 </div>
               </div>
             </div>

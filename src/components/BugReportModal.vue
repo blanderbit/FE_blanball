@@ -179,7 +179,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(48, 46, 46, 0.514);
+  background: rgba(255, 255, 255, 0.514);
   z-index: 999;
 
   .b-bug-report-modal__modal-window {

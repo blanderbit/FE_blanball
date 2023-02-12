@@ -5,6 +5,7 @@ export default {
     'new-email': 'Новий E-mail',
     email: 'E-mail',
     'code-message': 'Лист із кодом підтвердження прийде за адресою',
+    'email-already-used': 'Цей імейл вже зайнятий'
   },
   delete_acc: {
     title: 'Видалення акаунту',
@@ -21,6 +22,7 @@ export default {
     'sms-code': 'Лист із кодом підтвердження прийде за адресою',
     'wrong-old-pass': 'Ви ввели неправильний старий пароль',
     'server-error': 'Проблема на серверi',
+    'bad-verify-code': 'Перевірте правильність введеного коду підтвердження'
   },
   change_user_data: {
     'main-text':

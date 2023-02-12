@@ -5,13 +5,14 @@
           <div class="card-icon">
           <img src="../../assets/img/hands-shake.svg" alt="" />
         </div>
+        <span :class="['status', `status-${card.status.toLowerCase()}`]">{{ $t(`events.${card.status}`) }}</span>
+        <span class="active-time">{{ card.time }} - {{ cardFinishTime }}</span>
         <div class="text-block">
           <div class="title">{{ $t('events.friendly-match') }}</div>
           <div class="date-time-mob">
             <div class="date">
               {{ card.date }}
             </div>
-            <div class="time">{{ card.time }}</div>
           </div>
         </div>
       </div>
@@ -62,6 +63,7 @@
         </div>
         <div class="right-side">
           <GreenBtn
+            :disabled="card.status !== 'Planned'"
             :animation="true"
             :text="card.privacy ? $t('events.apply') : $t('events.join')"
             :width="120"
@@ -75,10 +77,13 @@
 </template>
 
 <script>
+import { ref } from "vue"
+
 import GreenBtn from '../../components/GreenBtn.vue'
 import { useDevice } from 'next-vue-device-detector'
 
 import PlaceDetector from '../../components/maps/PlaceDetector.vue'
+import WhiteBtn from "../WhiteBtn.vue"
 export default {
   props: {
     card: {
@@ -89,11 +94,27 @@ export default {
   components: {
     GreenBtn,
     PlaceDetector,
-  },
-  setup() {
+    WhiteBtn
+},
+  setup(props) {
     const device = useDevice()
+
+    function addMinutes(time, minutesToAdd) {
+      let timeArray = time.split(':');
+      let hours = timeArray[0];
+      let originalMinutes = timeArray[1];
+      let date = new Date();
+      date.setHours(hours);
+      date.setMinutes(originalMinutes);
+      date.setMinutes(date.getMinutes() + minutesToAdd);
+      return date.toTimeString().substr(0, 5);
+    }
+    
+    const cardFinishTime = addMinutes(props.card.time, props.card.duration)
+
     return {
       device,
+      cardFinishTime,
     }
   },
 }
@@ -259,6 +280,7 @@ export default {
   .bottom-block {
     margin-top: 12px;
     border-top: 1px dashed #dfdeed;
+
     .top-line {
       display: flex;
       justify-content: space-between;
@@ -270,6 +292,12 @@ export default {
         font-weight: 500;
         font-size: 12px;
         line-height: 20px;
+        max-width: 100%;
+        word-break: break-word;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
         color: #393762;
       }
       .price {
@@ -325,5 +353,44 @@ export default {
   margin-top: 10px;
   width: fit-content;
   max-width: 100%;
+  cursor: pointer;
+}
+.status {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 20px;
+  text-align: center;
+  color: #FFFFFF;
+  border-radius: 4px;
+  padding: 0px 4px;
+
+  &-planned {
+    background: #ebbb53;
+  }
+
+  &-active {
+     background: #71BA12;
+  }
+
+  &-finished {
+    background: #E184A0;
+  }
+}
+.active-time {
+  position: absolute;
+  right: 25px;
+  top: 45px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  text-align: right;
+  color: #575775;
 }
 </style>

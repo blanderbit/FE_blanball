@@ -219,4 +219,13 @@ export default {
     }
   }
 }
+
+.error-message {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  color: #f32929;
+}
 </style>

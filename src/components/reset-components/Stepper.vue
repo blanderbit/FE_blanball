@@ -85,7 +85,7 @@
           {{ $t('reset.cancel') }}
         </div>
         <GreenBtn
-          :text="$t('reset.drop-password')"
+          :text="$t(nextButtonText)"
           :width="155"
           :loading="loading"
           :height="40"
@@ -128,6 +128,7 @@
       const router = useRouter();
       const toast = useToast();
       const { t } = useI18n()
+      const nextButtonText = ref('reset.drop-password')
       const eyeCrossed = computed(() => {
         return eyeCross
       });
@@ -203,16 +204,20 @@
       const resendResetVerifyCode = async () => {
         await API.AuthorizationService.ResetPasswordRequest({"email": userEmail.value});
       }
+
+    
       async function handleNextClick(formData) {
         switch (currentStep.value) {
           case 1:
             return await handleResetPasswordRequest(formData);
           case 2:
+            nextButtonText.value = 'reset.save-changes'
             return await handleResetVerifyCode(formData);
           case 3:
             return await handleResetResetComplete(formData);
         }
       }
+
       return {
         handleNextClick,
         handleBackClick,
@@ -220,6 +225,7 @@
         loading,
         schema,
         userEmail,
+        nextButtonText,
         currentStep,
         eyeCrossed,
         eyeOpened,
@@ -342,7 +348,7 @@
     .b-reset-step__buttons {
       flex-grow: 2;
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       justify-content: space-between;
       .b-reset-step__cancel-button {
         font-family: 'Inter';

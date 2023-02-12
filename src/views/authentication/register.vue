@@ -61,13 +61,15 @@
             @next="currentStep++"
           />
         </Transition>
-        <Transition>
+        <div class="b-register__step-8">
+          <Transition>
           <Step_8
             v-if="currentStep === 8"
             @next="handleUpdate(data)"
             @back="currentStep--"
           />
         </Transition>
+        </div>
         <Transition>
           <Step_9
             v-if="currentStep === 9"
@@ -408,5 +410,8 @@ form {
 .v-enter,
 .v-leave-to {
   opacity: 0;
+}
+.b-register__step-8::v-deep(.b-auth__central-block) {
+  height: 700px !important;
 }
 </style>

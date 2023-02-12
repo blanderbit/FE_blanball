@@ -13,7 +13,6 @@
             <InputComponent
               :title="$t('modals.change_password.current-pass')"
               :title-width="0"
-              :placeholder="'*********'"
               :type="'password'"
               :outside-title="true"
               name="old_password"
@@ -23,7 +22,6 @@
             <InputComponent
               :title="$t('modals.change_password.new-pass')"
               :title-width="0"
-              :placeholder="'*********'"
               :type="'password'"
               :outside-title="true"
               name="new_password"
@@ -175,8 +173,7 @@ export default {
             closeModal()
           })
           .catch((e) => {
-            console.log('change password error', e.data.error)
-            errorMessage.value = t('modals.change_password.server-error')
+            errorMessage.value = t('modals.change_password.bad-verify-code')
           })
       }
     }

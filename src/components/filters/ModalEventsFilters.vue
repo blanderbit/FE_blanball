@@ -24,6 +24,15 @@
               name="position"
             />
           </div>
+          <div class="b-modal-filters__game-search-input">
+            <InputComponent
+              :placeholder="'Введіть ключові слова'"
+              v-model="searchData"
+              :title-width="0"
+              :height="38"
+              name="change_email"
+            />
+          </div>
           <div class="b-modal-filters__gender">
             <RadioGenderBox v-model:gender="genderData" />
           </div>
@@ -92,6 +101,7 @@ import GreenBtn from '../GreenBtn.vue'
 import RadioGenderBox from './components/RadioGenderBox.vue'
 import ModalPositionMap from '../maps/ModalPositionMap.vue'
 import ClearFilters from './components/ClearFilters.vue'
+import InputComponent from '../forms/InputComponent.vue'
 
 import tickIcon from '../../assets/img/tick-white.svg'
 
@@ -106,6 +116,7 @@ export default {
     RadioGenderBox,
     ClearFilters,
     ModalPositionMap,
+    InputComponent,
   },
   props: {
     dropdownGameType: {
@@ -124,6 +135,10 @@ export default {
       type: Object,
       default: '',
     },
+    search: {
+      type: String,
+      default: '',
+    },
     dateAndTime: {
       type: Object,
       default: () => {},
@@ -138,11 +153,13 @@ export default {
     'update:status',
     'update:location',
     'update:dateAndTime',
+    'update:search'
   ],
   setup(props, { emit }) {
     const gameTypeData = ref(props.dropdownGameType)
     const gameStatusData = ref(props.status)
     const genderData = ref(props.gender)
+    const searchData = ref(props.search)
     const locationData = ref(props.location)
     const dateAndTimeData = ref(props.dateAndTime)
 
@@ -172,6 +189,12 @@ export default {
       }
     )
     watch(
+      () => searchData.value,
+      (newVal) => {
+        emit('update:search', newVal)
+      }
+    )
+    watch(
       () => gameStatusData.value,
       (newVal) => {
         emit('update:status', newVal)
@@ -196,8 +219,10 @@ export default {
     }
     function clearAllData() {
       emit('clearFilters')
+      emit('closeModal')
       gameStatusData.value = ''
       gameTypeData.value = ''
+      searchData.value = ''
       locationData.value = {}
       genderData.value = ''
       dateAndTimeData.value = {
@@ -214,6 +239,7 @@ export default {
       icon,
       gameStatusData,
       gameTypeData,
+      searchData,
       locationData,
       genderData,
       dateAndTimeData,
@@ -353,6 +379,10 @@ export default {
       }
     }
   }
+  .b-modal-filters__game-search-input {
+    margin-bottom: 10px;
+  }
+
   &__game-type-input {
     width: 100%;
     height: 40px;
