@@ -31,6 +31,7 @@
               :is-disabled="modalSteps.first ? false : true"
               name="email"
             />
+            <span class="error-message">{{ errorMessage }}</span>
           </div>
           <div v-if="modalSteps.second" class="description-text">
             <Counter
@@ -100,16 +101,36 @@ export default {
       second: false,
     })
     const repeatEmail = ref('')
+    const errorMessage = ref('')
 
     const schema = computed(() => {
       return yup.object({
         verify_code: yup
           .string()
-          .required('errors.required')
-          .min(5, 'errors.min5'),
+          .verifyCodeRequired('errors.required')
+          .verifyCodeMinLength('errors.min5'),
         email: yup.string().required('errors.required').email('errors.email'),
       })
     })
+
+    yup.addMethod(yup.string, "verifyCodeRequired", function (errorMessage) {
+      return this.test(`test-verify-code-required`, errorMessage, function (value) {
+        const { path, createError } = this;
+      
+        return (
+          (modalSteps.value.second && !value  ? false : true) || createError({ path, errorMessage })
+        );
+      });
+    });
+
+    yup.addMethod(yup.string, "verifyCodeMinLength", function (errorMessage) {
+      return this.test(`test-verify-code-min-length`, errorMessage, function (value) {
+        const { path, createError } = this;
+        return (
+          (modalSteps.value.second && value.length !== 5  ? false : true) || createError({ path, errorMessage })
+        );
+      });
+    });
 
     const cancelBtnTitle = computed(() => {
       return modalSteps.value.first
@@ -139,17 +160,21 @@ export default {
     async function saveClick(data) {
       const { valid } = await data.validate()
 
-      console.log(data)
       if (!valid) {
         return false
       }
 
       let payload
       if (modalSteps.value.first) {
-        setSteps(false, true)
         payload = { email: data.controlledValues.email }
         repeatEmail.value = payload
-        sendCodeForChangingEmail(payload)
+        try {
+          await sendCodeForChangingEmail(payload)
+          setSteps(false, true)
+          errorMessage.value = ''
+        } catch(e) {
+          errorMessage.value = t('modals.change_login.email-already-used')
+        }
       } else {
         payload = { verify_code: data.controlledValues.verify_code }
         API.UserService.sendApproveCode(payload).then(() => {
@@ -161,9 +186,11 @@ export default {
     function sendEmailAgain() {
       sendCodeForChangingEmail(repeatEmail.value)
     }
-    function sendCodeForChangingEmail(val) {
-      API.UserService.changeUserEmail(val)
+
+    async function sendCodeForChangingEmail(val) {
+      await API.UserService.changeUserEmail(val)
     }
+
     function closeModal() {
       setSteps(true, false)
       context.emit('closeModal', 'email')
@@ -180,6 +207,7 @@ export default {
       schema,
       cancelBtnTitle,
       saveBtnTitle,
+      errorMessage,
       disableSubmit: (e) => {
         e.stopPropagation()
         e.preventDefault()
@@ -188,5 +216,4 @@ export default {
   },
 }
 </script>
-
 <style></style>
