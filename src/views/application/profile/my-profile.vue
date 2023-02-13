@@ -676,6 +676,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::-webkit-scrollbar {
+    display: none;
+}
 .b-player-page__outer-btns {
   position: absolute;
   top: -30px;
