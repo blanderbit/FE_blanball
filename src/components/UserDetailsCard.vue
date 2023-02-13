@@ -465,6 +465,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .b-user-card {
   padding: 20px 16px;
   background: #eeeef3;
@@ -649,6 +650,9 @@ export default {
           }
         }
         .b-user-card__textarea-line {
+          &::v-deep(.b-text-area__min-max-label) {
+            display: none;
+          }
           .b-user-card__about-me {
             font-family: 'Inter';
             font-style: normal;

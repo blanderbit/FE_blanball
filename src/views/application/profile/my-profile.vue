@@ -291,7 +291,7 @@ export default {
           .string()
           .required('errors.required')
           .userName('errors.invalid-name'),
-        about_me: yup.string().required('errors.required').max(100),
+        about_me: yup.string().nullable(),
         day: yup.string().required('errors.required'),
         month: yup.string().required('errors.required'),
         year: yup.string().required('errors.required'),
