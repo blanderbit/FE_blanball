@@ -2,9 +2,6 @@
   <div class="b-manage-event">
     <SelectionSuitModal v-if="isSuitModalActive" @close-modal="closeModal" />
     <Form v-slot="data" :validation-schema="schema" @submit="disableSubmit">
-      <pre>
-        {{ data.values }}
-      </pre>
       <div class="b-manage-event__page-title">
         <span>
           {{ $t('events.event-creation') }}
@@ -72,6 +69,9 @@
           :user-location="userLocation"
         />
 
+        <div class="b-manage-event__btnbs-preview-block">
+
+        </div>
         <div class="b-manage-event__btns-desktop-block">
           <ButtonsBlock
             :save-btn-text="$t('buttons.save-as-template')"
@@ -269,8 +269,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.b-manage-event__main-body {
+  margin-top: 0px;
+}
 .b-manage-event {
   overflow: hidden;
+  ::-webkit-scrollbar {
+    display: none;
+  }
   form {
     overflow: hidden;
     height: 100%;

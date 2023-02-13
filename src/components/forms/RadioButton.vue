@@ -117,11 +117,15 @@ $color2: #148783;
   border: 1px solid #dfdeed;
   border-radius: 6px;
   margin-right: 12px;
+  padding: 6px 12px;
+
+  .b-radio__icon {
+    margin-right: 10px;
+  }
   input[type='radio'] {
     position: absolute;
     opacity: 0;
     + .b-radio-label {
-      padding: 6px 12px;
       display: flex;
       align-items: center;
       font-family: 'Inter';

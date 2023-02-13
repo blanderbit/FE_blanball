@@ -9,10 +9,10 @@
     <div class="radio-btn-wrapper">
       <div class="radio">
         <radio-button
-          :title="$t('events.free')"
+          :title="'Вільний'"
           value="true"
           :width="'auto'"
-          :is-disabled="true"
+          @get-radio-value="getRadioValue"
         ></radio-button>
       </div>
       <div class="radio">
@@ -20,7 +20,7 @@
           :title="$t('events.closed')"
           value="false"
           :width="'auto'"
-          :is-disabled="true"
+          @get-radio-value="getRadioValue"
         ></radio-button>
       </div>
     </div>
@@ -48,7 +48,7 @@
     <div v-show="isEventPayment" class="input">
       <InputComponent
         :outside-title="true"
-        :title="$t('events.payed')"
+        :title="$t('events.enter-sum')"
         :placeholder="'45₴'"
         :title-width="0"
         name="price"
@@ -76,25 +76,33 @@
       <InputComponent
         :placeholder="$t('events.search-users')"
         :title-width="30"
+        v-model="searchValue"
         :icon-left="icons.addUser"
         :icon="icons.search"
         name="user_search"
       />
     </div>
-
     <SearchBlockAll
       :tags="tags"
-      :filtered-teams="filteredTeams"
-      :list-item-icon="icons.plus"
-      @chose-tab-category="$emit('choseCategory')"
+      :usersList="relevantUsersList"
+      :loading="loading"
+      :itemIcon="icons.plus"
+      :itemDisabledText="'Запрошено'"
+      :disabladUsersIDSList="invitedUsersIDS"
       @item-list-click="inviteUser"
+      @item-image-click="openUserProfile"
     />
   </div>
 </template>
 
 <script>
 import { ref, watch, computed } from 'vue'
+import { useRouter } from 'vue-router'
+
 import { useUserDataStore } from '../../stores/userData'
+
+import { API } from '../../workers/api-worker/api.worker'
+import { ROUTES } from '../../router/router.const'
 
 import InputComponent from '../forms/InputComponent.vue'
 import Switcher from '../../components/Switcher.vue'
@@ -104,15 +112,12 @@ import RadioButton from '../forms/RadioButton.vue'
 import HorArrow from '../../assets/img/sort-arrows-down.svg'
 import AddUser from '../../assets/img/add-user.svg'
 import Search from '../../assets/img/search.svg'
-import PlusIcon from '../../assets/img/plus.svg'
+import PlusIcon from '../../assets/img/gray-plus.svg'
+
 
 export default {
   props: {
     tags: {
-      type: Array,
-      default: () => [],
-    },
-    filteredTeams: {
       type: Array,
       default: () => [],
     },
@@ -132,7 +137,17 @@ export default {
     const store = useUserDataStore()
     const isEventPayment = ref(false)
     const isPhoneShown = ref(false)
+    const relevantUsersList = ref([])
+    const searchValue = ref('')
+    const router = useRouter()
+    let searchTimeout
+    const loading = ref(false)
+    const invitedUsers = ref([])
+  
 
+    const invitedUsersIDS = computed(() => {
+      return invitedUsers.value.map(user => user.id);
+    })
     const icons = computed(() => {
       return {
         arrow: HorArrow,
@@ -141,6 +156,30 @@ export default {
         plus: PlusIcon,
       }
     })
+
+    const inviteUser = (user_id, user_data) => {
+      invitedUsers.value.push(user_data)
+    }
+
+    watch(searchValue, (searchValue, previous) => {
+      clearTimeout(searchTimeout)
+      loading.value = true
+      const relevantSearch = () =>  {
+        getRelevantUsers({'search': searchValue})
+      }
+      searchTimeout = setTimeout(relevantSearch, 500);
+    })
+
+    const openUserProfile = (userId) => {
+      router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId))
+    }
+
+    const getRelevantUsers =  async (options) => {
+      loading.value = true
+      let response = await API.UserService.getRelevantUsers(options)
+      relevantUsersList.value = response.data.results
+      loading.value = false
+    }
 
     const userPhoneNumber = computed(() => store.getUserPhone)
 
@@ -156,14 +195,23 @@ export default {
       isPhoneShown.value = val
     }
 
+    getRelevantUsers()
+
     return {
       icons,
       isEventPayment,
       stepStyle,
       isPhoneShown,
       userPhoneNumber,
+      relevantUsersList,
+      searchValue,
+      loading,
+      invitedUsers,
       showHidePhone,
+      openUserProfile,
+      invitedUsersIDS,
       getRadioValue,
+      inviteUser,
     }
   },
 }
@@ -274,7 +322,7 @@ export default {
       font-weight: 700;
       font-size: 16px;
       line-height: 24px;
-      color: #7f7db5;
+      color: #262541;
     }
   }
   .subtitle {
@@ -284,7 +332,7 @@ export default {
     font-weight: 400;
     font-size: 13px;
     line-height: 20px;
-    color: #7f7db5;
+    color: #262541;
     margin-bottom: 20px;
   }
   .title {

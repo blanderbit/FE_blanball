@@ -11,6 +11,7 @@
       :placeholder="placeholder"
       :options="options"
       :label="displayName || 'value'"
+      :disabled="disabled"
       append-to-body
       taggable="taggable"
       :class="{ 'b-form-error': modelErrorMessage }"
@@ -101,6 +102,10 @@ export default {
       default: 'test placeholder',
     },
     name: String,
+    disabled: {
+      type: Boolean,
+      default: false,
+    }
   },
   emits: ['new-value', 'update:modelValue'],
   setup(props, { emit }) {
@@ -338,7 +343,7 @@ export default {
     padding: 0px 4px;
     left: 8px;
     top: -8px;
-    z-index: 1;
+    z-index: 10;
   }
   &__custom-option {
     display: flex;

@@ -1,17 +1,17 @@
 <template>
   <div class="b-event-m-1st" :style="stepStyle">
-    <!-- <Dropdown
+    <Dropdown
+      style="margin-top: 10px;"
       :outside-title="true"
       :main-title="$t('events.event-type')"
       :placeholder="$t('events.event-type')"
-      :options="mockData.typeOfEventDropdown"
+      :disabled="true"
       display-name="name"
       display-value="value"
       :width="320"
       :height="40"
       name="type"
-    /> -->
-    <p>{{ $t('events.friendly-match') }}</p>
+    />
     <div class="b-event-m-1st__title mt-3 mb-2">
       {{ $t('events.gender') }}
     </div>
@@ -19,7 +19,7 @@
       <div class="radio-cover">
         <radio-button
           name="gender"
-          :title="$t('events.men')"
+          :title="$t('events.Man')"
           value="Man"
           :width="'auto'"
         ></radio-button>
@@ -27,7 +27,7 @@
       <div class="radio-cover">
         <radio-button
           name="gender"
-          :title="$t('events.women')"
+          :title="$t('events.Woman')"
           value="Woman"
           :width="'auto'"
         ></radio-button>
@@ -80,10 +80,18 @@
       <div class="b-event-m-1st__input-time">
         <InputComponent
           :outside-title="true"
-          :title="$t('events.time')"
+          :title="'Початок'"
           :placeholder="'17:00'"
           :title-width="0"
-          :icon="icons.watch"
+          name="time"
+        />
+      </div>
+      <div class="b-event-m-2st__input-time">
+        <InputComponent
+          :outside-title="true"
+          :title="'Кінець'"
+          :placeholder="'18:10'"
+          :title-width="0"
           name="time"
         />
       </div>
@@ -202,7 +210,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     .b-event-m-1st__input-calendar {
-      flex-basis: 50%;
+      flex-basis: 30%;
       margin-right: 12px;
       border: 1px solid #dfdeed;
       border-radius: 6px;
@@ -236,7 +244,12 @@ export default {
       }
     }
     .b-event-m-1st__input-time {
-      flex-basis: 50%;
+      flex-basis: 30%;
+      margin-right: 12px;
+    }
+
+    .b-event-m-2st__input-time {
+      flex-basis: 30%;
     }
   }
   .b-event-m-1st__input-location {
@@ -261,6 +274,9 @@ export default {
     justify-content: space-between;
     .radio-cover {
       flex-basis: 30%;
+      &:not(:last-child) {
+        margin-right: 10px;
+      }
       ::v-deep {
         .b-radio {
           margin-right: 0;
