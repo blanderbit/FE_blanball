@@ -10,7 +10,7 @@
       display-value="value"
       :width="320"
       :height="40"
-      name="type"
+      name="game-type"
     />
     <div class="b-event-m-1st__title mt-3 mb-2">
       {{ $t('events.gender') }}
@@ -32,14 +32,6 @@
           :width="'auto'"
         ></radio-button>
       </div>
-      <div class="radio-cover">
-        <radio-button
-          name="gender"
-          :title="$t('events.all')"
-          value="All"
-          :width="'auto'"
-        ></radio-button>
-      </div>
     </div>
     <div class="b-event-m-1st__sport-type mt-3">
       <Dropdown
@@ -54,6 +46,9 @@
         name="type"
       />
     </div>
+    <div class="b-event-m-1st__title mt-3 mb-2">
+      {{ $t('events.place-and-time') }}
+    </div>
     <div class="b-event-m-1st__time-and-date mt-3">
       <div class="b-event-m-1st__input-calendar">
         <div class="b-event-m-1st__label">
@@ -63,20 +58,24 @@
           locale="ukr"
           :model-config="calendar.modelConfig"
           v-model="initialDate"
+          name="date"
         >
           <template #default="options">
             <div class="b-event-m-1st__calendar-cover">
               <input
                 class="py-1 border rounded"
                 :value="options.inputValue"
+                readonly
                 v-on="options.inputEvents"
                 name="date"
+                v-maska="'##.##.####'"
               />
             </div>
           </template>
         </v-date-picker>
         <img src="../../assets/img/calendar.svg" alt="" />
       </div>
+      <span class="b-event-m-1st__subtitle">Оберіть із запропонованих або встановіть час власноруч (тільки круглі числа)</span>
       <div class="b-event-m-1st__input-time">
         <InputComponent
           :outside-title="true"
@@ -84,6 +83,7 @@
           :placeholder="'17:00'"
           :title-width="0"
           name="time"
+          v-maska="'##:##'"
         />
       </div>
       <div class="b-event-m-2st__input-time">
@@ -92,21 +92,22 @@
           :title="'Кінець'"
           :placeholder="'18:10'"
           :title-width="0"
-          name="time"
+          name="end_time"
+          v-maska="'##:##'"
         />
       </div>
     </div>
-    <div class="b-event-m-1st__input-location">
-      <!-- <InputComponent
-        :placeholder="$t('events.place')"
-        :title-width="0"
-        :icon="icons.location"
-        name="location"
-      /> -->
-      <ModalPositionMap v-model="userLocation"></ModalPositionMap>
-    </div>
-    <div class="b-event-m-1st__event-map">
-      <img src="../../assets/img/map-manage-event.svg" alt="" />
+    <ModalPositionMap  
+        class="b-event-m-1st__input-location" 
+        v-model="eventLocation">
+    </ModalPositionMap>
+    <ErrorMessage class="b-event-location__error-message" name="place.place_name"/>
+    <div v-if="eventLocation.lat && eventLocation.lng" class="b-event-m-1st__event-map">
+      <position-map
+        :coords="eventLocationOnMap" 
+        @map-loaded="loading = false"
+        disable-change-coords>
+      </position-map>
     </div>
   </div>
 </template>
@@ -114,10 +115,15 @@
 <script>
 import { ref, watch, computed } from 'vue'
 
+import { ErrorMessage } from '@system.it.flumx.com/vee-validate'
+
 import Dropdown from '../forms/Dropdown.vue'
 import InputComponent from '../forms/InputComponent.vue'
 import RadioButton from '../forms/RadioButton.vue'
+import PositionMap from '../maps/PositionMap.vue'
 import ModalPositionMap from '../maps/ModalPositionMap.vue'
+import RegisterModalPositionMap from '../maps/RegisterModalPositionMap.vue'
+import PlaceDetector from '../maps/PlaceDetector.vue'
 
 import CalendarPic from '../../assets/img/calendar.svg'
 import WatchPic from '../../assets/img/watch.svg'
@@ -134,6 +140,10 @@ export default {
     InputComponent,
     RadioButton,
     ModalPositionMap,
+    PositionMap,
+    RegisterModalPositionMap,
+    PlaceDetector,
+    ErrorMessage,
   },
   props: {
     formData: {
@@ -145,26 +155,21 @@ export default {
       default: null,
     },
   },
-  emit: ['updateDate'],
+
   setup(props, { emit }) {
     const initialDate = ref(new Date())
-    const userLocation = ref('')
+    const eventLocation = ref({lat: '', lng: ''})
+    const eventLocationOnMap = ref({})
+
+    watch(() => eventLocation.value, (newData, oldData) => {
+      emit('changeEventLocation', newData)
+      
+      eventLocationOnMap.value = {lat: newData.lat, lng: newData.lng}
+    })
 
     const stepStyle = computed(() => {
       return props.currentStep === 1 ? { height: 'auto' } : { height: '0px' }
     })
-    watch(
-      () => initialDate.value,
-      () => {
-        emit('updateDate', initialDate.value)
-      }
-    )
-    watch(
-      () => userLocation.value,
-      () => {
-        emit('updateLocation', userLocation.value)
-      }
-    )
 
     const calendar = ref({
       inputMask: 'YYYY-MM-DD',
@@ -173,6 +178,8 @@ export default {
         mask: 'YYYY-MM-DD', // Uses 'iso' if missing
       },
     })
+
+
     const icons = computed(() => {
       return {
         calendar: CalendarPic,
@@ -195,7 +202,8 @@ export default {
       mockData,
       initialDate,
       calendar,
-      userLocation,
+      eventLocationOnMap,
+      eventLocation,
       stepStyle,
     }
   },
@@ -207,18 +215,17 @@ export default {
   overflow: hidden;
   .b-event-m-1st__time-and-date {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 10px;
     .b-event-m-1st__input-calendar {
-      flex-basis: 30%;
+      width: 100%;
       margin-right: 12px;
       border: 1px solid #dfdeed;
       border-radius: 6px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       padding: 0 12px;
-      width: 154px;
-      min-width: 154px;
       position: relative;
       .b-event-m-1st__label {
         position: absolute;
@@ -244,24 +251,36 @@ export default {
       }
     }
     .b-event-m-1st__input-time {
-      flex-basis: 30%;
-      margin-right: 12px;
+      flex-basis: 100%;
     }
 
     .b-event-m-2st__input-time {
-      flex-basis: 30%;
+      flex-basis: 100%;
     }
   }
   .b-event-m-1st__input-location {
-    width: 100%;
-    height: 40px;
+    min-width: 100%;
+    border: 1px solid #DFDEED;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding: 12px 8px 12px 12px;
     margin-top: 16px;
+
+    &::v-deep(.b-modal-position__address-text) {
+      justify-content: space-between;
+      flex-direction: row-reverse;
+    }
+
+    .b-event-m-1st__location-map {
+      width: 100%;
+    }
   }
   .b-event-m-1st__title {
     font-family: 'Inter';
     font-style: normal;
-    font-weight: 500;
-    font-size: 13px;
+    font-weight: 600;
+    font-size: 14px;
     line-height: 20px;
     color: #262541;
   }
@@ -273,7 +292,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     .radio-cover {
-      flex-basis: 30%;
+      flex-basis: 50%;
       &:not(:last-child) {
         margin-right: 10px;
       }
@@ -289,6 +308,24 @@ export default {
   }
   .b-event-m-1st__event-map {
     margin-top: 16px;
+    height: 200px;
   }
+}
+.b-event-location__error-message {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  color: #f32929;
+}
+.b-event-m-1st__subtitle {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 20px;
+  color: #575775;
+  margin-bottom: 10px;
 }
 </style>

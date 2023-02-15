@@ -61,7 +61,6 @@
             @next="currentStep++"
           />
         </Transition>
-        <div class="b-register__step-8">
           <Transition>
           <Step_8
             v-if="currentStep === 8"
@@ -69,7 +68,6 @@
             @back="currentStep--"
           />
         </Transition>
-        </div>
         <Transition>
           <Step_9
             v-if="currentStep === 9"

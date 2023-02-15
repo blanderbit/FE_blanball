@@ -261,7 +261,7 @@
               :outside-title="true"
               :height="40"
               name="phone"
-              v-maska="'+38 (0##) ### ## ##'"
+              v-maska="'+38 (0XX) XXX XX XX'"
             />
           </div>
           <div class="b-user-card__area-line">

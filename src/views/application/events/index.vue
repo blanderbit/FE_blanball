@@ -35,7 +35,11 @@
           @update:value="setFilters"
           @clearFilters="clearFilters"
         ></events-filters>
+        
         <div class="b-events-page__all-events-block">
+          <div @click="goToCreateEvent" class="b-events-page__all-create-event-mobile-button">
+            <img src="../../../assets/img/plus.svg" alt="">
+          </div>
           <SmartGridList
             :list="paginationElements"
             ref="refList"
@@ -431,6 +435,26 @@ export default {
         margin-top: 23px;
         height: 76vh;
         overflow: hidden;
+
+        .b-events-page__all-create-event-mobile-button {
+          background: #148783;
+          box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+          border-radius: 100px;
+          padding: 12px;
+          position: absolute;
+          display: none;
+          font-size: 24px;
+          font-weight: 700px;
+          width: 44px;
+          height: 44px;
+          right: 25px;
+          z-index: 10;
+          bottom: 130px;
+
+          @media (max-width: 992px) {
+            display: flex;
+          }
+        }
         .b-events-page__cards-event-wrapper {
           display: flex;
           flex-wrap: wrap;

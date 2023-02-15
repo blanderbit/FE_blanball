@@ -89,7 +89,6 @@ import { API } from '../../workers/api-worker/api.worker'
 import GreenBtn from '../../components/GreenBtn.vue'
 import Loading from '../../workers/loading-worker/Loading.vue'
 import tickIcon from '../../assets/img/location-point.svg'
-
 export default {
   components: {
     ModalWindow,
@@ -117,13 +116,11 @@ export default {
       region: yup.string().required('errors.required'),
       city: yup.string().required('errors.required'),
     })
-
     const icons = computed(() => {
       return {
         tick: tickIcon,
       }
     })
-
     function setValue() {
       if (!props.modelValue) return
       const [Sregion, SCity] = props.modelValue.place?.split?.(',') || []
@@ -148,7 +145,6 @@ export default {
       () => activeModal.value,
       () => {
         if (!activeModal.value) return
-
         PositionMapBus.emit('update:map:by:coords', {
           data: {
             coordinates: {
@@ -172,7 +168,6 @@ export default {
         district: CONSTANTS.register.jsonCityRegions,
       }
     })
-
     function updateCoords(e) {
       coords.value = {
         lat: e.lat,
@@ -182,11 +177,9 @@ export default {
       city.value = e.place.city || e.place.town || e.place.village
       nextButton.value = !region.value || !city.value
     }
-
     async function getCoordsByName(str) {
       return await API.LocationService.GetPlaceByAddress(str)
     }
-
     let timeout
     return {
       schema,
@@ -210,7 +203,6 @@ export default {
         } catch (e) {
           nextButton.value = true
         }
-
         loading.value = false
       },
       async changeCity(e) {
@@ -248,7 +240,6 @@ export default {
   },
 }
 </script>
-
 <style scoped lang="scss">
 .b-modal-position__address-text {
   font-family: 'Inter';
@@ -256,6 +247,7 @@ export default {
   font-weight: 400;
   font-size: 13px;
   line-height: 24px;
+  width: 100%;
   color: #262541;
   cursor: pointer;
   display: flex;
@@ -268,18 +260,15 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 120px;
     display: block;
   }
 }
 .b-modal-position__block {
   margin-bottom: 15px;
 }
-
 .b-modal-position__map {
   height: 300px;
 }
-
 .b-modal-position__clear {
   font-family: 'Inter';
   font-style: normal;

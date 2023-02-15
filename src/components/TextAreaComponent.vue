@@ -4,7 +4,7 @@
       <div v-if="title" class="b-text-area__outer-title">
         <span>{{ title }}</span>
       </div>
-      <div class="b-text-area__min-max-label">
+      <div v-if="textareaIcon" class="b-text-area__min-max-label">
         {{ modelValue ? modelValue.length : 0 }} / {{ maxTextValue }}
       </div>
       <textarea
@@ -68,7 +68,6 @@ export default {
     },
     maxTextValue: {
       type: Number,
-      default: 200,
     },
   },
   emits: ['icon-click'],

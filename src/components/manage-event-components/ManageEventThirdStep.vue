@@ -8,29 +8,39 @@
     </div>
     <TextAreaComponent
       :placeholder="$t('events.event-description')"
+      :height="92"
       name="description"
     />
-    <!-- <div class="contact-switcher">
-      <div class="title-prize">
-        {{$t('events.prize')}}
-        <span>
-          VIP
-        </span>
-      </div>
-      <Switcher 
-        :id="'prise'"
+    <div class="contact-switcher">
+      <span>{{ $t('events.show-my-contacts') }}</span>
+      <Switcher
+        :id="'contacts'"
         :is-edit-mode="true"
         name="is_phone_shown"
         @get-value="showHidePhone"
       />
     </div>
-    <div class="input">
+    <div class="input" v-show="isPhoneShown">
       <InputComponent
-          :placeholder="$t('events.what-prize')"
-          :title-width="0"
-          :icon="icons.aim"
+        :placeholder="userPhoneNumber"
+        :title-width="0"
+        name="contact_number"
+        v-maska="'+38 (0XX) XXX XX XX'"
+      >
+      </InputComponent>
+    </div>
+
+    <div class="prize-switcher">
+      <div class="prize-title">
+      Чи буде розіграно приз? <span>ViP</span>
+    </div>
+      <Switcher
+        :is-edit-mode="false"
+        name="is_prize"
+        @get-value="showHidePhone"
       />
-    </div> -->
+    </div>
+
     <div class="title-outfit">
       {{ $t('events.need-clothes') }}
     </div>
@@ -39,7 +49,7 @@
         <radio-button
           name="need_form"
           :title="$t('events.yes')"
-          value="true"
+          :value="true"
           :width="'auto'"
         ></radio-button>
       </div>
@@ -47,60 +57,24 @@
         <radio-button
           name="need_form"
           :title="$t('events.manijki-available')"
-          value="false"
+          :value="false"
           :width="'auto'"
         ></radio-button>
       </div>
-      <!-- <div class="radio">
-        <input
-            id="radio-outfit"
-            name="outfit"
-            type="radio"
-            :value="$t('events.yes')"
-            checked
-        >
-        <label for="radio-outfit" class="radio-label">
-          {{ $t('events.yes') }}
-        </label>
-      </div>
-      <div class="radio">
-        <input
-            id="radio-outfit2"
-            name="outfit"
-            type="radio"
-            :value="$t('events.manijki-available')"
-        >
-        <label for="radio-outfit2" class="radio-label">
-          {{$t('events.manijki-available')}}
-        </label>
-      </div> -->
     </div>
     <div class="title-outfit">
       {{ $t('events.enter-colors') }}
     </div>
     <div class="outfit-colors">
-      <!-- <div class="input">
-        <InputComponent
-            :placeholder="'Input'"
-            :title-width="0"
-            :outside-title="true"
-            :title="$t('events.team1')"
-        />
-      </div>
-      <div class="input">
-        <InputComponent
-            :placeholder="'Input'"
-            :title-width="0"
-            :outside-title="true"
-            :title="$t('events.team2')"
-        />
-      </div> -->
     </div>
   </div>
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+
+import { useUserDataStore } from '../../stores/userData'
+
 import Switcher from '../../components/Switcher.vue'
 import RadioButton from '../../components/forms/RadioButton.vue'
 import InputComponent from '../../components/forms/InputComponent.vue'
@@ -123,11 +97,20 @@ export default {
     },
   },
   setup(props) {
+    const isPhoneShown = ref(false)
+    const store = useUserDataStore()
+    const userPhoneNumber = computed(() => store.getUserPhone)
+
     const icons = computed(() => {
       return {
         aim: AimIcon,
       }
     })
+
+    function showHidePhone(val) {
+      isPhoneShown.value = val
+    }
+
 
     const stepStyle = computed(() => {
       return props.currentStep === 3 ? { height: 'auto' } : { height: '0px' }
@@ -136,6 +119,9 @@ export default {
     return {
       icons,
       stepStyle,
+      userPhoneNumber,
+      isPhoneShown,
+      showHidePhone,
     }
   },
 }
@@ -261,20 +247,19 @@ export default {
     margin-bottom: 8px;
     font-family: 'Inter';
     font-style: normal;
-    font-weight: 500;
-    font-size: 13px;
+    font-weight: 600;
+    font-size: 14px;
     line-height: 20px;
     color: #262541;
   }
   .title-outfit {
     font-family: 'Inter';
     font-style: normal;
-    font-weight: 400;
-    font-size: 13px;
+    font-weight: 600;
+    font-size: 14px;
     line-height: 20px;
-    color: #575775;
-    margin-top: 16px;
-    margin-bottom: 8px;
+    color: #262541;
+    margin: 12px 0px;
   }
   .contact-switcher {
     display: flex;
@@ -282,24 +267,14 @@ export default {
     align-items: center;
     margin-top: 16px;
     margin-bottom: 8px;
-    .title-prize {
+
+    span {
       font-family: 'Inter';
       font-style: normal;
-      font-weight: 500;
-      font-size: 13px;
+      font-weight: 600;
+      font-size: 14px;
       line-height: 20px;
       color: #262541;
-      span {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 12px;
-        line-height: 20px;
-        color: #575775;
-        padding: 0px 4px;
-        background: #efeff6;
-        border-radius: 4px;
-      }
     }
   }
   .outfit-colors {
@@ -311,5 +286,31 @@ export default {
       margin-top: 0;
     }
   }
+}
+.prize-switcher {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  opacity: 0.6;
+  .prize-title {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 16px 0px;
+    color: #262541;
+      span {
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 12px;
+          line-height: 20px;
+          padding: 0px 4px;
+          background: #EFEFF6;
+          border-radius: 4px;
+        }
+    }
 }
 </style>

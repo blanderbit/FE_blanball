@@ -134,7 +134,10 @@ export default {
 
     watch(
       () => props.coords,
-      () => marker.value.setPosition(event.latLng)
+      () => {
+        marker.value.setPosition(props.coords)
+        map.setCenter(props.coords)
+      }
     )
 
     onMounted(() => {

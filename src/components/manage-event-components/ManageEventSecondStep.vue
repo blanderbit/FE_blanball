@@ -9,18 +9,18 @@
     <div class="radio-btn-wrapper">
       <div class="radio">
         <radio-button
-          :title="'Вільний'"
-          value="true"
+          name="privacy"
+          :title="$t('events.join-free')"
+          :value="false"
           :width="'auto'"
-          @get-radio-value="getRadioValue"
         ></radio-button>
       </div>
       <div class="radio">
         <radio-button
+          name="privacy"
           :title="$t('events.closed')"
-          value="false"
+          :value="true"
           :width="'auto'"
-          @get-radio-value="getRadioValue"
         ></radio-button>
       </div>
     </div>
@@ -30,48 +30,52 @@
         <radio-button
           name="is_price"
           :title="$t('events.for-free')"
-          value="false"
+          :value="false"
           :width="'auto'"
-          @get-radio-value="getRadioValue"
+          @get-radio-value="toggleEventPayment"
         ></radio-button>
       </div>
       <div class="radio">
         <radio-button
           name="is_price"
           :title="$t('events.payed')"
-          value="true"
+          :value="true"
           :width="'auto'"
-          @get-radio-value="getRadioValue"
+          @get-radio-value="toggleEventPayment"
         ></radio-button>
       </div>
     </div>
-    <div v-show="isEventPayment" class="input">
+    <div v-show="isEventPayment" class="input enter-sum-input">
       <InputComponent
         :outside-title="true"
         :title="$t('events.enter-sum')"
         :placeholder="'45₴'"
+        v-maska="'#####'"
         :title-width="0"
         name="price"
       />
     </div>
-    <div class="contact-switcher">
-      <span>{{ $t('events.show-my-contacts') }}</span>
-      <Switcher
-        :id="'contacts'"
-        :is-edit-mode="true"
-        name="is_phone_shown"
-        @get-value="showHidePhone"
+    <div v-show="isEventPayment" class="input describe-sum-input">
+      <TextAreaComponent
+        :outside-title="true"
+        :title="$t('events.describe-sum')"
+        :height="80"
+        :title-width="0"
+        :maxTextValue="500"
+        name="price_description"
       />
     </div>
-    <div class="input" v-show="isPhoneShown">
-      <InputComponent
-        :placeholder="userPhoneNumber"
-        :title-width="0"
-        name="contact_number"
-      >
-      </InputComponent>
-    </div>
     <div class="title">{{ $t('events.invite-users') }}</div>
+    <div class="subtitle">{{ $t('events.enter-amount-members') }}</div>
+    <div class="input">
+      <InputComponent
+        :placeholder="$t('events.max-50')"
+        v-maska="'##'"
+        :icon="icons.users"
+        :title-width="0"
+        name="amount_members"
+      />
+    </div>
     <div class="input">
       <InputComponent
         :placeholder="$t('events.search-users')"
@@ -83,8 +87,7 @@
       />
     </div>
     <SearchBlockAll
-      :tags="tags"
-      :usersList="relevantUsersList"
+      :usersList="filteredUsersList"
       :loading="loading"
       :itemIcon="icons.plus"
       :itemDisabledText="'Запрошено'"
@@ -99,18 +102,17 @@
 import { ref, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
-import { useUserDataStore } from '../../stores/userData'
-
-import { API } from '../../workers/api-worker/api.worker'
 import { ROUTES } from '../../router/router.const'
 
 import InputComponent from '../forms/InputComponent.vue'
+import TextAreaComponent from '../TextAreaComponent.vue'
 import Switcher from '../../components/Switcher.vue'
 import SearchBlockAll from '../SearchBlockAll.vue'
 import RadioButton from '../forms/RadioButton.vue'
 
 import HorArrow from '../../assets/img/sort-arrows-down.svg'
 import AddUser from '../../assets/img/add-user.svg'
+import Users from '../../assets/img/members.svg'
 import Search from '../../assets/img/search.svg'
 import PlusIcon from '../../assets/img/gray-plus.svg'
 
@@ -125,92 +127,92 @@ export default {
       type: Number,
       default: null,
     },
+    filteredUsersList: {
+      type: Array,
+      default: () => [],
+    }, 
+    filterUsersListLoading: {
+      type: Boolean,
+      default: false
+    },
+    invitedUsersList: {
+      type: Array,
+      default: () => [],
+    }
   },
   components: {
     InputComponent,
     Switcher,
     SearchBlockAll,
     RadioButton,
+    TextAreaComponent,
   },
-  emit: ['choseCategory'],
+
   setup(props, { emit }) {
-    const store = useUserDataStore()
     const isEventPayment = ref(false)
-    const isPhoneShown = ref(false)
-    const relevantUsersList = ref([])
     const searchValue = ref('')
     const router = useRouter()
-    let searchTimeout
-    const loading = ref(false)
-    const invitedUsers = ref([])
+    const loading = ref(props.filterUsersListLoading)
+
+    
+    const invitedUsersIDS = computed(() => {
+      return props.invitedUsersList.map(user => user.id);
+    })
+
+    const inviteUser = (user_id, user_data) => {
+      emit('invite-user', user_data)
+    }
+
+    
+    watch(() => props.filterUsersListLoading, (newData, oldData) => {
+      loading.value = newData
+    })
   
 
-    const invitedUsersIDS = computed(() => {
-      return invitedUsers.value.map(user => user.id);
-    })
+    watch(
+      () => searchValue.value,
+      () => {
+        emit('searchUsers', searchValue.value)
+      }
+    )
+  
     const icons = computed(() => {
       return {
         arrow: HorArrow,
         addUser: AddUser,
         search: Search,
         plus: PlusIcon,
+        users: Users,
       }
     })
 
-    const inviteUser = (user_id, user_data) => {
-      invitedUsers.value.push(user_data)
-    }
-
-    watch(searchValue, (searchValue, previous) => {
-      clearTimeout(searchTimeout)
-      loading.value = true
-      const relevantSearch = () =>  {
-        getRelevantUsers({'search': searchValue})
-      }
-      searchTimeout = setTimeout(relevantSearch, 500);
-    })
-
+  
     const openUserProfile = (userId) => {
       router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId))
     }
-
-    const getRelevantUsers =  async (options) => {
-      loading.value = true
-      let response = await API.UserService.getRelevantUsers(options)
-      relevantUsersList.value = response.data.results
-      loading.value = false
-    }
-
-    const userPhoneNumber = computed(() => store.getUserPhone)
 
     const stepStyle = computed(() => {
       return props.currentStep === 2 ? { height: 'auto' } : { height: '0px' }
     })
 
-    function getRadioValue(val) {
-      isEventPayment.value = val === 'true' ? true : false
+    function toggleEventPayment(val) {
+      isEventPayment.value = val ? true : false
+      
+      if (!isEventPayment.value) {
+        emit('changedEventPrivacyToFree')
+      }
     }
 
-    function showHidePhone(val) {
-      isPhoneShown.value = val
-    }
-
-    getRelevantUsers()
-
+    
     return {
       icons,
       isEventPayment,
       stepStyle,
-      isPhoneShown,
-      userPhoneNumber,
-      relevantUsersList,
       searchValue,
       loading,
-      invitedUsers,
-      showHidePhone,
-      openUserProfile,
       invitedUsersIDS,
-      getRadioValue,
+      toggleEventPayment,
+      openUserProfile,
       inviteUser,
     }
   },
@@ -219,11 +221,17 @@ export default {
 
 <style lang="scss" scoped>
 .second-step {
-  overflow: hidden;
+  overflow: scroll;
   .input {
     width: 100%;
-    height: 40px;
     margin-top: 16px;
+  }
+  .enter-sum-input {
+    margin-bottom: 35px;
+  }
+
+  .describe-sum-input {
+    margin-bottom: 10px;
   }
   .radio-btn-wrapper {
     $color1: #f4f4f4;
@@ -340,8 +348,8 @@ export default {
     margin-bottom: 8px;
     font-family: 'Inter';
     font-style: normal;
-    font-weight: 500;
-    font-size: 13px;
+    font-weight: 600;
+    font-size: 14px;
     line-height: 20px;
     color: #262541;
   }

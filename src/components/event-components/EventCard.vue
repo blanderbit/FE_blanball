@@ -25,7 +25,7 @@
     </div>
     <PlaceDetector
       class="event-place"
-      v-if="!device.mobile" 
+      v-if="card.place.place_name" 
       :place="card.place">
     </PlaceDetector>
     <div class="main-text">
@@ -110,7 +110,7 @@ export default {
       return date.toTimeString().substr(0, 5);
     }
     
-    const cardFinishTime = addMinutes(props.card.time, props.card.duration)
+    const cardFinishTime = 'dffddf'
 
     return {
       device,

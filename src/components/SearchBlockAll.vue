@@ -148,9 +148,10 @@ export default {
 .b-modal-item {
   display: flex;
   align-items: center;
+  margin: 5px 0px;
   padding: 5px;
   border-radius: 6px;
-  &:not(.b-modal-item__disabled ):hover {
+  &:not(.b-modal-item__disabled):hover {
     background: #f0f0f4;
     cursor: pointer;
     .b-user-button {
@@ -189,6 +190,7 @@ export default {
 
 .b-modal-item__disabled {
   opacity: 0.6;
+  border: 1px solid #E2E2E9;
 }
 .b-user-item__disabled-text {
   font-family: 'Inter';
