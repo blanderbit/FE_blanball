@@ -46,7 +46,6 @@ import { useToast } from 'vue-toastification'
 
 import { v4 as uuid } from 'uuid'
 
-
 import Sidebar from './../../components/Sidebar.vue'
 import MainHeader from './../../components/MainHeader.vue'
 import MobileMenu from '../../components/MobileMenu.vue'
@@ -62,7 +61,7 @@ import { NotificationsBus } from '../../workers/event-bus-worker'
 import { MessageActionTypes } from '../../workers/web-socket-worker/message.action.types'
 import { API } from '../../workers/api-worker/api.worker'
 
-import message_audio from '../../assets/message_audio.mp3'
+import message_audio from '../../assets/audio/message_audio.mp3'
 
 
 const isVerifyModalActive = ref(false);
