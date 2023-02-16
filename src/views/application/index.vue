@@ -28,6 +28,11 @@
         </div>
       </div>
     </div>
+
+    <EventCreatedSuccessModal 
+      v-if="isEventCreatedModalActive" 
+      @closeModal="closeEventCreatedModal"/>
+
     <ModalFeedback
         :isActive="isCreateReviewModalActive"
         :eventData="endedEventData"
@@ -52,6 +57,7 @@ import MobileMenu from '../../components/MobileMenu.vue'
 import Notification from '../../components/Notification.vue'
 import VerifyEmailModal from '../../components/user-cabinet/VerifyEmailModal.vue'
 import ModalFeedback from '../../components/ModalFeedback/index.vue'
+import EventCreatedSuccessModal from '../../components/manage-event-components/EventCreatedSuccessModal.vue'
 
 import { AuthWebSocketWorkerInstance } from './../../workers/web-socket-worker'
 import { TokenWorker } from '../../workers/token-worker'
@@ -72,6 +78,12 @@ const isCreateReviewModalActive = ref(false)
 const endedEventData = ref({})
 const selectedEmojies = ref([])
 const modalFeedBackAnimation = ref(false)
+const isEventCreatedModalActive = ref(false)
+
+
+const closeEventCreatedModal = () => {
+  isEventCreatedModalActive.value = false
+}
 
 const closeEventReviewModal = () => {
   isCreateReviewModalActive.value = false

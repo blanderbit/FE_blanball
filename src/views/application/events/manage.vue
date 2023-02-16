@@ -26,7 +26,6 @@
           />
           <ManageEventSecondStep
             :currentStep="currentStep"
-            :tags="mockData.tags"
             :filteredUsersList="relevantUsersList"
             :filterUsersListLoading="searchUsersLoading"
             :invitedUsersList="invitedUsers"
@@ -141,7 +140,6 @@ import { useUserDataStore } from '../../../stores/userData'
 import { ROUTES } from '../../../router/router.const'
 
 import Arrow from '../../../assets/img/arrow-right-white.svg'
-import CONSTANTS from '../../../consts/index'
 
 export default {
   name: 'CreateEventPage',
@@ -336,6 +334,7 @@ export default {
       }
     }
 
+
     const greenBtnText = computed(() => {
       return currentStep.value !== 3 ? t('buttons.next') : t('buttons.publish')
     })
@@ -410,44 +409,6 @@ export default {
       }
     })
 
-    const mockData = computed(() => {
-      return {
-        tags: CONSTANTS.manage_event.tags,
-        teams: CONSTANTS.manage_event.teams,
-      }
-    })
-    const filteredTeams = computed(() => {
-      if (currentCategory() === 'Всі') {
-        return mockData.value.teams
-      } else {
-        return [
-          mockData.value.teams.find(
-            (item) => item.category_name === currentCategory()
-          ),
-        ]
-      }
-    })
-
-    function currentCategory() {
-      return mockData.value.tags.find((item) => item.isActive).text
-    }
-
-    function choseCategory(id) {
-      mockData.value.tags = mockData.value.tags.map((item) => ({
-        ...item,
-        isActive: false,
-      }))
-      mockData.value.tags = mockData.value.tags.map((item) => {
-        if (item.id === id) {
-          return {
-            ...item,
-            isActive: true,
-          }
-        } else {
-          return item
-        }
-      })
-    }
 
     async function saveEvent(data) {
       eventCreateLoader.value = true
@@ -500,8 +461,6 @@ export default {
     
     return {
       currentStep,
-      mockData,
-      filteredTeams,
       icons,
       schema,
       searchUsersLoading,
@@ -513,8 +472,8 @@ export default {
       eventPreviewData,
       eventCreateLoader,
       getNewEventLocation,
+      closeEventCreatedModal,
       runOnSelectEventDuration,
-      choseCategory,
       updateEventPriceAfterSelectFree,
       inviteUsetToTheEvent,
       changeStep,
