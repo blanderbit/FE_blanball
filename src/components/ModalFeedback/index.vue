@@ -72,9 +72,7 @@ export default {
       return CONSTANTS.modal_feedback.steps(props.eventData)
     })
     const currentStep = ref(0)
-    onBeforeUnmount(() => {
-        NotificationsBus.off('openEventReviewModal');
-    });
+
     const createEventReview = async (comment) => {
       API.ReviewService.createEventReview({
         'event': props.eventData.id,

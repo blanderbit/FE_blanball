@@ -63,7 +63,7 @@ import { AuthWebSocketWorkerInstance } from './../../workers/web-socket-worker'
 import { TokenWorker } from '../../workers/token-worker'
 import { notificationButtonHandlerMessage } from "../../workers/utils-worker";
 import { useUserDataStore } from '@/stores/userData'
-import { NotificationsBus } from '../../workers/event-bus-worker' 
+import { NotificationsBus, BlanballEventBus } from '../../workers/event-bus-worker' 
 import { MessageActionTypes } from '../../workers/web-socket-worker/message.action.types'
 import { API } from '../../workers/api-worker/api.worker'
 
@@ -84,6 +84,9 @@ const isEventCreatedModalActive = ref(false)
 const closeEventCreatedModal = () => {
   isEventCreatedModalActive.value = false
 }
+const openEventCreatedModal = () => {
+  isEventCreatedModalActive.value = true
+}
 
 const closeEventReviewModal = () => {
   isCreateReviewModalActive.value = false
@@ -102,6 +105,10 @@ NotificationsBus.on('openEventReviewModal', async (data) => {
   const respone = await API.EventService.getOneEvent(data.data.event.id)
   endedEventData.value = respone.data
   openEventReviewModal()
+});
+
+BlanballEventBus.on('EventCreated', () => {
+  openEventCreatedModal()
 });
 
 
@@ -222,7 +229,9 @@ AuthWebSocketWorkerInstance.registerCallback(handleNewMessage).connect({
 })
 
 onBeforeUnmount(() => {
-  AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect()
+  NotificationsBus.off('openEventReviewModal');
+  BlanballEventBus.off('EventCreated');
+  AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect();
 })
 </script>
 

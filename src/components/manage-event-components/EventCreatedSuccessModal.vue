@@ -28,7 +28,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(117, 114, 114, 0.514);
+    background: rgba(197, 197, 197, 0.514);
     z-index: 999;
     .b-event-created-modal {
         position: absolute;

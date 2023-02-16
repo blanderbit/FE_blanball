@@ -28,7 +28,7 @@
       <div class="b_header_search-input">
         <InputComponent
           :title-width="0"
-          :placeholder="$t('header.search-events')"
+          :placeholder="$t('users.users-search')"
           :icon="icons.search"
           v-model="searchValue"
           @on-click-action="showSearchBlock"

@@ -136,6 +136,7 @@ import Loading from '../../../workers/loading-worker/Loading.vue'
 
 import { API } from '../../../workers/api-worker/api.worker'
 import { useUserDataStore } from '../../../stores/userData'
+import { BlanballEventBus } from '../../../workers/event-bus-worker'
 
 import { ROUTES } from '../../../router/router.const'
 
@@ -270,7 +271,7 @@ export default {
                 return schema
               }),
           place: yup.object({
-            place_name: yup.string().required('errors.required'),
+            place_name: yup.string().required(() => t('errors.required')),
             lat: yup.number().required('errors.required'),
             lon: yup.number().required('errors.required')
           })
@@ -431,6 +432,7 @@ export default {
           eventCreateLoader.value = false
         })
         router.push(ROUTES.APPLICATION.EVENTS.absolute)
+        setTimeout(() => BlanballEventBus.emit('EventCreated'), 100)
       } catch {
       }
     }
@@ -472,7 +474,6 @@ export default {
       eventPreviewData,
       eventCreateLoader,
       getNewEventLocation,
-      closeEventCreatedModal,
       runOnSelectEventDuration,
       updateEventPriceAfterSelectFree,
       inviteUsetToTheEvent,
