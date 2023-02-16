@@ -17,6 +17,7 @@ export default {
   'friendly-match': 'Дружній матч',
   Futsal: 'Фут-зал',
   Football: 'Футбол',
+  'watch': 'Переглянути',
   'without-category': 'Без розряду',
   free: 'Безкоштовні',
   'for-free': 'Безкоштовно',

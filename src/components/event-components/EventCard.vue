@@ -25,7 +25,6 @@
     </div>
     <PlaceDetector
       class="event-place"
-      v-if="!device.mobile" 
       :place="card.place">
     </PlaceDetector>
     <div class="main-text">
@@ -63,13 +62,23 @@
         </div>
         <div class="right-side">
           <GreenBtn
-            :disabled="card.status !== 'Planned'"
+            v-if="card.status === 'Planned'"
             :animation="true"
             :text="card.privacy ? $t('events.apply') : $t('events.join')"
             :width="120"
             :height="35"
             @click-function="$emit('goToEventPage')"
           />
+          <WhiteBtn
+          v-else
+          :text="$t('events.watch')"
+          :width="120"
+          :height="35"
+          :main-color="'#262541'"
+          :is-border="true"
+          :font-styles="{ 'font-weight': 400 }"
+          @click-function="$emit('goToEventPage')"
+        />
         </div>
       </div>
     </div>
@@ -263,6 +272,8 @@ export default {
     display: flex;
     align-items: center;
     margin-top: 12px;
+    flex-wrap: wrap;
+    gap: 8px 0px;
     .label {
       margin-right: 4px;
       font-family: 'Inter';
@@ -280,6 +291,10 @@ export default {
   .bottom-block {
     margin-top: 12px;
     border-top: 1px dashed #dfdeed;
+
+    @media (max-width: 768px) {
+      margin-top: 20px;
+    }
 
     .top-line {
       display: flex;

@@ -639,9 +639,7 @@ export default {
           }
           .b-user-card__input-surname,
           .b-user-card__input-name {
-            @media (max-width: 1200px) {
-              width: 100%;
-            }
+            width: 100%;
           }
           .b-user-card__input-name {
             @media (max-width: 1200px) {

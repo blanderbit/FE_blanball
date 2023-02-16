@@ -20,6 +20,6 @@ export default {
     LF: 'ЛФ',
     ST: 'ФС',
     Football: 'Футбол',
-    'need_ball': 'Потрібна форма',
+    'need_ball': 'Потрібен м`яч',
     'need_form': 'Потрібна форма',
 }
