@@ -274,7 +274,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/calendar.scss';
+@import '../../assets/styles/calendar.scss';
 .b-event-m-1st {
   overflow: hidden;
   .b-event-m-1st__time-and-date {

@@ -349,5 +349,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../../../assets/search-event-block-styles/index.scss';
+@import '../../../assets/styles/search-event.block.scss';
 </style>
