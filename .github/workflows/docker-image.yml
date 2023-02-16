@@ -49,3 +49,4 @@ jobs:
       - name: Trigger deploy in portainer
         run: |
           curl -X POST ${{ env.WEBHOOK }}
+    

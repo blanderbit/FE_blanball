@@ -19,7 +19,10 @@
           {{ $t('profile.generally') }}
         </div>
         <div
-          :class="['b-rating-card__right-btn', {'b-rating-card__right-btn__disabled': !ratingScale}]"
+          :class="[
+            'b-rating-card__right-btn',
+            { 'b-rating-card__right-btn__disabled': !ratingScale },
+          ]"
           :style="{
             border: `1px solid ${rateStatus ? '#148581' : '#DFDEED'}`,
           }"
@@ -30,35 +33,82 @@
       </div>
       <transition>
         <div v-if="rateStatus" class="b-rating-card__cards-block">
-          <div v-if="usersReviews">
-            <div
-              v-for="(item, idx) in usersReviews"
-              :key="item.id"
-              class="b-rating-card__card"
-              :style="{ 'border-top': idx !== 0 && '1px dashed #DFDEED' }"
+          <div v-if="paginationElements">
+            <SmartList
+              :list="paginationElements"
+              ref="refList"
+              v-model:scrollbar-existing="blockScrollToTopIfExist"
             >
-              <div class="b-rating-card__top-line">
-                <div class="b-rating-card__name">
-                  {{ item.author.name }}
-                  {{ item.author.last_name }}
-                </div>
-                <div class="b-rating-card__rate">
-                  <star-rating
-                    :rating="item.stars"
-                    :star-size="14"
-                    :show-rating="false"
-                    :read-only="true"
-                    :active-color="'#148783'"
+              <template #smartListItem="slotProps">
+                <div
+                  :class="[
+                    'b-rating-card__card',
+                    {
+                      'b-rating-card__card-opened':
+                        openedReviewID === slotProps.smartListItem.id,
+                    },
+                  ]"
+                  :style="{ 'border-top': idx !== 0 && '1px dashed #DFDEED' }"
+                  @click="$emit('openReview', slotProps.smartListItem.id)"
+                >
+                  <div class="b-rating-card__top-line">
+                    <div class="b-rating-card__name">
+                      {{ slotProps.smartListItem.author.profile.name }}
+                      {{ slotProps.smartListItem.author.profile.last_name }}
+                    </div>
+                    <div class="b-rating-card__rate">
+                      <star-rating
+                        :rating="slotProps.smartListItem.stars"
+                        :star-size="14"
+                        :show-rating="false"
+                        :read-only="true"
+                        :active-color="'#148783'"
+                      >
+                      </star-rating>
+                      <span
+                        v-if="openedReviewID === slotProps.smartListItem.id"
+                        class="b-rating-card__hide-button"
+                        @click="$emit('hideReview')"
+                      >
+                        Приховати
+                      </span>
+                    </div>
+                  </div>
+                  <div class="b-rating-card__bottom-line">
+                    <div class="b-rating-card__date">
+                      {{ slotProps.smartListItem.time_created }}
+                    </div>
+                  </div>
+                  <div
+                    v-if="openedReviewID === slotProps.smartListItem.id"
+                    class="b-rating-card__text"
                   >
-                  </star-rating>
+                    {{ slotProps.smartListItem.text }}
+                  </div>
                 </div>
-              </div>
-              <div class="b-rating-card__bottom-line">
-                <div class="b-rating-card__date">
-                  {{ item.date }}
-                </div>
-              </div>
-            </div>
+              </template>
+              <template #after>
+                <InfiniteLoading
+                  :identifier="triggerForRestart"
+                  ref="scrollbar"
+                  @infinite="loadDataPaginationData(paginationPage + 1, $event)"
+                >
+                  <template #complete>
+                    <EmptyList
+                      v-if="!paginationElements.length"
+                      :title="emptyListMessages.title"
+                      :description="emptyListMessages.title"
+                    />
+
+                    <ScrollToTop
+                      :element-length="paginationElements"
+                      :is-scroll-top-exist="blockScrollToTopIfExist"
+                      @scroll-button-clicked="scrollToFirstElement()"
+                    />
+                  </template>
+                </InfiniteLoading>
+              </template>
+            </SmartList>
           </div>
           <div v-else class="b-rating-card__no-reviews-block">
             <div class="b-rating-card__no-data-title">
@@ -76,11 +126,19 @@
 
 <script>
 import { ref, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
 import StarRating from 'vue-star-rating'
 import dayjs from 'dayjs'
-import dayjsUkrLocale from 'dayjs/locale/uk'
+
+import { v4 as uuid } from 'uuid'
+
+import { PaginationWorker } from '../workers/pagination-worker'
+import { FilterPatch } from '../workers/api-worker/http/filter/filter.patch'
 
 import ReviewDetailsComponent from '../components/ReviewDetails.vue'
+import SmartList from './smart-list/SmartList.vue'
+import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue'
 
 import { API } from '../workers/api-worker/api.worker'
 
@@ -90,18 +148,34 @@ export default {
   name: 'RatingCard',
   components: {
     ReviewDetailsComponent,
-    StarRating,
+    SmartList,
+    InfiniteLoading,
+    StarRating
   },
   props: {
     ratingScale: {
       type: Number,
       default: null,
     },
+    openedReviewID: {
+      type: Number,
+      default: 0,
+    },
   },
   setup() {
     const rateStatus = ref(false)
     const usersReviews = ref(true)
     const isLoader = ref(false)
+    const refList = ref()
+    const route = useRoute();
+    const router = useRouter();
+    const blockScrollToTopIfExist = ref(false)
+
+    const triggerForRestart = ref(false)
+
+    const restartInfiniteScroll = () => {
+      triggerForRestart.value = uuid()
+    }
 
     const mockData = computed(() => {
       return {
@@ -109,44 +183,86 @@ export default {
       }
     })
 
+    const emptyListMessages = computed(() => {
+      return {
+        title: 'Немає повідомлень для відображення',
+        description: 'Вам ще не надходили сповіщення від інших користувачів',
+      }
+    })
+
+    const {
+      paginationElements,
+      paginationPage,
+      paginationTotalCount,
+      paginationLoad,
+      paginationClearData,
+    } = PaginationWorker({
+      paginationDataRequest: (page) =>
+        API.ReviewService.getMyReviews({'page': page}),
+      dataTransformation: (item) => {
+        item.metadata = {
+          expanding: false,
+        }
+        item.time_created = dayjs(item.time_created).format('DD.MM.YYYY')
+        return item
+      },
+    })
+
+    paginationPage.value = 1
+    paginationElements.value = route.meta.allReviewsData.data.results.map((item) => {
+      return {
+        ...item,
+        time_created: `${dayjs(item.time_created)
+          .format('D.MM.YYYY')}`,
+      }
+    })
+
+    const { getRawFilters, filters, setFilters, clearFilters } = FilterPatch({
+      router,
+      filters: {},
+      afterUpdateFiltersCallBack: () => {
+        restartInfiniteScroll()
+        paginationClearData()
+      },
+    })
+
+    const loadDataPaginationData = (pageNumber, $state) => {
+      paginationLoad({
+        pageNumber,
+        $state,
+        forceUpdate: paginationPage.value === 1,
+      })
+    }
+
     function switchRate(val) {
       rateStatus.value = val
-
-      if (val) {
-        API.ReviewService.getMyReviews()
-          .then((res) => {
-            if (res.data.results.length) {
-              usersReviews.value = res.data.results.map((item) => {
-                return {
-                  ...item,
-                  author: {
-                    name: item.author.profile?.name,
-                    last_name: item.author.profile?.last_name,
-                  },
-                  date: `${dayjs(item.time_created)
-                    .locale(dayjsUkrLocale)
-                    .format('D.MM.YYYY')}`,
-                }
-              })
-            } else {
-              usersReviews.value = false
-            }
-          })
-          .catch((e) => console.log('some mistake', e))
-      }
     }
 
     return {
-      switchRate,
       rateStatus,
       usersReviews,
       mockData,
+      emptyListMessages,
+      triggerForRestart,
+      blockScrollToTopIfExist,
+      paginationElements,
+      paginationPage,
+      restartInfiniteScroll,
+      loadDataPaginationData,
+      switchRate,
+      scrollToFirstElement: () => {
+        refList.value.scrollToFirstElement()
+      },
     }
   },
 }
 </script>
 
 <style lang="scss" scoped>
+
+::-webkit-scrollbar {
+    display: none;
+}
 .b-rating-card {
   height: fit-content;
   background: #ffffff;
@@ -213,7 +329,7 @@ export default {
         transform: translateX();
 
         &__disabled {
-          color: #A8A8BD;
+          color: #a8a8bd;
           cursor: default;
         }
       }
@@ -221,12 +337,21 @@ export default {
     .b-rating-card__cards-block {
       margin-top: 20px;
       position: relative;
+      max-height: 400px;
+      overflow-y: scroll;
+
+      .b-rating-card__card-opened {
+        background: #f9f9fc;
+        border-bottom: 1px dashed #f0f0f4;
+        border-radius: 8px;
+        padding: 12px;
+      }
       .b-rating-card__card {
         padding-top: 8px;
         margin-bottom: 8px;
+        cursor: pointer;
         .b-rating-card__top-line {
           display: flex;
-          align-items: center;
           justify-content: space-between;
           .b-rating-card__name {
             font-family: 'Inter';
@@ -236,6 +361,17 @@ export default {
             line-height: 20px;
             color: #262541;
           }
+        }
+        .b-rating-card__hide-button {
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 12px;
+          line-height: 20px;
+          color: #575775;
+          background: #efeff6;
+          border-radius: 4px;
+          padding: 4px;
         }
         .b-rating-card__bottom-line {
           display: flex;
@@ -249,6 +385,17 @@ export default {
             text-align: center;
             color: #575775;
           }
+        }
+        .b-rating-card__text {
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 24px;
+          color: #262541;
+          max-width: 100%;
+          word-break: break-word;
+          margin-top: 10px;
         }
       }
     }

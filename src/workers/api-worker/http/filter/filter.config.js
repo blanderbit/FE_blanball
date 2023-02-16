@@ -30,6 +30,10 @@ export const filterConfigForRelevantUsers = {
   search: String,
 };
 
+export const filterConfigForReviews = {
+  page: Number,
+};
+
 export const filterConfigForEvents = {
   page: Number,
   gender: new Enum(['Man', 'Woman', '']),
