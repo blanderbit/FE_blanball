@@ -16,10 +16,11 @@ import { computed } from 'vue'
 import LoginComponent from '../../components/login-components/LoginComponent.vue'
 import AuthenticationMain from '../../components/AuthenticationMain.vue'
 
+import CONSTANTS from '../../consts/index'
+
+
 import bgTabPicture from '../../assets/img/registration-back-tab1.svg'
 import rightSidePicture from '../../assets/img/registration-back-1.svg'
-
-import CONSTANTS from '../../consts/index'
 
 export default {
   name: 'login',

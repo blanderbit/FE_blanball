@@ -1,29 +1,31 @@
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
 import { createI18n } from 'vue-i18n'
+import { createPinia } from 'pinia'
+
+import { createDeviceDetector } from 'next-vue-device-detector'
 
 import VCalendar from 'v-calendar'
 import Toast from 'vue-toastification'
 
+import { createLoader } from './workers/loading-worker/loading.worker'
+import Maska from './workers/phone-maska-worker'
+
 import App from './App.vue'
 import router from './router'
 import pkg from '../package'
-
+import '../src/components/maps/map.init'
 import { UA_LANGUAGE } from './i18n/ua'
-
-import { createLoader } from './workers/loading-worker/loading.worker'
 
 import './assets/main.css'
 import 'v-calendar/dist/style.css'
 import 'vue3-virtual-scroller/dist/vue3-virtual-scroller.css'
 import 'bootstrap/dist/css/bootstrap-grid.min.css'
-import Maska from './workers/phone-maska-worker'
-import '../src/components/maps/map.init'
 import 'vue-select/dist/vue-select.css'
 import 'cropperjs/dist/cropper.css'
 import '@vueform/slider/themes/default.css'
 import '@mcistudio/vue-colorpicker/dist/style.css'
-import { createDeviceDetector } from 'next-vue-device-detector'
+
+
 export const i18n = createI18n({
   locale: 'ua',
   allowComposition: true,

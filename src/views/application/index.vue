@@ -43,28 +43,27 @@
 import { ref, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
+
 import { v4 as uuid } from 'uuid'
-import { useUserDataStore } from '@/stores/userData'
+
 
 import Sidebar from './../../components/Sidebar.vue'
 import MainHeader from './../../components/MainHeader.vue'
 import MobileMenu from '../../components/MobileMenu.vue'
 import Notification from '../../components/Notification.vue'
 import VerifyEmailModal from '../../components/user-cabinet/VerifyEmailModal.vue'
-
-import BugReportModal from '../../components/BugReportModal.vue'
-
 import ModalFeedback from '../../components/ModalFeedback/index.vue'
-
-import message_audio from '../../assets/message_audio.mp3'
 
 import { AuthWebSocketWorkerInstance } from './../../workers/web-socket-worker'
 import { TokenWorker } from '../../workers/token-worker'
 import { notificationButtonHandlerMessage } from "../../workers/utils-worker";
+import { useUserDataStore } from '@/stores/userData'
 import { NotificationsBus } from '../../workers/event-bus-worker' 
-
 import { MessageActionTypes } from '../../workers/web-socket-worker/message.action.types'
 import { API } from '../../workers/api-worker/api.worker'
+
+import message_audio from '../../assets/message_audio.mp3'
+
 
 const isVerifyModalActive = ref(false);
 const userEmail = ref('');

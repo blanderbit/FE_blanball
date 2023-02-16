@@ -47,7 +47,7 @@
       />
     </div>
     <div class="b-event-m-1st__title mt-3 mb-2">
-      {{ $t('events.place-and-time') }}
+      {{ $t('events.when-event-start') }}
     </div>
     <div class="b-event-m-1st__time-and-date mt-3">
       <div class="b-event-m-1st__input-calendar">
@@ -55,9 +55,11 @@
           {{ $t('events.date') }}
         </div>
         <v-date-picker
+          class="b-main-search__calendar"
           locale="ukr"
           :model-config="calendar.modelConfig"
           v-model="initialDate"
+          :min-date="minEventDate"
           name="date"
         >
           <template #default="options">
@@ -75,7 +77,7 @@
         </v-date-picker>
         <img src="../../assets/img/calendar.svg" alt="" />
       </div>
-      <span class="b-event-m-1st__subtitle">Оберіть із запропонованих або встановіть час власноруч (тільки круглі числа)</span>
+      <span class="b-event-m-1st__subtitle">Оберіть із запропонованих або встановіть час власноруч</span>
       <div class="b-event-m-1st__input-time">
         <InputComponent
           :outside-title="true"
@@ -97,6 +99,17 @@
         />
       </div>
     </div>
+    <div class="b-event-m-2st__duration-select">
+      <div v-for="option in eventDurationOptions" 
+        :class="['b-event-m-2st__duration-item', 
+        {'b-event-m-2st__duration-item-selected': option.id === selectedDurationID}]"
+        @click="selectEventDuration(option)">
+        <span>{{ option.text }}</span>
+      </div>
+    </div>
+    <div class="b-event-m-1st__title mt-3 mb-2">
+      {{ $t('events.place') }}
+    </div>
     <ModalPositionMap  
         class="b-event-m-1st__input-location" 
         v-model="eventLocation">
@@ -117,13 +130,15 @@ import { ref, watch, computed } from 'vue'
 
 import { ErrorMessage } from '@system.it.flumx.com/vee-validate'
 
+import dayjs from 'dayjs'
+
 import Dropdown from '../forms/Dropdown.vue'
 import InputComponent from '../forms/InputComponent.vue'
 import RadioButton from '../forms/RadioButton.vue'
 import PositionMap from '../maps/PositionMap.vue'
 import ModalPositionMap from '../maps/ModalPositionMap.vue'
-import RegisterModalPositionMap from '../maps/RegisterModalPositionMap.vue'
-import PlaceDetector from '../maps/PlaceDetector.vue'
+
+import CONSTANTS from '../../consts/index'
 
 import CalendarPic from '../../assets/img/calendar.svg'
 import WatchPic from '../../assets/img/watch.svg'
@@ -132,7 +147,28 @@ import UniPic from '../../assets/img/unisex.svg'
 import MalePic from '../../assets/img/male-icon.svg'
 import FemalePic from '../../assets/img/female-icon.svg'
 
-import CONSTANTS from '../../consts/index'
+const eventDurationOptions = ref([
+  {
+    id: 0,
+    text: '30 хв',
+    value: 30*60000
+  },
+  {
+    id: 1,
+    text: '60 хв',
+    value: 60*60000
+  },
+  {
+    id: 2,
+    text: '1,5 год',
+    value: 90*60000
+  },
+  {
+    id: 3,
+    text: '2 год',
+    value: 120*60000
+  },
+])
 
 export default {
   components: {
@@ -141,8 +177,6 @@ export default {
     RadioButton,
     ModalPositionMap,
     PositionMap,
-    RegisterModalPositionMap,
-    PlaceDetector,
     ErrorMessage,
   },
   props: {
@@ -155,17 +189,34 @@ export default {
       default: null,
     },
   },
+  emits: [
+    'changeEventLocation', 
+    'changeEventDate', 
+    'selectEventDuration'
+  ],
 
   setup(props, { emit }) {
     const initialDate = ref(new Date())
     const eventLocation = ref({lat: '', lng: ''})
     const eventLocationOnMap = ref({})
+    const selectedDurationID = ref('')
+    const minEventDate = ref(new Date().toISOString().slice(0, 10))
 
     watch(() => eventLocation.value, (newData, oldData) => {
       emit('changeEventLocation', newData)
       
       eventLocationOnMap.value = {lat: newData.lat, lng: newData.lng}
     })
+
+
+    watch(() => initialDate.value, (newData, oldData) => {
+      emit('changeEventDate', newData)
+    })
+
+
+    const setEventInitDate = () => {
+      emit('changeEventDate', dayjs(initialDate.value).format('YYYY-MM-DD'))
+    }
 
     const stepStyle = computed(() => {
       return props.currentStep === 1 ? { height: 'auto' } : { height: '0px' }
@@ -179,7 +230,13 @@ export default {
       },
     })
 
+    const selectEventDuration = (data) => {
+      selectedDurationID.value = data.id
 
+      emit('selectEventDuration', data.value)
+    }
+
+  
     const icons = computed(() => {
       return {
         calendar: CalendarPic,
@@ -197,6 +254,8 @@ export default {
       }
     })
 
+    setEventInitDate()
+
     return {
       icons,
       mockData,
@@ -205,12 +264,17 @@ export default {
       eventLocationOnMap,
       eventLocation,
       stepStyle,
+      eventDurationOptions,
+      minEventDate,
+      selectedDurationID,
+      selectEventDuration,
     }
   },
 }
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/calendar.scss';
 .b-event-m-1st {
   overflow: hidden;
   .b-event-m-1st__time-and-date {
@@ -276,14 +340,14 @@ export default {
       width: 100%;
     }
   }
-  .b-event-m-1st__title {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 20px;
-    color: #262541;
-  }
+    .b-event-m-1st__title {
+      font-family: 'Exo 2';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 24px;
+      color: #262541;
+    }
   .b-event-m-1st__radio-btn-wrapper {
     margin-top: 12px;
     $color1: #f4f4f4;
@@ -327,5 +391,34 @@ export default {
   line-height: 20px;
   color: #575775;
   margin-bottom: 10px;
+}
+.b-event-m-2st__duration-select {
+  border: 1px solid #DFDEED;
+  border-radius: 6px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .b-event-m-2st__duration-item {
+    flex-basis: 25%;
+    background: #FFFFFF;
+    border-radius: 4px;
+    padding: 8px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 20px;
+    text-align: center;  
+    color: #6F6F77;
+    cursor: pointer;
+
+    &-selected {
+      background: #F0F0F4;
+      color: #262541;
+      font-weight: 500;
+    }
+  }
 }
 </style>

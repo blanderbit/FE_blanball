@@ -84,11 +84,15 @@
 
 <script>
 import { computed, ref } from 'vue'
+
+import { Form, ErrorMessage } from "@system.it.flumx.com/vee-validate";
+
+import * as yup from "yup";
+
 import GreenBtn from '../GreenBtn.vue'
 import TextAreaComponent from '../TextAreaComponent.vue'
 import Emotions from '../forms/Emotions.vue';
-import { Form, ErrorMessage } from "@system.it.flumx.com/vee-validate";
-import * as yup from "yup";
+
 export default {
   name: 'ModalTopCard',
   components: {

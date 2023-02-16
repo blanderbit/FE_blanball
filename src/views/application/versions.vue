@@ -98,12 +98,14 @@
 <script>
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
+
 import dayjs from 'dayjs'
 import dayjsUkrLocale from 'dayjs/locale/uk'
-import { API } from '../../workers/api-worker/api.worker'
-import Loading from '../../workers/loading-worker/Loading.vue'
 
+import Loading from '../../workers/loading-worker/Loading.vue'
 import VersionItem from '../../components/versions-page/version-item.vue'
+
+import { API } from '../../workers/api-worker/api.worker'
 
 export default {
   name: 'VersionsPage',

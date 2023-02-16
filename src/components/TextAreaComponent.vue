@@ -4,7 +4,7 @@
       <div v-if="title" class="b-text-area__outer-title">
         <span>{{ title }}</span>
       </div>
-      <div v-if="textareaIcon" class="b-text-area__min-max-label">
+      <div v-if="maxTextValue" class="b-text-area__min-max-label">
         {{ modelValue ? modelValue.length : 0 }} / {{ maxTextValue }}
       </div>
       <textarea
@@ -29,10 +29,10 @@
 </template>
 
 <script>
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'vue-toastification'
 
-import { computed, ref } from 'vue'
 import { CustomModelWorker } from '../workers/custom-model-worker'
 
 export default {

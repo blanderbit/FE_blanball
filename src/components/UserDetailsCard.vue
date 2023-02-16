@@ -261,7 +261,7 @@
               :outside-title="true"
               :height="40"
               name="phone"
-              v-maska="'+38 (0XX) XXX XX XX'"
+              v-maska="'+38 (0##) ### ## ##'"
             />
           </div>
           <div class="b-user-card__area-line">
@@ -305,22 +305,23 @@
 
 <script>
 import { ref, computed, watchEffect, onMounted, onBeforeUnmount } from 'vue'
+import { useI18n } from 'vue-i18n'
+
 import dayjs from 'dayjs'
 import dayjsUkrLocale from 'dayjs/locale/uk'
-import { useI18n } from 'vue-i18n'
 
 import InputComponent from './forms/InputComponent.vue'
 import TextAreaComponent from '../components/TextAreaComponent.vue'
 import Dropdown from './forms/Dropdown.vue'
 import Avatar from '../components/Avatar.vue'
 
-import sortArrowHorizontally from '../assets/img/sort-arrows-horizontal.svg'
-import tick from '../assets/img/tick.svg'
-import edit from '../assets/img/edit.svg'
-
 import { API } from '../workers/api-worker/api.worker'
 import CONSTANTS from '../consts'
 import useWindowWidth from '../utils/widthScreen'
+
+import sortArrowHorizontally from '../assets/img/sort-arrows-horizontal.svg'
+import tick from '../assets/img/tick.svg'
+import edit from '../assets/img/edit.svg'
 
 const IMAGE_TYPES = ['image/jpeg', 'image/png']
 

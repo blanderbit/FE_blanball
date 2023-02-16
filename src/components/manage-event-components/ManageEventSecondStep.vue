@@ -102,13 +102,13 @@
 import { ref, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
-import { ROUTES } from '../../router/router.const'
-
 import InputComponent from '../forms/InputComponent.vue'
 import TextAreaComponent from '../TextAreaComponent.vue'
 import Switcher from '../../components/Switcher.vue'
 import SearchBlockAll from '../SearchBlockAll.vue'
 import RadioButton from '../forms/RadioButton.vue'
+
+import { ROUTES } from '../../router/router.const'
 
 import HorArrow from '../../assets/img/sort-arrows-down.svg'
 import AddUser from '../../assets/img/add-user.svg'
@@ -346,11 +346,11 @@ export default {
   .title {
     margin-top: 20px;
     margin-bottom: 8px;
-    font-family: 'Inter';
+    font-family: 'Exo 2';
     font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 20px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
     color: #262541;
   }
   .contact-switcher {

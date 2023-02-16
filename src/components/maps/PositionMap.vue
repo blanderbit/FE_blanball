@@ -4,9 +4,12 @@
 
 <script>
 import { onMounted, ref, watch } from 'vue'
-import { PositionMapBackgroundStyle, PositionMapStyles } from './map.styles'
+
 import { API } from '../../workers/api-worker/api.worker'
 import { PositionMapBus } from '../../workers/event-bus-worker'
+
+import { PositionMapBackgroundStyle, PositionMapStyles } from './map.styles'
+
 const Restrictions = {
   Ukraine: {
     east: 40.2275801,

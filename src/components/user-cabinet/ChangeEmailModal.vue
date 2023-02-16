@@ -67,9 +67,11 @@
 
 <script>
 import { computed, ref } from 'vue'
-import { Form } from '@system.it.flumx.com/vee-validate'
-import * as yup from 'yup'
 import { useI18n } from 'vue-i18n'
+
+import { Form } from '@system.it.flumx.com/vee-validate'
+
+import * as yup from 'yup'
 
 import ModalWindow from '../../components/ModalWindow.vue'
 import Counter from '../../components/Counter.vue'

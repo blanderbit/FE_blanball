@@ -39,6 +39,7 @@
 
 <script>
 import { computed, watch, ref } from 'vue'
+
 import Spinner from '../workers/infinit-load-worker/Spinner.vue'
 import Avatar from './Avatar.vue'
 

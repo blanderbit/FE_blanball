@@ -1,3 +1,5 @@
+@import '../calendar.scss';
+
 .b-main-search__soring-title {
   font-family: 'Inter';
   font-style: normal;
@@ -116,72 +118,6 @@
           }
           &:deep .vc-popover-content-wrapper {
             .vc-popover-content {
-              .vc-pane {
-                .vc-header {
-                  width: 160px;
-                  padding: 17px 16px 0;
-                  .vc-title {
-                    font-family: 'Inter';
-                    font-style: normal;
-                    font-weight: 400;
-                    font-size: 12px;
-                    line-height: 16px;
-                    text-align: center;
-                    color: #808181;
-                  }
-                }
-                .vc-weeks {
-                  .vc-weekday {
-                    font-family: 'Inter';
-                    font-style: normal;
-                    font-weight: 500;
-                    font-size: 14px;
-                    line-height: 16px;
-                    text-align: center;
-                    color: #0a3435;
-                  }
-                  .vc-day {
-                    span {
-                      font-family: 'Inter';
-                      font-style: normal;
-                      font-weight: 400;
-                      font-size: 14px;
-                      line-height: 16px;
-                      text-align: center;
-                      color: #0a3435;
-                      &:hover {
-                        background-color: transparent;
-                      }
-                    }
-                    .vc-highlights {
-                      & + span {
-                        color: #148783 !important;
-                        font-family: 'Inter';
-                        font-style: normal;
-                        font-weight: 400 !important;
-                        font-size: 14px;
-                        line-height: 16px;
-                        text-align: center;
-                      }
-                      .vc-day-layer {
-                        .vc-highlight {
-                          background: #e9fcfb !important;
-                          border-radius: 6px !important;
-                        }
-                        .vc-highlight.vc-highlight-base-start {
-                          background: #e9fcfb !important;
-                        }
-                        .vc-highlight.vc-highlight-base-middle {
-                          background: #e9fcfb !important;
-                        }
-                        .vc-highlight.vc-highlight-base-end {
-                          background: #e9fcfb !important;
-                        }
-                      }
-                    }
-                  }
-                }
-              }
               .vc-arrows-container {
                 width: 160px;
                 .is-left {

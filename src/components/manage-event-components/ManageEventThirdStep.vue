@@ -12,7 +12,7 @@
       name="description"
     />
     <div class="contact-switcher">
-      <span>{{ $t('events.show-my-contacts') }}</span>
+      <span class="title">{{ $t('events.show-my-contacts') }}</span>
       <Switcher
         :id="'contacts'"
         :is-edit-mode="true"
@@ -25,13 +25,13 @@
         :placeholder="userPhoneNumber"
         :title-width="0"
         name="contact_number"
-        v-maska="'+38 (0XX) XXX XX XX'"
+        v-maska="'+38 (0##) ### ## ##'"
       >
       </InputComponent>
     </div>
 
     <div class="prize-switcher">
-      <div class="prize-title">
+      <div class="title title-margin">
       Чи буде розіграно приз? <span>ViP</span>
     </div>
       <Switcher
@@ -41,7 +41,7 @@
       />
     </div>
 
-    <div class="title-outfit">
+    <div class="title">
       {{ $t('events.need-clothes') }}
     </div>
     <div class="radio-btn-wrapper">
@@ -51,6 +51,7 @@
           :title="$t('events.yes')"
           :value="true"
           :width="'auto'"
+          @get-radio-value="selectForms"
         ></radio-button>
       </div>
       <div class="radio">
@@ -59,13 +60,20 @@
           :title="$t('events.manijki-available')"
           :value="false"
           :width="'auto'"
+          @get-radio-value="selectForms"
         ></radio-button>
       </div>
     </div>
-    <div class="title-outfit">
-      {{ $t('events.enter-colors') }}
-    </div>
-    <div class="outfit-colors">
+    <div v-if="needForm !== null" class="forms-block"
+      @click="openSelectFormsModal">
+      <div class="forms-select-form">
+        <span>Призначте кольори форми команд</span>
+        <img src="../../assets/img/set-filter.svg" alt="">
+      </div>
+      <SelectionSuitModal 
+        v-if="false"
+        :selectedCategory="selectedFormType"
+        @closeModal="closeSelectFormsModal"/>
     </div>
   </div>
 </template>
@@ -77,6 +85,7 @@ import { useUserDataStore } from '../../stores/userData'
 
 import Switcher from '../../components/Switcher.vue'
 import RadioButton from '../../components/forms/RadioButton.vue'
+import SelectionSuitModal from '../suit/SelectionSuitModal.vue'
 import InputComponent from '../../components/forms/InputComponent.vue'
 import TextAreaComponent from '../TextAreaComponent.vue'
 
@@ -89,6 +98,7 @@ export default {
     InputComponent,
     RadioButton,
     TextAreaComponent,
+    SelectionSuitModal,
   },
   props: {
     currentStep: {
@@ -100,6 +110,9 @@ export default {
     const isPhoneShown = ref(false)
     const store = useUserDataStore()
     const userPhoneNumber = computed(() => store.getUserPhone)
+    const needForm = ref(null)
+    const selectedFormType = ref('')
+    const isSelectFormColarModalOpened = ref(false)
 
     const icons = computed(() => {
       return {
@@ -111,6 +124,24 @@ export default {
       isPhoneShown.value = val
     }
 
+    const selectForms = (value) => {
+      needForm.value = value
+      if (value) {
+        selectedFormType.value = 'T-Shirt'
+      } else if (!value) {
+        selectedFormType.value = 'Shirt-Front'
+      }
+    }
+
+    const openSelectFormsModal = () => {
+      isSelectFormColarModalOpened.value = true
+    }
+
+    const closeSelectFormsModal = () => {
+      debugger
+      isSelectFormColarModalOpened.value = false
+    }
+
 
     const stepStyle = computed(() => {
       return props.currentStep === 3 ? { height: 'auto' } : { height: '0px' }
@@ -119,9 +150,15 @@ export default {
     return {
       icons,
       stepStyle,
+      needForm,
       userPhoneNumber,
+      isSelectFormColarModalOpened,
       isPhoneShown,
+      selectedFormType,
       showHidePhone,
+      selectForms,
+      openSelectFormsModal,
+      closeSelectFormsModal,
     }
   },
 }
@@ -243,23 +280,16 @@ export default {
     margin-bottom: 20px;
   }
   .title {
-    margin-top: 20px;
     margin-bottom: 8px;
-    font-family: 'Inter';
+    font-family: 'Exo 2';
     font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 20px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
     color: #262541;
   }
-  .title-outfit {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 20px;
-    color: #262541;
-    margin: 12px 0px;
+  .title-margin {
+    margin-top: 20px;
   }
   .contact-switcher {
     display: flex;
@@ -267,24 +297,6 @@ export default {
     align-items: center;
     margin-top: 16px;
     margin-bottom: 8px;
-
-    span {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 600;
-      font-size: 14px;
-      line-height: 20px;
-      color: #262541;
-    }
-  }
-  .outfit-colors {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .input {
-      width: 154px;
-      margin-top: 0;
-    }
   }
 }
 .prize-switcher {
@@ -293,24 +305,38 @@ export default {
   align-items: center;
   margin-bottom: 8px;
   opacity: 0.6;
-  .prize-title {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 20px;
-    margin: 16px 0px;
-    color: #262541;
-      span {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 12px;
-          line-height: 20px;
-          padding: 0px 4px;
-          background: #EFEFF6;
-          border-radius: 4px;
-        }
+
+    span {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 20px;
+      padding: 0px 4px;
+      background: #EFEFF6;
+      border-radius: 4px;
+  }
+}
+.forms-block {
+  .forms-select-form {
+    border: 1px solid #DFDEED;
+    border-radius: 6px;
+    margin: 20px 0px;
+    padding: 8px 8px 8px 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    span {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 24px;
+      width: 100%;
+      color: #262541;
     }
+  }
 }
 </style>

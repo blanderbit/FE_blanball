@@ -48,11 +48,14 @@
 
 <script>
   import { computed, ref } from 'vue'
+  import { useI18n } from 'vue-i18n'
+
   import GreenBtn from '../GreenBtn.vue'
   import Dropdown from '../forms/Dropdown.vue'
-  import CONSTANTS from '../../consts/index'
   import StepWrapper from './StepWrapper.vue'
-  import { useI18n } from 'vue-i18n'
+
+  import CONSTANTS from '../../consts/index'
+  
   export default {
     name: 'Step8',
     components: {

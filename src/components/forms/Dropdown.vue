@@ -42,13 +42,18 @@
 
 <script>
 import { ref, watch, computed } from 'vue'
-import vSelect from "vue-select";
-import OpenIndicator from './OpenIndicator.vue'
+import { useI18n } from 'vue-i18n'
+
 import { createPopper } from '@popperjs/core'
 
+import vSelect from "vue-select";
+
+import OpenIndicator from './OpenIndicator.vue'
+
 import { CustomModelWorker } from '../../workers/custom-model-worker/index'
+
 import SearchIcon from '../../assets/img/search.svg'
-import { useI18n } from 'vue-i18n'
+
 export default {
   name: 'dropdown-component',
   components: {

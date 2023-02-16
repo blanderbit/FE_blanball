@@ -29,12 +29,12 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+
 import ModalWindow from '../../components/ModalWindow.vue'
 import PositionMap from '../../components/maps/PositionMap.vue'
 import GreenBtn from '../../components/GreenBtn.vue'
 import Loading from '../../workers/loading-worker/Loading.vue'
-
-import { ref } from 'vue'
 
 export default {
   name: 'PlaceDetector',

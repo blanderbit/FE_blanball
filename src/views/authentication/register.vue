@@ -93,8 +93,12 @@
 <script>
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { merge, cloneDeep } from 'lodash'
+
 import { Form } from '@system.it.flumx.com/vee-validate'
+
+import { merge, cloneDeep } from 'lodash'
+import * as yup from 'yup'
+
 import Step_1 from '../../components/register-components/Step-1.vue'
 import Step_2 from '../../components/register-components/Step-2.vue'
 import Step_3 from '../../components/register-components/Step-3.vue'
@@ -107,6 +111,13 @@ import Step_9 from '../../components/register-components/Step-9.vue'
 import Step_10 from '../../components/register-components/Step-10.vue'
 import Step_11 from '../../components/register-components/Step-11.vue'
 import AuthenticationMain from '../../components/AuthenticationMain.vue'
+
+import { API } from '../../workers/api-worker/api.worker'
+import { TokenWorker } from '../../workers/token-worker'
+import { PositionMapBus } from '../../workers/event-bus-worker'
+
+import { ROUTES } from '../../router/router.const'
+
 import imageStep_1 from '../../assets/img/registration-back-1.svg'
 import imageStep_2 from '../../assets/img/registration-back-2.svg'
 import imageStep_3 from '../../assets/img/registration-back-3.svg'
@@ -125,11 +136,7 @@ import imageStepMob_4 from '../../assets/img/registration-back-mob4.svg'
 import onboardingStepMob_2 from '../../assets/img/onboarding-step-mob2.svg'
 import onboardingStepMob_3 from '../../assets/img/onboarding-step-mob3.svg'
 import onboardingStepMob_4 from '../../assets/img/onboarding-step-mob4.svg'
-import * as yup from 'yup'
-import { API } from '../../workers/api-worker/api.worker'
-import { TokenWorker } from '../../workers/token-worker'
-import { PositionMapBus } from '../../workers/event-bus-worker'
-import { ROUTES } from '../../router/router.const'
+
 yup.addMethod(yup.string, 'userName', function (errorMessage) {
   return this.test(`UserName`, errorMessage, function (value) {
     const { path, createError } = this

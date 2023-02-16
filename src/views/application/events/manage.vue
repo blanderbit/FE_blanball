@@ -22,6 +22,8 @@
           <ManageEventFirstStep
             :currentStep="currentStep"
             @changeEventLocation="getNewEventLocation($event, data)"
+            @selectEventDuration="runOnSelectEventDuration($event, data)"
+            @changeEventDate="setEventDate($event, data)"
           />
           <ManageEventSecondStep
             :currentStep="currentStep"
@@ -114,11 +116,12 @@
 </template>
 
 <script>
-import { computed, reactive, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
-import { Form } from '@system.it.flumx.com/vee-validate'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { API } from '../../../workers/api-worker/api.worker'
+import { useRouter } from 'vue-router'
+
+import { Form } from '@system.it.flumx.com/vee-validate'
+
 import * as yup from 'yup'
 
 import InputComponent from '../../../components/forms/InputComponent.vue'
@@ -134,9 +137,12 @@ import ManageEventThirdStep from '../../../components/manage-event-components/Ma
 import ButtonsBlock from '../../../components/manage-event-components/ButtonsBlock.vue'
 import RemoveInvitedUsersModal from '../../../components/manage-event-components/RemoveInvitedUsersModal.vue'
 
+import { API } from '../../../workers/api-worker/api.worker'
+
+import { ROUTES } from '../../../router/router.const'
+
 import Arrow from '../../../assets/img/arrow-right-white.svg'
 import CONSTANTS from '../../../consts/index'
-import { ROUTES } from '../../../router/router.const'
 
 export default {
   name: 'CreateEventPage',
@@ -167,9 +173,13 @@ export default {
     const removeInvitedUsersModalOpened = ref(false)
     let searchTimeout
 
+    const eventFormTypes = {
+      T_Shirt: 'T-Shirt',
+      Shirt_Front: 'Shirt-Front',
+    }
 
     const eventPreviewData = ref({
-      "name": "",
+      "name": "fddfdffd",
       "place": {},
       "status": "Planned",
       "gender": null,
@@ -180,7 +190,8 @@ export default {
       "need_form": null,
       "date_and_time": "",
       "count_current_users": 0,
-      "count_current_fans": 0
+      "count_current_fans": 0,
+      "current_users": []
     })
 
 
@@ -193,15 +204,29 @@ export default {
           time: yup
             .string()
             .matches(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/, 'errors.invalid-time')
-            .required('errors.required'),
+            .min(5, 'errors.invalid-time')
+            .required('errors.required').test({
+              name: 'isOneHourLater',
+              message: 'errors.time-more-than-one-hour',
+              test: time => {
+                let currentHour = new Date().getHours();
+                let currentMinute = new Date().getMinutes();
+                let hour = parseInt(time.split(':')[0]);
+                let minute = parseInt(time.split(':')[1]);
+
+                return hour > currentHour + 1 || (hour === currentHour + 1 && minute > currentMinute);
+              }
+            }),
           end_time: yup
             .string()
             .matches(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/, 'errors.invalid-time')
             .required('errors.required')
+            .min(5, 'errors.invalid-time')
             .when("time",
               (time, schema, value) => {
                 if (time)
                   return schema.test('end_time', 'errors.duration-10min-3hours', function (value) {
+                   try {
                     const start_time_hours = parseInt(time.split(":")[0]);
                     const end_time_hours = parseInt(value.split(":")[0]);
                     const start_time_minutes = parseInt(time.split(":")[1]);
@@ -219,14 +244,21 @@ export default {
                     }
 
                     return true;
+                   } catch {
+                    return false;
+                   }
                   }).test('event_duration', function (value) {
-                    const [hours1, minutes1] = time.split(":").map(Number);
-                    const [hours2, minutes2] = value.split(":").map(Number);
-                    const totalMinutes1 = hours1 * 60 + minutes1;
-                    const totalMinutes2 = hours2 * 60 + minutes2;
-                    const timeDifference = Math.abs(totalMinutes1 - totalMinutes2);
+                    try {
+                      const [hours1, minutes1] = time.split(":").map(Number);
+                      const [hours2, minutes2] = value.split(":").map(Number);
+                      const totalMinutes1 = hours1 * 60 + minutes1;
+                      const totalMinutes2 = hours2 * 60 + minutes2;
+                      const timeDifference = Math.abs(totalMinutes1 - totalMinutes2);
 
-                    return timeDifference % 10 === 0;
+                      return timeDifference % 10 === 0;
+                    } catch {
+                      return false
+                    }
                   })
                 return schema
               }),
@@ -303,9 +335,26 @@ export default {
       removeInvitedUsersModalOpened.value = true
     }
 
+    const setEventDate = (date_value, data) => {
+      data.values.date = date_value
+    }
+
+    function addZeroBefore(n) {
+      return (n < 10 ? '0' : '') + n;
+    }
+
     const updateEventPriceAfterSelectFree = (data) => {
       data.values.price = null
       data.values.price_description = ''
+    }
+
+    const runOnSelectEventDuration = (durationValue, data) => {
+      const currentDateTime = new Date()
+      const eventStartTime = new Date(currentDateTime.getTime() + 65*60000);
+      const eventEndDateTime = new Date(eventStartTime.getTime() + durationValue);
+      data.values.time = `${(addZeroBefore(eventStartTime.getHours()))}:${(addZeroBefore(eventStartTime.getMinutes()))}`;
+      data.values.end_time = `${(addZeroBefore(eventEndDateTime.getHours()))}:${(addZeroBefore(eventEndDateTime.getMinutes()))}`;
+      data.values.duration = durationValue / 60000
     }
 
     
@@ -392,16 +441,44 @@ export default {
     }
     async function changeStep(val, data) {
       const { valid } = await data.validate()
-
-
-      console.log(data)
       if(!valid) {
         return false;
       }
 
+    
       if (currentStep.value === 1 && val === '-') {
         return router.push(ROUTES.APPLICATION.EVENTS.absolute)
       }
+      if (currentStep.value === 3 && val === '+') {
+        const createEventData = data.values
+
+        createEventData.date_and_time = `${createEventData.date} ${createEventData.time}`;
+
+        console.log(createEventData.date_and_time)
+        createEventData.current_users = invitedUsers.value.map((user) => user.id);
+
+        switch(createEventData.need_form) {
+          case(true):
+            createEventData.forms = eventFormTypes.T_Shirt
+            break
+          case(false):
+            createEventData.forms = eventFormTypes.Shirt_Front
+        }
+
+        delete createEventData.count_current_users
+        delete createEventData.count_current_fans
+        delete createEventData.status
+        delete createEventData.time
+        delete createEventData.date
+        delete createEventData.end_time
+        delete createEventData.is_phone_shown
+        delete createEventData.is_price
+
+        API.EventService.createOneEvent(createEventData)
+
+        return router.push(ROUTES.APPLICATION.EVENTS.absolute)
+      }
+
       switch (val) {
         case '+':
           this.currentStep++
@@ -436,6 +513,7 @@ export default {
       removeInvitedUsersModalOpened,
       eventPreviewData,
       getNewEventLocation,
+      runOnSelectEventDuration,
       choseCategory,
       updateEventPriceAfterSelectFree,
       inviteUsetToTheEvent,
@@ -447,6 +525,7 @@ export default {
       searchRelevantUsers,
       openRemoveUsersModal,
       closeRemoveUsersModal,
+      setEventDate,
     }
   },
 }

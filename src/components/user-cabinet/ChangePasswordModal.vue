@@ -71,20 +71,22 @@
 </template>
 
 <script>
-import { computed, ref, watch, onBeforeUnmount } from 'vue'
-import { Form } from '@system.it.flumx.com/vee-validate'
-import * as yup from 'yup'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+
+import { Form } from '@system.it.flumx.com/vee-validate'
+
+import * as yup from 'yup'
 
 import ModalWindow from '../../components/ModalWindow.vue'
 import Counter from '../../components/Counter.vue'
 import CodeInput from '../forms/CodeInput.vue'
 import InputComponent from '../forms/InputComponent.vue'
 
+import { API } from '../../workers/api-worker/api.worker'
+
 import eyeCross from '../../assets/img/eye-crossed.svg'
 import eyeOpen from '../../assets/img/eye-opened.svg'
-
-import { API } from '../../workers/api-worker/api.worker'
 
 const secondsToCount = 30
 

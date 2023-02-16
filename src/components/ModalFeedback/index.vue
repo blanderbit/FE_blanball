@@ -32,12 +32,16 @@
 </template>
 
 <script>
-import { API } from '../../workers/api-worker/api.worker'
 import { computed, ref, watch, onBeforeUnmount } from 'vue'
+
 import ModalTopCard from './ModalTopCard.vue'
 import ModalBottomCard from './ModalBottomCard.vue'
+
+import { API } from '../../workers/api-worker/api.worker'
 import { NotificationsBus } from '../../workers/event-bus-worker'
+
 import CONSTANTS from '../../consts/index'
+
 export default {
   name: 'ModalFeedback',
   components: {

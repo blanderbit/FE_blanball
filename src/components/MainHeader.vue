@@ -42,19 +42,19 @@
 <script>
 import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRouter } from 'vue-router'
+
 import BreadCrumbs from './Breadcrumbs.vue'
 import InputComponent from './forms/InputComponent.vue'
 import SearchModal from './SearchModal.vue'
 import SearchBlockAll from './SearchBlockAll.vue'
 import SmallLoader from './SmallLoader.vue'
 
-
-import searchIcon from '../assets/img/search.svg'
-import arrowIcon from '../assets/img/arrow-right-gray.svg'
-
 import CONSTANTS from '../consts/index'
 import { ROUTES } from "../router/router.const";
 import { API } from '../workers/api-worker/api.worker'
+
+import searchIcon from '../assets/img/search.svg'
+import arrowIcon from '../assets/img/arrow-right-gray.svg'
 
 
 export default {

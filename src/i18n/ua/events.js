@@ -21,7 +21,7 @@ export default {
   free: 'Безкоштовні',
   'for-free': 'Безкоштовно',
   players: 'Гравці',
-  'place-and-time': 'Місце і час проведення',
+  'when-event-start': 'Коли відбудеться подія?',
   fans: 'Вболівальники',
   'planned-events': 'Заплановані події',
   'your-events': 'Заходи у яких ви запланували участь',

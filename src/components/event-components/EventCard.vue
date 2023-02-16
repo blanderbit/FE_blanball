@@ -6,7 +6,7 @@
           <img src="../../assets/img/hands-shake.svg" alt="" />
         </div>
         <span :class="['status', `status-${card.status.toLowerCase()}`]">{{ $t(`events.${card.status}`) }}</span>
-        <span class="active-time">{{ card.time }} - {{ cardFinishTime }}</span>
+        <span class="active-time">{{ card.time }} - {{ card.end_time }}</span>
         <div class="text-block">
           <div class="title">{{ $t('events.friendly-match') }}</div>
           <div class="date-time-mob">
@@ -99,22 +99,8 @@ export default {
   setup(props) {
     const device = useDevice()
 
-    function addMinutes(time, minutesToAdd) {
-      let timeArray = time.split(':');
-      let hours = timeArray[0];
-      let originalMinutes = timeArray[1];
-      let date = new Date();
-      date.setHours(hours);
-      date.setMinutes(originalMinutes);
-      date.setMinutes(date.getMinutes() + minutesToAdd);
-      return date.toTimeString().substr(0, 5);
-    }
-    
-    const cardFinishTime = 'dffddf'
-
     return {
       device,
-      cardFinishTime,
     }
   },
 }

@@ -45,6 +45,7 @@ import {
   onMounted,
   watch,
 } from 'vue'
+
 import { toggleIcon } from './vue-collapsible-panel.constant'
 import { useCollapsiblePanelStore } from './composables/vue-collapsible-panel.store'
 import { v4 as uuid } from 'uuid'

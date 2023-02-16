@@ -143,10 +143,11 @@
 import { ref, computed, reactive, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { Form } from '@system.it.flumx.com/vee-validate'
-import * as yup from 'yup'
 import { useToast } from "vue-toastification";
-import { useUserDataStore } from '@/stores/userData'
+
+import { Form } from '@system.it.flumx.com/vee-validate'
+
+import * as yup from 'yup'
 
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
@@ -164,12 +165,13 @@ import ChangeUserDataModal from '../../../components/user-cabinet/ChangeUserData
 import ChangeEmailModal from '../../../components/user-cabinet/ChangeEmailModal.vue'
 import ButtonsBlock from '../../../components/user-cabinet/ButtonsBlock.vue'
 import EditAvatarModal from '../../../components/user-cabinet/EditAvatarModal.vue'
-
 import Loading from '../../../workers/loading-worker/Loading.vue'
-import { API } from '../../../workers/api-worker/api.worker'
-import CONSTANTS from '../../../consts'
 
+import { API } from '../../../workers/api-worker/api.worker'
+import { useUserDataStore } from '@/stores/userData'
 import useWindowWidth from '../../../utils/widthScreen'
+
+import CONSTANTS from '../../../consts'
 
 yup.addMethod(yup.string, 'userName', function (errorMessage) {
   return this.test(`UserName`, errorMessage, function (value) {

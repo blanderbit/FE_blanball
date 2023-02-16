@@ -23,6 +23,7 @@
 <script>
 import GreenBtn from '../../components/GreenBtn.vue'
 import EventCard from '../event-components/EventCard.vue'
+
 export default {
   name: 'PreviewBlock',
   components: {

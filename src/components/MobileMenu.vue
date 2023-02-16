@@ -97,6 +97,10 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
+import CONSTANTS from '../consts/index'
+import { ROUTES } from '../router/router.const'
+import { TokenWorker } from '../workers/token-worker'
+
 import Notification from '../assets/img/notification-small.svg'
 import NotificationWhite from '../assets/img/notification-white.svg'
 import Record from '../assets/img/record.svg'
@@ -105,10 +109,6 @@ import Members from '../assets/img/members.svg'
 import MembersWhite from '../assets/img/members-white.svg'
 import Settings from '../assets/img/Settings.svg'
 import SettingsWhite from '../assets/img/Settings-white.svg'
-
-import CONSTANTS from '../consts/index'
-import { ROUTES } from '../router/router.const'
-import { TokenWorker } from '../workers/token-worker'
 
 export default {
   name: 'MobileMenu',

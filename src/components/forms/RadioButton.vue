@@ -31,10 +31,12 @@
 </template>
 
 <script>
-import { CustomModelWorker } from '../../workers/custom-model-worker'
-import { v4 as uuid } from 'uuid'
 import { ref, computed, watch } from 'vue'
-import { booleanTypeAnnotation } from '@babel/types'
+
+import { v4 as uuid } from 'uuid'
+
+import { CustomModelWorker } from '../../workers/custom-model-worker'
+
 export default {
   name: 'RadioButton',
   props: {

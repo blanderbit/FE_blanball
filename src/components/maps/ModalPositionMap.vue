@@ -76,19 +76,26 @@
 </template>
 
 <script>
+import { ref, computed, watch } from 'vue'
+
+import { Form } from '@system.it.flumx.com/vee-validate'
+
+import * as yup from 'yup'
+
 import PositionMap from './PositionMap.vue'
 import Dropdown from './../forms/Dropdown.vue'
 import InputComponent from './../forms/InputComponent.vue'
-import * as yup from 'yup'
-import { ref, computed, watch } from 'vue'
-import CONSTANTS from '../../consts'
 import ModalWindow from '../ModalWindow.vue'
-import { Form } from '@system.it.flumx.com/vee-validate'
-import { PositionMapBus } from '../../workers/event-bus-worker'
-import { API } from '../../workers/api-worker/api.worker'
 import GreenBtn from '../../components/GreenBtn.vue'
 import Loading from '../../workers/loading-worker/Loading.vue'
+
+import { PositionMapBus } from '../../workers/event-bus-worker'
+import { API } from '../../workers/api-worker/api.worker'
+
+import CONSTANTS from '../../consts'
+
 import tickIcon from '../../assets/img/location-point.svg'
+
 export default {
   components: {
     ModalWindow,

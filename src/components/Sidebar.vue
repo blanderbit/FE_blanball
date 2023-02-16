@@ -56,22 +56,25 @@
 </template>
 
 <script>
-import { storeToRefs } from "pinia";
-
 import { ref, computed, onBeforeUnmount, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { useUserDataStore } from '../stores/userData'
-import { useEventDataStore } from '../stores/eventsData'
+
+import { storeToRefs } from "pinia";
 
 import SlideMenu from '../components/SlideMenu.vue'
 import Avatar from './../components/Avatar.vue'
 import BugReportModal from './BugReportModal.vue'
 
+import { useUserDataStore } from '../stores/userData'
+import { useEventDataStore } from '../stores/eventsData'
 import { createNotificationFromData } from '../workers/utils-worker'
 import { AuthWebSocketWorkerInstance } from './../workers/web-socket-worker'
 import { API } from '../workers/api-worker/api.worker'
 import { PaginationWorker } from '../workers/pagination-worker'
+import { TokenWorker } from '../workers/token-worker'
 import { NotificationsBus } from '../workers/event-bus-worker'
+
+import { ROUTES } from '../router/router.const'
 
 import notification from '../assets/img/Notification.svg'
 import notificationUnread from '../assets/img/notificationUnread.svg'
@@ -81,8 +84,6 @@ import medal from '../assets/img/medal.svg'
 import settings from '../assets/img/Settings.svg'
 import bugReport from '../assets/img/warning-black.svg'
 
-import { TokenWorker } from '../workers/token-worker'
-import { ROUTES } from '../router/router.const'
 const findDublicates = (list, newList) => {
   return newList.filter((item) =>
     list.length
