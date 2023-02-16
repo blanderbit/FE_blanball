@@ -263,7 +263,7 @@ onBeforeUpdate(() => {
 </script>
 
 <style scoped>
-@import 'forms.scss';
+@import '../../assets/styles/forms.scss';
 
 .code-input-container {
   position: relative;

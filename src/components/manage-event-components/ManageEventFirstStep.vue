@@ -1,5 +1,8 @@
 <template>
   <div class="b-event-m-1st" :style="stepStyle">
+    <div class="b-event-m-1st__title-general mb-2">
+      {{ $t('events.general-info') }}
+    </div>
     <Dropdown
       style="margin-top: 10px;"
       :outside-title="true"
@@ -12,6 +15,15 @@
       :height="40"
       name="game-type"
     />
+    <div class="b-event-m-2st__input-name">
+      <InputComponent
+        :outside-title="true"
+        :title="$t('events.event-name')"
+        :placeholder="$t('events.event-name-placeholder')"
+        :title-width="0"
+        name="name"
+      />
+    </div>
     <div class="b-event-m-1st__title mt-3 mb-2">
       {{ $t('events.gender') }}
     </div>
@@ -81,7 +93,7 @@
       <div class="b-event-m-1st__input-time">
         <InputComponent
           :outside-title="true"
-          :title="'Початок'"
+          :title="$t('events.start')"
           :placeholder="'17:00'"
           :title-width="0"
           name="time"
@@ -91,7 +103,7 @@
       <div class="b-event-m-2st__input-time">
         <InputComponent
           :outside-title="true"
-          :title="'Кінець'"
+          :title="$t('events.end')"
           :placeholder="'18:10'"
           :title-width="0"
           name="end_time"
@@ -277,6 +289,18 @@ export default {
 @import '../../assets/styles/calendar.scss';
 .b-event-m-1st {
   overflow: hidden;
+
+  .b-event-m-1st__title-general {
+    font-family: 'Exo 2';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    color: #262541;
+  }
+  .b-event-m-2st__input-name {
+    margin-top: 20px;
+  }
   .b-event-m-1st__time-and-date {
     display: flex;
     flex-direction: column;

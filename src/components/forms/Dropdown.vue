@@ -230,7 +230,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import 'forms.scss';
+@import '../../assets/styles/forms.scss';
 
 ::v-deep {
   .vs__clear {

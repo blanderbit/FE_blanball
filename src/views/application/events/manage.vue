@@ -1,6 +1,6 @@
 <template>
+  <Loading :is-loading="eventCreateLoader"></Loading>
   <div class="b-manage-event">
-    <SelectionSuitModal v-if="isSuitModalActive" @close-modal="closeModal" />
     <Form v-slot="data" :initial-values="eventPreviewData" :validation-schema="schema" @submit="disableSubmit">
       <div class="b-manage-event__page-title">
         <span>
@@ -13,7 +13,6 @@
             :green-btn-width="105"
             :green-btn-height="28"
             @save-btn-click="saveEvent(data)"
-            @cancel-btn-click="cancelEventCreation"
           />
         </div>
       </div>
@@ -81,7 +80,7 @@
 
         <div class="b-manage-event__invited-users__list mt-10">
           <span class="b-user-what-you__invited" v-if="invitedUsers.length">
-            Люди, яких ви запросили
+            {{ $t('events.invited-people') }}
           </span>
           <span class="b-remove-all__invited-users" @click="openRemoveUsersModal">Видалити всіх</span>
           <div class="b-manage-event__invited-user" v-for="user in invitedUsers">
@@ -106,8 +105,6 @@
             :save-btn-text="$t('buttons.save-as-template')"
             :white-btn-width="208"
             :green-btn-width="208"
-            @save-btn-click="saveEvent(data)"
-            @cancel-btn-click="cancelEventCreation"
           />
         </div>
       </div>
@@ -136,8 +133,10 @@ import ManageEventSecondStep from '../../../components/manage-event-components/M
 import ManageEventThirdStep from '../../../components/manage-event-components/ManageEventThirdStep.vue'
 import ButtonsBlock from '../../../components/manage-event-components/ButtonsBlock.vue'
 import RemoveInvitedUsersModal from '../../../components/manage-event-components/RemoveInvitedUsersModal.vue'
+import Loading from '../../../workers/loading-worker/Loading.vue'
 
 import { API } from '../../../workers/api-worker/api.worker'
+import { useUserDataStore } from '../../../stores/userData'
 
 import { ROUTES } from '../../../router/router.const'
 
@@ -159,6 +158,7 @@ export default {
     Form,
     PreviewBlock,
     Avatar,
+    Loading,
     RemoveInvitedUsersModal,
   },
   setup() {
@@ -166,9 +166,10 @@ export default {
     const { t } = useI18n()
     const currentStep = ref(1)
     const startDate = ref('')
-    const isSuitModalActive = ref(false)
+    const userStore = useUserDataStore()
     const searchUsersLoading = ref(false)
     const relevantUsersList = ref([])
+    const eventCreateLoader = ref(false)
     const invitedUsers = ref([])
     const removeInvitedUsersModalOpened = ref(false)
     let searchTimeout
@@ -179,13 +180,14 @@ export default {
     }
 
     const eventPreviewData = ref({
-      "name": "fddfdffd",
+      "name": "",
       "place": {},
       "status": "Planned",
       "gender": null,
       "description": "",
       "type": "",
-      "need_ball": null,
+      "contact_number": userStore.user.phone,
+      "need_ball": false,
       "duration": null,
       "need_form": null,
       "date_and_time": "",
@@ -201,6 +203,10 @@ export default {
         return yup.object({
           gender: yup.string().required('errors.required'),
           type: yup.string().required('errors.required'),
+          name: yup
+            .string()
+            .required('errors.required')
+            .max(255, 'errors.max255'),
           time: yup
             .string()
             .matches(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/, 'errors.invalid-time')
@@ -209,12 +215,15 @@ export default {
               name: 'isOneHourLater',
               message: 'errors.time-more-than-one-hour',
               test: time => {
-                let currentHour = new Date().getHours();
-                let currentMinute = new Date().getMinutes();
-                let hour = parseInt(time.split(':')[0]);
-                let minute = parseInt(time.split(':')[1]);
-
-                return hour > currentHour + 1 || (hour === currentHour + 1 && minute > currentMinute);
+                try {
+                  let currentHour = new Date().getHours();
+                  let currentMinute = new Date().getMinutes();
+                  let hour = parseInt(time.split(':')[0]);
+                  let minute = parseInt(time.split(':')[1]);
+                  return hour > currentHour + 1 || (hour === currentHour + 1 && minute > currentMinute);
+                } catch {
+                  return false
+                }
               }
             }),
           end_time: yup
@@ -247,7 +256,7 @@ export default {
                    } catch {
                     return false;
                    }
-                  }).test('event_duration', function (value) {
+                  }).test('event_duration', "errors.duration-must-be-round", function (value) {
                     try {
                       const [hours1, minutes1] = time.split(":").map(Number);
                       const [hours2, minutes2] = value.split(":").map(Number);
@@ -267,7 +276,6 @@ export default {
             lat: yup.number().required('errors.required'),
             lon: yup.number().required('errors.required')
           })
-          // date: yup.string().required('errors.required'),
         })
       }
       if (currentStep.value === 2) {
@@ -291,6 +299,7 @@ export default {
           }),
           price_description: yup
             .string('errors.required')
+            .nullable()
             .when("price", (price, schema) => {
               if (price)
                 return schema
@@ -345,7 +354,7 @@ export default {
 
     const updateEventPriceAfterSelectFree = (data) => {
       data.values.price = null
-      data.values.price_description = ''
+      data.values.price_description = null
     }
 
     const runOnSelectEventDuration = (durationValue, data) => {
@@ -377,12 +386,12 @@ export default {
       clearTimeout(searchTimeout)
       searchUsersLoading.value = true
       const relevantSearch = () =>  {
-        getRelevantUsers({'search': searchValue})
+        getRelevantUsers({'search': searchValue, 'skipids': userStore.user.id})
       }
       searchTimeout = setTimeout(relevantSearch, 500);
     }
 
-    getRelevantUsers()
+    getRelevantUsers({'skipids': userStore.user.id})
 
     const removeInvitedUser = (user_id) => {
       invitedUsers.value = invitedUsers.value.filter(function (item) {
@@ -439,44 +448,43 @@ export default {
         }
       })
     }
+
+    async function saveEvent(data) {
+      eventCreateLoader.value = true
+      const createEventData = data.values
+
+      createEventData.date_and_time = `${createEventData.date} ${createEventData.time}`;
+
+      createEventData.current_users = invitedUsers.value.map((user) => user.id);
+
+      switch (createEventData.need_form) {
+        case (true):
+          createEventData.forms = eventFormTypes.T_Shirt
+          break
+        case (false):
+          createEventData.forms = eventFormTypes.Shirt_Front
+      }
+
+      try {
+        await API.EventService.createOneEvent(createEventData).finally(() => {
+          eventCreateLoader.value = false
+        })
+        router.push(ROUTES.APPLICATION.EVENTS.absolute)
+      } catch {
+      }
+    }
+
     async function changeStep(val, data) {
       const { valid } = await data.validate()
       if(!valid) {
         return false;
       }
 
-    
       if (currentStep.value === 1 && val === '-') {
         return router.push(ROUTES.APPLICATION.EVENTS.absolute)
       }
       if (currentStep.value === 3 && val === '+') {
-        const createEventData = data.values
-
-        createEventData.date_and_time = `${createEventData.date} ${createEventData.time}`;
-
-        console.log(createEventData.date_and_time)
-        createEventData.current_users = invitedUsers.value.map((user) => user.id);
-
-        switch(createEventData.need_form) {
-          case(true):
-            createEventData.forms = eventFormTypes.T_Shirt
-            break
-          case(false):
-            createEventData.forms = eventFormTypes.Shirt_Front
-        }
-
-        delete createEventData.count_current_users
-        delete createEventData.count_current_fans
-        delete createEventData.status
-        delete createEventData.time
-        delete createEventData.date
-        delete createEventData.end_time
-        delete createEventData.is_phone_shown
-        delete createEventData.is_price
-
-        API.EventService.createOneEvent(createEventData)
-
-        return router.push(ROUTES.APPLICATION.EVENTS.absolute)
+        return saveEvent(data)
       }
 
       switch (val) {
@@ -489,16 +497,7 @@ export default {
       }
     }
 
-    function closeModal() {
-      VersionHandling.closeVersionModal()
-    }
-    function saveEvent(val) {
-      console.log(val)
-    }
-    function cancelEventCreation() {
-      console.log('cancelEventCreation')
-    }
-
+    
     return {
       currentStep,
       mockData,
@@ -512,6 +511,7 @@ export default {
       greenBtnText,
       removeInvitedUsersModalOpened,
       eventPreviewData,
+      eventCreateLoader,
       getNewEventLocation,
       runOnSelectEventDuration,
       choseCategory,
@@ -520,7 +520,6 @@ export default {
       changeStep,
       removeAllInvitedUsers,
       saveEvent,
-      cancelEventCreation,
       removeInvitedUser,
       searchRelevantUsers,
       openRemoveUsersModal,

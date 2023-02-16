@@ -1,46 +1,5 @@
 <template>
   <div class="third-step" :style="stepStyle">
-    <div class="title-block">
-      <span>{{ $t('events.additional-info') }}</span>
-    </div>
-    <div class="subtitle">
-      {{ $t('events.add-comment') }}
-    </div>
-    <TextAreaComponent
-      :placeholder="$t('events.event-description')"
-      :height="92"
-      name="description"
-    />
-    <div class="contact-switcher">
-      <span class="title">{{ $t('events.show-my-contacts') }}</span>
-      <Switcher
-        :id="'contacts'"
-        :is-edit-mode="true"
-        name="is_phone_shown"
-        @get-value="showHidePhone"
-      />
-    </div>
-    <div class="input" v-show="isPhoneShown">
-      <InputComponent
-        :placeholder="userPhoneNumber"
-        :title-width="0"
-        name="contact_number"
-        v-maska="'+38 (0##) ### ## ##'"
-      >
-      </InputComponent>
-    </div>
-
-    <div class="prize-switcher">
-      <div class="title title-margin">
-      Чи буде розіграно приз? <span>ViP</span>
-    </div>
-      <Switcher
-        :is-edit-mode="false"
-        name="is_prize"
-        @get-value="showHidePhone"
-      />
-    </div>
-
     <div class="title">
       {{ $t('events.need-clothes') }}
     </div>
@@ -64,6 +23,7 @@
         ></radio-button>
       </div>
     </div>
+
     <div v-if="needForm !== null" class="forms-block"
       @click="openSelectFormsModal">
       <div class="forms-select-form">
@@ -75,6 +35,60 @@
         :selectedCategory="selectedFormType"
         @closeModal="closeSelectFormsModal"/>
     </div>
+
+    <div class="prize-switcher">
+      <div class="title">
+      {{ $t('events.prize') }} <span>{{ $t('events.vip') }}</span>
+    </div>
+      <Switcher
+        :is-edit-mode="false"
+        name="is_prize"
+        @get-value="showHidePhone"
+      />
+    </div>
+
+    <div class="need-ball-switcher">
+      <span class="title">{{ $t('events.is-ball-need') }}</span>
+      <Switcher
+        :id="'need_ball'"
+        :is-edit-mode="true"
+        name="need_ball"
+      />
+    </div>
+    <span class="subtitle">
+      {{ $t('events.need-ball-subtitle') }}
+    </span>
+
+    <div class="contact-switcher">
+      <span class="title">{{ $t('events.show-my-contacts') }}</span>
+      <Switcher
+        :id="'contacts'"
+        :is-edit-mode="true"
+        name="is_phone_shown"
+        @get-value="showHidePhone"
+      />
+    </div>
+    <div class="input" v-show="isPhoneShown">
+      <InputComponent
+        :placeholder="userPhoneNumber"
+        :title-width="0"
+        name="contact_number"
+        v-maska="'+38 (0##) ### ## ##'"
+      >
+      </InputComponent>
+    </div>
+
+    <div class="title-block">
+      <span class="title-margin">{{ $t('events.additional-info') }}</span>
+    </div>
+    <div class="subtitle">
+      {{ $t('events.add-comment') }}
+    </div>
+    <TextAreaComponent
+      :placeholder="$t('events.event-description')"
+      :height="92"
+      name="description"
+    />
   </div>
 </template>
 
@@ -138,7 +152,6 @@ export default {
     }
 
     const closeSelectFormsModal = () => {
-      debugger
       isSelectFormColarModalOpened.value = false
     }
 
@@ -290,6 +303,12 @@ export default {
   }
   .title-margin {
     margin-top: 20px;
+  }
+  .need-ball-switcher {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
   }
   .contact-switcher {
     display: flex;

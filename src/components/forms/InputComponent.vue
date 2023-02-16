@@ -218,7 +218,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import 'forms.scss';
+@import '../../assets/styles/forms.scss';
+
 .b-input__input-component {
   height: 100%;
   .b-input__wrapper {

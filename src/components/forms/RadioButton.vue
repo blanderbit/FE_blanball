@@ -108,7 +108,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import 'forms.scss';
+@import '../../assets/styles/forms.scss';
+
 $color1: #f4f4f4;
 $color2: #148783;
 .b-radio {
