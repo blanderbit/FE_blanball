@@ -39,6 +39,7 @@
           :placeholder="placeholder"
           v-on="modelHandlers"
           :value="staticModelValue"
+          :readonly="isReadOnly"
           :style="inputStyle"
           :disabled="isDisabled"
           @click="$emit('onClickAction', $event)"
@@ -119,6 +120,10 @@ export default {
       type: String,
       default: 'aggressive',
     },
+    isReadOnly: {
+      type: Boolean,
+      default: false,
+    }
   },
   emits: [
     'iconClick',

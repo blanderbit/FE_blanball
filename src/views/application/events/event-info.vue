@@ -1,13 +1,15 @@
 <template>
+  <ShareEventModal 
+    v-if="isShareEventModalOpened"
+    :shareLink="currentFullRoute"
+    @copyLinkButtonClick="copyLinkButtonClick"
+    @closeModal="closeShareEventModal"/>
   <div class="b-event-info">
     <div class="b-event-info__main-body">
       <div class="b-event-info__header-block">
         <div class="b-event-info__left-part">
           <div class="b-event-info__title">
             {{ $t('my_events.friendly-match') }}
-          </div>
-          <div class="b-event-info__subtitle">
-            {{ $t('my_events.subtitle') }}
           </div>
         </div>
         <div class="b-event-info__right-part">
@@ -20,7 +22,7 @@
           </router-link>
           <div class="b-event-info__share-link">
             <img src="../../../assets/img/share-icon.svg" alt="" />
-            <span>
+            <span @click="openEventShareModal">
               {{ $t('my_events.share') }}
             </span>
           </div>
@@ -30,11 +32,11 @@
         <div class="b-event-info__left-side">
           <div class="b-event-info__timing">
             <img src="../../../assets/img/watch.svg" alt="" />
-            16 червня. 12:00 – 14:00
+            {{ eventData.date }}, {{ eventData.time }} - {{ eventData.end_time }}
           </div>
           <div class="b-event-info__address">
             <img src="../../../assets/img/address-icon.svg" alt="" />
-            <span>Запоріжжя, Центральна, стадіон «Торпеда»</span>
+            <span>{{ eventData.place.place_name }}</span>
           </div>
           <div class="b-event-info__clothes">
             <div class="b-event-info__clothe">
@@ -50,23 +52,20 @@
             {{ $t('my_events.description-event') }}
           </div>
           <div class="b-event-info__description">
-            Donec a eros justo. Fusce egestas tristique ultrices. Nam tempor,
-            augue nec tincidunt molestie, massa nunc varius arcu, at scelerisque
-            elit erat a magna. Donec quis erat at libero ultrices mollis. In hac
-            habitasse platea dictumst. Vivamus vehicula leo dui, at porta nisi
-            facilisis finibus. In euismod augue vitae nisi ultricies, non
-            aliquet urna tincidunt. Integer in nisi eget nulla commodo faucibus
-            efficitur quis massa. Praesent felis est, finibus et nisi ac,
-            hendrerit venenatis libero. Donec consectetur faucibus ipsum id
-            gravida.
+            {{ eventData.description }}
           </div>
           <div class="b-event-info__labels">
-            <div
-              v-for="label of mockData.labels"
-              :key="label.id"
-              class="b-event-info__label"
-            >
-              {{ label.text }}
+            <div class="b-event-info__label">
+              {{ $t(`events.${eventData.type}`) }}
+            </div>
+            <div class="b-event-info__label">
+              {{ $t(`events.${eventData.gender}`) }}
+            </div>
+            <div v-if="eventData.need_ball" class="b-event-info__label">
+              {{ $t('hashtags.need_ball') }}
+            </div>
+            <div v-if="eventData.need_form" class="b-event-info__label">
+              {{ $t('hashtags.need_form') }}
             </div>
           </div>
         </div>
@@ -95,7 +94,11 @@
             </div>
           </div>
           <div class="b-event-info__map">
-            <img src="../../../assets/img/map-event-info.svg" alt="" />
+            <position-map
+              :coords="{lat: eventData.place.lat, lng: eventData.place.lon}" 
+              @map-loaded="loading = false"
+              disable-change-coords>
+            </position-map>
           </div>
         </div>
       </div>
@@ -133,11 +136,19 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { useToast } from 'vue-toastification'
+import { useI18n } from 'vue-i18n'
+
+import dayjs from 'dayjs'
+import dayjsUkrLocale from 'dayjs/locale/uk'
 
 import GreenBtn from '../../../components/GreenBtn.vue'
 import RightSidebar from '../../../components/RightSidebar.vue'
 import EventInfoUsersTable from '../../../components/EventInfoUsersTable.vue'
+import PositionMap from '../../../components/maps/PositionMap.vue'
+import ShareEventModal from '../../../components/ShareEventModal.vue'
 
 import CONSTANTS from '../../../consts/index'
 import { ROUTES } from '../../../router/router.const'
@@ -148,8 +159,65 @@ export default {
     GreenBtn,
     RightSidebar,
     EventInfoUsersTable,
+    PositionMap,
+    ShareEventModal,
   },
   setup() {
+    const route = useRoute();
+    const toast = useToast();
+    const { t } = useI18n()
+    const eventData = ref(route.meta.eventData.data);
+    const isShareEventModalOpened = ref(false);
+    const currentFullRoute = ref(window.location.href);
+
+    function getDate(date) {
+      return dayjs(date)
+        .locale(dayjsUkrLocale)
+        .format(
+          Number(dayjs(date).locale(dayjsUkrLocale).format('YYYY')) ===
+            new Date().getFullYear()
+            ? 'D MMMM'
+            : ' D MMMM, YYYY'
+        )
+    }
+
+    const openEventShareModal = () => {
+      isShareEventModalOpened.value = true
+    }
+
+    function getTime(time) {
+      return dayjs(time).locale(dayjsUkrLocale).format('HH:mm')
+    }
+
+    const closeShareEventModal = () => {
+      isShareEventModalOpened.value = false
+    }
+
+    const copyLinkButtonClick = () => {
+      navigator.clipboard.writeText(currentFullRoute.value);
+      closeShareEventModal()
+      toast.success(t('notifications.event-share-link-copied'))
+    }
+
+    function addMinutes(time, minutesToAdd) {
+      let timeArray = time.split(':');
+      let hours = timeArray[0];
+      let originalMinutes = timeArray[1];
+      let date = new Date();
+      date.setHours(hours);
+      date.setMinutes(originalMinutes);
+      date.setMinutes(date.getMinutes() + minutesToAdd);
+      return date.toTimeString().substr(0, 5);
+    }
+
+    const handleIncomeData = () => {
+      eventData.value.date = getDate(eventData.value.date_and_time)
+      eventData.value.time = getTime(eventData.value.date_and_time)
+      eventData.value.end_time = addMinutes(
+        getTime(eventData.value.date_and_time), eventData.value.duration)
+    }
+
+
     const mockData = computed(() => {
       return {
         players_list: CONSTANTS.event_info.playersList,
@@ -164,9 +232,17 @@ export default {
       return ROUTES
     })
 
+    handleIncomeData()
+
     return {
       mockData,
       ALL_ROUTES,
+      isShareEventModalOpened,
+      eventData,
+      currentFullRoute,
+      copyLinkButtonClick,
+      openEventShareModal,
+      closeShareEventModal,
     }
   },
 }
@@ -223,6 +299,7 @@ export default {
           margin-left: 25px;
           display: flex;
           align-items: center;
+          cursor: pointer;
           img {
             margin-right: 10px;
           }
@@ -241,6 +318,8 @@ export default {
         gap: 20px;
       }
       .b-event-info__left-side {
+        max-width: 430px;
+
         .b-event-info__timing,
         .b-event-info__address,
         .b-event-info__clothes {
@@ -273,6 +352,8 @@ export default {
           color: #575775;
           margin-top: 20px;
           margin-bottom: 16px;
+          max-width: 100%;
+          word-break: break-word;
         }
         .b-event-info__description {
           font-family: 'Inter';
@@ -282,20 +363,25 @@ export default {
           line-height: 24px;
           color: #262541;
           margin-bottom: 16px;
+          max-width: 100%;
+          word-break: break-word;
         }
         .b-event-info__labels {
           display: flex;
+          flex-wrap: wrap;
+          gap: 8px 0px;
           .b-event-info__label {
-            padding: 2px 8px;
-            border: 1px solid #dfdeed;
-            border-radius: 100px;
+            margin-right: 4px;
             font-family: 'Inter';
             font-style: normal;
+            text-align: center;
             font-weight: 400;
             font-size: 12px;
             line-height: 20px;
             color: #262541;
-            margin-right: 4px;
+            padding: 0px 8px;
+            border: 1px solid #dfdeed;
+            border-radius: 100px;
           }
         }
       }
@@ -342,6 +428,7 @@ export default {
         }
         .b-event-info__map {
           margin-top: 20px;
+          height: 200px;
           img {
             width: 100%;
           }
