@@ -162,8 +162,6 @@ import { useToast } from "vue-toastification";
 import { Form } from '@system.it.flumx.com/vee-validate'
 
 import * as yup from 'yup'
-import { useToast } from 'vue-toastification'
-import { useUserDataStore } from '@/stores/userData'
 
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'

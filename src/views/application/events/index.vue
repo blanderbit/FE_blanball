@@ -292,7 +292,7 @@ export default {
       itemHeight,
       itemMinHeight,
     }) => {
-      itemHeight.value = 315
+      itemHeight.value = 325
       if (window.matchMedia('(min-width: 1400px)').matches) {
         itemWidth.value = mainEventsBlock.value.clientWidth / 3
         itemCount.value = 3

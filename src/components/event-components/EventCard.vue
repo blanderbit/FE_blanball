@@ -32,10 +32,10 @@
       {{ card.description }}
     </div>
     <div class="labels">
-      <div class="label">
+      <div v-if="card.gender" class="label">
         {{ $t(`events.${card.gender}`) }}
       </div>
-      <div class="label">
+      <div v-if="card.type" class="label">
         {{ $t(`events.${card.type}`) }}
       </div>
       <div v-if="card.need_ball" class="label">{{ $t('hashtags.need_ball') }}</div>
