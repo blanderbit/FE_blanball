@@ -87,16 +87,20 @@
           { active: tab.isActive, disabled: tab.isDisabled },
         ]"
         @click="changeTab(tab.id, tab.url, tab.isDisabled)"
-        @mouseenter="switchTabLabel(tab.isDisabled)"
-        @mouseleave="switchTabLabel(tab.isDisabled)"
       >
         <img :src="tab.img" :alt="tab.name" />
-        {{ tab.name }}
-        <TabLabel
-          v-if="tab.isDisabled && isTabLabel"
-          :title="$t('profile.coming-soon-title')"
-          :text="$t('profile.coming-soon-text')"
-        />
+        <span
+          @mouseenter="switchTabLabel(tab.isDisabled)"
+          @mouseleave="switchTabLabel(tab.isDisabled)"
+          >{{ tab.name }}</span
+        >
+        <Transition>
+          <TabLabel
+            v-if="tab.isDisabled && isTabLabel"
+            :title="$t('profile.coming-soon-title')"
+            :text="$t('profile.coming-soon-text')"
+          />
+        </Transition>
       </div>
     </div>
     <div class="b-user-cabinet__my-profile-tab">
@@ -145,7 +149,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Form } from '@system.it.flumx.com/vee-validate'
 import * as yup from 'yup'
-import { useToast } from "vue-toastification";
+import { useToast } from 'vue-toastification'
 import { useUserDataStore } from '@/stores/userData'
 
 import GreenBtn from '../../../components/GreenBtn.vue'
@@ -212,7 +216,7 @@ export default {
     const { t } = useI18n()
     const toast = useToast()
     const store = useUserDataStore()
-    
+
     const route = useRoute()
     const router = useRouter()
     const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
@@ -249,8 +253,8 @@ export default {
       ...store.user,
       configuration: {
         ...store.user.configuration,
-        planned_events: true
-      }
+        planned_events: true,
+      },
     }
     const formValues = ref({
       last_name: store.user.profile.last_name,
@@ -267,7 +271,7 @@ export default {
       config_phone: store.user.profile.phone,
       config_email: store.user.profile.email,
       show_reviews: store.user.profile.show_reviews,
-      planned_events: true
+      planned_events: true,
     })
 
     const checkboxData = reactive({})
@@ -324,8 +328,8 @@ export default {
       ...store.user,
       profile: {
         ...store.user.profile,
-        working_leg: getWorkingLeg(store.user.profile.working_leg)
-      }
+        working_leg: getWorkingLeg(store.user.profile.working_leg),
+      },
     }
     userRating.value = store.user.raiting
     userPhone.value = store.user.phone
@@ -339,8 +343,8 @@ export default {
     checkboxData.value = {
       checkboxPhone: store.user.configuration.phone,
       checkboxEmail: store.user.configuration.email,
-      checkboxReviews: store.user.configuration.show_reviews
-    };
+      checkboxReviews: store.user.configuration.show_reviews,
+    }
 
     onMounted(() => {
       window.addEventListener('resize', onResize)
@@ -571,7 +575,7 @@ export default {
             birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
             gender: store.user.profile.gender,
             avatar_url: store.getUserAvatar,
-            position: getUserPositionText(position)
+            position: getUserPositionText(position),
           }
           delete profileData.day
           delete profileData.month
@@ -677,7 +681,7 @@ export default {
 
 <style lang="scss" scoped>
 ::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 .b-player-page__outer-btns {
   position: absolute;
@@ -717,15 +721,6 @@ export default {
       margin-right: 10px;
     }
   }
-}
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.8s ease;
-}
-
-.v-enter,
-.v-leave-to {
-  opacity: 0;
 }
 .b-user-cabinet {
   overflow-y: scroll;
@@ -786,6 +781,16 @@ export default {
     }
     &.disabled {
       color: #7f7db5;
+    }
+
+    .v-enter-active,
+    .v-leave-active {
+      transition: opacity 0.4s ease;
+    }
+
+    .v-enter-from,
+    .v-leave-to {
+      opacity: 0;
     }
   }
 }
