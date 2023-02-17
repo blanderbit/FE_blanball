@@ -1,4 +1,10 @@
 <template>
+  <SelectionSuitModal
+    v-if="isSelectFormColarModalOpened"
+    :selectedCategory="selectedFormType"
+    @closeModal="closeSelectFormsModal()"
+  />
+
   <div class="third-step" :style="stepStyle">
     <div class="title">
       {{ $t('events.need-clothes') }}
@@ -24,22 +30,21 @@
       </div>
     </div>
 
-    <div v-if="needForm !== null" class="forms-block"
-      @click="openSelectFormsModal">
+    <div
+      v-if="needForm !== null"
+      class="forms-block"
+      @click="openSelectFormsModal"
+    >
       <div class="forms-select-form">
-        <span>Призначте кольори форми команд</span>
-        <img src="../../assets/img/set-filter.svg" alt="">
+        <span>{{ $t('events.set-forms-colors') }}</span>
+        <img src="../../assets/img/set-filter.svg" alt="" />
       </div>
-      <SelectionSuitModal 
-        v-if="false"
-        :selectedCategory="selectedFormType"
-        @closeModal="closeSelectFormsModal"/>
     </div>
 
     <div class="prize-switcher">
       <div class="title">
-      {{ $t('events.prize') }} <span>{{ $t('events.vip') }}</span>
-    </div>
+        {{ $t('events.prize') }} <span>{{ $t('events.vip') }}</span>
+      </div>
       <Switcher
         :is-edit-mode="false"
         name="is_prize"
@@ -49,11 +54,7 @@
 
     <div class="need-ball-switcher">
       <span class="title">{{ $t('events.is-ball-need') }}</span>
-      <Switcher
-        :id="'need_ball'"
-        :is-edit-mode="true"
-        name="need_ball"
-      />
+      <Switcher :id="'need_ball'" :is-edit-mode="true" name="need_ball" />
     </div>
     <span class="subtitle">
       {{ $t('events.need-ball-subtitle') }}
@@ -154,7 +155,6 @@ export default {
     const closeSelectFormsModal = () => {
       isSelectFormColarModalOpened.value = false
     }
-
 
     const stepStyle = computed(() => {
       return props.currentStep === 3 ? { height: 'auto' } : { height: '0px' }
@@ -324,21 +324,22 @@ export default {
   align-items: center;
   margin-bottom: 8px;
   opacity: 0.6;
+  margin-top: 20px;
 
-    span {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 12px;
-      line-height: 20px;
-      padding: 0px 4px;
-      background: #EFEFF6;
-      border-radius: 4px;
+  span {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    padding: 0px 4px;
+    background: #efeff6;
+    border-radius: 4px;
   }
 }
 .forms-block {
   .forms-select-form {
-    border: 1px solid #DFDEED;
+    border: 1px solid #dfdeed;
     border-radius: 6px;
     margin: 20px 0px;
     padding: 8px 8px 8px 12px;

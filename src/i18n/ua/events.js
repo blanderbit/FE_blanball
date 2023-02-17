@@ -62,6 +62,7 @@ export default {
   'show-more': 'Показати ще 20 результатів',
   'new-first': 'Cпочатку нові',
   'search-events': 'Пошук серед подій',
+  'set-forms-colors': 'Призначте кольори форми команд',
   found: 'знайдено',
   advertisments: 'оголошень',
   'additional-info': 'Додаткова інформація',
