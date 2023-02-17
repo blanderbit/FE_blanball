@@ -466,6 +466,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .b-user-card {
   padding: 20px 16px;
   background: #eeeef3;
@@ -639,9 +640,7 @@ export default {
           }
           .b-user-card__input-surname,
           .b-user-card__input-name {
-            @media (max-width: 1200px) {
-              width: 100%;
-            }
+            width: 100%;
           }
           .b-user-card__input-name {
             @media (max-width: 1200px) {
@@ -650,6 +649,9 @@ export default {
           }
         }
         .b-user-card__textarea-line {
+          &::v-deep(.b-text-area__min-max-label) {
+            display: none;
+          }
           .b-user-card__about-me {
             font-family: 'Inter';
             font-style: normal;

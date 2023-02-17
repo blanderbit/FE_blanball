@@ -160,8 +160,12 @@ export default {
       }
     })
     function getDate(date) {
-      return dayjs(date).locale(dayjsUkrLocale).format('D MMMM')
+      return dayjs(date).locale(dayjsUkrLocale).
+      format(Number(dayjs(date).locale(dayjsUkrLocale).format('YYYY')) === new Date().getFullYear()
+      ? 'D MMMM'
+      : ' D MMMM, YYYY')
     }
+    
     function getTime(time) {
       return dayjs(time).locale(dayjsUkrLocale).format('HH:mm')
     }

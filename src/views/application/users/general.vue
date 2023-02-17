@@ -11,11 +11,29 @@
           <div
             v-for="tab in tabs"
             :key="tab.id"
-            :class="['tab-element', { active: tab.isActive }]"
+            :class="[
+              'tab-element',
+              { active: tab.isActive },
+              { disabled: tab.isDisabled },
+            ]"
             @click="changeTab(tab.id, tab.url)"
           >
+            <Transition>
+              <TabLabel
+                v-if="tab.isDisabled && currentHoverSideBarItemID === tab.id"
+                style="position: absolute"
+                :title="$t('profile.coming-soon-title')"
+                :text="$t('profile.coming-soon-text')"
+              />
+            </Transition>
+
+      
             <img :src="tab.img" :alt="tab.name" />
-            {{ $t('users.' + tab.name) }}
+            <span 
+              @mouseenter="enterHoverSidebarItem(tab.id)"
+              @mouseleave="leaveHoverSidebarItem">
+              {{ $t('users.' + tab.name) }}
+            </span>
           </div>
         </div>
       </div>
@@ -82,6 +100,8 @@ import SmartList from '../../../components/smart-list/SmartList.vue'
 import EmptyList from '../../../components/EmptyList.vue'
 import ScrollToTop from '../../../components/ScrollToTop.vue'
 import RightSidebar from '../../../components/RightSidebar.vue'
+import TabLabel from '../../../components/TabLabel.vue'
+
 import members from '../../../assets/img/members.svg'
 import runner from '../../../assets/img/runner.svg'
 import ball from '../../../assets/img/ball.svg'
@@ -110,6 +130,7 @@ export default {
     EmptyList,
     UsersFilters,
     RightSidebar,
+    TabLabel,
   },
   setup() {
     const route = useRoute()
@@ -117,6 +138,7 @@ export default {
     const refList = ref()
     const blockScrollToTopIfExist = ref(false)
     const triggerForRestart = ref(false)
+    const currentHoverSideBarItemID = ref(0)
 
     const restartInfiniteScroll = () => {
       triggerForRestart.value = uuid()
@@ -206,16 +228,24 @@ export default {
       })
     }
 
+    const enterHoverSidebarItem = (itemId) =>
+      (currentHoverSideBarItemID.value = itemId)
+
+    const leaveHoverSidebarItem = () => (currentHoverSideBarItemID.value = 0)
+
     return {
       paginationElements,
       paginationPage,
       paginationTotalCount,
       refList,
       emptyListMessages,
+      currentHoverSideBarItemID,
       blockScrollToTopIfExist,
       filters,
       triggerForRestart,
       loadDataPaginationData,
+      leaveHoverSidebarItem,
+      enterHoverSidebarItem,
       scrollToFirstElement: () => {
         refList.value.scrollToFirstElement()
       },
@@ -233,40 +263,45 @@ export default {
       },
       tabs: [
         {
-          id: 0,
+          id: 1,
           name: 'general',
           img: members,
           url: '/application/users/general',
+          isDisabled: false,
           isActive: true,
         },
-        // {
-        //   id: 1,
-        //   name: 'players',
-        //   img: runner,
-        //   url: '/application/users/players',
-        //   isActive: false,
-        // },
-        // {
-        //   id: 2,
-        //   name: 'trainers',
-        //   img: ball,
-        //   url: '/application/users/trainers',
-        //   isActive: false,
-        // },
-        // {
-        //   id: 3,
-        //   name: 'referee',
-        //   img: timer,
-        //   url: '/application/users/referee',
-        //   isActive: false,
-        // },
-        // {
-        //   id: 4,
-        //   name: 'teams',
-        //   img: tShirt,
-        //   url: '/application/users/teams',
-        //   isActive: false,
-        // },
+        {
+          id: 2,
+          name: 'players',
+          img: runner,
+          url: '/application/users/players',
+          isDisabled: true,
+          isActive: false,
+        },
+        {
+          id: 3,
+          name: 'trainers',
+          img: ball,
+          url: '/application/users/trainers',
+          isDisabled: true,
+          isActive: false,
+        },
+        {
+          id: 4,
+          name: 'referee',
+          img: timer,
+          url: '/application/users/referee',
+          isDisabled: true,
+          isActive: false,
+        },
+        {
+          id: 5,
+          name: 'teams',
+          img: tShirt,
+          url: '/application/users/teams',
+          isDisabled: true,
+          isActive: false,
+        },
       ],
       calendar: [
         {
@@ -417,12 +452,31 @@ export default {
           font-weight: 400;
           font-size: 13px;
           color: #262541;
+          cursor: pointer;
+          position: relative;
           user-select: none;
           img {
             margin-right: 8px;
           }
           &.active {
             border-bottom: 2px solid #262541;
+          }
+          &.disabled {
+            color: #7f7db5;
+
+            .v-enter-active,
+            .v-leave-active {
+              transition: opacity 0.4s ease;
+            }
+
+            .v-enter-from,
+            .v-leave-to {
+              opacity: 0;
+            }
+
+            img {
+              opacity: 0.5;
+            }
           }
         }
       }

@@ -19,6 +19,7 @@ export default {
   Futsal: 'Фут-зал',
   end: 'Кінець',
   Football: 'Футбол',
+  'watch': 'Переглянути',
   'without-category': 'Без розряду',
   free: 'Безкоштовні',
   'for-free': 'Безкоштовно',
