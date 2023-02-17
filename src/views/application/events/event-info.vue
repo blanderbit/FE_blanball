@@ -1,9 +1,10 @@
 <template>
-  <ShareEventModal 
+  <ShareEventModal
     v-if="isShareEventModalOpened"
     :shareLink="currentFullRoute"
     @copyLinkButtonClick="copyLinkButtonClick"
-    @closeModal="closeShareEventModal"/>
+    @closeModal="closeShareEventModal"
+  />
   <div class="b-event-info">
     <div class="b-event-info__main-body">
       <div class="b-event-info__header-block">
@@ -32,7 +33,8 @@
         <div class="b-event-info__left-side">
           <div class="b-event-info__timing">
             <img src="../../../assets/img/watch.svg" alt="" />
-            {{ eventData.date }}, {{ eventData.time }} - {{ eventData.end_time }}
+            {{ eventData.date }}, {{ eventData.time }} -
+            {{ eventData.end_time }}
           </div>
           <div class="b-event-info__address">
             <img src="../../../assets/img/address-icon.svg" alt="" />
@@ -71,33 +73,31 @@
         </div>
         <div class="b-event-info__right-side">
           <div class="b-event-info__users">
-            <div
-              v-for="cief of mockData.ciefs"
-              :key="cief.id"
-              class="b-event-info__user"
-              :style="{
-                'border-top': cief.id === 0 ? 'none' : '1px solid #DFDEED',
-              }"
-            >
+            <div class="b-event-info__user">
               <div class="b-event-info__left-side">
                 <div class="b-event-info__picture">
-                  <img :src="cief.img" alt="" />
+                  <avatar
+                    class="b-user__image"
+                    :link="eventData.author.profile.avatar_url"
+                    :full-name="`${eventData.author.profile.name} ${eventData.author.profile.last_name}`"
+                  ></avatar>
                 </div>
                 <div class="b-event-info__text-block">
-                  <div class="b-event-info__name">{{ cief.name }}</div>
-                  <div class="b-event-info__phone">{{ cief.phone }}</div>
+                  <div class="b-event-info__name">{{ eventData.author.profile.name }}</div>
+                  <div class="b-event-info__phone">{{ eventData.author.phone}}</div>
                 </div>
               </div>
               <div class="b-event-info__right-side">
-                {{ cief.status }}
+                Організатор
               </div>
             </div>
           </div>
           <div class="b-event-info__map">
             <position-map
-              :coords="{lat: eventData.place.lat, lng: eventData.place.lon}" 
+              :coords="{ lat: eventData.place.lat, lng: eventData.place.lon }"
               @map-loaded="loading = false"
-              disable-change-coords>
+              disable-change-coords
+            >
             </position-map>
           </div>
         </div>
@@ -149,6 +149,7 @@ import RightSidebar from '../../../components/RightSidebar.vue'
 import EventInfoUsersTable from '../../../components/EventInfoUsersTable.vue'
 import PositionMap from '../../../components/maps/PositionMap.vue'
 import ShareEventModal from '../../../components/ShareEventModal.vue'
+import Avatar from '../../../components/Avatar.vue'
 
 import CONSTANTS from '../../../consts/index'
 import { ROUTES } from '../../../router/router.const'
@@ -161,14 +162,15 @@ export default {
     EventInfoUsersTable,
     PositionMap,
     ShareEventModal,
+    Avatar,
   },
   setup() {
-    const route = useRoute();
-    const toast = useToast();
+    const route = useRoute()
+    const toast = useToast()
     const { t } = useI18n()
-    const eventData = ref(route.meta.eventData.data);
-    const isShareEventModalOpened = ref(false);
-    const currentFullRoute = ref(window.location.href);
+    const eventData = ref(route.meta.eventData.data)
+    const isShareEventModalOpened = ref(false)
+    const currentFullRoute = ref(window.location.href)
 
     function getDate(date) {
       return dayjs(date)
@@ -194,29 +196,30 @@ export default {
     }
 
     const copyLinkButtonClick = () => {
-      navigator.clipboard.writeText(currentFullRoute.value);
+      navigator.clipboard.writeText(currentFullRoute.value)
       closeShareEventModal()
       toast.success(t('notifications.event-share-link-copied'))
     }
 
     function addMinutes(time, minutesToAdd) {
-      let timeArray = time.split(':');
-      let hours = timeArray[0];
-      let originalMinutes = timeArray[1];
-      let date = new Date();
-      date.setHours(hours);
-      date.setMinutes(originalMinutes);
-      date.setMinutes(date.getMinutes() + minutesToAdd);
-      return date.toTimeString().substr(0, 5);
+      let timeArray = time.split(':')
+      let hours = timeArray[0]
+      let originalMinutes = timeArray[1]
+      let date = new Date()
+      date.setHours(hours)
+      date.setMinutes(originalMinutes)
+      date.setMinutes(date.getMinutes() + minutesToAdd)
+      return date.toTimeString().substr(0, 5)
     }
 
     const handleIncomeData = () => {
       eventData.value.date = getDate(eventData.value.date_and_time)
       eventData.value.time = getTime(eventData.value.date_and_time)
       eventData.value.end_time = addMinutes(
-        getTime(eventData.value.date_and_time), eventData.value.duration)
+        getTime(eventData.value.date_and_time),
+        eventData.value.duration
+      )
     }
-
 
     const mockData = computed(() => {
       return {
@@ -393,6 +396,7 @@ export default {
             align-items: flex-start;
             padding-top: 12px;
             margin-bottom: 12px;
+            border-top: 1px solid #dfdeed;
             .b-event-info__left-side {
               display: flex;
               align-items: center;
