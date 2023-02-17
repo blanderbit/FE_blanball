@@ -100,17 +100,24 @@
   import { ref, computed } from 'vue'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
+  import { useToast } from 'vue-toastification'
+
+  import { Form } from '@system.it.flumx.com/vee-validate'
+
+  import * as yup from "yup";
+
   import GreenBtn from '../GreenBtn.vue'
   import InputComponent from '../forms/InputComponent.vue'
-  import Counter from '../Counter.vue'
-  import { API } from "../../workers/api-worker/api.worker";
-  import * as yup from "yup";
-  import { Form } from '@system.it.flumx.com/vee-validate'
-  import { useToast } from 'vue-toastification'
   import CodeInput from "../forms/CodeInput.vue";
+  import Counter from '../Counter.vue'
+
+  import { API } from "../../workers/api-worker/api.worker";
+  
+  import { ROUTES } from "../../router/router.const";
+
   import eyeCross from '../../assets/img/eye-crossed.svg'
   import eyeOpen from '../../assets/img/eye-opened.svg'
-  import { ROUTES } from "../../router/router.const";
+
   export default {
     name: 'Step1',
     components: {

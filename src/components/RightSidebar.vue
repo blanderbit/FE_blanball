@@ -18,14 +18,20 @@
 </template>
 
 <script setup>
-import SmallEventCard from './SmallEventCard.vue'
-import SimpleListWrapper from './simple-list/SimpleListWrapper.vue'
+import { computed } from "vue";
+
+import { useI18n } from "vue-i18n";
+
 import dayjs from 'dayjs'
 import dayjsUkrLocale from 'dayjs/locale/uk'
+
+import SmallEventCard from './SmallEventCard.vue'
+import SimpleListWrapper from './simple-list/SimpleListWrapper.vue'
+
 import { API } from "../workers/api-worker/api.worker";
-import { useI18n } from "vue-i18n";
-import { computed } from "vue";
+
 const {t} = useI18n();
+
 const getPlanedEvents = (page) => { // TODO DUBLICATE
   return API.EventService.getPlannedUserEvents(
     {

@@ -87,11 +87,14 @@
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+
 import dayjs from 'dayjs'
 import dayjsUkrLocale from 'dayjs/locale/uk'
-import { useI18n } from 'vue-i18n'
+
+import { v4 as uuid } from 'uuid'
 
 import GreenBtn from '../../../components/GreenBtn.vue'
 import InputComponent from '../../../components/forms/InputComponent.vue'
@@ -102,26 +105,20 @@ import SearchBlockEvents from '../../../components/SearchBlockEvents.vue'
 import MyEventCard from '../../../components/MyEventCard.vue'
 import RightSidebar from '../../../components/RightSidebar.vue'
 import EmptyList from '../../../components/EmptyList.vue'
-
-import CONSTANTS from '../../../consts/index'
-
-import { API } from '../../../workers/api-worker/api.worker'
-import { ROUTES } from '../../../router/router.const'
+import FilterBlock from '../../../components/filters/FilterBlock.vue'
 import SmartGridList from '../../../components/smart-list/SmartGridList.vue'
 import ScrollToTop from '../../../components/ScrollToTop.vue'
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue'
+import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue'
+
+import { API } from '../../../workers/api-worker/api.worker'
+import { ROUTES } from '../../../router/router.const'
 import { PaginationWorker } from '../../../workers/pagination-worker'
 import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patch'
-import FilterBlock from '../../../components/filters/FilterBlock.vue'
 
-import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue'
-import { v4 as uuid } from 'uuid'
+import CONSTANTS from '../../../consts/index'
+
 import Plus from '../../../assets/img/plus.svg'
-
-const COLORS = {
-  green: '#148581',
-  grey: '#DFDEED',
-}
 
 export default {
   name: 'EventsPage',

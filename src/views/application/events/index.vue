@@ -35,7 +35,11 @@
           @update:value="setFilters"
           @clearFilters="clearFilters"
         ></events-filters>
+        
         <div class="b-events-page__all-events-block">
+          <div @click="goToCreateEvent" class="b-events-page__all-create-event-mobile-button">
+            <img src="../../../assets/img/plus.svg" alt="">
+          </div>
           <SmartGridList
             :list="paginationElements"
             ref="refList"
@@ -82,10 +86,12 @@
 <script>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+
 import dayjs from 'dayjs'
 import dayjsUkrLocale from 'dayjs/locale/uk'
-import { useI18n } from 'vue-i18n'
-import { useEventDataStore } from '../../../stores/eventsData'
+import { v4 as uuid } from 'uuid'
+
 import GreenBtn from '../../../components/GreenBtn.vue'
 import InputComponent from '../../../components/forms/InputComponent.vue'
 import ContextMenu from '../../../components/ContextMenuModal.vue'
@@ -99,14 +105,19 @@ import SmartGridList from '../../../components/smart-list/SmartGridList.vue'
 import CONSTANTS from '../../../consts/index'
 import ScrollToTop from '../../../components/ScrollToTop.vue'
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue'
-import { API } from '../../../workers/api-worker/api.worker'
-import { ROUTES } from '../../../router/router.const'
 import Dropdown from '../../../components/forms/Dropdown.vue'
+import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue'
+
+import { useEventDataStore } from '../../../stores/eventsData'
+import { API } from '../../../workers/api-worker/api.worker'
 import { PaginationWorker } from '../../../workers/pagination-worker'
 import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patch'
-import { v4 as uuid } from 'uuid'
-import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue'
+
+import { ROUTES } from '../../../router/router.const'
+
 import Plus from '../../../assets/img/plus.svg'
+
+
 export default {
   name: 'EventsPage',
   components: {
@@ -158,11 +169,24 @@ export default {
     function getTime(time) {
       return dayjs(time).locale(dayjsUkrLocale).format('HH:mm')
     }
+
+    function addMinutes(time, minutesToAdd) {
+      let timeArray = time.split(':');
+      let hours = timeArray[0];
+      let originalMinutes = timeArray[1];
+      let date = new Date();
+      date.setHours(hours);
+      date.setMinutes(originalMinutes);
+      date.setMinutes(date.getMinutes() + minutesToAdd);
+      return date.toTimeString().substr(0, 5);
+    }
+
     function handlingIncomeData(item) {
       return {
         ...item,
         date: getDate(item.date_and_time),
         time: getTime(item.date_and_time),
+        end_time: addMinutes(getTime(item.date_and_time), item.duration),
         labels: [
           item.type,
           item.gender === 'Man' ? t('events.men') : t('events.women'),
@@ -435,6 +459,26 @@ export default {
         margin-top: 23px;
         height: 76vh;
         overflow: hidden;
+
+        .b-events-page__all-create-event-mobile-button {
+          background: #148783;
+          box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+          border-radius: 100px;
+          padding: 12px;
+          position: absolute;
+          display: none;
+          font-size: 24px;
+          font-weight: 700px;
+          width: 44px;
+          height: 44px;
+          right: 25px;
+          z-index: 10;
+          bottom: 130px;
+
+          @media (max-width: 992px) {
+            display: flex;
+          }
+        }
         .b-events-page__cards-event-wrapper {
           display: flex;
           flex-wrap: wrap;

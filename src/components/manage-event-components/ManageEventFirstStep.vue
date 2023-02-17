@@ -1,17 +1,29 @@
 <template>
   <div class="b-event-m-1st" :style="stepStyle">
-    <!-- <Dropdown
+    <div class="b-event-m-1st__title-general mb-2">
+      {{ $t('events.general-info') }}
+    </div>
+    <Dropdown
+      style="margin-top: 10px;"
       :outside-title="true"
       :main-title="$t('events.event-type')"
       :placeholder="$t('events.event-type')"
-      :options="mockData.typeOfEventDropdown"
+      :disabled="true"
       display-name="name"
       display-value="value"
       :width="320"
       :height="40"
-      name="type"
-    /> -->
-    <p>{{ $t('events.friendly-match') }}</p>
+      name="game-type"
+    />
+    <div class="b-event-m-2st__input-name">
+      <InputComponent
+        :outside-title="true"
+        :title="$t('events.event-name')"
+        :placeholder="$t('events.event-name-placeholder')"
+        :title-width="0"
+        name="name"
+      />
+    </div>
     <div class="b-event-m-1st__title mt-3 mb-2">
       {{ $t('events.gender') }}
     </div>
@@ -19,7 +31,7 @@
       <div class="radio-cover">
         <radio-button
           name="gender"
-          :title="$t('events.men')"
+          :title="$t('events.Man')"
           value="Man"
           :width="'auto'"
         ></radio-button>
@@ -27,16 +39,8 @@
       <div class="radio-cover">
         <radio-button
           name="gender"
-          :title="$t('events.women')"
+          :title="$t('events.Woman')"
           value="Woman"
-          :width="'auto'"
-        ></radio-button>
-      </div>
-      <div class="radio-cover">
-        <radio-button
-          name="gender"
-          :title="$t('events.all')"
-          value="All"
           :width="'auto'"
         ></radio-button>
       </div>
@@ -54,51 +58,81 @@
         name="type"
       />
     </div>
+    <div class="b-event-m-1st__title mt-3 mb-2">
+      {{ $t('events.when-event-start') }}
+    </div>
     <div class="b-event-m-1st__time-and-date mt-3">
       <div class="b-event-m-1st__input-calendar">
         <div class="b-event-m-1st__label">
           {{ $t('events.date') }}
         </div>
         <v-date-picker
+          class="b-main-search__calendar"
           locale="ukr"
           :model-config="calendar.modelConfig"
           v-model="initialDate"
+          :min-date="minEventDate"
+          name="date"
         >
           <template #default="options">
             <div class="b-event-m-1st__calendar-cover">
               <input
                 class="py-1 border rounded"
                 :value="options.inputValue"
+                readonly
                 v-on="options.inputEvents"
                 name="date"
+                v-maska="'##.##.####'"
               />
             </div>
           </template>
         </v-date-picker>
         <img src="../../assets/img/calendar.svg" alt="" />
       </div>
+      <span class="b-event-m-1st__subtitle">Оберіть із запропонованих або встановіть час власноруч</span>
       <div class="b-event-m-1st__input-time">
         <InputComponent
           :outside-title="true"
-          :title="$t('events.time')"
+          :title="$t('events.start')"
           :placeholder="'17:00'"
           :title-width="0"
-          :icon="icons.watch"
           name="time"
+          v-maska="'##:##'"
+        />
+      </div>
+      <div class="b-event-m-2st__input-time">
+        <InputComponent
+          :outside-title="true"
+          :title="$t('events.end')"
+          :placeholder="'18:10'"
+          :title-width="0"
+          name="end_time"
+          v-maska="'##:##'"
         />
       </div>
     </div>
-    <div class="b-event-m-1st__input-location">
-      <!-- <InputComponent
-        :placeholder="$t('events.place')"
-        :title-width="0"
-        :icon="icons.location"
-        name="location"
-      /> -->
-      <ModalPositionMap v-model="userLocation"></ModalPositionMap>
+    <div class="b-event-m-2st__duration-select">
+      <div v-for="option in eventDurationOptions" 
+        :class="['b-event-m-2st__duration-item', 
+        {'b-event-m-2st__duration-item-selected': option.id === selectedDurationID}]"
+        @click="selectEventDuration(option)">
+        <span>{{ option.text }}</span>
+      </div>
     </div>
-    <div class="b-event-m-1st__event-map">
-      <img src="../../assets/img/map-manage-event.svg" alt="" />
+    <div class="b-event-m-1st__title mt-3 mb-2">
+      {{ $t('events.place') }}
+    </div>
+    <ModalPositionMap  
+        class="b-event-m-1st__input-location" 
+        v-model="eventLocation">
+    </ModalPositionMap>
+    <ErrorMessage class="b-event-location__error-message" name="place.place_name"/>
+    <div v-if="eventLocation.lat && eventLocation.lng" class="b-event-m-1st__event-map">
+      <position-map
+        :coords="eventLocationOnMap" 
+        @map-loaded="loading = false"
+        disable-change-coords>
+      </position-map>
     </div>
   </div>
 </template>
@@ -106,10 +140,17 @@
 <script>
 import { ref, watch, computed } from 'vue'
 
+import { ErrorMessage } from '@system.it.flumx.com/vee-validate'
+
+import dayjs from 'dayjs'
+
 import Dropdown from '../forms/Dropdown.vue'
 import InputComponent from '../forms/InputComponent.vue'
 import RadioButton from '../forms/RadioButton.vue'
+import PositionMap from '../maps/PositionMap.vue'
 import ModalPositionMap from '../maps/ModalPositionMap.vue'
+
+import CONSTANTS from '../../consts/index'
 
 import CalendarPic from '../../assets/img/calendar.svg'
 import WatchPic from '../../assets/img/watch.svg'
@@ -118,7 +159,28 @@ import UniPic from '../../assets/img/unisex.svg'
 import MalePic from '../../assets/img/male-icon.svg'
 import FemalePic from '../../assets/img/female-icon.svg'
 
-import CONSTANTS from '../../consts/index'
+const eventDurationOptions = ref([
+  {
+    id: 0,
+    text: '30 хв',
+    value: 30*60000
+  },
+  {
+    id: 1,
+    text: '60 хв',
+    value: 60*60000
+  },
+  {
+    id: 2,
+    text: '1,5 год',
+    value: 90*60000
+  },
+  {
+    id: 3,
+    text: '2 год',
+    value: 120*60000
+  },
+])
 
 export default {
   components: {
@@ -126,6 +188,8 @@ export default {
     InputComponent,
     RadioButton,
     ModalPositionMap,
+    PositionMap,
+    ErrorMessage,
   },
   props: {
     formData: {
@@ -137,26 +201,38 @@ export default {
       default: null,
     },
   },
-  emit: ['updateDate'],
+  emits: [
+    'changeEventLocation', 
+    'changeEventDate', 
+    'selectEventDuration'
+  ],
+
   setup(props, { emit }) {
     const initialDate = ref(new Date())
-    const userLocation = ref('')
+    const eventLocation = ref({lat: '', lng: ''})
+    const eventLocationOnMap = ref({})
+    const selectedDurationID = ref('')
+    const minEventDate = ref(new Date().toISOString().slice(0, 10))
+
+    watch(() => eventLocation.value, (newData, oldData) => {
+      emit('changeEventLocation', newData)
+      
+      eventLocationOnMap.value = {lat: newData.lat, lng: newData.lng}
+    })
+
+
+    watch(() => initialDate.value, (newData, oldData) => {
+      emit('changeEventDate', newData)
+    })
+
+
+    const setEventInitDate = () => {
+      emit('changeEventDate', dayjs(initialDate.value).format('YYYY-MM-DD'))
+    }
 
     const stepStyle = computed(() => {
       return props.currentStep === 1 ? { height: 'auto' } : { height: '0px' }
     })
-    watch(
-      () => initialDate.value,
-      () => {
-        emit('updateDate', initialDate.value)
-      }
-    )
-    watch(
-      () => userLocation.value,
-      () => {
-        emit('updateLocation', userLocation.value)
-      }
-    )
 
     const calendar = ref({
       inputMask: 'YYYY-MM-DD',
@@ -165,6 +241,14 @@ export default {
         mask: 'YYYY-MM-DD', // Uses 'iso' if missing
       },
     })
+
+    const selectEventDuration = (data) => {
+      selectedDurationID.value = data.id
+
+      emit('selectEventDuration', data.value)
+    }
+
+  
     const icons = computed(() => {
       return {
         calendar: CalendarPic,
@@ -182,35 +266,54 @@ export default {
       }
     })
 
+    setEventInitDate()
+
     return {
       icons,
       mockData,
       initialDate,
       calendar,
-      userLocation,
+      eventLocationOnMap,
+      eventLocation,
       stepStyle,
+      eventDurationOptions,
+      minEventDate,
+      selectedDurationID,
+      selectEventDuration,
     }
   },
 }
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/styles/calendar.scss';
 .b-event-m-1st {
   overflow: hidden;
+
+  .b-event-m-1st__title-general {
+    font-family: 'Exo 2';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    color: #262541;
+  }
+  .b-event-m-2st__input-name {
+    margin-top: 20px;
+  }
   .b-event-m-1st__time-and-date {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 10px;
     .b-event-m-1st__input-calendar {
-      flex-basis: 50%;
+      width: 100%;
       margin-right: 12px;
       border: 1px solid #dfdeed;
       border-radius: 6px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       padding: 0 12px;
-      width: 154px;
-      min-width: 154px;
       position: relative;
       .b-event-m-1st__label {
         position: absolute;
@@ -236,22 +339,39 @@ export default {
       }
     }
     .b-event-m-1st__input-time {
-      flex-basis: 50%;
+      flex-basis: 100%;
+    }
+
+    .b-event-m-2st__input-time {
+      flex-basis: 100%;
     }
   }
   .b-event-m-1st__input-location {
-    width: 100%;
-    height: 40px;
+    min-width: 100%;
+    border: 1px solid #DFDEED;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding: 12px 8px 12px 12px;
     margin-top: 16px;
+
+    &::v-deep(.b-modal-position__address-text) {
+      justify-content: space-between;
+      flex-direction: row-reverse;
+    }
+
+    .b-event-m-1st__location-map {
+      width: 100%;
+    }
   }
-  .b-event-m-1st__title {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 13px;
-    line-height: 20px;
-    color: #262541;
-  }
+    .b-event-m-1st__title {
+      font-family: 'Exo 2';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 24px;
+      color: #262541;
+    }
   .b-event-m-1st__radio-btn-wrapper {
     margin-top: 12px;
     $color1: #f4f4f4;
@@ -260,7 +380,10 @@ export default {
     align-items: center;
     justify-content: space-between;
     .radio-cover {
-      flex-basis: 30%;
+      flex-basis: 50%;
+      &:not(:last-child) {
+        margin-right: 10px;
+      }
       ::v-deep {
         .b-radio {
           margin-right: 0;
@@ -273,6 +396,53 @@ export default {
   }
   .b-event-m-1st__event-map {
     margin-top: 16px;
+    height: 200px;
+  }
+}
+.b-event-location__error-message {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  color: #f32929;
+}
+.b-event-m-1st__subtitle {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 20px;
+  color: #575775;
+  margin-bottom: 10px;
+}
+.b-event-m-2st__duration-select {
+  border: 1px solid #DFDEED;
+  border-radius: 6px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .b-event-m-2st__duration-item {
+    flex-basis: 25%;
+    background: #FFFFFF;
+    border-radius: 4px;
+    padding: 8px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 20px;
+    text-align: center;  
+    color: #6F6F77;
+    cursor: pointer;
+
+    &-selected {
+      background: #F0F0F4;
+      color: #262541;
+      font-weight: 500;
+    }
   }
 }
 </style>

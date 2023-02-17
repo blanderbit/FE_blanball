@@ -76,7 +76,9 @@
 
 <script>
 import { ref, computed } from 'vue'
+
 import StarRating from 'vue-star-rating'
+
 import dayjs from 'dayjs'
 import dayjsUkrLocale from 'dayjs/locale/uk'
 

@@ -31,10 +31,12 @@
 </template>
 
 <script>
-import { CustomModelWorker } from '../../workers/custom-model-worker'
-import { v4 as uuid } from 'uuid'
 import { ref, computed, watch } from 'vue'
-import { booleanTypeAnnotation } from '@babel/types'
+
+import { v4 as uuid } from 'uuid'
+
+import { CustomModelWorker } from '../../workers/custom-model-worker'
+
 export default {
   name: 'RadioButton',
   props: {
@@ -106,7 +108,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import 'forms.scss';
+@import '../../assets/styles/forms.scss';
+
 $color1: #f4f4f4;
 $color2: #148783;
 .b-radio {
@@ -117,11 +120,15 @@ $color2: #148783;
   border: 1px solid #dfdeed;
   border-radius: 6px;
   margin-right: 12px;
+  padding: 6px 12px;
+
+  .b-radio__icon {
+    margin-right: 10px;
+  }
   input[type='radio'] {
     position: absolute;
     opacity: 0;
     + .b-radio-label {
-      padding: 6px 12px;
       display: flex;
       align-items: center;
       font-family: 'Inter';
