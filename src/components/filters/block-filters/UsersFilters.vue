@@ -131,17 +131,17 @@ import Checkbox from '../../forms/Checkbox.vue'
 import ButtonDetailsFilters from '../components/ButtonDetailsFilters.vue'
 import ClearFilters from '../components/ClearFilters.vue'
 import ModalPositionMap from '../../maps/ModalPositionMap.vue'
-import { cloneDeep, isEqual } from 'lodash'
-import { TransformedFiltersWorker } from './transformed.filters.worker'
 import ModalFilters from '../ModalUsersFilters.vue'
+
+import { TransformedFiltersWorker } from './transformed.filters.worker'
+import useWindowWidth from '../../../utils/widthScreen'
+
+import CONSTANTS from '../../../consts'
 
 import SearchIcon from '../../../assets/img/search.svg'
 import ArrowTopIcon from '../../../assets/img/arrow-top.svg'
 import ArrowDownIcon from '../../../assets/img/arrow-down2.svg'
 
-import CONSTANTS from '../../../consts'
-
-import useWindowWidth from '../../../utils/widthScreen'
 
 export default {
   name: 'UsersFilters',

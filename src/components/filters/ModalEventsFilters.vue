@@ -103,9 +103,9 @@ import ModalPositionMap from '../maps/ModalPositionMap.vue'
 import ClearFilters from './components/ClearFilters.vue'
 import InputComponent from '../forms/InputComponent.vue'
 
-import tickIcon from '../../assets/img/tick-white.svg'
-
 import CONSTANTS from '../../consts/index'
+
+import tickIcon from '../../assets/img/tick-white.svg'
 
 export default {
   name: 'ModalUsersFilters',

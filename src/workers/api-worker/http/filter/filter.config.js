@@ -28,6 +28,7 @@ export const filterConfigForUsers = {
 export const filterConfigForRelevantUsers = {
   page: Number,
   search: String,
+  skipids: Number,
 };
 
 export const filterConfigForReviews = {

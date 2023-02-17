@@ -25,6 +25,7 @@
 
 <script>
 import { useRouter } from 'vue-router'
+
 import { ROUTES } from '../router/router.const'
 
 export default {

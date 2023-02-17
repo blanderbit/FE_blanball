@@ -41,8 +41,11 @@
 
 <script>
 import { computed } from 'vue'
+
 import RatePlayerCard from '../ModalFeedback/RatePlayerCard.vue'
+
 import CONSTANTS from '../../consts/index'
+
 export default {
   name: 'ModalBottomCard',
   components: {

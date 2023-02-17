@@ -22,4 +22,5 @@ export default {
   publish: 'Опублікувати',
   'close-this-window': 'Закрити це вікно',
   'send-feedback': 'Надіслати відгук',
+  'delete-users': 'Видалити користувачів'
 }

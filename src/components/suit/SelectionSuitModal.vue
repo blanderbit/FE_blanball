@@ -5,23 +5,13 @@
       <div class="b-selection-suit__description">
         Оберіть кольори форм або маніжок для команд
       </div>
-
-      <div class="b-selection-suit__block">
-        <div class="b-selection-suit__subtitle">Вид форми</div>
-        <LongRadioButtonGroup
-          v-model="selectedType"
-          name="test"
-          :values="values"
-        >
-        </LongRadioButtonGroup>
-      </div>
       <div class="b-selection-suit__block" v-for="item in teams">
         <div class="b-selection-suit__subtitle">{{ item.teamName }}</div>
         <suit-card :values="item.values"></suit-card>
       </div>
       <div class="d-flex justify-content-between align-items-center">
-        <div class="b-selection-suit__clear">Скасувати</div>
-        <GreenBtn :text="'Зберегти'" :width="140" :height="40" />
+        <div @click="$emit('closeModal')" class="b-selection-suit__clear">Скасувати</div>
+        <GreenBtn @click="$emit('saveData')" :text="'Зберегти'" :width="140" :height="40" />
       </div>
     </template>
   </ModalWindow>
@@ -38,6 +28,10 @@ export default {
   name: 'SelectionSuitModal',
   props: {
     modelValue: String,
+    selectedCategory: {
+      type: String,
+      default: ''
+    }
   },
   components: {
     ModalWindow,
@@ -45,15 +39,15 @@ export default {
     SuitCard,
     GreenBtn,
   },
-  setup() {
-    const selectedType = ref('Формы')
+  emits: ['closeModal', 'saveData'],
+  setup(props) {
     const values = ref([
       { title: 'Формы', value: 'Формы' },
       { title: 'Манижки', value: 'Манижки' },
     ])
 
     const teams = computed(() => {
-      if (selectedType.value === 'Формы') {
+      if (props.selectedCategory === 'T-Shirt') {
         return [
           {
             teamName: 'Команда №1',
@@ -82,7 +76,7 @@ export default {
             ],
           },
         ]
-      } else if (selectedType.value === 'Манижки') {
+      } else if (props.selectedCategory === 'Shirt-Front') {
         return [
           {
             teamName: 'Команда №1',
@@ -109,7 +103,6 @@ export default {
     })
     return {
       values,
-      selectedType,
       teams,
     }
   },
@@ -148,7 +141,7 @@ export default {
   }
 
   &__block {
-    margin-bottom: 16px;
+    margin-bottom: 20px;
   }
 
   &__clear {

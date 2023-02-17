@@ -52,11 +52,14 @@
 
 <script>
 import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+
 import { CustomModelWorker } from '../../workers/custom-model-worker/index'
 
 import eyeCross from '../../assets/img/eye-crossed.svg'
 import eyeOpen from '../../assets/img/eye-opened.svg'
-import { useI18n } from 'vue-i18n'
+
+
 const PASSWORD_TYPES = {
   PASSWORD: 'password',
   TEXT: 'text',
@@ -215,7 +218,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import 'forms.scss';
+@import '../../assets/styles/forms.scss';
+
 .b-input__input-component {
   height: 100%;
   .b-input__wrapper {

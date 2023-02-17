@@ -199,21 +199,24 @@
 </template>
 
 <script>
-  import { computed, ref } from 'vue'
-  import { useRoute } from 'vue-router'
-  import StarRating from 'vue-star-rating'
-  import dayjs from 'dayjs'
-  import dayjsUkrLocale from 'dayjs/locale/uk'
+import { computed, ref } from 'vue'
+  
+import StarRating from 'vue-star-rating'
+
+import dayjs from 'dayjs'
+import dayjsUkrLocale from 'dayjs/locale/uk'
+
+import SimpleListWrapper from './simple-list/SimpleListWrapper.vue'
+import Avatar from './Avatar.vue'
+import Loading from './../workers/loading-worker/Loading.vue'
+
+import { API } from '../workers/api-worker/api.worker'
 
 import publicPageBack from '../assets/img/public-page-back.svg'
 import userPageBack from '../assets/img/user-page-back.svg'
 import fitWeight from '../assets/img/fit-weight.svg'
 import measureTape from '../assets/img/measure-tape.svg'
 
-import { API } from '../workers/api-worker/api.worker'
-import Loading from './../workers/loading-worker/Loading.vue'
-import SimpleListWrapper from './simple-list/SimpleListWrapper.vue'
-import Avatar from './Avatar.vue'
 
 const PAGE_MODE = 'public'
 

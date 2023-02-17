@@ -19,6 +19,11 @@ export default {
       name: 'Футбол',
       value: 'Football',
     },
+    {
+      id: 0,
+      name: 'Фут-зал',
+      value: 'Futsal',
+    },
   ],
   tags: [
     {

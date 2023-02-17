@@ -1,4 +1,4 @@
-@import './../../node_modules/vue-toastification/dist/index.css';
+@import '../../../node_modules/vue-toastification/dist/index.css';
 
 .Vue-Toastification__toast {
   background: #262541;
