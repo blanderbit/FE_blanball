@@ -111,7 +111,12 @@
         @submit="disableSubmit"
         ref="myForm"
       >
-        <RatingCard v-if="!isTabletSize" :rating-scale="userRating" />
+        <RatingCard 
+          v-if="!isTabletSize" 
+          :rating-scale="userRating"
+          :openedReviewID="openedReviewId"
+          @openReview="openReview"
+          @hideReview="hideReview"/>
         <UserDetailsCard
           :user-data="userData"
           :phone="userPhone"
@@ -119,7 +124,12 @@
           @openEditPictureModal="openEditPictureModal"
         />
         <div class="b-user-cabinet__mobile-tablet-block">
-          <RatingCard v-if="isTabletSize" :rating-scale="userRating" />
+          <RatingCard 
+            v-if="isTabletSize" 
+            :rating-scale="userRating" 
+            :openedReviewID="openedReviewId"
+            @openReview="openReview"
+            @hideReview="hideReview"/>
           <SecurityBlock
             @toggle-modal="toggleModal"
             :user-email="userEmail"
@@ -238,6 +248,7 @@ export default {
     const isTabLabel = ref(false)
     const userAvatar = ref('')
     const restData = ref()
+    const openedReviewId = ref(0)
 
     const isTabletSize = computed(() => {
       return isBetweenTabletAndDesktop.value || isTablet.value
@@ -357,6 +368,15 @@ export default {
     onBeforeUnmount(() => {
       window.removeEventListener('resize', onResize)
     })
+
+    function openReview(reviewId) {
+      openedReviewId.value = reviewId
+    }
+
+    function hideReview() {
+      openedReviewId.value = 0
+      debugger
+    }
 
     function switchTabLabel(isDisabled) {
       if (isDisabled) {
@@ -654,6 +674,7 @@ export default {
       cancelDataEdit,
       openEditPictureModal,
       getMyProfile,
+      openReview,
       showPreview,
       userRating,
       userPhone,
@@ -668,6 +689,7 @@ export default {
       formValues,
       myForm,
       userInfo,
+      openedReviewId,
       isLoading,
       isMobile,
       isTabLabel,

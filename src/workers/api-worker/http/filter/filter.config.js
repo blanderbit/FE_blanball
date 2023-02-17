@@ -31,6 +31,10 @@ export const filterConfigForRelevantUsers = {
   skipids: Number,
 };
 
+export const filterConfigForReviews = {
+  page: Number,
+};
+
 export const filterConfigForEvents = {
   page: Number,
   gender: new Enum(['Man', 'Woman', '']),

@@ -54,4 +54,3 @@ jobs:
         uses: saulmaldonado/skip-workflow@v1
         with:
           fail-fast: 'true'
-
