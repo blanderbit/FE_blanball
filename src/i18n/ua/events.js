@@ -66,7 +66,11 @@ export default {
   'enter-colors': 'Вкажіть кольори форм',
   team1: 'Команда №1',
   team2: 'Команда №1',
+  'list-of-users': 'Список гравців',
   'poster-preview': 'Попередній перегляд афіші',
+  'registered-fans': 'Зареєстровані глядачі',
+  'couch-list': 'Тренерський склад',
+  'apps-for-participation': 'Заявки на участь',
   preview: 'Попередній перегляд',
   'invited-members': 'Запрошені учасники',
   'poster-main-preview':

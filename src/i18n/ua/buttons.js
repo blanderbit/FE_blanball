@@ -23,5 +23,5 @@ export default {
   'join': 'Долучитися',
   'close-this-window': 'Закрити це вікно',
   'send-feedback': 'Надіслати відгук',
-  'copy-link': 'Скопіювати посилання',
+  'copy-link': 'Скопіювати посилання', 
 }

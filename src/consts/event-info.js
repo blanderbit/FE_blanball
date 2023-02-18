@@ -3,6 +3,10 @@ import smile_face from '../assets/img/smile_face.svg'
 import no_user from '../assets/img/no-user-picture.svg'
 import minus from '../assets/img/minus.svg'
 import add_user from '../assets/img/add-user-button.svg'
+import ball_icon from '../assets/img/ball-icon.svg'
+import members from '../assets/img/members.svg'
+import couch from '../assets/img/couch.svg'
+import user_with_plus from '../assets/img/add-user.svg'
 
 export default {
   playersList: new Array(21).fill('l').map((item, idx) => {
@@ -26,56 +30,30 @@ export default {
       }
     }
   }),
-  trainer: [
+  tabs: [
     {
       id: 0,
-      img: user,
-      name: 'Капустин Никита',
-      status: 'ПНЗ',
-      icon: smile_face,
-      isActive: true,
-      duty: 'Тренерська категорія',
-    },
-  ],
-  judge: [
-    {
-      id: 0,
-      img: user,
-      name: 'Капустин Никита',
-      status: 'ПНЗ',
-      icon: smile_face,
-      isActive: true,
-      duty: 'Суддівська категорія',
-    },
-  ],
-  ciefs: [
-    {
-      id: 0,
-      img: user,
-      name: 'Сергій Білецький',
-      phone: '+380 66 873 05 75',
-      status: 'Організатор',
+      name: 'events.list-of-users',
+      img: ball_icon,
+      isDisabled: false
     },
     {
       id: 1,
-      img: user,
-      name: 'Ярослав Бойко',
-      phone: '+380 97 773 05 81',
-      status: 'Тренер',
-    },
-  ],
-  labels: [
-    {
-      id: 0,
-      text: 'Футбол',
-    },
-    {
-      id: 1,
-      text: 'Чоловіки',
+      name: 'events.registered-fans',
+      img: members,
+      isDisabled: false
     },
     {
       id: 2,
-      text: 'Без розряду',
+      name: 'events.apps-for-participation',
+      img: user_with_plus,
+      isDisabled: false
+    },
+    {
+      id: 3,
+      name: 'events.couch-list',
+      img: couch,
+      isDisabled: true
     },
   ],
 }
