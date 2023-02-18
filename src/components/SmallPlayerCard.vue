@@ -2,11 +2,15 @@
   <div :class="['b-small-player-card', { inactive: !dataPlayer.isActive }]">
     <div class="b-small-player-card__left-side">
       <div class="b-small-player-card__picture">
-        <img :src="dataPlayer.img" alt="" />
+        <Avatar
+          :link="dataPlayer.profile.avatar_url"
+          :full-name="`${dataPlayer.profile.name} ${dataPlayer.profile.last_name}`"
+          @clickByAvatar="goToUserProfile(dataPlayer.id)"
+        ></Avatar>
       </div>
       <div class="b-small-player-card__name-duty">
         <div class="b-small-player-card__name">
-          {{ dataPlayer.name }}
+          {{ dataPlayer.profile.name }} {{ dataPlayer.profile.last_name }}
         </div>
         <div class="b-small-player-card__duty">
           {{ dataPlayer.duty }}
@@ -14,37 +18,51 @@
       </div>
     </div>
     <div class="b-small-player-card__right-side">
-      <div v-if="dataPlayer.isActive" class="b-small-player-card__status">
-        {{ dataPlayer.status }}
+      <div class="b-small-player-card__status">
+        {{ $t(`hashtags.${dataPlayer.profile?.position}`) }}
       </div>
-      <img
-        v-else
-        :src="dataPlayer.status"
-        class="b-small-player-card__inactive"
-        alt=""
-      />
       <div class="b-small-player-card__icon">
-        <img :src="dataPlayer.icon" alt="" />
+        <img :src="dataPlayer.emoji" alt="" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { useRouter } from 'vue-router'
+
+import Avatar from './Avatar.vue'
+
+import { ROUTES } from '../router/router.const'
+
 export default {
+  components: {
+    Avatar,
+  },
   props: {
     dataPlayer: {
       type: Object,
       default: () => ({}),
     },
   },
+  setup() {
+    const router = useRouter()
+
+    const goToUserProfile = (userId) => {
+      router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId))
+    }
+
+    return {
+      goToUserProfile,
+    }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 .b-small-player-card {
-  width: 380px;
   padding: 14px 20px;
+  width: 48%;
   border: 1px solid #dfdeed;
   border-radius: 4px;
   margin-bottom: 12px;
@@ -57,12 +75,7 @@ export default {
   font-size: 14px;
   line-height: 20px;
   color: #262541;
-  @media (min-width: 1200px) and (max-width: 1400px) {
-    width: 368px;
-  }
-  @media (min-width: 768px) and (max-width: 992px) {
-    width: 300px;
-  }
+
   @media (max-width: 768px) {
     width: 100%;
   }
@@ -75,6 +88,9 @@ export default {
     align-items: center;
     .b-small-player-card__picture {
       margin-right: 16px;
+      border: 2px dashed #dfdeed;
+      border-radius: 100px;
+      padding: 4px;
     }
     .b-small-player-card__name-duty {
       .b-small-player-card__duty {
@@ -85,13 +101,28 @@ export default {
         line-height: 20px;
         color: #575775;
       }
+
+      .b-small-player-card__name {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        color: #262541;
+      }
     }
   }
   .b-small-player-card__right-side {
     display: flex;
     align-items: center;
     .b-small-player-card__status {
-      margin-right: 24px;
+      margin-right: 50px;
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      color: #262541;
     }
     .b-small-player-card__inactive {
       margin-right: 24px;

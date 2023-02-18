@@ -38,7 +38,7 @@ export class ResponseToInviteForParticipationMessage extends InitialMessage {
     this.actions = [
       {
         type: MessageActionTypes.ActionClose,
-        text: 'Понятно',
+        text: 'Зрозуміло',
       },
     ]
 

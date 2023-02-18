@@ -21,11 +21,11 @@ import { ROUTES } from '../../../../router/router.const'
 @SetActions([
   {
     type: MessageActionTypes.ActionClose,
-    text: 'Понятно',
+    text: 'Зрозуміло',
   },
   {
     type: MessageActionTypes.Action,
-    text: 'Просмотреть ивент',
+    text: 'Переглянути зміни',
     action: ({ notificationInstance }) =>
       ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(
         notificationInstance.data.event.id
@@ -42,6 +42,6 @@ export class EventUpdatedMessage extends InitialMessage {
   }
 
   createTitle() {
-    return 'Ивент был обновлен!'
+    return 'Подія була оновлена'
   }
 }

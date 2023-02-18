@@ -19,11 +19,11 @@ import { NotificationsBus } from '../../../event-bus-worker'
 @SetActions([
   {
     type: MessageActionTypes.ActionClose,
-    text: 'Понятно',
+    text: 'Зрозуміло',
   },
   {
     type: MessageActionTypes.Action,
-    text: 'Оставить отзыв',
+    text: 'Залишити відгук',
     action: ({notificationInstance}) => {
       NotificationsBus.emit('openEventReviewModal', notificationInstance)
     },
@@ -34,11 +34,11 @@ import { NotificationsBus } from '../../../event-bus-worker'
 export class EventHasBeenEndedMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `${data.event.name} - событие закончилось! Вы можете оставить отзыв о событии и учасниках, надеемся Вам все понравилось!"`,
+      `Подія "${data.event.name}" була закінчена, ви можете залишити відгук про подію та її учасників"`,
     ]
   }
 
   createTitle() {
-    return 'Событие закончилось!'
+    return 'Подія закінчилася'
   }
 }

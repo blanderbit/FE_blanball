@@ -46,8 +46,10 @@
                 </star-rating>
               </div>
               <div class="b-user-card__team-status">
-                <div class="b-user-card__team">Какая-то команда</div>
-                <div class="b-user-card__status-mob">{{ userData.role }}</div>
+                <div class="b-user-card__team">BlanBall Team</div>
+                <div class="b-user-card__status-mob">
+                  {{ $t(`hashtags.${userData.role}`) }}
+                </div>
               </div>
             </div>
             <!-- <div class="b-user-card__bottom-line">
@@ -60,7 +62,7 @@
           </div>
           <div class="b-user-card__user-status">
             <img src="../assets/img/runner.svg" alt="runner icon" />
-            <div class="b-user-card__status">{{ userData.role }}</div>
+            <div class="b-user-card__status">{{ $t(`hashtags.${userData.role}`) }}</div>
           </div>
           <!--<div-->
           <!--:class="['b_user_card_arrow', {active: userData.isActive}]"-->
@@ -73,18 +75,18 @@
 
     <template #content>
       <div class="b-user-card__flipping-part">
-        <div class="b-user-card__pnz">
-          {{ userData.profile.position }}
+        <div v-if="userData.profile.position" class="b-user-card__pnz">
+          {{ $t(`hashtags.${userData.profile.position}`) }}
           <span>
-            {{ userPosition[userData.profile.position] }}
+            {{ $t(`hashtags.position_full.${userData.profile.position}`) }}
           </span>
         </div>
-        <div class="b-user-card__gender">
+        <div  v-if="userData.profile.gender" class="b-user-card__gender">
           <span class="title">{{ $t('users.gender') }}</span>
           <span class="icon">
             <img src="../assets/img/unisex-icon2.svg" alt="gender icon" />
           </span>
-          <span>{{ userData.profile.gender }}</span>
+          <span>: {{ $t(`hashtags.${userData.profile.gender}`) }}</span>
         </div>
       </div>
     </template>

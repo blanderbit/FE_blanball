@@ -105,7 +105,7 @@ export default {
           margin: 20px auto;
         }
       }
-      .green-btn {
+      .b-green-btn {
         @media (max-width: 768px) {
           margin: 0 auto;
         }

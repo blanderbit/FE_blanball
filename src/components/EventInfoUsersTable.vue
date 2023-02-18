@@ -1,7 +1,10 @@
 <template>
-  <div class="b-users-table" :style="tableStyle">
-    <div class="b-users-table__table-label" :style="labelStyle">
+  <div v-if="data.length" class="b-users-table" :style="border ? tableStyle : null">
+    <div v-if="border" class="b-users-table__table-label" :style="labelStyle">
       {{ tableTitle }}
+      <span v-if="maxPlayersCount"
+        >{{ data.length }} / {{ maxPlayersCount }}</span
+      >
     </div>
     <SmallPlayerCard
       v-for="player of data"
@@ -9,12 +12,18 @@
       :data-player="player"
     />
   </div>
+  <EmptyList
+    v-else
+      :title="'fd'"
+      :description="'dfd'"
+    />
 </template>
 
 <script>
 import { ref, reactive } from 'vue'
 
 import SmallPlayerCard from './SmallPlayerCard.vue'
+import EmptyList  from './EmptyList.vue'
 
 export default {
   props: {
@@ -30,9 +39,17 @@ export default {
       type: String,
       default: '#000',
     },
+    border: {
+      type: Boolean,
+      default: true,
+    },
+    maxPlayersCount: {
+      type: Number,
+    },
   },
   components: {
     SmallPlayerCard,
+    EmptyList,
   },
   setup(props) {
     const tableTitle = ref(props.tableTitleText)

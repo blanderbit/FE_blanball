@@ -18,7 +18,7 @@ import { NotificationImage } from '../../../../assets/img/notifications/notifica
 @SetActions([
   {
     type: MessageActionTypes.ActionClose,
-    text: 'Понятно',
+    text: 'Зрозуміло',
   },
 ])
 export class EventTimeNotificationMessage extends InitialMessage {
@@ -36,11 +36,11 @@ export class EventTimeNotificationMessage extends InitialMessage {
       .asHours()
 
     return [
-      `Напоминаем, ${data.recipient.name} - событие начинается в ${start_time}, время до старта ${time_to_start}`,
+      `Команда Blanball нагадує вам, що подія "${data.recipient.name}" почнеться через ${time_to_start}`,
     ]
   }
 
   createTitle() {
-    return 'Напоминание о старте события.'
+    return 'Не пропустіть подію'
   }
 }
