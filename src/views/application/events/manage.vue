@@ -1,7 +1,12 @@
 <template>
   <Loading :is-loading="eventCreateLoader"></Loading>
   <div class="b-manage-event">
-    <Form v-slot="data" :initial-values="eventPreviewData" :validation-schema="schema" @submit="disableSubmit">
+    <Form
+      v-slot="data"
+      :initial-values="eventPreviewData"
+      :validation-schema="schema"
+      @submit="disableSubmit"
+    >
       <div class="b-manage-event__page-title">
         <span>
           {{ $t('events.event-creation') }}
@@ -68,35 +73,50 @@
         </div>
 
         <div class="b-manage-event-preview__block">
-          <PreviewBlock
-          :eventData="data.values"
-        />
+          <PreviewBlock :eventData="data.values" />
 
-        <RemoveInvitedUsersModal 
+          <RemoveInvitedUsersModal
             v-if="removeInvitedUsersModalOpened"
             @closeModal="closeRemoveUsersModal"
-            @deleteUsers="removeAllInvitedUsers"/>
+            @deleteUsers="removeAllInvitedUsers"
+          />
 
-        <div class="b-manage-event__invited-users__list mt-10">
-          <span class="b-user-what-you__invited" v-if="invitedUsers.length">
-            {{ $t('events.invited-people') }}
-          </span>
-          <span class="b-remove-all__invited-users" @click="openRemoveUsersModal">Видалити всіх</span>
-          <div class="b-manage-event__invited-user" v-for="user in invitedUsers">
-            <div class="b-manage-event__invited-user-left__side">
-              <avatar class="b-invited-user__avatar" :link="user.profile.avatar_url"
-                :full-name="`${user.profile.name} ${user.profile.last_name}`"></avatar>
-              <span class="b-invited-user__position">{{ user.profile.position }}</span>
-              <span class="b-invited-user__full-name">
-                {{ user.profile.name }} {{ user.profile.last_name }}
-              </span>
-            </div>
-            <div class="b-invited-user-right__side">
-              <img class="b-remove-invited__user" src="../../../assets/img/gray-cross.svg" alt="gray-cross"
-                @click="removeInvitedUser(user.id)">
+          <div class="b-manage-event__invited-users__list mt-10">
+            <span class="b-user-what-you__invited" v-if="invitedUsers.length">
+              {{ $t('events.invited-people') }}
+            </span>
+            <span
+              class="b-remove-all__invited-users"
+              @click="openRemoveUsersModal"
+              >Видалити всіх</span
+            >
+            <div
+              class="b-manage-event__invited-user"
+              v-for="user in invitedUsers"
+            >
+              <div class="b-manage-event__invited-user-left__side">
+                <avatar
+                  class="b-invited-user__avatar"
+                  :link="user.profile.avatar_url"
+                  :full-name="`${user.profile.name} ${user.profile.last_name}`"
+                ></avatar>
+                <span class="b-invited-user__position">{{
+                  user.profile.position
+                }}</span>
+                <span class="b-invited-user__full-name">
+                  {{ user.profile.name }} {{ user.profile.last_name }}
+                </span>
+              </div>
+              <div class="b-invited-user-right__side">
+                <img
+                  class="b-remove-invited__user"
+                  src="../../../assets/img/gray-cross.svg"
+                  alt="gray-cross"
+                  @click="removeInvitedUser(user.id)"
+                />
+              </div>
             </div>
           </div>
-        </div>
         </div>
 
         <div class="b-manage-event__btns-desktop-block">
@@ -179,24 +199,22 @@ export default {
     }
 
     const eventPreviewData = ref({
-      "name": "",
-      "place": {},
-      "status": "Planned",
-      "gender": null,
-      "description": "",
-      "type": "",
-      "contact_number": userStore.user.phone,
-      "need_ball": false,
-      "duration": null,
-      "need_form": null,
-      "date_and_time": "",
-      "count_current_users": 0,
-      "count_current_fans": 0,
-      "current_users": []
+      name: '',
+      place: {},
+      status: 'Planned',
+      gender: null,
+      description: '',
+      type: '',
+      contact_number: userStore.user.phone,
+      need_ball: false,
+      duration: null,
+      need_form: null,
+      date_and_time: '',
+      count_current_users: 0,
+      count_current_fans: 0,
+      current_users: [],
     })
 
-
-  
     const schema = computed(() => {
       if (currentStep.value === 1) {
         return yup.object({
@@ -208,73 +226,96 @@ export default {
             .max(255, 'errors.max255'),
           time: yup
             .string()
-            .matches(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/, 'errors.invalid-time')
+            .matches(
+              /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/,
+              'errors.invalid-time'
+            )
             .min(5, 'errors.invalid-time')
-            .required('errors.required').test({
+            .required('errors.required')
+            .test({
               name: 'isOneHourLater',
               message: 'errors.time-more-than-one-hour',
-              test: time => {
+              test: (time) => {
                 try {
-                  let currentHour = new Date().getHours();
-                  let currentMinute = new Date().getMinutes();
-                  let hour = parseInt(time.split(':')[0]);
-                  let minute = parseInt(time.split(':')[1]);
-                  return hour > currentHour + 1 || (hour === currentHour + 1 && minute > currentMinute);
+                  let currentHour = new Date().getHours()
+                  let currentMinute = new Date().getMinutes()
+                  let hour = parseInt(time.split(':')[0])
+                  let minute = parseInt(time.split(':')[1])
+                  return (
+                    hour > currentHour + 1 ||
+                    (hour === currentHour + 1 && minute > currentMinute)
+                  )
                 } catch {
                   return false
                 }
-              }
+              },
             }),
           end_time: yup
             .string()
-            .matches(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/, 'errors.invalid-time')
+            .matches(
+              /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/,
+              'errors.invalid-time'
+            )
             .required('errors.required')
             .min(5, 'errors.invalid-time')
-            .when("time",
-              (time, schema, value) => {
-                if (time)
-                  return schema.test('end_time', 'errors.duration-10min-3hours', function (value) {
-                   try {
-                    const start_time_hours = parseInt(time.split(":")[0]);
-                    const end_time_hours = parseInt(value.split(":")[0]);
-                    const start_time_minutes = parseInt(time.split(":")[1]);
-                    const end_time_minutes = parseInt(value.split(":")[1]);
-                    const maxDifference = 3 * 60; // 3 hours in minutes
-                    const minDifference = 10; // 10 minutes
-                    const timeDifference = (end_time_hours - start_time_hours) * 60 + (end_time_minutes - start_time_minutes);
-
-                    if (timeDifference > maxDifference) {
-                      return false;
-                    }
-
-                    if (timeDifference < minDifference) {
-                      return false;
-                    }
-
-                    return true;
-                   } catch {
-                    return false;
-                   }
-                  }).test('event_duration', "errors.duration-must-be-round", function (value) {
-                    try {
-                      const [hours1, minutes1] = time.split(":").map(Number);
-                      const [hours2, minutes2] = value.split(":").map(Number);
-                      const totalMinutes1 = hours1 * 60 + minutes1;
-                      const totalMinutes2 = hours2 * 60 + minutes2;
-                      const timeDifference = Math.abs(totalMinutes1 - totalMinutes2);
-
-                      return timeDifference % 10 === 0;
-                    } catch {
-                      return false
-                    }
-                  })
+            .when('time', (time, schema, value) => {
+              if (time)
                 return schema
-              }),
+                  .test(
+                    'end_time',
+                    'errors.duration-10min-3hours',
+                    function (value) {
+                      try {
+                        const start_time_hours = parseInt(time.split(':')[0])
+                        const end_time_hours = parseInt(value.split(':')[0])
+                        const start_time_minutes = parseInt(time.split(':')[1])
+                        const end_time_minutes = parseInt(value.split(':')[1])
+                        const maxDifference = 3 * 60 // 3 hours in minutes
+                        const minDifference = 10 // 10 minutes
+                        const timeDifference =
+                          (end_time_hours - start_time_hours) * 60 +
+                          (end_time_minutes - start_time_minutes)
+
+                        if (timeDifference > maxDifference) {
+                          return false
+                        }
+
+                        if (timeDifference < minDifference) {
+                          return false
+                        }
+
+                        return true
+                      } catch {
+                        return false
+                      }
+                    }
+                  )
+                  .test(
+                    'event_duration',
+                    'errors.duration-must-be-round',
+                    function (value) {
+                      try {
+                        const [hours1, minutes1] = time.split(':').map(Number)
+                        const [hours2, minutes2] = value.split(':').map(Number)
+                        const totalMinutes1 = hours1 * 60 + minutes1
+                        const totalMinutes2 = hours2 * 60 + minutes2
+                        const timeDifference = Math.abs(
+                          totalMinutes1 - totalMinutes2
+                        )
+
+                        return timeDifference % 10 === 0
+                      } catch {
+                        return false
+                      }
+                    }
+                  )
+              return schema
+            }),
           place: yup.object({
             place_name: yup.string().required(() => t('errors.required')),
             lat: yup.number().required('errors.required'),
-            lon: yup.number().required('errors.required')
-          })
+            lon: yup.number().required('errors.required'),
+          }),
         })
       }
       if (currentStep.value === 2) {
@@ -287,36 +328,39 @@ export default {
             .required('errors.required')
             .min(6, 'errors.min6')
             .max(50, 'errors.max50'),
-          price: yup.number('errors.type-number').nullable().when("is_price", {
-            is: true,
-            then: yup
-              .number()
-              .typeError('errors.type-number')
-              .required('errors.required')
-              .min(1, 'errors.min1')
-              .max(32767, 'errors.max32767'),
-          }),
+          price: yup
+            .number('errors.type-number')
+            .nullable()
+            .when('is_price', {
+              is: true,
+              then: yup
+                .number()
+                .typeError('errors.type-number')
+                .required('errors.required')
+                .min(1, 'errors.min1')
+                .max(32767, 'errors.max32767'),
+            }),
           price_description: yup
             .string('errors.required')
             .nullable()
-            .when("price", (price, schema) => {
+            .when('price', (price, schema) => {
               if (price)
                 return schema
                   .required('errors.required')
                   .max(500, 'errors.max500')
               return schema
-            })
+            }),
         })
       }
       if (currentStep.value === 3) {
         return yup.object({
-          description: yup
-            .string()
-            .required('errors.required'),
+          description: yup.string().required('errors.required'),
           need_form: yup.string().required('errors.required'),
           is_phone_shown: yup.boolean().nullable(),
           contact_number: yup
-            .string().nullable().when("is_phone_shown", {
+            .string()
+            .nullable()
+            .when('is_phone_shown', {
               is: true,
               then: yup
                 .string()
@@ -329,12 +373,11 @@ export default {
 
     const getNewEventLocation = (location, data) => {
       data.values.place = {
-        'place_name': location.place,
-        'lat': location.lat,
-        'lon': location.lng
+        place_name: location.place,
+        lat: location.lat,
+        lon: location.lng,
       }
     }
-
 
     const greenBtnText = computed(() => {
       return currentStep.value !== 3 ? t('buttons.next') : t('buttons.publish')
@@ -349,7 +392,7 @@ export default {
     }
 
     function addZeroBefore(n) {
-      return (n < 10 ? '0' : '') + n;
+      return (n < 10 ? '0' : '') + n
     }
 
     const updateEventPriceAfterSelectFree = (data) => {
@@ -359,19 +402,24 @@ export default {
 
     const runOnSelectEventDuration = (durationValue, data) => {
       const currentDateTime = new Date()
-      const eventStartTime = new Date(currentDateTime.getTime() + 65*60000);
-      const eventEndDateTime = new Date(eventStartTime.getTime() + durationValue);
-      data.values.time = `${(addZeroBefore(eventStartTime.getHours()))}:${(addZeroBefore(eventStartTime.getMinutes()))}`;
-      data.values.end_time = `${(addZeroBefore(eventEndDateTime.getHours()))}:${(addZeroBefore(eventEndDateTime.getMinutes()))}`;
+      const eventStartTime = new Date(currentDateTime.getTime() + 65 * 60000)
+      const eventEndDateTime = new Date(
+        eventStartTime.getTime() + durationValue
+      )
+      data.values.time = `${addZeroBefore(
+        eventStartTime.getHours()
+      )}:${addZeroBefore(eventStartTime.getMinutes())}`
+      data.values.end_time = `${addZeroBefore(
+        eventEndDateTime.getHours()
+      )}:${addZeroBefore(eventEndDateTime.getMinutes())}`
       data.values.duration = durationValue / 60000
     }
 
-    
     const closeRemoveUsersModal = () => {
       removeInvitedUsersModalOpened.value = false
     }
 
-    const getRelevantUsers =  async (options) => {
+    const getRelevantUsers = async (options) => {
       searchUsersLoading.value = true
       let response = await API.UserService.getRelevantUsers(options)
       relevantUsersList.value = response.data.results
@@ -385,18 +433,18 @@ export default {
     const searchRelevantUsers = (searchValue) => {
       clearTimeout(searchTimeout)
       searchUsersLoading.value = true
-      const relevantSearch = () =>  {
-        getRelevantUsers({'search': searchValue, 'skipids': userStore.user.id})
+      const relevantSearch = () => {
+        getRelevantUsers({ search: searchValue, skipids: userStore.user.id })
       }
-      searchTimeout = setTimeout(relevantSearch, 500);
+      searchTimeout = setTimeout(relevantSearch, 500)
     }
 
-    getRelevantUsers({'skipids': userStore.user.id})
+    getRelevantUsers({ skipids: userStore.user.id })
 
     const removeInvitedUser = (user_id) => {
       invitedUsers.value = invitedUsers.value.filter(function (item) {
-        return item.id !== user_id;
-      });
+        return item.id !== user_id
+      })
     }
 
     const removeAllInvitedUsers = () => {
@@ -410,20 +458,19 @@ export default {
       }
     })
 
-
     async function saveEvent(data) {
       eventCreateLoader.value = true
       const createEventData = data.values
 
-      createEventData.date_and_time = `${createEventData.date} ${createEventData.time}`;
+      createEventData.date_and_time = `${createEventData.date} ${createEventData.time}`
 
-      createEventData.current_users = invitedUsers.value.map((user) => user.id);
+      createEventData.current_users = invitedUsers.value.map((user) => user.id)
 
       switch (createEventData.need_form) {
-        case (true):
+        case true:
           createEventData.forms = eventFormTypes.T_Shirt
           break
-        case (false):
+        case false:
           createEventData.forms = eventFormTypes.Shirt_Front
       }
 
@@ -433,34 +480,34 @@ export default {
         })
         router.push(ROUTES.APPLICATION.EVENTS.absolute)
         setTimeout(() => BlanballEventBus.emit('EventCreated'), 100)
-      } catch {
-      }
+      } catch {}
     }
 
     async function changeStep(val, data) {
-      const { valid } = await data.validate()
-      if(!valid) {
-        return false;
-      }
-
+      
       if (currentStep.value === 1 && val === '-') {
         return router.push(ROUTES.APPLICATION.EVENTS.absolute)
       }
+
+      if (val === '-') {
+        return this.currentStep--
+      }
+
+      const { valid } = await data.validate()
+
+      if (!valid) {
+        return false
+      }
+
       if (currentStep.value === 3 && val === '+') {
         return saveEvent(data)
       }
 
-      switch (val) {
-        case '+':
-          this.currentStep++
-          break
-        case '-':
-          this.currentStep--
-          break
+      if (val === '+') {
+        this.currentStep++
       }
     }
 
-    
     return {
       currentStep,
       icons,
@@ -539,7 +586,7 @@ export default {
     margin-top: 20px;
     height: 100%;
     overflow: hidden;
-    
+
     .b-manage-event__create-event-block {
       overflow-y: scroll;
       width: 420px;
@@ -607,13 +654,13 @@ export default {
 }
 .b-manage-event__invited-user {
   padding: 8px;
-  border-bottom: 1px solid #DFDEED;
+  border-bottom: 1px solid #dfdeed;
   display: flex;
   align-items: center;
   justify-content: space-between;
   &:first-of-type {
     margin-top: 30px;
-    border-top: 1px solid #DFDEED;
+    border-top: 1px solid #dfdeed;
   }
 }
 .b-user-what-you__invited {
@@ -649,7 +696,7 @@ export default {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: #8A8AA8;
+  color: #8a8aa8;
 }
 .b-remove-invited__user {
   cursor: pointer;
