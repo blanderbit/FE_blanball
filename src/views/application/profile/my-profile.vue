@@ -111,7 +111,12 @@
         @submit="disableSubmit"
         ref="myForm"
       >
-        <RatingCard v-if="!isTabletSize" :rating-scale="userRating" />
+        <RatingCard 
+          v-if="!isTabletSize" 
+          :rating-scale="userRating"
+          :openedReviewID="openedReviewId"
+          @openReview="openReview"
+          @hideReview="hideReview"/>
         <UserDetailsCard
           :user-data="userData"
           :phone="userPhone"
@@ -119,7 +124,12 @@
           @openEditPictureModal="openEditPictureModal"
         />
         <div class="b-user-cabinet__mobile-tablet-block">
-          <RatingCard v-if="isTabletSize" :rating-scale="userRating" />
+          <RatingCard 
+            v-if="isTabletSize" 
+            :rating-scale="userRating" 
+            :openedReviewID="openedReviewId"
+            @openReview="openReview"
+            @hideReview="hideReview"/>
           <SecurityBlock
             @toggle-modal="toggleModal"
             :user-email="userEmail"
@@ -147,10 +157,11 @@
 import { ref, computed, reactive, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { useToast } from "vue-toastification";
+
 import { Form } from '@system.it.flumx.com/vee-validate'
+
 import * as yup from 'yup'
-import { useToast } from 'vue-toastification'
-import { useUserDataStore } from '@/stores/userData'
 
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
@@ -168,12 +179,13 @@ import ChangeUserDataModal from '../../../components/user-cabinet/ChangeUserData
 import ChangeEmailModal from '../../../components/user-cabinet/ChangeEmailModal.vue'
 import ButtonsBlock from '../../../components/user-cabinet/ButtonsBlock.vue'
 import EditAvatarModal from '../../../components/user-cabinet/EditAvatarModal.vue'
-
 import Loading from '../../../workers/loading-worker/Loading.vue'
-import { API } from '../../../workers/api-worker/api.worker'
-import CONSTANTS from '../../../consts'
 
+import { API } from '../../../workers/api-worker/api.worker'
+import { useUserDataStore } from '@/stores/userData'
 import useWindowWidth from '../../../utils/widthScreen'
+
+import CONSTANTS from '../../../consts'
 
 yup.addMethod(yup.string, 'userName', function (errorMessage) {
   return this.test(`UserName`, errorMessage, function (value) {
@@ -234,6 +246,7 @@ export default {
     const isTabLabel = ref(false)
     const userAvatar = ref('')
     const restData = ref()
+    const openedReviewId = ref(0)
 
     const isTabletSize = computed(() => {
       return isBetweenTabletAndDesktop.value || isTablet.value
@@ -353,6 +366,15 @@ export default {
     onBeforeUnmount(() => {
       window.removeEventListener('resize', onResize)
     })
+
+    function openReview(reviewId) {
+      openedReviewId.value = reviewId
+    }
+
+    function hideReview() {
+      openedReviewId.value = 0
+      debugger
+    }
 
     function switchTabLabel(isDisabled) {
       if (isDisabled) {
@@ -650,6 +672,7 @@ export default {
       cancelDataEdit,
       openEditPictureModal,
       getMyProfile,
+      openReview,
       showPreview,
       userRating,
       userPhone,
@@ -664,6 +687,7 @@ export default {
       formValues,
       myForm,
       userInfo,
+      openedReviewId,
       isLoading,
       isMobile,
       isTabLabel,

@@ -183,24 +183,24 @@
 
 <script>
 import { ref, inject, computed, watch } from 'vue'
+
 import { v4 as uuid } from 'uuid'
 
 import Notifications from './sitebar-notifications/Notifications.vue'
 import Notification from './Notification.vue'
 import EmptyList from './EmptyList.vue'
+import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue'
 import ScrollToTop from './ScrollToTop.vue'
 
-import sidebarArrowBack from '../assets/img/sidebar-arrow-back.svg'
-import sidebarArrow from '../assets/img/sidebar-arrow.svg'
-
 import { useUserDataStore } from '../stores/userData'
-
-import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue'
 import { NewNotifications } from '../workers/web-socket-worker/not-includes-to-socket/new_notifications'
 import { API } from '../workers/api-worker/api.worker'
 
 import CONSTANTS from '../consts/index'
 import { ROUTES } from '../router/router.const'
+
+import sidebarArrowBack from '../assets/img/sidebar-arrow-back.svg'
+import sidebarArrow from '../assets/img/sidebar-arrow.svg'
 
 export default {
   components: {

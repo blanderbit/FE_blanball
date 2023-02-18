@@ -27,6 +27,7 @@
 </template>
 <script>
 import PlaceDetector from './../components/maps/PlaceDetector.vue'
+
 export default {
   name: 'SmallEventCard',
   components: {

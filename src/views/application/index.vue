@@ -30,6 +30,11 @@
         </div>
       </div>
     </div>
+
+    <EventCreatedSuccessModal 
+      v-if="isEventCreatedModalActive" 
+      @closeModal="closeEventCreatedModal"/>
+
     <ModalFeedback
       :isActive="isCreateReviewModalActive"
       :eventData="endedEventData"
@@ -45,35 +50,45 @@
 import { ref, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
+
 import { v4 as uuid } from 'uuid'
-import { useUserDataStore } from '@/stores/userData'
 
 import Sidebar from './../../components/Sidebar.vue'
 import MainHeader from './../../components/MainHeader.vue'
 import MobileMenu from '../../components/MobileMenu.vue'
 import Notification from '../../components/Notification.vue'
 import VerifyEmailModal from '../../components/user-cabinet/VerifyEmailModal.vue'
-
 import ModalFeedback from '../../components/ModalFeedback/index.vue'
-
-import message_audio from '../../assets/message_audio.mp3'
+import EventCreatedSuccessModal from '../../components/manage-event-components/EventCreatedSuccessModal.vue'
 
 import { AuthWebSocketWorkerInstance } from './../../workers/web-socket-worker'
 import { TokenWorker } from '../../workers/token-worker'
-import { notificationButtonHandlerMessage } from '../../workers/utils-worker'
-import { NotificationsBus } from '../../workers/event-bus-worker'
-
+import { notificationButtonHandlerMessage } from "../../workers/utils-worker";
+import { useUserDataStore } from '@/stores/userData'
+import { NotificationsBus, BlanballEventBus } from '../../workers/event-bus-worker' 
 import { MessageActionTypes } from '../../workers/web-socket-worker/message.action.types'
 import { API } from '../../workers/api-worker/api.worker'
 
-const isVerifyModalActive = ref(false)
-const userEmail = ref('')
-const isUserVerified = ref(true)
-const isMobMenuActive = ref(false)
+import message_audio from '../../assets/audio/message_audio.mp3'
+
+
+const isVerifyModalActive = ref(false);
+const userEmail = ref('');
+const isUserVerified = ref(true);
+const isMobMenuActive = ref(false);
 const isCreateReviewModalActive = ref(false)
 const endedEventData = ref({})
 const selectedEmojies = ref([])
 const modalFeedBackAnimation = ref(false)
+const isEventCreatedModalActive = ref(false)
+
+
+const closeEventCreatedModal = () => {
+  isEventCreatedModalActive.value = false
+}
+const openEventCreatedModal = () => {
+  isEventCreatedModalActive.value = true
+}
 
 const closeEventReviewModal = () => {
   isCreateReviewModalActive.value = false
@@ -94,7 +109,11 @@ NotificationsBus.on('openEventReviewModal', async (data) => {
   const respone = await API.EventService.getOneEvent(data.data.event.id)
   endedEventData.value = respone.data
   openEventReviewModal()
-})
+});
+
+BlanballEventBus.on('EventCreated', () => {
+  openEventCreatedModal()
+});
 
 const emojiSelection = (emoji) => {
   for (let i = 0; i < selectedEmojies.value.length; i++) {
@@ -212,7 +231,9 @@ AuthWebSocketWorkerInstance.registerCallback(handleNewMessage).connect({
 })
 
 onBeforeUnmount(() => {
-  AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect()
+  NotificationsBus.off('openEventReviewModal');
+  BlanballEventBus.off('EventCreated');
+  AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect();
 })
 </script>
 

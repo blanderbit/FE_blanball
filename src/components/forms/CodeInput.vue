@@ -49,9 +49,12 @@ import {
   onMounted,
   onBeforeUnmount,
 } from 'vue'
-import { CustomModelWorker } from '../../workers/custom-model-worker/index'
 import { useI18n } from 'vue-i18n'
+
+import { CustomModelWorker } from '../../workers/custom-model-worker/index'
+
 const { t } = useI18n()
+
 const props = defineProps({
   className: String,
   fields: {
@@ -260,7 +263,7 @@ onBeforeUpdate(() => {
 </script>
 
 <style scoped>
-@import 'forms.scss';
+@import '../../assets/styles/forms.scss';
 
 .code-input-container {
   position: relative;

@@ -11,6 +11,7 @@
       :placeholder="placeholder"
       :options="options"
       :label="displayName || 'value'"
+      :disabled="disabled"
       append-to-body
       taggable="taggable"
       :class="{ 'b-form-error': modelErrorMessage }"
@@ -41,13 +42,18 @@
 
 <script>
 import { ref, watch, computed } from 'vue'
-import vSelect from "vue-select";
-import OpenIndicator from './OpenIndicator.vue'
+import { useI18n } from 'vue-i18n'
+
 import { createPopper } from '@popperjs/core'
 
+import vSelect from "vue-select";
+
+import OpenIndicator from './OpenIndicator.vue'
+
 import { CustomModelWorker } from '../../workers/custom-model-worker/index'
+
 import SearchIcon from '../../assets/img/search.svg'
-import { useI18n } from 'vue-i18n'
+
 export default {
   name: 'dropdown-component',
   components: {
@@ -101,6 +107,10 @@ export default {
       default: 'test placeholder',
     },
     name: String,
+    disabled: {
+      type: Boolean,
+      default: false,
+    }
   },
   emits: ['new-value', 'update:modelValue'],
   setup(props, { emit }) {
@@ -220,7 +230,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import 'forms.scss';
+@import '../../assets/styles/forms.scss';
 
 ::v-deep {
   .vs__clear {
@@ -338,7 +348,7 @@ export default {
     padding: 0px 4px;
     left: 8px;
     top: -8px;
-    z-index: 1;
+    z-index: 10;
   }
   &__custom-option {
     display: flex;

@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import { CustomModelWorker } from '../../workers/custom-model-worker'
 import RadioButton from './RadioButton.vue'
+
 export default {
   name: 'LongRadioButtonGroup',
   components: {
