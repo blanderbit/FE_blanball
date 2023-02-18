@@ -30,22 +30,22 @@ export class ResponseToRequestForParticipationMessage extends InitialMessage {
 
   createTitle(data) {
     return data.request.response
-      ? 'Владелец подтвердил ваш запрос участие на ивенте;'
-      : 'Владелец отклонил ваш запрос участие на ивенте;'
+      ? 'Автор події прийняв вашу заявку на участь'
+      : 'Автор події відхилив вашу заявку на участь'
   }
 
   onInit() {
     this.actions = [
       {
         type: MessageActionTypes.ActionClose,
-        text: 'Понятно',
+        text: 'Зрозуміло',
       },
     ]
 
     if (this.data.request.response) {
       this.actions.push({
         type: MessageActionTypes.Action,
-        text: 'Просмотреть ивент',
+        text: 'Переглянути подію',
         action: ({ notificationInstance }) =>
           ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(
             notificationInstance.data.event.id
@@ -57,7 +57,7 @@ export class ResponseToRequestForParticipationMessage extends InitialMessage {
     } else {
       this.actions.push({
         type: MessageActionTypes.Action,
-        text: 'Найти другие ивенты',
+        text: 'Знайти інші події',
         action: ROUTES.APPLICATION.EVENTS.absolute,
         actionType: MessageActionDataTypes.Url,
         buttonType: 'stroked',

@@ -15,14 +15,13 @@ import { WebSocketTypes } from '../../web.socket.types'
 import { API } from '../../../api-worker/api.worker'
 
 
-// FIXME NOTIFICATIONS
 @AuthWebSocketMessage()
-@SetMessageType(WebSocketTypes.ChangeMaintenance)
+@SetMessageType(WebSocketTypes.InviteUserToEvent)
 @NotificationSetUserImage()
 @SetActions([
   {
     type: MessageActionTypes.Action,
-    text: 'Принять',
+    text: 'Прийняти',
     action: ({ notificationInstance }) =>
       API.EventService.declineOrAcceptInvites(
         notificationInstance.data.invite.id,
@@ -36,7 +35,7 @@ import { API } from '../../../api-worker/api.worker'
   },
   {
     type: MessageActionTypes.Action,
-    text: 'Отклонить',
+    text: 'Відхилити',
     action: ({ notificationInstance }) =>
       API.EventService.declineOrAcceptInvites(
         notificationInstance.data.invite.id,
@@ -52,7 +51,7 @@ import { API } from '../../../api-worker/api.worker'
 export class InviteUserToEventMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `Юзер ${data.sender.name} приглашает вас на событие "${data.event.name}", пожалуйста выбирите действие!`,
+      `Користувач ${data.sender.name} запрошує вас на спільну гру у події "${data.event.name}"`,
       // TODO add inplementation for move to user profile
     ]
   }
@@ -77,6 +76,6 @@ export class InviteUserToEventMessage extends InitialMessage {
   }
 
   createTitle() {
-    return 'Приглашение на событие.'
+    return 'Запрошення на подію'
   }
 }

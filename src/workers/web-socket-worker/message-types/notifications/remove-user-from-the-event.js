@@ -21,7 +21,7 @@ import { ROUTES } from '../../../../router/router.const'
 @SetActions([
   {
     type: MessageActionTypes.ActionClose,
-    text: 'Понятно',
+    text: 'Зрозуміло',
   },
   {
     type: MessageActionTypes.Action,

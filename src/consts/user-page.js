@@ -5,25 +5,6 @@ import FemaleIcon from '../assets/img/male-icon.svg'
 import UnisexIcon from '../assets/img/unisex.svg'
 
 export default {
-  user_position: {
-    GK: 'Position is GK',
-    LB: 'Position is LB',
-    RB: 'Position is RB',
-    CB: 'Position is CB',
-    LWB: 'Position is LWB',
-    RWB: 'Position is RWB',
-    CDM: 'Position is CDM',
-    CM: 'Position is CM',
-    CAM: 'Position is CAM',
-    RM: 'Position is RM',
-    LM: 'Position is LM',
-    RW: 'Position is RW',
-    LW: 'Position is LW',
-    RF: 'Position is RF',
-    CF: 'Position is CF',
-    LF: 'Position is LF',
-    ST: 'Position is ST',
-  },
   rateBlock: [
     {
       id: 0,

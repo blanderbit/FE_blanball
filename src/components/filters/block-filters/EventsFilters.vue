@@ -40,17 +40,6 @@
                 v-model="transformedFilters.type"
               />
             </div>
-            <div class="b-main-search__dropdown-wrapper-gender">
-              <Dropdown
-                :check-value-immediate="true"
-                :placeholder="$t('events.gender')"
-                :options="gender"
-                :height="32"
-                display-value="value"
-                display-name="name"
-                v-model="transformedFilters.gender"
-              />
-            </div>
           </div>
           <div class="b-main-search__right-block">
             <div class="b-main-search__search-input-desktop">

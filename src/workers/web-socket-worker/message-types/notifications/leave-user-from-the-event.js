@@ -20,11 +20,11 @@ import { ROUTES } from '../../../../router/router.const'
 @SetActions([
   {
     type: MessageActionTypes.ActionClose,
-    text: 'Понятно',
+    text: 'Зрозуміло',
   },
   {
     type: MessageActionTypes.Action,
-    text: 'Просмотреть ивент',
+    text: 'Переглянути подію',
     action: ({ notificationInstance }) =>
       ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(
         notificationInstance.data.event.id

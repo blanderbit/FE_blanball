@@ -342,7 +342,12 @@ export default {
   overflow: scroll;
   @media (max-width: 1200px) {
     grid-template-columns: 1fr;
+
+    &::v-deep(.b-right-sidebar) {
+      display: none;
+    }
   }
+
   .b-event-info__main-body {
     height: calc(100% + 70px);
     .b-event-info__header-block {
