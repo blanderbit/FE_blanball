@@ -7,13 +7,15 @@
       @email-verified="isUserVerified = true"
     />
 
-    <div v-if="!isUserVerified" class="b_header_validate-email-block">
-      <span class="b_header_text">
-        {{ $t('header.approve-your-email') }}: {{ userEmail }}
-      </span>
-      <span class="b_header_verify-btn" @click="isVerifyModalActive = true">
-        {{ $t('header.approve-email') }}
-      </span>
+    <div class="b_header_validate-email-block-wrapper">
+      <div v-if="!isUserVerified" class="b_header_validate-email-block">
+        <span class="b_header_text">
+          {{ $t('header.approve-your-email') }}: {{ userEmail }}
+        </span>
+        <span class="b_header_verify-btn" @click="isVerifyModalActive = true">
+          Підтвердити
+        </span>
+      </div>
     </div>
     <mobile-menu
       :isMenuActive="isMobMenuActive"
@@ -28,13 +30,18 @@
         </div>
       </div>
     </div>
+
+    <EventCreatedSuccessModal 
+      v-if="isEventCreatedModalActive" 
+      @closeModal="closeEventCreatedModal"/>
+
     <ModalFeedback
-        :isActive="isCreateReviewModalActive"
-        :eventData="endedEventData"
-        :animationActive="modalFeedBackAnimation"
-        :selectedEmojies="selectedEmojies"
-        @emojiSelection="emojiSelection"
-        @close-modal="closeEventReviewModal"
+      :isActive="isCreateReviewModalActive"
+      :eventData="endedEventData"
+      :animationActive="modalFeedBackAnimation"
+      :selectedEmojies="selectedEmojies"
+      @emojiSelection="emojiSelection"
+      @close-modal="closeEventReviewModal"
     />
   </div>
 </template>
@@ -43,28 +50,27 @@
 import { ref, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
+
 import { v4 as uuid } from 'uuid'
-import { useUserDataStore } from '@/stores/userData'
 
 import Sidebar from './../../components/Sidebar.vue'
 import MainHeader from './../../components/MainHeader.vue'
 import MobileMenu from '../../components/MobileMenu.vue'
 import Notification from '../../components/Notification.vue'
 import VerifyEmailModal from '../../components/user-cabinet/VerifyEmailModal.vue'
-
-import BugReportModal from '../../components/BugReportModal.vue'
-
 import ModalFeedback from '../../components/ModalFeedback/index.vue'
-
-import message_audio from '../../assets/message_audio.mp3'
+import EventCreatedSuccessModal from '../../components/manage-event-components/EventCreatedSuccessModal.vue'
 
 import { AuthWebSocketWorkerInstance } from './../../workers/web-socket-worker'
 import { TokenWorker } from '../../workers/token-worker'
 import { notificationButtonHandlerMessage } from "../../workers/utils-worker";
-import { NotificationsBus } from '../../workers/event-bus-worker' 
-
+import { useUserDataStore } from '@/stores/userData'
+import { NotificationsBus, BlanballEventBus } from '../../workers/event-bus-worker' 
 import { MessageActionTypes } from '../../workers/web-socket-worker/message.action.types'
 import { API } from '../../workers/api-worker/api.worker'
+
+import message_audio from '../../assets/audio/message_audio.mp3'
+
 
 const isVerifyModalActive = ref(false);
 const userEmail = ref('');
@@ -74,6 +80,15 @@ const isCreateReviewModalActive = ref(false)
 const endedEventData = ref({})
 const selectedEmojies = ref([])
 const modalFeedBackAnimation = ref(false)
+const isEventCreatedModalActive = ref(false)
+
+
+const closeEventCreatedModal = () => {
+  isEventCreatedModalActive.value = false
+}
+const openEventCreatedModal = () => {
+  isEventCreatedModalActive.value = true
+}
 
 const closeEventReviewModal = () => {
   isCreateReviewModalActive.value = false
@@ -83,7 +98,9 @@ const closeEventReviewModal = () => {
 const openEventReviewModal = () => {
   if (isCreateReviewModalActive.value) {
     modalFeedBackAnimation.value = true
-    setTimeout(() => {modalFeedBackAnimation.value = false}, 500)
+    setTimeout(() => {
+      modalFeedBackAnimation.value = false
+    }, 500)
   }
   isCreateReviewModalActive.value = true
 }
@@ -94,21 +111,23 @@ NotificationsBus.on('openEventReviewModal', async (data) => {
   openEventReviewModal()
 });
 
+BlanballEventBus.on('EventCreated', () => {
+  openEventCreatedModal()
+});
 
 const emojiSelection = (emoji) => {
   for (let i = 0; i < selectedEmojies.value.length; i++) {
     if (selectedEmojies.value[i].step === emoji.step) {
       // Update the existing object
-      selectedEmojies.value[i] = emoji;
+      selectedEmojies.value[i] = emoji
       return
     }
   }
-  selectedEmojies.value.push(emoji);
+  selectedEmojies.value.push(emoji)
 }
 
-
-const router = useRouter();
-const toast = useToast();
+const router = useRouter()
+const toast = useToast()
 const store = useUserDataStore()
 const audio = new Audio(message_audio)
 let timeout
@@ -117,7 +136,7 @@ isUserVerified.value = store.user?.is_verified
 userEmail.value = store.user?.email || ''
 
 const handlerAction = async (button, notificationInstance) => {
-  clearTimeout(timeout);
+  clearTimeout(timeout)
   await notificationButtonHandlerMessage({
     button,
     notificationInstance,
@@ -212,7 +231,9 @@ AuthWebSocketWorkerInstance.registerCallback(handleNewMessage).connect({
 })
 
 onBeforeUnmount(() => {
-  AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect()
+  NotificationsBus.off('openEventReviewModal');
+  BlanballEventBus.off('EventCreated');
+  AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect();
 })
 </script>
 
@@ -234,15 +255,34 @@ html {
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
   }
+
+  .b_header_validate-email-block-wrapper {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 10px);
+
+    @media (max-width: 992px) {
+      position: relative;
+    }
+
+    @media (max-width: 576px) {
+      padding: 0px 16px;
+    }
+  }
+  
   .b_header_validate-email-block {
     padding: 6px 8px;
     background: #272643;
     border-radius: 6px;
-    position: absolute;
-    left: 50%;
-    z-index: 3;
-    transform: translate(-50%, 10px);
     text-align: center;
+
+    @media (max-width: 576px) {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-align: left;
+    }
+
     .b_header_text {
       font-family: 'Inter';
       font-style: normal;
@@ -250,6 +290,7 @@ html {
       font-size: 12px;
       line-height: 20px;
       color: #ffffff;
+      margin-right: 20px;
     }
     .b_header_verify-btn {
       padding: 2px 8px;
@@ -258,7 +299,7 @@ html {
       font-family: 'Inter';
       font-style: normal;
       font-weight: 500;
-      font-size: 13px;
+      font-size: 12px;
       line-height: 24px;
       text-align: center;
       color: #ffffff;

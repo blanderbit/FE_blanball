@@ -85,14 +85,17 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+import { Form } from '@system.it.flumx.com/vee-validate'
+
+import * as yup from 'yup'
+
 import GreenBtn from '../GreenBtn.vue'
 import InputComponent from '../forms/InputComponent.vue'
 import Checkbox from '../forms/Checkbox.vue'
 
-import * as yup from 'yup'
-import { Form } from '@system.it.flumx.com/vee-validate'
 import { API } from '../../workers/api-worker/api.worker'
 import { TokenWorker } from '../../workers/token-worker'
+
 import { ROUTES } from '../../router/router.const'
 
 export default {

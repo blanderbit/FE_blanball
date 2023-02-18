@@ -20,6 +20,9 @@ export default {
   clear: 'Очистити',
   apply: 'Застосувати',
   publish: 'Опублікувати',
+  'join': 'Долучитися',
   'close-this-window': 'Закрити це вікно',
   'send-feedback': 'Надіслати відгук',
+  'copy-link': 'Скопіювати посилання', 
+  'delete-users': 'Видалити користувачів'
 }

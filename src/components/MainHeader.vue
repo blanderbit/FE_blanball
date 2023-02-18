@@ -10,33 +10,10 @@
         <SearchBlockAll
           :width="modalSearchWidth"
           :loading="loading"
-          :tags="relevantTags"
-          :filtered-users="paginationElements"
-          :list-item-icon="icons.arrow"
+          :usersList="relevantUsersList"
+          :itemIcon="icons.arrow"
+          @item-list-click="openUserProfile"
         >
-        <template v-slot:users>
-          <div class="b-modal-items__container" v-for="user in relevantUsersList">
-            <div  @click="openUserProfile(user.id)"  class="b-user b-modal-item  w-100">
-              <avatar
-                class="b-user__image"
-                :link="user.profile.avatar_url"
-                :full-name="`${user.profile.name} ${user.profile.last_name}`"
-              ></avatar>
-              <div class="b-user-main-info__container">
-                <div class="b-user__name">
-                {{ user.profile.name }} {{ user.profile.last_name }}
-              </div>
-                <img
-                  class="b-show-user-profile__button" 
-                  src="../assets/img/arrow-right-gray.svg" 
-                  alt="arrow-right-gray">
-              </div>
-            </div>
-          </div>
-          <span class="b-modal-no__results" v-if="!relevantUsersList.length">
-            {{ $t('errors.no-results') }}
-          </span>
-        </template>
       </SearchBlockAll>
       </template>
     </SearchModal>
@@ -51,7 +28,7 @@
       <div class="b_header_search-input">
         <InputComponent
           :title-width="0"
-          :placeholder="$t('header.search-events')"
+          :placeholder="$t('users.users-search')"
           :icon="icons.search"
           v-model="searchValue"
           @on-click-action="showSearchBlock"
@@ -65,20 +42,19 @@
 <script>
 import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRouter } from 'vue-router'
+
 import BreadCrumbs from './Breadcrumbs.vue'
 import InputComponent from './forms/InputComponent.vue'
 import SearchModal from './SearchModal.vue'
 import SearchBlockAll from './SearchBlockAll.vue'
-import Avatar from './Avatar.vue'
 import SmallLoader from './SmallLoader.vue'
-
-
-import searchIcon from '../assets/img/search.svg'
-import arrowIcon from '../assets/img/arrow-long-right.svg'
 
 import CONSTANTS from '../consts/index'
 import { ROUTES } from "../router/router.const";
 import { API } from '../workers/api-worker/api.worker'
+
+import searchIcon from '../assets/img/search.svg'
+import arrowIcon from '../assets/img/arrow-right-gray.svg'
 
 
 export default {
@@ -87,7 +63,6 @@ export default {
     InputComponent,
     SearchModal,
     SearchBlockAll,
-    Avatar,
     SmallLoader,
   },
   setup() {
@@ -103,7 +78,7 @@ export default {
     const loading = ref(false)
     let searchTimeout
 
-    const openUserProfile =  (userId) => {
+    const openUserProfile = (userId) => {
       router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId))
       isSearchBlock.value = false
     }
@@ -196,11 +171,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.b-user-main-info__container {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
 .b_header {
   display: flex;
   justify-content: space-between;
@@ -224,51 +194,5 @@ export default {
       height: 44px;
     }
   }
-}
-
-.b-user__name {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  color: #262541;
-  margin-left: 8px;
-}
-.b-modal-item {
-  display: flex;
-  align-items: center;
-  padding: 5px;
-  border-radius: 6px;
-  &:hover {
-    background: #f0f0f4;
-
-    .b-show-user-profile__button {
-      display: block;
-    }
-  }
-}
-.b-user__image {
-  min-width: 32px;
-  max-width: 32px;
-  height: 32px;
-  border-radius: 4px;
-  font-family: 'Exo 2';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 20px;
-}
-.b-show-user-profile__button {
-  cursor: pointer;
-  display: none;
-}
-.b-modal-no__results {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 13px;
-  line-height: 20px;
-  color: #575775;
 }
 </style>

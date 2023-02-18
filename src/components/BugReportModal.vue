@@ -67,18 +67,17 @@
 
 <script>
 import { ref } from 'vue'
-
-import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
+import { useToast } from 'vue-toastification'
+
+import { Form } from '@system.it.flumx.com/vee-validate'
+
+import * as yup from 'yup'
 
 import InputComponent from './forms/InputComponent.vue'
 import TextAreaComponent from './TextAreaComponent.vue'
 
-import { Form } from '@system.it.flumx.com/vee-validate'
-
 import { API } from '../workers/api-worker/api.worker'
-
-import * as yup from 'yup'
 
 import addFileIcon from '../assets/img/add-file-icon.svg'
 

@@ -1,37 +1,12 @@
 <template>
+  <SelectionSuitModal
+    v-if="isSelectFormColarModalOpened"
+    :selectedCategory="selectedFormType"
+    @closeModal="closeSelectFormsModal()"
+  />
+
   <div class="third-step" :style="stepStyle">
-    <div class="title-block">
-      <span>{{ $t('events.additional-info') }}</span>
-    </div>
-    <div class="subtitle">
-      {{ $t('events.add-comment') }}
-    </div>
-    <TextAreaComponent
-      :placeholder="$t('events.event-description')"
-      name="description"
-    />
-    <!-- <div class="contact-switcher">
-      <div class="title-prize">
-        {{$t('events.prize')}}
-        <span>
-          VIP
-        </span>
-      </div>
-      <Switcher 
-        :id="'prise'"
-        :is-edit-mode="true"
-        name="is_phone_shown"
-        @get-value="showHidePhone"
-      />
-    </div>
-    <div class="input">
-      <InputComponent
-          :placeholder="$t('events.what-prize')"
-          :title-width="0"
-          :icon="icons.aim"
-      />
-    </div> -->
-    <div class="title-outfit">
+    <div class="title">
       {{ $t('events.need-clothes') }}
     </div>
     <div class="radio-btn-wrapper">
@@ -39,70 +14,93 @@
         <radio-button
           name="need_form"
           :title="$t('events.yes')"
-          value="true"
+          :value="true"
           :width="'auto'"
+          @get-radio-value="selectForms"
         ></radio-button>
       </div>
       <div class="radio">
         <radio-button
           name="need_form"
           :title="$t('events.manijki-available')"
-          value="false"
+          :value="false"
           :width="'auto'"
+          @get-radio-value="selectForms"
         ></radio-button>
       </div>
-      <!-- <div class="radio">
-        <input
-            id="radio-outfit"
-            name="outfit"
-            type="radio"
-            :value="$t('events.yes')"
-            checked
-        >
-        <label for="radio-outfit" class="radio-label">
-          {{ $t('events.yes') }}
-        </label>
+    </div>
+
+    <div
+      v-if="needForm !== null"
+      class="forms-block"
+      @click="openSelectFormsModal"
+    >
+      <div class="forms-select-form">
+        <span>{{ $t('events.set-forms-colors') }}</span>
+        <img src="../../assets/img/set-filter.svg" alt="" />
       </div>
-      <div class="radio">
-        <input
-            id="radio-outfit2"
-            name="outfit"
-            type="radio"
-            :value="$t('events.manijki-available')"
-        >
-        <label for="radio-outfit2" class="radio-label">
-          {{$t('events.manijki-available')}}
-        </label>
-      </div> -->
     </div>
-    <div class="title-outfit">
-      {{ $t('events.enter-colors') }}
-    </div>
-    <div class="outfit-colors">
-      <!-- <div class="input">
-        <InputComponent
-            :placeholder="'Input'"
-            :title-width="0"
-            :outside-title="true"
-            :title="$t('events.team1')"
-        />
+
+    <div class="prize-switcher">
+      <div class="title">
+        {{ $t('events.prize') }} <span>{{ $t('events.vip') }}</span>
       </div>
-      <div class="input">
-        <InputComponent
-            :placeholder="'Input'"
-            :title-width="0"
-            :outside-title="true"
-            :title="$t('events.team2')"
-        />
-      </div> -->
+      <Switcher
+        :is-edit-mode="false"
+        name="is_prize"
+        @get-value="showHidePhone"
+      />
     </div>
+
+    <div class="need-ball-switcher">
+      <span class="title">{{ $t('events.is-ball-need') }}</span>
+      <Switcher :id="'need_ball'" :is-edit-mode="true" name="need_ball" />
+    </div>
+    <span class="subtitle">
+      {{ $t('events.need-ball-subtitle') }}
+    </span>
+
+    <div class="contact-switcher">
+      <span class="title">{{ $t('events.show-my-contacts') }}</span>
+      <Switcher
+        :id="'contacts'"
+        :is-edit-mode="true"
+        name="is_phone_shown"
+        @get-value="showHidePhone"
+      />
+    </div>
+    <div class="input" v-show="isPhoneShown">
+      <InputComponent
+        :placeholder="userPhoneNumber"
+        :title-width="0"
+        name="contact_number"
+        v-maska="'+38 (0##) ### ## ##'"
+      >
+      </InputComponent>
+    </div>
+
+    <div class="title-block">
+      <span class="title-margin">{{ $t('events.additional-info') }}</span>
+    </div>
+    <div class="subtitle">
+      {{ $t('events.add-comment') }}
+    </div>
+    <TextAreaComponent
+      :placeholder="$t('events.event-description')"
+      :height="92"
+      name="description"
+    />
   </div>
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+
+import { useUserDataStore } from '../../stores/userData'
+
 import Switcher from '../../components/Switcher.vue'
 import RadioButton from '../../components/forms/RadioButton.vue'
+import SelectionSuitModal from '../suit/SelectionSuitModal.vue'
 import InputComponent from '../../components/forms/InputComponent.vue'
 import TextAreaComponent from '../TextAreaComponent.vue'
 
@@ -115,6 +113,7 @@ export default {
     InputComponent,
     RadioButton,
     TextAreaComponent,
+    SelectionSuitModal,
   },
   props: {
     currentStep: {
@@ -123,11 +122,39 @@ export default {
     },
   },
   setup(props) {
+    const isPhoneShown = ref(false)
+    const store = useUserDataStore()
+    const userPhoneNumber = computed(() => store.getUserPhone)
+    const needForm = ref(null)
+    const selectedFormType = ref('')
+    const isSelectFormColarModalOpened = ref(false)
+
     const icons = computed(() => {
       return {
         aim: AimIcon,
       }
     })
+
+    function showHidePhone(val) {
+      isPhoneShown.value = val
+    }
+
+    const selectForms = (value) => {
+      needForm.value = value
+      if (value) {
+        selectedFormType.value = 'T-Shirt'
+      } else if (!value) {
+        selectedFormType.value = 'Shirt-Front'
+      }
+    }
+
+    const openSelectFormsModal = () => {
+      isSelectFormColarModalOpened.value = true
+    }
+
+    const closeSelectFormsModal = () => {
+      isSelectFormColarModalOpened.value = false
+    }
 
     const stepStyle = computed(() => {
       return props.currentStep === 3 ? { height: 'auto' } : { height: '0px' }
@@ -136,6 +163,15 @@ export default {
     return {
       icons,
       stepStyle,
+      needForm,
+      userPhoneNumber,
+      isSelectFormColarModalOpened,
+      isPhoneShown,
+      selectedFormType,
+      showHidePhone,
+      selectForms,
+      openSelectFormsModal,
+      closeSelectFormsModal,
     }
   },
 }
@@ -257,24 +293,22 @@ export default {
     margin-bottom: 20px;
   }
   .title {
-    margin-top: 20px;
     margin-bottom: 8px;
-    font-family: 'Inter';
+    font-family: 'Exo 2';
     font-style: normal;
-    font-weight: 500;
-    font-size: 13px;
-    line-height: 20px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
     color: #262541;
   }
-  .title-outfit {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 13px;
-    line-height: 20px;
-    color: #575775;
+  .title-margin {
+    margin-top: 20px;
+  }
+  .need-ball-switcher {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-top: 16px;
-    margin-bottom: 8px;
   }
   .contact-switcher {
     display: flex;
@@ -282,33 +316,46 @@ export default {
     align-items: center;
     margin-top: 16px;
     margin-bottom: 8px;
-    .title-prize {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 500;
-      font-size: 13px;
-      line-height: 20px;
-      color: #262541;
-      span {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 12px;
-        line-height: 20px;
-        color: #575775;
-        padding: 0px 4px;
-        background: #efeff6;
-        border-radius: 4px;
-      }
-    }
   }
-  .outfit-colors {
+}
+.prize-switcher {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  opacity: 0.6;
+  margin-top: 20px;
+
+  span {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    padding: 0px 4px;
+    background: #efeff6;
+    border-radius: 4px;
+  }
+}
+.forms-block {
+  .forms-select-form {
+    border: 1px solid #dfdeed;
+    border-radius: 6px;
+    margin: 20px 0px;
+    padding: 8px 8px 8px 12px;
+    cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .input {
-      width: 154px;
-      margin-top: 0;
+
+    span {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 24px;
+      width: 100%;
+      color: #262541;
     }
   }
 }

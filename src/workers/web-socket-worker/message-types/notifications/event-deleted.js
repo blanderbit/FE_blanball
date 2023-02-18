@@ -23,11 +23,11 @@ import { ROUTES } from '../../../../router/router.const'
 @SetActions([
   {
     type: MessageActionTypes.ActionClose,
-    text: 'Понятно',
+    text: 'Зрозуміло',
   },
   {
     type: MessageActionTypes.Action,
-    text: 'Найти ивенты',
+    text: 'Знайти інші події',
     action: ROUTES.APPLICATION.EVENTS.absolute,
     actionType: MessageActionDataTypes.Url,
     buttonType: 'stroked',
@@ -36,11 +36,11 @@ import { ROUTES } from '../../../../router/router.const'
 export class EventDeletedMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `Событие было удалено. Для того что бы подобрать другое событие нажмите кнопку "${this.actions[1].text}."`,
+      `Подія, на якій ви брали участь, була видалена, але ви можете знайти інші події "${this.actions[1].text}."`,
     ]
   }
 
   createTitle() {
-    return 'Событие удалено!'
+    return 'Подія видалена'
   }
 }

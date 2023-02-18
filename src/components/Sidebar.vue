@@ -29,11 +29,27 @@
               :class="['b_sidebar_menu-item', item.class]"
               @click="item.action && item.action()"
             >
-              <router-link v-if="item.url" :to="item.url">
+              <Transition>
+                <TabLabel
+                  v-if="item.disabled && currentHoverSideBarItemID === item.id"
+                  style="position: absolute; top: 8px"
+                  :title="$t('profile.coming-soon-title')"
+                  :text="$t('profile.coming-soon-text')"
+                />
+              </Transition>
+              <router-link
+                v-if="item.url"
+                :to="item.url"
+                @mouseenter="enterHoverSidebarItem(item.id)"
+                @mouseleave="leaveHoverSidebarItem"
+              >
                 <img :src="item.img" alt="" />
               </router-link>
-
-              <a v-else>
+              <a
+                v-else
+                @mouseenter="enterHoverSidebarItem(item.id)"
+                @mouseleave="leaveHoverSidebarItem"
+              >
                 <img :src="item.img" />
               </a>
             </li>
@@ -42,7 +58,11 @@
       </div>
       <div class="b_sidebar_bottom-block">
         <div class="b_sidebar_picture-bottom">
-          <avatar :link="userAvatar" :full-name="userFullName" @click="goToProfile"></avatar>
+          <avatar
+            :link="userAvatar"
+            :full-name="userFullName"
+            @click="goToProfile"
+          ></avatar>
           <div
             @click="logOut"
             class="b_sidebar_logout d-flex justify-content-center align-items-center"
@@ -56,22 +76,26 @@
 </template>
 
 <script>
-import { storeToRefs } from "pinia";
-
 import { ref, computed, onBeforeUnmount, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { useUserDataStore } from '../stores/userData'
-import { useEventDataStore } from '../stores/eventsData'
+
+import { storeToRefs } from "pinia";
 
 import SlideMenu from '../components/SlideMenu.vue'
 import Avatar from './../components/Avatar.vue'
 import BugReportModal from './BugReportModal.vue'
+import TabLabel from './TabLabel.vue'
 
+import { useUserDataStore } from '../stores/userData'
+import { useEventDataStore } from '../stores/eventsData'
 import { createNotificationFromData } from '../workers/utils-worker'
 import { AuthWebSocketWorkerInstance } from './../workers/web-socket-worker'
 import { API } from '../workers/api-worker/api.worker'
 import { PaginationWorker } from '../workers/pagination-worker'
+import { TokenWorker } from '../workers/token-worker'
 import { NotificationsBus } from '../workers/event-bus-worker'
+
+import { ROUTES } from '../router/router.const'
 
 import notification from '../assets/img/Notification.svg'
 import notificationUnread from '../assets/img/notificationUnread.svg'
@@ -81,8 +105,6 @@ import medal from '../assets/img/medal.svg'
 import settings from '../assets/img/Settings.svg'
 import bugReport from '../assets/img/warning-black.svg'
 
-import { TokenWorker } from '../workers/token-worker'
-import { ROUTES } from '../router/router.const'
 const findDublicates = (list, newList) => {
   return newList.filter((item) =>
     list.length
@@ -99,6 +121,7 @@ export default {
     SlideMenu,
     Avatar,
     BugReportModal,
+    TabLabel,
   },
   setup() {
     const userStore = useUserDataStore()
@@ -106,46 +129,64 @@ export default {
     const notReadNotificationCount = ref(0)
     const skipids = ref([])
     const { user } = storeToRefs(userStore)
-    const userFullName =  computed(() => `${userStore.user.profile.name} ${userStore.user.profile.last_name}`)
+    const userFullName = computed(
+      () => `${userStore.user.profile.name} ${userStore.user.profile.last_name}`
+    )
     const userAvatar = ref(user.value.profile.avatar_url)
     const router = useRouter()
     const isMenuOpened = ref(false)
     const isBugReportModalOpened = ref(false)
+    const currentHoverSideBarItemID = ref(0)
 
-    watch(() => user, (newData, oldData) => {
-      console.log(newData)
-    })
+    watch(
+      () => user,
+      (newData, oldData) => {
+        console.log(newData)
+      }
+    )
 
     const menuItems = computed(() => [
       {
+        id: 1,
         img: notReadNotificationCount.value ? notificationUnread : notification,
         action: () => (isMenuOpened.value = true),
+        disabled: false,
       },
       {
+        id: 2,
         img: record,
         url: '/application/events',
         action: () => (isMenuOpened.value = false),
+        disabled: false,
       },
       {
+        id: 3,
         img: medal,
         url: '',
         action: () => (isMenuOpened.value = false),
+        disabled: true,
       },
       {
+        id: 4,
         img: members,
         url: '/application/users/general',
         action: () => (isMenuOpened.value = false),
+        disabled: false,
       },
       {
+        id: 5,
         img: settings,
         url: '',
         action: () => (isMenuOpened.value = false),
+        disabled: true,
       },
       {
+        id: 6,
         img: bugReport,
         url: '',
         class: 'b-bug-report__icon',
         action: () => (isBugReportModalOpened.value = true),
+        disabled: false,
       },
     ])
 
@@ -157,6 +198,11 @@ export default {
       )
 
     const closeBugReportModal = () => (isBugReportModalOpened.value = false)
+
+    const enterHoverSidebarItem = (itemId) =>
+      (currentHoverSideBarItemID.value = itemId)
+
+    const leaveHoverSidebarItem = () => (currentHoverSideBarItemID.value = 0)
 
     const {
       paginationElements,
@@ -235,9 +281,12 @@ export default {
       menuItems,
       userAvatar,
       isMenuOpened,
+      currentHoverSideBarItemID,
       userFullName,
       isBugReportModalOpened,
       loadDataNotifications,
+      leaveHoverSidebarItem,
+      enterHoverSidebarItem,
       paginationClearData,
       goToProfile,
       logOut,
@@ -298,6 +347,7 @@ export default {
           width: 40px;
           height: 40px;
           list-style: none;
+          position: relative;
           cursor: pointer;
           transition: 0.3s all;
           .router-link-active {
@@ -349,5 +399,14 @@ export default {
   a:hover {
     background: #fff4ec;
   }
+}
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.4s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>

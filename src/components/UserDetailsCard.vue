@@ -305,22 +305,23 @@
 
 <script>
 import { ref, computed, watchEffect, onMounted, onBeforeUnmount } from 'vue'
+import { useI18n } from 'vue-i18n'
+
 import dayjs from 'dayjs'
 import dayjsUkrLocale from 'dayjs/locale/uk'
-import { useI18n } from 'vue-i18n'
 
 import InputComponent from './forms/InputComponent.vue'
 import TextAreaComponent from '../components/TextAreaComponent.vue'
 import Dropdown from './forms/Dropdown.vue'
 import Avatar from '../components/Avatar.vue'
 
-import sortArrowHorizontally from '../assets/img/sort-arrows-horizontal.svg'
-import tick from '../assets/img/tick.svg'
-import edit from '../assets/img/edit.svg'
-
 import { API } from '../workers/api-worker/api.worker'
 import CONSTANTS from '../consts'
 import useWindowWidth from '../utils/widthScreen'
+
+import sortArrowHorizontally from '../assets/img/sort-arrows-horizontal.svg'
+import tick from '../assets/img/tick.svg'
+import edit from '../assets/img/edit.svg'
 
 const IMAGE_TYPES = ['image/jpeg', 'image/png']
 
@@ -465,6 +466,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .b-user-card {
   padding: 20px 16px;
   background: #eeeef3;
@@ -638,9 +640,7 @@ export default {
           }
           .b-user-card__input-surname,
           .b-user-card__input-name {
-            @media (max-width: 1200px) {
-              width: 100%;
-            }
+            width: 100%;
           }
           .b-user-card__input-name {
             @media (max-width: 1200px) {
@@ -649,6 +649,9 @@ export default {
           }
         }
         .b-user-card__textarea-line {
+          &::v-deep(.b-text-area__min-max-label) {
+            display: none;
+          }
           .b-user-card__about-me {
             font-family: 'Inter';
             font-style: normal;

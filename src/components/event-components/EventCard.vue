@@ -6,7 +6,7 @@
           <img src="../../assets/img/hands-shake.svg" alt="" />
         </div>
         <span :class="['status', `status-${card.status.toLowerCase()}`]">{{ $t(`events.${card.status}`) }}</span>
-        <span class="active-time">{{ card.time }} - {{ cardFinishTime }}</span>
+        <span class="active-time">{{ card.time }} - {{ card.end_time }}</span>
         <div class="text-block">
           <div class="title">{{ $t('events.friendly-match') }}</div>
           <div class="date-time-mob">
@@ -25,17 +25,17 @@
     </div>
     <PlaceDetector
       class="event-place"
-      v-if="!device.mobile" 
+      v-if="card.place.place_name" 
       :place="card.place">
     </PlaceDetector>
     <div class="main-text">
       {{ card.description }}
     </div>
     <div class="labels">
-      <div class="label">
+      <div v-if="card.gender" class="label">
         {{ $t(`events.${card.gender}`) }}
       </div>
-      <div class="label">
+      <div v-if="card.type" class="label">
         {{ $t(`events.${card.type}`) }}
       </div>
       <div v-if="card.need_ball" class="label">{{ $t('hashtags.need_ball') }}</div>
@@ -63,13 +63,23 @@
         </div>
         <div class="right-side">
           <GreenBtn
-            :disabled="card.status !== 'Planned'"
+            v-if="card.status === 'Planned'"
             :animation="true"
             :text="card.privacy ? $t('events.apply') : $t('events.join')"
             :width="120"
             :height="35"
             @click-function="$emit('goToEventPage')"
           />
+          <WhiteBtn
+          v-else
+          :text="$t('events.watch')"
+          :width="120"
+          :height="35"
+          :main-color="'#262541'"
+          :is-border="true"
+          :font-styles="{ 'font-weight': 400 }"
+          @click-function="$emit('goToEventPage')"
+        />
         </div>
       </div>
     </div>
@@ -99,22 +109,8 @@ export default {
   setup(props) {
     const device = useDevice()
 
-    function addMinutes(time, minutesToAdd) {
-      let timeArray = time.split(':');
-      let hours = timeArray[0];
-      let originalMinutes = timeArray[1];
-      let date = new Date();
-      date.setHours(hours);
-      date.setMinutes(originalMinutes);
-      date.setMinutes(date.getMinutes() + minutesToAdd);
-      return date.toTimeString().substr(0, 5);
-    }
-    
-    const cardFinishTime = addMinutes(props.card.time, props.card.duration)
-
     return {
       device,
-      cardFinishTime,
     }
   },
 }
@@ -263,6 +259,8 @@ export default {
     display: flex;
     align-items: center;
     margin-top: 12px;
+    flex-wrap: wrap;
+    gap: 8px 0px;
     .label {
       margin-right: 4px;
       font-family: 'Inter';
@@ -280,6 +278,10 @@ export default {
   .bottom-block {
     margin-top: 12px;
     border-top: 1px dashed #dfdeed;
+
+    @media (max-width: 768px) {
+      margin-top: 20px;
+    }
 
     .top-line {
       display: flex;

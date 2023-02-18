@@ -20,11 +20,12 @@ export const EndpointsEnum = {
     ReadAllMyNotifications: '/notifications/client/read/all/notifications',
   },
   Events: {
-    GetAllEvents: '/events/client/events/list',
+    GetAllEvents: '/events/client/planned/events/list',
     GetAllMyEvents: '/events/client/my/events/list',
     getOneEvent: (eventId) => `/events/client/event/${eventId}`,
     DeclineOrAcceptInvites: '/events/client/accept/or/decline/invites/to/events',
     PopularEventsList: '/events/client/popular/events/list',
+    CreateOneEvent: '/events/client/event/create',
     DeclineOrAcceptParticipations:
       '/events/client/accept/or/decline/participations',
     getPlannedUserEvents: (userId) =>

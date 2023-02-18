@@ -58,17 +58,22 @@
 
 <script>
   import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
+  import { useI18n } from 'vue-i18n'
+
   import Dropdown from '../forms/Dropdown.vue'
   import InputComponent from '../forms/InputComponent.vue'
   import RegisterModalPositionMap from '../maps/RegisterModalPositionMap.vue'
-  import tickIcon from '../../assets/img/tick-white.svg'
-  import CONSTANTS from '../../consts/index'
+  import StepWrapper from './StepWrapper.vue'
+
   import { PositionMapBus } from "../../workers/event-bus-worker";
   import { API } from "../../workers/api-worker/api.worker";
-  import { useI18n } from 'vue-i18n'
-  import StepWrapper from './StepWrapper.vue'
   import { useDevice } from "next-vue-device-detector";
   import useWindowWidth from '../../utils/widthScreen'
+
+  import CONSTANTS from '../../consts/index'
+
+  import tickIcon from '../../assets/img/tick-white.svg'
+  
   export default {
     name: 'Step10',
     components: {

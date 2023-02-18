@@ -40,17 +40,6 @@
                 v-model="transformedFilters.type"
               />
             </div>
-            <div class="b-main-search__dropdown-wrapper-gender">
-              <Dropdown
-                :check-value-immediate="true"
-                :placeholder="$t('events.gender')"
-                :options="gender"
-                :height="32"
-                display-value="value"
-                display-name="name"
-                v-model="transformedFilters.gender"
-              />
-            </div>
           </div>
           <div class="b-main-search__right-block">
             <div class="b-main-search__search-input-desktop">
@@ -166,19 +155,21 @@
 <script>
 import { computed, reactive, watch, ref, onMounted, onBeforeUnmount } from 'vue'
 
+import Slider from '@vueform/slider'
+
 import Dropdown from '../../forms/Dropdown.vue'
 import FilterBlock from '../FilterBlock.vue'
 import InputComponent from '../../forms/InputComponent.vue'
 import ButtonDetailsFilters from '../components/ButtonDetailsFilters.vue'
 import ClearFilters from '../components/ClearFilters.vue'
 import ModalPositionMap from '../../maps/ModalPositionMap.vue'
-import Slider from '@vueform/slider'
-import { cloneDeep, isEqual } from 'lodash'
-import { TransformedFiltersWorker } from './transformed.filters.worker'
-import CONSTANTS from '../../../consts'
-import useWindowWidth from '../../../utils/widthScreen'
 import ModalFilters from '../ModalEventsFilters.vue'
+
+import { TransformedFiltersWorker } from './transformed.filters.worker'
+import useWindowWidth from '../../../utils/widthScreen'
 import useTodaysDate from '../../../utils/todaysDate'
+
+import CONSTANTS from '../../../consts'
 
 import MaleIcon from '../../../assets/img/female-icon.svg'
 import FemaleIcon from '../../../assets/img/male-icon.svg'
@@ -347,5 +338,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../../../assets/search-event-block-styles/index.scss';
+@import '../../../assets/styles/search-event.block.scss';
 </style>

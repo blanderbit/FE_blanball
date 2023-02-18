@@ -17,8 +17,9 @@
 
 
 <script>
-import { useI18n } from "vue-i18n";
 import { CustomModelWorker } from "../../workers/custom-model-worker";
+
+
 export default {
     props: {
         selectedEmojies: {

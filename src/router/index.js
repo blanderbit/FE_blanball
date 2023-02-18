@@ -24,6 +24,7 @@ const usersData = () => {
   }
 }
 
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -78,6 +79,7 @@ const router = createRouter({
           name: ROUTES.APPLICATION.PROFILE.MY_PROFILE.name,
           beforeEnter: routerAuthResolver.routeInterceptor(() => ({
             usersData,
+            allReviewsData: () => API.ReviewService.getMyReviews()
           })),
           component: () =>
             import('../views/application/profile/my-profile.vue'),
@@ -150,8 +152,9 @@ const router = createRouter({
         {
           path: ROUTES.APPLICATION.EVENTS.GET_ONE.relative,
           name: ROUTES.APPLICATION.EVENTS.GET_ONE.name,
-          beforeEnter: routerAuthResolver.routeInterceptor(() => ({
+          beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
             usersData,
+            eventData: () => API.EventService.getOneEvent(to.params.id)
           })),
           component: () => import('../views/application/events/event-info.vue'),
           meta: {
