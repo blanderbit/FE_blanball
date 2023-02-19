@@ -1,6 +1,6 @@
 {
   "name": "fe-blanball-latest",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "scripts": {
     "dev": "vite --port 4172",
     "build": "vite build",
