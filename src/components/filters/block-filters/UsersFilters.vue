@@ -309,6 +309,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '../../../assets/styles/mixins/device.scss';
 .b-users-filters {
   * {
     z-index: 10;
@@ -346,7 +347,7 @@ export default {
   &__mob-line {
     display: none;
     justify-content: space-between;
-    @media (min-width: 576px) and (max-width: 992px) {
+    @include tablet {
       justify-content: flex-start;
     }
     @media (max-width: 992px) {

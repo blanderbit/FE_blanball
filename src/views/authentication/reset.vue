@@ -42,9 +42,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@import '../../assets/styles/mixins/device.scss';
+
 ::v-deep(.b-auth__left-part) {
 
-  @media (max-width: 576px) {
+  @include mobile {
     margin-top: 170px; 
   }
 } 

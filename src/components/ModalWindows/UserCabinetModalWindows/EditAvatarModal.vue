@@ -198,12 +198,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../../assets/styles/mixins/device.scss';
+
 .b-edit-avatar {
   &__main-part {
     display: flex;
     justify-content: space-between;
     padding-bottom: 20px;
-    @media (max-width: 576px) {
+    @include mobile {
       display: block;
     }
     .b-edit-avatar__right-side {
@@ -211,11 +213,11 @@ export default {
         overflow: hidden;
         height: 248px;
         width: 196px;
-        @media (max-width: 576px) {
+        @include mobile {
           width: 100%;
         }
         img {
-          @media (max-width: 576px) {
+          @include mobile {
             width: 100%;
           }
         }
@@ -226,7 +228,7 @@ export default {
         width: 140px;
         height: 132px;
         overflow: hidden;
-        @media (max-width: 576px) {
+        @include mobile {
           display: none;
         }
         img {
@@ -247,11 +249,11 @@ export default {
         color: #575775;
         margin-bottom: 12px;
         cursor: pointer;
-        @media (max-width: 576px) {
+        @include mobile {
           margin-bottom: 0;
         }
         span {
-          @media (max-width: 576px) {
+          @include mobile {
             display: none;
           }
         }
@@ -261,11 +263,11 @@ export default {
         margin-top: 18px;
         img {
           margin-right: 9px;
-          @media (max-width: 576px) {
+          @include mobile {
             margin-right: 0;
           }
         }
-        @media (max-width: 576px) {
+        @include mobile {
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -276,32 +278,32 @@ export default {
             align-items: center;
             cursor: pointer;
             .b-edit-avatar__desk-text {
-              @media (max-width: 576px) {
+              @include mobile {
                 display: none;
               }
             }
             .b-edit-avatar__mob-text {
               display: none;
-              @media (max-width: 576px) {
+              @include mobile {
                 display: block;
               }
             }
             img {
-              @media (max-width: 576px) {
+              @include mobile {
                 display: none;
               }
             }
           }
         }
         .b-edit-avatar__left-mob-part {
-          @media (max-width: 576px) {
+          @include mobile {
             display: flex;
           }
           .b-edit-avatar__rotate {
             margin-right: 8px;
           }
           .b-edit-avatar__rotate {
-            @media (max-width: 576px) {
+            @include mobile {
               border: 1px solid #dfdeed;
               padding: 9px 17px;
               border-radius: 6px;

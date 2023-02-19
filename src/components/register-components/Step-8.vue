@@ -101,6 +101,8 @@
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/styles/mixins/device.scss';
+
   ::v-deep {
     .b-radio {
       width: 40%;
@@ -132,10 +134,10 @@
     .b-register-step__dropdown {
       margin-right: 10px;
       width: 120px;
-      @media (min-width: 576px) and (max-width: 992px) {
+      @include tablet {
         width: 133px;
       }
-      @media (max-width: 576px) {
+      @include mobile {
         width: 32.5%;
       }
     }

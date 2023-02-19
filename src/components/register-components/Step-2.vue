@@ -126,6 +126,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/styles/mixins/device.scss';
+
 .b-register-step__input {
   width: 384px;
   margin-top: 12px;
@@ -139,7 +141,7 @@ export default {
   width: 80px;
   top: -30px;
   left: -30px;
-  @media (min-width: 576px) {
+  @include tablet {
     display: none;
   }
 }
@@ -147,7 +149,7 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
-  @media (min-width: 576px) {
+  @include tablet {
     display: none;
   }
 }

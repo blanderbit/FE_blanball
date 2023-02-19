@@ -331,6 +331,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../../assets/styles/mixins/device.scss';
+
 ::-webkit-scrollbar {
   display: none;
 }
@@ -377,7 +379,7 @@ export default {
       .b-event-info__right-part {
         display: flex;
         align-items: center;
-        @media (max-width: 576px) {
+        @include mobile {
           position: fixed;
           bottom: 0;
           left: 50%;

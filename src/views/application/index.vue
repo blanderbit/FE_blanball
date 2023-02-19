@@ -238,6 +238,8 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss">
+@import '../../assets/styles/mixins/device.scss';
+
 html {
   overflow: hidden;
 }
@@ -265,7 +267,7 @@ html {
       position: relative;
     }
 
-    @media (max-width: 576px) {
+    @include mobile {
       padding: 0px 16px;
     }
   }
@@ -276,7 +278,7 @@ html {
     border-radius: 6px;
     text-align: center;
 
-    @media (max-width: 576px) {
+    @include mobile {
       display: flex;
       align-items: center;
       justify-content: space-between;

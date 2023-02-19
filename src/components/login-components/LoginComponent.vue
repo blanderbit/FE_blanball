@@ -200,13 +200,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/styles/mixins/device.scss';
 .remember-me__desktop {
-  @media (max-width: 576px) {
+  @include mobile {
     display: none;
   }
 }
 .remember-me__mobile {
-  @media (min-width: 576px) {
+  @include tablet {
     display: none;
   }
 }
@@ -258,7 +259,7 @@ export default {
       font-size: 28px;
       line-height: 28px;
       color: #262541;
-      @media (max-width: 576px) {
+      @include mobile {
         text-align: center;
       }
     }
@@ -271,7 +272,7 @@ export default {
       font-size: 22px;
       line-height: 32px;
       color: #262541;
-      @media (max-width: 576px) {
+      @include mobile {
         text-align: center;
       }
     }
@@ -296,13 +297,13 @@ export default {
       color: #8a8aa8;
       border-bottom: 1px dashed #8a8aa8;
     }
-    @media (max-width: 576px) {
+    @include mobile {
       display: none;
     }
   }
   .b-login-step__remember-me {
     margin-top: 26px;
-    @media (max-width: 576px) {
+    @include mobile {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -332,7 +333,7 @@ export default {
       line-height: 20px;
       color: #8a8aa8;
       border-bottom: 1px dashed #8a8aa8;
-      @media (min-width: 576px) {
+      @include tablet {
         display: none;
       }
     }

@@ -246,6 +246,8 @@
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/styles/mixins/device.scss';
+
   form {
     height: 100%;
   }
@@ -255,7 +257,7 @@
     height: 100%;
     flex-direction: column;
     /*justify-content: space-between;*/
-    @media (max-width: 576px) {
+    @include mobile {
       padding: 44px 16px;
     }
     .b-reset-step__top-part {
@@ -266,7 +268,7 @@
         font-size: 22px;
         line-height: 32px;
         color: #262541;
-        @media (max-width: 576px) {
+        @include mobile {
           text-align: center;
         }
       }
@@ -277,7 +279,7 @@
           display: flex;
           align-items: center;
           justify-content: space-between;
-          @media (max-width: 576px) {
+          @include mobile{
             width: 266px;
             margin: 0 auto;
           }
@@ -316,7 +318,7 @@
         margin-bottom: 24px;
         justify-content: space-between;
         align-items: center;
-        @media (max-width: 576px) {
+        @include mobile {
           justify-content: center;
         }
         input {
@@ -332,14 +334,14 @@
             -webkit-appearance: none;
             margin: 0;
           }
-          @media (max-width: 576px) {
+          @include mobile {
             margin-right: 6px;
           }
           /* Firefox */
           &[type='number'] {
             -moz-appearance: textfield;
           }
-          @media (max-width: 576px) {
+          @include mobile {
             width: 60px;
           }
         }

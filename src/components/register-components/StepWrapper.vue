@@ -97,6 +97,8 @@
   }
 </script>
 <style lang="scss" scoped>
+@import '../../assets/styles/mixins/device.scss';
+
   .b-register-step__subtitle {
     font-family: 'Exo 2';
     font-style: normal;
@@ -116,10 +118,10 @@
     border-radius: 28px 28px 0px 0px;
     position: relative;
     overflow: hidden;
-    @media (max-width: 576px) {
+    @include mobile {
       padding: 44px 16px;
     }
-    @media (min-width: 576px) {
+    @include tablet {
       border-radius: 8px;
     }
     .b-register-step__top-part {
@@ -138,7 +140,7 @@
           display: flex;
           align-items: center;
           justify-content: space-between;
-          @media (max-width: 576px) {
+          @include mobile {
             width: 266px;
             margin: 0 auto;
           }

@@ -171,6 +171,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/styles/mixins/device.scss';
+
 .b_header {
   display: flex;
   justify-content: space-between;
@@ -184,7 +186,7 @@ export default {
   }
   .b_header_logo {
     display: none;
-    @media (min-width: 576px) and (max-width: 992px) {
+    @include tablet {
       display: block;
     }
   }

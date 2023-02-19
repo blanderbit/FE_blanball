@@ -203,6 +203,8 @@
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/styles/mixins/device.scss';
+
   .b-register-step__title {
     font-family: 'Exo 2';
     font-style: normal;
@@ -210,7 +212,7 @@
     font-size: 22px;
     line-height: 32px;
     color: #262541;
-    @media (max-width: 576px) {
+    @include mobile {
       text-align: center;
     }
   }
