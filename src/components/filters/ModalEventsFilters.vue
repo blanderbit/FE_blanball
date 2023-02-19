@@ -95,7 +95,7 @@
 <script>
 import { computed, ref, watch } from 'vue'
 
-import ModalWindow from '../ModalWindow.vue'
+import ModalWindow from '../ModalWindows/ModalWindow.vue'
 import Dropdown from '../forms/Dropdown.vue'
 import GreenBtn from '../GreenBtn.vue'
 import RadioGenderBox from './components/RadioGenderBox.vue'

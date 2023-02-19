@@ -21,9 +21,9 @@
               :height="40"
             />
           </router-link>
-          <div class="b-event-info__share-link">
+          <div @click="openEventShareModal" class="b-event-info__share-link">
             <img src="../../../assets/img/share-icon.svg" alt="" />
-            <span @click="openEventShareModal">
+            <span>
               {{ $t('my_events.share') }}
             </span>
           </div>
@@ -170,7 +170,7 @@ import GreenBtn from '../../../components/GreenBtn.vue'
 import RightSidebar from '../../../components/RightSidebar.vue'
 import EventInfoUsersTable from '../../../components/EventInfoUsersTable.vue'
 import PositionMap from '../../../components/maps/PositionMap.vue'
-import ShareEventModal from '../../../components/ShareEventModal.vue'
+import ShareEventModal from '../../../components/ModalWindows/ShareEventModal.vue'
 import Avatar from '../../../components/Avatar.vue'
 import TabLabel from '../../../components/TabLabel.vue'
 
@@ -340,6 +340,7 @@ export default {
   grid-template-columns: 1fr 256px;
   grid-gap: 28px;
   overflow: scroll;
+  width: 100%;
   @media (max-width: 1200px) {
     grid-template-columns: 1fr;
 
@@ -349,7 +350,7 @@ export default {
   }
 
   .b-event-info__main-body {
-    height: calc(100% + 70px);
+    height: calc(100% + 150px);
     .b-event-info__header-block {
       display: flex;
       justify-content: space-between;

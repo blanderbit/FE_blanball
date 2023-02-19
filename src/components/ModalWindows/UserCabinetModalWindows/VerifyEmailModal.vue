@@ -60,12 +60,12 @@ import { Form } from '@system.it.flumx.com/vee-validate'
 
 import * as yup from 'yup'
 
-import ModalWindow from '../../components/ModalWindow.vue'
-import Counter from '../../components/Counter.vue'
-import CodeInput from '../../components/forms/CodeInput.vue'
-import InputComponent from '../../components/forms/InputComponent.vue'
+import ModalWindow from '../ModalWindow.vue'
+import Counter from '../../Counter.vue'
+import CodeInput from '../../forms/CodeInput.vue'
+import InputComponent from '../../forms/InputComponent.vue'
 
-import { API } from '../../workers/api-worker/api.worker'
+import { API } from '../../../workers/api-worker/api.worker'
 
 export default {
   name: 'VerifyEmailModal',

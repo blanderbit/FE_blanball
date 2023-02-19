@@ -83,7 +83,7 @@ import { storeToRefs } from "pinia";
 
 import SlideMenu from '../components/SlideMenu.vue'
 import Avatar from './../components/Avatar.vue'
-import BugReportModal from './BugReportModal.vue'
+import BugReportModal from './ModalWindows/BugReportModal.vue'
 import TabLabel from './TabLabel.vue'
 
 import { useUserDataStore } from '../stores/userData'

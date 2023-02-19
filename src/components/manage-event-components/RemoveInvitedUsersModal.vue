@@ -28,7 +28,7 @@
   
   <script>
 
-  import ModalWindow from '../../components/ModalWindow.vue'
+  import ModalWindow from '../ModalWindows/ModalWindow.vue'
   
   export default {
     name: 'DeleteAccountModal',

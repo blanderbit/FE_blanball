@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import ModalWindow from '../../components/ModalWindow.vue'
+import ModalWindow from '../ModalWindows/ModalWindow.vue'
 import SuitCard from './SuitCard.vue'
 import LongRadioButtonGroup from './../forms/LongRadioButtonGroup.vue'
 import { ref, computed } from 'vue'

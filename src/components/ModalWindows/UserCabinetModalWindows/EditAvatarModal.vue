@@ -24,7 +24,7 @@
                       style="display: none"
                       @change="onFileSelected"
                     />
-                    <img src="../../assets/img/add-picture.svg" alt="" />
+                    <img src="../../../assets/img/add-picture.svg" alt="" />
                     <span class="b-edit-avatar__desk-text">
                       {{ $t('modals.edit_avatar.another-pic') }}
                     </span>
@@ -35,7 +35,7 @@
                 </div>
                 <div class="b-edit-avatar__left-mob-part">
                   <div class="b-edit-avatar__rotate" @click="rotateImage">
-                    <img src="../../assets/img/rotate-picture.svg" alt="" />
+                    <img src="../../../assets/img/rotate-picture.svg" alt="" />
                     <span>
                       {{ $t('modals.edit_avatar.rotate') }}
                     </span>
@@ -68,14 +68,14 @@ import { Form } from '@system.it.flumx.com/vee-validate'
 import Cropper from 'cropperjs'
 
 import ModalWindow from '../ModalWindow.vue'
-import InputComponent from '../forms/InputComponent.vue'
-import GreenBtn from '../GreenBtn.vue'
+import InputComponent from '../../forms/InputComponent.vue'
+import GreenBtn from '../../GreenBtn.vue'
 
-import SaveIcon from '../../assets/img/save-icon.svg'
+import SaveIcon from '../../../assets/img/save-icon.svg'
 
-import { useUserDataStore } from '../../stores/userData'
+import { useUserDataStore } from '../../../stores/userData'
 
-import { API } from '../../workers/api-worker/api.worker'
+import { API } from '../../../workers/api-worker/api.worker'
 
 export default {
   name: 'EditAvatarModal',

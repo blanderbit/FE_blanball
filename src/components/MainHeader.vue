@@ -45,7 +45,7 @@ import { useRouter } from 'vue-router'
 
 import BreadCrumbs from './Breadcrumbs.vue'
 import InputComponent from './forms/InputComponent.vue'
-import SearchModal from './SearchModal.vue'
+import SearchModal from './ModalWindows/SearchModal.vue'
 import SearchBlockAll from './SearchBlockAll.vue'
 import SmallLoader from './SmallLoader.vue'
 

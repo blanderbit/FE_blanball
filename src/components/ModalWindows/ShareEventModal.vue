@@ -5,7 +5,7 @@
         <div class="b-share-event-modal__title">
           {{ $t('modals.share_event.title') }}
         </div>
-        <img src="../assets/img/share-arrow.svg" alt="" />
+        <img src="../../assets/img/share-arrow.svg" alt="" />
       </div>
       <div class="b-share-event-modal__main-side">
         <InputComponent
@@ -31,10 +31,10 @@
 <script>
 import { ref } from "vue"
 
-import InputComponent from './forms/InputComponent.vue'
-import GreenBtn from './GreenBtn.vue'
+import InputComponent from '../forms/InputComponent.vue'
+import GreenBtn from '../GreenBtn.vue'
 
-import CopyIcon from '../assets/img/copy.svg'
+import CopyIcon from '../../assets/img/copy.svg'
 
 export default {
   components: {

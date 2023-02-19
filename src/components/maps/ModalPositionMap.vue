@@ -85,7 +85,7 @@ import * as yup from 'yup'
 import PositionMap from './PositionMap.vue'
 import Dropdown from './../forms/Dropdown.vue'
 import InputComponent from './../forms/InputComponent.vue'
-import ModalWindow from '../ModalWindow.vue'
+import ModalWindow from '../ModalWindows/ModalWindow.vue'
 import GreenBtn from '../../components/GreenBtn.vue'
 import Loading from '../../workers/loading-worker/Loading.vue'
 
