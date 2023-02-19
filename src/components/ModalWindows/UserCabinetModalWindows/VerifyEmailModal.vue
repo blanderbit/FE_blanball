@@ -5,7 +5,7 @@
         {{ $t('modals.verify_email.title') }}
       </template>
       <template #title-icon>
-        <img src="../../assets/img/envelop.svg" alt="" />
+        <img src="../../../assets/img/envelop.svg" alt="" />
       </template>
       <template #verify-email>
         <Form v-slot="data" :validation-schema="schema">
