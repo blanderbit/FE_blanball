@@ -10,10 +10,10 @@
           :style="arrowStyle"
           @click="$emit('arrowClick')"
         >
-          <img src="../../assets/img/arrow-down.svg" alt="" />
+          <img src="../../../assets/img/arrow-down.svg" alt="" />
         </div>
         <div class="b-modal-bottom-card__send-complain" v-if="isOpened">
-          <img src="../../assets/img/warning-red.svg" alt="" />
+          <img src="../../../assets/img/warning-red.svg" alt="" />
           {{$t('modal_feedback.complain')}}
         </div>
       </div>
@@ -42,9 +42,9 @@
 <script>
 import { computed } from 'vue'
 
-import RatePlayerCard from '../ModalFeedback/RatePlayerCard.vue'
+import RatePlayerCard from './RatePlayerCard.vue'
 
-import CONSTANTS from '../../consts/index'
+import CONSTANTS from '../../../consts/index'
 
 export default {
   name: 'ModalBottomCard',

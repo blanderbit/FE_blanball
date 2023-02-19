@@ -58,7 +58,7 @@ import MainHeader from './../../components/MainHeader.vue'
 import MobileMenu from '../../components/MobileMenu.vue'
 import Notification from '../../components/Notification.vue'
 import VerifyEmailModal from '../../components/ModalWindows/UserCabinetModalWindows/VerifyEmailModal.vue'
-import ModalFeedback from '../../components/ModalFeedback/index.vue'
+import ModalFeedback from '../../components/ModalWindows/ModalFeedbackModalWindow/index.vue'
 import EventCreatedSuccessModal from '../../components/manage-event-components/EventCreatedSuccessModal.vue'
 
 import { AuthWebSocketWorkerInstance } from './../../workers/web-socket-worker'

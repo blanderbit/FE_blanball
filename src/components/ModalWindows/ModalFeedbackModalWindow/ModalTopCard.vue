@@ -7,20 +7,20 @@
         :style="arrowStyle"
         @click="$emit('arrowClick')"
       >
-        <img src="../../assets/img/arrow-down.svg" alt="">
+        <img src="../../../assets/img/arrow-down.svg" alt="">
       </div>
       <div
         v-else
         class="b-modal-top-card__cross"
         @click="$emit('crossClick')"
       >
-        <img src="../../assets/img/cross.svg" alt="">
+        <img src="../../../assets/img/cross.svg" alt="">
       </div>
     </div>
     <div class="b-modal-top-card__title-wrapper">
       <img
         v-if="step.id === 5"
-        src="../../assets/img/cloud-hands.svg" 
+        src="../../../assets/img/cloud-hands.svg" 
         alt="cloud-hands"
       >
       <div
@@ -89,9 +89,9 @@ import { Form, ErrorMessage } from "@system.it.flumx.com/vee-validate";
 
 import * as yup from "yup";
 
-import GreenBtn from '../GreenBtn.vue'
-import TextAreaComponent from '../TextAreaComponent.vue'
-import Emotions from '../forms/Emotions.vue';
+import GreenBtn from '../../GreenBtn.vue'
+import TextAreaComponent from '../../TextAreaComponent.vue'
+import Emotions from '../../forms/Emotions.vue';
 
 export default {
   name: 'ModalTopCard',
