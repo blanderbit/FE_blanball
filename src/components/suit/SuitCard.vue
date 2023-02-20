@@ -25,6 +25,8 @@
 import ColorPicker from './Colorpicker.vue'
 import { ref } from 'vue'
 
+import { BlanballEventBus } from '../../workers/event-bus-worker'
+
 export default {
   name: 'SuitCard',
   components: {
@@ -44,7 +46,8 @@ export default {
     ])
 
     function triggerChanged(color) {
-      console.log('current color:', color)
+      console.log(color)
+      BlanballEventBus.emit('colorChanged', color)
     }
 
     return {

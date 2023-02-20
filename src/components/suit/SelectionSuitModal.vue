@@ -11,7 +11,7 @@
       </div>
       <div class="d-flex justify-content-between align-items-center">
         <div @click="$emit('closeModal')" class="b-selection-suit__clear">Скасувати</div>
-        <GreenBtn @click="$emit('saveData')" :text="'Зберегти'" :width="140" :height="40" />
+        <GreenBtn @click="$emit('saveData', item.values)" :text="'Зберегти'" :width="140" :height="40" />
       </div>
     </template>
   </ModalWindow>

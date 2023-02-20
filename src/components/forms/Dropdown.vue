@@ -36,23 +36,25 @@
         </div>
       </template>
     </v-select>
-    <p class="b-input__error-message">{{ modelErrorMessage ? t(modelErrorMessage) : '' }}</p>
+    <p class="b-input__error-message">
+      {{ modelErrorMessage ? t(modelErrorMessage) : '' }}
+    </p>
   </div>
 </template>
 
 <script>
-import { ref, watch, computed } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { ref, watch, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import { createPopper } from '@popperjs/core'
+import { createPopper } from '@popperjs/core';
 
-import vSelect from "vue-select";
+import vSelect from 'vue-select';
 
-import OpenIndicator from './OpenIndicator.vue'
+import OpenIndicator from './OpenIndicator.vue';
 
-import { CustomModelWorker } from '../../workers/custom-model-worker/index'
+import { CustomModelWorker } from '../../workers/custom-model-worker/index';
 
-import SearchIcon from '../../assets/img/search.svg'
+import SearchIcon from '../../assets/img/search.svg';
 
 export default {
   name: 'dropdown-component',
@@ -110,60 +112,60 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   emits: ['new-value', 'update:modelValue'],
   setup(props, { emit }) {
-    const wrapper = ref(null)
-    const isOpened = ref(false)
-    const dropdownModelValue = ref(null)
+    const wrapper = ref(null);
+    const isOpened = ref(false);
+    const dropdownModelValue = ref(null);
     const {
       modelValue: staticModelValue,
       modelErrorMessage,
       modelHandlers,
-    } = CustomModelWorker(props)
-    const icon = computed(() => SearchIcon)
+    } = CustomModelWorker(props);
+    const icon = computed(() => SearchIcon);
 
     function selectValue(e) {
       dropdownModelValue.value =
         props.options.find((item) => {
-          return item[props.displayValue] === e
-        }) || (e ? { value: e, name: e } : null)
+          return item[props.displayValue] === e;
+        }) || (e ? { value: e, name: e } : null);
 
-      modelHandlers.value.input[0](e)
-      modelHandlers.value.input[1](e, true)
+      modelHandlers.value.input[0](e);
+      modelHandlers.value.input[1](e, true);
     }
 
     vSelect.props.components.default = () => ({ OpenIndicator });
     watch(
       () => props.options,
       () => {
-        selectValue(props.modelValue)
+        selectValue(props.modelValue);
       },
       {
         immediate: props.checkValueImmediate,
       }
-    )
+    );
 
     if (props.checkValueInitially) {
-      selectValue(props.modelValue)
+      selectValue(props.modelValue);
     }
 
     watch(
       () => props.modelValue,
       () => {
-        selectValue(props.modelValue)
+        selectValue(props.modelValue);
       },
       {
         immediate: props.checkValueImmediate,
       }
-    )
+    );
     const withPopper = (dropdownList, component, context) => {
       /**
        * We need to explicitly define the dropdown width since
        * it is usually inherited from the parent with CSS.
        */
-      dropdownList.style.width = context.width
+      dropdownList.style.width = context.width;
 
       /**
        * Here we position the dropdownList relative to the $refs.toggle Element.
@@ -176,7 +178,7 @@ export default {
        * above.
        */
       const popper = createPopper(component.$refs.toggle, dropdownList, {
-        placement: 'auto-end',
+        placement: 'bottom',
         modifiers: [
           {
             name: 'offset',
@@ -196,23 +198,23 @@ export default {
             },
           },
         ],
-      })
+      });
 
       /**
        * To prevent memory leaks Popper needs to be destroyed.
        * If you return function, it will be called just before dropdown is removed from DOM.
        */
-      return () => popper.destroy()
-    }
+      return () => popper.destroy();
+    };
 
     function setNewValue(val) {
-      modelHandlers.value.input[0](val?.[props.displayValue])
-      modelHandlers.value.input[1](val?.[props.displayValue], true)
-      emit('new-value', val?.[props.displayValue])
-      emit('update:modelValue', val?.[props.displayValue])
+      modelHandlers.value.input[0](val?.[props.displayValue]);
+      modelHandlers.value.input[1](val?.[props.displayValue], true);
+      emit('new-value', val?.[props.displayValue]);
+      emit('update:modelValue', val?.[props.displayValue]);
     }
 
-    const { t } = useI18n()
+    const { t } = useI18n();
     return {
       setNewValue,
       withPopper,
@@ -224,9 +226,9 @@ export default {
       dropdownModelValue,
       icon,
       t,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -279,7 +281,6 @@ export default {
 ::v-deep {
   #vs3__listbox {
     --vs-dropdown-min-width: auto;
-    
   }
   .vs__selected-options {
     overflow: hidden;
@@ -356,9 +357,9 @@ export default {
     height: 100%;
     font-family: 'Inter';
     font-style: normal;
-    font-weight: 500;
-    font-size: 13px;
-    line-height: 16px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
     color: #262541;
 
     img {

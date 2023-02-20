@@ -210,6 +210,10 @@ export default {
       duration: null,
       need_form: null,
       date_and_time: '',
+      forms: {
+        first_team: {},
+        second_team: {},
+      },
       count_current_users: 0,
       count_current_fans: 0,
       current_users: [],
@@ -468,10 +472,12 @@ export default {
 
       switch (createEventData.need_form) {
         case true:
-          createEventData.forms = eventFormTypes.T_Shirt
+          createEventData.forms.first_team.type = eventFormTypes.T_Shirt
+          createEventData.forms.second_team.type = eventFormTypes.T_Shirt
           break
         case false:
-          createEventData.forms = eventFormTypes.Shirt_Front
+          createEventData.forms.first_team.type = eventFormTypes.Shirt_Front
+          createEventData.forms.second_team.type = eventFormTypes.Shirt_Front
       }
 
       try {
