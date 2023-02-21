@@ -86,7 +86,7 @@ export const ROUTES = {
       name: 'application-users',
       GENERAL: {
         relative: 'users/general',
-        absolute: '/application/smart-list/general',
+        absolute: '/application/users/general',
         name: 'application-users-general',
       },
       PLAYERS: {
