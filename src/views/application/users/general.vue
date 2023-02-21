@@ -16,7 +16,6 @@
               { active: tab.isActive },
               { disabled: tab.isDisabled },
             ]"
-            @click="changeTab(tab.id, tab.url)"
           >
             <Transition>
               <TabLabel

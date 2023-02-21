@@ -154,7 +154,8 @@ const router = createRouter({
           name: ROUTES.APPLICATION.EVENTS.GET_ONE.name,
           beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
             usersData,
-            eventData: () => API.EventService.getOneEvent(to.params.id)
+            eventData: () => API.EventService.getOneEvent(to.params.id),
+            eventRequestsToParticipationData: () => API.EventService.requestsToParticipations(to.params.id)
           })),
           component: () => import('../views/application/events/event-info.vue'),
           meta: {

@@ -20,6 +20,12 @@ export class EventService {
     })
   }
 
+  requestsToParticipations(eventId) {
+    return AxiosInstance.get(
+      EndpointsEnum.Events.EventRequestsToParticipations(eventId),
+    )
+  }
+
   declineOrAcceptParticipations(id, isAccept) {
     return AxiosInstance.post(
       EndpointsEnum.Events.DeclineOrAcceptParticipations,

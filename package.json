@@ -16,6 +16,7 @@
     "@popperjs/core": "^2.11.6",
     "@rollup/plugin-babel": "^6.0.2",
     "@system.it.flumx.com/vee-validate": "^0.0.1",
+    "@system.it.flumx.com/vue-virtual-scroller": "^2.0.0-beta.7",
     "@types/uuid": "^8.3.0",
     "@vueform/slider": "^2.1.5",
     "axios": "^0.24.0",

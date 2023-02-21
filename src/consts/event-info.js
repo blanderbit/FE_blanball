@@ -30,30 +30,36 @@ export default {
       }
     }
   }),
-  tabs: [
-    {
-      id: 0,
-      name: 'events.list-of-users',
-      img: ball_icon,
-      isDisabled: false
-    },
-    {
-      id: 1,
-      name: 'events.registered-fans',
-      img: members,
-      isDisabled: false
-    },
-    {
-      id: 2,
-      name: 'events.apps-for-participation',
-      img: user_with_plus,
-      isDisabled: false
-    },
-    {
-      id: 3,
-      name: 'events.couch-list',
-      img: couch,
-      isDisabled: true
-    },
-  ],
+  tabs: (eventData, userId) => {
+    return [
+      {
+        id: 0,
+        name: 'events.list-of-users',
+        img: ball_icon,
+        isDisabled: false,
+        isShown: true
+      },
+      {
+        id: 1,
+        name: 'events.registered-fans',
+        img: members,
+        isDisabled: false,
+        isShown: true
+      },
+      {
+        id: 2,
+        name: 'events.apps-for-participation',
+        img: user_with_plus,
+        isDisabled: false,
+        isShown: eventData.privacy && userId === eventData.author.id,
+      },
+      {
+        id: 3,
+        name: 'events.couch-list',
+        img: couch,
+        isDisabled: true,
+        isShown: true,
+      },
+    ]
+  }
 }
