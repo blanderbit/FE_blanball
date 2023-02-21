@@ -129,6 +129,7 @@ export default {
       @media (max-width: 768px) {
         order: 1;
         text-align: center;
+        border: none;
         margin-bottom: 10px;
       }
     }
