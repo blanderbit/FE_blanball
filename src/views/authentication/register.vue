@@ -232,13 +232,13 @@ export default {
             .typeError('errors.type-number')
             .required('errors.required')
             .min(145, 'errors.min145')
-            .max(250, 'errors.max250'),
+            .max(210, 'errors.max210'),
           weight: yup
             .number()
             .typeError('errors.type-number')
             .required('errors.required')
             .min(30, 'errors.min30')
-            .max(200, 'errors.max250'),
+            .max(210, 'errors.max210'),
           position: yup.string().required('errors.required'),
           working_leg: yup.string().required('errors.required'),
         })

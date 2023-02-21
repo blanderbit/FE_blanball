@@ -45,7 +45,7 @@ export default {
   'your-city': 'Ваш населений пункт',
   city: 'Місто/село/містечко',
   district: 'Область',
-  address: 'Адресса',
+  address: 'Адреса',
   'address-placeholder': 'Володимирська, 60',
   'add-district': 'Додати район',
   'select-on-map': 'Вибрати локацію на карті',
@@ -70,7 +70,7 @@ export default {
   'load-app':
     'Завантажте додаток BlanBall на свій смартфон та будьте завжди на зв’язку',
   'main-leg': 'Ударна нога',
-  position: 'Позиция',
+  position: 'Позиція',
   finishing: 'Завершення конфігураціі профіля',
   'thanks-for-configure-profile':
     'Дякуемо за заповнення інформаціі. Це допоможе в роботі ношої системи!',

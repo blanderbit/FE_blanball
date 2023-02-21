@@ -136,7 +136,7 @@ export default {
       password: yup
         .string()
         .required('errors.required')
-        .min(8, 'errors.password-error')
+        .min(8, 'errors.min8')
         .max(68, 'errors.max68'),
     })
 

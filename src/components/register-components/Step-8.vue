@@ -12,7 +12,9 @@
       <div class="b-register-step__date-block mb-2">
         <div class="b-register-step__dropdown">
           <Dropdown
-              :placeholder="$t('register.day')"
+              v-model="day"
+              :placeholder="!day ? $t('register.day') : ''"
+              :mainTitle="day ? $t('register.day') : ''"
               :options="mockData.days"
               display-name="value"
               display-value="id"
@@ -21,7 +23,9 @@
         </div>
         <div class="b-register-step__dropdown">
           <Dropdown
-              :placeholder="$t('register.month')"
+              v-model="month"
+              :placeholder="!month ? $t('register.month') : ''"
+              :mainTitle="month ? $t('register.month') : ''"
               :options="mockData.months"
               display-name="value"
               display-value="id"
@@ -30,17 +34,15 @@
         </div>
         <div class="b-register-step__dropdown">
           <Dropdown
-              :placeholder="$t('register.year')"
+              v-model="year"
+              :placeholder="!year ? $t('register.year') : ''"
+              :mainTitle="year ? $t('register.year') : ''"
               :options="mockData.years"
               display-name="value"
               display-value="value"
               name="year"
           />
         </div>
-      </div>
-
-      <div class="b-register-step__small-subtitle">
-        {{$t('register.you_must_have_6_or_more_years')}}
       </div>
     </template>
   </step-wrapper>
@@ -66,6 +68,10 @@
       StepWrapper
     },
     setup() {
+      const day = ref(null)
+      const month = ref(null)
+      const year = ref(null)
+
       const mockData = computed(() => {
         return {
           days: CONSTANTS.register.days,
@@ -97,7 +103,10 @@
       return {
         mockData,
         genderRadio,
-        stepConfig
+        stepConfig,
+        day,
+        month,
+        year,
       }
     },
   }

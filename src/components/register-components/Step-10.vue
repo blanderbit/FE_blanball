@@ -14,7 +14,8 @@
       <div class="b-register-step__dropdown">
         <Dropdown
             :outside-title="true"
-            :main-title="$t('register.district')"
+            :main-title="region ? $t('register.district') : ''"
+            :placeholder="!region ? $t('register.district') : ''"
             :options="mockData.district"
             :model-value="region"
             :height="40"
@@ -28,7 +29,8 @@
       <div class="b-register-step__dropdown">
         <Dropdown
             :outside-title="true"
-            :main-title="$t('register.city')"
+            :main-title="city ? $t('register.city') : ''"
+            :placeholder="!city ? $t('register.city') : ''"
             :options="mockData.cities"
             :model-value="city"
             :height="40"
