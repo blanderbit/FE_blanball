@@ -136,7 +136,8 @@ export default {
       password: yup
         .string()
         .required('errors.required')
-        .min(8, 'errors.password-error'),
+        .min(8, 'errors.password-error')
+        .max(68, 'errors.max68'),
     })
 
     const handleLogin = async (data) => {

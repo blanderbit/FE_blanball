@@ -116,15 +116,17 @@ export default {
         old_password: yup
           .string()
           .required('errors.required')
-          .min(8, 'errors.min8'),
+          .min(8, 'errors.min8')
+          .max(68, 'errors.max68'),
         new_password: yup
           .string()
           .required('errors.required')
-          .min(8, 'errors.min8'),
+          .min(8, 'errors.min8')
+          .max(68, 'errors.max68'),
         password_code: yup
           .string()
           .required('errors.required')
-          .min(5, 'errors.min5'),
+          .min(5, 'errors.min5')
       })
     })
     const eyeCrossed = computed(() => eyeCross)

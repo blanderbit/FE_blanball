@@ -155,11 +155,16 @@
         }
         if (currentStep.value === 3) {
           return yup.object({
-            new_password: yup.string().required('errors.required').min(8, 'errors.min8'),
+            new_password: yup
+              .string()
+              .required('errors.required')
+              .min(8, 'errors.min8')
+              .max(68, 'errors.max68'),
             confirm_new_password: yup
               .string()
               .required('errors.required')
               .min(8, 'errors.min8')
+              .max(68, 'errors.max68')
               .oneOf([yup.ref('new_password'), null], 'errors.same-password')
           });
         }

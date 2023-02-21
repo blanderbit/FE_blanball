@@ -198,11 +198,13 @@ export default {
           password: yup
             .string()
             .required('errors.required')
-            .min(8, 'errors.min8'),
+            .min(8, 'errors.min8')
+            .max(68, 'errors.max68'),
           re_password: yup
             .string()
             .required('errors.required')
             .min(8, 'errors.min8')
+            .max(68, 'errors.max68')
             .when('password', (password, field) =>
               password
                 ? field
