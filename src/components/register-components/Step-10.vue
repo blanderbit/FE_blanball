@@ -129,7 +129,7 @@
         },
         nextButton: {
           exist: true,
-          text: t('register.next'),
+          text: t('register.finish'),
           disabled: nextButton.value
         },
         stepperLines: {
@@ -215,6 +215,15 @@
     @include mobile {
       text-align: center;
     }
+  }
+
+  .b-register-step__small-title {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #262541;
   }
   .b-register-step__dropdown {
     width: 384px;

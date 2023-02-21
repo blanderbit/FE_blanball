@@ -37,13 +37,20 @@
         </div>
         <GreenBtn
           :text="nextButton?.text"
-          :disabled="nextButton?.disabled"
-          :width="155"
+          :width="nextButton.width ? nextButton.width : 155"
           :height="40"
-          v-if="nextButton?.exist"
+          v-if="nextButton?.exist && !nextButton?.disabled"
           :icon-right="arrow_right"
           :is-icon-and-text-apart="true"
           @click-function="$emit('next')"
+        />
+        <WhiteBtn
+          v-if="nextButton?.disabled"
+          :text="nextButton?.text"
+          :disabled="nextButton?.disabled"
+          :width="155"
+          :height="40"
+          :is-icon-and-text-apart="true"
         />
       </div>
     </div>
@@ -54,11 +61,14 @@
   import GreenBtn from '../GreenBtn.vue'
   import Loading from '../../workers/loading-worker/Loading.vue'
   import ArrowRight from '../../assets/img/arrow-right-white.svg'
+  import WhiteBtn from '../WhiteBtn.vue'
+
   export default {
     name: 'StepWrapper',
     components: {
       GreenBtn,
-      Loading
+      Loading,
+      WhiteBtn,
     },
     props: {
       stepperLines: {

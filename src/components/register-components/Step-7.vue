@@ -31,6 +31,7 @@ export default {
         nextButton: {
           exist: true,
           text: t('register.adjust'),
+          width: 165
         },
         returnButton: {
           exist: true,

@@ -108,7 +108,8 @@ export default {
         },
         nextButton: {
           exist: true,
-          text: t('register.next'),
+          text: t('register.register'),
+          width: 180
         },
         stepperLines: {
           count: 2,

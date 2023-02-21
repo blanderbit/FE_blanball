@@ -72,7 +72,9 @@ export default {
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
+  border: 1px solid #DFDEED !important;
   cursor: pointer;
+  color: #575775 !important;
   user-select: none;
   img {
     margin-right: 8px;
