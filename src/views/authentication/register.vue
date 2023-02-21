@@ -83,9 +83,6 @@
             @back="currentStep--"
           />
         </Transition>
-        <Transition>
-          <Step_11 v-if="currentStep === 11" @next="goToEvents()" />
-        </Transition>
       </Form>
     </template>
   </AuthenticationMain>
@@ -330,6 +327,11 @@ export default {
     function finishOnBoarding() {
       currentStep.value = 7
     }
+
+    function goToEvents() {
+      router.push(ROUTES.APPLICATION.EVENTS.absolute)
+    }
+
     return {
       currentStep,
       rightSideStyle,
@@ -339,6 +341,7 @@ export default {
       schema,
       initialValues,
       finishOnBoarding,
+      goToEvents,
       async handleRegister(data) {
         const { valid } = await data.validate()
         if (!valid) return
@@ -390,6 +393,10 @@ export default {
               last_name: profileValues.profile.last_name,
             }
             await API.UserService.updateProfileData(profileValues)
+            if (currentStep.value === 10) {
+              goToEvents()
+            }
+
           } catch (e) {
             return
           }
@@ -398,9 +405,6 @@ export default {
       },
       backToRoute() {
         router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute)
-      },
-      goToEvents() {
-        router.push(ROUTES.APPLICATION.EVENTS.absolute)
       },
       disableSubmit: (e) => {
         e.stopPropagation()
