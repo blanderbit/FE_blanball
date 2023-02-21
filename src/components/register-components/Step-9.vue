@@ -63,14 +63,18 @@
 
 <script>
   import { computed, ref } from 'vue'
+  import { useI18n } from 'vue-i18n'
+
   import GreenBtn from '../GreenBtn.vue'
   import Dropdown from '../forms/Dropdown.vue'
   import InputComponent from '../forms/InputComponent.vue'
+  import StepWrapper from './StepWrapper.vue'
+
+  import CONSTANTS from "../../consts";
+
   import arrowRight from '../../assets/img/arrow-right-white.svg'
   import clipIcon from '../../assets/img/clip.svg'
-  import CONSTANTS from "../../consts";
-  import { useI18n } from 'vue-i18n'
-  import StepWrapper from './StepWrapper.vue'
+
   export default {
     name: 'Step9',
     components: {
@@ -83,9 +87,6 @@
       const profesionaLevel = ref('');
       const clip = computed(() => {
         return clipIcon
-      });
-      const arrow_right = computed(() => {
-        return arrowRight
       });
       const isDocumentNeeded = computed(() => {
         return profesionaLevel.value === 'Професійно'
@@ -106,7 +107,8 @@
           },
           nextButton: {
             exist: true,
-            text: t('register.next')
+            text: t('register.next'),
+            icon: arrowRight,
           },
           stepperLines: {
             exist: true,
@@ -116,7 +118,6 @@
         }
       });
       return {
-        arrow_right,
         clip,
         profesionaLevel,
         isDocumentNeeded,

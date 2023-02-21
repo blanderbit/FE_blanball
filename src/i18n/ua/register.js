@@ -48,6 +48,7 @@ export default {
   address: 'Адресса',
   'address-placeholder': 'Володимирська, 60',
   'add-district': 'Додати район',
+  'select-on-map': 'Вибрати локацію на карті',
   optionally: 'Опціонально',
   finish: 'Завершити',
   welcome: 'Вітаємо у BLANBALL !',

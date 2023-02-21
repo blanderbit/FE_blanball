@@ -55,6 +55,8 @@
   import StepWrapper from './StepWrapper.vue'
 
   import CONSTANTS from '../../consts/index'
+
+  import arrowRight from '../../assets/img/arrow-right-white.svg'
   
   export default {
     name: 'Step8',
@@ -82,7 +84,8 @@
           },
           nextButton: {
             exist: true,
-            text: t('register.next')
+            text: t('register.next'),
+            icon: arrowRight,
           },
           stepperLines: {
             exist: true,

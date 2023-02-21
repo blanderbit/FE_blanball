@@ -15,6 +15,8 @@ import { useI18n } from 'vue-i18n'
 
 import StepWrapper from './StepWrapper.vue'
 
+import arrowRight from '../../assets/img/arrow-right-white.svg'
+
 export default {
   name: 'Step6',
 
@@ -31,7 +33,8 @@ export default {
         nextButton: {
           exist: true,
           text: t('register.adjust'),
-          width: 165
+          width: 180,
+          icon: arrowRight,
         },
         returnButton: {
           exist: true,

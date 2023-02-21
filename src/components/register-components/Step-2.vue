@@ -84,6 +84,7 @@ import InputComponent from '../forms/InputComponent.vue'
 import StepWrapper from './StepWrapper.vue'
 
 import tickWhite from '../../assets/img/tick-white.svg'
+import arrowRight from '../../assets/img/arrow-right-white.svg'
 
 export default {
   name: 'Step2',
@@ -109,7 +110,8 @@ export default {
         nextButton: {
           exist: true,
           text: t('register.register'),
-          width: 180
+          width: 180,
+          icon: arrowRight,
         },
         stepperLines: {
           count: 2,

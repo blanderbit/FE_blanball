@@ -93,7 +93,6 @@ export default {
         FemaleIcon,
       }
     })
-    const arrow_right = computed(() => arrowRight)
     const stepConfig = computed(() => {
       return {
         title: t('register.title'),
@@ -104,6 +103,7 @@ export default {
         nextButton: {
           exist: true,
           text: t('register.next'),
+          icon: arrowRight
         },
         stepperLines: {
           count: 2,
@@ -113,7 +113,6 @@ export default {
       }
     })
     return {
-      arrow_right,
       stepConfig,
       icons,
     }

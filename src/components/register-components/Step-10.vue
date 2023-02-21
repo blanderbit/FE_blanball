@@ -51,7 +51,12 @@
             name="address"
         ></InputComponent>
       </div>
-      <RegisterModalPositionMap v-if="isMobile"></RegisterModalPositionMap>
+      <div class="b-register-step__map">
+        <RegisterModalPositionMap 
+          v-if="isMobile"
+          :title="'Вибрати позицію на карті'">
+        </RegisterModalPositionMap>
+      </div>
     </template>
   </step-wrapper>
 </template>
@@ -73,6 +78,7 @@
   import CONSTANTS from '../../consts/index'
 
   import tickIcon from '../../assets/img/tick-white.svg'
+  import nikeIcon from '../../assets/img/nike-icon.svg'
   
   export default {
     name: 'Step10',
@@ -130,7 +136,8 @@
         nextButton: {
           exist: true,
           text: t('register.finish'),
-          disabled: nextButton.value
+          disabled: nextButton.value,
+          icon: nikeIcon,
         },
         stepperLines: {
           exist: true,
@@ -231,5 +238,9 @@
     @media (max-width: 992px) {
       width: 100%;
     }
+  }
+  .b-register-step__map {
+    display: flex;
+    gap: 8px;
   }
 </style>

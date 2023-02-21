@@ -40,7 +40,7 @@
           :width="nextButton.width ? nextButton.width : 155"
           :height="40"
           v-if="nextButton?.exist && !nextButton?.disabled"
-          :icon-right="arrow_right"
+          :icon-right="nextButton?.icon"
           :is-icon-and-text-apart="true"
           @click-function="$emit('next')"
         />
@@ -60,7 +60,6 @@
   import {computed} from 'vue'
   import GreenBtn from '../GreenBtn.vue'
   import Loading from '../../workers/loading-worker/Loading.vue'
-  import ArrowRight from '../../assets/img/arrow-right-white.svg'
   import WhiteBtn from '../WhiteBtn.vue'
 
   export default {
@@ -97,10 +96,8 @@
       }
     },
     setup(props) {
-      const arrow_right = computed(() => ArrowRight);
       const one_step_percent = computed(() => (100 / props.stepperLines?.count) - 1);
       return {
-        arrow_right,
         one_step_percent
       }
     }
