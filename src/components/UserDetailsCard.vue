@@ -493,6 +493,7 @@ export default {
     @media (max-width: 1200px) {
       box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     }
+    
     .b-user-card__top-part {
       display: flex;
       .b-user-card__profile-picture {
@@ -568,9 +569,10 @@ export default {
     }
   }
   .b-user-card__tabs-block {
-    @media (max-width: 1200px) {
+    @media (max-width: 1200px) and (min-width: 768px) {
       box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     }
+    
     .b-user-card__tab-titles {
       display: flex;
       justify-content: space-between;

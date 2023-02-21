@@ -373,7 +373,6 @@ export default {
 
     function hideReview() {
       openedReviewId.value = 0
-      debugger
     }
 
     function switchTabLabel(isDisabled) {
@@ -749,7 +748,7 @@ export default {
 .b-user-cabinet {
   overflow-y: scroll;
   @media (max-width: 768px) {
-    padding-bottom: 10px;
+    padding-bottom: 150px;
   }
 }
 .b-user-cabinet__user-cabinet::-webkit-scrollbar {

@@ -86,6 +86,17 @@ export default {
 <style lang="scss" scoped>
 .b-user-cabinet__buttons {
   order: 4;
+
+  @media (max-width: 768px) {
+    position: absolute;
+    left: 50%;
+    max-width: 515px;
+    width: calc(100% - 40px);
+    z-index: 10;
+    bottom: 20px;
+    padding: 0px 16px;
+    transform: translate(-50%, 10px);
+  }
   .b-user-cabinet__save-cancel-btns {
     @media (max-width: 768px) {
       display: flex;

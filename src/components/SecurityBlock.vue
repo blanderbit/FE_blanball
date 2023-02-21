@@ -132,6 +132,10 @@ export default {
   padding: 20px 16px;
   height: fit-content;
 
+  @media (max-width: 768px) {
+    box-shadow: none;
+  }
+
   .b-security__email-input {
     height: 40px;
     margin-bottom: 12px;
