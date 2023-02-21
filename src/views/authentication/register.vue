@@ -4,6 +4,7 @@
     :background-mob="backgroundMob"
     :right-side-style="rightSideStyle"
     :current-step="currentStep"
+    :class="{'b-register__onboarding-step': onboadringSteps}"
   >
     <template #main-content>
       <Form
@@ -26,7 +27,7 @@
             @back="currentStep--"
           />
         </Transition>
-        <Transition>
+          <Transition>
           <Step_3
             v-if="currentStep === 3"
             @next="currentStep++"
@@ -170,6 +171,11 @@ export default {
     let profileValues = {
       profile: {},
     }
+
+    const onboadringSteps = computed(() => {
+      return currentStep.value > 2 && currentStep.value  < 8
+    })
+
     let schema = computed(() => {
       if (currentStep.value === 1) {
         return yup.object({
@@ -327,6 +333,7 @@ export default {
       rightSideStyle,
       backgroundTab,
       backgroundMob,
+      onboadringSteps,
       schema,
       initialValues,
       finishOnBoarding,
@@ -416,7 +423,10 @@ form {
 .v-leave-to {
   opacity: 0;
 }
-.b-register__step-8::v-deep(.b-auth__central-block) {
-  height: 700px !important;
+.b-register__onboarding-step::v-deep(.b-auth__left-part) {
+
+  @media (max-width: 576px) {
+    margin-top: 150px;
+  }
 }
 </style>

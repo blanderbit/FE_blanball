@@ -119,7 +119,7 @@
     position: relative;
     overflow: hidden;
     @include mobile {
-      padding: 44px 16px;
+      padding: 30px 16px;
     }
     @include tablet {
       border-radius: 8px;
@@ -168,6 +168,16 @@
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
+
+      @media (max-width: 992px) {
+        align-items: center;
+      }
+
+      @media (max-width: 576px) {
+        align-items: flex-start;
+        margin-top: 40px;
+      }
+
       >div {
         width: 100%;
       }
