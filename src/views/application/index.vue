@@ -17,15 +17,11 @@
         </span>
       </div>
     </div>
-    <mobile-menu
-      :isMenuActive="isMobMenuActive"
-      @close-menu="isMobMenuActive = false"
-    />
     <sidebar />
     <div class="main-block">
       <div class="container">
         <div class="main-body-inner">
-          <main-header @menu-icon-click="isMobMenuActive = true" />
+          <main-header @menu-icon-click="openMobileMenu"/>
           <router-view />
         </div>
       </div>
@@ -55,7 +51,6 @@ import { v4 as uuid } from 'uuid'
 
 import Sidebar from './../../components/Sidebar.vue'
 import MainHeader from './../../components/MainHeader.vue'
-import MobileMenu from '../../components/MobileMenu.vue'
 import Notification from '../../components/Notification.vue'
 import VerifyEmailModal from '../../components/ModalWindows/UserCabinetModalWindows/VerifyEmailModal.vue'
 import ModalFeedback from '../../components/ModalWindows/ModalFeedbackModalWindow/index.vue'
@@ -75,7 +70,6 @@ import message_audio from '../../assets/audio/message_audio.mp3'
 const isVerifyModalActive = ref(false);
 const userEmail = ref('');
 const isUserVerified = ref(true);
-const isMobMenuActive = ref(false);
 const isCreateReviewModalActive = ref(false)
 const endedEventData = ref({})
 const selectedEmojies = ref([])
@@ -93,6 +87,9 @@ const openEventCreatedModal = () => {
 const closeEventReviewModal = () => {
   isCreateReviewModalActive.value = false
   modalFeedBackAnimation.value = false
+}
+const openMobileMenu = () => {
+  BlanballEventBus.emit('OpenMobileMenu')
 }
 
 const openEventReviewModal = () => {

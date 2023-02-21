@@ -8,7 +8,6 @@
     }"
     v-if="link"
     @click.stop="$emit('clickByAvatar')" data="avatar.jpg" type="image/jpeg">
-    <img/>
   </object>
   <div
     class="b-avatar b-avatar-words d-flex justify-content-center align-items-center"

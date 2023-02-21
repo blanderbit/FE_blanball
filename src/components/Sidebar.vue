@@ -73,6 +73,19 @@
       </div>
     </div>
   </div>
+  <mobile-menu
+    :isMenuActive="isMobMenuActive"
+    :notifications="paginationElements"
+    :notReadNotificationCount="notReadNotificationCount"
+    :newNotifications="skipids.length"
+    :total-notifications-count="paginationTotalCount"
+    @close="isMenuOpened = false"
+    @closed="paginationClearData()"
+    @loadingInfinite="loadDataNotifications(paginationPage + 1, $event)"
+    @reLoading="loadDataNotifications(1, null, true)"
+    @loading="loadDataNotifications(1, null, true)"
+    @close-menu="isMobMenuActive = false"
+  />
 </template>
 
 <script>
@@ -85,6 +98,7 @@ import SlideMenu from '../components/SlideMenu.vue'
 import Avatar from './../components/Avatar.vue'
 import BugReportModal from './ModalWindows/BugReportModal.vue'
 import TabLabel from './TabLabel.vue'
+import MobileMenu from './MobileMenu.vue';
 
 import { useUserDataStore } from '../stores/userData'
 import { useEventDataStore } from '../stores/eventsData'
@@ -93,7 +107,7 @@ import { AuthWebSocketWorkerInstance } from './../workers/web-socket-worker'
 import { API } from '../workers/api-worker/api.worker'
 import { PaginationWorker } from '../workers/pagination-worker'
 import { TokenWorker } from '../workers/token-worker'
-import { NotificationsBus } from '../workers/event-bus-worker'
+import { NotificationsBus, BlanballEventBus } from '../workers/event-bus-worker'
 
 import { ROUTES } from '../router/router.const'
 
@@ -122,11 +136,13 @@ export default {
     Avatar,
     BugReportModal,
     TabLabel,
+    MobileMenu,
   },
   setup() {
     const userStore = useUserDataStore()
     const eventStore = useEventDataStore()
     const notReadNotificationCount = ref(0)
+    const isMobMenuActive = ref(false);
     const skipids = ref([])
     const { user } = storeToRefs(userStore)
     const userFullName = computed(
@@ -260,8 +276,13 @@ export default {
       paginationClearData()
     })
 
+    BlanballEventBus.on('OpenMobileMenu', () => {
+      isMobMenuActive.value = true
+    })
+
     onBeforeUnmount(() => {
       NotificationsBus.off('SidebarClearData')
+      BlanballEventBus.off('OpenMobileMenu')
       AuthWebSocketWorkerInstance.destroyCallback(handleMessageInSidebar)
     })
 
@@ -280,6 +301,7 @@ export default {
       skipids,
       menuItems,
       userAvatar,
+      isMobMenuActive,
       isMenuOpened,
       currentHoverSideBarItemID,
       userFullName,
