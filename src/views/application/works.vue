@@ -42,7 +42,7 @@ export default {}
 </script>
 
 <style lang="scss" scoped>
-@import '../../../assets/styles/mixins/device.scss';
+@import '../../assets/styles/mixins/device.scss';
 
 .b-tech-works {
   position: fixed;
