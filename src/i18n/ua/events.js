@@ -32,7 +32,7 @@ export default {
   'your-popular-events': 'Найпопулярніщі івенки, де ви можете приняти участь',
   'need-uniform': 'Потрібна форма',
   'do-not-need-uniform': 'Не потрібна форма',
-  gender: 'Гендер учасників події',
+  gender: 'Гендер учасників',
   'general-info': 'Загальна інформація',
   'event-name': 'Назва заходу',
   'event-name-placeholder': '«Хом`ячкове змагання»',

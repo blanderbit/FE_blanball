@@ -84,6 +84,7 @@ import InputComponent from '../forms/InputComponent.vue'
 import StepWrapper from './StepWrapper.vue'
 
 import tickWhite from '../../assets/img/tick-white.svg'
+import arrowRight from '../../assets/img/arrow-right-white.svg'
 
 export default {
   name: 'Step2',
@@ -108,7 +109,9 @@ export default {
         },
         nextButton: {
           exist: true,
-          text: t('register.next'),
+          text: t('register.register'),
+          width: 180,
+          icon: arrowRight,
         },
         stepperLines: {
           count: 2,
@@ -126,6 +129,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/styles/mixins/device.scss';
+
 .b-register-step__input {
   width: 384px;
   margin-top: 12px;
@@ -139,7 +144,7 @@ export default {
   width: 80px;
   top: -30px;
   left: -30px;
-  @media (min-width: 576px) {
+  @include tablet {
     display: none;
   }
 }
@@ -147,7 +152,7 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
-  @media (min-width: 576px) {
+  @include tablet {
     display: none;
   }
 }

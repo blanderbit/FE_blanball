@@ -37,13 +37,20 @@
         </div>
         <GreenBtn
           :text="nextButton?.text"
+          :width="nextButton.width ? nextButton.width : 155"
+          :height="40"
+          v-if="nextButton?.exist && !nextButton?.disabled"
+          :icon-right="nextButton?.icon"
+          :is-icon-and-text-apart="true"
+          @click-function="$emit('next')"
+        />
+        <WhiteBtn
+          v-if="nextButton?.disabled"
+          :text="nextButton?.text"
           :disabled="nextButton?.disabled"
           :width="155"
           :height="40"
-          v-if="nextButton?.exist"
-          :icon-right="arrow_right"
           :is-icon-and-text-apart="true"
-          @click-function="$emit('next')"
         />
       </div>
     </div>
@@ -53,12 +60,14 @@
   import {computed} from 'vue'
   import GreenBtn from '../GreenBtn.vue'
   import Loading from '../../workers/loading-worker/Loading.vue'
-  import ArrowRight from '../../assets/img/arrow-right-white.svg'
+  import WhiteBtn from '../WhiteBtn.vue'
+
   export default {
     name: 'StepWrapper',
     components: {
       GreenBtn,
-      Loading
+      Loading,
+      WhiteBtn,
     },
     props: {
       stepperLines: {
@@ -87,16 +96,16 @@
       }
     },
     setup(props) {
-      const arrow_right = computed(() => ArrowRight);
       const one_step_percent = computed(() => (100 / props.stepperLines?.count) - 1);
       return {
-        arrow_right,
         one_step_percent
       }
     }
   }
 </script>
 <style lang="scss" scoped>
+@import '../../assets/styles/mixins/device.scss';
+
   .b-register-step__subtitle {
     font-family: 'Exo 2';
     font-style: normal;
@@ -116,10 +125,10 @@
     border-radius: 28px 28px 0px 0px;
     position: relative;
     overflow: hidden;
-    @media (max-width: 576px) {
-      padding: 44px 16px;
+    @include mobile {
+      padding: 30px 16px;
     }
-    @media (min-width: 576px) {
+    @include tablet {
       border-radius: 8px;
     }
     .b-register-step__top-part {
@@ -138,7 +147,7 @@
           display: flex;
           align-items: center;
           justify-content: space-between;
-          @media (max-width: 576px) {
+          @include mobile {
             width: 266px;
             margin: 0 auto;
           }
@@ -166,6 +175,16 @@
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
+
+      @media (max-width: 992px) {
+        align-items: center;
+      }
+
+      @media (max-width: 576px) {
+        align-items: flex-start;
+        margin-top: 40px;
+      }
+
       >div {
         width: 100%;
       }

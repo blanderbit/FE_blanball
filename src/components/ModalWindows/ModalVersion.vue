@@ -2,7 +2,7 @@
   <div @click.self="$emit('closeModalClick')" class="b-version-modal">
     <div class="b-version-modal__window">
       <div class="b-version-modal__left-side">
-        <img src="../assets/img/logo-modal-versions.svg" alt="" />
+        <img src="../../assets/img/logo-modal-versions.svg" alt="" />
       </div>
       <div class="b-version-modal__right-side">
         <div class="b-version-modal__name">Blanball</div>
@@ -26,7 +26,7 @@
 <script>
 import { useRouter } from 'vue-router'
 
-import { ROUTES } from '../router/router.const'
+import { ROUTES } from '../../router/router.const'
 
 export default {
   name: 'ModalVersion',

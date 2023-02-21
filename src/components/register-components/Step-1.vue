@@ -93,17 +93,17 @@ export default {
         FemaleIcon,
       }
     })
-    const arrow_right = computed(() => arrowRight)
     const stepConfig = computed(() => {
       return {
         title: t('register.title'),
         returnButton: {
           exist: true,
-          text: t('register.return_to_login'),
+          text: t('register.return'),
         },
         nextButton: {
           exist: true,
           text: t('register.next'),
+          icon: arrowRight
         },
         stepperLines: {
           count: 2,
@@ -113,7 +113,6 @@ export default {
       }
     })
     return {
-      arrow_right,
       stepConfig,
       icons,
     }
@@ -122,6 +121,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/styles/mixins/device.scss';
+
 .b-register-step__input {
   width: 384px;
   margin-top: 12px;
@@ -135,7 +136,7 @@ export default {
   width: 80px;
   top: -30px;
   left: -30px;
-  @media (min-width: 576px) {
+  @include tablet {
     display: none;
   }
 }
@@ -143,7 +144,7 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
-  @media (min-width: 576px) {
+  @include tablet {
     display: none;
   }
 }

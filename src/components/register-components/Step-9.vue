@@ -13,25 +13,30 @@
 
       <div class="b-sport-info d-flex justify-content-between align-baseline mb-3">
         <InputComponent
+            v-model="height"
             :outside-title="true"
-            :title="$t('register.height')"
-            :placeholder="$t('register.height')"
+            :title="height ? $t('register.height') : ''"
+            :placeholder="!height ? $t('register.height') : ''"
             :title-width="0"
             type="number"
             name="height"
+            v-maska="'###'"
         ></InputComponent>
         <InputComponent
+            v-model="weight"
             :outside-title="true"
-            :title="$t('register.weight')"
-            :placeholder="$t('register.weight')"
+            :title="weight ? $t('register.weight') : ''"
+            :placeholder="!weight ? $t('register.weight') : ''"
             :title-width="0"
             type="number"
             name="weight"
+            v-maska="'###'"
         ></InputComponent>
         <Dropdown
-            :placeholder="$t('register.main-leg')"
+            v-model="workingLeg"
+            :placeholder="!workingLeg ? $t('register.main-leg'): ''"
             :outside-title="true"
-            :main-title="$t('register.main-leg')"
+            :main-title="workingLeg ? $t('register.main-leg') : ''"
             :options="mockData.main_lag"
             :width="200"
             :height="40"
@@ -45,9 +50,10 @@
       </div>
       <div class="b-register-step__dropdown">
         <Dropdown
-            :placeholder="$t('register.position')"
+            v-model="position"
+            :placeholder="!position ? $t('register.position') : ''"
             :outside-title="true"
-            :main-title="$t('register.position')"
+            :main-title="position ? $t('register.position') : ''"
             :options="mockData.position"
             :width="200"
             :height="40"
@@ -63,14 +69,18 @@
 
 <script>
   import { computed, ref } from 'vue'
+  import { useI18n } from 'vue-i18n'
+
   import GreenBtn from '../GreenBtn.vue'
   import Dropdown from '../forms/Dropdown.vue'
   import InputComponent from '../forms/InputComponent.vue'
+  import StepWrapper from './StepWrapper.vue'
+
+  import CONSTANTS from "../../consts";
+
   import arrowRight from '../../assets/img/arrow-right-white.svg'
   import clipIcon from '../../assets/img/clip.svg'
-  import CONSTANTS from "../../consts";
-  import { useI18n } from 'vue-i18n'
-  import StepWrapper from './StepWrapper.vue'
+
   export default {
     name: 'Step9',
     components: {
@@ -80,12 +90,14 @@
       StepWrapper
     },
     setup() {
+      const position = ref(null)
+      const height = ref(null)
+      const weight = ref(null)
+      const workingLeg = ref(null)
+
       const profesionaLevel = ref('');
       const clip = computed(() => {
         return clipIcon
-      });
-      const arrow_right = computed(() => {
-        return arrowRight
       });
       const isDocumentNeeded = computed(() => {
         return profesionaLevel.value === 'Професійно'
@@ -106,7 +118,8 @@
           },
           nextButton: {
             exist: true,
-            text: t('register.next')
+            text: t('register.next'),
+            icon: arrowRight,
           },
           stepperLines: {
             exist: true,
@@ -116,12 +129,15 @@
         }
       });
       return {
-        arrow_right,
         clip,
         profesionaLevel,
         isDocumentNeeded,
         mockData,
-        stepConfig
+        stepConfig,
+        position,
+        height,
+        weight,
+        workingLeg,
       }
     },
   }

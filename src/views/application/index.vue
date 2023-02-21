@@ -57,8 +57,8 @@ import Sidebar from './../../components/Sidebar.vue'
 import MainHeader from './../../components/MainHeader.vue'
 import MobileMenu from '../../components/MobileMenu.vue'
 import Notification from '../../components/Notification.vue'
-import VerifyEmailModal from '../../components/user-cabinet/VerifyEmailModal.vue'
-import ModalFeedback from '../../components/ModalFeedback/index.vue'
+import VerifyEmailModal from '../../components/ModalWindows/UserCabinetModalWindows/VerifyEmailModal.vue'
+import ModalFeedback from '../../components/ModalWindows/ModalFeedbackModalWindow/index.vue'
 import EventCreatedSuccessModal from '../../components/manage-event-components/EventCreatedSuccessModal.vue'
 
 import { AuthWebSocketWorkerInstance } from './../../workers/web-socket-worker'
@@ -238,6 +238,8 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss">
+@import '../../assets/styles/mixins/device.scss';
+
 html {
   overflow: hidden;
 }
@@ -265,7 +267,7 @@ html {
       position: relative;
     }
 
-    @media (max-width: 576px) {
+    @include mobile {
       padding: 0px 16px;
     }
   }
@@ -276,7 +278,7 @@ html {
     border-radius: 6px;
     text-align: center;
 
-    @media (max-width: 576px) {
+    @include mobile {
       display: flex;
       align-items: center;
       justify-content: space-between;

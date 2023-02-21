@@ -68,7 +68,7 @@ export default {
   @media (min-width: 1200px) and (max-width: 1400px) {
     width: 408px;
   }
-  @media (min-width: 992px) and (max-width: 1199px) {
+  @media (min-width: 992px) and (max-width: 1200px) {
     width: 320px;
   }
   @media (min-width: 768px) and (max-width: 991px) {
@@ -102,7 +102,7 @@ export default {
       @media (min-width: 1200px) and (max-width: 1400px) {
         width: 230px;
       }
-      @media (min-width: 992px) and (max-width: 1199px) {
+      @media (min-width: 992px) and (max-width: 1200px) {
         width: 150px;
       }
       @media (min-width: 768px) and (max-width: 991px) {

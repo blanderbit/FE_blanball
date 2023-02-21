@@ -339,6 +339,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/styles/mixins/device.scss';
+
 .mt-8 {
   margin-top: 8px;
 }
@@ -376,7 +378,7 @@ export default {
     top: 0;
     z-index: -1;
     width: 100%;
-    @media (max-width: 576px) {
+    @include mobile {
       left: -70px;
       width: 250%;
     }
@@ -419,11 +421,11 @@ export default {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          @media (max-width: 576px) {
+          @include mobile {
             align-items: flex-start;
           }
           &.invite-share-desk {
-            @media (max-width: 576px) {
+            @include mobile {
               display: none;
             }
           }
@@ -446,7 +448,7 @@ export default {
             font-size: 20px;
             line-height: 24px;
             color: #262541;
-            @media (max-width: 576px) {
+            @include mobile {
               font-size: 16px;
               line-height: 20px;
             }
@@ -459,7 +461,7 @@ export default {
             line-height: 20px;
             text-align: center;
             color: #575775;
-            @media (max-width: 576px) {
+            @include mobile {
               font-size: 12px;
             }
           }

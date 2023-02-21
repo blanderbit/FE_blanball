@@ -1,4 +1,5 @@
 <template>
+  <Loading :is-loading="loading" />
   <ShareEventModal
     v-if="isShareEventModalOpened"
     :shareLink="currentFullRoute"
@@ -16,14 +17,16 @@
         <div class="b-event-info__right-part">
           <router-link :to="ALL_ROUTES.APPLICATION.EVENTS.CREATE.absolute">
             <GreenBtn
-              :text="eventData.privacy ? $t('events.apply') : $t('buttons.join')"
+              :text="
+                eventData.privacy ? $t('events.apply') : $t('buttons.join')
+              "
               :width="150"
               :height="40"
             />
           </router-link>
-          <div class="b-event-info__share-link">
+          <div @click="openEventShareModal" class="b-event-info__share-link">
             <img src="../../../assets/img/share-icon.svg" alt="" />
-            <span @click="openEventShareModal">
+            <span>
               {{ $t('my_events.share') }}
             </span>
           </div>
@@ -114,6 +117,7 @@
         <div class="b-event-info__tab-block">
           <div
             v-for="tab in mockData.tabs"
+            v-show="tab.isShown"
             :key="tab.id"
             :class="[
               'b-event-info__tab-element',
@@ -150,6 +154,13 @@
           :data="eventData.current_fans"
           :border="false"
         />
+
+        <ListOfEventRequestsToParticipations
+          v-if="activeTab === 2"
+          :requestsToParticipationsData="eventRequestsToParticipations"
+          @acceptRequest="acceptRequestToParticipation"
+          @declineRequest="declineRequestToParticipation"
+        />
       </div>
     </div>
 
@@ -158,31 +169,36 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useToast } from 'vue-toastification'
-import { useI18n } from 'vue-i18n'
+import { ref, computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useToast } from 'vue-toastification';
+import { useI18n } from 'vue-i18n';
 
-import dayjs from 'dayjs'
-import dayjsUkrLocale from 'dayjs/locale/uk'
+import dayjs from 'dayjs';
+import dayjsUkrLocale from 'dayjs/locale/uk';
 
-import GreenBtn from '../../../components/GreenBtn.vue'
-import RightSidebar from '../../../components/RightSidebar.vue'
-import EventInfoUsersTable from '../../../components/EventInfoUsersTable.vue'
-import PositionMap from '../../../components/maps/PositionMap.vue'
-import ShareEventModal from '../../../components/ShareEventModal.vue'
-import Avatar from '../../../components/Avatar.vue'
-import TabLabel from '../../../components/TabLabel.vue'
+import GreenBtn from '../../../components/GreenBtn.vue';
+import RightSidebar from '../../../components/RightSidebar.vue';
+import EventInfoUsersTable from '../../../components/EventInfoUsersTable.vue';
+import PositionMap from '../../../components/maps/PositionMap.vue';
+import ShareEventModal from '../../../components/ModalWindows/ShareEventModal.vue';
+import Avatar from '../../../components/Avatar.vue';
+import TabLabel from '../../../components/TabLabel.vue';
+import ListOfEventRequestsToParticipations from '../../../components/ListOfEventRequestsToParticipations.vue';
+import Loading from '../../../workers/loading-worker/Loading.vue';
 
-import CONSTANTS from '../../../consts/index'
-import { ROUTES } from '../../../router/router.const'
+import { API } from '../../../workers/api-worker/api.worker';
+import { useUserDataStore } from '../../../stores/userData';
 
-import emoji_1 from '../../../assets/img/emojies/1.svg'
-import emoji_2 from '../../../assets/img/emojies/2.svg'
-import emoji_3 from '../../../assets/img/emojies/3.svg'
-import emoji_4 from '../../../assets/img/emojies/4.svg'
-import emoji_5 from '../../../assets/img/emojies/5.svg'
-import noReviews from '../../../assets/img/no-records/no-reviews.svg'
+import CONSTANTS from '../../../consts/index';
+import { ROUTES } from '../../../router/router.const';
+
+import emoji_1 from '../../../assets/img/emojies/1.svg';
+import emoji_2 from '../../../assets/img/emojies/2.svg';
+import emoji_3 from '../../../assets/img/emojies/3.svg';
+import emoji_4 from '../../../assets/img/emojies/4.svg';
+import emoji_5 from '../../../assets/img/emojies/5.svg';
+import noReviews from '../../../assets/img/no-records/no-reviews.svg';
 
 export default {
   name: 'EventsPage',
@@ -193,27 +209,60 @@ export default {
     PositionMap,
     ShareEventModal,
     Avatar,
+    Loading,
     TabLabel,
+    ListOfEventRequestsToParticipations,
   },
   setup() {
-    const route = useRoute()
-    const router = useRouter()
-    const toast = useToast()
-    const isTabLabel = ref(false)
-    const { t } = useI18n()
-    const eventData = ref(route.meta.eventData.data)
-    const isShareEventModalOpened = ref(false)
-    const currentFullRoute = ref(window.location.href)
-    const activeTab = ref(0)
+    const setUserEmoji = (raiting) => {
+      switch (raiting) {
+        case 5:
+          return emoji_5;
+          break;
+        case 4:
+          return emoji_4;
+          break;
+        case 3:
+          return emoji_3;
+          break;
+        case 2:
+          return emoji_2;
+          break;
+        case 1:
+          return emoji_1;
+          break;
+        default:
+          return noReviews;
+      }
+    };
+
+    const route = useRoute();
+    const router = useRouter();
+    const toast = useToast();
+    const userStore = useUserDataStore();
+    const isTabLabel = ref(false);
+    const loading = ref(false);
+    const { t } = useI18n();
+    const eventData = ref(route.meta.eventData.data);
+    const eventRequestsToParticipations = ref(
+      handlePreloadRequestsParticipationsData(
+        route.meta.eventRequestsToParticipationData.data
+      )
+    );
+    const isShareEventModalOpened = ref(false);
+    const currentFullRoute = ref(window.location.href);
+    const activeTab = ref(0);
+
+    handleIncomeEventData(eventData.value);
 
     const mockData = computed(() => {
       return {
-        tabs: CONSTANTS.event_info.tabs.map((item) => ({
+        tabs: CONSTANTS.event_info.tabs(eventData.value, userStore.user.id).map((item) => ({
           ...item,
           name: t(item.name),
         })),
-      }
-    })
+      };
+    });
 
     function getDate(date) {
       return dayjs(date)
@@ -223,93 +272,100 @@ export default {
             new Date().getFullYear()
             ? 'D MMMM'
             : ' D MMMM, YYYY'
-        )
+        );
     }
+
+    const acceptRequestToParticipation = async (id) => {
+      loading.value = true;
+
+      await API.EventService.declineOrAcceptParticipations(id, true);
+      let newEventData = await API.EventService.getOneEvent(eventData.value.id);
+      let requestsToParticipations =
+        await API.EventService.requestsToParticipations(eventData.value.id);
+      eventData.value = newEventData.data;
+      handleIncomeEventData(eventData.value);
+      eventRequestsToParticipations.value =
+        handlePreloadRequestsParticipationsData(requestsToParticipations.data);
+      loading.value = false;
+    };
+
+    const declineRequestToParticipation = async (id) => {
+      loading.value = true;
+
+      await API.EventService.declineOrAcceptParticipations(id, false);
+      let requestsToParticipations =
+        await API.EventService.requestsToParticipations(eventData.value.id);
+      eventRequestsToParticipations.value =
+        handlePreloadRequestsParticipationsData(requestsToParticipations.data);
+      loading.value = false;
+    };
 
     const openEventShareModal = () => {
-      isShareEventModalOpened.value = true
-    }
+      isShareEventModalOpened.value = true;
+    };
 
     function getTime(time) {
-      return dayjs(time).locale(dayjsUkrLocale).format('HH:mm')
+      return dayjs(time).locale(dayjsUkrLocale).format('HH:mm');
     }
 
     const closeShareEventModal = () => {
-      isShareEventModalOpened.value = false
+      isShareEventModalOpened.value = false;
+    };
+
+    function handlePreloadRequestsParticipationsData(data) {
+      return data.map((item) => {
+        item.sender.emoji = setUserEmoji(item.raiting);
+        return {
+          ...item,
+        };
+      });
+    }
+
+    function handleIncomeEventData(data) {
+      data.date = getDate(data.date_and_time);
+      data.time = getTime(data.date_and_time);
+      data.end_time = addMinutes(getTime(data.date_and_time), data.duration);
+      for (let user of data.current_users) {
+        user.raiting = Math.round(user.raiting);
+        user.emoji = setUserEmoji(user.raiting);
+      }
     }
 
     const copyLinkButtonClick = () => {
-      navigator.clipboard.writeText(currentFullRoute.value)
-      closeShareEventModal()
-      toast.success(t('notifications.event-share-link-copied'))
-    }
+      navigator.clipboard.writeText(currentFullRoute.value);
+      closeShareEventModal();
+      toast.success(t('notifications.event-share-link-copied'));
+    };
 
     function addMinutes(time, minutesToAdd) {
-      let timeArray = time.split(':')
-      let hours = timeArray[0]
-      let originalMinutes = timeArray[1]
-      let date = new Date()
-      date.setHours(hours)
-      date.setMinutes(originalMinutes)
-      date.setMinutes(date.getMinutes() + minutesToAdd)
-      return date.toTimeString().substr(0, 5)
+      let timeArray = time.split(':');
+      let hours = timeArray[0];
+      let originalMinutes = timeArray[1];
+      let date = new Date();
+      date.setHours(hours);
+      date.setMinutes(originalMinutes);
+      date.setMinutes(date.getMinutes() + minutesToAdd);
+      return date.toTimeString().substr(0, 5);
     }
 
     const goToUserProfile = (userId) => {
-      router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId))
-    }
-
-    const handleIncomeData = () => {
-      eventData.value.date = getDate(eventData.value.date_and_time)
-      eventData.value.time = getTime(eventData.value.date_and_time)
-      eventData.value.end_time = addMinutes(
-        getTime(eventData.value.date_and_time),
-        eventData.value.duration
-      )
-      for (let user of eventData.value.current_users) {
-        user.raiting = Math.round(user.raiting)
-        user.emoji = setUserEmoji(user.raiting)
-      }
-    }
-
-    const setUserEmoji = (raiting) => {
-      switch (raiting) {
-        case 5:
-          return emoji_5
-          break
-        case 4:
-          return emoji_4
-          break
-        case 3:
-          return emoji_3
-          break
-        case 2:
-          return emoji_2
-          break
-        case 1:
-          return emoji_1
-          break
-        default:
-          return noReviews
-      }
-    }
+      router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId));
+    };
 
     function changeTab(id, isDisabled) {
-      if (isDisabled) return
-      activeTab.value = id
+      if (isDisabled) return;
+      activeTab.value = id;
     }
 
     function switchTabLabel(isDisabled) {
       if (isDisabled) {
-        isTabLabel.value = !isTabLabel.value
+        isTabLabel.value = !isTabLabel.value;
       }
     }
 
     const ALL_ROUTES = computed(() => {
-      return ROUTES
-    })
-
-    handleIncomeData()
+      return ROUTES;
+    });
 
     return {
       mockData,
@@ -318,19 +374,26 @@ export default {
       eventData,
       currentFullRoute,
       isTabLabel,
+      loading,
+      userStore,
       activeTab,
+      eventRequestsToParticipations,
       copyLinkButtonClick,
       switchTabLabel,
       changeTab,
       openEventShareModal,
+      acceptRequestToParticipation,
+      declineRequestToParticipation,
       goToUserProfile,
       closeShareEventModal,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
+@import '../../../assets/styles/mixins/device.scss';
+
 ::-webkit-scrollbar {
   display: none;
 }
@@ -340,6 +403,7 @@ export default {
   grid-template-columns: 1fr 256px;
   grid-gap: 28px;
   overflow: scroll;
+  width: 100%;
   @media (max-width: 1200px) {
     grid-template-columns: 1fr;
 
@@ -349,7 +413,7 @@ export default {
   }
 
   .b-event-info__main-body {
-    height: calc(100% + 70px);
+    height: calc(100% + 150px);
     .b-event-info__header-block {
       display: flex;
       justify-content: space-between;
@@ -376,7 +440,7 @@ export default {
       .b-event-info__right-part {
         display: flex;
         align-items: center;
-        @media (max-width: 576px) {
+        @include mobile {
           position: fixed;
           bottom: 0;
           left: 50%;

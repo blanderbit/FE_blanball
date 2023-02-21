@@ -5,7 +5,7 @@
         {{ $t('modals.delete_acc.title') }}
       </template>
       <template #title-icon>
-        <img src="../../assets/img/warning.svg" alt="" />
+        <img src="../../../assets/img/warning.svg" alt="" />
       </template>
       <template #delete-account>
         <div v-if="modalDeleteAcc.first" class="first-screen">
@@ -69,12 +69,12 @@ import { useRouter } from 'vue-router'
 import { Form } from '@system.it.flumx.com/vee-validate'
 import * as yup from 'yup'
 
-import ModalWindow from '../../components/ModalWindow.vue'
-import Counter from '../../components/Counter.vue'
-import CodeInput from '../../components/forms/CodeInput.vue'
+import ModalWindow from '../ModalWindow.vue'
+import Counter from '../../Counter.vue'
+import CodeInput from '../../forms/CodeInput.vue'
 
-import { API } from '../../workers/api-worker/api.worker'
-import { ROUTES } from '../../router/router.const'
+import { API } from '../../../workers/api-worker/api.worker'
+import { ROUTES } from '../../../router/router.const'
 
 export default {
   name: 'DeleteAccountModal',

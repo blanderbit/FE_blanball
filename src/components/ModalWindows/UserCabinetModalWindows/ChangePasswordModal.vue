@@ -5,7 +5,7 @@
         {{ $t('modals.change_password.title') }}
       </template>
       <template #title-icon>
-        <img src="../../assets/img/key.svg" alt="" />
+        <img src="../../../assets/img/key.svg" alt="" />
       </template>
       <template #change-password>
         <Form v-slot="data" @submit="disableSubmit" :validation-schema="schema">
@@ -78,15 +78,15 @@ import { Form } from '@system.it.flumx.com/vee-validate'
 
 import * as yup from 'yup'
 
-import ModalWindow from '../../components/ModalWindow.vue'
-import Counter from '../../components/Counter.vue'
-import CodeInput from '../forms/CodeInput.vue'
-import InputComponent from '../forms/InputComponent.vue'
+import ModalWindow from '../ModalWindow.vue'
+import Counter from '../../Counter.vue'
+import CodeInput from '../../forms/CodeInput.vue'
+import InputComponent from '../../forms/InputComponent.vue'
 
-import { API } from '../../workers/api-worker/api.worker'
+import { API } from '../../../workers/api-worker/api.worker'
 
-import eyeCross from '../../assets/img/eye-crossed.svg'
-import eyeOpen from '../../assets/img/eye-opened.svg'
+import eyeCross from '../../../assets/img/eye-crossed.svg'
+import eyeOpen from '../../../assets/img/eye-opened.svg'
 
 const secondsToCount = 30
 
@@ -116,15 +116,17 @@ export default {
         old_password: yup
           .string()
           .required('errors.required')
-          .min(8, 'errors.min8'),
+          .min(8, 'errors.min8')
+          .max(68, 'errors.max68'),
         new_password: yup
           .string()
           .required('errors.required')
-          .min(8, 'errors.min8'),
+          .min(8, 'errors.min8')
+          .max(68, 'errors.max68'),
         password_code: yup
           .string()
           .required('errors.required')
-          .min(5, 'errors.min5'),
+          .min(5, 'errors.min5')
       })
     })
     const eyeCrossed = computed(() => eyeCross)

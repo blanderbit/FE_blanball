@@ -278,6 +278,10 @@ export default {
     flex-basis: 312px;
   }
 
+  @media (max-width: 768px) {
+    box-shadow: none;
+  }
+
   .b-rating-card__top-table {
     .b-rating-card__title {
       font-family: 'Exo 2';

@@ -3,6 +3,7 @@
     v-if="isSelectFormColarModalOpened"
     :selectedCategory="selectedFormType"
     @closeModal="closeSelectFormsModal()"
+    @saveData="saveFormsColors"
   />
 
   <div class="third-step" :style="stepStyle">
@@ -160,6 +161,11 @@ export default {
       return props.currentStep === 3 ? { height: 'auto' } : { height: '0px' }
     })
 
+    const saveFormsColors = (colors) => {
+      console.log(colors)
+      closeSelectFormsModal
+    }
+
     return {
       icons,
       stepStyle,
@@ -170,6 +176,7 @@ export default {
       selectedFormType,
       showHidePhone,
       selectForms,
+      saveFormsColors,
       openSelectFormsModal,
       closeSelectFormsModal,
     }

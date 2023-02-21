@@ -136,7 +136,8 @@ export default {
       password: yup
         .string()
         .required('errors.required')
-        .min(8, 'errors.password-error'),
+        .min(8, 'errors.min8')
+        .max(68, 'errors.max68'),
     })
 
     const handleLogin = async (data) => {
@@ -200,8 +201,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/styles/mixins/device.scss';
+
 .remember-me__desktop {
-  @media (max-width: 576px) {
+  @include mobile {
     display: none;
   }
 }

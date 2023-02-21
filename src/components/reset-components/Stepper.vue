@@ -135,7 +135,6 @@
       const router = useRouter();
       const toast = useToast();
       const { t } = useI18n()
-      const nextButtonText = ref('reset.drop-password')
       const eyeCrossed = computed(() => {
         return eyeCross
       });
@@ -155,11 +154,16 @@
         }
         if (currentStep.value === 3) {
           return yup.object({
-            new_password: yup.string().required('errors.required').min(8, 'errors.min8'),
+            new_password: yup
+              .string()
+              .required('errors.required')
+              .min(8, 'errors.min8')
+              .max(68, 'errors.max68'),
             confirm_new_password: yup
               .string()
               .required('errors.required')
               .min(8, 'errors.min8')
+              .max(68, 'errors.max68')
               .oneOf([yup.ref('new_password'), null], 'errors.same-password')
           });
         }
@@ -212,13 +216,24 @@
         await API.AuthorizationService.ResetPasswordRequest({"email": userEmail.value});
       }
 
+
+      const nextButtonText = computed(() => {
+        switch (currentStep.value) {
+          case 1:
+          return 'reset.send-code'
+          case 2:
+            return 'reset.drop-password'
+          case 3:
+            return 'reset.save-changes'
+        }
+      })
+
     
       async function handleNextClick(formData) {
         switch (currentStep.value) {
           case 1:
             return await handleResetPasswordRequest(formData);
           case 2:
-            nextButtonText.value = 'reset.save-changes'
             return await handleResetVerifyCode(formData);
           case 3:
             return await handleResetResetComplete(formData);
@@ -246,6 +261,8 @@
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/styles/mixins/device.scss';
+
   form {
     height: 100%;
   }
@@ -255,7 +272,7 @@
     height: 100%;
     flex-direction: column;
     /*justify-content: space-between;*/
-    @media (max-width: 576px) {
+    @include mobile {
       padding: 44px 16px;
     }
     .b-reset-step__top-part {
@@ -266,7 +283,7 @@
         font-size: 22px;
         line-height: 32px;
         color: #262541;
-        @media (max-width: 576px) {
+        @include mobile {
           text-align: center;
         }
       }
@@ -277,7 +294,7 @@
           display: flex;
           align-items: center;
           justify-content: space-between;
-          @media (max-width: 576px) {
+          @include mobile{
             width: 266px;
             margin: 0 auto;
           }
@@ -316,7 +333,7 @@
         margin-bottom: 24px;
         justify-content: space-between;
         align-items: center;
-        @media (max-width: 576px) {
+        @include mobile {
           justify-content: center;
         }
         input {
@@ -332,14 +349,14 @@
             -webkit-appearance: none;
             margin: 0;
           }
-          @media (max-width: 576px) {
+          @include mobile {
             margin-right: 6px;
           }
           /* Firefox */
           &[type='number'] {
             -moz-appearance: textfield;
           }
-          @media (max-width: 576px) {
+          @include mobile {
             width: 60px;
           }
         }

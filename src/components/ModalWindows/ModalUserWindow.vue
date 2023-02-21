@@ -16,6 +16,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/styles/mixins/device.scss';
+
 .b_modal_user_wrapper {
   position: fixed;
   top: 0;
@@ -43,10 +45,10 @@ export default {
     @media (min-width: 768px) and (max-width: 992px) {
       width: 748px;
     }
-    @media (min-width: 576px) and (max-width: 768px) {
+    @include tablet {
       width: 556px;
     }
-    @media (max-width: 576px) {
+    @include mobile {
       width: 90%;
       padding: 0;
     }

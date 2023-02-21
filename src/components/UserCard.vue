@@ -132,6 +132,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/styles/mixins/device.scss';
 .b-user-card {
   padding: 8px 12px 8px 0;
   /* background: #FFFFFF; */
@@ -172,7 +173,7 @@ export default {
       font-size: 14px;
       line-height: 20px;
       color: #262541;
-      @media (max-width: 576px) {
+      @include mobile {
         width: 110px;
       }
       .b-user-card__top-line-name-rating {

@@ -4,6 +4,7 @@
     :background-mob="backgroundMob"
     :right-side-style="rightSideStyle"
     :current-step="currentStep"
+    :class="{'b-register__onboarding-step': onboadringSteps}"
   >
     <template #main-content>
       <Form
@@ -26,7 +27,7 @@
             @back="currentStep--"
           />
         </Transition>
-        <Transition>
+          <Transition>
           <Step_3
             v-if="currentStep === 3"
             @next="currentStep++"
@@ -81,9 +82,6 @@
             @next="handleUpdate(data)"
             @back="currentStep--"
           />
-        </Transition>
-        <Transition>
-          <Step_11 v-if="currentStep === 11" @next="goToEvents()" />
         </Transition>
       </Form>
     </template>
@@ -170,6 +168,11 @@ export default {
     let profileValues = {
       profile: {},
     }
+
+    const onboadringSteps = computed(() => {
+      return currentStep.value > 2 && currentStep.value  < 8
+    })
+
     let schema = computed(() => {
       if (currentStep.value === 1) {
         return yup.object({
@@ -192,11 +195,13 @@ export default {
           password: yup
             .string()
             .required('errors.required')
-            .min(8, 'errors.min8'),
+            .min(8, 'errors.min8')
+            .max(68, 'errors.max68'),
           re_password: yup
             .string()
             .required('errors.required')
             .min(8, 'errors.min8')
+            .max(68, 'errors.max68')
             .when('password', (password, field) =>
               password
                 ? field
@@ -224,13 +229,13 @@ export default {
             .typeError('errors.type-number')
             .required('errors.required')
             .min(145, 'errors.min145')
-            .max(250, 'errors.max250'),
+            .max(210, 'errors.max210'),
           weight: yup
             .number()
             .typeError('errors.type-number')
             .required('errors.required')
             .min(30, 'errors.min30')
-            .max(200, 'errors.max250'),
+            .max(210, 'errors.max210'),
           position: yup.string().required('errors.required'),
           working_leg: yup.string().required('errors.required'),
         })
@@ -322,14 +327,21 @@ export default {
     function finishOnBoarding() {
       currentStep.value = 7
     }
+
+    function goToEvents() {
+      router.push(ROUTES.APPLICATION.EVENTS.absolute)
+    }
+
     return {
       currentStep,
       rightSideStyle,
       backgroundTab,
       backgroundMob,
+      onboadringSteps,
       schema,
       initialValues,
       finishOnBoarding,
+      goToEvents,
       async handleRegister(data) {
         const { valid } = await data.validate()
         if (!valid) return
@@ -381,6 +393,10 @@ export default {
               last_name: profileValues.profile.last_name,
             }
             await API.UserService.updateProfileData(profileValues)
+            if (currentStep.value === 10) {
+              goToEvents()
+            }
+
           } catch (e) {
             return
           }
@@ -389,9 +405,6 @@ export default {
       },
       backToRoute() {
         router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute)
-      },
-      goToEvents() {
-        router.push(ROUTES.APPLICATION.EVENTS.absolute)
       },
       disableSubmit: (e) => {
         e.stopPropagation()
@@ -416,7 +429,10 @@ form {
 .v-leave-to {
   opacity: 0;
 }
-.b-register__step-8::v-deep(.b-auth__central-block) {
-  height: 700px !important;
+.b-register__onboarding-step::v-deep(.b-auth__left-part) {
+
+  @media (max-width: 576px) {
+    margin-top: 150px;
+  }
 }
 </style>

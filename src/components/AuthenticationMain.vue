@@ -1,11 +1,11 @@
 <template>
   <div class="b-auth" :style="authBlockStyles">
     <div v-if="backgroundTab" class="b-auth__background-tab">
-      <img :src="backgroundTab" alt="background image tablet" />
+      <img :src="backgroundTab" :alt="'background_image_tablet'" />
     </div>
     <Transition>
       <div v-if="backgroundMob" class="b-auth__background-mob">
-        <img :src="backgroundMob" alt="background image mobile" />
+        <img :src="backgroundMob" :alt="'background image mobile'" />
       </div>
     </Transition>
     <div class="b-auth__central-block">
@@ -120,6 +120,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/styles/mixins/device.scss';
+
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.8s ease;
@@ -134,11 +136,11 @@ export default {
   height: 100vh;
   display: flex;
   justify-content: center;
-  @media (min-width: 576px) and (max-width: 992px) {
+  @include tablet {
     padding-top: 132px;
     overflow: hidden;
   }
-  @media (max-width: 576px) {
+  @include mobile {
     padding-top: 140px;
     padding-top: 0;
     // display: block;
@@ -151,7 +153,7 @@ export default {
     top: 0;
     left: 0;
     width: 100%;
-    @media (min-width: 576px) and (max-width: 992px) {
+    @include tablet {
       display: block;
     }
     img {
@@ -164,7 +166,7 @@ export default {
     z-index: -1;
     top: 0;
     left: 0;
-    @media (max-width: 576px) {
+    @include mobile {
       display: block;
       width: 100%;
     }
@@ -183,27 +185,22 @@ export default {
     @media (min-width: 992px) and (max-width: 1200px) {
       width: 890px;
     }
-    @media (min-width: 576px) and (max-width: 992px) {
+    @include tablet {
       width: 464px;
       box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
       border-radius: 8px;
     }
-    @media (max-width: 576px) {
+    @include mobile {
       border-radius: 28px 28px 0px 0px;
       width: 100%;
       box-shadow: none;
-
-      // @media (max-width: 410px) {
-      //   height: 100%;
-      //   box-shadow: none;
-      // }
     }
     .b-auth__ball-big {
       position: absolute;
       width: 100px;
       top: -30px;
       left: -30px;
-      @media (min-width: 576px) {
+      @include tablet {
         display: none;
       }
     }
@@ -211,7 +208,7 @@ export default {
       position: absolute;
       top: 0;
       right: 0;
-      @media (min-width: 576px) {
+      @include tablet {
         display: none;
       }
     }

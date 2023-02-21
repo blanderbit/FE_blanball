@@ -87,13 +87,13 @@
             </div>
             <div class="b-main-search__dropdown-wrapper-cities">
               <Dropdown
-                :check-value-immediate="true"
-                :options="statusDropdown"
-                :placeholder="'Статус події'"
-                :height="32"
-                display-value="value"
-                display-name="name"
-                v-model="transformedFilters.status"
+                  :check-value-immediate="true"
+                  :placeholder="$t('events.gender')"
+                  :options="gender"
+                  :height="32"
+                  display-value="value"
+                  display-name="name"
+                  v-model="transformedFilters.gender"
               />
             </div>
           </div>

@@ -10,6 +10,7 @@ export default {
   'enter-new-password': 'Новий пароль',
   'repeat-new-password': 'Повторіть пароль',
   'save-changes': 'Зберегти зміни',
+  'send-code': 'Надіслати код',
   'load-app':
     'Завантажте додаток BlanBall на свій смартфон та будьте завжди на зв’язку',
   post: 'Пошта',

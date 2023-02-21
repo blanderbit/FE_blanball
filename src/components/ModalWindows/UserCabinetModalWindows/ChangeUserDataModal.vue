@@ -49,8 +49,8 @@
 </template>
 
 <script>
-import GreenBtn from '../GreenBtn.vue'
-import WhiteBtn from '../WhiteBtn.vue'
+import GreenBtn from '../../GreenBtn.vue'
+import WhiteBtn from '../../WhiteBtn.vue'
 
 export default {
   name: 'ChangeUserDataModal',

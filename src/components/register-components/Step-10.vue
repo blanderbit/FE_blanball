@@ -14,7 +14,8 @@
       <div class="b-register-step__dropdown">
         <Dropdown
             :outside-title="true"
-            :main-title="$t('register.district')"
+            :main-title="region ? $t('register.district') : ''"
+            :placeholder="!region ? $t('register.district') : ''"
             :options="mockData.district"
             :model-value="region"
             :height="40"
@@ -28,7 +29,8 @@
       <div class="b-register-step__dropdown">
         <Dropdown
             :outside-title="true"
-            :main-title="$t('register.city')"
+            :main-title="city ? $t('register.city') : ''"
+            :placeholder="!city ? $t('register.city') : ''"
             :options="mockData.cities"
             :model-value="city"
             :height="40"
@@ -51,7 +53,12 @@
             name="address"
         ></InputComponent>
       </div>
-      <RegisterModalPositionMap v-if="isMobile"></RegisterModalPositionMap>
+      <div class="b-register-step__map">
+        <RegisterModalPositionMap 
+          v-if="isMobile"
+          :title="'Вибрати позицію на карті'">
+        </RegisterModalPositionMap>
+      </div>
     </template>
   </step-wrapper>
 </template>
@@ -73,6 +80,7 @@
   import CONSTANTS from '../../consts/index'
 
   import tickIcon from '../../assets/img/tick-white.svg'
+  import nikeIcon from '../../assets/img/nike-icon.svg'
   
   export default {
     name: 'Step10',
@@ -129,8 +137,9 @@
         },
         nextButton: {
           exist: true,
-          text: t('register.next'),
-          disabled: nextButton.value
+          text: t('register.finish'),
+          disabled: nextButton.value,
+          icon: nikeIcon,
         },
         stepperLines: {
           exist: true,
@@ -203,6 +212,8 @@
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/styles/mixins/device.scss';
+
   .b-register-step__title {
     font-family: 'Exo 2';
     font-style: normal;
@@ -210,9 +221,18 @@
     font-size: 22px;
     line-height: 32px;
     color: #262541;
-    @media (max-width: 576px) {
+    @include mobile {
       text-align: center;
     }
+  }
+
+  .b-register-step__small-title {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #262541;
   }
   .b-register-step__dropdown {
     width: 384px;
@@ -220,5 +240,9 @@
     @media (max-width: 992px) {
       width: 100%;
     }
+  }
+  .b-register-step__map {
+    display: flex;
+    gap: 8px;
   }
 </style>

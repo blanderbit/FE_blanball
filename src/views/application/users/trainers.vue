@@ -347,6 +347,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../../assets/styles/mixins/device.scss';
+
 .events-page {
   display: grid;
   grid-template-columns: 1fr 256px;
@@ -417,7 +419,7 @@ export default {
       }
     }
     .tab-block-wrapper {
-      @media (max-width: 576px) {
+      @include mobile {
         height: 36px;
         position: relative;
         overflow-x: scroll;
@@ -427,7 +429,7 @@ export default {
         display: flex;
         border-bottom: 1px solid #dfdeed;
         margin-top: 28px;
-        @media (max-width: 576px) {
+        @include mobile {
           position: absolute;
           margin-top: 0;
         }

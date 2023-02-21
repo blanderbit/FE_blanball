@@ -45,9 +45,10 @@ export default {
   'your-city': 'Ваш населений пункт',
   city: 'Місто/село/містечко',
   district: 'Область',
-  address: 'Адресса',
+  address: 'Адреса',
   'address-placeholder': 'Володимирська, 60',
   'add-district': 'Додати район',
+  'select-on-map': 'Вибрати локацію на карті',
   optionally: 'Опціонально',
   finish: 'Завершити',
   welcome: 'Вітаємо у BLANBALL !',
@@ -69,11 +70,12 @@ export default {
   'load-app':
     'Завантажте додаток BlanBall на свій смартфон та будьте завжди на зв’язку',
   'main-leg': 'Ударна нога',
-  position: 'Позиция',
+  position: 'Позиція',
   finishing: 'Завершення конфігураціі профіля',
   'thanks-for-configure-profile':
     'Дякуемо за заповнення інформаціі. Це допоможе в роботі ношої системи!',
   'go-to-events': 'Перейти до подій',
   'skip-and-go-to-events': 'Нагадати пізніше',
-  'you_must_have_6_or_more_years': "Наша система дозволяе вибирати рік народження не менше 6 років"
+  'you_must_have_6_or_more_years': "Наша система дозволяе вибирати рік народження не менше 6 років",
+  'register': 'Зареєструватися'
 }

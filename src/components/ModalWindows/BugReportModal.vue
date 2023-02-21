@@ -5,7 +5,7 @@
         <span class="b-bug-report-modal__title">
           {{ $t('modals.bug_report.title') }}
         </span>
-        <img src="../assets/img/white-warning-icon.svg" alt="warning" />
+        <img src="../../assets/img/white-warning-icon.svg" alt="warning" />
       </div>
       <Form v-slot="data" :validation-schema="schema" @submit="disableSubmit">
         <div class="b-bug-report-modal__main-side">
@@ -32,7 +32,7 @@
             class="b-bug-report-modal__uploaded-images"
           >
             <div class="b-bug-report-modal__uploaded-image">
-              <img src="../assets/img/uploaded-image.svg" alt="uploaded-imag" />
+              <img src="../../assets/img/uploaded-image.svg" alt="uploaded-imag" />
               <span class="b-bug-report-modal__uploaded-images-title">{{
                 i.name
               }}</span>
@@ -40,7 +40,7 @@
             <img
               @click="removeUploadedImage(i.name)"
               class="b-bug-report-modal-remove__image"
-              src="../assets/img/cross.svg"
+              src="../../assets/img/cross.svg"
               alt="cross"
             />
           </div>
@@ -74,12 +74,12 @@ import { Form } from '@system.it.flumx.com/vee-validate'
 
 import * as yup from 'yup'
 
-import InputComponent from './forms/InputComponent.vue'
-import TextAreaComponent from './TextAreaComponent.vue'
+import InputComponent from '../forms/InputComponent.vue'
+import TextAreaComponent from '../TextAreaComponent.vue'
 
-import { API } from '../workers/api-worker/api.worker'
+import { API } from '../../workers/api-worker/api.worker'
 
-import addFileIcon from '../assets/img/add-file-icon.svg'
+import addFileIcon from '../../assets/img/add-file-icon.svg'
 
 const schema = yup.object({
   title: yup.string().required('errors.required').max(255, 'errors.max255'),

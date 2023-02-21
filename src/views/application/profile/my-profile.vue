@@ -166,19 +166,19 @@ import * as yup from 'yup'
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
 import InputComponent from '../../../components/forms/InputComponent.vue'
-import ModalWindow from '../../../components/ModalWindow.vue'
-import ModalUserWindow from '../../../components/ModalUserWindow.vue'
+import ModalWindow from '../../../components/ModalWindows/ModalWindow.vue'
+import ModalUserWindow from '../../../components/ModalWindows/ModalUserWindow.vue'
 import PlayerPageComponent from '../../../components/PlayerPageComponent.vue'
 import RatingCard from '../../../components/RatingCard.vue'
 import UserDetailsCard from '../../../components/UserDetailsCard.vue'
 import SecurityBlock from '../../../components/SecurityBlock.vue'
 import TabLabel from '../../../components/TabLabel.vue'
-import DeleteAccountModal from '../../../components/user-cabinet/DeleteAccountModal.vue'
-import ChangePasswordModal from '../../../components/user-cabinet/ChangePasswordModal.vue'
-import ChangeUserDataModal from '../../../components/user-cabinet/ChangeUserDataModal.vue'
-import ChangeEmailModal from '../../../components/user-cabinet/ChangeEmailModal.vue'
+import DeleteAccountModal from '../../../components/ModalWindows/UserCabinetModalWindows/DeleteAccountModal.vue'
+import ChangePasswordModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangePasswordModal.vue'
+import ChangeUserDataModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangeUserDataModal.vue'
+import ChangeEmailModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangeEmailModal.vue'
 import ButtonsBlock from '../../../components/user-cabinet/ButtonsBlock.vue'
-import EditAvatarModal from '../../../components/user-cabinet/EditAvatarModal.vue'
+import EditAvatarModal from '../../../components/ModalWindows/UserCabinetModalWindows/EditAvatarModal.vue'
 import Loading from '../../../workers/loading-worker/Loading.vue'
 
 import { API } from '../../../workers/api-worker/api.worker'
@@ -373,7 +373,6 @@ export default {
 
     function hideReview() {
       openedReviewId.value = 0
-      debugger
     }
 
     function switchTabLabel(isDisabled) {
@@ -749,7 +748,7 @@ export default {
 .b-user-cabinet {
   overflow-y: scroll;
   @media (max-width: 768px) {
-    padding-bottom: 10px;
+    padding-bottom: 150px;
   }
 }
 .b-user-cabinet__user-cabinet::-webkit-scrollbar {

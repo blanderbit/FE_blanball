@@ -3,6 +3,7 @@
     <div class="b-small-player-card__left-side">
       <div class="b-small-player-card__picture">
         <Avatar
+          class="b-small-player-card__avatar"
           :link="dataPlayer.profile.avatar_url"
           :full-name="`${dataPlayer.profile.name} ${dataPlayer.profile.last_name}`"
           @clickByAvatar="goToUserProfile(dataPlayer.id)"
@@ -29,11 +30,11 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router';
 
-import Avatar from './Avatar.vue'
+import Avatar from './Avatar.vue';
 
-import { ROUTES } from '../router/router.const'
+import { ROUTES } from '../router/router.const';
 
 export default {
   components: {
@@ -46,17 +47,17 @@ export default {
     },
   },
   setup() {
-    const router = useRouter()
+    const router = useRouter();
 
     const goToUserProfile = (userId) => {
-      router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId))
-    }
+      router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId));
+    };
 
     return {
       goToUserProfile,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -91,6 +92,12 @@ export default {
       border: 2px dashed #dfdeed;
       border-radius: 100px;
       padding: 4px;
+
+      .b-small-player-card__avatar {
+        min-width: 32px;
+        max-width: 32px;
+        height: 32px;
+      }
     }
     .b-small-player-card__name-duty {
       .b-small-player-card__duty {

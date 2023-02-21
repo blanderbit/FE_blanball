@@ -152,6 +152,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/styles/mixins/device.scss';
+
 .b-register-step {
   padding: 44px 24px 72px 24px;
   height: 100%;
@@ -160,10 +162,10 @@ export default {
   justify-content: space-between;
   background: #ffffff;
   border-radius: 28px 28px 0px 0px;
-  @media (max-width: 576px) {
+  @include mobile {
     padding: 44px 16px 72px 16px;
   }
-  @media (min-width: 576px) {
+  @include tablet {
     border-radius: 8px;
   }
   .b-register-step__top-part {
@@ -174,7 +176,7 @@ export default {
       font-size: 22px;
       line-height: 32px;
       color: #262541;
-      @media (max-width: 576px) {
+      @include mobile {
         text-align: center;
       }
     }
@@ -185,7 +187,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        @media (max-width: 576px) {
+        @include mobile {
           width: 266px;
           margin: 0 auto;
         }
@@ -239,10 +241,10 @@ export default {
           border-radius: 6px;
           width: 186px;
           margin-top: 12px;
-          @media (min-width: 576px) and (max-width: 992px) {
+          @include tablet {
             width: 204px;
           }
-          @media (max-width: 576px) {
+          @include mobile {
             width: 49%;
           }
           input[type='radio'] {

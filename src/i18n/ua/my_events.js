@@ -5,7 +5,7 @@ export default {
   'already-accepted': 'Вже підтвердили участь',
   share: 'Поділитися',
   form1: 'Форма №1',
-  from2: 'Форма №2',
+  form2: 'Форма №2',
   'players-list': 'Список гравців',
   judge: 'Суддя',
   coach: 'Тренер',

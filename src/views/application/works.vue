@@ -42,6 +42,8 @@ export default {}
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/styles/mixins/device.scss';
+
 .b-tech-works {
   position: fixed;
   top: 0;
@@ -150,7 +152,7 @@ export default {}
         margin: 0 20px;
         top: 5%;
         left: 5%;
-        @media (max-width: 576px) {
+        @include mobile {
           top: 0;
           left: 0;
         }
@@ -163,7 +165,7 @@ export default {}
         width: 145px;
         height: 145px;
         animation: stid 2.5s linear infinite;
-        @media (max-width: 576px) {
+        @include mobile {
           left: 0;
         }
       }
@@ -175,7 +177,7 @@ export default {}
         height: 180px;
         background: url('../../assets/img/wheel2.svg') no-repeat center / cover;
         animation: stidd 2.5s linear infinite;
-        @media (max-width: 576px) {
+        @include mobile {
           left: 40%;
         }
       }
@@ -187,7 +189,7 @@ export default {}
         width: 110px;
         height: 110px;
         animation: stid 2.5s linear infinite;
-        @media (max-width: 576px) {
+        @include mobile {
           top: 66%;
         }
       }

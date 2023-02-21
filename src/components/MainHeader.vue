@@ -28,7 +28,7 @@
       <div class="b_header_search-input">
         <InputComponent
           :title-width="0"
-          :placeholder="$t('users.users-search')"
+          :placeholder="$t('users.search')"
           :icon="icons.search"
           v-model="searchValue"
           @on-click-action="showSearchBlock"
@@ -45,7 +45,7 @@ import { useRouter } from 'vue-router'
 
 import BreadCrumbs from './Breadcrumbs.vue'
 import InputComponent from './forms/InputComponent.vue'
-import SearchModal from './SearchModal.vue'
+import SearchModal from './ModalWindows/SearchModal.vue'
 import SearchBlockAll from './SearchBlockAll.vue'
 import SmallLoader from './SmallLoader.vue'
 
@@ -171,6 +171,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/styles/mixins/device.scss';
+
 .b_header {
   display: flex;
   justify-content: space-between;
@@ -184,7 +186,7 @@ export default {
   }
   .b_header_logo {
     display: none;
-    @media (min-width: 576px) and (max-width: 992px) {
+    @include tablet {
       display: block;
     }
   }
