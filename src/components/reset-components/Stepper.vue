@@ -135,7 +135,6 @@
       const router = useRouter();
       const toast = useToast();
       const { t } = useI18n()
-      const nextButtonText = ref('reset.drop-password')
       const eyeCrossed = computed(() => {
         return eyeCross
       });
@@ -217,13 +216,24 @@
         await API.AuthorizationService.ResetPasswordRequest({"email": userEmail.value});
       }
 
+
+      const nextButtonText = computed(() => {
+        switch (currentStep.value) {
+          case 1:
+          return 'reset.send-code'
+          case 2:
+            return 'reset.drop-password'
+          case 3:
+            return 'reset.save-changes'
+        }
+      })
+
     
       async function handleNextClick(formData) {
         switch (currentStep.value) {
           case 1:
             return await handleResetPasswordRequest(formData);
           case 2:
-            nextButtonText.value = 'reset.save-changes'
             return await handleResetVerifyCode(formData);
           case 3:
             return await handleResetResetComplete(formData);
