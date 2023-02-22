@@ -7,14 +7,19 @@ npm install
 npm run build
 
 # Check if build was successful
-if [[ -d /usr/share/nginx/html && -n $(ls /usr/share/nginx/html) ]]; then
+if [[ -d dist && -n $(ls dist) ]]; then
+    # Copy the .htaccess file to the dist directory
+    cp deploy/.htaccess dist/.htaccess
+
+    # Copy the contents of the dist directory to /usr/share/nginx/html
+    cp -a dist/* /usr/share/nginx/html
 
     # Start Nginx in the foreground
     nginx -g 'daemon off;'
 else
     # Roll back to the previous backup
     latest_backup=$(ls -td /backups/html_* | head -n 1)
-    cp -r "$latest_backup" /usr/share/nginx/html
+    cp -r "$latest_backup"/* /usr/share/nginx/html
 
     # Start Nginx in the foreground
     nginx -g 'daemon off;'
