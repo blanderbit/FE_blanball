@@ -48,7 +48,7 @@ jobs:
 
       - name: Trigger deploy in portainer
         run: |
-          curl -X POST ${{ env.WEBHOOK }}
+          echo "PORTAINER_STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST ${{ env.WEBHOOK }})" >> $GITHUB_ENV
       - name: Stop deploy
         if: ${{ env.PORTAINER_STATUS_CODE != 204}}
         uses: saulmaldonado/skip-workflow@v1
