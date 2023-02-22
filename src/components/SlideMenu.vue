@@ -163,8 +163,10 @@
         </div>
         <div class="b_slide_menu_bottom-block">
           <div class="b_slide_menu_top-line d-flex justify-content-between">
-            <div class="b_slide_menu_name">{{ userFullName }}</div>
-            <div class="b_slide_menu_position">тренер</div>
+            <div class="b_slide_menu_name">
+              {{ userData.profile.name }} {{ userData.profile.last_name }}
+            </div>
+            <div class="b_slide_menu_position">{{ $t(`hashtags.${userData.role}`) }}</div>
           </div>
           <div class="b_slide_menu_bottom-line">
             {{ $t('slide_menu.version') }}
@@ -185,6 +187,7 @@
 import { ref, inject, computed, watch } from 'vue'
 
 import { v4 as uuid } from 'uuid'
+import { storeToRefs } from 'pinia'
 
 import Notifications from './sitebar-notifications/Notifications.vue'
 import Notification from './Notification.vue'
@@ -246,11 +249,14 @@ export default {
     const blockScrollToTopIfExist = ref(false)
     const triggerForRestart = ref('')
     const selectedList = ref([])
-    const store = useUserDataStore()
+    const userStore = useUserDataStore()
+    const { user } = storeToRefs(userStore)
     const newNotificationInstance = ref(new NewNotifications())
     const clientVersion = ref(inject('clientVersion'))
 
-    const userFullName = ref(`${store.user.profile.name} ${store.user.profile.last_name}`)
+    const userData = computed(() => {
+      return user.value
+    })
 
     watch(
       () => context.isMenuOpened,
@@ -318,11 +324,11 @@ export default {
     return {
       clientVersion,
       arrowPosition,
+      userData,
       toggleMenu,
       getNewNotificationInstance,
       emptyListMessages,
       routeObject,
-      userFullName,
       selectedList,
       HandleAction,
       triggerForRestart,
