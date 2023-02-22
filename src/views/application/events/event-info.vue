@@ -80,6 +80,7 @@
               <div class="b-event-info__left-side">
                 <div class="b-event-info__picture">
                   <avatar
+                    :border="true"
                     :link="eventData.author.profile.avatar_url"
                     :full-name="`${eventData.author.profile.name} ${eventData.author.profile.last_name}`"
                     @clickByAvatar="goToUserProfile(eventData.author.id)"
@@ -313,7 +314,8 @@ export default {
     };
 
     function handlePreloadRequestsParticipationsData(data) {
-      return data.map((item) => {
+
+      return data.results.map((item) => {
         item.sender.emoji = setUserEmoji(item.raiting);
         return {
           ...item,
@@ -560,9 +562,6 @@ export default {
               align-items: center;
               .b-event-info__picture {
                 margin-right: 12px;
-                border: 2px dashed #dfdeed;
-                border-radius: 100px;
-                padding: 4px;
                 cursor: pointer;
               }
               .b-event-info__name {

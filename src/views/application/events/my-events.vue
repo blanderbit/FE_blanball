@@ -11,7 +11,7 @@
       <div class="b-events-page__header-block">
         <div class="b-events-page__left-part">
           <div class="b-events-page__title">
-            {{ $t('events.future-events') }}
+            {{ $t('events.my-events') }}
           </div>
           <div class="b-events-page__subtitle">
             {{ $t('events.renew-your-data') }}

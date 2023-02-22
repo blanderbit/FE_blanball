@@ -1,7 +1,7 @@
 export default {
   'future-events': 'Майбутні події',
-  'general-events': 'Загальна',
   'my-events': 'Мої події',
+  'general-events': 'Загальна',
   'renew-your-data': 'Оновіть своє фото та персональні дані',
   Man: 'Чоловіки',
   Woman: 'Жінки',
@@ -98,6 +98,9 @@ export default {
   'event-creation': 'Створення події',
   'event-description': 'Опис події',
   'describe-sum': 'Опишіть для чого потрібна ця сума',
+  'you-are-player': 'Ви – гравець',
+  'you-are-fan': 'Ви – глядач',
+  'request-sent': 'Заявку подано',
   months: {
     January: 'Січень',
     February: 'Лютий',

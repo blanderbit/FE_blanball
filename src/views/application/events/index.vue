@@ -51,7 +51,9 @@
                 :key="slotProps.index"
                 :card="slotProps.smartListItem"
                 @go-to-event-page="goToEventPage(slotProps.smartListItem.id)"
+                @eventJoin="showEventJoinTooltip($event)"
               />
+              <!-- <EventJoinModal/> -->
             </template>
             <template #after>
               <InfiniteLoading
@@ -107,6 +109,7 @@ import ScrollToTop from '../../../components/ScrollToTop.vue'
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue'
 import Dropdown from '../../../components/forms/Dropdown.vue'
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue'
+import EventJoinModal from '../../../components/ModalWindows/EventJoinModal.vue'
 
 import { useEventDataStore } from '../../../stores/eventsData'
 import { API } from '../../../workers/api-worker/api.worker'
@@ -135,6 +138,7 @@ export default {
     InfiniteLoading,
     ScrollToTop,
     EventsFilters,
+    EventJoinModal,
   },
   setup() {
     const eventStore = useEventDataStore()
@@ -144,6 +148,7 @@ export default {
     const { t } = useI18n()
     const isLoaderActive = ref(false)
     const mainEventsBlock = ref()
+    
     const mockData = computed(() => {
       return {
         event_cards: CONSTANTS.event_page.event_cards,
@@ -168,6 +173,10 @@ export default {
     
     function getTime(time) {
       return dayjs(time).locale(dayjsUkrLocale).format('HH:mm')
+    }
+
+    const showEventJoinTooltip = (event) => {
+      console.log(event)
     }
 
     function addMinutes(time, minutesToAdd) {
@@ -350,6 +359,7 @@ export default {
       detectSizesForCards,
       setFilters,
       clearFilters,
+      showEventJoinTooltip,
       scrollToFirstElement: () => {
         refList.value.scrollToFirstElement()
       },
