@@ -76,6 +76,7 @@
                 >
                   <template #complete>
                     <empty-list
+                      style="margin-top: 16px;"
                       v-if="!notifications.length"
                       :title="emptyListMessages.title"
                       :description="emptyListMessages.description"
@@ -387,12 +388,19 @@ export default {
   position: fixed;
   background: #efeff6;
   padding: 16px;
-  width: 100%;
   height: 100%;
   z-index: 999;
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease-out;
+
+  @media (max-width: 992px ) {
+    width: 70%;
+  }
+  @media (max-width: 576px) {
+    width: 100%;
+  }
+
   .b-mob-menu__logo-block {
     display: flex;
     justify-content: space-between;

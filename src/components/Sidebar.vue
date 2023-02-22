@@ -74,6 +74,7 @@
     </div>
   </div>
   <mobile-menu
+    class="b_mobile-menu"
     :isMenuActive="isMobMenuActive"
     :notifications="paginationElements"
     :notReadNotificationCount="notReadNotificationCount"
@@ -430,5 +431,11 @@ export default {
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
+}
+
+.b_mobile-menu {
+  @media (min-width: 992px) {
+    display: none;
+  }
 }
 </style>
