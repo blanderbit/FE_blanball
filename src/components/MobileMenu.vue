@@ -6,12 +6,18 @@
     </div>
     <div class="b-mob-menu__user-data">
       <div class="b-mob-menu__user-img">
-        <img src="../assets/img/my-profile-pic.svg" alt="" />
+        <Avatar
+          :link="userData.profile.avatar_url"
+          :full-name="`${userData.profile.name} ${userData.profile.last_name}`"
+        >  
+        </Avatar>
       </div>
       <div class="b-mob-menu__text-block">
-        <div class="b-mob-menu__user-name">Стефанія Калиновська</div>
+        <div class="b-mob-menu__user-name">
+          {{ userData.profile.name }} {{ userData.profile.last_name }}
+        </div>
         <div class="b-mob-menu__account-type">
-          {{ $t('menu.guest-account') }}
+          {{ $t(`hashtags.${userData.role}`) }}
         </div>
       </div>
       <div class="b-mob-menu__logout-icon" @click="logOut">
@@ -44,26 +50,49 @@
       </div>
       <div class="b-mob-menu__content-block">
         <div class="b-mob-menu__message-list">
-          <div
-            class="b-mob-menu__message"
-            v-for="item in mockData.letters"
-            :key="item.id"
-          >
-            <div class="b-mob-menu__left-side">
-              <img :src="item.userImg" alt="" />
-              <div class="b-mob-menu__is-user-active"></div>
-            </div>
-            <div class="b-mob-menu__right-side">
-              <div class="b-mob-menu__top-line">
-                <span>{{ item.sender }}</span>
-                <span>{{ item.time }}</span>
-              </div>
-              <div class="b-mob-menu__bottom-line">
-                <span>{{ item.topic }}</span>
-                <img :src="item.icon" alt="" />
-              </div>
-            </div>
-          </div>
+
+          <Notifications
+              :notifications="notifications"
+              :selectable="selectable"
+              ref="notificationList"
+              v-model:selected-list="selectedList"
+              v-model:scrollbar-existing="blockScrollToTopIfExist"
+            >
+              <template #before>
+                <Notification
+                  v-if="newNotifications"
+                  class="b-new-notification"
+                  :notificationInstance="getNewNotificationInstance"
+                  :not-collapsible="true"
+                  @handler-action="$emit('reLoading'), restartInfiniteScroll()"
+                >
+                </Notification>
+              </template>
+              <template #after>
+                <InfiniteLoading
+                  :identifier="triggerForRestart"
+                  ref="scrollbar"
+                  @infinite="$emit('loadingInfinite', $event)"
+                >
+                  <template #complete>
+                    <empty-list
+                      style="margin-top: 16px;"
+                      v-if="!notifications.length"
+                      :title="emptyListMessages.title"
+                      :description="emptyListMessages.description"
+                      :is-notification="true"
+                    >
+                    </empty-list>
+                    <ScrollToTop
+                      :element-length="notifications"
+                      :is-scroll-top-exist="blockScrollToTopIfExist"
+                      @scroll-button-clicked="scrollToFirstElement()"
+                    />
+                  </template>
+                </InfiniteLoading>
+              </template>
+            </Notifications>
+            
         </div>
       </div>
       <div class="b-mob-menu__line">
@@ -97,11 +126,23 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
+import { storeToRefs } from "pinia";
+import { v4 as uuid } from 'uuid'
+
+import Avatar from './Avatar.vue';
+import Notifications from './sitebar-notifications/Notifications.vue'
+import Notification from './Notification.vue'
+import EmptyList from './EmptyList.vue'
+import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue'
+import ScrollToTop from './ScrollToTop.vue'
+
+import { TokenWorker } from '../workers/token-worker'
+import { useUserDataStore } from '../stores/userData'
+
 import CONSTANTS from '../consts/index'
 import { ROUTES } from '../router/router.const'
-import { TokenWorker } from '../workers/token-worker'
 
-import Notification from '../assets/img/notification-small.svg'
+import NotificationIcon from '../assets/img/notification-small.svg'
 import NotificationWhite from '../assets/img/notification-white.svg'
 import Record from '../assets/img/record.svg'
 import RecordWhite from '../assets/img/record-white.svg'
@@ -117,6 +158,30 @@ export default {
       type: Boolean,
       default: false,
     },
+    notifications: {
+      type: Array,
+      default: () => [],
+    },
+    notReadNotificationCount: {
+      type: Number,
+      default: 0,
+    },
+    newNotifications: {
+      type: Number,
+      default: 0,
+    },
+    totalNotificationsCount: {
+      type: Number,
+      default: 0,
+    },
+  },
+  components: {
+    Avatar,
+    Notifications,
+    Notification,
+    EmptyList,
+    InfiniteLoading,
+    ScrollToTop,
   },
   emit: ['closeMenu'],
   setup(props, { emit }) {
@@ -125,7 +190,7 @@ export default {
         id: 0,
         value: 'Сповіщення',
         value_show: true,
-        imgInactive: Notification,
+        imgInactive: NotificationIcon,
         imgActive: NotificationWhite,
         isIconActive: false,
         width: '50%',
@@ -180,6 +245,26 @@ export default {
       },
     ])
     const router = useRouter()
+    const userStore = useUserDataStore()
+    const { user } = storeToRefs(userStore)
+    const notificationList = ref()
+    const selectable = ref(false)
+    const selectedList = ref([])
+    const blockScrollToTopIfExist = ref(false)
+    const triggerForRestart = ref('')
+
+
+    const emptyListMessages = computed(() => {
+      return {
+        title: CONSTANTS.no_data_notifications.noNotifications.title,
+        description:
+          CONSTANTS.no_data_notifications.noNotifications.description,
+      }
+    })
+
+    const userData = computed(() => {
+      return user.value
+    })
 
     const mockData = computed(() => {
       return {
@@ -273,13 +358,26 @@ export default {
 
     return {
       topMenu,
+      selectable,
+      emptyListMessages,
+      selectedList,
       bottomMenu,
+      blockScrollToTopIfExist,
       mockData,
+      notificationList,
       menuBlockStyle,
+      userData,
       mobMenuStyle,
+      triggerForRestart,
       lineMenuClick,
       closeMobMenu,
       logOut,
+      restartInfiniteScroll: () => {
+        triggerForRestart.value = uuid()
+      },
+      scrollToFirstElement: () => {
+        notificationList.value.scrollToFirstElement()
+      },
     }
   },
 }
@@ -290,12 +388,19 @@ export default {
   position: fixed;
   background: #efeff6;
   padding: 16px;
-  width: 100%;
   height: 100%;
   z-index: 999;
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease-out;
+
+  @media (max-width: 992px ) {
+    width: 70%;
+  }
+  @media (max-width: 576px) {
+    width: 100%;
+  }
+
   .b-mob-menu__logo-block {
     display: flex;
     justify-content: space-between;
@@ -400,6 +505,7 @@ export default {
         top: 0;
         left: 0;
         width: 100%;
+        padding: 0px 16px;
         .b-mob-menu__message {
           padding: 14px 12px;
           display: flex;
