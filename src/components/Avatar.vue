@@ -1,4 +1,5 @@
 <template>
+ <div class="b-avatar-wrapper" :style="border ? avatarBorder : null">
   <object class="b-avatar"
     :class="[`b-avatar-${avatarType}`]"
     :data="avatarType === 'circle' ? link : null"
@@ -17,6 +18,7 @@
   >
     {{ shortFullName }}
   </div>
+ </div>
 </template>
 
 <script>
@@ -33,6 +35,10 @@ export default {
       type: String,
       default: 'circle', // square
     },
+    border: {
+      type: Boolean,
+      default: false
+    }
   },
   emits: ['clickByAvatar'],
   computed: {
@@ -43,6 +49,9 @@ export default {
         .map((item) => item?.[0]?.toUpperCase())
         .join('')
     },
+    avatarBorder() {
+      return "border: 2px dashed #dfdeed; border-radius: 100px; padding: 4px; display: flex; align-items: center;"
+    }
   },
 }
 </script>

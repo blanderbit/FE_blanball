@@ -3,7 +3,7 @@
     <div class="b-small-player-card__left-side">
       <div class="b-small-player-card__picture">
         <Avatar
-          class="b-small-player-card__avatar"
+          :border="true"
           :link="dataPlayer.profile.avatar_url"
           :full-name="`${dataPlayer.profile.name} ${dataPlayer.profile.last_name}`"
           @clickByAvatar="goToUserProfile(dataPlayer.id)"
@@ -89,9 +89,6 @@ export default {
     align-items: center;
     .b-small-player-card__picture {
       margin-right: 16px;
-      border: 2px dashed #dfdeed;
-      border-radius: 100px;
-      padding: 4px;
 
       .b-small-player-card__avatar {
         min-width: 32px;

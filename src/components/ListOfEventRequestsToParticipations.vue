@@ -5,6 +5,7 @@
         <div class="b-list-item__picture">
           <Avatar
             class="b-list-item__avatar"
+            :border="true"
             :link="request.sender.profile.avatar_url"
             :full-name="`${request.sender.profile.name} ${request.sender.profile.last_name}`"
           ></Avatar>
@@ -99,10 +100,6 @@ export default {
       align-items: center;
       gap: 12px;
       .b-list-item__picture {
-        border: 2px dashed #dfdeed;
-        border-radius: 100px;
-        padding: 4px;
-
         .b-list-item__avatar {
           min-width: 32px;
           max-width: 32px;
