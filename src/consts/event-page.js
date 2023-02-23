@@ -1,6 +1,7 @@
 import circleTick from '../assets/img/tick-in-circle.svg'
 import bucket from '../assets/img/bucket.svg'
 import pin from '../assets/img/pin.svg'
+import unpin from '../assets/img/unpin.svg'
 
 export default {
   event_cards: [
@@ -203,7 +204,7 @@ export default {
     {
       id: 2,
       text: !eventPinned ? 'Закріпити' : 'Відкріпити',
-      img: pin,
+      img: !eventPinned ? pin : unpin,
       type: !eventPinned ? 'pin' : 'unpin'
     },
   ],

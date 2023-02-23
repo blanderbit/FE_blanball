@@ -50,7 +50,9 @@
           @clearFilters="clearFilters"
         ></events-filters>
 
-      <div v-if="selected.length" class="b-events-page__after-select-block">
+
+      <FilterBlock v-if="selected.length">
+        <div class="b-events-page__after-select-block">
         <div class="b-left__side">
           <WhiteBtn
             class="b-left__side-cancel-button"
@@ -77,7 +79,7 @@
           </div>
         </div>
       </div>
-
+      </FilterBlock>
         <div class="b-events-page__all-events-block">
         <SmartGridList
           :list="paginationElements"
@@ -256,8 +258,12 @@ export default {
     }
 
     function getDate(date) {
-      return dayjs(date).locale(dayjsUkrLocale).format('D MMMM')
+      return dayjs(date).locale(dayjsUkrLocale).
+      format(Number(dayjs(date).locale(dayjsUkrLocale).format('YYYY')) === new Date().getFullYear()
+      ? 'D MMMM'
+      : ' D MMMM, YYYY')
     }
+
     function getTime(time) {
       return dayjs(time).locale(dayjsUkrLocale).format('HH:mm')
     }
@@ -480,12 +486,12 @@ export default {
         itemHeight.value = 125
         itemWidth.value = mainEventsBlock.value.clientWidth
         itemCount.value = 1
-      } else if (window.matchMedia('(min-width: 460px) and (max-width: 576px)').matches) {
+      } else if (window.matchMedia('(min-width: 485px) and (max-width: 576px)').matches) {
         itemHeight.value = 125
         itemWidth.value = mainEventsBlock.value.clientWidth
         itemCount.value = 1
       }
-      else if (window.matchMedia('(max-width: 460px)').matches) {
+      else if (window.matchMedia('(max-width: 485px)').matches) {
         itemHeight.value = 155
         itemWidth.value = mainEventsBlock.value.clientWidth
         itemCount.value = 1
@@ -639,7 +645,6 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 20px;
 
         .b-left__side {
           display: flex;
@@ -675,6 +680,7 @@ export default {
         }
 
         .b-right__side {
+          z-index: 2;
           .b-right__side-cancel {
             font-family: 'Inter';
             font-style: normal;

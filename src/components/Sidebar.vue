@@ -61,7 +61,7 @@
           <avatar
             :link="userAvatar"
             :full-name="userFullName"
-            @click="goToProfile"
+            @clickByAvatar="goToProfile"
           ></avatar>
           <div
             @click="logOut"

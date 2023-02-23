@@ -4,7 +4,9 @@
     { finished: card.status === 'Finished' },
     { selected: isCardSelected}]" 
     @click.right.prevent="$emit('cardRightClick', $event)"
-    @click.prevent="$emit('cardLeftClick', card.id)">
+    @click.prevent="$emit('cardLeftClick', card.id)"
+    @touchstart="startHoldOpenMenu"
+    @touchend="endHoldOpenMenu">
     <div v-if="isCardSelected" class="b-my-event-card-selected-icon">
       <img src="../assets/img/green-nike-icon.svg" alt="">
     </div>
@@ -68,12 +70,29 @@ export default {
       default: () => [],
     }
   },
-  setup(props) {
+  setup(props, context) {
     const isCardSelected = computed(() => {
       return props.selected.includes(props.card.id)
     })
+
+    let timeout
+
+    const startHoldOpenMenu = (e) => {
+      const touch = e.touches[0];
+      const data = {'clientX': touch.pageX, 'clientY': touch.pageY}
+      timeout = setTimeout(() => {
+        context.emit('cardRightClick', data)
+      }, 500);
+    }
+
+    const endHoldOpenMenu = (e) => {
+      clearTimeout(timeout);
+    }
+
     return {
       isCardSelected,
+      startHoldOpenMenu,
+      endHoldOpenMenu,
     }
   }
 }
@@ -174,6 +193,7 @@ export default {
         gap: 8px 0px;
         margin-left: -60px;
         margin-top: 10px;
+        min-width: 170px;
 
         .b-my-event-card__label {
           padding: 0px 8px;
@@ -193,6 +213,7 @@ export default {
   }
 
   .b-my-event-card__right-block {
+    max-height: 50px;
 
     &.selected {
       opacity: 0.6;
@@ -225,7 +246,8 @@ export default {
     }
 
     .b-my-event-card__col-3 {
-      min-width: 100%;
+      min-width: 120px;
+      max-height: 70px;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
