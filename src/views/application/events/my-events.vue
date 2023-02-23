@@ -1,11 +1,17 @@
 <template>
   <div class="b-events-page">
+    <DeleteEventsModal
+      v-if="isDeleteEventsModalActive"
+      @closeModal="closeDeleteEventsModal"
+      @deleteEvents="deleteEvents"/>
     <ContextMenu
+      class="b-context-menu"
       v-if="isContextMenuActive"
-      :client-x="contextMenuX"
-      :client-y="contextMenuY"
+      :clientX="contextMenuX"
+      :clientY="contextMenuY"
       :menu-text="mockData.menu_text"
       @close-modal="isContextMenuActive = false"
+      @itemClick="contextMenuItemClick"
     />
     <div class="b-events-page__main-body" ref="mainEventsBlock">
       <div class="b-events-page__header-block">
@@ -31,17 +37,46 @@
             :width="168"
             :icon="iconPlus"
             :height="40"
-            @click-function="goToCreateEvent"
           />
         </div>
       </div>
 
       <div class="b-events-page__main-search-block">
         <events-filters
+          v-if="!selected.length"
           :modelValue="filters"
           @update:value="setFilters"
           @clearFilters="clearFilters"
         ></events-filters>
+
+      <div v-if="selected.length" class="b-events-page__after-select-block">
+        <div class="b-left__side">
+          <WhiteBtn
+            class="b-left__side-cancel-button"
+            :text="$t('buttons.pin')"
+            :width="127"
+            :icon="PinIcon"
+            :height="32"
+          />
+          <GreenBtn
+            :text="$t('buttons.delete')"
+            :width="127"
+            :icon="WhiteBucket"
+            :height="32"
+            @click-function="openDeleteEventsModal"
+          />
+          <div v-if="selected.length" class="b-left__side-count-selected">
+            {{ selected.length }}
+          </div>
+        </div>
+        <div class="b-right__side">
+          <div @click="declineSelect" class="b-right__side-cancel">
+            {{ $t('buttons.decline') }}
+          </div>
+        </div>
+      </div>
+
+        <div class="b-events-page__all-events-block">
         <SmartGridList
           :list="paginationElements"
           ref="refList"
@@ -52,8 +87,10 @@
             <MyEventCard
               :key="slotProps.index"
               :card="slotProps.smartListItem"
-              @card-right-click="myCardRightClick"
+              :selected="selected"
+              @card-right-click="myCardRightClick($event, slotProps.smartListItem.id)"
               @go-to-event-page="goToEventPage(slotProps.smartListItem.id)"
+              @card-left-click="myCardLeftClick"
             />
 
             <!--  @update:expanding="slotProps.smartListItem.metadata.expanding = $event"-->
@@ -82,6 +119,7 @@
         </SmartGridList>
       </div>
     </div>
+  </div>
     <RightSidebar />
   </div>
 </template>
@@ -90,6 +128,7 @@
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { useToast } from 'vue-toastification'
 
 import dayjs from 'dayjs'
 import dayjsUkrLocale from 'dayjs/locale/uk'
@@ -110,6 +149,8 @@ import SmartGridList from '../../../components/smart-list/SmartGridList.vue'
 import ScrollToTop from '../../../components/ScrollToTop.vue'
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue'
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue'
+import WhiteBtn from '../../../components/WhiteBtn.vue'
+import DeleteEventsModal from '../../../components/ModalWindows/DeleteEventsModal.vue'
 
 import { API } from '../../../workers/api-worker/api.worker'
 import { ROUTES } from '../../../router/router.const'
@@ -119,6 +160,9 @@ import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patc
 import CONSTANTS from '../../../consts/index'
 
 import Plus from '../../../assets/img/plus.svg'
+import WhiteBucket from '../../../assets/img/white-bucket.svg'
+import PinIcon from '../../../assets/img/pin.svg'
+
 
 export default {
   name: 'EventsPage',
@@ -137,20 +181,24 @@ export default {
     ScrollToTop,
     FilterBlock,
     EventsFilters,
+    WhiteBtn,
+    DeleteEventsModal,
   },
   setup() {
     const scrollComponent = ref(null)
-    const currentPage = ref(null)
-    const totalPages = ref(null)
     const route = useRoute()
+    const toast = useToast()
     const router = useRouter()
     const eventCards = ref([])
+    const selected = ref([])
     const { t } = useI18n()
     const isLoaderActive = ref(false)
     const contextMenuX = ref(null)
     const contextMenuY = ref(null)
     const isContextMenuActive = ref(false)
+    const isDeleteEventsModalActive = ref(false)
     const mainEventsBlock = ref()
+    const selectedContextMenuEventId = ref()
 
     const mockData = computed(() => {
       return {
@@ -173,6 +221,15 @@ export default {
       }
     })
 
+    const contextMenuItemClick = (itemType) => {
+      switch(itemType) {
+        case 'select':
+          if (selected.value.indexOf(selectedContextMenuEventId.value) === -1) {
+            selected.value.push(selectedContextMenuEventId.value)
+        }
+      }
+    }
+
     function switchEvents() {
       router.push(ROUTES.APPLICATION.EVENTS.absolute)
     }
@@ -184,33 +241,66 @@ export default {
       return dayjs(time).locale(dayjsUkrLocale).format('HH:mm')
     }
 
+    function addMinutes(time, minutesToAdd) {
+      let timeArray = time.split(':');
+      let hours = timeArray[0];
+      let originalMinutes = timeArray[1];
+      let date = new Date();
+      date.setHours(hours);
+      date.setMinutes(originalMinutes);
+      date.setMinutes(date.getMinutes() + minutesToAdd);
+      return date.toTimeString().substr(0, 5);
+    }
+
     function handlingIncomeData(item) {
       return {
         ...item,
         date: getDate(item.date_and_time),
         time: getTime(item.date_and_time),
-        labels: [
-          item.type,
-          item.gender === 'Man' ? t('events.men') : t('events.women'),
-          item.need_form
-            ? t('events.need-uniform')
-            : t('events.do-not-need-uniform'),
-        ],
+        end_time: addMinutes(getTime(item.date_and_time), item.duration),
       }
     }
 
-    function myCardRightClick(e) {
+    function openDeleteEventsModal() {
+      isDeleteEventsModalActive.value = true
+    }
+
+    function closeDeleteEventsModal() {
+      isDeleteEventsModalActive.value = false
+    }
+
+    function deleteEvents() {
+      selected.value = []
+      closeDeleteEventsModal()
+      toast.success(t('notifications.events-deleted'))
+    }
+
+    function myCardRightClick(e, eventId) {
       contextMenuX.value = e.clientX
       contextMenuY.value = e.clientY
+      selectedContextMenuEventId.value = eventId
       isContextMenuActive.value = true
     }
 
-    function goToEventPage() {
-      router.push('/application/events/3')
+    function myCardLeftClick(eventId) {
+      if (selected.value.length) {
+        if (selected.value.includes(eventId)) {
+          let index = selected.value.indexOf(eventId);
+          index !== -1 ? selected.value.splice(index, 1) : null
+        } else {
+          selected.value.push(eventId)
+        }
+      } else {
+        goToEventPage(eventId)
+      }
+    }
+  
+    function goToEventPage(id) {
+      router.push(ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(id))
     }
 
-    function goToCreateEvent() {
-      router.push('/application/events/create')
+    function declineSelect() {
+      selected.value = []
     }
 
     const refList = ref()
@@ -299,34 +389,45 @@ export default {
       itemHeight,
       itemMinHeight,
     }) => {
-      itemHeight.value = 100
       if (window.matchMedia('(min-width: 1400px)').matches) {
-        itemWidth.value = mainEventsBlock.value.clientWidth / 3
+        itemHeight.value = 125
+        itemWidth.value = mainEventsBlock.value.clientWidth / 2
         itemCount.value = 3
       } else if (
         window.matchMedia('(min-width: 1200px) and (max-width: 1400px)').matches
       ) {
+        itemHeight.value = 160
         itemWidth.value = mainEventsBlock.value.clientWidth / 2
         itemCount.value = 2
       } else if (
         window.matchMedia('(min-width: 992px) and (max-width: 1199px)').matches
       ) {
+        itemHeight.value = 160
         itemWidth.value = mainEventsBlock.value.clientWidth / 2
         itemCount.value = 2
       } else if (
         window.matchMedia('(min-width: 768px) and (max-width: 991px)').matches
       ) {
+        itemHeight.value = 160
         itemWidth.value = mainEventsBlock.value.clientWidth / 2
         itemCount.value = 2
       } else if (
         window.matchMedia('(min-width: 576px) and (max-width: 768px)').matches
       ) {
+        itemHeight.value = 125
         itemWidth.value = mainEventsBlock.value.clientWidth
         itemCount.value = 1
-      } else if (window.matchMedia('(max-width: 576px)').matches) {
+      } else if (window.matchMedia('(min-width: 460px) and (max-width: 576px)').matches) {
+        itemHeight.value = 125
         itemWidth.value = mainEventsBlock.value.clientWidth
         itemCount.value = 1
       }
+      else if (window.matchMedia('(max-width: 460px)').matches) {
+        itemHeight.value = 155
+        itemWidth.value = mainEventsBlock.value.clientWidth
+        itemCount.value = 1
+      }
+      
     }
 
     const loadDataPaginationData = (pageNumber, $state) => {
@@ -342,13 +443,24 @@ export default {
       isLoaderActive,
       mockData,
       iconPlus,
+      WhiteBucket,
+      contextMenuX,
+      contextMenuY,
+      PinIcon,
+      selected,
       emptyListMessages,
       myCardRightClick,
+      deleteEvents,
+      contextMenuItemClick,
+      declineSelect,
       goToEventPage,
-      goToCreateEvent,
+      myCardLeftClick,
+      openDeleteEventsModal,
+      closeDeleteEventsModal,
       switchEvents,
       isContextMenuActive,
       refList,
+      isDeleteEventsModalActive,
       blockScrollToTopIfExist,
       triggerForRestart,
       paginationElements,
@@ -458,8 +570,61 @@ export default {
         }
       }
     }
+    .b-events-page__after-select-block {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+
+        .b-left__side {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          position: relative;
+
+          .b-left__side-cancel-button {
+            border: 1px solid #DFDEED !important;
+            color: #575775 !important;
+          }
+
+          .b-left__side-count-selected {
+            position: absolute;
+            right: -10px;
+            top: -10px;
+            background: #FFFFFF;
+            border: 2px solid #148783;
+            border-radius: 100px;
+            width: 28px;
+            height: 24px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 20px;
+            color: #262541;
+          }
+        }
+
+        .b-right__side {
+          .b-right__side-cancel {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 24px;
+            text-align: center;
+            color: #575775;
+            cursor: pointer;
+          }
+        }
+      }
     .b-events-page__main-search-block {
       margin-top: 36px;
+      margin-bottom: 20px;
       position: relative;
       @media (max-width: 992px) {
         padding: 0;
@@ -468,7 +633,12 @@ export default {
         position: relative;
         margin-top: 23px;
         height: 76vh;
-        overflow: hidden;
+        overflow: scroll;
+        -ms-overflow-style: none; /* for Internet Explorer, Edge */
+          scrollbar-width: none; /* for Firefox */
+          &::-webkit-scrollbar {
+            display: none; /* for Chrome, Safari, and Opera */
+        }
         .b-events-page__cards-event-wrapper {
           display: flex;
           flex-wrap: wrap;
@@ -491,4 +661,5 @@ export default {
     }
   }
 }
+
 </style>

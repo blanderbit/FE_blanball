@@ -58,5 +58,9 @@ export default {
   event_created: {
     'title': 'Чудово!',
     'main-text': 'Подію успішно створено'
+  },
+  delete_events: {
+    'title': 'Видалення подій',
+    'main-text': 'Ви дійсно хочете видалити ваші раніше створені події?'
   }
 }

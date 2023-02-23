@@ -292,31 +292,40 @@ export default {
       itemHeight,
       itemMinHeight,
     }) => {
-      itemHeight.value = 325
       if (window.matchMedia('(min-width: 1400px)').matches) {
+        itemHeight.value = 310
         itemWidth.value = mainEventsBlock.value.clientWidth / 3
         itemCount.value = 3
       } else if (
         window.matchMedia('(min-width: 1200px) and (max-width: 1400px)').matches
       ) {
+        itemHeight.value = 295
         itemWidth.value = mainEventsBlock.value.clientWidth / 2
         itemCount.value = 2
       } else if (
         window.matchMedia('(min-width: 992px) and (max-width: 1199px)').matches
       ) {
+        itemHeight.value = 315
         itemWidth.value = mainEventsBlock.value.clientWidth / 2
         itemCount.value = 2
       } else if (
         window.matchMedia('(min-width: 768px) and (max-width: 991px)').matches
       ) {
+        itemHeight.value = 310
         itemWidth.value = mainEventsBlock.value.clientWidth / 2
         itemCount.value = 2
       } else if (
         window.matchMedia('(min-width: 576px) and (max-width: 768px)').matches
       ) {
+        itemHeight.value = 300
         itemWidth.value = mainEventsBlock.value.clientWidth
         itemCount.value = 1
-      } else if (window.matchMedia('(max-width: 576px)').matches) {
+      } else if (window.matchMedia('(min-width: 430px) and (max-width: 576px)').matches) {
+        itemHeight.value = 300
+        itemWidth.value = mainEventsBlock.value.clientWidth
+        itemCount.value = 1
+      } else if (window.matchMedia('(max-width: 430px)').matches) {
+        itemHeight.value = 330
         itemWidth.value = mainEventsBlock.value.clientWidth
         itemCount.value = 1
       }

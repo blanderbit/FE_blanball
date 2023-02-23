@@ -192,16 +192,19 @@ export default {
       id: 0,
       text: 'Виділити',
       img: circleTick,
+      type: 'select'
     },
     {
       id: 1,
       text: 'Видалити',
       img: bucket,
+      type: 'delete'
     },
     {
       id: 2,
       text: 'Закріпити',
       img: pin,
+      type: 'pin'
     },
   ],
   status_ropdown: [
