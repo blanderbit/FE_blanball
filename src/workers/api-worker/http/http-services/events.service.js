@@ -63,6 +63,15 @@ export class EventService {
     )
   }
 
+  eventJoinAsPlayer(eventId) {
+    return AxiosInstance.post(
+      EndpointsEnum.Events.EventJoinAsPlayer,
+      {
+        event_id: eventId,
+      }
+    )
+  }
+
   @FilterParamsDecorator(filterConfigForEvents)
   getAllEvents(options) {
     return AxiosInstance.get(

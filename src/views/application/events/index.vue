@@ -1,4 +1,12 @@
 <template>
+  <Loading :is-loading="loading"/>
+   <EventJoinModal
+    v-if="isEventJoinModalActive"
+    :clientX="eventJoinModalX"
+    :clientY="eventJoinModalY"
+    :modalItems="eventJoinToolTipItems"
+    @closeModal="closeEventJoinModal"
+    @itemClick="joinEventModalItemClick"/>
   <div class="b-events-page">
     <div class="b-events-page__main-body" ref="mainEventsBlock">
       <div class="b-events-page__header-block">
@@ -51,9 +59,8 @@
                 :key="slotProps.index"
                 :card="slotProps.smartListItem"
                 @go-to-event-page="goToEventPage(slotProps.smartListItem.id)"
-                @eventJoin="showEventJoinTooltip($event)"
+                @event-join="showEventJoinModal($event, slotProps.smartListItem)"
               />
-              <!-- <EventJoinModal/> -->
             </template>
             <template #after>
               <InfiniteLoading
@@ -89,6 +96,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { useToast } from 'vue-toastification'
 
 import dayjs from 'dayjs'
 import dayjsUkrLocale from 'dayjs/locale/uk'
@@ -110,6 +118,7 @@ import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoadin
 import Dropdown from '../../../components/forms/Dropdown.vue'
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue'
 import EventJoinModal from '../../../components/ModalWindows/EventJoinModal.vue'
+import Loading from '../../../workers/loading-worker/Loading.vue'
 
 import { useEventDataStore } from '../../../stores/eventsData'
 import { API } from '../../../workers/api-worker/api.worker'
@@ -119,6 +128,7 @@ import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patc
 import { ROUTES } from '../../../router/router.const'
 
 import Plus from '../../../assets/img/plus.svg'
+import BallIcon from '../../../assets/img/ball.svg'
 
 
 export default {
@@ -138,16 +148,39 @@ export default {
     InfiniteLoading,
     ScrollToTop,
     EventsFilters,
+    Loading,
     EventJoinModal,
   },
   setup() {
     const eventStore = useEventDataStore()
     const scrollComponent = ref(null)
+    const isEventJoinModalActive = ref(false)
     const router = useRouter()
+    const toast = useToast()
     const eventCards = ref([])
+    const loading = ref(false)
+    const joinEventData = ref(null)
+    const eventJoinModalX = ref(null)
+    const eventJoinModalY = ref(null)
     const { t } = useI18n()
     const isLoaderActive = ref(false)
     const mainEventsBlock = ref()
+
+
+    const eventJoinToolTipItems = ref([
+            {
+                id: 1,
+                text: 'Як учасник',
+                img: BallIcon,
+                type: 'play'
+            },
+            {
+                id: 2,
+                text: 'Як вболівальник',
+                img: BallIcon,
+                type: 'view'
+            }
+        ])
     
     const mockData = computed(() => {
       return {
@@ -175,8 +208,48 @@ export default {
       return dayjs(time).locale(dayjsUkrLocale).format('HH:mm')
     }
 
-    const showEventJoinTooltip = (event) => {
-      console.log(event)
+    async function joinEventAsPlayer(eventId, eventPrivacy) {
+      loading.value = true
+      await API.EventService.eventJoinAsPlayer(eventId)
+      const response = await API.EventService.getAllEvents({
+          ...filters,
+          paginationPage,
+        })
+      paginationElements.value = response.data.results
+      loading.value = false
+      if (eventPrivacy) {
+        toast.success(t('notifications.event-request-sent'))
+      } else {
+        toast.success(t('notifications.event-join-as-player'))
+      }
+    }
+    
+    function joinEventModalItemClick(data) {
+      switch(data) {
+        case 'play':
+          joinEventAsPlayer(
+            joinEventData.value.id, joinEventData.value.privacy
+          )
+          closeEventJoinModal()
+          break
+        case 'view':
+          closeEventJoinModal()
+          break
+      }
+    }
+
+    const showEventJoinModal = (e, eventData) => {
+      eventJoinModalX.value = e.clientX
+      eventJoinModalY.value = e.clientY
+      joinEventData.value = eventData
+      isEventJoinModalActive.value = true
+    }
+
+    const closeEventJoinModal = () => {
+      isEventJoinModalActive.value = false
+      eventJoinModalX.value = null
+      eventJoinModalY.value = null
+      joinEventData.value = null
     }
 
     function addMinutes(time, minutesToAdd) {
@@ -189,6 +262,7 @@ export default {
       date.setMinutes(date.getMinutes() + minutesToAdd);
       return date.toTimeString().substr(0, 5);
     }
+
 
     function handlingIncomeData(item) {
       return {
@@ -302,25 +376,25 @@ export default {
       itemMinHeight,
     }) => {
       if (window.matchMedia('(min-width: 1400px)').matches) {
-        itemHeight.value = 310
+        itemHeight.value = 320
         itemWidth.value = mainEventsBlock.value.clientWidth / 3
         itemCount.value = 3
       } else if (
         window.matchMedia('(min-width: 1200px) and (max-width: 1400px)').matches
       ) {
-        itemHeight.value = 295
+        itemHeight.value = 305
         itemWidth.value = mainEventsBlock.value.clientWidth / 2
         itemCount.value = 2
       } else if (
         window.matchMedia('(min-width: 992px) and (max-width: 1199px)').matches
       ) {
-        itemHeight.value = 315
+        itemHeight.value = 320
         itemWidth.value = mainEventsBlock.value.clientWidth / 2
         itemCount.value = 2
       } else if (
         window.matchMedia('(min-width: 768px) and (max-width: 991px)').matches
       ) {
-        itemHeight.value = 310
+        itemHeight.value = 320
         itemWidth.value = mainEventsBlock.value.clientWidth / 2
         itemCount.value = 2
       } else if (
@@ -352,7 +426,13 @@ export default {
       eventCards,
       isLoaderActive,
       switchToMyEvents,
+      isEventJoinModalActive,
       mainEventsBlock,
+      eventJoinModalY,
+      eventJoinModalX,
+      showEventJoinModal,
+      closeEventJoinModal,
+      loading,
       mockData,
       filters,
       goToEventPage,
@@ -363,12 +443,15 @@ export default {
       triggerForRestart,
       paginationElements,
       paginationPage,
+      joinEventModalItemClick,
       paginationLoad,
       loadDataPaginationData,
       detectSizesForCards,
       setFilters,
       clearFilters,
-      showEventJoinTooltip,
+
+      eventJoinToolTipItems,
+
       scrollToFirstElement: () => {
         refList.value.scrollToFirstElement()
       },

@@ -1,7 +1,8 @@
 <template>
-    <div class="b-event-join__tooltip-wrapper">
-        <div class="b-event-join__tooltip">
-            <div class="b-event-join__tooltip-item" v-for="item in eventJoinToolTipItems">
+    <div class="b-event-join__tooltip-wrapper"
+        @click.self="$emit('closeModal')" >
+        <div :style="modalStyle" class="b-event-join__tooltip">
+            <div v-for="item in modalItems" class="b-event-join__tooltip-item" @click="$emit('itemClick', item.type)">
                 <img :src="item.img" alt="">
                 <span class="b-item-text">{{ item.text }}</span>
             </div>
@@ -10,47 +11,77 @@
 </template>
 
 
-<script setup>
-import { ref } from "vue"
+<script>
+import { computed } from "vue"
 
-import BallIcon from '../../assets/img/ball.svg'
-
-const eventJoinToolTipItems = ref([
-    {
-        id: 1,
-        text: 'Грати',
-        img: BallIcon
+export default {
+    props: {
+        clientX: {
+            type: Number,
+            default: null,
+            require: true,
+        },
+        clientY: {
+            type: Number,
+            default: null,
+            require: true,
+        },
+        modalItems: {
+            type: Array,
+            dafault: () => [],
+            require: true,
+        },
     },
-    {
-        id: 2,
-        text: 'Вболівати',
-        img: BallIcon
+    setup(props) {
+        const modalStyle = computed(() => {
+            return {
+                top: props.clientY - 50 + 'px',
+                left: props.clientX + 'px',
+            }
+        })
+
+        return {
+            modalStyle,
+        }
     }
-])
+}
 </script>
 
 <style lang="scss" scoped>
 .b-event-join__tooltip-wrapper {
-    position: absolute;
-    top: 0px;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(136, 133, 133, 0.514);
     z-index: 999;
+
+    &::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        min-height: 100%;
+        background: #262541;
+        width: 100%;
+        min-height: 100%;
+        z-index: -1;
+        opacity: 0.2;
+    }
 
     .b-event-join__tooltip {
         background: #FFFFFF;
         width: 180px;
         position: absolute;
         border-radius: 6px;
-        bottom: 0px;
-        right: -20px;
+
         .b-event-join__tooltip-item {
             display: flex;
             align-items: center;
             gap: 8px 8px;
             padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 6px;
+
+            &:hover {
+          background: #F0F0F4;
+        }
 
             .b-item-text {
                 font-family: 'Inter';
@@ -59,6 +90,7 @@ const eventJoinToolTipItems = ref([
                 font-size: 13px;
                 line-height: 20px;
                 color: #262541;
+                z-index: 999;
             }
         }
     }

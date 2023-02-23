@@ -27,6 +27,7 @@ export const EndpointsEnum = {
     PopularEventsList: '/events/client/popular/events/list',
     CreateOneEvent: '/events/client/event/create',
     DeleteEvents: '/events/client/events/delete',
+    EventJoinAsPlayer: '/events/client/event/join',
     PinEvents: '/events/client/events/pin',
     UnPinEvents: '/events/client/events/unpin',
     EventRequestsToParticipations: (eventId) => `/events/client/requests/participations/list${eventId}`,

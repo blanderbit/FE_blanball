@@ -68,7 +68,7 @@
             :text="card.privacy ? $t('events.apply') : $t('events.join')"
             :width="120"
             :height="35"
-            @click-function="$emit('eventJoin', card)"
+            @click-function="eventJoin"
           />
           <WhiteBtn
           v-else
@@ -111,10 +111,14 @@ export default {
     PlaceDetector,
     WhiteBtn,
   },
-  setup(props) {
+  setup(props, context) {
     const device = useDevice()
     const userStore = useUserDataStore();
     const { user } = storeToRefs(userStore);
+
+    const eventJoin = (e) => {
+      context.emit('eventJoin', e)
+    }
 
     const greenButtonAvalable = computed(() => {
       return props.card.status === 'Planned' && !props.card.request_user_role
@@ -138,6 +142,7 @@ export default {
       user,
       greenButtonAvalable,
       whiteButtonText,
+      eventJoin,
     }
   },
 }
@@ -351,7 +356,7 @@ export default {
         display: flex;
         align-items: center;
         .titles {
-          margin-right: 30px;
+          margin-right: 20px;
 
           @media (max-width: 400px) {
             margin-right: 10px;

@@ -97,7 +97,7 @@ export default {
         }
 
         &:hover {
-          background: #e3fbfa;
+          background: #F0F0F4;
         }
       }
     }

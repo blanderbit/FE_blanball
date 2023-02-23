@@ -2,7 +2,7 @@
   <div
     :class="['b-green-btn', {'b-green-btn__animated': animation}]"
     :style="btnStyle"
-    @click.stop="!disabled && $emit('click-function')"
+    @click.stop="!disabled && $emit('click-function', $event)"
   >
     <img class="b-green-btn__left-icon" v-if="icon" :src="icon" alt="" />
     {{ text }}
