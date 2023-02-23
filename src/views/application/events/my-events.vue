@@ -1,5 +1,6 @@
 <template>
   <div class="b-events-page">
+    <Loading :is-loading="loading"/>
     <DeleteEventsModal
       v-if="isDeleteEventsModalActive"
       @closeModal="closeDeleteEventsModal"
@@ -151,6 +152,7 @@ import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoadin
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
 import DeleteEventsModal from '../../../components/ModalWindows/DeleteEventsModal.vue'
+import Loading from '../../../workers/loading-worker/Loading.vue'
 
 import { API } from '../../../workers/api-worker/api.worker'
 import { ROUTES } from '../../../router/router.const'
@@ -182,6 +184,7 @@ export default {
     FilterBlock,
     EventsFilters,
     WhiteBtn,
+    Loading,
     DeleteEventsModal,
   },
   setup() {
@@ -190,6 +193,7 @@ export default {
     const toast = useToast()
     const router = useRouter()
     const eventCards = ref([])
+    const loading = ref(false)
     const selected = ref([])
     const { t } = useI18n()
     const isLoaderActive = ref(false)
@@ -269,9 +273,14 @@ export default {
       isDeleteEventsModalActive.value = false
     }
 
-    function deleteEvents() {
-      selected.value = []
+    async function deleteEvents() {
       closeDeleteEventsModal()
+      loading.value = true
+      await API.EventService.deleteEvents(selected.value)
+      selected.value = []
+      let response = await API.EventService.getAllMyEvents()
+      paginationElements.value = response.data.results
+      loading.value = false
       toast.success(t('notifications.events-deleted'))
     }
 
@@ -447,6 +456,7 @@ export default {
       contextMenuX,
       contextMenuY,
       PinIcon,
+      loading,
       selected,
       emptyListMessages,
       myCardRightClick,

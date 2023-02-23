@@ -26,6 +26,7 @@ export const EndpointsEnum = {
     DeclineOrAcceptInvites: '/events/client/accept/or/decline/invites/to/events',
     PopularEventsList: '/events/client/popular/events/list',
     CreateOneEvent: '/events/client/event/create',
+    DeleteEvents: '/events/client/events/delete',
     EventRequestsToParticipations: (eventId) => `/events/client/requests/participations/list${eventId}`,
     DeclineOrAcceptParticipations:
       '/events/client/accept/or/decline/participations',

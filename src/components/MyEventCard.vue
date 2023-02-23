@@ -4,7 +4,7 @@
     { finished: card.status === 'Finished' },
     { selected: isCardSelected}]" 
     @click.right.prevent="$emit('cardRightClick', $event)"
-    @click.prevent.stop="$emit('cardLeftClick', card.id)">
+    @click.prevent="$emit('cardLeftClick', card.id)">
     <div v-if="isCardSelected" class="b-my-event-card-selected-icon">
       <img src="../assets/img/green-nike-icon.svg" alt="">
     </div>
@@ -138,6 +138,12 @@ export default {
         font-size: 16px;
         line-height: 24px;
         color: #262541;
+        width: 75%;
+        word-break: break-word;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
 
       .b-my-event-card__labels {

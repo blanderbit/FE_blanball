@@ -36,6 +36,15 @@ export class EventService {
     )
   }
 
+  deleteEvents(ids) {
+    return AxiosInstance.post(
+      EndpointsEnum.Events.DeleteEvents,
+      {
+        ids: ids,
+      }
+    )
+  }
+
   @FilterParamsDecorator(filterConfigForEvents)
   getAllEvents(options) {
     return AxiosInstance.get(
