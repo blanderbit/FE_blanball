@@ -187,7 +187,7 @@ export default {
       ],
     },
   ],
-  menu_text: [
+  menu_text: (eventPinned) => [
     {
       id: 0,
       text: 'Виділити',
@@ -202,9 +202,9 @@ export default {
     },
     {
       id: 2,
-      text: 'Закріпити',
+      text: !eventPinned ? 'Закріпити' : 'Відкріпити',
       img: pin,
-      type: 'pin'
+      type: !eventPinned ? 'pin' : 'unpin'
     },
   ],
   status_ropdown: [

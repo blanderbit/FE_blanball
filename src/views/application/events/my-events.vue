@@ -58,6 +58,7 @@
             :width="127"
             :icon="PinIcon"
             :height="32"
+            @click-function="pinEvents"
           />
           <GreenBtn
             :text="$t('buttons.delete')"
@@ -89,7 +90,7 @@
               :key="slotProps.index"
               :card="slotProps.smartListItem"
               :selected="selected"
-              @card-right-click="myCardRightClick($event, slotProps.smartListItem.id)"
+              @card-right-click="myCardRightClick($event, slotProps.smartListItem)"
               @go-to-event-page="goToEventPage(slotProps.smartListItem.id)"
               @card-left-click="myCardLeftClick"
             />
@@ -202,8 +203,10 @@ export default {
     const isContextMenuActive = ref(false)
     const isDeleteEventsModalActive = ref(false)
     const mainEventsBlock = ref()
-    const selectedContextMenuEventId = ref()
+    const selectedContextMenuEvent = ref()
     const oneEventToDeleteId = ref(null)
+    const oneEventToPinId = ref(null)
+    const oneEventToUnPinId = ref(null)
 
     const mockData = computed(() => {
       return {
@@ -213,7 +216,7 @@ export default {
         gender_dropdown: CONSTANTS.event_page.gender_dropdown,
         cities_dropdown: CONSTANTS.event_page.cities_dropdown,
         calendar: CONSTANTS.event_page.calendar,
-        menu_text: CONSTANTS.event_page.menu_text,
+        menu_text: CONSTANTS.event_page.menu_text(selectedContextMenuEvent.value.pinned),
       }
     })
 
@@ -229,13 +232,21 @@ export default {
     const contextMenuItemClick = (itemType) => {
       switch(itemType) {
         case 'select':
-          if (selected.value.indexOf(selectedContextMenuEventId.value) === -1) {
-            selected.value.push(selectedContextMenuEventId.value)
+          if (selected.value.indexOf(selectedContextMenuEvent.value.id) === -1) {
+            selected.value.push(selectedContextMenuEvent.value.id)
           }
           break
         case 'delete':
-          oneEventToDeleteId.value = selectedContextMenuEventId.value
+          oneEventToDeleteId.value = selectedContextMenuEvent.value.id
           openDeleteEventsModal()
+          break
+        case 'pin':
+          oneEventToPinId.value = selectedContextMenuEvent.value.id
+          pinEvents()
+          break
+        case 'unpin':
+          oneEventToUnPinId.value = selectedContextMenuEvent.value.id
+          unPinEvents()
           break
       }
     }
@@ -279,6 +290,35 @@ export default {
       isDeleteEventsModalActive.value = false
     }
 
+    async function unPinEvents() {
+      loading.value = true
+      await API.EventService.unPinEvents([oneEventToUnPinId.value])
+      selected.value = selected.value.filter((value) => ![oneEventToUnPinId.value].includes(value));
+      oneEventToUnPinId.value = null
+      let response = await API.EventService.getAllMyEvents()
+      paginationElements.value = response.data.results.map(handlingIncomeData)
+      loading.value = false
+      toast.success(t('notifications.event-unpinned'))
+    }
+
+    async function pinEvents() {
+      loading.value = true
+      let eventsIDSToPin = oneEventToPinId.value 
+        ? [oneEventToPinId.value]
+        : selected.value
+      await API.EventService.pinEvents(eventsIDSToPin)
+      if (!oneEventToPinId.value) {
+        selected.value = []
+      } else {
+        selected.value = selected.value.filter((value) => !eventsIDSToPin.includes(value));
+        oneEventToPinId.value = null
+      }
+      let response = await API.EventService.getAllMyEvents()
+      paginationElements.value = response.data.results.map(handlingIncomeData)
+      loading.value = false
+      toast.success(t('notifications.events-pinned'))
+    }
+
     async function deleteEvents() {
       closeDeleteEventsModal()
       loading.value = true
@@ -293,15 +333,15 @@ export default {
         oneEventToDeleteId.value = null
       }
       let response = await API.EventService.getAllMyEvents()
-      paginationElements.value = response.data.results
+      paginationElements.value = response.data.results.map(handlingIncomeData)
       loading.value = false
       toast.success(t('notifications.events-deleted'))
     }
 
-    function myCardRightClick(e, eventId) {
+    function myCardRightClick(e, event) {
       contextMenuX.value = e.clientX
       contextMenuY.value = e.clientY
-      selectedContextMenuEventId.value = eventId
+      selectedContextMenuEvent.value = event
       isContextMenuActive.value = true
     }
 
@@ -475,6 +515,7 @@ export default {
       emptyListMessages,
       myCardRightClick,
       deleteEvents,
+      pinEvents,
       contextMenuItemClick,
       declineSelect,
       goToEventPage,

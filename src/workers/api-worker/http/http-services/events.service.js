@@ -36,6 +36,24 @@ export class EventService {
     )
   }
 
+  pinEvents(ids) {
+    return AxiosInstance.post(
+      EndpointsEnum.Events.PinEvents,
+      {
+        ids: ids,
+      }
+    )
+  }
+
+  unPinEvents(ids) {
+    return AxiosInstance.post(
+      EndpointsEnum.Events.UnPinEvents,
+      {
+        ids: ids,
+      }
+    )
+  }
+
   deleteEvents(ids) {
     return AxiosInstance.post(
       EndpointsEnum.Events.DeleteEvents,

@@ -8,6 +8,9 @@
     <div v-if="isCardSelected" class="b-my-event-card-selected-icon">
       <img src="../assets/img/green-nike-icon.svg" alt="">
     </div>
+    <div v-if="card.pinned && !isCardSelected" class="b-my-event-card-pinned-icon">
+      <img src="../assets/img/gray-pin.svg" alt="">
+    </div>
     <div :class="['b-my-event-card__left-block',  { selected: isCardSelected}]">
       <div class="b-my-event-card__col-1">
         <div class="b-my-event-card__card-icon">
@@ -106,6 +109,19 @@ export default {
     border-radius: 20px;
     display: flex;
     align-items: center;
+  }
+
+  .b-my-event-card-pinned-icon {
+    background: #FFFFFF;
+    position: absolute;
+    right: -5px;
+    padding: 4px;
+    top: -3px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    border: 2px solid #F0F0F4;
+    border-radius: 20px;
   }
 
   .b-my-event-card__left-block {
