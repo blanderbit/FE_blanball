@@ -203,6 +203,7 @@ export default {
     const isDeleteEventsModalActive = ref(false)
     const mainEventsBlock = ref()
     const selectedContextMenuEventId = ref()
+    const oneEventToDeleteId = ref(null)
 
     const mockData = computed(() => {
       return {
@@ -230,7 +231,12 @@ export default {
         case 'select':
           if (selected.value.indexOf(selectedContextMenuEventId.value) === -1) {
             selected.value.push(selectedContextMenuEventId.value)
-        }
+          }
+          break
+        case 'delete':
+          oneEventToDeleteId.value = selectedContextMenuEventId.value
+          openDeleteEventsModal()
+          break
       }
     }
 
@@ -276,8 +282,16 @@ export default {
     async function deleteEvents() {
       closeDeleteEventsModal()
       loading.value = true
-      await API.EventService.deleteEvents(selected.value)
-      selected.value = []
+      let eventsIDSToDelete = oneEventToDeleteId.value 
+        ? [oneEventToDeleteId.value]
+        : selected.value
+      await API.EventService.deleteEvents(eventsIDSToDelete)
+      if (!oneEventToDeleteId.value) {
+        selected.value = []
+      } else {
+        selected.value = selected.value.filter((value) => !eventsIDSToDelete.includes(value));
+        oneEventToDeleteId.value = null
+      }
       let response = await API.EventService.getAllMyEvents()
       paginationElements.value = response.data.results
       loading.value = false
@@ -401,7 +415,7 @@ export default {
       if (window.matchMedia('(min-width: 1400px)').matches) {
         itemHeight.value = 125
         itemWidth.value = mainEventsBlock.value.clientWidth / 2
-        itemCount.value = 3
+        itemCount.value = 2
       } else if (
         window.matchMedia('(min-width: 1200px) and (max-width: 1400px)').matches
       ) {

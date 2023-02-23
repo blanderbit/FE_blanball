@@ -8,7 +8,7 @@
     <div v-if="isCardSelected" class="b-my-event-card-selected-icon">
       <img src="../assets/img/green-nike-icon.svg" alt="">
     </div>
-    <div class="b-my-event-card__left-block">
+    <div :class="['b-my-event-card__left-block',  { selected: isCardSelected}]">
       <div class="b-my-event-card__col-1">
         <div class="b-my-event-card__card-icon">
           <img src="../assets/img/hands-shake.svg" alt="" />
@@ -30,7 +30,7 @@
         </div>
       </div>
     </div>
-    <div class="b-my-event-card__right-block">
+    <div :class="['b-my-event-card__right-block',  { selected: isCardSelected}]">
       <div class="b-my-event-card__col-3">
         <span :class="['b-my-event-card__status', `b-my-event-card__status-${card.status.toLowerCase()}`]">
           {{ $t(`events.${card.status}`) }}
@@ -111,6 +111,10 @@ export default {
   .b-my-event-card__left-block {
     display: flex;
 
+    &.selected {
+      opacity: 0.6;
+    }
+
     .b-my-event-card__col-1 {
       margin-right: 8px;
       min-width: 50px;
@@ -173,6 +177,10 @@ export default {
   }
 
   .b-my-event-card__right-block {
+
+    &.selected {
+      opacity: 0.6;
+    }
 
     .b-my-event-card__status {
       font-family: 'Inter';
