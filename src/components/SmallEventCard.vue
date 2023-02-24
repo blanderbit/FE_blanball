@@ -1,5 +1,6 @@
 <template>
-  <div class="b-small-event-card">
+  <div class="b-small-event-card" @click="
+      $emit('clickSmallEventCard', item.id)">
     <div class="b-small-event-card__top-line">
       <div class="b-small-event-card__icon-pic">
         <img src="../assets/img/hands-shake.svg" alt="" />
@@ -51,6 +52,7 @@ export default {
   border-radius: 6px;
   padding: 10px 12px;
   margin-bottom: 16px;
+  cursor: pointer;
   .b-small-event-card__close {
     position: absolute;
     right: 10px;

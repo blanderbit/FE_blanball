@@ -7,7 +7,9 @@
     <div class="b-right-sidebar__cards-block">
       <Spinner v-if="loading"/>
       <div v-for="event in popularEvents">
-        <SmallEventCard :item="event"/>
+        <SmallEventCard 
+          :item="event"
+          @clickSmallEventCard="goToEventPage"/>
       </div>
     </div>
   </div>
@@ -15,6 +17,7 @@
 
 <script setup>
 import { ref } from "vue"
+import { useRouter } from "vue-router";
 
 import SmallEventCard from './SmallEventCard.vue'
 import Spinner from "../workers/infinit-load-worker/Spinner.vue";
@@ -24,8 +27,11 @@ import { addMinutes } from '../utils/addMinutes'
 import { getDate } from '../utils/getDate'
 import { getTime } from '../utils/getTime'
 
+import { ROUTES } from "../router/router.const"; 
+
 
 const popularEvents = ref([])
+const router = useRouter();
 const loading = ref(false)
 
 const getPopularEvents = (page) => {
@@ -36,8 +42,7 @@ const getPopularEvents = (page) => {
     }
   ).then(result => ({
     data: {
-      results: result.data.results.map((i, index) => {
-        i.id = index
+      results: result.data.results.map((i) => {
         return {
           ...handlingIncomeData(i)
         }
@@ -58,6 +63,10 @@ function handlingIncomeData(item) {
     time: getTime(item.date_and_time),
     end_time: addMinutes(getTime(item.date_and_time), item.duration),
   }
+}
+
+function goToEventPage(id) {
+  router.push(ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(id))
 }
 
 </script>

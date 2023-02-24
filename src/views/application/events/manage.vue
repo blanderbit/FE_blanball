@@ -474,11 +474,14 @@ export default {
       switch (createEventData.need_form) {
         case true:
           createEventData.forms.first_team.type = eventFormTypes.T_Shirt
-          createEventData.forms.second_team.type = eventFormTypes.T_Shirt
+          createEventData.forms.first_team.type = eventFormTypes.T_Shirt
+          createEventData.forms.first_team.t_shirt_color = '#000'
+          createEventData.forms.first_team.shorts_color = '#000'
           break
         case false:
-          createEventData.forms.first_team.type = eventFormTypes.Shirt_Front
           createEventData.forms.second_team.type = eventFormTypes.Shirt_Front
+          createEventData.forms.second_team.type = eventFormTypes.Shirt_Front
+          createEventData.forms.second_team.color = '#000'
       }
 
       try {

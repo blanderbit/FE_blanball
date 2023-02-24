@@ -68,12 +68,6 @@
             </Transition>
             </div>
           </div>
-          <div class="b-event-info__title">
-            {{ $t('my_events.description-event') }}
-          </div>
-          <div class="b-event-info__description">
-            {{ eventData.description }}
-          </div>
           <div class="b-event-info__labels">
             <div class="b-event-info__label">
               {{ $t(`events.${eventData.type}`) }}
@@ -87,6 +81,60 @@
             <div v-if="eventData.need_form" class="b-event-info__label">
               {{ $t('hashtags.need_form') }}
             </div>
+          </div>
+          <div class="b-event-info__forms">
+            <div class="b-event-info__form" v-for="form in eventData.forms">
+              <span class="b-event-info__form-title">
+                {{ $t('events.team_num', {'num': 1}) }}
+              </span>
+              <div class="b-event-info__form-content">
+
+                <div v-if="form.type === 'T-Shirt'" class="b-event-info__form-content-t-thirt">
+                  <div class="b-event-info__form-item">
+                  <div class="b-event-info__form-item-name">
+                    {{ $t('events.t-shirts') }}
+                  </div>
+                  <div class="b-event-info__form-item-color">
+                    <div class="b-event-info__form-item-color-view"></div>
+                    <div class="b-event-info__form-item-color-name">
+                      Сині
+                    </div> 
+                  </div>
+                </div>
+                <div class="b-event-info__form-item">
+                  <div class="b-event-info__form-item-name">
+                    {{ $t('events.shorts') }}
+                  </div>
+                  <div class="b-event-info__form-item-color">
+                    <div class="b-event-info__form-item-color-view"></div>
+                    <div class="b-event-info__form-item-color-name">
+                      Сині
+                    </div> 
+                  </div>
+                </div>
+                </div>
+                <div  v-else class="b-event-info__form-content-shirt-front">
+                  <div class="b-event-info__form-item">
+                  <div class="b-event-info__form-item-name">
+                    Маніжки
+                  </div>
+                  <div class="b-event-info__form-item-color">
+                    <div class="b-event-info__form-item-color-view"></div>
+                    <div class="b-event-info__form-item-color-name">
+                      Сині
+                    </div> 
+                  </div>
+                </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="b-event-info__title">
+            {{ $t('my_events.description-event') }}
+          </div>
+          <div class="b-event-info__description">
+            {{ eventData.description }}
           </div>
         </div>
         <div class="b-event-info__right-side">
@@ -189,9 +237,6 @@ import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
-
-import dayjs from 'dayjs';
-import dayjsUkrLocale from 'dayjs/locale/uk';
 
 import GreenBtn from '../../../components/GreenBtn.vue';
 import RightSidebar from '../../../components/RightSidebar.vue';
@@ -401,8 +446,8 @@ export default {
   display: grid;
   grid-template-columns: 1fr 256px;
   grid-gap: 28px;
-  overflow: scroll;
   width: 100%;
+  overflow: scroll;
   @media (max-width: 1200px) {
     grid-template-columns: 1fr;
 
@@ -413,6 +458,7 @@ export default {
 
   .b-event-info__main-body {
     height: calc(100% + 150px);
+    overflow: auto;
     .b-event-info__header-block {
       display: flex;
       justify-content: space-between;
@@ -606,6 +652,7 @@ export default {
           display: flex;
           flex-wrap: wrap;
           gap: 8px 0px;
+          margin-top: 20px;
           .b-event-info__label {
             margin-right: 4px;
             font-family: 'Inter';
@@ -618,6 +665,69 @@ export default {
             padding: 0px 8px;
             border: 1px solid #dfdeed;
             border-radius: 100px;
+          }
+        }
+      }
+      .b-event-info__forms {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 16px;
+        .b-event-info__form {
+          background: #F9F9FC;
+          border-radius: 6px;
+          padding: 12px;
+          display: flex;
+          flex-direction: column;
+          .b-event-info__form-title {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 24px;
+            color: #262541;
+          }
+          .b-event-info__form-content {
+            .b-event-info__form-item {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 8px;
+              margin-top: 8px;
+              .b-event-info__form-item-name {
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 500;
+                font-size: 12px;
+                line-height: 20px;
+                color: #575775;
+              }
+              .b-event-info__form-item-color {
+                background: #EFEFF6;
+                border-radius: 4px;
+                padding: 2px 8px;
+                min-width: 115px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                .b-event-info__form-item-color-view {
+                  border: 2px solid #fff;
+                  border-radius: 2px;
+                  background: #2946E1;
+                  width: 14px;
+                  height: 14px;
+                }
+                .b-event-info__form-item-color-name {
+                  font-family: 'Inter';
+                  font-style: normal;
+                  font-weight: 500;
+                  font-size: 12px;
+                  line-height: 20px;
+                  color: #262541;
+                }
+              }
+            }
           }
         }
       }
