@@ -124,6 +124,9 @@ import { useEventDataStore } from '../../../stores/eventsData'
 import { API } from '../../../workers/api-worker/api.worker'
 import { PaginationWorker } from '../../../workers/pagination-worker'
 import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patch'
+import { addMinutes } from '../../../utils/addMinutes'
+import { getDate } from '../../../utils/getDate'
+import { getTime } from '../../../utils/getTime'
 
 import { ROUTES } from '../../../router/router.const'
 
@@ -197,17 +200,7 @@ export default {
         description: 'Вам ще не надходили сповіщення від інших користувачів',
       }
     })
-    function getDate(date) {
-      return dayjs(date).locale(dayjsUkrLocale).
-      format(Number(dayjs(date).locale(dayjsUkrLocale).format('YYYY')) === new Date().getFullYear()
-      ? 'D MMMM'
-      : ' D MMMM, YYYY')
-    }
     
-    function getTime(time) {
-      return dayjs(time).locale(dayjsUkrLocale).format('HH:mm')
-    }
-
     async function joinEvent(eventData, type) {
       loading.value = true
       switch(type) {
@@ -266,19 +259,8 @@ export default {
       eventJoinModalY.value = null
       joinEventData.value = null
     }
-
-    function addMinutes(time, minutesToAdd) {
-      let timeArray = time.split(':');
-      let hours = timeArray[0];
-      let originalMinutes = timeArray[1];
-      let date = new Date();
-      date.setHours(hours);
-      date.setMinutes(originalMinutes);
-      date.setMinutes(date.getMinutes() + minutesToAdd);
-      return date.toTimeString().substr(0, 5);
-    }
-
-
+ 
+    
     function handlingIncomeData(item) {
       return {
         ...item,

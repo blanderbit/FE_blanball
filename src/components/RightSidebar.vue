@@ -30,7 +30,7 @@ import SimpleListWrapper from './simple-list/SimpleListWrapper.vue'
 
 import { API } from "../workers/api-worker/api.worker";
 
-const {t} = useI18n();
+const { t } = useI18n();
 
 const getPlanedEvents = (page) => { // TODO DUBLICATE
   return API.EventService.getPlannedUserEvents(
@@ -39,7 +39,7 @@ const getPlanedEvents = (page) => { // TODO DUBLICATE
     }
   ).then(result => ({
     data: {
-      results: result.data.map((i, index) => {
+      results: result.data.results.map((i, index) => {
         i.id = index
         i.time = `${dayjs(i.time_created)
           .locale(dayjsUkrLocale)
@@ -62,7 +62,7 @@ const getPopularEvents = (page) => { // TODO DUBLICATE
     }
   ).then(result => ({
     data: {
-      results: result.data.map((i, index) => {
+      results: result.data.results.map((i, index) => {
         i.id = index
         i.time = `${dayjs(i.time_created)
           .locale(dayjsUkrLocale)
@@ -76,6 +76,15 @@ const getPopularEvents = (page) => { // TODO DUBLICATE
       }),
     },
   }))
+}
+
+function handlingIncomeData(item) {
+  return {
+    ...item,
+    date: getDate(item.date_and_time),
+    time: getTime(item.date_and_time),
+    end_time: addMinutes(getTime(item.date_and_time), item.duration),
+  }
 }
 
 const randomElement = computed(() =>
@@ -99,6 +108,7 @@ const randomElement = computed(() =>
   @media (max-width: 992px) {
     display: none;
   }
+
   .b-right-sidebar__title-block {
     .b-right-sidebar__title {
       font-family: 'Exo 2';
@@ -108,6 +118,7 @@ const randomElement = computed(() =>
       line-height: 32px;
       color: #262541;
     }
+
     .b-right-sidebar__subtitle {
       font-family: 'Inter';
       font-style: normal;
@@ -117,8 +128,8 @@ const randomElement = computed(() =>
       color: #575775;
     }
   }
+
   .b-right-sidebar__cards-block {
     margin-top: 20px;
   }
-}
-</style>
+}</style>

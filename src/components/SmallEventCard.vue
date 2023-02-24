@@ -19,8 +19,8 @@
     </div>
     <PlaceDetector :place="item.place"></PlaceDetector>
     <div class="b-small-event-card__labels">
-      <div class="b-small-event-card__label">{{ item.type }}</div>
-      <div class="b-small-event-card__label">{{ item.gender }}</div>
+      <div class="b-small-event-card__label">{{ $t(`hashtags.${item.type}`) }}</div>
+      <div class="b-small-event-card__label">{{ $t(`events.${item.gender}`) }}</div>
       <div class="b-small-event-card__label">...</div>
     </div>
   </div>

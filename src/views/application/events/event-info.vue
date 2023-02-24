@@ -205,6 +205,9 @@ import Loading from '../../../workers/loading-worker/Loading.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
+import { addMinutes } from '../../../utils/addMinutes'
+import { getDate } from '../../../utils/getDate'
+import { getTime } from '../../../utils/getTime'
 
 import CONSTANTS from '../../../consts/index';
 import { ROUTES } from '../../../router/router.const';
@@ -281,17 +284,7 @@ export default {
       };
     });
 
-    function getDate(date) {
-      return dayjs(date)
-        .locale(dayjsUkrLocale)
-        .format(
-          Number(dayjs(date).locale(dayjsUkrLocale).format('YYYY')) ===
-            new Date().getFullYear()
-            ? 'D MMMM'
-            : ' D MMMM, YYYY'
-        );
-    }
-
+  
     const acceptRequestToParticipation = async (id) => {
       loading.value = true;
 
@@ -321,9 +314,6 @@ export default {
       isShareEventModalOpened.value = true;
     };
 
-    function getTime(time) {
-      return dayjs(time).locale(dayjsUkrLocale).format('HH:mm');
-    }
 
     const closeShareEventModal = () => {
       isShareEventModalOpened.value = false;
@@ -355,17 +345,7 @@ export default {
       toast.success(t('notifications.event-share-link-copied'));
     };
 
-    function addMinutes(time, minutesToAdd) {
-      let timeArray = time.split(':');
-      let hours = timeArray[0];
-      let originalMinutes = timeArray[1];
-      let date = new Date();
-      date.setHours(hours);
-      date.setMinutes(originalMinutes);
-      date.setMinutes(date.getMinutes() + minutesToAdd);
-      return date.toTimeString().substr(0, 5);
-    }
-
+    
     const goToUserProfile = (userId) => {
       router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId));
     };
