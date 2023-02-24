@@ -9,12 +9,15 @@
             <div  @click="itemListClick(user)"
               :class="['b-user b-modal-item', 'w-100', 
               {'b-modal-item__disabled': checkItemIsDisabled(user.id)}]">
-              <avatar
+              <div>
+                <avatar
                 class="b-user__image"
                 @click="$emit('item-image-click', user.id)"
                 :link="user.profile.avatar_url"
+                :avatarType="'small-square'"
                 :full-name="`${user.profile.name} ${user.profile.last_name}`"
               ></avatar>
+              </div>
               <div class="b-user-main-info__container">
                 <div class="b-user__name">
                 {{ user.profile.name }} {{ user.profile.last_name }}
@@ -159,17 +162,6 @@ export default {
       display: block;
     }
   }
-}
-.b-user__image {
-  min-width: 32px;
-  max-width: 32px;
-  height: 32px;
-  border-radius: 4px;
-  font-family: 'Exo 2';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 20px;
 }
 .b-user-button {
   cursor: pointer;

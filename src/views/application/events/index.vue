@@ -208,31 +208,46 @@ export default {
       return dayjs(time).locale(dayjsUkrLocale).format('HH:mm')
     }
 
-    async function joinEventAsPlayer(eventId, eventPrivacy) {
+    async function joinEvent(eventData, type) {
       loading.value = true
-      await API.EventService.eventJoinAsPlayer(eventId)
+      switch(type) {
+        case 'play':
+          await API.EventService.eventJoinAsPlayer(eventData.id)
+          break
+        case 'view':
+          await API.EventService.eventJoinAsFan(eventData.id)
+          break
+      }
+
       const response = await API.EventService.getAllEvents({
           ...filters,
           paginationPage,
-        })
+      })
       paginationElements.value = response.data.results
       loading.value = false
-      if (eventPrivacy) {
-        toast.success(t('notifications.event-request-sent'))
-      } else {
-        toast.success(t('notifications.event-join-as-player'))
+
+      switch(type) {
+        case 'play':
+          if (eventData.privacy) {
+            toast.success(t('notifications.event-request-sent'))
+          } else {
+            toast.success(t('notifications.event-join-as-player'))
+          }
+          break
+        case 'view':
+          toast.success(t('notifications.event-join-as-fan'))
+          break
       }
     }
     
     function joinEventModalItemClick(data) {
       switch(data) {
         case 'play':
-          joinEventAsPlayer(
-            joinEventData.value.id, joinEventData.value.privacy
-          )
+          joinEvent(joinEventData.value, 'play')
           closeEventJoinModal()
           break
         case 'view':
+          joinEvent(joinEventData.value, 'view')
           closeEventJoinModal()
           break
       }

@@ -98,6 +98,7 @@
                 <avatar
                   class="b-invited-user__avatar"
                   :link="user.profile.avatar_url"
+                  :avatarType="'small-square'"
                   :full-name="`${user.profile.name} ${user.profile.last_name}`"
                 ></avatar>
                 <span class="b-invited-user__position">{{

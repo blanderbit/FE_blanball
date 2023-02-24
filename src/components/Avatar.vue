@@ -1,24 +1,15 @@
 <template>
- <div class="b-avatar-wrapper" :style="border ? avatarBorder : null">
-  <object class="b-avatar"
-    :class="[`b-avatar-${avatarType}`]"
-    :data="avatarType === 'circle' ? link : null"
-    onerror="this.style.display='none'"
-    :style="{
-      backgroundImage: `url(${link})`,
-    }"
-    v-if="link"
-    @click.stop="$emit('clickByAvatar')" data="avatar.jpg" type="image/jpeg">
-  </object>
-  <div
-    class="b-avatar b-avatar-words d-flex justify-content-center align-items-center"
-    :class="[`b-avatar-${avatarType}`]"
-    @click.stop="$emit('clickByAvatar')"
-    v-else
-  >
-    {{ shortFullName }}
+  <div class="b-avatar-wrapper" :style="border ? avatarBorder : null">
+    <object class="b-avatar" :class="[`b-avatar-${avatarType}`]" :data="avatarType === 'circle' ? link : null"
+      onerror="this.style.display='none'" :style="{
+        backgroundImage: `url(${link})`,
+      }" v-if="link" @click.stop="$emit('clickByAvatar')" data="avatar.jpg" type="image/jpeg">
+    </object>
+    <div class="b-avatar b-avatar-words d-flex justify-content-center align-items-center"
+      :class="[`b-avatar-${avatarType}`]" @click.stop="$emit('clickByAvatar')" v-else>
+      {{ shortFullName }}
+    </div>
   </div>
- </div>
 </template>
 
 <script>
@@ -57,6 +48,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 .b-avatar {
   &-circle {
     width: 40px;
@@ -64,6 +56,7 @@ export default {
     border-radius: 50%;
     overflow: hidden;
   }
+
   &-square {
     width: 100%;
     height: 164px;
@@ -72,13 +65,28 @@ export default {
     background-size: cover;
     background-position: center center;
   }
+
+  &-small-square {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    font-family: 'Exo 2';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+  }
+
   &-words {
-      color: #148783;
-      min-width: 100%;
-      font-family: 'Exo 2';
-      font-style: normal;
-      font-weight: 700;
-      background: #C8EBE7;
+    color: #148783;
+    min-width: 100%;
+    font-family: 'Exo 2';
+    font-style: normal;
+    font-weight: 700;
+    background: #C8EBE7;
   }
 
   img {
