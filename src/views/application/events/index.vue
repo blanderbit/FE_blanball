@@ -43,7 +43,8 @@
           @update:value="setFilters"
           @clearFilters="clearFilters"
         ></events-filters>
-        
+
+      
         <div class="b-events-page__all-events-block">
           <div @click="goToCreateEvent" class="b-events-page__all-create-event-mobile-button">
             <img src="../../../assets/img/plus.svg" alt="">
@@ -98,8 +99,6 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'vue-toastification'
 
-import dayjs from 'dayjs'
-import dayjsUkrLocale from 'dayjs/locale/uk'
 import { v4 as uuid } from 'uuid'
 
 import GreenBtn from '../../../components/GreenBtn.vue'

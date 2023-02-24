@@ -104,22 +104,6 @@ export default {
     background: #fafafa;
     padding: 0px 4px;
     margin-top: 4px;
-    img {
-      margin-right: 5px;
-    }
-    p {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 12px;
-      line-height: 20px;
-      color: #575775;
-      border-radius: 4px;
-      display: -webkit-box;
-      -webkit-line-clamp: 1;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
   }
   .b-small-event-card__labels {
     display: flex;
@@ -146,5 +130,10 @@ export default {
   font-size: 14px;
   line-height: 16px;
   color: #262541;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 50%;
 }
 </style>

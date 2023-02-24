@@ -1,23 +1,24 @@
 <template>
-  <div class="b-right-sidebar">
+  <div ref="el" class="b-right-sidebar">
     <div class="b-right-sidebar__title-block">
       <div class="b-right-sidebar__title">{{ $t('events.popular-events') }}</div>
       <div class="b-right-sidebar__subtitle">{{ $t('events.your-popular-events') }}</div>
     </div>
-    <div class="b-right-sidebar__cards-block">
-      <Spinner v-if="loading"/>
+
+      <div :style="eventCardsStyle" class="b-right-sidebar__cards-block">
+      <Spinner v-if="loading" />
       <div v-for="event in popularEvents">
-        <SmallEventCard 
-          :item="event"
-          @clickSmallEventCard="goToEventPage"/>
+        <SmallEventCard :item="event" @clickSmallEventCard="goToEventPage" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue"
+import { ref, computed } from "vue"
 import { useRouter } from "vue-router";
+
+import { useElementSize } from '@vueuse/core'
 
 import SmallEventCard from './SmallEventCard.vue'
 import Spinner from "../workers/infinit-load-worker/Spinner.vue";
@@ -27,12 +28,22 @@ import { addMinutes } from '../utils/addMinutes'
 import { getDate } from '../utils/getDate'
 import { getTime } from '../utils/getTime'
 
-import { ROUTES } from "../router/router.const"; 
+import { ROUTES } from "../router/router.const";
 
+
+const el = ref(null)
+const { width, height } = useElementSize(el)
 
 const popularEvents = ref([])
 const router = useRouter();
 const loading = ref(false)
+
+const eventCardsStyle = computed(() => {
+  return {
+    'height': height.value - 126 + 'px',
+    'overflow': 'scroll'
+  }
+})
 
 const getPopularEvents = (page) => {
   loading.value = true
@@ -73,6 +84,12 @@ function goToEventPage(id) {
 
 <style lang="scss" scoped>
 .b-right-sidebar {
+  display: block;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+
   @media (max-width: 992px) {
     display: none;
   }
@@ -99,6 +116,11 @@ function goToEventPage(id) {
 
   .b-right-sidebar__cards-block {
     margin-top: 20px;
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    &::-webkit-scrollbar {
+      display: none; /* for Chrome, Safari, and Opera */
+    }
   }
 }
 </style>

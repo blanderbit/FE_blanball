@@ -1,10 +1,10 @@
 <template>
-  <SelectionSuitModal
+  <!-- <SelectionSuitModal
     v-if="isSelectFormColarModalOpened"
     :selectedCategory="selectedFormType"
     @closeModal="closeSelectFormsModal()"
     @saveData="saveFormsColors"
-  />
+  /> -->
 
   <div class="third-step" :style="stepStyle">
     <div class="title">

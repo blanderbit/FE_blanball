@@ -25,7 +25,6 @@ import 'cropperjs/dist/cropper.css'
 import '@vueform/slider/themes/default.css'
 import '@mcistudio/vue-colorpicker/dist/style.css'
 
-
 export const i18n = createI18n({
   locale: 'ua',
   allowComposition: true,

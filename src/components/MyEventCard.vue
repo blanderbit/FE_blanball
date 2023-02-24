@@ -251,6 +251,8 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
+      justify-content: center;
+      margin-left: -20px;
 
       .b-my-event-card__state {
         font-family: 'Inter';

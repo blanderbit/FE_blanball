@@ -227,8 +227,7 @@
         />
       </div>
     </div>
-
-    <RightSidebar />
+    <RightSidebar/>
   </div>
 </template>
 
