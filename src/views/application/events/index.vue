@@ -1,4 +1,5 @@
 <template>
+  <SelectFormsColorsModal/>
   <Loading :is-loading="loading"/>
    <EventJoinModal
     v-if="isEventJoinModalActive"
@@ -119,6 +120,8 @@ import EventsFilters from '../../../components/filters/block-filters/EventsFilte
 import EventJoinModal from '../../../components/ModalWindows/EventJoinModal.vue'
 import Loading from '../../../workers/loading-worker/Loading.vue'
 
+import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue'
+
 import { useEventDataStore } from '../../../stores/eventsData'
 import { API } from '../../../workers/api-worker/api.worker'
 import { PaginationWorker } from '../../../workers/pagination-worker'
@@ -151,6 +154,7 @@ export default {
     ScrollToTop,
     EventsFilters,
     Loading,
+    SelectFormsColorsModal,
     EventJoinModal,
   },
   setup() {

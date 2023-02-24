@@ -101,7 +101,6 @@ import { useUserDataStore } from '../../stores/userData'
 
 import Switcher from '../../components/Switcher.vue'
 import RadioButton from '../../components/forms/RadioButton.vue'
-import SelectionSuitModal from '../suit/SelectionSuitModal.vue'
 import InputComponent from '../../components/forms/InputComponent.vue'
 import TextAreaComponent from '../TextAreaComponent.vue'
 
@@ -114,7 +113,6 @@ export default {
     InputComponent,
     RadioButton,
     TextAreaComponent,
-    SelectionSuitModal,
   },
   props: {
     currentStep: {

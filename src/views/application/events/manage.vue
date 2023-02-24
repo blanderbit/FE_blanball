@@ -144,7 +144,6 @@ import * as yup from 'yup'
 import InputComponent from '../../../components/forms/InputComponent.vue'
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
-import SelectionSuitModal from '../../../components/suit/SelectionSuitModal.vue'
 import ManageEventFirstStep from '../../../components/manage-event-components/ManageEventFirstStep.vue'
 import Avatar from '../../../components/Avatar.vue'
 import PreviewBlock from '../../../components/manage-event-components/PreviewBlock.vue'
@@ -172,7 +171,6 @@ export default {
     ManageEventFirstStep,
     ManageEventSecondStep,
     ManageEventThirdStep,
-    SelectionSuitModal,
     ButtonsBlock,
     EventCard,
     Form,

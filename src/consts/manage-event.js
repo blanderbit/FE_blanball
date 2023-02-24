@@ -20,7 +20,7 @@ export default {
       value: 'Football',
     },
     {
-      id: 0,
+      id: 1,
       name: 'Фут-зал',
       value: 'Futsal',
     },
