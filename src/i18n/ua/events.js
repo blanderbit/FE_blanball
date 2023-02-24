@@ -101,6 +101,8 @@ export default {
   'you-are-player': 'Ви – гравець',
   'you-are-fan': 'Ви – глядач',
   'request-sent': 'Заявку подано',
+  'price_description': 'Обґрунтування вартості',
+  'event-price': 'Вартість участі',
   months: {
     January: 'Січень',
     February: 'Лютий',

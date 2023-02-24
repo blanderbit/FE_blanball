@@ -11,6 +11,9 @@
       <div class="b-event-info__header-block">
         <div class="b-event-info__left-part">
           <div class="b-event-info__title">
+            {{ eventData.name }}
+          </div>
+          <div class="b-event-info__subtitle">
             {{ $t('my_events.friendly-match') }}
           </div>
         </div>
@@ -43,14 +46,26 @@
             <img src="../../../assets/img/address-icon.svg" alt="" />
             <span>{{ eventData.place.place_name }}</span>
           </div>
-          <div class="b-event-info__clothes">
-            <div class="b-event-info__clothe">
-              <img src="../../../assets/img/t-shirt.svg" alt="" />
-              <span>{{ $t('my_events.form1') }}</span>
-            </div>
-            <div class="b-event-info__clothe">
-              <img src="../../../assets/img/t-shirt.svg" alt="" />
-              <span>{{ $t('my_events.form2') }}</span>
+          <div :class="['b-event-info__price', 
+            {'fee': eventData.price},
+            {'free': !eventData.price }]"
+            @mouseenter="eventPriceHover=true"
+            @mouseleave="eventPriceHover=false">
+            <img v-if="!eventData.price" src="../../../assets/img/info.svg" alt="">
+            <img  v-else src="../../../assets/img/green-info.svg" alt="">
+            <span>{{ $t('events.event-price') }} <span v-if="eventData.price" 
+              class="b-price">{{ `${eventData.price} грн` }}</span>
+              <span class="b-price-free" v-else>{{ $t('events.for-free') }}</span>
+            </span>
+            <div class="b-event-info__price-tooltip-wrapper">
+              <Transition>
+              <TabLabel
+                v-if="eventData.price && eventPriceHover"
+                class="b-event-info__price-tooltip"
+                :title="$t('events.price_description')"
+                :text="eventData.price_description"
+              />
+            </Transition>
             </div>
           </div>
           <div class="b-event-info__title">
@@ -253,6 +268,7 @@ export default {
     const isShareEventModalOpened = ref(false);
     const currentFullRoute = ref(window.location.href);
     const activeTab = ref(0);
+    const eventPriceHover = ref(false)
 
     handleIncomeEventData(eventData.value);
 
@@ -379,6 +395,7 @@ export default {
       loading,
       userStore,
       activeTab,
+      eventPriceHover,
       eventRequestsToParticipations,
       copyLinkButtonClick,
       switchTabLabel,
@@ -483,8 +500,7 @@ export default {
       }
       .b-event-info__left-side {
         .b-event-info__timing,
-        .b-event-info__address,
-        .b-event-info__clothes {
+        .b-event-info__address {
           font-family: 'Inter';
           font-style: normal;
           font-weight: 400;
@@ -499,10 +515,88 @@ export default {
           span {
             border-bottom: 1px dashed #000;
           }
-          .b-event-info__clothe {
-            margin-right: 16px;
+        }
+        .b-event-info__price {
+          display: flex;
+          align-items: center;
+          position: relative;
+          gap: 6px;
+          padding: 6px;
+          max-width: fit-content;
+          cursor: pointer;
+
+          &.fee {
+            border-bottom: 1px dashed #148783;
+            border-radius: 4px 4px 0px 0px;
+            background: #E3FBFA;
+            span {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 16px;
             display: flex;
             align-items: center;
+            color: #148783;
+
+            .b-price {
+              font-family: 'Exo 2';
+              font-style: normal;
+              font-weight: 700;
+              font-size: 16px;
+              line-height: 24px;
+              margin-left: 6px;
+              color: #148783;
+            }
+          }
+          }
+
+          &.free {
+            background: #F9F9FC;
+            border-radius: 4px;
+            span {
+              font-family: 'Inter';
+              font-style: normal;
+              font-weight: 400;
+              font-size: 14px;
+              line-height: 16px;
+              display: flex;
+              align-items: center;
+              color: #262541;
+
+            .b-price-free {
+              font-family: 'Exo 2';
+              font-style: normal;
+              font-weight: 700;
+              font-size: 16px;
+              line-height: 24px;
+              color: #262541;
+              margin-left: 6px;
+              }
+            }
+          }
+          .b-event-info__price-tooltip-wrapper {
+            position: absolute;
+            top: 8px;
+            left: 65px;
+            width: fit-content;
+            z-index: 2;
+
+            .v-enter-active,
+            .v-leave-active {
+              transition: opacity 0.4s ease;
+            }
+            .v-enter-from,
+            .v-leave-to {
+              opacity: 0;
+            }
+            .b-event-info__price-tooltip {
+              position: relative;
+              height: fit-content;
+              max-width: 390px;
+              width: max-content;
+              word-break: break-word;
+            }
           }
         }
         .b-event-info__title {
