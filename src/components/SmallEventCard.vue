@@ -1,6 +1,5 @@
 <template>
   <div class="b-small-event-card">
-    <div class="b-small-event-card__close">&times;</div>
     <div class="b-small-event-card__top-line">
       <div class="b-small-event-card__icon-pic">
         <img src="../assets/img/hands-shake.svg" alt="" />
@@ -10,9 +9,11 @@
           {{ item.name }}
         </div>
         <div class="b-small-event-card__bottom-line">
-          <div class="b-small-event-card__time">12:00 – 14:00</div>
+          <div class="b-small-event-card__time">
+            {{ item.time }} - {{ item.end_time }}
+          </div>
           <div class="b-small-event-card__date">
-            16 {{ $t('events.months.June') }}
+            {{ item.date }}
           </div>
         </div>
       </div>
@@ -135,5 +136,13 @@ export default {
       border-radius: 100px;
     }
   }
+}
+.b_small_event_card_name {
+  font-family: 'Exo 2';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+  color: #262541;
 }
 </style>

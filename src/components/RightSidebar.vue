@@ -1,61 +1,35 @@
 <template>
   <div class="b-right-sidebar">
     <div class="b-right-sidebar__title-block">
-      <div class="b-right-sidebar__title">{{ randomElement.title }}</div>
-      <div class="b-right-sidebar__subtitle">{{ randomElement.subTitle }}</div>
+      <div class="b-right-sidebar__title">{{ $t('events.popular-events') }}</div>
+      <div class="b-right-sidebar__subtitle">{{ $t('events.your-popular-events') }}</div>
     </div>
     <div class="b-right-sidebar__cards-block">
-      <SimpleListWrapper :requestForGetData="randomElement.request">
-        <template #default="{ smartListItem: item }">
-          <SmallEventCard :item="item" />
-        </template>
-        <template #emptyList>
-          Указать верстку что пустой список для запланированых ивентов TODO
-        </template>
-      </SimpleListWrapper>
+      <Spinner v-if="loading"/>
+      <div v-for="event in popularEvents">
+        <SmallEventCard :item="event"/>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from "vue";
-
-import { useI18n } from "vue-i18n";
-
-import dayjs from 'dayjs'
-import dayjsUkrLocale from 'dayjs/locale/uk'
+import { ref } from "vue"
 
 import SmallEventCard from './SmallEventCard.vue'
-import SimpleListWrapper from './simple-list/SimpleListWrapper.vue'
+import Spinner from "../workers/infinit-load-worker/Spinner.vue";
 
 import { API } from "../workers/api-worker/api.worker";
+import { addMinutes } from '../utils/addMinutes'
+import { getDate } from '../utils/getDate'
+import { getTime } from '../utils/getTime'
 
-const { t } = useI18n();
 
-const getPlanedEvents = (page) => { // TODO DUBLICATE
-  return API.EventService.getPlannedUserEvents(
-    {
-      page
-    }
-  ).then(result => ({
-    data: {
-      results: result.data.results.map((i, index) => {
-        i.id = index
-        i.time = `${dayjs(i.time_created)
-          .locale(dayjsUkrLocale)
-          .format('hh : mm')}`
-        i.date = `${dayjs(i.time_created)
-          .locale(dayjsUkrLocale)
-          .format('D MMMM')}`
-        return {
-          ...i,
-        }
-      }),
-    },
-  }))
-}
+const popularEvents = ref([])
+const loading = ref(false)
 
-const getPopularEvents = (page) => { // TODO DUBLICATE
+const getPopularEvents = (page) => {
+  loading.value = true
   return API.EventService.getPopularEventsListEvents(
     {
       page
@@ -64,19 +38,18 @@ const getPopularEvents = (page) => { // TODO DUBLICATE
     data: {
       results: result.data.results.map((i, index) => {
         i.id = index
-        i.time = `${dayjs(i.time_created)
-          .locale(dayjsUkrLocale)
-          .format('hh : mm')}`
-        i.date = `${dayjs(i.time_created)
-          .locale(dayjsUkrLocale)
-          .format('D MMMM')}`
         return {
-          ...i,
+          ...handlingIncomeData(i)
         }
       }),
     },
   }))
 }
+
+getPopularEvents().then((value) => {
+  popularEvents.value = value.data.results
+  loading.value = false
+})
 
 function handlingIncomeData(item) {
   return {
@@ -87,20 +60,6 @@ function handlingIncomeData(item) {
   }
 }
 
-const randomElement = computed(() =>
-  [
-    {
-      title: t('events.planned-events'),
-      subTitle: t('events.your-events'),
-      request: getPlanedEvents,
-    },
-    {
-      title: t('events.popular-events'),
-      subTitle: t('events.your-popular-events'),
-      request: getPopularEvents,
-    },
-  ].getRandomElement()
-)
 </script>
 
 <style lang="scss" scoped>
@@ -132,4 +91,5 @@ const randomElement = computed(() =>
   .b-right-sidebar__cards-block {
     margin-top: 20px;
   }
-}</style>
+}
+</style>
