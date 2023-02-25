@@ -1,5 +1,4 @@
 <template>
-  <SelectFormsColorsModal/>
   <Loading :is-loading="loading"/>
    <EventJoinModal
     v-if="isEventJoinModalActive"

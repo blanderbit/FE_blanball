@@ -74,6 +74,7 @@ export default {
   'need-clothes': 'Чи потрібно мати свою форму?',
   yes: 'Так',
   'manijki-available': 'Ні, є маніжки',
+  'manijki': 'Маніжки',
   'enter-colors': 'Вкажіть кольори форм',
   'list-of-users': 'Список гравців',
   'poster-preview': 'Попередній перегляд афіші',

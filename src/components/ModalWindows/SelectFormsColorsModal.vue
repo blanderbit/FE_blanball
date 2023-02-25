@@ -15,7 +15,8 @@
                         {{ $t('modals.selectFormsColors.form-type') }}
                     </div>
                     <div class="b-tabs-block__tabs">
-                        <div v-for="tab in mockData.tabs" :class="['b-tabs-block__tab', { 'active': tab.active }]"
+                        <div v-for="tab in mockData.tabs" :class="['b-tabs-block__tab', 
+                            { 'active': tab.id === selectedTabID }]"
                             @click="switchTab(tab.id)">
                             {{ tab.text }}
                         </div>
@@ -28,29 +29,59 @@
                         <div class="b-main-side-team__title">
                             {{ team.name }}
                         </div>
-                        <div class="b-main-side__form-select">
-                            <div class="b-main-side__form-select-item">
+                        <div v-if="selectedTabID === 1" class="b-main-side__form-select">
+                            <div class="b-main-side__form-select-forms" >
+                                <div class="b-main-side__form-select-item">
                                 <div class="b-item__name">
                                     Футболки
                                 </div>
-                                <Dropdown class="b-item__dropdown" :height="36" :options="mockData.colors" />
+                                <Dropdown 
+                                    class="b-item__dropdown" 
+                                    :height="36"
+                                    :options="mockData.colors" 
+                                    name="t-shirt"/>
                             </div>
                             <div class="b-main-side__form-select-item">
                                 <div class="b-item__name">
                                     Шорти
                                 </div>
-                                <Dropdown class="b-item__dropdown" :height="36" />
+                                <Dropdown
+                                    class="b-item__dropdown" 
+                                    :height="36"
+                                    :options="mockData.colors" 
+                                    name="shorts"/>
+                            </div>
+                            </div>
+                            
+                        </div>
+                        <div v-if="selectedTabID === 2" class="b-main-side__form-select">
+                            <div class="b-main-side__form-select-forms" >
+                                <div class="b-main-side__form-select-item">
+                                <div class="b-item__name">
+                                    {{ $t('events.manijki') }}
+                                </div>
+                                <Dropdown 
+                                    class="b-item__dropdown" 
+                                    :height="36"
+                                    :options="mockData.colors" 
+                                    name="manijki"/>
+                            </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="b-select-forms-color-modal__bottom-side">
-                <div class="b-bottom-side__cancel-button">
+                <div class="b-bottom-side__cancel-button"
+                    @click="$emit('closeModal')">
                     {{ $t('buttons.cancel') }}
                 </div>
-                <GreenBtn :width="144" :text="$t('buttons.save')" :height="32"
-                    @click-function="clickAcceptButton(request.id)" />
+                <GreenBtn
+                    :width="144"
+                    :text="$t('buttons.save')"
+                    :height="32"
+                    @click-function="$emit('saveData')"
+                />
             </div>
         </div>
     </div>
@@ -69,7 +100,10 @@ export default {
         Dropdown,
         GreenBtn,
     },
+    emits: ['closeModal', 'saveData'],
     setup() {
+
+        const selectedTabID = ref(1)
 
         const mockData = computed(() => {
             return {
@@ -79,8 +113,14 @@ export default {
             }
         })
 
+        const switchTab = (tabId) => {
+            selectedTabID.value = tabId
+        }
+
         return {
-            mockData
+            mockData,
+            selectedTabID,
+            switchTab,
         }
     }
 }
@@ -215,12 +255,13 @@ export default {
                     background: #EFEFF6;
                     border-radius: 4px;
                     padding: 8px 8px 12px;
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
-
-                    .b-main-side__form-select-item {
-                        flex: 50%;
+                    .b-main-side__form-select-forms {
+                        display: flex;
+                        align-items: center;
+                        width: 100%;
+                        gap: 8px;
+                        .b-main-side__form-select-item {
+                            flex: 50%;
 
                         .b-item__name {
                             font-family: 'Inter';
@@ -237,10 +278,10 @@ export default {
                             border-radius: 6px;
                         }
                     }
+                    }
                 }
             }
         }
-
         .b-select-forms-color-modal__bottom-side {
             display: flex;
             align-items: center;
@@ -255,6 +296,7 @@ export default {
                 line-height: 24px;
                 text-align: center;
                 color: #575775;
+                cursor: pointer;
             }
         }
     }
