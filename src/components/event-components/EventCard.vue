@@ -159,6 +159,9 @@ export default {
   border-radius: 6px;
   margin-bottom: 16px;
   height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 100%;
   cursor: pointer;
   
@@ -329,7 +332,7 @@ export default {
         font-weight: 500;
         font-size: 12px;
         line-height: 20px;
-        max-width: 100%;
+        width: 60%;
         word-break: break-word;
         display: -webkit-box;
         -webkit-line-clamp: 1;

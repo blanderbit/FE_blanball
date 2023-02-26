@@ -38,6 +38,7 @@
             :width="168"
             :icon="iconPlus"
             :height="40"
+            @click-function="goToCreateEvent"
           />
         </div>
       </div>
@@ -110,6 +111,7 @@
                   v-if="!paginationElements.length"
                   :title="emptyListMessages.title"
                   :description="emptyListMessages.title"
+                  :buttonText="emptyListMessages.button_text"
                 />
 
                 <ScrollToTop
@@ -229,8 +231,9 @@ export default {
 
     const emptyListMessages = computed(() => {
       return {
-        title: 'Немає повідомлень для відображення',
-        description: 'Вам ще не надходили сповіщення від інших користувачів',
+        title: 'До сьогодні ви ще не були організатором подій',
+        description: 'Організуйте вашу першу подію',
+        button_text: 'Створити подію',
       }
     })
 
@@ -333,6 +336,7 @@ export default {
       isContextMenuActive.value = true
     }
 
+
     function myCardLeftClick(eventId) {
       if (selected.value.length) {
         if (selected.value.includes(eventId)) {
@@ -348,6 +352,9 @@ export default {
   
     function goToEventPage(id) {
       router.push(ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(id))
+    }
+    function goToCreateEvent() {
+      router.push(ROUTES.APPLICATION.EVENTS.CREATE.absolute)
     }
 
     function declineSelect() {
@@ -511,6 +518,7 @@ export default {
       openDeleteEventsModal,
       closeDeleteEventsModal,
       switchEvents,
+      goToCreateEvent,
       isContextMenuActive,
       refList,
       isDeleteEventsModalActive,

@@ -83,21 +83,20 @@
             </div>
           </div>
           <div class="b-event-info__forms">
-            <div class="b-event-info__form" v-for="form in eventData.forms">
+            <div class="b-event-info__form" v-for="(item, key, index) in eventData.forms">
               <span class="b-event-info__form-title">
-                {{ $t('events.team_num', {'num': 1}) }}
+                {{ $t('events.team_num', {'num': index+1}) }}
               </span>
               <div class="b-event-info__form-content">
-
-                <div v-if="form.type === 'T-Shirt'" class="b-event-info__form-content-t-thirt">
+                <div v-if="eventFormsType === 'Forms'" class="b-event-info__form-content-t-thirt">
                   <div class="b-event-info__form-item">
                   <div class="b-event-info__form-item-name">
                     {{ $t('events.t-shirts') }}
                   </div>
                   <div class="b-event-info__form-item-color">
-                    <div class="b-event-info__form-item-color-view"></div>
+                    <img :src="mockData.colors[item.t_shirts]" alt="">
                     <div class="b-event-info__form-item-color-name">
-                      Сині
+                      {{ $t(`colors.${item.t_shirts}`) }}
                     </div> 
                   </div>
                 </div>
@@ -106,9 +105,9 @@
                     {{ $t('events.shorts') }}
                   </div>
                   <div class="b-event-info__form-item-color">
-                    <div class="b-event-info__form-item-color-view"></div>
+                    <img :src="mockData.colors[item.shorts]" alt="">
                     <div class="b-event-info__form-item-color-name">
-                      Сині
+                      {{ $t(`colors.${item.shorts}`) }}
                     </div> 
                   </div>
                 </div>
@@ -119,14 +118,13 @@
                     Маніжки
                   </div>
                   <div class="b-event-info__form-item-color">
-                    <div class="b-event-info__form-item-color-view"></div>
+                    <img :src="mockData.colors[item.shirtfronts]" alt="">
                     <div class="b-event-info__form-item-color-name">
-                      Сині
+                      {{ $t(`colors.${item.shirtfronts}`) }}
                     </div> 
                   </div>
                 </div>
                 </div>
-
               </div>
             </div>
           </div>
@@ -263,6 +261,8 @@ import emoji_4 from '../../../assets/img/emojies/4.svg';
 import emoji_5 from '../../../assets/img/emojies/5.svg';
 import noReviews from '../../../assets/img/no-records/no-reviews.svg';
 
+import WhiteIcon from '../../../assets/img/colors/white.svg'
+
 export default {
   name: 'EventsPage',
   components: {
@@ -301,6 +301,7 @@ export default {
 
     const route = useRoute();
     const router = useRouter();
+    const eventFormsType = ref('')
     const toast = useToast();
     const userStore = useUserDataStore();
     const isTabLabel = ref(false);
@@ -321,6 +322,7 @@ export default {
 
     const mockData = computed(() => {
       return {
+        colors: CONSTANTS.forms.colorIcons,
         tabs: CONSTANTS.event_info.tabs(eventData.value, userStore.user.id).map((item) => ({
           ...item,
           name: t(item.name),
@@ -359,6 +361,13 @@ export default {
     };
 
 
+    const formsColorsIcons = computed(() => {
+      return {
+        White: WhiteIcon
+      }
+    })
+
+
     const closeShareEventModal = () => {
       isShareEventModalOpened.value = false;
     };
@@ -373,10 +382,13 @@ export default {
       });
     }
 
+
     function handleIncomeEventData(data) {
       data.date = getDate(data.date_and_time);
       data.time = getTime(data.date_and_time);
       data.end_time = addMinutes(getTime(data.date_and_time), data.duration);
+      eventFormsType.value = data.forms.type
+      delete data.forms.type
       for (let user of data.current_users) {
         user.raiting = Math.round(user.raiting);
         user.emoji = setUserEmoji(user.raiting);
@@ -417,9 +429,11 @@ export default {
       currentFullRoute,
       isTabLabel,
       loading,
+      eventFormsType,
       userStore,
       activeTab,
       eventPriceHover,
+      formsColorsIcons,
       eventRequestsToParticipations,
       copyLinkButtonClick,
       switchTabLabel,
@@ -709,14 +723,6 @@ export default {
                 display: flex;
                 align-items: center;
                 gap: 8px;
-
-                .b-event-info__form-item-color-view {
-                  border: 2px solid #fff;
-                  border-radius: 2px;
-                  background: #2946E1;
-                  width: 14px;
-                  height: 14px;
-                }
                 .b-event-info__form-item-color-name {
                   font-family: 'Inter';
                   font-style: normal;

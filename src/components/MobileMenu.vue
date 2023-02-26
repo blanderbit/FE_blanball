@@ -1,7 +1,18 @@
 <template>
   <div class="b-mob-menu" :style="mobMenuStyle">
     <div class="b-mob-menu__logo-block">
-      <div class="b-mob-menu__logo">{{ $t('menu.blanball') }}</div>
+      <div class="b-mob-menu__logo-left">
+        <div class="b-mob-menu__logo">{{ $t('menu.blanball') }}</div>
+        <div class="b-mob-menu__version">
+          {{ $t('slide_menu.version') }}
+          <router-link
+              :to="routeObject.APPLICATION.VERSION.absolute"
+              @click="$emit('close')"
+            >
+          <span>{{ clientVersion }}</span>
+        </router-link>
+        </div>
+      </div>
       <div class="b-mob-menu__close" @click="closeMobMenu">&times;</div>
     </div>
     <div class="b-mob-menu__user-data">
@@ -123,7 +134,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, inject } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { storeToRefs } from "pinia";
@@ -252,6 +263,7 @@ export default {
     const selectedList = ref([])
     const blockScrollToTopIfExist = ref(false)
     const triggerForRestart = ref('')
+    const clientVersion = ref(inject('clientVersion'))
 
 
     const emptyListMessages = computed(() => {
@@ -281,6 +293,9 @@ export default {
       return {
         transform: `translateX(${props.isMenuActive ? 0 : -100}%)`,
       }
+    })
+    const routeObject = computed(() => {
+      return ROUTES
     })
 
     function closeMobMenu() {
@@ -364,10 +379,12 @@ export default {
       bottomMenu,
       blockScrollToTopIfExist,
       mockData,
+      clientVersion,
       notificationList,
       menuBlockStyle,
       userData,
       mobMenuStyle,
+      routeObject,
       triggerForRestart,
       lineMenuClick,
       closeMobMenu,
@@ -406,13 +423,41 @@ export default {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 16px;
-    .b-mob-menu__logo {
-      font-family: 'Exo 2';
-      font-style: normal;
-      font-weight: 800;
-      font-size: 20px;
-      line-height: 32px;
-      color: #262541;
+
+    .b-mob-menu__logo-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      .b-mob-menu__logo {
+        font-family: 'Exo 2';
+        font-style: normal;
+        font-weight: 800;
+        font-size: 20px;
+        line-height: 32px;
+        color: #262541;
+      }
+      .b-mob-menu__version {
+        display: flex;
+        align-items: center;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 16px;
+        text-align: center;
+        color: #8A8AA8;
+        margin-top: 10px;
+        cursor: pointer;
+
+        span {
+          text-decoration: none;
+          font-style: normal;
+          font-weight: 600;
+          font-size: 12px;
+          line-height: 16px;
+          color: #8a8aa8;
+        }
+      }
     }
     .b-mob-menu__close {
       font-size: 28px;

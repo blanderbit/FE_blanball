@@ -74,6 +74,7 @@
                     v-if="!paginationElements.length"
                     :title="emptyListMessages.title"
                     :description="emptyListMessages.title"
+                    :buttonText="emptyListMessages.button_text"
                   />
 
                   <ScrollToTop
@@ -198,8 +199,9 @@ export default {
     const iconPlus = computed(() => Plus)
     const emptyListMessages = computed(() => {
       return {
-        title: 'Немає повідомлень для відображення',
-        description: 'Вам ще не надходили сповіщення від інших користувачів',
+        title: 'Наразі немає актуальних подій для відображення',
+        description: 'Ваша подія може стати першою',
+        button_text: 'Організувати подію!'
       }
     })
     

@@ -107,7 +107,6 @@ import Step_7 from '../../components/register-components/Step-7.vue'
 import Step_8 from '../../components/register-components/Step-8.vue'
 import Step_9 from '../../components/register-components/Step-9.vue'
 import Step_10 from '../../components/register-components/Step-10.vue'
-import Step_11 from '../../components/register-components/Step-11.vue'
 import AuthenticationMain from '../../components/AuthenticationMain.vue'
 
 import { API } from '../../workers/api-worker/api.worker'
@@ -139,8 +138,7 @@ yup.addMethod(yup.string, 'userName', function (errorMessage) {
   return this.test(`UserName`, errorMessage, function (value) {
     const { path, createError } = this
     // const reg = /^[a-zа-яієїґ\'\d]{1}[a-zа-яієїґ\'\d-]*[a-zа-яієїґ\'\d]{1}$/i;
-    const reg =
-      /^[А-Яа-яієїґЇІЄҐ\'\d]{1}[А-Яа-яієїґЇІЄҐ\'\d-]*[А-Яа-яієїґЇІЄҐ\'\d]{1}$/i
+    const reg = /^[А-Яа-яієїґЇІЄҐ\'-]*[А-Яа-яієїґЇІЄҐ\'-]+$/i
     return reg.exec(value) || createError({ path, message: errorMessage })
   })
 })
@@ -157,7 +155,6 @@ export default {
     Step_8,
     Step_9,
     Step_10,
-    Step_11,
     Form,
     AuthenticationMain,
   },

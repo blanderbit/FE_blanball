@@ -32,12 +32,6 @@ export const i18n = createI18n({
     ua: UA_LANGUAGE,
   },
 })
-Object.defineProperty(Object.prototype, 'getRandomElement', {
-  value: function () {
-    return this[Math.floor(Math.random() * this.length)]
-  },
-})
-
 createLoader()
 
 const app = createApp(App)

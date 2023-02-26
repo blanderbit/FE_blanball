@@ -1,5 +1,10 @@
 <template>
     <div class="b-select-forms-color-modal__wrapper">
+        <Form  
+            v-slot="data"
+            :validation-schema="schema"
+            :initial-values="initialValues"
+            @submit="disableSubmit">
         <div class="b-select-forms-color-modal">
             <div class="b-select-forms-color-modal__top-side">
                 <div class="b-select-forms-color-modal__titles-block">
@@ -16,8 +21,7 @@
                     </div>
                     <div class="b-tabs-block__tabs">
                         <div v-for="tab in mockData.tabs" :class="['b-tabs-block__tab', 
-                            { 'active': tab.id === selectedTabID }]"
-                            @click="switchTab(tab.id)">
+                            { 'active': tab.id === selectedTab }]">
                             {{ tab.text }}
                         </div>
                     </div>
@@ -29,7 +33,7 @@
                         <div class="b-main-side-team__title">
                             {{ team.name }}
                         </div>
-                        <div v-if="selectedTabID === 1" class="b-main-side__form-select">
+                        <div v-if="selectedTab === 1" class="b-main-side__form-select">
                             <div class="b-main-side__form-select-forms" >
                                 <div class="b-main-side__form-select-item">
                                 <div class="b-item__name">
@@ -39,7 +43,10 @@
                                     class="b-item__dropdown" 
                                     :height="36"
                                     :options="mockData.colors" 
-                                    name="t-shirt"/>
+                                    display-name="name"
+                                    display-value="value"
+                                    :initValue="formsData[team.type]?.t_shirts"
+                                    :name="`${team.type}.t_shirts`"/>
                             </div>
                             <div class="b-main-side__form-select-item">
                                 <div class="b-item__name">
@@ -49,22 +56,25 @@
                                     class="b-item__dropdown" 
                                     :height="36"
                                     :options="mockData.colors" 
-                                    name="shorts"/>
+                                    display-name="name"
+                                    :initValue="formsData[team.type]?.shorts"
+                                    :name="`${team.type}.shorts`"/>
                             </div>
                             </div>
                             
                         </div>
-                        <div v-if="selectedTabID === 2" class="b-main-side__form-select">
+                        <div v-if="selectedTab === 2" class="b-main-side__form-select">
                             <div class="b-main-side__form-select-forms" >
                                 <div class="b-main-side__form-select-item">
                                 <div class="b-item__name">
-                                    {{ $t('events.manijki') }}
+                                    {{ $t('events.shirtfronts') }}
                                 </div>
                                 <Dropdown 
                                     class="b-item__dropdown" 
                                     :height="36"
-                                    :options="mockData.colors" 
-                                    name="manijki"/>
+                                    :options="mockData.colors"
+                                    :initValue="formsData[team.type]?.shirtfronts"
+                                    :name="`${team.type}.shirtfronts`"/>
                             </div>
                             </div>
                         </div>
@@ -80,15 +90,20 @@
                     :width="144"
                     :text="$t('buttons.save')"
                     :height="32"
-                    @click-function="$emit('saveData')"
+                    @click-function="saveData(data)"
                 />
             </div>
         </div>
+    </Form>
     </div>
 </template>
 
 <script>
 import { ref, computed } from "vue"
+
+import { Form } from '@system.it.flumx.com/vee-validate'
+
+import * as yup from 'yup'
 
 import Dropdown from '../forms/Dropdown.vue';
 import GreenBtn from "../GreenBtn.vue";
@@ -99,11 +114,21 @@ export default {
     components: {
         Dropdown,
         GreenBtn,
+        Form,
+    },
+    props: {
+        selectedTab: {
+            type: Number,
+            default: 1,
+        },
+        formsData:{
+            type: Object,
+            default: () => {}
+        }
     },
     emits: ['closeModal', 'saveData'],
-    setup() {
 
-        const selectedTabID = ref(1)
+    setup(props , { emit }) {
 
         const mockData = computed(() => {
             return {
@@ -113,14 +138,59 @@ export default {
             }
         })
 
-        const switchTab = (tabId) => {
-            selectedTabID.value = tabId
+        const schema = computed(() => {
+            if (props.selectedTab === 1) {
+                return yup.object({
+                    first_team: yup.object({
+                        t_shirts: yup
+                            .string()
+                            .required('errors.required'),
+                        shorts: yup
+                            .string()
+                            .required('errors.required')
+                    }),
+                    second_team: yup.object({
+                        t_shirts: yup
+                            .string()
+                            .required('errors.required'),
+                        shorts: yup
+                            .string()
+                            .required('errors.required')
+                    })
+                })
+            }
+            if (props.selectedTab === 2) {
+                return yup.object({
+                    first_team: yup.object({
+                        shirtfronts: yup
+                            .string()
+                            .required('errors.required'),
+                    }),
+                    second_team: yup.object({
+                        shirtfronts: yup
+                            .string()
+                            .required('errors.required'),
+                    })
+                })
+            }
+        })
+       
+        const saveData = async (data) => {
+            const { valid } = await data.validate()
+            if (!valid) {
+                return false
+            }
+            emit('saveData', data.values)
         }
 
         return {
             mockData,
-            selectedTabID,
-            switchTab,
+            saveData,
+            schema,
+            disableSubmit: (e) => {
+                e.stopPropagation()
+                e.preventDefault()
+            },
         }
     }
 }
@@ -141,7 +211,7 @@ export default {
         background: #262541;
         width: 100%;
         min-height: 100%;
-        z-index: -1;
+        z-index: 100;
         opacity: 0.2;
     }
 
@@ -157,6 +227,7 @@ export default {
         border-radius: 6px;
         background: #fff;
         padding: 20px 16px 28px;
+        z-index: 999;
 
         .b-select-forms-color-modal__top-side {
             .b-select-forms-color-modal__titles-block {

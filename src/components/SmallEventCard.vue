@@ -6,7 +6,7 @@
         <img src="../assets/img/hands-shake.svg" alt="" />
       </div>
       <div class="b-small-event-card__text-data">
-        <div class="b-small-event-card__top-line b_small_event_card_name">
+        <div class="b_small_event_card_name">
           {{ item.name }}
         </div>
         <div class="b-small-event-card__bottom-line">
@@ -19,7 +19,9 @@
         </div>
       </div>
     </div>
-    <PlaceDetector :place="item.place"></PlaceDetector>
+    <PlaceDetector 
+      :place="item.place">
+    </PlaceDetector>
     <div class="b-small-event-card__labels">
       <div class="b-small-event-card__label">{{ $t(`hashtags.${item.type}`) }}</div>
       <div class="b-small-event-card__label">{{ $t(`events.${item.gender}`) }}</div>
@@ -130,10 +132,11 @@ export default {
   font-size: 14px;
   line-height: 16px;
   color: #262541;
+  width: 90%;
+  word-break: break-word;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  max-width: 50%;
 }
 </style>

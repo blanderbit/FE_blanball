@@ -26,7 +26,8 @@
             <li
               v-for="(item, index) in menuItems"
               :key="index"
-              :class="['b_sidebar_menu-item', item.class]"
+              :class="['b_sidebar_menu-item', item.class, 
+              {'b_sidebar_menu-item__disabled': disabled}]"
               @click="item.action && item.action()"
             >
               <Transition>

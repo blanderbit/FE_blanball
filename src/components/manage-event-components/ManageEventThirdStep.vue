@@ -1,11 +1,4 @@
 <template>
-  <!-- <SelectionSuitModal
-    v-if="isSelectFormColarModalOpened"
-    :selectedCategory="selectedFormType"
-    @closeModal="closeSelectFormsModal()"
-    @saveData="saveFormsColors"
-  /> -->
-
   <div class="third-step" :style="stepStyle">
     <div class="title">
       {{ $t('events.need-clothes') }}
@@ -36,11 +29,13 @@
       class="forms-block"
       @click="openSelectFormsModal"
     >
-      <div class="forms-select-form">
+      <div class="forms-select-form"
+        @click="$emit('setForms')">
         <span>{{ $t('events.set-forms-colors') }}</span>
         <img src="../../assets/img/set-filter.svg" alt="" />
       </div>
     </div>
+    <ErrorMessage class="b-forms-block-error-message" name="forms"/>
 
     <div class="prize-switcher">
       <div class="title">
@@ -97,6 +92,8 @@
 <script>
 import { computed, ref } from 'vue'
 
+import { ErrorMessage } from '@system.it.flumx.com/vee-validate'
+
 import { useUserDataStore } from '../../stores/userData'
 
 import Switcher from '../../components/Switcher.vue'
@@ -113,6 +110,7 @@ export default {
     InputComponent,
     RadioButton,
     TextAreaComponent,
+    ErrorMessage,
   },
   props: {
     currentStep: {
@@ -120,13 +118,11 @@ export default {
       default: null,
     },
   },
-  setup(props) {
+  setup(props, { emit }) {
     const isPhoneShown = ref(false)
     const store = useUserDataStore()
     const userPhoneNumber = computed(() => store.getUserPhone)
     const needForm = ref(null)
-    const selectedFormType = ref('')
-    const isSelectFormColarModalOpened = ref(false)
 
     const icons = computed(() => {
       return {
@@ -140,43 +136,23 @@ export default {
 
     const selectForms = (value) => {
       needForm.value = value
-      if (value) {
-        selectedFormType.value = 'T-Shirt'
-      } else if (!value) {
-        selectedFormType.value = 'Shirt-Front'
-      }
+      emit('selectNeedForm', needForm.value)
     }
 
-    const openSelectFormsModal = () => {
-      isSelectFormColarModalOpened.value = true
-    }
-
-    const closeSelectFormsModal = () => {
-      isSelectFormColarModalOpened.value = false
-    }
-
+    
     const stepStyle = computed(() => {
       return props.currentStep === 3 ? { height: 'auto' } : { height: '0px' }
     })
 
-    const saveFormsColors = (colors) => {
-      console.log(colors)
-      closeSelectFormsModal
-    }
-
+   
     return {
       icons,
       stepStyle,
       needForm,
       userPhoneNumber,
-      isSelectFormColarModalOpened,
       isPhoneShown,
-      selectedFormType,
       showHidePhone,
       selectForms,
-      saveFormsColors,
-      openSelectFormsModal,
-      closeSelectFormsModal,
     }
   },
 }
@@ -363,5 +339,13 @@ export default {
       color: #262541;
     }
   }
+}
+.b-forms-block-error-message {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  color: #f32929;
 }
 </style>

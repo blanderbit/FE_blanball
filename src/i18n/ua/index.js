@@ -22,6 +22,7 @@ import Errors from './errors'
 import Notifications from './notifications'
 import Breadcrumbs from './breadcrumbs'
 import Hashtags from './hashtags'
+import Colors from './colors'
 
 export const UA_LANGUAGE = {
   events: EventsPage,
@@ -48,4 +49,5 @@ export const UA_LANGUAGE = {
   scroll_top_component: ScrollTopComponent,
   errors: Errors,
   notifications: Notifications,
+  colors: Colors,
 }
