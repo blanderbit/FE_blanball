@@ -82,52 +82,11 @@
               {{ $t('hashtags.need_form') }}
             </div>
           </div>
-          <div class="b-event-info__forms">
-            <div class="b-event-info__form" v-for="(item, key, index) in eventData.forms">
-              <span class="b-event-info__form-title">
-                {{ $t('events.team_num', {'num': index+1}) }}
-              </span>
-              <div class="b-event-info__form-content">
-                <div v-if="eventFormsType === 'Forms'" class="b-event-info__form-content-t-thirt">
-                  <div class="b-event-info__form-item">
-                  <div class="b-event-info__form-item-name">
-                    {{ $t('events.t-shirts') }}
-                  </div>
-                  <div class="b-event-info__form-item-color">
-                    <img :src="mockData.colors[item.t_shirts]" alt="">
-                    <div class="b-event-info__form-item-color-name">
-                      {{ $t(`colors.${item.t_shirts}`) }}
-                    </div> 
-                  </div>
-                </div>
-                <div class="b-event-info__form-item">
-                  <div class="b-event-info__form-item-name">
-                    {{ $t('events.shorts') }}
-                  </div>
-                  <div class="b-event-info__form-item-color">
-                    <img :src="mockData.colors[item.shorts]" alt="">
-                    <div class="b-event-info__form-item-color-name">
-                      {{ $t(`colors.${item.shorts}`) }}
-                    </div> 
-                  </div>
-                </div>
-                </div>
-                <div  v-else class="b-event-info__form-content-shirt-front">
-                  <div class="b-event-info__form-item">
-                  <div class="b-event-info__form-item-name">
-                    Маніжки
-                  </div>
-                  <div class="b-event-info__form-item-color">
-                    <img :src="mockData.colors[item.shirtfronts]" alt="">
-                    <div class="b-event-info__form-item-color-name">
-                      {{ $t(`colors.${item.shirtfronts}`) }}
-                    </div> 
-                  </div>
-                </div>
-                </div>
-              </div>
-            </div>
-          </div>
+
+          <EventInfoForms
+            :formsData="eventData.forms"
+          />
+
           <div class="b-event-info__title">
             {{ $t('my_events.description-event') }}
           </div>
@@ -244,6 +203,7 @@ import Avatar from '../../../components/Avatar.vue';
 import TabLabel from '../../../components/TabLabel.vue';
 import ListOfEventRequestsToParticipations from '../../../components/ListOfEventRequestsToParticipations.vue';
 import Loading from '../../../workers/loading-worker/Loading.vue';
+import EventInfoForms from '../../../components/buildedForms/EventInfoForms.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
@@ -261,8 +221,6 @@ import emoji_4 from '../../../assets/img/emojies/4.svg';
 import emoji_5 from '../../../assets/img/emojies/5.svg';
 import noReviews from '../../../assets/img/no-records/no-reviews.svg';
 
-import WhiteIcon from '../../../assets/img/colors/white.svg'
-
 export default {
   name: 'EventsPage',
   components: {
@@ -274,6 +232,7 @@ export default {
     Avatar,
     Loading,
     TabLabel,
+    EventInfoForms,
     ListOfEventRequestsToParticipations,
   },
   setup() {
@@ -301,7 +260,6 @@ export default {
 
     const route = useRoute();
     const router = useRouter();
-    const eventFormsType = ref('')
     const toast = useToast();
     const userStore = useUserDataStore();
     const isTabLabel = ref(false);
@@ -322,7 +280,6 @@ export default {
 
     const mockData = computed(() => {
       return {
-        colors: CONSTANTS.forms.colorIcons,
         tabs: CONSTANTS.event_info.tabs(eventData.value, userStore.user.id).map((item) => ({
           ...item,
           name: t(item.name),
@@ -361,13 +318,6 @@ export default {
     };
 
 
-    const formsColorsIcons = computed(() => {
-      return {
-        White: WhiteIcon
-      }
-    })
-
-
     const closeShareEventModal = () => {
       isShareEventModalOpened.value = false;
     };
@@ -387,8 +337,6 @@ export default {
       data.date = getDate(data.date_and_time);
       data.time = getTime(data.date_and_time);
       data.end_time = addMinutes(getTime(data.date_and_time), data.duration);
-      eventFormsType.value = data.forms.type
-      delete data.forms.type
       for (let user of data.current_users) {
         user.raiting = Math.round(user.raiting);
         user.emoji = setUserEmoji(user.raiting);
@@ -429,11 +377,9 @@ export default {
       currentFullRoute,
       isTabLabel,
       loading,
-      eventFormsType,
       userStore,
       activeTab,
       eventPriceHover,
-      formsColorsIcons,
       eventRequestsToParticipations,
       copyLinkButtonClick,
       switchTabLabel,
@@ -681,68 +627,7 @@ export default {
           }
         }
       }
-      .b-event-info__forms {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-top: 16px;
-
-        @media (min-width: 768px) and (max-width: 992px) {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 12px 12px;
-        }
-        .b-event-info__form {
-          background: #F9F9FC;
-          border-radius: 6px;
-          padding: 12px;
-          display: flex;
-          flex-direction: column;
-          .b-event-info__form-title {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 600;
-            font-size: 14px;
-            line-height: 24px;
-            color: #262541;
-          }
-          .b-event-info__form-content {
-            .b-event-info__form-item {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              gap: 8px;
-              margin-top: 8px;
-              .b-event-info__form-item-name {
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 500;
-                font-size: 12px;
-                line-height: 20px;
-                color: #575775;
-              }
-              .b-event-info__form-item-color {
-                background: #EFEFF6;
-                border-radius: 4px;
-                padding: 2px 8px;
-                min-width: 115px;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                .b-event-info__form-item-color-name {
-                  font-family: 'Inter';
-                  font-style: normal;
-                  font-weight: 500;
-                  font-size: 12px;
-                  line-height: 20px;
-                  color: #262541;
-                }
-              }
-            }
-          }
-        }
-      }
+      
       .b-event-info__right-side {
         .b-event-info__users {
           .b-event-info__user {

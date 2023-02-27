@@ -105,6 +105,9 @@ export default {
   'event-price': 'Вартість участі',
   't-shirts': 'Футболки',
   'shorts': 'Шорты',
+  'color-t-shirts': '{color} футболки',
+  'color-shorts': '{color} шорты',
+  'color-shirtfronts': '{color} маніжки',
   months: {
     January: 'Січень',
     February: 'Лютий',

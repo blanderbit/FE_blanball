@@ -37,7 +37,7 @@
                             <div class="b-main-side__form-select-forms" >
                                 <div class="b-main-side__form-select-item">
                                 <div class="b-item__name">
-                                    Футболки
+                                    {{ $t('events.t-shirts') }}
                                 </div>
                                 <Dropdown 
                                     class="b-item__dropdown" 

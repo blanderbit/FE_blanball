@@ -25,7 +25,7 @@
     </div>
 
     <div
-      v-if="needForm !== null"
+      v-if="needForm !== null && Object.keys(formsValue).length == 0"
       class="forms-block"
       @click="openSelectFormsModal"
     >
@@ -35,7 +35,12 @@
         <img src="../../assets/img/set-filter.svg" alt="" />
       </div>
     </div>
-    <ErrorMessage class="b-forms-block-error-message" name="forms"/>
+    <ErrorMessage class="b-forms-block-error-message" name="forms"/>   
+    
+    <EventCreateForms
+      v-if="formsValue"
+      :formsData="formsValue"
+      @changeForms="changeForms"/>
 
     <div class="prize-switcher">
       <div class="title">
@@ -100,6 +105,7 @@ import Switcher from '../../components/Switcher.vue'
 import RadioButton from '../../components/forms/RadioButton.vue'
 import InputComponent from '../../components/forms/InputComponent.vue'
 import TextAreaComponent from '../TextAreaComponent.vue'
+import EventCreateForms from '../buildedForms/EventCreateForms.vue'
 
 import AimIcon from '../../assets/img/aim.svg'
 
@@ -111,12 +117,18 @@ export default {
     RadioButton,
     TextAreaComponent,
     ErrorMessage,
+
+    EventCreateForms,
   },
   props: {
     currentStep: {
       type: Number,
       default: null,
     },
+    formsValue: {
+      type: Object,
+      default: () => {},
+    }
   },
   setup(props, { emit }) {
     const isPhoneShown = ref(false)
@@ -139,6 +151,10 @@ export default {
       emit('selectNeedForm', needForm.value)
     }
 
+    const changeForms = () => {
+      emit('changeForms')
+    }
+
     
     const stepStyle = computed(() => {
       return props.currentStep === 3 ? { height: 'auto' } : { height: '0px' }
@@ -152,6 +168,7 @@ export default {
       userPhoneNumber,
       isPhoneShown,
       showHidePhone,
+      changeForms,
       selectForms,
     }
   },

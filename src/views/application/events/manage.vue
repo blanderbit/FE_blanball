@@ -47,8 +47,10 @@
           />
           <ManageEventThirdStep 
             :currentStep="currentStep"
-            @selectNeedForm="selectNeedForm"
-            @setForms="openSelectFormsModal"/>
+            :formsValue="eventForms"
+            @selectNeedForm="selectNeedForm($event, data)"
+            @setForms="openSelectFormsModal"
+            @changeForms="openSelectFormsModal"/>
 
           <div class="b-manage-event__progress-line">
             <div class="b-manage-event__sections">
@@ -206,11 +208,6 @@ export default {
     const removeInvitedUsersModalOpened = ref(false)
     const eventForms = ref({})
     let searchTimeout
-
-    const eventFormTypes = {
-      T_Shirt: 'T-Shirt',
-      Shirt_Front: 'Shirt-Front',
-    }
 
     const eventPreviewData = ref({
       name: '',
@@ -420,8 +417,9 @@ export default {
       isSelectFormColarModalOpened.value = false
     }
 
-
-    const selectNeedForm = (needForm) => {
+    const selectNeedForm = (needForm, data) => {
+      eventForms.value = {}
+      data.values.forms = {}
       switch(needForm) {
         case true:
           formsModalSelectedTabId.value = 1
