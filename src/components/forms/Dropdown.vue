@@ -24,14 +24,14 @@
       <template #option="options">
         <div class="b-dropdown__custom-option">
           <img v-if="options.iconSrc" :src="options.iconSrc" alt="icon" />
-          {{ $t(options[displayName]) }}
+          {{ $t(options[displayName].toString()) }}
         </div>
       </template>
       <template #selected-option="options">
         <div class="b-dropdown__custom-option">
           <img v-if="options.iconSrc" :src="options.iconSrc" alt="icon" />
           <span class="b-dropdown__custom-option-text">
-            {{ $t(options[displayName]) }}
+            {{ $t(options[displayName].toString()) }}
           </span>
         </div>
       </template>

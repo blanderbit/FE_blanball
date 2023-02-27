@@ -686,6 +686,13 @@ export default {
         align-items: center;
         gap: 12px;
         margin-top: 16px;
+
+        @media (min-width: 768px) and (max-width: 992px) {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px 12px;
+        }
         .b-event-info__form {
           background: #F9F9FC;
           border-radius: 6px;

@@ -358,11 +358,12 @@ export default {
     const imageSrc = ref(null)
     const fileReader = new FileReader()
     const labels = ref([
+      props.userData?.role ? `hashtags.${props.userData?.role}` : null ,
+      props.userData?.position ?  `hashtags.${props.userData?.position}` : null,
       props.userData?.age ? `${props.userData?.age} років` : null ,
       props.userData?.gender ? `hashtags.${props.userData?.gender}` : null ,
-      props.userData?.role ? `hashtags.${props.userData?.role}` : null ,
-      props.userData?.position ?  `hashtags.${props.userData?.position}` : null 
     ])
+    
     const fileInput = ref(null)
 
     const userPosition = computed(() => {
@@ -547,6 +548,7 @@ export default {
         .b-user-card__labels {
           display: flex;
           flex-wrap: wrap;
+          width: fit-content;
           .b-user-card__label {
             span {
               display: block;

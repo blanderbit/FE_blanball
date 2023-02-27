@@ -182,6 +182,13 @@ export default {
     display: none;
     @media (max-width: 992px) {
       display: block;
+      background: #FAFAFA;
+      border-radius: 6px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
   .b_header_logo {

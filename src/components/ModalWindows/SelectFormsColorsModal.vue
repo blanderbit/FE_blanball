@@ -72,6 +72,7 @@
                                 <Dropdown 
                                     class="b-item__dropdown" 
                                     :height="36"
+                                    display-name="name"
                                     :options="mockData.colors"
                                     :initValue="formsData[team.type]?.shirtfronts"
                                     :name="`${team.type}.shirtfronts`"/>
