@@ -74,7 +74,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../assets/styles/mixins/fonts.scss';
 
 .b-profile {
   .b-profile__header {

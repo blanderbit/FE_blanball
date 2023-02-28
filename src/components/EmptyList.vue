@@ -95,12 +95,8 @@ export default {
     margin-bottom: 12px;
   }
   &__description {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 12px;
+    @include inter(12px, 500, #575775);
     line-height: 20px;
-    color: #575775;
   }
 }
 </style>

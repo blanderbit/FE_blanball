@@ -222,45 +222,30 @@ export default {
 }
 
 .notification-content {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 13px;
+  @include inter(13px, 400, #dfdeed);
   line-height: 20px;
-  color: #dfdeed;
   margin-bottom: 12px;
 }
 
 .notification-title {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
+  @include inter(14px, 600, #fff);
   line-height: 20px;
-  color: #ffffff;
 }
 
 .notification-date {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 13px;
+  @include inter(13px, 400, #a8a8bd);
   line-height: 20px;
-  color: #a8a8bd;
 }
 
 .notification-action {
+  @include inter(13px, 500, #efeff6);
+  line-height: 24px;
+
   display: inline-block;
   padding: 2px 12px;
   background: #575775;
   border-radius: 6px;
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 13px;
-  line-height: 24px;
   text-align: center;
-  color: #ffffff;
   margin-right: 8px;
 }
 

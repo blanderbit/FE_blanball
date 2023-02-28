@@ -108,12 +108,8 @@ export default {
       }
 
       .b-list-item__name {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 14px;
+        @include inter(14px, 400);
         line-height: 20px;
-        color: #262541;
       }
     }
     .b-list-item-right__side {

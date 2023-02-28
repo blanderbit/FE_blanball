@@ -158,12 +158,8 @@ export default {
       margin-right: 5px;
     }
     p {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 12px;
+      @include inter(12px, 400, #575775);
       line-height: 20px;
-      color: #575775;
       border-radius: 4px;
       display: -webkit-box;
       -webkit-line-clamp: 1;
@@ -176,22 +172,14 @@ export default {
     justify-content: space-between;
     align-items: center;
     .b-event-card__date {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 500;
-      font-size: 14px;
+      @include inter(14px, 500);
       line-height: 20px;
       text-align: right;
-      color: #262541;
     }
     .b-event-card__time {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 12px;
+      @include inter(12px, 400, #4c4a82);
       line-height: 20px;
       text-align: right;
-      color: #4c4a82;
     }
     .b-event-card__left-side {
       display: flex;
@@ -231,12 +219,8 @@ export default {
     }
   }
   .b-event-card__main-text {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 12px;
+    @include inter(12px, 400, #393762);
     line-height: 20px;
-    color: #393762;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -248,11 +232,8 @@ export default {
     align-items: center;
     margin-top: 12px;
     .b-event-card__label {
+      @include inter(12px, 400, #575775);
       margin-right: 4px;
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 12px;
       line-height: 20px;
       color: #575775;
       padding: 0px 8px;
@@ -269,21 +250,13 @@ export default {
       align-items: center;
       padding-top: 12px;
       .b-event-card__name {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 12px;
+        @include inter(12px, 500, #393762);
         line-height: 20px;
-        color: #393762;
       }
       .b-event-card__price {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 600;
-        font-size: 14px;
+        @include inter(14px, 600);
         line-height: 20px;
         text-align: right;
-        color: #262541;
       }
     }
     .b-event-card__bottom-line {
@@ -299,10 +272,7 @@ export default {
         }
         .b-event-card__titles,
         .b-event-card__date {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 12px;
+          @include inter(14px, 600);
           line-height: 20px;
         }
         .b-event-card__players,

@@ -197,15 +197,12 @@ export default {
         min-width: 170px;
 
         .b-my-event-card__label {
+          @include inter(12px, 400, #575775);
+          line-height: 20px;
+
           padding: 0px 8px;
           border: 1px solid #efeff6;
           border-radius: 100px;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 12px;
-          line-height: 20px;
-          color: #575775;
           margin-right: 4px;
           margin-bottom: 4px;
         }
@@ -221,10 +218,7 @@ export default {
     }
 
     .b-my-event-card__status {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 13px;
+      @include inter(12px, 400);
       line-height: 20px;
       text-align: center;
       border-radius: 4px;
@@ -256,16 +250,12 @@ export default {
       margin-left: -20px;
 
       .b-my-event-card__state {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 13px;
+        @include inter(13px, 400);
         line-height: 20px;
         text-align: center;
         padding: 0px 4px;
         border-radius: 4px;
         background: #efeff6;
-        color: #262541;
         width: fit-content;
 
         &.b-my-event-card__active {
@@ -275,25 +265,17 @@ export default {
       }
 
       .b-my-event-card__date {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 14px;
+        @include inter(14px, 500);
         line-height: 20px;
         text-align: right;
-        color: #262541;
         margin-top: 12px;
         margin-bottom: 4px;
       }
 
       .b-my-event-card__time {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 12px;
+        @include inter(12px, 400, #4c4a82);
         line-height: 20px;
         text-align: right;
-        color: #4c4a82;
       }
     }
   }

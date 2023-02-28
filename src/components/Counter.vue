@@ -67,10 +67,7 @@ export default {
 <style lang="scss" scoped>
 .b-counter {
   &__sms-text {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 12px;
+    @include inter(12px, 500, #575775);
     line-height: 20px;
     color: #575775;
     margin-bottom: 4px;
