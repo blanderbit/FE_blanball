@@ -88,7 +88,7 @@ export default {
         font-size: 13px;
         line-height: 20px;
         text-align: center;
-        color: #262541;
+        color: $--b-main-black-color;
       }
     }
   }

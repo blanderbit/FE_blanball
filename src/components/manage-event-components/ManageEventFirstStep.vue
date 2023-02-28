@@ -297,7 +297,7 @@ export default {
     font-weight: 700;
     font-size: 16px;
     line-height: 24px;
-    color: #262541;
+    color: $--b-main-black-color;
   }
   .b-event-m-2st__input-name {
     margin-top: 20px;
@@ -371,7 +371,7 @@ export default {
       font-weight: 700;
       font-size: 16px;
       line-height: 24px;
-      color: #262541;
+      color: $--b-main-black-color;
     }
   .b-event-m-1st__radio-btn-wrapper {
     margin-top: 12px;
@@ -441,7 +441,7 @@ export default {
 
     &-selected {
       background: #F0F0F4;
-      color: #262541;
+      color: $--b-main-black-color;
       font-weight: 500;
     }
   }

@@ -239,12 +239,8 @@ export default {
         bottom: 0;
         display: flex;
         align-items: center;
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 12px;
+        @include inter(14px, 400,#575775);
         line-height: 20px;
-        color: #575775;
         padding: 24px;
         img {
           margin-right: 12px;

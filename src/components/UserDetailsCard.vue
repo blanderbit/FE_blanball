@@ -56,7 +56,7 @@
             'flex-basis': item.id === 1 ? '50%' : '33.3333%',
             'margin-right': item.id !== 2 ? '4px' : 0,
             background: currentTab === item.id ? '#FFFFFF' : '#F9F9FC',
-            color: currentTab === item.id ? '#262541' : '#575775',
+            color: currentTab === item.id ? '$--b-main-black-color' : '#575775',
             'font-weight': currentTab === item.id ? 500 : 400,
           }"
           @click="changeUserTab(item.id)"
@@ -538,7 +538,7 @@ export default {
             font-weight: 700;
             font-size: 16px;
             line-height: 24px;
-            color: #262541;
+            color: $--b-main-black-color;
             margin-bottom: 8px;
           }
           img {
@@ -610,7 +610,7 @@ export default {
           font-weight: 700;
           font-size: 16px;
           line-height: 24px;
-          color: #262541;
+          color: $--b-main-black-color;
           margin-bottom: 12px;
           margin-top: 16px;
         }
@@ -621,7 +621,7 @@ export default {
             font-weight: 400;
             font-size: 13px;
             line-height: 24px;
-            color: #262541;
+            color: $--b-main-black-color;
           }
           .b-user-card__title {
             font-family: 'Inter';
@@ -662,7 +662,7 @@ export default {
             font-weight: 400;
             font-size: 14px;
             line-height: 20px;
-            color: #262541;
+            color: $--b-main-black-color;
             .b-user-card__title {
               font-family: 'Inter';
               font-style: normal;
@@ -684,7 +684,7 @@ export default {
             font-weight: 400;
             font-size: 14px;
             line-height: 20px;
-            color: #262541;
+            color: $--b-main-black-color;
             .b-user-card__title {
               font-family: 'Inter';
               font-style: normal;

@@ -443,18 +443,15 @@ export default {
         font-weight: 800;
         font-size: 20px;
         line-height: 32px;
-        color: #262541;
+        color: $--b-main-black-color;
       }
       .b-mob-menu__version {
+        @include inter(12px, 400, #8A8AA8);
+        line-height: 16px;
+
         display: flex;
         align-items: center;
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 12px;
-        line-height: 16px;
         text-align: center;
-        color: #8A8AA8;
         margin-top: 10px;
         cursor: pointer;
 
@@ -493,15 +490,11 @@ export default {
         font-weight: 800;
         font-size: 18px;
         line-height: 24px;
-        color: #262541;
+        color: $--b-main-black-color;
       }
       .b-mob-menu__account-type {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 12px;
+        @include inter(12px, 500, #148581);
         line-height: 20px;
-        color: #148581;
       }
     }
 
@@ -539,12 +532,9 @@ export default {
         img {
         }
         span {
-          margin-left: 13px;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 500;
-          font-size: 13px;
+          @include inter(12px, 500, #148581);
           line-height: 16px;
+          margin-left: 13px;
         }
       }
     }
@@ -582,15 +572,12 @@ export default {
           .b-mob-menu__right-side {
             width: 100%;
             .b-mob-menu__top-line {
+              @include inter(14px, 400, #8a8aa8);
+              line-height: 20px;
+
               display: flex;
               align-items: center;
               justify-content: space-between;
-              font-family: 'Inter';
-              font-style: normal;
-              font-weight: 400;
-              font-size: 14px;
-              line-height: 20px;
-              color: #8a8aa8;
               margin-bottom: 4px;
             }
 
@@ -598,12 +585,8 @@ export default {
               display: flex;
               align-items: center;
               justify-content: space-between;
-              font-family: 'Inter';
-              font-style: normal;
-              font-weight: 600;
-              font-size: 14px;
+              @include inter(14px, 600, #8a8aa8);
               line-height: 20px;
-              color: #8a8aa8;
             }
           }
         }
@@ -629,12 +612,8 @@ export default {
   transform: translateX(-50%);
 
   span {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
+    @include inter(14px, 500, #fff);
     line-height: 24px;
-    color: #FFFFFF;
   }
 }
 </style>

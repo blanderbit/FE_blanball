@@ -122,18 +122,15 @@ export default {
     }
 }
 .b-green-btn {
+  @include inter(14px, 500, #ffffff);
+
   box-shadow: 0px 4px 12px rgba(42, 145, 141, 0.2);
   position: relative;
   border-radius: 6px;
   overflow: hidden;
-  color: #fff;
   height: 32px;
   display: flex;
   align-items: center;
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
   cursor: pointer;
   user-select: none;
 

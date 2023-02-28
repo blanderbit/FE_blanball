@@ -375,7 +375,7 @@ export default {
           font-weight: 700;
           font-size: 22px;
           line-height: 32px;
-          color: #262541;
+          color: $--b-main-black-color;
           margin-bottom: 4px;
         }
         .event-switcher {
@@ -385,7 +385,7 @@ export default {
           font-size: 13px;
           line-height: 20px;
           text-align: center;
-          color: #262541;
+          color: $--b-main-black-color;
           display: flex;
           @media (max-width: 992px) {
             display: none;
@@ -451,7 +451,7 @@ export default {
           font-style: normal;
           font-weight: 400;
           font-size: 13px;
-          color: #262541;
+          color: $--b-main-black-color;
           cursor: pointer;
           position: relative;
           user-select: none;
@@ -459,7 +459,7 @@ export default {
             margin-right: 8px;
           }
           &.active {
-            border-bottom: 2px solid #262541;
+            border-bottom: 2px solid $--b-main-black-color;
           }
           &.disabled {
             color: #7f7db5;
@@ -526,14 +526,14 @@ export default {
                     font-size: 13px;
                     line-height: 24px;
                     text-transform: capitalize;
-                    color: #262541;
+                    color: $--b-main-black-color;
                     img {
                       margin-right: 4px;
                     }
                     &:after {
                       content: '';
                       border-radius: 100%;
-                      border: 1px solid #262541;
+                      border: 1px solid $--b-main-black-color;
                       display: inline-block;
                       width: 13px;
                       height: 13px;
@@ -586,7 +586,7 @@ export default {
           .middle-block {
             display: flex;
             align-items: center;
-            border-bottom: 1px dashed #262541;
+            border-bottom: 1px dashed $--b-main-black-color;
             img {
               margin-right: 7px;
             }
@@ -596,7 +596,7 @@ export default {
               font-weight: 400;
               font-size: 14px;
               line-height: 20px;
-              color: #262541;
+              color: $--b-main-black-color;
             }
           }
           .right-block {
@@ -611,7 +611,7 @@ export default {
               font-weight: 500;
               font-size: 13px;
               line-height: 20px;
-              color: #262541;
+              color: $--b-main-black-color;
               span {
                 display: block;
                 font-family: 'Inter';
@@ -685,7 +685,7 @@ export default {
             font-weight: 500;
             font-size: 13px;
             line-height: 20px;
-            color: #262541;
+            color: $--b-main-black-color;
           }
           .terms {
             font-family: 'Inter';
@@ -825,7 +825,7 @@ export default {
               font-size: 14px;
               line-height: 20px;
               text-align: right;
-              color: #262541;
+              color: $--b-main-black-color;
             }
             .time {
               font-family: 'Inter';
@@ -859,7 +859,7 @@ export default {
                   font-weight: 700;
                   font-size: 16px;
                   line-height: 24px;
-                  color: #262541;
+                  color: $--b-main-black-color;
                 }
                 .date-time-mob {
                   display: flex;
@@ -932,7 +932,7 @@ export default {
                 font-size: 14px;
                 line-height: 20px;
                 text-align: right;
-                color: #262541;
+                color: $--b-main-black-color;
               }
             }
             .bottom-line {
@@ -956,7 +956,7 @@ export default {
                 }
                 .players,
                 .players-date {
-                  color: #262541;
+                  color: $--b-main-black-color;
                 }
                 .visitors,
                 .visitors-date {
@@ -1035,7 +1035,7 @@ export default {
                 font-weight: 700;
                 font-size: 16px;
                 line-height: 24px;
-                color: #262541;
+                color: $--b-main-black-color;
               }
               .address {
                 display: flex;
@@ -1096,7 +1096,7 @@ export default {
                 padding: 0px 4px;
                 border-radius: 4px;
                 background: #efeff6;
-                color: #262541;
+                color: $--b-main-black-color;
                 width: fit-content;
                 &.active {
                   background: #71ba12;
@@ -1110,7 +1110,7 @@ export default {
                 font-size: 14px;
                 line-height: 20px;
                 text-align: right;
-                color: #262541;
+                color: $--b-main-black-color;
                 margin-top: 12px;
                 margin-bottom: 4px;
               }
@@ -1148,7 +1148,7 @@ export default {
         font-weight: 700;
         font-size: 22px;
         line-height: 32px;
-        color: #262541;
+        color: $--b-main-black-color;
       }
       .subtitle {
         font-family: 'Inter';
@@ -1187,7 +1187,7 @@ export default {
               font-weight: 600;
               font-size: 14px;
               line-height: 16px;
-              color: #262541;
+              color: $--b-main-black-color;
             }
             .bottom-line {
               display: flex;
@@ -1210,7 +1210,7 @@ export default {
                 font-size: 12px;
                 line-height: 16px;
                 text-align: right;
-                color: #262541;
+                color: $--b-main-black-color;
               }
             }
           }

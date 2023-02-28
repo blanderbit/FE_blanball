@@ -58,7 +58,7 @@
                 font-weight: 800;
                 font-size: 22px;
                 line-height: 40px;
-                color: #262541;
+                color: $--b-main-black-color;
             }
             .b-event-created-modal__subtitle {
                 font-family: 'Exo 2';
@@ -66,7 +66,7 @@
                 font-weight: 500;
                 font-size: 16px;
                 line-height: 28px;
-                color: #262541;
+                color: $--b-main-black-color;
                 margin-top: -5px;
             }
         }

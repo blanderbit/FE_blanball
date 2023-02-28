@@ -175,7 +175,7 @@ export default {
       font-weight: 700;
       font-size: 22px;
       line-height: 32px;
-      color: #262541;
+      color: $--b-main-black-color;
       @include mobile {
         text-align: center;
       }
@@ -217,7 +217,7 @@ export default {
       font-weight: 500;
       font-size: 14px;
       line-height: 20px;
-      color: #262541;
+      color: $--b-main-black-color;
     }
     .b-register-step__experience-block {
       display: flex;
@@ -259,12 +259,12 @@ export default {
               font-size: 13px;
               line-height: 24px;
               text-transform: capitalize;
-              color: #262541;
+              color: $--b-main-black-color;
               justify-content: space-between;
               &::before {
                 content: '';
                 border-radius: 100%;
-                border: 1px solid #262541;
+                border: 1px solid $--b-main-black-color;
                 display: inline-block;
                 width: 13px;
                 height: 13px;

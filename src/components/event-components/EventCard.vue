@@ -76,7 +76,7 @@
           :text="$t(whiteButtonText)"
           :width="120"
           :height="35"
-          :main-color="'#262541'"
+          :main-color="'$--b-main-black-color'"
           :is-border="true"
           :font-styles="{ 'font-weight': 400 }"
           @click-function="$emit('goToEventPage')"
@@ -223,7 +223,7 @@ export default {
       font-size: 14px;
       line-height: 20px;
       text-align: right;
-      color: #262541;
+      color: $--b-main-black-color;
     }
     .time {
       font-family: 'Inter';
@@ -257,7 +257,7 @@ export default {
           font-weight: 700;
           font-size: 16px;
           line-height: 24px;
-          color: #262541;
+          color: $--b-main-black-color;
         }
         .date-time-mob {
           display: flex;
@@ -347,7 +347,7 @@ export default {
         font-size: 14px;
         line-height: 20px;
         text-align: right;
-        color: #262541;
+        color: $--b-main-black-color;
       }
     }
     .bottom-line {
@@ -375,7 +375,7 @@ export default {
         }
         .players,
         .players-date {
-          color: #262541;
+          color: $--b-main-black-color;
         }
         .visitors,
         .visitors-date {

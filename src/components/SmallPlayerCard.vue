@@ -75,7 +75,7 @@ export default {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: #262541;
+  color: $--b-main-black-color;
 
   @media (max-width: 768px) {
     width: 100%;
@@ -112,7 +112,7 @@ export default {
         font-weight: 400;
         font-size: 14px;
         line-height: 20px;
-        color: #262541;
+        color: $--b-main-black-color;
       }
     }
   }
@@ -126,7 +126,7 @@ export default {
       font-weight: 400;
       font-size: 14px;
       line-height: 20px;
-      color: #262541;
+      color: $--b-main-black-color;
     }
     .b-small-player-card__inactive {
       margin-right: 24px;

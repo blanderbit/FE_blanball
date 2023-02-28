@@ -349,12 +349,8 @@ export default {
   margin-right: 16px;
 }
 .b-player-page__block-hidden {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
+  @include inter(12px, 400, #6f6f77);
   line-height: 20px;
-  color: #6f6f77;
   display: flex;
   align-items: flex-start;
   border-top: 1px solid #dfdeed;
@@ -430,12 +426,8 @@ export default {
             }
           }
           .b_player-qualification {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 12px;
+            @include inter(12px, 400, #395d09);
             line-height: 20px;
-            color: #395d09;
             padding: 0px 4px;
             background: #d2f6a2;
             border-radius: 4px;
@@ -447,62 +439,47 @@ export default {
             font-weight: 700;
             font-size: 20px;
             line-height: 24px;
-            color: #262541;
+            color: $--b-main-black-color;
             @include mobile {
               font-size: 16px;
               line-height: 20px;
             }
           }
           .b-player-page__label {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 500;
-            font-size: 14px;
-            line-height: 20px;
-            text-align: center;
-            color: #575775;
+            @include inter(14px, 500, #575775);
             @include mobile {
               font-size: 12px;
             }
+            line-height: 20px;
+            text-align: center;
           }
           .b-player-page__invite {
+            @include inter(14px, 500, #ffffff);
+            line-height: 24px;
             padding: 6px;
             margin-top: 16px;
             margin-bottom: 8px;
-            background: #262541;
+            background: $--b-main-black-color;
             border-radius: 6px;
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 500;
-            font-size: 14px;
-            line-height: 24px;
             text-align: center;
-            color: #ffffff;
             width: 100%;
             cursor: pointer;
           }
           .b-player-page__title {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 12px;
+            @include inter(12px, 400, #575775);
             line-height: 16px;
-            color: #575775;
           }
           .b-player-page__send-email {
             margin-right: 8px;
           }
           .b-player-page__send-email,
           .b-player-page__call {
+            @include inter(12px, 500, #575775);
+            line-height: 20px;
+
             padding: 6px 8px;
             border: 1px solid #c5c5d3;
             border-radius: 4px;
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 500;
-            font-size: 12px;
-            line-height: 20px;
-            color: #575775;
             display: flex;
             cursor: pointer;
             img {
@@ -518,33 +495,21 @@ export default {
       .b-player-page__about-line {
         margin-top: 16px;
         .b-player-page__title {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 12px;
+          @include inter(12px, 400, #575775);
           line-height: 16px;
-          color: #575775;
           margin-bottom: 4px;
         }
         .b-player-page__text {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 14px;
+          @include inter(14px, 400);
           line-height: 20px;
-          color: #262541;
         }
       }
     }
 
     .b-player-page {
       &__small-text {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 12px;
+        @include inter(14px, 400, #575775);
         line-height: 20px;
-        color: #575775;
       }
       &__main-titles-text {
         font-family: 'Exo 2';
@@ -552,7 +517,7 @@ export default {
         font-weight: 700;
         font-size: 16px;
         line-height: 24px;
-        color: #262541;
+        color: $--b-main-black-color;
       }
       &__right-block {
         background: #ffffff;
@@ -590,19 +555,15 @@ export default {
           font-weight: 700;
           font-size: 16px;
           line-height: 24px;
-          color: #262541;
+          color: $--b-main-black-color;
         }
         .b-player-page__name-date-line {
           display: flex;
           justify-content: space-between;
         }
         .b-player-page__name {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 500;
-          font-size: 12px;
+          @include inter(12px, 500, #575775);
           line-height: 20px;
-          color: #575775;
         }
         .b-player-page__feedback-blocks {
           border-top: 1px solid #efeff6;
@@ -616,12 +577,8 @@ export default {
           }
         }
         .b-player-page__main-text {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 14px;
+          @include inter(14px, 400);
           line-height: 20px;
-          color: #262541;
         }
       }
       &__play-blocks {
@@ -645,12 +602,8 @@ export default {
         }
       }
       &__feature-name {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 600;
-        font-size: 14px;
+        @include inter(14px, 600);
         line-height: 20px;
-        color: #262541;
       }
 
       &__events-history-block {
@@ -682,16 +635,12 @@ export default {
             font-weight: 600;
             font-size: 14px;
             line-height: 20px;
-            color: #262541;
+            color: $--b-main-black-color;
             margin-right: 6px;
           }
           .b-player-page__position {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 12px;
+            @include inter(12px, 400);
             line-height: 20px;
-            color: #262541;
             padding: 0px 4px;
             background: #f0f0f4;
             border-radius: 4px;
@@ -701,12 +650,8 @@ export default {
           display: flex;
           margin-bottom: 6px;
           .b-player-page__label {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 12px;
+            @include inter(12px, 400);
             line-height: 20px;
-            color: #262541;
             padding: 0px 8px;
             border: 1px solid #dfdeed;
             border-radius: 100px;

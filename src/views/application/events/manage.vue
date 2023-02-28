@@ -71,7 +71,7 @@
             <WhiteBtn
               :text="$t('buttons.back')"
               :width="140"
-              :main-color="'#262541'"
+              :main-color="'$--b-main-black-color'"
               :is-border="false"
               @click-function="changeStep('-', data)"
             />
@@ -627,7 +627,7 @@ export default {
     font-weight: 700;
     font-size: 22px;
     line-height: 32px;
-    color: #262541;
+    color: $--b-main-black-color;
     padding-left: 20px;
     display: flex;
     justify-content: space-between;
@@ -738,7 +738,7 @@ export default {
   font-weight: 700;
   font-size: 16px;
   line-height: 24px;
-  color: #262541;
+  color: $--b-main-black-color;
 }
 .b-manage-event__invited-user-left__side {
   display: flex;
@@ -757,7 +757,7 @@ export default {
   font-weight: 500;
   font-size: 12px;
   line-height: 20px;
-  color: #262541;
+  color: $--b-main-black-color;
 }
 .b-invited-user__position {
   font-family: 'Inter';

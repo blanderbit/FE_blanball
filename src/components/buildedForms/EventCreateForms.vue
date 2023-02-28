@@ -140,7 +140,7 @@ export default {
                   font-weight: 500;
                   font-size: 12px;
                   line-height: 20px;
-                  color: #262541;
+                  color: $--b-main-black-color;
                 }
               }
             }

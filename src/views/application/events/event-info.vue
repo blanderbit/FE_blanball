@@ -438,7 +438,7 @@ export default {
           font-weight: 700;
           font-size: 22px;
           line-height: 32px;
-          color: #262541;
+          color: $--b-main-black-color;
           margin-bottom: 4px;
         }
         .b-event-info__subtitle {
@@ -510,7 +510,7 @@ export default {
           font-weight: 400;
           font-size: 14px;
           line-height: 20px;
-          color: #262541;
+          color: $--b-main-black-color;
           margin-bottom: 10px;
           display: flex;
           img {
@@ -566,7 +566,7 @@ export default {
               line-height: 16px;
               display: flex;
               align-items: center;
-              color: #262541;
+              color: $--b-main-black-color;
 
             .b-price-free {
               font-family: 'Exo 2';
@@ -574,7 +574,7 @@ export default {
               font-weight: 700;
               font-size: 16px;
               line-height: 24px;
-              color: #262541;
+              color: $--b-main-black-color;
               margin-left: 6px;
               }
             }
@@ -621,7 +621,7 @@ export default {
           font-weight: 400;
           font-size: 14px;
           line-height: 24px;
-          color: #262541;
+          color: $--b-main-black-color;
           margin-bottom: 16px;
           max-width: 100%;
           word-break: break-word;
@@ -639,7 +639,7 @@ export default {
             font-weight: 400;
             font-size: 12px;
             line-height: 20px;
-            color: #262541;
+            color: $--b-main-black-color;
             padding: 0px 8px;
             border: 1px solid #dfdeed;
             border-radius: 100px;
@@ -670,7 +670,7 @@ export default {
                 font-weight: 500;
                 font-size: 14px;
                 line-height: 20px;
-                color: #262541;
+                color: $--b-main-black-color;
               }
               .b-event-info__phone {
                 font-family: 'Inter';
@@ -713,7 +713,7 @@ export default {
         font-weight: 700;
         font-size: 16px;
         line-height: 24px;
-        color: #262541;
+        color: $--b-main-black-color;
       }
       .b-event-info__judge-trainer-tables {
         display: flex;

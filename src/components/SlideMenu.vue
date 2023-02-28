@@ -430,7 +430,7 @@ export default {
             font-weight: 400;
             font-size: 12px;
             line-height: 20px;
-            color: #262541;
+            color: $--b-main-black-color;
             img {
               margin-right: 12px;
             }
@@ -462,7 +462,7 @@ export default {
           font-weight: 500;
           font-size: 13px;
           line-height: 24px;
-          color: #262541;
+          color: $--b-main-black-color;
         }
       }
       .b_slide_menu_bottom-line {
@@ -488,7 +488,7 @@ export default {
 }
 
 .b-new-notification {
-  border-bottom: 1px solid #262541;
+  border-bottom: 1px solid $--b-main-black-color;
 }
 
 button {
@@ -499,7 +499,7 @@ button {
   font-weight: 400;
   font-size: 12px;
   line-height: 20px;
-  color: #262541;
+  color: $--b-main-black-color;
   background: white;
   margin-right: 5px;
   img {
@@ -523,7 +523,7 @@ button {
   font-weight: 500;
   font-size: 13px;
   line-height: 20px;
-  color: #262541;
+  color: $--b-main-black-color;
 }
 
 .b-notification-unreaded {

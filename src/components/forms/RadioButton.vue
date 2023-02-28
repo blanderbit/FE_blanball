@@ -92,7 +92,7 @@ export default {
     const labelStyle = computed(() => {
       return {
         width: props.width,
-        color: `${props.isDisabled ? '#7F7DB5' : '#262541'}`,
+        color: `${props.isDisabled ? '#7F7DB5' : '$--b-main-black-color'}`,
       }
     })
 
@@ -144,7 +144,7 @@ $color2: #148783;
       &::before {
         content: '';
         border-radius: 100%;
-        border: 1px solid #262541;
+        border: 1px solid $--b-main-black-color;
         display: inline-block;
         width: 13px;
         height: 13px;

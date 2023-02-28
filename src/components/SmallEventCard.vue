@@ -73,7 +73,7 @@ export default {
         font-weight: 600;
         font-size: 14px;
         line-height: 16px;
-        color: #262541;
+        color: $--b-main-black-color;
       }
       .b-small-event-card__bottom-line {
         display: flex;
@@ -96,7 +96,7 @@ export default {
           font-size: 12px;
           line-height: 16px;
           text-align: right;
-          color: #262541;
+          color: $--b-main-black-color;
         }
       }
     }
@@ -131,7 +131,7 @@ export default {
   font-weight: 600;
   font-size: 14px;
   line-height: 16px;
-  color: #262541;
+  color: $--b-main-black-color;
   width: 90%;
   word-break: break-word;
   display: -webkit-box;
