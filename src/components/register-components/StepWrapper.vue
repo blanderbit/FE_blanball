@@ -121,7 +121,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: #ffffff;
+    background: $--b-main-white-color;
     border-radius: 28px 28px 0px 0px;
     position: relative;
     overflow: hidden;

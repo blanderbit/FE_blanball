@@ -49,7 +49,7 @@ export default {
 .b-small-event-card {
   position: relative;
   width: 100%;
-  background: #ffffff;
+  background: $--b-main-white-color;
   border: 1px solid #dfdeed;
   border-radius: 6px;
   padding: 10px 12px;

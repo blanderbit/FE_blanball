@@ -36,7 +36,7 @@ $blue: $--b-main-gray-color;
 $green: #329e78;
 $grey: #d6d6d6;
 $red: #dd3c3a;
-$white: #ffffff;
+$white: $--b-main-white-color;
 
 $border-radius: 3px;
 label {

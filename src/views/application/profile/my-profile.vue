@@ -733,7 +733,7 @@ export default {
     font-weight: 500;
     font-size: 13px;
     line-height: 24px;
-    color: #ffffff;
+    color: $--b-main-white-color;
     padding: 2px 8px;
     background: #6f6f77;
     border-radius: 6px;

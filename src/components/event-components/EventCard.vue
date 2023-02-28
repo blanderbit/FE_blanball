@@ -154,7 +154,7 @@ export default {
   position: relative;
   padding: 15px 15px;
   isolation: isolate;
-  background: #ffffff;
+  background: $--b-main-white-color;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 6px;
   margin-bottom: 16px;
@@ -406,7 +406,7 @@ export default {
   font-size: 13px;
   line-height: 20px;
   text-align: center;
-  color: #FFFFFF;
+  color: $--b-main-white-color;
   border-radius: 4px;
   padding: 0px 4px;
 

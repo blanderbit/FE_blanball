@@ -68,7 +68,7 @@ export default {
 .notification-button.flat {
   background: $--b-main-gray-color;
   border-color: $--b-main-gray-color;
-  color: #ffffff;
+  color: $--b-main-white-color;
   &.notification-type__notification-sidebar {
     background: #efeff6;
     border-color: #efeff6;
@@ -79,7 +79,7 @@ export default {
 .notification-button.stroked {
   background: $--b-main-black-color;
   border-color: #c5c5d3;
-  color: #ffffff;
+  color: $--b-main-white-color;
   &.notification-type__notification-sidebar {
     background: #fcfcfc;
     border-color: #efeff6;
@@ -90,24 +90,24 @@ export default {
 .notification-button.flat.success {
   background: #148581;
   border-color: #148581;
-  color: #ffffff;
+  color: $--b-main-white-color;
 }
 
 .notification-button.stroked.success {
   background: #148581;
   border-color: #c5c5d3;
-  color: #ffffff;
+  color: $--b-main-white-color;
 }
 
 .notification-button.flat.error {
   background: #a4284d;
   border-color: #a4284d;
-  color: #ffffff;
+  color: $--b-main-white-color;
 }
 
 .notification-button.stroked.error {
   background: #a4284d;
   border-color: #c5c5d3;
-  color: #ffffff;
+  color: $--b-main-white-color;
 }
 </style>

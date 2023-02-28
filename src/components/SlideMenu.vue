@@ -377,7 +377,7 @@ export default {
     height: 32px;
     right: -20px;
     top: 72px;
-    background: #ffffff;
+    background: $--b-main-white-color;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 6px;
     display: flex;
@@ -515,7 +515,7 @@ button {
   font-weight: 500;
   font-size: 12px;
   line-height: 20px;
-  color: #ffffff;
+  color: $--b-main-white-color;
 }
 
 .b-notifications-title {
@@ -534,7 +534,7 @@ button {
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  color: #ffffff;
+  color: $--b-main-white-color;
 }
 
 .b-button-scroll__to-first-element {

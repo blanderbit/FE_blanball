@@ -395,7 +395,7 @@ export default {
     .b-player-page__user-card {
       padding: 24px;
       flex-basis: 324px;
-      background: #ffffff;
+      background: $--b-main-white-color;
       box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
       border-radius: 6px;
       margin-right: 16px;
@@ -520,7 +520,7 @@ export default {
         color: $--b-main-black-color;
       }
       &__right-block {
-        background: #ffffff;
+        background: $--b-main-white-color;
         box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
         border-radius: 12px;
         padding-bottom: 15px;

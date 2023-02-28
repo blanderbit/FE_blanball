@@ -85,7 +85,7 @@ export default {
   gap: 12px 0px;
 
   .b-list-item {
-    background: #ffffff;
+    background: $--b-main-white-color;
     border: 1px solid #dfdeed;
     border-radius: 4px;
     padding: 4px 16px;

@@ -112,12 +112,12 @@ export default {
         font-weight: 600;
         font-size: 14px;
         line-height: 20px;
-        color: #ffffff;
+        color: $--b-main-white-color;
       }
 
       .b-change-data__close {
         line-height: 20px;
-        color: #ffffff;
+        color: $--b-main-white-color;
         font-size: 22px;
         cursor: pointer;
       }

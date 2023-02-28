@@ -210,7 +210,7 @@ export default {
         font-weight: 600;
         font-size: 16px;
         line-height: 24px;
-        color: #ffffff;
+        color: $--b-main-white-color;
       }
     }
     .b-bug-report-modal__main-side {
@@ -285,7 +285,7 @@ export default {
         font-size: 14px;
         line-height: 24px;
         text-align: center;
-        color: #ffffff;
+        color: $--b-main-white-color;
         cursor: pointer;
 
         @media (max-width: 450px) {

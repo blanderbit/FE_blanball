@@ -475,7 +475,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     padding: 8px 12px;
-    background: #ffffff;
+    background: $--b-main-white-color;
     border-radius: 8px;
     .b-mob-menu__user-img {
       img {

@@ -288,7 +288,7 @@ html {
       font-weight: 500;
       font-size: 12px;
       line-height: 20px;
-      color: #ffffff;
+      color: $--b-main-white-color;
       margin-right: 20px;
     }
     .b_header_verify-btn {
@@ -301,7 +301,7 @@ html {
       font-size: 12px;
       line-height: 24px;
       text-align: center;
-      color: #ffffff;
+      color: $--b-main-white-color;
       display: inline-block;
       cursor: pointer;
       margin-left: 12px;

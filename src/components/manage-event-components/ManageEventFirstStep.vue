@@ -321,7 +321,7 @@ export default {
         left: 2px;
         top: -8px;
         padding: 0px 4px;
-        background: #ffffff;
+        background: $--b-main-white-color;
         border-radius: 4px;
         font-family: 'Inter';
         font-style: normal;
@@ -427,7 +427,7 @@ export default {
 
   .b-event-m-2st__duration-item {
     flex-basis: 25%;
-    background: #FFFFFF;
+    background: $--b-main-white-color;
     border-radius: 4px;
     padding: 8px;
     font-family: 'Inter';

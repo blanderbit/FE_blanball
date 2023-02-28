@@ -353,7 +353,7 @@ export default {
     font-size: 12px;
     line-height: 16px;
     color: $--b-main-gray-color;
-    background: #ffffff;
+    background: $--b-main-white-color;
     padding: 0px 4px;
     left: 8px;
     top: -8px;

@@ -116,7 +116,7 @@ $color2: $--b-main-green-color;
   display: flex;
   flex-direction: row;
   align-items: center;
-  background: #ffffff;
+  background: $--b-main-white-color;
   border: 1px solid #dfdeed;
   border-radius: 6px;
   margin-right: 12px;

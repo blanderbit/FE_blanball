@@ -214,7 +214,7 @@ export default {
     }
     .b-auth__left-part {
       width: 432px;
-      background: #ffffff;
+      background: $--b-main-white-color;
       @media (max-width: 992px) {
         width: 100%;
       }

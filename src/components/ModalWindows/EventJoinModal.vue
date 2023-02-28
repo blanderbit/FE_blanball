@@ -66,7 +66,7 @@ export default {
     }
 
     .b-event-join__tooltip {
-        background: #FFFFFF;
+        background: $--b-main-white-color;
         width: 180px;
         position: absolute;
         border-radius: 6px;

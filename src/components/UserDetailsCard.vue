@@ -487,7 +487,7 @@ export default {
   }
 
   .b-user-card__top-table {
-    background: #ffffff;
+    background: $--b-main-white-color;
     border-radius: 8px;
     padding: 16px 16px;
     margin-bottom: 16px;
@@ -563,7 +563,7 @@ export default {
               font-weight: 500;
               font-size: 12px;
               line-height: 20px;
-              color: #ffffff;
+              color: $--b-main-white-color;
             }
           }
         }

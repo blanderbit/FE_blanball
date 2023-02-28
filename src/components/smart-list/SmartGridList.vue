@@ -161,7 +161,7 @@ export default {
 
 ::v-deep {
   .vcp--expandable {
-    background: #ffffff;
+    background: $--b-main-white-color;
     border-bottom: 1px solid #efeff6;
     box-shadow: 2px 2px 10px rgb(56 56 251 / 10%);
   }

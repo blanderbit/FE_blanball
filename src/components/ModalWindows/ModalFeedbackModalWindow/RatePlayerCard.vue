@@ -74,7 +74,7 @@ export default {
       font-size: 13px;
       line-height: 20px;
       text-align: center;
-      color: #ffffff;
+      color: $--b-main-white-color;
       text-transform: uppercase;
     }
 

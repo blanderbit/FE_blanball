@@ -135,7 +135,7 @@ export default {
 @import '../assets/styles/mixins/device.scss';
 .b-user-card {
   padding: 8px 12px 8px 0;
-  /* background: #FFFFFF; */
+  /* background: $--b-main-white-color; */
   /* border-bottom: 1px solid #EFEFF6; */
   /* box-shadow: 2px 2px 10px rgb(56 56 251 / 10%); */
   /* border-radius: 8px; */

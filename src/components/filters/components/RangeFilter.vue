@@ -95,7 +95,7 @@ export default {
     z-index: 11;
   }
   .b-range-filter__left-side {
-    background: #ffffff;
+    background: $--b-main-white-color;
     padding: 0 12px;
     width: 100%;
     display: flex;
@@ -110,7 +110,7 @@ export default {
     border-top: 1px solid #dfdeed;
     border-right: 1px solid #dfdeed;
     border-bottom: 1px solid #dfdeed;
-    background: #ffffff;
+    background: $--b-main-white-color;
     padding: 6px 12px;
     border-radius: 0 6px 6px 0;
     font-family: 'Inter';

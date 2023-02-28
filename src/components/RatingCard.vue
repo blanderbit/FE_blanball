@@ -266,7 +266,7 @@ export default {
 }
 .b-rating-card {
   height: fit-content;
-  background: #ffffff;
+  background: $--b-main-white-color;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 8px;
   padding: 20px 16px;

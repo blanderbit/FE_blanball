@@ -47,7 +47,7 @@ export default {
 
 <style scoped lang="scss">
 .b-long__radio-button {
-  background: #ffffff;
+  background: $--b-main-white-color;
   padding: 6px;
   border: 1px solid #f0f0f4;
   border-radius: 6px;

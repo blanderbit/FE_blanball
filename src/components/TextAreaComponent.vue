@@ -141,7 +141,7 @@ export default {
       position: absolute;
       left: 8px;
       top: -8px;
-      background: #ffffff;
+      background: $--b-main-white-color;
       border-radius: 4px;
       font-family: 'Inter';
       font-style: normal;

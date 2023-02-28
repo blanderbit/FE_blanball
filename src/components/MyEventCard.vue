@@ -101,7 +101,7 @@ export default {
 <style lang="scss" scoped>
 .b-my-event-card {
   padding: 12px;
-  background: #ffffff;
+  background: $--b-main-white-color;
   border-radius: 6px;
   display: flex;
   justify-content: space-between;
@@ -124,7 +124,7 @@ export default {
     right: -5px;
     top: -3px;
     padding: 4px;
-    background: #FFFFFF;
+    background: $--b-main-white-color;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 20px;
     display: flex;
@@ -132,7 +132,7 @@ export default {
   }
 
   .b-my-event-card-pinned-icon {
-    background: #FFFFFF;
+    background: $--b-main-white-color;
     position: absolute;
     right: -5px;
     padding: 4px;

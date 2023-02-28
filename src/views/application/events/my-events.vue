@@ -696,7 +696,7 @@ export default {
             position: absolute;
             right: -10px;
             top: -10px;
-            background: #FFFFFF;
+            background: $--b-main-white-color;
             border: 2px solid $--b-main-green-color;
             border-radius: 100px;
             width: 28px;

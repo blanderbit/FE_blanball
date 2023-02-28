@@ -273,7 +273,7 @@ export default {
     margin-right: 4px;
     border: 1px solid #dfdeed;
     border-radius: 6px;
-    background: #ffffff;
+    background: $--b-main-white-color;
     display: flex;
     align-items: center;
     padding: 0 13px;
@@ -281,7 +281,7 @@ export default {
       height: 32px;
       width: 100px;
       padding: 4px 12px;
-      background: #ffffff;
+      background: $--b-main-white-color;
       border-radius: 6px;
       outline: none;
     }

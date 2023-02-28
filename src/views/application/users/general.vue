@@ -510,7 +510,7 @@ export default {
                 flex-direction: row;
                 align-items: center;
                 padding: 6px 12px;
-                background: #ffffff;
+                background: $--b-main-white-color;
                 border: 1px solid #dfdeed;
                 border-radius: 6px;
                 margin-right: 8px;
@@ -632,7 +632,7 @@ export default {
               }
               width: 32px;
               height: 32px;
-              background: #ffffff;
+              background: $--b-main-white-color;
               border: 1px solid #dfdeed;
               border-radius: 6px;
               margin-right: 8px;
@@ -745,7 +745,7 @@ export default {
           padding: 20px 16px;
           isolation: isolate;
           width: 328px;
-          background: #ffffff;
+          background: $--b-main-white-color;
           box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
           border-radius: 6px;
           margin-bottom: 16px;
@@ -976,7 +976,7 @@ export default {
         margin-top: 23px;
         .my-event-card {
           padding: 12px;
-          background: #ffffff;
+          background: $--b-main-white-color;
           border-radius: 6px;
           display: flex;
           justify-content: space-between;
@@ -1164,7 +1164,7 @@ export default {
       .card {
         position: relative;
         width: 100%;
-        background: #ffffff;
+        background: $--b-main-white-color;
         border: 1px solid #dfdeed;
         border-radius: 6px;
         padding: 10px 12px;

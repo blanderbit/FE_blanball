@@ -57,7 +57,7 @@ export default {
     font-weight: 600;
     font-size: 12px;
     line-height: 16px;
-    color: #ffffff;
+    color: $--b-main-white-color;
   }
   &__label-text {
     font-family: 'Inter';

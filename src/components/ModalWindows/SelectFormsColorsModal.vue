@@ -266,7 +266,7 @@ export default {
             }
 
             .b-tabs-block__tabs {
-                background: #FFFFFF;
+                background: $--b-main-white-color;
                 border: 1px solid #F0F0F4;
                 border-radius: 6px;
                 width: 100%;
@@ -346,7 +346,7 @@ export default {
                         }
 
                         .b-item__dropdown {
-                            background: #FFFFFF;
+                            background: $--b-main-white-color;
                             border-radius: 6px;
                         }
                     }

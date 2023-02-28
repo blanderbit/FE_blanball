@@ -141,7 +141,7 @@ export default {
         padding: 8px;
         width: 48px;
         height: 40px;
-        background: #ffffff;
+        background: $--b-main-white-color;
         border: 1px solid #dfdeed;
         border-radius: 6px;
         margin-right: 4px;

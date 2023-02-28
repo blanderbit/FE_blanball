@@ -160,7 +160,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: #ffffff;
+  background: $--b-main-white-color;
   border-radius: 28px 28px 0px 0px;
   @include mobile {
     padding: 44px 16px 72px 16px;
@@ -236,7 +236,7 @@ export default {
           flex-direction: row;
           align-items: center;
           padding: 6px 12px;
-          background: #ffffff;
+          background: $--b-main-white-color;
           border: 1px solid #dfdeed;
           border-radius: 6px;
           width: 186px;

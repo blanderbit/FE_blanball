@@ -16,7 +16,7 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background: #ffffff;
+  background: $--b-main-white-color;
   background: linear-gradient(
     to right,
     #148783 10%,
@@ -39,7 +39,7 @@
 }
 
 .loader:after {
-  background: #ffffff;
+  background: $--b-main-white-color;
   width: 75%;
   height: 75%;
   border-radius: 50%;

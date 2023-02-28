@@ -345,7 +345,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     z-index: 12;
-    background: #ffffff;
+    background: $--b-main-white-color;
     .b_sidebar_picture-bottom {
       background: #efeff6;
       border-radius: 24px;
@@ -357,7 +357,7 @@ export default {
         margin-top: 6px;
         width: 40px;
         height: 40px;
-        background: #ffffff;
+        background: $--b-main-white-color;
         border: 1px solid #efeff6;
         border-radius: 24px;
         cursor: pointer;

@@ -108,7 +108,7 @@ export default {
   padding: 20px 16px;
   isolation: isolate;
   width: 328px;
-  background: #ffffff;
+  background: $--b-main-white-color;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 6px;
   margin-bottom: 16px;

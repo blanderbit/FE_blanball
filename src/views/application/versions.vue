@@ -229,7 +229,7 @@ export default {
     font-size: 12px;
     line-height: 20px;
     text-align: center;
-    color: #ffffff;
+    color: $--b-main-white-color;
     padding: 0px 6px;
     background: $--b-main-gray-color;
     border-radius: 4px;
