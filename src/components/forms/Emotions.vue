@@ -99,7 +99,7 @@ export default {
     font-weight: 400;
     font-size: 12px;
     line-height: 20px;
-    color: #F32929;
+    color: $--b-error-color;
     margin-top: 20px;
 }
 </style>

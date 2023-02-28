@@ -406,7 +406,7 @@ export default {
   font-weight: 400;
   font-size: 12px;
   line-height: 20px;
-  color: #f32929;
+  color: $--b-error-color;
 }
 .b-event-m-1st__subtitle {
   font-family: 'Inter';

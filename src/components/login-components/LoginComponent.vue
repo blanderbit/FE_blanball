@@ -237,7 +237,7 @@ export default {
     font-size: 14px;
     line-height: 24px;
     text-align: center;
-    color: #f32929;
+    color: $--b-error-color;
     transition: all 0.3s ease-in-out;
     .b-login-step__left-part {
       display: flex;
@@ -349,7 +349,7 @@ export default {
     font-weight: 400;
     font-size: 12px;
     line-height: 20px;
-    color: #f32929;
+    color: $--b-error-color;
     padding: 2px 0px 2px 4px;
     width: 100%;
     height: 44px;

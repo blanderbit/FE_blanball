@@ -165,7 +165,7 @@ export default {
       font-weight: 400;
       font-size: 12px;
       line-height: 20px;
-      color: #f32929;
+      color: $--b-error-color;
     }
     .btns-block {
       display: flex;
@@ -226,6 +226,6 @@ export default {
   font-weight: 400;
   font-size: 12px;
   line-height: 20px;
-  color: #f32929;
+  color: $--b-error-color;
 }
 </style>

@@ -120,7 +120,7 @@ export default {
       font-size: 13px;
       line-height: 24px;
       text-align: center;
-      color: #f32929;
+      color: $--b-error-color;
       margin-left: 7px;
     }
   }
