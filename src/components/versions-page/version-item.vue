@@ -66,7 +66,7 @@ export default {
     font-size: 12px;
     line-height: 20px;
     text-align: center;
-    color: #148783;
+    color: $--b-main-green-color;
   }
   &__date {
     div {

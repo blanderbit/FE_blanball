@@ -81,7 +81,7 @@ export default {
   }
 
   &-words {
-    color: #148783;
+    color: $--b-main-green-color;
     min-width: 100%;
     font-family: 'Exo 2';
     font-style: normal;

@@ -81,7 +81,7 @@ export default {
         width: 140px;
         height: 140px;
         margin: 8px;
-        border: 8px solid #148783;
+        border: 8px solid $--b-main-green-color;
         border-radius: 50%;
         animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
         border-color: #148783 transparent transparent transparent;

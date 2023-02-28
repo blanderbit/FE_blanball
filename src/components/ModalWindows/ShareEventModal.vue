@@ -88,7 +88,7 @@ export default {
       width: 328px;
       border-radius: 6px 6px 0px 0px;
       height: 52px;
-      background: #148783;
+      background: $--b-main-green-color;
 
       .b-share-event-modal__title {
         font-family: 'Exo 2';

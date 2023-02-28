@@ -30,7 +30,7 @@
 .loader:before {
   width: 50%;
   height: 50%;
-  background: #148783;
+  background: $--b-main-green-color;
   border-radius: 100% 0 0 0;
   position: absolute;
   top: 0;

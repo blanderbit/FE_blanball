@@ -160,7 +160,7 @@ export default {
   margin-top: 12px;
   .radio-btn-wrapper {
     $color1: #f4f4f4;
-    $color2: #148783;
+    $color2: $--b-main-green-color;
     display: flex;
     align-items: center;
   }

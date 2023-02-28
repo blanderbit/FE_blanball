@@ -112,7 +112,7 @@ export default {
 }
 
 input:checked + .b_switch_slider {
-  background-color: #148783;
+  background-color: $--b-main-green-color;
 }
 
 input:checked + .b_switch_slider:before {

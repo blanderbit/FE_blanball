@@ -201,7 +201,7 @@ export default {
         font-weight: 500;
         font-size: 14px;
         line-height: 24px;
-        color: #148783;
+        color: $--b-main-green-color;
         cursor: pointer;
       }
       .save-btn {
@@ -213,7 +213,7 @@ export default {
         font-weight: 500;
         font-size: 14px;
         line-height: 24px;
-        color: #148783;
+        color: $--b-main-green-color;
         cursor: pointer;
       }
     }

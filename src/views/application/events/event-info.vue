@@ -530,7 +530,7 @@ export default {
           cursor: pointer;
 
           &.fee {
-            border-bottom: 1px dashed #148783;
+            border-bottom: 1px dashed $--b-main-green-color;
             border-radius: 4px 4px 0px 0px;
             background: #E3FBFA;
             span {
@@ -541,7 +541,7 @@ export default {
             line-height: 16px;
             display: flex;
             align-items: center;
-            color: #148783;
+            color: $--b-main-green-color;
 
             .b-price {
               font-family: 'Exo 2';
@@ -550,7 +550,7 @@ export default {
               font-size: 16px;
               line-height: 24px;
               margin-left: 6px;
-              color: #148783;
+              color: $--b-main-green-color;
             }
           }
           }

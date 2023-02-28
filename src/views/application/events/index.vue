@@ -613,7 +613,7 @@ export default {
         overflow: hidden;
 
         .b-events-page__all-create-event-mobile-button {
-          background: #148783;
+          background: $--b-main-green-color;
           box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
           border-radius: 100px;
           padding: 12px;

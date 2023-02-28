@@ -71,7 +71,7 @@ export default {
 
 <style scoped lang="scss">
 .filter-style {
-  --slider-connect-bg: #148783;
+  --slider-connect-bg: $--b-main-green-color;
   --slider-height: 2px;
   --slider-handle-border: 4px solid #1ab2ad;
   --slider-handle-shadow: 0.5px 0.5px 2px 1px #e9fcfb;

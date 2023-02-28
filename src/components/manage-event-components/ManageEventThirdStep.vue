@@ -181,7 +181,7 @@ export default {
 
   .radio-btn-wrapper {
     $color1: #f4f4f4;
-    $color2: #148783;
+    $color2: $--b-main-green-color;
     display: flex;
     align-items: center;
     justify-content: space-between;

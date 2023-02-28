@@ -697,7 +697,7 @@ export default {
             right: -10px;
             top: -10px;
             background: #FFFFFF;
-            border: 2px solid #148783;
+            border: 2px solid $--b-main-green-color;
             border-radius: 100px;
             width: 28px;
             height: 24px;

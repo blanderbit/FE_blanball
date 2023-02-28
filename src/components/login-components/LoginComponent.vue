@@ -366,8 +366,8 @@ export default {
     line-height: 20px;
     color: $--b-main-black-color;
     span {
-      color: #148783;
-      border-bottom: 1px dashed #148783;
+      color: $--b-main-green-color;
+      border-bottom: 1px dashed $--b-main-green-color;
       cursor: pointer;
     }
   }
