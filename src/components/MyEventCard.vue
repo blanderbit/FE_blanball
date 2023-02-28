@@ -1,43 +1,50 @@
 <template>
-  <div
-    :class="['b-my-event-card', { active: card.isActive }]"
+  <div :class="['b-my-event-card', 
+    { active: card.status === 'Active' },
+    { finished: card.status === 'Finished' },
+    { selected: isCardSelected}]" 
     @click.right.prevent="$emit('cardRightClick', $event)"
-  >
-    <div class="b-my-event-card__left-block">
+    @click.prevent="$emit('cardLeftClick', card.id)"
+    @touchstart="startHoldOpenMenu"
+    @touchend="endHoldOpenMenu">
+    <div v-if="isCardSelected" class="b-my-event-card-selected-icon">
+      <img src="../assets/img/green-nike-icon.svg" alt="">
+    </div>
+    <div v-if="card.pinned && !isCardSelected" class="b-my-event-card-pinned-icon">
+      <img src="../assets/img/gray-pin.svg" alt="">
+    </div>
+    <div :class="['b-my-event-card__left-block',  { selected: isCardSelected}]">
       <div class="b-my-event-card__col-1">
         <div class="b-my-event-card__card-icon">
           <img src="../assets/img/hands-shake.svg" alt="" />
         </div>
       </div>
       <div class="b-my-event-card__col-2">
-        <div class="b-my-event-card__title">{{ card.title }}</div>
-        <div class="b-my-event-card__address">
-          <img src="../assets/img/location-point.svg" alt="" />
-          <p>
-            {{ card.address }}
-          </p>
-        </div>
+        <div class="b-my-event-card__title">{{ card.name }}</div>
+        <PlaceDetector class="b-my-event-card__place" v-if="card.place.place_name" :place="card.place">
+        </PlaceDetector>
         <div class="b-my-event-card__labels">
-          <div
-            v-for="label in card.labels"
-            :key="label"
-            class="b-my-event-card__label"
-          >
-            {{ label }}
+          <div v-if="card.gender" class="b-my-event-card__label">
+            {{ $t(`events.${card.gender}`) }}
           </div>
+          <div v-if="card.type" class="b-my-event-card__label">
+            {{ $t(`events.${card.type}`) }}
+          </div>
+          <div v-if="card.need_ball" class="b-my-event-card__label">{{ $t('hashtags.need_ball') }}</div>
+          <div v-if="card.need_form" class="b-my-event-card__label">{{ $t('hashtags.need_form') }}</div>
         </div>
       </div>
     </div>
-    <div class="b-my-event-card__right-block">
+    <div :class="['b-my-event-card__right-block',  { selected: isCardSelected}]">
       <div class="b-my-event-card__col-3">
-        <div :class="['b-my-event-card__state', { active: card.isActive }]">
-          {{ card.isActive ? 'Активно' : 'Заплановано' }}
-        </div>
+        <span :class="['b-my-event-card__status', `b-my-event-card__status-${card.status.toLowerCase()}`]">
+          {{ $t(`events.${card.status}`) }}
+        </span>
         <div class="b-my-event-card__date">
           {{ card.date }}
         </div>
         <div class="b-my-event-card__time">
-          {{ card.time }}
+          {{ card.time }} - {{ card.end_time }}
         </div>
       </div>
     </div>
@@ -45,13 +52,49 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+
+import PlaceDetector from './maps/PlaceDetector.vue'
+
 export default {
+  components: {
+    PlaceDetector,
+  },
   props: {
     card: {
       type: Object,
       default: () => ({}),
     },
+    selected: {
+      type: Array,
+      default: () => [],
+    }
   },
+  setup(props, context) {
+    const isCardSelected = computed(() => {
+      return props.selected.includes(props.card.id)
+    })
+
+    let timeout
+
+    const startHoldOpenMenu = (e) => {
+      const touch = e.touches[0];
+      const data = {'clientX': touch.pageX, 'clientY': touch.pageY}
+      timeout = setTimeout(() => {
+        context.emit('cardRightClick', data)
+      }, 500);
+    }
+
+    const endHoldOpenMenu = (e) => {
+      clearTimeout(timeout);
+    }
+
+    return {
+      isCardSelected,
+      startHoldOpenMenu,
+      endHoldOpenMenu,
+    }
+  }
 }
 </script>
 
@@ -64,27 +107,54 @@ export default {
   justify-content: space-between;
   border: 1px solid #dfdeed;
   margin-bottom: 16px;
-  width: 328px;
-  @media (min-width: 1200px) and (max-width: 1400px) {
-    width: 408px;
-  }
-  @media (min-width: 992px) and (max-width: 1200px) {
-    width: 320px;
-  }
-  @media (min-width: 768px) and (max-width: 991px) {
-    width: 344px;
-  }
-  @media (max-width: 768px) {
-    width: 100%;
-  }
+  cursor: pointer;
   &.active {
     border: 1px solid #71ba12;
   }
+  &.finished {
+    border: 1px solid #E184A0;
+  }
+  &.selected {
+    border: 1px solid #1AB2AD;
+  }
+
+  .b-my-event-card-selected-icon {
+    position: absolute;
+    right: -5px;
+    top: -3px;
+    padding: 4px;
+    background: #FFFFFF;
+    box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  .b-my-event-card-pinned-icon {
+    background: #FFFFFF;
+    position: absolute;
+    right: -5px;
+    padding: 4px;
+    top: -3px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    border: 2px solid #F0F0F4;
+    border-radius: 20px;
+  }
+
   .b-my-event-card__left-block {
     display: flex;
+
+    &.selected {
+      opacity: 0.6;
+    }
+
     .b-my-event-card__col-1 {
       margin-right: 8px;
       min-width: 50px;
+      max-height: 50px;
+
       .b-my-event-card__card-icon {
         display: flex;
         flex-direction: row;
@@ -97,20 +167,9 @@ export default {
         border-radius: 4px;
       }
     }
+
     .b-my-event-card__col-2 {
-      width: 150px;
-      @media (min-width: 1200px) and (max-width: 1400px) {
-        width: 230px;
-      }
-      @media (min-width: 992px) and (max-width: 1200px) {
-        width: 150px;
-      }
-      @media (min-width: 768px) and (max-width: 991px) {
-        width: 165px;
-      }
-      @media (max-width: 768px) {
-        width: 70%;
-      }
+      min-width: 100%;
       .b-my-event-card__title {
         font-family: 'Exo 2';
         font-style: normal;
@@ -118,34 +177,24 @@ export default {
         font-size: 16px;
         line-height: 24px;
         color: #262541;
+        width: 75%;
+        word-break: break-word;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
-      .b-my-event-card__address {
-        display: flex;
-        background: #fafafa;
-        padding: 0px 4px;
-        margin-top: 4px;
-        img {
-          margin-right: 5px;
-        }
-        p {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 12px;
-          line-height: 20px;
-          color: #575775;
-          border-radius: 4px;
-          display: -webkit-box;
-          -webkit-line-clamp: 1;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
-      }
+
       .b-my-event-card__labels {
         display: flex;
         align-items: center;
+        margin-top: 12px;
         flex-wrap: wrap;
-        margin-top: 8px;
+        gap: 8px 0px;
+        margin-left: -60px;
+        margin-top: 10px;
+        min-width: 170px;
+
         .b-my-event-card__label {
           padding: 0px 8px;
           border: 1px solid #efeff6;
@@ -162,12 +211,49 @@ export default {
       }
     }
   }
+
   .b-my-event-card__right-block {
+    max-height: 50px;
+
+    &.selected {
+      opacity: 0.6;
+    }
+
+    .b-my-event-card__status {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 20px;
+      text-align: center;
+      border-radius: 4px;
+      padding: 0px 4px;
+
+      &-planned {
+        color: #262541;
+        background: #EFEFF6;
+      }
+
+      &-active {
+        color: #fff;
+        background: #71BA12;
+      }
+
+      &-finished {
+        color: #fff;
+        background: #E184A0;
+      }
+    }
+
     .b-my-event-card__col-3 {
-      min-width: 100%;
+      min-width: 120px;
+      max-height: 70px;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
+      justify-content: center;
+      margin-left: -20px;
+
       .b-my-event-card__state {
         font-family: 'Inter';
         font-style: normal;
@@ -180,11 +266,13 @@ export default {
         background: #efeff6;
         color: #262541;
         width: fit-content;
+
         &.b-my-event-card__active {
           background: #71ba12;
           color: #fff;
         }
       }
+
       .b-my-event-card__date {
         font-family: 'Inter';
         font-style: normal;
@@ -196,6 +284,7 @@ export default {
         margin-top: 12px;
         margin-bottom: 4px;
       }
+
       .b-my-event-card__time {
         font-family: 'Inter';
         font-style: normal;
@@ -207,5 +296,14 @@ export default {
       }
     }
   }
+}
+
+.b-my-event-card__place::v-deep(.b-place-detector) {
+  background: #EFEFF6;
+  border-radius: 4px;
+  margin-top: 10px;
+  width: fit-content;
+  max-width: 70%;
+  cursor: pointer;
 }
 </style>

@@ -24,5 +24,7 @@ export default {
   'close-this-window': 'Закрити це вікно',
   'send-feedback': 'Надіслати відгук',
   'copy-link': 'Скопіювати посилання', 
-  'delete-users': 'Видалити користувачів'
+  'delete-users': 'Видалити користувачів',
+  'delete': 'Видалити',
+  'pin': 'Закріпити'
 }

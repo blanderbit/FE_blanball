@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="b-place-detector" @click="activeModal = true">
+    <div class="b-place-detector" @click.stop="activeModal = true">
       <img src="../../assets/img/location-point.svg" alt="" />
       <p>{{ place?.place_name }}</p>
     </div>

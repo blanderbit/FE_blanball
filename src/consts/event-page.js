@@ -1,6 +1,7 @@
 import circleTick from '../assets/img/tick-in-circle.svg'
 import bucket from '../assets/img/bucket.svg'
 import pin from '../assets/img/pin.svg'
+import unpin from '../assets/img/unpin.svg'
 
 export default {
   event_cards: [
@@ -187,21 +188,24 @@ export default {
       ],
     },
   ],
-  menu_text: [
+  menu_text: (eventPinned) => [
     {
       id: 0,
       text: 'Виділити',
       img: circleTick,
+      type: 'select'
     },
     {
       id: 1,
       text: 'Видалити',
       img: bucket,
+      type: 'delete'
     },
     {
       id: 2,
-      text: 'Закріпити',
-      img: pin,
+      text: !eventPinned ? 'Закріпити' : 'Відкріпити',
+      img: !eventPinned ? pin : unpin,
+      type: !eventPinned ? 'pin' : 'unpin'
     },
   ],
   status_ropdown: [

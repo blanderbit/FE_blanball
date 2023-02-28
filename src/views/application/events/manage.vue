@@ -7,6 +7,13 @@
       :validation-schema="schema"
       @submit="disableSubmit"
     >
+    <SelectFormsColorsModal
+    v-if="isSelectFormColarModalOpened"
+    :formsData="eventForms"
+    :selectedTab="formsModalSelectedTabId"
+    @closeModal="closeSelectFormsModal"
+    @saveData="saveForms($event, data)"
+  />
       <div class="b-manage-event__page-title">
         <span>
           {{ $t('events.event-creation') }}
@@ -38,7 +45,12 @@
             @invite-user="inviteUsetToTheEvent"
             @changedEventPrivacyToFree="updateEventPriceAfterSelectFree(data)"
           />
-          <ManageEventThirdStep :currentStep="currentStep" />
+          <ManageEventThirdStep 
+            :currentStep="currentStep"
+            :formsValue="eventForms"
+            @selectNeedForm="selectNeedForm($event, data)"
+            @setForms="openSelectFormsModal"
+            @changeForms="openSelectFormsModal"/>
 
           <div class="b-manage-event__progress-line">
             <div class="b-manage-event__sections">
@@ -98,6 +110,7 @@
                 <avatar
                   class="b-invited-user__avatar"
                   :link="user.profile.avatar_url"
+                  :avatarType="'small-square'"
                   :full-name="`${user.profile.name} ${user.profile.last_name}`"
                 ></avatar>
                 <span class="b-invited-user__position">{{
@@ -143,7 +156,6 @@ import * as yup from 'yup'
 import InputComponent from '../../../components/forms/InputComponent.vue'
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
-import SelectionSuitModal from '../../../components/suit/SelectionSuitModal.vue'
 import ManageEventFirstStep from '../../../components/manage-event-components/ManageEventFirstStep.vue'
 import Avatar from '../../../components/Avatar.vue'
 import PreviewBlock from '../../../components/manage-event-components/PreviewBlock.vue'
@@ -153,6 +165,7 @@ import ManageEventThirdStep from '../../../components/manage-event-components/Ma
 import ButtonsBlock from '../../../components/manage-event-components/ButtonsBlock.vue'
 import RemoveInvitedUsersModal from '../../../components/manage-event-components/RemoveInvitedUsersModal.vue'
 import Loading from '../../../workers/loading-worker/Loading.vue'
+import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue'
 
 import { API } from '../../../workers/api-worker/api.worker'
 import { useUserDataStore } from '../../../stores/userData'
@@ -171,10 +184,10 @@ export default {
     ManageEventFirstStep,
     ManageEventSecondStep,
     ManageEventThirdStep,
-    SelectionSuitModal,
     ButtonsBlock,
     EventCard,
     Form,
+    SelectFormsColorsModal,
     PreviewBlock,
     Avatar,
     Loading,
@@ -187,16 +200,14 @@ export default {
     const startDate = ref('')
     const userStore = useUserDataStore()
     const searchUsersLoading = ref(false)
+    const formsModalSelectedTabId = ref(null)
     const relevantUsersList = ref([])
     const eventCreateLoader = ref(false)
     const invitedUsers = ref([])
+    const isSelectFormColarModalOpened = ref(false)
     const removeInvitedUsersModalOpened = ref(false)
+    const eventForms = ref({})
     let searchTimeout
-
-    const eventFormTypes = {
-      T_Shirt: 'T-Shirt',
-      Shirt_Front: 'Shirt-Front',
-    }
 
     const eventPreviewData = ref({
       name: '',
@@ -211,6 +222,7 @@ export default {
       need_form: null,
       date_and_time: '',
       forms: {
+        type: '',
         first_team: {},
         second_team: {},
       },
@@ -361,6 +373,7 @@ export default {
           description: yup.string().required('errors.required'),
           need_form: yup.string().required('errors.required'),
           is_phone_shown: yup.boolean().nullable(),
+          forms: yup.object({}).required('errors.required'),
           contact_number: yup
             .string()
             .nullable()
@@ -393,6 +406,59 @@ export default {
 
     const setEventDate = (date_value, data) => {
       data.values.date = date_value
+    }
+
+  
+    const openSelectFormsModal = () => {
+      isSelectFormColarModalOpened.value = true
+    }
+
+    const closeSelectFormsModal = () => {
+      isSelectFormColarModalOpened.value = false
+    }
+
+    const selectNeedForm = (needForm, data) => {
+      eventForms.value = {}
+      data.values.forms = {}
+      switch(needForm) {
+        case true:
+          formsModalSelectedTabId.value = 1
+          break
+        case false:
+          formsModalSelectedTabId.value = 2
+          break
+      }
+    }
+
+    const saveForms = (forms, data) => {
+      switch(data.values.need_form) {
+        case true:
+          data.values.forms = {
+            type: 'Forms',
+            first_team: {
+              t_shirts: forms.first_team.t_shirts,
+              shorts: forms.first_team.shorts,
+            },
+            second_team: {
+              t_shirts: forms.second_team.t_shirts,
+              shorts: forms.second_team.shorts,
+            }
+          }
+          break
+        case false:
+          data.values.forms = {
+            type: 'ShirtFronts',
+            first_team: {
+              shirtfronts: forms.first_team.shirtfronts,
+            },
+            second_team: {
+              shirtfronts: forms.second_team.shirtfronts,
+            }
+          }
+          break
+      }
+      eventForms.value = data.values.forms
+      closeSelectFormsModal()
     }
 
     function addZeroBefore(n) {
@@ -470,16 +536,6 @@ export default {
 
       createEventData.current_users = invitedUsers.value.map((user) => user.id)
 
-      switch (createEventData.need_form) {
-        case true:
-          createEventData.forms.first_team.type = eventFormTypes.T_Shirt
-          createEventData.forms.second_team.type = eventFormTypes.T_Shirt
-          break
-        case false:
-          createEventData.forms.first_team.type = eventFormTypes.Shirt_Front
-          createEventData.forms.second_team.type = eventFormTypes.Shirt_Front
-      }
-
       try {
         await API.EventService.createOneEvent(createEventData).finally(() => {
           eventCreateLoader.value = false
@@ -523,17 +579,24 @@ export default {
       invitedUsers,
       startDate,
       greenBtnText,
+      isSelectFormColarModalOpened,
       removeInvitedUsersModalOpened,
       eventPreviewData,
       eventCreateLoader,
+      formsModalSelectedTabId,
+      eventForms,
       getNewEventLocation,
+      openSelectFormsModal,
+      selectNeedForm,
       runOnSelectEventDuration,
       updateEventPriceAfterSelectFree,
       inviteUsetToTheEvent,
       changeStep,
+      saveForms,
       removeAllInvitedUsers,
       saveEvent,
       removeInvitedUser,
+      closeSelectFormsModal,
       searchRelevantUsers,
       openRemoveUsersModal,
       closeRemoveUsersModal,

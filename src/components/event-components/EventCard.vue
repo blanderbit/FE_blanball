@@ -1,5 +1,5 @@
 <template>
-  <div class="event-card">
+  <div class="event-card" @click="$emit('goToEventPage')">
     <div class="top-title">
       <div class="left-side">
           <div class="card-icon">
@@ -63,16 +63,17 @@
         </div>
         <div class="right-side">
           <GreenBtn
-            v-if="card.status === 'Planned'"
+            v-if="greenButtonAvalable"
             :animation="true"
             :text="card.privacy ? $t('events.apply') : $t('events.join')"
             :width="120"
             :height="35"
-            @click-function="$emit('goToEventPage')"
+            @click-function="eventJoin"
           />
           <WhiteBtn
           v-else
-          :text="$t('events.watch')"
+          class="right-side-white-btn"
+          :text="$t(whiteButtonText)"
           :width="120"
           :height="35"
           :main-color="'#262541'"
@@ -87,13 +88,17 @@
 </template>
 
 <script>
-import { ref } from "vue"
+import { computed } from "vue"
+
+import { useDevice } from 'next-vue-device-detector'
+import { storeToRefs } from "pinia"
 
 import GreenBtn from '../../components/GreenBtn.vue'
-import { useDevice } from 'next-vue-device-detector'
-
 import PlaceDetector from '../../components/maps/PlaceDetector.vue'
 import WhiteBtn from "../WhiteBtn.vue"
+
+import { useUserDataStore } from "../../stores/userData"
+
 export default {
   props: {
     card: {
@@ -104,19 +109,47 @@ export default {
   components: {
     GreenBtn,
     PlaceDetector,
-    WhiteBtn
-},
-  setup(props) {
+    WhiteBtn,
+  },
+  setup(props, context) {
     const device = useDevice()
+    const userStore = useUserDataStore();
+    const { user } = storeToRefs(userStore);
+
+    const eventJoin = (e) => {
+      context.emit('eventJoin', e)
+    }
+
+    const greenButtonAvalable = computed(() => {
+      return props.card.status === 'Planned' && !props.card.request_user_role
+    })
+
+    const whiteButtonText = computed(() => {
+      switch(props.card.request_user_role) {
+        case 'author':
+          return 'events.watch'
+        case 'player':
+          return 'events.you-are-player'
+        case 'fan':
+          return 'events.you-are-fan'
+        case 'request_participation':
+          return 'events.request-sent'
+      }
+    })
 
     return {
       device,
+      user,
+      greenButtonAvalable,
+      whiteButtonText,
+      eventJoin,
     }
   },
 }
 </script>
 
 <style lang="scss" scoped>
+
 .event-card {
   position: relative;
   padding: 15px 15px;
@@ -126,7 +159,11 @@ export default {
   border-radius: 6px;
   margin-bottom: 16px;
   height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 100%;
+  cursor: pointer;
   
   &:before {
     content: '';
@@ -234,6 +271,7 @@ export default {
     }
     .right-side {
       display: none;
+      position: relative;
       // @media (max-width: 992px) {
       //   display: none;
       // }
@@ -294,7 +332,7 @@ export default {
         font-weight: 500;
         font-size: 12px;
         line-height: 20px;
-        max-width: 100%;
+        width: 60%;
         word-break: break-word;
         display: -webkit-box;
         -webkit-line-clamp: 1;
@@ -321,7 +359,7 @@ export default {
         display: flex;
         align-items: center;
         .titles {
-          margin-right: 30px;
+          margin-right: 20px;
 
           @media (max-width: 400px) {
             margin-right: 10px;
@@ -345,6 +383,7 @@ export default {
         }
       }
       .right-side {
+        position: relative;
       }
     }
   }
@@ -394,5 +433,9 @@ export default {
   line-height: 20px;
   text-align: right;
   color: #575775;
+}
+.right-side-white-btn {
+  background: #F0F0F4;
+  border: none !important;
 }
 </style>

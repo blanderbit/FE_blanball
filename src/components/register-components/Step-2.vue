@@ -85,6 +85,7 @@ import StepWrapper from './StepWrapper.vue'
 
 import tickWhite from '../../assets/img/tick-white.svg'
 import arrowRight from '../../assets/img/arrow-right-white.svg'
+import nikeIcon from '../../assets/img/nike-icon.svg'
 
 export default {
   name: 'Step2',
@@ -111,7 +112,7 @@ export default {
           exist: true,
           text: t('register.register'),
           width: 180,
-          icon: arrowRight,
+          icon: nikeIcon,
         },
         stepperLines: {
           count: 2,

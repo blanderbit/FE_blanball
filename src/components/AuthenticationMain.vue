@@ -200,9 +200,9 @@ export default {
       width: 100px;
       top: -30px;
       left: -30px;
-      @include tablet {
+      @media (min-width: 576px) {
         display: none;
-      }
+      } 
     }
     .b-auth__ball-small {
       position: absolute;

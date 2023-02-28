@@ -24,14 +24,14 @@
       <template #option="options">
         <div class="b-dropdown__custom-option">
           <img v-if="options.iconSrc" :src="options.iconSrc" alt="icon" />
-          {{ options[displayName] }}
+          {{ $t(options[displayName].toString()) }}
         </div>
       </template>
       <template #selected-option="options">
         <div class="b-dropdown__custom-option">
           <img v-if="options.iconSrc" :src="options.iconSrc" alt="icon" />
           <span class="b-dropdown__custom-option-text">
-            {{ options[displayName] }}
+            {{ $t(options[displayName].toString()) }}
           </span>
         </div>
       </template>
@@ -106,13 +106,17 @@ export default {
     },
     placeholder: {
       type: String,
-      default: 'test placeholder',
+      default: '',
     },
     name: String,
     disabled: {
       type: Boolean,
       default: false,
     },
+    initValue: {
+      type: String,
+      default: '',
+    }
   },
   emits: ['new-value', 'update:modelValue'],
   setup(props, { emit }) {
@@ -134,6 +138,10 @@ export default {
 
       modelHandlers.value.input[0](e);
       modelHandlers.value.input[1](e, true);
+    }
+
+    if (props.initValue) {
+      selectValue(props.initValue);
     }
 
     vSelect.props.components.default = () => ({ OpenIndicator });

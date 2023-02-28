@@ -191,8 +191,7 @@ yup.addMethod(yup.string, 'userName', function (errorMessage) {
   return this.test(`UserName`, errorMessage, function (value) {
     const { path, createError } = this
     // const reg = /^[a-zа-яієїґ\'\d]{1}[a-zа-яієїґ\'\d-]*[a-zа-яієїґ\'\d]{1}$/i;
-    const reg =
-      /^[А-Яа-яієїґЇІЄҐ\'\d]{1}[А-Яа-яієїґЇІЄҐ\'\d-]*[А-Яа-яієїґЇІЄҐ\'\d]{1}$/i
+    const reg = /^[А-Яа-яієїґЇІЄҐ\'-]*[А-Яа-яієїґЇІЄҐ\'-]+$/i
     return reg.exec(value) || createError({ path, message: errorMessage })
   })
 })

@@ -19,71 +19,71 @@ export default {
   position: [
     { 
       value: 'GK',
-      name: 'Вратарь'
+      name: 'hashtags.position_full.GK'
     },
     { 
       value: 'LB',
-      name: 'Левый защитник'
+      name: 'hashtags.position_full.LB'
     },
     { 
       value: 'RB',
-      name: 'Правый защитник'
+      name: 'hashtags.position_full.RB'
     },
     { 
       value: 'CB',
-      name: 'Центральный защитник'
+      name: 'hashtags.position_full.CB'
     },
     { 
       value: 'LWB',
-      name: 'Левый фланговый защитник'
+      name: 'hashtags.position_full.LWB'
     },
     { 
       value: 'RWB',
-      name: 'Правый фланговый защитник'
+      name: 'hashtags.position_full.RWB'
     },
     { 
       value: 'CDM',
-      name: 'Опорный полузащитник'
+      name: 'hashtags.position_full.CDM'
     },
     { 
       value: 'CM',
-      name: 'Центральный полузащитник'
+      name: 'hashtags.position_full.CM'
     },
     { 
       value: 'CAM',
-      name: 'Атакующий полузащитник'
+      name: 'hashtags.position_full.CAM'
     },
     { 
       value: 'RM',
-      name: 'Правый крайний полузащитник'
+      name: 'hashtags.position_full.RM'
     },
     { 
       value: 'LM',
-      name: 'Левый крайний полузащитник'
+      name: 'hashtags.position_full.LM'
     },
     { 
       value: 'RW',
-      name: 'Правый фланговый атакующий'
+      name: 'hashtags.position_full.RW'
     },
     { 
       value: 'LW',
-      name: 'Левый фланговый атакующий'
+      name: 'hashtags.position_full.LW'
     },
     { 
       value: 'RF',
-      name: 'Правый форвард'
+      name: 'hashtags.position_full.RF'
     },
     { 
       value: 'CF',
-      name: 'Центральный форвард'
+      name: 'hashtags.position_full.CF'
     },
     { 
       value: 'LF',
-      name: 'Левый форвард'
+      name: 'hashtags.position_full.LF'
     },
     { 
       value: 'ST',
-      name: 'Форвард страйкер'
+      name: 'hashtags.position_full.ST'
     }
   ],
   tabs: [

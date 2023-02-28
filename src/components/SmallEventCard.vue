@@ -1,26 +1,30 @@
 <template>
-  <div class="b-small-event-card">
-    <div class="b-small-event-card__close">&times;</div>
+  <div class="b-small-event-card" @click="
+      $emit('clickSmallEventCard', item.id)">
     <div class="b-small-event-card__top-line">
       <div class="b-small-event-card__icon-pic">
         <img src="../assets/img/hands-shake.svg" alt="" />
       </div>
       <div class="b-small-event-card__text-data">
-        <div class="b-small-event-card__top-line b_small_event_card_name">
+        <div class="b_small_event_card_name">
           {{ item.name }}
         </div>
         <div class="b-small-event-card__bottom-line">
-          <div class="b-small-event-card__time">12:00 – 14:00</div>
+          <div class="b-small-event-card__time">
+            {{ item.time }} - {{ item.end_time }}
+          </div>
           <div class="b-small-event-card__date">
-            16 {{ $t('events.months.June') }}
+            {{ item.date }}
           </div>
         </div>
       </div>
     </div>
-    <PlaceDetector :place="item.place"></PlaceDetector>
+    <PlaceDetector 
+      :place="item.place">
+    </PlaceDetector>
     <div class="b-small-event-card__labels">
-      <div class="b-small-event-card__label">{{ item.type }}</div>
-      <div class="b-small-event-card__label">{{ item.gender }}</div>
+      <div class="b-small-event-card__label">{{ $t(`hashtags.${item.type}`) }}</div>
+      <div class="b-small-event-card__label">{{ $t(`events.${item.gender}`) }}</div>
       <div class="b-small-event-card__label">...</div>
     </div>
   </div>
@@ -50,6 +54,7 @@ export default {
   border-radius: 6px;
   padding: 10px 12px;
   margin-bottom: 16px;
+  cursor: pointer;
   .b-small-event-card__close {
     position: absolute;
     right: 10px;
@@ -101,22 +106,6 @@ export default {
     background: #fafafa;
     padding: 0px 4px;
     margin-top: 4px;
-    img {
-      margin-right: 5px;
-    }
-    p {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 12px;
-      line-height: 20px;
-      color: #575775;
-      border-radius: 4px;
-      display: -webkit-box;
-      -webkit-line-clamp: 1;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
   }
   .b-small-event-card__labels {
     display: flex;
@@ -135,5 +124,19 @@ export default {
       border-radius: 100px;
     }
   }
+}
+.b_small_event_card_name {
+  font-family: 'Exo 2';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+  color: #262541;
+  width: 90%;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 </style>

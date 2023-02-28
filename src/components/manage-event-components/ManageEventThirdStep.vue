@@ -1,11 +1,4 @@
 <template>
-  <SelectionSuitModal
-    v-if="isSelectFormColarModalOpened"
-    :selectedCategory="selectedFormType"
-    @closeModal="closeSelectFormsModal()"
-    @saveData="saveFormsColors"
-  />
-
   <div class="third-step" :style="stepStyle">
     <div class="title">
       {{ $t('events.need-clothes') }}
@@ -32,15 +25,22 @@
     </div>
 
     <div
-      v-if="needForm !== null"
+      v-if="needForm !== null && Object.keys(formsValue).length == 0"
       class="forms-block"
       @click="openSelectFormsModal"
     >
-      <div class="forms-select-form">
+      <div class="forms-select-form"
+        @click="$emit('setForms')">
         <span>{{ $t('events.set-forms-colors') }}</span>
         <img src="../../assets/img/set-filter.svg" alt="" />
       </div>
     </div>
+    <ErrorMessage class="b-forms-block-error-message" name="forms"/>   
+    
+    <EventCreateForms
+      v-if="formsValue"
+      :formsData="formsValue"
+      @changeForms="changeForms"/>
 
     <div class="prize-switcher">
       <div class="title">
@@ -97,13 +97,15 @@
 <script>
 import { computed, ref } from 'vue'
 
+import { ErrorMessage } from '@system.it.flumx.com/vee-validate'
+
 import { useUserDataStore } from '../../stores/userData'
 
 import Switcher from '../../components/Switcher.vue'
 import RadioButton from '../../components/forms/RadioButton.vue'
-import SelectionSuitModal from '../suit/SelectionSuitModal.vue'
 import InputComponent from '../../components/forms/InputComponent.vue'
 import TextAreaComponent from '../TextAreaComponent.vue'
+import EventCreateForms from '../buildedForms/EventCreateForms.vue'
 
 import AimIcon from '../../assets/img/aim.svg'
 
@@ -114,21 +116,25 @@ export default {
     InputComponent,
     RadioButton,
     TextAreaComponent,
-    SelectionSuitModal,
+    ErrorMessage,
+
+    EventCreateForms,
   },
   props: {
     currentStep: {
       type: Number,
       default: null,
     },
+    formsValue: {
+      type: Object,
+      default: () => {},
+    }
   },
-  setup(props) {
+  setup(props, { emit }) {
     const isPhoneShown = ref(false)
     const store = useUserDataStore()
     const userPhoneNumber = computed(() => store.getUserPhone)
     const needForm = ref(null)
-    const selectedFormType = ref('')
-    const isSelectFormColarModalOpened = ref(false)
 
     const icons = computed(() => {
       return {
@@ -142,43 +148,28 @@ export default {
 
     const selectForms = (value) => {
       needForm.value = value
-      if (value) {
-        selectedFormType.value = 'T-Shirt'
-      } else if (!value) {
-        selectedFormType.value = 'Shirt-Front'
-      }
+      emit('selectNeedForm', needForm.value)
     }
 
-    const openSelectFormsModal = () => {
-      isSelectFormColarModalOpened.value = true
+    const changeForms = () => {
+      emit('changeForms')
     }
 
-    const closeSelectFormsModal = () => {
-      isSelectFormColarModalOpened.value = false
-    }
-
+    
     const stepStyle = computed(() => {
       return props.currentStep === 3 ? { height: 'auto' } : { height: '0px' }
     })
 
-    const saveFormsColors = (colors) => {
-      console.log(colors)
-      closeSelectFormsModal
-    }
-
+   
     return {
       icons,
       stepStyle,
       needForm,
       userPhoneNumber,
-      isSelectFormColarModalOpened,
       isPhoneShown,
-      selectedFormType,
       showHidePhone,
+      changeForms,
       selectForms,
-      saveFormsColors,
-      openSelectFormsModal,
-      closeSelectFormsModal,
     }
   },
 }
@@ -365,5 +356,13 @@ export default {
       color: #262541;
     }
   }
+}
+.b-forms-block-error-message {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  color: #f32929;
 }
 </style>

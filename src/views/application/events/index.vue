@@ -1,4 +1,12 @@
 <template>
+  <Loading :is-loading="loading"/>
+   <EventJoinModal
+    v-if="isEventJoinModalActive"
+    :clientX="eventJoinModalX"
+    :clientY="eventJoinModalY"
+    :modalItems="eventJoinToolTipItems"
+    @closeModal="closeEventJoinModal"
+    @itemClick="joinEventModalItemClick"/>
   <div class="b-events-page">
     <div class="b-events-page__main-body" ref="mainEventsBlock">
       <div class="b-events-page__header-block">
@@ -35,7 +43,8 @@
           @update:value="setFilters"
           @clearFilters="clearFilters"
         ></events-filters>
-        
+
+      
         <div class="b-events-page__all-events-block">
           <div @click="goToCreateEvent" class="b-events-page__all-create-event-mobile-button">
             <img src="../../../assets/img/plus.svg" alt="">
@@ -51,6 +60,7 @@
                 :key="slotProps.index"
                 :card="slotProps.smartListItem"
                 @go-to-event-page="goToEventPage(slotProps.smartListItem.id)"
+                @event-join="showEventJoinModal($event, slotProps.smartListItem)"
               />
             </template>
             <template #after>
@@ -64,6 +74,7 @@
                     v-if="!paginationElements.length"
                     :title="emptyListMessages.title"
                     :description="emptyListMessages.title"
+                    :buttonText="emptyListMessages.button_text"
                   />
 
                   <ScrollToTop
@@ -87,9 +98,8 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { useToast } from 'vue-toastification'
 
-import dayjs from 'dayjs'
-import dayjsUkrLocale from 'dayjs/locale/uk'
 import { v4 as uuid } from 'uuid'
 
 import GreenBtn from '../../../components/GreenBtn.vue'
@@ -107,15 +117,23 @@ import ScrollToTop from '../../../components/ScrollToTop.vue'
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue'
 import Dropdown from '../../../components/forms/Dropdown.vue'
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue'
+import EventJoinModal from '../../../components/ModalWindows/EventJoinModal.vue'
+import Loading from '../../../workers/loading-worker/Loading.vue'
+
+import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue'
 
 import { useEventDataStore } from '../../../stores/eventsData'
 import { API } from '../../../workers/api-worker/api.worker'
 import { PaginationWorker } from '../../../workers/pagination-worker'
 import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patch'
+import { addMinutes } from '../../../utils/addMinutes'
+import { getDate } from '../../../utils/getDate'
+import { getTime } from '../../../utils/getTime'
 
 import { ROUTES } from '../../../router/router.const'
 
 import Plus from '../../../assets/img/plus.svg'
+import BallIcon from '../../../assets/img/ball.svg'
 
 
 export default {
@@ -135,15 +153,41 @@ export default {
     InfiniteLoading,
     ScrollToTop,
     EventsFilters,
+    Loading,
+    SelectFormsColorsModal,
+    EventJoinModal,
   },
   setup() {
     const eventStore = useEventDataStore()
     const scrollComponent = ref(null)
+    const isEventJoinModalActive = ref(false)
     const router = useRouter()
+    const toast = useToast()
     const eventCards = ref([])
+    const loading = ref(false)
+    const joinEventData = ref(null)
+    const eventJoinModalX = ref(null)
+    const eventJoinModalY = ref(null)
     const { t } = useI18n()
     const isLoaderActive = ref(false)
     const mainEventsBlock = ref()
+
+
+    const eventJoinToolTipItems = ref([
+            {
+                id: 1,
+                text: 'Як учасник',
+                img: BallIcon,
+                type: 'play'
+            },
+            {
+                id: 2,
+                text: 'Як вболівальник',
+                img: BallIcon,
+                type: 'view'
+            }
+        ])
+    
     const mockData = computed(() => {
       return {
         event_cards: CONSTANTS.event_page.event_cards,
@@ -155,32 +199,72 @@ export default {
     const iconPlus = computed(() => Plus)
     const emptyListMessages = computed(() => {
       return {
-        title: 'Немає повідомлень для відображення',
-        description: 'Вам ще не надходили сповіщення від інших користувачів',
+        title: 'Наразі немає актуальних подій для відображення',
+        description: 'Ваша подія може стати першою',
+        button_text: 'Організувати подію!'
       }
     })
-    function getDate(date) {
-      return dayjs(date).locale(dayjsUkrLocale).
-      format(Number(dayjs(date).locale(dayjsUkrLocale).format('YYYY')) === new Date().getFullYear()
-      ? 'D MMMM'
-      : ' D MMMM, YYYY')
+    
+    async function joinEvent(eventData, type) {
+      loading.value = true
+      switch(type) {
+        case 'play':
+          await API.EventService.eventJoinAsPlayer(eventData.id)
+          break
+        case 'view':
+          await API.EventService.eventJoinAsFan(eventData.id)
+          break
+      }
+
+      const response = await API.EventService.getAllEvents({
+          ...filters,
+          paginationPage,
+      })
+      paginationElements.value = response.data.results
+      loading.value = false
+
+      switch(type) {
+        case 'play':
+          if (eventData.privacy) {
+            toast.success(t('notifications.event-request-sent'))
+          } else {
+            toast.success(t('notifications.event-join-as-player'))
+          }
+          break
+        case 'view':
+          toast.success(t('notifications.event-join-as-fan'))
+          break
+      }
     }
     
-    function getTime(time) {
-      return dayjs(time).locale(dayjsUkrLocale).format('HH:mm')
+    function joinEventModalItemClick(data) {
+      switch(data) {
+        case 'play':
+          joinEvent(joinEventData.value, 'play')
+          closeEventJoinModal()
+          break
+        case 'view':
+          joinEvent(joinEventData.value, 'view')
+          closeEventJoinModal()
+          break
+      }
     }
 
-    function addMinutes(time, minutesToAdd) {
-      let timeArray = time.split(':');
-      let hours = timeArray[0];
-      let originalMinutes = timeArray[1];
-      let date = new Date();
-      date.setHours(hours);
-      date.setMinutes(originalMinutes);
-      date.setMinutes(date.getMinutes() + minutesToAdd);
-      return date.toTimeString().substr(0, 5);
+    const showEventJoinModal = (e, eventData) => {
+      eventJoinModalX.value = e.clientX
+      eventJoinModalY.value = e.clientY
+      joinEventData.value = eventData
+      isEventJoinModalActive.value = true
     }
 
+    const closeEventJoinModal = () => {
+      isEventJoinModalActive.value = false
+      eventJoinModalX.value = null
+      eventJoinModalY.value = null
+      joinEventData.value = null
+    }
+ 
+    
     function handlingIncomeData(item) {
       return {
         ...item,
@@ -292,31 +376,40 @@ export default {
       itemHeight,
       itemMinHeight,
     }) => {
-      itemHeight.value = 325
       if (window.matchMedia('(min-width: 1400px)').matches) {
+        itemHeight.value = 320
         itemWidth.value = mainEventsBlock.value.clientWidth / 3
         itemCount.value = 3
       } else if (
         window.matchMedia('(min-width: 1200px) and (max-width: 1400px)').matches
       ) {
+        itemHeight.value = 305
         itemWidth.value = mainEventsBlock.value.clientWidth / 2
         itemCount.value = 2
       } else if (
         window.matchMedia('(min-width: 992px) and (max-width: 1199px)').matches
       ) {
+        itemHeight.value = 320
         itemWidth.value = mainEventsBlock.value.clientWidth / 2
         itemCount.value = 2
       } else if (
         window.matchMedia('(min-width: 768px) and (max-width: 991px)').matches
       ) {
+        itemHeight.value = 320
         itemWidth.value = mainEventsBlock.value.clientWidth / 2
         itemCount.value = 2
       } else if (
         window.matchMedia('(min-width: 576px) and (max-width: 768px)').matches
       ) {
+        itemHeight.value = 300
         itemWidth.value = mainEventsBlock.value.clientWidth
         itemCount.value = 1
-      } else if (window.matchMedia('(max-width: 576px)').matches) {
+      } else if (window.matchMedia('(min-width: 430px) and (max-width: 576px)').matches) {
+        itemHeight.value = 300
+        itemWidth.value = mainEventsBlock.value.clientWidth
+        itemCount.value = 1
+      } else if (window.matchMedia('(max-width: 430px)').matches) {
+        itemHeight.value = 330
         itemWidth.value = mainEventsBlock.value.clientWidth
         itemCount.value = 1
       }
@@ -334,7 +427,13 @@ export default {
       eventCards,
       isLoaderActive,
       switchToMyEvents,
+      isEventJoinModalActive,
       mainEventsBlock,
+      eventJoinModalY,
+      eventJoinModalX,
+      showEventJoinModal,
+      closeEventJoinModal,
+      loading,
       mockData,
       filters,
       goToEventPage,
@@ -345,11 +444,15 @@ export default {
       triggerForRestart,
       paginationElements,
       paginationPage,
+      joinEventModalItemClick,
       paginationLoad,
       loadDataPaginationData,
       detectSizesForCards,
       setFilters,
       clearFilters,
+
+      eventJoinToolTipItems,
+
       scrollToFirstElement: () => {
         refList.value.scrollToFirstElement()
       },
