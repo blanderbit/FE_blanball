@@ -77,7 +77,7 @@ export default {
 }
 
 .notification-button.stroked {
-  background: #262541;
+  background: $--b-main-black-color;
   border-color: #c5c5d3;
   color: #ffffff;
   &.notification-type__notification-sidebar {

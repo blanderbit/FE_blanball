@@ -149,7 +149,7 @@ export default {
       font-weight: 700;
       font-size: 16px;
       line-height: 24px;
-      color: #262541;
+      color: $--b-main-black-color;
     }
     .b-security__subtitle {
       font-family: 'Inter';
@@ -170,7 +170,7 @@ export default {
         font-weight: 400;
         font-size: 14px;
         line-height: 20px;
-        color: #262541;
+        color: $--b-main-black-color;
         padding: 12px 0;
         display: flex;
         justify-content: space-between;
@@ -185,7 +185,7 @@ export default {
       font-weight: 700;
       font-size: 16px;
       line-height: 24px;
-      color: #262541;
+      color: $--b-main-black-color;
     }
     .b-security__subtitle-security {
       font-family: 'Inter';

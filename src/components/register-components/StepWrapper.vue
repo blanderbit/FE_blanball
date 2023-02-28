@@ -112,7 +112,7 @@
     font-weight: 400;
     font-size: 16px;
     line-height: 24px;
-    color: #262541;
+    color: $--b-main-black-color;
     margin-top: 16px;
   }
   .b-register-step {
@@ -138,7 +138,7 @@
         font-weight: 700;
         font-size: 22px;
         line-height: 32px;
-        color: #262541;
+        color: $--b-main-black-color;
       }
       .b-register-step__progress-line {
         margin-top: 16px;

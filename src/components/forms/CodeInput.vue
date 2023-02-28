@@ -262,7 +262,7 @@ onBeforeUpdate(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 @import '../../assets/styles/forms.scss';
 
 .code-input-container {
@@ -310,6 +310,6 @@ onBeforeUpdate(() => {
   font-weight: 400;
   font-size: 12px;
   line-height: 20px;
-  color: #f32929;
+  color: $--b-error-color;
 }
 </style>

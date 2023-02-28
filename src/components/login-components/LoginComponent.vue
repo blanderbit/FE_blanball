@@ -237,7 +237,7 @@ export default {
     font-size: 14px;
     line-height: 24px;
     text-align: center;
-    color: #f32929;
+    color: $--b-error-color;
     transition: all 0.3s ease-in-out;
     .b-login-step__left-part {
       display: flex;
@@ -260,7 +260,7 @@ export default {
       font-weight: 800;
       font-size: 28px;
       line-height: 28px;
-      color: #262541;
+      color: $--b-main-black-color;
       @media (max-width: 576px) {
         text-align: center;
       }
@@ -273,7 +273,7 @@ export default {
       font-weight: 700;
       font-size: 22px;
       line-height: 32px;
-      color: #262541;
+      color: $--b-main-black-color;
       @media (max-width: 576px) {
         text-align: center;
       }
@@ -318,7 +318,7 @@ export default {
         font-weight: 400;
         font-size: 12px;
         line-height: 20px;
-        color: #262541;
+        color: $--b-main-black-color;
         vertical-align: bottom;
       }
       ::v-deep .indicator {
@@ -349,7 +349,7 @@ export default {
     font-weight: 400;
     font-size: 12px;
     line-height: 20px;
-    color: #f32929;
+    color: $--b-error-color;
     padding: 2px 0px 2px 4px;
     width: 100%;
     height: 44px;
@@ -364,7 +364,7 @@ export default {
     font-weight: 400;
     font-size: 12px;
     line-height: 20px;
-    color: #262541;
+    color: $--b-main-black-color;
     span {
       color: #148783;
       border-bottom: 1px dashed #148783;

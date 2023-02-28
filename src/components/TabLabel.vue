@@ -35,7 +35,7 @@ export default {
     right: -164px;
     width: 152px;
     height: 56px;
-    background: #262541;
+    background: $--b-main-black-color;
     box-shadow: 3px 6px 15px rgba(8, 27, 130, 0.1);
     border-radius: 6px;
     padding: 4px 6px;
@@ -46,7 +46,7 @@ export default {
     height: 0;
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
-    border-right: 10px solid #262541;
+    border-right: 10px solid $--b-main-black-color;
     position: absolute;
     left: -8px;
     top: 2px;

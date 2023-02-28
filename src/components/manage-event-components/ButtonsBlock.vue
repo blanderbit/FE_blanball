@@ -9,7 +9,7 @@
           :text="$t('buttons.download-template')"
           :width="whiteBtnWidth"
           :height="40"
-          :main-color="'#262541'"
+          :main-color="'$--b-main-black-color'"
           :is-border="false"
           :font-styles="{ 'font-weight': 400 }"
           :icon="icons.iconCloud"
@@ -93,7 +93,7 @@ export default {
     font-weight: 700;
     font-size: 16px;
     line-height: 24px;
-    color: #262541;
+    color: $--b-main-black-color;
     margin-top: 24px;
     @media (max-width: 1200px) {
       display: none;

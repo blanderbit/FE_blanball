@@ -97,7 +97,7 @@ export default {}
         font-size: 28px;
         line-height: 36px;
         text-transform: uppercase;
-        color: #262541;
+        color: $--b-main-black-color;
         margin-bottom: 12px;
         @media (max-width: 768px) {
           font-size: 20px;
@@ -126,7 +126,7 @@ export default {}
         font-weight: 500;
         font-size: 12px;
         line-height: 20px;
-        color: #262541;
+        color: $--b-main-black-color;
       }
       .b-tech-works__register-link {
         font-family: 'Inter';

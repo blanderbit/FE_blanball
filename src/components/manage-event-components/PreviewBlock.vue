@@ -102,7 +102,7 @@ export default {
           font-weight: 700;
           font-size: 16px;
           line-height: 24px;
-          color: #262541;
+          color: $--b-main-black-color;
           @media (max-width: 1200px) {
             display: flex;
             align-items: center;

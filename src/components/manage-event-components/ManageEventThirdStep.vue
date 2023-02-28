@@ -210,14 +210,14 @@ export default {
           font-size: 13px;
           line-height: 24px;
           text-transform: capitalize;
-          color: #262541;
+          color: $--b-main-black-color;
           img {
             margin-right: 4px;
           }
           &:after {
             content: '';
             border-radius: 100%;
-            border: 1px solid #262541;
+            border: 1px solid $--b-main-black-color;
             display: inline-block;
             width: 13px;
             height: 13px;
@@ -277,7 +277,7 @@ export default {
       font-weight: 700;
       font-size: 16px;
       line-height: 24px;
-      color: #262541;
+      color: $--b-main-black-color;
     }
   }
   .subtitle {
@@ -297,7 +297,7 @@ export default {
     font-weight: 700;
     font-size: 16px;
     line-height: 24px;
-    color: #262541;
+    color: $--b-main-black-color;
   }
   .title-margin {
     margin-top: 20px;
@@ -353,7 +353,7 @@ export default {
       font-size: 13px;
       line-height: 24px;
       width: 100%;
-      color: #262541;
+      color: $--b-main-black-color;
     }
   }
 }
@@ -363,6 +363,6 @@ export default {
   font-weight: 400;
   font-size: 12px;
   line-height: 20px;
-  color: #f32929;
+  color: $--b-error-color;
 }
 </style>

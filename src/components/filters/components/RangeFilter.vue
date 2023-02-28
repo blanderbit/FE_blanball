@@ -88,7 +88,7 @@ export default {
     font-weight: 400;
     font-size: 12px;
     line-height: 16px;
-    color: #262541;
+    color: $--b-main-black-color;
     padding: 0px 4px;
     background: #f9f9fc;
     border-radius: 4px;

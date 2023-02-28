@@ -151,7 +151,7 @@
     font-size: 14px;
     line-height: 20px;
     margin-bottom: 10px;
-    color: #262541;
+    color: $--b-main-black-color;
   }
   ::v-deep {
     .b-input__input-component {

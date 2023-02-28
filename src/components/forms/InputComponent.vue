@@ -237,7 +237,7 @@ export default {
     font-weight: 400;
     font-size: 13px;
     line-height: 24px;
-    color: #262541;
+    color: $--b-main-black-color;
     .b-input__icon {
       display: flex;
       height: 100%;
@@ -324,7 +324,7 @@ export default {
     font-weight: 400;
     font-size: 12px;
     line-height: 20px;
-    color: #f32929;
+    color: $--b-error-color;
   }
 }
 </style>

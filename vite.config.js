@@ -49,5 +49,12 @@ export default defineConfig({
       // fs: require.resolve('rollup-plugin-node-builtins'),
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import "@/assets/styles/variables.scss"; @import "@/assets/styles/mixins/fonts.scss";`,
+      },
+    },
+  },
   define: globalVariables,
 })

@@ -94,7 +94,7 @@ export default {
         font-weight: 700;
         font-size: 16px;
         line-height: 24px;
-        color: #262541;
+        color: $--b-main-black-color;
         margin-bottom: 16px;
         @media (max-width: 768px) {
           text-align: center;

@@ -100,7 +100,7 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 361px;
-    background: #262541;
+    background: $--b-main-black-color;
     border-radius: 6px;
     padding: 16px;
     font-family: 'Inter';
