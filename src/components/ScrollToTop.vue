@@ -48,7 +48,7 @@ export default {
     font-weight: 500;
     font-size: 13px;
     line-height: 20px;
-    color: #575775;
+    color: $--b-main-gray-color;
   }
   &__to-first-element {
     display: flex;
@@ -58,7 +58,7 @@ export default {
     font-weight: 500;
     font-size: 13px;
     line-height: 24px;
-    color: #575775;
+    color: $--b-main-gray-color;
     padding: 2px 12px;
     background: #efeff6;
     border-radius: 6px;

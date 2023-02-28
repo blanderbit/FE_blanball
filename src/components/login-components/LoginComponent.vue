@@ -322,7 +322,7 @@ export default {
         vertical-align: bottom;
       }
       ::v-deep .indicator {
-        border: 1px solid #575775;
+        border: 1px solid $--b-main-gray-color;
         background: white;
       }
     }

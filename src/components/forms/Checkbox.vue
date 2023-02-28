@@ -32,7 +32,7 @@ export default {
 /* Checkbox styles */
 
 $black: #2d3137;
-$blue: #575775;
+$blue: $--b-main-gray-color;
 $green: #329e78;
 $grey: #d6d6d6;
 $red: #dd3c3a;

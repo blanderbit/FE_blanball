@@ -158,7 +158,7 @@ export default {
       margin-right: 5px;
     }
     p {
-      @include inter(12px, 400, #575775);
+      @include inter(12px, 400, $--b-main-gray-color);
       line-height: 20px;
       border-radius: 4px;
       display: -webkit-box;
@@ -232,10 +232,10 @@ export default {
     align-items: center;
     margin-top: 12px;
     .b-event-card__label {
-      @include inter(12px, 400, #575775);
+      @include inter(12px, 400, $--b-main-gray-color);
       margin-right: 4px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
       padding: 0px 8px;
       border: 1px solid #efeff6;
       border-radius: 100px;
@@ -281,7 +281,7 @@ export default {
         }
         .b-event-card__visitors,
         .b-event-card__visitors-date {
-          color: #575775;
+          color: $--b-main-gray-color;
         }
       }
       .b-event-card__right-side {

@@ -110,7 +110,7 @@ function goToEventPage(id) {
       font-weight: 500;
       font-size: 13px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
     }
   }
 

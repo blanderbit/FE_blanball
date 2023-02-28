@@ -502,7 +502,7 @@ export default {
           font-weight: 500;
           font-size: 13px;
           line-height: 20px;
-          color: #575775;
+          color: $--b-main-gray-color;
           @media (min-width: 992px) {
             display: none;
           }
@@ -587,7 +587,7 @@ export default {
             font-size: 13px;
             line-height: 24px;
             text-align: center;
-            color: #575775;
+            color: $--b-main-gray-color;
           }
         }
       }

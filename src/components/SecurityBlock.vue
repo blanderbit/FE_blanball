@@ -157,7 +157,7 @@ export default {
       font-weight: 400;
       font-size: 13px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
     }
     .b-security__settings-block {
       padding-top: 8px;
@@ -193,7 +193,7 @@ export default {
       font-weight: 400;
       font-size: 13px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
     }
     .b-security__change-pass-btn {
       padding-left: 16px;
@@ -220,7 +220,7 @@ export default {
     font-weight: 400;
     font-size: 12px;
     text-decoration-line: underline;
-    color: #575775;
+    color: $--b-main-gray-color;
     text-align: right;
     cursor: pointer;
   }

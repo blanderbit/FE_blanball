@@ -446,7 +446,7 @@ export default {
             }
           }
           .b-player-page__label {
-            @include inter(14px, 500, #575775);
+            @include inter(14px, 500, $--b-main-gray-color);
             @include mobile {
               font-size: 12px;
             }
@@ -466,7 +466,7 @@ export default {
             cursor: pointer;
           }
           .b-player-page__title {
-            @include inter(12px, 400, #575775);
+            @include inter(12px, 400, $--b-main-gray-color);
             line-height: 16px;
           }
           .b-player-page__send-email {
@@ -474,7 +474,7 @@ export default {
           }
           .b-player-page__send-email,
           .b-player-page__call {
-            @include inter(12px, 500, #575775);
+            @include inter(12px, 500, $--b-main-gray-color);
             line-height: 20px;
 
             padding: 6px 8px;
@@ -495,7 +495,7 @@ export default {
       .b-player-page__about-line {
         margin-top: 16px;
         .b-player-page__title {
-          @include inter(12px, 400, #575775);
+          @include inter(12px, 400, $--b-main-gray-color);
           line-height: 16px;
           margin-bottom: 4px;
         }
@@ -508,7 +508,7 @@ export default {
 
     .b-player-page {
       &__small-text {
-        @include inter(14px, 400, #575775);
+        @include inter(14px, 400, $--b-main-gray-color);
         line-height: 20px;
       }
       &__main-titles-text {
@@ -562,7 +562,7 @@ export default {
           justify-content: space-between;
         }
         .b-player-page__name {
-          @include inter(12px, 500, #575775);
+          @include inter(12px, 500, $--b-main-gray-color);
           line-height: 20px;
         }
         .b-player-page__feedback-blocks {

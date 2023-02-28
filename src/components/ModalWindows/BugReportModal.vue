@@ -160,7 +160,7 @@ export default {
     font-weight: 400;
     font-size: 12px;
     line-height: 16px;
-    color: #575775;
+    color: $--b-main-gray-color;
   }
 
   &::v-deep(textarea::-webkit-scrollbar) {
@@ -272,7 +272,7 @@ export default {
         font-size: 14px;
         line-height: 24px;
         text-align: center;
-        color: #575775;
+        color: $--b-main-gray-color;
         cursor: pointer;
       }
       .b-bug-report-modal__submit-button {

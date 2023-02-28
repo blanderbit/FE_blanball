@@ -66,13 +66,13 @@ export default {
 }
 
 .notification-button.flat {
-  background: #575775;
-  border-color: #575775;
+  background: $--b-main-gray-color;
+  border-color: $--b-main-gray-color;
   color: #ffffff;
   &.notification-type__notification-sidebar {
     background: #efeff6;
     border-color: #efeff6;
-    color: #575775;
+    color: $--b-main-gray-color;
   }
 }
 

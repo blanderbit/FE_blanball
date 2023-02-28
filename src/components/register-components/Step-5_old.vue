@@ -208,7 +208,7 @@ export default {
       font-weight: 400;
       font-size: 14px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
       margin-bottom: 20px;
     }
     .b-register-step__small-title {
@@ -335,7 +335,7 @@ export default {
       font-size: 14px;
       line-height: 24px;
       text-align: center;
-      color: #575775;
+      color: $--b-main-gray-color;
       cursor: pointer;
     }
   }

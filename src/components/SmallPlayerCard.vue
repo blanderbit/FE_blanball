@@ -82,7 +82,7 @@ export default {
   }
   &.inactive {
     font-size: 13px;
-    color: #575775;
+    color: $--b-main-gray-color;
   }
   .b-small-player-card__left-side {
     display: flex;
@@ -103,7 +103,7 @@ export default {
         font-weight: 400;
         font-size: 12px;
         line-height: 20px;
-        color: #575775;
+        color: $--b-main-gray-color;
       }
 
       .b-small-player-card__name {

@@ -272,7 +272,7 @@ export default {
       left: 2px;
       top: -8px;
       background: #ffffff;
-      color: #575775;
+      color: $--b-main-gray-color;
       border-radius: 4px;
       font-family: 'Inter';
       font-style: normal;
@@ -291,7 +291,7 @@ export default {
       font-weight: 400;
       font-size: 14px;
       line-height: 24px;
-      color: #575775;
+      color: $--b-main-gray-color;
       background: #fff;
       border-radius: 6px;
       span {

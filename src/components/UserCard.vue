@@ -213,7 +213,7 @@ export default {
           font-weight: 400;
           font-size: 12px;
           line-height: 20px;
-          color: #575775;
+          color: $--b-main-gray-color;
         }
       }
     }
@@ -238,7 +238,7 @@ export default {
           font-weight: 400;
           font-size: 14px;
           line-height: 20px;
-          color: #575775;
+          color: $--b-main-gray-color;
           margin-left: 30px;
           @media (max-width: 768px) {
             margin-left: 0;
@@ -297,7 +297,7 @@ export default {
     //     font-weight: 400;
     //     font-size: 12px;
     //     line-height: 20px;
-    //     color: #575775;
+    //     color: $--b-main-gray-color;
     //     @media (max-width: 768px) {
     //       font-weight: 500;
     //       color: $--b-main-black-color;
@@ -345,7 +345,7 @@ export default {
         font-weight: 400;
         font-size: 12px;
         line-height: 20px;
-        color: #575775;
+        color: $--b-main-gray-color;
       }
     }
 
@@ -379,7 +379,7 @@ export default {
         font-weight: 400;
         font-size: 12px;
         line-height: 20px;
-        color: #575775;
+        color: $--b-main-gray-color;
         @media (max-width: 768px) {
           font-weight: 500;
           color: $--b-main-black-color;

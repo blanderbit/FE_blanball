@@ -70,7 +70,7 @@ export default {
       font-weight: 400;
       font-size: 13px;
       line-height: 24px;
-      color: #575775;
+      color: $--b-main-gray-color;
       min-width: 60px;
       width: 60px;
       display: flex;

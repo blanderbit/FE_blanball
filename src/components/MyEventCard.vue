@@ -197,7 +197,7 @@ export default {
         min-width: 170px;
 
         .b-my-event-card__label {
-          @include inter(12px, 400, #575775);
+          @include inter(12px, 400, $--b-main-gray-color);
           line-height: 20px;
 
           padding: 0px 8px;

@@ -97,7 +97,7 @@ export default {
         font-weight: 400;
         font-size: 14px;
         line-height: 20px;
-        color: #575775;
+        color: $--b-main-gray-color;
         margin-bottom: 12px;
       }
 
@@ -112,7 +112,7 @@ export default {
           font-size: 13px;
           line-height: 24px;
           text-align: center;
-          color: #575775;
+          color: $--b-main-gray-color;
           padding: 2px 12px;
           background: #efeff6;
           border-radius: 6px;

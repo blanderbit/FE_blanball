@@ -86,7 +86,7 @@ export default {
           font-size: 12px;
           line-height: 20px;
           text-align: right;
-          color: #575775;
+          color: $--b-main-gray-color;
           margin-right: 21px;
         }
         .b-small-event-card__date {
@@ -118,7 +118,7 @@ export default {
       font-weight: 400;
       font-size: 12px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
       padding: 0px 8px;
       border: 1px solid #efeff6;
       border-radius: 100px;

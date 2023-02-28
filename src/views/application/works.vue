@@ -104,7 +104,7 @@ export default {}
           line-height: 28px;
         }
         span {
-          color: #575775;
+          color: $--b-main-gray-color;
         }
       }
       .b-tech-works__subtitle {
@@ -113,7 +113,7 @@ export default {}
         font-weight: 400;
         font-size: 14px;
         line-height: 20px;
-        color: #575775;
+        color: $--b-main-gray-color;
         padding-bottom: 28px;
         margin-bottom: 12px;
         @media (max-width: 768px) {

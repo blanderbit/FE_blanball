@@ -179,7 +179,7 @@ export default {
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  color: #575775;
+  color: $--b-main-gray-color;
   background: #efeff6;
   border-radius: 4px;
   padding: 0px 2px;

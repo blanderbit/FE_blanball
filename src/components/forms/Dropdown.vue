@@ -264,7 +264,7 @@ export default {
     font-weight: 400;
     font-size: 13px;
     line-height: 24px;
-    color: #575775;
+    color: $--b-main-gray-color;
   }
   .v-select .vs__dropdown-toggle {
     padding: 0;
@@ -282,7 +282,7 @@ export default {
     font-weight: 400;
     font-size: 13px;
     line-height: 24px;
-    color: #575775;
+    color: $--b-main-gray-color;
   }
 }
 
@@ -352,7 +352,7 @@ export default {
     font-weight: 400;
     font-size: 12px;
     line-height: 16px;
-    color: #575775;
+    color: $--b-main-gray-color;
     background: #ffffff;
     padding: 0px 4px;
     left: 8px;

@@ -213,7 +213,7 @@ export default {
         height: '76px',
         alignement: 'flex-start',
         background: '#FFFFFF',
-        textColor: '#575775',
+        textColor: '$--b-main-gray-color',
       },
       {
         id: 1,
@@ -226,7 +226,7 @@ export default {
         height: '76px',
         alignement: 'flex-start',
         background: '#FFFFFF',
-        textColor: '#575775',
+        textColor: '$--b-main-gray-color',
         url: ROUTES.APPLICATION.EVENTS.absolute,
       },
     ])
@@ -242,7 +242,7 @@ export default {
         height: '76px',
         alignement: 'flex-start',
         background: '#FFFFFF',
-        textColor: '#575775',
+        textColor: '$--b-main-gray-color',
         url: ROUTES.APPLICATION.USERS.GENERAL.absolute,
       },
       {
@@ -256,7 +256,7 @@ export default {
         height: '76px',
         alignement: 'flex-start',
         background: '#FFFFFF',
-        textColor: '#575775',
+        textColor: '$--b-main-gray-color',
         url: ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute,
       },
     ])
@@ -321,7 +321,7 @@ export default {
           height: '76px',
           alignement: 'flex-start',
           background: '#FFFFFF',
-          textColor: '#575775',
+          textColor: '$--b-main-gray-color',
         }
       })
     }
@@ -349,7 +349,7 @@ export default {
             width: '80%',
             height: '52px',
             alignement: 'flex-start',
-            background: '#575775',
+            background: '$--b-main-gray-color',
             textColor: '#fff',
           }
         } else {
@@ -366,7 +366,7 @@ export default {
             height: '52px',
             alignement: 'center',
             background: '#FFFFFF',
-            textColor: '#575775',
+            textColor: '$--b-main-gray-color',
           }
         } else {
           return item
@@ -596,7 +596,7 @@ export default {
 }
 
 .b-mob-menu__found-error {
-  background: #575775;
+  background: $--b-main-gray-color;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 6px;
   padding: 4px 16px;

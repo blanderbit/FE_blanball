@@ -89,7 +89,7 @@ export default {
       }
 
       .b-profile__subtitle {
-        @include inter(13px, 500,#575775);
+        @include inter(13px, 500,$--b-main-gray-color);
         line-height: 20px;
       }
     }
@@ -99,7 +99,7 @@ export default {
       gap: 20px;
       margin-top: 30px;
       .b-profile__tab {
-        @include inter(13px, 500,#575775);
+        @include inter(13px, 500,$--b-main-gray-color);
         line-height: 20px;
         padding: 8px 4px 12px 0px;
         display: flex;

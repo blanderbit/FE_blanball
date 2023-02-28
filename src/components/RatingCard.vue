@@ -292,7 +292,7 @@ export default {
       color: $--b-main-black-color;
     }
     .b-rating-card__subtitle {
-      @include inter(12px, 400, #575775);
+      @include inter(12px, 400, $--b-main-gray-color);
       line-height: 20px;
     }
     .b-rating-card__scale-block {
@@ -324,7 +324,7 @@ export default {
         justify-content: center;
         align-items: center;
         height: 32px;
-        color: #575775;
+        color: $--b-main-gray-color;
         border-radius: 0px 6px 6px 0px;
         flex-basis: 50%;
         cursor: pointer;
@@ -366,7 +366,7 @@ export default {
           font-weight: 400;
           font-size: 12px;
           line-height: 20px;
-          color: #575775;
+          color: $--b-main-gray-color;
           background: #efeff6;
           border-radius: 4px;
           padding: 4px;
@@ -381,7 +381,7 @@ export default {
             font-size: 12px;
             line-height: 20px;
             text-align: center;
-            color: #575775;
+            color: $--b-main-gray-color;
           }
         }
         .b-rating-card__text {
@@ -412,7 +412,7 @@ export default {
         font-weight: 400;
         font-size: 14px;
         line-height: 20px;
-        color: #575775;
+        color: $--b-main-gray-color;
         margin-top: 12px;
       }
     }

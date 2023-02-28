@@ -315,7 +315,7 @@
         font-weight: 400;
         font-size: 14px;
         line-height: 20px;
-        color: #575775;
+        color: $--b-main-gray-color;
       }
       .b-reset-step__code-title {
         margin-top: 12px;
@@ -325,7 +325,7 @@
         font-size: 12px;
         line-height: 20px;
         text-align: right;
-        color: #575775;
+        color: $--b-main-gray-color;
         text-align: left;
       }
       .b-reset-step__sms-code-block {
@@ -380,7 +380,7 @@
         font-weight: 400;
         font-size: 14px;
         line-height: 24px;
-        color: #575775;
+        color: $--b-main-gray-color;
         cursor: pointer;
       }
     }

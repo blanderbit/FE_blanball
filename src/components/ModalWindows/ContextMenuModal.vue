@@ -80,7 +80,7 @@ export default {
       font-weight: 400;
       font-size: 13px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
     }
 
     ul {

@@ -247,7 +247,7 @@ export default {
                     font-weight: 400;
                     font-size: 12px;
                     line-height: 20px;
-                    color: #575775;
+                    color: $--b-main-gray-color;
                 }
             }
 
@@ -282,7 +282,7 @@ export default {
                     font-size: 13px;
                     line-height: 20px;
                     text-align: center;
-                    color: #575775;
+                    color: $--b-main-gray-color;
                     display: flex;
                     justify-content: center;
                     flex: 50%;
@@ -341,7 +341,7 @@ export default {
                             font-weight: 500;
                             font-size: 13px;
                             line-height: 20px;
-                            color: #575775;
+                            color: $--b-main-gray-color;
                             margin-bottom: 4px;
                         }
 
@@ -367,7 +367,7 @@ export default {
                 font-size: 14px;
                 line-height: 24px;
                 text-align: center;
-                color: #575775;
+                color: $--b-main-gray-color;
                 cursor: pointer;
             }
         }

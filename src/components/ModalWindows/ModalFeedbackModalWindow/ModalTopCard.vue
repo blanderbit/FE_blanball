@@ -228,7 +228,7 @@ export default {
       font-weight: 400;
       font-size: 14px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
       margin-top: 16px;
       margin-bottom: 20px;
     }
@@ -251,7 +251,7 @@ export default {
         font-weight: 400;
         font-size: 14px;
         line-height: 24px;
-        color: #575775;
+        color: $--b-main-gray-color;
         cursor: pointer;
       }
       .b-modal-top-card__next-btn { 

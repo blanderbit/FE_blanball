@@ -328,7 +328,7 @@ export default {
         font-weight: 400;
         font-size: 12px;
         line-height: 16px;
-        color: #575775;
+        color: $--b-main-gray-color;
       }
       .b-event-m-1st__calendar-cover {
         width: 100%;
@@ -414,7 +414,7 @@ export default {
   font-weight: 500;
   font-size: 13px;
   line-height: 20px;
-  color: #575775;
+  color: $--b-main-gray-color;
   margin-bottom: 10px;
 }
 .b-event-m-2st__duration-select {

@@ -195,7 +195,7 @@
         font-size: 14px;
         line-height: 24px;
         text-align: center;
-        color: #575775;
+        color: $--b-main-gray-color;
         cursor: pointer;
       }
     }

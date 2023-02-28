@@ -231,7 +231,7 @@ export default {
     text-align: center;
     color: #ffffff;
     padding: 0px 6px;
-    background: #575775;
+    background: $--b-main-gray-color;
     border-radius: 4px;
   }
 

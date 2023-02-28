@@ -151,7 +151,7 @@
         line-height: 20px;
       }
       .b-main-search__terms {
-        @include inter(12px, 400, #575775);
+        @include inter(12px, 400, $--b-main-gray-color);
         line-height: 20px;
         display: -webkit-box;
         -webkit-line-clamp: 1;

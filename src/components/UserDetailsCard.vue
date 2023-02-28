@@ -56,7 +56,7 @@
             'flex-basis': item.id === 1 ? '50%' : '33.3333%',
             'margin-right': item.id !== 2 ? '4px' : 0,
             background: currentTab === item.id ? '#FFFFFF' : '#F9F9FC',
-            color: currentTab === item.id ? '$--b-main-black-color' : '#575775',
+            color: currentTab === item.id ? '$--b-main-black-color' : '$--b-main-gray-color',
             'font-weight': currentTab === item.id ? 500 : 400,
           }"
           @click="changeUserTab(item.id)"
@@ -629,7 +629,7 @@ export default {
             font-weight: 400;
             font-size: 12px;
             line-height: 20px;
-            color: #575775;
+            color: $--b-main-gray-color;
           }
         }
         .b-user-card__name-line {
@@ -669,7 +669,7 @@ export default {
               font-weight: 400;
               font-size: 12px;
               line-height: 20px;
-              color: #575775;
+              color: $--b-main-gray-color;
               margin-top: 4px;
             }
           }
@@ -691,7 +691,7 @@ export default {
               font-weight: 400;
               font-size: 12px;
               line-height: 20px;
-              color: #575775;
+              color: $--b-main-gray-color;
             }
           }
           .b-user-card__dropdowns {

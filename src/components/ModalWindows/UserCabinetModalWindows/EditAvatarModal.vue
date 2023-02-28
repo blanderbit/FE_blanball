@@ -246,7 +246,7 @@ export default {
         font-weight: 400;
         font-size: 13px;
         line-height: 24px;
-        color: #575775;
+        color: $--b-main-gray-color;
         margin-bottom: 12px;
         cursor: pointer;
         @include mobile {
@@ -326,7 +326,7 @@ export default {
       font-weight: 400;
       font-size: 14px;
       line-height: 24px;
-      color: #575775;
+      color: $--b-main-gray-color;
       padding: 4px 16px;
       cursor: pointer;
     }

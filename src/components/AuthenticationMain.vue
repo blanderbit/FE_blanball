@@ -239,7 +239,7 @@ export default {
         bottom: 0;
         display: flex;
         align-items: center;
-        @include inter(14px, 400,#575775);
+        @include inter(14px, 400,$--b-main-gray-color);
         line-height: 20px;
         padding: 24px;
         img {

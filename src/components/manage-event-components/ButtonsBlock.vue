@@ -22,7 +22,7 @@
           :icon="icons.iconSave"
           :width="greenBtnWidth"
           :height="greenBtnHeight"
-          :background-color="'#575775'"
+          :background-color="'$--b-main-gray-color'"
           :font-styles="{ 'font-weight': 400 }"
           @click-function="$emit('saveBtnClick')"
         />

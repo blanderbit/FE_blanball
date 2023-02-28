@@ -416,7 +416,7 @@ export default {
           font-weight: 500;
           font-size: 14px;
           line-height: 20px;
-          color: #575775;
+          color: $--b-main-gray-color;
         }
         ul {
           margin-top: 22px;
@@ -508,7 +508,7 @@ button {
 }
 
 .b-selected-elements__count {
-  background: #575775;
+  background: $--b-main-gray-color;
   border-radius: 6px;
   padding: 0px 4px;
   font-style: normal;
@@ -528,7 +528,7 @@ button {
 
 .b-notification-unreaded {
   padding: 0px 4px;
-  background: #575775;
+  background: $--b-main-gray-color;
   border-radius: 100px;
   font-style: normal;
   font-weight: 400;

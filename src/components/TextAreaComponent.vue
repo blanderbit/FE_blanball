@@ -121,7 +121,7 @@ export default {
       font-style: normal;
       font-weight: 500;
       font-size: 12px;
-      color: #575775;
+      color: $--b-main-gray-color;
       padding: 0px 2px;
       position: absolute;
       right: 8px;

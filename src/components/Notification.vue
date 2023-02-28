@@ -243,7 +243,7 @@ export default {
 
   display: inline-block;
   padding: 2px 12px;
-  background: #575775;
+  background: $--b-main-gray-color;
   border-radius: 6px;
   text-align: center;
   margin-right: 8px;
@@ -319,10 +319,10 @@ export default {
   }
 
   .notification-date {
-    color: #575775;
+    color: $--b-main-gray-color;
   }
   .notification-content {
-    color: #575775;
+    color: $--b-main-gray-color;
   }
   ::v-deep {
     .spiner-text {
@@ -350,7 +350,7 @@ export default {
           height: 50px;
         }
         .lds-ring div {
-          border-color: #575775 transparent transparent transparent;
+          border-color: $--b-main-gray-color transparent transparent transparent;
         }
       }
     }

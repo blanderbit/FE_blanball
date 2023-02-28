@@ -95,7 +95,7 @@ export default {
     margin-bottom: 12px;
   }
   &__description {
-    @include inter(12px, 500, #575775);
+    @include inter(12px, 500, $--b-main-gray-color);
     line-height: 20px;
   }
 }

@@ -447,7 +447,7 @@ export default {
           font-weight: 500;
           font-size: 13px;
           line-height: 20px;
-          color: #575775;
+          color: $--b-main-gray-color;
         }
       }
       .b-event-info__right-part {
@@ -474,7 +474,7 @@ export default {
           font-weight: 400;
           font-size: 14px;
           line-height: 24px;
-          color: #575775;
+          color: $--b-main-gray-color;
           margin-left: 25px;
           display: flex;
           align-items: center;
@@ -609,7 +609,7 @@ export default {
           font-weight: 400;
           font-size: 12px;
           line-height: 20px;
-          color: #575775;
+          color: $--b-main-gray-color;
           margin-top: 20px;
           margin-bottom: 16px;
           max-width: 100%;
@@ -678,7 +678,7 @@ export default {
                 font-weight: 400;
                 font-size: 14px;
                 line-height: 20px;
-                color: #575775;
+                color: $--b-main-gray-color;
               }
             }
             .b-event-info__right-side {
@@ -687,7 +687,7 @@ export default {
               font-weight: 400;
               font-size: 12px;
               line-height: 20px;
-              color: #575775;
+              color: $--b-main-gray-color;
             }
           }
         }
@@ -743,7 +743,7 @@ export default {
     font-size: 13px;
     position: relative;
     line-height: 20px;
-    color: #575775;
+    color: $--b-main-gray-color;
     display: flex;
     align-items: center;
     gap: 5px;
