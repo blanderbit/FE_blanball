@@ -230,12 +230,12 @@ export default {
       }
 
       &-active {
-        color: #fff;
+        color: $--b-main-white-color;
         background: #71BA12;
       }
 
       &-finished {
-        color: #fff;
+        color: $--b-main-white-color;
         background: #E184A0;
       }
     }
@@ -260,7 +260,7 @@ export default {
 
         &.b-my-event-card__active {
           background: #71ba12;
-          color: #fff;
+          color: $--b-main-white-color;
         }
       }
 

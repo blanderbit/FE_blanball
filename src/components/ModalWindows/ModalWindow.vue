@@ -84,7 +84,7 @@ export default {
     transform: translate(-50%, -50%);
     box-shadow: 2px 2px 10px rgb(56 56 251 / 10%);
     border-radius: 6px;
-    background: #fff;
+    background: $--b-main-white-color;
     padding: 80px 20px 20px 20px;
     .b_modal_window-title {
       display: flex;
@@ -96,7 +96,7 @@ export default {
       top: 0;
       left: 0;
       border-radius: 6px 6px 0 0;
-      color: #fff;
+      color: $--b-main-white-color;
       font-family: 'Exo 2';
       font-style: normal;
       font-weight: 600;

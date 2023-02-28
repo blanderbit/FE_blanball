@@ -245,7 +245,7 @@ export default {
       position: absolute;
       top: 0;
       right: 0;
-      // background: #fff;
+      // background: $--b-main-white-color;
       border-radius: 6px;
       cursor: pointer;
       img {
@@ -259,7 +259,7 @@ export default {
       position: absolute;
       top: 0;
       left: 0;
-      background: #fff;
+      background: $--b-main-white-color;
       border-radius: 6px;
       cursor: pointer;
       img {
@@ -292,7 +292,7 @@ export default {
       font-size: 14px;
       line-height: 24px;
       color: $--b-main-gray-color;
-      background: #fff;
+      background: $--b-main-white-color;
       border-radius: 6px;
       span {
         display: table-cell;

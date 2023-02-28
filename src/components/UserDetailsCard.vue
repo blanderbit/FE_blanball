@@ -594,7 +594,7 @@ export default {
     }
     .b-user-card__main-tab-body {
       padding: 24px 16px;
-      background: #fff;
+      background: $--b-main-white-color;
       @media (max-width: 1200px) {
         padding: 12px;
       }

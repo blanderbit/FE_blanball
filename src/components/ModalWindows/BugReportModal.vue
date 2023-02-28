@@ -191,7 +191,7 @@ export default {
     transform: translate(-50%, -50%);
     box-shadow: 2px 2px 10px rgb(56 56 251 / 10%);
     border-radius: 6px;
-    background: #fff;
+    background: $--b-main-white-color;
 
     @media (max-width: 450px) {
       width: 350px;

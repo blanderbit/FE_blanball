@@ -801,7 +801,7 @@ export default {
       border-bottom: 2px solid $--b-main-black-color;
     }
     &.disabled {
-      color: #7f7db5;
+      color: $--b-disabled-color;
     }
 
     .v-enter-active,

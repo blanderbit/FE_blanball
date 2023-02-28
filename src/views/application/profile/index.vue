@@ -112,7 +112,7 @@ export default {
           border-bottom: 2px solid #8a8aa8;
         }
         &.disabled {
-          color: #7f7db5;
+          color: $--b-disabled-color;
           font-weight: 400;
         }
       }

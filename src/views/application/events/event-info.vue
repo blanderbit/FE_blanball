@@ -756,7 +756,7 @@ export default {
     }
 
     &.disabled {
-      color: #7f7db5;
+      color: $--b-disabled-color;
 
       img {
         opacity: 0.6;

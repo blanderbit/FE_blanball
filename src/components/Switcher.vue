@@ -101,7 +101,7 @@ export default {
 }
 
 .b_switch_slider:before {
-  background-color: #fff;
+  background-color: $--b-main-white-color;
   bottom: 2px;
   content: '';
   height: 16px;

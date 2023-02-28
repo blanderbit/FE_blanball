@@ -539,7 +539,7 @@ export default {
       }
     }
     .b-mob-menu__content-block {
-      background: #fff;
+      background: $--b-main-white-color;
       height: 100%;
       position: relative;
       overflow-y: scroll;
@@ -564,7 +564,7 @@ export default {
               right: 0;
               bottom: 4px;
               background: #1ccd62;
-              border: 2px solid #fff;
+              border: 2px solid $--b-main-white-color;
               border-radius: 50%;
             }
           }

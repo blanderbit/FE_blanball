@@ -69,7 +69,7 @@ export default {
 
   .b-context-modal {
     width: 228px;
-    background: #fff;
+    background: $--b-main-white-color;
     position: absolute;
     filter: drop-shadow(2px 2px 10px rgba(56, 56, 251, 0.1));
     border-radius: 6px;

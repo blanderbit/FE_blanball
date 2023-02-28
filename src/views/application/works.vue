@@ -50,7 +50,7 @@ export default {}
   left: 0;
   width: 100%;
   height: 100%;
-  background: #fff;
+  background: $--b-main-white-color;
   z-index: 999;
   .b-tech-works__top-message-line {
     padding: 8px 0 8px 0;
