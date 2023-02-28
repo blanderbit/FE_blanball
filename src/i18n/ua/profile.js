@@ -1,6 +1,6 @@
 export default {
   title: 'Особистий кабінет',
-  'change-personal-data': 'Оновіть своє фото та персональні дані',
+  'subtitle': 'Керуйте своїми персональними даними',
   'my-profile': 'Мій профіль',
   'rate-plan': 'Тарифний план',
   notifications: 'Сповіщення',
