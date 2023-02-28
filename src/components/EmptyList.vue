@@ -91,7 +91,7 @@ export default {
     font-weight: 800;
     font-size: 16px;
     line-height: 20px;
-    color: #262541;
+    color: $--b-main-black-color;
     margin-bottom: 12px;
   }
   &__description {

@@ -315,7 +315,7 @@ export default {
   padding: 16px 0;
 
   .notification-title {
-    color: #262541;
+    color: $--b-main-black-color;
   }
 
   .notification-date {

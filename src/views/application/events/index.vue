@@ -493,7 +493,7 @@ export default {
           font-weight: 700;
           font-size: 22px;
           line-height: 32px;
-          color: #262541;
+          color: $--b-main-black-color;
           margin-bottom: 4px;
         }
         .b-events-page__subtitle {
@@ -514,7 +514,7 @@ export default {
           font-size: 13px;
           line-height: 20px;
           text-align: center;
-          color: #262541;
+          color: $--b-main-black-color;
           display: flex;
           @media (max-width: 992px) {
             display: none;
@@ -570,7 +570,7 @@ export default {
             font-size: 13px;
             line-height: 20px;
             text-align: center;
-            color: #262541;
+            color: $--b-main-black-color;
             background: #F0F0F4;
             border-radius: 4px;
             height: 100%;

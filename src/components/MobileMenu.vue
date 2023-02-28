@@ -443,7 +443,7 @@ export default {
         font-weight: 800;
         font-size: 20px;
         line-height: 32px;
-        color: #262541;
+        color: $--b-main-black-color;
       }
       .b-mob-menu__version {
         @include inter(12px, 400, #8A8AA8);
@@ -490,7 +490,7 @@ export default {
         font-weight: 800;
         font-size: 18px;
         line-height: 24px;
-        color: #262541;
+        color: $--b-main-black-color;
       }
       .b-mob-menu__account-type {
         @include inter(12px, 500, #148581);

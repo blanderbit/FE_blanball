@@ -58,7 +58,7 @@ export default {
         left: 0;
         width: 100%;
         min-height: 100%;
-        background: #262541;
+        background: $--b-main-black-color;
         width: 100%;
         min-height: 100%;
         z-index: -1;
@@ -89,7 +89,7 @@ export default {
                 font-weight: 400;
                 font-size: 13px;
                 line-height: 20px;
-                color: #262541;
+                color: $--b-main-black-color;
                 z-index: 999;
             }
         }

@@ -237,7 +237,7 @@ export default {
     font-weight: 400;
     font-size: 13px;
     line-height: 24px;
-    color: #262541;
+    color: $--b-main-black-color;
     .b-input__icon {
       display: flex;
       height: 100%;

@@ -177,7 +177,7 @@ export default {
         font-weight: 700;
         font-size: 16px;
         line-height: 24px;
-        color: #262541;
+        color: $--b-main-black-color;
         width: 75%;
         word-break: break-word;
         display: -webkit-box;
@@ -225,7 +225,7 @@ export default {
       padding: 0px 4px;
 
       &-planned {
-        color: #262541;
+        color: $--b-main-black-color;
         background: #EFEFF6;
       }
 

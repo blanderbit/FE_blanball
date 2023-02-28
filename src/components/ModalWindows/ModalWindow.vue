@@ -113,7 +113,7 @@ export default {
       font-weight: 500;
       font-size: 14px;
       line-height: 20px;
-      color: #262541;
+      color: $--b-main-black-color;
       margin-bottom: 12px;
     }
     .description-title-second {
@@ -122,7 +122,7 @@ export default {
       font-weight: 600;
       font-size: 14px;
       line-height: 20px;
-      color: #262541;
+      color: $--b-main-black-color;
       margin-bottom: 16px;
     }
     .description-text {
@@ -178,7 +178,7 @@ export default {
         font-size: 14px;
         line-height: 24px;
         text-align: center;
-        color: #262541;
+        color: $--b-main-black-color;
         padding: 4px 0;
         cursor: pointer;
       }

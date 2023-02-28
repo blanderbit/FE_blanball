@@ -107,7 +107,7 @@ export default {
         gap: 4px;
         cursor: pointer;
         &.active {
-          color: #262541;
+          color: $--b-main-black-color;
           font-weight: 500;
           border-bottom: 2px solid #8a8aa8;
         }

@@ -380,7 +380,7 @@ export default {
           font-weight: 500;
           font-size: 13px;
           line-height: 20px;
-          color: #262541;
+          color: $--b-main-black-color;
         }
         .b-users-filters__text {
           font-family: 'Inter';

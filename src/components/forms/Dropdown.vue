@@ -368,7 +368,7 @@ export default {
     font-weight: 400;
     font-size: 14px;
     line-height: 24px;
-    color: #262541;
+    color: $--b-main-black-color;
 
     img {
       margin-right: 5px;

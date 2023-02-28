@@ -52,7 +52,7 @@ export default {
     font-weight: 500;
     font-size: 14px;
     line-height: 20px;
-    color: #262541;
+    color: $--b-main-black-color;
   }
   &__label-new {
     padding: 0px 8px;

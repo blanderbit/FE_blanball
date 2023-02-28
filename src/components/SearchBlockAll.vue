@@ -146,7 +146,7 @@ export default {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: #262541;
+  color: $--b-main-black-color;
   margin-left: 8px;
 }
 .b-modal-item {

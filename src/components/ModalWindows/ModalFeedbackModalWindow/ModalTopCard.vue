@@ -163,7 +163,7 @@ export default {
         'font-weight': 700,
         'font-size': '24px',
         'line-height': '28px',
-        color: '#262541'
+        color: '$--b-main-black-color'
       }
     })
     const mainBlockCardStyle = computed(() => {
@@ -217,7 +217,7 @@ export default {
       font-weight: 600;
       font-size: 16px;
       line-height: 26px;
-      color: #262541;
+      color: $--b-main-black-color;
     }
   }
   .b-modal-top-card__main-block {
@@ -238,7 +238,7 @@ export default {
       font-weight: 400;
       font-size: 14px;
       line-height: 20px;
-      color: #262541
+      color: $--b-main-black-color
     }
     .b-modal-top-card__btns-block { 
       display: flex;

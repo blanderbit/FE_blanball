@@ -166,7 +166,7 @@ export default {
   &__title-level1 {
     font-weight: 700;
     font-size: 20px;
-    color: #262541;
+    color: $--b-main-black-color;
     font-family: 'Exo 2';
     &.title-customs {
       width: 368px;
@@ -178,7 +178,7 @@ export default {
     font-weight: 700;
     font-size: 16px;
     margin-left: 12px;
-    color: #262541;
+    color: $--b-main-black-color;
     margin-bottom: 20px;
     font-family: 'Exo 2';
   }
@@ -187,7 +187,7 @@ export default {
     font-weight: 600;
     font-size: 16px;
     margin-left: 12px;
-    color: #262541;
+    color: $--b-main-black-color;
     margin-bottom: 12px;
     font-family: 'Exo 2';
   }
@@ -195,7 +195,7 @@ export default {
   &__title-level4 {
     font-weight: 600;
     font-size: 14px;
-    color: #262541;
+    color: $--b-main-black-color;
     margin-bottom: 12px;
     font-family: 'Exo 2';
   }

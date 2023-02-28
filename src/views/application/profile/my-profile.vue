@@ -766,7 +766,7 @@ export default {
     font-style: normal;
     font-weight: 700;
     font-size: 22px;
-    color: #262541;
+    color: $--b-main-black-color;
   }
   .b-user-cabinet__subtitle {
     font-family: 'Inter';
@@ -790,7 +790,7 @@ export default {
     font-style: normal;
     font-weight: 400;
     font-size: 13px;
-    color: #262541;
+    color: $--b-main-black-color;
     user-select: none;
     cursor: pointer;
     position: relative;
@@ -798,7 +798,7 @@ export default {
       margin-right: 8px;
     }
     &.active {
-      border-bottom: 2px solid #262541;
+      border-bottom: 2px solid $--b-main-black-color;
     }
     &.disabled {
       color: #7f7db5;

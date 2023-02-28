@@ -202,7 +202,7 @@ export default {
           font-weight: 700;
           font-size: 16px;
           line-height: 24px;
-          color: #262541;
+          color: $--b-main-black-color;
         }
         .b-event-card__date-time-mob {
           display: flex;
@@ -277,7 +277,7 @@ export default {
         }
         .b-event-card__players,
         .b-event-card__players-date {
-          color: #262541;
+          color: $--b-main-black-color;
         }
         .b-event-card__visitors,
         .b-event-card__visitors-date {

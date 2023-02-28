@@ -209,7 +209,7 @@ export default {
         left: 0;
         width: 100%;
         min-height: 100%;
-        background: #262541;
+        background: $--b-main-black-color;
         width: 100%;
         min-height: 100%;
         z-index: 100;
@@ -238,7 +238,7 @@ export default {
                     font-weight: 600;
                     font-size: 16px;
                     line-height: 28px;
-                    color: #262541;
+                    color: $--b-main-black-color;
                 }
 
                 .b-select-forms-color-modal__subtitle {
@@ -260,7 +260,7 @@ export default {
                     font-weight: 500;
                     font-size: 13px;
                     line-height: 20px;
-                    color: #262541;
+                    color: $--b-main-black-color;
                     margin-bottom: 8px;
                 }
             }
@@ -297,7 +297,7 @@ export default {
                         font-size: 13px;
                         line-height: 20px;
                         text-align: center;
-                        color: #262541;
+                        color: $--b-main-black-color;
 
                     }
                 }
@@ -318,7 +318,7 @@ export default {
                         font-weight: 500;
                         font-size: 13px;
                         line-height: 20px;
-                        color: #262541;
+                        color: $--b-main-black-color;
                         margin-bottom: 8px;
                     }
                 }
