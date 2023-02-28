@@ -14,14 +14,19 @@
           <div class="b-events-page__title">
             {{ $t('events.future-events') }}
           </div>
-          <div class="b-events-page__subtitle">
-            {{ $t('events.renew-your-data') }}
-          </div>
           <div class="b-events-page__event-switcher">
             <div class="b-events-page__general-events">
               {{ $t('events.general-events') }}
             </div>
             <div class="b-events-page__my-events" @click="switchToMyEvents">
+              {{ $t('events.my-events') }}
+            </div>
+          </div>
+          <div class="b-events-page__event-switcher-mobile">
+            <div class="b-events-page__general-events-mobile">
+              {{ $t('events.general-events') }}
+            </div>
+            <div class="b-events-page__my-events-mobile" @click="switchToMyEvents">
               {{ $t('events.my-events') }}
             </div>
           </div>
@@ -539,6 +544,50 @@ export default {
             border-right: 1px solid #f0f0f4;
             border-bottom: 1px solid #f0f0f4;
             cursor: pointer;
+          }
+        }
+
+        .b-events-page__event-switcher-mobile {
+          display: none;
+          align-items: center;
+          justify-content: space-between;
+          width: 344px;
+          border: 1px solid #F0F0F4;
+          border-radius: 6px;
+          height: 36px;
+          padding: 4px;
+          margin-top: 16px;
+
+          @media (max-width: 992px) {
+            display: flex;
+          }
+          .b-events-page__general-events-mobile {
+            flex: 50%;
+            cursor: pointer;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 13px;
+            line-height: 20px;
+            text-align: center;
+            color: #262541;
+            background: #F0F0F4;
+            border-radius: 4px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .b-events-page__my-events-mobile {
+            flex: 50%;
+            cursor: pointer;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 13px;
+            line-height: 24px;
+            text-align: center;
+            color: #575775;
           }
         }
       }

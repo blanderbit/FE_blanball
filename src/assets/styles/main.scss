@@ -7,23 +7,50 @@
 }
 
 .Vue-Toastification__toast--success {
-  background: #f4fde8;
-  border: 1px solid #71ba12;
+  background: #F4FDE8;
+  border: 1px solid #71BA12;
+  border-radius: 6px;
+  color: #262541;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 20px;
   color: #262541;
 }
 .Vue-Toastification__toast--error {
   background: #ffeeee;
-  border: 1px solid #f43e3e;
+  border: 1px solid #F43E3E;
+  border-radius: 6px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 20px;
   color: #262541;
 }
 .Vue-Toastification__toast--warning {
   background: #fff4ec;
-  border: 1px solid #f6803c;
+  border: 1px solid #F6803C;
+  border-radius: 6px;
+  color: #262541;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 20px;
   color: #262541;
 }
 .Vue-Toastification__toast--info {
-  background: #f7f7fe;
-  border: 1px solid #bfbeda;
+  background: #F7F7FE;
+  border: 1px solid #BFBEDA;
+  border-radius: 6px;
+  color: #262541;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 20px;
   color: #262541;
 }
 

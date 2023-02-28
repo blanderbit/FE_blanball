@@ -20,14 +20,19 @@
           <div class="b-events-page__title">
             {{ $t('events.my-events') }}
           </div>
-          <div class="b-events-page__subtitle">
-            {{ $t('events.renew-your-data') }}
-          </div>
           <div class="b-events-page__event-switcher">
             <div class="b-events-page__general-events" @click="switchEvents">
               {{ $t('events.general-events') }}
             </div>
             <div class="b-events-page__my-events">
+              {{ $t('events.my-events') }}
+            </div>
+          </div>
+          <div class="b-events-page__event-switcher-mobile">
+            <div class="b-events-page__general-events-mobile"  @click="switchEvents">
+              {{ $t('events.general-events') }}
+            </div>
+            <div class="b-events-page__my-events-mobile">
               {{ $t('events.my-events') }}
             </div>
           </div>
@@ -135,9 +140,6 @@ import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'vue-toastification'
-
-import dayjs from 'dayjs'
-import dayjsUkrLocale from 'dayjs/locale/uk'
 
 import { v4 as uuid } from 'uuid'
 
@@ -619,6 +621,49 @@ export default {
             border-radius: 0px 6px 6px 0px;
             border: 1px solid #148581;
             cursor: pointer;
+          }
+        }
+        .b-events-page__event-switcher-mobile {
+          display: none;
+          align-items: center;
+          justify-content: space-between;
+          width: 344px;
+          border: 1px solid #F0F0F4;
+          border-radius: 6px;
+          height: 36px;
+          padding: 4px;
+          margin-top: 16px;
+
+          @media (max-width: 992px) {
+            display: flex;
+          }
+          .b-events-page__my-events-mobile {
+            flex: 50%;
+            cursor: pointer;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 13px;
+            line-height: 20px;
+            text-align: center;
+            color: #262541;
+            background: #F0F0F4;
+            border-radius: 4px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .b-events-page__general-events-mobile {
+            flex: 50%;
+            cursor: pointer;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 13px;
+            line-height: 24px;
+            text-align: center;
+            color: #575775;
           }
         }
       }

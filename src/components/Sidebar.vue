@@ -87,6 +87,7 @@
     @reLoading="loadDataNotifications(1, null, true)"
     @loading="loadDataNotifications(1, null, true)"
     @close-menu="isMobMenuActive = false"
+    @foundBug="foundBug"
   />
 </template>
 
@@ -155,6 +156,11 @@ export default {
     const isMenuOpened = ref(false)
     const isBugReportModalOpened = ref(false)
     const currentHoverSideBarItemID = ref(0)
+
+    const foundBug = () => {
+      isMobMenuActive.value = false
+      isBugReportModalOpened.value = true
+    }
 
     watch(
       () => user,
@@ -312,6 +318,7 @@ export default {
       leaveHoverSidebarItem,
       enterHoverSidebarItem,
       paginationClearData,
+      foundBug,
       goToProfile,
       logOut,
       closeBugReportModal,

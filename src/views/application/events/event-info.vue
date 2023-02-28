@@ -20,11 +20,20 @@
         <div class="b-event-info__right-part">
           <router-link :to="ALL_ROUTES.APPLICATION.EVENTS.CREATE.absolute">
             <GreenBtn
+              class="b-event-info__right-part-green-btn"
               :text="
                 eventData.privacy ? $t('events.apply') : $t('buttons.join')
               "
               :width="150"
               :height="40"
+            />
+            <GreenBtn
+              class="b-event-info__right-part-green-mobile"
+              :text="
+                eventData.privacy ? $t('events.apply') : $t('buttons.join')
+              "
+              :width="115"
+              :height="32"
             />
           </router-link>
           <div @click="openEventShareModal" class="b-event-info__share-link">
@@ -444,16 +453,20 @@ export default {
       .b-event-info__right-part {
         display: flex;
         align-items: center;
-        @include mobile {
-          position: fixed;
-          bottom: 0;
-          left: 50%;
-          z-index: 3;
-          transform: translateX(-50%);
-          margin-bottom: 10px;
-        }
         a {
           text-decoration: none;
+        }
+        .b-event-info__right-part-green-btn {
+          display: flex;
+          @media (max-width: 768px) {
+            display: none;
+          }
+        }
+        .b-event-info__right-part-green-mobile {
+          display: none;
+          @media (max-width: 768px) {
+            display: flex;
+          }
         }
         .b-event-info__share-link {
           font-family: 'Inter';
@@ -479,10 +492,16 @@ export default {
       grid-template-columns: 1fr 1fr;
       gap: 48px;
       margin-top: 24px;
-      @media (max-width: 768px) {
+      @media (max-width: 992px) {
         grid-template-columns: 1fr;
         gap: 20px;
       }
+
+      @media (max-width: 768px) {
+        border-top: none;
+        margin-top: 20px;
+      }
+
       .b-event-info__left-side {
         .b-event-info__timing,
         .b-event-info__address {
