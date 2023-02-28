@@ -130,11 +130,16 @@
         </div>
       </div>
     </div>
+    <div v-if="isShowingFoundBug" class="b-mob-menu__found-error"
+      @click="$emit('foundBug')">
+      <img src="../assets/img/white-warning-icon.svg" alt="">
+      <span>Знайшли помилку?</span>
+    </div>
   </div>
 </template>
 
 <script>
-import { ref, computed, inject } from 'vue'
+import { ref, computed, inject, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { storeToRefs } from "pinia";
@@ -263,6 +268,7 @@ export default {
     const selectedList = ref([])
     const blockScrollToTopIfExist = ref(false)
     const triggerForRestart = ref('')
+    const isShowingFoundBug = ref(true)
     const clientVersion = ref(inject('clientVersion'))
 
 
@@ -303,6 +309,7 @@ export default {
       normalizeBlock(bottomMenu)
       menuBlockHeight.value = 'auto'
       emit('closeMenu')
+      isShowingFoundBug.value = true
     }
     function normalizeBlock(menu) {
       menu.value = menu.value.map((item) => {
@@ -329,6 +336,7 @@ export default {
         menuType === 'top-menu' ? topMenu : bottomMenu
       const spareMenu = menuType === 'top-menu' ? bottomMenu : topMenu
       const spareId = id ? 0 : 1
+      isShowingFoundBug.value = false
 
       normalizeBlock(spareMenu)
 
@@ -380,6 +388,7 @@ export default {
       blockScrollToTopIfExist,
       mockData,
       clientVersion,
+      isShowingFoundBug,
       notificationList,
       menuBlockStyle,
       userData,
@@ -600,6 +609,32 @@ export default {
         }
       }
     }
+  }
+}
+
+.b-mob-menu__found-error {
+  background: #575775;
+  box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+  border-radius: 6px;
+  padding: 4px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  max-width: 193px;
+  position: absolute;
+  bottom: 70px;
+  cursor: pointer;
+  left: 50%;
+  transform: translateX(-50%);
+
+  span {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 24px;
+    color: #FFFFFF;
   }
 }
 </style>

@@ -198,6 +198,7 @@ export default {
   position: relative;
   overflow: hidden;
   width: 400px;
+  z-index: 10;
   .b-modal-top-card__arrow-cross-block {
     position: absolute;
     top: 20px;

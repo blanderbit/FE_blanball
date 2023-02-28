@@ -71,7 +71,8 @@ export default {
   padding: 20px;
   background: #f9f9fc;
   border-radius: 12px;
-  width: 430px;
+  width: 100%;
+  max-width: 430px;
   margin: 0 auto;
   .b-empty-list__left-side {
     display: flex;

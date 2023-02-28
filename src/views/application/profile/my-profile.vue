@@ -646,7 +646,6 @@ export default {
 
     function openEditPictureModal(modal, picture) {
       userAvatar.value = picture
-      console.log(userAvatar.value)
       toggleModal(modal)
     }
 

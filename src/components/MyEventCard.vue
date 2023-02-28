@@ -108,6 +108,7 @@ export default {
   border: 1px solid #dfdeed;
   margin-bottom: 16px;
   cursor: pointer;
+  height: 100%;
   &.active {
     border: 1px solid #71ba12;
   }
