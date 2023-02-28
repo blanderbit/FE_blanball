@@ -114,12 +114,12 @@ import { NotificationsBus, BlanballEventBus } from '../workers/event-bus-worker'
 
 import { ROUTES } from '../router/router.const'
 
-import notification from '../assets/img/Notification.svg'
+import notification from '../assets/img/notification.svg'
 import notificationUnread from '../assets/img/notificationUnread.svg'
 import record from '../assets/img/record.svg'
 import members from '../assets/img/members.svg'
 import medal from '../assets/img/medal.svg'
-import settings from '../assets/img/Settings.svg'
+import settings from '../assets/img/settings.svg'
 import bugReport from '../assets/img/warning-black.svg'
 
 const findDublicates = (list, newList) => {

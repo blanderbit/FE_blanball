@@ -164,8 +164,8 @@ import Record from '../assets/img/record.svg'
 import RecordWhite from '../assets/img/record-white.svg'
 import Members from '../assets/img/members.svg'
 import MembersWhite from '../assets/img/members-white.svg'
-import Settings from '../assets/img/Settings.svg'
-import SettingsWhite from '../assets/img/Settings-white.svg'
+import Settings from '../assets/img/settings.svg'
+import SettingsWhite from '../assets/img/settings-white.svg'
 
 export default {
   name: 'MobileMenu',

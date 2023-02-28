@@ -56,9 +56,9 @@
               <div class="notification-response d-flex align-items-center">
                 <img
                   v-if="notificationInstance.textsAfterAction.response"
-                  src="../assets/img/true_check.svg"
+                  src="../assets/img/true-check.svg"
                 />
-                <img v-else src="../assets/img/red_cross.svg" />
+                <img v-else src="../assets/img/red-cross.svg" />
                 {{ notificationInstance.textsAfterAction.text }}
               </div>
             </template>

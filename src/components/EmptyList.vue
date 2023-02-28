@@ -28,7 +28,7 @@ import { computed } from 'vue'
 import GreenBtn from './GreenBtn.vue'
 
 import EmptyNotificationsSvg from '../assets/img/no-records/empty-notifications.svg'
-import NoData from '../assets/img/no-records/no_data.svg'
+import NoData from '../assets/img/no-records/no-data.svg'
 
 export default {
   name: 'EmptyList',
