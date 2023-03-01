@@ -104,20 +104,28 @@ export const TypeRequestMessageWorker = (result = {}) => {
       }
     })
   } else if (result?.status === 'error') {
-    return (
-      result?.data?.errors?.map((error) => {
-        const detectedType = detectMessageByKey(error.detail)
-        const excludedColumnParameter = excludeColumnParameter(
-          DETAILS_TYPE_ENUM[detectedType]
-        )
+    if (result.data.error) {
+      return [result.data.error].map((error) => {
         return {
-          errorType: detectedType?.toLowerCase(),
-          field:
-            excludedColumnParameter.field &&
-            excludeOneRowParam(error.detail, excludedColumnParameter.type),
+          errorType:detectMessageByKey(error)?.toLowerCase(),
         }
-      }) || []
-    )
+      })
+    } else {
+      return (
+        result?.data?.errors?.map((error) => {
+          const detectedType = detectMessageByKey(error.detail)
+          const excludedColumnParameter = excludeColumnParameter(
+            DETAILS_TYPE_ENUM[detectedType]
+          )
+          return {
+            errorType: detectedType?.toLowerCase(),
+            field:
+              excludedColumnParameter.field &&
+              excludeOneRowParam(error.detail, excludedColumnParameter.type),
+          }
+        }) || []
+      )
+    }
   }
   return []
 }

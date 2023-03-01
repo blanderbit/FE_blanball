@@ -237,7 +237,6 @@ function pasteHandler() {
         .forEach((item, index) => (values.value[index] = item))
     })
     .catch((err) => {
-      console.log('К сожалению не удалось взять текст из буффера', err)
     })
 }
 

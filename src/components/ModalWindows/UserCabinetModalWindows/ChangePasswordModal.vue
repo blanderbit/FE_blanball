@@ -79,8 +79,6 @@ import Loading from '../../../workers/loading-worker/Loading.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 
-const secondsToCount = 30;
-
 export default {
   name: 'ChangePasswordModal',
   props: {
@@ -102,7 +100,6 @@ export default {
     const loading = ref(false)
     const toast = useToast();
     const modalChangeStep = ref(1);
-    const seconds = ref(secondsToCount);
 
     const schema = computed(() => {
       if (modalChangeStep.value === 1) {
@@ -143,7 +140,6 @@ export default {
 
     async function sendCode(data) {
       await API.UserService.changePassword(data.values);
-      seconds.value = secondsToCount;
     }
 
     async function nextStep(data) {
@@ -182,7 +178,6 @@ export default {
       loading,
       modalChangeStep,
       schema,
-      seconds,
       disableSubmit: (e) => {
         e.stopPropagation();
         e.preventDefault();

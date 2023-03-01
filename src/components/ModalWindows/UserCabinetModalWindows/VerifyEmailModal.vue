@@ -111,7 +111,6 @@ export default {
         })
         .catch(() => {
           toast.error(t('notifications.some-mistake'))
-          console.log('some mistake happened')
         })
     }
     function sendEmailAgain() {

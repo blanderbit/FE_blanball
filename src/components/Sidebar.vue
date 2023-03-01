@@ -165,7 +165,6 @@ export default {
     watch(
       () => user,
       (newData, oldData) => {
-        console.log(newData)
       }
     )
 

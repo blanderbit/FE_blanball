@@ -278,7 +278,6 @@ export default {
     })
 
     const getPlanedEvents = (page) => {
-      console.log(page)
       return API.EventService.getPlannedUserEvents(props.userData.id, {
         page,
       }).then((result) => {

@@ -499,7 +499,6 @@ export default {
           getMyProfile()
         })
         .catch((e) => {
-          console.log('mistake happened', e)
           toast.error(t('profile.some-mistake'))
         })
     }
@@ -544,7 +543,6 @@ export default {
         })
         .catch((e) => {
           isLoading.value = false
-          console.log('some mistake happened', e)
           toast.error(t('profile.some-mistake'))
         })
     }

@@ -129,7 +129,6 @@ export default {
           router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute)
         })
         .catch((e) => {
-          console.log('Delete account error', e)
         })
     }
 

@@ -84,7 +84,7 @@ export default {
     const isDisabledTabHover = ref(false);
     const isChangeEmailModalActive = ref(false);
     const isDeleteAccountModalActive = ref(false);
-    const isChangePasswordModalActive = ref(true);
+    const isChangePasswordModalActive = ref(false);
 
     const userData = ref(route.meta.usersData.data);
 
