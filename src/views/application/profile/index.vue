@@ -106,6 +106,9 @@ export default {
     const closeChangeEmailModal = () => {
       isChangeEmailModalActive.value = false;
     };
+    const closeChangePasswordModal = () => {
+      isChangePasswordModalActive.value = false
+    }
 
     const closeModals = (modalType) => {
       switch (modalType) {
@@ -113,6 +116,8 @@ export default {
           return closeDeleteAccountModal();
         case 'email':
           return closeChangeEmailModal();
+         case 'change_password':
+          return closeChangePasswordModal();
       }
     };
 

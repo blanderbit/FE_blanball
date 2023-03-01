@@ -1,4 +1,5 @@
 <template>
+  <Loading :is-loading="loading"/>
   <Transition>
     <ModalWindow>
       <template #title>
@@ -27,13 +28,13 @@
               name="new_password"
             />
           </div>
-         
+
           <div v-if="modalChangeStep === 2">
             <Counter
               :start-time="30"
               :counter-text="$t('modals.change_password.sms-code')"
               :email="userEmail"
-              @resend-code-action="resendCode(data)"
+              @resend-code-action="sendCode(data)"
             />
           </div>
 
@@ -43,7 +44,7 @@
               :fieldWidth="48"
               :fieldHeight="40"
               :required="true"
-              name="password_code"
+              name="verify_code"
               @complete="completed = true"
             />
           </div>
@@ -51,7 +52,7 @@
             <div class="cancle-btn" @click="closeModal">
               {{ $t('buttons.cancel-editing') }}
             </div>
-            <div class="save-btn" @click="changePassword(data)">
+            <div class="save-btn" @click="nextStep(data)">
               {{ $t('buttons.save-changes') }}
             </div>
           </div>
@@ -62,24 +63,23 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { computed, ref } from 'vue';
+import { useToast } from 'vue-toastification';
+import { useI18n } from 'vue-i18n';
 
-import { Form } from '@system.it.flumx.com/vee-validate'
+import { Form } from '@system.it.flumx.com/vee-validate';
 
-import * as yup from 'yup'
+import * as yup from 'yup';
 
-import ModalWindow from '../ModalWindow.vue'
-import Counter from '../../Counter.vue'
-import CodeInput from '../../forms/CodeInput.vue'
-import InputComponent from '../../forms/InputComponent.vue'
+import ModalWindow from '../ModalWindow.vue';
+import Counter from '../../Counter.vue';
+import CodeInput from '../../forms/CodeInput.vue';
+import InputComponent from '../../forms/InputComponent.vue';
+import Loading from '../../../workers/loading-worker/Loading.vue';
 
-import { API } from '../../../workers/api-worker/api.worker'
+import { API } from '../../../workers/api-worker/api.worker';
 
-import eyeCross from '../../../assets/img/eye-crossed.svg'
-import eyeOpen from '../../../assets/img/eye-opened.svg'
-
-const secondsToCount = 30
+const secondsToCount = 30;
 
 export default {
   name: 'ChangePasswordModal',
@@ -95,91 +95,101 @@ export default {
     CodeInput,
     InputComponent,
     Counter,
+    Loading,
   },
-  setup(props, context) {
-    const { t } = useI18n()
-    const modalChangeStep = ref(1)
-    const seconds = ref(secondsToCount)
+  setup(_, { emit }) {
+    const { t } = useI18n();
+    const loading = ref(false)
+    const toast = useToast();
+    const modalChangeStep = ref(1);
+    const seconds = ref(secondsToCount);
 
     const schema = computed(() => {
-      return yup.object({
-        old_password: yup
-          .string()
-          .required('errors.required')
-          .min(8, 'errors.min8')
-          .max(68, 'errors.max68'),
-        new_password: yup
-          .string()
-          .required('errors.required')
-          .min(8, 'errors.min8')
-          .max(68, 'errors.max68'),
-        password_code: yup
-          .string()
-          .required('errors.required')
-          .min(5, 'errors.min5')
-      })
-    })
-    const eyeCrossed = computed(() => eyeCross)
-    const eyeOpened = computed(() => eyeOpen)
+      if (modalChangeStep.value === 1) {
+        return yup.object({
+          old_password: yup
+            .string()
+            .required('errors.required')
+            .min(8, 'errors.min8')
+            .max(68, 'errors.max68'),
+          new_password: yup
+            .string()
+            .required('errors.required')
+            .min(8, 'errors.min8')
+            .max(68, 'errors.max68')
+            .when('old_password', (password, field) =>
+              password
+                ? field
+                    .required('errors.required')
+                    .oneOf([yup.ref('old_password')], 'errors.same-password')
+                : field
+            ),
+        });
+      }
+      if (modalChangeStep.value === 2) {
+        return yup.object({
+          verify_code: yup
+            .string()
+            .required('errors.required')
+            .min(5, 'errors.min5'),
+        });
+      }
+    });
 
     function closeModal() {
-      modalChangeStep.value = 1
-      context.emit('closeModal', 'change_password')
+      modalChangeStep.value = 1;
+      emit('closeModal', 'change_password');
     }
 
-    function resendCode(formData) {
-      const newPassword = formData.controlledValues.new_password
-      const oldPassword = formData.controlledValues.old_password
-      const payload = {
-        new_password: newPassword,
-        old_password: oldPassword,
-      }
-      API.UserService.changePassword(payload)
-      seconds.value = secondsToCount
+    async function sendCode(data) {
+      await API.UserService.changePassword(data.values);
+      seconds.value = secondsToCount;
     }
 
-    function changePassword(formData) {
-      const newPassword = formData.controlledValues.new_password
-      const oldPassword = formData.controlledValues.old_password
-      const passCode = formData.controlledValues.password_code
+    async function nextStep(data) {
+      const { valid } = await data.validate();
 
-      if (modalChangeStep.value === 1 && newPassword && oldPassword) {
-        const payload = {
-          new_password: newPassword,
-          old_password: oldPassword,
-        }
-        API.UserService.changePassword(payload)
-          .then(() => {
-            modalChangeStep.value = 2
-          })
+      if (!valid) {
+        return false;
       }
-      if (modalChangeStep.value === 2 && passCode) {
-        const payload = {
-          verify_code: passCode,
+      loading.value = true;
+      try {
+        if (modalChangeStep.value === 1) {
+          await sendCode(data);
+        } else {
+          await changePassword(data);
+          toast.success(t('notifications.password-reset'))
         }
-        API.UserService.sendApproveCode(payload)
-          .then(() => {
-            closeModal()
-          })
+        modalChangeStep.value++;
+        loading.value = false;
+      } catch {
+        loading.value = false;
       }
+    }
+
+    async function changePassword(data) {
+      await API.UserService.sendApproveCode({
+        verify_code: data.values.verify_code,
+      });
+      closeModal();
     }
 
     return {
       closeModal,
       changePassword,
-      resendCode,
+      sendCode,
+      nextStep,
+      loading,
       modalChangeStep,
       schema,
-      eyeCrossed,
-      eyeOpened,
       seconds,
       disableSubmit: (e) => {
-        e.stopPropagation()
-        e.preventDefault()
+        e.stopPropagation();
+        e.preventDefault();
       },
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped></style>
