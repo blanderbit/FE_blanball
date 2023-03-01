@@ -46,11 +46,17 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-fafafa: #fafafa;
+ $color-efeff6: #efeff6;
+
+
 .b-small-event-card {
   position: relative;
   width: 100%;
-  background: #ffffff;
-  border: 1px solid #dfdeed;
+  background: $--b-main-white-color;
+  border: 1px solid $color-dfdeed;
   border-radius: 6px;
   padding: 10px 12px;
   margin-bottom: 16px;
@@ -86,7 +92,7 @@ export default {
           font-size: 12px;
           line-height: 20px;
           text-align: right;
-          color: #575775;
+          color: $--b-main-gray-color;
           margin-right: 21px;
         }
         .b-small-event-card__date {
@@ -103,7 +109,7 @@ export default {
   }
   .b-small-event-card__address {
     display: flex;
-    background: #fafafa;
+    background: $color-fafafa;
     padding: 0px 4px;
     margin-top: 4px;
   }
@@ -118,9 +124,9 @@ export default {
       font-weight: 400;
       font-size: 12px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
       padding: 0px 8px;
-      border: 1px solid #efeff6;
+      border: 1px solid $color-efeff6;
       border-radius: 100px;
     }
   }

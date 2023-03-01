@@ -78,6 +78,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-f9f9fc: #f9f9fc;
+ $color-efeff6: #efeff6;
+
+
 .b-event-info__forms {
         display: flex;
         align-items: center;
@@ -110,7 +115,7 @@ export default {
                 font-weight: 500;
                 font-size: 12px;
                 line-height: 20px;
-                color: #575775;
+                color: $--b-main-gray-color;
               }
               .b-event-info__form-item-color {
                 background: #EFEFF6;

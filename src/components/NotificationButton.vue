@@ -43,6 +43,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
+// SCSS variables for hex colors
+ $color-efeff6: #efeff6;
+ $color-c5c5d3: #c5c5d3;
+ $color-fcfcfc: #fcfcfc;
+ $color-424257: #424257;
+ $color-148581: #148581;
+ $color-a4284d: #a4284d;
+
+
 .notification-button {
   cursor: pointer;
   display: inline-block;
@@ -66,48 +75,48 @@ export default {
 }
 
 .notification-button.flat {
-  background: #575775;
-  border-color: #575775;
-  color: #ffffff;
+  background: $--b-main-gray-color;
+  border-color: $--b-main-gray-color;
+  color: $--b-main-white-color;
   &.notification-type__notification-sidebar {
-    background: #efeff6;
-    border-color: #efeff6;
-    color: #575775;
+    background: $color-efeff6;
+    border-color: $color-efeff6;
+    color: $--b-main-gray-color;
   }
 }
 
 .notification-button.stroked {
   background: $--b-main-black-color;
-  border-color: #c5c5d3;
-  color: #ffffff;
+  border-color: $color-c5c5d3;
+  color: $--b-main-white-color;
   &.notification-type__notification-sidebar {
-    background: #fcfcfc;
-    border-color: #efeff6;
-    color: #424257;
+    background: $color-fcfcfc;
+    border-color: $color-efeff6;
+    color: $color-424257;
   }
 }
 
 .notification-button.flat.success {
-  background: #148581;
-  border-color: #148581;
-  color: #ffffff;
+  background: $color-148581;
+  border-color: $color-148581;
+  color: $--b-main-white-color;
 }
 
 .notification-button.stroked.success {
-  background: #148581;
-  border-color: #c5c5d3;
-  color: #ffffff;
+  background: $color-148581;
+  border-color: $color-c5c5d3;
+  color: $--b-main-white-color;
 }
 
 .notification-button.flat.error {
-  background: #a4284d;
-  border-color: #a4284d;
-  color: #ffffff;
+  background: $color-a4284d;
+  border-color: $color-a4284d;
+  color: $--b-main-white-color;
 }
 
 .notification-button.stroked.error {
-  background: #a4284d;
-  border-color: #c5c5d3;
-  color: #ffffff;
+  background: $color-a4284d;
+  border-color: $color-c5c5d3;
+  color: $--b-main-white-color;
 }
 </style>

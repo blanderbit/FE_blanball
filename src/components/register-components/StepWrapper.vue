@@ -104,6 +104,11 @@
   }
 </script>
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-efeff6: #efeff6;
+ $color-1ab2ad: #1ab2ad;
+
+
 @import '../../assets/styles/mixins/device.scss';
 
   .b-register-step__subtitle {
@@ -121,7 +126,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: #ffffff;
+    background: $--b-main-white-color;
     border-radius: 28px 28px 0px 0px;
     position: relative;
     overflow: hidden;
@@ -154,10 +159,10 @@
           .b-register-step__section {
             width: 49%;
             height: 4px;
-            background: #efeff6;
+            background: $color-efeff6;
             border-radius: 2px;
             &.active {
-              background: #1ab2ad;
+              background: $color-1ab2ad;
             }
           }
         }
@@ -195,7 +200,7 @@
         font-size: 14px;
         line-height: 24px;
         text-align: center;
-        color: #575775;
+        color: $--b-main-gray-color;
         cursor: pointer;
       }
     }

@@ -149,12 +149,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-fafafa: #fafafa;
+ $color-4c4a82: #4c4a82;
+ $color-efeff6: #efeff6;
+ $color-393762: #393762;
+ $color-dfdeed: #dfdeed;
+ $color-ebbb53: #ebbb53;
+ $color-71ba12: #71ba12;
+ $color-e184a0: #e184a0;
+ $color-f0f0f4: #f0f0f4;
+
+
 
 .event-card {
   position: relative;
   padding: 15px 15px;
   isolation: isolate;
-  background: #ffffff;
+  background: $--b-main-white-color;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 6px;
   margin-bottom: 16px;
@@ -188,7 +200,7 @@ export default {
       // }
     }
     display: flex;
-    background: #fafafa;
+    background: $color-fafafa;
     padding: 0px 4px;
     margin-top: 4px;
     @media (max-width: 992px) {
@@ -204,7 +216,7 @@ export default {
       font-weight: 400;
       font-size: 12px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
       border-radius: 4px;
       display: -webkit-box;
       -webkit-line-clamp: 1;
@@ -232,7 +244,7 @@ export default {
       font-size: 12px;
       line-height: 20px;
       text-align: right;
-      color: #4c4a82;
+      color: $color-4c4a82;
     }
     .left-side {
       display: flex;
@@ -246,7 +258,7 @@ export default {
         min-width: 48px;
         width: 48px;
         height: 48px;
-        background: #efeff6;
+        background: $color-efeff6;
         border-radius: 4px;
         margin-right: 8px;
       }
@@ -284,7 +296,7 @@ export default {
     font-weight: 400;
     font-size: 12px;
     line-height: 20px;
-    color: #393762;
+    color: $color-393762;
     width: 100%;
     word-break: break-word;
     display: -webkit-box;
@@ -307,15 +319,15 @@ export default {
       font-weight: 400;
       font-size: 12px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
       padding: 0px 8px;
-      border: 1px solid #efeff6;
+      border: 1px solid $color-efeff6;
       border-radius: 100px;
     }
   }
   .bottom-block {
     margin-top: 12px;
-    border-top: 1px dashed #dfdeed;
+    border-top: 1px dashed $color-dfdeed;
 
     @media (max-width: 768px) {
       margin-top: 20px;
@@ -338,7 +350,7 @@ export default {
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
         overflow: hidden;
-        color: #393762;
+        color: $color-393762;
       }
       .price {
         font-family: 'Inter';
@@ -379,7 +391,7 @@ export default {
         }
         .visitors,
         .visitors-date {
-          color: #575775;
+          color: $--b-main-gray-color;
         }
       }
       .right-side {
@@ -406,12 +418,12 @@ export default {
   font-size: 13px;
   line-height: 20px;
   text-align: center;
-  color: #FFFFFF;
+  color: $--b-main-white-color;
   border-radius: 4px;
   padding: 0px 4px;
 
   &-planned {
-    background: #ebbb53;
+    background: $color-ebbb53;
   }
 
   &-active {
@@ -432,7 +444,7 @@ export default {
   font-size: 12px;
   line-height: 20px;
   text-align: right;
-  color: #575775;
+  color: $--b-main-gray-color;
 }
 .right-side-white-btn {
   background: #F0F0F4;

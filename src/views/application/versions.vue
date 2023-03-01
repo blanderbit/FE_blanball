@@ -161,6 +161,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
+// SCSS variables for hex colors
+ $color-c5c5d3: #c5c5d3;
+ $color-fbfbfb: #fbfbfb;
+ $color-e2e2e9: #e2e2e9;
+
+
 .b-versions {
   overflow-y: scroll;
   &__title-level1 {
@@ -229,9 +235,9 @@ export default {
     font-size: 12px;
     line-height: 20px;
     text-align: center;
-    color: #ffffff;
+    color: $--b-main-white-color;
     padding: 0px 6px;
-    background: #575775;
+    background: $--b-main-gray-color;
     border-radius: 4px;
   }
 
@@ -244,7 +250,7 @@ export default {
 
     &::before {
       content: '\2022';
-      color: #c5c5d3;
+      color: $color-c5c5d3;
       font-weight: bold;
       display: inline-block;
       width: 1em;
@@ -254,7 +260,7 @@ export default {
 
   &__important-changes {
     padding: 20px 12px;
-    background: #fbfbfb;
+    background: $color-fbfbfb;
     border-radius: 8px;
     margin-bottom: 20px;
     .b-versions__title-level3 {
@@ -264,7 +270,7 @@ export default {
 
   &__change-variant {
     &::after {
-      background-color: #e2e2e9;
+      background-color: $color-e2e2e9;
       content: '';
       display: inline-block;
       height: 1px;

@@ -99,18 +99,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-71ba12: #71ba12;
+ $color-e184a0: #e184a0;
+ $color-1ab2ad: #1ab2ad;
+ $color-f0f0f4: #f0f0f4;
+ $color-efeff6: #efeff6;
+ $color-4c4a82: #4c4a82;
+
+
 .b-my-event-card {
   padding: 12px;
-  background: #ffffff;
+  background: $--b-main-white-color;
   border-radius: 6px;
   display: flex;
   justify-content: space-between;
-  border: 1px solid #dfdeed;
+  border: 1px solid $color-dfdeed;
   margin-bottom: 16px;
   cursor: pointer;
   height: 100%;
   &.active {
-    border: 1px solid #71ba12;
+    border: 1px solid $color-71ba12;
   }
   &.finished {
     border: 1px solid #E184A0;
@@ -124,7 +134,7 @@ export default {
     right: -5px;
     top: -3px;
     padding: 4px;
-    background: #FFFFFF;
+    background: $--b-main-white-color;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 20px;
     display: flex;
@@ -132,7 +142,7 @@ export default {
   }
 
   .b-my-event-card-pinned-icon {
-    background: #FFFFFF;
+    background: $--b-main-white-color;
     position: absolute;
     right: -5px;
     padding: 4px;
@@ -164,7 +174,7 @@ export default {
         min-width: 48px;
         width: 48px;
         height: 48px;
-        background: #efeff6;
+        background: $color-efeff6;
         border-radius: 4px;
       }
     }
@@ -197,11 +207,11 @@ export default {
         min-width: 170px;
 
         .b-my-event-card__label {
-          @include inter(12px, 400, #575775);
+          @include inter(12px, 400, $--b-main-gray-color);
           line-height: 20px;
 
           padding: 0px 8px;
-          border: 1px solid #efeff6;
+          border: 1px solid $color-efeff6;
           border-radius: 100px;
           margin-right: 4px;
           margin-bottom: 4px;
@@ -230,12 +240,12 @@ export default {
       }
 
       &-active {
-        color: #fff;
+        color: $--b-main-white-color;
         background: #71BA12;
       }
 
       &-finished {
-        color: #fff;
+        color: $--b-main-white-color;
         background: #E184A0;
       }
     }
@@ -255,12 +265,12 @@ export default {
         text-align: center;
         padding: 0px 4px;
         border-radius: 4px;
-        background: #efeff6;
+        background: $color-efeff6;
         width: fit-content;
 
         &.b-my-event-card__active {
-          background: #71ba12;
-          color: #fff;
+          background: $color-71ba12;
+          color: $--b-main-white-color;
         }
       }
 
@@ -273,7 +283,7 @@ export default {
       }
 
       .b-my-event-card__time {
-        @include inter(12px, 400, #4c4a82);
+        @include inter(12px, 400, $color-4c4a82);
         line-height: 20px;
         text-align: right;
       }

@@ -43,6 +43,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-148783: #148783;
+
+
 .spiner-wrapper {
   background: rgba(255, 255, 255, 0.514);
   position: absolute;
@@ -60,7 +64,7 @@ export default {
     position: absolute;
     width: 220px;
     height: 248px;
-    background: #ffffff;
+    background: $--b-main-white-color;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 8px;
     position: absolute;
@@ -81,10 +85,10 @@ export default {
         width: 140px;
         height: 140px;
         margin: 8px;
-        border: 8px solid #148783;
+        border: 8px solid $--b-main-green-color;
         border-radius: 50%;
         animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-        border-color: #148783 transparent transparent transparent;
+        border-color: $color-148783 transparent transparent transparent;
       }
       .lds-ring div:nth-child(1) {
         animation-delay: -0.45s;

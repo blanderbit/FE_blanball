@@ -287,6 +287,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-f4f4f4: #f4f4f4;
+ $color-6f6f77: #6f6f77;
+ $color-f0f0f4: #f0f0f4;
+
+
 @import '../../assets/styles/calendar.scss';
 .b-event-m-1st {
   overflow: hidden;
@@ -309,7 +316,7 @@ export default {
     .b-event-m-1st__input-calendar {
       width: 100%;
       margin-right: 12px;
-      border: 1px solid #dfdeed;
+      border: 1px solid $color-dfdeed;
       border-radius: 6px;
       display: flex;
       align-items: center;
@@ -321,14 +328,14 @@ export default {
         left: 2px;
         top: -8px;
         padding: 0px 4px;
-        background: #ffffff;
+        background: $--b-main-white-color;
         border-radius: 4px;
         font-family: 'Inter';
         font-style: normal;
         font-weight: 400;
         font-size: 12px;
         line-height: 16px;
-        color: #575775;
+        color: $--b-main-gray-color;
       }
       .b-event-m-1st__calendar-cover {
         width: 100%;
@@ -375,8 +382,8 @@ export default {
     }
   .b-event-m-1st__radio-btn-wrapper {
     margin-top: 12px;
-    $color1: #f4f4f4;
-    $color2: #148783;
+    $color1: $color-f4f4f4;
+    $color2: $--b-main-green-color;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -414,7 +421,7 @@ export default {
   font-weight: 500;
   font-size: 13px;
   line-height: 20px;
-  color: #575775;
+  color: $--b-main-gray-color;
   margin-bottom: 10px;
 }
 .b-event-m-2st__duration-select {
@@ -427,7 +434,7 @@ export default {
 
   .b-event-m-2st__duration-item {
     flex-basis: 25%;
-    background: #FFFFFF;
+    background: $--b-main-white-color;
     border-radius: 4px;
     padding: 8px;
     font-family: 'Inter';

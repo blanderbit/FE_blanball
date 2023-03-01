@@ -198,6 +198,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-efeff6: #efeff6;
+
+
 @import '../../../assets/styles/mixins/device.scss';
 
 .b-edit-avatar {
@@ -246,7 +251,7 @@ export default {
         font-weight: 400;
         font-size: 13px;
         line-height: 24px;
-        color: #575775;
+        color: $--b-main-gray-color;
         margin-bottom: 12px;
         cursor: pointer;
         @include mobile {
@@ -304,7 +309,7 @@ export default {
           }
           .b-edit-avatar__rotate {
             @include mobile {
-              border: 1px solid #dfdeed;
+              border: 1px solid $color-dfdeed;
               padding: 9px 17px;
               border-radius: 6px;
             }
@@ -318,7 +323,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px solid #efeff6;
+    border-top: 1px solid $color-efeff6;
     padding-top: 20px;
     .b-edit-avatar__cancel-btn {
       font-family: 'Inter';
@@ -326,7 +331,7 @@ export default {
       font-weight: 400;
       font-size: 14px;
       line-height: 24px;
-      color: #575775;
+      color: $--b-main-gray-color;
       padding: 4px 16px;
       cursor: pointer;
     }

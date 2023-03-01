@@ -66,6 +66,12 @@ export default {
 </script>
 
 <style lang="scss">
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-c10b0b: #c10b0b;
+ $color-d3f8f7: #d3f8f7;
+
+
 .b_modal_wrapper {
   position: fixed;
   top: 0;
@@ -84,7 +90,7 @@ export default {
     transform: translate(-50%, -50%);
     box-shadow: 2px 2px 10px rgb(56 56 251 / 10%);
     border-radius: 6px;
-    background: #fff;
+    background: $--b-main-white-color;
     padding: 80px 20px 20px 20px;
     .b_modal_window-title {
       display: flex;
@@ -96,7 +102,7 @@ export default {
       top: 0;
       left: 0;
       border-radius: 6px 6px 0 0;
-      color: #fff;
+      color: $--b-main-white-color;
       font-family: 'Exo 2';
       font-style: normal;
       font-weight: 600;
@@ -131,7 +137,7 @@ export default {
       font-weight: 400;
       font-size: 14px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
       margin-bottom: 20px;
     }
     .sms-code-block {
@@ -141,8 +147,8 @@ export default {
         padding: 8px;
         width: 48px;
         height: 40px;
-        background: #ffffff;
-        border: 1px solid #dfdeed;
+        background: $--b-main-white-color;
+        border: 1px solid $color-dfdeed;
         border-radius: 6px;
         margin-right: 4px;
         outline: none;
@@ -189,7 +195,7 @@ export default {
         font-size: 14px;
         line-height: 24px;
         text-align: center;
-        color: #c10b0b;
+        color: $color-c10b0b;
         padding: 4px 0;
         cursor: pointer;
       }
@@ -201,19 +207,19 @@ export default {
         font-weight: 500;
         font-size: 14px;
         line-height: 24px;
-        color: #148783;
+        color: $--b-main-green-color;
         cursor: pointer;
       }
       .save-btn {
         padding: 4px 16px;
-        background: #d3f8f7;
+        background: $color-d3f8f7;
         border-radius: 6px;
         font-family: 'Inter';
         font-style: normal;
         font-weight: 500;
         font-size: 14px;
         line-height: 24px;
-        color: #148783;
+        color: $--b-main-green-color;
         cursor: pointer;
       }
     }

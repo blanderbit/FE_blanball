@@ -220,6 +220,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-f4f4f4: #f4f4f4;
+
+
 .second-step {
   overflow: scroll;
   .input {
@@ -234,8 +238,8 @@ export default {
     margin-bottom: 10px;
   }
   .radio-btn-wrapper {
-    $color1: #f4f4f4;
-    $color2: #148783;
+    $color1: $color-f4f4f4;
+    $color2: $--b-main-green-color;
     display: flex;
     align-items: center;
     justify-content: space-between;

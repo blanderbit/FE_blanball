@@ -214,7 +214,7 @@ export default {
     }
     .b-auth__left-part {
       width: 432px;
-      background: #ffffff;
+      background: $--b-main-white-color;
       @media (max-width: 992px) {
         width: 100%;
       }
@@ -239,7 +239,7 @@ export default {
         bottom: 0;
         display: flex;
         align-items: center;
-        @include inter(14px, 400,#575775);
+        @include inter(14px, 400,$--b-main-gray-color);
         line-height: 20px;
         padding: 24px;
         img {

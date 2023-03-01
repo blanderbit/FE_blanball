@@ -28,7 +28,7 @@ import { computed } from 'vue'
 import GreenBtn from './GreenBtn.vue'
 
 import EmptyNotificationsSvg from '../assets/img/no-records/empty-notifications.svg'
-import NoData from '../assets/img/no-records/no_data.svg'
+import NoData from '../assets/img/no-records/no-data.svg'
 
 export default {
   name: 'EmptyList',
@@ -67,9 +67,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
+// SCSS variables for hex colors
+ $color-f9f9fc: #f9f9fc;
+
+
 .b-empty-list {
   padding: 20px;
-  background: #f9f9fc;
+  background: $color-f9f9fc;
   border-radius: 12px;
   width: 100%;
   max-width: 430px;
@@ -95,7 +99,7 @@ export default {
     margin-bottom: 12px;
   }
   &__description {
-    @include inter(12px, 500, #575775);
+    @include inter(12px, 500, $--b-main-gray-color);
     line-height: 20px;
   }
 }

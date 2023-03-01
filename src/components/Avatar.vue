@@ -48,6 +48,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+// SCSS variables for hex colors
+$color-c8ebe7: #c8ebe7;
+
 
 .b-avatar {
   &-circle {
@@ -81,7 +84,7 @@ export default {
   }
 
   &-words {
-    color: #148783;
+    color: $--b-main-green-color;
     min-width: 100%;
     font-family: 'Exo 2';
     font-style: normal;

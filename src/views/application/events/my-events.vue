@@ -544,6 +544,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-f0f0f4: #f0f0f4;
+ $color-148581: #148581;
+ $color-dfdeed: #dfdeed;
+
+
 @import 'v-calendar/dist/style.css';
 .b-events-page {
   display: grid;
@@ -579,7 +585,7 @@ export default {
           font-weight: 500;
           font-size: 13px;
           line-height: 20px;
-          color: #575775;
+          color: $--b-main-gray-color;
           @media (min-width: 992px) {
             display: none;
           }
@@ -605,9 +611,9 @@ export default {
             width: 100px;
             height: 28px;
             border-radius: 6px 0px 0px 6px;
-            border-top: 1px solid #f0f0f4;
-            border-left: 1px solid #f0f0f4;
-            border-bottom: 1px solid #f0f0f4;
+            border-top: 1px solid $color-f0f0f4;
+            border-left: 1px solid $color-f0f0f4;
+            border-bottom: 1px solid $color-f0f0f4;
             cursor: pointer;
           }
           .b-events-page__my-events {
@@ -619,7 +625,7 @@ export default {
             width: 100px;
             height: 28px;
             border-radius: 0px 6px 6px 0px;
-            border: 1px solid #148581;
+            border: 1px solid $color-148581;
             cursor: pointer;
           }
         }
@@ -663,7 +669,7 @@ export default {
             font-size: 13px;
             line-height: 24px;
             text-align: center;
-            color: #575775;
+            color: $--b-main-gray-color;
           }
         }
       }
@@ -689,15 +695,15 @@ export default {
 
           .b-left__side-cancel-button {
             border: 1px solid #DFDEED !important;
-            color: #575775 !important;
+            color: $--b-main-gray-color !important;
           }
 
           .b-left__side-count-selected {
             position: absolute;
             right: -10px;
             top: -10px;
-            background: #FFFFFF;
-            border: 2px solid #148783;
+            background: $--b-main-white-color;
+            border: 2px solid $--b-main-green-color;
             border-radius: 100px;
             width: 28px;
             height: 24px;
@@ -723,7 +729,7 @@ export default {
             font-size: 14px;
             line-height: 24px;
             text-align: center;
-            color: #575775;
+            color: $--b-main-gray-color;
             cursor: pointer;
           }
         }

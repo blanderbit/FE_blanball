@@ -201,6 +201,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-fee7e7: #fee7e7;
+ $color-e26767: #e26767;
+ $color-8a8aa8: #8a8aa8;
+
+
 @import '../../assets/styles/mixins/device.scss';
 
 .remember-me__desktop {
@@ -222,7 +228,7 @@ export default {
     position: absolute;
     width: 749px;
     height: 40px;
-    background: #fee7e7;
+    background: $color-fee7e7;
     border-radius: 6px;
     position: fixed;
     z-index: 1;
@@ -244,7 +250,7 @@ export default {
       align-items: center;
       padding-right: 8px;
       margin-right: 12px;
-      border-right: 1px solid #e26767;
+      border-right: 1px solid $color-e26767;
       img {
         margin-right: 7px;
       }
@@ -296,8 +302,8 @@ export default {
       font-weight: 400;
       font-size: 12px;
       line-height: 20px;
-      color: #8a8aa8;
-      border-bottom: 1px dashed #8a8aa8;
+      color: $color-8a8aa8;
+      border-bottom: 1px dashed $color-8a8aa8;
     }
     @media (max-width: 576px) {
       display: none;
@@ -322,7 +328,7 @@ export default {
         vertical-align: bottom;
       }
       ::v-deep .indicator {
-        border: 1px solid #575775;
+        border: 1px solid $--b-main-gray-color;
         background: white;
       }
     }
@@ -333,8 +339,8 @@ export default {
       font-weight: 400;
       font-size: 12px;
       line-height: 20px;
-      color: #8a8aa8;
-      border-bottom: 1px dashed #8a8aa8;
+      color: $color-8a8aa8;
+      border-bottom: 1px dashed $color-8a8aa8;
       @media (min-width: 576px) {
         display: none;
       }
@@ -353,7 +359,7 @@ export default {
     padding: 2px 0px 2px 4px;
     width: 100%;
     height: 44px;
-    background: #fee7e7;
+    background: $color-fee7e7;
     border-radius: 6px;
     margin-top: 22px;
   }
@@ -366,8 +372,8 @@ export default {
     line-height: 20px;
     color: $--b-main-black-color;
     span {
-      color: #148783;
-      border-bottom: 1px dashed #148783;
+      color: $--b-main-green-color;
+      border-bottom: 1px dashed $--b-main-green-color;
       cursor: pointer;
     }
   }

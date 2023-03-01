@@ -223,12 +223,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+
+
 @import '../../assets/styles/forms.scss';
 
 .b-input__input-component {
   height: 100%;
   .b-input__wrapper {
-    border: 1px solid #dfdeed;
+    border: 1px solid $color-dfdeed;
     position: relative;
     border-radius: 6px;
     width: 100%;
@@ -245,7 +249,7 @@ export default {
       position: absolute;
       top: 0;
       right: 0;
-      // background: #fff;
+      // background: $--b-main-white-color;
       border-radius: 6px;
       cursor: pointer;
       img {
@@ -259,7 +263,7 @@ export default {
       position: absolute;
       top: 0;
       left: 0;
-      background: #fff;
+      background: $--b-main-white-color;
       border-radius: 6px;
       cursor: pointer;
       img {
@@ -271,8 +275,8 @@ export default {
       position: absolute;
       left: 2px;
       top: -8px;
-      background: #ffffff;
-      color: #575775;
+      background: $--b-main-white-color;
+      color: $--b-main-gray-color;
       border-radius: 4px;
       font-family: 'Inter';
       font-style: normal;
@@ -291,14 +295,14 @@ export default {
       font-weight: 400;
       font-size: 14px;
       line-height: 24px;
-      color: #575775;
-      background: #fff;
+      color: $--b-main-gray-color;
+      background: $--b-main-white-color;
       border-radius: 6px;
       span {
         display: table-cell;
         text-align: left;
         vertical-align: middle;
-        border-right: 1px solid #dfdeed;
+        border-right: 1px solid $color-dfdeed;
         padding-left: 12px;
       }
     }

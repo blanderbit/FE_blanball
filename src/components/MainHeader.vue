@@ -171,6 +171,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-fafafa: #fafafa;
+
+
 @import '../assets/styles/mixins/device.scss';
 
 .b_header {

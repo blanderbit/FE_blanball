@@ -1,5 +1,5 @@
 import user from '../assets/img/user.png'
-import smile_face from '../assets/img/smile_face.svg'
+import smile_face from '../assets/img/smile-face.svg'
 import no_user from '../assets/img/no-user-picture.svg'
 import minus from '../assets/img/minus.svg'
 import add_user from '../assets/img/add-user-button.svg'

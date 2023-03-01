@@ -22,6 +22,10 @@
 </template>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-f9f9fc: #f9f9fc;
+
+
 .b-event-created-modal__wrapper {
     position: fixed;
     top: 0;

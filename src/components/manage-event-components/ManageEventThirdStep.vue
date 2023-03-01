@@ -176,12 +176,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-f4f4f4: #f4f4f4;
+ $color-efeff6: #efeff6;
+ $color-dfdeed: #dfdeed;
+
+
 .third-step {
   overflow: hidden;
 
   .radio-btn-wrapper {
-    $color1: #f4f4f4;
-    $color2: #148783;
+    $color1: $color-f4f4f4;
+    $color2: $--b-main-green-color;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -287,7 +293,7 @@ export default {
     font-weight: 400;
     font-size: 13px;
     line-height: 20px;
-    color: #575775;
+    color: $--b-main-gray-color;
     margin-bottom: 20px;
   }
   .title {
@@ -331,13 +337,13 @@ export default {
     font-size: 12px;
     line-height: 20px;
     padding: 0px 4px;
-    background: #efeff6;
+    background: $color-efeff6;
     border-radius: 4px;
   }
 }
 .forms-block {
   .forms-select-form {
-    border: 1px solid #dfdeed;
+    border: 1px solid $color-dfdeed;
     border-radius: 6px;
     margin: 20px 0px;
     padding: 8px 8px 8px 12px;

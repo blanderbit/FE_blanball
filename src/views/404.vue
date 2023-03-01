@@ -51,8 +51,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-f5fffe: #f5fffe;
+
+
 .b-error-page {
-  background: #f5fffe;
+  background: $color-f5fffe;
   position: fixed;
   top: 0;
   left: 0;

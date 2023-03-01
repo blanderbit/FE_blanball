@@ -80,6 +80,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+// SCSS variables for hex colors
+ $color-efeff6: #efeff6;
+
+
 .b-modal-position__block {
   display: flex;
   align-items: center;
@@ -98,7 +102,7 @@ export default {
   font-size: 14px;
   line-height: 24px;
   text-align: center;
-  color: #575775;
+  color: $--b-main-gray-color;
 }
 
 .b-modal-position__map-wrapper {
@@ -122,7 +126,7 @@ export default {
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  color: #575775;
+  color: $--b-main-gray-color;
   background: #EFEFF6;
   border-radius: 4px;
   padding: 0px 2px;

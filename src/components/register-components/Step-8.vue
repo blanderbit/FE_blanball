@@ -137,7 +137,7 @@
     font-weight: 400;
     font-size: 14px;
     line-height: 20px;
-    color: #575775;
+    color: $--b-main-gray-color;
   }
   .b-register-step__date-block {
     display: flex;

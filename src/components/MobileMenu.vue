@@ -164,8 +164,8 @@ import Record from '../assets/img/record.svg'
 import RecordWhite from '../assets/img/record-white.svg'
 import Members from '../assets/img/members.svg'
 import MembersWhite from '../assets/img/members-white.svg'
-import Settings from '../assets/img/Settings.svg'
-import SettingsWhite from '../assets/img/Settings-white.svg'
+import Settings from '../assets/img/settings.svg'
+import SettingsWhite from '../assets/img/settings-white.svg'
 
 export default {
   name: 'MobileMenu',
@@ -213,7 +213,7 @@ export default {
         height: '76px',
         alignement: 'flex-start',
         background: '#FFFFFF',
-        textColor: '#575775',
+        textColor: '$--b-main-gray-color',
       },
       {
         id: 1,
@@ -226,7 +226,7 @@ export default {
         height: '76px',
         alignement: 'flex-start',
         background: '#FFFFFF',
-        textColor: '#575775',
+        textColor: '$--b-main-gray-color',
         url: ROUTES.APPLICATION.EVENTS.absolute,
       },
     ])
@@ -242,7 +242,7 @@ export default {
         height: '76px',
         alignement: 'flex-start',
         background: '#FFFFFF',
-        textColor: '#575775',
+        textColor: '$--b-main-gray-color',
         url: ROUTES.APPLICATION.USERS.GENERAL.absolute,
       },
       {
@@ -256,7 +256,7 @@ export default {
         height: '76px',
         alignement: 'flex-start',
         background: '#FFFFFF',
-        textColor: '#575775',
+        textColor: '$--b-main-gray-color',
         url: ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute,
       },
     ])
@@ -321,7 +321,7 @@ export default {
           height: '76px',
           alignement: 'flex-start',
           background: '#FFFFFF',
-          textColor: '#575775',
+          textColor: '$--b-main-gray-color',
         }
       })
     }
@@ -349,7 +349,7 @@ export default {
             width: '80%',
             height: '52px',
             alignement: 'flex-start',
-            background: '#575775',
+            background: '$--b-main-gray-color',
             textColor: '#fff',
           }
         } else {
@@ -366,7 +366,7 @@ export default {
             height: '52px',
             alignement: 'center',
             background: '#FFFFFF',
-            textColor: '#575775',
+            textColor: '$--b-main-gray-color',
           }
         } else {
           return item
@@ -410,9 +410,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-efeff6: #efeff6;
+ $color-8a8aa8: #8a8aa8;
+ $color-148581: #148581;
+ $color-dfdeed: #dfdeed;
+ $color-1ccd62: #1ccd62;
+ $color-fff: #fff;
+
+
 .b-mob-menu {
   position: fixed;
-  background: #efeff6;
+  background: $color-efeff6;
   padding: 16px;
   height: 100%;
   z-index: 999;
@@ -461,7 +470,7 @@ export default {
           font-weight: 600;
           font-size: 12px;
           line-height: 16px;
-          color: #8a8aa8;
+          color: $color-8a8aa8;
         }
       }
     }
@@ -475,7 +484,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     padding: 8px 12px;
-    background: #ffffff;
+    background: $--b-main-white-color;
     border-radius: 8px;
     .b-mob-menu__user-img {
       img {
@@ -493,7 +502,7 @@ export default {
         color: $--b-main-black-color;
       }
       .b-mob-menu__account-type {
-        @include inter(12px, 500, #148581);
+        @include inter(12px, 500, $color-148581);
         line-height: 20px;
       }
     }
@@ -515,7 +524,7 @@ export default {
     transition: all 0.3s ease-out;
     .b-mob-menu__line {
       display: flex;
-      border-bottom: 1.5px solid #dfdeed;
+      border-bottom: 1.5px solid $color-dfdeed;
       &:last-child {
         border: none;
       }
@@ -524,7 +533,7 @@ export default {
         align-items: center;
         justify-content: flex-start;
         padding: 0 16px;
-        border-right: 1.5px solid #dfdeed;
+        border-right: 1.5px solid $color-dfdeed;
         transition: all 0.3s ease-out;
         &:last-child {
           border: none;
@@ -532,14 +541,14 @@ export default {
         img {
         }
         span {
-          @include inter(12px, 500, #148581);
+          @include inter(12px, 500, $color-148581);
           line-height: 16px;
           margin-left: 13px;
         }
       }
     }
     .b-mob-menu__content-block {
-      background: #fff;
+      background: $--b-main-white-color;
       height: 100%;
       position: relative;
       overflow-y: scroll;
@@ -553,7 +562,7 @@ export default {
         .b-mob-menu__message {
           padding: 14px 12px;
           display: flex;
-          border-bottom: 1px solid #efeff6;
+          border-bottom: 1px solid $color-efeff6;
           .b-mob-menu__left-side {
             margin-right: 12px;
             position: relative;
@@ -563,8 +572,8 @@ export default {
               position: absolute;
               right: 0;
               bottom: 4px;
-              background: #1ccd62;
-              border: 2px solid #fff;
+              background: $color-1ccd62;
+              border: 2px solid $--b-main-white-color;
               border-radius: 50%;
             }
           }
@@ -572,7 +581,7 @@ export default {
           .b-mob-menu__right-side {
             width: 100%;
             .b-mob-menu__top-line {
-              @include inter(14px, 400, #8a8aa8);
+              @include inter(14px, 400, $color-8a8aa8);
               line-height: 20px;
 
               display: flex;
@@ -585,7 +594,7 @@ export default {
               display: flex;
               align-items: center;
               justify-content: space-between;
-              @include inter(14px, 600, #8a8aa8);
+              @include inter(14px, 600, $color-8a8aa8);
               line-height: 20px;
             }
           }
@@ -596,7 +605,7 @@ export default {
 }
 
 .b-mob-menu__found-error {
-  background: #575775;
+  background: $--b-main-gray-color;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 6px;
   padding: 4px 16px;
@@ -612,7 +621,7 @@ export default {
   transform: translateX(-50%);
 
   span {
-    @include inter(14px, 500, #fff);
+    @include inter(14px, 500, $color-fff);
     line-height: 24px;
   }
 }

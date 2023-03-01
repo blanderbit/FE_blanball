@@ -348,6 +348,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-f0f0f4: #f0f0f4;
+ $color-8a8aa8: #8a8aa8;
+ $color-fcfcfc: #fcfcfc;
+ $color-dfdeed: #dfdeed;
+ $color-e9f6ff: #e9f6ff;
+ $color-1c4fc5: #1c4fc5;
+ $color-efeff6: #efeff6;
+
+
 .b_slide_menu_back {
   position: fixed;
   top: 0;
@@ -365,11 +375,11 @@ export default {
   height: 100%;
   .b_slide_menu_new_notifications {
     padding: 8px;
-    background: #f0f0f4;
+    background: $color-f0f0f4;
     font-weight: 500;
     font-size: 12px;
     line-height: 20px;
-    color: #8a8aa8;
+    color: $color-8a8aa8;
   }
   .b_slide_menu_sidebar-arrow {
     position: absolute;
@@ -377,7 +387,7 @@ export default {
     height: 32px;
     right: -20px;
     top: 72px;
-    background: #ffffff;
+    background: $--b-main-white-color;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 6px;
     display: flex;
@@ -394,7 +404,7 @@ export default {
     top: 0;
     right: 0px;
     height: 100vh;
-    background: #fcfcfc;
+    background: $color-fcfcfc;
     box-shadow: 2px 2px 10px rgb(56 56 251 / 10%);
     border-radius: 6px;
     z-index: 11;
@@ -408,7 +418,7 @@ export default {
       }
       .b_slide_menu_items {
         margin-top: 12px;
-        border-top: 1px solid #dfdeed;
+        border-top: 1px solid $color-dfdeed;
         padding-top: 12px;
         .b_slide_menu_title {
           font-family: 'Inter';
@@ -416,7 +426,7 @@ export default {
           font-weight: 500;
           font-size: 14px;
           line-height: 20px;
-          color: #575775;
+          color: $--b-main-gray-color;
         }
         ul {
           margin-top: 22px;
@@ -440,19 +450,19 @@ export default {
     }
     .b_slide_menu_bottom-block {
       padding: 16px 11px;
-      border-top: 1px solid #dfdeed;
+      border-top: 1px solid $color-dfdeed;
       .b_slide_menu_top-line {
         width: 100%;
         margin-bottom: 8px;
         .b_slide_menu_position {
-          background: #e9f6ff;
+          background: $color-e9f6ff;
           border-radius: 4px;
           font-family: 'Inter';
           font-style: normal;
           font-weight: 400;
           font-size: 12px;
           line-height: 20px;
-          color: #1c4fc5;
+          color: $color-1c4fc5;
           width: fit-content;
           padding: 1px 4px;
         }
@@ -472,7 +482,7 @@ export default {
         font-weight: 400;
         font-size: 12px;
         line-height: 16px;
-        color: #8a8aa8;
+        color: $color-8a8aa8;
 
         span {
           text-decoration: none;
@@ -480,7 +490,7 @@ export default {
           font-weight: 600;
           font-size: 12px;
           line-height: 16px;
-          color: #8a8aa8;
+          color: $color-8a8aa8;
         }
       }
     }
@@ -493,7 +503,7 @@ export default {
 
 button {
   padding: 4px 8px;
-  border: 1px solid #dfdeed;
+  border: 1px solid $color-dfdeed;
   border-radius: 6px;
   font-style: normal;
   font-weight: 400;
@@ -508,14 +518,14 @@ button {
 }
 
 .b-selected-elements__count {
-  background: #575775;
+  background: $--b-main-gray-color;
   border-radius: 6px;
   padding: 0px 4px;
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
   line-height: 20px;
-  color: #ffffff;
+  color: $--b-main-white-color;
 }
 
 .b-notifications-title {
@@ -528,19 +538,19 @@ button {
 
 .b-notification-unreaded {
   padding: 0px 4px;
-  background: #575775;
+  background: $--b-main-gray-color;
   border-radius: 100px;
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  color: #ffffff;
+  color: $--b-main-white-color;
 }
 
 .b-button-scroll__to-first-element {
   align-items: center;
   padding: 2px 12px;
-  background: #efeff6;
+  background: $color-efeff6;
   border-radius: 6px;
   img {
     margin-left: 12px;
