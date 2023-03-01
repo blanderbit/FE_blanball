@@ -139,7 +139,7 @@ export default {
         if (currentStep.value === 1) {
           await sendCode();
         } else {
-          await deleteAcc(data)
+          await deleteAcc(data);
         }
         currentStep.value++;
         loading.value = false;

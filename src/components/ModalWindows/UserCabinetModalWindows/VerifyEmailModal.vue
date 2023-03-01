@@ -1,4 +1,5 @@
 <template>
+  <Loading :is-loading="loading"/>
   <Transition>
     <ModalWindow>
       <template #title>
@@ -24,7 +25,7 @@
               :start-time="30"
               :counter-text="$t('modals.change_login.code-message')"
               :email="userEmail"
-              @resend-code-action="sendEmailAgain"
+              @resend-code-action="sendCode"
             />
           </div>
           <div class="code-input-field">
@@ -38,7 +39,7 @@
             />
           </div>
           <div class="btns-block">
-            <div class="cancle-btn" @click="$emit('closeModal')">
+            <div class="cancle-btn" @click="closeModal">
               {{ $t('buttons.return') }}
             </div>
             <div class="save-btn" @click="saveClick(data)">
@@ -52,20 +53,21 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
-import { useToast } from 'vue-toastification'
-import { useI18n } from 'vue-i18n'
+import { computed, ref } from 'vue';
+import { useToast } from 'vue-toastification';
+import { useI18n } from 'vue-i18n';
 
-import { Form } from '@system.it.flumx.com/vee-validate'
+import { Form } from '@system.it.flumx.com/vee-validate';
 
-import * as yup from 'yup'
+import * as yup from 'yup';
 
-import ModalWindow from '../ModalWindow.vue'
-import Counter from '../../Counter.vue'
-import CodeInput from '../../forms/CodeInput.vue'
-import InputComponent from '../../forms/InputComponent.vue'
+import ModalWindow from '../ModalWindow.vue';
+import Counter from '../../Counter.vue';
+import CodeInput from '../../forms/CodeInput.vue';
+import InputComponent from '../../forms/InputComponent.vue';
+import Loading from '../../../workers/loading-worker/Loading.vue';
 
-import { API } from '../../../workers/api-worker/api.worker'
+import { API } from '../../../workers/api-worker/api.worker';
 
 export default {
   name: 'VerifyEmailModal',
@@ -75,6 +77,7 @@ export default {
     Counter,
     CodeInput,
     Form,
+    Loading,
   },
   props: {
     userEmail: {
@@ -83,9 +86,10 @@ export default {
     },
   },
   emits: ['closeModal', 'emailVerified'],
-  setup(props, context) {
-    const toast = useToast()
-    const { t } = useI18n()
+  setup(_, { emit }) {
+    const toast = useToast();
+    const loading = ref(false);
+    const { t } = useI18n();
 
     const schema = computed(() => {
       return yup.object({
@@ -93,37 +97,50 @@ export default {
           .string()
           .required('errors.required')
           .min(5, 'errors.min5'),
-        email: yup.string().required('errors.required'),
-      })
-    })
+      });
+    });
 
-    API.AuthorizationService.VerifyEmail().catch((e) =>
-      console.log('some mistake happened', e)
-    )
+    function closeModal() {
+      emit('closeModal');
+    }
 
-    function saveClick(data) {
-      const payload = { verify_code: data.controlledValues?.verify_code }
-      API.AuthorizationService.VerifyCode(payload)
-        .then(() => {
-          context.emit('closeModal')
-          context.emit('emailVerified')
-          toast.success(t('notifications.email-verified'))
-        })
-        .catch(() => {
-          toast.error(t('notifications.some-mistake'))
-        })
+    async function sendCode() {
+      loading.value = true;
+      await API.AuthorizationService.VerifyEmail();
+      loading.value = false;
     }
-    function sendEmailAgain() {
-      API.AuthorizationService.VerifyEmail()
+
+    async function saveClick(data) {
+      const { valid } = await data.validate();
+
+      if (!valid) {
+        return false;
+      }
+
+      loading.value = true;
+      try {
+        await API.AuthorizationService.VerifyCode({
+          verify_code: data.values.verify_code,
+        });
+        closeModal();
+        loading.value = false;
+        toast.success(t('notifications.email-verified'));
+      } catch {
+        loading.value = false;
+      }
     }
+
+    sendCode();
 
     return {
-      saveClick,
-      sendEmailAgain,
       schema,
-    }
+      loading,
+      saveClick,
+      closeModal,
+      sendCode,
+    };
   },
-}
+};
 </script>
 
 <style></style>
