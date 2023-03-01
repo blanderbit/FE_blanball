@@ -99,18 +99,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-71ba12: #71ba12;
+ $color-e184a0: #e184a0;
+ $color-1ab2ad: #1ab2ad;
+ $color-f0f0f4: #f0f0f4;
+ $color-efeff6: #efeff6;
+ $color-4c4a82: #4c4a82;
+
+
 .b-my-event-card {
   padding: 12px;
   background: $--b-main-white-color;
   border-radius: 6px;
   display: flex;
   justify-content: space-between;
-  border: 1px solid #dfdeed;
+  border: 1px solid $color-dfdeed;
   margin-bottom: 16px;
   cursor: pointer;
   height: 100%;
   &.active {
-    border: 1px solid #71ba12;
+    border: 1px solid $color-71ba12;
   }
   &.finished {
     border: 1px solid #E184A0;
@@ -164,7 +174,7 @@ export default {
         min-width: 48px;
         width: 48px;
         height: 48px;
-        background: #efeff6;
+        background: $color-efeff6;
         border-radius: 4px;
       }
     }
@@ -201,7 +211,7 @@ export default {
           line-height: 20px;
 
           padding: 0px 8px;
-          border: 1px solid #efeff6;
+          border: 1px solid $color-efeff6;
           border-radius: 100px;
           margin-right: 4px;
           margin-bottom: 4px;
@@ -255,11 +265,11 @@ export default {
         text-align: center;
         padding: 0px 4px;
         border-radius: 4px;
-        background: #efeff6;
+        background: $color-efeff6;
         width: fit-content;
 
         &.b-my-event-card__active {
-          background: #71ba12;
+          background: $color-71ba12;
           color: $--b-main-white-color;
         }
       }
@@ -273,7 +283,7 @@ export default {
       }
 
       .b-my-event-card__time {
-        @include inter(12px, 400, #4c4a82);
+        @include inter(12px, 400, $color-4c4a82);
         line-height: 20px;
         text-align: right;
       }

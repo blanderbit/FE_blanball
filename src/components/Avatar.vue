@@ -48,6 +48,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+// SCSS variables for hex colors
+$color-c8ebe7: #c8ebe7;
+
 
 .b-avatar {
   &-circle {

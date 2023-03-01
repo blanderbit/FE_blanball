@@ -213,32 +213,42 @@ export default {
 </script>
 
 <style scoped lang="scss">
+// SCSS variables for hex colors
+ $color-8a8aa8: #8a8aa8;
+ $color-dfdeed: #dfdeed;
+ $color-fff: #fff;
+ $color-a8a8bd: #a8a8bd;
+ $color-efeff6: #efeff6;
+ $color-d3d3d3: #d3d3d3;
+ $color-000: #000;
+
+
 .notification-sender {
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: #8a8aa8;
+  color: $color-8a8aa8;
 }
 
 .notification-content {
-  @include inter(13px, 400, #dfdeed);
+  @include inter(13px, 400, $color-dfdeed);
   line-height: 20px;
   margin-bottom: 12px;
 }
 
 .notification-title {
-  @include inter(14px, 600, #fff);
+  @include inter(14px, 600, $color-fff);
   line-height: 20px;
 }
 
 .notification-date {
-  @include inter(13px, 400, #a8a8bd);
+  @include inter(13px, 400, $color-a8a8bd);
   line-height: 20px;
 }
 
 .notification-action {
-  @include inter(13px, 500, #efeff6);
+  @include inter(13px, 500, $color-efeff6);
   line-height: 24px;
 
   display: inline-block;
@@ -264,7 +274,7 @@ export default {
     cursor: pointer;
     transform: rotateZ(90deg);
     path {
-      fill: #d3d3d3;
+      fill: $color-d3d3d3;
     }
   }
 }
@@ -309,9 +319,9 @@ export default {
 
 .notification-sidebar {
   * {
-    color: #000;
+    color: $color-000;
   }
-  border-bottom: 1px solid #efeff6;
+  border-bottom: 1px solid $color-efeff6;
   padding: 16px 0;
 
   .notification-title {
@@ -372,7 +382,7 @@ export default {
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  color: #8a8aa8;
+  color: $color-8a8aa8;
   margin-bottom: 8px;
   > img {
     margin-right: 5px;
@@ -393,7 +403,7 @@ export default {
   }
   .vcp__header-icon {
     svg {
-      fill: #8a8aa8;
+      fill: $color-8a8aa8;
     }
   }
 }

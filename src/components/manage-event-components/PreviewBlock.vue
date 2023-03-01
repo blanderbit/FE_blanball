@@ -39,6 +39,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-f9f9fc: #f9f9fc;
+
+
 .b-event-preview {
   @media (max-width: 768px) {
     position: fixed;
@@ -50,7 +54,7 @@ export default {
   }
   .b-event-preview__preview-block {
     padding: 24px 44px;
-    background: #f9f9fc;
+    background: $color-f9f9fc;
     border-radius: 12px;
     width: 564px;
     overflow: hidden;
@@ -79,11 +83,11 @@ export default {
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
-      background: #f9f9fc;
+      background: $color-f9f9fc;
     }
     .b-event-preview__preview-header {
       @media (max-width: 1199px) {
-        background: #f9f9fc;
+        background: $color-f9f9fc;
         padding: 13px;
         margin-bottom: 8px;
       }

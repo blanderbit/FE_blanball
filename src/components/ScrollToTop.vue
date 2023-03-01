@@ -36,6 +36,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-efeff6: #efeff6;
+
+
 .b-scroll-top {
   &__return-top {
     display: flex;
@@ -60,7 +64,7 @@ export default {
     line-height: 24px;
     color: $--b-main-gray-color;
     padding: 2px 12px;
-    background: #efeff6;
+    background: $color-efeff6;
     border-radius: 6px;
     border: none;
     align-items: center;

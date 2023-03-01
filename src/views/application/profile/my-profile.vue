@@ -701,6 +701,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-e2e2e9: #e2e2e9;
+ $color-6f6f77: #6f6f77;
+ $color-dfdeed: #dfdeed;
+
+
 ::-webkit-scrollbar {
   display: none;
 }
@@ -719,7 +725,7 @@ export default {
     font-weight: 400;
     font-size: 13px;
     line-height: 24px;
-    color: #e2e2e9;
+    color: $color-e2e2e9;
     cursor: pointer;
     span {
       margin-right: 10px;
@@ -735,7 +741,7 @@ export default {
     line-height: 24px;
     color: $--b-main-white-color;
     padding: 2px 8px;
-    background: #6f6f77;
+    background: $color-6f6f77;
     border-radius: 6px;
     cursor: pointer;
     span {
@@ -779,7 +785,7 @@ export default {
 }
 .b-user-cabinet__tab-block {
   display: flex;
-  border-bottom: 1px solid #dfdeed;
+  border-bottom: 1px solid $color-dfdeed;
   margin-top: 28px;
   .b-user-cabinet__tab-element {
     display: flex;

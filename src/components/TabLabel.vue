@@ -27,6 +27,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-efefef: #efefef;
+
+
 .b-tab-label {
   &__label {
     display: block;
@@ -65,7 +69,7 @@ export default {
     font-weight: 449;
     font-size: 12px;
     line-height: 16px;
-    color: #efefef;
+    color: $color-efefef;
   }
 }
 </style>

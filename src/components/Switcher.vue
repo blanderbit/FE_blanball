@@ -64,6 +64,10 @@ export default {
 </script>
 
 <style scoped>
+// SCSS variables for hex colors
+ $color-ccc: #ccc;
+
+
 .b_switch_wrapper {
   position: relative;
   display: inherit;
@@ -90,7 +94,7 @@ export default {
 }
 
 .b_switch_slider {
-  background-color: #ccc;
+  background-color: $color-ccc;
   bottom: 0;
   cursor: pointer;
   left: 0;

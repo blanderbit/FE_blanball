@@ -56,13 +56,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-148581: #148581;
+
+
 .b-radio-btns {
   display: flex;
   input[type='radio'] {
     display: none;
     + label {
       padding: 8px 6px;
-      border: 1px solid #dfdeed;
+      border: 1px solid $color-dfdeed;
       border-radius: 6px;
       margin-right: 8px;
       font-family: 'Inter';
@@ -80,8 +85,8 @@ export default {
       }
     }
     &:checked + label {
-      border: 1px solid #148581;
-      color: #148581;
+      border: 1px solid $color-148581;
+      color: $color-148581;
     }
   }
 }

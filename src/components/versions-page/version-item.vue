@@ -30,6 +30,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+// SCSS variables for hex colors
+ $color-d3f8f7: #d3f8f7;
+
+
 .b-version-item {
   background: $--b-main-white-color;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
@@ -58,7 +62,7 @@ export default {
     padding: 0px 8px;
     width: 46px;
     height: 20px;
-    background: #d3f8f7;
+    background: $color-d3f8f7;
     border-radius: 4px;
     font-family: 'Inter';
     font-style: normal;

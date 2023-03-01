@@ -132,6 +132,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-efeff6: #efeff6;
+ $color-f7f7fc: #f7f7fc;
+
+
 @import '../assets/styles/mixins/device.scss';
 .b-user-card {
   padding: 8px 12px 8px 0;

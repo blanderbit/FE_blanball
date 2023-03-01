@@ -250,6 +250,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-808181: #808181;
+ $color-0a3435: #0a3435;
+ $color-148783: #148783;
+ $color-e9fcfb: #e9fcfb;
+
+
 .b-modal-filters {
   &__title {
     font-family: 'Inter';
@@ -271,7 +279,7 @@ export default {
   &__calendar {
     margin-top: 12px;
     margin-right: 4px;
-    border: 1px solid #dfdeed;
+    border: 1px solid $color-dfdeed;
     border-radius: 6px;
     background: $--b-main-white-color;
     display: flex;
@@ -312,7 +320,7 @@ export default {
               font-size: 12px;
               line-height: 16px;
               text-align: center;
-              color: #808181;
+              color: $color-808181;
             }
           }
           .vc-weeks {
@@ -323,7 +331,7 @@ export default {
               font-size: 14px;
               line-height: 16px;
               text-align: center;
-              color: #0a3435;
+              color: $color-0a3435;
             }
             .vc-day {
               span {
@@ -333,14 +341,14 @@ export default {
                 font-size: 14px;
                 line-height: 16px;
                 text-align: center;
-                color: #0a3435;
+                color: $color-0a3435;
                 &:hover {
                   background-color: transparent;
                 }
               }
               .vc-highlights {
                 & + span {
-                  color: #148783 !important;
+                  color: $color-148783 !important;
                   font-family: 'Inter';
                   font-style: normal;
                   font-weight: 400 !important;
@@ -350,17 +358,17 @@ export default {
                 }
                 .vc-day-layer {
                   .vc-highlight {
-                    background: #e9fcfb !important;
+                    background: $color-e9fcfb !important;
                     border-radius: 6px !important;
                   }
                   .vc-highlight.vc-highlight-base-start {
-                    background: #e9fcfb !important;
+                    background: $color-e9fcfb !important;
                   }
                   .vc-highlight.vc-highlight-base-middle {
-                    background: #e9fcfb !important;
+                    background: $color-e9fcfb !important;
                   }
                   .vc-highlight.vc-highlight-base-end {
-                    background: #e9fcfb !important;
+                    background: $color-e9fcfb !important;
                   }
                 }
               }

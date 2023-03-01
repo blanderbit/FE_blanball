@@ -60,9 +60,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
+// SCSS variables for hex colors
+ $color-fafafa: #fafafa;
+
+
 .b-place-detector {
   display: flex;
-  background: #fafafa;
+  background: $color-fafafa;
   padding: 0px 4px;
   margin-top: 4px;
   img {

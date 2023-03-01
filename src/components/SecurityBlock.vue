@@ -125,6 +125,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-d3f8f7: #d3f8f7;
+
+
 .b-security {
   background: $--b-main-white-color;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
@@ -163,7 +168,7 @@ export default {
       padding-top: 8px;
       padding-bottom: 8px;
       margin-top: 20px;
-      border-top: 1px solid #dfdeed;
+      border-top: 1px solid $color-dfdeed;
       .b-security__personal-settings {
         font-family: 'Inter';
         font-style: normal;
@@ -202,7 +207,7 @@ export default {
       justify-content: space-between;
       align-items: center;
       height: 40px;
-      background: #d3f8f7;
+      background: $color-d3f8f7;
       border-radius: 6px;
       font-family: 'Inter';
       font-style: normal;

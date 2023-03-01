@@ -223,12 +223,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+
+
 @import '../../assets/styles/forms.scss';
 
 .b-input__input-component {
   height: 100%;
   .b-input__wrapper {
-    border: 1px solid #dfdeed;
+    border: 1px solid $color-dfdeed;
     position: relative;
     border-radius: 6px;
     width: 100%;
@@ -298,7 +302,7 @@ export default {
         display: table-cell;
         text-align: left;
         vertical-align: middle;
-        border-right: 1px solid #dfdeed;
+        border-right: 1px solid $color-dfdeed;
         padding-left: 12px;
       }
     }

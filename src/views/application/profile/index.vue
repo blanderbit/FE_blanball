@@ -74,10 +74,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-8a8aa8: #8a8aa8;
+
+
 
 .b-profile {
   .b-profile__header {
-    border-bottom: 1px solid #dfdeed;
+    border-bottom: 1px solid $color-dfdeed;
     .b-profile__titles-block {
       display: flex;
       flex-direction: column;
@@ -109,7 +114,7 @@ export default {
         &.active {
           color: $--b-main-black-color;
           font-weight: 500;
-          border-bottom: 2px solid #8a8aa8;
+          border-bottom: 2px solid $color-8a8aa8;
         }
         &.disabled {
           color: $--b-disabled-color;

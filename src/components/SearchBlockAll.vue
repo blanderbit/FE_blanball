@@ -122,6 +122,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-f0f0f4: #f0f0f4;
+ $color-e2e2e9: #e2e2e9;
+ $color-8a8aa8: #8a8aa8;
+
+
 .b-user-main-info__container {
   display: flex;
   justify-content: space-between;
@@ -156,7 +162,7 @@ export default {
   padding: 5px;
   border-radius: 6px;
   &:not(.b-modal-item__disabled):hover {
-    background: #f0f0f4;
+    background: $color-f0f0f4;
     cursor: pointer;
     .b-user-button {
       display: block;

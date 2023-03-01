@@ -61,10 +61,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+
+
 .b-small-player-card {
   padding: 14px 20px;
   width: 48%;
-  border: 1px solid #dfdeed;
+  border: 1px solid $color-dfdeed;
   border-radius: 4px;
   margin-bottom: 12px;
   display: flex;

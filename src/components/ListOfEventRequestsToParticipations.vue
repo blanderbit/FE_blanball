@@ -79,6 +79,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-efeff6: #efeff6;
+
+
 .b-list-of-event-requests-to-participations {
   display: flex;
   flex-direction: column;
@@ -86,7 +91,7 @@ export default {
 
   .b-list-item {
     background: $--b-main-white-color;
-    border: 1px solid #dfdeed;
+    border: 1px solid $color-dfdeed;
     border-radius: 4px;
     padding: 4px 16px;
     height: 60px;
@@ -122,11 +127,11 @@ export default {
         align-items: center;
         gap: 8px;
         padding-left: 20px;
-        border-left: 1px solid #efeff6;
+        border-left: 1px solid $color-efeff6;
         margin-left: 12px;
 
         .b-list-item__cancel-button {
-          border: 1px solid #dfdeed !important;
+          border: 1px solid $color-dfdeed !important;
           ::v-deep(img) {
             margin: 0;
           }

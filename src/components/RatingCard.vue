@@ -260,6 +260,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-a8a8bd: #a8a8bd;
+ $color-f9f9fc: #f9f9fc;
+ $color-f0f0f4: #f0f0f4;
+ $color-efeff6: #efeff6;
+
+
 
 ::-webkit-scrollbar {
     display: none;
@@ -331,7 +338,7 @@ export default {
         transform: translateX();
 
         &__disabled {
-          color: #a8a8bd;
+          color: $color-a8a8bd;
           cursor: default;
         }
       }
@@ -343,8 +350,8 @@ export default {
       overflow-y: scroll;
 
       .b-rating-card__card-opened {
-        background: #f9f9fc;
-        border-bottom: 1px dashed #f0f0f4;
+        background: $color-f9f9fc;
+        border-bottom: 1px dashed $color-f0f0f4;
         border-radius: 8px;
         padding: 12px;
       }
@@ -367,7 +374,7 @@ export default {
           font-size: 12px;
           line-height: 20px;
           color: $--b-main-gray-color;
-          background: #efeff6;
+          background: $color-efeff6;
           border-radius: 4px;
           padding: 4px;
         }

@@ -52,10 +52,15 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-f7f7fe: #f7f7fe;
+ $color-dfdeed: #dfdeed;
+
+
 .b-register-step__info-block {
   padding: 6px 6px 6px 38px;
-  background: #f7f7fe;
-  border: 1px solid #dfdeed;
+  background: $color-f7f7fe;
+  border: 1px solid $color-dfdeed;
   border-radius: 6px;
   margin-top: 28px;
   position: relative;

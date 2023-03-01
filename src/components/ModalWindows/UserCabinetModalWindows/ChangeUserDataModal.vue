@@ -86,6 +86,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-e2e2e9: #e2e2e9;
+
+
 .b-change-data__wrapper {
   position: fixed;
   top: 0;
@@ -128,7 +133,7 @@ export default {
       font-weight: 400;
       font-size: 13px;
       line-height: 20px;
-      color: #dfdeed;
+      color: $color-dfdeed;
     }
     .b-change-data__btns-block {
       display: flex;
@@ -141,7 +146,7 @@ export default {
       font-weight: 400;
       font-size: 13px;
       line-height: 24px;
-      color: #e2e2e9;
+      color: $color-e2e2e9;
       margin-top: 14px;
       cursor: pointer;
     }

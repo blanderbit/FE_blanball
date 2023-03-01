@@ -309,6 +309,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+// SCSS variables for hex colors
+ $color-fafafa: #fafafa;
+
+
 @import '../../../assets/styles/mixins/device.scss';
 .b-users-filters {
   * {
@@ -364,7 +368,7 @@ export default {
         width: 36px;
         min-width: 36px;
         height: 36px;
-        background: #fafafa;
+        background: $color-fafafa;
         border-radius: 6px;
         margin-right: 4px;
         display: flex;

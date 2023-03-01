@@ -155,6 +155,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+// SCSS variables for hex colors
+ $color-efeff6: #efeff6;
+
+
 .scroller {
   height: 100%;
 }
@@ -162,7 +166,7 @@ export default {
 ::v-deep {
   .vcp--expandable {
     background: $--b-main-white-color;
-    border-bottom: 1px solid #efeff6;
+    border-bottom: 1px solid $color-efeff6;
     box-shadow: 2px 2px 10px rgb(56 56 251 / 10%);
   }
   .vue-recycle-scroller__item-view {

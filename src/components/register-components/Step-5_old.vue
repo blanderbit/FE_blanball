@@ -152,6 +152,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-efeff6: #efeff6;
+ $color-1ab2ad: #1ab2ad;
+ $color-f4f4f4: #f4f4f4;
+ $color-dfdeed: #dfdeed;
+
+
 @import '../assets/styles/mixins/device.scss';
 
 .b-register-step {
@@ -194,10 +201,10 @@ export default {
         .b-register-step__section {
           width: 33%;
           height: 4px;
-          background: #efeff6;
+          background: $color-efeff6;
           border-radius: 2px;
           &.active {
-            background: #1ab2ad;
+            background: $color-1ab2ad;
           }
         }
       }
@@ -224,7 +231,7 @@ export default {
       align-items: center;
       justify-content: space-between;
       .radio-btn-wrapper {
-        $color1: #f4f4f4;
+        $color1: $color-f4f4f4;
         $color2: $--b-main-green-color;
         display: flex;
         align-items: center;
@@ -237,7 +244,7 @@ export default {
           align-items: center;
           padding: 6px 12px;
           background: $--b-main-white-color;
-          border: 1px solid #dfdeed;
+          border: 1px solid $color-dfdeed;
           border-radius: 6px;
           width: 186px;
           margin-top: 12px;

@@ -109,10 +109,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-f9f9fc: #f9f9fc;
+ $color-e2e2e9: #e2e2e9;
+
+
 .b-text-area__component {
   height: 100%;
   .b-text-area__wrapper {
-    border: 1px solid #dfdeed;
+    border: 1px solid $color-dfdeed;
     position: relative;
     border-radius: 6px;
     width: 100%;
@@ -126,8 +132,8 @@ export default {
       position: absolute;
       right: 8px;
       bottom: -8px;
-      background: #f9f9fc;
-      border: 1px solid #e2e2e9;
+      background: $color-f9f9fc;
+      border: 1px solid $color-e2e2e9;
       border-radius: 4px;
     }
     .b-text-area__icon {

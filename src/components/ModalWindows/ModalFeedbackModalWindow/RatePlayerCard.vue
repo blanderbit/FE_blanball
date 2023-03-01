@@ -54,8 +54,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-2946e1: #2946e1;
+
+
 .b-player-card {
-  border-top: 1px dashed #dfdeed;
+  border-top: 1px dashed $color-dfdeed;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -66,7 +71,7 @@ export default {
     .b-player-card__team-label {
       margin-right: 8px;
       padding: 0px 4px;
-      background: #2946e1;
+      background: $color-2946e1;
       border-radius: 4px;
       font-family: 'Inter';
       font-style: normal;

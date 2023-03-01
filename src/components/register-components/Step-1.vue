@@ -121,6 +121,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-f4f4f4: #f4f4f4;
+ $color-efeff6: #efeff6;
+
+
 @import '../../assets/styles/mixins/device.scss';
 
 .b-register-step__input {
@@ -159,7 +164,7 @@ export default {
 .b-register-step__gender-block {
   margin-top: 12px;
   .radio-btn-wrapper {
-    $color1: #f4f4f4;
+    $color1: $color-f4f4f4;
     $color2: $--b-main-green-color;
     display: flex;
     align-items: center;
@@ -180,7 +185,7 @@ export default {
   font-size: 12px;
   line-height: 16px;
   color: $--b-main-gray-color;
-  background: #efeff6;
+  background: $color-efeff6;
   border-radius: 4px;
   padding: 0px 2px;
 }

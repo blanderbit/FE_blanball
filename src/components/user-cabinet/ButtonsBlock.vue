@@ -84,6 +84,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+
+
 .b-user-cabinet__buttons {
   order: 4;
 
@@ -125,7 +129,7 @@ export default {
       color: $--b-main-gray-color;
       margin-top: 4px;
       cursor: pointer;
-      border-bottom: 1px dashed #dfdeed;
+      border-bottom: 1px dashed $color-dfdeed;
       @media (max-width: 768px) {
         order: 1;
         text-align: center;

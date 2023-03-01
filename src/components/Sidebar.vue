@@ -328,6 +328,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-efeff6: #efeff6;
+ $color-d3f8f7: #d3f8f7;
+ $color-fff4ec: #fff4ec;
+
+
 .b_sidebar_wrapper {
   position: relative;
   @media (max-width: 992px) {
@@ -347,7 +353,7 @@ export default {
     z-index: 12;
     background: $--b-main-white-color;
     .b_sidebar_picture-bottom {
-      background: #efeff6;
+      background: $color-efeff6;
       border-radius: 24px;
       padding: 4px;
       .b-avatar {
@@ -358,7 +364,7 @@ export default {
         width: 40px;
         height: 40px;
         background: $--b-main-white-color;
-        border: 1px solid #efeff6;
+        border: 1px solid $color-efeff6;
         border-radius: 24px;
         cursor: pointer;
       }
@@ -382,7 +388,7 @@ export default {
           cursor: pointer;
           transition: 0.3s all;
           .router-link-active {
-            background: #d3f8f7;
+            background: $color-d3f8f7;
           }
           &:hover {
             background: rgba(220, 255, 254, 0.65);
@@ -428,7 +434,7 @@ export default {
   margin-top: 20px;
 
   a:hover {
-    background: #fff4ec;
+    background: $color-fff4ec;
   }
 }
 .v-enter-active,

@@ -287,6 +287,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-f4f4f4: #f4f4f4;
+ $color-6f6f77: #6f6f77;
+ $color-f0f0f4: #f0f0f4;
+
+
 @import '../../assets/styles/calendar.scss';
 .b-event-m-1st {
   overflow: hidden;
@@ -309,7 +316,7 @@ export default {
     .b-event-m-1st__input-calendar {
       width: 100%;
       margin-right: 12px;
-      border: 1px solid #dfdeed;
+      border: 1px solid $color-dfdeed;
       border-radius: 6px;
       display: flex;
       align-items: center;
@@ -375,7 +382,7 @@ export default {
     }
   .b-event-m-1st__radio-btn-wrapper {
     margin-top: 12px;
-    $color1: #f4f4f4;
+    $color1: $color-f4f4f4;
     $color2: $--b-main-green-color;
     display: flex;
     align-items: center;

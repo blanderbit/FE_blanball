@@ -261,6 +261,12 @@
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-efeff6: #efeff6;
+ $color-1ab2ad: #1ab2ad;
+ $color-dfdeed: #dfdeed;
+
+
 @import '../../assets/styles/mixins/device.scss';
 
   form {
@@ -301,10 +307,10 @@
           .b-reset-step__section {
             width: 33%;
             height: 4px;
-            background: #efeff6;
+            background: $color-efeff6;
             border-radius: 2px;
             &.active {
-              background: #1ab2ad;
+              background: $color-1ab2ad;
             }
           }
         }
@@ -340,7 +346,7 @@
           padding: 8px;
           width: 72px;
           background: $--b-main-white-color;
-          border: 1px solid #dfdeed;
+          border: 1px solid $color-dfdeed;
           border-radius: 6px;
           outline: none;
           text-align: center;

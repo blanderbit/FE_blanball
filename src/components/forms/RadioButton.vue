@@ -108,16 +108,21 @@ export default {
 </script>
 
 <style scoped lang="scss">
+// SCSS variables for hex colors
+ $color-f4f4f4: #f4f4f4;
+ $color-dfdeed: #dfdeed;
+
+
 @import '../../assets/styles/forms.scss';
 
-$color1: #f4f4f4;
+$color1: $color-f4f4f4;
 $color2: $--b-main-green-color;
 .b-radio {
   display: flex;
   flex-direction: row;
   align-items: center;
   background: $--b-main-white-color;
-  border: 1px solid #dfdeed;
+  border: 1px solid $color-dfdeed;
   border-radius: 6px;
   margin-right: 12px;
   padding: 6px 12px;

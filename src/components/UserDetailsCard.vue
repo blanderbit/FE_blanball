@@ -467,10 +467,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-eeeef3: #eeeef3;
+ $color-148581: #148581;
+ $color-efeff6: #efeff6;
+
+
 
 .b-user-card {
   padding: 20px 16px;
-  background: #eeeef3;
+  background: $color-eeeef3;
   border-radius: 8px;
   height: fit-content;
   @media (max-width: 1200px) {
@@ -554,7 +560,7 @@ export default {
               display: block;
               margin-top: 4px;
               margin-right: 4px;
-              background: #148581;
+              background: $color-148581;
               border-radius: 100px;
               padding: 0 8px;
               height: 20px;
@@ -677,7 +683,7 @@ export default {
         .b-user-card__birthday-line {
           padding-top: 12px;
           margin-top: 12px;
-          border-top: 1px solid #efeff6;
+          border-top: 1px solid $color-efeff6;
           .b-user-card__birth-date {
             font-family: 'Inter';
             font-style: normal;
@@ -719,11 +725,11 @@ export default {
             margin-right: 8px;
           }
           .b-user-card__weight {
-            border-left: 1px solid #efeff6;
+            border-left: 1px solid $color-efeff6;
           }
           .b-user-card__main-leg {
             flex-basis: 40%;
-            border-left: 1px solid #efeff6;
+            border-left: 1px solid $color-efeff6;
             .b-user-card__dropdown-main-leg {
               ::v-deep {
                 .vs__dropdown-toggle {

@@ -79,6 +79,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-f9f9fc: #f9f9fc;
+ $color-dfdeed: #dfdeed;
+
+
 .b-event-info__forms {
         display: flex;
         flex-direction: column;

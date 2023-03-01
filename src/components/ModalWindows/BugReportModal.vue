@@ -149,6 +149,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-4c4a82: #4c4a82;
+
+
 .b-bug-report-modal__description-input::v-deep(.b-input__icon) {
   height: 10% !important;
   margin-top: 10px;
@@ -198,7 +202,7 @@ export default {
     }
 
     .b-bug-report-modal__top-side {
-      background: #4c4a82;
+      background: $color-4c4a82;
       display: flex;
       justify-content: space-between;
       padding: 20px;
@@ -277,7 +281,7 @@ export default {
       }
       .b-bug-report-modal__submit-button {
         padding: 4px 16px;
-        background: #4c4a82;
+        background: $color-4c4a82;
         border-radius: 6px;
         font-family: 'Inter';
         font-style: normal;

@@ -42,6 +42,11 @@ export default {}
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-f0f0f4: #f0f0f4;
+ $color-8a8aa8: #8a8aa8;
+
+
 @import '../../assets/styles/mixins/device.scss';
 
 .b-tech-works {
@@ -54,7 +59,7 @@ export default {}
   z-index: 999;
   .b-tech-works__top-message-line {
     padding: 8px 0 8px 0;
-    background: #f0f0f4;
+    background: $color-f0f0f4;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -70,7 +75,7 @@ export default {}
       font-weight: 500;
       font-size: 12px;
       line-height: 20px;
-      color: #8a8aa8;
+      color: $color-8a8aa8;
       margin-right: 119px;
     }
   }

@@ -66,6 +66,12 @@ export default {
 </script>
 
 <style lang="scss">
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-c10b0b: #c10b0b;
+ $color-d3f8f7: #d3f8f7;
+
+
 .b_modal_wrapper {
   position: fixed;
   top: 0;
@@ -142,7 +148,7 @@ export default {
         width: 48px;
         height: 40px;
         background: $--b-main-white-color;
-        border: 1px solid #dfdeed;
+        border: 1px solid $color-dfdeed;
         border-radius: 6px;
         margin-right: 4px;
         outline: none;
@@ -189,7 +195,7 @@ export default {
         font-size: 14px;
         line-height: 24px;
         text-align: center;
-        color: #c10b0b;
+        color: $color-c10b0b;
         padding: 4px 0;
         cursor: pointer;
       }
@@ -206,7 +212,7 @@ export default {
       }
       .save-btn {
         padding: 4px 16px;
-        background: #d3f8f7;
+        background: $color-d3f8f7;
         border-radius: 6px;
         font-family: 'Inter';
         font-style: normal;

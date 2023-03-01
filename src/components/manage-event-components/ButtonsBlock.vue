@@ -81,9 +81,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-f9f9fc: #f9f9fc;
+
+
 .b-manage-tem-btns {
   @media (max-width: 1200px) {
-    background: #f9f9fc;
+    background: $color-f9f9fc;
     border-radius: 8px;
     padding: 10px 12px;
   }

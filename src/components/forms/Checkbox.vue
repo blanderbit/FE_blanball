@@ -29,13 +29,20 @@ export default {
 </script>
 
 <style scoped lang="scss">
+// SCSS variables for hex colors
+ $color-2d3137: #2d3137;
+ $color-329e78: #329e78;
+ $color-d6d6d6: #d6d6d6;
+ $color-dd3c3a: #dd3c3a;
+
+
 /* Checkbox styles */
 
-$black: #2d3137;
+$black: $color-2d3137;
 $blue: $--b-main-gray-color;
-$green: #329e78;
-$grey: #d6d6d6;
-$red: #dd3c3a;
+$green: $color-329e78;
+$grey: $color-d6d6d6;
+$red: $color-dd3c3a;
 $white: $--b-main-white-color;
 
 $border-radius: 3px;

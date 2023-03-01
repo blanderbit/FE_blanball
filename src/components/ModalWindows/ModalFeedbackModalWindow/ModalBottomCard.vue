@@ -82,6 +82,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-fee7e7: #fee7e7;
+
+
 .b-modal-bottom-card {
   overflow-y: scroll;
   padding: 20px;
@@ -112,7 +116,7 @@ export default {
     }
     .b-modal-bottom-card__send-complain {
       padding: 2px 12px;
-      background: #fee7e7;
+      background: $color-fee7e7;
       border-radius: 6px;
       font-family: 'Inter';
       font-style: normal;

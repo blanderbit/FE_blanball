@@ -355,6 +355,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-f4f4f4: #f4f4f4;
+ $color-efeff6: #efeff6;
+ $color-fafafa: #fafafa;
+ $color-4a7deb: #4a7deb;
+ $color-8978ee: #8978ee;
+ $color-d243c5: #d243c5;
+ $color-4c4a82: #4c4a82;
+ $color-393762: #393762;
+ $color-71ba12: #71ba12;
+
+
 @import '../../../assets/styles/mixins/device.scss';
 .events-page {
   display: grid;
@@ -435,7 +448,7 @@ export default {
       }
       .tab-block {
         display: flex;
-        border-bottom: 1px solid #dfdeed;
+        border-bottom: 1px solid $color-dfdeed;
         margin-top: 28px;
         @include mobile {
           position: absolute;
@@ -500,7 +513,7 @@ export default {
             display: flex;
             align-items: center;
             .radio-btn-wrapper {
-              $color1: #f4f4f4;
+              $color1: $color-f4f4f4;
               $color2: $--b-main-green-color;
               display: flex;
               align-items: center;
@@ -511,7 +524,7 @@ export default {
                 align-items: center;
                 padding: 6px 12px;
                 background: $--b-main-white-color;
-                border: 1px solid #dfdeed;
+                border: 1px solid $color-dfdeed;
                 border-radius: 6px;
                 margin-right: 8px;
                 input[type='radio'] {
@@ -633,7 +646,7 @@ export default {
               width: 32px;
               height: 32px;
               background: $--b-main-white-color;
-              border: 1px solid #dfdeed;
+              border: 1px solid $color-dfdeed;
               border-radius: 6px;
               margin-right: 8px;
               cursor: pointer;
@@ -645,7 +658,7 @@ export default {
               width: 32px;
               min-width: 32px;
               height: 32px;
-              background: #efeff6;
+              background: $color-efeff6;
               border-radius: 6px;
               display: flex;
               margin-right: 8px;
@@ -673,7 +686,7 @@ export default {
             width: 36px;
             min-width: 36px;
             height: 36px;
-            background: #fafafa;
+            background: $color-fafafa;
             border-radius: 6px;
             img {
               margin: auto;
@@ -724,7 +737,7 @@ export default {
                 width: 36px;
                 min-width: 36px;
                 height: 36px;
-                background: #efeff6;
+                background: $color-efeff6;
               }
             }
             .text {
@@ -771,9 +784,9 @@ export default {
             height: 6px;
             background: linear-gradient(
               90.37deg,
-              #4a7deb -29.39%,
-              #8978ee 37.85%,
-              #d243c5 97.19%
+              $color-4a7deb -29.39%,
+              $color-8978ee 37.85%,
+              $color-d243c5 97.19%
             );
             border-radius: 6px 6px 0px 0px;
           }
@@ -790,7 +803,7 @@ export default {
               // }
             }
             display: flex;
-            background: #fafafa;
+            background: $color-fafafa;
             padding: 0px 4px;
             margin-top: 4px;
             @media (max-width: 992px) {
@@ -834,7 +847,7 @@ export default {
               font-size: 12px;
               line-height: 20px;
               text-align: right;
-              color: #4c4a82;
+              color: $color-4c4a82;
             }
             .left-side {
               display: flex;
@@ -848,7 +861,7 @@ export default {
                 min-width: 48px;
                 width: 48px;
                 height: 48px;
-                background: #efeff6;
+                background: $color-efeff6;
                 border-radius: 4px;
                 margin-right: 8px;
               }
@@ -885,7 +898,7 @@ export default {
             font-weight: 400;
             font-size: 12px;
             line-height: 20px;
-            color: #393762;
+            color: $color-393762;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -905,13 +918,13 @@ export default {
               line-height: 20px;
               color: $--b-main-gray-color;
               padding: 0px 8px;
-              border: 1px solid #efeff6;
+              border: 1px solid $color-efeff6;
               border-radius: 100px;
             }
           }
           .bottom-block {
             margin-top: 12px;
-            border-top: 1px dashed #dfdeed;
+            border-top: 1px dashed $color-dfdeed;
             .top-line {
               display: flex;
               justify-content: space-between;
@@ -923,7 +936,7 @@ export default {
                 font-weight: 500;
                 font-size: 12px;
                 line-height: 20px;
-                color: #393762;
+                color: $color-393762;
               }
               .price {
                 font-family: 'Inter';
@@ -980,7 +993,7 @@ export default {
           border-radius: 6px;
           display: flex;
           justify-content: space-between;
-          border: 1px solid #dfdeed;
+          border: 1px solid $color-dfdeed;
           margin-bottom: 16px;
           width: 328px;
           @media (min-width: 1200px) and (max-width: 1400px) {
@@ -996,7 +1009,7 @@ export default {
             width: 100%;
           }
           &.active {
-            border: 1px solid #71ba12;
+            border: 1px solid $color-71ba12;
           }
           .left-block {
             display: flex;
@@ -1011,7 +1024,7 @@ export default {
                 min-width: 48px;
                 width: 48px;
                 height: 48px;
-                background: #efeff6;
+                background: $color-efeff6;
                 border-radius: 4px;
               }
             }
@@ -1039,7 +1052,7 @@ export default {
               }
               .address {
                 display: flex;
-                background: #fafafa;
+                background: $color-fafafa;
                 padding: 0px 4px;
                 margin-top: 4px;
                 img {
@@ -1066,7 +1079,7 @@ export default {
                 margin-top: 8px;
                 .label {
                   padding: 0px 8px;
-                  border: 1px solid #efeff6;
+                  border: 1px solid $color-efeff6;
                   border-radius: 100px;
                   font-family: 'Inter';
                   font-style: normal;
@@ -1095,11 +1108,11 @@ export default {
                 text-align: center;
                 padding: 0px 4px;
                 border-radius: 4px;
-                background: #efeff6;
+                background: $color-efeff6;
                 color: $--b-main-black-color;
                 width: fit-content;
                 &.active {
-                  background: #71ba12;
+                  background: $color-71ba12;
                   color: $--b-main-white-color;
                 }
               }
@@ -1121,7 +1134,7 @@ export default {
                 font-size: 12px;
                 line-height: 20px;
                 text-align: right;
-                color: #4c4a82;
+                color: $color-4c4a82;
               }
             }
           }
@@ -1165,7 +1178,7 @@ export default {
         position: relative;
         width: 100%;
         background: $--b-main-white-color;
-        border: 1px solid #dfdeed;
+        border: 1px solid $color-dfdeed;
         border-radius: 6px;
         padding: 10px 12px;
         margin-bottom: 16px;
@@ -1217,7 +1230,7 @@ export default {
         }
         .address {
           display: flex;
-          background: #fafafa;
+          background: $color-fafafa;
           padding: 0px 4px;
           margin-top: 4px;
           img {
@@ -1250,7 +1263,7 @@ export default {
             line-height: 20px;
             color: $--b-main-gray-color;
             padding: 0px 8px;
-            border: 1px solid #efeff6;
+            border: 1px solid $color-efeff6;
             border-radius: 100px;
           }
         }

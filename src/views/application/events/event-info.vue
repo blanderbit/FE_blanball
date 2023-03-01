@@ -404,6 +404,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-000: #000;
+ $color-e3fbfa: #e3fbfa;
+ $color-f9f9fc: #f9f9fc;
+ $color-8a8aa8: #8a8aa8;
+
+
 @import '../../../assets/styles/mixins/device.scss';
 
 ::-webkit-scrollbar {
@@ -486,7 +494,7 @@ export default {
       }
     }
     .b-event-info__details-block {
-      border-top: 1px solid #dfdeed;
+      border-top: 1px solid $color-dfdeed;
       padding-top: 14px;
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -517,7 +525,7 @@ export default {
             margin-right: 8px;
           }
           span {
-            border-bottom: 1px dashed #000;
+            border-bottom: 1px dashed $color-000;
           }
         }
         .b-event-info__price {
@@ -641,7 +649,7 @@ export default {
             line-height: 20px;
             color: $--b-main-black-color;
             padding: 0px 8px;
-            border: 1px solid #dfdeed;
+            border: 1px solid $color-dfdeed;
             border-radius: 100px;
           }
         }
@@ -656,7 +664,7 @@ export default {
             padding-top: 12px;
             margin-bottom: 12px;
             padding-bottom: 12px;
-            border-bottom: 1px solid #dfdeed;
+            border-bottom: 1px solid $color-dfdeed;
             .b-event-info__left-side {
               display: flex;
               align-items: center;
@@ -732,7 +740,7 @@ export default {
   align-items: center;
   width: 100%;
   flex-grow: 1;
-  border-bottom: 1px solid #dfdeed;
+  border-bottom: 1px solid $color-dfdeed;
   margin-bottom: 30px;
   overflow-x: scroll;
 
@@ -752,7 +760,7 @@ export default {
     min-width: fit-content;
 
     &.active {
-      border-bottom: 2px solid #8a8aa8;
+      border-bottom: 2px solid $color-8a8aa8;
     }
 
     &.disabled {

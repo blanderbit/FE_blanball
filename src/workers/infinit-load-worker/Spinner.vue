@@ -4,7 +4,11 @@
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-148783: #148783;
+
+
 .loader-wrapper {
   padding: 1em;
 }
@@ -19,7 +23,7 @@
   background: $--b-main-white-color;
   background: linear-gradient(
     to right,
-    #148783 10%,
+    $color-148783 10%,
     rgba(255, 255, 255, 0) 42%
   );
   position: relative;

@@ -467,6 +467,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-148581: #148581;
+ $color-f0f0f4: #f0f0f4;
+
+
 @import 'v-calendar/dist/style.css';
 .b-events-page {
   display: grid;
@@ -528,7 +533,7 @@ export default {
             width: 100px;
             height: 28px;
             border-radius: 6px 0px 0px 6px;
-            border: 1px solid #148581;
+            border: 1px solid $color-148581;
             cursor: pointer;
           }
           .b-events-page__my-events {
@@ -540,9 +545,9 @@ export default {
             width: 100px;
             height: 28px;
             border-radius: 0px 6px 6px 0px;
-            border-top: 1px solid #f0f0f4;
-            border-right: 1px solid #f0f0f4;
-            border-bottom: 1px solid #f0f0f4;
+            border-top: 1px solid $color-f0f0f4;
+            border-right: 1px solid $color-f0f0f4;
+            border-bottom: 1px solid $color-f0f0f4;
             cursor: pointer;
           }
         }

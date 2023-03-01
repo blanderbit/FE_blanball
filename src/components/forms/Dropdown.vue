@@ -240,6 +240,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+
+
 @import '../../assets/styles/forms.scss';
 
 ::v-deep {
@@ -315,7 +319,7 @@ export default {
     height: 100%;
   }
   .vs--searchable .vs__dropdown-toggle {
-    border-color: #dfdeed;
+    border-color: $color-dfdeed;
     height: 100%;
     padding: 0;
   }
