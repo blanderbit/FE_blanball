@@ -48,6 +48,7 @@ import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 
 import { v4 as uuid } from 'uuid'
+import { storeToRefs } from 'pinia'
 
 import Sidebar from './../../components/Sidebar.vue'
 import MainHeader from './../../components/MainHeader.vue'
@@ -126,11 +127,12 @@ const emojiSelection = (emoji) => {
 const router = useRouter()
 const toast = useToast()
 const store = useUserDataStore()
+const { user } = storeToRefs(store)
 const audio = new Audio(message_audio)
 let timeout
 
-isUserVerified.value = store.user?.is_verified
-userEmail.value = store.user?.email || ''
+isUserVerified.value = user.value?.is_verified
+userEmail.value = user.value?.email || ''
 
 const handlerAction = async (button, notificationInstance) => {
   clearTimeout(timeout)

@@ -143,13 +143,13 @@ export default {
   },
   setup() {
     const userStore = useUserDataStore()
+    const { user } = storeToRefs(userStore)
     const eventStore = useEventDataStore()
     const notReadNotificationCount = ref(0)
     const isMobMenuActive = ref(false);
     const skipids = ref([])
-    const { user } = storeToRefs(userStore)
     const userFullName = computed(
-      () => `${userStore.user.profile.name} ${userStore.user.profile.last_name}`
+      () => `${user.value.profile.name} ${user.value.profile.last_name}`
     )
     const userAvatar = ref(user.value.profile.avatar_url)
     const router = useRouter()

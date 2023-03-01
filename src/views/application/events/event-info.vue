@@ -282,6 +282,7 @@ export default {
     const router = useRouter();
     const toast = useToast();
     const userStore = useUserDataStore();
+    const { user } = storeToRefs(userStore);
     const isTabLabel = ref(false);
     const loading = ref(false);
     const { t } = useI18n();
@@ -301,7 +302,7 @@ export default {
     const mockData = computed(() => {
       return {
         tabs: CONSTANTS.event_info
-          .tabs(eventData.value, userStore.user.id)
+          .tabs(eventData.value, user.value.id)
           .map((item) => ({
             ...item,
             name: t(item.name),
@@ -394,7 +395,6 @@ export default {
       currentFullRoute,
       isTabLabel,
       loading,
-      userStore,
       activeTab,
       eventPriceHover,
       eventRequestsToParticipations,

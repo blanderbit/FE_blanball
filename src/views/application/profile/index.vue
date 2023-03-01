@@ -80,13 +80,15 @@ export default {
   },
   setup() {
     const route = useRoute();
+    const userStore = useUserDataStore();
+    const { user } = storeToRefs(userStore);
+    const userData = ref(user.value);
 
     const isDisabledTabHover = ref(false);
     const isChangeEmailModalActive = ref(false);
-    const isDeleteAccountModalActive = ref(false);
+    const isDeleteAccountModalActive = ref(true);
     const isChangePasswordModalActive = ref(false);
-
-    const userData = ref(route.meta.usersData.data);
+  
 
     const mockData = computed(() => {
       return {

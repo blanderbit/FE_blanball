@@ -108,6 +108,7 @@ import TextAreaComponent from '../TextAreaComponent.vue'
 import EventCreateForms from '../buildedForms/EventCreateForms.vue'
 
 import AimIcon from '../../assets/img/aim.svg'
+import { storeToRefs } from 'pinia'
 
 export default {
   name: 'ManageEventThirdStep',
@@ -133,7 +134,8 @@ export default {
   setup(props, { emit }) {
     const isPhoneShown = ref(false)
     const store = useUserDataStore()
-    const userPhoneNumber = computed(() => store.getUserPhone)
+    const { getUserPhone } = storeToRefs(store)
+    const userPhoneNumber = computed(() => getUserPhone)
     const needForm = ref(null)
 
     const icons = computed(() => {

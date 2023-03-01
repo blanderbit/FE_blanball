@@ -161,6 +161,7 @@ import { useToast } from "vue-toastification";
 
 import { Form } from '@system.it.flumx.com/vee-validate'
 
+import { storeToRefs } from "pinia"
 import * as yup from 'yup'
 
 import GreenBtn from '../../../components/GreenBtn.vue'
@@ -227,6 +228,7 @@ export default {
     const { t } = useI18n()
     const toast = useToast()
     const store = useUserDataStore()
+    const { user } = storeToRefs(store)
 
     const route = useRoute()
     const router = useRouter()
