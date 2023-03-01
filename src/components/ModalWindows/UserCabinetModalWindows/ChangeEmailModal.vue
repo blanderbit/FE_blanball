@@ -161,7 +161,6 @@ export default {
           await sendCode(data.values.email);
         } else {
           await changeEmail(data);
-          toast.success(t('notifications.email-changed'))
         }
         currentStep.value++;
         loading.value = false;
@@ -175,6 +174,7 @@ export default {
         verify_code: data.values.verify_code,
       });
       closeModal();
+      toast.success(t('notifications.email-changed'));
     }
 
     return {

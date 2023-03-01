@@ -1,4 +1,5 @@
 <template>
+  <Loading :is-loading="loading" />
   <Transition>
     <ModalWindow :title-color="'#C10B0B'">
       <template #title>
@@ -8,7 +9,7 @@
         <img src="../../../assets/img/warning.svg" alt="" />
       </template>
       <template #delete-account>
-        <div v-if="modalDeleteAcc.first" class="first-screen">
+        <div v-if="currentStep === 1" class="first-screen">
           <div class="description-text">
             {{ $t('modals.delete_acc.text') }}
           </div>
@@ -16,12 +17,12 @@
             <div class="cancle-delete-acc" @click="closeModal">
               {{ $t('buttons.cancel-deleting') }}
             </div>
-            <div class="delete-acc" @click="sendCodeForDeleteAcc">
+            <div class="delete-acc" @click="nextStep">
               {{ $t('buttons.delete-account') }}
             </div>
           </div>
         </div>
-        <div v-if="modalDeleteAcc.second" class="second-screen">
+        <div v-if="currentStep === 2" class="second-screen">
           <div class="description-title-second">
             {{ $t('modals.delete_acc.title-second') }}
           </div>
@@ -30,7 +31,7 @@
               :start-time="30"
               :counter-text="$t('modals.delete_acc.text-second')"
               :email="userEmail"
-              @resend-code-action="sendCodeForDeleteAcc"
+              @resend-code-action="sendCode"
             />
           </div>
           <Form
@@ -52,7 +53,7 @@
               <div class="cancle-delete-acc" @click="closeModal">
                 {{ $t('buttons.cancel-deleting') }}
               </div>
-              <div class="delete-acc" @click="deleteAcc(data)">
+              <div class="delete-acc" @click="nextStep(data)">
                 {{ $t('buttons.delete-account') }}
               </div>
             </div>
@@ -64,17 +65,21 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { Form } from '@system.it.flumx.com/vee-validate'
-import * as yup from 'yup'
+import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useToast } from 'vue-toastification';
+import { useI18n } from 'vue-i18n';
 
-import ModalWindow from '../ModalWindow.vue'
-import Counter from '../../Counter.vue'
-import CodeInput from '../../forms/CodeInput.vue'
+import { Form } from '@system.it.flumx.com/vee-validate';
+import * as yup from 'yup';
 
-import { API } from '../../../workers/api-worker/api.worker'
-import { ROUTES } from '../../../router/router.const'
+import ModalWindow from '../ModalWindow.vue';
+import Counter from '../../Counter.vue';
+import CodeInput from '../../forms/CodeInput.vue';
+import Loading from '../../../workers/loading-worker/Loading.vue';
+
+import { API } from '../../../workers/api-worker/api.worker';
+import { ROUTES } from '../../../router/router.const';
 
 export default {
   name: 'DeleteAccountModal',
@@ -83,6 +88,7 @@ export default {
     CodeInput,
     Form,
     Counter,
+    Loading,
   },
   props: {
     userEmail: {
@@ -91,60 +97,80 @@ export default {
     },
   },
   emits: ['closeModal'],
-  setup(props, context) {
-    const router = useRouter()
-    const modalDeleteAcc = ref({
-      first: true,
-      second: false,
-    })
+  setup(_, { emit }) {
+    const router = useRouter();
+    const { t } = useI18n();
+    const toast = useToast();
+    const currentStep = ref(1);
+    const loading = ref(false);
+
     const schema = computed(() => {
-      return yup.object({
-        verify_code: yup
-          .string()
-          .required('errors.required')
-          .min(5, 'errors.min5'),
-      })
-    })
+      if (currentStep.value === 2) {
+        return yup.object({
+          verify_code: yup
+            .string()
+            .required('errors.required')
+            .min(5, 'errors.min5'),
+        });
+      } else {
+        return yup.object({});
+      }
+    });
 
     function closeModal() {
-      modalDeleteAcc.value = {
-        first: true,
-        second: false,
-      }
-      context.emit('closeModal', 'delete_acc')
+      emit('closeModal', 'delete_acc');
     }
 
-    function sendCodeForDeleteAcc() {
-      modalDeleteAcc.value = {
-        first: false,
-        second: true,
-      }
-      API.UserService.deleteMyProfile()
+    async function sendCode() {
+      await API.UserService.deleteMyProfile();
     }
 
-    function deleteAcc(formData) {
-      API.UserService.sendApproveCode(formData.controlledValues)
-        .then(() => {
-          localStorage.removeItem('token')
-          router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute)
-        })
-        .catch((e) => {
-        })
+    async function nextStep(data) {
+      if (currentStep.value === 2) {
+        const { valid } = await data.validate();
+
+        if (!valid) {
+          return false;
+        }
+      }
+
+      loading.value = true;
+      try {
+        if (currentStep.value === 1) {
+          await sendCode();
+        } else {
+          await deleteAcc(data)
+        }
+        currentStep.value++;
+        loading.value = false;
+      } catch {
+        loading.value = false;
+      }
+    }
+
+    async function deleteAcc(data) {
+      await API.UserService.sendApproveCode(data.values);
+      toast.success(t('notifications.account-deleted'));
+      localStorage.removeItem('token');
+      router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute);
+      closeModal();
     }
 
     return {
-      sendCodeForDeleteAcc,
+      currentStep,
+      loading,
+      schema,
+      sendCode,
       closeModal,
       deleteAcc,
-      modalDeleteAcc,
-      schema,
+      nextStep,
       disableSubmit: (e) => {
-        e.stopPropagation()
-        e.preventDefault()
+        e.stopPropagation();
+        e.preventDefault();
       },
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped></style>

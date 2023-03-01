@@ -154,7 +154,6 @@ export default {
           await sendCode(data);
         } else {
           await changePassword(data);
-          toast.success(t('notifications.password-reset'))
         }
         modalChangeStep.value++;
         loading.value = false;
@@ -168,6 +167,7 @@ export default {
         verify_code: data.values.verify_code,
       });
       closeModal();
+      toast.success(t('notifications.password-reset'));
     }
 
     return {
