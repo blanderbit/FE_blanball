@@ -24,35 +24,34 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router';
 
-import { ROUTES } from '../../router/router.const'
+import { ROUTES } from '../../router/router.const';
 
 export default {
   name: 'ModalVersion',
   emits: ['closeModalClick'],
   setup(props, context) {
-    const router = useRouter()
+    const router = useRouter();
 
     function showVersionsPage() {
-      context.emit('closeModalClick')
-      router.push(ROUTES.APPLICATION.VERSION.absolute)
+      context.emit('closeModalClick');
+      router.push(ROUTES.APPLICATION.VERSION.absolute);
     }
     return {
       showVersionsPage,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
 // SCSS variables for hex colors
- $color-fcfcfc: #fcfcfc;
- $color-8a8aa8: #8a8aa8;
- $color-efeff6: #efeff6;
- $color-424257: #424257;
- $color-e2e2e9: #e2e2e9;
-
+$color-fcfcfc: #fcfcfc;
+$color-8a8aa8: #8a8aa8;
+$color-efeff6: #efeff6;
+$color-424257: #424257;
+$color-e2e2e9: #e2e2e9;
 
 .b-version-modal {
   position: fixed;

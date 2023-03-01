@@ -12,7 +12,7 @@
 <script>
 export default {
   name: 'ModalUserWindow',
-}
+};
 </script>
 
 <style lang="scss" scoped>

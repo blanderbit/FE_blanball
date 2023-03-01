@@ -1,4 +1,22 @@
 <template>
+  <ChangeEmailModal
+    v-if="isChangeEmailModalActive"
+    :user-email="userData.email"
+    @closeModal="closeModals"
+  />
+
+  <DeleteAccountModal
+    v-if="isDeleteAccountModalActive"
+    :user-email="userData.email" 
+    @closeModal="closeModals" 
+  />
+
+  <ChangePasswordModal
+    v-if="isChangePasswordModalActive"
+    :user-email="userData.email" 
+    @closeModal="closeModals" 
+  />
+
   <div class="b-profile">
     <div class="b-profile__header">
       <div class="b-profile__titles-block">
@@ -39,35 +57,75 @@
 
 <script>
 import { ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
 
-import TabLabel from '../../../components/TabLabel.vue'
+import { storeToRefs } from 'pinia';
+
+import TabLabel from '../../../components/TabLabel.vue';
+import DeleteAccountModal from '../../../components/ModalWindows/UserCabinetModalWindows/DeleteAccountModal.vue';
+import ChangePasswordModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangePasswordModal.vue';
+import ChangeUserDataModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangeUserDataModal.vue';
+import ChangeEmailModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangeEmailModal.vue';
+
+import { useUserDataStore } from '../../../stores/userData';
 
 import CONSTANTS from '../../../consts';
 
 export default {
   components: {
     TabLabel,
+    DeleteAccountModal,
+    ChangePasswordModal,
+    ChangeEmailModal,
   },
   setup() {
-    const isDisabledTabHover = ref(false)
+    const route = useRoute();
+
+    const isDisabledTabHover = ref(false);
+    const isChangeEmailModalActive = ref(false);
+    const isDeleteAccountModalActive = ref(false);
+    const isChangePasswordModalActive = ref(true);
+
+    const userData = ref(route.meta.usersData.data);
 
     const mockData = computed(() => {
       return {
         tabs: CONSTANTS.profile.tabs,
       };
     });
-    
+
     const hoverTab = (isDisabled) => {
       if (isDisabled) {
-        isDisabledTabHover.value = !isDisabledTabHover.value
+        isDisabledTabHover.value = !isDisabledTabHover.value;
       }
-    }
+    };
+
+    const closeDeleteAccountModal = () => {
+      isDeleteAccountModalActive.value = false;
+    };
+    const closeChangeEmailModal = () => {
+      isChangeEmailModalActive.value = false;
+    };
+
+    const closeModals = (modalType) => {
+      switch (modalType) {
+        case 'delete_acc':
+          return closeDeleteAccountModal();
+        case 'email':
+          return closeChangeEmailModal();
+      }
+    };
 
     return {
       mockData,
       isDisabledTabHover,
+      isDeleteAccountModalActive,
+      isChangeEmailModalActive,
+      isChangePasswordModalActive,
+      userData,
 
       hoverTab,
+      closeModals,
     };
   },
 };
@@ -75,10 +133,8 @@ export default {
 
 <style lang="scss" scoped>
 // SCSS variables for hex colors
- $color-dfdeed: #dfdeed;
- $color-8a8aa8: #8a8aa8;
-
-
+$color-dfdeed: #dfdeed;
+$color-8a8aa8: #8a8aa8;
 
 .b-profile {
   .b-profile__header {
@@ -94,7 +150,7 @@ export default {
       }
 
       .b-profile__subtitle {
-        @include inter(13px, 500,$--b-main-gray-color);
+        @include inter(13px, 500, $--b-main-gray-color);
         line-height: 20px;
       }
     }
@@ -104,7 +160,7 @@ export default {
       gap: 20px;
       margin-top: 30px;
       .b-profile__tab {
-        @include inter(13px, 500,$--b-main-gray-color);
+        @include inter(13px, 500, $--b-main-gray-color);
         line-height: 20px;
         padding: 8px 4px 12px 0px;
         display: flex;

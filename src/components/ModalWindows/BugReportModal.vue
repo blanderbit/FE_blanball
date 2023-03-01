@@ -32,7 +32,10 @@
             class="b-bug-report-modal__uploaded-images"
           >
             <div class="b-bug-report-modal__uploaded-image">
-              <img src="../../assets/img/uploaded-image.svg" alt="uploaded-imag" />
+              <img
+                src="../../assets/img/uploaded-image.svg"
+                alt="uploaded-imag"
+              />
               <span class="b-bug-report-modal__uploaded-images-title">{{
                 i.name
               }}</span>
@@ -66,24 +69,24 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useToast } from 'vue-toastification'
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toastification';
 
-import { Form } from '@system.it.flumx.com/vee-validate'
+import { Form } from '@system.it.flumx.com/vee-validate';
 
-import * as yup from 'yup'
+import * as yup from 'yup';
 
-import InputComponent from '../forms/InputComponent.vue'
-import TextAreaComponent from '../TextAreaComponent.vue'
+import InputComponent from '../forms/InputComponent.vue';
+import TextAreaComponent from '../TextAreaComponent.vue';
 
-import { API } from '../../workers/api-worker/api.worker'
+import { API } from '../../workers/api-worker/api.worker';
 
-import addFileIcon from '../../assets/img/add-file-icon.svg'
+import addFileIcon from '../../assets/img/add-file-icon.svg';
 
 const schema = yup.object({
   title: yup.string().required('errors.required').max(255, 'errors.max255'),
-})
+});
 
 export default {
   components: {
@@ -94,42 +97,42 @@ export default {
   },
   emits: ['close-modal'],
   setup(_, { emit }) {
-    const uploadedImages = ref([])
-    const toast = useToast()
-    const { t } = useI18n()
+    const uploadedImages = ref([]);
+    const toast = useToast();
+    const { t } = useI18n();
 
     const afterLoadImage = (image) => {
-      uploadedImages.value.push(image)
-    }
+      uploadedImages.value.push(image);
+    };
 
     const removeUploadedImage = (fileName) => {
       uploadedImages.value.pop(
         uploadedImages.value.filter((value) => value.name === fileName)
-      )
-    }
+      );
+    };
 
     const createBugReport = async (data) => {
-      const { valid } = await data.validate()
+      const { valid } = await data.validate();
 
       if (!valid) {
-        return false
+        return false;
       }
 
       const createFormData = () => {
-        const formData = new FormData()
-        formData.append('title', data.values.title)
-        formData.append('description', data.values.description)
-        Object.values(uploadedImages.value).forEach(element => {
-          formData.append('images', element)
+        const formData = new FormData();
+        formData.append('title', data.values.title);
+        formData.append('description', data.values.description);
+        Object.values(uploadedImages.value).forEach((element) => {
+          formData.append('images', element);
         });
 
-        return formData
-      }
+        return formData;
+      };
 
-      await API.BugReportsService.CreateBugReport(createFormData())
-      emit('close-modal')
-      toast.success(t('notifications.bug-report-created'))
-    }
+      await API.BugReportsService.CreateBugReport(createFormData());
+      emit('close-modal');
+      toast.success(t('notifications.bug-report-created'));
+    };
 
     return {
       addFileIcon,
@@ -140,18 +143,17 @@ export default {
       afterLoadImage,
       removeUploadedImage,
       disableSubmit: (e) => {
-        e.stopPropagation()
-        e.preventDefault()
+        e.stopPropagation();
+        e.preventDefault();
       },
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
 // SCSS variables for hex colors
- $color-4c4a82: #4c4a82;
-
+$color-4c4a82: #4c4a82;
 
 .b-bug-report-modal__description-input::v-deep(.b-input__icon) {
   height: 10% !important;

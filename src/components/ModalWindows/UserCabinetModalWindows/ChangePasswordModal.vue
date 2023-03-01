@@ -27,13 +27,7 @@
               name="new_password"
             />
           </div>
-          <!-- <div
-            v-if="errorMessage"
-            class="error-message"
-          >
-            {{ $t('modals.change_password.wrong-old-pass') }}
-          </div> -->
-
+         
           <div v-if="modalChangeStep === 2">
             <Counter
               :start-time="30"
@@ -52,9 +46,6 @@
               name="password_code"
               @complete="completed = true"
             />
-          </div>
-          <div v-if="errorMessage.length" class="error-message">
-            {{ errorMessage }}
           </div>
           <div class="btns-block">
             <div class="cancle-btn" @click="closeModal">
@@ -108,7 +99,6 @@ export default {
   setup(props, context) {
     const { t } = useI18n()
     const modalChangeStep = ref(1)
-    const errorMessage = ref('')
     const seconds = ref(secondsToCount)
 
     const schema = computed(() => {
@@ -160,11 +150,7 @@ export default {
         }
         API.UserService.changePassword(payload)
           .then(() => {
-            errorMessage.value = ''
             modalChangeStep.value = 2
-          })
-          .catch((e) => {
-            errorMessage.value = t('modals.change_password.wrong-old-pass')
           })
       }
       if (modalChangeStep.value === 2 && passCode) {
@@ -173,11 +159,7 @@ export default {
         }
         API.UserService.sendApproveCode(payload)
           .then(() => {
-            errorMessage.value = ''
             closeModal()
-          })
-          .catch((e) => {
-            errorMessage.value = t('modals.change_password.bad-verify-code')
           })
       }
     }
@@ -190,7 +172,6 @@ export default {
       schema,
       eyeCrossed,
       eyeOpened,
-      errorMessage,
       seconds,
       disableSubmit: (e) => {
         e.stopPropagation()

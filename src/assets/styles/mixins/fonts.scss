@@ -5,12 +5,12 @@
     font-weight: $weight;
 }
 
-@mixin inter($size, $weight, $color: #262541) {
+@mixin inter($size, $weight, $color: $--b-main-black-color) {
   font-family: 'Inter';
   @include font($color, $size, $weight)
 }
 
-@mixin exo($size, $weight, $color: #262541) {
+@mixin exo($size, $weight, $color: $--b-main-black-color) {
     font-family: 'Exo 2';
     @include font($color, $size, $weight)
 }

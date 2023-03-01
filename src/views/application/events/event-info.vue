@@ -55,26 +55,39 @@
             <img src="../../../assets/img/address-icon.svg" alt="" />
             <span>{{ eventData.place.place_name }}</span>
           </div>
-          <div :class="['b-event-info__price', 
-            {'fee': eventData.price},
-            {'free': !eventData.price }]"
-            @mouseenter="eventPriceHover=true"
-            @mouseleave="eventPriceHover=false">
-            <img v-if="!eventData.price" src="../../../assets/img/info.svg" alt="">
-            <img  v-else src="../../../assets/img/green-info.svg" alt="">
-            <span>{{ $t('events.event-price') }} <span v-if="eventData.price" 
-              class="b-price">{{ `${eventData.price} грн` }}</span>
-              <span class="b-price-free" v-else>{{ $t('events.for-free') }}</span>
+          <div
+            :class="[
+              'b-event-info__price',
+              { fee: eventData.price },
+              { free: !eventData.price },
+            ]"
+            @mouseenter="eventPriceHover = true"
+            @mouseleave="eventPriceHover = false"
+          >
+            <img
+              v-if="!eventData.price"
+              src="../../../assets/img/info.svg"
+              alt=""
+            />
+            <img v-else src="../../../assets/img/green-info.svg" alt="" />
+            <span
+              >{{ $t('events.event-price') }}
+              <span v-if="eventData.price" class="b-price">{{
+                `${eventData.price} грн`
+              }}</span>
+              <span class="b-price-free" v-else>{{
+                $t('events.for-free')
+              }}</span>
             </span>
             <div class="b-event-info__price-tooltip-wrapper">
               <Transition>
-              <TabLabel
-                v-if="eventData.price && eventPriceHover"
-                class="b-event-info__price-tooltip"
-                :title="$t('events.price_description')"
-                :text="eventData.price_description"
-              />
-            </Transition>
+                <TabLabel
+                  v-if="eventData.price && eventPriceHover"
+                  class="b-event-info__price-tooltip"
+                  :title="$t('events.price_description')"
+                  :text="eventData.price_description"
+                />
+              </Transition>
             </div>
           </div>
           <div class="b-event-info__labels">
@@ -92,9 +105,7 @@
             </div>
           </div>
 
-          <EventInfoForms
-            :formsData="eventData.forms"
-          />
+          <EventInfoForms :formsData="eventData.forms" />
 
           <div class="b-event-info__title">
             {{ $t('my_events.description-event') }}
@@ -193,7 +204,7 @@
         />
       </div>
     </div>
-    <RightSidebar/>
+    <RightSidebar />
   </div>
 </template>
 
@@ -216,9 +227,9 @@ import EventInfoForms from '../../../components/buildedForms/EventInfoForms.vue'
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
-import { addMinutes } from '../../../utils/addMinutes'
-import { getDate } from '../../../utils/getDate'
-import { getTime } from '../../../utils/getTime'
+import { addMinutes } from '../../../utils/addMinutes';
+import { getDate } from '../../../utils/getDate';
+import { getTime } from '../../../utils/getTime';
 
 import CONSTANTS from '../../../consts/index';
 import { ROUTES } from '../../../router/router.const';
@@ -283,20 +294,21 @@ export default {
     const isShareEventModalOpened = ref(false);
     const currentFullRoute = ref(window.location.href);
     const activeTab = ref(0);
-    const eventPriceHover = ref(false)
+    const eventPriceHover = ref(false);
 
     handleIncomeEventData(eventData.value);
 
     const mockData = computed(() => {
       return {
-        tabs: CONSTANTS.event_info.tabs(eventData.value, userStore.user.id).map((item) => ({
-          ...item,
-          name: t(item.name),
-        })),
+        tabs: CONSTANTS.event_info
+          .tabs(eventData.value, userStore.user.id)
+          .map((item) => ({
+            ...item,
+            name: t(item.name),
+          })),
       };
     });
 
-  
     const acceptRequestToParticipation = async (id) => {
       loading.value = true;
 
@@ -326,13 +338,11 @@ export default {
       isShareEventModalOpened.value = true;
     };
 
-
     const closeShareEventModal = () => {
       isShareEventModalOpened.value = false;
     };
 
     function handlePreloadRequestsParticipationsData(data) {
-
       return data.results.map((item) => {
         item.sender.emoji = setUserEmoji(item.raiting);
         return {
@@ -340,7 +350,6 @@ export default {
         };
       });
     }
-
 
     function handleIncomeEventData(data) {
       data.date = getDate(data.date_and_time);
@@ -358,7 +367,6 @@ export default {
       toast.success(t('notifications.event-share-link-copied'));
     };
 
-    
     const goToUserProfile = (userId) => {
       router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId));
     };
@@ -405,12 +413,11 @@ export default {
 
 <style lang="scss" scoped>
 // SCSS variables for hex colors
- $color-dfdeed: #dfdeed;
- $color-000: #000;
- $color-e3fbfa: #e3fbfa;
- $color-f9f9fc: #f9f9fc;
- $color-8a8aa8: #8a8aa8;
-
+$color-dfdeed: #dfdeed;
+$color-000: #000;
+$color-e3fbfa: #e3fbfa;
+$color-f9f9fc: #f9f9fc;
+$color-8a8aa8: #8a8aa8;
 
 @import '../../../assets/styles/mixins/device.scss';
 
@@ -540,31 +547,31 @@ export default {
           &.fee {
             border-bottom: 1px dashed $--b-main-green-color;
             border-radius: 4px 4px 0px 0px;
-            background: #E3FBFA;
+            background: #e3fbfa;
             span {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 16px;
-            display: flex;
-            align-items: center;
-            color: $--b-main-green-color;
-
-            .b-price {
-              font-family: 'Exo 2';
+              font-family: 'Inter';
               font-style: normal;
-              font-weight: 700;
-              font-size: 16px;
-              line-height: 24px;
-              margin-left: 6px;
+              font-weight: 400;
+              font-size: 14px;
+              line-height: 16px;
+              display: flex;
+              align-items: center;
               color: $--b-main-green-color;
+
+              .b-price {
+                font-family: 'Exo 2';
+                font-style: normal;
+                font-weight: 700;
+                font-size: 16px;
+                line-height: 24px;
+                margin-left: 6px;
+                color: $--b-main-green-color;
+              }
             }
-          }
           }
 
           &.free {
-            background: #F9F9FC;
+            background: #f9f9fc;
             border-radius: 4px;
             span {
               font-family: 'Inter';
@@ -576,14 +583,14 @@ export default {
               align-items: center;
               color: $--b-main-black-color;
 
-            .b-price-free {
-              font-family: 'Exo 2';
-              font-style: normal;
-              font-weight: 700;
-              font-size: 16px;
-              line-height: 24px;
-              color: $--b-main-black-color;
-              margin-left: 6px;
+              .b-price-free {
+                font-family: 'Exo 2';
+                font-style: normal;
+                font-weight: 700;
+                font-size: 16px;
+                line-height: 24px;
+                color: $--b-main-black-color;
+                margin-left: 6px;
               }
             }
           }
@@ -654,7 +661,7 @@ export default {
           }
         }
       }
-      
+
       .b-event-info__right-side {
         .b-event-info__users {
           .b-event-info__user {
