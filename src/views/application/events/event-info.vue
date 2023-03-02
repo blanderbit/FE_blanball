@@ -188,12 +188,14 @@
           :table-title-text="$t('my_events.players-list')"
           :table-color="'#148783'"
           :maxPlayersCount="eventData.amount_members"
+          :emptyListData="noUsersData"
         />
 
         <EventInfoUsersTable
           v-if="activeTab === 1"
           :data="eventData.current_fans"
           :border="false"
+          :emptyListData="noFansData"
         />
 
         <ListOfEventRequestsToParticipations
@@ -242,6 +244,8 @@ import emoji_3 from '../../../assets/img/emojies/3.svg';
 import emoji_4 from '../../../assets/img/emojies/4.svg';
 import emoji_5 from '../../../assets/img/emojies/5.svg';
 import noReviews from '../../../assets/img/no-records/no-reviews.svg';
+import noUserRecords from '../../../assets/img/no-records/no-user-records.svg';
+
 
 export default {
   name: 'EventsPage',
@@ -312,6 +316,41 @@ export default {
       };
     });
 
+    const noUsersData = computed(() => {
+      if (eventData.value.author.id === user.value.id) {
+        return {
+          title: 'Наразі, немає учасників для відображення',
+          description: 'Як тільки хтось із користувачів приєднається — ми сповістимо вас',
+          button_text: 'Запросити учасників',
+          image: noUserRecords
+        }
+      } else {
+        return {
+          title: 'Наразі, немає учасників для відображення',
+          description: 'Покищо ніхто не долучився до участі у події, однак, ви можете стати першим!',
+          button_text: !eventData.value.privacy ? 'Долучитися до участі' : 'Подати заявку',
+          image: noUserRecords
+        }
+      }
+    })
+
+    const noFansData = computed(() => {
+      if (eventData.value.author.id === user.value.id) {
+        return {
+          title: 'Наразі, немає глядачів для відображення',
+          description: 'Як тільки хтось із глядачів приєднається — ми сповістимо вас',
+          image: noUserRecords
+        }
+      } else {
+        return {
+          title: 'Наразі, немає глядачів для відображення',
+          description: 'Покищо ніхто не долучився до вболівання у події, однак, ви можете стати першим!',
+          button_text: 'Стати вболівальником',
+          image: noUserRecords
+        }
+      }
+    })
+    
     const acceptRequestToParticipation = async (id) => {
       loading.value = true;
 
@@ -397,7 +436,10 @@ export default {
       currentFullRoute,
       isTabLabel,
       loading,
+      user,
       activeTab,
+      noUsersData,
+      noFansData,
       eventPriceHover,
       eventRequestsToParticipations,
       copyLinkButtonClick,

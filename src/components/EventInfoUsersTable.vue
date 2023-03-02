@@ -14,8 +14,10 @@
   </div>
   <EmptyList
     v-else
-      :title="'fd'"
-      :description="'dfd'"
+      :title="emptyListData.title"
+      :description="emptyListData.description"
+      :buttonText="emptyListData.button_text"
+      :image="emptyListData.image"
     />
 </template>
 
@@ -46,6 +48,10 @@ export default {
     maxPlayersCount: {
       type: Number,
     },
+    emptyListData: {
+      type: Object,
+      default: () => {},
+    }
   },
   components: {
     SmallPlayerCard,

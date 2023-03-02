@@ -5,7 +5,6 @@
         <Avatar
           :border="true"
           :link="dataPlayer.profile.avatar_url"
-          :online="user.is_online"
           :full-name="`${dataPlayer.profile.name} ${dataPlayer.profile.last_name}`"
           @clickByAvatar="goToUserProfile(dataPlayer.id)"
         ></Avatar>

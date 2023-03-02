@@ -441,6 +441,7 @@ export default {
     }
     .tab-block-wrapper {
       margin-bottom: 35px;
+      overflow: scroll;
       @include mobile {
         height: 36px;
         position: relative;

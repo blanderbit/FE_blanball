@@ -120,7 +120,10 @@ export default {
     const schema = computed(() => {
       if (currentStep.value === 1) {
         return yup.object({
-          email: yup.string().required('errors.required').email('errors.email'),
+          email: yup
+            .string()
+            .required('errors.required')
+            .email('errors.email'),
         });
       }
       if (currentStep.value === 2) {

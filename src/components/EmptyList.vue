@@ -50,13 +50,21 @@ export default {
       require: false,
       default: false,
     },
+    image: {
+      type: String,
+      default: ''
+    }
   },
   components: {
     GreenBtn
   },
-  setup({ isNotification }) {
+  setup(props) {
     const imageLink = computed(() => {
-      return isNotification ? EmptyNotificationsSvg : NoData
+      if (props.image) {
+        return props.image
+      } else {
+        return props.isNotification ? EmptyNotificationsSvg : NoData
+      }
     })
 
     return {

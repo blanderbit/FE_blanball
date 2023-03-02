@@ -37,7 +37,7 @@
     "vue-select": "^4.0.0-beta.6",
     "vue-star-rating": "^2.1.0",
     "vue-toastification": "^2.0.0-rc.5",
-    "vue-virtual-scroller": "file:vue-virtual-scroller",
+    "vue-virtual-scroller": "^2.0.0-beta.8",
     "vue3-virtual-scroller": "^0.2.3",
     "websocket": "^1.0.34",
     "yup": "^0.32.11"

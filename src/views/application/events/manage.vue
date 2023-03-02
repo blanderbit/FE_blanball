@@ -110,7 +110,6 @@
                 <avatar
                   class="b-invited-user__avatar"
                   :link="user.profile.avatar_url"
-                  :online="user.is_online"
                   :avatarType="'small-square'"
                   :full-name="`${user.profile.name} ${user.profile.last_name}`"
                 ></avatar>
