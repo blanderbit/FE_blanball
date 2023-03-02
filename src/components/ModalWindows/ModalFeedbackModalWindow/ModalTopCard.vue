@@ -163,7 +163,7 @@ export default {
         'font-weight': 700,
         'font-size': '24px',
         'line-height': '28px',
-        color: '#262541'
+        color: '$--b-main-black-color'
       }
     })
     const mainBlockCardStyle = computed(() => {
@@ -191,7 +191,7 @@ export default {
 <style lang="scss" scoped>
 .b-modal-top-card {
   padding: 20px;
-  background: #FFFFFF;
+  background: $--b-main-white-color;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 6px;
   margin-bottom: 8px;
@@ -217,7 +217,7 @@ export default {
       font-weight: 600;
       font-size: 16px;
       line-height: 26px;
-      color: #262541;
+      color: $--b-main-black-color;
     }
   }
   .b-modal-top-card__main-block {
@@ -228,7 +228,7 @@ export default {
       font-weight: 400;
       font-size: 14px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
       margin-top: 16px;
       margin-bottom: 20px;
     }
@@ -238,7 +238,7 @@ export default {
       font-weight: 400;
       font-size: 14px;
       line-height: 20px;
-      color: #262541
+      color: $--b-main-black-color
     }
     .b-modal-top-card__btns-block { 
       display: flex;
@@ -251,7 +251,7 @@ export default {
         font-weight: 400;
         font-size: 14px;
         line-height: 24px;
-        color: #575775;
+        color: $--b-main-gray-color;
         cursor: pointer;
       }
       .b-modal-top-card__next-btn { 

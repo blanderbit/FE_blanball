@@ -125,8 +125,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-d3f8f7: #d3f8f7;
+
+
 .b-security {
-  background: #ffffff;
+  background: $--b-main-white-color;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 8px;
   padding: 20px 16px;
@@ -149,7 +154,7 @@ export default {
       font-weight: 700;
       font-size: 16px;
       line-height: 24px;
-      color: #262541;
+      color: $--b-main-black-color;
     }
     .b-security__subtitle {
       font-family: 'Inter';
@@ -157,20 +162,20 @@ export default {
       font-weight: 400;
       font-size: 13px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
     }
     .b-security__settings-block {
       padding-top: 8px;
       padding-bottom: 8px;
       margin-top: 20px;
-      border-top: 1px solid #dfdeed;
+      border-top: 1px solid $color-dfdeed;
       .b-security__personal-settings {
         font-family: 'Inter';
         font-style: normal;
         font-weight: 400;
         font-size: 14px;
         line-height: 20px;
-        color: #262541;
+        color: $--b-main-black-color;
         padding: 12px 0;
         display: flex;
         justify-content: space-between;
@@ -185,7 +190,7 @@ export default {
       font-weight: 700;
       font-size: 16px;
       line-height: 24px;
-      color: #262541;
+      color: $--b-main-black-color;
     }
     .b-security__subtitle-security {
       font-family: 'Inter';
@@ -193,7 +198,7 @@ export default {
       font-weight: 400;
       font-size: 13px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
     }
     .b-security__change-pass-btn {
       padding-left: 16px;
@@ -202,14 +207,14 @@ export default {
       justify-content: space-between;
       align-items: center;
       height: 40px;
-      background: #d3f8f7;
+      background: $color-d3f8f7;
       border-radius: 6px;
       font-family: 'Inter';
       font-style: normal;
       font-weight: 500;
       font-size: 14px;
       line-height: 24px;
-      color: #148783;
+      color: $--b-main-green-color;
       cursor: pointer;
       margin-bottom: 16px;
     }
@@ -220,7 +225,7 @@ export default {
     font-weight: 400;
     font-size: 12px;
     text-decoration-line: underline;
-    color: #575775;
+    color: $--b-main-gray-color;
     text-align: right;
     cursor: pointer;
   }

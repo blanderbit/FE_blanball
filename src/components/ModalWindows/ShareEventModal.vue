@@ -88,7 +88,7 @@ export default {
       width: 328px;
       border-radius: 6px 6px 0px 0px;
       height: 52px;
-      background: #148783;
+      background: $--b-main-green-color;
 
       .b-share-event-modal__title {
         font-family: 'Exo 2';
@@ -96,11 +96,11 @@ export default {
         font-weight: 600;
         font-size: 14px;
         line-height: 20px;
-        color: #ffffff;
+        color: $--b-main-white-color;
       }
     }
     .b-share-event-modal__main-side {
-      background: #ffffff;
+      background: $--b-main-white-color;
       padding: 16px;
       border-radius: 0px 0px 6px 6px;
       display: flex;

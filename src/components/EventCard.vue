@@ -103,12 +103,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-4a7deb: #4a7deb;
+ $color-8978ee: #8978ee;
+ $color-d243c5: #d243c5;
+ $color-fafafa: #fafafa;
+ $color-4c4a82: #4c4a82;
+ $color-efeff6: #efeff6;
+ $color-393762: #393762;
+ $color-dfdeed: #dfdeed;
+
+
 .b-event-card {
   position: relative;
   padding: 20px 16px;
   isolation: isolate;
   width: 328px;
-  background: #ffffff;
+  background: $--b-main-white-color;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 6px;
   margin-bottom: 16px;
@@ -134,9 +145,9 @@ export default {
     height: 6px;
     background: linear-gradient(
       9037deg,
-      #4a7deb -2939%,
-      #8978ee 3785%,
-      #d243c5 9719%
+      $color-4a7deb -2939%,
+      $color-8978ee 3785%,
+      $color-d243c5 9719%
     );
     border-radius: 6px 6px 0px 0px;
   }
@@ -147,7 +158,7 @@ export default {
     &.b-event-card__mob-address {
     }
     display: flex;
-    background: #fafafa;
+    background: $color-fafafa;
     padding: 0px 4px;
     margin-top: 4px;
     @media (max-width: 992px) {
@@ -158,12 +169,8 @@ export default {
       margin-right: 5px;
     }
     p {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 12px;
+      @include inter(12px, 400, $--b-main-gray-color);
       line-height: 20px;
-      color: #575775;
       border-radius: 4px;
       display: -webkit-box;
       -webkit-line-clamp: 1;
@@ -176,22 +183,14 @@ export default {
     justify-content: space-between;
     align-items: center;
     .b-event-card__date {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 500;
-      font-size: 14px;
+      @include inter(14px, 500);
       line-height: 20px;
       text-align: right;
-      color: #262541;
     }
     .b-event-card__time {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 12px;
+      @include inter(12px, 400, $color-4c4a82);
       line-height: 20px;
       text-align: right;
-      color: #4c4a82;
     }
     .b-event-card__left-side {
       display: flex;
@@ -203,7 +202,7 @@ export default {
         min-width: 48px;
         width: 48px;
         height: 48px;
-        background: #efeff6;
+        background: $color-efeff6;
         border-radius: 4px;
         margin-right: 8px;
       }
@@ -214,7 +213,7 @@ export default {
           font-weight: 700;
           font-size: 16px;
           line-height: 24px;
-          color: #262541;
+          color: $--b-main-black-color;
         }
         .b-event-card__date-time-mob {
           display: flex;
@@ -231,12 +230,8 @@ export default {
     }
   }
   .b-event-card__main-text {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 12px;
+    @include inter(12px, 400, $color-393762);
     line-height: 20px;
-    color: #393762;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -248,42 +243,31 @@ export default {
     align-items: center;
     margin-top: 12px;
     .b-event-card__label {
+      @include inter(12px, 400, $--b-main-gray-color);
       margin-right: 4px;
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 12px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
       padding: 0px 8px;
-      border: 1px solid #efeff6;
+      border: 1px solid $color-efeff6;
       border-radius: 100px;
     }
   }
   .b-event-card__bottom-block {
     margin-top: 12px;
-    border-top: 1px dashed #dfdeed;
+    border-top: 1px dashed $color-dfdeed;
     .b-event-card__top-line {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding-top: 12px;
       .b-event-card__name {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 12px;
+        @include inter(12px, 500, $color-393762);
         line-height: 20px;
-        color: #393762;
       }
       .b-event-card__price {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 600;
-        font-size: 14px;
+        @include inter(14px, 600);
         line-height: 20px;
         text-align: right;
-        color: #262541;
       }
     }
     .b-event-card__bottom-line {
@@ -299,19 +283,16 @@ export default {
         }
         .b-event-card__titles,
         .b-event-card__date {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 12px;
+          @include inter(14px, 600);
           line-height: 20px;
         }
         .b-event-card__players,
         .b-event-card__players-date {
-          color: #262541;
+          color: $--b-main-black-color;
         }
         .b-event-card__visitors,
         .b-event-card__visitors-date {
-          color: #575775;
+          color: $--b-main-gray-color;
         }
       }
       .b-event-card__right-side {

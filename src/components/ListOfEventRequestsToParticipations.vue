@@ -79,14 +79,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-efeff6: #efeff6;
+
+
 .b-list-of-event-requests-to-participations {
   display: flex;
   flex-direction: column;
   gap: 12px 0px;
 
   .b-list-item {
-    background: #ffffff;
-    border: 1px solid #dfdeed;
+    background: $--b-main-white-color;
+    border: 1px solid $color-dfdeed;
     border-radius: 4px;
     padding: 4px 16px;
     height: 60px;
@@ -108,12 +113,8 @@ export default {
       }
 
       .b-list-item__name {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 14px;
+        @include inter(14px, 400);
         line-height: 20px;
-        color: #262541;
       }
     }
     .b-list-item-right__side {
@@ -126,11 +127,11 @@ export default {
         align-items: center;
         gap: 8px;
         padding-left: 20px;
-        border-left: 1px solid #efeff6;
+        border-left: 1px solid $color-efeff6;
         margin-left: 12px;
 
         .b-list-item__cancel-button {
-          border: 1px solid #dfdeed !important;
+          border: 1px solid $color-dfdeed !important;
           ::v-deep(img) {
             margin: 0;
           }

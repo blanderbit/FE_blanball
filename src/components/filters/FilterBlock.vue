@@ -12,13 +12,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
+// SCSS variables for hex colors
+ $color-f9f9fc: #f9f9fc;
+
+
 .b-filters {
   &__wrapper {
     position: relative;
   }
 
   &__background {
-    background: #f9f9fc;
+    background: $color-f9f9fc;
     position: absolute;
     border-radius: 8px;
     top: -20px;

@@ -1,4 +1,5 @@
 @import '../../../node_modules/vue-toastification/dist/index.css';
+@import './variables.scss';
 
 .Vue-Toastification__toast {
   background: #262541;
@@ -55,7 +56,7 @@
 }
 
 .Vue-Toastification__close-button {
-  color: #575775;
+  color: $--b-main-gray-color;
 }
 
 .notification-success {

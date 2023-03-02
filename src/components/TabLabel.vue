@@ -27,6 +27,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-efefef: #efefef;
+
+
 .b-tab-label {
   &__label {
     display: block;
@@ -35,7 +39,7 @@ export default {
     right: -164px;
     width: 152px;
     height: 56px;
-    background: #262541;
+    background: $--b-main-black-color;
     box-shadow: 3px 6px 15px rgba(8, 27, 130, 0.1);
     border-radius: 6px;
     padding: 4px 6px;
@@ -46,7 +50,7 @@ export default {
     height: 0;
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
-    border-right: 10px solid #262541;
+    border-right: 10px solid $--b-main-black-color;
     position: absolute;
     left: -8px;
     top: 2px;
@@ -57,7 +61,7 @@ export default {
     font-weight: 600;
     font-size: 12px;
     line-height: 16px;
-    color: #ffffff;
+    color: $--b-main-white-color;
   }
   &__label-text {
     font-family: 'Inter';
@@ -65,7 +69,7 @@ export default {
     font-weight: 449;
     font-size: 12px;
     line-height: 16px;
-    color: #efefef;
+    color: $color-efefef;
   }
 }
 </style>

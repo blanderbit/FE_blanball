@@ -61,10 +61,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+
+
 .b-small-player-card {
   padding: 14px 20px;
   width: 48%;
-  border: 1px solid #dfdeed;
+  border: 1px solid $color-dfdeed;
   border-radius: 4px;
   margin-bottom: 12px;
   display: flex;
@@ -75,14 +79,14 @@ export default {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: #262541;
+  color: $--b-main-black-color;
 
   @media (max-width: 768px) {
     width: 100%;
   }
   &.inactive {
     font-size: 13px;
-    color: #575775;
+    color: $--b-main-gray-color;
   }
   .b-small-player-card__left-side {
     display: flex;
@@ -103,7 +107,7 @@ export default {
         font-weight: 400;
         font-size: 12px;
         line-height: 20px;
-        color: #575775;
+        color: $--b-main-gray-color;
       }
 
       .b-small-player-card__name {
@@ -112,7 +116,7 @@ export default {
         font-weight: 400;
         font-size: 14px;
         line-height: 20px;
-        color: #262541;
+        color: $--b-main-black-color;
       }
     }
   }
@@ -126,7 +130,7 @@ export default {
       font-weight: 400;
       font-size: 14px;
       line-height: 20px;
-      color: #262541;
+      color: $--b-main-black-color;
     }
     .b-small-player-card__inactive {
       margin-right: 24px;

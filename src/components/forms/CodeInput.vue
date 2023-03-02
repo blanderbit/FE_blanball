@@ -262,7 +262,13 @@ onBeforeUpdate(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-a8adb7: #a8adb7;
+ $color-525461: #525461;
+ $color-8a8aa8: #8a8aa8;
+
+
 @import '../../assets/styles/forms.scss';
 
 .code-input-container {
@@ -281,20 +287,20 @@ onBeforeUpdate(() => {
 }
 
 .code-input > input {
-  border: solid 1px #a8adb7;
+  border: solid 1px $color-a8adb7;
   font-family: 'Lato';
   font-size: 20px;
   border-radius: 6px;
   text-align: center;
   transition: 0.2s all ease-in-out;
-  color: #525461;
+  color: $color-525461;
   box-sizing: border-box;
   -webkit-appearance: initial;
 }
 
 .code-input > input:focus {
   outline: none;
-  border: 2px solid #8a8aa8;
+  border: 2px solid $color-8a8aa8;
   caret-color: transparent;
 }
 
@@ -310,6 +316,6 @@ onBeforeUpdate(() => {
   font-weight: 400;
   font-size: 12px;
   line-height: 20px;
-  color: #f32929;
+  color: $--b-error-color;
 }
 </style>

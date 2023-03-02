@@ -9,7 +9,7 @@
           :text="$t('buttons.download-template')"
           :width="whiteBtnWidth"
           :height="40"
-          :main-color="'#262541'"
+          :main-color="'$--b-main-black-color'"
           :is-border="false"
           :font-styles="{ 'font-weight': 400 }"
           :icon="icons.iconCloud"
@@ -22,7 +22,7 @@
           :icon="icons.iconSave"
           :width="greenBtnWidth"
           :height="greenBtnHeight"
-          :background-color="'#575775'"
+          :background-color="'$--b-main-gray-color'"
           :font-styles="{ 'font-weight': 400 }"
           @click-function="$emit('saveBtnClick')"
         />
@@ -81,9 +81,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-f9f9fc: #f9f9fc;
+
+
 .b-manage-tem-btns {
   @media (max-width: 1200px) {
-    background: #f9f9fc;
+    background: $color-f9f9fc;
     border-radius: 8px;
     padding: 10px 12px;
   }
@@ -93,7 +97,7 @@ export default {
     font-weight: 700;
     font-size: 16px;
     line-height: 24px;
-    color: #262541;
+    color: $--b-main-black-color;
     margin-top: 24px;
     @media (max-width: 1200px) {
       display: none;

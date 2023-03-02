@@ -79,6 +79,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-f9f9fc: #f9f9fc;
+ $color-dfdeed: #dfdeed;
+
+
 .b-event-info__forms {
         display: flex;
         flex-direction: column;
@@ -104,7 +109,7 @@ export default {
             font-weight: 500;
             font-size: 13px;
             line-height: 20px;
-            color: #575775;
+            color: $--b-main-gray-color;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -140,7 +145,7 @@ export default {
                   font-weight: 500;
                   font-size: 12px;
                   line-height: 20px;
-                  color: #262541;
+                  color: $--b-main-black-color;
                 }
               }
             }

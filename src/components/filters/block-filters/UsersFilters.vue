@@ -309,6 +309,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+// SCSS variables for hex colors
+ $color-fafafa: #fafafa;
+
+
 @import '../../../assets/styles/mixins/device.scss';
 .b-users-filters {
   * {
@@ -364,7 +368,7 @@ export default {
         width: 36px;
         min-width: 36px;
         height: 36px;
-        background: #fafafa;
+        background: $color-fafafa;
         border-radius: 6px;
         margin-right: 4px;
         display: flex;
@@ -380,7 +384,7 @@ export default {
           font-weight: 500;
           font-size: 13px;
           line-height: 20px;
-          color: #262541;
+          color: $--b-main-black-color;
         }
         .b-users-filters__text {
           font-family: 'Inter';
@@ -388,7 +392,7 @@ export default {
           font-weight: 400;
           font-size: 12px;
           line-height: 20px;
-          color: #575775;
+          color: $--b-main-gray-color;
         }
       }
     }

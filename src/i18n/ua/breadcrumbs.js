@@ -1,6 +1,10 @@
 export default {
   versions: [{ name: 'Головна', path: '/' }, { name: 'Версії' }],
-  profile: [{ name: 'Головна', path: '/' }, { name: 'Профіль' }],
+  profile: [
+    { name: 'Головна', path: '/' }, 
+    { name: 'Профіль', path: '' },
+    { name: 'Особистий кабінет' }
+  ],
   myEvents: [
     { name: 'Головна', path: '/' },
     { name: 'Події', path: '/application/events' },

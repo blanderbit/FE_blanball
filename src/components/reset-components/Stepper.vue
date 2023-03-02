@@ -261,6 +261,12 @@
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-efeff6: #efeff6;
+ $color-1ab2ad: #1ab2ad;
+ $color-dfdeed: #dfdeed;
+
+
 @import '../../assets/styles/mixins/device.scss';
 
   form {
@@ -282,7 +288,7 @@
         font-weight: 700;
         font-size: 22px;
         line-height: 32px;
-        color: #262541;
+        color: $--b-main-black-color;
         @include mobile {
           text-align: center;
         }
@@ -301,10 +307,10 @@
           .b-reset-step__section {
             width: 33%;
             height: 4px;
-            background: #efeff6;
+            background: $color-efeff6;
             border-radius: 2px;
             &.active {
-              background: #1ab2ad;
+              background: $color-1ab2ad;
             }
           }
         }
@@ -315,7 +321,7 @@
         font-weight: 400;
         font-size: 14px;
         line-height: 20px;
-        color: #575775;
+        color: $--b-main-gray-color;
       }
       .b-reset-step__code-title {
         margin-top: 12px;
@@ -325,7 +331,7 @@
         font-size: 12px;
         line-height: 20px;
         text-align: right;
-        color: #575775;
+        color: $--b-main-gray-color;
         text-align: left;
       }
       .b-reset-step__sms-code-block {
@@ -339,8 +345,8 @@
         input {
           padding: 8px;
           width: 72px;
-          background: #ffffff;
-          border: 1px solid #dfdeed;
+          background: $--b-main-white-color;
+          border: 1px solid $color-dfdeed;
           border-radius: 6px;
           outline: none;
           text-align: center;
@@ -380,7 +386,7 @@
         font-weight: 400;
         font-size: 14px;
         line-height: 24px;
-        color: #575775;
+        color: $--b-main-gray-color;
         cursor: pointer;
       }
     }

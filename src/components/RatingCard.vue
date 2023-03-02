@@ -260,13 +260,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-a8a8bd: #a8a8bd;
+ $color-f9f9fc: #f9f9fc;
+ $color-f0f0f4: #f0f0f4;
+ $color-efeff6: #efeff6;
+
+
 
 ::-webkit-scrollbar {
     display: none;
 }
 .b-rating-card {
   height: fit-content;
-  background: #ffffff;
+  background: $--b-main-white-color;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 8px;
   padding: 20px 16px;
@@ -289,15 +296,11 @@ export default {
       font-weight: 700;
       font-size: 16px;
       line-height: 24px;
-      color: #262541;
+      color: $--b-main-black-color;
     }
     .b-rating-card__subtitle {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 13px;
+      @include inter(12px, 400, $--b-main-gray-color);
       line-height: 20px;
-      color: #575775;
     }
     .b-rating-card__scale-block {
       display: flex;
@@ -307,6 +310,7 @@ export default {
       margin-bottom: 12px;
     }
     .b-rating-card__btns-block {
+      
       font-family: 'Inter';
       font-style: normal;
       font-weight: 500;
@@ -317,7 +321,7 @@ export default {
         justify-content: center;
         align-items: center;
         height: 32px;
-        color: #262541;
+        color: $--b-main-black-color;
         border-radius: 6px 0px 0px 6px;
         flex-basis: 50%;
         cursor: pointer;
@@ -327,14 +331,14 @@ export default {
         justify-content: center;
         align-items: center;
         height: 32px;
-        color: #575775;
+        color: $--b-main-gray-color;
         border-radius: 0px 6px 6px 0px;
         flex-basis: 50%;
         cursor: pointer;
         transform: translateX();
 
         &__disabled {
-          color: #a8a8bd;
+          color: $color-a8a8bd;
           cursor: default;
         }
       }
@@ -346,8 +350,8 @@ export default {
       overflow-y: scroll;
 
       .b-rating-card__card-opened {
-        background: #f9f9fc;
-        border-bottom: 1px dashed #f0f0f4;
+        background: $color-f9f9fc;
+        border-bottom: 1px dashed $color-f0f0f4;
         border-radius: 8px;
         padding: 12px;
       }
@@ -359,12 +363,8 @@ export default {
           display: flex;
           justify-content: space-between;
           .b-rating-card__name {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 500;
-            font-size: 13px;
+            @include inter(13px, 500);
             line-height: 20px;
-            color: #262541;
           }
         }
         .b-rating-card__hide-button {
@@ -373,8 +373,8 @@ export default {
           font-weight: 400;
           font-size: 12px;
           line-height: 20px;
-          color: #575775;
-          background: #efeff6;
+          color: $--b-main-gray-color;
+          background: $color-efeff6;
           border-radius: 4px;
           padding: 4px;
         }
@@ -388,7 +388,7 @@ export default {
             font-size: 12px;
             line-height: 20px;
             text-align: center;
-            color: #575775;
+            color: $--b-main-gray-color;
           }
         }
         .b-rating-card__text {
@@ -397,7 +397,7 @@ export default {
           font-weight: 400;
           font-size: 14px;
           line-height: 24px;
-          color: #262541;
+          color: $--b-main-black-color;
           max-width: 100%;
           word-break: break-word;
           margin-top: 10px;
@@ -411,7 +411,7 @@ export default {
         font-weight: 800;
         font-size: 20px;
         line-height: 28px;
-        color: #262541;
+        color: $--b-main-black-color;
       }
       .b-rating-card__no-data-text {
         font-family: 'Inter';
@@ -419,7 +419,7 @@ export default {
         font-weight: 400;
         font-size: 14px;
         line-height: 20px;
-        color: #575775;
+        color: $--b-main-gray-color;
         margin-top: 12px;
       }
     }

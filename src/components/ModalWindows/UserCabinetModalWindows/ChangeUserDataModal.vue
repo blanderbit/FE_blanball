@@ -86,6 +86,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-e2e2e9: #e2e2e9;
+
+
 .b-change-data__wrapper {
   position: fixed;
   top: 0;
@@ -100,7 +105,7 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 361px;
-    background: #262541;
+    background: $--b-main-black-color;
     border-radius: 6px;
     padding: 16px;
     font-family: 'Inter';
@@ -112,12 +117,12 @@ export default {
         font-weight: 600;
         font-size: 14px;
         line-height: 20px;
-        color: #ffffff;
+        color: $--b-main-white-color;
       }
 
       .b-change-data__close {
         line-height: 20px;
-        color: #ffffff;
+        color: $--b-main-white-color;
         font-size: 22px;
         cursor: pointer;
       }
@@ -128,7 +133,7 @@ export default {
       font-weight: 400;
       font-size: 13px;
       line-height: 20px;
-      color: #dfdeed;
+      color: $color-dfdeed;
     }
     .b-change-data__btns-block {
       display: flex;
@@ -141,7 +146,7 @@ export default {
       font-weight: 400;
       font-size: 13px;
       line-height: 24px;
-      color: #e2e2e9;
+      color: $color-e2e2e9;
       margin-top: 14px;
       cursor: pointer;
     }

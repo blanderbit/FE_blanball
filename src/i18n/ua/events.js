@@ -2,7 +2,6 @@ export default {
   'future-events': 'Майбутні події',
   'my-events': 'Мої події',
   'general-events': 'Загальна',
-  'renew-your-data': 'Оновіть своє фото та персональні дані',
   Man: 'Чоловіки',
   Woman: 'Жінки',
   'Planned': 'Заплановано',

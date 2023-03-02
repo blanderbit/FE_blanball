@@ -1,12 +1,8 @@
 @import './calendar.scss';
 
 .b-main-search__soring-title {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 13px;
+  @include inter(13px, 500);
   line-height: 20px;
-  color: #262541;
 }
 .b-main-search__wrapper {
   margin-top: 36px;
@@ -39,15 +35,12 @@
         display: flex;
         align-items: center;
         .b-main-search__old-new-filter {
+          @include inter(13px, 500);
+          line-height: 20px;
+
           display: flex;
           align-items: center;
           margin-right: 20px;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 500;
-          font-size: 13px;
-          line-height: 20px;
-          color: #262541;
           img {
             margin-right: 6px;
           }
@@ -154,20 +147,12 @@
         }
       }
       .b-main-search__title {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 13px;
+        @include inter(13px, 500);
         line-height: 20px;
-        color: #262541;
       }
       .b-main-search__terms {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 12px;
+        @include inter(12px, 400, $--b-main-gray-color);
         line-height: 20px;
-        color: #575775;
         display: -webkit-box;
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
@@ -187,12 +172,8 @@
             display: block;
           }
           .b-main-search__title {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 500;
-            font-size: 13px;
+            @include inter(13px, 500);
             line-height: 20px;
-            color: #262541;
           }
         }
       }
