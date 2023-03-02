@@ -110,6 +110,7 @@
                 <avatar
                   class="b-invited-user__avatar"
                   :link="user.profile.avatar_url"
+                  :online="user.is_online"
                   :avatarType="'small-square'"
                   :full-name="`${user.profile.name} ${user.profile.last_name}`"
                 ></avatar>
@@ -152,6 +153,7 @@ import { useRouter } from 'vue-router'
 import { Form } from '@system.it.flumx.com/vee-validate'
 
 import * as yup from 'yup'
+import { storeToRefs } from "pinia"
 
 import InputComponent from '../../../components/forms/InputComponent.vue'
 import GreenBtn from '../../../components/GreenBtn.vue'

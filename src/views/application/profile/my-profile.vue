@@ -64,7 +64,7 @@
           {{ $t('profile.title') }}
         </div>
         <div class="b-user-cabinet__subtitle">
-          {{ $t('profile.change-personal-data') }}
+          {{ $t('profile.subtitle') }}
         </div>
       </div>
       <ButtonsBlock
@@ -92,7 +92,7 @@
         <span
           @mouseenter="switchTabLabel(tab.isDisabled)"
           @mouseleave="switchTabLabel(tab.isDisabled)"
-          >{{ tab.name }}</span
+          >{{ $t(tab.name) }}</span
         >
         <Transition>
           <TabLabel
@@ -112,7 +112,7 @@
         ref="myForm"
       >
         <RatingCard 
-          v-if="!isTabletSize" 
+          v-if="!isTabletSize && !isMobile" 
           :rating-scale="userRating"
           :openedReviewID="openedReviewId"
           @openReview="openReview"
@@ -122,6 +122,7 @@
           :phone="userPhone"
           :is-edit-mode="isEditModeProfile"
           @openEditPictureModal="openEditPictureModal"
+          :initValues="formValues"
         />
         <div class="b-user-cabinet__mobile-tablet-block">
           <RatingCard 
@@ -160,8 +161,8 @@ import { useI18n } from 'vue-i18n'
 import { useToast } from "vue-toastification";
 
 import { Form } from '@system.it.flumx.com/vee-validate'
-
 import { storeToRefs } from "pinia"
+
 import * as yup from 'yup'
 
 import GreenBtn from '../../../components/GreenBtn.vue'
@@ -228,6 +229,7 @@ export default {
     const { t } = useI18n()
     const toast = useToast()
     const store = useUserDataStore()
+
     const { user } = storeToRefs(store)
 
     const route = useRoute()
@@ -252,13 +254,11 @@ export default {
     const isTabletSize = computed(() => {
       return isBetweenTabletAndDesktop.value || isTablet.value
     })
+
     const mockData = computed(() => {
       return {
         user_info: CONSTANTS.users_page.userInfo,
-        tabs: CONSTANTS.profile.tabs.map((item) => ({
-          ...item,
-          name: t(item.name),
-        })),
+        tabs: CONSTANTS.profile.tabs,
         monthFromNumber: CONSTANTS.users_page.months.monthFromNumber,
         numberFromMonth: CONSTANTS.users_page.months.numberFromMonth,
       }
@@ -270,6 +270,7 @@ export default {
         planned_events: true,
       },
     }
+
     const formValues = ref({
       last_name: store.user.profile.last_name,
       name: store.user.profile.name,
@@ -281,10 +282,10 @@ export default {
       weight: store.user.profile.weight,
       working_leg: getWorkingLeg(store.user.profile.working_leg),
       position: store.user.profile.position,
-      phone: store.user.profile.phone,
-      config_phone: store.user.profile.phone,
-      config_email: store.user.profile.email,
-      show_reviews: store.user.profile.show_reviews,
+      phone: store.user.phone,
+      config_phone: store.user.configuration.phone,
+      config_email: store.user.configuration.email,
+      show_reviews: store.user.configuration.show_reviews,
       planned_events: true,
     })
 
@@ -326,7 +327,7 @@ export default {
           .min(30, 'errors.min30')
           .max(200, 'errors.max250'),
         working_leg: yup.string().required('errors.required'),
-        position: yup.string().required('errors.required'),
+        position: yup.string().nullable().required('errors.required'),
         phone: yup
           .string()
           .required('errors.required')
@@ -500,9 +501,6 @@ export default {
         .then(() => {
           getMyProfile()
         })
-        .catch((e) => {
-          toast.error(t('profile.some-mistake'))
-        })
     }
 
     function getMyProfile() {
@@ -545,6 +543,7 @@ export default {
         })
         .catch((e) => {
           isLoading.value = false
+          console.log('some mistake happened', e)
           toast.error(t('profile.some-mistake'))
         })
     }
@@ -672,6 +671,7 @@ export default {
       openReview,
       showPreview,
       userRating,
+      user,
       userPhone,
       userEmail,
       isEditModeProfile,

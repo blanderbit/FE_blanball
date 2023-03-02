@@ -5,6 +5,7 @@
         <Avatar
           :border="true"
           :link="dataPlayer.profile.avatar_url"
+          :online="user.is_online"
           :full-name="`${dataPlayer.profile.name} ${dataPlayer.profile.last_name}`"
           @clickByAvatar="goToUserProfile(dataPlayer.id)"
         ></Avatar>
@@ -19,8 +20,8 @@
       </div>
     </div>
     <div class="b-small-player-card__right-side">
-      <div class="b-small-player-card__status">
-        {{ $t(`hashtags.${dataPlayer.profile?.position}`) }}
+      <div v-if="dataPlayer.profile.position" class="b-small-player-card__status">
+        {{ $t(`hashtags.${dataPlayer.profile.position}`) }}
       </div>
       <div class="b-small-player-card__icon">
         <img :src="dataPlayer.emoji" alt="" />

@@ -59,4 +59,6 @@ export default {
   'no-working-leg': 'Нога не вказана',
   'no-place': 'Адреса не зазначена',
   'no-role': 'Роль не вказана',
+  'no-content': 'Не вказано',
+  'write-several-words': 'Напишіть декілька слів про себе',
 }

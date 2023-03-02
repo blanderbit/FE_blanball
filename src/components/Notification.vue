@@ -224,11 +224,12 @@ export default {
 
 
 .notification-sender {
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: $color-8a8aa8;
+  color: #575775;
 }
 
 .notification-content {

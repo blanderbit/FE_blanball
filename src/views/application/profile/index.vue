@@ -7,14 +7,14 @@
 
   <DeleteAccountModal
     v-if="isDeleteAccountModalActive"
-    :user-email="userData.email" 
-    @closeModal="closeModals" 
+    :user-email="userData.email"
+    @closeModal="closeModals"
   />
 
   <ChangePasswordModal
     v-if="isChangePasswordModalActive"
-    :user-email="userData.email" 
-    @closeModal="closeModals" 
+    :user-email="userData.email"
+    @closeModal="closeModals"
   />
 
   <div class="b-profile">
@@ -52,11 +52,18 @@
         </div>
       </div>
     </div>
+    <div class="b-profile__main-side">
+      <div class="b-profile-raiting__block">
+        <RatingCard :raiting-scale="user.raiting" />
+      </div>
+      <UserDetailsCard
+          :userData="user"/>
+    </div>
   </div>
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, onBeforeUnmount, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { storeToRefs } from 'pinia';
@@ -66,8 +73,13 @@ import DeleteAccountModal from '../../../components/ModalWindows/UserCabinetModa
 import ChangePasswordModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangePasswordModal.vue';
 import ChangeUserDataModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangeUserDataModal.vue';
 import ChangeEmailModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangeEmailModal.vue';
+import RatingCard from '../../../components/RatingCard.vue';
+import GreenBtn from '../../../components/GreenBtn.vue';
+import UserInfo from '../../../components/UserInfo.vue'
+import UserDetailsCard from '../../../components/UserDetailsCard.vue'
 
 import { useUserDataStore } from '../../../stores/userData';
+import useWindowWidth from '../../../utils/widthScreen';
 
 import CONSTANTS from '../../../consts';
 
@@ -77,6 +89,10 @@ export default {
     DeleteAccountModal,
     ChangePasswordModal,
     ChangeEmailModal,
+    RatingCard,
+    GreenBtn,
+    UserInfo,
+    UserDetailsCard,
   },
   setup() {
     const route = useRoute();
@@ -86,9 +102,10 @@ export default {
 
     const isDisabledTabHover = ref(false);
     const isChangeEmailModalActive = ref(false);
-    const isDeleteAccountModalActive = ref(true);
+    const isDeleteAccountModalActive = ref(false);
     const isChangePasswordModalActive = ref(false);
-  
+    const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
+      useWindowWidth();
 
     const mockData = computed(() => {
       return {
@@ -109,8 +126,8 @@ export default {
       isChangeEmailModalActive.value = false;
     };
     const closeChangePasswordModal = () => {
-      isChangePasswordModalActive.value = false
-    }
+      isChangePasswordModalActive.value = false;
+    };
 
     const closeModals = (modalType) => {
       switch (modalType) {
@@ -118,10 +135,18 @@ export default {
           return closeDeleteAccountModal();
         case 'email':
           return closeChangeEmailModal();
-         case 'change_password':
+        case 'change_password':
           return closeChangePasswordModal();
       }
     };
+
+    onMounted(() => {
+      window.addEventListener('resize', onResize);
+    });
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', onResize);
+    });
 
     return {
       mockData,
@@ -130,6 +155,7 @@ export default {
       isChangeEmailModalActive,
       isChangePasswordModalActive,
       userData,
+      user,
 
       hoverTab,
       closeModals,
@@ -174,6 +200,7 @@ $color-8a8aa8: #8a8aa8;
         align-items: center;
         gap: 4px;
         cursor: pointer;
+        position: relative;
         &.active {
           color: $--b-main-black-color;
           font-weight: 500;
@@ -186,5 +213,23 @@ $color-8a8aa8: #8a8aa8;
       }
     }
   }
+  .b-profile__main-side {
+    margin-top: 24px;
+    display: flex;
+    gap: 16px;
+    .b-profile-raiting__block {
+      width: 320px;
+    }
+  }
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.4s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>

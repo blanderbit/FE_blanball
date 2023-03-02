@@ -16,7 +16,8 @@
       <div class="b-mob-menu__close" @click="closeMobMenu">&times;</div>
     </div>
     <div class="b-mob-menu__user-data">
-      <div class="b-mob-menu__user-img">
+      <div class="b-mob-menu__user-info">
+        <div class="b-mob-menu__user-img">
         <Avatar
           :link="userData.profile.avatar_url"
           :full-name="`${userData.profile.name} ${userData.profile.last_name}`"
@@ -30,6 +31,7 @@
         <div class="b-mob-menu__account-type">
           {{ $t(`hashtags.${userData.role}`) }}
         </div>
+      </div>
       </div>
       <div class="b-mob-menu__logout-icon" @click="logOut">
         <img src="../assets/img/logout-icon.svg" alt="" />
@@ -213,7 +215,6 @@ export default {
         height: '76px',
         alignement: 'flex-start',
         background: '#FFFFFF',
-        textColor: '$--b-main-gray-color',
       },
       {
         id: 1,
@@ -226,7 +227,6 @@ export default {
         height: '76px',
         alignement: 'flex-start',
         background: '#FFFFFF',
-        textColor: '$--b-main-gray-color',
         url: ROUTES.APPLICATION.EVENTS.absolute,
       },
     ])
@@ -242,7 +242,6 @@ export default {
         height: '76px',
         alignement: 'flex-start',
         background: '#FFFFFF',
-        textColor: '$--b-main-gray-color',
         url: ROUTES.APPLICATION.USERS.GENERAL.absolute,
       },
       {
@@ -256,7 +255,6 @@ export default {
         height: '76px',
         alignement: 'flex-start',
         background: '#FFFFFF',
-        textColor: '$--b-main-gray-color',
         url: ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute,
       },
     ])
@@ -486,6 +484,12 @@ export default {
     padding: 8px 12px;
     background: $--b-main-white-color;
     border-radius: 8px;
+    .b-mob-menu__user-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
     .b-mob-menu__user-img {
       img {
         display: block;
@@ -541,7 +545,7 @@ export default {
         img {
         }
         span {
-          @include inter(12px, 500, $color-148581);
+          @include inter(12px, 500);
           line-height: 16px;
           margin-left: 13px;
         }

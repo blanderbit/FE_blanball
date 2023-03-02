@@ -214,6 +214,8 @@ import { useRoute, useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
 
+import { storeToRefs } from 'pinia';
+
 import GreenBtn from '../../../components/GreenBtn.vue';
 import RightSidebar from '../../../components/RightSidebar.vue';
 import EventInfoUsersTable from '../../../components/EventInfoUsersTable.vue';
@@ -750,6 +752,7 @@ $color-8a8aa8: #8a8aa8;
   border-bottom: 1px solid $color-dfdeed;
   margin-bottom: 30px;
   overflow-x: scroll;
+  
 
   .b-event-info__tab-element {
     font-family: 'Inter';
