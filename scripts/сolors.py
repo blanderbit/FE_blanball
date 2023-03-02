@@ -26,7 +26,7 @@ for subdir, _, files in os.walk(directory):
 
                         # Create a dictionary that maps hex colors to their corresponding SCSS variables
                         color_var_map = {}
-                        new_style_content = '\n// SCSS variables for hex colors\n'
+                        new_style_content = ''
                         for color in hex_colors:
                             color = color.lower()  # convert to lowercase
                             variable_name = f'$color-{color}'

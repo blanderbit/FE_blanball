@@ -414,6 +414,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 // SCSS variables for hex colors
 $color-dfdeed: #dfdeed;
 $color-000: #000;
@@ -549,7 +550,7 @@ $color-8a8aa8: #8a8aa8;
           &.fee {
             border-bottom: 1px dashed $--b-main-green-color;
             border-radius: 4px 4px 0px 0px;
-            background: #e3fbfa;
+            background: $color-e3fbfa;
             span {
               font-family: 'Inter';
               font-style: normal;
@@ -573,7 +574,7 @@ $color-8a8aa8: #8a8aa8;
           }
 
           &.free {
-            background: #f9f9fc;
+            background: $color-f9f9fc;
             border-radius: 4px;
             span {
               font-family: 'Inter';

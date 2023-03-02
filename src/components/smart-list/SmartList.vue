@@ -101,6 +101,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 // SCSS variables for hex colors
  $color-efeff6: #efeff6;
 

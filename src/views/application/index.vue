@@ -237,6 +237,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss">
+
 // SCSS variables for hex colors
  $color-272643: #272643;
  $color-454461: #454461;

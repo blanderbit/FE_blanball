@@ -262,6 +262,7 @@ onBeforeUpdate(() => {
 </script>
 
 <style lang="scss" scoped>
+
 // SCSS variables for hex colors
  $color-a8adb7: #a8adb7;
  $color-525461: #525461;

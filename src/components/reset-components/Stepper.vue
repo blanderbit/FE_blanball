@@ -261,6 +261,7 @@
 </script>
 
 <style lang="scss" scoped>
+
 // SCSS variables for hex colors
  $color-efeff6: #efeff6;
  $color-1ab2ad: #1ab2ad;

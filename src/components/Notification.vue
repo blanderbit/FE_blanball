@@ -212,7 +212,9 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="scss"> $color-575775: #575775;
+
+
 // SCSS variables for hex colors
  $color-8a8aa8: #8a8aa8;
  $color-dfdeed: #dfdeed;
@@ -229,7 +231,7 @@ export default {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: #575775;
+  color: $color-575775;
 }
 
 .notification-content {

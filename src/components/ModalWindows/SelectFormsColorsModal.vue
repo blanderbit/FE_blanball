@@ -193,6 +193,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 // SCSS variables for hex colors
 $color-f0f0f4: #f0f0f4;
 $color-efeff6: #efeff6;
@@ -265,7 +266,7 @@ $color-efeff6: #efeff6;
 
       .b-tabs-block__tabs {
         background: $--b-main-white-color;
-        border: 1px solid #f0f0f4;
+        border: 1px solid $color-f0f0f4;
         border-radius: 6px;
         width: 100%;
         padding: 6px;
@@ -287,7 +288,7 @@ $color-efeff6: #efeff6;
           cursor: pointer;
 
           &.active {
-            background: #efeff6;
+            background: $color-efeff6;
             border-radius: 4px;
             font-family: 'Inter';
             font-style: normal;
@@ -321,7 +322,7 @@ $color-efeff6: #efeff6;
         }
 
         .b-main-side__form-select {
-          background: #efeff6;
+          background: $color-efeff6;
           border-radius: 4px;
           padding: 8px 8px 12px;
           .b-main-side__form-select-forms {

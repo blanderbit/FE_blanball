@@ -270,15 +270,24 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped> $color-eeeef3: #eeeef3;
+ $color-ffffff: #ffffff;
+ $color-262541: #262541;
+ $color-148581: #148581;
+ $color-f9f9fc: #f9f9fc;
+ $color-575775: #575775;
+ $color-fff: #fff;
+ $color-6f6f77: #6f6f77;
+
+
 .b-user-info {
-  background: #eeeef3;
+  background: $color-eeeef3;
   border-radius: 8px;
   padding: 20px 16px;
   width: 100%;
   max-width: 464px;
   .b-user-info__top-side {
-    background: #ffffff;
+    background: $color-ffffff;
     border-radius: 8px;
     width: 100%;
     padding: 16px;
@@ -295,14 +304,14 @@ export default {
         font-weight: 700;
         font-size: 16px;
         line-height: 24px;
-        color: #262541;
+        color: $color-262541;
       }
       .b-user__hashtags {
         display: flex;
         align-items: center;
         gap: 4px;
         .b-user__hashtag {
-          background: #148581;
+          background: $color-148581;
           border-radius: 100px;
           padding: 0px 8px;
           font-family: 'Inter';
@@ -310,7 +319,7 @@ export default {
           font-weight: 500;
           font-size: 12px;
           line-height: 20px;
-          color: #ffffff;
+          color: $color-ffffff;
         }
       }
     }
@@ -322,7 +331,7 @@ export default {
       gap: 4px;
       width: 100%;
       .b-main-side__tab {
-        background: #f9f9fc;
+        background: $color-f9f9fc;
         border-radius: 4px 4px 0px 0px;
         padding: 8px 16px;
         font-family: 'Inter';
@@ -330,22 +339,22 @@ export default {
         font-weight: 400;
         font-size: 14px;
         line-height: 20px;
-        color: #575775;
+        color: $color-575775;
         cursor: pointer;
 
         &.active {
-          background: #ffffff;
+          background: $color-ffffff;
           font-family: 'Inter';
           font-style: normal;
           font-weight: 400;
           font-size: 14px;
           line-height: 20px;
-          color: #575775;
+          color: $color-575775;
         }
       }
     }
     .b-main-side-content {
-      background: #fff;
+      background: $color-fff;
       width: 100%;
       min-height: 160px;
       padding: 20px 16px 12px 16px;
@@ -370,7 +379,7 @@ export default {
             font-weight: 400;
             font-size: 14px;
             line-height: 20px;
-            color: #262541;
+            color: $color-262541;
           }
           .b-field__subtitlte {
             font-family: 'Inter';
@@ -378,7 +387,7 @@ export default {
             font-weight: 400;
             font-size: 12px;
             line-height: 20px;
-            color: #6f6f77;
+            color: $color-6f6f77;
             margin-top: 8px;
           }
         }

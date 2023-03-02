@@ -50,6 +50,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 // SCSS variables for hex colors
 $color-f0f0f4: #f0f0f4;
 
@@ -85,7 +86,7 @@ $color-f0f0f4: #f0f0f4;
       border-radius: 6px;
 
       &:hover {
-        background: #f0f0f4;
+        background: $color-f0f0f4;
       }
 
       .b-item-text {

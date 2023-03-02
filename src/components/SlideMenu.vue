@@ -329,7 +329,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped> $color-262541: #262541;
+
+
 // SCSS variables for hex colors
  $color-f0f0f4: #f0f0f4;
  $color-8a8aa8: #8a8aa8;
@@ -516,7 +518,7 @@ button {
   font-weight: 400;
   font-size: 12px;
   line-height: 20px;
-  color: #262541;
+  color: $color-262541;
 }
 .b-notifications-title {
   font-style: normal;
@@ -524,7 +526,7 @@ button {
   font-size: 13px;
   line-height: 20px;
   font-family: 'Inter';
-  color: #262541;
+  color: $color-262541;
   color: $--b-main-black-color;
 }
 

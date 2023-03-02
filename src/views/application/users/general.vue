@@ -355,6 +355,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 // SCSS variables for hex colors
  $color-dfdeed: #dfdeed;
  $color-f4f4f4: #f4f4f4;
