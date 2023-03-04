@@ -143,13 +143,13 @@ export default {
   },
   setup() {
     const userStore = useUserDataStore()
+    const { user } = storeToRefs(userStore)
     const eventStore = useEventDataStore()
     const notReadNotificationCount = ref(0)
     const isMobMenuActive = ref(false);
     const skipids = ref([])
-    const { user } = storeToRefs(userStore)
     const userFullName = computed(
-      () => `${userStore.user.profile.name} ${userStore.user.profile.last_name}`
+      () => `${user.value.profile.name} ${user.value.profile.last_name}`
     )
     const userAvatar = ref(user.value.profile.avatar_url)
     const router = useRouter()
@@ -165,7 +165,6 @@ export default {
     watch(
       () => user,
       (newData, oldData) => {
-        console.log(newData)
       }
     )
 
@@ -328,6 +327,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 // SCSS variables for hex colors
  $color-efeff6: #efeff6;
  $color-d3f8f7: #d3f8f7;

@@ -82,7 +82,7 @@ const router = createRouter({
             allReviewsData: () => API.ReviewService.getMyReviews()
           })),
           component: () =>
-            import('../views/application/profile/index.vue'),
+            import('../views/application/profile/my-profile.vue'),
           meta: {
             breadcrumbs: {
               i18n: 'breadcrumbs.profile',

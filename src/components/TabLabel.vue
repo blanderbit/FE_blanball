@@ -27,6 +27,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 // SCSS variables for hex colors
  $color-efefef: #efefef;
 
@@ -44,6 +45,9 @@ export default {
     border-radius: 6px;
     padding: 4px 6px;
     z-index: 1;
+
+    @media (max-width: 576px) {
+    }
   }
   &__label-corner {
     width: 0;

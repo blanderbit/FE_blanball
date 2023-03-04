@@ -152,6 +152,7 @@ import { useRouter } from 'vue-router'
 import { Form } from '@system.it.flumx.com/vee-validate'
 
 import * as yup from 'yup'
+import { storeToRefs } from "pinia"
 
 import InputComponent from '../../../components/forms/InputComponent.vue'
 import GreenBtn from '../../../components/GreenBtn.vue'
@@ -199,6 +200,7 @@ export default {
     const currentStep = ref(1)
     const startDate = ref('')
     const userStore = useUserDataStore()
+    const { user } = storeToRefs(userStore)
     const searchUsersLoading = ref(false)
     const formsModalSelectedTabId = ref(null)
     const relevantUsersList = ref([])
@@ -216,7 +218,7 @@ export default {
       gender: null,
       description: '',
       type: '',
-      contact_number: userStore.user.phone,
+      contact_number: user.value.phone,
       need_ball: false,
       duration: null,
       need_form: null,
@@ -504,12 +506,12 @@ export default {
       clearTimeout(searchTimeout)
       searchUsersLoading.value = true
       const relevantSearch = () => {
-        getRelevantUsers({ search: searchValue, skipids: userStore.user.id })
+        getRelevantUsers({ search: searchValue, skipids: user.value.id })
       }
       searchTimeout = setTimeout(relevantSearch, 500)
     }
 
-    getRelevantUsers({ skipids: userStore.user.id })
+    getRelevantUsers({ skipids: user.value.id })
 
     const removeInvitedUser = (user_id) => {
       invitedUsers.value = invitedUsers.value.filter(function (item) {
@@ -607,6 +609,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 // SCSS variables for hex colors
  $color-dfdeed: #dfdeed;
  $color-1ab2ad: #1ab2ad;

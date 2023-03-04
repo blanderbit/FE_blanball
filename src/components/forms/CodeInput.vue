@@ -237,7 +237,6 @@ function pasteHandler() {
         .forEach((item, index) => (values.value[index] = item))
     })
     .catch((err) => {
-      console.log('К сожалению не удалось взять текст из буффера', err)
     })
 }
 
@@ -263,6 +262,7 @@ onBeforeUpdate(() => {
 </script>
 
 <style lang="scss" scoped>
+
 // SCSS variables for hex colors
  $color-a8adb7: #a8adb7;
  $color-525461: #525461;

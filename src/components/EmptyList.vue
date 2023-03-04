@@ -50,13 +50,21 @@ export default {
       require: false,
       default: false,
     },
+    image: {
+      type: String,
+      default: ''
+    }
   },
   components: {
     GreenBtn
   },
-  setup({ isNotification }) {
+  setup(props) {
     const imageLink = computed(() => {
-      return isNotification ? EmptyNotificationsSvg : NoData
+      if (props.image) {
+        return props.image
+      } else {
+        return props.isNotification ? EmptyNotificationsSvg : NoData
+      }
     })
 
     return {
@@ -67,6 +75,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 // SCSS variables for hex colors
  $color-f9f9fc: #f9f9fc;
 

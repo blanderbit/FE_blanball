@@ -27,31 +27,25 @@
             class="b_slide_menu_items d-flex justify-content-between align-items-center mb-2"
             v-if="notifications.length"
           >
-            <div
-              class="d-flex align-items-center"
-              :style="{ opacity: selectedList.length ? '1' : '0' }"
+          <div class="b-read-all-notifications__button d-flex align-items-center"
+              v-if="notifications.length && notReadNotificationCount"
+              @click="HandleAction.readAll()"
             >
               <img
-                src="../assets/img/cross.svg"
-                height="10"
+                src="../assets/img/notifications/double-check.svg"
+                height="16"
                 alt=""
-                class="me-2"
-                @click="clearSelectedList"
               />
-              <div class="d-flex">
-                <div class="b-selected-elements__count me-1">
-                  {{ selectedList.length }}
-                </div>
-                / {{ totalNotificationsCount }}
-              </div>
-            </div>
-            <button @click=";(selectable = !selectable), clearSelectedList()">
-              <span v-if="!selectable">Выбрать записи</span>
-              <span v-else>Отменить выбор</span>
+              <span class="b-button-text">Прочитати всі</span>
+          </div>
+
+            <button class="b-notifictions-actions__button" @click=";(selectable = !selectable), clearSelectedList()">
+              <span v-if="!selectable" class="b-button-text">Керування повідомленнями</span>
+              <span v-else  class="b-button-text">Скасувати керування</span>
             </button>
           </div>
           <div class="d-flex mb-2">
-            <button
+            <!-- <button
               v-if="notifications.length"
               @click="HandleAction.deleteAll()"
               class="d-flex align-items-center"
@@ -61,20 +55,8 @@
                 alt=""
                 height="16"
               />
-              Удалить все
-            </button>
-            <button
-              v-if="notifications.length && notReadNotificationCount"
-              @click="HandleAction.readAll()"
-              class="d-flex align-items-center"
-            >
-              <img
-                src="../assets/img/notifications/double-check.svg"
-                height="16"
-                alt=""
-              />
-              Прочитать все
-            </button>
+              <span class="b-button-text"> Удалить все</span>
+            </button> -->
             <button
               v-if="selectable && notifications.length && selectedList.length"
               @click="HandleAction.deleteSelected()"
@@ -85,7 +67,7 @@
                 height="16"
                 alt=""
               />
-              Удалить
+              Видалити
             </button>
             <button
               v-if="selectable && notifications.length && selectedList.length"
@@ -97,11 +79,11 @@
                 height="16"
                 alt=""
               />
-              Прочитать
+              Позначити як прочитане
             </button>
           </div>
-          <div class="d-flex">
-            <div class="b-notifications-title me-1">
+          <div class="b-notifications__tabs">
+            <div v-if="notifications.length" class="b-notifications-title me-1">
               {{ $t('slide_menu.notifications') }}
             </div>
             <div
@@ -347,7 +329,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped> $color-262541: #262541;
+
+
 // SCSS variables for hex colors
  $color-f0f0f4: #f0f0f4;
  $color-8a8aa8: #8a8aa8;
@@ -399,7 +383,7 @@ export default {
   }
   .b_slide_menu_main {
     width: 464px;
-    padding: 24px 20px 0 20px;
+    padding: 35px 20px 0 20px;
     position: absolute;
     top: 0;
     right: 0px;
@@ -418,7 +402,6 @@ export default {
       }
       .b_slide_menu_items {
         margin-top: 12px;
-        border-top: 1px solid $color-dfdeed;
         padding-top: 12px;
         .b_slide_menu_title {
           font-family: 'Inter';
@@ -502,6 +485,7 @@ export default {
 }
 
 button {
+  font-family: 'Inter';
   padding: 4px 8px;
   border: 1px solid $color-dfdeed;
   border-radius: 6px;
@@ -512,6 +496,7 @@ button {
   color: $--b-main-black-color;
   background: white;
   margin-right: 5px;
+  cursor: pointer;
   img {
     margin-right: 3px;
   }
@@ -527,23 +512,35 @@ button {
   line-height: 20px;
   color: $--b-main-white-color;
 }
-
+.b-button-text {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  color: $color-262541;
+}
 .b-notifications-title {
   font-style: normal;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 13px;
   line-height: 20px;
+  font-family: 'Inter';
+  color: $color-262541;
   color: $--b-main-black-color;
 }
 
 .b-notification-unreaded {
-  padding: 0px 4px;
+  font-family: 'Inter';
+  padding: 4px 4px;
   background: $--b-main-gray-color;
-  border-radius: 100px;
   font-style: normal;
+  border-radius: 100px;
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
+  min-height: 16px;
+  min-width: 16px;
   color: $--b-main-white-color;
 }
 
@@ -555,5 +552,16 @@ button {
   img {
     margin-left: 12px;
   }
+}
+.b-notifications__tabs {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #DFDEED;
+  padding-bottom: 12px;
+}
+.b-read-all-notifications__button {
+  border-bottom: 1px dashed #DFDEED;
+  gap: 6px;
+  cursor: pointer;
 }
 </style>

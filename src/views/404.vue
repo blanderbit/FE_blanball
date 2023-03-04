@@ -51,6 +51,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 // SCSS variables for hex colors
  $color-f5fffe: #f5fffe;
 

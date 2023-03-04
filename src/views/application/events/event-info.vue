@@ -188,12 +188,14 @@
           :table-title-text="$t('my_events.players-list')"
           :table-color="'#148783'"
           :maxPlayersCount="eventData.amount_members"
+          :emptyListData="noUsersData"
         />
 
         <EventInfoUsersTable
           v-if="activeTab === 1"
           :data="eventData.current_fans"
           :border="false"
+          :emptyListData="noFansData"
         />
 
         <ListOfEventRequestsToParticipations
@@ -213,6 +215,8 @@ import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
+
+import { storeToRefs } from 'pinia';
 
 import GreenBtn from '../../../components/GreenBtn.vue';
 import RightSidebar from '../../../components/RightSidebar.vue';
@@ -240,6 +244,8 @@ import emoji_3 from '../../../assets/img/emojies/3.svg';
 import emoji_4 from '../../../assets/img/emojies/4.svg';
 import emoji_5 from '../../../assets/img/emojies/5.svg';
 import noReviews from '../../../assets/img/no-records/no-reviews.svg';
+import noUserRecords from '../../../assets/img/no-records/no-user-records.svg';
+
 
 export default {
   name: 'EventsPage',
@@ -282,6 +288,7 @@ export default {
     const router = useRouter();
     const toast = useToast();
     const userStore = useUserDataStore();
+    const { user } = storeToRefs(userStore);
     const isTabLabel = ref(false);
     const loading = ref(false);
     const { t } = useI18n();
@@ -301,7 +308,7 @@ export default {
     const mockData = computed(() => {
       return {
         tabs: CONSTANTS.event_info
-          .tabs(eventData.value, userStore.user.id)
+          .tabs(eventData.value, user.value.id)
           .map((item) => ({
             ...item,
             name: t(item.name),
@@ -309,6 +316,41 @@ export default {
       };
     });
 
+    const noUsersData = computed(() => {
+      if (eventData.value.author.id === user.value.id) {
+        return {
+          title: 'Наразі, немає учасників для відображення',
+          description: 'Як тільки хтось із користувачів приєднається — ми сповістимо вас',
+          button_text: 'Запросити учасників',
+          image: noUserRecords
+        }
+      } else {
+        return {
+          title: 'Наразі, немає учасників для відображення',
+          description: 'Покищо ніхто не долучився до участі у події, однак, ви можете стати першим!',
+          button_text: !eventData.value.privacy ? 'Долучитися до участі' : 'Подати заявку',
+          image: noUserRecords
+        }
+      }
+    })
+
+    const noFansData = computed(() => {
+      if (eventData.value.author.id === user.value.id) {
+        return {
+          title: 'Наразі, немає глядачів для відображення',
+          description: 'Як тільки хтось із глядачів приєднається — ми сповістимо вас',
+          image: noUserRecords
+        }
+      } else {
+        return {
+          title: 'Наразі, немає глядачів для відображення',
+          description: 'Покищо ніхто не долучився до вболівання у події, однак, ви можете стати першим!',
+          button_text: 'Стати вболівальником',
+          image: noUserRecords
+        }
+      }
+    })
+    
     const acceptRequestToParticipation = async (id) => {
       loading.value = true;
 
@@ -394,8 +436,10 @@ export default {
       currentFullRoute,
       isTabLabel,
       loading,
-      userStore,
+      user,
       activeTab,
+      noUsersData,
+      noFansData,
       eventPriceHover,
       eventRequestsToParticipations,
       copyLinkButtonClick,
@@ -412,6 +456,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 // SCSS variables for hex colors
 $color-dfdeed: #dfdeed;
 $color-000: #000;
@@ -547,7 +592,7 @@ $color-8a8aa8: #8a8aa8;
           &.fee {
             border-bottom: 1px dashed $--b-main-green-color;
             border-radius: 4px 4px 0px 0px;
-            background: #e3fbfa;
+            background: $color-e3fbfa;
             span {
               font-family: 'Inter';
               font-style: normal;
@@ -571,7 +616,7 @@ $color-8a8aa8: #8a8aa8;
           }
 
           &.free {
-            background: #f9f9fc;
+            background: $color-f9f9fc;
             border-radius: 4px;
             span {
               font-family: 'Inter';
@@ -750,6 +795,7 @@ $color-8a8aa8: #8a8aa8;
   border-bottom: 1px solid $color-dfdeed;
   margin-bottom: 30px;
   overflow-x: scroll;
+  
 
   .b-event-info__tab-element {
     font-family: 'Inter';

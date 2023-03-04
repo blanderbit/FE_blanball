@@ -20,7 +20,7 @@
             <Transition>
               <TabLabel
                 v-if="tab.isDisabled && currentHoverSideBarItemID === tab.id"
-                style="position: absolute"
+                class="b-comming-soon"
                 :title="$t('profile.coming-soon-title')"
                 :text="$t('profile.coming-soon-text')"
               />
@@ -355,6 +355,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 // SCSS variables for hex colors
  $color-dfdeed: #dfdeed;
  $color-f4f4f4: #f4f4f4;
@@ -440,10 +441,10 @@ export default {
     }
     .tab-block-wrapper {
       margin-bottom: 35px;
+      overflow: scroll;
       @include mobile {
         height: 36px;
         position: relative;
-        overflow-x: scroll;
         margin-top: 24px;
       }
       .tab-block {
@@ -468,6 +469,15 @@ export default {
           cursor: pointer;
           position: relative;
           user-select: none;
+
+          .b-comming-soon {
+            position: absolute;
+
+            @media (max-width: 768px) {
+              left: 0;
+              top: 30px;
+            }
+          }
           img {
             margin-right: 8px;
           }
@@ -1271,4 +1281,5 @@ export default {
     }
   }
 }
+
 </style>

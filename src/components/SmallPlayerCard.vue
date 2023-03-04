@@ -19,8 +19,8 @@
       </div>
     </div>
     <div class="b-small-player-card__right-side">
-      <div class="b-small-player-card__status">
-        {{ $t(`hashtags.${dataPlayer.profile?.position}`) }}
+      <div v-if="dataPlayer.profile.position" class="b-small-player-card__status">
+        {{ $t(`hashtags.${dataPlayer.profile.position}`) }}
       </div>
       <div class="b-small-player-card__icon">
         <img :src="dataPlayer.emoji" alt="" />
@@ -61,6 +61,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 // SCSS variables for hex colors
  $color-dfdeed: #dfdeed;
 

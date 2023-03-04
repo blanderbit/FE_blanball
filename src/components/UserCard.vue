@@ -83,9 +83,6 @@
         </div>
         <div  v-if="userData.profile.gender" class="b-user-card__gender">
           <span class="title">{{ $t('users.gender') }}</span>
-          <span class="icon">
-            <img src="../assets/img/unisex-icon2.svg" alt="gender icon" />
-          </span>
           <span>: {{ $t(`hashtags.${userData.profile.gender}`) }}</span>
         </div>
       </div>
@@ -132,6 +129,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 // SCSS variables for hex colors
  $color-efeff6: #efeff6;
  $color-f7f7fc: #f7f7fc;
@@ -367,17 +365,8 @@ export default {
         line-height: 20px;
         color: $--b-main-black-color;
         margin-right: 3px;
-        @media (max-width: 768px) {
-          display: none;
-        }
       }
-      .icon {
-        display: none;
-        margin-right: 4px;
-        @media (max-width: 768px) {
-          display: inherit;
-        }
-      }
+
       span {
         font-family: 'Inter';
         font-style: normal;

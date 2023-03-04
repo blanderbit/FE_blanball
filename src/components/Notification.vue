@@ -212,7 +212,9 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="scss"> $color-575775: #575775;
+
+
 // SCSS variables for hex colors
  $color-8a8aa8: #8a8aa8;
  $color-dfdeed: #dfdeed;
@@ -224,11 +226,12 @@ export default {
 
 
 .notification-sender {
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: $color-8a8aa8;
+  color: $color-575775;
 }
 
 .notification-content {
