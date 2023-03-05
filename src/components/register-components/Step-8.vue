@@ -145,7 +145,7 @@
     .b-register-step__dropdown {
       margin-right: 10px;
       width: 120px;
-      @include tablet {
+      @include bigTablet {
         width: 133px;
       }
       @include mobile {

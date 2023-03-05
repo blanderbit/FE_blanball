@@ -136,7 +136,7 @@ export default {
   height: 100vh;
   display: flex;
   justify-content: center;
-  @include tablet {
+  @include bigTablet {
     padding-top: 132px;
     overflow: hidden;
   }
@@ -153,7 +153,7 @@ export default {
     top: 0;
     left: 0;
     width: 100%;
-    @include tablet {
+    @include bigTablet {
       display: block;
     }
     img {
@@ -185,7 +185,7 @@ export default {
     @media (min-width: 992px) and (max-width: 1200px) {
       width: 890px;
     }
-    @include tablet {
+    @include bigTablet {
       width: 464px;
       box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
       border-radius: 8px;
@@ -208,7 +208,7 @@ export default {
       position: absolute;
       top: 0;
       right: 0;
-      @include tablet {
+      @include bigTablet {
         display: none;
       }
     }

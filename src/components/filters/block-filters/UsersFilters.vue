@@ -350,7 +350,7 @@ export default {
   &__mob-line {
     display: none;
     justify-content: space-between;
-    @include tablet {
+    @include bigTablet {
       justify-content: flex-start;
     }
     @media (max-width: 992px) {

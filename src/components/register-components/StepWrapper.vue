@@ -132,7 +132,7 @@
     @include mobile {
       padding: 30px 16px;
     }
-    @include tablet {
+    @include bigTablet {
       border-radius: 8px;
     }
     .b-register-step__top-part {
@@ -184,7 +184,7 @@
         align-items: center;
       }
 
-      @media (max-width: 576px) {
+      @include mobile {
         align-items: flex-start;
         margin-top: 40px;
       }

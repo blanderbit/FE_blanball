@@ -425,7 +425,7 @@ export default {
   @media (max-width: 992px ) {
     width: 70%;
   }
-  @media (max-width: 576px) {
+  @include mobile {
     width: 100%;
   }
 

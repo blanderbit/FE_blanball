@@ -197,7 +197,7 @@ export default {
   }
   .b_header_logo {
     display: none;
-    @include tablet {
+    @include bigTablet {
       display: block;
     }
   }

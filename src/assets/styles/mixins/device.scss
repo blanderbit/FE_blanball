@@ -4,11 +4,12 @@
   }
 }
 
-@mixin tablet {
+@mixin bigTablet {
   @media (min-width: 576px) and (max-width: 992px) {
     @content;
   }
 }
+
 
 @mixin desktop {
   @media (min-width: 992px) {

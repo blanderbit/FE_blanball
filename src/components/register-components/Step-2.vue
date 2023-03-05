@@ -143,7 +143,7 @@ export default {
   width: 80px;
   top: -30px;
   left: -30px;
-  @include tablet {
+  @include bigTablet {
     display: none;
   }
 }
@@ -151,7 +151,7 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
-  @include tablet {
+  @include bigTablet {
     display: none;
   }
 }

@@ -36,27 +36,21 @@
                 height="16"
                 alt=""
               />
-              <span class="b-button-text">Прочитати всі</span>
+              <span class="b-button-text">
+                {{ $t('slide_menu.read-all') }}
+              </span>
           </div>
 
             <button class="b-notifictions-actions__button" @click=";(selectable = !selectable), clearSelectedList()">
-              <span v-if="!selectable" class="b-button-text">Керування повідомленнями</span>
-              <span v-else  class="b-button-text">Скасувати керування</span>
+              <span v-if="!selectable" class="b-button-text">
+                {{ $t('slide_menu.notifications-manage') }}
+              </span>
+              <span v-else  class="b-button-text">
+                {{ $t('slide_menu.cancel-manage') }}
+              </span>
             </button>
           </div>
           <div class="d-flex mb-2">
-            <!-- <button
-              v-if="notifications.length"
-              @click="HandleAction.deleteAll()"
-              class="d-flex align-items-center"
-            >
-              <img
-                src="../assets/img/notifications/trash.svg"
-                alt=""
-                height="16"
-              />
-              <span class="b-button-text"> Удалить все</span>
-            </button> -->
             <button
               v-if="selectable && notifications.length && selectedList.length"
               @click="HandleAction.deleteSelected()"
@@ -67,7 +61,7 @@
                 height="16"
                 alt=""
               />
-              Видалити
+              {{ $t('buttons.delete') }}
             </button>
             <button
               v-if="selectable && notifications.length && selectedList.length"
@@ -79,7 +73,7 @@
                 height="16"
                 alt=""
               />
-              Позначити як прочитане
+              {{ $t('slide_menu.mark-as-viewed') }}
             </button>
           </div>
           <div class="b-notifications__tabs">
@@ -182,7 +176,6 @@ import { useUserDataStore } from '../stores/userData'
 import { NewNotifications } from '../workers/web-socket-worker/not-includes-to-socket/new_notifications'
 import { API } from '../workers/api-worker/api.worker'
 
-import CONSTANTS from '../consts/index'
 import { ROUTES } from '../router/router.const'
 
 import sidebarArrowBack from '../assets/img/sidebar-arrow-back.svg'
@@ -330,10 +323,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped> $color-262541: #262541;
-
-
-// SCSS variables for hex colors
+<style lang="scss" scoped> 
  $color-f0f0f4: #f0f0f4;
  $color-8a8aa8: #8a8aa8;
  $color-fcfcfc: #fcfcfc;
@@ -519,7 +509,7 @@ button {
   font-weight: 400;
   font-size: 12px;
   line-height: 20px;
-  color: $color-262541;
+  color: $--b-main-black-color;
 }
 .b-notifications-title {
   font-style: normal;
@@ -527,7 +517,6 @@ button {
   font-size: 13px;
   line-height: 20px;
   font-family: 'Inter';
-  color: $color-262541;
   color: $--b-main-black-color;
 }
 
@@ -557,11 +546,11 @@ button {
 .b-notifications__tabs {
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #DFDEED;
+  border-bottom: 1px solid $color-dfdeed;
   padding-bottom: 12px;
 }
 .b-read-all-notifications__button {
-  border-bottom: 1px dashed #DFDEED;
+  border-bottom: 1px dashed $color-dfdeed;
   gap: 6px;
   cursor: pointer;
 }

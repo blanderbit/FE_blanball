@@ -266,7 +266,7 @@ export default {
       font-size: 28px;
       line-height: 28px;
       color: $--b-main-black-color;
-      @media (max-width: 576px) {
+      @include mobile {
         text-align: center;
       }
     }
@@ -279,7 +279,7 @@ export default {
       font-size: 22px;
       line-height: 32px;
       color: $--b-main-black-color;
-      @media (max-width: 576px) {
+      @include mobile {
         text-align: center;
       }
     }
@@ -304,13 +304,13 @@ export default {
       color: $color-8a8aa8;
       border-bottom: 1px dashed $color-8a8aa8;
     }
-    @media (max-width: 576px) {
+    @include mobile {
       display: none;
     }
   }
   .b-login-step__remember-me {
     margin-top: 26px;
-    @media (max-width: 576px) {
+    @include mobile {
       display: flex;
       align-items: center;
       justify-content: space-between;
