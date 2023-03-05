@@ -12,7 +12,7 @@
         @click="$emit('scrollButtonClicked')"
       >
         {{ $t('scroll_top_component.up') }}
-        <img src="../assets/img/arrow_up.svg" />
+        <img src="../assets/img/arrow-up.svg" />
       </button>
     </div>
     <div v-if="!isScrollTopExist"></div>
@@ -36,6 +36,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+// SCSS variables for hex colors
+ $color-efeff6: #efeff6;
+
+
 .b-scroll-top {
   &__return-top {
     display: flex;
@@ -48,7 +53,7 @@ export default {
     font-weight: 500;
     font-size: 13px;
     line-height: 20px;
-    color: #575775;
+    color: $--b-main-gray-color;
   }
   &__to-first-element {
     display: flex;
@@ -58,9 +63,9 @@ export default {
     font-weight: 500;
     font-size: 13px;
     line-height: 24px;
-    color: #575775;
+    color: $--b-main-gray-color;
     padding: 2px 12px;
-    background: #efeff6;
+    background: $color-efeff6;
     border-radius: 6px;
     border: none;
     align-items: center;

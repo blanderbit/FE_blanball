@@ -1,14 +1,30 @@
 <template>
   <div class="b-avatar-wrapper" :style="border ? avatarBorder : null">
-    <object class="b-avatar" :class="[`b-avatar-${avatarType}`]" :data="avatarType === 'circle' ? link : null"
-      onerror="this.style.display='none'" :style="{
+    <object
+      class="b-avatar"
+      :class="[`b-avatar-${avatarType}`]"
+      :data="avatarType === 'circle' ? link : null"
+      onerror="this.style.display='none'"
+      :style="{
         backgroundImage: `url(${link})`,
-      }" v-if="link" @click.stop="$emit('clickByAvatar')" data="avatar.jpg" type="image/jpeg">
-    </object>
-    <div class="b-avatar b-avatar-words d-flex justify-content-center align-items-center"
-      :class="[`b-avatar-${avatarType}`]" @click.stop="$emit('clickByAvatar')" v-else>
+      }"
+      v-if="link"
+      @click.stop="$emit('clickByAvatar')"
+      data="avatar.jpg"
+      type="image/jpeg"
+    ></object>
+    <div
+      class="b-avatar b-avatar-words d-flex justify-content-center align-items-center"
+      :class="[`b-avatar-${avatarType}`]"
+      @click.stop="$emit('clickByAvatar')"
+      v-else
+    >
       {{ shortFullName }}
     </div>
+    <div
+      v-if="online"
+      :class="[`b-avatar-online__indicator-${avatarType}`]"
+    ></div>
   </div>
 </template>
 
@@ -28,33 +44,47 @@ export default {
     },
     border: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
+    online: {
+      type: Boolean,
+      default: true,
+    },
   },
   emits: ['clickByAvatar'],
   computed: {
     shortFullName() {
-      if (!this.fullName) return
+      if (!this.fullName) return;
       return this.fullName
         .split(' ')
         .map((item) => item?.[0]?.toUpperCase())
-        .join('')
+        .join('');
     },
     avatarBorder() {
-      return "border: 2px dashed #dfdeed; border-radius: 100px; padding: 4px; display: flex; align-items: center;"
-    }
+      return 'border: 2px dashed #dfdeed; border-radius: 100px; padding: 4px; display: flex; align-items: center;';
+    },
   },
-}
+};
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="scss"> $color-1ccd62: #1ccd62;
+ $color-ffffff: #ffffff;
+
+
+// SCSS variables for hex colors
+$color-c8ebe7: #c8ebe7;
 
 .b-avatar {
+  position: relative;
+
+  &-wrapper {
+    position: relative;
+  }
+
   &-circle {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    overflow: hidden;
   }
 
   &-square {
@@ -81,16 +111,35 @@ export default {
   }
 
   &-words {
-    color: #148783;
+    color: $--b-main-green-color;
     min-width: 100%;
     font-family: 'Exo 2';
     font-style: normal;
     font-weight: 700;
-    background: #C8EBE7;
-  }
-
-  img {
-    height: 100%;
+    background: $color-c8ebe7;
   }
 }
+
+// .b-avatar-online__indicator {
+//   &-small-square {
+//     background: $color-1ccd62;
+//     border-radius: 6px;
+//     border: 1.5px solid $color-ffffff;
+//     width: 8px;
+//     height: 8px;
+//     position: absolute;
+//     right: 0;
+//     bottom: 0;
+//   }
+//   &-circle {
+//     background: $color-1ccd62;
+//     border-radius: 6px;
+//     border: 1.5px solid $color-ffffff;
+//     width: 10px;
+//     height: 10px;
+//     position: absolute;
+//     right: 0px;
+//     bottom: 2px;
+//   }
+// }
 </style>

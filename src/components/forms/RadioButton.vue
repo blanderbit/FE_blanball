@@ -92,7 +92,7 @@ export default {
     const labelStyle = computed(() => {
       return {
         width: props.width,
-        color: `${props.isDisabled ? '#7F7DB5' : '#262541'}`,
+        color: `${props.isDisabled ? '#7F7DB5' : '$--b-main-black-color'}`,
       }
     })
 
@@ -108,16 +108,22 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+// SCSS variables for hex colors
+ $color-f4f4f4: #f4f4f4;
+ $color-dfdeed: #dfdeed;
+
+
 @import '../../assets/styles/forms.scss';
 
-$color1: #f4f4f4;
-$color2: #148783;
+$color1: $color-f4f4f4;
+$color2: $--b-main-green-color;
 .b-radio {
   display: flex;
   flex-direction: row;
   align-items: center;
-  background: #ffffff;
-  border: 1px solid #dfdeed;
+  background: $--b-main-white-color;
+  border: 1px solid $color-dfdeed;
   border-radius: 6px;
   margin-right: 12px;
   padding: 6px 12px;
@@ -144,7 +150,7 @@ $color2: #148783;
       &::before {
         content: '';
         border-radius: 100%;
-        border: 1px solid #262541;
+        border: 1px solid $--b-main-black-color;
         display: inline-block;
         width: 13px;
         height: 13px;
@@ -193,6 +199,6 @@ $color2: #148783;
 }
 
 .b-radio-selected {
-  border: 1px solid #148783;
+  border: 1px solid $--b-main-green-color;
 }
 </style>

@@ -71,7 +71,7 @@
             <WhiteBtn
               :text="$t('buttons.back')"
               :width="140"
-              :main-color="'#262541'"
+              :main-color="'$--b-main-black-color'"
               :is-border="false"
               @click-function="changeStep('-', data)"
             />
@@ -152,6 +152,7 @@ import { useRouter } from 'vue-router'
 import { Form } from '@system.it.flumx.com/vee-validate'
 
 import * as yup from 'yup'
+import { storeToRefs } from "pinia"
 
 import InputComponent from '../../../components/forms/InputComponent.vue'
 import GreenBtn from '../../../components/GreenBtn.vue'
@@ -199,6 +200,7 @@ export default {
     const currentStep = ref(1)
     const startDate = ref('')
     const userStore = useUserDataStore()
+    const { user } = storeToRefs(userStore)
     const searchUsersLoading = ref(false)
     const formsModalSelectedTabId = ref(null)
     const relevantUsersList = ref([])
@@ -216,7 +218,7 @@ export default {
       gender: null,
       description: '',
       type: '',
-      contact_number: userStore.user.phone,
+      contact_number: user.value.phone,
       need_ball: false,
       duration: null,
       need_form: null,
@@ -504,12 +506,12 @@ export default {
       clearTimeout(searchTimeout)
       searchUsersLoading.value = true
       const relevantSearch = () => {
-        getRelevantUsers({ search: searchValue, skipids: userStore.user.id })
+        getRelevantUsers({ search: searchValue, skipids: user.value.id })
       }
       searchTimeout = setTimeout(relevantSearch, 500)
     }
 
-    getRelevantUsers({ skipids: userStore.user.id })
+    getRelevantUsers({ skipids: user.value.id })
 
     const removeInvitedUser = (user_id) => {
       invitedUsers.value = invitedUsers.value.filter(function (item) {
@@ -607,6 +609,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-1ab2ad: #1ab2ad;
+ $color-8a8aa8: #8a8aa8;
+
+
 .b-manage-event__main-body {
   margin-top: 0px;
 }
@@ -627,7 +636,7 @@ export default {
     font-weight: 700;
     font-size: 22px;
     line-height: 32px;
-    color: #262541;
+    color: $--b-main-black-color;
     padding-left: 20px;
     display: flex;
     justify-content: space-between;
@@ -678,7 +687,7 @@ export default {
       .b-manage-event__progress-line {
         margin-top: 20px;
         padding-top: 24px;
-        border-top: 1px dashed #dfdeed;
+        border-top: 1px dashed $color-dfdeed;
         .b-manage-event__sections {
           display: flex;
           align-items: center;
@@ -690,7 +699,7 @@ export default {
             height: 4px;
             border-radius: 2px;
             &.active {
-              background: #1ab2ad;
+              background: $color-1ab2ad;
             }
           }
         }
@@ -723,13 +732,13 @@ export default {
 }
 .b-manage-event__invited-user {
   padding: 8px;
-  border-bottom: 1px solid #dfdeed;
+  border-bottom: 1px solid $color-dfdeed;
   display: flex;
   align-items: center;
   justify-content: space-between;
   &:first-of-type {
     margin-top: 30px;
-    border-top: 1px solid #dfdeed;
+    border-top: 1px solid $color-dfdeed;
   }
 }
 .b-user-what-you__invited {
@@ -738,7 +747,7 @@ export default {
   font-weight: 700;
   font-size: 16px;
   line-height: 24px;
-  color: #262541;
+  color: $--b-main-black-color;
 }
 .b-manage-event__invited-user-left__side {
   display: flex;
@@ -757,7 +766,7 @@ export default {
   font-weight: 500;
   font-size: 12px;
   line-height: 20px;
-  color: #262541;
+  color: $--b-main-black-color;
 }
 .b-invited-user__position {
   font-family: 'Inter';
@@ -765,7 +774,7 @@ export default {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: #8a8aa8;
+  color: $color-8a8aa8;
 }
 .b-remove-invited__user {
   cursor: pointer;
@@ -784,7 +793,7 @@ export default {
   font-weight: 500;
   font-size: 12px;
   line-height: 20px;
-  color: #575775;
+  color: $--b-main-gray-color;
   cursor: pointer;
 }
 </style>

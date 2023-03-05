@@ -23,6 +23,7 @@ import Notifications from './notifications'
 import Breadcrumbs from './breadcrumbs'
 import Hashtags from './hashtags'
 import Colors from './colors'
+import Alts from './alts'
 
 export const UA_LANGUAGE = {
   events: EventsPage,
@@ -50,4 +51,5 @@ export const UA_LANGUAGE = {
   errors: Errors,
   notifications: Notifications,
   colors: Colors,
+  alts: Alts,
 }

@@ -101,7 +101,7 @@ function goToEventPage(id) {
       font-weight: 700;
       font-size: 22px;
       line-height: 32px;
-      color: #262541;
+      color: $--b-main-black-color;
     }
 
     .b-right-sidebar__subtitle {
@@ -110,7 +110,7 @@ function goToEventPage(id) {
       font-weight: 500;
       font-size: 13px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
     }
   }
 

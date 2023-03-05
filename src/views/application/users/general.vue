@@ -20,7 +20,7 @@
             <Transition>
               <TabLabel
                 v-if="tab.isDisabled && currentHoverSideBarItemID === tab.id"
-                style="position: absolute"
+                class="b-comming-soon"
                 :title="$t('profile.coming-soon-title')"
                 :text="$t('profile.coming-soon-text')"
               />
@@ -355,6 +355,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-f4f4f4: #f4f4f4;
+ $color-efeff6: #efeff6;
+ $color-fafafa: #fafafa;
+ $color-4a7deb: #4a7deb;
+ $color-8978ee: #8978ee;
+ $color-d243c5: #d243c5;
+ $color-4c4a82: #4c4a82;
+ $color-393762: #393762;
+ $color-71ba12: #71ba12;
+
+
 @import '../../../assets/styles/mixins/device.scss';
 .events-page {
   display: grid;
@@ -375,7 +389,7 @@ export default {
           font-weight: 700;
           font-size: 22px;
           line-height: 32px;
-          color: #262541;
+          color: $--b-main-black-color;
           margin-bottom: 4px;
         }
         .event-switcher {
@@ -385,7 +399,7 @@ export default {
           font-size: 13px;
           line-height: 20px;
           text-align: center;
-          color: #262541;
+          color: $--b-main-black-color;
           display: flex;
           @media (max-width: 992px) {
             display: none;
@@ -427,15 +441,15 @@ export default {
     }
     .tab-block-wrapper {
       margin-bottom: 35px;
+      overflow: scroll;
       @include mobile {
         height: 36px;
         position: relative;
-        overflow-x: scroll;
         margin-top: 24px;
       }
       .tab-block {
         display: flex;
-        border-bottom: 1px solid #dfdeed;
+        border-bottom: 1px solid $color-dfdeed;
         margin-top: 28px;
         @include mobile {
           position: absolute;
@@ -451,18 +465,27 @@ export default {
           font-style: normal;
           font-weight: 400;
           font-size: 13px;
-          color: #262541;
+          color: $--b-main-black-color;
           cursor: pointer;
           position: relative;
           user-select: none;
+
+          .b-comming-soon {
+            position: absolute;
+
+            @media (max-width: 768px) {
+              left: 0;
+              top: 30px;
+            }
+          }
           img {
             margin-right: 8px;
           }
           &.active {
-            border-bottom: 2px solid #262541;
+            border-bottom: 2px solid $--b-main-black-color;
           }
           &.disabled {
-            color: #7f7db5;
+            color: $--b-disabled-color;
 
             .v-enter-active,
             .v-leave-active {
@@ -500,8 +523,8 @@ export default {
             display: flex;
             align-items: center;
             .radio-btn-wrapper {
-              $color1: #f4f4f4;
-              $color2: #148783;
+              $color1: $color-f4f4f4;
+              $color2: $--b-main-green-color;
               display: flex;
               align-items: center;
               justify-content: space-between;
@@ -510,8 +533,8 @@ export default {
                 flex-direction: row;
                 align-items: center;
                 padding: 6px 12px;
-                background: #ffffff;
-                border: 1px solid #dfdeed;
+                background: $--b-main-white-color;
+                border: 1px solid $color-dfdeed;
                 border-radius: 6px;
                 margin-right: 8px;
                 input[type='radio'] {
@@ -526,14 +549,14 @@ export default {
                     font-size: 13px;
                     line-height: 24px;
                     text-transform: capitalize;
-                    color: #262541;
+                    color: $--b-main-black-color;
                     img {
                       margin-right: 4px;
                     }
                     &:after {
                       content: '';
                       border-radius: 100%;
-                      border: 1px solid #262541;
+                      border: 1px solid $--b-main-black-color;
                       display: inline-block;
                       width: 13px;
                       height: 13px;
@@ -586,7 +609,7 @@ export default {
           .middle-block {
             display: flex;
             align-items: center;
-            border-bottom: 1px dashed #262541;
+            border-bottom: 1px dashed $--b-main-black-color;
             img {
               margin-right: 7px;
             }
@@ -596,7 +619,7 @@ export default {
               font-weight: 400;
               font-size: 14px;
               line-height: 20px;
-              color: #262541;
+              color: $--b-main-black-color;
             }
           }
           .right-block {
@@ -611,7 +634,7 @@ export default {
               font-weight: 500;
               font-size: 13px;
               line-height: 20px;
-              color: #262541;
+              color: $--b-main-black-color;
               span {
                 display: block;
                 font-family: 'Inter';
@@ -619,7 +642,7 @@ export default {
                 font-weight: 400;
                 font-size: 12px;
                 line-height: 20px;
-                color: #575775;
+                color: $--b-main-gray-color;
               }
               img {
                 margin-right: 6px;
@@ -632,8 +655,8 @@ export default {
               }
               width: 32px;
               height: 32px;
-              background: #ffffff;
-              border: 1px solid #dfdeed;
+              background: $--b-main-white-color;
+              border: 1px solid $color-dfdeed;
               border-radius: 6px;
               margin-right: 8px;
               cursor: pointer;
@@ -645,7 +668,7 @@ export default {
               width: 32px;
               min-width: 32px;
               height: 32px;
-              background: #efeff6;
+              background: $color-efeff6;
               border-radius: 6px;
               display: flex;
               margin-right: 8px;
@@ -673,7 +696,7 @@ export default {
             width: 36px;
             min-width: 36px;
             height: 36px;
-            background: #fafafa;
+            background: $color-fafafa;
             border-radius: 6px;
             img {
               margin: auto;
@@ -685,7 +708,7 @@ export default {
             font-weight: 500;
             font-size: 13px;
             line-height: 20px;
-            color: #262541;
+            color: $--b-main-black-color;
           }
           .terms {
             font-family: 'Inter';
@@ -693,7 +716,7 @@ export default {
             font-weight: 400;
             font-size: 12px;
             line-height: 20px;
-            color: #575775;
+            color: $--b-main-gray-color;
             display: -webkit-box;
             -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
@@ -724,7 +747,7 @@ export default {
                 width: 36px;
                 min-width: 36px;
                 height: 36px;
-                background: #efeff6;
+                background: $color-efeff6;
               }
             }
             .text {
@@ -745,7 +768,7 @@ export default {
           padding: 20px 16px;
           isolation: isolate;
           width: 328px;
-          background: #ffffff;
+          background: $--b-main-white-color;
           box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
           border-radius: 6px;
           margin-bottom: 16px;
@@ -771,9 +794,9 @@ export default {
             height: 6px;
             background: linear-gradient(
               90.37deg,
-              #4a7deb -29.39%,
-              #8978ee 37.85%,
-              #d243c5 97.19%
+              $color-4a7deb -29.39%,
+              $color-8978ee 37.85%,
+              $color-d243c5 97.19%
             );
             border-radius: 6px 6px 0px 0px;
           }
@@ -790,7 +813,7 @@ export default {
               // }
             }
             display: flex;
-            background: #fafafa;
+            background: $color-fafafa;
             padding: 0px 4px;
             margin-top: 4px;
             @media (max-width: 992px) {
@@ -806,7 +829,7 @@ export default {
               font-weight: 400;
               font-size: 12px;
               line-height: 20px;
-              color: #575775;
+              color: $--b-main-gray-color;
               border-radius: 4px;
               display: -webkit-box;
               -webkit-line-clamp: 1;
@@ -825,7 +848,7 @@ export default {
               font-size: 14px;
               line-height: 20px;
               text-align: right;
-              color: #262541;
+              color: $--b-main-black-color;
             }
             .time {
               font-family: 'Inter';
@@ -834,7 +857,7 @@ export default {
               font-size: 12px;
               line-height: 20px;
               text-align: right;
-              color: #4c4a82;
+              color: $color-4c4a82;
             }
             .left-side {
               display: flex;
@@ -848,7 +871,7 @@ export default {
                 min-width: 48px;
                 width: 48px;
                 height: 48px;
-                background: #efeff6;
+                background: $color-efeff6;
                 border-radius: 4px;
                 margin-right: 8px;
               }
@@ -859,7 +882,7 @@ export default {
                   font-weight: 700;
                   font-size: 16px;
                   line-height: 24px;
-                  color: #262541;
+                  color: $--b-main-black-color;
                 }
                 .date-time-mob {
                   display: flex;
@@ -885,7 +908,7 @@ export default {
             font-weight: 400;
             font-size: 12px;
             line-height: 20px;
-            color: #393762;
+            color: $color-393762;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -903,15 +926,15 @@ export default {
               font-weight: 400;
               font-size: 12px;
               line-height: 20px;
-              color: #575775;
+              color: $--b-main-gray-color;
               padding: 0px 8px;
-              border: 1px solid #efeff6;
+              border: 1px solid $color-efeff6;
               border-radius: 100px;
             }
           }
           .bottom-block {
             margin-top: 12px;
-            border-top: 1px dashed #dfdeed;
+            border-top: 1px dashed $color-dfdeed;
             .top-line {
               display: flex;
               justify-content: space-between;
@@ -923,7 +946,7 @@ export default {
                 font-weight: 500;
                 font-size: 12px;
                 line-height: 20px;
-                color: #393762;
+                color: $color-393762;
               }
               .price {
                 font-family: 'Inter';
@@ -932,7 +955,7 @@ export default {
                 font-size: 14px;
                 line-height: 20px;
                 text-align: right;
-                color: #262541;
+                color: $--b-main-black-color;
               }
             }
             .bottom-line {
@@ -956,11 +979,11 @@ export default {
                 }
                 .players,
                 .players-date {
-                  color: #262541;
+                  color: $--b-main-black-color;
                 }
                 .visitors,
                 .visitors-date {
-                  color: #575775;
+                  color: $--b-main-gray-color;
                 }
               }
               .right-side {
@@ -976,11 +999,11 @@ export default {
         margin-top: 23px;
         .my-event-card {
           padding: 12px;
-          background: #ffffff;
+          background: $--b-main-white-color;
           border-radius: 6px;
           display: flex;
           justify-content: space-between;
-          border: 1px solid #dfdeed;
+          border: 1px solid $color-dfdeed;
           margin-bottom: 16px;
           width: 328px;
           @media (min-width: 1200px) and (max-width: 1400px) {
@@ -996,7 +1019,7 @@ export default {
             width: 100%;
           }
           &.active {
-            border: 1px solid #71ba12;
+            border: 1px solid $color-71ba12;
           }
           .left-block {
             display: flex;
@@ -1011,7 +1034,7 @@ export default {
                 min-width: 48px;
                 width: 48px;
                 height: 48px;
-                background: #efeff6;
+                background: $color-efeff6;
                 border-radius: 4px;
               }
             }
@@ -1035,11 +1058,11 @@ export default {
                 font-weight: 700;
                 font-size: 16px;
                 line-height: 24px;
-                color: #262541;
+                color: $--b-main-black-color;
               }
               .address {
                 display: flex;
-                background: #fafafa;
+                background: $color-fafafa;
                 padding: 0px 4px;
                 margin-top: 4px;
                 img {
@@ -1051,7 +1074,7 @@ export default {
                   font-weight: 400;
                   font-size: 12px;
                   line-height: 20px;
-                  color: #575775;
+                  color: $--b-main-gray-color;
                   border-radius: 4px;
                   display: -webkit-box;
                   -webkit-line-clamp: 1;
@@ -1066,14 +1089,14 @@ export default {
                 margin-top: 8px;
                 .label {
                   padding: 0px 8px;
-                  border: 1px solid #efeff6;
+                  border: 1px solid $color-efeff6;
                   border-radius: 100px;
                   font-family: 'Inter';
                   font-style: normal;
                   font-weight: 400;
                   font-size: 12px;
                   line-height: 20px;
-                  color: #575775;
+                  color: $--b-main-gray-color;
                   margin-right: 4px;
                   margin-bottom: 4px;
                 }
@@ -1095,12 +1118,12 @@ export default {
                 text-align: center;
                 padding: 0px 4px;
                 border-radius: 4px;
-                background: #efeff6;
-                color: #262541;
+                background: $color-efeff6;
+                color: $--b-main-black-color;
                 width: fit-content;
                 &.active {
-                  background: #71ba12;
-                  color: #fff;
+                  background: $color-71ba12;
+                  color: $--b-main-white-color;
                 }
               }
               .date {
@@ -1110,7 +1133,7 @@ export default {
                 font-size: 14px;
                 line-height: 20px;
                 text-align: right;
-                color: #262541;
+                color: $--b-main-black-color;
                 margin-top: 12px;
                 margin-bottom: 4px;
               }
@@ -1121,7 +1144,7 @@ export default {
                 font-size: 12px;
                 line-height: 20px;
                 text-align: right;
-                color: #4c4a82;
+                color: $color-4c4a82;
               }
             }
           }
@@ -1148,7 +1171,7 @@ export default {
         font-weight: 700;
         font-size: 22px;
         line-height: 32px;
-        color: #262541;
+        color: $--b-main-black-color;
       }
       .subtitle {
         font-family: 'Inter';
@@ -1156,7 +1179,7 @@ export default {
         font-weight: 500;
         font-size: 13px;
         line-height: 20px;
-        color: #575775;
+        color: $--b-main-gray-color;
       }
     }
     .cards-block {
@@ -1164,8 +1187,8 @@ export default {
       .card {
         position: relative;
         width: 100%;
-        background: #ffffff;
-        border: 1px solid #dfdeed;
+        background: $--b-main-white-color;
+        border: 1px solid $color-dfdeed;
         border-radius: 6px;
         padding: 10px 12px;
         margin-bottom: 16px;
@@ -1187,7 +1210,7 @@ export default {
               font-weight: 600;
               font-size: 14px;
               line-height: 16px;
-              color: #262541;
+              color: $--b-main-black-color;
             }
             .bottom-line {
               display: flex;
@@ -1200,7 +1223,7 @@ export default {
                 font-size: 12px;
                 line-height: 20px;
                 text-align: right;
-                color: #575775;
+                color: $--b-main-gray-color;
                 margin-right: 21px;
               }
               .date {
@@ -1210,14 +1233,14 @@ export default {
                 font-size: 12px;
                 line-height: 16px;
                 text-align: right;
-                color: #262541;
+                color: $--b-main-black-color;
               }
             }
           }
         }
         .address {
           display: flex;
-          background: #fafafa;
+          background: $color-fafafa;
           padding: 0px 4px;
           margin-top: 4px;
           img {
@@ -1229,7 +1252,7 @@ export default {
             font-weight: 400;
             font-size: 12px;
             line-height: 20px;
-            color: #575775;
+            color: $--b-main-gray-color;
             border-radius: 4px;
             display: -webkit-box;
             -webkit-line-clamp: 1;
@@ -1248,9 +1271,9 @@ export default {
             font-weight: 400;
             font-size: 12px;
             line-height: 20px;
-            color: #575775;
+            color: $--b-main-gray-color;
             padding: 0px 8px;
-            border: 1px solid #efeff6;
+            border: 1px solid $color-efeff6;
             border-radius: 100px;
           }
         }
@@ -1258,4 +1281,5 @@ export default {
     }
   }
 }
+
 </style>

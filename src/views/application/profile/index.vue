@@ -49,34 +49,15 @@
       </template>
     </ModalUserWindow>
 
-    <ChangeUserDataModal
-      v-if="isModalActive.change_data"
-      :config="changeDataModalConfig"
-      @close-modal="closeChangeUserDataModal"
-      @save-changes="handleSaveDataChanges"
-      @decline-changes="declineUserDataChanges"
-      @show-preview="showPreview"
-    />
-
     <div class="b-user-cabinet__title-block">
       <div class="b-user-cabinet__titles">
         <div class="b-user-cabinet__title">
           {{ $t('profile.title') }}
         </div>
         <div class="b-user-cabinet__subtitle">
-          {{ $t('profile.change-personal-data') }}
+          {{ $t('profile.subtitle') }}
         </div>
       </div>
-      <ButtonsBlock
-        v-if="!isMobile"
-        :cancel-btn-width="'auto'"
-        :save-btn-width="'auto'"
-        :is-edit-mode-profile="isEditModeProfile"
-        @cancel-data-edit="cancelDataEdit"
-        @save-data-edit="saveDataEdit"
-        @toggle-modal="toggleModal"
-        @toggle-edit-mode="toggleEditMode"
-      />
     </div>
     <div class="b-user-cabinet__tab-block">
       <div
@@ -92,7 +73,7 @@
         <span
           @mouseenter="switchTabLabel(tab.isDisabled)"
           @mouseleave="switchTabLabel(tab.isDisabled)"
-          >{{ tab.name }}</span
+          >{{ $t(tab.name) }}</span
         >
         <Transition>
           <TabLabel
@@ -111,8 +92,28 @@
         @submit="disableSubmit"
         ref="myForm"
       >
+
+      <ButtonsBlock
+        v-if="!isMobile"
+        :cancel-btn-width="'auto'"
+        :save-btn-width="'auto'"
+        :is-edit-mode-profile="isEditModeProfile"
+        @cancel-data-edit="cancelDataEdit"
+        @save-data-edit="saveDataEdit(data)"
+        @toggle-modal="toggleModal"
+        @toggle-edit-mode="toggleEditMode"
+      />
+
+      <ChangeUserDataModal
+        v-if="isModalActive.change_data"
+        :config="changeDataModalConfig"
+        @close-modal="closeChangeUserDataModal"
+        @save-changes="handleSaveDataChanges"
+        @decline-changes="declineUserDataChanges"
+        @show-preview="showPreview"
+      />
         <RatingCard 
-          v-if="!isTabletSize" 
+          v-if="!isTabletSize && !isMobile" 
           :rating-scale="userRating"
           :openedReviewID="openedReviewId"
           @openReview="openReview"
@@ -122,6 +123,7 @@
           :phone="userPhone"
           :is-edit-mode="isEditModeProfile"
           @openEditPictureModal="openEditPictureModal"
+          :initValues="formValues"
         />
         <div class="b-user-cabinet__mobile-tablet-block">
           <RatingCard 
@@ -144,7 +146,7 @@
           :cancel-btn-width="'auto'"
           :save-btn-width="'auto'"
           @cancel-data-edit="cancelDataEdit"
-          @save-data-edit="saveDataEdit"
+          @save-data-edit="saveDataEdit(data)"
           @toggle-modal="toggleModal"
           @toggle-edit-mode="toggleEditMode"
         />
@@ -160,6 +162,7 @@ import { useI18n } from 'vue-i18n'
 import { useToast } from "vue-toastification";
 
 import { Form } from '@system.it.flumx.com/vee-validate'
+import { storeToRefs } from "pinia"
 
 import * as yup from 'yup'
 
@@ -228,6 +231,8 @@ export default {
     const toast = useToast()
     const store = useUserDataStore()
 
+    const { user } = storeToRefs(store)
+
     const route = useRoute()
     const router = useRouter()
     const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
@@ -250,13 +255,11 @@ export default {
     const isTabletSize = computed(() => {
       return isBetweenTabletAndDesktop.value || isTablet.value
     })
+
     const mockData = computed(() => {
       return {
         user_info: CONSTANTS.users_page.userInfo,
-        tabs: CONSTANTS.profile.tabs.map((item) => ({
-          ...item,
-          name: t(item.name),
-        })),
+        tabs: CONSTANTS.profile.tabs,
         monthFromNumber: CONSTANTS.users_page.months.monthFromNumber,
         numberFromMonth: CONSTANTS.users_page.months.numberFromMonth,
       }
@@ -268,6 +271,7 @@ export default {
         planned_events: true,
       },
     }
+
     const formValues = ref({
       last_name: store.user.profile.last_name,
       name: store.user.profile.name,
@@ -279,10 +283,10 @@ export default {
       weight: store.user.profile.weight,
       working_leg: getWorkingLeg(store.user.profile.working_leg),
       position: store.user.profile.position,
-      phone: store.user.profile.phone,
-      config_phone: store.user.profile.phone,
-      config_email: store.user.profile.email,
-      show_reviews: store.user.profile.show_reviews,
+      phone: store.user.phone,
+      config_phone: store.user.configuration.phone,
+      config_email: store.user.configuration.email,
+      show_reviews: store.user.configuration.show_reviews,
       planned_events: true,
     })
 
@@ -324,7 +328,7 @@ export default {
           .min(30, 'errors.min30')
           .max(200, 'errors.max250'),
         working_leg: yup.string().required('errors.required'),
-        position: yup.string().required('errors.required'),
+        position: yup.string().nullable().required('errors.required'),
         phone: yup
           .string()
           .required('errors.required')
@@ -348,6 +352,8 @@ export default {
     userEmail.value = store.user.email
     userData.value = {
       ...store.user.profile,
+      phone: store.user.phone,
+      raiting: store.user.raiting,
       working_leg: getWorkingLeg(store.user.profile.working_leg),
       role: store.user.role,
     }
@@ -405,7 +411,14 @@ export default {
       }
     }
 
-    function saveDataEdit() {
+    async function saveDataEdit(data) {
+      const { valid } = await data.validate()
+      
+      if (!valid) {
+        toast.error(t('errors.check-data'))
+        return false
+      }
+
       toggleModal('change_data')
       changeDataModalConfig.value = {
         title: 'Подивитись зі сторони',
@@ -444,7 +457,7 @@ export default {
       closeChangeUserDataModal(val)
     }
 
-    function handleSaveDataChanges() {
+    async function handleSaveDataChanges() {
       saveUserDataChanges()
       closeChangeUserDataModal(true)
     }
@@ -498,10 +511,6 @@ export default {
         .then(() => {
           getMyProfile()
         })
-        .catch((e) => {
-          console.log('mistake happened', e)
-          toast.error(t('profile.some-mistake'))
-        })
     }
 
     function getMyProfile() {
@@ -527,6 +536,8 @@ export default {
           userInfo.value = res.data
           userData.value = {
             ...res.data?.profile,
+            phone: res.data?.phone,
+            raiting: res.data?.raiting,
             working_leg: getWorkingLeg(res.data.profile?.working_leg),
             role: res.data?.role,
           }
@@ -544,8 +555,6 @@ export default {
         })
         .catch((e) => {
           isLoading.value = false
-          console.log('some mistake happened', e)
-          toast.error(t('profile.some-mistake'))
         })
     }
 
@@ -672,6 +681,7 @@ export default {
       openReview,
       showPreview,
       userRating,
+      user,
       userPhone,
       userEmail,
       isEditModeProfile,
@@ -701,6 +711,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+// SCSS variables for hex colors
+ $color-e2e2e9: #e2e2e9;
+ $color-6f6f77: #6f6f77;
+ $color-dfdeed: #dfdeed;
+
+
 ::-webkit-scrollbar {
   display: none;
 }
@@ -719,7 +736,7 @@ export default {
     font-weight: 400;
     font-size: 13px;
     line-height: 24px;
-    color: #e2e2e9;
+    color: $color-e2e2e9;
     cursor: pointer;
     span {
       margin-right: 10px;
@@ -733,9 +750,9 @@ export default {
     font-weight: 500;
     font-size: 13px;
     line-height: 24px;
-    color: #ffffff;
+    color: $--b-main-white-color;
     padding: 2px 8px;
-    background: #6f6f77;
+    background: $color-6f6f77;
     border-radius: 6px;
     cursor: pointer;
     span {
@@ -766,20 +783,20 @@ export default {
     font-style: normal;
     font-weight: 700;
     font-size: 22px;
-    color: #262541;
+    color: $--b-main-black-color;
   }
   .b-user-cabinet__subtitle {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 500;
     font-size: 13px;
-    color: #575775;
+    color: $--b-main-gray-color;
     margin-top: 4px;
   }
 }
 .b-user-cabinet__tab-block {
   display: flex;
-  border-bottom: 1px solid #dfdeed;
+  border-bottom: 1px solid $color-dfdeed;
   margin-top: 28px;
   .b-user-cabinet__tab-element {
     display: flex;
@@ -790,7 +807,7 @@ export default {
     font-style: normal;
     font-weight: 400;
     font-size: 13px;
-    color: #262541;
+    color: $--b-main-black-color;
     user-select: none;
     cursor: pointer;
     position: relative;
@@ -798,10 +815,10 @@ export default {
       margin-right: 8px;
     }
     &.active {
-      border-bottom: 2px solid #262541;
+      border-bottom: 2px solid $--b-main-black-color;
     }
     &.disabled {
-      color: #7f7db5;
+      color: $--b-disabled-color;
     }
 
     .v-enter-active,

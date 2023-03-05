@@ -55,26 +55,39 @@
             <img src="../../../assets/img/address-icon.svg" alt="" />
             <span>{{ eventData.place.place_name }}</span>
           </div>
-          <div :class="['b-event-info__price', 
-            {'fee': eventData.price},
-            {'free': !eventData.price }]"
-            @mouseenter="eventPriceHover=true"
-            @mouseleave="eventPriceHover=false">
-            <img v-if="!eventData.price" src="../../../assets/img/info.svg" alt="">
-            <img  v-else src="../../../assets/img/green-info.svg" alt="">
-            <span>{{ $t('events.event-price') }} <span v-if="eventData.price" 
-              class="b-price">{{ `${eventData.price} грн` }}</span>
-              <span class="b-price-free" v-else>{{ $t('events.for-free') }}</span>
+          <div
+            :class="[
+              'b-event-info__price',
+              { fee: eventData.price },
+              { free: !eventData.price },
+            ]"
+            @mouseenter="eventPriceHover = true"
+            @mouseleave="eventPriceHover = false"
+          >
+            <img
+              v-if="!eventData.price"
+              src="../../../assets/img/info.svg"
+              alt=""
+            />
+            <img v-else src="../../../assets/img/green-info.svg" alt="" />
+            <span
+              >{{ $t('events.event-price') }}
+              <span v-if="eventData.price" class="b-price">{{
+                `${eventData.price} грн`
+              }}</span>
+              <span class="b-price-free" v-else>{{
+                $t('events.for-free')
+              }}</span>
             </span>
             <div class="b-event-info__price-tooltip-wrapper">
               <Transition>
-              <TabLabel
-                v-if="eventData.price && eventPriceHover"
-                class="b-event-info__price-tooltip"
-                :title="$t('events.price_description')"
-                :text="eventData.price_description"
-              />
-            </Transition>
+                <TabLabel
+                  v-if="eventData.price && eventPriceHover"
+                  class="b-event-info__price-tooltip"
+                  :title="$t('events.price_description')"
+                  :text="eventData.price_description"
+                />
+              </Transition>
             </div>
           </div>
           <div class="b-event-info__labels">
@@ -92,9 +105,7 @@
             </div>
           </div>
 
-          <EventInfoForms
-            :formsData="eventData.forms"
-          />
+          <EventInfoForms :formsData="eventData.forms" />
 
           <div class="b-event-info__title">
             {{ $t('my_events.description-event') }}
@@ -177,12 +188,14 @@
           :table-title-text="$t('my_events.players-list')"
           :table-color="'#148783'"
           :maxPlayersCount="eventData.amount_members"
+          :emptyListData="noUsersData"
         />
 
         <EventInfoUsersTable
           v-if="activeTab === 1"
           :data="eventData.current_fans"
           :border="false"
+          :emptyListData="noFansData"
         />
 
         <ListOfEventRequestsToParticipations
@@ -193,7 +206,7 @@
         />
       </div>
     </div>
-    <RightSidebar/>
+    <RightSidebar />
   </div>
 </template>
 
@@ -202,6 +215,8 @@ import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
+
+import { storeToRefs } from 'pinia';
 
 import GreenBtn from '../../../components/GreenBtn.vue';
 import RightSidebar from '../../../components/RightSidebar.vue';
@@ -216,9 +231,9 @@ import EventInfoForms from '../../../components/buildedForms/EventInfoForms.vue'
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
-import { addMinutes } from '../../../utils/addMinutes'
-import { getDate } from '../../../utils/getDate'
-import { getTime } from '../../../utils/getTime'
+import { addMinutes } from '../../../utils/addMinutes';
+import { getDate } from '../../../utils/getDate';
+import { getTime } from '../../../utils/getTime';
 
 import CONSTANTS from '../../../consts/index';
 import { ROUTES } from '../../../router/router.const';
@@ -229,6 +244,8 @@ import emoji_3 from '../../../assets/img/emojies/3.svg';
 import emoji_4 from '../../../assets/img/emojies/4.svg';
 import emoji_5 from '../../../assets/img/emojies/5.svg';
 import noReviews from '../../../assets/img/no-records/no-reviews.svg';
+import noUserRecords from '../../../assets/img/no-records/no-user-records.svg';
+
 
 export default {
   name: 'EventsPage',
@@ -271,6 +288,7 @@ export default {
     const router = useRouter();
     const toast = useToast();
     const userStore = useUserDataStore();
+    const { user } = storeToRefs(userStore);
     const isTabLabel = ref(false);
     const loading = ref(false);
     const { t } = useI18n();
@@ -283,20 +301,56 @@ export default {
     const isShareEventModalOpened = ref(false);
     const currentFullRoute = ref(window.location.href);
     const activeTab = ref(0);
-    const eventPriceHover = ref(false)
+    const eventPriceHover = ref(false);
 
     handleIncomeEventData(eventData.value);
 
     const mockData = computed(() => {
       return {
-        tabs: CONSTANTS.event_info.tabs(eventData.value, userStore.user.id).map((item) => ({
-          ...item,
-          name: t(item.name),
-        })),
+        tabs: CONSTANTS.event_info
+          .tabs(eventData.value, user.value.id)
+          .map((item) => ({
+            ...item,
+            name: t(item.name),
+          })),
       };
     });
 
-  
+    const noUsersData = computed(() => {
+      if (eventData.value.author.id === user.value.id) {
+        return {
+          title: 'Наразі, немає учасників для відображення',
+          description: 'Як тільки хтось із користувачів приєднається — ми сповістимо вас',
+          button_text: 'Запросити учасників',
+          image: noUserRecords
+        }
+      } else {
+        return {
+          title: 'Наразі, немає учасників для відображення',
+          description: 'Покищо ніхто не долучився до участі у події, однак, ви можете стати першим!',
+          button_text: !eventData.value.privacy ? 'Долучитися до участі' : 'Подати заявку',
+          image: noUserRecords
+        }
+      }
+    })
+
+    const noFansData = computed(() => {
+      if (eventData.value.author.id === user.value.id) {
+        return {
+          title: 'Наразі, немає глядачів для відображення',
+          description: 'Як тільки хтось із глядачів приєднається — ми сповістимо вас',
+          image: noUserRecords
+        }
+      } else {
+        return {
+          title: 'Наразі, немає глядачів для відображення',
+          description: 'Покищо ніхто не долучився до вболівання у події, однак, ви можете стати першим!',
+          button_text: 'Стати вболівальником',
+          image: noUserRecords
+        }
+      }
+    })
+    
     const acceptRequestToParticipation = async (id) => {
       loading.value = true;
 
@@ -326,13 +380,11 @@ export default {
       isShareEventModalOpened.value = true;
     };
 
-
     const closeShareEventModal = () => {
       isShareEventModalOpened.value = false;
     };
 
     function handlePreloadRequestsParticipationsData(data) {
-
       return data.results.map((item) => {
         item.sender.emoji = setUserEmoji(item.raiting);
         return {
@@ -340,7 +392,6 @@ export default {
         };
       });
     }
-
 
     function handleIncomeEventData(data) {
       data.date = getDate(data.date_and_time);
@@ -358,7 +409,6 @@ export default {
       toast.success(t('notifications.event-share-link-copied'));
     };
 
-    
     const goToUserProfile = (userId) => {
       router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId));
     };
@@ -386,8 +436,10 @@ export default {
       currentFullRoute,
       isTabLabel,
       loading,
-      userStore,
+      user,
       activeTab,
+      noUsersData,
+      noFansData,
       eventPriceHover,
       eventRequestsToParticipations,
       copyLinkButtonClick,
@@ -404,6 +456,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+// SCSS variables for hex colors
+$color-dfdeed: #dfdeed;
+$color-000: #000;
+$color-e3fbfa: #e3fbfa;
+$color-f9f9fc: #f9f9fc;
+$color-8a8aa8: #8a8aa8;
+
 @import '../../../assets/styles/mixins/device.scss';
 
 ::-webkit-scrollbar {
@@ -425,8 +485,14 @@ export default {
   }
 
   .b-event-info__main-body {
-    height: calc(100% + 150px);
-    overflow: auto;
+    height: calc(100vh - 90px);
+    overflow: scroll;
+
+    @media (max-width: 992px) {
+      height: calc(100vh + 240px);
+      overflow: scroll;
+    }
+
     .b-event-info__header-block {
       display: flex;
       justify-content: space-between;
@@ -438,7 +504,7 @@ export default {
           font-weight: 700;
           font-size: 22px;
           line-height: 32px;
-          color: #262541;
+          color: $--b-main-black-color;
           margin-bottom: 4px;
         }
         .b-event-info__subtitle {
@@ -447,7 +513,7 @@ export default {
           font-weight: 500;
           font-size: 13px;
           line-height: 20px;
-          color: #575775;
+          color: $--b-main-gray-color;
         }
       }
       .b-event-info__right-part {
@@ -474,7 +540,7 @@ export default {
           font-weight: 400;
           font-size: 14px;
           line-height: 24px;
-          color: #575775;
+          color: $--b-main-gray-color;
           margin-left: 25px;
           display: flex;
           align-items: center;
@@ -486,7 +552,7 @@ export default {
       }
     }
     .b-event-info__details-block {
-      border-top: 1px solid #dfdeed;
+      border-top: 1px solid $color-dfdeed;
       padding-top: 14px;
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -510,14 +576,14 @@ export default {
           font-weight: 400;
           font-size: 14px;
           line-height: 20px;
-          color: #262541;
+          color: $--b-main-black-color;
           margin-bottom: 10px;
           display: flex;
           img {
             margin-right: 8px;
           }
           span {
-            border-bottom: 1px dashed #000;
+            border-bottom: 1px dashed $color-000;
           }
         }
         .b-event-info__price {
@@ -530,33 +596,33 @@ export default {
           cursor: pointer;
 
           &.fee {
-            border-bottom: 1px dashed #148783;
+            border-bottom: 1px dashed $--b-main-green-color;
             border-radius: 4px 4px 0px 0px;
-            background: #E3FBFA;
+            background: $color-e3fbfa;
             span {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 16px;
-            display: flex;
-            align-items: center;
-            color: #148783;
-
-            .b-price {
-              font-family: 'Exo 2';
+              font-family: 'Inter';
               font-style: normal;
-              font-weight: 700;
-              font-size: 16px;
-              line-height: 24px;
-              margin-left: 6px;
-              color: #148783;
+              font-weight: 400;
+              font-size: 14px;
+              line-height: 16px;
+              display: flex;
+              align-items: center;
+              color: $--b-main-green-color;
+
+              .b-price {
+                font-family: 'Exo 2';
+                font-style: normal;
+                font-weight: 700;
+                font-size: 16px;
+                line-height: 24px;
+                margin-left: 6px;
+                color: $--b-main-green-color;
+              }
             }
-          }
           }
 
           &.free {
-            background: #F9F9FC;
+            background: $color-f9f9fc;
             border-radius: 4px;
             span {
               font-family: 'Inter';
@@ -566,16 +632,16 @@ export default {
               line-height: 16px;
               display: flex;
               align-items: center;
-              color: #262541;
+              color: $--b-main-black-color;
 
-            .b-price-free {
-              font-family: 'Exo 2';
-              font-style: normal;
-              font-weight: 700;
-              font-size: 16px;
-              line-height: 24px;
-              color: #262541;
-              margin-left: 6px;
+              .b-price-free {
+                font-family: 'Exo 2';
+                font-style: normal;
+                font-weight: 700;
+                font-size: 16px;
+                line-height: 24px;
+                color: $--b-main-black-color;
+                margin-left: 6px;
               }
             }
           }
@@ -609,7 +675,7 @@ export default {
           font-weight: 400;
           font-size: 12px;
           line-height: 20px;
-          color: #575775;
+          color: $--b-main-gray-color;
           margin-top: 20px;
           margin-bottom: 16px;
           max-width: 100%;
@@ -621,7 +687,7 @@ export default {
           font-weight: 400;
           font-size: 14px;
           line-height: 24px;
-          color: #262541;
+          color: $--b-main-black-color;
           margin-bottom: 16px;
           max-width: 100%;
           word-break: break-word;
@@ -639,14 +705,14 @@ export default {
             font-weight: 400;
             font-size: 12px;
             line-height: 20px;
-            color: #262541;
+            color: $--b-main-black-color;
             padding: 0px 8px;
-            border: 1px solid #dfdeed;
+            border: 1px solid $color-dfdeed;
             border-radius: 100px;
           }
         }
       }
-      
+
       .b-event-info__right-side {
         .b-event-info__users {
           .b-event-info__user {
@@ -656,7 +722,7 @@ export default {
             padding-top: 12px;
             margin-bottom: 12px;
             padding-bottom: 12px;
-            border-bottom: 1px solid #dfdeed;
+            border-bottom: 1px solid $color-dfdeed;
             .b-event-info__left-side {
               display: flex;
               align-items: center;
@@ -670,7 +736,7 @@ export default {
                 font-weight: 500;
                 font-size: 14px;
                 line-height: 20px;
-                color: #262541;
+                color: $--b-main-black-color;
               }
               .b-event-info__phone {
                 font-family: 'Inter';
@@ -678,7 +744,7 @@ export default {
                 font-weight: 400;
                 font-size: 14px;
                 line-height: 20px;
-                color: #575775;
+                color: $--b-main-gray-color;
               }
             }
             .b-event-info__right-side {
@@ -687,7 +753,7 @@ export default {
               font-weight: 400;
               font-size: 12px;
               line-height: 20px;
-              color: #575775;
+              color: $--b-main-gray-color;
             }
           }
         }
@@ -713,7 +779,7 @@ export default {
         font-weight: 700;
         font-size: 16px;
         line-height: 24px;
-        color: #262541;
+        color: $--b-main-black-color;
       }
       .b-event-info__judge-trainer-tables {
         display: flex;
@@ -732,9 +798,10 @@ export default {
   align-items: center;
   width: 100%;
   flex-grow: 1;
-  border-bottom: 1px solid #dfdeed;
+  border-bottom: 1px solid $color-dfdeed;
   margin-bottom: 30px;
   overflow-x: scroll;
+  
 
   .b-event-info__tab-element {
     font-family: 'Inter';
@@ -743,7 +810,7 @@ export default {
     font-size: 13px;
     position: relative;
     line-height: 20px;
-    color: #575775;
+    color: $--b-main-gray-color;
     display: flex;
     align-items: center;
     gap: 5px;
@@ -752,11 +819,11 @@ export default {
     min-width: fit-content;
 
     &.active {
-      border-bottom: 2px solid #8a8aa8;
+      border-bottom: 2px solid $color-8a8aa8;
     }
 
     &.disabled {
-      color: #7f7db5;
+      color: $--b-disabled-color;
 
       img {
         opacity: 0.6;

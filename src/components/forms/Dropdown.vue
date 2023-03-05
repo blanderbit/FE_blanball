@@ -240,6 +240,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+
+
 @import '../../assets/styles/forms.scss';
 
 ::v-deep {
@@ -264,7 +269,7 @@ export default {
     font-weight: 400;
     font-size: 13px;
     line-height: 24px;
-    color: #575775;
+    color: $--b-main-gray-color;
   }
   .v-select .vs__dropdown-toggle {
     padding: 0;
@@ -282,7 +287,7 @@ export default {
     font-weight: 400;
     font-size: 13px;
     line-height: 24px;
-    color: #575775;
+    color: $--b-main-gray-color;
   }
 }
 
@@ -315,7 +320,7 @@ export default {
     height: 100%;
   }
   .vs--searchable .vs__dropdown-toggle {
-    border-color: #dfdeed;
+    border-color: $color-dfdeed;
     height: 100%;
     padding: 0;
   }
@@ -327,7 +332,7 @@ export default {
   font-weight: 400;
   font-size: 12px;
   line-height: 20px;
-  color: #f32929;
+  color: $--b-error-color;
 }
 .v-select.drop-up.vs--open .vs__dropdown-toggle {
   border-radius: 0 0 4px 4px;
@@ -352,8 +357,8 @@ export default {
     font-weight: 400;
     font-size: 12px;
     line-height: 16px;
-    color: #575775;
-    background: #ffffff;
+    color: $--b-main-gray-color;
+    background: $--b-main-white-color;
     padding: 0px 4px;
     left: 8px;
     top: -8px;
@@ -368,7 +373,7 @@ export default {
     font-weight: 400;
     font-size: 14px;
     line-height: 24px;
-    color: #262541;
+    color: $--b-main-black-color;
 
     img {
       margin-right: 5px;

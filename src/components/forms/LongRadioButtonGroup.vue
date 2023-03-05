@@ -46,10 +46,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+// SCSS variables for hex colors
+ $color-f0f0f4: #f0f0f4;
+ $color-efeff6: #efeff6;
+
+
 .b-long__radio-button {
-  background: #ffffff;
+  background: $--b-main-white-color;
   padding: 6px;
-  border: 1px solid #f0f0f4;
+  border: 1px solid $color-f0f0f4;
   border-radius: 6px;
 
   ::v-deep {
@@ -80,7 +86,7 @@ export default {
       }
 
       input:checked + .b-radio-label {
-        background: #efeff6;
+        background: $color-efeff6;
 
         font-family: 'Inter';
         font-style: normal;
@@ -88,7 +94,7 @@ export default {
         font-size: 13px;
         line-height: 20px;
         text-align: center;
-        color: #262541;
+        color: $--b-main-black-color;
       }
     }
   }

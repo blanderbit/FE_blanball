@@ -4,7 +4,12 @@
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+
+// SCSS variables for hex colors
+ $color-148783: #148783;
+
+
 .loader-wrapper {
   padding: 1em;
 }
@@ -16,10 +21,10 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background: #ffffff;
+  background: $--b-main-white-color;
   background: linear-gradient(
     to right,
-    #148783 10%,
+    $color-148783 10%,
     rgba(255, 255, 255, 0) 42%
   );
   position: relative;
@@ -30,7 +35,7 @@
 .loader:before {
   width: 50%;
   height: 50%;
-  background: #148783;
+  background: $--b-main-green-color;
   border-radius: 100% 0 0 0;
   position: absolute;
   top: 0;
@@ -39,7 +44,7 @@
 }
 
 .loader:after {
-  background: #ffffff;
+  background: $--b-main-white-color;
   width: 75%;
   height: 75%;
   border-radius: 50%;

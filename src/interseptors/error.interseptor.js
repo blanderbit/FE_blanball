@@ -32,6 +32,7 @@ export const ErrorInterceptor = (error) => {
     (item) => !skipErrorMessageType?.includes(item.errorType)
   )[0]
 
+  console.log(errorMessageType)
 
   if (errorMessageType) {
     toast.error(

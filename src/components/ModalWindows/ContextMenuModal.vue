@@ -2,7 +2,11 @@
   <div class="b-context-modal__wrapper" @click="wrapperClick">
     <div class="b-context-modal" :style="contextWindowStyle">
       <ul>
-        <li @click.stop="itemClick(item.type)" v-for="item in menuText" :key="item.id">
+        <li
+          @click.stop="itemClick(item.type)"
+          v-for="item in menuText"
+          :key="item.id"
+        >
           <img :src="item.img" alt="" />
           <span class="b-context-modal__text">{{ item.text }}</span>
         </li>
@@ -12,7 +16,7 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 export default {
   name: 'ContextMenu',
@@ -38,29 +42,33 @@ export default {
     const contextWindowStyle = computed(() => {
       return {
         top: props.clientY - 200 + 'px',
-        left: props.clientX  - 200  + 'px',
-      }
-    })
+        left: props.clientX - 200 + 'px',
+      };
+    });
 
     function itemClick(itemType) {
-      context.emit('itemClick', itemType)
-      context.emit('close-modal')
+      context.emit('itemClick', itemType);
+      context.emit('close-modal');
     }
 
     function wrapperClick() {
-      context.emit('close-modal')
+      context.emit('close-modal');
     }
 
     return {
       contextWindowStyle,
       wrapperClick,
       itemClick,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
+
+// SCSS variables for hex colors
+$color-f0f0f4: #f0f0f4;
+
 .b-context-modal__wrapper {
   position: absolute;
   width: 100%;
@@ -69,7 +77,7 @@ export default {
 
   .b-context-modal {
     width: 228px;
-    background: #fff;
+    background: $--b-main-white-color;
     position: absolute;
     filter: drop-shadow(2px 2px 10px rgba(56, 56, 251, 0.1));
     border-radius: 6px;
@@ -80,7 +88,7 @@ export default {
       font-weight: 400;
       font-size: 13px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
     }
 
     ul {
@@ -97,9 +105,10 @@ export default {
         }
 
         &:hover {
-          background: #F0F0F4;
+          background: $color-f0f0f4;
         }
       }
     }
   }
-}</style>
+}
+</style>

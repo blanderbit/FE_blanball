@@ -38,11 +38,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+// SCSS variables for hex colors
+ $color-efeff6: #efeff6;
+
+
 .b-button-details__filters {
   width: 32px;
   min-width: 32px;
   height: 32px;
-  background: #efeff6;
+  background: $color-efeff6;
   border-radius: 6px;
   display: flex;
   margin-right: 8px;

@@ -108,8 +108,7 @@ export default {
   .b-review-details__lines {
     display: flex;
     justify-content: space-between;
-    width: 250px;
-    min-width: 250px;
+    gap: 5px;
     height: 36px;
     clip-path: polygon(0 88%, 100% 0, 100% 100%, 0 100%);
     margin-left: 12px;

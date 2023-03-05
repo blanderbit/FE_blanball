@@ -8,36 +8,24 @@
                     padding: 17px 16px 0;
 
                     .vc-title {
-                        font-family: 'Inter';
-                        font-style: normal;
-                        font-weight: 400;
-                        font-size: 12px;
+                        @include inter(12px, 400,#808181);
                         line-height: 16px;
                         text-align: center;
-                        color: #808181;
                     }
                 }
 
                 .vc-weeks {
                     .vc-weekday {
-                        font-family: 'Inter';
-                        font-style: normal;
-                        font-weight: 500;
-                        font-size: 14px;
+                        @include inter(14px, 500,#0a3435);
                         line-height: 16px;
                         text-align: center;
-                        color: #0a3435;
                     }
 
                     .vc-day {
                         span {
-                            font-family: 'Inter';
-                            font-style: normal;
-                            font-weight: 400;
-                            font-size: 14px;
+                            @include inter(14px, 400,#0a3435);
                             line-height: 16px;
                             text-align: center;
-                            color: #0a3435;
 
                             &:hover {
                                 background-color: transparent;

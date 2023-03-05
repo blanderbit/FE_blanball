@@ -152,6 +152,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+// SCSS variables for hex colors
+ $color-efeff6: #efeff6;
+ $color-1ab2ad: #1ab2ad;
+ $color-f4f4f4: #f4f4f4;
+ $color-dfdeed: #dfdeed;
+
+
 @import '../assets/styles/mixins/device.scss';
 
 .b-register-step {
@@ -160,7 +168,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: #ffffff;
+  background: $--b-main-white-color;
   border-radius: 28px 28px 0px 0px;
   @include mobile {
     padding: 44px 16px 72px 16px;
@@ -175,7 +183,7 @@ export default {
       font-weight: 700;
       font-size: 22px;
       line-height: 32px;
-      color: #262541;
+      color: $--b-main-black-color;
       @include mobile {
         text-align: center;
       }
@@ -194,10 +202,10 @@ export default {
         .b-register-step__section {
           width: 33%;
           height: 4px;
-          background: #efeff6;
+          background: $color-efeff6;
           border-radius: 2px;
           &.active {
-            background: #1ab2ad;
+            background: $color-1ab2ad;
           }
         }
       }
@@ -208,7 +216,7 @@ export default {
       font-weight: 400;
       font-size: 14px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
       margin-bottom: 20px;
     }
     .b-register-step__small-title {
@@ -217,15 +225,15 @@ export default {
       font-weight: 500;
       font-size: 14px;
       line-height: 20px;
-      color: #262541;
+      color: $--b-main-black-color;
     }
     .b-register-step__experience-block {
       display: flex;
       align-items: center;
       justify-content: space-between;
       .radio-btn-wrapper {
-        $color1: #f4f4f4;
-        $color2: #148783;
+        $color1: $color-f4f4f4;
+        $color2: $--b-main-green-color;
         display: flex;
         align-items: center;
         flex-wrap: wrap;
@@ -236,8 +244,8 @@ export default {
           flex-direction: row;
           align-items: center;
           padding: 6px 12px;
-          background: #ffffff;
-          border: 1px solid #dfdeed;
+          background: $--b-main-white-color;
+          border: 1px solid $color-dfdeed;
           border-radius: 6px;
           width: 186px;
           margin-top: 12px;
@@ -259,12 +267,12 @@ export default {
               font-size: 13px;
               line-height: 24px;
               text-transform: capitalize;
-              color: #262541;
+              color: $--b-main-black-color;
               justify-content: space-between;
               &::before {
                 content: '';
                 border-radius: 100%;
-                border: 1px solid #262541;
+                border: 1px solid $--b-main-black-color;
                 display: inline-block;
                 width: 13px;
                 height: 13px;
@@ -335,7 +343,7 @@ export default {
       font-size: 14px;
       line-height: 24px;
       text-align: center;
-      color: #575775;
+      color: $--b-main-gray-color;
       cursor: pointer;
     }
   }

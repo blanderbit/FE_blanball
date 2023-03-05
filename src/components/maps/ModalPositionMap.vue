@@ -255,7 +255,7 @@ export default {
   font-size: 13px;
   line-height: 24px;
   width: 100%;
-  color: #262541;
+  color: $--b-main-black-color;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -283,6 +283,6 @@ export default {
   font-size: 14px;
   line-height: 24px;
   text-align: center;
-  color: #575775;
+  color: $--b-main-gray-color;
 }
 </style>

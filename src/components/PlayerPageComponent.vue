@@ -278,7 +278,6 @@ export default {
     })
 
     const getPlanedEvents = (page) => {
-      console.log(page)
       return API.EventService.getPlannedUserEvents(props.userData.id, {
         page,
       }).then((result) => {
@@ -339,6 +338,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+// SCSS variables for hex colors
+ $color-6f6f77: #6f6f77;
+ $color-dfdeed: #dfdeed;
+ $color-395d09: #395d09;
+ $color-d2f6a2: #d2f6a2;
+ $color-ffffff: #ffffff;
+ $color-c5c5d3: #c5c5d3;
+ $color-efeff6: #efeff6;
+ $color-f0f0f4: #f0f0f4;
+
+
 @import '../assets/styles/mixins/device.scss';
 
 .mt-8 {
@@ -349,15 +360,11 @@ export default {
   margin-right: 16px;
 }
 .b-player-page__block-hidden {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
+  @include inter(12px, 400, $color-6f6f77);
   line-height: 20px;
-  color: #6f6f77;
   display: flex;
   align-items: flex-start;
-  border-top: 1px solid #dfdeed;
+  border-top: 1px solid $color-dfdeed;
   margin-top: 12px;
   padding-top: 16px;
   img {
@@ -399,7 +406,7 @@ export default {
     .b-player-page__user-card {
       padding: 24px;
       flex-basis: 324px;
-      background: #ffffff;
+      background: $--b-main-white-color;
       box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
       border-radius: 6px;
       margin-right: 16px;
@@ -430,14 +437,10 @@ export default {
             }
           }
           .b_player-qualification {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 12px;
+            @include inter(12px, 400, $color-395d09);
             line-height: 20px;
-            color: #395d09;
             padding: 0px 4px;
-            background: #d2f6a2;
+            background: $color-d2f6a2;
             border-radius: 4px;
           }
           .b-player-page__name,
@@ -447,62 +450,47 @@ export default {
             font-weight: 700;
             font-size: 20px;
             line-height: 24px;
-            color: #262541;
+            color: $--b-main-black-color;
             @include mobile {
               font-size: 16px;
               line-height: 20px;
             }
           }
           .b-player-page__label {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 500;
-            font-size: 14px;
-            line-height: 20px;
-            text-align: center;
-            color: #575775;
+            @include inter(14px, 500, $--b-main-gray-color);
             @include mobile {
               font-size: 12px;
             }
+            line-height: 20px;
+            text-align: center;
           }
           .b-player-page__invite {
+            @include inter(14px, 500, $color-ffffff);
+            line-height: 24px;
             padding: 6px;
             margin-top: 16px;
             margin-bottom: 8px;
-            background: #262541;
+            background: $--b-main-black-color;
             border-radius: 6px;
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 500;
-            font-size: 14px;
-            line-height: 24px;
             text-align: center;
-            color: #ffffff;
             width: 100%;
             cursor: pointer;
           }
           .b-player-page__title {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 12px;
+            @include inter(12px, 400, $--b-main-gray-color);
             line-height: 16px;
-            color: #575775;
           }
           .b-player-page__send-email {
             margin-right: 8px;
           }
           .b-player-page__send-email,
           .b-player-page__call {
-            padding: 6px 8px;
-            border: 1px solid #c5c5d3;
-            border-radius: 4px;
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 500;
-            font-size: 12px;
+            @include inter(12px, 500, $--b-main-gray-color);
             line-height: 20px;
-            color: #575775;
+
+            padding: 6px 8px;
+            border: 1px solid $color-c5c5d3;
+            border-radius: 4px;
             display: flex;
             cursor: pointer;
             img {
@@ -518,33 +506,21 @@ export default {
       .b-player-page__about-line {
         margin-top: 16px;
         .b-player-page__title {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 12px;
+          @include inter(12px, 400, $--b-main-gray-color);
           line-height: 16px;
-          color: #575775;
           margin-bottom: 4px;
         }
         .b-player-page__text {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 14px;
+          @include inter(14px, 400);
           line-height: 20px;
-          color: #262541;
         }
       }
     }
 
     .b-player-page {
       &__small-text {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 12px;
+        @include inter(14px, 400, $--b-main-gray-color);
         line-height: 20px;
-        color: #575775;
       }
       &__main-titles-text {
         font-family: 'Exo 2';
@@ -552,10 +528,10 @@ export default {
         font-weight: 700;
         font-size: 16px;
         line-height: 24px;
-        color: #262541;
+        color: $--b-main-black-color;
       }
       &__right-block {
-        background: #ffffff;
+        background: $--b-main-white-color;
         box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
         border-radius: 12px;
         padding-bottom: 15px;
@@ -574,7 +550,7 @@ export default {
 
       &__features-reviews-block {
         padding: 24px;
-        border-right: 1px solid #efeff6;
+        border-right: 1px solid $color-efeff6;
       }
       &__play-features {
       }
@@ -590,44 +566,36 @@ export default {
           font-weight: 700;
           font-size: 16px;
           line-height: 24px;
-          color: #262541;
+          color: $--b-main-black-color;
         }
         .b-player-page__name-date-line {
           display: flex;
           justify-content: space-between;
         }
         .b-player-page__name {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 500;
-          font-size: 12px;
+          @include inter(12px, 500, $--b-main-gray-color);
           line-height: 20px;
-          color: #575775;
         }
         .b-player-page__feedback-blocks {
-          border-top: 1px solid #efeff6;
+          border-top: 1px solid $color-efeff6;
           .b-player-page__feedback-block {
             margin-top: 16px;
             padding-bottom: 16px;
-            border-bottom: 1px dashed #dfdeed;
+            border-bottom: 1px dashed $color-dfdeed;
             &:last-child {
               border-bottom: none;
             }
           }
         }
         .b-player-page__main-text {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 14px;
+          @include inter(14px, 400);
           line-height: 20px;
-          color: #262541;
         }
       }
       &__play-blocks {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        border-top: 1px solid #dfdeed;
+        border-top: 1px solid $color-dfdeed;
         padding-top: 20px;
         margin-top: 16px;
         margin-bottom: 8px;
@@ -645,12 +613,8 @@ export default {
         }
       }
       &__feature-name {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 600;
-        font-size: 14px;
+        @include inter(14px, 600);
         line-height: 20px;
-        color: #262541;
       }
 
       &__events-history-block {
@@ -658,7 +622,7 @@ export default {
       }
       &__play-events {
         .b-player-page__event-blocks {
-          border-top: 1px solid #dfdeed;
+          border-top: 1px solid $color-dfdeed;
           margin-top: 16px;
           height: 400px;
           @media (max-width: 1200px) {
@@ -668,7 +632,7 @@ export default {
         .b-player-page__event-block {
           margin-top: 22px;
           padding-bottom: 16px;
-          border-bottom: 1px dashed #dfdeed;
+          border-bottom: 1px dashed $color-dfdeed;
           &:last-child {
             border-bottom: none;
           }
@@ -682,18 +646,14 @@ export default {
             font-weight: 600;
             font-size: 14px;
             line-height: 20px;
-            color: #262541;
+            color: $--b-main-black-color;
             margin-right: 6px;
           }
           .b-player-page__position {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 12px;
+            @include inter(12px, 400);
             line-height: 20px;
-            color: #262541;
             padding: 0px 4px;
-            background: #f0f0f4;
+            background: $color-f0f0f4;
             border-radius: 4px;
           }
         }
@@ -701,14 +661,10 @@ export default {
           display: flex;
           margin-bottom: 6px;
           .b-player-page__label {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 12px;
+            @include inter(12px, 400);
             line-height: 20px;
-            color: #262541;
             padding: 0px 8px;
-            border: 1px solid #dfdeed;
+            border: 1px solid $color-dfdeed;
             border-radius: 100px;
             margin-right: 4px;
           }
@@ -718,7 +674,7 @@ export default {
         }
       }
       &__play-history {
-        border-top: 1px solid #dfdeed;
+        border-top: 1px solid $color-dfdeed;
         display: flex;
         justify-content: space-between;
         padding-top: 16px;

@@ -105,6 +105,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+// SCSS variables for hex colors
+ $color-c6c7c7: #c6c7c7;
+ $color-ffffff: #ffffff;
+
+
 .b-green-btn__animated {
   &:hover {
       &:before {
@@ -115,25 +121,22 @@ export default {
         left: -100%;
         width: 32px;
         height: 100%;
-        background: #c6c7c7;
+        background: $color-c6c7c7;
         filter: blur(6px);
         animation: blink 5s ease-in-out infinite;
       }
     }
 }
 .b-green-btn {
+  @include inter(14px, 500, $color-ffffff);
+
   box-shadow: 0px 4px 12px rgba(42, 145, 141, 0.2);
   position: relative;
   border-radius: 6px;
   overflow: hidden;
-  color: #fff;
   height: 32px;
   display: flex;
   align-items: center;
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
   cursor: pointer;
   user-select: none;
 

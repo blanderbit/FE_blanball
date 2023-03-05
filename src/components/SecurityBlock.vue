@@ -125,8 +125,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-d3f8f7: #d3f8f7;
+
+
 .b-security {
-  background: #ffffff;
+  background: $--b-main-white-color;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 8px;
   padding: 20px 16px;
@@ -134,8 +140,8 @@ export default {
 
   @media (max-width: 768px) {
     box-shadow: none;
+    padding: 0px 16px;
   }
-
   .b-security__email-input {
     height: 40px;
     margin-bottom: 12px;
@@ -143,13 +149,14 @@ export default {
   }
   .b-security__confidentiality {
     .b-security__title {
+      margin-top: 12px;
       margin-bottom: 4px;
       font-family: 'Exo 2';
       font-style: normal;
       font-weight: 700;
       font-size: 16px;
       line-height: 24px;
-      color: #262541;
+      color: $--b-main-black-color;
     }
     .b-security__subtitle {
       font-family: 'Inter';
@@ -157,24 +164,37 @@ export default {
       font-weight: 400;
       font-size: 13px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
     }
     .b-security__settings-block {
-      padding-top: 8px;
       padding-bottom: 8px;
       margin-top: 20px;
-      border-top: 1px solid #dfdeed;
+      border-top: 1px solid $color-dfdeed;
+
+      @media (max-width: 768px) {
+        border-top: none;
+        margin-top: 0px;
+      }
+
       .b-security__personal-settings {
         font-family: 'Inter';
         font-style: normal;
         font-weight: 400;
         font-size: 14px;
         line-height: 20px;
-        color: #262541;
+        color: $--b-main-black-color;
         padding: 12px 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
+
+        @media (min-width: 768px) and (max-width: 1200px) {
+          border-bottom: 1px solid #DFDEED; 
+        }
+
+        @media (max-width: 768px) {
+          font-weight: 500;
+        }
       }
     }
   }
@@ -185,7 +205,7 @@ export default {
       font-weight: 700;
       font-size: 16px;
       line-height: 24px;
-      color: #262541;
+      color: $--b-main-black-color;
     }
     .b-security__subtitle-security {
       font-family: 'Inter';
@@ -193,7 +213,7 @@ export default {
       font-weight: 400;
       font-size: 13px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
     }
     .b-security__change-pass-btn {
       padding-left: 16px;
@@ -202,16 +222,26 @@ export default {
       justify-content: space-between;
       align-items: center;
       height: 40px;
-      background: #d3f8f7;
+      background: $color-d3f8f7;
       border-radius: 6px;
       font-family: 'Inter';
       font-style: normal;
       font-weight: 500;
       font-size: 14px;
       line-height: 24px;
-      color: #148783;
+      color: $--b-main-green-color;
       cursor: pointer;
       margin-bottom: 16px;
+
+      @media (max-width: 992px) {
+        justify-content: center;
+        gap: 12px;
+      }
+      @media (max-width: 768px) {
+        justify-content: center;
+        flex-direction: row-reverse;
+        gap: 12px;
+      }
     }
   }
   .b-security__delete-account {
@@ -220,7 +250,7 @@ export default {
     font-weight: 400;
     font-size: 12px;
     text-decoration-line: underline;
-    color: #575775;
+    color: $--b-main-gray-color;
     text-align: right;
     cursor: pointer;
   }

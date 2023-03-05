@@ -30,8 +30,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+// SCSS variables for hex colors
+ $color-d3f8f7: #d3f8f7;
+
+
 .b-version-item {
-  background: #ffffff;
+  background: $--b-main-white-color;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 6px;
   padding: 16px;
@@ -52,13 +57,13 @@ export default {
     font-weight: 500;
     font-size: 14px;
     line-height: 20px;
-    color: #262541;
+    color: $--b-main-black-color;
   }
   &__label-new {
     padding: 0px 8px;
     width: 46px;
     height: 20px;
-    background: #d3f8f7;
+    background: $color-d3f8f7;
     border-radius: 4px;
     font-family: 'Inter';
     font-style: normal;
@@ -66,7 +71,7 @@ export default {
     font-size: 12px;
     line-height: 20px;
     text-align: center;
-    color: #148783;
+    color: $--b-main-green-color;
   }
   &__date {
     div {

@@ -84,6 +84,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+
+
 .b-user-cabinet__buttons {
   order: 4;
 
@@ -94,10 +99,10 @@ export default {
     width: calc(100% - 40px);
     z-index: 10;
     bottom: 20px;
-    padding: 0px 16px;
     transform: translate(-50%, 10px);
   }
   .b-user-cabinet__save-cancel-btns {
+    padding: 0px 20px;
     @media (max-width: 768px) {
       display: flex;
       flex-direction: column;
@@ -122,10 +127,10 @@ export default {
       font-weight: 400;
       font-size: 12px;
       line-height: 20px;
-      color: #575775;
+      color: $--b-main-gray-color;
       margin-top: 4px;
       cursor: pointer;
-      border-bottom: 1px dashed #dfdeed;
+      border-bottom: 1px dashed $color-dfdeed;
       @media (max-width: 768px) {
         order: 1;
         text-align: center;

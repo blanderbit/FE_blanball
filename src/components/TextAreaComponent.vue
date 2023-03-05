@@ -109,10 +109,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-f9f9fc: #f9f9fc;
+ $color-e2e2e9: #e2e2e9;
+
+
 .b-text-area__component {
   height: 100%;
   .b-text-area__wrapper {
-    border: 1px solid #dfdeed;
+    border: 1px solid $color-dfdeed;
     position: relative;
     border-radius: 6px;
     width: 100%;
@@ -121,13 +128,13 @@ export default {
       font-style: normal;
       font-weight: 500;
       font-size: 12px;
-      color: #575775;
+      color: $--b-main-gray-color;
       padding: 0px 2px;
       position: absolute;
       right: 8px;
       bottom: -8px;
-      background: #f9f9fc;
-      border: 1px solid #e2e2e9;
+      background: $color-f9f9fc;
+      border: 1px solid $color-e2e2e9;
       border-radius: 4px;
     }
     .b-text-area__icon {
@@ -141,7 +148,7 @@ export default {
       position: absolute;
       left: 8px;
       top: -8px;
-      background: #ffffff;
+      background: $--b-main-white-color;
       border-radius: 4px;
       font-family: 'Inter';
       font-style: normal;
@@ -170,7 +177,7 @@ export default {
     font-weight: 400;
     font-size: 12px;
     line-height: 20px;
-    color: #f32929;
+    color: $--b-error-color;
   }
 }
 input[type='file'] {

@@ -114,12 +114,12 @@ import { NotificationsBus, BlanballEventBus } from '../workers/event-bus-worker'
 
 import { ROUTES } from '../router/router.const'
 
-import notification from '../assets/img/Notification.svg'
+import notification from '../assets/img/notification.svg'
 import notificationUnread from '../assets/img/notificationUnread.svg'
 import record from '../assets/img/record.svg'
 import members from '../assets/img/members.svg'
 import medal from '../assets/img/medal.svg'
-import settings from '../assets/img/Settings.svg'
+import settings from '../assets/img/settings.svg'
 import bugReport from '../assets/img/warning-black.svg'
 
 const findDublicates = (list, newList) => {
@@ -143,13 +143,13 @@ export default {
   },
   setup() {
     const userStore = useUserDataStore()
+    const { user } = storeToRefs(userStore)
     const eventStore = useEventDataStore()
     const notReadNotificationCount = ref(0)
     const isMobMenuActive = ref(false);
     const skipids = ref([])
-    const { user } = storeToRefs(userStore)
     const userFullName = computed(
-      () => `${userStore.user.profile.name} ${userStore.user.profile.last_name}`
+      () => `${user.value.profile.name} ${user.value.profile.last_name}`
     )
     const userAvatar = ref(user.value.profile.avatar_url)
     const router = useRouter()
@@ -165,7 +165,6 @@ export default {
     watch(
       () => user,
       (newData, oldData) => {
-        console.log(newData)
       }
     )
 
@@ -328,6 +327,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+// SCSS variables for hex colors
+ $color-efeff6: #efeff6;
+ $color-d3f8f7: #d3f8f7;
+ $color-fff4ec: #fff4ec;
+
+
 .b_sidebar_wrapper {
   position: relative;
   @media (max-width: 992px) {
@@ -345,9 +351,9 @@ export default {
     justify-content: space-between;
     align-items: center;
     z-index: 12;
-    background: #ffffff;
+    background: $--b-main-white-color;
     .b_sidebar_picture-bottom {
-      background: #efeff6;
+      background: $color-efeff6;
       border-radius: 24px;
       padding: 4px;
       .b-avatar {
@@ -357,8 +363,8 @@ export default {
         margin-top: 6px;
         width: 40px;
         height: 40px;
-        background: #ffffff;
-        border: 1px solid #efeff6;
+        background: $--b-main-white-color;
+        border: 1px solid $color-efeff6;
         border-radius: 24px;
         cursor: pointer;
       }
@@ -382,7 +388,7 @@ export default {
           cursor: pointer;
           transition: 0.3s all;
           .router-link-active {
-            background: #d3f8f7;
+            background: $color-d3f8f7;
           }
           &:hover {
             background: rgba(220, 255, 254, 0.65);
@@ -428,7 +434,7 @@ export default {
   margin-top: 20px;
 
   a:hover {
-    background: #fff4ec;
+    background: $color-fff4ec;
   }
 }
 .v-enter-active,

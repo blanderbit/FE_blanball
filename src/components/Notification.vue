@@ -56,9 +56,9 @@
               <div class="notification-response d-flex align-items-center">
                 <img
                   v-if="notificationInstance.textsAfterAction.response"
-                  src="../assets/img/true_check.svg"
+                  src="../assets/img/true-check.svg"
                 />
-                <img v-else src="../assets/img/red_cross.svg" />
+                <img v-else src="../assets/img/red-cross.svg" />
                 {{ notificationInstance.textsAfterAction.text }}
               </div>
             </template>
@@ -212,55 +212,53 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="scss"> $color-575775: #575775;
+
+
+// SCSS variables for hex colors
+ $color-8a8aa8: #8a8aa8;
+ $color-dfdeed: #dfdeed;
+ $color-fff: #fff;
+ $color-a8a8bd: #a8a8bd;
+ $color-efeff6: #efeff6;
+ $color-d3d3d3: #d3d3d3;
+ $color-000: #000;
+
+
 .notification-sender {
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: #8a8aa8;
+  color: $color-575775;
 }
 
 .notification-content {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 13px;
+  @include inter(13px, 400, $color-dfdeed);
   line-height: 20px;
-  color: #dfdeed;
   margin-bottom: 12px;
 }
 
 .notification-title {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
+  @include inter(14px, 600, $color-fff);
   line-height: 20px;
-  color: #ffffff;
 }
 
 .notification-date {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 13px;
+  @include inter(13px, 400, $color-a8a8bd);
   line-height: 20px;
-  color: #a8a8bd;
 }
 
 .notification-action {
+  @include inter(13px, 500, $color-efeff6);
+  line-height: 24px;
+
   display: inline-block;
   padding: 2px 12px;
-  background: #575775;
+  background: $--b-main-gray-color;
   border-radius: 6px;
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 13px;
-  line-height: 24px;
   text-align: center;
-  color: #ffffff;
   margin-right: 8px;
 }
 
@@ -279,7 +277,7 @@ export default {
     cursor: pointer;
     transform: rotateZ(90deg);
     path {
-      fill: #d3d3d3;
+      fill: $color-d3d3d3;
     }
   }
 }
@@ -324,20 +322,20 @@ export default {
 
 .notification-sidebar {
   * {
-    color: #000;
+    color: $color-000;
   }
-  border-bottom: 1px solid #efeff6;
+  border-bottom: 1px solid $color-efeff6;
   padding: 16px 0;
 
   .notification-title {
-    color: #262541;
+    color: $--b-main-black-color;
   }
 
   .notification-date {
-    color: #575775;
+    color: $--b-main-gray-color;
   }
   .notification-content {
-    color: #575775;
+    color: $--b-main-gray-color;
   }
   ::v-deep {
     .spiner-text {
@@ -365,7 +363,7 @@ export default {
           height: 50px;
         }
         .lds-ring div {
-          border-color: #575775 transparent transparent transparent;
+          border-color: $--b-main-gray-color transparent transparent transparent;
         }
       }
     }
@@ -387,7 +385,7 @@ export default {
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  color: #8a8aa8;
+  color: $color-8a8aa8;
   margin-bottom: 8px;
   > img {
     margin-right: 5px;
@@ -408,7 +406,7 @@ export default {
   }
   .vcp__header-icon {
     svg {
-      fill: #8a8aa8;
+      fill: $color-8a8aa8;
     }
   }
 }

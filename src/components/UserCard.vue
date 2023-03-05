@@ -83,9 +83,6 @@
         </div>
         <div  v-if="userData.profile.gender" class="b-user-card__gender">
           <span class="title">{{ $t('users.gender') }}</span>
-          <span class="icon">
-            <img src="../assets/img/unisex-icon2.svg" alt="gender icon" />
-          </span>
           <span>: {{ $t(`hashtags.${userData.profile.gender}`) }}</span>
         </div>
       </div>
@@ -132,19 +129,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+// SCSS variables for hex colors
+ $color-efeff6: #efeff6;
+ $color-f7f7fc: #f7f7fc;
+
+
 @import '../assets/styles/mixins/device.scss';
 .b-user-card {
-  padding: 8px 12px 8px 0;
-  /* background: #FFFFFF; */
-  /* border-bottom: 1px solid #EFEFF6; */
-  /* box-shadow: 2px 2px 10px rgb(56 56 251 / 10%); */
-  /* border-radius: 8px; */
-  /* overflow: hidden; */
   width: 100%;
-  @media (max-width: 768px) {
-    padding: 8px 12px 8px 0;
-  }
-
   &__top-line {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -172,7 +165,7 @@ export default {
       font-weight: 500;
       font-size: 14px;
       line-height: 20px;
-      color: #262541;
+      color: $--b-main-black-color;
       @include mobile {
         width: 110px;
       }
@@ -201,7 +194,7 @@ export default {
         font-weight: 500;
         font-size: 12px;
         line-height: 20px;
-        color: #262541;
+        color: $--b-main-black-color;
         @media (max-width: 768px) {
           position: absolute;
           left: 0;
@@ -213,7 +206,7 @@ export default {
           font-weight: 400;
           font-size: 12px;
           line-height: 20px;
-          color: #575775;
+          color: $--b-main-gray-color;
         }
       }
     }
@@ -238,7 +231,7 @@ export default {
           font-weight: 400;
           font-size: 14px;
           line-height: 20px;
-          color: #575775;
+          color: $--b-main-gray-color;
           margin-left: 30px;
           @media (max-width: 768px) {
             margin-left: 0;
@@ -255,7 +248,7 @@ export default {
             font-weight: 400;
             font-size: 13px;
             line-height: 16px;
-            color: #262541;
+            color: $--b-main-black-color;
           }
         }
       }
@@ -272,7 +265,7 @@ export default {
     //     font-weight: 500;
     //     font-size: 12px;
     //     line-height: 20px;
-    //     color: #262541;
+    //     color: $--b-main-black-color;
     //     @media (max-width: 768px) {
     //       display: none;
     //     }
@@ -297,10 +290,10 @@ export default {
     //     font-weight: 400;
     //     font-size: 12px;
     //     line-height: 20px;
-    //     color: #575775;
+    //     color: $--b-main-gray-color;
     //     @media (max-width: 768px) {
     //       font-weight: 500;
-    //       color: #262541;
+    //       color: $--b-main-black-color;
     //     }
     //   }
     // }
@@ -321,7 +314,7 @@ export default {
       font-weight: 400;
       font-size: 13px;
       line-height: 16px;
-      color: #262541;
+      color: $--b-main-black-color;
       margin-left: 8px;
     }
   }
@@ -337,7 +330,7 @@ export default {
       font-weight: 500;
       font-size: 12px;
       line-height: 20px;
-      color: #262541;
+      color: $--b-main-black-color;
       margin-right: 34px;
       span {
         font-family: 'Inter';
@@ -345,7 +338,7 @@ export default {
         font-weight: 400;
         font-size: 12px;
         line-height: 20px;
-        color: #575775;
+        color: $--b-main-gray-color;
       }
     }
 
@@ -360,29 +353,20 @@ export default {
         font-weight: 500;
         font-size: 12px;
         line-height: 20px;
-        color: #262541;
+        color: $--b-main-black-color;
         margin-right: 3px;
-        @media (max-width: 768px) {
-          display: none;
-        }
       }
-      .icon {
-        display: none;
-        margin-right: 4px;
-        @media (max-width: 768px) {
-          display: inherit;
-        }
-      }
+
       span {
         font-family: 'Inter';
         font-style: normal;
         font-weight: 400;
         font-size: 12px;
         line-height: 20px;
-        color: #575775;
+        color: $--b-main-gray-color;
         @media (max-width: 768px) {
           font-weight: 500;
-          color: #262541;
+          color: $--b-main-black-color;
         }
       }
     }

@@ -42,12 +42,8 @@ export default {
     li {
       list-style: none;
       a {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 12px;
+        @include inter(12px, 400);
         text-decoration: none;
-        color: #262541;
       }
       img {
         margin-left: 13.5px;

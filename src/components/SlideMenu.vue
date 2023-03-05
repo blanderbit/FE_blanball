@@ -27,31 +27,25 @@
             class="b_slide_menu_items d-flex justify-content-between align-items-center mb-2"
             v-if="notifications.length"
           >
-            <div
-              class="d-flex align-items-center"
-              :style="{ opacity: selectedList.length ? '1' : '0' }"
+          <div class="b-read-all-notifications__button d-flex align-items-center"
+              v-if="notifications.length && notReadNotificationCount"
+              @click="HandleAction.readAll()"
             >
               <img
-                src="../assets/img/cross.svg"
-                height="10"
+                src="../assets/img/notifications/double-check.svg"
+                height="16"
                 alt=""
-                class="me-2"
-                @click="clearSelectedList"
               />
-              <div class="d-flex">
-                <div class="b-selected-elements__count me-1">
-                  {{ selectedList.length }}
-                </div>
-                / {{ totalNotificationsCount }}
-              </div>
-            </div>
-            <button @click=";(selectable = !selectable), clearSelectedList()">
-              <span v-if="!selectable">Выбрать записи</span>
-              <span v-else>Отменить выбор</span>
+              <span class="b-button-text">Прочитати всі</span>
+          </div>
+
+            <button class="b-notifictions-actions__button" @click=";(selectable = !selectable), clearSelectedList()">
+              <span v-if="!selectable" class="b-button-text">Керування повідомленнями</span>
+              <span v-else  class="b-button-text">Скасувати керування</span>
             </button>
           </div>
           <div class="d-flex mb-2">
-            <button
+            <!-- <button
               v-if="notifications.length"
               @click="HandleAction.deleteAll()"
               class="d-flex align-items-center"
@@ -61,20 +55,8 @@
                 alt=""
                 height="16"
               />
-              Удалить все
-            </button>
-            <button
-              v-if="notifications.length && notReadNotificationCount"
-              @click="HandleAction.readAll()"
-              class="d-flex align-items-center"
-            >
-              <img
-                src="../assets/img/notifications/double-check.svg"
-                height="16"
-                alt=""
-              />
-              Прочитать все
-            </button>
+              <span class="b-button-text"> Удалить все</span>
+            </button> -->
             <button
               v-if="selectable && notifications.length && selectedList.length"
               @click="HandleAction.deleteSelected()"
@@ -85,7 +67,7 @@
                 height="16"
                 alt=""
               />
-              Удалить
+              Видалити
             </button>
             <button
               v-if="selectable && notifications.length && selectedList.length"
@@ -97,11 +79,11 @@
                 height="16"
                 alt=""
               />
-              Прочитать
+              Позначити як прочитане
             </button>
           </div>
-          <div class="d-flex">
-            <div class="b-notifications-title me-1">
+          <div class="b-notifications__tabs">
+            <div v-if="notifications.length" class="b-notifications-title me-1">
               {{ $t('slide_menu.notifications') }}
             </div>
             <div
@@ -347,7 +329,19 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped> $color-262541: #262541;
+
+
+// SCSS variables for hex colors
+ $color-f0f0f4: #f0f0f4;
+ $color-8a8aa8: #8a8aa8;
+ $color-fcfcfc: #fcfcfc;
+ $color-dfdeed: #dfdeed;
+ $color-e9f6ff: #e9f6ff;
+ $color-1c4fc5: #1c4fc5;
+ $color-efeff6: #efeff6;
+
+
 .b_slide_menu_back {
   position: fixed;
   top: 0;
@@ -365,11 +359,11 @@ export default {
   height: 100%;
   .b_slide_menu_new_notifications {
     padding: 8px;
-    background: #f0f0f4;
+    background: $color-f0f0f4;
     font-weight: 500;
     font-size: 12px;
     line-height: 20px;
-    color: #8a8aa8;
+    color: $color-8a8aa8;
   }
   .b_slide_menu_sidebar-arrow {
     position: absolute;
@@ -377,7 +371,7 @@ export default {
     height: 32px;
     right: -20px;
     top: 72px;
-    background: #ffffff;
+    background: $--b-main-white-color;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 6px;
     display: flex;
@@ -389,12 +383,12 @@ export default {
   }
   .b_slide_menu_main {
     width: 464px;
-    padding: 24px 20px 0 20px;
+    padding: 35px 20px 0 20px;
     position: absolute;
     top: 0;
     right: 0px;
     height: 100vh;
-    background: #fcfcfc;
+    background: $color-fcfcfc;
     box-shadow: 2px 2px 10px rgb(56 56 251 / 10%);
     border-radius: 6px;
     z-index: 11;
@@ -408,7 +402,6 @@ export default {
       }
       .b_slide_menu_items {
         margin-top: 12px;
-        border-top: 1px solid #dfdeed;
         padding-top: 12px;
         .b_slide_menu_title {
           font-family: 'Inter';
@@ -416,7 +409,7 @@ export default {
           font-weight: 500;
           font-size: 14px;
           line-height: 20px;
-          color: #575775;
+          color: $--b-main-gray-color;
         }
         ul {
           margin-top: 22px;
@@ -430,7 +423,7 @@ export default {
             font-weight: 400;
             font-size: 12px;
             line-height: 20px;
-            color: #262541;
+            color: $--b-main-black-color;
             img {
               margin-right: 12px;
             }
@@ -440,19 +433,19 @@ export default {
     }
     .b_slide_menu_bottom-block {
       padding: 16px 11px;
-      border-top: 1px solid #dfdeed;
+      border-top: 1px solid $color-dfdeed;
       .b_slide_menu_top-line {
         width: 100%;
         margin-bottom: 8px;
         .b_slide_menu_position {
-          background: #e9f6ff;
+          background: $color-e9f6ff;
           border-radius: 4px;
           font-family: 'Inter';
           font-style: normal;
           font-weight: 400;
           font-size: 12px;
           line-height: 20px;
-          color: #1c4fc5;
+          color: $color-1c4fc5;
           width: fit-content;
           padding: 1px 4px;
         }
@@ -462,7 +455,7 @@ export default {
           font-weight: 500;
           font-size: 13px;
           line-height: 24px;
-          color: #262541;
+          color: $--b-main-black-color;
         }
       }
       .b_slide_menu_bottom-line {
@@ -472,7 +465,7 @@ export default {
         font-weight: 400;
         font-size: 12px;
         line-height: 16px;
-        color: #8a8aa8;
+        color: $color-8a8aa8;
 
         span {
           text-decoration: none;
@@ -480,7 +473,7 @@ export default {
           font-weight: 600;
           font-size: 12px;
           line-height: 16px;
-          color: #8a8aa8;
+          color: $color-8a8aa8;
         }
       }
     }
@@ -488,62 +481,87 @@ export default {
 }
 
 .b-new-notification {
-  border-bottom: 1px solid #262541;
+  border-bottom: 1px solid $--b-main-black-color;
 }
 
 button {
+  font-family: 'Inter';
   padding: 4px 8px;
-  border: 1px solid #dfdeed;
+  border: 1px solid $color-dfdeed;
   border-radius: 6px;
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
   line-height: 20px;
-  color: #262541;
+  color: $--b-main-black-color;
   background: white;
   margin-right: 5px;
+  cursor: pointer;
   img {
     margin-right: 3px;
   }
 }
 
 .b-selected-elements__count {
-  background: #575775;
+  background: $--b-main-gray-color;
   border-radius: 6px;
   padding: 0px 4px;
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
   line-height: 20px;
-  color: #ffffff;
+  color: $--b-main-white-color;
 }
-
-.b-notifications-title {
-  font-style: normal;
-  font-weight: 500;
-  font-size: 13px;
-  line-height: 20px;
-  color: #262541;
-}
-
-.b-notification-unreaded {
-  padding: 0px 4px;
-  background: #575775;
-  border-radius: 100px;
+.b-button-text {
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
+  line-height: 20px;
+  color: $color-262541;
+}
+.b-notifications-title {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 20px;
+  font-family: 'Inter';
+  color: $color-262541;
+  color: $--b-main-black-color;
+}
+
+.b-notification-unreaded {
+  font-family: 'Inter';
+  padding: 4px 4px;
+  background: $--b-main-gray-color;
+  font-style: normal;
+  border-radius: 100px;
+  font-weight: 400;
+  font-size: 12px;
   line-height: 16px;
-  color: #ffffff;
+  min-height: 16px;
+  min-width: 16px;
+  color: $--b-main-white-color;
 }
 
 .b-button-scroll__to-first-element {
   align-items: center;
   padding: 2px 12px;
-  background: #efeff6;
+  background: $color-efeff6;
   border-radius: 6px;
   img {
     margin-left: 12px;
   }
+}
+.b-notifications__tabs {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #DFDEED;
+  padding-bottom: 12px;
+}
+.b-read-all-notifications__button {
+  border-bottom: 1px dashed #DFDEED;
+  gap: 6px;
+  cursor: pointer;
 }
 </style>

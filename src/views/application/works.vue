@@ -42,6 +42,12 @@ export default {}
 </script>
 
 <style lang="scss" scoped>
+
+// SCSS variables for hex colors
+ $color-f0f0f4: #f0f0f4;
+ $color-8a8aa8: #8a8aa8;
+
+
 @import '../../assets/styles/mixins/device.scss';
 
 .b-tech-works {
@@ -50,11 +56,11 @@ export default {}
   left: 0;
   width: 100%;
   height: 100%;
-  background: #fff;
+  background: $--b-main-white-color;
   z-index: 999;
   .b-tech-works__top-message-line {
     padding: 8px 0 8px 0;
-    background: #f0f0f4;
+    background: $color-f0f0f4;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -70,7 +76,7 @@ export default {}
       font-weight: 500;
       font-size: 12px;
       line-height: 20px;
-      color: #8a8aa8;
+      color: $color-8a8aa8;
       margin-right: 119px;
     }
   }
@@ -97,14 +103,14 @@ export default {}
         font-size: 28px;
         line-height: 36px;
         text-transform: uppercase;
-        color: #262541;
+        color: $--b-main-black-color;
         margin-bottom: 12px;
         @media (max-width: 768px) {
           font-size: 20px;
           line-height: 28px;
         }
         span {
-          color: #575775;
+          color: $--b-main-gray-color;
         }
       }
       .b-tech-works__subtitle {
@@ -113,7 +119,7 @@ export default {}
         font-weight: 400;
         font-size: 14px;
         line-height: 20px;
-        color: #575775;
+        color: $--b-main-gray-color;
         padding-bottom: 28px;
         margin-bottom: 12px;
         @media (max-width: 768px) {
@@ -126,7 +132,7 @@ export default {}
         font-weight: 500;
         font-size: 12px;
         line-height: 20px;
-        color: #262541;
+        color: $--b-main-black-color;
       }
       .b-tech-works__register-link {
         font-family: 'Inter';
@@ -134,7 +140,7 @@ export default {}
         font-weight: 500;
         font-size: 12px;
         line-height: 20px;
-        color: #148783;
+        color: $--b-main-green-color;
       }
     }
     .b-tech-works__right-side {

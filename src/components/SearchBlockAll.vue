@@ -122,13 +122,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+// SCSS variables for hex colors
+ $color-f0f0f4: #f0f0f4;
+ $color-e2e2e9: #e2e2e9;
+ $color-8a8aa8: #8a8aa8;
+
+
 .b-user-main-info__container {
   display: flex;
   justify-content: space-between;
 }
 .b-search-block {
   padding: 12px;
-  background: #ffffff;
+  background: $--b-main-white-color;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 6px;
   margin-top: 8px;
@@ -146,7 +153,7 @@ export default {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: #262541;
+  color: $--b-main-black-color;
   margin-left: 8px;
 }
 .b-modal-item {
@@ -156,7 +163,7 @@ export default {
   padding: 5px;
   border-radius: 6px;
   &:not(.b-modal-item__disabled):hover {
-    background: #f0f0f4;
+    background: $color-f0f0f4;
     cursor: pointer;
     .b-user-button {
       display: block;
@@ -173,7 +180,7 @@ export default {
   font-weight: 500;
   font-size: 13px;
   line-height: 20px;
-  color: #575775;
+  color: $--b-main-gray-color;
 }
 .b-user-main-info__container {
   width: 100%;

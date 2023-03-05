@@ -48,6 +48,7 @@ import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 
 import { v4 as uuid } from 'uuid'
+import { storeToRefs } from 'pinia'
 
 import Sidebar from './../../components/Sidebar.vue'
 import MainHeader from './../../components/MainHeader.vue'
@@ -126,11 +127,12 @@ const emojiSelection = (emoji) => {
 const router = useRouter()
 const toast = useToast()
 const store = useUserDataStore()
+const { user } = storeToRefs(store)
 const audio = new Audio(message_audio)
 let timeout
 
-isUserVerified.value = store.user?.is_verified
-userEmail.value = store.user?.email || ''
+isUserVerified.value = user.value?.is_verified
+userEmail.value = user.value?.email || ''
 
 const handlerAction = async (button, notificationInstance) => {
   clearTimeout(timeout)
@@ -235,6 +237,12 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss">
+
+// SCSS variables for hex colors
+ $color-272643: #272643;
+ $color-454461: #454461;
+
+
 @import '../../assets/styles/mixins/device.scss';
 
 html {
@@ -271,7 +279,7 @@ html {
   
   .b_header_validate-email-block {
     padding: 6px 8px;
-    background: #272643;
+    background: $color-272643;
     border-radius: 6px;
     text-align: center;
 
@@ -288,12 +296,12 @@ html {
       font-weight: 500;
       font-size: 12px;
       line-height: 20px;
-      color: #ffffff;
+      color: $--b-main-white-color;
       margin-right: 20px;
     }
     .b_header_verify-btn {
       padding: 2px 8px;
-      background: #454461;
+      background: $color-454461;
       border-radius: 4px;
       font-family: 'Inter';
       font-style: normal;
@@ -301,7 +309,7 @@ html {
       font-size: 12px;
       line-height: 24px;
       text-align: center;
-      color: #ffffff;
+      color: $--b-main-white-color;
       display: inline-block;
       cursor: pointer;
       margin-left: 12px;
