@@ -107,6 +107,9 @@ export default {
   'color-t-shirts': '{color} футболки',
   'color-shorts': '{color} шорты',
   'color-shirtfronts': '{color} маніжки',
+  'shirtfronts': 'Маніжки',
+  'friends-match': 'Дружній матч',
+  'invited': 'Запрошено',
   months: {
     January: 'Січень',
     February: 'Лютий',

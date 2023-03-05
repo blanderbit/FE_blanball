@@ -17,4 +17,8 @@ export default {
   'check-email': 'Перевірте правильність введеного імейлу',
   required: "Це поле є обов'язковим для заповнення",
   'password-error': 'Пароль повинен складатися не менше ніж з 8 символів',
+  login: 'Логін',
+  password: 'Пароль',
+  'enter-account': 'Увійти в акаунт',
+  'example-email': 'example@email.com',
 }

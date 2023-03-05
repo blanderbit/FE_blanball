@@ -12,8 +12,8 @@
         <div class="b-login-step__input">
           <InputComponent
             :outside-title="true"
-            :title="`Логін`"
-            :placeholder="'example@email.com'"
+            :title="$t('login.login')"
+            :placeholder="$t('login.example-email')"
             :title-width="0"
             :height="40"
             name="email"
@@ -21,7 +21,7 @@
         </div>
         <div class="b-login-step__input">
           <InputComponent
-            :title="`Пароль`"
+            :title="$t('login.password')"
             :title-width="0"
             :outside-title="true"
             :placeholder="'********'"
@@ -69,7 +69,7 @@
       <div class="b-login-step__buttons">
         <GreenBtn
           @click-function="handleLogin(data)"
-          :text="'Увійти в акаунт'"
+          :text="$t('login.enter-account')"
           :height="40"
         />
       </div>
@@ -140,6 +140,7 @@ export default {
         .max(68, 'errors.max68'),
     })
 
+    
     const handleLogin = async (data) => {
       const { valid } = await data.validate()
 

@@ -9,7 +9,7 @@
       :main-title="$t('events.event-type')"
       :placeholder="$t('events.event-type')"
       :disabled="true"
-      :initValue="'Дружній матч'"
+      :initValue="$t('events.friends-match')"
       display-name="name"
       display-value="value"
       :width="320"

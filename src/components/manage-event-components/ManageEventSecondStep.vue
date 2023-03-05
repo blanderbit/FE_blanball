@@ -90,7 +90,7 @@
       :usersList="filteredUsersList"
       :loading="loading"
       :itemIcon="icons.plus"
-      :itemDisabledText="'Запрошено'"
+      :itemDisabledText="$t('events.invited')"
       :disabladUsersIDSList="invitedUsersIDS"
       @item-list-click="inviteUser"
       @item-image-click="openUserProfile"

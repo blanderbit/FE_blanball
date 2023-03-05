@@ -32,7 +32,7 @@
                 <div v-else class="b-event-info__form-content-shirt-front">
                     <div class="b-event-info__form-item">
                         <div class="b-event-info__form-item-name">
-                            Маніжки
+                            {{  $t('events.shirtfronts') }}
                         </div>
                         <div class="b-event-info__form-item-color">
                             <img :src="mockData.colors[item.shirtfronts]" alt="">
