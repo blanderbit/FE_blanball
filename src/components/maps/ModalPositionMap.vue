@@ -119,10 +119,12 @@ export default {
     const coords = ref({})
     const loading = ref(true)
     const activeModal = ref(false)
+
     const schema = yup.object({
       region: yup.string().required('errors.required'),
       city: yup.string().required('errors.required'),
     })
+    
     const icons = computed(() => {
       return {
         tick: tickIcon,

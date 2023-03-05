@@ -83,15 +83,15 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import { computed, ref } from 'vue';
 
 import { Form, ErrorMessage } from "@system.it.flumx.com/vee-validate";
 
-import * as yup from "yup";
-
-import GreenBtn from '../../GreenBtn.vue'
-import TextAreaComponent from '../../TextAreaComponent.vue'
+import GreenBtn from '../../GreenBtn.vue';
+import TextAreaComponent from '../../TextAreaComponent.vue';
 import Emotions from '../../forms/Emotions.vue';
+
+import SCHEMAS from '../../../validators/schemas';
 
 export default {
   name: 'ModalTopCard',
@@ -125,21 +125,11 @@ export default {
     const emojiSelect = (emoji) => {
       emit('emojiSelect', emoji)
     }
-    yup.addMethod(yup.string, "emojiRequired", function (errorMessage) {
-      return this.test(`test-emoji-required`, errorMessage, function (value) {
-        const { path, createError } = this;
-        const emoji = props.selectedEmojies.filter((value) => value.step === props.step.id)
-        return (
-          ([0, 4].includes(props.step.id) ? true : !!emoji?.length) || createError({ path, errorMessage })
-        );
-      });
-    });
+
     const schema = computed(() => {
-      return yup.object({
-        emoji: yup.string().emojiRequired('errors.required'),
-        comment: yup.string().max(200 , 'errors.max200')
-      })
+      return SCHEMAS.eventReview.schema
     })
+
     const goToTheNextStep = async (data) => {
       const { valid } = await data.validate()
       if (!valid) {

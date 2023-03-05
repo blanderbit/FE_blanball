@@ -95,7 +95,6 @@ import { useRouter } from 'vue-router'
 import { Form } from '@system.it.flumx.com/vee-validate'
 
 import { merge, cloneDeep } from 'lodash'
-import * as yup from 'yup'
 
 import Step_1 from '../../components/register-components/Step-1.vue'
 import Step_2 from '../../components/register-components/Step-2.vue'
@@ -135,14 +134,6 @@ import onboardingStepMob_2 from '../../assets/img/onboarding-step-mob2.svg'
 import onboardingStepMob_3 from '../../assets/img/onboarding-step-mob3.svg'
 import onboardingStepMob_4 from '../../assets/img/onboarding-step-mob4.svg'
 
-yup.addMethod(yup.string, 'userName', function (errorMessage) {
-  return this.test(`UserName`, errorMessage, function (value) {
-    const { path, createError } = this
-    // const reg = /^[a-zа-яієїґ\'\d]{1}[a-zа-яієїґ\'\d-]*[a-zа-яієїґ\'\d]{1}$/i;
-    const reg = /^[А-Яа-яієїґЇІЄҐ\'-]*[А-Яа-яієїґЇІЄҐ\'-]+$/i
-    return reg.exec(value) || createError({ path, message: errorMessage })
-  })
-})
 export default {
   name: 'register',
   components: {

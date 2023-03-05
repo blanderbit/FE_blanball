@@ -151,7 +151,6 @@ import { useRouter } from 'vue-router'
 
 import { Form } from '@system.it.flumx.com/vee-validate'
 
-import * as yup from 'yup'
 import { storeToRefs } from "pinia"
 
 import InputComponent from '../../../components/forms/InputComponent.vue'

@@ -387,4 +387,7 @@ export default {
     }
   }
 }
+.b-form-error  {
+  border-radius: 6px;
+}
 </style>
