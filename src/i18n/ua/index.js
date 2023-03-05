@@ -24,6 +24,7 @@ import Breadcrumbs from './breadcrumbs'
 import Hashtags from './hashtags'
 import Colors from './colors'
 import Alts from './alts'
+import NoRecords from './no_records'
 
 export const UA_LANGUAGE = {
   events: EventsPage,
@@ -52,4 +53,5 @@ export const UA_LANGUAGE = {
   notifications: Notifications,
   colors: Colors,
   alts: Alts,
+  no_records: NoRecords,
 }

@@ -26,10 +26,12 @@
 </template>
 
 <script>
-import Notification from '../Notification.vue'
-import { useRouter } from 'vue-router'
 import { ref, watch, nextTick } from 'vue'
+import { useRouter } from 'vue-router'
+
 import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller'
+
+import Notification from '../Notification.vue'
 
 export default {
   name: 'Notifications',

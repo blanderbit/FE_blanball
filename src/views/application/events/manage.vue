@@ -100,7 +100,7 @@
             <span
               class="b-remove-all__invited-users"
               @click="openRemoveUsersModal"
-              >Видалити всіх</span
+              >{{ $t('buttons.remove-all') }}</span
             >
             <div
               class="b-manage-event__invited-user"
