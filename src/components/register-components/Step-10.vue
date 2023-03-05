@@ -56,7 +56,7 @@
       <div class="b-register-step__map">
         <RegisterModalPositionMap 
           v-if="isMobile"
-          :title="'Вибрати позицію на карті'">
+          :title="$t('register.select-position-on-map')">
         </RegisterModalPositionMap>
       </div>
     </template>

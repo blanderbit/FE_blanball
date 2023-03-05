@@ -77,5 +77,8 @@ export default {
   'go-to-events': 'Перейти до подій',
   'skip-and-go-to-events': 'Нагадати пізніше',
   'you_must_have_6_or_more_years': "Наша система дозволяе вибирати рік народження не менше 6 років",
-  'register': 'Зареєструватися'
+  'register': 'Зареєструватися',
+  'Olexandra': 'Олександра',
+  'Bilozerska': 'Білозерська',
+  'select-position-on-map': 'Вибрати позицію на карті'
 }

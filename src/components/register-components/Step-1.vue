@@ -22,7 +22,7 @@
         <InputComponent
           :outside-title="true"
           :title="$t('register.name')"
-          :placeholder="'Олександра'"
+          :placeholder="$t('register.Olexandra')"
           :title-width="0"
           :height="40"
           name="profile.name"
@@ -32,7 +32,7 @@
         <InputComponent
           :outside-title="true"
           :title="$t('register.last_name')"
-          :placeholder="'Білозерська'"
+          :placeholder="$t('register.Bilozerska')"
           :title-width="0"
           :height="40"
           name="profile.last_name"
