@@ -69,24 +69,21 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
-
-import * as yup from 'yup';
 
 import InputComponent from '../forms/InputComponent.vue';
 import TextAreaComponent from '../TextAreaComponent.vue';
 
 import { API } from '../../workers/api-worker/api.worker';
 
+import SCHEMAS from '../../validators/schemas';
+
 import addFileIcon from '../../assets/img/add-file-icon.svg';
 
-const schema = yup.object({
-  title: yup.string().required('errors.required').max(255, 'errors.max255'),
-});
 
 export default {
   components: {
@@ -101,6 +98,10 @@ export default {
     const toast = useToast();
     const { t } = useI18n();
 
+    const schema = computed(() => {
+      return SCHEMAS.bugReport.schema
+    });
+
     const afterLoadImage = (image) => {
       uploadedImages.value.push(image);
     };
@@ -111,6 +112,17 @@ export default {
       );
     };
 
+    const createFormData = (values) => {
+      const formData = new FormData();
+      formData.append('title', values.title);
+      formData.append('description', values.description);
+      Object.values(uploadedImages.value).forEach((element) => {
+        formData.append('images', element);
+      });
+
+      return formData;
+    };
+
     const createBugReport = async (data) => {
       const { valid } = await data.validate();
 
@@ -118,18 +130,7 @@ export default {
         return false;
       }
 
-      const createFormData = () => {
-        const formData = new FormData();
-        formData.append('title', data.values.title);
-        formData.append('description', data.values.description);
-        Object.values(uploadedImages.value).forEach((element) => {
-          formData.append('images', element);
-        });
-
-        return formData;
-      };
-
-      await API.BugReportsService.CreateBugReport(createFormData());
+      await API.BugReportsService.CreateBugReport(createFormData(data.values));
       emit('close-modal');
       toast.success(t('notifications.bug-report-created'));
     };
@@ -152,7 +153,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 // SCSS variables for hex colors
 $color-4c4a82: #4c4a82;
 
