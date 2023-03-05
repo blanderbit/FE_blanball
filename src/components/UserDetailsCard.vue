@@ -234,7 +234,7 @@
           <div class="b-user-card__position">
             <div v-if="!isEditMode" class="b-user-card__to-show">
               <div class="b-user-card__data">
-                {{ userPosition || $t('profile.no-content') }}
+                {{ $t(`hashtags.position_full.${userData.position}`) || $t('profile.no-content') }}
               </div>
               <div class="b-user-card__title">
                 {{ $t('profile.game-position') }}
@@ -285,8 +285,8 @@
           </div>
           <div class="b-user-card__area-line">
             <div v-if="!isEditMode" class="b-user-card__to-show">
-              <div class="b-user-card__data">
-                {{ userData.place || $t('profile.no-content') }}
+              <div class="b-user-card__data b-user__location">
+                {{ userData.place?.place_name || $t('profile.no-content') }}
               </div>
               <div class="b-user-card__title">
                 {{ $t('profile.location') }}
@@ -302,7 +302,7 @@
 </template>
 
 <script>
-import { ref, computed, watchEffect, onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed, watch, watchEffect, onMounted, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import dayjs from 'dayjs';
@@ -314,7 +314,6 @@ import Dropdown from './forms/Dropdown.vue';
 import Avatar from '../components/Avatar.vue';
 import RatingCard from '../components/RatingCard.vue'
 
-import { API } from '../workers/api-worker/api.worker';
 import CONSTANTS from '../consts';
 import useWindowWidth from '../utils/widthScreen';
 
@@ -357,20 +356,23 @@ export default {
     const selectedFile = ref(null);
     const imageSrc = ref(null);
     const fileReader = new FileReader();
-    const labels = ref([
-      props.userData?.role ? `hashtags.${props.userData?.role}` : null,
-      props.userData?.position ? `hashtags.${props.userData?.position}` : null,
-      props.userData?.age ? `${props.userData?.age} років` : null,
-      props.userData?.gender ? `hashtags.${props.userData?.gender}` : null,
-    ]);
+    const labels = ref(setupLabels());
+
+    watch(() => props.userData, (newData, oldData) => {
+      labels.value = setupLabels();
+    })
+
+
+    function setupLabels() {
+      return [
+        props.userData?.age ? `${props.userData?.age} років` : null,
+        props.userData?.position ? `hashtags.${props.userData?.position}` : null,
+        props.userData?.gender ? `hashtags.${props.userData?.gender}` : null,
+        props.userData?.role ? `hashtags.${props.userData?.role}` : null,
+      ]
+    }
 
     const fileInput = ref(null);
-
-    const userPosition = computed(() => {
-      return CONSTANTS.profile.position.find(
-        (item) => item.value === props.userData?.position
-      )?.name;
-    });
 
     const isMobTabletSize = computed(() => {
       return (
@@ -461,7 +463,6 @@ export default {
       labels,
       fullUserName,
       isMobTabletSize,
-      userPosition,
       fileInput,
       isMobile,
     };
@@ -494,6 +495,10 @@ $color-efeff6: #efeff6;
     flex-basis: 49%;
   }
 
+  @media (max-width: 768px) {
+    padding-bottom: 0px;
+  }
+
   .b-user-card__top-table {
     background: $--b-main-white-color;
     border-radius: 8px;
@@ -501,6 +506,9 @@ $color-efeff6: #efeff6;
     margin-bottom: 10px;
     @media (max-width: 1200px) {
       box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+    }
+    @media (max-width: 768px) {
+      padding: 8px 8px 10px;
     }
 
     .b-user-card__top-part {
@@ -606,6 +614,9 @@ $color-efeff6: #efeff6;
       @media (max-width: 1200px) {
         padding: 12px;
       }
+      @media (max-width: 768px) {
+        padding: 0px;
+      }
       .b-user-card__tab-body {
         &:nth-child(1) {
           .b-user-card__mob-title {
@@ -619,8 +630,8 @@ $color-efeff6: #efeff6;
           font-size: 16px;
           line-height: 24px;
           color: $--b-main-black-color;
-          margin-bottom: 12px;
-          margin-top: 16px;
+          margin-bottom: 10px;
+          margin-top: 12px;
         }
         .b-user-card__to-show {
           .b-user-card__data {
@@ -666,6 +677,7 @@ $color-efeff6: #efeff6;
           }
           .b-user-card__about-me {
             font-family: 'Inter';
+            word-break: break-word;
             font-style: normal;
             font-weight: 400;
             font-size: 14px;
@@ -739,6 +751,8 @@ $color-efeff6: #efeff6;
           }
         }
         .b-user-card__position {
+          border-top: 1px solid #EFEFF6;
+          padding-top: 12px;
           margin-top: 16px;
         }
         .b-user-card__area-line {
@@ -751,5 +765,9 @@ $color-efeff6: #efeff6;
       }
     }
   }
+}
+.b-user__location {
+  border-top: 1px solid #EFEFF6;
+  padding-top: 12px;
 }
 </style>

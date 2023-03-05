@@ -120,26 +120,26 @@ $color-c8ebe7: #c8ebe7;
   }
 }
 
-.b-avatar-online__indicator {
-  &-small-square {
-    background: $color-1ccd62;
-    border-radius: 6px;
-    border: 1.5px solid $color-ffffff;
-    width: 8px;
-    height: 8px;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-  }
-  &-circle {
-    background: $color-1ccd62;
-    border-radius: 6px;
-    border: 1.5px solid $color-ffffff;
-    width: 10px;
-    height: 10px;
-    position: absolute;
-    right: 0px;
-    bottom: 2px;
-  }
-}
+// .b-avatar-online__indicator {
+//   &-small-square {
+//     background: $color-1ccd62;
+//     border-radius: 6px;
+//     border: 1.5px solid $color-ffffff;
+//     width: 8px;
+//     height: 8px;
+//     position: absolute;
+//     right: 0;
+//     bottom: 0;
+//   }
+//   &-circle {
+//     background: $color-1ccd62;
+//     border-radius: 6px;
+//     border: 1.5px solid $color-ffffff;
+//     width: 10px;
+//     height: 10px;
+//     position: absolute;
+//     right: 0px;
+//     bottom: 2px;
+//   }
+// }
 </style>

@@ -140,8 +140,8 @@ export default {
 
   @media (max-width: 768px) {
     box-shadow: none;
+    padding: 0px 16px;
   }
-
   .b-security__email-input {
     height: 40px;
     margin-bottom: 12px;
@@ -149,6 +149,7 @@ export default {
   }
   .b-security__confidentiality {
     .b-security__title {
+      margin-top: 12px;
       margin-bottom: 4px;
       font-family: 'Exo 2';
       font-style: normal;
@@ -166,10 +167,15 @@ export default {
       color: $--b-main-gray-color;
     }
     .b-security__settings-block {
-      padding-top: 8px;
       padding-bottom: 8px;
       margin-top: 20px;
       border-top: 1px solid $color-dfdeed;
+
+      @media (max-width: 768px) {
+        border-top: none;
+        margin-top: 0px;
+      }
+
       .b-security__personal-settings {
         font-family: 'Inter';
         font-style: normal;
@@ -181,6 +187,14 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
+
+        @media (min-width: 768px) and (max-width: 1200px) {
+          border-bottom: 1px solid #DFDEED; 
+        }
+
+        @media (max-width: 768px) {
+          font-weight: 500;
+        }
       }
     }
   }
@@ -218,6 +232,16 @@ export default {
       color: $--b-main-green-color;
       cursor: pointer;
       margin-bottom: 16px;
+
+      @media (max-width: 992px) {
+        justify-content: center;
+        gap: 12px;
+      }
+      @media (max-width: 768px) {
+        justify-content: center;
+        flex-direction: row-reverse;
+        gap: 12px;
+      }
     }
   }
   .b-security__delete-account {

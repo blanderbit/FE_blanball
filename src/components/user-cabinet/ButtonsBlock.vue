@@ -99,10 +99,10 @@ export default {
     width: calc(100% - 40px);
     z-index: 10;
     bottom: 20px;
-    padding: 0px 16px;
     transform: translate(-50%, 10px);
   }
   .b-user-cabinet__save-cancel-btns {
+    padding: 0px 20px;
     @media (max-width: 768px) {
       display: flex;
       flex-direction: column;
