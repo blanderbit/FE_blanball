@@ -167,6 +167,7 @@
 
 <script>
 import { ref, inject, computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { v4 as uuid } from 'uuid'
 import { storeToRefs } from 'pinia'
@@ -235,6 +236,7 @@ export default {
     const { user } = storeToRefs(userStore)
     const newNotificationInstance = ref(new NewNotifications())
     const clientVersion = ref(inject('clientVersion'))
+    const { t } = useI18n()
 
     const userData = computed(() => {
       return user.value
@@ -270,9 +272,8 @@ export default {
 
     const emptyListMessages = computed(() => {
       return {
-        title: CONSTANTS.no_data_notifications.noNotifications.title,
-        description:
-          CONSTANTS.no_data_notifications.noNotifications.description,
+        title: t('no_records.noNotifications.title'),
+        description: t('no_records.noNotifications.description')
       }
     })
 

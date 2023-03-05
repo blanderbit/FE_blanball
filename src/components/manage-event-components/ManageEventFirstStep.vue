@@ -262,7 +262,6 @@ export default {
     })
     const mockData = computed(() => {
       return {
-        typeOfEventDropdown: CONSTANTS.manage_event.type_of_event_dropdown,
         typeOfSportDropdown: CONSTANTS.manage_event.type_of_sport_dropdown,
       }
     })

@@ -198,7 +198,6 @@ export default {
         event_cards: CONSTANTS.event_page.event_cards,
         sport_type_dropdown: CONSTANTS.event_page.sport_type_dropdown,
         gender_dropdown: CONSTANTS.event_page.gender_dropdown,
-        cities_dropdown: CONSTANTS.event_page.cities_dropdown,
       }
     })
     const iconPlus = computed(() => Plus)

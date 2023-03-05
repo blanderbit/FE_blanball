@@ -223,7 +223,6 @@ export default {
         my_events: CONSTANTS.event_page.my_events,
         sport_type_dropdown: CONSTANTS.event_page.sport_type_dropdown,
         gender_dropdown: CONSTANTS.event_page.gender_dropdown,
-        cities_dropdown: CONSTANTS.event_page.cities_dropdown,
         calendar: CONSTANTS.event_page.calendar,
         menu_text: CONSTANTS.event_page.menu_text(selectedContextMenuEvent.value.pinned),
       }

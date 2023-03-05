@@ -464,7 +464,6 @@ $color-e3fbfa: #e3fbfa;
 $color-f9f9fc: #f9f9fc;
 $color-8a8aa8: #8a8aa8;
 
-@import '../../../assets/styles/mixins/device.scss';
 
 ::-webkit-scrollbar {
   display: none;

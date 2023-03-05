@@ -203,9 +203,6 @@ export default {
  $color-dfdeed: #dfdeed;
  $color-efeff6: #efeff6;
 
-
-@import '../../../assets/styles/mixins/device.scss';
-
 .b-edit-avatar {
   &__main-part {
     display: flex;
