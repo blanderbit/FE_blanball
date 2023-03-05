@@ -164,8 +164,6 @@ import { useToast } from "vue-toastification";
 import { Form } from '@system.it.flumx.com/vee-validate'
 import { storeToRefs } from "pinia"
 
-import * as yup from 'yup'
-
 import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
 import InputComponent from '../../../components/forms/InputComponent.vue'

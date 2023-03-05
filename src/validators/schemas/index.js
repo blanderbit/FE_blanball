@@ -7,6 +7,10 @@ import SelectForms from './selectForms';
 import BugReport from './bugReport';
 import ChangePassword from './changePassword';
 import EventReview from './eventReview'
+import VerifyEmail from './verifyEmail'
+import DeleteAccount from './deleteAccount';
+import ChangeEmail from './changeEmail';
+import PositionMap from './positionMap';
 
 export default {
   login: Login,
@@ -18,4 +22,8 @@ export default {
   bugReport: BugReport,
   changePassword: ChangePassword,
   eventReview: EventReview,
+  verifyEmail: VerifyEmail,
+  deleteAccount: DeleteAccount,
+  changeEmail: ChangeEmail,
+  positionMap: PositionMap,
 };
