@@ -208,9 +208,6 @@ export default {
  $color-e26767: #e26767;
  $color-8a8aa8: #8a8aa8;
 
-
-@import '../../assets/styles/mixins/device.scss';
-
 .remember-me__desktop {
   @include mobile {
     display: none;

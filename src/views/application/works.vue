@@ -48,8 +48,6 @@ export default {}
  $color-8a8aa8: #8a8aa8;
 
 
-@import '../../assets/styles/mixins/device.scss';
-
 .b-tech-works {
   position: fixed;
   top: 0;

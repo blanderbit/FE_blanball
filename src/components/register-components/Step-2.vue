@@ -129,7 +129,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/styles/mixins/device.scss';
 
 .b-register-step__input {
   width: 384px;

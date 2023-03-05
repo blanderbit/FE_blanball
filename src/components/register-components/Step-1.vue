@@ -127,8 +127,6 @@ export default {
  $color-efeff6: #efeff6;
 
 
-@import '../../assets/styles/mixins/device.scss';
-
 .b-register-step__input {
   width: 384px;
   margin-top: 12px;

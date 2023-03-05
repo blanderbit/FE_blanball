@@ -212,7 +212,6 @@
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/styles/mixins/device.scss';
 
   .b-register-step__title {
     font-family: 'Exo 2';

@@ -110,8 +110,6 @@
  $color-1ab2ad: #1ab2ad;
 
 
-@import '../../assets/styles/mixins/device.scss';
-
   .b-register-step__subtitle {
     font-family: 'Exo 2';
     font-style: normal;

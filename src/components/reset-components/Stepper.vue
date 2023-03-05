@@ -267,9 +267,6 @@
  $color-1ab2ad: #1ab2ad;
  $color-dfdeed: #dfdeed;
 
-
-@import '../../assets/styles/mixins/device.scss';
-
   form {
     height: 100%;
   }
