@@ -189,15 +189,7 @@ import { useUserDataStore } from '@/stores/userData'
 import useWindowWidth from '../../../utils/widthScreen'
 
 import CONSTANTS from '../../../consts'
-
-yup.addMethod(yup.string, 'userName', function (errorMessage) {
-  return this.test(`UserName`, errorMessage, function (value) {
-    const { path, createError } = this
-    // const reg = /^[a-zа-яієїґ\'\d]{1}[a-zа-яієїґ\'\d-]*[a-zа-яієїґ\'\d]{1}$/i;
-    const reg = /^[А-Яа-яієїґЇІЄҐ\'-]*[А-Яа-яієїґЇІЄҐ\'-]+$/i
-    return reg.exec(value) || createError({ path, message: errorMessage })
-  })
-})
+import SCHEMAS from '../../../validators/schemas'
 
 const EDIT_BUTTON_ACTIONS = {
   SAVE: 'save',
@@ -232,8 +224,6 @@ export default {
     const store = useUserDataStore()
 
     const { user } = storeToRefs(store)
-
-    const route = useRoute()
     const router = useRouter()
     const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
       useWindowWidth()
@@ -302,42 +292,7 @@ export default {
     })
 
     const schema = computed(() => {
-      return yup.object({
-        last_name: yup
-          .string()
-          .required('errors.required')
-          .userName('errors.invalid-name'),
-        name: yup
-          .string()
-          .required('errors.required')
-          .userName('errors.invalid-name'),
-        about_me: yup.string().nullable(),
-        day: yup.string().required('errors.required'),
-        month: yup.string().required('errors.required'),
-        year: yup.string().required('errors.required'),
-        height: yup
-          .number()
-          .typeError('errors.type-number')
-          .required('errors.required')
-          .min(145, 'errors.min145')
-          .max(250, 'errors.max250'),
-        weight: yup
-          .number()
-          .typeError('errors.type-number')
-          .required('errors.required')
-          .min(30, 'errors.min30')
-          .max(200, 'errors.max250'),
-        working_leg: yup.string().required('errors.required'),
-        position: yup.string().nullable().required('errors.required'),
-        phone: yup
-          .string()
-          .required('errors.required')
-          .min(19, 'errors.invalid-phone'),
-        config_phone: yup.boolean().required('errors.required'),
-        config_email: yup.boolean().required('errors.required'),
-        show_reviews: yup.boolean().required('errors.required'),
-        planned_events: yup.string().required('errors.required'),
-      })
+      return SCHEMAS.profile.schema
     })
 
     userInfo.value = {

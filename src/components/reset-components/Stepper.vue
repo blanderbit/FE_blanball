@@ -144,12 +144,18 @@
       let schema = computed(() => {
         if (currentStep.value === 1) {
           return yup.object({
-            email: yup.string().email('errors.email').required('errors.required'),
+            email: yup
+              .string()
+              .email('errors.email')
+              .required('errors.required'),
           });
         }
         if (currentStep.value === 2) {
           return yup.object({
-            verify_code: yup.string().required('errors.required').min(5, 'errors.min5'),
+            verify_code: yup
+              .string()
+              .required('errors.required')
+              .min(5, 'errors.min5'),
           });
         }
         if (currentStep.value === 3) {
