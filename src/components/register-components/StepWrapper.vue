@@ -132,7 +132,7 @@
     @include mobile {
       padding: 30px 16px;
     }
-    @include bigTablet {
+    @include tablet {
       border-radius: 8px;
     }
     .b-register-step__top-part {

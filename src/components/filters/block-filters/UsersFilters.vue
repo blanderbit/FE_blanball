@@ -340,7 +340,7 @@ export default {
   }
   &__second-line {
     margin-top: 30px;
-    @media (max-width: 768px) {
+    @include tabletAndMoblo {
       display: none;
     }
     .b-users-filters__age-filter-wrapp {
@@ -350,7 +350,7 @@ export default {
   &__mob-line {
     display: none;
     justify-content: space-between;
-    @include bigTablet {
+    @include tablet {
       justify-content: flex-start;
     }
     @media (max-width: 992px) {

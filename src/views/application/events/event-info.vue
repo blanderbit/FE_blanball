@@ -523,13 +523,13 @@ $color-8a8aa8: #8a8aa8;
         }
         .b-event-info__right-part-green-btn {
           display: flex;
-          @media (max-width: 768px) {
+          @include tabletAndMoblo {
             display: none;
           }
         }
         .b-event-info__right-part-green-mobile {
           display: none;
-          @media (max-width: 768px) {
+          @include tabletAndMoblo {
             display: flex;
           }
         }
@@ -562,7 +562,7 @@ $color-8a8aa8: #8a8aa8;
         gap: 20px;
       }
 
-      @media (max-width: 768px) {
+      @include tabletAndMoblo {
         border-top: none;
         margin-top: 20px;
       }
@@ -784,7 +784,7 @@ $color-8a8aa8: #8a8aa8;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        @media (max-width: 768px) {
+        @include tabletAndMoblo {
           flex-direction: column;
         }
       }

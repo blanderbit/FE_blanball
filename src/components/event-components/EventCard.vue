@@ -330,7 +330,7 @@ export default {
     margin-top: 12px;
     border-top: 1px dashed $color-dfdeed;
 
-    @media (max-width: 768px) {
+    @include tabletAndMoblo {
       margin-top: 20px;
     }
 

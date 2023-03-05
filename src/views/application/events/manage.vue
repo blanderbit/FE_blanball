@@ -642,18 +642,18 @@ export default {
     justify-content: space-between;
     align-items: center;
     span {
-      @media (max-width: 768px) {
+      @include tabletAndMoblo {
         display: none;
       }
     }
-    @media (max-width: 768px) {
+    @include tabletAndMoblo {
       padding: 0;
     }
     .b-manage-event__btns-mob-block {
       @media (min-width: 1200px) {
         display: none;
       }
-      @media (max-width: 768px) {
+      @include tabletAndMoblo {
         width: 100%;
       }
     }
@@ -681,7 +681,7 @@ export default {
         width: 450px;
         min-width: 350px;
       }
-      @media (max-width: 768px) {
+      @include tabletAndMoblo {
         width: 100%;
       }
       .b-manage-event__progress-line {
@@ -709,7 +709,7 @@ export default {
         justify-content: space-between;
         align-items: center;
         margin-top: 20px;
-        @media (max-width: 768px) {
+        @include tabletAndMoblo {
           margin-bottom: 50px;
         }
       }
@@ -726,7 +726,7 @@ export default {
   margin-top: 20px;
   position: relative;
 
-  @media (max-width: 768px) {
+  @include tabletAndMoblo {
     display: none;
   }
 }

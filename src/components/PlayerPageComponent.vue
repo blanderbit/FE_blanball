@@ -398,7 +398,7 @@ export default {
     align-items: flex-start;
     justify-content: space-between;
     height: 100%;
-    @media (max-width: 768px) {
+    @include tabletAndMoblo {
       flex-direction: column;
       align-items: center;
       overflow-y: scroll;
@@ -413,7 +413,7 @@ export default {
       @media (max-width: 1200px) {
         flex-basis: 344px;
       }
-      @media (max-width: 768px) {
+      @include tabletAndMoblo {
         margin-right: 0;
       }
       .b-player-page__top-line {
@@ -496,7 +496,7 @@ export default {
             img {
               margin-right: 9px;
             }
-            @media (max-width: 768px) {
+            @include tabletAndMoblo {
               flex-basis: 50%;
             }
           }
@@ -543,7 +543,7 @@ export default {
           grid-template-columns: 1fr;
           flex-basis: 342px;
         }
-        @media (max-width: 768px) {
+        @include tabletAndMoblo {
           overflow-y: unset;
         }
       }

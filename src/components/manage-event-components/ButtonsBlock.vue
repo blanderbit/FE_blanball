@@ -118,12 +118,12 @@ export default {
       @media (max-width: 1200px) {
         margin-bottom: 0;
       }
-      @media (max-width: 768px) {
+      @include tabletAndMoblo {
         flex-basis: 50%;
       }
     }
     .b-manage-tem-btns__green-btn-wrapper {
-      @media (max-width: 768px) {
+      @include tabletAndMoblo {
         flex-basis: 50%;
         margin-right: 16px;
       }

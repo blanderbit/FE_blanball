@@ -133,7 +133,7 @@ export default {
   @media (min-width: 768px) and (max-width: 991px) {
     width: 344px;
   }
-  @media (max-width: 768px) {
+  @include tabletAndMoblo {
     width: 100%;
   }
   &:before {

@@ -44,7 +44,7 @@ export default {
     @media (min-width: 768px) and (max-width: 992px) {
       width: 748px;
     }
-    @include bigTablet {
+    @include tablet {
       width: 556px;
     }
     @include mobile {
