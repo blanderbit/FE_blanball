@@ -233,6 +233,73 @@ export default {
       current_users: [],
     })
 
+
+
+    yup.addMethod(yup.mixed, 'durationMustBeRound', function(startTime, errorMessage) {
+  return this.test('durationMustBeRound', errorMessage, function(value) {
+    try {
+      const [hours1, minutes1] = startTime.split(':').map(Number)
+      const [hours2, minutes2] = value.split(':').map(Number)
+      const totalMinutes1 = hours1 * 60 + minutes1
+      const totalMinutes2 = hours2 * 60 + minutes2
+      const timeDifference = Math.abs(
+        totalMinutes1 - totalMinutes2
+      )
+      return timeDifference % 10 === 0
+    } catch {
+      return false
+    }
+  })
+})
+
+// Method 2: Validate time range
+yup.addMethod(yup.mixed, 'duration10min3hours', function(startTime, errorMessage) {
+  return this.test('duration10min3hours', errorMessage, function(value) {
+    try {
+      const start_time_hours = parseInt(startTime.split(':')[0])
+      const end_time_hours = parseInt(value.split(':')[0])
+      const start_time_minutes = parseInt(startTime.split(':')[1])
+      const end_time_minutes = parseInt(value.split(':')[1])
+      const maxDifference = 180 // 3 hours in 10-minute increments
+      const minDifference = 1 // 10 minutes in 10-minute increments
+      const start_time = (start_time_hours * 6) + (start_time_minutes / 10)
+      const end_time = (end_time_hours * 6) + (end_time_minutes / 10)
+      const timeDifference = end_time - start_time
+
+      if (timeDifference > maxDifference) {
+        return false
+      }
+
+      if (timeDifference < minDifference) {
+        return false
+      }
+
+      return true
+    } catch {
+      return false
+    }
+  })
+})
+
+yup.addMethod(yup.string, 'isOneHourLater', function (errorMessage) {
+  return this.test('isOneHourLater', errorMessage, function (time) {
+    try {
+      let currentHour = new Date().getHours()
+      let currentMinute = new Date().getMinutes()
+      let hour = parseInt(time.split(':')[0])
+      let minute = parseInt(time.split(':')[1])
+      return (
+        hour > currentHour + 1 ||
+        (hour === currentHour + 1 && minute > currentMinute)
+      )
+    } catch {
+      return false
+    }
+  })
+});
+
+
+
     const schema = computed(() => {
       if (currentStep.value === 1) {
         return yup.object({
@@ -250,24 +317,7 @@ export default {
             )
             .min(5, 'errors.invalid-time')
             .required('errors.required')
-            .test({
-              name: 'isOneHourLater',
-              message: 'errors.time-more-than-one-hour',
-              test: (time) => {
-                try {
-                  let currentHour = new Date().getHours()
-                  let currentMinute = new Date().getMinutes()
-                  let hour = parseInt(time.split(':')[0])
-                  let minute = parseInt(time.split(':')[1])
-                  return (
-                    hour > currentHour + 1 ||
-                    (hour === currentHour + 1 && minute > currentMinute)
-                  )
-                } catch {
-                  return false
-                }
-              },
-            }),
+            .isOneHourLater('errors.time-more-than-one-hour'),
           end_time: yup
             .string()
             .matches(
@@ -279,54 +329,8 @@ export default {
             .when('time', (time, schema, value) => {
               if (time)
                 return schema
-                  .test(
-                    'end_time',
-                    'errors.duration-10min-3hours',
-                    function (value) {
-                      try {
-                        const start_time_hours = parseInt(time.split(':')[0])
-                        const end_time_hours = parseInt(value.split(':')[0])
-                        const start_time_minutes = parseInt(time.split(':')[1])
-                        const end_time_minutes = parseInt(value.split(':')[1])
-                        const maxDifference = 3 * 60 // 3 hours in minutes
-                        const minDifference = 10 // 10 minutes
-                        const timeDifference =
-                          (end_time_hours - start_time_hours) * 60 +
-                          (end_time_minutes - start_time_minutes)
-
-                        if (timeDifference > maxDifference) {
-                          return false
-                        }
-
-                        if (timeDifference < minDifference) {
-                          return false
-                        }
-
-                        return true
-                      } catch {
-                        return false
-                      }
-                    }
-                  )
-                  .test(
-                    'event_duration',
-                    'errors.duration-must-be-round',
-                    function (value) {
-                      try {
-                        const [hours1, minutes1] = time.split(':').map(Number)
-                        const [hours2, minutes2] = value.split(':').map(Number)
-                        const totalMinutes1 = hours1 * 60 + minutes1
-                        const totalMinutes2 = hours2 * 60 + minutes2
-                        const timeDifference = Math.abs(
-                          totalMinutes1 - totalMinutes2
-                        )
-
-                        return timeDifference % 10 === 0
-                      } catch {
-                        return false
-                      }
-                    }
-                  )
+                .durationMustBeRound(time, 'errors.duration-must-be-round')
+                .duration10min3hours(time, 'errors.duration-10min-3hours')
               return schema
             }),
           place: yup.object({
