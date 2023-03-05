@@ -14,7 +14,7 @@ export default {
   'change-password': 'Змінити пароль',
   'delete-account': 'Видалити акаунт',
   confidentiality: 'Конфіденційність',
-  'set-personal-details': 'Налаштуйте видимість ваших даних',
+  'set-personal-details': 'Налаштуйте видимість ваших персональних даних іншим користувачам',
   'phone-number': 'Номер телефону',
   'e-mail': 'E-mail',
   'my-feedbacks': 'Показувати відгуки',

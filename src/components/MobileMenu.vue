@@ -1,5 +1,5 @@
 <template>
-  <div class="b-mob-menu" :style="mobMenuStyle">
+    <div class="b-mob-menu" :style="mobMenuStyle">
     <div class="b-mob-menu__logo-block">
       <div class="b-mob-menu__logo-left">
         <div class="b-mob-menu__logo">{{ $t('menu.blanball') }}</div>
@@ -417,7 +417,9 @@ export default {
  $color-1ccd62: #1ccd62;
  $color-fff: #fff;
 
-
+.b-mob-menu__wrapper {
+  height: 100%;
+}
 .b-mob-menu {
   position: fixed;
   background: $color-efeff6;
@@ -620,6 +622,7 @@ export default {
   gap: 8px;
   max-width: 193px;
   position: absolute;
+  width: max-content;
   bottom: 70px;
   cursor: pointer;
   left: 50%;

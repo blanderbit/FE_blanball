@@ -485,8 +485,14 @@ $color-8a8aa8: #8a8aa8;
   }
 
   .b-event-info__main-body {
-    height: calc(100% + 150px);
-    overflow: auto;
+    height: calc(100vh - 90px);
+    overflow: scroll;
+
+    @media (max-width: 992px) {
+      height: calc(100vh + 240px);
+      overflow: scroll;
+    }
+
     .b-event-info__header-block {
       display: flex;
       justify-content: space-between;
