@@ -31,5 +31,6 @@ export default {
           .min(5, 'errors.min5'),
       });
     }
+    return yup.object({});
   },
 };

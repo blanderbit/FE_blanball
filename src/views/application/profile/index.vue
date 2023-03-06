@@ -95,6 +95,7 @@
 
       <ButtonsBlock
         v-if="!isMobile"
+        class="b-user-cabinet__buttons-block"
         :cancel-btn-width="'auto'"
         :save-btn-width="'auto'"
         :is-edit-mode-profile="isEditModeProfile"
@@ -116,8 +117,7 @@
           v-if="!isTabletSize && !isMobile" 
           :rating-scale="userRating"
           :openedReviewID="openedReviewId"
-          @openReview="openReview"
-          @hideReview="hideReview"/>
+          @clickReview="clickReview"/>
         <UserDetailsCard
           :user-data="userData"
           :phone="userPhone"
@@ -130,8 +130,7 @@
             v-if="isTabletSize" 
             :rating-scale="userRating" 
             :openedReviewID="openedReviewId"
-            @openReview="openReview"
-            @hideReview="hideReview"/>
+            @clickReview="clickReview"/>
           <SecurityBlock
             @toggle-modal="toggleModal"
             :user-email="userEmail"
@@ -325,12 +324,12 @@ export default {
       window.removeEventListener('resize', onResize)
     })
 
-    function openReview(reviewId) {
-      openedReviewId.value = reviewId
-    }
-
-    function hideReview() {
-      openedReviewId.value = 0
+    function clickReview(reviewId) {
+      if (openedReviewId.value === reviewId) {
+        openedReviewId.value = 0
+      } else {
+        openedReviewId.value = reviewId
+      }
     }
 
     function switchTabLabel(isDisabled) {
@@ -631,7 +630,7 @@ export default {
       cancelDataEdit,
       openEditPictureModal,
       getMyProfile,
-      openReview,
+      clickReview,
       showPreview,
       userRating,
       user,
@@ -715,6 +714,10 @@ export default {
 }
 .b-user-cabinet {
   overflow-y: scroll;
+  padding-bottom: 50px;
+  @media (min-width: 768px) {
+    position: relative;
+  }
   @media (max-width: 768px) {
     padding-bottom: 150px;
   }
@@ -796,6 +799,11 @@ export default {
     }
     @media (max-width: 768px) {
       display: block;
+    }
+    .b-user-cabinet__buttons-block {
+      position: absolute; 
+      top: 5px; 
+      right: 0;
     }
     .b-user-cabinet__mobile-tablet-block {
       @media (min-width: 1400px) {

@@ -129,9 +129,10 @@ export default {
             then: yup
               .string()
               .required('errors.required')
-              .min(19, 'errors.invalid-phone'),
+              .matches(/^(\+38|38)?\s*\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{2}[\s.-]?\d{2}$/, 'errors.invalid-phone'),
           }),
       });
     }
+    return yup.object({});
   },
 };

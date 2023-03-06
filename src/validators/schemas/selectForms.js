@@ -24,5 +24,6 @@ export default {
         }),
       });
     }
+    return yup.object({});
   },
 };

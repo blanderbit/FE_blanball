@@ -8,7 +8,7 @@ export default {
   'sub-rate': 'Складається на основі оцінок інших користувачів',
   generally: 'Узагальнено',
   detailed: 'Детально',
-  'about-myself': 'Про себе:',
+  'about-myself': 'Про себе',
   safety: 'Безпека',
   'change-login&password': 'Ви можете змінити свій логін, пароль',
   'change-password': 'Змінити пароль',

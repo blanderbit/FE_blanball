@@ -49,7 +49,8 @@
                     },
                   ]"
                   :style="{ 'border-top': idx !== 0 && '1px dashed #DFDEED' }"
-                  @click="$emit('openReview', slotProps.smartListItem.id)"
+                  @click="$emit('clickReview', 
+                  slotProps.smartListItem.id)"
                 >
                   <div class="b-rating-card__top-line">
                     <div class="b-rating-card__name">
@@ -65,13 +66,6 @@
                         :active-color="'#148783'"
                       >
                       </star-rating>
-                      <span
-                        v-if="openedReviewID === slotProps.smartListItem.id"
-                        class="b-rating-card__hide-button"
-                        @click="$emit('hideReview')"
-                      >
-                        Приховати
-                      </span>
                     </div>
                   </div>
                   <div class="b-rating-card__bottom-line">

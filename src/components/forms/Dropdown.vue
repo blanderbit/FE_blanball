@@ -116,6 +116,10 @@ export default {
     initValue: {
       type: String,
       default: '',
+    },
+    openIndicator: {
+      type: String,
+      default: ''
     }
   },
   emits: ['new-value', 'update:modelValue'],

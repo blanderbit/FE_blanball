@@ -9,8 +9,7 @@ export default {
           .required('errors.required')
           .min(5, 'errors.min5'),
       });
-    } else {
-      return yup.object({});
     }
+    return yup.object({});
   },
 };

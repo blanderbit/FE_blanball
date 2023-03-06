@@ -13,11 +13,13 @@ export default {
           name: yup
             .string()
             .required('errors.required')
-            .userName('errors.invalid-name'),
+            .userName('errors.invalid-name')
+            .max(20, 'errors.max20'),
           last_name: yup
             .string()
             .required('errors.required')
-            .userName('errors.invalid-name'),
+            .userName('errors.invalid-name')
+            .max(20, 'errors.max20'),
         }),
       });
     }
@@ -44,7 +46,7 @@ export default {
         phone: yup
           .string()
           .required('errors.required')
-          .min(19, 'errors.invalid-phone'),
+          .matches(/^(\+38|38)?\s*\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{2}[\s.-]?\d{2}$/, 'errors.invalid-phone'),
       });
     }
     if (currentStep === 8) {
