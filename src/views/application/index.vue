@@ -243,8 +243,6 @@ onBeforeUnmount(() => {
  $color-454461: #454461;
 
 
-@import '../../assets/styles/mixins/device.scss';
-
 html {
   overflow: hidden;
 }

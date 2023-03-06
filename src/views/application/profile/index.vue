@@ -761,7 +761,7 @@ export default {
 }
 .b-user-cabinet {
   overflow-y: scroll;
-  @media (max-width: 768px) {
+  @include tabletAndMobile {
     padding-bottom: 150px;
   }
 }
@@ -840,7 +840,7 @@ export default {
     @media (min-width: 1200px) {
       justify-content: space-between;
     }
-    @media (max-width: 768px) {
+    @include tabletAndMobile {
       display: block;
     }
     .b-user-cabinet__mobile-tablet-block {

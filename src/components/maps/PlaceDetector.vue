@@ -17,7 +17,7 @@
         </div>
         <div class="d-flex justify-content-end align-items-center mt-3">
           <GreenBtn
-            :text="'Скасувати'"
+            :text="$t('buttons.cancel')"
             :width="140"
             :height="40"
             @click-function="activeModal = false"

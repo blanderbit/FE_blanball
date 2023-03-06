@@ -313,8 +313,6 @@ export default {
 // SCSS variables for hex colors
  $color-fafafa: #fafafa;
 
-
-@import '../../../assets/styles/mixins/device.scss';
 .b-users-filters {
   * {
     z-index: 10;
@@ -342,7 +340,7 @@ export default {
   }
   &__second-line {
     margin-top: 30px;
-    @media (max-width: 768px) {
+    @include tabletAndMobile {
       display: none;
     }
     .b-users-filters__age-filter-wrapp {

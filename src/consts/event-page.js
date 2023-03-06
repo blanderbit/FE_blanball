@@ -4,112 +4,6 @@ import pin from '../assets/img/pin.svg'
 import unpin from '../assets/img/unpin.svg'
 
 export default {
-  event_cards: [
-    {
-      id: 0,
-      url: '/my-events/friendly-match',
-      date: 14,
-      time: '12:00 – 14:00',
-      address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-      main_text:
-        'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
-      name: 'В’ячеслав Залізняк',
-      play_dates: '10 / 22',
-      visitor_dates: '17 / 30',
-    },
-    {
-      id: 1,
-      url: '/my-events/friendly-match',
-      date: 14,
-      time: '12:00 – 14:00',
-      address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-      main_text:
-        'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
-      name: 'В’ячеслав Залізняк',
-      play_dates: '10 / 22',
-      visitor_dates: '17 / 30',
-    },
-    {
-      id: 2,
-      url: '/my-events/friendly-match',
-      date: 14,
-      time: '12:00 – 14:00',
-      address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-      main_text:
-        'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
-      name: 'В’ячеслав Залізняк',
-      play_dates: '10 / 22',
-      visitor_dates: '17 / 30',
-    },
-    {
-      id: 3,
-      url: '/my-events/friendly-match',
-      date: 14,
-      time: '12:00 – 14:00',
-      address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-      main_text:
-        'Aliquam a dui vel justo fringilla euismod id id enim. Nunc non semper tellus. Pellentesque vitae tellus non dui fermentum hendrerit. In vel imperdiet mi. Aliquam erat volutpat. Cras dapibus shdsjhd',
-      name: 'В’ячеслав Залізняк',
-      play_dates: '10 / 22',
-      visitor_dates: '17 / 30',
-    },
-  ],
-  my_events: [
-    {
-      id: 0,
-      title: 'Дружній матч',
-      isActive: true,
-      address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-      date: '7 липня',
-      time: '18:00 – 22:00',
-      labels: ['Футбол', 'Чоловіки', 'Без розряду'],
-    },
-    {
-      id: 1,
-      title: 'Дружній матч',
-      isActive: true,
-      address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-      date: '7 липня',
-      time: '18:00 – 22:00',
-      labels: ['Футбол', 'Чоловіки', 'Без розряду'],
-    },
-    {
-      id: 2,
-      title: 'Дружній матч',
-      isActive: false,
-      address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-      date: '7 липня',
-      time: '18:00 – 22:00',
-      labels: ['Футбол', 'Чоловіки', 'Без розряду'],
-    },
-    {
-      id: 3,
-      title: 'Дружній матч',
-      isActive: false,
-      address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-      date: '7 липня',
-      time: '18:00 – 22:00',
-      labels: ['Футбол', 'Чоловіки', 'Без розряду'],
-    },
-    {
-      id: 4,
-      title: 'Дружній матч',
-      isActive: true,
-      address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-      date: '7 липня',
-      time: '18:00 – 22:00',
-      labels: ['Футбол', 'Чоловіки', 'Без розряду'],
-    },
-    {
-      id: 5,
-      title: 'Дружній матч',
-      isActive: true,
-      address: 'Запоріжжя, Центральна, стадіон «Торпеда»',
-      date: '7 липня',
-      time: '18:00 – 22:00',
-      labels: ['Футбол', 'Чоловіки', 'Без розряду'],
-    },
-  ],
   sport_type_dropdown: [
     {
       id: 1,
@@ -134,20 +28,6 @@ export default {
     {
       id: 2,
       value: 'all',
-    },
-  ],
-  cities_dropdown: [
-    {
-      id: 0,
-      value: 'Запорожье',
-    },
-    {
-      id: 1,
-      value: 'Мелитополь',
-    },
-    {
-      id: 2,
-      value: 'Киев',
     },
   ],
   calendar: [

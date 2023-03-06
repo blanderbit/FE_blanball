@@ -114,7 +114,6 @@ export default {
     const mockData = computed(() => {
       return {
         tags: CONSTANTS.manage_event.tags,
-        teams: CONSTANTS.manage_event.teams
       }
     })
 

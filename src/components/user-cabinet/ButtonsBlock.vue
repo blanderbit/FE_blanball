@@ -92,7 +92,7 @@ export default {
 .b-user-cabinet__buttons {
   order: 4;
 
-  @media (max-width: 768px) {
+  @include tabletAndMobile {
     position: absolute;
     left: 50%;
     max-width: 515px;
@@ -102,19 +102,15 @@ export default {
     transform: translate(-50%, 10px);
   }
   .b-user-cabinet__save-cancel-btns {
-    padding: 20px 20px;
-    background: rgba(255, 255, 255, 0.7);
-    margin-bottom: -10px;
-
-    backdrop-filter: blur(2px);
-    @media (max-width: 768px) {
+    padding: 0px 20px;
+    @include tabletAndMobile {
       display: flex;
       flex-direction: column;
     }
     .b-user-cabinet__btns-line {
       display: flex;
       justify-content: space-between;
-      @media (max-width: 768px) {
+      @include tabletAndMobile {
         order: 2;
       }
       .b-user-cabinet__btn-cancel {
@@ -135,7 +131,7 @@ export default {
       margin-top: 4px;
       cursor: pointer;
       border-bottom: 1px dashed $color-dfdeed;
-      @media (max-width: 768px) {
+      @include tabletAndMobile {
         order: 1;
         text-align: center;
         border: none;

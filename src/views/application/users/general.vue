@@ -92,6 +92,7 @@
 <script>
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 import InputComponent from '../../../components/forms/InputComponent.vue'
 import UserCard from '../../../components/UserCard.vue'
@@ -113,7 +114,6 @@ import { v4 as uuid } from 'uuid'
 import { PaginationWorker } from '../../../workers/pagination-worker'
 import { API } from '../../../workers/api-worker/api.worker'
 
-import CONSTANTS from '../../../consts/index'
 import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patch'
 import UsersFilters from '../../../components/filters/block-filters/UsersFilters.vue'
 import { ROUTES } from '../../../router/router.const'
@@ -138,6 +138,7 @@ export default {
     const blockScrollToTopIfExist = ref(false)
     const triggerForRestart = ref(false)
     const currentHoverSideBarItemID = ref(0)
+    const { t } = useI18n();
 
     const restartInfiniteScroll = () => {
       triggerForRestart.value = uuid()
@@ -165,8 +166,8 @@ export default {
 
     const emptyListMessages = computed(() => {
       return {
-        title: CONSTANTS.no_data_notifications.noUsers.title,
-        description: CONSTANTS.no_data_notifications.noUsers.description,
+        title: t('no_records.noUsers.title'),
+        description: t('no_records.noUsers.description')
       }
     })
 
@@ -368,8 +369,6 @@ export default {
  $color-393762: #393762;
  $color-71ba12: #71ba12;
 
-
-@import '../../../assets/styles/mixins/device.scss';
 .events-page {
   display: grid;
   grid-template-columns: 1fr 256px;
@@ -473,7 +472,7 @@ export default {
           .b-comming-soon {
             position: absolute;
 
-            @media (max-width: 768px) {
+            @include tabletAndMobile {
               left: 0;
               top: 30px;
             }
@@ -751,7 +750,7 @@ export default {
               }
             }
             .text {
-              @media (max-width: 768px) {
+              @include tabletAndMobile {
                 display: none;
               }
             }
@@ -781,7 +780,7 @@ export default {
           @media (min-width: 768px) and (max-width: 991px) {
             width: 344px;
           }
-          @media (max-width: 768px) {
+          @include tabletAndMobile {
             width: 100%;
           }
           &:before {
@@ -1015,7 +1014,7 @@ export default {
           @media (min-width: 768px) and (max-width: 991px) {
             width: 344px;
           }
-          @media (max-width: 768px) {
+          @include tabletAndMobile {
             width: 100%;
           }
           &.active {
@@ -1049,7 +1048,7 @@ export default {
               @media (min-width: 768px) and (max-width: 991px) {
                 width: 165px;
               }
-              @media (max-width: 768px) {
+              @include tabletAndMobile {
                 width: 70%;
               }
               .title {

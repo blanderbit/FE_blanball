@@ -45,7 +45,7 @@ export default {
 
 
 .b-event-preview {
-  @media (max-width: 768px) {
+  @include tabletAndMobile {
     position: fixed;
     bottom: 0;
     background: #0000005c;
@@ -62,7 +62,7 @@ export default {
     
     &.active {
       height: auto;
-      @media (max-width: 768px) {
+      @include tabletAndMobile {
         padding: 12px 8px;
       }
     }
@@ -78,7 +78,7 @@ export default {
       padding: 0;
       height: 44px;
     }
-    @media (max-width: 768px) {
+    @include tabletAndMobile {
       position: absolute;
       bottom: 8px;
       left: 50%;
@@ -92,7 +92,7 @@ export default {
         padding: 13px;
         margin-bottom: 8px;
       }
-      @media (max-width: 768px) {
+      @include tabletAndMobile {
         margin-bottom: 0;
       }
       .b-event-preview__title-block {

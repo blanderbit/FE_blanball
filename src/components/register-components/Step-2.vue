@@ -22,7 +22,7 @@
         <InputComponent
           :outside-title="true"
           :title="$t('register.email')"
-          :placeholder="'example@email.com'"
+          :placeholder="$t('login.example-email')"
           :title-width="0"
           :height="40"
           name="email"
@@ -84,7 +84,6 @@ import InputComponent from '../forms/InputComponent.vue'
 import StepWrapper from './StepWrapper.vue'
 
 import tickWhite from '../../assets/img/tick-white.svg'
-import arrowRight from '../../assets/img/arrow-right-white.svg'
 import nikeIcon from '../../assets/img/nike-icon.svg'
 
 export default {
@@ -130,7 +129,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/styles/mixins/device.scss';
 
 .b-register-step__input {
   width: 384px;

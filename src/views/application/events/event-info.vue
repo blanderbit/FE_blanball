@@ -319,16 +319,16 @@ export default {
     const noUsersData = computed(() => {
       if (eventData.value.author.id === user.value.id) {
         return {
-          title: 'Наразі, немає учасників для відображення',
-          description: 'Як тільки хтось із користувачів приєднається — ми сповістимо вас',
-          button_text: 'Запросити учасників',
+          title:  t('no_records.noEventPlayers.title'),
+          description: t('no_records.noEventPlayers.description_author'),
+          button_text: t('buttons.invite-players'),
           image: noUserRecords
         }
       } else {
         return {
-          title: 'Наразі, немає учасників для відображення',
-          description: 'Покищо ніхто не долучився до участі у події, однак, ви можете стати першим!',
-          button_text: !eventData.value.privacy ? 'Долучитися до участі' : 'Подати заявку',
+          title: t('no_records.noEventPlayers.title'),
+          description: t('no_records.noEventPlayers.description_user'),
+          button_text: !eventData.value.privacy ? t('buttons.join-participate') : t('events.apply'),
           image: noUserRecords
         }
       }
@@ -337,15 +337,15 @@ export default {
     const noFansData = computed(() => {
       if (eventData.value.author.id === user.value.id) {
         return {
-          title: 'Наразі, немає глядачів для відображення',
-          description: 'Як тільки хтось із глядачів приєднається — ми сповістимо вас',
+          title: t('no_records.noEventFans.title'),
+          description: t('no_records.noEventFans.description_author'),
           image: noUserRecords
         }
       } else {
         return {
-          title: 'Наразі, немає глядачів для відображення',
-          description: 'Покищо ніхто не долучився до вболівання у події, однак, ви можете стати першим!',
-          button_text: 'Стати вболівальником',
+          title: t('no_records.noEventFans.title'),
+          description:  t('no_records.noEventFans.description_user'),
+          button_text: t('buttons.become-a-fan'),
           image: noUserRecords
         }
       }
@@ -464,7 +464,6 @@ $color-e3fbfa: #e3fbfa;
 $color-f9f9fc: #f9f9fc;
 $color-8a8aa8: #8a8aa8;
 
-@import '../../../assets/styles/mixins/device.scss';
 
 ::-webkit-scrollbar {
   display: none;
@@ -524,13 +523,13 @@ $color-8a8aa8: #8a8aa8;
         }
         .b-event-info__right-part-green-btn {
           display: flex;
-          @media (max-width: 768px) {
+          @include tabletAndMobile {
             display: none;
           }
         }
         .b-event-info__right-part-green-mobile {
           display: none;
-          @media (max-width: 768px) {
+          @include tabletAndMobile {
             display: flex;
           }
         }
@@ -563,7 +562,7 @@ $color-8a8aa8: #8a8aa8;
         gap: 20px;
       }
 
-      @media (max-width: 768px) {
+      @include tabletAndMobile {
         border-top: none;
         margin-top: 20px;
       }
@@ -785,7 +784,7 @@ $color-8a8aa8: #8a8aa8;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        @media (max-width: 768px) {
+        @include tabletAndMobile {
           flex-direction: column;
         }
       }

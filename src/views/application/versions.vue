@@ -283,7 +283,7 @@ export default {
   }
 
   &__images {
-    @media (max-width: 768px) {
+    @include tabletAndMobile {
       flex-wrap: wrap;
     }
   }

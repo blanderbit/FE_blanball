@@ -186,7 +186,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../assets/styles/mixins/device.scss';
+// SCSS variables for hex colors
+ $color-dfdeed: #dfdeed;
+ $color-efeff6: #efeff6;
 
 .b-edit-avatar {
   &__main-part {
