@@ -286,7 +286,7 @@ export default {
     flex-basis: 312px;
   }
 
-  @include tabletAndMoblo {
+  @include tabletAndMobile {
     box-shadow: none;
   }
 

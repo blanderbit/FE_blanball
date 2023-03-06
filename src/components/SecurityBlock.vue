@@ -130,7 +130,7 @@ export default {
   padding: 20px 16px;
   height: fit-content;
 
-  @include tabletAndMoblo {
+  @include tabletAndMobile {
     box-shadow: none;
     padding: 0px 16px;
   }
@@ -163,7 +163,7 @@ export default {
       margin-top: 20px;
       border-top: 1px solid $color-dfdeed;
 
-      @include tabletAndMoblo {
+      @include tabletAndMobile {
         border-top: none;
         margin-top: 0px;
       }
@@ -184,7 +184,7 @@ export default {
           border-bottom: 1px solid #DFDEED; 
         }
 
-        @include tabletAndMoblo {
+        @include tabletAndMobile {
           font-weight: 500;
         }
       }
@@ -229,7 +229,7 @@ export default {
         justify-content: center;
         gap: 12px;
       }
-      @include tabletAndMoblo {
+      @include tabletAndMobile {
         justify-content: center;
         flex-direction: row-reverse;
         gap: 12px;

@@ -84,13 +84,13 @@ export default {}
     align-items: center;
     margin-top: 20px;
     padding: 0 16px;
-    @include tabletAndMoblo {
+    @include tabletAndMobile {
       flex-direction: column;
     }
     .b-tech-works__left-side {
       width: 416px;
       margin-right: 40px;
-      @include tabletAndMoblo {
+      @include tabletAndMobile {
         width: 100%;
         margin: 0;
       }
@@ -103,7 +103,7 @@ export default {}
         text-transform: uppercase;
         color: $--b-main-black-color;
         margin-bottom: 12px;
-        @include tabletAndMoblo {
+        @include tabletAndMobile {
           font-size: 20px;
           line-height: 28px;
         }
@@ -120,7 +120,7 @@ export default {}
         color: $--b-main-gray-color;
         padding-bottom: 28px;
         margin-bottom: 12px;
-        @include tabletAndMoblo {
+        @include tabletAndMobile {
           font-size: 12px;
         }
       }
@@ -143,7 +143,7 @@ export default {}
     }
     .b-tech-works__right-side {
       position: relative;
-      @include tabletAndMoblo {
+      @include tabletAndMobile {
         margin-top: 20px;
       }
       img {

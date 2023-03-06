@@ -45,7 +45,7 @@ export default {
 
 
 .b-event-preview {
-  @include tabletAndMoblo {
+  @include tabletAndMobile {
     position: fixed;
     bottom: 0;
     background: #0000005c;
@@ -62,7 +62,7 @@ export default {
     
     &.active {
       height: auto;
-      @include tabletAndMoblo {
+      @include tabletAndMobile {
         padding: 12px 8px;
       }
     }
@@ -78,7 +78,7 @@ export default {
       padding: 0;
       height: 44px;
     }
-    @include tabletAndMoblo {
+    @include tabletAndMobile {
       position: absolute;
       bottom: 8px;
       left: 50%;
@@ -92,7 +92,7 @@ export default {
         padding: 13px;
         margin-bottom: 8px;
       }
-      @include tabletAndMoblo {
+      @include tabletAndMobile {
         margin-bottom: 0;
       }
       .b-event-preview__title-block {

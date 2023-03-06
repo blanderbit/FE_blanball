@@ -67,7 +67,7 @@ export default {
   .b-error-page__main-block {
     position: relative;
     margin: auto;
-    @include tabletAndMoblo {
+    @include tabletAndMobile {
       margin: 0;
       width: 100%;
     }
@@ -75,14 +75,14 @@ export default {
       width: 100%;
     }
     .b-error-page__img-desk {
-      @include tabletAndMoblo {
+      @include tabletAndMobile {
         display: none;
       }
     }
     .b-error-page__img-mob {
       display: none;
       margin: 20px auto;
-      @include tabletAndMoblo {
+      @include tabletAndMobile {
         display: block;
       }
     }
@@ -90,7 +90,7 @@ export default {
       position: absolute;
       bottom: 145px;
       left: 95px;
-      @include tabletAndMoblo {
+      @include tabletAndMobile {
         position: static;
       }
       .b-error-page__text {
@@ -101,7 +101,7 @@ export default {
         line-height: 24px;
         color: $--b-main-black-color;
         margin-bottom: 16px;
-        @include tabletAndMoblo {
+        @include tabletAndMobile {
           text-align: center;
           font-weight: 700;
           font-size: 24px;
@@ -111,7 +111,7 @@ export default {
         }
       }
       .b-green-btn {
-        @include tabletAndMoblo {
+        @include tabletAndMobile {
           margin: 0 auto;
         }
       }

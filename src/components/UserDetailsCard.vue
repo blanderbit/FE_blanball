@@ -495,7 +495,7 @@ $color-efeff6: #efeff6;
     flex-basis: 49%;
   }
 
-  @include tabletAndMoblo {
+  @include tabletAndMobile {
     padding-bottom: 0px;
   }
 
@@ -507,7 +507,7 @@ $color-efeff6: #efeff6;
     @media (max-width: 1200px) {
       box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     }
-    @include tabletAndMoblo {
+    @include tabletAndMobile {
       padding: 8px 8px 10px;
     }
 
@@ -614,7 +614,7 @@ $color-efeff6: #efeff6;
       @media (max-width: 1200px) {
         padding: 12px;
       }
-      @include tabletAndMoblo {
+      @include tabletAndMobile {
         padding: 0px;
       }
       .b-user-card__tab-body {

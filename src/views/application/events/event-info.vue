@@ -523,13 +523,13 @@ $color-8a8aa8: #8a8aa8;
         }
         .b-event-info__right-part-green-btn {
           display: flex;
-          @include tabletAndMoblo {
+          @include tabletAndMobile {
             display: none;
           }
         }
         .b-event-info__right-part-green-mobile {
           display: none;
-          @include tabletAndMoblo {
+          @include tabletAndMobile {
             display: flex;
           }
         }
@@ -562,7 +562,7 @@ $color-8a8aa8: #8a8aa8;
         gap: 20px;
       }
 
-      @include tabletAndMoblo {
+      @include tabletAndMobile {
         border-top: none;
         margin-top: 20px;
       }
@@ -784,7 +784,7 @@ $color-8a8aa8: #8a8aa8;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        @include tabletAndMoblo {
+        @include tabletAndMobile {
           flex-direction: column;
         }
       }

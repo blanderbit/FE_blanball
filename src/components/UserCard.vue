@@ -141,7 +141,7 @@ export default {
   &__top-line {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    @include tabletAndMoblo {
+    @include tabletAndMobile {
       display: flex;
       justify-content: space-between;
     }
@@ -150,7 +150,7 @@ export default {
   &__picture-name {
     display: flex;
     align-items: center;
-    @include tabletAndMoblo {
+    @include tabletAndMobile {
       position: relative;
     }
     .b-user-card__picture {
@@ -173,14 +173,14 @@ export default {
         .b-user-card__name {
           display: flex;
           align-items: center;
-          @include tabletAndMoblo {
+          @include tabletAndMobile {
             font-size: 13px;
             line-height: 16px;
           }
         }
         .b-user-card__team-rating-mob {
           display: none;
-          @include tabletAndMoblo {
+          @include tabletAndMobile {
             height: auto;
             display: block;
           }
@@ -195,7 +195,7 @@ export default {
         font-size: 12px;
         line-height: 20px;
         color: $--b-main-black-color;
-        @include tabletAndMoblo {
+        @include tabletAndMobile {
           position: absolute;
           left: 0;
           width: max-content;
@@ -219,7 +219,7 @@ export default {
       height: 32px;
       .b-user-card__team-rating {
         // .star-rating {
-        @include tabletAndMoblo {
+        @include tabletAndMobile {
           display: none;
         }
         // }
@@ -233,7 +233,7 @@ export default {
           line-height: 20px;
           color: $--b-main-gray-color;
           margin-left: 30px;
-          @include tabletAndMoblo {
+          @include tabletAndMobile {
             margin-left: 0;
             font-size: 12px;
             line-height: 16px;
@@ -241,7 +241,7 @@ export default {
         }
         .b-user-card__status-mob {
           display: none;
-          @include tabletAndMoblo {
+          @include tabletAndMobile {
             display: block;
             font-family: 'Inter';
             font-style: normal;
@@ -257,7 +257,7 @@ export default {
     //   display: flex;
     //   align-items: center;
     //   margin-top: 6px;
-    //   @include tabletAndMoblo {
+    //   @include tabletAndMobile {
     //   }
     //   .title {
     //     font-family: 'Inter';
@@ -266,7 +266,7 @@ export default {
     //     font-size: 12px;
     //     line-height: 20px;
     //     color: $--b-main-black-color;
-    //     @include tabletAndMoblo {
+    //     @include tabletAndMobile {
     //       display: none;
     //     }
     //   }
@@ -276,7 +276,7 @@ export default {
     //     height: 20px;
     //     background: #F7F7FC;
     //     border-radius: 4px;
-    //     @include tabletAndMoblo {
+    //     @include tabletAndMobile {
     //       display: flex;
     //     }
     //     img {
@@ -291,7 +291,7 @@ export default {
     //     font-size: 12px;
     //     line-height: 20px;
     //     color: $--b-main-gray-color;
-    //     @include tabletAndMoblo {
+    //     @include tabletAndMobile {
     //       font-weight: 500;
     //       color: $--b-main-black-color;
     //     }
@@ -304,7 +304,7 @@ export default {
     align-items: center;
     justify-content: flex-end;
     height: 32px;
-    @include tabletAndMoblo {
+    @include tabletAndMobile {
       display: none;
     }
 
@@ -321,7 +321,7 @@ export default {
   &__flipping-part {
     display: flex;
     margin-left: 60px;
-    @include tabletAndMoblo {
+    @include tabletAndMobile {
       margin-left: 0;
     }
     .b-user-card__pnz {
@@ -345,7 +345,7 @@ export default {
     .b-user-card__gender {
       display: flex;
       align-items: center;
-      @include tabletAndMoblo {
+      @include tabletAndMobile {
       }
       .title {
         font-family: 'Inter';
@@ -364,7 +364,7 @@ export default {
         font-size: 12px;
         line-height: 20px;
         color: $--b-main-gray-color;
-        @include tabletAndMoblo {
+        @include tabletAndMobile {
           font-weight: 500;
           color: $--b-main-black-color;
         }

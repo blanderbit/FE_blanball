@@ -283,7 +283,7 @@ export default {
   }
 
   &__images {
-    @include tabletAndMoblo {
+    @include tabletAndMobile {
       flex-wrap: wrap;
     }
   }

@@ -642,18 +642,18 @@ export default {
     justify-content: space-between;
     align-items: center;
     span {
-      @include tabletAndMoblo {
+      @include tabletAndMobile {
         display: none;
       }
     }
-    @include tabletAndMoblo {
+    @include tabletAndMobile {
       padding: 0;
     }
     .b-manage-event__btns-mob-block {
       @media (min-width: 1200px) {
         display: none;
       }
-      @include tabletAndMoblo {
+      @include tabletAndMobile {
         width: 100%;
       }
     }
@@ -681,7 +681,7 @@ export default {
         width: 450px;
         min-width: 350px;
       }
-      @include tabletAndMoblo {
+      @include tabletAndMobile {
         width: 100%;
       }
       .b-manage-event__progress-line {
@@ -709,7 +709,7 @@ export default {
         justify-content: space-between;
         align-items: center;
         margin-top: 20px;
-        @include tabletAndMoblo {
+        @include tabletAndMobile {
           margin-bottom: 50px;
         }
       }
@@ -726,7 +726,7 @@ export default {
   margin-top: 20px;
   position: relative;
 
-  @include tabletAndMoblo {
+  @include tabletAndMobile {
     display: none;
   }
 }

@@ -10,7 +10,7 @@
   }
 }
 
-@mixin tabletAndMoblo {
+@mixin tabletAndMobile {
   @media (max-width: 768px) {
     @content;
   }

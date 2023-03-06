@@ -472,7 +472,7 @@ export default {
           .b-comming-soon {
             position: absolute;
 
-            @include tabletAndMoblo {
+            @include tabletAndMobile {
               left: 0;
               top: 30px;
             }
@@ -750,7 +750,7 @@ export default {
               }
             }
             .text {
-              @include tabletAndMoblo {
+              @include tabletAndMobile {
                 display: none;
               }
             }
@@ -780,7 +780,7 @@ export default {
           @media (min-width: 768px) and (max-width: 991px) {
             width: 344px;
           }
-          @include tabletAndMoblo {
+          @include tabletAndMobile {
             width: 100%;
           }
           &:before {
@@ -1014,7 +1014,7 @@ export default {
           @media (min-width: 768px) and (max-width: 991px) {
             width: 344px;
           }
-          @include tabletAndMoblo {
+          @include tabletAndMobile {
             width: 100%;
           }
           &.active {
@@ -1048,7 +1048,7 @@ export default {
               @media (min-width: 768px) and (max-width: 991px) {
                 width: 165px;
               }
-              @include tabletAndMoblo {
+              @include tabletAndMobile {
                 width: 70%;
               }
               .title {

@@ -340,7 +340,7 @@ export default {
   }
   &__second-line {
     margin-top: 30px;
-    @include tabletAndMoblo {
+    @include tabletAndMobile {
       display: none;
     }
     .b-users-filters__age-filter-wrapp {
