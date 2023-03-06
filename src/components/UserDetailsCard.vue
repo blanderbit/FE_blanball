@@ -273,15 +273,14 @@
               </div>
             </div>
             <InputComponent
-              v-else
-              :title="$t('profile.phone')"
-              :placeholder="userData.phone"
-              :title-width="0"
-              :outside-title="true"
-              :height="40"
-              name="phone"
-              v-maska="'+38 (0##) ### ## ##'"
-            />
+                v-else
+                :outside-title="true"
+                :title="$t('profile.phone')"
+                :height="40"
+                :title-width="0"
+                name="phone"
+                v-maska="'+38 (0##) ### ## ##'"
+              />
           </div>
           <div class="b-user-card__area-line">
             <div v-if="!isEditMode" class="b-user-card__to-show">
