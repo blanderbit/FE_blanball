@@ -102,7 +102,11 @@ export default {
     transform: translate(-50%, 10px);
   }
   .b-user-cabinet__save-cancel-btns {
-    padding: 0px 20px;
+    padding: 20px 20px;
+    background: rgba(255, 255, 255, 0.7);
+    margin-bottom: -10px;
+
+    backdrop-filter: blur(2px);
     @media (max-width: 768px) {
       display: flex;
       flex-direction: column;

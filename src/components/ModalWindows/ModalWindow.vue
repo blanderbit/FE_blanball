@@ -79,7 +79,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.514);
+  background: rgba(38, 37, 65, 0.2);
   z-index: 999;
   .b_modal_modal-window {
     position: absolute;
@@ -93,6 +93,7 @@ export default {
     border-radius: 6px;
     background: $--b-main-white-color;
     padding: 80px 20px 20px 20px;
+
     .b_modal_window-title {
       display: flex;
       justify-content: space-between;

@@ -331,8 +331,7 @@ export default {
         position: yup.string().nullable().required('errors.required'),
         phone: yup
           .string()
-          .required('errors.required')
-          .min(19, 'errors.invalid-phone'),
+          .required('errors.required'),
         config_phone: yup.boolean().required('errors.required'),
         config_email: yup.boolean().required('errors.required'),
         show_reviews: yup.boolean().required('errors.required'),

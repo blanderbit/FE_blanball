@@ -185,7 +185,7 @@ $color-4c4a82: #4c4a82;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.514);
+  background: rgba(38, 37, 65, 0.2);
   z-index: 999;
 
   .b-bug-report-modal__modal-window {

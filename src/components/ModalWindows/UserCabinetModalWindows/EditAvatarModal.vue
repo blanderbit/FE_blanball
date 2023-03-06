@@ -5,14 +5,23 @@
         <div class="b-edit-avatar">
           <div class="b-edit-avatar__main-part">
             <div class="b-edit-avatar__right-side">
-              <div class="b-edit-avatar__crop-pic">
-                <img :src="userSrcImage" ref="cropImg" alt="" />
-              </div>
+              <vue-cropper
+                ref="cropper"
+                :aspectRatio="1"
+                :minContainerHeight="200"
+                :viewMode="2"
+                :styles="{ border: '2px solid red' }"
+                :src="userImage"
+                alt="Source Image"
+                @crop="cropFile"
+                preview=".preview"
+              >
+              </vue-cropper>
             </div>
 
             <div class="b-edit-avatar__left-side">
               <div class="b-edit-avatar__edited-pic">
-                <img :src="cropedImage" alt="" />
+                <div class="preview"></div>
               </div>
 
               <div class="b-edit-avatar__main-functions">
@@ -21,6 +30,7 @@
                     <input
                       type="file"
                       id="my_file"
+                      accept="image/png, image/jpeg"
                       style="display: none"
                       @change="onFileSelected"
                     />
@@ -52,6 +62,7 @@
             <GreenBtn
               :icon="iconSave"
               :width="125"
+              :disabled="!blobFile"
               :text="$t('buttons.save')"
               @click-function="setAvatar"
             />
@@ -63,19 +74,19 @@
 </template>
 
 <script>
-import { computed, ref, watch, watchEffect, onMounted, onUnmounted } from 'vue'
-import { Form } from '@system.it.flumx.com/vee-validate'
-import Cropper from 'cropperjs'
+import { computed, ref, watchEffect } from 'vue';
+import { Form } from '@system.it.flumx.com/vee-validate';
+import VueCropper from 'vue-cropperjs';
+import 'cropperjs/dist/cropper.css';
+import ModalWindow from '../ModalWindow.vue';
+import InputComponent from '../../forms/InputComponent.vue';
+import GreenBtn from '../../GreenBtn.vue';
 
-import ModalWindow from '../ModalWindow.vue'
-import InputComponent from '../../forms/InputComponent.vue'
-import GreenBtn from '../../GreenBtn.vue'
+import SaveIcon from '../../../assets/img/save-icon.svg';
 
-import SaveIcon from '../../../assets/img/save-icon.svg'
+import { useUserDataStore } from '../../../stores/userData';
 
-import { useUserDataStore } from '../../../stores/userData'
-
-import { API } from '../../../workers/api-worker/api.worker'
+import { API } from '../../../workers/api-worker/api.worker';
 
 export default {
   name: 'EditAvatarModal',
@@ -84,104 +95,79 @@ export default {
     InputComponent,
     Form,
     GreenBtn,
+    VueCropper,
   },
   props: ['userImage'],
   emits: ['closeModal', 'getProfileData'],
   setup(props, { emit }) {
-    const cropImg = ref(null)
-    const cropedImage = ref('')
-    const userSrcImage = ref(null)
-    const selectedFile = ref(null)
-    const userDataStore = useUserDataStore()
-    const blobFile = ref(null)
-    const fileReader = new FileReader()
+    const cropImg = ref(null);
+    const cropedImage = ref('');
+    const selectedFile = ref(null);
+    const cropper = ref();
+    const userDataStore = useUserDataStore();
+    const blobFile = ref(null);
+    const fileReader = new FileReader();
 
-    let cropper = null
+    const iconSave = computed(() => SaveIcon);
 
-    userSrcImage.value = props.userImage
-
-    const iconSave = computed(() => SaveIcon)
     function closeModal() {
-      userSrcImage.value = null
-      selectedFile.value = null
-      emit('closeModal', 'edit_avatar')
+      emit('closeModal', 'edit_avatar');
     }
-    function getCroppedImage() {
-      cropper.getCroppedCanvas().toBlob((blob) => {
-        blobFile.value = blob
-        cropedImage.value = URL.createObjectURL(blob)
-      }, 'image/jpeg')
-    }
+
     function rotateImage() {
-      cropper.rotate(-90)
+      cropper.value.rotate(-90);
     }
+
+    function cropFile() {
+      blobFile.value = true;
+    }
+
     function onFileSelected(event) {
-      selectedFile.value = event.target.files[0]
+      selectedFile.value = event.target.files[0];
     }
 
-    function setAvatar() {
-      const formData = new FormData()
+    function getAvatar() {
+      return new Promise((resolve) => {
+        cropper.value.getCroppedCanvas().toBlob(resolve);
+      });
+    }
 
-      const myAvatar = new File([blobFile.value], 'my_avatar.jpg', {
+    async function setAvatar() {
+      if (!blobFile.value) {
+        return;
+      }
+
+      const formData = new FormData();
+      const file = await getAvatar();
+
+      const myAvatar = new File([file], 'my_avatar.jpg', {
         type: 'image/jpg',
         lastModified: new Date().getTime(),
-      })
+      });
 
-      formData.append('avatar', myAvatar)
+      formData.append('avatar', myAvatar);
       API.AuthorizationService.AddAvatar(formData)
         .then(() => {
-          emit('closeModal', 'edit_avatar')
-          emit('getProfileData')
+          emit('closeModal', 'edit_avatar');
+          emit('getProfileData');
         })
-        .catch((e) => console.log(e))
+        .catch((e) => console.log(e));
       API.UserService.getMyProfile().then((value) => {
         userDataStore.$patch({
           user: value.data,
-        })
-      })
+        });
+      });
     }
 
     fileReader.onload = (event) => {
-      userSrcImage.value = event.target.result
-    }
+      cropper.value.replace(event.target.result);
+    };
 
     watchEffect(() => {
       if (selectedFile.value) {
-        fileReader.readAsDataURL(selectedFile.value)
+        fileReader.readAsDataURL(selectedFile.value);
       }
-    })
-
-    watch(userSrcImage, () => {
-      if (userSrcImage.value) {
-        cropper.replace(userSrcImage.value)
-      }
-    })
-
-    onMounted(() => {
-      cropImg.value.addEventListener('ready', function () {
-        getCroppedImage()
-      })
-      cropImg.value.addEventListener('cropend', function (event) {
-        getCroppedImage()
-      })
-      cropImg.value.addEventListener('crop', function (event) {
-        getCroppedImage()
-      })
-      cropper = new Cropper(cropImg.value, {
-        aspectRatio: 1,
-        minCropBoxWidth: 50,
-        minCropBoxHeight: 50,
-        viewMode: 2,
-        dragMode: 'crop',
-        rotatable: true,
-        background: false,
-        cropBoxMovable: true,
-        cropBoxResizable: true,
-      })
-    })
-    onUnmounted(() => {
-      cropper.destroy()
-    })
+    });
 
     return {
       closeModal,
@@ -191,19 +177,15 @@ export default {
       iconSave,
       cropImg,
       cropedImage,
-      userSrcImage,
-    }
+      cropper,
+      cropFile,
+      blobFile,
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-// SCSS variables for hex colors
- $color-dfdeed: #dfdeed;
- $color-efeff6: #efeff6;
-
-
 @import '../../../assets/styles/mixins/device.scss';
 
 .b-edit-avatar {
@@ -214,7 +196,15 @@ export default {
     @include mobile {
       display: block;
     }
-    .b-edit-avatar__right-side {
+    ::v-deep(.cropper-move) {
+      display: none;
+    }
+    ::v-deep(.b-edit-avatar__right-side) {
+      width: 200px;
+      @include mobile {
+          width: 100%;
+      }
+
       .b-edit-avatar__crop-pic {
         overflow: hidden;
         height: 248px;
@@ -231,16 +221,25 @@ export default {
     }
     .b-edit-avatar__left-side {
       .b-edit-avatar__edited-pic {
-        width: 140px;
-        height: 132px;
+        width: 140px !important;
+        height: 132px !important;
         overflow: hidden;
+        border-radius: 4px;
         @include mobile {
           display: none;
         }
+      }
+      ::v-deep(.b-edit-avatar__edited-pic) {
         img {
           display: block;
           height: 100%;
           margin: 0 auto;
+        }
+        .preview {
+          background: gainsboro;
+          width: 100% !important;
+          height: 100%;
+          border-radius: 4px;
         }
       }
       .b-edit-avatar__another-pic,
@@ -252,7 +251,7 @@ export default {
         font-weight: 400;
         font-size: 13px;
         line-height: 24px;
-        color: $--b-main-gray-color;
+        color: #575775;
         margin-bottom: 12px;
         cursor: pointer;
         @include mobile {
@@ -310,7 +309,7 @@ export default {
           }
           .b-edit-avatar__rotate {
             @include mobile {
-              border: 1px solid $color-dfdeed;
+              border: 1px solid #dfdeed;
               padding: 9px 17px;
               border-radius: 6px;
             }
@@ -324,7 +323,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px solid $color-efeff6;
+    border-top: 2px solid #efeff6;
     padding-top: 20px;
     .b-edit-avatar__cancel-btn {
       font-family: 'Inter';
@@ -332,10 +331,43 @@ export default {
       font-weight: 400;
       font-size: 14px;
       line-height: 24px;
-      color: $--b-main-gray-color;
+      color: #575775;
       padding: 4px 16px;
       cursor: pointer;
     }
   }
 }
+::v-deep(.cropper-modal) {
+  background: #D9D9D9;;
+}
+::v-deep(.cropper-line) {
+  background: transparent;
+  background-color: transparent;
+}
+::v-deep(.cropper-dashed) {
+  opacity: 0;
+}
+::v-deep(.cropper-center) {
+  display: none;
+}
+::v-deep(.cropper-view-box) {
+  border-width: 2px;
+  border-style: solid;
+  border: 3px dashed #148783;
+  background: transparent;
+  outline: none;
+}
+::v-deep(.cropper-point) {
+  background: transparent;
+}
+// ::v-deep(.point-ne) {
+//   width: 14px;
+//   height: 14px;
+//   border-top: 3px solid #148783;
+//   border-right: 3px solid #148783;
+// }
+// ::v-deep(.point-e) {
+//   height: 28px;
+//   border-right: 3px solid #148783;
+// }
 </style>
