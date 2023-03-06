@@ -116,6 +116,10 @@ export default {
     initValue: {
       type: String,
       default: '',
+    },
+    openIndicator: {
+      type: String,
+      default: ''
     }
   },
   emits: ['new-value', 'update:modelValue'],
@@ -386,5 +390,8 @@ export default {
       text-overflow: ellipsis;
     }
   }
+}
+.b-form-error  {
+  border-radius: 6px;
 }
 </style>

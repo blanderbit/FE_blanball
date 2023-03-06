@@ -112,12 +112,11 @@ import { ref, computed } from 'vue';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import * as yup from 'yup';
-
 import Dropdown from '../forms/Dropdown.vue';
 import GreenBtn from '../GreenBtn.vue';
 
 import CONSTANTS from '../../consts/index';
+import SCHEMAS from '../../validators/schemas';
 
 export default {
   components: {
@@ -147,28 +146,7 @@ export default {
     });
 
     const schema = computed(() => {
-      if (props.selectedTab === 1) {
-        return yup.object({
-          first_team: yup.object({
-            t_shirts: yup.string().required('errors.required'),
-            shorts: yup.string().required('errors.required'),
-          }),
-          second_team: yup.object({
-            t_shirts: yup.string().required('errors.required'),
-            shorts: yup.string().required('errors.required'),
-          }),
-        });
-      }
-      if (props.selectedTab === 2) {
-        return yup.object({
-          first_team: yup.object({
-            shirtfronts: yup.string().required('errors.required'),
-          }),
-          second_team: yup.object({
-            shirtfronts: yup.string().required('errors.required'),
-          }),
-        });
-      }
+      return SCHEMAS.selectForms.schema(props.selectedTab)
     });
 
     const saveData = async (data) => {

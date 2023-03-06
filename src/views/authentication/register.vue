@@ -95,7 +95,6 @@ import { useRouter } from 'vue-router'
 import { Form } from '@system.it.flumx.com/vee-validate'
 
 import { merge, cloneDeep } from 'lodash'
-import * as yup from 'yup'
 
 import Step_1 from '../../components/register-components/Step-1.vue'
 import Step_2 from '../../components/register-components/Step-2.vue'
@@ -114,6 +113,7 @@ import { TokenWorker } from '../../workers/token-worker'
 import { PositionMapBus } from '../../workers/event-bus-worker'
 
 import { ROUTES } from '../../router/router.const'
+import SCHEMAS from '../../validators/schemas'
 
 import imageStep_1 from '../../assets/img/registration-back-1.svg'
 import imageStep_2 from '../../assets/img/registration-back-2.svg'
@@ -134,14 +134,6 @@ import onboardingStepMob_2 from '../../assets/img/onboarding-step-mob2.svg'
 import onboardingStepMob_3 from '../../assets/img/onboarding-step-mob3.svg'
 import onboardingStepMob_4 from '../../assets/img/onboarding-step-mob4.svg'
 
-yup.addMethod(yup.string, 'userName', function (errorMessage) {
-  return this.test(`UserName`, errorMessage, function (value) {
-    const { path, createError } = this
-    // const reg = /^[a-zа-яієїґ\'\d]{1}[a-zа-яієїґ\'\d-]*[a-zа-яієїґ\'\d]{1}$/i;
-    const reg = /^[А-Яа-яієїґЇІЄҐ\'-]*[А-Яа-яієїґЇІЄҐ\'-]+$/i
-    return reg.exec(value) || createError({ path, message: errorMessage })
-  })
-})
 export default {
   name: 'register',
   components: {
@@ -171,81 +163,9 @@ export default {
     })
 
     let schema = computed(() => {
-      if (currentStep.value === 1) {
-        return yup.object({
-          gender: yup.string().required('errors.required'),
-          profile: yup.object({
-            name: yup
-              .string()
-              .required('errors.required')
-              .userName('errors.invalid-name'),
-            last_name: yup
-              .string()
-              .required('errors.required')
-              .userName('errors.invalid-name'),
-          }),
-        })
-      }
-      if (currentStep.value === 2) {
-        return yup.object({
-          email: yup.string().required('errors.required').email('errors.email'),
-          password: yup
-            .string()
-            .required('errors.required')
-            .min(8, 'errors.min8')
-            .max(68, 'errors.max68'),
-          re_password: yup
-            .string()
-            .required('errors.required')
-            .min(8, 'errors.min8')
-            .max(68, 'errors.max68')
-            .when('password', (password, field) =>
-              password
-                ? field
-                    .required('errors.required')
-                    .oneOf([yup.ref('password')], 'errors.same-password')
-                : field
-            ),
-          phone: yup
-            .string()
-            .required('errors.required')
-            .min(19, 'errors.invalid-phone'),
-        })
-      }
-      if (currentStep.value === 8) {
-        return yup.object({
-          day: yup.string().required('errors.required'),
-          month: yup.string().required('errors.required'),
-          year: yup.string().required('errors.required'),
-        })
-      }
-      if (currentStep.value === 9) {
-        return yup.object({
-          height: yup
-            .number()
-            .typeError('errors.type-number')
-            .required('errors.required')
-            .min(145, 'errors.min145')
-            .max(210, 'errors.max210'),
-          weight: yup
-            .number()
-            .typeError('errors.type-number')
-            .required('errors.required')
-            .min(30, 'errors.min30')
-            .max(210, 'errors.max210'),
-          position: yup.string().required('errors.required'),
-          working_leg: yup.string().required('errors.required'),
-        })
-      }
-      if (currentStep.value === 10) {
-        return yup.object({
-          region: yup.string().required('errors.required'),
-          city: yup.string().required('errors.required'),
-          address: yup.string().required('errors.required'),
-        })
-      }
-      return yup.object({})
+      return SCHEMAS.register.schema(currentStep.value)
     })
+
     const rightSideStyle = computed(() => {
       switch (currentStep.value) {
         case 4:

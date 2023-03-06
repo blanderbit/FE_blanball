@@ -73,8 +73,6 @@ import { useToast } from 'vue-toastification';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import * as yup from 'yup';
-
 import ModalWindow from '../ModalWindow.vue';
 import Counter from '../../Counter.vue';
 import CodeInput from '../../forms/CodeInput.vue';
@@ -82,6 +80,8 @@ import InputComponent from '../../forms/InputComponent.vue';
 import Loading from '../../../workers/loading-worker/Loading.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
+
+import SCHEMAS from '../../../validators/schemas';
 
 export default {
   name: 'ChangeEmailModal',
@@ -118,22 +118,7 @@ export default {
     });
 
     const schema = computed(() => {
-      if (currentStep.value === 1) {
-        return yup.object({
-          email: yup
-            .string()
-            .required('errors.required')
-            .email('errors.email'),
-        });
-      }
-      if (currentStep.value === 2) {
-        return yup.object({
-          verify_code: yup
-            .string()
-            .required('errors.required')
-            .min(5, 'errors.min5'),
-        });
-      }
+      return SCHEMAS.changeEmail.schema(currentStep.value)
     });
 
     function closeModal() {
