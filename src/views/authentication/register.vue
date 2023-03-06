@@ -348,7 +348,7 @@ form {
 }
 .b-register__onboarding-step::v-deep(.b-auth__left-part) {
 
-  @media (max-width: 576px) {
+  @include mobile {
     margin-top: 150px;
   }
 }

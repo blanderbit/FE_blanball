@@ -718,7 +718,7 @@ export default {
   @media (min-width: 768px) {
     position: relative;
   }
-  @media (max-width: 768px) {
+  @include tabletAndMobile {
     padding-bottom: 150px;
   }
 }
@@ -797,7 +797,7 @@ export default {
     @media (min-width: 1200px) {
       justify-content: space-between;
     }
-    @media (max-width: 768px) {
+    @include tabletAndMobile {
       display: block;
     }
     .b-user-cabinet__buttons-block {

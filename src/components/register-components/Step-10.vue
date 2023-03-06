@@ -56,7 +56,7 @@
       <div class="b-register-step__map">
         <RegisterModalPositionMap 
           v-if="isMobile"
-          :title="'Вибрати позицію на карті'">
+          :title="$t('register.select-position-on-map')">
         </RegisterModalPositionMap>
       </div>
     </template>
@@ -212,7 +212,6 @@
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/styles/mixins/device.scss';
 
   .b-register-step__title {
     font-family: 'Exo 2';

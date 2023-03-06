@@ -12,8 +12,8 @@
         <div class="b-login-step__input">
           <InputComponent
             :outside-title="true"
-            :title="`Логін`"
-            :placeholder="'example@email.com'"
+            :title="$t('login.login')"
+            :placeholder="$t('login.example-email')"
             :title-width="0"
             :height="40"
             name="email"
@@ -21,7 +21,7 @@
         </div>
         <div class="b-login-step__input">
           <InputComponent
-            :title="`Пароль`"
+            :title="$t('login.password')"
             :title-width="0"
             :outside-title="true"
             :placeholder="'********'"
@@ -69,7 +69,7 @@
       <div class="b-login-step__buttons">
         <GreenBtn
           @click-function="handleLogin(data)"
-          :text="'Увійти в акаунт'"
+          :text="$t('login.enter-account')"
           :height="40"
         />
       </div>
@@ -135,6 +135,7 @@ export default {
     }
 
 
+    
     const handleLogin = async (data) => {
       const { valid } = await data.validate()
 
@@ -202,9 +203,6 @@ export default {
  $color-e26767: #e26767;
  $color-8a8aa8: #8a8aa8;
 
-
-@import '../../assets/styles/mixins/device.scss';
-
 .remember-me__desktop {
   @include mobile {
     display: none;
@@ -263,7 +261,7 @@ export default {
       font-size: 28px;
       line-height: 28px;
       color: $--b-main-black-color;
-      @media (max-width: 576px) {
+      @include mobile {
         text-align: center;
       }
     }
@@ -276,7 +274,7 @@ export default {
       font-size: 22px;
       line-height: 32px;
       color: $--b-main-black-color;
-      @media (max-width: 576px) {
+      @include mobile {
         text-align: center;
       }
     }
@@ -301,13 +299,13 @@ export default {
       color: $color-8a8aa8;
       border-bottom: 1px dashed $color-8a8aa8;
     }
-    @media (max-width: 576px) {
+    @include mobile {
       display: none;
     }
   }
   .b-login-step__remember-me {
     margin-top: 26px;
-    @media (max-width: 576px) {
+    @include mobile {
       display: flex;
       align-items: center;
       justify-content: space-between;

@@ -55,21 +55,13 @@ export default {
 $color-f0f0f4: #f0f0f4;
 
 .b-event-join__tooltip-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(38, 37, 65, 0.2);
   z-index: 999;
-
-  &::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    min-height: 100%;
-    background: $--b-main-black-color;
-    width: 100%;
-    min-height: 100%;
-    z-index: -1;
-    opacity: 0.2;
-  }
 
   .b-event-join__tooltip {
     background: $--b-main-white-color;

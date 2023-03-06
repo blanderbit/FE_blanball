@@ -27,13 +27,15 @@
 </template>
 
 <script>
-import { PaginationWorker } from '../../workers/pagination-worker'
 import { ref, computed } from 'vue'
+import { useI18n } from "vue-i18n";
+
+import { PaginationWorker } from '../../workers/pagination-worker'
 import SmartList from '../../components/smart-list/SmartList.vue'
 import EmptyList from '../../components/EmptyList.vue'
 import ScrollToTop from '../../components/ScrollToTop.vue'
 import InfiniteLoading from '../../workers/infinit-load-worker/InfiniteLoading.vue'
-import CONSTANTS from '../../consts'
+
 export default {
   name: 'SimpleListWrapper',
   components: {
@@ -50,6 +52,7 @@ export default {
   setup(props) {
     const refList = ref()
     const blockScrollToTopIfExist = ref()
+    const { t } = useI18n();
 
     const { paginationElements, paginationLoad, paginationPage } =
       PaginationWorker({
@@ -70,8 +73,8 @@ export default {
 
     const emptyListMessages = computed(() => {
       return {
-        title: CONSTANTS.no_data_notifications.noUsers.title,
-        description: CONSTANTS.no_data_notifications.noUsers.description,
+        title: t('no_records.noUsers.title'),
+        description: t('no_records.noUsers.description'),
       }
     })
     return {

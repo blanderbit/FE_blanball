@@ -280,7 +280,7 @@ export default {
     flex-basis: 312px;
   }
 
-  @media (max-width: 768px) {
+  @include tabletAndMobile {
     box-shadow: none;
   }
 

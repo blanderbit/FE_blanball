@@ -60,10 +60,10 @@
         </div>
         <div class="d-flex justify-content-between align-items-center">
           <div class="b-modal-position__clear" @click="activeModal = false">
-            Скасувати
+            {{ $t('buttons.cancel') }}
           </div>
           <GreenBtn
-            :text="'Зберегти'"
+            :text="$t('buttons.save')"
             :width="140"
             :height="40"
             :disabled="nextButton"

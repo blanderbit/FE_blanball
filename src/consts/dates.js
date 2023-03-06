@@ -1,7 +1,12 @@
+const fullYear = new Date().getFullYear()
+const lastAvailableYear = fullYear - 6
+
 export default {
-  days: new Array(31)
-    .fill('l')
-    .map((i, idx) => ({ value: idx + 1, name: idx + 1 })),
+  days: new Array(31).fill('l').map((i, k) => ({
+    id: `${k >= 8 ? k + 1 : '0' + (k + 1)}`,
+    value: k + 1,
+    name: new String(k + 1)
+  })),
   months: [
     {
       value: 'Січня',
@@ -52,13 +57,9 @@ export default {
       name: 'Грудня',
     },
   ],
-  years: new Array(42).fill(1970).reduce((curr, next, idx) => {
-    return [
-      ...curr,
-      {
-        value: next + idx,
-        name: next + idx,
-      },
-    ]
-  }, []),
+  years: Array.from({ length: 80 }, (v, k) => ({
+    id: k,
+    value: lastAvailableYear - k,
+    name: new String(lastAvailableYear - k)
+  })),
 }

@@ -23,7 +23,7 @@
       </div>
       <div class="d-flex justify-content-between align-items-center">
         <GreenBtn
-          :text="'Зберегти'"
+          :text="$t('buttons.save')"
           :width="140"
           :height="40"
           @click-function="save(data)"

@@ -9,7 +9,9 @@
           <div></div>
         </div>
       </div>
-      <div class="spiner-text">Завантаження</div>
+      <div class="spiner-text">
+        {{ $t('buttons.loading') }}
+      </div>
     </div>
   </div>
 </template>

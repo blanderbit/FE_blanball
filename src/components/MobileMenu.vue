@@ -141,8 +141,9 @@
 </template>
 
 <script>
-import { ref, computed, inject, onMounted } from 'vue'
+import { ref, computed, inject } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n';
 
 import { storeToRefs } from "pinia";
 import { v4 as uuid } from 'uuid'
@@ -157,7 +158,6 @@ import ScrollToTop from './ScrollToTop.vue'
 import { TokenWorker } from '../workers/token-worker'
 import { useUserDataStore } from '../stores/userData'
 
-import CONSTANTS from '../consts/index'
 import { ROUTES } from '../router/router.const'
 
 import NotificationIcon from '../assets/img/notification-small.svg'
@@ -268,13 +268,13 @@ export default {
     const triggerForRestart = ref('')
     const isShowingFoundBug = ref(true)
     const clientVersion = ref(inject('clientVersion'))
+    const { t } = useI18n();
 
 
     const emptyListMessages = computed(() => {
       return {
-        title: CONSTANTS.no_data_notifications.noNotifications.title,
-        description:
-          CONSTANTS.no_data_notifications.noNotifications.description,
+        title: t('no_records.noNotifications.title'),
+        description: t('no_records.noNotifications.description')
       }
     })
 
@@ -282,11 +282,6 @@ export default {
       return user.value
     })
 
-    const mockData = computed(() => {
-      return {
-        letters: CONSTANTS.mob_menu.letters,
-      }
-    })
     const menuBlockHeight = ref('auto')
     const menuBlockStyle = computed(() => {
       return {
@@ -384,7 +379,6 @@ export default {
       selectedList,
       bottomMenu,
       blockScrollToTopIfExist,
-      mockData,
       clientVersion,
       isShowingFoundBug,
       notificationList,
@@ -433,7 +427,7 @@ export default {
   @media (max-width: 992px ) {
     width: 70%;
   }
-  @media (max-width: 576px) {
+  @include mobile {
     width: 100%;
   }
 

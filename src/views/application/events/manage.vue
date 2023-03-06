@@ -100,7 +100,7 @@
             <span
               class="b-remove-all__invited-users"
               @click="openRemoveUsersModal"
-              >Видалити всіх</span
+              >{{ $t('buttons.remove-all') }}</span
             >
             <div
               class="b-manage-event__invited-user"
@@ -113,9 +113,9 @@
                   :avatarType="'small-square'"
                   :full-name="`${user.profile.name} ${user.profile.last_name}`"
                 ></avatar>
-                <span class="b-invited-user__position">{{
-                  user.profile.position
-                }}</span>
+                <span v-if="user.profile.position" class="b-invited-user__position">
+                  {{ $t(`hashtags.${user.profile.position}`) }}
+               </span>
                 <span class="b-invited-user__full-name">
                   {{ user.profile.name }} {{ user.profile.last_name }}
                 </span>
@@ -491,18 +491,18 @@ export default {
     justify-content: space-between;
     align-items: center;
     span {
-      @media (max-width: 768px) {
+      @include tabletAndMobile {
         display: none;
       }
     }
-    @media (max-width: 768px) {
+    @include tabletAndMobile {
       padding: 0;
     }
     .b-manage-event__btns-mob-block {
       @media (min-width: 1200px) {
         display: none;
       }
-      @media (max-width: 768px) {
+      @include tabletAndMobile {
         width: 100%;
       }
     }
@@ -530,7 +530,7 @@ export default {
         width: 450px;
         min-width: 350px;
       }
-      @media (max-width: 768px) {
+      @include tabletAndMobile {
         width: 100%;
       }
       .b-manage-event__progress-line {
@@ -558,7 +558,7 @@ export default {
         justify-content: space-between;
         align-items: center;
         margin-top: 20px;
-        @media (max-width: 768px) {
+        @include tabletAndMobile {
           margin-bottom: 50px;
         }
       }
@@ -575,7 +575,7 @@ export default {
   margin-top: 20px;
   position: relative;
 
-  @media (max-width: 768px) {
+  @include tabletAndMobile {
     display: none;
   }
 }

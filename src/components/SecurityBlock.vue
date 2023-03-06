@@ -32,14 +32,6 @@
             name="show_reviews"
           />
         </div>
-        <!-- <div class="b-security__personal-settings">
-          <p>{{ $t('profile.planed-events') }}</p>
-          <Switcher
-            :id="'events'"
-            :is-edit-mode="isEditMode"
-            name="planned_events"
-          />
-        </div> -->
       </div>
     </div>
     <div class="b-security__top-table">
@@ -138,7 +130,7 @@ export default {
   padding: 20px 16px;
   height: fit-content;
 
-  @media (max-width: 768px) {
+  @include tabletAndMobile {
     box-shadow: none;
     padding: 0px 16px;
   }
@@ -171,7 +163,7 @@ export default {
       margin-top: 20px;
       border-top: 1px solid $color-dfdeed;
 
-      @media (max-width: 768px) {
+      @include tabletAndMobile {
         border-top: none;
         margin-top: 0px;
       }
@@ -192,7 +184,7 @@ export default {
           border-bottom: 1px solid #DFDEED; 
         }
 
-        @media (max-width: 768px) {
+        @include tabletAndMobile {
           font-weight: 500;
         }
       }
@@ -237,7 +229,7 @@ export default {
         justify-content: center;
         gap: 12px;
       }
-      @media (max-width: 768px) {
+      @include tabletAndMobile {
         justify-content: center;
         flex-direction: row-reverse;
         gap: 12px;
