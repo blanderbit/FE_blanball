@@ -113,9 +113,9 @@
                   :avatarType="'small-square'"
                   :full-name="`${user.profile.name} ${user.profile.last_name}`"
                 ></avatar>
-                <span class="b-invited-user__position">{{
-                  user.profile.position
-                }}</span>
+                <span v-if="user.profile.position" class="b-invited-user__position">
+                  {{ $t(`hashtags.${user.profile.position}`) }}
+               </span>
                 <span class="b-invited-user__full-name">
                   {{ user.profile.name }} {{ user.profile.last_name }}
                 </span>

@@ -143,6 +143,7 @@
 <script>
 import { ref, computed, inject } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n';
 
 import { storeToRefs } from "pinia";
 import { v4 as uuid } from 'uuid'
@@ -267,6 +268,7 @@ export default {
     const triggerForRestart = ref('')
     const isShowingFoundBug = ref(true)
     const clientVersion = ref(inject('clientVersion'))
+    const { t } = useI18n();
 
 
     const emptyListMessages = computed(() => {

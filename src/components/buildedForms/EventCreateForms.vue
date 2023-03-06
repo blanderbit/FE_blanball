@@ -149,7 +149,7 @@ $color-dfdeed: #dfdeed;
       }
       .b-event-info__form-item {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-between;
         gap: 8px;
         margin-top: 8px;
