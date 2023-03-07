@@ -116,7 +116,7 @@ export default {
     @media (max-width: 1200px) {
       margin-top: 0;
       display: flex;
-      flex-direction: c;
+      flex-direction: column;
       justify-content: space-between;
       align-items: center;
     }
@@ -127,6 +127,7 @@ export default {
       gap: 12px;
       @media (max-width: 1200px) {
         margin-bottom: 0;
+        flex-direction: row;
       }
       @include tabletAndMobile {
         flex-basis: 50%;

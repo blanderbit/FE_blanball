@@ -61,25 +61,24 @@
       {{ $t('events.need-ball-subtitle') }}
     </span>
 
-    <div class="contact-switcher">
-      <span class="title">{{ $t('events.show-my-contacts') }}</span>
-      <Switcher
-        :id="'contacts'"
-        :is-edit-mode="true"
-        name="is_phone_shown"
-        @get-value="showHidePhone"
-      />
-    </div>
-    <div class="input" v-if="isPhoneShown">
+    <div class="phone-block">
+      <span class="title">{{ $t('events.my-contacts') }}</span>
+      <div class="input"
+      :class="{'phone-read': !isEditPhone}">
       <InputComponent
-        :placeholder="user.phone"
+        ref="phoneValue"
+        :placeholder="phoneValue?.staticModelValue"
         :title-width="0"
+        :readonly="!isEditPhone"
         name="contact_number"
         v-maska="'+38 (0##) ### ## ##'"
+        :icon="icons.editPhone"
+        @icon-click="changeEditPhoneMode"
       >
       </InputComponent>
     </div>
-
+    </div>
+    
     <div class="title-block">
       <span class="title-margin">{{ $t('events.additional-info') }}</span>
     </div>
@@ -110,6 +109,9 @@ import EventCreateForms from '../buildedForms/EventCreateForms.vue'
 import AimIcon from '../../assets/img/aim.svg'
 import { storeToRefs } from 'pinia'
 
+import editPhoneIcon from '../../assets/img/sort-arrows-horizontal.svg'
+import checkMarkIcon from '../../assets/img/check-mark.svg'
+
 export default {
   name: 'ManageEventThirdStep',
   components: {
@@ -136,14 +138,16 @@ export default {
     }
   },
   setup(props, { emit }) {
-    const isPhoneShown = ref(props.initialValues?.is_phone_shown);
     const store = useUserDataStore();
     const { user } = storeToRefs(store);
     const needForm = ref(props.initialValues?.need_form);
+    const phoneValue = ref(null);
+    const isEditPhone = ref(false);
 
     const icons = computed(() => {
       return {
         aim: AimIcon,
+        editPhone: isEditPhone.value ? editPhoneIcon : checkMarkIcon,
       }
     })
 
@@ -159,20 +163,24 @@ export default {
     const changeForms = () => {
       emit('changeForms')
     }
-
     
     const stepStyle = computed(() => {
       return props.currentStep === 3 ? { height: 'auto' } : { height: '0px' }
     })
 
-   
+    function changeEditPhoneMode() {
+      isEditPhone.value = !isEditPhone.value
+    }
+
     return {
       icons,
       stepStyle,
       needForm,
+      isEditPhone,
       user,
-      isPhoneShown,
+      phoneValue,
       showHidePhone,
+      changeEditPhoneMode,
       changeForms,
       selectForms,
     }
@@ -376,5 +384,33 @@ export default {
   font-size: 12px;
   line-height: 20px;
   color: $--b-error-color;
+}
+.phone-block {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  .phone-value {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #F9F9FC;
+    border-radius: 6px;
+    padding: 8px;
+    line-height: 20px;
+    @include inter(13px, 500);
+
+    img {
+      cursor: pointer;
+    }
+  }
+}
+.phone-read {
+  ::v-deep(input) {
+    background: #F9F9FC;
+  }
+  ::v-deep(.b-input__wrapper) {
+    border: none;
+  }
 }
 </style>

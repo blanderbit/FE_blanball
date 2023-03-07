@@ -24,28 +24,8 @@
               name="position"
             />
           </div>
-          <div class="b-modal-filters__game-search-input">
-            <InputComponent
-              :placeholder="'Введіть ключові слова'"
-              v-model="searchData"
-              :title-width="0"
-              :height="38"
-              name="change_email"
-            />
-          </div>
           <div class="b-modal-filters__gender">
             <RadioGenderBox v-model:gender="genderData" />
-          </div>
-          <div class="b-modal-filters__status-event">
-            <Dropdown
-              :check-value-immediate="true"
-              :options="statusDropdown"
-              :placeholder="$t('events.event-status')"
-              :height="32"
-              display-value="value"
-              display-name="name"
-              v-model="gameStatusData"
-            />
           </div>
           <div class="b-modal-filters__location">
             <ModalPositionMap v-model="locationData"></ModalPositionMap>

@@ -12,7 +12,6 @@ import { transpileInterseptorQueryToConfig } from '../workers/api-worker/http/fi
 import { ROUTES } from './router.const'
 import { useUserDataStore } from '../stores/userData'
 import { prepareEventUpdateData } from '../utils/prepareEventUpdateData'
-import { prepareEventData } from '../utils/prepareEventData'
 
 const usersData = () => {
   const userStore = useUserDataStore()
@@ -129,9 +128,6 @@ const router = createRouter({
           name: ROUTES.APPLICATION.EVENTS.CREATE.name,
           beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
             usersData,
-            eventData: async () => {
-              return prepareEventData()
-            }
           })),
           component: () => import('../views/application/events/manage.vue'),
           meta: {

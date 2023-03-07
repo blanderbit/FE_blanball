@@ -119,18 +119,11 @@ export default {
       return yup.object({
         description: yup.string().required('errors.required'),
         need_form: yup.string().required('errors.required'),
-        is_phone_shown: yup.boolean().nullable(),
         forms: yup.object({}).required('errors.required'),
         contact_number: yup
           .string()
-          .nullable()
-          .when('is_phone_shown', {
-            is: true,
-            then: yup
-              .string()
-              .required('errors.required')
-              .matches(/^(\+38|38)?\s*\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{2}[\s.-]?\d{2}$/, 'errors.invalid-phone'),
-          }),
+          .required('errors.required')
+          .matches(/^(\+38|38)?\s*\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{2}[\s.-]?\d{2}$/, 'errors.invalid-phone'),
       });
     }
     return yup.object({});

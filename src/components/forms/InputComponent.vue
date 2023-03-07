@@ -134,7 +134,7 @@ export default {
     'sendInputCoordinates',
     'update:modelValue',
   ],
-  setup(props, { emit }) {
+  setup(props, { emit, expose }) {
     const {
       modelValue: staticModelValue,
       modelErrorMessage,
@@ -157,6 +157,8 @@ export default {
     const inputType = ref(null)
     const rightIcon = ref('')
     const input = ref(null)
+
+    expose({staticModelValue})
 
     const inputStyle = computed(() => {
       return {

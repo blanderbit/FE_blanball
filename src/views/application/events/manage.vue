@@ -210,7 +210,26 @@ export default {
     const invitedUsers = ref([])
     const isSelectFormColarModalOpened = ref(false)
     const removeInvitedUsersModalOpened = ref(false)
-    const eventPreviewData = ref(route.meta.eventData);
+
+    const eventPreviewData = ref(route.meta?.eventData ||
+    {
+      name: '',
+      place: {},
+      status: 'Planned',
+      gender: null,
+      description: '',
+      type: '',
+      need_ball: false,
+      duration: null,
+      need_form: null,
+      date_and_time: '',
+      forms: {},
+      contact_number: user.value.phone,
+      count_current_users: 0,
+      count_current_fans: 0,
+      current_users: [],
+    })
+
     const formsModalSelectedTabId = ref(
       eventPreviewData.value.need_form ? 1 : 2
     )
