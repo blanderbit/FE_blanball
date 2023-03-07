@@ -82,7 +82,7 @@ export default {
   line-height: 20px;
   color: $--b-main-black-color;
 
-  @media (max-width: 768px) {
+  @include tabletAndMobile {
     width: 100%;
   }
   &.inactive {

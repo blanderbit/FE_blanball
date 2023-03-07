@@ -29,7 +29,7 @@
             />
           </div>
 
-          <div v-if="modalChangeStep === 2">
+          <div v-if="currentStep === 2">
             <Counter
               :start-time="30"
               :counter-text="$t('modals.change_password.sms-code')"
@@ -38,7 +38,7 @@
             />
           </div>
 
-          <div v-show="modalChangeStep === 2" class="sms-code-block">
+          <div v-show="currentStep === 2" class="sms-code-block">
             <CodeInput
               :fields="5"
               :fieldWidth="48"
@@ -69,8 +69,6 @@ import { useI18n } from 'vue-i18n';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import * as yup from 'yup';
-
 import ModalWindow from '../ModalWindow.vue';
 import Counter from '../../Counter.vue';
 import CodeInput from '../../forms/CodeInput.vue';
@@ -78,6 +76,8 @@ import InputComponent from '../../forms/InputComponent.vue';
 import Loading from '../../../workers/loading-worker/Loading.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
+
+import SCHEMAS from '../../../validators/schemas';
 
 export default {
   name: 'ChangePasswordModal',
@@ -99,42 +99,14 @@ export default {
     const { t } = useI18n();
     const loading = ref(false)
     const toast = useToast();
-    const modalChangeStep = ref(1);
+    const currentStep = ref(1);
 
     const schema = computed(() => {
-      if (modalChangeStep.value === 1) {
-        return yup.object({
-          old_password: yup
-            .string()
-            .required('errors.required')
-            .min(8, 'errors.min8')
-            .max(68, 'errors.max68'),
-          new_password: yup
-            .string()
-            .required('errors.required')
-            .min(8, 'errors.min8')
-            .max(68, 'errors.max68')
-            .when('old_password', (password, field) =>
-              password
-                ? field
-                    .required('errors.required')
-                    .oneOf([yup.ref('old_password')], 'errors.same-password')
-                : field
-            ),
-        });
-      }
-      if (modalChangeStep.value === 2) {
-        return yup.object({
-          verify_code: yup
-            .string()
-            .required('errors.required')
-            .min(5, 'errors.min5'),
-        });
-      }
+      return SCHEMAS.changePassword.schema(currentStep.value)
     });
 
     function closeModal() {
-      modalChangeStep.value = 1;
+      currentStep.value = 1;
       emit('closeModal', 'change_password');
     }
 
@@ -150,12 +122,12 @@ export default {
       }
       loading.value = true;
       try {
-        if (modalChangeStep.value === 1) {
+        if (currentStep.value === 1) {
           await sendCode(data);
         } else {
           await changePassword(data);
         }
-        modalChangeStep.value++;
+        currentStep.value++;
         loading.value = false;
       } catch {
         loading.value = false;
@@ -176,7 +148,7 @@ export default {
       sendCode,
       nextStep,
       loading,
-      modalChangeStep,
+      currentStep,
       schema,
       disableSubmit: (e) => {
         e.stopPropagation();

@@ -181,13 +181,13 @@ export default {
     const eventJoinToolTipItems = ref([
             {
                 id: 1,
-                text: 'Як учасник',
+                text: t('buttons.like-a-player'),
                 img: BallIcon,
                 type: 'play'
             },
             {
                 id: 2,
-                text: 'Як вболівальник',
+                text: t('buttons.like-a-fan'),
                 img: BallIcon,
                 type: 'view'
             }
@@ -198,15 +198,14 @@ export default {
         event_cards: CONSTANTS.event_page.event_cards,
         sport_type_dropdown: CONSTANTS.event_page.sport_type_dropdown,
         gender_dropdown: CONSTANTS.event_page.gender_dropdown,
-        cities_dropdown: CONSTANTS.event_page.cities_dropdown,
       }
     })
     const iconPlus = computed(() => Plus)
     const emptyListMessages = computed(() => {
       return {
-        title: 'Наразі немає актуальних подій для відображення',
-        description: 'Ваша подія може стати першою',
-        button_text: 'Організувати подію!'
+        title: t('no_records.noEvents.title'),
+        description: t('no_records.noEvents.description'),
+        button_text: t('no_records.noEvents.button_text')
       }
     })
     

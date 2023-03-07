@@ -60,10 +60,10 @@
         </div>
         <div class="d-flex justify-content-between align-items-center">
           <div class="b-modal-position__clear" @click="activeModal = false">
-            Скасувати
+            {{ $t('buttons.cancel') }}
           </div>
           <GreenBtn
-            :text="'Зберегти'"
+            :text="$t('buttons.save')"
             :width="140"
             :height="40"
             :disabled="nextButton"
@@ -80,8 +80,6 @@ import { ref, computed, watch } from 'vue'
 
 import { Form } from '@system.it.flumx.com/vee-validate'
 
-import * as yup from 'yup'
-
 import PositionMap from './PositionMap.vue'
 import Dropdown from './../forms/Dropdown.vue'
 import InputComponent from './../forms/InputComponent.vue'
@@ -95,6 +93,7 @@ import { API } from '../../workers/api-worker/api.worker'
 import CONSTANTS from '../../consts'
 
 import tickIcon from '../../assets/img/location-point.svg'
+import SCHEMAS from '../../validators/schemas'
 
 export default {
   components: {
@@ -119,10 +118,11 @@ export default {
     const coords = ref({})
     const loading = ref(true)
     const activeModal = ref(false)
-    const schema = yup.object({
-      region: yup.string().required('errors.required'),
-      city: yup.string().required('errors.required'),
+
+    const schema = computed(() => {
+      return SCHEMAS.positionMap.schema
     })
+
     const icons = computed(() => {
       return {
         tick: tickIcon,

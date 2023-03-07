@@ -100,7 +100,7 @@
             <span
               class="b-remove-all__invited-users"
               @click="openRemoveUsersModal"
-              >Видалити всіх</span
+              >{{ $t('buttons.remove-all') }}</span
             >
             <div
               class="b-manage-event__invited-user"
@@ -113,9 +113,9 @@
                   :avatarType="'small-square'"
                   :full-name="`${user.profile.name} ${user.profile.last_name}`"
                 ></avatar>
-                <span class="b-invited-user__position">{{
-                  user.profile.position
-                }}</span>
+                <span v-if="user.profile.position" class="b-invited-user__position">
+                  {{ $t(`hashtags.${user.profile.position}`) }}
+               </span>
                 <span class="b-invited-user__full-name">
                   {{ user.profile.name }} {{ user.profile.last_name }}
                 </span>
@@ -151,7 +151,6 @@ import { useRouter } from 'vue-router'
 
 import { Form } from '@system.it.flumx.com/vee-validate'
 
-import * as yup from 'yup'
 import { storeToRefs } from "pinia"
 
 import InputComponent from '../../../components/forms/InputComponent.vue'
@@ -173,6 +172,7 @@ import { useUserDataStore } from '../../../stores/userData'
 import { BlanballEventBus } from '../../../workers/event-bus-worker'
 
 import { ROUTES } from '../../../router/router.const'
+import SCHEMAS from '../../../validators/schemas'
 
 import Arrow from '../../../assets/img/arrow-right-white.svg'
 
@@ -233,161 +233,10 @@ export default {
       current_users: [],
     })
 
+
+
     const schema = computed(() => {
-      if (currentStep.value === 1) {
-        return yup.object({
-          gender: yup.string().required('errors.required'),
-          type: yup.string().required('errors.required'),
-          name: yup
-            .string()
-            .required('errors.required')
-            .max(255, 'errors.max255'),
-          time: yup
-            .string()
-            .matches(
-              /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/,
-              'errors.invalid-time'
-            )
-            .min(5, 'errors.invalid-time')
-            .required('errors.required')
-            .test({
-              name: 'isOneHourLater',
-              message: 'errors.time-more-than-one-hour',
-              test: (time) => {
-                try {
-                  let currentHour = new Date().getHours()
-                  let currentMinute = new Date().getMinutes()
-                  let hour = parseInt(time.split(':')[0])
-                  let minute = parseInt(time.split(':')[1])
-                  return (
-                    hour > currentHour + 1 ||
-                    (hour === currentHour + 1 && minute > currentMinute)
-                  )
-                } catch {
-                  return false
-                }
-              },
-            }),
-          end_time: yup
-            .string()
-            .matches(
-              /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/,
-              'errors.invalid-time'
-            )
-            .required('errors.required')
-            .min(5, 'errors.invalid-time')
-            .when('time', (time, schema, value) => {
-              if (time)
-                return schema
-                  .test(
-                    'end_time',
-                    'errors.duration-10min-3hours',
-                    function (value) {
-                      try {
-                        const start_time_hours = parseInt(time.split(':')[0])
-                        const end_time_hours = parseInt(value.split(':')[0])
-                        const start_time_minutes = parseInt(time.split(':')[1])
-                        const end_time_minutes = parseInt(value.split(':')[1])
-                        const maxDifference = 3 * 60 // 3 hours in minutes
-                        const minDifference = 10 // 10 minutes
-                        const timeDifference =
-                          (end_time_hours - start_time_hours) * 60 +
-                          (end_time_minutes - start_time_minutes)
-
-                        if (timeDifference > maxDifference) {
-                          return false
-                        }
-
-                        if (timeDifference < minDifference) {
-                          return false
-                        }
-
-                        return true
-                      } catch {
-                        return false
-                      }
-                    }
-                  )
-                  .test(
-                    'event_duration',
-                    'errors.duration-must-be-round',
-                    function (value) {
-                      try {
-                        const [hours1, minutes1] = time.split(':').map(Number)
-                        const [hours2, minutes2] = value.split(':').map(Number)
-                        const totalMinutes1 = hours1 * 60 + minutes1
-                        const totalMinutes2 = hours2 * 60 + minutes2
-                        const timeDifference = Math.abs(
-                          totalMinutes1 - totalMinutes2
-                        )
-
-                        return timeDifference % 10 === 0
-                      } catch {
-                        return false
-                      }
-                    }
-                  )
-              return schema
-            }),
-          place: yup.object({
-            place_name: yup.string().required(() => t('errors.required')),
-            lat: yup.number().required('errors.required'),
-            lon: yup.number().required('errors.required'),
-          }),
-        })
-      }
-      if (currentStep.value === 2) {
-        return yup.object({
-          privacy: yup.boolean().required('errors.required'),
-          is_price: yup.boolean().required('errors.required'),
-          amount_members: yup
-            .number()
-            .typeError('errors.type-number')
-            .required('errors.required')
-            .min(6, 'errors.min6')
-            .max(50, 'errors.max50'),
-          price: yup
-            .number('errors.type-number')
-            .nullable()
-            .when('is_price', {
-              is: true,
-              then: yup
-                .number()
-                .typeError('errors.type-number')
-                .required('errors.required')
-                .min(1, 'errors.min1')
-                .max(32767, 'errors.max32767'),
-            }),
-          price_description: yup
-            .string('errors.required')
-            .nullable()
-            .when('price', (price, schema) => {
-              if (price)
-                return schema
-                  .required('errors.required')
-                  .max(500, 'errors.max500')
-              return schema
-            }),
-        })
-      }
-      if (currentStep.value === 3) {
-        return yup.object({
-          description: yup.string().required('errors.required'),
-          need_form: yup.string().required('errors.required'),
-          is_phone_shown: yup.boolean().nullable(),
-          forms: yup.object({}).required('errors.required'),
-          contact_number: yup
-            .string()
-            .nullable()
-            .when('is_phone_shown', {
-              is: true,
-              then: yup
-                .string()
-                .required('errors.required')
-                .min(19, 'errors.invalid-phone'),
-            }),
-        })
-      }
+      return SCHEMAS.manageEvent.schema(currentStep.value)
     })
 
     const getNewEventLocation = (location, data) => {
@@ -642,18 +491,18 @@ export default {
     justify-content: space-between;
     align-items: center;
     span {
-      @media (max-width: 768px) {
+      @include tabletAndMobile {
         display: none;
       }
     }
-    @media (max-width: 768px) {
+    @include tabletAndMobile {
       padding: 0;
     }
     .b-manage-event__btns-mob-block {
       @media (min-width: 1200px) {
         display: none;
       }
-      @media (max-width: 768px) {
+      @include tabletAndMobile {
         width: 100%;
       }
     }
@@ -681,7 +530,7 @@ export default {
         width: 450px;
         min-width: 350px;
       }
-      @media (max-width: 768px) {
+      @include tabletAndMobile {
         width: 100%;
       }
       .b-manage-event__progress-line {
@@ -709,7 +558,7 @@ export default {
         justify-content: space-between;
         align-items: center;
         margin-top: 20px;
-        @media (max-width: 768px) {
+        @include tabletAndMobile {
           margin-bottom: 50px;
         }
       }
@@ -726,7 +575,7 @@ export default {
   margin-top: 20px;
   position: relative;
 
-  @media (max-width: 768px) {
+  @include tabletAndMobile {
     display: none;
   }
 }

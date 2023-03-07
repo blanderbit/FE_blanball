@@ -223,7 +223,6 @@ export default {
         my_events: CONSTANTS.event_page.my_events,
         sport_type_dropdown: CONSTANTS.event_page.sport_type_dropdown,
         gender_dropdown: CONSTANTS.event_page.gender_dropdown,
-        cities_dropdown: CONSTANTS.event_page.cities_dropdown,
         calendar: CONSTANTS.event_page.calendar,
         menu_text: CONSTANTS.event_page.menu_text(selectedContextMenuEvent.value.pinned),
       }
@@ -233,9 +232,9 @@ export default {
 
     const emptyListMessages = computed(() => {
       return {
-        title: 'До сьогодні ви ще не були організатором подій',
-        description: 'Організуйте вашу першу подію',
-        button_text: 'Створити подію',
+        title: t('no_records.noMyEvents.title'),
+        description: t('no_records.noMyEvents.description'),
+        button_text: t('no_records.noMyEvents.button_text'),
       }
     })
 

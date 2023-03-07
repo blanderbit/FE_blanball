@@ -1,35 +1,9 @@
-import user from '../assets/img/user.png'
-import smile_face from '../assets/img/smile-face.svg'
-import no_user from '../assets/img/no-user-picture.svg'
-import minus from '../assets/img/minus.svg'
-import add_user from '../assets/img/add-user-button.svg'
 import ball_icon from '../assets/img/ball-icon.svg'
 import members from '../assets/img/members.svg'
 import couch from '../assets/img/couch.svg'
 import user_with_plus from '../assets/img/add-user.svg'
 
 export default {
-  playersList: new Array(21).fill('l').map((item, idx) => {
-    if (idx <= 8) {
-      return {
-        id: idx,
-        img: user,
-        name: 'Капустин Никита',
-        status: 'ПНЗ',
-        icon: smile_face,
-        isActive: true,
-      }
-    } else {
-      return {
-        id: idx,
-        img: no_user,
-        name: 'Приєднатися до команди',
-        status: minus,
-        icon: add_user,
-        isActive: false,
-      }
-    }
-  }),
   tabs: (eventData, userId) => {
     return [
       {

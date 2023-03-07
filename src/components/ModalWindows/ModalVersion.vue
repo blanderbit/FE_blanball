@@ -5,17 +5,21 @@
         <img src="../../assets/img/logo-modal-versions.svg" alt="" />
       </div>
       <div class="b-version-modal__right-side">
-        <div class="b-version-modal__name">Blanball</div>
+        <div class="b-version-modal__name">
+          {{ $t('versions.blanball') }}
+        </div>
         <div class="b-version-modal__title">
-          Нова версія Blanball вже доступна!
+          {{ $t('versions.new-version-available') }}
         </div>
         <div class="b-version-modal__description">
-          Перейдіть на сторінку версій щоби ознайомитися із деталями оновлення
+          {{ $t('versions.go-to-the-event-page-for-more-details') }}
         </div>
         <div class="b-version-modal__buttons">
-          <div class="b-version-modal__download">Завантажити оновлення</div>
+          <div class="b-version-modal__download">
+            {{  $t('versions.download-update') }}
+          </div>
           <div class="b-version-modal__whats-new" @click="showVersionsPage">
-            Що нового?
+            {{  $t('versions.what-is-new') }}
           </div>
         </div>
       </div>

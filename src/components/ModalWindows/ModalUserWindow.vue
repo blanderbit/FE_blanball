@@ -16,7 +16,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/styles/mixins/device.scss';
 
 .b_modal_user_wrapper {
   position: fixed;

@@ -9,7 +9,7 @@
       :main-title="$t('events.event-type')"
       :placeholder="$t('events.event-type')"
       :disabled="true"
-      :initValue="'Дружній матч'"
+      :initValue="$t('events.friends-match')"
       display-name="name"
       display-value="value"
       :width="320"
@@ -262,7 +262,6 @@ export default {
     })
     const mockData = computed(() => {
       return {
-        typeOfEventDropdown: CONSTANTS.manage_event.type_of_event_dropdown,
         typeOfSportDropdown: CONSTANTS.manage_event.type_of_sport_dropdown,
       }
     })

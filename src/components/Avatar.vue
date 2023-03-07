@@ -85,6 +85,9 @@ $color-c8ebe7: #c8ebe7;
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
   }
 
   &-square {

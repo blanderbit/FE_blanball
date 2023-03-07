@@ -48,8 +48,6 @@ export default {}
  $color-8a8aa8: #8a8aa8;
 
 
-@import '../../assets/styles/mixins/device.scss';
-
 .b-tech-works {
   position: fixed;
   top: 0;
@@ -86,13 +84,13 @@ export default {}
     align-items: center;
     margin-top: 20px;
     padding: 0 16px;
-    @media (max-width: 768px) {
+    @include tabletAndMobile {
       flex-direction: column;
     }
     .b-tech-works__left-side {
       width: 416px;
       margin-right: 40px;
-      @media (max-width: 768px) {
+      @include tabletAndMobile {
         width: 100%;
         margin: 0;
       }
@@ -105,7 +103,7 @@ export default {}
         text-transform: uppercase;
         color: $--b-main-black-color;
         margin-bottom: 12px;
-        @media (max-width: 768px) {
+        @include tabletAndMobile {
           font-size: 20px;
           line-height: 28px;
         }
@@ -122,7 +120,7 @@ export default {}
         color: $--b-main-gray-color;
         padding-bottom: 28px;
         margin-bottom: 12px;
-        @media (max-width: 768px) {
+        @include tabletAndMobile {
           font-size: 12px;
         }
       }
@@ -145,7 +143,7 @@ export default {}
     }
     .b-tech-works__right-side {
       position: relative;
-      @media (max-width: 768px) {
+      @include tabletAndMobile {
         margin-top: 20px;
       }
       img {

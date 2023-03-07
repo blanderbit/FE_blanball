@@ -53,8 +53,7 @@
       v-if="isMobile"
       :rating-scale="userData.raiting"
       :openedReviewID="openedReviewId"
-      @openReview="openReview"
-      @hideReview="hideReview"
+      @clickReview="clickReview"
     />
 
     <div class="b-user-card__tabs-block">
@@ -108,15 +107,16 @@
           </div>
           <div class="b-user-card__textarea-line">
             <div v-if="!isEditMode" class="b-user-card__about-me">
-              {{ userData.about_me || $t('profile.no-about_me') }}
+              {{ userData.about_me || $t('profile.about-myself') }}
               <div class="b-user-card__title">
-                {{ $t('profile.about-myself') }}
+                {{ userData.about_me ? $t('profile.about-myself') : $t('profile.write-several-words') }}
               </div>
             </div>
             <TextAreaComponent
               v-else
               :height="88"
               :title="$t('profile.words-about-myself')"
+              :maxTextValue="110"
               name="about_me"
             />
           </div>
@@ -280,6 +280,7 @@
               :outside-title="true"
               :height="40"
               name="phone"
+              :icon="icons.arrowsIcon"
               v-maska="'+38 (0##) ### ## ##'"
             />
           </div>
@@ -320,6 +321,7 @@ import useWindowWidth from '../utils/widthScreen';
 import sortArrowHorizontally from '../assets/img/sort-arrows-horizontal.svg';
 import tick from '../assets/img/tick.svg';
 import edit from '../assets/img/edit.svg';
+import arrows from '../assets/img/sort-arrows-horizontal.svg'
 
 const IMAGE_TYPES = ['image/jpeg', 'image/png'];
 
@@ -357,6 +359,7 @@ export default {
     const imageSrc = ref(null);
     const fileReader = new FileReader();
     const labels = ref(setupLabels());
+    const openedReviewId = ref(0);
 
     watch(() => props.userData, (newData, oldData) => {
       labels.value = setupLabels();
@@ -405,6 +408,7 @@ export default {
         sortIcon: sortArrowHorizontally,
         tickIcon: tick,
         editIcon: edit,
+        arrowsIcon: arrows,
       };
     });
 
@@ -425,6 +429,14 @@ export default {
     onBeforeUnmount(() => {
       window.removeEventListener('resize', onResize);
     });
+
+    function clickReview(reviewId) {
+      if (openedReviewId.value === reviewId) {
+        openedReviewId.value = 0
+      } else {
+        openedReviewId.value = reviewId
+      }
+    }
 
     function changeUserTab(id) {
       currentTab.value = id;
@@ -456,6 +468,8 @@ export default {
       changeUserTab,
       onFileSelected,
       clearFileInputValue,
+      clickReview,
+      openedReviewId,
       currentTab,
       icons,
       birthDate,
@@ -495,7 +509,7 @@ $color-efeff6: #efeff6;
     flex-basis: 49%;
   }
 
-  @media (max-width: 768px) {
+  @include tabletAndMobile {
     padding-bottom: 0px;
   }
 
@@ -507,7 +521,7 @@ $color-efeff6: #efeff6;
     @media (max-width: 1200px) {
       box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     }
-    @media (max-width: 768px) {
+    @include tabletAndMobile {
       padding: 8px 8px 10px;
     }
 
@@ -614,7 +628,7 @@ $color-efeff6: #efeff6;
       @media (max-width: 1200px) {
         padding: 12px;
       }
-      @media (max-width: 768px) {
+      @include tabletAndMobile {
         padding: 0px;
       }
       .b-user-card__tab-body {
@@ -672,9 +686,6 @@ $color-efeff6: #efeff6;
           }
         }
         .b-user-card__textarea-line {
-          &::v-deep(.b-text-area__min-max-label) {
-            display: none;
-          }
           .b-user-card__about-me {
             font-family: 'Inter';
             word-break: break-word;
