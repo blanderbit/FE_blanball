@@ -18,24 +18,22 @@
           </div>
         </div>
         <div class="b-event-info__right-part">
-          <router-link :to="ALL_ROUTES.APPLICATION.EVENTS.CREATE.absolute">
             <GreenBtn
               class="b-event-info__right-part-green-btn"
-              :text="
-                eventData.privacy ? $t('events.apply') : $t('buttons.join')
-              "
+              :text="greenButton.text"
               :width="150"
+              :icon="greenButton?.icon"
               :height="40"
+              @click-function="greenButtonClick"
             />
             <GreenBtn
               class="b-event-info__right-part-green-mobile"
-              :text="
-                eventData.privacy ? $t('events.apply') : $t('buttons.join')
-              "
+              :text="greenButton.text"
+              :icon="greenButton?.icon"
               :width="115"
               :height="32"
+              @click-function="greenButtonClick"
             />
-          </router-link>
           <div @click="openEventShareModal" class="b-event-info__share-link">
             <img src="../../../assets/img/share-icon.svg" alt="" />
             <span>
@@ -245,6 +243,7 @@ import emoji_4 from '../../../assets/img/emojies/4.svg';
 import emoji_5 from '../../../assets/img/emojies/5.svg';
 import noReviews from '../../../assets/img/no-records/no-reviews.svg';
 import noUserRecords from '../../../assets/img/no-records/no-user-records.svg';
+import editEvent from '../../../assets/img/edit-white.svg'
 
 
 export default {
@@ -350,6 +349,23 @@ export default {
         }
       }
     })
+
+    const greenButton =  computed(() => {
+      if (eventData.value.author.id === user.value.id) {
+        return {
+          text: t('buttons.edit'),
+          icon: editEvent,
+        }
+      } else if (eventData.value.privacy ) {
+        return {
+          text: t('buttons.join')
+        }
+      } else {
+        return {
+          text: t('events.apply')
+        }
+      }
+    })
     
     const acceptRequestToParticipation = async (id) => {
       loading.value = true;
@@ -403,6 +419,12 @@ export default {
       }
     }
 
+    const greenButtonClick  = () => {
+      if (eventData.value.author.id === user.value.id) { 
+        return router.push(ROUTES.APPLICATION.EVENTS.EDIT.absolute(eventData.value.id))
+      }
+    }
+
     const copyLinkButtonClick = () => {
       navigator.clipboard.writeText(currentFullRoute.value);
       closeShareEventModal();
@@ -436,6 +458,7 @@ export default {
       currentFullRoute,
       isTabLabel,
       loading,
+      greenButton,
       user,
       activeTab,
       noUsersData,
@@ -443,6 +466,7 @@ export default {
       eventPriceHover,
       eventRequestsToParticipations,
       copyLinkButtonClick,
+      greenButtonClick,
       switchTabLabel,
       changeTab,
       openEventShareModal,

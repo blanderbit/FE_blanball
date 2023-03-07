@@ -117,10 +117,6 @@ export default {
       type: String,
       default: '',
     },
-    openIndicator: {
-      type: String,
-      default: ''
-    }
   },
   emits: ['new-value', 'update:modelValue'],
   setup(props, { emit }) {

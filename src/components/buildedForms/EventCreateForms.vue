@@ -83,6 +83,10 @@ export default {
     const formsDataValue = ref(props.formsData);
     const formsType = ref(props.formsData.type);
 
+    if (formsDataValue.value.type) {
+      delete formsDataValue.value.type
+    }
+
     watch(
       () => props.formsData,
       (newData, oldData) => {
@@ -146,6 +150,7 @@ $color-dfdeed: #dfdeed;
         display: flex;
         align-items: center;
         gap: 8px;
+        flex-wrap: wrap;
       }
       .b-event-info__form-item {
         display: flex;

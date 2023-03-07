@@ -32,6 +32,7 @@
         <div class="b-manage-event__create-event-block">
           <ManageEventFirstStep
             :currentStep="currentStep"
+            :initialValues="eventPreviewData"
             @changeEventLocation="getNewEventLocation($event, data)"
             @selectEventDuration="runOnSelectEventDuration($event, data)"
             @changeEventDate="setEventDate($event, data)"
@@ -41,6 +42,7 @@
             :filteredUsersList="relevantUsersList"
             :filterUsersListLoading="searchUsersLoading"
             :invitedUsersList="invitedUsers"
+            :initialValues="eventPreviewData"
             @searchUsers="searchRelevantUsers"
             @invite-user="inviteUsetToTheEvent"
             @changedEventPrivacyToFree="updateEventPriceAfterSelectFree(data)"
@@ -48,6 +50,7 @@
           <ManageEventThirdStep 
             :currentStep="currentStep"
             :formsValue="eventForms"
+            :initialValues="eventPreviewData"
             @selectNeedForm="selectNeedForm($event, data)"
             @setForms="openSelectFormsModal"
             @changeForms="openSelectFormsModal"/>
@@ -72,7 +75,6 @@
               :text="$t('buttons.back')"
               :width="140"
               :main-color="'$--b-main-black-color'"
-              :is-border="false"
               @click-function="changeStep('-', data)"
             />
             <GreenBtn
@@ -147,7 +149,7 @@
 <script>
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 import { Form } from '@system.it.flumx.com/vee-validate'
 
@@ -195,45 +197,26 @@ export default {
     RemoveInvitedUsersModal,
   },
   setup() {
-    const router = useRouter()
+    const router = useRouter();
+    const route = useRoute();
     const { t } = useI18n()
     const currentStep = ref(1)
     const startDate = ref('')
     const userStore = useUserDataStore()
     const { user } = storeToRefs(userStore)
     const searchUsersLoading = ref(false)
-    const formsModalSelectedTabId = ref(null)
     const relevantUsersList = ref([])
     const eventCreateLoader = ref(false)
     const invitedUsers = ref([])
     const isSelectFormColarModalOpened = ref(false)
     const removeInvitedUsersModalOpened = ref(false)
-    const eventForms = ref({})
+    const eventPreviewData = ref(route.meta.eventData);
+    const formsModalSelectedTabId = ref(
+      eventPreviewData.value.need_form ? 1 : 2
+    )
+
+    const eventForms = ref(eventPreviewData.value.forms);
     let searchTimeout
-
-    const eventPreviewData = ref({
-      name: '',
-      place: {},
-      status: 'Planned',
-      gender: null,
-      description: '',
-      type: '',
-      contact_number: user.value.phone,
-      need_ball: false,
-      duration: null,
-      need_form: null,
-      date_and_time: '',
-      forms: {
-        type: '',
-        first_team: {},
-        second_team: {},
-      },
-      count_current_users: 0,
-      count_current_fans: 0,
-      current_users: [],
-    })
-
-
 
     const schema = computed(() => {
       return SCHEMAS.manageEvent.schema(currentStep.value)

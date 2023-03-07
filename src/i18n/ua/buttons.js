@@ -34,4 +34,5 @@ export default {
   'become-a-fan': 'Стати вболівальником',
   'remove-all': 'Видалити всіх',
   'loading': 'Завантаження',
+  'edit': 'Редагувати'
 }

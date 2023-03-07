@@ -70,9 +70,9 @@
         @get-value="showHidePhone"
       />
     </div>
-    <div class="input" v-show="isPhoneShown">
+    <div class="input" v-if="isPhoneShown">
       <InputComponent
-        :placeholder="userPhoneNumber"
+        :placeholder="user.phone"
         :title-width="0"
         name="contact_number"
         v-maska="'+38 (0##) ### ## ##'"
@@ -129,14 +129,17 @@ export default {
     formsValue: {
       type: Object,
       default: () => {},
+    },
+    initialValues: {
+      type: Object,
+      default: () => {},
     }
   },
   setup(props, { emit }) {
-    const isPhoneShown = ref(false)
-    const store = useUserDataStore()
-    const { getUserPhone } = storeToRefs(store)
-    const userPhoneNumber = computed(() => getUserPhone)
-    const needForm = ref(null)
+    const isPhoneShown = ref(props.initialValues?.is_phone_shown);
+    const store = useUserDataStore();
+    const { user } = storeToRefs(store);
+    const needForm = ref(props.initialValues?.need_form);
 
     const icons = computed(() => {
       return {
@@ -167,7 +170,7 @@ export default {
       icons,
       stepStyle,
       needForm,
-      userPhoneNumber,
+      user,
       isPhoneShown,
       showHidePhone,
       changeForms,

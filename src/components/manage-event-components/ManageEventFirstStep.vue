@@ -52,6 +52,7 @@
         :main-title="$t('events.sport-type')"
         :placeholder="$t('events.sport-type')"
         :options="mockData.typeOfSportDropdown"
+        :initValue="initialValues.type"
         display-name="name"
         display-value="value"
         :width="320"
@@ -201,6 +202,10 @@ export default {
       type: Number,
       default: null,
     },
+    initialValues: {
+      type: Object,
+      default: () => {},
+    }
   },
   emits: [
     'changeEventLocation', 
@@ -210,9 +215,15 @@ export default {
 
   setup(props, { emit }) {
     const initialDate = ref(new Date())
-    const eventLocation = ref({lat: '', lng: ''})
-    const eventLocationOnMap = ref({})
-    const selectedDurationID = ref('')
+    const eventLocation = ref({
+      lat: props.initialValues.place.lat, 
+      lng: props.initialValues.place.lon
+    });
+    const eventLocationOnMap = ref({
+      lat: props.initialValues.place.lat, 
+      lng: props.initialValues.place.lon
+    });
+    const selectedDurationID = ref('');
     const minEventDate = ref(new Date().toISOString().slice(0, 10))
 
     watch(() => eventLocation.value, (newData, oldData) => {

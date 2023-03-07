@@ -129,6 +129,7 @@ export default {
       }
     })
     function setValue() {
+      console.log(props.modelValue)
       if (!props.modelValue) return
       const [Sregion, SCity] = props.modelValue.place?.split?.(',') || []
       region.value = Sregion ? new String(Sregion) : ''
