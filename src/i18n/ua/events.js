@@ -96,6 +96,7 @@ export default {
   'select-position': 'Оберiть локацiю',
   'event-status': 'Статус події',
   'event-creation': 'Створення події',
+  'event-update': 'Редагування події',
   'event-description': 'Опис події',
   'describe-sum': 'Опишіть для чого потрібна ця сума',
   'you-are-player': 'Ви – гравець',

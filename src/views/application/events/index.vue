@@ -47,6 +47,7 @@
           :modelValue="filters"
           @update:value="setFilters"
           @clearFilters="clearFilters"
+          :elementsCount="paginationTotalCount"
         ></events-filters>
 
       
@@ -315,6 +316,7 @@ export default {
       dataTransformation: handlingIncomeData,
     })
     paginationPage.value = 1
+    paginationTotalCount.value = router.currentRoute.value.meta.eventData.data.total_count
     paginationElements.value =
       router.currentRoute.value.meta.eventData.data.results.map(
         handlingIncomeData
@@ -430,6 +432,7 @@ export default {
       scrollComponent,
       eventCards,
       isLoaderActive,
+      paginationTotalCount,
       switchToMyEvents,
       isEventJoinModalActive,
       mainEventsBlock,

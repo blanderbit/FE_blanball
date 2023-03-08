@@ -54,6 +54,7 @@
           :modelValue="filters"
           @update:value="setFilters"
           @clearFilters="clearFilters"
+          :elementsCount="paginationTotalCount"
         ></events-filters>
 
 
@@ -387,6 +388,7 @@ export default {
     })
 
     paginationPage.value = 1
+    paginationTotalCount.value = route.meta.eventData.data.total_count
     paginationElements.value =
       route.meta.eventData.data.results.map(handlingIncomeData)
 
@@ -507,6 +509,7 @@ export default {
       contextMenuY,
       PinIcon,
       loading,
+      paginationTotalCount,
       selected,
       emptyListMessages,
       myCardRightClick,

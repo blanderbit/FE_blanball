@@ -15,8 +15,11 @@
     @saveData="saveForms($event, data)"
   />
       <div class="b-manage-event__page-title">
-        <span>
+        <span v-if="manageAction === manageEventActionTypes.CREATE">
           {{ $t('events.event-creation') }}
+        </span>
+        <span v-else> 
+          {{ $t('events.event-update') }} 
         </span>
         <div class="b-manage-event__btns-mob-block">
           <ButtonsBlock
@@ -178,6 +181,15 @@ import SCHEMAS from '../../../validators/schemas'
 
 import Arrow from '../../../assets/img/arrow-right-white.svg'
 
+const manageEventActionTypes = ref(
+  {
+    CREATE: 'CREATE'
+  },
+  {
+    EDIT: 'EDIT'
+  }
+)
+
 export default {
   name: 'CreateEventPage',
   components: {
@@ -209,8 +221,9 @@ export default {
     const eventCreateLoader = ref(false)
     const invitedUsers = ref([])
     const isSelectFormColarModalOpened = ref(false)
-    const removeInvitedUsersModalOpened = ref(false)
-
+    const removeInvitedUsersModalOpened = ref(false);
+    const manageAction = ref(route.meta.action);
+    
     const eventPreviewData = ref(route.meta?.eventData ||
     {
       name: '',
@@ -324,8 +337,17 @@ export default {
     }
 
     const runOnSelectEventDuration = (durationValue, data) => {
-      const currentDateTime = new Date()
-      const eventStartTime = new Date(currentDateTime.getTime() + 65 * 60000)
+      let eventStartTime;
+      if (data.values.time) {
+        let timeStr = data.values.time;
+        let [hours, minutes] = timeStr.split(":").map(Number);
+        let date = new Date();
+        date.setHours(hours);
+        date.setMinutes(minutes);
+        eventStartTime = date;
+      } else {
+        eventStartTime = new Date(new Date().getTime() + 65 * 60000)
+      }
       const eventEndDateTime = new Date(
         eventStartTime.getTime() + durationValue
       )
@@ -438,6 +460,8 @@ export default {
       eventCreateLoader,
       formsModalSelectedTabId,
       eventForms,
+      manageAction,
+      manageEventActionTypes,
       getNewEventLocation,
       openSelectFormsModal,
       selectNeedForm,

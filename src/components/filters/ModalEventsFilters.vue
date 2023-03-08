@@ -11,7 +11,7 @@
             {{ $t('users.filters') }}
           </div>
           <div class="b-modal-filters__subtitle">
-            {{ $t('users.found') }} 15 {{ $t('users.advertisments') }}
+            {{ $t('users.found') }} {{ elementsCount }} {{ $t('users.advertisments') }}
           </div>
           <div class="b-modal-filters__game-type-input">
             <Dropdown
@@ -123,6 +123,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    elementsCount: {
+      type: Number,
+      default: 0
+    }
   },
   emits: [
     'closeModal',

@@ -124,11 +124,11 @@
     <div class="b-event-m-1st__title mt-3 mb-2">
       {{ $t('events.place') }}
     </div>
-    <ModalPositionMap  
+    <EventCreatePositionMap  
         class="b-event-m-1st__input-location" 
+        name="place.place_name"
         v-model="eventLocation">
-    </ModalPositionMap>
-    <ErrorMessage class="b-event-location__error-message" name="place.place_name"/>
+    </EventCreatePositionMap>
     <div v-if="eventLocation.lat && eventLocation.lng" class="b-event-m-1st__event-map">
       <position-map
         :coords="eventLocationOnMap" 
@@ -150,7 +150,7 @@ import Dropdown from '../forms/Dropdown.vue'
 import InputComponent from '../forms/InputComponent.vue'
 import RadioButton from '../forms/RadioButton.vue'
 import PositionMap from '../maps/PositionMap.vue'
-import ModalPositionMap from '../maps/ModalPositionMap.vue'
+import EventCreatePositionMap from '../maps/EventCreatePositionMap.vue'
 
 import CONSTANTS from '../../consts/index'
 
@@ -189,7 +189,7 @@ export default {
     Dropdown,
     InputComponent,
     RadioButton,
-    ModalPositionMap,
+    EventCreatePositionMap,
     PositionMap,
     ErrorMessage,
   },
@@ -223,7 +223,9 @@ export default {
       lat: props.initialValues.place.lat, 
       lng: props.initialValues.place.lon
     });
-    const selectedDurationID = ref('');
+    const selectedDurationID = ref(eventDurationOptions.value.findIndex(
+      element => element.value === props.initialValues.duration*60000
+    ));
     const minEventDate = ref(new Date().toISOString().slice(0, 10))
 
     watch(() => eventLocation.value, (newData, oldData) => {

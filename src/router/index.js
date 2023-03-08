@@ -127,6 +127,7 @@ const router = createRouter({
           path: ROUTES.APPLICATION.EVENTS.CREATE.relative,
           name: ROUTES.APPLICATION.EVENTS.CREATE.name,
           beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
+            action: () => 'CREATE',
             usersData,
           })),
           component: () => import('../views/application/events/manage.vue'),
@@ -140,6 +141,7 @@ const router = createRouter({
           path: ROUTES.APPLICATION.EVENTS.EDIT.relative,
           name: ROUTES.APPLICATION.EVENTS.EDIT.name,
           beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
+            action: () => 'EDIT',
             usersData,
             eventData: async () => {
              return prepareEventUpdateData(to.params.id)

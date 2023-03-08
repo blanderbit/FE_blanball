@@ -234,6 +234,7 @@ export default {
 
 .b-input__input-component {
   height: 100%;
+  width: 100%;
   .b-input__wrapper {
     border: 1px solid $color-dfdeed;
     position: relative;
