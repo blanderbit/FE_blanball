@@ -76,65 +76,50 @@
           <div class="b-manage-event__buttons-block">
             <WhiteBtn
               :text="$t('buttons.back')"
-              :width="140"
               :main-color="'$--b-main-black-color'"
+              :height="35"
               @click-function="changeStep('-', data)"
             />
             <GreenBtn
-              :text="greenBtnText"
-              :width="160"
-              :icon-right="icons.arrowRight"
+              :text="greenBtn.text"
+              :icon-right="greenBtn.icon"
+              :height="35"
               @click-function="changeStep('+', data)"
             />
           </div>
+          <div class="b-manage-event__manage-buttons-block">
+            <span @click="">Попередній перегляд</span>
+            <span @click="showEventInvitedUsersListModal">
+              Запрошені учасники
+            </span>
+          </div>
         </div>
 
+        <InvitedUsersListModal
+          v-if="isEventInvitedUsersListModal && invitedUsers.length"
+          :invitedUsers="invitedUsers"
+          @removeInvitedUser="removeInvitedUser"
+          @closeModal="closeEventInvitedUsersListModal"
+        />
+      
         <div class="b-manage-event-preview__block">
           <PreviewBlock :eventData="data.values" />
 
-          <RemoveInvitedUsersModal
+
+          <Transition>
+            <RemoveInvitedUsersModal
             v-if="removeInvitedUsersModalOpened"
             @closeModal="closeRemoveUsersModal"
             @deleteUsers="removeAllInvitedUsers"
           />
-
-          <div class="b-manage-event__invited-users__list mt-10">
-            <span class="b-user-what-you__invited" v-if="invitedUsers.length">
-              {{ $t('events.invited-people') }}
-            </span>
-            <span
-              class="b-remove-all__invited-users"
-              @click="openRemoveUsersModal"
-              >{{ $t('buttons.remove-all') }}</span
-            >
-            <div
-              class="b-manage-event__invited-user"
-              v-for="user in invitedUsers"
-            >
-              <div class="b-manage-event__invited-user-left__side">
-                <avatar
-                  class="b-invited-user__avatar"
-                  :link="user.profile.avatar_url"
-                  :avatarType="'small-square'"
-                  :full-name="`${user.profile.name} ${user.profile.last_name}`"
-                ></avatar>
-                <span v-if="user.profile.position" class="b-invited-user__position">
-                  {{ $t(`hashtags.${user.profile.position}`) }}
-               </span>
-                <span class="b-invited-user__full-name">
-                  {{ user.profile.name }} {{ user.profile.last_name }}
-                </span>
-              </div>
-              <div class="b-invited-user-right__side">
-                <img
-                  class="b-remove-invited__user"
-                  src="../../../assets/img/gray-cross.svg"
-                  alt="gray-cross"
-                  @click="removeInvitedUser(user.id)"
-                />
-              </div>
-            </div>
-          </div>
+          </Transition>
+      
+          <InvitedUsersList
+            class="b-manage-event-invited-users__list"
+            :invitedUsers="invitedUsers"
+            @removeInvitedUser="removeInvitedUser"
+            @openRemoveUsersModal="openRemoveUsersModal"
+          />
         </div>
 
         <div class="b-manage-event__btns-desktop-block">
@@ -171,6 +156,8 @@ import ButtonsBlock from '../../../components/manage-event-components/ButtonsBlo
 import RemoveInvitedUsersModal from '../../../components/manage-event-components/RemoveInvitedUsersModal.vue'
 import Loading from '../../../workers/loading-worker/Loading.vue'
 import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue'
+import InvitedUsersList from '../../../components/manage-event-components/InvitedUsersList.vue'
+import InvitedUsersListModal from '../../../components/ModalWindows/InvitedUsersListModal.vue'
 
 import { API } from '../../../workers/api-worker/api.worker'
 import { useUserDataStore } from '../../../stores/userData'
@@ -206,6 +193,8 @@ export default {
     PreviewBlock,
     Avatar,
     Loading,
+    InvitedUsersList,
+    InvitedUsersListModal,
     RemoveInvitedUsersModal,
   },
   setup() {
@@ -262,8 +251,11 @@ export default {
       }
     }
 
-    const greenBtnText = computed(() => {
-      return currentStep.value !== 3 ? t('buttons.next') : t('buttons.publish')
+    const greenBtn = computed(() => {
+      return {
+        text: currentStep.value !== 3 ? t('buttons.next') : t('buttons.publish'),
+        icon: currentStep.value !== 3 ? Arrow : null
+      }
     })
 
     const openRemoveUsersModal = () => {
@@ -403,6 +395,18 @@ export default {
       }
     })
 
+    const isEventInvitedUsersListModal = ref(false);
+
+    const showEventInvitedUsersListModal = () => {
+      if (invitedUsers.value.length) {
+        isEventInvitedUsersListModal.value = true
+      }
+    }
+
+    const closeEventInvitedUsersListModal = () => {
+      isEventInvitedUsersListModal.value = false
+    }
+
     async function saveEvent(data) {
       eventCreateLoader.value = true
       const createEventData = data.values
@@ -453,19 +457,22 @@ export default {
       relevantUsersList,
       invitedUsers,
       startDate,
-      greenBtnText,
+      greenBtn,
       isSelectFormColarModalOpened,
       removeInvitedUsersModalOpened,
       eventPreviewData,
+      isEventInvitedUsersListModal,
       eventCreateLoader,
       formsModalSelectedTabId,
       eventForms,
       manageAction,
       manageEventActionTypes,
       getNewEventLocation,
+      showEventInvitedUsersListModal,
       openSelectFormsModal,
       selectNeedForm,
       runOnSelectEventDuration,
+      closeEventInvitedUsersListModal,
       updateEventPriceAfterSelectFree,
       inviteUsetToTheEvent,
       changeStep,
@@ -558,6 +565,7 @@ export default {
       }
       @include tabletAndMobile {
         width: 100%;
+        padding: 20px 0px;
       }
       .b-manage-event__progress-line {
         margin-top: 20px;
@@ -584,9 +592,48 @@ export default {
         justify-content: space-between;
         align-items: center;
         margin-top: 20px;
-        @include tabletAndMobile {
-          margin-bottom: 50px;
+
+        ::v-deep(.b_white-btn) {
+          border: 1px solid #DFDEED;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 24px;
+          text-align: center;
+          color: #575775;
+          flex-basis: 48%;
         }
+        ::v-deep(.b-green-btn) {
+          flex-basis: 48%;
+        }
+      }
+      .b-manage-event__manage-buttons-block {
+        width: 100%;
+        background: rgba(239, 239, 246, 0.7);
+        border: 1px solid #DFDEED;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px;
+        margin-top: 8px;
+        
+        span {
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 20px;
+          text-align: right;
+          color: #575775;
+        }
+      }
+    }
+
+    .b-manage-event-invited-users__list {
+      @include tabletAndMobile {
+        display: none;
       }
     }
     .b-manage-event__btns-desktop-block {
@@ -596,79 +643,13 @@ export default {
     }
   }
 }
-.b-manage-event__invited-users__list {
-  overflow: auto;
-  margin-top: 20px;
-  position: relative;
 
-  @include tabletAndMobile {
-    display: none;
-  }
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.8s ease;
 }
-.b-manage-event__invited-user {
-  padding: 8px;
-  border-bottom: 1px solid $color-dfdeed;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  &:first-of-type {
-    margin-top: 30px;
-    border-top: 1px solid $color-dfdeed;
-  }
-}
-.b-user-what-you__invited {
-  font-family: 'Exo 2';
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 24px;
-  color: $--b-main-black-color;
-}
-.b-manage-event__invited-user-left__side {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.b-invited-user__avatar {
-  min-width: 32px;
-  max-width: 32px;
-  height: 32px;
-  border-radius: 4px;
-}
-.b-invited-user__full-name {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 20px;
-  color: $--b-main-black-color;
-}
-.b-invited-user__position {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  color: $color-8a8aa8;
-}
-.b-remove-invited__user {
-  cursor: pointer;
-}
-.b-manage-event-preview__block {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-.b-remove-all__invited-users {
-  position: absolute;
-  right: 0;
-  top: 30px;
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 20px;
-  color: $--b-main-gray-color;
-  cursor: pointer;
+.v-enter,
+.v-leave-to {
+  opacity: 0;
 }
 </style>

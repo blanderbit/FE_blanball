@@ -7,7 +7,7 @@
             <div class="b-edit-avatar__right-side">
               <vue-cropper
                 ref="cropper"
-                :aspectRatio="1"
+                :aspectRatio="1/1"
                 :minContainerHeight="200"
                 :viewMode="2"
                 :styles="{ border: '2px solid red' }"
