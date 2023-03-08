@@ -75,7 +75,7 @@
 
           <div class="b-manage-event__buttons-block">
             <WhiteBtn
-              :text="$t('buttons.back')"
+              :text="whiteBtn.text"
               :main-color="'$--b-main-black-color'"
               :height="35"
               @click-function="changeStep('-', data)"
@@ -89,10 +89,10 @@
           </div>
           <div class="b-manage-event__manage-buttons-block">
             <span @click="showPreviewEventModal">
-              Попередній перегляд
+              {{ $t('buttons.preview') }}
             </span>
             <span @click="showEventInvitedUsersListModal">
-              Запрошені учасники
+            {{ $t('buttons.invited-users') }}
             </span>
           </div>
         </div>
@@ -264,9 +264,29 @@ export default {
     }
 
     const greenBtn = computed(() => {
+      let text;
+      if (currentStep.value !== 3) {
+        text = t('buttons.next')
+      } else if (currentStep.value === 3 && manageAction.value === manageEventActionTypes.value.CREATE) {
+        text = t('buttons.publish')
+      } else {
+        text = t('buttons.save-changes')
+      }
       return {
-        text: currentStep.value !== 3 ? t('buttons.next') : t('buttons.publish'),
+        text: text,
         icon: currentStep.value !== 3 ? Arrow : null
+      }
+    })
+
+    const whiteBtn = computed(() => {
+      let text;
+      if (currentStep.value !== 1) {
+        text = t('buttons.back')
+      } else {
+        text = t('buttons.cancel')
+      }
+      return {
+        text: text,
       }
     })
 
@@ -278,7 +298,6 @@ export default {
       data.values.date = date_value
     }
 
-  
     const openSelectFormsModal = () => {
       isSelectFormColarModalOpened.value = true
     }
@@ -436,9 +455,16 @@ export default {
       createEventData.current_users = invitedUsers.value.map((user) => user.id)
 
       try {
-        await API.EventService.createOneEvent(createEventData).finally(() => {
-          eventCreateLoader.value = false
-        })
+        switch(manageAction.value) {
+          case 'CREATE':
+            await API.EventService.createOneEvent(createEventData)
+            eventCreateLoader.value = false
+            break
+          case 'EDIT':
+            await API.EventService.editOneEvent(route.params.id, createEventData)
+            eventCreateLoader.value = false
+            break
+        }
         router.push(ROUTES.APPLICATION.EVENTS.absolute)
         setTimeout(() => BlanballEventBus.emit('EventCreated'), 100)
       } catch {}
@@ -487,6 +513,7 @@ export default {
       formsModalSelectedTabId,
       eventForms,
       manageAction,
+      whiteBtn,
       manageEventActionTypes,
       getNewEventLocation,
       showEventInvitedUsersListModal,

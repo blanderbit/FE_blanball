@@ -113,6 +113,10 @@ export class EventService {
     return AxiosInstance.post(EndpointsEnum.Events.CreateOneEvent, eventData)
   }
 
+  editOneEvent(eventID, eventData) {
+    return AxiosInstance.put(EndpointsEnum.Events.EditOneEvent(eventID), eventData)
+  }
+
   getPlannedUserEvents(userId) {
     return AxiosInstance.get(EndpointsEnum.Events.getPlannedUserEvents(userId))
   }

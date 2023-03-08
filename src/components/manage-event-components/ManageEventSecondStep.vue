@@ -61,7 +61,7 @@
         :title="$t('events.describe-sum')"
         :height="80"
         :title-width="0"
-        :maxTextValue="500"
+        :maxTextValue="265"
         name="price_description"
       />
     </div>

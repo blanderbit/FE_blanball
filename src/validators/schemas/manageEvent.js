@@ -110,7 +110,7 @@ export default {
             if (price)
               return schema
                 .required('errors.required')
-                .max(500, 'errors.max500');
+                .max(265, 'errors.max265');
             return schema;
           }),
       });
