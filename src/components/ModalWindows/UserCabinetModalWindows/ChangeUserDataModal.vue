@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="b-change-data__main-text">
-          {{ $t('modals.change_user_data.main-text') }}
+          {{ config.description ? config.description : $t('modals.change_user_data.main-text') }}
         </div>
         <div class="b-change-data__btns-block">
           <div class="b-change-data__first-btn">

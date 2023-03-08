@@ -1,5 +1,11 @@
 <template>
   <Loading :is-loading="eventCreateLoader"></Loading>
+  <ChangeUserDataModal
+    v-if="isSubmitModalOpened"
+    :config="changeDataModalConfig"
+    @closeModal="closeSubmitModal"
+    @goToTheEvents="goToTheEventPage"
+    @continue="closeSubmitModal"/>
   <div class="b-manage-event">
     <Form
       v-slot="data"
@@ -167,6 +173,7 @@ import SelectFormsColorsModal from '../../../components/ModalWindows/SelectForms
 import InvitedUsersList from '../../../components/manage-event-components/InvitedUsersList.vue'
 import InvitedUsersListModal from '../../../components/ModalWindows/InvitedUsersListModal.vue'
 import PreviewEventModal from '../../../components/ModalWindows/PreviewEventModal.vue'
+import ChangeUserDataModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangeUserDataModal.vue'
 
 import { API } from '../../../workers/api-worker/api.worker'
 import { useUserDataStore } from '../../../stores/userData'
@@ -206,6 +213,7 @@ export default {
     InvitedUsersListModal,
     RemoveInvitedUsersModal,
     PreviewEventModal,
+    ChangeUserDataModal,
   },
   setup() {
     const router = useRouter();
@@ -224,6 +232,8 @@ export default {
     const manageAction = ref(route.meta.action);
     const isEventInvitedUsersListModal = ref(false);
     const isEventPreivewModalOpened = ref(false);
+    const isSubmitModalOpened = ref(false);
+    const changeDataModalConfig = ref('')
     
     const eventPreviewData = ref(route.meta?.eventData ||
     {
@@ -456,24 +466,63 @@ export default {
 
       try {
         switch(manageAction.value) {
-          case 'CREATE':
+          case manageEventActionTypes.value.CREATE:
             await API.EventService.createOneEvent(createEventData)
             eventCreateLoader.value = false
             break
-          case 'EDIT':
+          case manageEventActionTypes.value.EDIT:
             await API.EventService.editOneEvent(route.params.id, createEventData)
             eventCreateLoader.value = false
             break
         }
-        router.push(ROUTES.APPLICATION.EVENTS.absolute)
+        goToTheEventPage()
         setTimeout(() => BlanballEventBus.emit('EventCreated'), 100)
       } catch {}
+    }
+
+    const openSumbitModal = () => {
+      switch (manageAction.value) {
+        case manageEventActionTypes.value.CREATE:
+          changeDataModalConfig.value = {
+            title: 'Скасування створення події',
+            description: 'Ви дійсно бажаєте скасувати створення події?',
+            button_1: 'Продовжити',
+            button_2: 'Cкасувати',
+            right_btn_action: 'goToTheEvents',
+            left_btn_action: 'continue',
+            btn_with_1: 132,
+            btn_with_2: 132,
+          }
+          isSubmitModalOpened.value = true;
+          break;
+        case manageEventActionTypes.value.EDIT:
+          changeDataModalConfig.value = {
+            title: 'Скасування редагування події',
+            description: 'Ви дійсно бажаєте скасувати редагування події?',
+            button_1: 'Продовжити',
+            button_2: 'Cкасувати',
+            right_btn_action: 'goToTheEvents',
+            left_btn_action: 'continue',
+            btn_with_1: 132,
+            btn_with_2: 132,
+          }
+          isSubmitModalOpened.value = true;
+          break;
+      }
+    }
+
+    const closeSubmitModal = () => {
+      isSubmitModalOpened.value = false;
+    }
+
+    function goToTheEventPage() {
+      router.push(ROUTES.APPLICATION.EVENTS.absolute)
     }
 
     async function changeStep(val, data) {
       
       if (currentStep.value === 1 && val === '-') {
-        return router.push(ROUTES.APPLICATION.EVENTS.absolute)
+        return openSumbitModal()
       }
 
       if (val === '-') {
@@ -497,6 +546,7 @@ export default {
 
     return {
       currentStep,
+      changeDataModalConfig,
       icons,
       schema,
       searchUsersLoading,
@@ -511,6 +561,7 @@ export default {
       isEventInvitedUsersListModal,
       eventCreateLoader,
       formsModalSelectedTabId,
+      isSubmitModalOpened,
       eventForms,
       manageAction,
       whiteBtn,
@@ -518,8 +569,10 @@ export default {
       getNewEventLocation,
       showEventInvitedUsersListModal,
       openSelectFormsModal,
+      closeSubmitModal,
       showPreviewEventModal,
       selectNeedForm,
+      goToTheEventPage,
       runOnSelectEventDuration,
       closeEventInvitedUsersListModal,
       updateEventPriceAfterSelectFree,

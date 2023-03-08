@@ -5,18 +5,29 @@
     </div>
     <div class="b-manage-tem-btns__btns-block">
       <div class="b-manage-tem-btns__white-btn-wrapper">
-        <WhiteBtn
-          class="b-manage-tem-download-template__button"
-          :text="$t('buttons.download-template')"
-          :height="40"
-          :width="200"
-          :main-color="'$--b-main-black-color'"
-          :is-border="false"
-          :font-styles="{ 'font-weight': 400 }"
-          :icon="icons.iconCloud"
-          @click-function="$emit('cancelBtnClick')"
-        />
-        <WhiteBtn
+
+        <div class="b-manage-tem-white__btn">
+          <WhiteBtn
+            class="b-manage-tem-download-template__button"
+            :text="$t('buttons.download-template')"
+            :height="40"
+            :width="200"
+            :main-color="'$--b-main-black-color'"
+            :is-border="false"
+            :font-styles="{ 'font-weight': 400 }"
+            :icon="icons.iconCloud"
+            @click-function="$emit('cancelBtnClick')"
+          />
+          <!-- <Transition>
+            <TabLabel
+              :title="$t('profile.coming-soon-title')"
+              :text="$t('profile.coming-soon-text')"
+            />
+          </Transition> -->
+        </div>
+
+        <div class="b-manage-tem-white__btn">
+          <WhiteBtn
           class="b-manage-tem-save-template__button"
           :text="$t('buttons.download-template')"
           :height="40"
@@ -27,27 +38,35 @@
           :icon="icons.iconSave"
           @click-function="$emit('cancelBtnClick')"
         />
+          <Transition>
+            <TabLabel
+              :title="$t('profile.coming-soon-title')"
+              :text="$t('profile.coming-soon-text')"
+            />
+          </Transition>
+        </div>
       </div>
-      <div class="b-manage-tem-btns__green-btn-wrapper">
-      </div>
+      <div class="b-manage-tem-btns__green-btn-wrapper"></div>
     </div>
   </div>
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
-import GreenBtn from '../../components/GreenBtn.vue'
-import WhiteBtn from '../../components/WhiteBtn.vue'
+import GreenBtn from '../../components/GreenBtn.vue';
+import WhiteBtn from '../../components/WhiteBtn.vue';
+import TabLabel from '../TabLabel.vue';
 
-import Cloud from '../../assets/img/download-cloud.svg'
-import Save from '../../assets/img/save-icon.svg'
+import Cloud from '../../assets/img/download-cloud.svg';
+import Save from '../../assets/img/save-icon.svg';
 
 export default {
   name: 'ButtonsBlock',
   components: {
     GreenBtn,
     WhiteBtn,
+    TabLabel,
   },
   props: {
     saveBtnText: {
@@ -73,21 +92,19 @@ export default {
       return {
         iconCloud: Cloud,
         iconSave: Save,
-      }
-    })
+      };
+    });
 
     return {
       icons,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
 // SCSS variables for hex colors
- $color-f9f9fc: #f9f9fc;
-
+$color-f9f9fc: #f9f9fc;
 
 .b-manage-tem-btns {
   @media (max-width: 1200px) {
@@ -95,7 +112,7 @@ export default {
     padding: 10px 12px;
   }
   @include tabletAndMobile {
-    background: #F0F0F4;
+    background: #f0f0f4;
     border-radius: 0px;
   }
   .b-manage-tem-btns__title {
@@ -113,6 +130,7 @@ export default {
   .b-manage-tem-btns__btns-block {
     margin-top: 20px;
     display: flex;
+    opacity: 0.6;
     @media (max-width: 1200px) {
       margin-top: 0;
       display: flex;
@@ -146,11 +164,14 @@ export default {
   }
 }
 .b-manage-tem-download-template__button {
-  border: 1px solid #DFDEED !important;
+  border: 1px solid #dfdeed !important;
   border-radius: 6px;
 }
 .b-manage-tem-save-template__button {
   background-color: #575775;
-  color: #FFFFFF;
+  color: #ffffff;
+}
+.b-manage-tem-white__btn {
+  position: relative;
 }
 </style>

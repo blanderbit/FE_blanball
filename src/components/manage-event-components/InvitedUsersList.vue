@@ -6,6 +6,7 @@
         @click="$emit('headerIconClick')">
     </span>
     <span
+      v-if="removeAllOption"
       class="b-remove-all__invited-users"
       @click="$emit('openRemoveUsersModal')"
       >{{ $t('buttons.remove-all') }}</span
@@ -55,6 +56,10 @@ export default {
     headerIcon: {
         type: String,
         default: ''
+    },
+    removeAllOption: {
+      type: Boolean,
+      default: true,
     }
   },
   emits: ['removeInvitedUser', 'openRemoveUsersModal'],

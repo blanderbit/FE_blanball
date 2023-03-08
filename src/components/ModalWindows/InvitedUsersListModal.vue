@@ -3,10 +3,11 @@
     <div class="b-invited-users-list__modal-window">
       <InvitedUsersList
         :invitedUsers="invitedUsers"
-        @removeInvitedUser="removeInvitedUser"
-        :title="'Запрошені учасники'"
+        :title="$t('buttons.invited-members')"
+        :removeAllOption="false"
         :headerIcon="closeArrowUpIcon"
         @headerIconClick="$emit('closeModal')"
+        @removeInvitedUser="removeInvitedUser"
       />
     </div>
   </div>

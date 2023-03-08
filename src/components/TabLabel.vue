@@ -1,6 +1,11 @@
 <template>
-  <div class="b-tab-label__label">
-    <div class="b-tab-label__label-corner"></div>
+  <div :class="['b-tab-label__label', `b-tab-label__label-${position}`]">
+    <div
+      :class="[
+        'b-tab-label__label-corner',
+        `b-tab-label__label-corner-${position}`,
+      ]"
+    ></div>
     <div class="b-tab-label__label-title">
       {{ title }}
     </div>
@@ -22,22 +27,23 @@ export default {
       type: String,
       default: '',
     },
+    position: {
+      type: String,
+      default: 'right',
+      validator: (v) => ['left', 'right', 'top', 'bottom'].includes(v),
+    },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
 // SCSS variables for hex colors
- $color-efefef: #efefef;
-
+$color-efefef: #efefef;
 
 .b-tab-label {
   &__label {
     display: block;
     position: absolute;
-    top: 0;
-    right: -164px;
     width: 152px;
     height: 56px;
     background: $--b-main-black-color;
@@ -45,16 +51,53 @@ export default {
     border-radius: 6px;
     padding: 4px 6px;
     z-index: 1;
+
+    &-right {
+      left: calc(100% + 10px);
+      top: 50%;
+    }
+    &-bottom {
+      top: calc(100% + 10px);
+    }
+    &-left {
+      right: calc(100% + 10px);
+    }
+    &-top {
+      bottom: calc(100% + 10px);
+    }
   }
   &__label-corner {
     width: 0;
     height: 0;
-    border-top: 10px solid transparent;
-    border-bottom: 10px solid transparent;
-    border-right: 10px solid $--b-main-black-color;
     position: absolute;
-    left: -8px;
-    top: 2px;
+    &-right {
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-right: 10px solid $--b-main-black-color;
+      left: -8px;
+      top: 0px;
+    }
+    &-bottom {
+      right: 50%;
+      top: 0;
+      border-bottom: 10px solid transparent;
+      border-right: 20px solid $--b-main-black-color;
+      transform: rotate(-45deg);
+    }
+    &-left {
+      right: 0px;
+      top: 50%;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-left: 10px solid $--b-main-black-color;
+    }
+    &-top {
+      right: 50%;
+      bottom: 0;
+      border-top: 10px solid transparent;
+      border-left: 20px solid $--b-main-black-color;
+      transform: rotate(-45deg);
+    }
   }
   &__label-title {
     font-family: 'Inter';
