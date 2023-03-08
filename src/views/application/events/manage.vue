@@ -8,12 +8,12 @@
       @submit="disableSubmit"
     >
     <SelectFormsColorsModal
-    v-if="isSelectFormColarModalOpened"
-    :formsData="eventForms"
-    :selectedTab="formsModalSelectedTabId"
-    @closeModal="closeSelectFormsModal"
-    @saveData="saveForms($event, data)"
-  />
+      v-if="isSelectFormColarModalOpened"
+      :formsData="eventForms"
+      :selectedTab="formsModalSelectedTabId"
+      @closeModal="closeSelectFormsModal"
+      @saveData="saveForms($event, data)"
+    />
       <div class="b-manage-event__page-title">
         <span v-if="manageAction === manageEventActionTypes.CREATE">
           {{ $t('events.event-creation') }}
@@ -88,31 +88,39 @@
             />
           </div>
           <div class="b-manage-event__manage-buttons-block">
-            <span @click="">Попередній перегляд</span>
+            <span @click="showPreviewEventModal">
+              Попередній перегляд
+            </span>
             <span @click="showEventInvitedUsersListModal">
               Запрошені учасники
             </span>
           </div>
         </div>
 
-        <InvitedUsersListModal
-          v-if="isEventInvitedUsersListModal && invitedUsers.length"
-          :invitedUsers="invitedUsers"
-          @removeInvitedUser="removeInvitedUser"
-          @closeModal="closeEventInvitedUsersListModal"
-        />
-      
+        <Transition name="slide">
+          <InvitedUsersListModal
+            v-if="isEventInvitedUsersListModal && invitedUsers.length"
+            :invitedUsers="invitedUsers"
+            @removeInvitedUser="removeInvitedUser"
+            @closeModal="closeEventInvitedUsersListModal"
+          />            
+        </Transition>
+
         <div class="b-manage-event-preview__block">
           <PreviewBlock :eventData="data.values" />
-
-
-          <Transition>
+          <Transition name="slide">
+          <PreviewEventModal
+            v-if="isEventPreivewModalOpened"
+            :eventData="data.values"
+            @closeModal="closePreviewEventModal"
+          />
+        </Transition>
+    
             <RemoveInvitedUsersModal
             v-if="removeInvitedUsersModalOpened"
             @closeModal="closeRemoveUsersModal"
             @deleteUsers="removeAllInvitedUsers"
           />
-          </Transition>
       
           <InvitedUsersList
             class="b-manage-event-invited-users__list"
@@ -158,6 +166,7 @@ import Loading from '../../../workers/loading-worker/Loading.vue'
 import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue'
 import InvitedUsersList from '../../../components/manage-event-components/InvitedUsersList.vue'
 import InvitedUsersListModal from '../../../components/ModalWindows/InvitedUsersListModal.vue'
+import PreviewEventModal from '../../../components/ModalWindows/PreviewEventModal.vue'
 
 import { API } from '../../../workers/api-worker/api.worker'
 import { useUserDataStore } from '../../../stores/userData'
@@ -196,6 +205,7 @@ export default {
     InvitedUsersList,
     InvitedUsersListModal,
     RemoveInvitedUsersModal,
+    PreviewEventModal,
   },
   setup() {
     const router = useRouter();
@@ -212,6 +222,8 @@ export default {
     const isSelectFormColarModalOpened = ref(false)
     const removeInvitedUsersModalOpened = ref(false);
     const manageAction = ref(route.meta.action);
+    const isEventInvitedUsersListModal = ref(false);
+    const isEventPreivewModalOpened = ref(false);
     
     const eventPreviewData = ref(route.meta?.eventData ||
     {
@@ -395,7 +407,6 @@ export default {
       }
     })
 
-    const isEventInvitedUsersListModal = ref(false);
 
     const showEventInvitedUsersListModal = () => {
       if (invitedUsers.value.length) {
@@ -406,6 +417,15 @@ export default {
     const closeEventInvitedUsersListModal = () => {
       isEventInvitedUsersListModal.value = false
     }
+
+    const showPreviewEventModal = () => {
+      isEventPreivewModalOpened.value = true
+    }
+
+    const closePreviewEventModal = () => {
+      isEventPreivewModalOpened.value = false
+    }
+
 
     async function saveEvent(data) {
       eventCreateLoader.value = true
@@ -461,6 +481,7 @@ export default {
       isSelectFormColarModalOpened,
       removeInvitedUsersModalOpened,
       eventPreviewData,
+      isEventPreivewModalOpened,
       isEventInvitedUsersListModal,
       eventCreateLoader,
       formsModalSelectedTabId,
@@ -470,11 +491,13 @@ export default {
       getNewEventLocation,
       showEventInvitedUsersListModal,
       openSelectFormsModal,
+      showPreviewEventModal,
       selectNeedForm,
       runOnSelectEventDuration,
       closeEventInvitedUsersListModal,
       updateEventPriceAfterSelectFree,
       inviteUsetToTheEvent,
+      closePreviewEventModal,
       changeStep,
       saveForms,
       removeAllInvitedUsers,
@@ -613,11 +636,15 @@ export default {
         background: rgba(239, 239, 246, 0.7);
         border: 1px solid #DFDEED;
         border-radius: 8px;
-        display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 12px;
         margin-top: 8px;
+        display: none;
+
+        @include tabletAndMobile {
+          display: flex;
+        }
         
         span {
           font-family: 'Inter';
@@ -644,12 +671,14 @@ export default {
   }
 }
 
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.8s ease;
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.5s;
 }
-.v-enter,
-.v-leave-to {
-  opacity: 0;
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateY(100%);
 }
+
 </style>
