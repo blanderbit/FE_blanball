@@ -27,9 +27,11 @@
       </div>
     </div>
 
-    <EventCreatedSuccessModal 
-      v-if="isEventCreatedModalActive" 
-      @closeModal="closeEventCreatedModal"/>
+    <ActionEventModal
+      v-if="isActionEventModalOpened"
+      :modalData="actionEventModalConfig"
+      @closeModal="closeEventActiondModal"
+    />
 
     <ModalFeedback
       :isActive="isCreateReviewModalActive"
@@ -46,6 +48,7 @@
 import { ref, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
+import { useI18n } from 'vue-i18n'
 
 import { v4 as uuid } from 'uuid'
 import { storeToRefs } from 'pinia'
@@ -55,7 +58,7 @@ import MainHeader from './../../components/MainHeader.vue'
 import Notification from '../../components/Notification.vue'
 import VerifyEmailModal from '../../components/ModalWindows/UserCabinetModalWindows/VerifyEmailModal.vue'
 import ModalFeedback from '../../components/ModalWindows/ModalFeedbackModalWindow/index.vue'
-import EventCreatedSuccessModal from '../../components/manage-event-components/EventCreatedSuccessModal.vue'
+import ActionEventModal from '../../components/ModalWindows/ActionEventModal.vue'
 
 import { AuthWebSocketWorkerInstance } from './../../workers/web-socket-worker'
 import { TokenWorker } from '../../workers/token-worker'
@@ -64,6 +67,9 @@ import { useUserDataStore } from '@/stores/userData'
 import { NotificationsBus, BlanballEventBus } from '../../workers/event-bus-worker' 
 import { MessageActionTypes } from '../../workers/web-socket-worker/message.action.types'
 import { API } from '../../workers/api-worker/api.worker'
+
+import EventUpdatedIcon from '../../assets/img/event-updated-modal-icon.svg'
+import EventCreatedIcon from '../../assets/img/event-creted-modal-icon.svg'
 
 import message_audio from '../../assets/audio/message_audio.mp3'
 
@@ -75,14 +81,17 @@ const isCreateReviewModalActive = ref(false)
 const endedEventData = ref({})
 const selectedEmojies = ref([])
 const modalFeedBackAnimation = ref(false)
-const isEventCreatedModalActive = ref(false)
+const isActionEventModalOpened = ref(false)
+
+const actionEventModalConfig = ref({})
+const { t } = useI18n();
 
 
-const closeEventCreatedModal = () => {
-  isEventCreatedModalActive.value = false
+const closeEventActiondModal = () => {
+  isActionEventModalOpened.value = false
 }
-const openEventCreatedModal = () => {
-  isEventCreatedModalActive.value = true
+const openEventActionModal = () => {
+  isActionEventModalOpened.value = true
 }
 
 const closeEventReviewModal = () => {
@@ -110,7 +119,20 @@ NotificationsBus.on('openEventReviewModal', async (data) => {
 });
 
 BlanballEventBus.on('EventCreated', () => {
-  openEventCreatedModal()
+  actionEventModalConfig.value = {
+    title: t('modals.event_created.title'),
+    description: t('modals.event_created.main-text'),
+    image: EventCreatedIcon,
+  }
+  openEventActionModal()
+});
+BlanballEventBus.on('EventUpdated', () => {
+  actionEventModalConfig.value = {
+    title: t('modals.event_updated.title'),
+    description: t('modals.event_updated.main-text'),
+    image: EventUpdatedIcon,
+  }
+  openEventActionModal()
 });
 
 const emojiSelection = (emoji) => {
@@ -232,6 +254,7 @@ AuthWebSocketWorkerInstance.registerCallback(handleNewMessage).connect({
 onBeforeUnmount(() => {
   NotificationsBus.off('openEventReviewModal');
   BlanballEventBus.off('EventCreated');
+  BlanballEventBus.off('EventUpdated');
   AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect();
 })
 </script>

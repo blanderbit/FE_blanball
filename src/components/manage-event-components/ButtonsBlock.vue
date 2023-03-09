@@ -38,12 +38,12 @@
           :icon="icons.iconSave"
           @click-function="$emit('cancelBtnClick')"
         />
-          <Transition>
+          <!-- <Transition>
             <TabLabel
               :title="$t('profile.coming-soon-title')"
               :text="$t('profile.coming-soon-text')"
             />
-          </Transition>
+          </Transition> -->
         </div>
       </div>
       <div class="b-manage-tem-btns__green-btn-wrapper"></div>

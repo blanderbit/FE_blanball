@@ -134,6 +134,8 @@ export default {
           return 'events.you-are-fan'
         case 'request_participation':
           return 'events.request-sent'
+        default:
+          return ''
       }
     })
 

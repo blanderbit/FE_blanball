@@ -3,7 +3,7 @@
     <div class="b-invited-users-list__modal-window">
       <InvitedUsersList
         :invitedUsers="invitedUsers"
-        :title="$t('buttons.invited-members')"
+        :title="$t('events.invited-members')"
         :removeAllOption="false"
         :headerIcon="closeArrowUpIcon"
         @headerIconClick="$emit('closeModal')"

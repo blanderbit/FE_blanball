@@ -184,15 +184,6 @@ import SCHEMAS from '../../../validators/schemas'
 
 import Arrow from '../../../assets/img/arrow-right-white.svg'
 
-const manageEventActionTypes = ref(
-  {
-    CREATE: 'CREATE'
-  },
-  {
-    EDIT: 'EDIT'
-  }
-)
-
 export default {
   name: 'CreateEventPage',
   components: {
@@ -234,6 +225,13 @@ export default {
     const isEventPreivewModalOpened = ref(false);
     const isSubmitModalOpened = ref(false);
     const changeDataModalConfig = ref('')
+
+    const manageEventActionTypes = ref(
+      {
+        CREATE: 'CREATE',
+        EDIT: 'EDIT'
+      }
+    )
     
     const eventPreviewData = ref(route.meta?.eventData ||
     {
@@ -476,7 +474,16 @@ export default {
             break
         }
         goToTheEventPage()
-        setTimeout(() => BlanballEventBus.emit('EventCreated'), 100)
+        setTimeout(() => {
+          switch(manageAction.value) {
+            case manageEventActionTypes.value.CREATE:
+              BlanballEventBus.emit('EventCreated')
+              break
+            case manageEventActionTypes.value.EDIT:
+              BlanballEventBus.emit('EventUpdated')
+              break
+        }
+        }, 100)
       } catch {}
     }
 
@@ -486,8 +493,8 @@ export default {
           changeDataModalConfig.value = {
             title: 'Скасування створення події',
             description: 'Ви дійсно бажаєте скасувати створення події?',
-            button_1: 'Продовжити',
-            button_2: 'Cкасувати',
+            button_1: 'Ні, продовжити',
+            button_2: 'Так, cкасувати',
             right_btn_action: 'goToTheEvents',
             left_btn_action: 'continue',
             btn_with_1: 132,
@@ -499,8 +506,8 @@ export default {
           changeDataModalConfig.value = {
             title: 'Скасування редагування події',
             description: 'Ви дійсно бажаєте скасувати редагування події?',
-            button_1: 'Продовжити',
-            button_2: 'Cкасувати',
+            button_1: 'Ні, продовжити',
+            button_2: 'Так, cкасувати',
             right_btn_action: 'goToTheEvents',
             left_btn_action: 'continue',
             btn_with_1: 132,
