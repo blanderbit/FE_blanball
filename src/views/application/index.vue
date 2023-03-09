@@ -82,7 +82,6 @@ const endedEventData = ref({})
 const selectedEmojies = ref([])
 const modalFeedBackAnimation = ref(false)
 const isActionEventModalOpened = ref(false)
-
 const actionEventModalConfig = ref({})
 const { t } = useI18n();
 

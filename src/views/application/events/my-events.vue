@@ -14,6 +14,7 @@
       @close-modal="isContextMenuActive = false"
       @itemClick="contextMenuItemClick"
     />
+
     <div class="b-events-page__main-body" ref="mainEventsBlock">
       <div class="b-events-page__header-block">
         <div class="b-events-page__left-part">

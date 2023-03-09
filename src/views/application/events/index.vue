@@ -180,20 +180,20 @@ export default {
 
 
     const eventJoinToolTipItems = ref([
-            {
-                id: 1,
-                text: t('buttons.like-a-player'),
-                img: BallIcon,
-                type: 'play'
-            },
-            {
-                id: 2,
-                text: t('buttons.like-a-fan'),
-                img: BallIcon,
-                type: 'view'
-            }
-        ])
-    
+      {
+        id: 1,
+        text: t('buttons.like-a-player'),
+        img: BallIcon,
+        type: 'play'
+      },
+      {
+        id: 2,
+        text: t('buttons.like-a-fan'),
+        img: BallIcon,
+        type: 'view'
+      }
+    ])
+
     const mockData = computed(() => {
       return {
         event_cards: CONSTANTS.event_page.event_cards,

@@ -6,6 +6,11 @@
     @copyLinkButtonClick="copyLinkButtonClick"
     @closeModal="closeShareEventModal"
   />
+  <ActionEventModal
+      v-if="isActionEventModalOpened"
+      :modalData="actionEventModalConfig"
+      @closeModal="closeEventActiondModal"
+    />
   <div class="b-event-info">
     <div class="b-event-info__main-body">
       <div class="b-event-info__header-block">
@@ -226,6 +231,7 @@ import TabLabel from '../../../components/TabLabel.vue';
 import ListOfEventRequestsToParticipations from '../../../components/ListOfEventRequestsToParticipations.vue';
 import Loading from '../../../workers/loading-worker/Loading.vue';
 import EventInfoForms from '../../../components/buildedForms/EventInfoForms.vue';
+import ActionEventModal from '../../../components/ModalWindows/ActionEventModal.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
@@ -244,7 +250,7 @@ import emoji_5 from '../../../assets/img/emojies/5.svg';
 import noReviews from '../../../assets/img/no-records/no-reviews.svg';
 import noUserRecords from '../../../assets/img/no-records/no-user-records.svg';
 import editEvent from '../../../assets/img/edit-white.svg'
-
+import NoEditPermIcon from '../../../assets/img/no-edit-perm-modal-icon.svg';
 
 export default {
   name: 'EventsPage',
@@ -259,6 +265,7 @@ export default {
     TabLabel,
     EventInfoForms,
     ListOfEventRequestsToParticipations,
+    ActionEventModal,
   },
   setup() {
     const setUserEmoji = (raiting) => {
@@ -302,6 +309,14 @@ export default {
     const activeTab = ref(0);
     const eventPriceHover = ref(false);
 
+    const isActionEventModalOpened = ref(false)
+    const actionEventModalConfig = ref({
+      title: 'Редагування недоступне',
+      description: 'Ви не можете редагувати подію, яка вже почалася або закінчилася',
+      image: NoEditPermIcon,
+    })
+
+  
     handleIncomeEventData(eventData.value);
 
     const mockData = computed(() => {
@@ -409,6 +424,13 @@ export default {
       });
     }
 
+    const closeEventActiondModal = () => {
+      isActionEventModalOpened.value = false
+    }
+    const openEventActionModal = () => {
+      isActionEventModalOpened.value = true
+    }
+
     function handleIncomeEventData(data) {
       data.date = getDate(data.date_and_time);
       data.time = getTime(data.date_and_time);
@@ -420,8 +442,10 @@ export default {
     }
 
     const greenButtonClick  = () => {
-      if (eventData.value.author.id === user.value.id) { 
+      if (eventData.value.author.id === user.value.id && eventData.value.status === 'Planned') { 
         return router.push(ROUTES.APPLICATION.EVENTS.EDIT.absolute(eventData.value.id))
+      } else {
+        openEventActionModal()
       }
     }
 
@@ -461,13 +485,16 @@ export default {
       greenButton,
       user,
       activeTab,
+      isActionEventModalOpened,
       noUsersData,
+      actionEventModalConfig,
       noFansData,
       eventPriceHover,
       eventRequestsToParticipations,
       copyLinkButtonClick,
       greenButtonClick,
       switchTabLabel,
+      closeEventActiondModal,
       changeTab,
       openEventShareModal,
       acceptRequestToParticipation,

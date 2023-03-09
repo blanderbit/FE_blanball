@@ -214,7 +214,8 @@ export default {
   ],
 
   setup(props, { emit }) {
-    const initialDate = ref(new Date())
+    const initialDate = ref(props.initialValues.date_and_time ? 
+      new Date(props.initialValues.date_and_time) : new Date())
     const eventLocation = ref({
       lat: props.initialValues.place.lat, 
       lng: props.initialValues.place.lon
