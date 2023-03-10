@@ -87,6 +87,7 @@ export default {
 
 <style lang="scss" scoped>
 
+
 // SCSS variables for hex colors
  $color-dfdeed: #dfdeed;
  $color-e2e2e9: #e2e2e9;

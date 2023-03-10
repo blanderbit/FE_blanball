@@ -323,7 +323,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped> 
+<style lang="scss" scoped>
+ 
  $color-f0f0f4: #f0f0f4;
  $color-8a8aa8: #8a8aa8;
  $color-fcfcfc: #fcfcfc;

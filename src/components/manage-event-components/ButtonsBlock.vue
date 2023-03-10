@@ -102,7 +102,12 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped> $color-f0f0f4: #f0f0f4;
+ $color-dfdeed: #dfdeed;
+ $color-575775: #575775;
+ $color-ffffff: #ffffff;
+
+
 // SCSS variables for hex colors
 $color-f9f9fc: #f9f9fc;
 
@@ -112,7 +117,7 @@ $color-f9f9fc: #f9f9fc;
     padding: 10px 12px;
   }
   @include tabletAndMobile {
-    background: #f0f0f4;
+    background: $color-f0f0f4;
     border-radius: 0px;
   }
   .b-manage-tem-btns__title {
@@ -164,12 +169,12 @@ $color-f9f9fc: #f9f9fc;
   }
 }
 .b-manage-tem-download-template__button {
-  border: 1px solid #dfdeed !important;
+  border: 1px solid $color-dfdeed !important;
   border-radius: 6px;
 }
 .b-manage-tem-save-template__button {
-  background-color: #575775;
-  color: #ffffff;
+  background-color: $color-575775;
+  color: $color-ffffff;
 }
 .b-manage-tem-white__btn {
   position: relative;

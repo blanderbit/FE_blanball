@@ -57,7 +57,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped> $color-f9f9fc: #f9f9fc;
+
+
 .b-invited-users-list-modal__wrapper {
   position: fixed;
   top: 0;

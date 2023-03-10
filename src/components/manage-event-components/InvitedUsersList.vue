@@ -113,6 +113,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 $color-dfdeed: #dfdeed;
 $color-8a8aa8: #8a8aa8;
 

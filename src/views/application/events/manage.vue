@@ -590,7 +590,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped> $color-575775: #575775;
+
+
 
 // SCSS variables for hex colors
  $color-dfdeed: #dfdeed;
@@ -701,7 +703,7 @@ export default {
           font-size: 14px;
           line-height: 24px;
           text-align: center;
-          color: #575775;
+          color: $color-575775;
           flex-basis: 48%;
         }
         ::v-deep(.b-green-btn) {
@@ -730,7 +732,7 @@ export default {
           font-size: 12px;
           line-height: 20px;
           text-align: right;
-          color: #575775;
+          color: $color-575775;
         }
       }
     }

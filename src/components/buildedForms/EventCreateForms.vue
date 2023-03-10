@@ -107,6 +107,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 // SCSS variables for hex colors
 $color-f9f9fc: #f9f9fc;
 $color-dfdeed: #dfdeed;
@@ -124,7 +125,7 @@ $color-dfdeed: #dfdeed;
     gap: 12px 12px;
   }
   .b-event-info__form {
-    background: #f9f9fc;
+    background: $color-f9f9fc;
     border-radius: 6px;
     padding: 8px;
     padding-bottom: 12px;
@@ -160,7 +161,7 @@ $color-dfdeed: #dfdeed;
         margin-top: 8px;
 
         .b-event-info__form-item-color {
-          background: #dfdeed;
+          background: $color-dfdeed;
           border-radius: 4px;
           padding: 2px 8px;
           width: max-content;

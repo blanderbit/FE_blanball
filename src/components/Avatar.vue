@@ -67,7 +67,8 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"> $color-1ccd62: #1ccd62;
+<style scoped lang="scss">
+ $color-1ccd62: #1ccd62;
  $color-ffffff: #ffffff;
 
 

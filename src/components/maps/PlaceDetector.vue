@@ -61,6 +61,7 @@ export default {
 
 <style scoped lang="scss">
 
+
 // SCSS variables for hex colors
  $color-fafafa: #fafafa;
 

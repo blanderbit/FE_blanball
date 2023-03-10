@@ -24,7 +24,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped> $color-575775: #575775;
+
+
 .b-action-event-modal__wrapper {
   position: fixed;
   top: 0;
@@ -58,7 +60,7 @@ export default {
       margin-bottom: 4px;
     }
     .b-action-event-modal__subtitle {
-      @include inter(14px, 400,#575775);
+      @include inter(14px, 400,$color-575775);
       line-height: 20px;
       display: flex;
       align-items: center;
