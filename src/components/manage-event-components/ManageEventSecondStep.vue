@@ -138,6 +138,10 @@ export default {
     invitedUsersList: {
       type: Array,
       default: () => [],
+    },
+    initialValues: {
+      type: Object,
+      default: () => {},
     }
   },
   components: {
@@ -149,7 +153,7 @@ export default {
   },
 
   setup(props, { emit }) {
-    const isEventPayment = ref(false)
+    const isEventPayment = ref(props.initialValues.is_price)
     const searchValue = ref('')
     const router = useRouter()
     const loading = ref(props.filterUsersListLoading)
@@ -187,7 +191,9 @@ export default {
     })
 
     const stepStyle = computed(() => {
-      return props?.currentStep === 2 ? { height: 'auto' } : { height: '0px' }
+      if (props?.currentStep) { 
+        return props?.currentStep === 2 ? { height: 'auto' } : { height: '0px' }
+      }
     })
 
   

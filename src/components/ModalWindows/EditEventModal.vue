@@ -10,9 +10,12 @@
     />
     <div class="b-edit-event-modal__modal-window">
       <div class="b-edit-event-modal__header">
-        <img class="b-edit-event-modal__close" 
-          src="../../assets/img/cross.svg" alt=""
-          @click="openSubmitModal">
+        <img
+          class="b-edit-event-modal__close"
+          src="../../assets/img/cross.svg"
+          alt=""
+          @click="openSubmitModal"
+        />
         <div class="b-edit-event-modal__title">
           {{ $t('events.event-update') }}
         </div>
@@ -20,7 +23,12 @@
           Оберіть кольори форм або маніжок для команд
         </div>
       </div>
-      <Form v-slot="data" :initial-values="eventData" @submit="disableSubmit">
+      <Form
+        v-slot="data"
+        :initial-values="eventData"
+        @submit="disableSubmit"
+        :validation-schema="schema"
+      >
         <div class="b-edit-event-modal__main-side">
           <Teleport to="body">
             <SelectFormsColorsModal
@@ -80,7 +88,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
@@ -97,6 +105,8 @@ import { API } from '../../workers/api-worker/api.worker';
 import { BlanballEventBus } from '../../workers/event-bus-worker';
 
 import { runOnSelectEventDuration } from '../../utils/runOnSelectEventDuration';
+
+import SCHEMAS from '../../validators/schemas';
 
 export default {
   components: {
@@ -142,6 +152,10 @@ export default {
       btn_with_1: 132,
       btn_with_2: 132,
     };
+
+    const schema = computed(() => {
+      return SCHEMAS.manageEvent.schema();
+    });
 
     const getNewEventLocation = (location, data) => {
       data.values.place = {
@@ -246,6 +260,15 @@ export default {
     getRelevantUsers({ skipids: eventData.value.author.id });
 
     async function editEvent(data) {
+
+      const { valid } = await data.validate();
+
+      console.log(data)
+
+      if (!valid) {
+        return false
+      }
+
       eventUpdateLoader.value = true;
       const createEventData = data.values;
 
@@ -267,6 +290,7 @@ export default {
       eventUpdateLoader,
       changeDataModalConfig,
       isSubmitModalOpened,
+      schema,
       formsModalSelectedTabId,
       eventForms,
       openSubmitModal,
@@ -295,7 +319,7 @@ export default {
 
 /* style for the scrollbar thumb */
 ::-webkit-scrollbar-thumb {
-  background-color: #8a8aa8;;
+  background-color: #8a8aa8;
   border-radius: 100px;
   transform: matrix(-1, 0, 0, 1, 0, 0);
 }
@@ -304,7 +328,6 @@ export default {
 ::-webkit-scrollbar {
   position: absolute;
   width: 6px;
-
 }
 .b-edit-event-modal__block-title {
   @include exo(16px, 700);
@@ -334,7 +357,6 @@ export default {
     overflow: scroll;
 
     .b-edit-event-modal__header {
-
       .b-edit-event-modal__close {
         position: absolute;
         right: 20px;

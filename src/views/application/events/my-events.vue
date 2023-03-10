@@ -3,7 +3,7 @@
     <Loading :is-loading="loading"/>
     <EditEventModal
       v-if="isEventUpdateModalOpened"
-      :eventDataValue="selectedContextMenuEvent"
+      :eventDataValue="updateEventData"
       @closeEventUpdateModal="closeEventUpdateModal"
     />
     <DeleteEventsModal
@@ -176,6 +176,7 @@ import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patc
 import { addMinutes } from '../../../utils/addMinutes'
 import { getDate } from '../../../utils/getDate'
 import { getTime } from '../../../utils/getTime'
+import { prepareEventUpdateData } from '../../../utils/prepareEventUpdateData'
 
 import CONSTANTS from '../../../consts/index'
 
@@ -226,6 +227,7 @@ export default {
     const oneEventToPinId = ref(null)
     const oneEventToUnPinId = ref(null)
     const isEventUpdateModalOpened = ref(false);
+    const updateEventData = ref({});
 
     const closeEventUpdateModal = () => {
       isEventUpdateModalOpened.value = false
@@ -253,7 +255,7 @@ export default {
       }
     })
 
-    const contextMenuItemClick = (itemType) => {
+    const contextMenuItemClick = async (itemType) => {
       switch(itemType) {
         case 'select':
           if (selected.value.indexOf(selectedContextMenuEvent.value.id) === -1) {
@@ -273,7 +275,10 @@ export default {
           unPinEvents()
           break
         case 'edit':
-          console.log(selectedContextMenuEvent.value)
+          let data = await prepareEventUpdateData(
+            selectedContextMenuEvent.value.id
+          )
+          updateEventData.value = data
           isEventUpdateModalOpened.value = true
           break
       }
@@ -530,6 +535,7 @@ export default {
       loading,
       paginationTotalCount,
       selected,
+      updateEventData,
       selectedContextMenuEvent,
       emptyListMessages,
       myCardRightClick,
