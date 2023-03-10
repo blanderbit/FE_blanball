@@ -121,7 +121,6 @@
       PositionMapBus.on('update:coords', (e) => {
         region.value = e.place.state;
         city.value = e.place.city || e.place.town || e.place.village;
-        console.log(e.place)
         address.value = `${e.place.neighbourhood || ''} ${e.place.road || ''} ${e.place.house_number || ''} ${e.place.postcode || ''}`;
         loading.value = false;
         nextButton.value = !region.value || !city.value || !address.value

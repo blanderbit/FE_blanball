@@ -143,7 +143,6 @@ export default {
       };
     });
     function setValue() {
-      console.log(props.modelValue);
       if (!props.modelValue) return;
       const [Sregion, SCity, Saddress] =
         props.modelValue.place?.split?.(',') || [];

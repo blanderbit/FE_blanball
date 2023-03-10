@@ -32,16 +32,18 @@ export class UserService {
   }
 
   @FilterParamsDecorator(filterConfigForRelevantUsers)
-  getRelevantUsers(options) {
+  getRelevantUsers({ search, skipids }) {
     return AxiosInstance.get(
       EndpointsEnum.Users.getRelevantUsers,
       AxiosParams(
-        AxiosQuery(options),
+        AxiosQuery({
+          search: search,
+          skipids: skipids?.join(','),
+        })),
         AxiosSkipErrorMessageType([
           DETAILS_TYPE_ENUM.INVALID_PAGE
         ])
       )
-    )
   }
 
   @FilterParamsDecorator(filterConfigForUsers)

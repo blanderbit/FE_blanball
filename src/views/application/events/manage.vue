@@ -375,12 +375,21 @@ export default {
       removeInvitedUsersModalOpened.value = false
     }
 
+    const SKIPIDS = [eventPreviewData.value.author.id, 
+      ...eventPreviewData.value.current_users.map((user) => user.id),
+      ...eventPreviewData.value.current_fans.map((fan) => fan.id)
+    ]
+
     const getRelevantUsers = async (options) => {
-      searchUsersLoading.value = true
-      let response = await API.UserService.getRelevantUsers(options)
-      relevantUsersList.value = response.data.results
-      searchUsersLoading.value = false
-    }
+      searchUsersLoading.value = true;
+      let response = await API.UserService.getRelevantUsers({
+        search: options?.search,
+        skipids: options?.skipids,
+      });
+      relevantUsersList.value = response.data.results;
+      searchUsersLoading.value = false;
+    };
+
 
     const inviteUsetToTheEvent = (user_data) => {
       invitedUsers.value.push(user_data)
@@ -390,12 +399,12 @@ export default {
       clearTimeout(searchTimeout)
       searchUsersLoading.value = true
       const relevantSearch = () => {
-        getRelevantUsers({ search: searchValue, skipids: user.value.id })
+        getRelevantUsers({ search: searchValue, skipids: SKIPIDS })
       }
       searchTimeout = setTimeout(relevantSearch, 500)
     }
 
-    getRelevantUsers({ skipids: user.value.id })
+    getRelevantUsers({ skipids: SKIPIDS })
 
     const removeInvitedUser = (user_id) => {
       invitedUsers.value = invitedUsers.value.filter(function (item) {

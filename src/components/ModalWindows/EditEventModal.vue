@@ -232,7 +232,10 @@ export default {
 
     const getRelevantUsers = async (options) => {
       searchUsersLoading.value = true;
-      let response = await API.UserService.getRelevantUsers(options);
+      let response = await API.UserService.getRelevantUsers({
+        search: options?.search,
+        skipids: options?.skipids,
+      });
       relevantUsersList.value = response.data.results;
       searchUsersLoading.value = false;
     };
@@ -245,25 +248,28 @@ export default {
       isSubmitModalOpened.value = false;
     };
 
+    const SKIPIDS = [eventData.value.author.id, 
+      ...eventData.value.current_users.map((user) => user.id),
+      ...eventData.value.current_fans.map((fan) => fan.id)
+    ]
+
     const searchRelevantUsers = (searchValue) => {
       clearTimeout(searchTimeout);
       searchUsersLoading.value = true;
       const relevantSearch = () => {
         getRelevantUsers({
           search: searchValue,
-          skipids: eventData.value.author.id,
+          skipids: SKIPIDS,
         });
       };
       searchTimeout = setTimeout(relevantSearch, 500);
     };
 
-    getRelevantUsers({ skipids: eventData.value.author.id });
+    getRelevantUsers({skipids: SKIPIDS});
 
     async function editEvent(data) {
 
       const { valid } = await data.validate();
-
-      console.log(data)
 
       if (!valid) {
         return false
