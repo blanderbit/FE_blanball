@@ -106,6 +106,7 @@ export default {
 
 <style lang="scss" scoped>
 
+
 // SCSS variables for hex colors
  $color-c6c7c7: #c6c7c7;
  $color-ffffff: #ffffff;

@@ -40,6 +40,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 
+
 // SCSS variables for hex colors
  $color-f9f9fc: #f9f9fc;
 
@@ -59,6 +60,10 @@ export default {
     border-radius: 12px;
     width: 564px;
     overflow: hidden;
+
+    @include tabletAndMobile {
+        display: none;
+      }
     
     &.active {
       height: auto;
@@ -91,9 +96,6 @@ export default {
         background: $color-f9f9fc;
         padding: 13px;
         margin-bottom: 8px;
-      }
-      @include tabletAndMobile {
-        margin-bottom: 0;
       }
       .b-event-preview__title-block {
         @media (max-width: 1200px) {
@@ -132,4 +134,5 @@ export default {
     }
   }
 }
+
 </style>

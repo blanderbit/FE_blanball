@@ -47,6 +47,7 @@
           :modelValue="filters"
           @update:value="setFilters"
           @clearFilters="clearFilters"
+          :elementsCount="paginationTotalCount"
         ></events-filters>
 
       
@@ -179,20 +180,20 @@ export default {
 
 
     const eventJoinToolTipItems = ref([
-            {
-                id: 1,
-                text: t('buttons.like-a-player'),
-                img: BallIcon,
-                type: 'play'
-            },
-            {
-                id: 2,
-                text: t('buttons.like-a-fan'),
-                img: BallIcon,
-                type: 'view'
-            }
-        ])
-    
+      {
+        id: 1,
+        text: t('buttons.like-a-player'),
+        img: BallIcon,
+        type: 'play'
+      },
+      {
+        id: 2,
+        text: t('buttons.like-a-fan'),
+        img: BallIcon,
+        type: 'view'
+      }
+    ])
+
     const mockData = computed(() => {
       return {
         event_cards: CONSTANTS.event_page.event_cards,
@@ -315,6 +316,7 @@ export default {
       dataTransformation: handlingIncomeData,
     })
     paginationPage.value = 1
+    paginationTotalCount.value = router.currentRoute.value.meta.eventData.data.total_count
     paginationElements.value =
       router.currentRoute.value.meta.eventData.data.results.map(
         handlingIncomeData
@@ -430,6 +432,7 @@ export default {
       scrollComponent,
       eventCards,
       isLoaderActive,
+      paginationTotalCount,
       switchToMyEvents,
       isEventJoinModalActive,
       mainEventsBlock,
@@ -466,6 +469,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 
 // SCSS variables for hex colors
  $color-148581: #148581;

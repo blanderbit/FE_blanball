@@ -67,6 +67,7 @@ export default {
 
 <style lang="scss">
 
+
 // SCSS variables for hex colors
  $color-dfdeed: #dfdeed;
  $color-c10b0b: #c10b0b;

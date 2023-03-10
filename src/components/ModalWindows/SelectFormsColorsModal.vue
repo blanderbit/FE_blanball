@@ -172,26 +172,19 @@ export default {
 
 <style lang="scss" scoped>
 
+
 // SCSS variables for hex colors
 $color-f0f0f4: #f0f0f4;
 $color-efeff6: #efeff6;
 
 .b-select-forms-color-modal__wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(38, 37, 65, 0.2);
   z-index: 999;
-
-  &::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    min-height: 100%;
-    background: $--b-main-black-color;
-    width: 100%;
-    min-height: 100%;
-    z-index: 100;
-    opacity: 0.2;
-  }
 
   .b-select-forms-color-modal {
     position: absolute;

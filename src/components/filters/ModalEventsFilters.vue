@@ -11,7 +11,7 @@
             {{ $t('users.filters') }}
           </div>
           <div class="b-modal-filters__subtitle">
-            {{ $t('users.found') }} 15 {{ $t('users.advertisments') }}
+            {{ $t('users.found') }} {{ elementsCount }} {{ $t('users.advertisments') }}
           </div>
           <div class="b-modal-filters__game-type-input">
             <Dropdown
@@ -24,28 +24,8 @@
               name="position"
             />
           </div>
-          <div class="b-modal-filters__game-search-input">
-            <InputComponent
-              :placeholder="'Введіть ключові слова'"
-              v-model="searchData"
-              :title-width="0"
-              :height="38"
-              name="change_email"
-            />
-          </div>
           <div class="b-modal-filters__gender">
             <RadioGenderBox v-model:gender="genderData" />
-          </div>
-          <div class="b-modal-filters__status-event">
-            <Dropdown
-              :check-value-immediate="true"
-              :options="statusDropdown"
-              :placeholder="$t('events.event-status')"
-              :height="32"
-              display-value="value"
-              display-name="name"
-              v-model="gameStatusData"
-            />
           </div>
           <div class="b-modal-filters__location">
             <ModalPositionMap v-model="locationData"></ModalPositionMap>
@@ -143,6 +123,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    elementsCount: {
+      type: Number,
+      default: 0
+    }
   },
   emits: [
     'closeModal',
@@ -250,6 +234,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 
 // SCSS variables for hex colors
  $color-dfdeed: #dfdeed;

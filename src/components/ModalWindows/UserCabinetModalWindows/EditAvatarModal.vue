@@ -7,7 +7,7 @@
             <div class="b-edit-avatar__right-side">
               <vue-cropper
                 ref="cropper"
-                :aspectRatio="1"
+                :aspectRatio="1/1"
                 :minContainerHeight="200"
                 :viewMode="2"
                 :styles="{ border: '2px solid red' }"
@@ -185,7 +185,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped> $color-575775: #575775;
+ $color-d9d9d9: #d9d9d9;
+ $color-148783: #148783;
+
+
 // SCSS variables for hex colors
  $color-dfdeed: #dfdeed;
  $color-efeff6: #efeff6;
@@ -253,7 +257,7 @@ export default {
         font-weight: 400;
         font-size: 13px;
         line-height: 24px;
-        color: #575775;
+        color: $color-575775;
         margin-bottom: 12px;
         cursor: pointer;
         @include mobile {
@@ -311,7 +315,7 @@ export default {
           }
           .b-edit-avatar__rotate {
             @include mobile {
-              border: 1px solid #dfdeed;
+              border: 1px solid $color-dfdeed;
               padding: 9px 17px;
               border-radius: 6px;
             }
@@ -325,7 +329,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 2px solid #efeff6;
+    border-top: 2px solid $color-efeff6;
     padding-top: 20px;
     .b-edit-avatar__cancel-btn {
       font-family: 'Inter';
@@ -333,7 +337,7 @@ export default {
       font-weight: 400;
       font-size: 14px;
       line-height: 24px;
-      color: #575775;
+      color: $color-575775;
       padding: 4px 16px;
       cursor: pointer;
     }
@@ -355,7 +359,7 @@ export default {
 ::v-deep(.cropper-view-box) {
   border-width: 2px;
   border-style: solid;
-  border: 3px dashed #148783;
+  border: 3px dashed $color-148783;
   background: transparent;
   outline: none;
 }
@@ -365,11 +369,11 @@ export default {
 // ::v-deep(.point-ne) {
 //   width: 14px;
 //   height: 14px;
-//   border-top: 3px solid #148783;
-//   border-right: 3px solid #148783;
+//   border-top: 3px solid $color-148783;
+//   border-right: 3px solid $color-148783;
 // }
 // ::v-deep(.point-e) {
 //   height: 28px;
-//   border-right: 3px solid #148783;
+//   border-right: 3px solid $color-148783;
 // }
 </style>

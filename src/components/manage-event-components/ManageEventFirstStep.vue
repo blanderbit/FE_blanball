@@ -52,6 +52,7 @@
         :main-title="$t('events.sport-type')"
         :placeholder="$t('events.sport-type')"
         :options="mockData.typeOfSportDropdown"
+        :initValue="initialValues.type"
         display-name="name"
         display-value="value"
         :width="320"
@@ -123,11 +124,11 @@
     <div class="b-event-m-1st__title mt-3 mb-2">
       {{ $t('events.place') }}
     </div>
-    <ModalPositionMap  
+    <EventCreatePositionMap  
         class="b-event-m-1st__input-location" 
+        name="place.place_name"
         v-model="eventLocation">
-    </ModalPositionMap>
-    <ErrorMessage class="b-event-location__error-message" name="place.place_name"/>
+    </EventCreatePositionMap>
     <div v-if="eventLocation.lat && eventLocation.lng" class="b-event-m-1st__event-map">
       <position-map
         :coords="eventLocationOnMap" 
@@ -149,7 +150,7 @@ import Dropdown from '../forms/Dropdown.vue'
 import InputComponent from '../forms/InputComponent.vue'
 import RadioButton from '../forms/RadioButton.vue'
 import PositionMap from '../maps/PositionMap.vue'
-import ModalPositionMap from '../maps/ModalPositionMap.vue'
+import EventCreatePositionMap from '../maps/EventCreatePositionMap.vue'
 
 import CONSTANTS from '../../consts/index'
 
@@ -188,7 +189,7 @@ export default {
     Dropdown,
     InputComponent,
     RadioButton,
-    ModalPositionMap,
+    EventCreatePositionMap,
     PositionMap,
     ErrorMessage,
   },
@@ -201,6 +202,10 @@ export default {
       type: Number,
       default: null,
     },
+    initialValues: {
+      type: Object,
+      default: () => {},
+    }
   },
   emits: [
     'changeEventLocation', 
@@ -209,10 +214,19 @@ export default {
   ],
 
   setup(props, { emit }) {
-    const initialDate = ref(new Date())
-    const eventLocation = ref({lat: '', lng: ''})
-    const eventLocationOnMap = ref({})
-    const selectedDurationID = ref('')
+    const initialDate = ref(props.initialValues.date_and_time ? 
+      new Date(props.initialValues.date_and_time) : new Date())
+    const eventLocation = ref({
+      lat: props.initialValues.place.lat, 
+      lng: props.initialValues.place.lon
+    });
+    const eventLocationOnMap = ref({
+      lat: props.initialValues.place.lat, 
+      lng: props.initialValues.place.lon
+    });
+    const selectedDurationID = ref(eventDurationOptions.value.findIndex(
+      element => element.value === props.initialValues.duration*60000
+    ));
     const minEventDate = ref(new Date().toISOString().slice(0, 10))
 
     watch(() => eventLocation.value, (newData, oldData) => {
@@ -231,10 +245,6 @@ export default {
       emit('changeEventDate', dayjs(initialDate.value).format('YYYY-MM-DD'))
     }
 
-    const stepStyle = computed(() => {
-      return props.currentStep === 1 ? { height: 'auto' } : { height: '0px' }
-    })
-
     const calendar = ref({
       inputMask: 'YYYY-MM-DD',
       modelConfig: {
@@ -248,6 +258,12 @@ export default {
 
       emit('selectEventDuration', data.value)
     }
+
+    const stepStyle = computed(() => {
+      if (props?.currentStep) {
+        return props?.currentStep === 1 ? { height: 'auto' } : { height: '0px' }
+      }
+    })
 
   
     const icons = computed(() => {
@@ -273,9 +289,9 @@ export default {
       mockData,
       initialDate,
       calendar,
+      stepStyle,
       eventLocationOnMap,
       eventLocation,
-      stepStyle,
       eventDurationOptions,
       minEventDate,
       selectedDurationID,
@@ -286,6 +302,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 
 // SCSS variables for hex colors
  $color-dfdeed: #dfdeed;

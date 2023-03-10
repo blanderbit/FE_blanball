@@ -117,10 +117,6 @@ export default {
       type: String,
       default: '',
     },
-    openIndicator: {
-      type: String,
-      default: ''
-    }
   },
   emits: ['new-value', 'update:modelValue'],
   setup(props, { emit }) {
@@ -244,6 +240,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 
 // SCSS variables for hex colors
  $color-dfdeed: #dfdeed;
