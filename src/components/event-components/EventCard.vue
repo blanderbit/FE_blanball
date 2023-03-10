@@ -134,6 +134,8 @@ export default {
           return 'events.you-are-fan'
         case 'request_participation':
           return 'events.request-sent'
+        default:
+          return ''
       }
     })
 
@@ -149,6 +151,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 
 // SCSS variables for hex colors
  $color-fafafa: #fafafa;

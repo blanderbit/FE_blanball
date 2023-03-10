@@ -2,6 +2,7 @@ import circleTick from '../assets/img/tick-in-circle.svg'
 import bucket from '../assets/img/bucket.svg'
 import pin from '../assets/img/pin.svg'
 import unpin from '../assets/img/unpin.svg'
+import edit from '../assets/img/edit-gray.svg'
 
 export default {
   sport_type_dropdown: [
@@ -86,6 +87,12 @@ export default {
       text: !eventPinned ? 'Закріпити' : 'Відкріпити',
       img: !eventPinned ? pin : unpin,
       type: !eventPinned ? 'pin' : 'unpin'
+    },
+    {
+      id: 3,
+      text: 'Редагувати',
+      img: edit,
+      type: 'edit'
     },
   ],
   status_ropdown: [

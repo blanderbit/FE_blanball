@@ -61,25 +61,24 @@
       {{ $t('events.need-ball-subtitle') }}
     </span>
 
-    <div class="contact-switcher">
-      <span class="title">{{ $t('events.show-my-contacts') }}</span>
-      <Switcher
-        :id="'contacts'"
-        :is-edit-mode="true"
-        name="is_phone_shown"
-        @get-value="showHidePhone"
-      />
-    </div>
-    <div class="input" v-show="isPhoneShown">
+    <div class="phone-block">
+      <span class="title">{{ $t('events.my-contacts') }}</span>
+      <div class="input"
+      :class="{'phone-read': !isEditPhone}">
       <InputComponent
-        :placeholder="userPhoneNumber"
+        ref="phoneValue"
+        :placeholder="phoneValue?.staticModelValue"
         :title-width="0"
+        :readonly="!isEditPhone"
         name="contact_number"
         v-maska="'+38 (0##) ### ## ##'"
+        :icon="icons.editPhone"
+        @icon-click="changeEditPhoneMode"
       >
       </InputComponent>
     </div>
-
+    </div>
+    
     <div class="title-block">
       <span class="title-margin">{{ $t('events.additional-info') }}</span>
     </div>
@@ -110,6 +109,9 @@ import EventCreateForms from '../buildedForms/EventCreateForms.vue'
 import AimIcon from '../../assets/img/aim.svg'
 import { storeToRefs } from 'pinia'
 
+import editPhoneIcon from '../../assets/img/sort-arrows-horizontal.svg'
+import checkMarkIcon from '../../assets/img/check-mark.svg'
+
 export default {
   name: 'ManageEventThirdStep',
   components: {
@@ -129,18 +131,23 @@ export default {
     formsValue: {
       type: Object,
       default: () => {},
+    },
+    initialValues: {
+      type: Object,
+      default: () => {},
     }
   },
   setup(props, { emit }) {
-    const isPhoneShown = ref(false)
-    const store = useUserDataStore()
-    const { getUserPhone } = storeToRefs(store)
-    const userPhoneNumber = computed(() => getUserPhone)
-    const needForm = ref(null)
+    const store = useUserDataStore();
+    const { user } = storeToRefs(store);
+    const needForm = ref(props.initialValues?.need_form);
+    const phoneValue = ref(null);
+    const isEditPhone = ref(false);
 
     const icons = computed(() => {
       return {
         aim: AimIcon,
+        editPhone: isEditPhone.value ? editPhoneIcon : checkMarkIcon,
       }
     })
 
@@ -157,19 +164,25 @@ export default {
       emit('changeForms')
     }
 
-    
+    function changeEditPhoneMode() {
+      isEditPhone.value = !isEditPhone.value
+    }
+
     const stepStyle = computed(() => {
-      return props.currentStep === 3 ? { height: 'auto' } : { height: '0px' }
+      if (props?.currentStep) {
+        return props?.currentStep === 3 ? { height: 'auto' } : { height: '0px' }
+      }
     })
 
-   
     return {
       icons,
-      stepStyle,
       needForm,
-      userPhoneNumber,
-      isPhoneShown,
+      stepStyle,
+      isEditPhone,
+      user,
+      phoneValue,
       showHidePhone,
+      changeEditPhoneMode,
       changeForms,
       selectForms,
     }
@@ -177,7 +190,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped> $color-f9f9fc: #f9f9fc;
+
+
 
 // SCSS variables for hex colors
  $color-f4f4f4: #f4f4f4;
@@ -373,5 +388,33 @@ export default {
   font-size: 12px;
   line-height: 20px;
   color: $--b-error-color;
+}
+.phone-block {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  .phone-value {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #F9F9FC;
+    border-radius: 6px;
+    padding: 8px;
+    line-height: 20px;
+    @include inter(13px, 500);
+
+    img {
+      cursor: pointer;
+    }
+  }
+}
+.phone-read {
+  ::v-deep(input) {
+    background: #F9F9FC;
+  }
+  ::v-deep(.b-input__wrapper) {
+    border: none;
+  }
 }
 </style>

@@ -1,6 +1,16 @@
 <template>
   <div class="b-events-page">
     <Loading :is-loading="loading"/>
+    <EditEventModal
+      v-if="isEventUpdateModalOpened"
+      :eventDataValue="updateEventData"
+      @closeEventUpdateModal="closeEventUpdateModal"
+    />
+    <ActionEventModal
+      v-if="isActionEventModalOpened"
+      :modalData="actionEventModalConfig"
+      @closeModal="closeEventActiondModal"
+    />
     <DeleteEventsModal
       v-if="isDeleteEventsModalActive"
       @closeModal="closeDeleteEventsModal"
@@ -14,6 +24,7 @@
       @close-modal="isContextMenuActive = false"
       @itemClick="contextMenuItemClick"
     />
+
     <div class="b-events-page__main-body" ref="mainEventsBlock">
       <div class="b-events-page__header-block">
         <div class="b-events-page__left-part">
@@ -54,6 +65,7 @@
           :modelValue="filters"
           @update:value="setFilters"
           @clearFilters="clearFilters"
+          :elementsCount="paginationTotalCount"
         ></events-filters>
 
 
@@ -102,8 +114,6 @@
               @go-to-event-page="goToEventPage(slotProps.smartListItem.id)"
               @card-left-click="myCardLeftClick"
             />
-
-            <!--  @update:expanding="slotProps.smartListItem.metadata.expanding = $event"-->
           </template>
           <template #after>
             <InfiniteLoading
@@ -160,6 +170,8 @@ import EventsFilters from '../../../components/filters/block-filters/EventsFilte
 import WhiteBtn from '../../../components/WhiteBtn.vue'
 import DeleteEventsModal from '../../../components/ModalWindows/DeleteEventsModal.vue'
 import Loading from '../../../workers/loading-worker/Loading.vue'
+import EditEventModal from '../../../components/ModalWindows/EditEventModal.vue'
+import ActionEventModal from '../../../components/ModalWindows/ActionEventModal.vue'
 
 import { API } from '../../../workers/api-worker/api.worker'
 import { ROUTES } from '../../../router/router.const'
@@ -168,12 +180,14 @@ import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patc
 import { addMinutes } from '../../../utils/addMinutes'
 import { getDate } from '../../../utils/getDate'
 import { getTime } from '../../../utils/getTime'
+import { prepareEventUpdateData } from '../../../utils/prepareEventUpdateData'
 
 import CONSTANTS from '../../../consts/index'
 
 import Plus from '../../../assets/img/plus.svg'
 import WhiteBucket from '../../../assets/img/white-bucket.svg'
 import PinIcon from '../../../assets/img/pin.svg'
+import NoEditPermIcon from '../../../assets/img/no-edit-perm-modal-icon.svg';
 
 
 export default {
@@ -189,11 +203,13 @@ export default {
     RightSidebar,
     EmptyList,
     SmartGridList,
+    EditEventModal,
     InfiniteLoading,
     ScrollToTop,
     FilterBlock,
     EventsFilters,
     WhiteBtn,
+    ActionEventModal,
     Loading,
     DeleteEventsModal,
   },
@@ -216,15 +232,18 @@ export default {
     const oneEventToDeleteId = ref(null)
     const oneEventToPinId = ref(null)
     const oneEventToUnPinId = ref(null)
+    const isEventUpdateModalOpened = ref(false);
+    const updateEventData = ref({});
+    const refList = ref()
+    const blockScrollToTopIfExist = ref(false)
+    const triggerForRestart = ref(false)
 
-    const mockData = computed(() => {
+    const isActionEventModalOpened = ref(false)
+    const actionEventModalConfig = computed(() => {
       return {
-        event_cards: CONSTANTS.event_page.event_cards,
-        my_events: CONSTANTS.event_page.my_events,
-        sport_type_dropdown: CONSTANTS.event_page.sport_type_dropdown,
-        gender_dropdown: CONSTANTS.event_page.gender_dropdown,
-        calendar: CONSTANTS.event_page.calendar,
-        menu_text: CONSTANTS.event_page.menu_text(selectedContextMenuEvent.value.pinned),
+        title: t('modals.no_perm_to_edit.title'),
+        description: t('modals.no_perm_to_edit.main-text'),
+        image: NoEditPermIcon,
       }
     })
 
@@ -238,7 +257,27 @@ export default {
       }
     })
 
-    const contextMenuItemClick = (itemType) => {
+    const mockData = computed(() => {
+      return {
+        event_cards: CONSTANTS.event_page.event_cards,
+        my_events: CONSTANTS.event_page.my_events,
+        sport_type_dropdown: CONSTANTS.event_page.sport_type_dropdown,
+        gender_dropdown: CONSTANTS.event_page.gender_dropdown,
+        calendar: CONSTANTS.event_page.calendar,
+        menu_text: CONSTANTS.event_page.menu_text(selectedContextMenuEvent.value.pinned),
+      }
+    })
+
+
+    const closeEventUpdateModal = () => {
+      isEventUpdateModalOpened.value = false
+    }
+    const closeEventActiondModal = () => {
+      isActionEventModalOpened.value = false
+    }
+
+    
+    const contextMenuItemClick = async (itemType) => {
       switch(itemType) {
         case 'select':
           if (selected.value.indexOf(selectedContextMenuEvent.value.id) === -1) {
@@ -256,6 +295,9 @@ export default {
         case 'unpin':
           oneEventToUnPinId.value = selectedContextMenuEvent.value.id
           unPinEvents()
+          break
+        case 'edit':
+          editEventsItemClick()
           break
       }
     }
@@ -280,6 +322,19 @@ export default {
 
     function closeDeleteEventsModal() {
       isDeleteEventsModalActive.value = false
+    }
+
+    async function editEventsItemClick() {
+      if (selectedContextMenuEvent.value.status === 'Planned') {
+        let data = await prepareEventUpdateData(
+          selectedContextMenuEvent.value.id
+        )
+        isActionEventModalOpened
+        updateEventData.value = data
+        isEventUpdateModalOpened.value = true
+      } else {
+        isActionEventModalOpened.value = true
+      }
     }
 
     async function unPinEvents() {
@@ -362,9 +417,6 @@ export default {
       selected.value = []
     }
 
-    const refList = ref()
-    const blockScrollToTopIfExist = ref(false)
-    const triggerForRestart = ref(false)
 
     const restartInfiniteScroll = () => {
       triggerForRestart.value = uuid()
@@ -387,6 +439,7 @@ export default {
     })
 
     paginationPage.value = 1
+    paginationTotalCount.value = route.meta.eventData.data.total_count
     paginationElements.value =
       route.meta.eventData.data.results.map(handlingIncomeData)
 
@@ -506,20 +559,15 @@ export default {
       contextMenuX,
       contextMenuY,
       PinIcon,
+      actionEventModalConfig,
+      isEventUpdateModalOpened,
       loading,
+      paginationTotalCount,
       selected,
+      updateEventData,
+      isActionEventModalOpened,
+      selectedContextMenuEvent,
       emptyListMessages,
-      myCardRightClick,
-      deleteEvents,
-      pinEvents,
-      contextMenuItemClick,
-      declineSelect,
-      goToEventPage,
-      myCardLeftClick,
-      openDeleteEventsModal,
-      closeDeleteEventsModal,
-      switchEvents,
-      goToCreateEvent,
       isContextMenuActive,
       refList,
       isDeleteEventsModalActive,
@@ -527,13 +575,26 @@ export default {
       triggerForRestart,
       paginationElements,
       paginationPage,
+      mainEventsBlock,
+      filters,
       paginationLoad,
       loadDataPaginationData,
       detectSizesForCards,
-      mainEventsBlock,
       clearFilters,
+      myCardRightClick,
+      deleteEvents,
+      closeEventUpdateModal,
+      pinEvents,
+      contextMenuItemClick,
+      closeEventActiondModal,
+      declineSelect,
+      goToEventPage,
+      myCardLeftClick,
+      openDeleteEventsModal,
+      closeDeleteEventsModal,
+      switchEvents,
+      goToCreateEvent,
       setFilters,
-      filters,
       scrollToFirstElement: () => {
         refList.value.scrollToFirstElement()
       },
@@ -543,6 +604,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 
 // SCSS variables for hex colors
  $color-f0f0f4: #f0f0f4;

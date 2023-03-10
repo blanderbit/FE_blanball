@@ -134,7 +134,7 @@ export default {
     'sendInputCoordinates',
     'update:modelValue',
   ],
-  setup(props, { emit }) {
+  setup(props, { emit, expose }) {
     const {
       modelValue: staticModelValue,
       modelErrorMessage,
@@ -157,6 +157,8 @@ export default {
     const inputType = ref(null)
     const rightIcon = ref('')
     const input = ref(null)
+
+    expose({staticModelValue})
 
     const inputStyle = computed(() => {
       return {
@@ -201,6 +203,10 @@ export default {
       window.addEventListener('resize', resizeFunction)
     })
 
+    watch(() => props.icon, (newData, oldData) => {
+      rightIcon.value = newData
+    })
+
     onBeforeUnmount(() => {
       window.removeEventListener('resize', resizeFunction)
     })
@@ -224,6 +230,7 @@ export default {
 
 <style lang="scss" scoped>
 
+
 // SCSS variables for hex colors
  $color-dfdeed: #dfdeed;
 
@@ -232,6 +239,7 @@ export default {
 
 .b-input__input-component {
   height: 100%;
+  width: 100%;
   .b-input__wrapper {
     border: 1px solid $color-dfdeed;
     position: relative;

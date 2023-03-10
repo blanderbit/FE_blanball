@@ -45,7 +45,7 @@
         ></radio-button>
       </div>
     </div>
-    <div v-show="isEventPayment" class="input enter-sum-input">
+    <div v-if="isEventPayment" class="input enter-sum-input">
       <InputComponent
         :outside-title="true"
         :title="$t('events.enter-sum')"
@@ -55,13 +55,13 @@
         name="price"
       />
     </div>
-    <div v-show="isEventPayment" class="input describe-sum-input">
+    <div v-if="isEventPayment" class="input describe-sum-input">
       <TextAreaComponent
         :outside-title="true"
         :title="$t('events.describe-sum')"
         :height="80"
         :title-width="0"
-        :maxTextValue="500"
+        :maxTextValue="265"
         name="price_description"
       />
     </div>
@@ -138,6 +138,10 @@ export default {
     invitedUsersList: {
       type: Array,
       default: () => [],
+    },
+    initialValues: {
+      type: Object,
+      default: () => {},
     }
   },
   components: {
@@ -149,7 +153,7 @@ export default {
   },
 
   setup(props, { emit }) {
-    const isEventPayment = ref(false)
+    const isEventPayment = ref(props.initialValues.is_price)
     const searchValue = ref('')
     const router = useRouter()
     const loading = ref(props.filterUsersListLoading)
@@ -186,14 +190,16 @@ export default {
       }
     })
 
+    const stepStyle = computed(() => {
+      if (props?.currentStep) { 
+        return props?.currentStep === 2 ? { height: 'auto' } : { height: '0px' }
+      }
+    })
+
   
     const openUserProfile = (userId) => {
       router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId))
     }
-
-    const stepStyle = computed(() => {
-      return props.currentStep === 2 ? { height: 'auto' } : { height: '0px' }
-    })
 
     function toggleEventPayment(val) {
       isEventPayment.value = val ? true : false
@@ -207,8 +213,8 @@ export default {
     return {
       icons,
       isEventPayment,
-      stepStyle,
       searchValue,
+      stepStyle,
       loading,
       invitedUsersIDS,
       toggleEventPayment,
@@ -220,6 +226,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 
 // SCSS variables for hex colors
  $color-f4f4f4: #f4f4f4;

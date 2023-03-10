@@ -270,7 +270,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped> $color-eeeef3: #eeeef3;
+<style lang="scss" scoped>
+ $color-eeeef3: #eeeef3;
  $color-ffffff: #ffffff;
  $color-262541: #262541;
  $color-148581: #148581;

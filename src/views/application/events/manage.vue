@@ -1,5 +1,11 @@
 <template>
   <Loading :is-loading="eventCreateLoader"></Loading>
+  <ChangeUserDataModal
+    v-if="isSubmitModalOpened"
+    :config="changeDataModalConfig"
+    @closeModal="closeSubmitModal"
+    @goToTheEvents="goToTheEventPage"
+    @continue="closeSubmitModal"/>
   <div class="b-manage-event">
     <Form
       v-slot="data"
@@ -8,15 +14,18 @@
       @submit="disableSubmit"
     >
     <SelectFormsColorsModal
-    v-if="isSelectFormColarModalOpened"
-    :formsData="eventForms"
-    :selectedTab="formsModalSelectedTabId"
-    @closeModal="closeSelectFormsModal"
-    @saveData="saveForms($event, data)"
-  />
+      v-if="isSelectFormColarModalOpened"
+      :formsData="eventForms"
+      :selectedTab="formsModalSelectedTabId"
+      @closeModal="closeSelectFormsModal"
+      @saveData="saveForms($event, data)"
+    />
       <div class="b-manage-event__page-title">
-        <span>
+        <span v-if="manageAction === manageEventActionTypes.CREATE">
           {{ $t('events.event-creation') }}
+        </span>
+        <span v-else> 
+          {{ $t('events.event-update') }} 
         </span>
         <div class="b-manage-event__btns-mob-block">
           <ButtonsBlock
@@ -32,6 +41,7 @@
         <div class="b-manage-event__create-event-block">
           <ManageEventFirstStep
             :currentStep="currentStep"
+            :initialValues="eventPreviewData"
             @changeEventLocation="getNewEventLocation($event, data)"
             @selectEventDuration="runOnSelectEventDuration($event, data)"
             @changeEventDate="setEventDate($event, data)"
@@ -41,6 +51,7 @@
             :filteredUsersList="relevantUsersList"
             :filterUsersListLoading="searchUsersLoading"
             :invitedUsersList="invitedUsers"
+            :initialValues="eventPreviewData"
             @searchUsers="searchRelevantUsers"
             @invite-user="inviteUsetToTheEvent"
             @changedEventPrivacyToFree="updateEventPriceAfterSelectFree(data)"
@@ -48,6 +59,7 @@
           <ManageEventThirdStep 
             :currentStep="currentStep"
             :formsValue="eventForms"
+            :initialValues="eventPreviewData"
             @selectNeedForm="selectNeedForm($event, data)"
             @setForms="openSelectFormsModal"
             @changeForms="openSelectFormsModal"/>
@@ -69,67 +81,62 @@
 
           <div class="b-manage-event__buttons-block">
             <WhiteBtn
-              :text="$t('buttons.back')"
-              :width="140"
+              :text="whiteBtn.text"
               :main-color="'$--b-main-black-color'"
-              :is-border="false"
+              :height="35"
               @click-function="changeStep('-', data)"
             />
             <GreenBtn
-              :text="greenBtnText"
-              :width="160"
-              :icon-right="icons.arrowRight"
+              :text="greenBtn.text"
+              :icon-right="greenBtn.icon"
+              :height="35"
               @click-function="changeStep('+', data)"
             />
           </div>
+          <div class="b-manage-event__manage-buttons-block">
+            <span @click="showPreviewEventModal">
+              {{ $t('buttons.preview') }}
+            </span>
+            <span @click="showEventInvitedUsersListModal">
+            {{ $t('buttons.invited-users') }}
+            </span>
+          </div>
         </div>
+
+        <Transition name="slide">
+          <InvitedUsersListModal
+            v-if="isEventInvitedUsersListModal && invitedUsers.length"
+            :invitedUsers="invitedUsers"
+            :acceptedUsers="acceptedUsers"
+            :manageAction="manageAction"
+            @removeInvitedUser="removeInvitedUser"
+            @closeModal="closeEventInvitedUsersListModal"
+          />            
+        </Transition>
 
         <div class="b-manage-event-preview__block">
           <PreviewBlock :eventData="data.values" />
-
-          <RemoveInvitedUsersModal
-            v-if="removeInvitedUsersModalOpened"
-            @closeModal="closeRemoveUsersModal"
-            @deleteUsers="removeAllInvitedUsers"
+          <Transition name="slide">
+          <PreviewEventModal
+            v-if="isEventPreivewModalOpened"
+            :eventData="data.values"
+            @closeModal="closePreviewEventModal"
           />
-
-          <div class="b-manage-event__invited-users__list mt-10">
-            <span class="b-user-what-you__invited" v-if="invitedUsers.length">
-              {{ $t('events.invited-people') }}
-            </span>
-            <span
-              class="b-remove-all__invited-users"
-              @click="openRemoveUsersModal"
-              >{{ $t('buttons.remove-all') }}</span
-            >
-            <div
-              class="b-manage-event__invited-user"
-              v-for="user in invitedUsers"
-            >
-              <div class="b-manage-event__invited-user-left__side">
-                <avatar
-                  class="b-invited-user__avatar"
-                  :link="user.profile.avatar_url"
-                  :avatarType="'small-square'"
-                  :full-name="`${user.profile.name} ${user.profile.last_name}`"
-                ></avatar>
-                <span v-if="user.profile.position" class="b-invited-user__position">
-                  {{ $t(`hashtags.${user.profile.position}`) }}
-               </span>
-                <span class="b-invited-user__full-name">
-                  {{ user.profile.name }} {{ user.profile.last_name }}
-                </span>
-              </div>
-              <div class="b-invited-user-right__side">
-                <img
-                  class="b-remove-invited__user"
-                  src="../../../assets/img/gray-cross.svg"
-                  alt="gray-cross"
-                  @click="removeInvitedUser(user.id)"
-                />
-              </div>
-            </div>
-          </div>
+        </Transition>
+    
+            <RemoveInvitedUsersModal
+              v-if="removeInvitedUsersModalOpened"
+              @closeModal="closeRemoveUsersModal"
+              @deleteUsers="removeAllInvitedUsers"
+          />
+      
+          <InvitedUsersList
+            class="b-manage-event-invited-users__list"
+            :invitedUsers="invitedUsers"
+            :acceptedUsers="acceptedUsers"
+            @removeInvitedUser="removeInvitedUser"
+            @openRemoveUsersModal="openRemoveUsersModal"
+          />
         </div>
 
         <div class="b-manage-event__btns-desktop-block">
@@ -147,7 +154,7 @@
 <script>
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 import { Form } from '@system.it.flumx.com/vee-validate'
 
@@ -166,10 +173,16 @@ import ButtonsBlock from '../../../components/manage-event-components/ButtonsBlo
 import RemoveInvitedUsersModal from '../../../components/manage-event-components/RemoveInvitedUsersModal.vue'
 import Loading from '../../../workers/loading-worker/Loading.vue'
 import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue'
+import InvitedUsersList from '../../../components/manage-event-components/InvitedUsersList.vue'
+import InvitedUsersListModal from '../../../components/ModalWindows/InvitedUsersListModal.vue'
+import PreviewEventModal from '../../../components/ModalWindows/PreviewEventModal.vue'
+import ChangeUserDataModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangeUserDataModal.vue'
 
 import { API } from '../../../workers/api-worker/api.worker'
 import { useUserDataStore } from '../../../stores/userData'
 import { BlanballEventBus } from '../../../workers/event-bus-worker'
+
+import { runOnSelectEventDuration } from '../../../utils/runOnSelectEventDuration'
 
 import { ROUTES } from '../../../router/router.const'
 import SCHEMAS from '../../../validators/schemas'
@@ -192,48 +205,66 @@ export default {
     PreviewBlock,
     Avatar,
     Loading,
+    InvitedUsersList,
+    InvitedUsersListModal,
     RemoveInvitedUsersModal,
+    PreviewEventModal,
+    ChangeUserDataModal,
   },
   setup() {
-    const router = useRouter()
+    const router = useRouter();
+    const route = useRoute();
     const { t } = useI18n()
     const currentStep = ref(1)
     const startDate = ref('')
     const userStore = useUserDataStore()
     const { user } = storeToRefs(userStore)
     const searchUsersLoading = ref(false)
-    const formsModalSelectedTabId = ref(null)
     const relevantUsersList = ref([])
     const eventCreateLoader = ref(false)
-    const invitedUsers = ref([])
     const isSelectFormColarModalOpened = ref(false)
-    const removeInvitedUsersModalOpened = ref(false)
-    const eventForms = ref({})
-    let searchTimeout
+    const removeInvitedUsersModalOpened = ref(false);
+    const manageAction = ref(route.meta.action);
+    const isEventInvitedUsersListModal = ref(false);
+    const isEventPreivewModalOpened = ref(false);
+    const isSubmitModalOpened = ref(false);
+    const changeDataModalConfig = ref('')
 
-    const eventPreviewData = ref({
+    const manageEventActionTypes = ref(
+      {
+        CREATE: 'CREATE',
+        EDIT: 'EDIT'
+      }
+    )
+    
+    const eventPreviewData = ref(route.meta?.eventData ||
+    {
       name: '',
       place: {},
       status: 'Planned',
       gender: null,
       description: '',
       type: '',
-      contact_number: user.value.phone,
       need_ball: false,
       duration: null,
       need_form: null,
       date_and_time: '',
-      forms: {
-        type: '',
-        first_team: {},
-        second_team: {},
-      },
+      forms: {},
+      contact_number: user.value.phone,
       count_current_users: 0,
       count_current_fans: 0,
       current_users: [],
     })
 
+    const invitedUsers = ref([])
+    const acceptedUsers = ref(eventPreviewData.value.current_users)
 
+    const formsModalSelectedTabId = ref(
+      eventPreviewData.value.need_form ? 1 : 2
+    )
+
+    const eventForms = ref(eventPreviewData.value.forms);
+    let searchTimeout
 
     const schema = computed(() => {
       return SCHEMAS.manageEvent.schema(currentStep.value)
@@ -247,8 +278,31 @@ export default {
       }
     }
 
-    const greenBtnText = computed(() => {
-      return currentStep.value !== 3 ? t('buttons.next') : t('buttons.publish')
+    const greenBtn = computed(() => {
+      let text;
+      if (currentStep.value !== 3) {
+        text = t('buttons.next')
+      } else if (currentStep.value === 3 && manageAction.value === manageEventActionTypes.value.CREATE) {
+        text = t('buttons.publish')
+      } else {
+        text = t('buttons.save-changes')
+      }
+      return {
+        text: text,
+        icon: currentStep.value !== 3 ? Arrow : null
+      }
+    })
+
+    const whiteBtn = computed(() => {
+      let text;
+      if (currentStep.value !== 1) {
+        text = t('buttons.back')
+      } else {
+        text = t('buttons.cancel')
+      }
+      return {
+        text: text,
+      }
     })
 
     const openRemoveUsersModal = () => {
@@ -259,7 +313,6 @@ export default {
       data.values.date = date_value
     }
 
-  
     const openSelectFormsModal = () => {
       isSelectFormColarModalOpened.value = true
     }
@@ -312,40 +365,31 @@ export default {
       closeSelectFormsModal()
     }
 
-    function addZeroBefore(n) {
-      return (n < 10 ? '0' : '') + n
-    }
-
     const updateEventPriceAfterSelectFree = (data) => {
       data.values.price = null
       data.values.price_description = null
     }
 
-    const runOnSelectEventDuration = (durationValue, data) => {
-      const currentDateTime = new Date()
-      const eventStartTime = new Date(currentDateTime.getTime() + 65 * 60000)
-      const eventEndDateTime = new Date(
-        eventStartTime.getTime() + durationValue
-      )
-      data.values.time = `${addZeroBefore(
-        eventStartTime.getHours()
-      )}:${addZeroBefore(eventStartTime.getMinutes())}`
-      data.values.end_time = `${addZeroBefore(
-        eventEndDateTime.getHours()
-      )}:${addZeroBefore(eventEndDateTime.getMinutes())}`
-      data.values.duration = durationValue / 60000
-    }
-
+   
     const closeRemoveUsersModal = () => {
       removeInvitedUsersModalOpened.value = false
     }
 
+    const SKIPIDS = [eventPreviewData.value.author.id, 
+      ...eventPreviewData.value.current_users.map((user) => user.id),
+      ...eventPreviewData.value.current_fans.map((fan) => fan.id)
+    ]
+
     const getRelevantUsers = async (options) => {
-      searchUsersLoading.value = true
-      let response = await API.UserService.getRelevantUsers(options)
-      relevantUsersList.value = response.data.results
-      searchUsersLoading.value = false
-    }
+      searchUsersLoading.value = true;
+      let response = await API.UserService.getRelevantUsers({
+        search: options?.search,
+        skipids: options?.skipids,
+      });
+      relevantUsersList.value = response.data.results;
+      searchUsersLoading.value = false;
+    };
+
 
     const inviteUsetToTheEvent = (user_data) => {
       invitedUsers.value.push(user_data)
@@ -355,12 +399,12 @@ export default {
       clearTimeout(searchTimeout)
       searchUsersLoading.value = true
       const relevantSearch = () => {
-        getRelevantUsers({ search: searchValue, skipids: user.value.id })
+        getRelevantUsers({ search: searchValue, skipids: SKIPIDS })
       }
       searchTimeout = setTimeout(relevantSearch, 500)
     }
 
-    getRelevantUsers({ skipids: user.value.id })
+    getRelevantUsers({ skipids: SKIPIDS })
 
     const removeInvitedUser = (user_id) => {
       invitedUsers.value = invitedUsers.value.filter(function (item) {
@@ -379,6 +423,26 @@ export default {
       }
     })
 
+
+    const showEventInvitedUsersListModal = () => {
+      if (invitedUsers.value.length) {
+        isEventInvitedUsersListModal.value = true
+      }
+    }
+
+    const closeEventInvitedUsersListModal = () => {
+      isEventInvitedUsersListModal.value = false
+    }
+
+    const showPreviewEventModal = () => {
+      isEventPreivewModalOpened.value = true
+    }
+
+    const closePreviewEventModal = () => {
+      isEventPreivewModalOpened.value = false
+    }
+
+
     async function saveEvent(data) {
       eventCreateLoader.value = true
       const createEventData = data.values
@@ -388,18 +452,73 @@ export default {
       createEventData.current_users = invitedUsers.value.map((user) => user.id)
 
       try {
-        await API.EventService.createOneEvent(createEventData).finally(() => {
-          eventCreateLoader.value = false
-        })
-        router.push(ROUTES.APPLICATION.EVENTS.absolute)
-        setTimeout(() => BlanballEventBus.emit('EventCreated'), 100)
+        switch(manageAction.value) {
+          case manageEventActionTypes.value.CREATE:
+            await API.EventService.createOneEvent(createEventData)
+            eventCreateLoader.value = false
+            break
+          case manageEventActionTypes.value.EDIT:
+            await API.EventService.editOneEvent(route.params.id, createEventData)
+            eventCreateLoader.value = false
+            break
+        }
+        goToTheEventPage()
+        setTimeout(() => {
+          switch(manageAction.value) {
+            case manageEventActionTypes.value.CREATE:
+              BlanballEventBus.emit('EventCreated')
+              break
+            case manageEventActionTypes.value.EDIT:
+              BlanballEventBus.emit('EventUpdated')
+              break
+        }
+        }, 100)
       } catch {}
+    }
+
+    const openSumbitModal = () => {
+      switch (manageAction.value) {
+        case manageEventActionTypes.value.CREATE:
+          changeDataModalConfig.value = {
+            title: 'Скасування створення події',
+            description: 'Ви дійсно бажаєте скасувати створення події?',
+            button_1: 'Ні, продовжити',
+            button_2: 'Так, cкасувати',
+            right_btn_action: 'goToTheEvents',
+            left_btn_action: 'continue',
+            btn_with_1: 132,
+            btn_with_2: 132,
+          }
+          isSubmitModalOpened.value = true;
+          break;
+        case manageEventActionTypes.value.EDIT:
+          changeDataModalConfig.value = {
+            title: 'Скасування редагування події',
+            description: 'Ви дійсно бажаєте скасувати редагування події?',
+            button_1: 'Ні, продовжити',
+            button_2: 'Так, cкасувати',
+            right_btn_action: 'goToTheEvents',
+            left_btn_action: 'continue',
+            btn_with_1: 132,
+            btn_with_2: 132,
+          }
+          isSubmitModalOpened.value = true;
+          break;
+      }
+    }
+
+    const closeSubmitModal = () => {
+      isSubmitModalOpened.value = false;
+    }
+
+    function goToTheEventPage() {
+      router.push(ROUTES.APPLICATION.EVENTS.absolute)
     }
 
     async function changeStep(val, data) {
       
       if (currentStep.value === 1 && val === '-') {
-        return router.push(ROUTES.APPLICATION.EVENTS.absolute)
+        return openSumbitModal()
       }
 
       if (val === '-') {
@@ -423,25 +542,39 @@ export default {
 
     return {
       currentStep,
+      changeDataModalConfig,
       icons,
       schema,
       searchUsersLoading,
       relevantUsersList,
       invitedUsers,
+      acceptedUsers,
       startDate,
-      greenBtnText,
+      greenBtn,
       isSelectFormColarModalOpened,
       removeInvitedUsersModalOpened,
       eventPreviewData,
+      isEventPreivewModalOpened,
+      isEventInvitedUsersListModal,
       eventCreateLoader,
       formsModalSelectedTabId,
+      isSubmitModalOpened,
       eventForms,
+      manageAction,
+      whiteBtn,
+      manageEventActionTypes,
       getNewEventLocation,
+      showEventInvitedUsersListModal,
       openSelectFormsModal,
+      closeSubmitModal,
+      showPreviewEventModal,
       selectNeedForm,
+      goToTheEventPage,
       runOnSelectEventDuration,
+      closeEventInvitedUsersListModal,
       updateEventPriceAfterSelectFree,
       inviteUsetToTheEvent,
+      closePreviewEventModal,
       changeStep,
       saveForms,
       removeAllInvitedUsers,
@@ -457,7 +590,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped> $color-575775: #575775;
+
+
 
 // SCSS variables for hex colors
  $color-dfdeed: #dfdeed;
@@ -532,6 +667,7 @@ export default {
       }
       @include tabletAndMobile {
         width: 100%;
+        padding: 20px 0px;
       }
       .b-manage-event__progress-line {
         margin-top: 20px;
@@ -558,9 +694,52 @@ export default {
         justify-content: space-between;
         align-items: center;
         margin-top: 20px;
-        @include tabletAndMobile {
-          margin-bottom: 50px;
+
+        ::v-deep(.b_white-btn) {
+          border: 1px solid #DFDEED;
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 24px;
+          text-align: center;
+          color: $color-575775;
+          flex-basis: 48%;
         }
+        ::v-deep(.b-green-btn) {
+          flex-basis: 48%;
+        }
+      }
+      .b-manage-event__manage-buttons-block {
+        width: 100%;
+        background: rgba(239, 239, 246, 0.7);
+        border: 1px solid #DFDEED;
+        border-radius: 8px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px;
+        margin-top: 8px;
+        display: none;
+
+        @include tabletAndMobile {
+          display: flex;
+        }
+        
+        span {
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 20px;
+          text-align: right;
+          color: $color-575775;
+        }
+      }
+    }
+
+    .b-manage-event-invited-users__list {
+      @include tabletAndMobile {
+        display: none;
       }
     }
     .b-manage-event__btns-desktop-block {
@@ -570,79 +749,15 @@ export default {
     }
   }
 }
-.b-manage-event__invited-users__list {
-  overflow: auto;
-  margin-top: 20px;
-  position: relative;
 
-  @include tabletAndMobile {
-    display: none;
-  }
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.5s;
 }
-.b-manage-event__invited-user {
-  padding: 8px;
-  border-bottom: 1px solid $color-dfdeed;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  &:first-of-type {
-    margin-top: 30px;
-    border-top: 1px solid $color-dfdeed;
-  }
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateY(100%);
 }
-.b-user-what-you__invited {
-  font-family: 'Exo 2';
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 24px;
-  color: $--b-main-black-color;
-}
-.b-manage-event__invited-user-left__side {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.b-invited-user__avatar {
-  min-width: 32px;
-  max-width: 32px;
-  height: 32px;
-  border-radius: 4px;
-}
-.b-invited-user__full-name {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 20px;
-  color: $--b-main-black-color;
-}
-.b-invited-user__position {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  color: $color-8a8aa8;
-}
-.b-remove-invited__user {
-  cursor: pointer;
-}
-.b-manage-event-preview__block {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-.b-remove-all__invited-users {
-  position: absolute;
-  right: 0;
-  top: 30px;
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 20px;
-  color: $--b-main-gray-color;
-  cursor: pointer;
-}
+
 </style>

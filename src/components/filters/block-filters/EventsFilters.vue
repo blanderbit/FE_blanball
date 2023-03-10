@@ -10,16 +10,13 @@
       v-model:date-and-time="transformedFilters.date_and_time"
       @close-modal="isModalFiltersActive = false"
       @set-modal-window-filters="setModalFilters"
+      :elementsCount="elementsCount"
       @clearFilters="$emit('clearFilters')"
     />
     <div class="b-main-search__wrapper">
       <div class="b-main-search__search-block">
         <div class="b-main-search__first-line">
           <div class="b-main-search__left-block">
-            <!--<div class="b-main-search__old-new-filter">-->
-            <!--<img src="../../../assets/img/sort-arrows.svg" alt="" />-->
-            <!--{{$t('events.new-first')}}-->
-            <!--</div>-->
             <div
               class="b-main-search__soring-button"
               @click="sortingButtonClick"
@@ -47,7 +44,7 @@
                 :title-width="0"
                 :placeholder="$t('events.search-events')"
                 :height="32"
-                :icon="icons.search"
+                :icon="times"
                 name="search"
                 v-model="transformedFilters.search"
               />
@@ -106,9 +103,9 @@
       </div>
       <div class="b-main-search__search-block-mob">
         <div
-          class="b-main-search__filters-block d-flex justify-content-between"
+          class="b-main-search__filters-block"
         >
-          <div class="b-main-search__left-part">
+          <div v-if="!isMobileSearchOpened" class="b-main-search__left-part">
             <div
               class="b-main-search__soring-button"
               @click="sortingButtonClick"
@@ -119,7 +116,7 @@
               </span>
             </div>
           </div>
-          <div class="b-main-search__right-part d-flex">
+          <div class="b-main-search__right-part d-flex align-items-center">
             <div class="b-main-search__search-input me-2">
               <InputComponent
                 :title-width="0"
@@ -130,6 +127,29 @@
                 v-model="transformedFilters.search"
               />
             </div>
+            <InputComponent
+                v-if="isMobileSearchOpened"
+                :title-width="0"
+                :placeholder="$t('events.search-events')"
+                :height="32"
+                :icon="icons.cross"
+                name="search"
+                v-model="transformedFilters.search"
+                @icon-click="closeMobileSearch"
+              />
+              <InputComponent
+                class="b-main-search__search-input-tablet"
+                :title-width="0"
+                :placeholder="$t('events.search-events')"
+                :height="36"
+                :icon="icons.search"
+                name="search"
+                v-model="transformedFilters.search"
+              />
+            <div v-if="!isMobileSearchOpened" class="b-main-search__search-icon-mobile"
+            @click="openMobileSearch">
+              <img :src="icons.search" alt="">
+            </div>
             <div
               class="b-main-search__filtering-block sort-item d-flex align-items-center"
               @click="isModalFiltersActive = true"
@@ -139,10 +159,12 @@
               >
                 <img src="../../../assets/img/set-filter.svg" alt="" />
               </div>
+              <div v-if="filterStatus" class="b-main-search-icon-status"></div>
               <div class="b-main-search__text-block">
                 <div class="b-main-search__title">
                   {{ $t('events.filters') }}
                 </div>
+                <span class="b-found-count">{{ $t('users.found')  }} {{ elementsCount }} {{ $t('users.advertisments') }}</span>
               </div>
             </div>
           </div>
@@ -153,7 +175,9 @@
 </template>
 
 <script>
-import { computed, reactive, watch, ref, onMounted, onBeforeUnmount } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
+import { useRoute } from 'vue-router'
+import dayjs from 'dayjs';
 
 import Slider from '@vueform/slider'
 
@@ -177,6 +201,7 @@ import UnisexIcon from '../../../assets/img/unisex.svg'
 import SearchIcon from '../../../assets/img/search.svg'
 import arrowsUpIcon from '../../../assets/img/sort-arrows.svg'
 import arrowsDownIcon from '../../../assets/img/sort-arrows-down.svg'
+import crossIcon from '../../../assets/img/cross.svg'
 
 export default {
   name: 'EventsFilters',
@@ -207,10 +232,16 @@ export default {
         point: '',
       }),
     },
+    elementsCount: {
+      type: Number,
+      default: 0
+    }
   },
     emits: ['update:value', 'clearFilters'],
     setup(props, {emit}) {
       const isModalFiltersActive = ref(false)
+      const route = useRoute()
+      const isMobileSearchOpened = ref(false);
       const todaysDate = useTodaysDate()
       const { isMobile, isTablet, onResize } = useWindowWidth()
       const icons = computed(() => {
@@ -220,7 +251,8 @@ export default {
           unisex: UnisexIcon,
           search: SearchIcon,
           arrowUp: arrowsUpIcon,
-          arrowDown: arrowsDownIcon
+          arrowDown: arrowsDownIcon,
+          cross: crossIcon,
         }
       })
       const ordering = computed(() => [
@@ -267,8 +299,8 @@ export default {
             type: transformedFilters.type,
             need_ball: transformedFilters.need_ball,
             duration: transformedFilters.duration,
-            date_and_time_before: transformedFilters.date_and_time.end,
-            date_and_time_after: transformedFilters.date_and_time.start,
+            date_and_time_before: transformedFilters.date_and_time?.end,
+            date_and_time_after: transformedFilters.date_and_time?.start,
             status: transformedFilters.status,
             search: transformedFilters.search,
             ordering: transformedFilters.ordering,
@@ -294,6 +326,17 @@ export default {
     const genderDropdown = CONSTANTS.event_page.gender_dropdown
     const statusDropdown = CONSTANTS.event_page.status_ropdown
 
+    const filterStatus = computed(() => {
+      return !!(
+        route.query.gender || 
+        route.query.type ||
+        route.query.point || 
+        route.query.dist ||
+        route.query.date_and_time_before || 
+        route.query.date_and_time_after
+      )
+    })
+
     const calendar = ref({
       inputMask: 'YYYY-MM-DD',
       modelConfig: {
@@ -318,14 +361,26 @@ export default {
       updateRealData()
     }
 
+    function openMobileSearch() {
+      isMobileSearchOpened.value = true
+    }
+
+    function closeMobileSearch() {
+      isMobileSearchOpened.value = false
+    }
+
     return {
       sortingButtonClick,
       setModalFilters,
+      closeMobileSearch,
+      openMobileSearch,
       ordering,
+      filterStatus,
       gender,
       activeFilters,
       transformedFilters,
       sportTypeDropdown,
+      isMobileSearchOpened,
       genderDropdown,
       statusDropdown,
       calendar,

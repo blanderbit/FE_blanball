@@ -78,13 +78,6 @@
       </div>
       <div class="b-users-filters__mob-line">
         <div class="b-users-filters__sorting">
-          <!-- <div class="b-users-filters__icon">
-            <img src="../../../assets/img/sort-arrows.svg" alt="">
-          </div>
-          <div class="b-users-filters__text-block">
-            <div class="b-users-filters__title">{{ $t('users.sorting') }}</div>
-            <div class="b-users-filters__text">{{ $t('users.new-first') }}</div>
-          </div> -->
           <dropdown
             :check-value-immediate="true"
             :options="ordering"
@@ -310,6 +303,7 @@ export default {
 
 <style scoped lang="scss">
 
+
 // SCSS variables for hex colors
  $color-fafafa: #fafafa;
 
@@ -362,6 +356,10 @@ export default {
     .b-users-filters__fitering {
       display: flex;
       width: 180px;
+
+      @include tablet {
+        margin-left: 50px;
+      }
 
       .b-users-filters__icon {
         width: 36px;
