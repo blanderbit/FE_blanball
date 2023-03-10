@@ -203,6 +203,10 @@ export default {
       window.addEventListener('resize', resizeFunction)
     })
 
+    watch(() => props.icon, (newData, oldData) => {
+      rightIcon.value = newData
+    })
+
     onBeforeUnmount(() => {
       window.removeEventListener('resize', resizeFunction)
     })

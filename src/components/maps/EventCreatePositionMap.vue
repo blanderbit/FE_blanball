@@ -10,7 +10,8 @@
         }}
       </span>
     </div>
-    <ModalWindow v-if="activeModal" :isTitleShown="false">
+    <Teleport to="body">
+      <ModalWindow v-if="activeModal" :isTitleShown="false">
       <Loading :is-loading="loading" />
       <Form v-slot="data" @submit="disableSubmit" :validation-schema="schema">
         <div class="b-modal-position__block">
@@ -76,6 +77,7 @@
         </div>
       </Form>
     </ModalWindow>
+    </Teleport>
   </div>
 </template>
 

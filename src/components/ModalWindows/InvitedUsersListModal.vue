@@ -3,6 +3,7 @@
     <div class="b-invited-users-list__modal-window">
       <InvitedUsersList
         :invitedUsers="invitedUsers"
+        :acceptedUsers="acceptedUsers"
         :title="$t('events.invited-members')"
         :removeAllOption="false"
         :headerIcon="closeArrowUpIcon"
@@ -24,8 +25,16 @@ export default {
   },
   props: {
     invitedUsers: {
-        type: Array,
-        default: () => []
+      type: Array,
+      default: () => []
+    },
+    acceptedUsers: {
+      type: Array,
+      default: () => [] 
+    },
+    manageAction: {
+      type: String,
+      default: ''
     }
   },
   components: {
@@ -35,9 +44,9 @@ export default {
     'removeInvitedUser',
     'closeModal'
   ],
-  setup(_, { emit }) {
+  setup(props, { emit }) {
     const removeInvitedUser = (userId) => {
-        emit('removeInvitedUser', userId)
+      emit('removeInvitedUser', userId)
     }
 
     return {

@@ -245,10 +245,6 @@ export default {
       emit('changeEventDate', dayjs(initialDate.value).format('YYYY-MM-DD'))
     }
 
-    const stepStyle = computed(() => {
-      return props.currentStep === 1 ? { height: 'auto' } : { height: '0px' }
-    })
-
     const calendar = ref({
       inputMask: 'YYYY-MM-DD',
       modelConfig: {
@@ -262,6 +258,12 @@ export default {
 
       emit('selectEventDuration', data.value)
     }
+
+    const stepStyle = computed(() => {
+      if (props?.currentStep) {
+        return props?.currentStep === 1 ? { height: 'auto' } : { height: '0px' }
+      }
+    })
 
   
     const icons = computed(() => {
@@ -287,9 +289,9 @@ export default {
       mockData,
       initialDate,
       calendar,
+      stepStyle,
       eventLocationOnMap,
       eventLocation,
-      stepStyle,
       eventDurationOptions,
       minEventDate,
       selectedDurationID,

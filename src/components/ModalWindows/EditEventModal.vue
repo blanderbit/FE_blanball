@@ -1,0 +1,370 @@
+<template>
+  <div class="b-edit-event-modal__wrapper">
+    <ChangeUserDataModal
+      v-if="isSubmitModalOpened"
+      :config="changeDataModalConfig"
+      @closeModal="closeSubmitModal"
+      @closeEventUpdateModal="$emit('closeEventUpdateModal')"
+      @continue="closeSubmitModal"
+    />
+    <div class="b-edit-event-modal__modal-window">
+      <div class="b-edit-event-modal__header">
+        <div class="b-edit-event-modal__title">
+          {{ $t('events.event-update') }}
+        </div>
+        <div class="b-edit-event-modal__subtitle">
+          Оберіть кольори форм або маніжок для команд
+        </div>
+      </div>
+      <Form v-slot="data" :initial-values="eventData" @submit="disableSubmit">
+        <div class="b-edit-event-modal__main-side">
+          <Teleport to="body">
+            <SelectFormsColorsModal
+              v-if="isSelectFormColarModalOpened"
+              :formsData="eventForms"
+              :selectedTab="1"
+              @closeModal="closeSelectFormsModal"
+              @saveData="saveForms($event, data)"
+            />
+          </Teleport>
+
+          <div class="b-main-side__first-step">
+            <ManageEventFirstStep
+              :initialValues="eventData"
+              @changeEventLocation="getNewEventLocation($event, data)"
+              @selectEventDuration="runOnSelectEventDuration($event, data)"
+              @changeEventDate="setEventDate($event, data)"
+            />
+          </div>
+          <div class="b-main-side__second-step">
+            <ManageEventSecondStep
+              :filteredUsersList="relevantUsersList"
+              :filterUsersListLoading="searchUsersLoading"
+              :invitedUsersList="invitedUsers"
+              :initialValues="eventData"
+              @searchUsers="searchRelevantUsers"
+              @invite-user="inviteUsetToTheEvent"
+              @changedEventPrivacyToFree="updateEventPriceAfterSelectFree(data)"
+            />
+          </div>
+          <div class="b-main-side__third-step">
+            <ManageEventThirdStep
+              :formsValue="eventForms"
+              :initialValues="eventData"
+              @selectNeedForm="selectNeedForm($event, data)"
+              @setForms="openSelectFormsModal"
+              @changeForms="openSelectFormsModal"
+            />
+          </div>
+        </div>
+        <div class="b-edit-event-modal__buttons-block">
+          <WhiteBtn
+            :text="$t('buttons.cancel-editing')"
+            :main-color="'$--b-main-black-color'"
+            :height="35"
+            @click-function="openSubmitModal"
+          />
+          <GreenBtn
+            :text="$t('buttons.save-changes')"
+            :height="40"
+            @click-function="editEvent(data)"
+          />
+        </div>
+      </Form>
+    </div>
+  </div>
+</template>
+
+<script>
+import { ref } from 'vue';
+
+import { Form } from '@system.it.flumx.com/vee-validate';
+
+import ManageEventFirstStep from '../manage-event-components/ManageEventFirstStep.vue';
+import ManageEventSecondStep from '../manage-event-components/ManageEventSecondStep.vue';
+import ManageEventThirdStep from '../manage-event-components/ManageEventThirdStep.vue';
+import SelectFormsColorsModal from './SelectFormsColorsModal.vue';
+import WhiteBtn from '../WhiteBtn.vue';
+import GreenBtn from '../GreenBtn.vue';
+import ChangeUserDataModal from './UserCabinetModalWindows/ChangeUserDataModal.vue';
+
+import { API } from '../../workers/api-worker/api.worker';
+import { BlanballEventBus } from '../../workers/event-bus-worker';
+
+import { runOnSelectEventDuration } from '../../utils/runOnSelectEventDuration';
+
+export default {
+  components: {
+    ManageEventFirstStep,
+    ManageEventSecondStep,
+    ManageEventThirdStep,
+    SelectFormsColorsModal,
+    WhiteBtn,
+    GreenBtn,
+    Form,
+    ChangeUserDataModal,
+  },
+  props: {
+    eventDataValue: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  setup(props, { emit }) {
+    const searchUsersLoading = ref(false);
+    const relevantUsersList = ref([]);
+    const eventCreateLoader = ref(false);
+    const isSelectFormColarModalOpened = ref(false);
+    const isSubmitModalOpened = ref(false);
+
+    const eventData = ref(props.eventDataValue);
+
+    const invitedUsers = ref([]);
+
+    const formsModalSelectedTabId = ref(eventData.value.need_form ? 1 : 2);
+
+    const eventForms = ref(eventData.value.forms);
+    let searchTimeout;
+
+    const changeDataModalConfig = {
+      title: 'Скасування редагування події',
+      description: 'Ви дійсно бажаєте скасувати редагування події?',
+      button_1: 'Ні, продовжити',
+      button_2: 'Так, cкасувати',
+      right_btn_action: 'closeEventUpdateModal',
+      left_btn_action: 'continue',
+      btn_with_1: 132,
+      btn_with_2: 132,
+    };
+
+    const getNewEventLocation = (location, data) => {
+      data.values.place = {
+        place_name: location.place,
+        lat: location.lat,
+        lon: location.lng,
+      };
+    };
+
+    const setEventDate = (date_value, data) => {
+      data.values.date = date_value;
+    };
+
+    const openSelectFormsModal = () => {
+      isSelectFormColarModalOpened.value = true;
+    };
+
+    const closeSelectFormsModal = () => {
+      isSelectFormColarModalOpened.value = false;
+    };
+
+    const openSubmitModal = () => {
+      isSubmitModalOpened.value = true;
+    };
+
+    const selectNeedForm = (needForm, data) => {
+      eventForms.value = {};
+      data.values.forms = {};
+      switch (needForm) {
+        case true:
+          formsModalSelectedTabId.value = 1;
+          break;
+        case false:
+          formsModalSelectedTabId.value = 2;
+          break;
+      }
+    };
+
+    const saveForms = (forms, data) => {
+      switch (data.values.need_form) {
+        case true:
+          data.values.forms = {
+            type: 'Forms',
+            first_team: {
+              t_shirts: forms.first_team.t_shirts,
+              shorts: forms.first_team.shorts,
+            },
+            second_team: {
+              t_shirts: forms.second_team.t_shirts,
+              shorts: forms.second_team.shorts,
+            },
+          };
+          break;
+        case false:
+          data.values.forms = {
+            type: 'ShirtFronts',
+            first_team: {
+              shirtfronts: forms.first_team.shirtfronts,
+            },
+            second_team: {
+              shirtfronts: forms.second_team.shirtfronts,
+            },
+          };
+          break;
+      }
+      eventForms.value = data.values.forms;
+      closeSelectFormsModal();
+    };
+
+    const updateEventPriceAfterSelectFree = (data) => {
+      data.values.price = null;
+      data.values.price_description = null;
+    };
+
+    const getRelevantUsers = async (options) => {
+      searchUsersLoading.value = true;
+      let response = await API.UserService.getRelevantUsers(options);
+      relevantUsersList.value = response.data.results;
+      searchUsersLoading.value = false;
+    };
+
+    const inviteUsetToTheEvent = (user_data) => {
+      invitedUsers.value.push(user_data);
+    };
+
+    const closeSubmitModal = () => {
+      isSubmitModalOpened.value = false;
+    };
+
+    const searchRelevantUsers = (searchValue) => {
+      clearTimeout(searchTimeout);
+      searchUsersLoading.value = true;
+      const relevantSearch = () => {
+        getRelevantUsers({
+          search: searchValue,
+          skipids: eventData.value.author.id,
+        });
+      };
+      searchTimeout = setTimeout(relevantSearch, 500);
+    };
+
+    getRelevantUsers({ skipids: eventData.value.author.id });
+
+    async function editEvent(data) {
+      eventCreateLoader.value = true;
+      const createEventData = data.values;
+
+      createEventData.date_and_time = `${createEventData.date} ${createEventData.time}`;
+
+      createEventData.current_users = invitedUsers.value.map((user) => user.id);
+
+      await API.EventService.editOneEvent(eventData.value.id, createEventData);
+      eventCreateLoader.value = false;
+      emit('closeEventUpdateModal')
+      BlanballEventBus.emit('EventUpdated');
+    }
+
+    return {
+      searchUsersLoading,
+      relevantUsersList,
+      invitedUsers,
+      isSelectFormColarModalOpened,
+      eventData,
+      eventCreateLoader,
+      changeDataModalConfig,
+      isSubmitModalOpened,
+      formsModalSelectedTabId,
+      eventForms,
+      openSubmitModal,
+      getNewEventLocation,
+      openSelectFormsModal,
+      selectNeedForm,
+      closeSubmitModal,
+      runOnSelectEventDuration,
+      updateEventPriceAfterSelectFree,
+      inviteUsetToTheEvent,
+      saveForms,
+      editEvent,
+      closeSelectFormsModal,
+      searchRelevantUsers,
+      setEventDate,
+    };
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.b-edit-event-modal__block-title {
+  @include exo(16px, 700);
+  line-height: 24px;
+}
+.b-edit-event-modal__wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(38, 37, 65, 0.2);
+  z-index: 999;
+  .b-edit-event-modal__modal-window {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    width: 385px;
+    height: 80%;
+    transform: translate(-50%, -50%);
+    box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+    border-radius: 6px;
+    background: $--b-main-white-color;
+    padding: 20px 20px 28px 24px;
+    overflow-y: scroll;
+
+    .b-edit-event-modal__header {
+      .b-edit-event-modal__title {
+        @include exo(22px, 700);
+        line-height: 32px;
+      }
+      .b-edit-event-modal__subtitle {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 20px;
+        color: #575775;
+        margin-top: 4px;
+      }
+    }
+    .b-edit-event-modal__main-side {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      .b-main-side__second-step {
+        ::-webkit-scrollbar {
+          display: none;
+        }
+      }
+      .b-edit-event-modal__general-info {
+        display: flex;
+        flex-direction: column;
+        gap: 16px 16px;
+        margin-bottom: 20px;
+        .b-general-info__dropdowns {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .b-general-info__dropdown {
+            flex-basis: 48%;
+          }
+        }
+      }
+    }
+    .b-edit-event-modal__buttons-block {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      ::v-deep(.b_white-btn) {
+        font-weight: 400;
+        color: #575775;
+        width: 164px !important;
+      }
+      ::v-deep(.b-green-btn) {
+        width: 130px !important;
+      }
+    }
+  }
+}
+</style>

@@ -107,6 +107,8 @@
           <InvitedUsersListModal
             v-if="isEventInvitedUsersListModal && invitedUsers.length"
             :invitedUsers="invitedUsers"
+            :acceptedUsers="acceptedUsers"
+            :manageAction="manageAction"
             @removeInvitedUser="removeInvitedUser"
             @closeModal="closeEventInvitedUsersListModal"
           />            
@@ -123,14 +125,15 @@
         </Transition>
     
             <RemoveInvitedUsersModal
-            v-if="removeInvitedUsersModalOpened"
-            @closeModal="closeRemoveUsersModal"
-            @deleteUsers="removeAllInvitedUsers"
+              v-if="removeInvitedUsersModalOpened"
+              @closeModal="closeRemoveUsersModal"
+              @deleteUsers="removeAllInvitedUsers"
           />
       
           <InvitedUsersList
             class="b-manage-event-invited-users__list"
             :invitedUsers="invitedUsers"
+            :acceptedUsers="acceptedUsers"
             @removeInvitedUser="removeInvitedUser"
             @openRemoveUsersModal="openRemoveUsersModal"
           />
@@ -179,6 +182,8 @@ import { API } from '../../../workers/api-worker/api.worker'
 import { useUserDataStore } from '../../../stores/userData'
 import { BlanballEventBus } from '../../../workers/event-bus-worker'
 
+import { runOnSelectEventDuration } from '../../../utils/runOnSelectEventDuration'
+
 import { ROUTES } from '../../../router/router.const'
 import SCHEMAS from '../../../validators/schemas'
 
@@ -217,7 +222,6 @@ export default {
     const searchUsersLoading = ref(false)
     const relevantUsersList = ref([])
     const eventCreateLoader = ref(false)
-    const invitedUsers = ref([])
     const isSelectFormColarModalOpened = ref(false)
     const removeInvitedUsersModalOpened = ref(false);
     const manageAction = ref(route.meta.action);
@@ -251,6 +255,9 @@ export default {
       count_current_fans: 0,
       current_users: [],
     })
+
+    const invitedUsers = ref([])
+    const acceptedUsers = ref(eventPreviewData.value.current_users)
 
     const formsModalSelectedTabId = ref(
       eventPreviewData.value.need_form ? 1 : 2
@@ -358,39 +365,12 @@ export default {
       closeSelectFormsModal()
     }
 
-    function addZeroBefore(n) {
-      return (n < 10 ? '0' : '') + n
-    }
-
     const updateEventPriceAfterSelectFree = (data) => {
       data.values.price = null
       data.values.price_description = null
     }
 
-    const runOnSelectEventDuration = (durationValue, data) => {
-      let eventStartTime;
-      if (data.values.time) {
-        let timeStr = data.values.time;
-        let [hours, minutes] = timeStr.split(":").map(Number);
-        let date = new Date();
-        date.setHours(hours);
-        date.setMinutes(minutes);
-        eventStartTime = date;
-      } else {
-        eventStartTime = new Date(new Date().getTime() + 65 * 60000)
-      }
-      const eventEndDateTime = new Date(
-        eventStartTime.getTime() + durationValue
-      )
-      data.values.time = `${addZeroBefore(
-        eventStartTime.getHours()
-      )}:${addZeroBefore(eventStartTime.getMinutes())}`
-      data.values.end_time = `${addZeroBefore(
-        eventEndDateTime.getHours()
-      )}:${addZeroBefore(eventEndDateTime.getMinutes())}`
-      data.values.duration = durationValue / 60000
-    }
-
+   
     const closeRemoveUsersModal = () => {
       removeInvitedUsersModalOpened.value = false
     }
@@ -559,6 +539,7 @@ export default {
       searchUsersLoading,
       relevantUsersList,
       invitedUsers,
+      acceptedUsers,
       startDate,
       greenBtn,
       isSelectFormColarModalOpened,

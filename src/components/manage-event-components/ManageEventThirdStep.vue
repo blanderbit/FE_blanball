@@ -163,19 +163,21 @@ export default {
     const changeForms = () => {
       emit('changeForms')
     }
-    
-    const stepStyle = computed(() => {
-      return props.currentStep === 3 ? { height: 'auto' } : { height: '0px' }
-    })
 
     function changeEditPhoneMode() {
       isEditPhone.value = !isEditPhone.value
     }
 
+    const stepStyle = computed(() => {
+      if (props?.currentStep) {
+        return props?.currentStep === 3 ? { height: 'auto' } : { height: '0px' }
+      }
+    })
+
     return {
       icons,
-      stepStyle,
       needForm,
+      stepStyle,
       isEditPhone,
       user,
       phoneValue,

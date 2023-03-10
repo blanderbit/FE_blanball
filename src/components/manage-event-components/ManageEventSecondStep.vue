@@ -45,7 +45,7 @@
         ></radio-button>
       </div>
     </div>
-    <div v-show="isEventPayment" class="input enter-sum-input">
+    <div v-if="isEventPayment" class="input enter-sum-input">
       <InputComponent
         :outside-title="true"
         :title="$t('events.enter-sum')"
@@ -55,7 +55,7 @@
         name="price"
       />
     </div>
-    <div v-show="isEventPayment" class="input describe-sum-input">
+    <div v-if="isEventPayment" class="input describe-sum-input">
       <TextAreaComponent
         :outside-title="true"
         :title="$t('events.describe-sum')"
@@ -186,14 +186,14 @@ export default {
       }
     })
 
+    const stepStyle = computed(() => {
+      return props?.currentStep === 2 ? { height: 'auto' } : { height: '0px' }
+    })
+
   
     const openUserProfile = (userId) => {
       router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId))
     }
-
-    const stepStyle = computed(() => {
-      return props.currentStep === 2 ? { height: 'auto' } : { height: '0px' }
-    })
 
     function toggleEventPayment(val) {
       isEventPayment.value = val ? true : false
@@ -207,8 +207,8 @@ export default {
     return {
       icons,
       isEventPayment,
-      stepStyle,
       searchValue,
+      stepStyle,
       loading,
       invitedUsersIDS,
       toggleEventPayment,

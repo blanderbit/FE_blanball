@@ -1,5 +1,9 @@
 <template>
   <Loading :is-loading="loading" />
+  <EditEventModal
+    v-if="isEventUpdateModalOpened"
+    :eventDataValue="eventData"
+    @closeEventUpdateModal="closeEventUpdateModal"/>
   <ShareEventModal
     v-if="isShareEventModalOpened"
     :shareLink="currentFullRoute"
@@ -232,6 +236,7 @@ import ListOfEventRequestsToParticipations from '../../../components/ListOfEvent
 import Loading from '../../../workers/loading-worker/Loading.vue';
 import EventInfoForms from '../../../components/buildedForms/EventInfoForms.vue';
 import ActionEventModal from '../../../components/ModalWindows/ActionEventModal.vue';
+import EditEventModal from '../../../components/ModalWindows/EditEventModal.vue'
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
@@ -264,6 +269,7 @@ export default {
     Loading,
     TabLabel,
     EventInfoForms,
+    EditEventModal,
     ListOfEventRequestsToParticipations,
     ActionEventModal,
   },
@@ -308,13 +314,18 @@ export default {
     const currentFullRoute = ref(window.location.href);
     const activeTab = ref(0);
     const eventPriceHover = ref(false);
+    const isEventUpdateModalOpened = ref(true);
 
     const isActionEventModalOpened = ref(false)
     const actionEventModalConfig = ref({
-      title: 'Редагування недоступне',
-      description: 'Ви не можете редагувати подію, яка вже почалася або закінчилася',
+      title: t('modals.no_perm_to_edit.title'),
+      description:  t('modals.no_perm_to_edit.main-text'),
       image: NoEditPermIcon,
     })
+
+    const closeEventUpdateModal = () => {
+      isEventUpdateModalOpened.value = false
+    }
 
   
     handleIncomeEventData(eventData.value);
@@ -444,7 +455,7 @@ export default {
     const greenButtonClick  = () => {
       if (eventData.value.author.id === user.value.id && eventData.value.status === 'Planned') { 
         return router.push(ROUTES.APPLICATION.EVENTS.EDIT.absolute(eventData.value.id))
-      } else {
+      } else if (eventData.value.author.id === user.value.id && eventData.value.status !== 'Planned') {
         openEventActionModal()
       }
     }
@@ -486,12 +497,14 @@ export default {
       user,
       activeTab,
       isActionEventModalOpened,
+      isEventUpdateModalOpened,
       noUsersData,
       actionEventModalConfig,
       noFansData,
       eventPriceHover,
       eventRequestsToParticipations,
       copyLinkButtonClick,
+      closeEventUpdateModal,
       greenButtonClick,
       switchTabLabel,
       closeEventActiondModal,
