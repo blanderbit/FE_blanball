@@ -1,4 +1,5 @@
 <template>
+  <Loading :is-loading="eventUpdateLoader"></Loading>
   <div class="b-edit-event-modal__wrapper">
     <ChangeUserDataModal
       v-if="isSubmitModalOpened"
@@ -9,6 +10,9 @@
     />
     <div class="b-edit-event-modal__modal-window">
       <div class="b-edit-event-modal__header">
+        <img class="b-edit-event-modal__close" 
+          src="../../assets/img/cross.svg" alt=""
+          @click="openSubmitModal">
         <div class="b-edit-event-modal__title">
           {{ $t('events.event-update') }}
         </div>
@@ -87,6 +91,7 @@ import SelectFormsColorsModal from './SelectFormsColorsModal.vue';
 import WhiteBtn from '../WhiteBtn.vue';
 import GreenBtn from '../GreenBtn.vue';
 import ChangeUserDataModal from './UserCabinetModalWindows/ChangeUserDataModal.vue';
+import Loading from '../../workers/loading-worker/Loading.vue';
 
 import { API } from '../../workers/api-worker/api.worker';
 import { BlanballEventBus } from '../../workers/event-bus-worker';
@@ -101,6 +106,7 @@ export default {
     SelectFormsColorsModal,
     WhiteBtn,
     GreenBtn,
+    Loading,
     Form,
     ChangeUserDataModal,
   },
@@ -113,7 +119,7 @@ export default {
   setup(props, { emit }) {
     const searchUsersLoading = ref(false);
     const relevantUsersList = ref([]);
-    const eventCreateLoader = ref(false);
+    const eventUpdateLoader = ref(false);
     const isSelectFormColarModalOpened = ref(false);
     const isSubmitModalOpened = ref(false);
 
@@ -240,7 +246,7 @@ export default {
     getRelevantUsers({ skipids: eventData.value.author.id });
 
     async function editEvent(data) {
-      eventCreateLoader.value = true;
+      eventUpdateLoader.value = true;
       const createEventData = data.values;
 
       createEventData.date_and_time = `${createEventData.date} ${createEventData.time}`;
@@ -248,18 +254,17 @@ export default {
       createEventData.current_users = invitedUsers.value.map((user) => user.id);
 
       await API.EventService.editOneEvent(eventData.value.id, createEventData);
-      eventCreateLoader.value = false;
-      emit('closeEventUpdateModal')
+      eventUpdateLoader.value = false;
+      emit('closeEventUpdateModal');
       BlanballEventBus.emit('EventUpdated');
     }
-
     return {
       searchUsersLoading,
       relevantUsersList,
       invitedUsers,
       isSelectFormColarModalOpened,
       eventData,
-      eventCreateLoader,
+      eventUpdateLoader,
       changeDataModalConfig,
       isSubmitModalOpened,
       formsModalSelectedTabId,
@@ -283,6 +288,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::-webkit-scrollbar-track {
+  background-color: #fff;
+  border-radius: 100px;
+}
+
+/* style for the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background-color: #8a8aa8;;
+  border-radius: 100px;
+  transform: matrix(-1, 0, 0, 1, 0, 0);
+}
+
+/* style for the scrollbar */
+::-webkit-scrollbar {
+  position: absolute;
+  width: 6px;
+
+}
 .b-edit-event-modal__block-title {
   @include exo(16px, 700);
   line-height: 24px;
@@ -308,9 +331,15 @@ export default {
     border-radius: 6px;
     background: $--b-main-white-color;
     padding: 20px 20px 28px 24px;
-    overflow-y: scroll;
+    overflow: scroll;
 
     .b-edit-event-modal__header {
+
+      .b-edit-event-modal__close {
+        position: absolute;
+        right: 20px;
+        cursor: pointer;
+      }
       .b-edit-event-modal__title {
         @include exo(22px, 700);
         line-height: 32px;

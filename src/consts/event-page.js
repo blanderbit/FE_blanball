@@ -87,6 +87,12 @@ export default {
       img: !eventPinned ? pin : unpin,
       type: !eventPinned ? 'pin' : 'unpin'
     },
+    {
+      id: 3,
+      text: 'Редагувати',
+      img: bucket,
+      type: 'edit'
+    },
   ],
   status_ropdown: [
     {

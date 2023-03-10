@@ -1,9 +1,5 @@
 <template>
   <Loading :is-loading="loading" />
-  <EditEventModal
-    v-if="isEventUpdateModalOpened"
-    :eventDataValue="eventData"
-    @closeEventUpdateModal="closeEventUpdateModal"/>
   <ShareEventModal
     v-if="isShareEventModalOpened"
     :shareLink="currentFullRoute"
@@ -314,7 +310,6 @@ export default {
     const currentFullRoute = ref(window.location.href);
     const activeTab = ref(0);
     const eventPriceHover = ref(false);
-    const isEventUpdateModalOpened = ref(true);
 
     const isActionEventModalOpened = ref(false)
     const actionEventModalConfig = ref({
@@ -322,11 +317,6 @@ export default {
       description:  t('modals.no_perm_to_edit.main-text'),
       image: NoEditPermIcon,
     })
-
-    const closeEventUpdateModal = () => {
-      isEventUpdateModalOpened.value = false
-    }
-
   
     handleIncomeEventData(eventData.value);
 
@@ -497,14 +487,12 @@ export default {
       user,
       activeTab,
       isActionEventModalOpened,
-      isEventUpdateModalOpened,
       noUsersData,
       actionEventModalConfig,
       noFansData,
       eventPriceHover,
       eventRequestsToParticipations,
       copyLinkButtonClick,
-      closeEventUpdateModal,
       greenButtonClick,
       switchTabLabel,
       closeEventActiondModal,

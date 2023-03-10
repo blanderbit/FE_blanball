@@ -1,6 +1,11 @@
 <template>
   <div class="b-events-page">
     <Loading :is-loading="loading"/>
+    <EditEventModal
+      v-if="isEventUpdateModalOpened"
+      :eventDataValue="selectedContextMenuEvent"
+      @closeEventUpdateModal="closeEventUpdateModal"
+    />
     <DeleteEventsModal
       v-if="isDeleteEventsModalActive"
       @closeModal="closeDeleteEventsModal"
@@ -162,6 +167,7 @@ import EventsFilters from '../../../components/filters/block-filters/EventsFilte
 import WhiteBtn from '../../../components/WhiteBtn.vue'
 import DeleteEventsModal from '../../../components/ModalWindows/DeleteEventsModal.vue'
 import Loading from '../../../workers/loading-worker/Loading.vue'
+import EditEventModal from '../../../components/ModalWindows/EditEventModal.vue'
 
 import { API } from '../../../workers/api-worker/api.worker'
 import { ROUTES } from '../../../router/router.const'
@@ -191,6 +197,7 @@ export default {
     RightSidebar,
     EmptyList,
     SmartGridList,
+    EditEventModal,
     InfiniteLoading,
     ScrollToTop,
     FilterBlock,
@@ -218,6 +225,12 @@ export default {
     const oneEventToDeleteId = ref(null)
     const oneEventToPinId = ref(null)
     const oneEventToUnPinId = ref(null)
+    const isEventUpdateModalOpened = ref(false);
+
+    const closeEventUpdateModal = () => {
+      isEventUpdateModalOpened.value = false
+    }
+
 
     const mockData = computed(() => {
       return {
@@ -258,6 +271,10 @@ export default {
         case 'unpin':
           oneEventToUnPinId.value = selectedContextMenuEvent.value.id
           unPinEvents()
+          break
+        case 'edit':
+          console.log(selectedContextMenuEvent.value)
+          isEventUpdateModalOpened.value = true
           break
       }
     }
@@ -509,12 +526,15 @@ export default {
       contextMenuX,
       contextMenuY,
       PinIcon,
+      isEventUpdateModalOpened,
       loading,
       paginationTotalCount,
       selected,
+      selectedContextMenuEvent,
       emptyListMessages,
       myCardRightClick,
       deleteEvents,
+      closeEventUpdateModal,
       pinEvents,
       contextMenuItemClick,
       declineSelect,
