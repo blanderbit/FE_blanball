@@ -312,10 +312,12 @@ export default {
     const eventPriceHover = ref(false);
 
     const isActionEventModalOpened = ref(false)
-    const actionEventModalConfig = ref({
-      title: t('modals.no_perm_to_edit.title'),
-      description:  t('modals.no_perm_to_edit.main-text'),
-      image: NoEditPermIcon,
+    const actionEventModalConfig = computed(() => {
+      return {
+        title: t('modals.no_perm_to_edit.title'),
+        description: t('modals.no_perm_to_edit.main-text'),
+        image: NoEditPermIcon,
+      }
     })
   
     handleIncomeEventData(eventData.value);
