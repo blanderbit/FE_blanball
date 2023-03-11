@@ -19,7 +19,7 @@
               {{ $t(`hashtags.${userData.role}`) }}
             </div>
             <StarRating
-              :rating="1"
+              :rating="userRating"
               :star-size="14"
               :show-rating="false"
               :read-only="true"
@@ -51,8 +51,8 @@
             <span class="b-qualification__text">
               {{ $t('player_page.qualification') }}
             </span>
-            <span class="b-qualification__status"> 
-                {{ $t('player_page.approved') }}
+            <span class="b-qualification__status">
+              {{ $t('player_page.approved') }}
             </span>
           </div>
           <div class="b-public-profile__description">
@@ -65,20 +65,71 @@
           </div>
         </div>
       </div>
+      <div class="b-public-profile__second-block">
+        <div class="b-second-block__title">
+          {{ $t('profile.game-features') }}
+        </div>
+        <div class="b-second-block__user-features">
+          <div
+            v-for="feature in playFeatures"
+            class="b-second-block__user-feature"
+          >
+            <img class="b-feature__image" :src="feature.img" alt="" />
+            <div class="b-feature__info">
+              <div class="b-feature__name">{{ feature.name }}</div>
+              <div class="b-feature__value">{{ feature.value }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="b-second-block__user-reviews">
+          <div class="b-user-reviews__info">
+            <div class="b-user-reviews__titles-block">
+              <div class="b-user-reviews__title">
+                {{ $t('player_page.feedbacks') }}
+              </div>
+              <div class="b-user-reviews__subtitle">
+                {{ paginationTotalCount }} оцінок
+              </div>
+            </div>
+            <div class="b-user-reviews__raiting-star">
+              <div class="b-user-reviews__user-raiting">
+                {{ userRating }}
+              </div>
+              <img :src="icons.star" alt="" />
+            </div>
+          </div>
+
+
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 
-import Avatar from './Avatar.vue';
+import dayjs from 'dayjs';
+import dayjsUkrLocale from 'dayjs/locale/uk';
 
 import StarRating from 'vue-star-rating';
+
+import Avatar from './Avatar.vue';
 import WhiteBtn from './WhiteBtn.vue';
+import SimpleListWrapper from './simple-list/SimpleListWrapper.vue';
+
+import { API } from '../workers/api-worker/api.worker';
+import { PaginationWorker } from '../workers/pagination-worker';
 
 import PhoneIcon from '../assets/img/phone-arrow.svg';
 import LetterIcon from '../assets/img/letter.svg';
+import FlagIcon from '../assets/img/flag.svg';
+import GamingLegIcon from '../assets/img/gaming-leg.svg';
+import DumbbellIcon from '../assets/img/dumbbell.svg';
+import RulerIcon from '../assets/img/ruler.svg';
+import StarIcon from '../assets/img/star.svg';
 
 export default {
   props: {
@@ -90,18 +141,110 @@ export default {
   components: {
     Avatar,
     WhiteBtn,
+    SimpleListWrapper,
     StarRating,
   },
-  setup() {
+  setup(props) {
+    const { t } = useI18n();
+    const noFeatureData = '----';
+    const blockScrollToTopIfExist = ref(false);
+    const route = useRoute()
+
     const icons = computed(() => {
       return {
         phone: PhoneIcon,
         letter: LetterIcon,
+        flag: FlagIcon,
+        gaming_leg: GamingLegIcon,
+        dumbbell: DumbbellIcon,
+        ruler: RulerIcon,
+        star: StarIcon,
       };
     });
 
+    const userRating = computed(() => {
+      return Math.round(props.userData.raiting) || 0;
+    });
+
+    const playFeatures = computed(() => {
+      return [
+        {
+          id: 1,
+          name: t('player_page.position'),
+          img: icons.value.flag,
+          value: props.userData.profile?.position
+            ? t(`hashtags.position_full.${props.userData.profile?.position}`)
+            : noFeatureData,
+        },
+        {
+          id: 2,
+          name: t('player_page.weight'),
+          img: icons.value.dumbbell,
+          value: props.userData.profile?.weight
+            ? `${props.userData.profile?.weight} ${t('player_page.kg')}`
+            : noFeatureData,
+        },
+        {
+          id: 3,
+          name: t('profile.main-leg'),
+          img: icons.value.gaming_leg,
+          value: props.userData.profile?.working_leg
+            ? t(`hashtags.${props.userData.profile?.working_leg}`)
+            : noFeatureData,
+        },
+        {
+          id: 4,
+          name: t('player_page.height'),
+          img: icons.value.ruler,
+          value: props.userData.profile?.height
+            ? `${props.userData.profile?.height} ${t('player_page.sm')}`
+            : noFeatureData,
+        },
+      ];
+    });
+
+    const {
+      paginationElements,
+      paginationPage,
+      paginationTotalCount,
+      paginationLoad,
+      paginationClearData,
+    } = PaginationWorker({
+      paginationDataRequest: (page) =>
+        API.ReviewService.getUserReviews(props.userData.id, {
+          page,
+        }),
+      dataTransformation: (item) => {
+        item.metadata = {
+          expanding: false,
+        };
+        item.time_created = dayjs(item.time_created).format('DD.MM.YYYY');
+        return item;
+      },
+    });
+
+
+    paginationPage.value = 1;
+    paginationTotalCount.value = route.meta.reviewsData.data.total_count
+    paginationElements.value = route.meta.reviewsData.data.results.map(
+      (item) => {
+        return {
+          ...item,
+          time_created: `${dayjs(item.time_created).format('D.MM.YYYY')}`,
+        };
+      }
+    );
+
     return {
       icons,
+      userRating,
+      playFeatures,
+      paginationElements,
+      paginationPage,
+      blockScrollToTopIfExist,
+      paginationPage,
+      paginationElements,
+      paginationTotalCount,
     };
   },
 };
@@ -126,6 +269,7 @@ export default {
 
   .b-public-profile__main-side {
     padding: 60px 32px 60px 32px;
+    display: flex;
 
     .b-public-profile__first-block {
       background: #ffffff;
@@ -236,9 +380,80 @@ export default {
           line-height: 16px;
         }
         .b-description__text {
-            @include inter(14px, 400);
-            line-height: 20px;
-            word-break: break-word;
+          @include inter(14px, 400);
+          line-height: 20px;
+          word-break: break-word;
+        }
+      }
+    }
+    .b-public-profile__second-block {
+      background: #ffffff;
+      box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+      border-radius: 12px;
+      margin-left: 16px;
+      padding: 24px;
+      min-width: 400px;
+      .b-second-block__title {
+        @include exo(16px, 700);
+        line-height: 24px;
+        padding-bottom: 16px;
+      }
+      .b-second-block__user-features {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        justify-content: space-between;
+        padding-top: 20px;
+        border-top: 1px solid #dfdeed;
+        align-items: center;
+        padding-right: 30px;
+        .b-second-block__user-feature {
+          display: flex;
+          gap: 8px;
+          margin-bottom: 16px;
+          &:nth-child(2) {
+            justify-content: flex-end;
+          }
+          &:nth-child(4) {
+            justify-content: flex-end;
+          }
+          .b-feature__info {
+            .b-feature__name {
+              @include inter(12px, 400, #6f6f77);
+              line-height: 20px;
+            }
+            .b-feature__value {
+              @include inter(14px, 600);
+              line-height: 20px;
+            }
+          }
+        }
+      }
+      .b-second-block__user-reviews {
+        .b-user-reviews__info {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .b-user-reviews__titles-block {
+            .b-user-reviews__title {
+              @include exo(16px, 700);
+              line-height: 24px;
+            }
+            .b-user-reviews__subtitle {
+              @include inter(12px, 400, #6f6f77);
+              line-height: 20px;
+            }
+          }
+          .b-user-reviews__raiting-star {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            .b-user-reviews__user-raiting {
+              @include exo(16px, 700);
+              line-height: 24px;
+            }
+          }
+          .b-user-reviews__feedbacks-block {
+          }
         }
       }
     }
