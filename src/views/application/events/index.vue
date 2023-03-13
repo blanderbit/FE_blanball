@@ -179,20 +179,22 @@ export default {
     const mainEventsBlock = ref()
 
 
-    const eventJoinToolTipItems = ref([
-      {
-        id: 1,
-        text: t('buttons.like-a-player'),
-        img: BallIcon,
-        type: 'play'
-      },
-      {
-        id: 2,
-        text: t('buttons.like-a-fan'),
-        img: BallIcon,
-        type: 'view'
-      }
-    ])
+    const eventJoinToolTipItems = computed(() => {
+      return [
+        {
+          id: 1,
+          text: t('buttons.like-a-player'),
+          img: BallIcon,
+          type: 'play'
+        },
+        {
+          id: 2,
+          text: t('buttons.like-a-fan'),
+          img: BallIcon,
+          type: 'view'
+        }
+      ]
+    })
 
     const mockData = computed(() => {
       return {

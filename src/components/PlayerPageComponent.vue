@@ -301,9 +301,7 @@ export default {
     }
 
     const getReviews = (page) => {
-      return API.ReviewService.getUserReviews(props.userData.id, {
-        page,
-      }).then((res) => {
+      return API.ReviewService.getUserReviews(page).then((res) => {
         res.data.results =
           res.data.results.map((item) => {
             return {

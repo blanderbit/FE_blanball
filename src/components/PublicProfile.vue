@@ -8,24 +8,36 @@
         <div class="b-public-profile__profile-info">
           <Avatar
             class="b-public-profile__avatar"
+            avatarType="square"
             :link="userData.profile.avatar_url"
             :full-name="`${userData.profile.name} ${userData.profile.last_name}`"
           />
           <div class="b-public-profile__user-main-info">
             <div class="b-public-profile__full-name">
-              {{ userData.profile.last_name }} {{ userData.profile.name }}
+              {{ userData.profile.last_name }} <br />
+              {{ userData.profile.name }}
             </div>
-            <div class="b-public-profile__role">
-              {{ $t(`hashtags.${userData.role}`) }}
+            <div class="b-user-role-raiting">
+              <div class="b-public-profile__role">
+                {{ $t(`hashtags.${userData.role}`) }}
+              </div>
+              <StarRating
+                :rating="userRating"
+                :star-size="14"
+                :show-rating="false"
+                :read-only="true"
+                :active-color="'#F57125'"
+              />
             </div>
-            <StarRating
-              :rating="userRating"
-              :star-size="14"
-              :show-rating="false"
-              :read-only="true"
-              :active-color="'#F57125'"
-            />
           </div>
+        </div>
+        <div class="b-public-profile__qualification tablet">
+          <span class="b-qualification__text">
+            {{ $t('player_page.qualification') }}
+          </span>
+          <span class="b-qualification__status">
+            {{ $t('player_page.approved') }}
+          </span>
         </div>
         <div class="b-public-profile__buttons-block">
           <div class="b-public-profile__invite-button">
@@ -47,7 +59,7 @@
           </div>
         </div>
         <div class="b-public-profile__bottom-block">
-          <div class="b-public-profile__qualification">
+          <div class="b-public-profile__qualification desktop">
             <span class="b-qualification__text">
               {{ $t('player_page.qualification') }}
             </span>
@@ -65,42 +77,28 @@
           </div>
         </div>
       </div>
-      <div class="b-public-profile__second-block">
-        <div class="b-second-block__title">
-          {{ $t('profile.game-features') }}
-        </div>
-        <div class="b-second-block__user-features">
-          <div
-            v-for="feature in playFeatures"
-            class="b-second-block__user-feature"
-          >
-            <img class="b-feature__image" :src="feature.img" alt="" />
-            <div class="b-feature__info">
-              <div class="b-feature__name">{{ feature.name }}</div>
-              <div class="b-feature__value">{{ feature.value }}</div>
+      <div class="b-public-profile__main-side-left-block">
+        <div class="b-public-profile__second-block">
+          <div class="b-second-block__user-features-block">
+            <div class="b-user-features__title">
+              {{ $t('profile.game-features') }}
+            </div>
+            <div class="b-second-block__user-features">
+              <div
+                v-for="feature in playFeatures"
+                class="b-second-block__user-feature"
+              >
+                <img class="b-feature__image" :src="feature.img" alt="" />
+                <div class="b-feature__info">
+                  <div class="b-feature__name">{{ feature.name }}</div>
+                  <div class="b-feature__value">{{ feature.value }}</div>
+                </div>
+              </div>
             </div>
           </div>
+          <PublicProfileReviews :userRating="userRating" />
         </div>
-        <div class="b-second-block__user-reviews">
-          <div class="b-user-reviews__info">
-            <div class="b-user-reviews__titles-block">
-              <div class="b-user-reviews__title">
-                {{ $t('player_page.feedbacks') }}
-              </div>
-              <div class="b-user-reviews__subtitle">
-                {{ paginationTotalCount }} оцінок
-              </div>
-            </div>
-            <div class="b-user-reviews__raiting-star">
-              <div class="b-user-reviews__user-raiting">
-                {{ userRating }}
-              </div>
-              <img :src="icons.star" alt="" />
-            </div>
-          </div>
-
-
-        </div>
+        <PublicProfilePlannedEvents/>
       </div>
     </div>
   </div>
@@ -109,19 +107,13 @@
 <script>
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
-
-import dayjs from 'dayjs';
-import dayjsUkrLocale from 'dayjs/locale/uk';
 
 import StarRating from 'vue-star-rating';
 
 import Avatar from './Avatar.vue';
 import WhiteBtn from './WhiteBtn.vue';
-import SimpleListWrapper from './simple-list/SimpleListWrapper.vue';
-
-import { API } from '../workers/api-worker/api.worker';
-import { PaginationWorker } from '../workers/pagination-worker';
+import PublicProfileReviews from './PublicProfileReviews.vue';
+import PublicProfilePlannedEvents from './PublicProfilePlannedEvents.vue'
 
 import PhoneIcon from '../assets/img/phone-arrow.svg';
 import LetterIcon from '../assets/img/letter.svg';
@@ -141,14 +133,13 @@ export default {
   components: {
     Avatar,
     WhiteBtn,
-    SimpleListWrapper,
+    PublicProfilePlannedEvents,
+    PublicProfileReviews,
     StarRating,
   },
   setup(props) {
     const { t } = useI18n();
     const noFeatureData = '----';
-    const blockScrollToTopIfExist = ref(false);
-    const route = useRoute()
 
     const icons = computed(() => {
       return {
@@ -166,6 +157,7 @@ export default {
       return Math.round(props.userData.raiting) || 0;
     });
 
+
     const playFeatures = computed(() => {
       return [
         {
@@ -173,7 +165,7 @@ export default {
           name: t('player_page.position'),
           img: icons.value.flag,
           value: props.userData.profile?.position
-            ? t(`hashtags.position_full.${props.userData.profile?.position}`)
+            ? t(`hashtags.${props.userData.profile?.position}`)
             : noFeatureData,
         },
         {
@@ -203,48 +195,10 @@ export default {
       ];
     });
 
-    const {
-      paginationElements,
-      paginationPage,
-      paginationTotalCount,
-      paginationLoad,
-      paginationClearData,
-    } = PaginationWorker({
-      paginationDataRequest: (page) =>
-        API.ReviewService.getUserReviews(props.userData.id, {
-          page,
-        }),
-      dataTransformation: (item) => {
-        item.metadata = {
-          expanding: false,
-        };
-        item.time_created = dayjs(item.time_created).format('DD.MM.YYYY');
-        return item;
-      },
-    });
-
-
-    paginationPage.value = 1;
-    paginationTotalCount.value = route.meta.reviewsData.data.total_count
-    paginationElements.value = route.meta.reviewsData.data.results.map(
-      (item) => {
-        return {
-          ...item,
-          time_created: `${dayjs(item.time_created).format('D.MM.YYYY')}`,
-        };
-      }
-    );
-
     return {
       icons,
       userRating,
       playFeatures,
-      paginationElements,
-      paginationPage,
-      blockScrollToTopIfExist,
-      paginationPage,
-      paginationElements,
-      paginationTotalCount,
     };
   },
 };
@@ -253,6 +207,10 @@ export default {
 <style lang="scss" scoped>
 .b-public-profile {
   position: relative;
+
+  @include beforeDesktop {
+    overflow: scroll;
+  }
 
   .b-public-profile__background-image {
     position: absolute;
@@ -268,28 +226,52 @@ export default {
   }
 
   .b-public-profile__main-side {
-    padding: 60px 32px 60px 32px;
+    padding: 60px 32px;
     display: flex;
+    justify-content: center;
+
+    @media (max-width: 1200px) {
+      padding: 40px 20px;
+    }
+
+    @include tabletAndMobile {
+      padding: 40px 10px;
+    }
 
     .b-public-profile__first-block {
       background: #ffffff;
       box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
       border-radius: 12px;
       width: 325px;
-      min-height: 526px;
+      height: 526px;
       padding: 24px;
+
+      @media (max-width: 1200px) {
+        padding: 16px;
+        width: 300px;
+      }
+
+      @include beforeDesktop {
+        padding: 16px;
+        margin-top: 5px;
+      }
 
       .b-public-profile__profile-info {
         display: flex;
         gap: 12px;
 
-        .b-public-profile__avatar {
-          height: 96px;
+        @include beforeDesktop {
+          flex-direction: column;
+          gap: 4px;
+        }
 
-          ::v-deep(.b-avatar) {
-            width: 96px;
-            height: 96px;
-            border-radius: 4px;
+        .b-public-profile__avatar {
+          @include desktop {
+            ::v-deep(.b-avatar) {
+              width: 96px;
+              height: 96px;
+              border-radius: 4px;
+            }
           }
         }
 
@@ -298,9 +280,23 @@ export default {
           flex-direction: column;
           gap: 4px 4px;
 
+          @include beforeDesktop {
+            flex-direction: row;
+            justify-content: space-between;
+          }
+
           .b-public-profile__full-name {
             @include exo(18px, 800);
             line-height: 24px;
+            word-break: break-all;
+          }
+
+          .b-user-role-raiting {
+            @include beforeDesktop {
+              display: flex;
+              flex-direction: column-reverse;
+              align-items: flex-end;
+            }
           }
 
           .b-public-profile__role {
@@ -351,24 +347,6 @@ export default {
     .b-public-profile__bottom-block {
       margin-top: 16px;
 
-      .b-public-profile__qualification {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        .b-qualification__text {
-          @include inter(12px, 400, #575775);
-          line-height: 20px;
-        }
-
-        .b-qualification__status {
-          @include inter(12px, 400, #395d09);
-          line-height: 20px;
-          background: #d2f6a2;
-          border-radius: 4px;
-          padding: 0px 4px;
-        }
-      }
       .b-public-profile__description {
         display: flex;
         flex-direction: column;
@@ -386,77 +364,131 @@ export default {
         }
       }
     }
-    .b-public-profile__second-block {
-      background: #ffffff;
-      box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
-      border-radius: 12px;
-      margin-left: 16px;
-      padding: 24px;
-      min-width: 400px;
-      .b-second-block__title {
-        @include exo(16px, 700);
-        line-height: 24px;
-        padding-bottom: 16px;
-      }
-      .b-second-block__user-features {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        justify-content: space-between;
-        padding-top: 20px;
-        border-top: 1px solid #dfdeed;
+    .b-public-profile__main-side-left-block {
+      display: flex;
+
+      @include beforeDesktop {
+        flex-direction: column;
         align-items: center;
-        padding-right: 30px;
-        .b-second-block__user-feature {
-          display: flex;
-          gap: 8px;
-          margin-bottom: 16px;
-          &:nth-child(2) {
-            justify-content: flex-end;
-          }
-          &:nth-child(4) {
-            justify-content: flex-end;
-          }
-          .b-feature__info {
-            .b-feature__name {
-              @include inter(12px, 400, #6f6f77);
-              line-height: 20px;
-            }
-            .b-feature__value {
-              @include inter(14px, 600);
-              line-height: 20px;
-            }
-          }
-        }
       }
-      .b-second-block__user-reviews {
-        .b-user-reviews__info {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          .b-user-reviews__titles-block {
-            .b-user-reviews__title {
-              @include exo(16px, 700);
-              line-height: 24px;
-            }
-            .b-user-reviews__subtitle {
-              @include inter(12px, 400, #6f6f77);
-              line-height: 20px;
-            }
+      .b-public-profile__second-block {
+        background: #ffffff;
+        box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+        border-radius: 12px 0px 0px 12px;
+        margin-left: 16px;
+        padding: 24px;
+        width: 450px;
+        border-right: 1px solid #efeff6;
+        overflow: hidden;
+
+        @include desktop {
+          height: calc(100vh - 90px - 70px);
+        }
+
+        ::-webkit-scrollbar {
+          display: none;
+        }
+
+        @media (max-width: 1400px) {
+          width: 350px;
+        }
+
+        @media (max-width: 1200px) {
+          padding: 16px;
+          width: 310px;
+        }
+
+        @include beforeDesktop {
+          padding: 5px;
+          background: transparent;
+          box-shadow: none;
+          border: none;
+        }
+
+        .b-second-block__user-features-block {
+          @include beforeDesktop {
+            padding: 16px;
+            box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+            background: #fff;
+            border-radius: 12px;
           }
-          .b-user-reviews__raiting-star {
-            display: flex;
+          .b-user-features__title {
+            @include exo(16px, 700);
+            line-height: 24px;
+            padding-bottom: 16px;
+          }
+          .b-second-block__user-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            justify-content: space-between;
+            padding-top: 20px;
+            border-top: 1px solid #dfdeed;
             align-items: center;
-            gap: 4px;
-            .b-user-reviews__user-raiting {
-              @include exo(16px, 700);
-              line-height: 24px;
+            padding-right: 30px;
+
+            @include beforeDesktop {
+              padding-right: 0px;
+              padding-top: 16px;
+              border-top: 1px dashed #dfdeed;
             }
-          }
-          .b-user-reviews__feedbacks-block {
+            .b-second-block__user-feature {
+              display: flex;
+              gap: 8px;
+              margin-bottom: 16px;
+              &:nth-child(2) {
+                justify-content: flex-end;
+              }
+              &:nth-child(4) {
+                justify-content: flex-end;
+              }
+              .b-feature__info {
+                .b-feature__name {
+                  @include inter(12px, 400, #6f6f77);
+                  line-height: 20px;
+                }
+                .b-feature__value {
+                  @include inter(14px, 600);
+                  line-height: 20px;
+                }
+              }
+            }
           }
         }
       }
     }
+  }
+}
+
+.b-public-profile__qualification {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &.desktop {
+    @include beforeDesktop {
+      display: none;
+    }
+  }
+
+  &.tablet {
+    display: none;
+    @include beforeDesktop {
+      display: flex;
+      margin-top: 8px;
+    }
+  }
+
+  .b-qualification__text {
+    @include inter(12px, 400, #575775);
+    line-height: 20px;
+  }
+
+  .b-qualification__status {
+    @include inter(12px, 400, #395d09);
+    line-height: 20px;
+    background: #d2f6a2;
+    border-radius: 4px;
+    padding: 0px 4px;
   }
 }
 </style>

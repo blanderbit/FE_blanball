@@ -188,10 +188,11 @@ const router = createRouter({
         {
           path: ROUTES.APPLICATION.USERS.GET_ONE.relative,
           name: ROUTES.APPLICATION.USERS.GET_ONE.name,
-          beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
+          beforeEnter: routerAuthResolver.routeInterceptor((to) => (
+            {
             reviewsData: () => API.ReviewService.getUserReviews(to.params.userId),
-            publicUserData: () =>
-              API.UserService.getUserPublicProfile(to.params.userId),
+            eventsData: () => API.EventService.getPlannedUserEvents(to.params.userId),
+            publicUserData: () => API.UserService.getUserPublicProfile(to.params.userId),
             usersData,
           })),
           component: () => import('../views/application/users/profile.vue'),
