@@ -152,14 +152,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-ffffff: #ffffff;
+$color-efeff6: #efeff6;
+$color-dfdeed: #dfdeed;
+$color-f0f0f4: #f0f0f4;
+$color-575775: #575775;
 .b-public-profile__planned-events {
-  background: #ffffff;
+  background: $color-ffffff;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 0px 12px 12px 0px;
   padding: 24px;
   padding-left: 32px;
   width: 400px;
-  border-right: 1px solid #efeff6;
+  border-right: 1px solid $color-efeff6;
 
   @media (max-width: 1400px) {
     width: 350px;
@@ -171,7 +176,7 @@ export default {
   }
 
   @include beforeDesktop {
-    background: #ffffff;
+    background: $color-ffffff;
     border-radius: 12px;
     margin-top: 20px;
     height: 400px;
@@ -186,7 +191,7 @@ export default {
     @include exo(16px, 700);
     line-height: 24px;
     padding-bottom: 16px;
-    border-bottom: 1px solid #dfdeed;
+    border-bottom: 1px solid $color-dfdeed;
   }
 }
 .b-public-profile__events-list {
@@ -198,7 +203,7 @@ export default {
   }
   .b-event {
     padding: 16px 0px;
-    border-bottom: 1px dashed #dfdeed;
+    border-bottom: 1px dashed $color-dfdeed;
 
     .b-event__top-side {
       display: flex;
@@ -213,7 +218,7 @@ export default {
       .b-event__user-role {
         @include inter(12px, 400);
         line-height: 20px;
-        background: #f0f0f4;
+        background: $color-f0f0f4;
         border-radius: 4px;
         padding: 0px 4px;
       }
@@ -221,7 +226,7 @@ export default {
     .b-event__main-side {
       margin: 6px 0px;
       .b-event_date-and-time {
-        @include inter(12px, 400, #575775);
+        @include inter(12px, 400, $color-575775);
         line-height: 20px;
       }
       .b-event__labels {
@@ -231,7 +236,7 @@ export default {
         .b-event__label {
           @include inter(12px, 400);
           line-height: 20px;
-          border: 1px solid #dfdeed;
+          border: 1px solid $color-dfdeed;
           border-radius: 100px;
           padding: 0px 8px;
           height: 20px;

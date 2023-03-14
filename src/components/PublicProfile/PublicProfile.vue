@@ -236,6 +236,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-ffffff: #ffffff;
+$color-efeff6: #efeff6;
+$color-575775: #575775;
+$color-fff: #fff;
+$color-c5c5d3: #c5c5d3;
+$color-6f6f77: #6f6f77;
+$color-dfdeed: #dfdeed;
+$color-395d09: #395d09;
+$color-d2f6a2: #d2f6a2;
 .b-public-profile {
   position: relative;
 
@@ -279,7 +288,7 @@ export default {
     }
 
     .b-public-profile__first-block {
-      background: #ffffff;
+      background: $color-ffffff;
       box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
       border-radius: 12px;
       width: 325px;
@@ -306,7 +315,7 @@ export default {
         @include inter(12px, 400);
         width: max-content;
         line-height: 20px;
-        background: #efeff6;
+        background: $color-efeff6;
         border-radius: 4px;
         padding: 2px 4px;
         position: absolute;
@@ -369,11 +378,11 @@ export default {
           }
 
           .b-public-profile__role {
-            @include inter(12px, 500, #575775);
+            @include inter(12px, 500, $color-575775);
             line-height: 20px;
 
             @include tabletAndMobile {
-              @include inter(14px, 500, #575775);
+              @include inter(14px, 500, $color-575775);
             }
           }
         }
@@ -384,7 +393,7 @@ export default {
       margin-top: 16px;
 
       .b-public-profile__invite-button {
-        @include inter(14px, 500, #fff);
+        @include inter(14px, 500, $color-fff);
         line-height: 24px;
         text-align: center;
         background: $--b-main-black-color;
@@ -400,10 +409,10 @@ export default {
         gap: 8px;
 
         ::v-deep(.b_white-btn) {
-          border: 1px solid #c5c5d3 !important;
+          border: 1px solid $color-c5c5d3 !important;
           border-radius: 4px;
           @include inter(12px, 500);
-          color: #575775 !important;
+          color: $color-575775 !important;
           line-height: 20px;
         }
 
@@ -427,7 +436,7 @@ export default {
         margin-top: 16px;
 
         .b-description__title {
-          @include inter(12px, 400, #6f6f77);
+          @include inter(12px, 400, $color-6f6f77);
           line-height: 16px;
         }
         .b-description__text {
@@ -445,13 +454,13 @@ export default {
         align-items: center;
       }
       .b-public-profile__second-block {
-        background: #ffffff;
+        background: $color-ffffff;
         box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
         border-radius: 12px 0px 0px 12px;
         margin-left: 16px;
         padding: 24px;
         width: 450px;
-        border-right: 1px solid #efeff6;
+        border-right: 1px solid $color-efeff6;
         overflow: hidden;
 
         @include desktop {
@@ -487,7 +496,7 @@ export default {
           @include beforeDesktop {
             padding: 16px;
             box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
-            background: #fff;
+            background: $color-fff;
             border-radius: 12px;
           }
           .b-user-features__title {
@@ -500,14 +509,14 @@ export default {
             grid-template-columns: repeat(2, 1fr);
             justify-content: space-between;
             padding-top: 20px;
-            border-top: 1px solid #dfdeed;
+            border-top: 1px solid $color-dfdeed;
             align-items: center;
             padding-right: 30px;
 
             @include beforeDesktop {
               padding-right: 0px;
               padding-top: 16px;
-              border-top: 1px dashed #dfdeed;
+              border-top: 1px dashed $color-dfdeed;
             }
             .b-second-block__user-feature {
               display: flex;
@@ -521,7 +530,7 @@ export default {
               }
               .b-feature__info {
                 .b-feature__name {
-                  @include inter(12px, 400, #6f6f77);
+                  @include inter(12px, 400, $color-6f6f77);
                   line-height: 20px;
                 }
                 .b-feature__value {
@@ -557,14 +566,14 @@ export default {
   }
 
   .b-qualification__text {
-    @include inter(12px, 400, #575775);
+    @include inter(12px, 400, $color-575775);
     line-height: 20px;
   }
 
   .b-qualification__status {
-    @include inter(12px, 400, #395d09);
+    @include inter(12px, 400, $color-395d09);
     line-height: 20px;
-    background: #d2f6a2;
+    background: $color-d2f6a2;
     border-radius: 4px;
     padding: 0px 4px;
   }

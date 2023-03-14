@@ -171,11 +171,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-ffffff: #ffffff;
+$color-6f6f77: #6f6f77;
+$color-dfdeed: #dfdeed;
+$color-f57125: #f57125;
+$color-575775: #575775;
 .b-public-profile-reviews__block {
   height: 550px;
   @include beforeDesktop {
     padding: 16px;
-    background: #ffffff;
+    background: $color-ffffff;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 12px;
     margin-top: 20px;
@@ -193,7 +198,7 @@ export default {
       line-height: 24px;
     }
     .b-user-reviews__subtitle {
-      @include inter(12px, 400, #6f6f77);
+      @include inter(12px, 400, $color-6f6f77);
       line-height: 20px;
     }
   }
@@ -224,7 +229,7 @@ export default {
 
   .b-public-profile__review {
     padding: 16px 5px;
-    border-top: 1px dashed #dfdeed;
+    border-top: 1px dashed $color-dfdeed;
 
     .b-review__top-side {
       display: flex;
@@ -241,20 +246,20 @@ export default {
           gap: 3px;
 
           .b-review__grade {
-            @include inter(16px, 500, #f57125);
+            @include inter(16px, 500, $color-f57125);
             line-height: 20px;
           }
         }
 
         .b-review__author-full-name {
-          @include inter(14px, 500, #575775);
+          @include inter(14px, 500, $color-575775);
           line-height: 16px;
           margin-left: 8px;
         }
       }
 
       .b-top-side__date {
-        @include inter(13px, 500, #575775);
+        @include inter(13px, 500, $color-575775);
         line-height: 20px;
       }
     }
