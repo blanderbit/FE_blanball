@@ -68,9 +68,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
- $color-1ccd62: #1ccd62;
- $color-ffffff: #ffffff;
-
+$color-1ccd62: #1ccd62;
+$color-ffffff: #ffffff;
 
 // SCSS variables for hex colors
 $color-c8ebe7: #c8ebe7;
@@ -89,6 +88,16 @@ $color-c8ebe7: #c8ebe7;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
+  }
+
+  &-big-circle {
+    width: 144px;
+    height: 144px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    z-index: 2;
   }
 
   &-square {
@@ -116,7 +125,6 @@ $color-c8ebe7: #c8ebe7;
 
   &-words {
     color: $--b-main-green-color;
-    min-width: 100%;
     font-family: 'Exo 2';
     font-style: normal;
     font-weight: 700;

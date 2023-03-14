@@ -6,14 +6,14 @@
           {{ $t('player_page.rates-feedbacks') }}
         </div>
         <div class="b-user-reviews__subtitle">
-          {{ paginationTotalCount }} оцінок
+          {{ paginationTotalCount }} {{  $t('player_page.rates') }}
         </div>
       </div>
       <div class="b-public-profile__raiting-star">
         <div class="b-public-profile__user-raiting">
           {{ userRating }}
         </div>
-        <img src="../assets/img/star.svg" alt="" />
+        <img src="../../assets/img/star.svg" alt="" />
       </div>
     </div>
     <div class="b-public-profile__reviews-list">
@@ -31,7 +31,7 @@
                     <div class="b-review__grade">
                       {{ slotProps.smartListItem.stars }}
                     </div>
-                    <img src="../assets/img/star.svg" alt="" />
+                    <img src="../../assets/img/star.svg" alt="" />
                   </div>
                   <div class="b-review__author-full-name">
                     {{ slotProps.smartListItem.author.profile.last_name }}
@@ -56,12 +56,7 @@
               @infinite="loadDataPaginationData(paginationPage + 1, $event)"
             >
               <template #complete>
-                <EmptyList
-                  v-if="!paginationElements.length"
-                  :title="emptyListMessages.title"
-                  :description="emptyListMessages.title"
-                />
-
+                
                 <ScrollToTop
                   :element-length="paginationElements"
                   :is-scroll-top-exist="blockScrollToTopIfExist"
@@ -84,15 +79,15 @@ import StarRating from 'vue-star-rating';
 
 import { v4 as uuid } from 'uuid';
 
-import { PaginationWorker } from '../workers/pagination-worker';
+import { PaginationWorker } from '../../workers/pagination-worker';
 
-import SmartList from './smart-list/SmartList.vue';
-import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue';
-import ScrollToTop from './ScrollToTop.vue';
+import SmartList from '../smart-list/SmartList.vue';
+import InfiniteLoading from '../../workers/infinit-load-worker/InfiniteLoading.vue';
+import ScrollToTop from '../ScrollToTop.vue';
 
-import { getDate } from '../utils/getDate';
+import { getDate } from '../../utils/getDate';
 
-import { API } from '../workers/api-worker/api.worker';
+import { API } from '../../workers/api-worker/api.worker';
 
 export default {
   name: 'RatingCard',
@@ -120,12 +115,6 @@ export default {
       triggerForRestart.value = uuid();
     };
 
-    const emptyListMessages = computed(() => {
-      return {
-        title: 'Немає повідомлень для відображення',
-        description: 'Вам ще не надходили сповіщення від інших користувачів',
-      };
-    });
 
     const {
       paginationElements,
@@ -166,7 +155,6 @@ export default {
 
     return {
       usersReviews,
-      emptyListMessages,
       triggerForRestart,
       paginationTotalCount,
       blockScrollToTopIfExist,

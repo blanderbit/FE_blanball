@@ -1,14 +1,22 @@
 <template>
   <div class="b-public-profile">
     <div class="b-public-profile__background-image">
-      <img src="../assets/img/user-page-back.svg" alt="" />
+      <img src="../../assets/img/user-page-back.svg" alt="" />
     </div>
     <div class="b-public-profile__main-side">
       <div class="b-public-profile__first-block">
+        <div v-if="userData.is_verified" class="b-public-profile__verified-status">
+          {{ $t('player_page.verified') }}
+          <img src="../../assets/img/profile-ball.svg" alt="">
+        </div>
+        <div v-else class="b-public-profile__verified-status not-verified">
+          {{ $t('player_page.not_verified') }}
+          <img src="../../assets/img/profile-ball.svg" alt="">
+        </div>
         <div class="b-public-profile__profile-info">
           <Avatar
             class="b-public-profile__avatar"
-            avatarType="square"
+            :avatarType="avatarType"
             :link="userData.profile.avatar_url"
             :full-name="`${userData.profile.name} ${userData.profile.last_name}`"
           />
@@ -98,30 +106,32 @@
           </div>
           <PublicProfileReviews :userRating="userRating" />
         </div>
-        <PublicProfilePlannedEvents/>
+        <PublicProfilePlannedEvents />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import StarRating from 'vue-star-rating';
 
-import Avatar from './Avatar.vue';
-import WhiteBtn from './WhiteBtn.vue';
+import Avatar from '../Avatar.vue';
+import WhiteBtn from '../WhiteBtn.vue';
 import PublicProfileReviews from './PublicProfileReviews.vue';
-import PublicProfilePlannedEvents from './PublicProfilePlannedEvents.vue'
+import PublicProfilePlannedEvents from './PublicProfilePlannedEvents.vue';
 
-import PhoneIcon from '../assets/img/phone-arrow.svg';
-import LetterIcon from '../assets/img/letter.svg';
-import FlagIcon from '../assets/img/flag.svg';
-import GamingLegIcon from '../assets/img/gaming-leg.svg';
-import DumbbellIcon from '../assets/img/dumbbell.svg';
-import RulerIcon from '../assets/img/ruler.svg';
-import StarIcon from '../assets/img/star.svg';
+import useWindowWidth from '../../utils/widthScreen'
+
+import PhoneIcon from '../../assets/img/phone-arrow.svg';
+import LetterIcon from '../../assets/img/letter.svg';
+import FlagIcon from '../../assets/img/flag.svg';
+import GamingLegIcon from '../../assets/img/gaming-leg.svg';
+import DumbbellIcon from '../../assets/img/dumbbell.svg';
+import RulerIcon from '../../assets/img/ruler.svg';
+import StarIcon from '../../assets/img/star.svg';
 
 export default {
   props: {
@@ -141,6 +151,9 @@ export default {
     const { t } = useI18n();
     const noFeatureData = '----';
 
+    const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
+      useWindowWidth();
+
     const icons = computed(() => {
       return {
         phone: PhoneIcon,
@@ -153,10 +166,27 @@ export default {
       };
     });
 
+
+    onMounted(() => {
+      window.addEventListener('resize', onResize)
+    })
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', onResize)
+    })
+
     const userRating = computed(() => {
       return Math.round(props.userData.raiting) || 0;
     });
 
+    const avatarType = computed(() => {
+
+      if (isMobile.value) {
+        return 'big-circle'
+      } else {
+        return 'square'
+      }
+    })
 
     const playFeatures = computed(() => {
       return [
@@ -197,6 +227,7 @@ export default {
 
     return {
       icons,
+      avatarType,
       userRating,
       playFeatures,
     };
@@ -220,6 +251,10 @@ export default {
     height: 180px;
     width: 100%;
 
+    @include tabletAndMobile {
+      z-index: 2;
+    }
+
     img {
       width: 100%;
     }
@@ -235,7 +270,12 @@ export default {
     }
 
     @include tabletAndMobile {
-      padding: 40px 10px;
+      padding: 40px 0px;
+    }
+
+    @include tabletAndMobile {
+      flex-direction: column;
+      align-items: center;
     }
 
     .b-public-profile__first-block {
@@ -243,8 +283,9 @@ export default {
       box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
       border-radius: 12px;
       width: 325px;
-      height: 526px;
+      height: max-content;
       padding: 24px;
+      position: relative;
 
       @media (max-width: 1200px) {
         padding: 16px;
@@ -254,6 +295,29 @@ export default {
       @include beforeDesktop {
         padding: 16px;
         margin-top: 5px;
+      }
+
+      @include tabletAndMobile {
+        width: 400px;
+        margin-top: -30px;
+      }
+
+      .b-public-profile__verified-status {
+        @include inter(12px, 400);
+        width: max-content;
+        line-height: 20px;
+        background: #efeff6;
+        border-radius: 4px;
+        padding: 2px 4px;
+        position: absolute;
+        top: 90px;
+        right: 22px;
+        display: none;
+        gap: 4px;
+
+        @include tabletAndMobile {
+          display: flex;
+        }
       }
 
       .b-public-profile__profile-info {
@@ -289,6 +353,11 @@ export default {
             @include exo(18px, 800);
             line-height: 24px;
             word-break: break-all;
+
+            @include tabletAndMobile {
+              @include exo(20px, 800);
+              margin-top: 8px;
+            }
           }
 
           .b-user-role-raiting {
@@ -302,6 +371,10 @@ export default {
           .b-public-profile__role {
             @include inter(12px, 500, #575775);
             line-height: 20px;
+
+            @include tabletAndMobile {
+              @include inter(14px, 500, #575775);
+            }
           }
         }
       }
@@ -403,6 +476,11 @@ export default {
           background: transparent;
           box-shadow: none;
           border: none;
+        }
+
+        @include tabletAndMobile {
+          margin-left: 0px;
+          width: 410px;
         }
 
         .b-second-block__user-features-block {

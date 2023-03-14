@@ -42,11 +42,6 @@
               @infinite="loadDataPaginationData(paginationPage + 1, $event)"
             >
               <template #complete>
-                <EmptyList
-                  v-if="!paginationElements.length"
-                  :title="emptyListMessages.title"
-                  :description="emptyListMessages.title"
-                />
 
                 <ScrollToTop
                   :element-length="paginationElements"
@@ -68,15 +63,15 @@ import { useRoute } from 'vue-router';
 
 import { v4 as uuid } from 'uuid';
 
-import { PaginationWorker } from '../workers/pagination-worker';
+import { PaginationWorker } from '../../workers/pagination-worker';
 
-import SmartList from './smart-list/SmartList.vue';
-import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue';
-import ScrollToTop from './ScrollToTop.vue';
+import SmartList from '../smart-list/SmartList.vue';
+import InfiniteLoading from '../../workers/infinit-load-worker/InfiniteLoading.vue';
+import ScrollToTop from '../ScrollToTop.vue';
 
-import { getDate } from '../utils/getDate';
+import { getDate } from '../../utils/getDate';
 
-import { API } from '../workers/api-worker/api.worker';
+import { API } from '../../workers/api-worker/api.worker';
 
 export default {
   name: 'RatingCard',
@@ -102,12 +97,6 @@ export default {
       triggerForRestart.value = uuid();
     };
 
-    const emptyListMessages = computed(() => {
-      return {
-        title: 'Немає повідомлень для відображення',
-        description: 'Вам ще не надходили сповіщення від інших користувачів',
-      };
-    });
 
     const {
       paginationElements,
@@ -147,7 +136,6 @@ export default {
     };
 
     return {
-      emptyListMessages,
       triggerForRestart,
       paginationTotalCount,
       blockScrollToTopIfExist,
@@ -189,6 +177,11 @@ export default {
     height: 400px;
     margin-left: 16px;
   }
+  @include tabletAndMobile {
+    margin-left: 0px;
+    width: 400px;
+  }
+
   .b-planned-events__title {
     @include exo(16px, 700);
     line-height: 24px;
