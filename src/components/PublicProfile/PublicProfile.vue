@@ -1,4 +1,8 @@
 <template>
+  <InviteUserToEventModal
+    v-if="isInviteUserModalOpened"
+    :userData="userData"
+    @closeModal="closeInviteUserModal"/>
   <div class="b-public-profile">
     <div class="b-public-profile__background-image">
       <img src="../../assets/img/user-page-back.svg" alt="" />
@@ -48,7 +52,8 @@
           </span>
         </div>
         <div class="b-public-profile__buttons-block">
-          <div class="b-public-profile__invite-button">
+          <div class="b-public-profile__invite-button"
+            @click="openInviteUserModal">
             {{ $t('player_page.invite') }}
           </div>
           <div class="b-public-profile__connection-buttons">
@@ -122,6 +127,7 @@ import Avatar from '../Avatar.vue';
 import WhiteBtn from '../WhiteBtn.vue';
 import PublicProfileReviews from './PublicProfileReviews.vue';
 import PublicProfilePlannedEvents from './PublicProfilePlannedEvents.vue';
+import InviteUserToEventModal from '../ModalWindows/InviteUserToEventModal.vue';
 
 import useWindowWidth from '../../utils/widthScreen'
 
@@ -145,11 +151,13 @@ export default {
     WhiteBtn,
     PublicProfilePlannedEvents,
     PublicProfileReviews,
+    InviteUserToEventModal,
     StarRating,
   },
   setup(props) {
     const { t } = useI18n();
     const noFeatureData = '----';
+    const isInviteUserModalOpened = ref(false)
 
     const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
       useWindowWidth();
@@ -187,6 +195,14 @@ export default {
         return 'square'
       }
     })
+
+    const openInviteUserModal = () => {
+      isInviteUserModalOpened.value = true
+    }
+
+    const closeInviteUserModal = () => {
+      isInviteUserModalOpened.value = false
+    }
 
     const playFeatures = computed(() => {
       return [
@@ -228,8 +244,11 @@ export default {
     return {
       icons,
       avatarType,
+      isInviteUserModalOpened,
       userRating,
       playFeatures,
+      openInviteUserModal,
+      closeInviteUserModal,
     };
   },
 };
