@@ -104,8 +104,8 @@ export default {
 
 <style lang="scss" scoped> $color-f0f0f4: #f0f0f4;
  $color-dfdeed: #dfdeed;
- $color-575775: #575775;
- $color-ffffff: #ffffff;
+ $color-575775: $--b-main-gray-color;
+ $color-ffffff: $--b-main-white-color;
 
 
 // SCSS variables for hex colors

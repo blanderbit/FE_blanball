@@ -151,12 +151,13 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-$color-ffffff: #ffffff;
-$color-efeff6: #efeff6;
-$color-dfdeed: #dfdeed;
-$color-f0f0f4: #f0f0f4;
-$color-575775: #575775;
+<style lang="scss" scoped> 
+ $color-ffffff: $--b-main-white-color;
+ $color-efeff6: #efeff6;
+ $color-dfdeed: #dfdeed;
+ $color-f0f0f4: #f0f0f4;
+ $color-575775: $--b-main-gray-color;
+
 .b-public-profile__planned-events {
   background: $color-ffffff;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);

@@ -236,10 +236,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$color-ffffff: #ffffff;
+$color-ffffff: $--b-main-white-color;
 $color-efeff6: #efeff6;
-$color-575775: #575775;
-$color-fff: #fff;
+$color-575775: $--b-main-gray-color;
+$color-fff: $--b-main-white-color;
 $color-c5c5d3: #c5c5d3;
 $color-6f6f77: #6f6f77;
 $color-dfdeed: #dfdeed;

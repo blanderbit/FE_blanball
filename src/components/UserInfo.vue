@@ -272,12 +272,12 @@ export default {
 
 <style lang="scss" scoped>
  $color-eeeef3: #eeeef3;
- $color-ffffff: #ffffff;
- $color-262541: #262541;
+ $color-ffffff: $--b-main-white-color;
+ $color-262541: $--b-main-black-color;
  $color-148581: #148581;
  $color-f9f9fc: #f9f9fc;
- $color-575775: #575775;
- $color-fff: #fff;
+ $color-575775: $--b-main-gray-color;
+ $color-fff: $--b-main-white-color;
  $color-6f6f77: #6f6f77;
 
 

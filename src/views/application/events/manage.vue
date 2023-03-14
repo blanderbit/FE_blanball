@@ -592,7 +592,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped> $color-575775: #575775;
+<style lang="scss" scoped> $color-575775: $--b-main-gray-color;
 
 
 

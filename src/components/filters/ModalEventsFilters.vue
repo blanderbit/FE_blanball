@@ -240,7 +240,7 @@ export default {
  $color-dfdeed: #dfdeed;
  $color-808181: #808181;
  $color-0a3435: #0a3435;
- $color-148783: #148783;
+ $color-148783: $--b-main-green-color;
  $color-e9fcfb: #e9fcfb;
 
 

@@ -170,12 +170,13 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-$color-ffffff: #ffffff;
-$color-6f6f77: #6f6f77;
-$color-dfdeed: #dfdeed;
-$color-f57125: #f57125;
-$color-575775: #575775;
+<style lang="scss" scoped> $color-ffffff: $--b-main-white-color;
+ $color-6f6f77: #6f6f77;
+ $color-dfdeed: #dfdeed;
+ $color-f57125: #f57125;
+ $color-575775: $--b-main-gray-color;
+
+
 .b-public-profile-reviews__block {
   height: 550px;
   @include beforeDesktop {

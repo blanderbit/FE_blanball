@@ -69,7 +69,7 @@ export default {
 
 <style scoped lang="scss">
 $color-1ccd62: #1ccd62;
-$color-ffffff: #ffffff;
+$color-ffffff: $--b-main-white-color;
 
 // SCSS variables for hex colors
 $color-c8ebe7: #c8ebe7;
