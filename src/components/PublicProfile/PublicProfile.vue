@@ -311,6 +311,10 @@ $color-d2f6a2: #d2f6a2;
         margin-top: -30px;
       }
 
+      @media (max-width: 430px) {
+        width: 100%;
+      }
+
       .b-public-profile__verified-status {
         @include inter(12px, 400);
         width: max-content;
@@ -326,6 +330,14 @@ $color-d2f6a2: #d2f6a2;
 
         @include tabletAndMobile {
           display: flex;
+        }
+
+        @media (max-width: 500px) {
+          top: 65px; 
+        }
+
+        @media (max-width: 350px) {
+          top: 50px;
         }
       }
 
@@ -453,6 +465,12 @@ $color-d2f6a2: #d2f6a2;
         flex-direction: column;
         align-items: center;
       }
+
+      @media (max-width: 430px) {
+        width: 100%;
+      }
+
+
       .b-public-profile__second-block {
         background: $color-ffffff;
         box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
@@ -490,6 +508,10 @@ $color-d2f6a2: #d2f6a2;
         @include tabletAndMobile {
           margin-left: 0px;
           width: 410px;
+        }
+
+        @media (max-width: 430px) {
+          width: 100%;
         }
 
         .b-second-block__user-features-block {

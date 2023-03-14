@@ -98,6 +98,11 @@ $color-c8ebe7: #c8ebe7;
     background-size: cover;
     background-position: center center;
     z-index: 2;
+
+    @include mobile {
+      width: 120px;
+      height: 120px;
+    }
   }
 
   &-square {

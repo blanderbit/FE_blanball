@@ -170,7 +170,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped> $color-ffffff: $--b-main-white-color;
+<style lang="scss" scoped> 
+ $color-ffffff: $--b-main-white-color;
  $color-6f6f77: #6f6f77;
  $color-dfdeed: #dfdeed;
  $color-f57125: #f57125;

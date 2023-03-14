@@ -16,7 +16,9 @@
                 <div class="b-event__type">
                   {{ $t('events.friendly-match') }}
                 </div>
-                <div class="b-event__user-role">Вболівальник</div>
+                <div class="b-event__user-role">
+                  {{ $t(`hashtags.${slotProps.smartListItem.pk_user_role}`) }}
+                </div>
               </div>
               <div class="b-event__main-side">
                 <div class="b-event_date-and-time">
@@ -186,6 +188,10 @@ export default {
   @include tabletAndMobile {
     margin-left: 0px;
     width: 400px;
+  }
+
+  @media (max-width: 430px) {
+    width: 100%;
   }
 
   .b-planned-events__title {
