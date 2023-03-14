@@ -13,7 +13,7 @@
           <InputComponent
             :outside-title="true"
             :title="$t('login.login')"
-            :placeholder="$t('login.example-email')"
+            :placeholder="'example@email.com'"
             :title-width="0"
             :height="40"
             name="email"

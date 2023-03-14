@@ -109,7 +109,7 @@ export default {
 
 // SCSS variables for hex colors
  $color-c6c7c7: #c6c7c7;
- $color-ffffff: #ffffff;
+ $color-ffffff: $--b-main-white-color;
 
 
 .b-green-btn__animated {

@@ -79,7 +79,7 @@ export default {
 
 
 // SCSS variables for hex colors
- $color-ffffff: #ffffff;
+ $color-ffffff: $--b-main-white-color;
 
 
 .b-users-table {

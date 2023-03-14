@@ -33,10 +33,10 @@ for subdir, _, files in os.walk(directory):
                             if variable_name not in defined_colors:
                                 # Check if the variable is already defined in the style content
                                 if f'{variable_name}:' not in style_content:
-                                    new_style_content += f' {variable_name}: #{color};\n'
+                                    new_style_content += f'\n{variable_name}: #{color};'
                                 defined_colors.add(variable_name)
                             color_var_map[color] = variable_name
-                        new_style_content += '\n'
+
                         new_style_content += style_content
 
                         # Replace all occurrences of each hex color in the style content with its corresponding SCSS variable

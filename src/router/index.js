@@ -1,29 +1,29 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 import {
   routerResolverByLoginPage,
   routerAuthResolver,
-} from '../workers/resolver-worker/reolver.worker'
-import { API } from '../workers/api-worker/api.worker'
+} from '../workers/resolver-worker/reolver.worker';
+import { API } from '../workers/api-worker/api.worker';
 import {
   filterConfigForEvents,
   filterConfigForUsers,
-} from '../workers/api-worker/http/filter/filter.config'
-import { transpileInterseptorQueryToConfig } from '../workers/api-worker/http/filter/filter.utils'
-import { ROUTES } from './router.const'
-import { useUserDataStore } from '../stores/userData'
-import { prepareEventUpdateData } from '../utils/prepareEventUpdateData'
+} from '../workers/api-worker/http/filter/filter.config';
+import { transpileInterseptorQueryToConfig } from '../workers/api-worker/http/filter/filter.utils';
+import { ROUTES } from './router.const';
+import { useUserDataStore } from '../stores/userData';
+import { prepareEventUpdateData } from '../utils/prepareEventUpdateData';
 
 const usersData = () => {
-  const userStore = useUserDataStore()
+  const userStore = useUserDataStore();
   if (!Object.keys(userStore.user).length) {
     return API.UserService.getMyProfile().then((res) => {
       userStore.$patch({
         user: res.data,
-      })
-      return res
-    })
+      });
+      return res;
+    });
   }
-}
+};
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -79,10 +79,9 @@ const router = createRouter({
           name: ROUTES.APPLICATION.PROFILE.MY_PROFILE.name,
           beforeEnter: routerAuthResolver.routeInterceptor(() => ({
             usersData,
-            allReviewsData: () => API.ReviewService.getMyReviews()
+            allReviewsData: () => API.ReviewService.getMyReviews(),
           })),
-          component: () =>
-            import('../views/application/profile/index.vue'),
+          component: () => import('../views/application/profile/index.vue'),
           meta: {
             breadcrumbs: {
               i18n: 'breadcrumbs.profile',
@@ -144,8 +143,9 @@ const router = createRouter({
             action: () => 'EDIT',
             usersData,
             eventData: async () => {
-             return prepareEventUpdateData(to.params.id)
-          }})),
+              return prepareEventUpdateData(to.params.id);
+            },
+          })),
           component: () => import('../views/application/events/manage.vue'),
           meta: {
             breadcrumbs: {
@@ -159,7 +159,8 @@ const router = createRouter({
           beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
             usersData,
             eventData: () => API.EventService.getOneEvent(to.params.id),
-            eventRequestsToParticipationData: () => API.EventService.requestsToParticipations(to.params.id)
+            eventRequestsToParticipationData: () =>
+              API.EventService.requestsToParticipations(to.params.id),
           })),
           component: () => import('../views/application/events/event-info.vue'),
           meta: {
@@ -189,14 +190,16 @@ const router = createRouter({
           path: ROUTES.APPLICATION.USERS.GET_ONE.relative,
           name: ROUTES.APPLICATION.USERS.GET_ONE.name,
           beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
+            reviewsData: () =>
+              API.ReviewService.getUserReviews(to.params.userId),
+            eventsData: () =>
+              API.EventService.getPlannedUserEvents(to.params.userId),
             publicUserData: () =>
               API.UserService.getUserPublicProfile(to.params.userId),
             usersData,
           })),
           component: () => import('../views/application/users/profile.vue'),
           meta: {
-            publicUserData: () => API.UserService.getUserPublicProfile(to.params.userId),
-            usersData,
             breadcrumbs: {
               i18n: 'breadcrumbs.userProfile',
             },
@@ -218,6 +221,6 @@ const router = createRouter({
       redirect: ROUTES.AUTHENTICATIONS.LOGIN.absolute,
     },
   ],
-})
+});
 
-export default router
+export default router;

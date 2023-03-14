@@ -317,9 +317,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped> $color-fff: #fff;
+<style lang="scss" scoped> $color-fff: $--b-main-white-color;
  $color-8a8aa8: #8a8aa8;
- $color-575775: #575775;
+ $color-575775: $--b-main-gray-color;
 
 
 ::-webkit-scrollbar-track {

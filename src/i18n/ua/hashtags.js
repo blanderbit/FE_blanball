@@ -2,6 +2,8 @@ export default {
     Woman: 'Жінка',
     Man: 'Чоловік',
     User: 'Гравець',
+    Right: 'Права',
+    Left: 'Ліва',
     GK: 'ВРТ',
     LB: 'ЛЗ',
     RB: 'ПЗ',
