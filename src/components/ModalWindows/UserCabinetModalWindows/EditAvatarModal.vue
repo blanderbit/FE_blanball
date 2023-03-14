@@ -185,9 +185,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped> $color-575775: #575775;
+<style lang="scss" scoped> $color-575775: $--b-main-gray-color;
  $color-d9d9d9: #d9d9d9;
- $color-148783: #148783;
+ $color-148783: $--b-main-green-color;
 
 
 // SCSS variables for hex colors

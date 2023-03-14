@@ -8,7 +8,7 @@
 
 
 // SCSS variables for hex colors
- $color-148783: #148783;
+ $color-148783: $--b-main-green-color;
 
 
 .loader-wrapper {

@@ -375,9 +375,11 @@ export default {
       removeInvitedUsersModalOpened.value = false
     }
 
-    const SKIPIDS = [eventPreviewData.value.author.id, 
-      ...eventPreviewData.value.current_users.map((user) => user.id),
-      ...eventPreviewData.value.current_fans.map((fan) => fan.id)
+    const SKIPIDS = [eventPreviewData.value.author?.id 
+      ? eventPreviewData.value.author.id 
+      : user.value.id, 
+      ...eventPreviewData.value?.current_users?.map((user) => user.id) ?? [],
+      ...eventPreviewData.value?.current_fans?.map((fan) => fan.id) ?? []
     ]
 
     const getRelevantUsers = async (options) => {
@@ -590,7 +592,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped> $color-575775: #575775;
+<style lang="scss" scoped> $color-575775: $--b-main-gray-color;
 
 
 
