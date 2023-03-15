@@ -12,7 +12,11 @@
         </div>
       </div>
       <div class="b-invite-user-to-event-modal__main-side">
-        <div class="b-invite-user-to-event-modal__invite-button">
+        <div :class="[
+          'b-invite-user-to-event-modal__invite-button',
+          {'active': isEventsListOpened}
+        ]"
+          @click="openEventsList">
           Оберіть подію
         </div>
         <TextAreaComponent
@@ -40,6 +44,8 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+
 import TextAreaComponent from '../TextAreaComponent.vue';
 import WhiteBtn from '../WhiteBtn.vue';
 import GreenBtn from '../GreenBtn.vue';
@@ -58,7 +64,17 @@ export default {
     WhiteBtn,
   },
   setup() {
-    return {};
+
+    const isEventsListOpened = ref(false)
+
+    const openEventsList = () => {
+      isEventsListOpened.value = true
+    }
+
+    return {
+      isEventsListOpened,
+      openEventsList,
+    };
   },
 };
 </script>
@@ -85,6 +101,10 @@ export default {
     border-radius: 6px;
     background: $--b-main-white-color;
     min-height: 296px;
+
+    @media (max-width: 430px) {
+      width: 100%;
+    }
 
     .b-invite-user-to-event-modal__top-side {
       .b-invite-user-to-event-modal__title {
@@ -113,6 +133,10 @@ export default {
         line-height: 24px;
         color: #262541;
         margin: 16px 0px;
+
+        &.active{
+          border: 1px solid $--b-main-green-color;
+        }
       }
     }
     .b-invite-user-to-event-modal__bottom-side {

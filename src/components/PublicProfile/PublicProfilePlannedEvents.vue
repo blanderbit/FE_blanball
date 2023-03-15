@@ -13,6 +13,9 @@
           <template #smartListItem="slotProps">
             <div class="b-event">
               <div class="b-event__top-side">
+                <img class="b-event__top-side-arrow" 
+                  src="../../assets/img/arrow-right-black.svg" alt=""
+                  @click="goToTheEvent(slotProps.smartListItem.id)">
                 <div class="b-event__type">
                   {{ $t('events.friendly-match') }}
                 </div>
@@ -61,7 +64,7 @@
 
 <script>
 import { ref, computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 import { v4 as uuid } from 'uuid';
 
@@ -75,6 +78,8 @@ import { getDate } from '../../utils/getDate';
 
 import { API } from '../../workers/api-worker/api.worker';
 
+import { ROUTES } from '../../router/router.const';
+
 export default {
   name: 'RatingCard',
   components: {
@@ -83,14 +88,15 @@ export default {
     InfiniteLoading,
   },
   props: {
-    userRating: {
+    userId: {
       type: Number,
-      default: 0,
+      required: true
     },
   },
-  setup() {
+  setup(props) {
     const refList = ref();
     const route = useRoute();
+    const router = useRouter();
     const blockScrollToTopIfExist = ref(false);
 
     const triggerForRestart = ref(false);
@@ -99,6 +105,9 @@ export default {
       triggerForRestart.value = uuid();
     };
 
+    const goToTheEvent = (eventId) => {
+      return router.push(ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(eventId))
+    }
 
     const {
       paginationElements,
@@ -108,7 +117,7 @@ export default {
       paginationClearData,
     } = PaginationWorker({
       paginationDataRequest: (page) =>
-        API.EventService.getPlannedUserEvents({ page: page }),
+        API.EventService.getPlannedUserEvents({id: props.userId, page: page} ),
       dataTransformation: (item) => {
         item.metadata = {
           expanding: false,
@@ -143,6 +152,7 @@ export default {
       blockScrollToTopIfExist,
       paginationElements,
       paginationPage,
+      goToTheEvent,
       restartInfiniteScroll,
       loadDataPaginationData,
       scrollToFirstElement: () => {
@@ -216,10 +226,18 @@ export default {
       display: flex;
       align-items: center;
       gap: 6px;
+      position: relative;
+
+      .b-event__top-side-arrow {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        cursor: pointer;
+      }
 
       .b-event__type {
         @include exo(14px, 600);
-        line-height: 20px;
+        line-height: 10px;
       }
 
       .b-event__user-role {

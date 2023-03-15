@@ -277,28 +277,28 @@ export default {
       return props.userData.configuration?.planned_events
     })
 
-    const getPlanedEvents = (page) => {
-      return API.EventService.getPlannedUserEvents(props.userData.id, {
-        page,
-      }).then((result) => {
-        return {
-          data: {
-            results: result.data.map((i, index) => {
-              i.id = index
-              i.time = `${dayjs(i.date_and_time)
-                .locale(dayjsUkrLocale)
-                .format('hh : mm')}`
-              i.date = `${dayjs(i.date_and_time)
-                .locale(dayjsUkrLocale)
-                .format('D MMMM')}`
-              return {
-                ...i,
-              }
-            }),
-          },
-        }
-      })
-    }
+    // const getPlanedEvents = (page) => {
+    //   return API.EventService.getPlannedUserEvents(props.userData.id, {
+    //     page,
+    //   }).then((result) => {
+    //     return {
+    //       data: {
+    //         results: result.data.map((i, index) => {
+    //           i.id = index
+    //           i.time = `${dayjs(i.date_and_time)
+    //             .locale(dayjsUkrLocale)
+    //             .format('hh : mm')}`
+    //           i.date = `${dayjs(i.date_and_time)
+    //             .locale(dayjsUkrLocale)
+    //             .format('D MMMM')}`
+    //           return {
+    //             ...i,
+    //           }
+    //         }),
+    //       },
+    //     }
+    //   })
+    // }
 
     const getReviews = (page) => {
       return API.ReviewService.getUserReviews(page).then((res) => {

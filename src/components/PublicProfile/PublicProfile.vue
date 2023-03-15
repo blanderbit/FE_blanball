@@ -2,116 +2,147 @@
   <InviteUserToEventModal
     v-if="isInviteUserModalOpened"
     :userData="userData"
-    @closeModal="closeInviteUserModal"/>
-  <div class="b-public-profile">
-    <div class="b-public-profile__background-image">
-      <img src="../../assets/img/user-page-back.svg" alt="" />
-    </div>
-    <div class="b-public-profile__main-side">
-      <div class="b-public-profile__first-block">
-        <div v-if="userData.is_verified" class="b-public-profile__verified-status">
-          {{ $t('player_page.verified') }}
-          <img src="../../assets/img/profile-ball.svg" alt="">
+    @closeModal="closeInviteUserModal"
+  />
+  <div
+    :class="[
+      { 'b-public-profile__top-wrapper': isPersonalPreview },
+      'b-wrapper-scroll',
+    ]"
+  >
+    <div :class="{ 'b-public-profile__wrapper': isPersonalPreview }">
+      <div v-if="isPersonalPreview" class="b-public-profile__wrapper-edit-buttons">
+        <div
+          class="b-public-profile__continue"
+          @click="toggleModal('public_profile')"
+        >
+          <span>{{ $t('buttons.keep-editing') }}</span>
+          <img src="../../assets/img/arrow-left-small.svg" alt="" />
         </div>
-        <div v-else class="b-public-profile__verified-status not-verified">
-          {{ $t('player_page.not_verified') }}
-          <img src="../../assets/img/profile-ball.svg" alt="">
-        </div>
-        <div class="b-public-profile__profile-info">
-          <Avatar
-            class="b-public-profile__avatar"
-            :avatarType="avatarType"
-            :link="userData.profile.avatar_url"
-            :full-name="`${userData.profile.name} ${userData.profile.last_name}`"
-          />
-          <div class="b-public-profile__user-main-info">
-            <div class="b-public-profile__full-name">
-              {{ userData.profile.last_name }} <br />
-              {{ userData.profile.name }}
-            </div>
-            <div class="b-user-role-raiting">
-              <div class="b-public-profile__role">
-                {{ $t(`hashtags.${userData.role}`) }}
-              </div>
-              <StarRating
-                :rating="userRating"
-                :star-size="14"
-                :show-rating="false"
-                :read-only="true"
-                :active-color="'#F57125'"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="b-public-profile__qualification tablet">
-          <span class="b-qualification__text">
-            {{ $t('player_page.qualification') }}
-          </span>
-          <span class="b-qualification__status">
-            {{ $t('player_page.approved') }}
-          </span>
-        </div>
-        <div class="b-public-profile__buttons-block">
-          <div class="b-public-profile__invite-button"
-            @click="openInviteUserModal">
-            {{ $t('player_page.invite') }}
-          </div>
-          <div class="b-public-profile__connection-buttons">
-            <WhiteBtn
-              class="b-connection__button b-send-email__button"
-              :text="$t('player_page.write-email')"
-              :icon="icons.letter"
-              :height="36"
-            />
-            <WhiteBtn
-              class="b-connection__button b-call-phone__button"
-              :text="$t('player_page.call')"
-              :icon="icons.phone"
-              :height="36"
-            />
-          </div>
-        </div>
-        <div class="b-public-profile__bottom-block">
-          <div class="b-public-profile__qualification desktop">
-            <span class="b-qualification__text">
-              {{ $t('player_page.qualification') }}
-            </span>
-            <span class="b-qualification__status">
-              {{ $t('player_page.approved') }}
-            </span>
-          </div>
-          <div class="b-public-profile__description">
-            <div class="b-description__title">
-              {{ $t('player_page.about-yourself') }}
-            </div>
-            <div class="b-description__text">
-              {{ userData.profile.about_me }}
-            </div>
-          </div>
+        <div @click="saveDataFromPreviewWindow" class="b-public-profile__exit">
+          <span>{{ $t('buttons.save-and-out') }}</span>
+          <img src="../../assets/img/cross-white.svg" alt="" />
         </div>
       </div>
-      <div class="b-public-profile__main-side-left-block">
-        <div class="b-public-profile__second-block">
-          <div class="b-second-block__user-features-block">
-            <div class="b-user-features__title">
-              {{ $t('profile.game-features') }}
+      <div class="b-public-profile">
+        <div class="b-public-profile__background-image">
+          <img src="../../assets/img/user-page-back.svg" alt="" />
+        </div>
+        <div class="b-public-profile__main-side">
+          <div class="b-public-profile__first-block">
+            <div
+              v-if="userData.is_verified"
+              class="b-public-profile__verified-status"
+            >
+              {{ $t('player_page.verified') }}
+              <img src="../../assets/img/profile-ball.svg" alt="" />
             </div>
-            <div class="b-second-block__user-features">
+            <div v-else class="b-public-profile__verified-status not-verified">
+              {{ $t('player_page.not_verified') }}
+              <img src="../../assets/img/profile-ball.svg" alt="" />
+            </div>
+            <div class="b-public-profile__profile-info">
+              <Avatar
+                class="b-public-profile__avatar"
+                :avatarType="avatarType"
+                :link="userData.profile.avatar_url"
+                :full-name="`${userData.profile.name} ${userData.profile.last_name}`"
+              />
+              <div class="b-public-profile__user-main-info">
+                <div class="b-public-profile__full-name">
+                  {{ userData.profile.last_name }} <br />
+                  {{ userData.profile.name }}
+                </div>
+                <div class="b-user-role-raiting">
+                  <div class="b-public-profile__role">
+                    {{ $t(`hashtags.${userData.role}`) }}
+                  </div>
+                  <StarRating
+                    :rating="userRating"
+                    :star-size="14"
+                    :show-rating="false"
+                    :read-only="true"
+                    :active-color="'#F57125'"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="b-public-profile__qualification tablet">
+              <span class="b-qualification__text">
+                {{ $t('player_page.qualification') }}
+              </span>
+              <span class="b-qualification__status">
+                {{ $t('player_page.approved') }}
+              </span>
+            </div>
+            <div class="b-public-profile__buttons-block">
               <div
-                v-for="feature in playFeatures"
-                class="b-second-block__user-feature"
+                class="b-public-profile__invite-button"
+                @click="openInviteUserModal"
               >
-                <img class="b-feature__image" :src="feature.img" alt="" />
-                <div class="b-feature__info">
-                  <div class="b-feature__name">{{ feature.name }}</div>
-                  <div class="b-feature__value">{{ feature.value }}</div>
+                {{ $t('player_page.invite') }}
+              </div>
+              <div class="b-public-profile__connection-buttons">
+                <WhiteBtn
+                  class="b-connection__button b-send-email__button"
+                  :text="$t('player_page.write-email')"
+                  :icon="icons.letter"
+                  :height="36"
+                />
+                <WhiteBtn
+                  class="b-connection__button b-call-phone__button"
+                  :text="$t('player_page.call')"
+                  :icon="icons.phone"
+                  :height="36"
+                />
+              </div>
+            </div>
+            <div class="b-public-profile__bottom-block">
+              <div class="b-public-profile__qualification desktop">
+                <span class="b-qualification__text">
+                  {{ $t('player_page.qualification') }}
+                </span>
+                <span class="b-qualification__status">
+                  {{ $t('player_page.approved') }}
+                </span>
+              </div>
+              <div class="b-public-profile__description">
+                <div class="b-description__title">
+                  {{ $t('player_page.about-yourself') }}
+                </div>
+                <div class="b-description__text">
+                  {{ userData.profile.about_me }}
                 </div>
               </div>
             </div>
           </div>
-          <PublicProfileReviews :userRating="userRating" />
+          <div class="b-public-profile__main-side-left-block">
+            <div class="b-public-profile__second-block">
+              <div class="b-second-block__user-features-block">
+                <div class="b-user-features__title">
+                  {{ $t('profile.game-features') }}
+                </div>
+                <div class="b-second-block__user-features">
+                  <div
+                    v-for="feature in playFeatures"
+                    class="b-second-block__user-feature"
+                  >
+                    <img class="b-feature__image" :src="feature.img" alt="" />
+                    <div class="b-feature__info">
+                      <div class="b-feature__name">{{ feature.name }}</div>
+                      <div class="b-feature__value">{{ feature.value }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <PublicProfileReviews
+                :userRating="userRating"
+                :userId="userData.id"
+              />
+            </div>
+            <PublicProfilePlannedEvents :userId="userData.id" />
+          </div>
         </div>
-        <PublicProfilePlannedEvents />
       </div>
     </div>
   </div>
@@ -129,7 +160,7 @@ import PublicProfileReviews from './PublicProfileReviews.vue';
 import PublicProfilePlannedEvents from './PublicProfilePlannedEvents.vue';
 import InviteUserToEventModal from '../ModalWindows/InviteUserToEventModal.vue';
 
-import useWindowWidth from '../../utils/widthScreen'
+import useWindowWidth from '../../utils/widthScreen';
 
 import PhoneIcon from '../../assets/img/phone-arrow.svg';
 import LetterIcon from '../../assets/img/letter.svg';
@@ -145,6 +176,13 @@ export default {
       type: Object,
       default: () => {},
     },
+    pageMode: {
+      type: String,
+      default: 'look',
+      validator(value) {
+        return ['look', 'preview'].includes(value)
+      }
+    }
   },
   components: {
     Avatar,
@@ -157,7 +195,18 @@ export default {
   setup(props) {
     const { t } = useI18n();
     const noFeatureData = '----';
-    const isInviteUserModalOpened = ref(false)
+    const isInviteUserModalOpened = ref(false);
+    const isPersonalPreview = ref(false);
+
+
+    switch(props.pageMode) {
+      case 'look':
+        isPersonalPreview.value = false;
+        break
+      case 'preview':
+        isPersonalPreview.value = true;
+        break
+    }
 
     const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
       useWindowWidth();
@@ -174,35 +223,33 @@ export default {
       };
     });
 
-
     onMounted(() => {
-      window.addEventListener('resize', onResize)
-    })
+      window.addEventListener('resize', onResize);
+    });
 
     onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize)
-    })
+      window.removeEventListener('resize', onResize);
+    });
 
     const userRating = computed(() => {
       return Math.round(props.userData.raiting) || 0;
     });
 
     const avatarType = computed(() => {
-
       if (isMobile.value) {
-        return 'big-circle'
+        return 'big-circle';
       } else {
-        return 'square'
+        return 'square';
       }
-    })
+    });
 
     const openInviteUserModal = () => {
-      isInviteUserModalOpened.value = true
-    }
+      isInviteUserModalOpened.value = true;
+    };
 
     const closeInviteUserModal = () => {
-      isInviteUserModalOpened.value = false
-    }
+      isInviteUserModalOpened.value = false;
+    };
 
     const playFeatures = computed(() => {
       return [
@@ -247,6 +294,7 @@ export default {
       isInviteUserModalOpened,
       userRating,
       playFeatures,
+      isPersonalPreview,
       openInviteUserModal,
       closeInviteUserModal,
     };
@@ -264,6 +312,71 @@ $color-6f6f77: #6f6f77;
 $color-dfdeed: #dfdeed;
 $color-395d09: #395d09;
 $color-d2f6a2: #d2f6a2;
+
+.b-public-profile__top-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(38, 37, 65, 0.2);
+  z-index: 999;
+}
+
+.b-wrapper-scroll {
+  overflow: scroll;
+}
+.b-public-profile__wrapper {
+  background: #fff;
+  border-radius: 20px 20px 0px 0px;
+  padding: 20px;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  @include beforeDesktop {
+    top: 75%;
+  }
+
+  @include tabletAndMobile {
+    top: 100%;
+  }
+
+  @media (max-width: 430px) {
+    width: 100%;
+  }
+}
+
+.b-public-profile__wrapper-edit-buttons {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .b-public-profile__continue {
+    @include inter(12px, 400, #e2e2e9);
+    line-height: 24px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .b-public-profile__exit {
+    @include inter(12px, 500, $--b-main-white-color);
+    line-height: 24px;
+    text-align: center;
+    background: #6f6f77;
+    border-radius: 6px;
+    padding: 2px 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+}
+
 .b-public-profile {
   position: relative;
 
@@ -352,7 +465,7 @@ $color-d2f6a2: #d2f6a2;
         }
 
         @media (max-width: 500px) {
-          top: 65px; 
+          top: 65px;
         }
 
         @media (max-width: 350px) {
@@ -430,6 +543,7 @@ $color-d2f6a2: #d2f6a2;
         background: $--b-main-black-color;
         border-radius: 6px;
         padding: 6px 16px;
+        cursor: pointer;
       }
 
       .b-public-profile__connection-buttons {
@@ -488,7 +602,6 @@ $color-d2f6a2: #d2f6a2;
       @media (max-width: 430px) {
         width: 100%;
       }
-
 
       .b-public-profile__second-block {
         background: $color-ffffff;

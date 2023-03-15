@@ -410,7 +410,7 @@ export default {
  $color-148581: #148581;
  $color-dfdeed: #dfdeed;
  $color-1ccd62: #1ccd62;
- $color-fff: $--b-main-white-color;
+ $color-fff: #fff;
 
 .b-mob-menu__wrapper {
   height: 100%;

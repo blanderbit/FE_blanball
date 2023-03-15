@@ -35,7 +35,13 @@ export const filterConfigForReviews = {
   page: Number,
 };
 
+export const filterConfigForUserReviews = {
+  id: Number,
+  page: Number,
+};
+
 export const filterConfigForEvents = {
+  id: Number,
   page: Number,
   gender: new Enum(['Man', 'Woman', '']),
   type: new Enum(['Football', 'Futsal']),

@@ -425,7 +425,7 @@ export default {
     }
     .b_slide_menu_bottom-block {
       padding: 16px 11px;
-      border-top: 1px solid $color-dfdeed;
+
       .b_slide_menu_top-line {
         width: 100%;
         margin-bottom: 8px;

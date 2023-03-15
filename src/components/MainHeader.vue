@@ -1,7 +1,7 @@
 <template>
   <div class="b_header">
     <SearchModal
-      v-if="isSearchBlock && searchValue" 
+      v-if="isSearchBlock && searchValue.length" 
       :client-x="clientX"
       :client-y="clientY"
       @close-modal="closeSearchBlock"

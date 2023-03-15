@@ -37,12 +37,12 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
-import GreenBtn from '../../components/GreenBtn.vue'
-import WhiteBtn from '../../components/WhiteBtn.vue'
+import GreenBtn from '../../components/GreenBtn.vue';
+import WhiteBtn from '../../components/WhiteBtn.vue';
 
-import edit from '../../assets/img/set-filter-white.svg'
+import edit from '../../assets/img/set-filter-white.svg';
 
 export default {
   name: 'ButtonsBlock',
@@ -73,22 +73,19 @@ export default {
     const icons = computed(() => {
       return {
         editIcon: edit,
-      }
-    })
+      };
+    });
 
     return {
       icons,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-dfdeed: #dfdeed;
-
+$color-dfdeed: #dfdeed;
 
 .b-user-cabinet__buttons {
   order: 4;
@@ -107,6 +104,9 @@ export default {
     @include tabletAndMobile {
       display: flex;
       flex-direction: column;
+      background: rgba(255, 255, 255, 0.8);
+      border-top: 1.5px solid #f0f0f4;
+      backdrop-filter: blur(1px);
     }
     .b-user-cabinet__btns-line {
       display: flex;

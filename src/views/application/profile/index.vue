@@ -28,26 +28,7 @@
       @close-modal="toggleModal"
     />
 
-    <ModalUserWindow v-if="isModalActive.public_profile">
-      <template #top-buttons>
-        <div class="b-player-page__outer-btns">
-          <div
-            class="b-player-page__continue"
-            @click="toggleModal('public_profile')"
-          >
-            <span>{{ $t('buttons.keep-editing') }}</span>
-            <img src="../../../assets/img/arrow-left-small.svg" alt="" />
-          </div>
-          <div @click="saveDataFromPreviewWindow" class="b-player-page__exit">
-            <span>{{ $t('buttons.save-and-out') }}</span>
-            <img src="../../../assets/img/cross-white.svg" alt="" />
-          </div>
-        </div>
-      </template>
-      <template #user-content>
-        <PlayerPageComponent :page-mode="'public'" :user-data="restData" />
-      </template>
-    </ModalUserWindow>
+    <PublicProfile :page-mode="'preview'" :user-data="restData"/>
 
     <div class="b-user-cabinet__title-block">
       <div class="b-user-cabinet__titles">
@@ -167,8 +148,6 @@ import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
 import InputComponent from '../../../components/forms/InputComponent.vue'
 import ModalWindow from '../../../components/ModalWindows/ModalWindow.vue'
-import ModalUserWindow from '../../../components/ModalWindows/ModalUserWindow.vue'
-import PlayerPageComponent from '../../../components/PlayerPageComponent.vue'
 import RatingCard from '../../../components/RatingCard.vue'
 import UserDetailsCard from '../../../components/UserDetailsCard.vue'
 import SecurityBlock from '../../../components/SecurityBlock.vue'
@@ -180,6 +159,7 @@ import ChangeEmailModal from '../../../components/ModalWindows/UserCabinetModalW
 import ButtonsBlock from '../../../components/user-cabinet/ButtonsBlock.vue'
 import EditAvatarModal from '../../../components/ModalWindows/UserCabinetModalWindows/EditAvatarModal.vue'
 import Loading from '../../../workers/loading-worker/Loading.vue'
+import PublicProfile from '../../../components/PublicProfile/PublicProfile.vue';
 
 import { API } from '../../../workers/api-worker/api.worker'
 import { useUserDataStore } from '@/stores/userData'
@@ -200,8 +180,7 @@ export default {
     WhiteBtn,
     InputComponent,
     ModalWindow,
-    ModalUserWindow,
-    PlayerPageComponent,
+    PublicProfile,
     RatingCard,
     UserDetailsCard,
     SecurityBlock,
@@ -222,6 +201,7 @@ export default {
 
     const { user } = storeToRefs(store)
     const router = useRouter()
+    const route = useRoute();
     const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
       useWindowWidth()
 

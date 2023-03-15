@@ -51,7 +51,6 @@
           </template>
           <template #after>
             <InfiniteLoading
-              :identifier="triggerForRestart"
               ref="scrollbar"
               @infinite="loadDataPaginationData(paginationPage + 1, $event)"
             >
@@ -102,19 +101,17 @@ export default {
       type: Number,
       default: 0,
     },
+    userId: {
+      type: Number,
+      required: true
+    }
   },
-  setup() {
+  setup(props) {
     const usersReviews = ref(true);
     const refList = ref();
     const route = useRoute();
+
     const blockScrollToTopIfExist = ref(false);
-
-    const triggerForRestart = ref(false);
-
-    const restartInfiniteScroll = () => {
-      triggerForRestart.value = uuid();
-    };
-
 
     const {
       paginationElements,
@@ -124,7 +121,7 @@ export default {
       paginationClearData,
     } = PaginationWorker({
       paginationDataRequest: (page) =>
-        API.ReviewService.getUserReviews({ page: page }),
+        API.ReviewService.getUserReviews({id: props.userId, page: page}),
       dataTransformation: (item) => {
         item.metadata = {
           expanding: false,
@@ -133,6 +130,9 @@ export default {
         return item;
       },
     });
+
+
+    console.log(route.meta)
 
     paginationPage.value = 1;
     paginationTotalCount.value = route.meta.reviewsData.data.total_count;
@@ -155,12 +155,10 @@ export default {
 
     return {
       usersReviews,
-      triggerForRestart,
       paginationTotalCount,
       blockScrollToTopIfExist,
       paginationElements,
       paginationPage,
-      restartInfiniteScroll,
       loadDataPaginationData,
       scrollToFirstElement: () => {
         refList.value.scrollToFirstElement();

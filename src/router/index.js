@@ -13,6 +13,7 @@ import { ROUTES } from './router.const';
 import { useUserDataStore } from '../stores/userData';
 import { prepareEventUpdateData } from '../utils/prepareEventUpdateData';
 
+
 const usersData = () => {
   const userStore = useUserDataStore();
   if (!Object.keys(userStore.user).length) {
@@ -24,6 +25,7 @@ const usersData = () => {
     });
   }
 };
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -80,6 +82,10 @@ const router = createRouter({
           beforeEnter: routerAuthResolver.routeInterceptor(() => ({
             usersData,
             allReviewsData: () => API.ReviewService.getMyReviews(),
+            reviewsData: () =>
+              API.ReviewService.getUserReviews({id: 368}),
+            eventsData: () =>
+              API.EventService.getPlannedUserEvents({id: 368}),
           })),
           component: () => import('../views/application/profile/index.vue'),
           meta: {
@@ -191,9 +197,9 @@ const router = createRouter({
           name: ROUTES.APPLICATION.USERS.GET_ONE.name,
           beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
             reviewsData: () =>
-              API.ReviewService.getUserReviews(to.params.userId),
+              API.ReviewService.getUserReviews({id: Number(to.params.userId)}),
             eventsData: () =>
-              API.EventService.getPlannedUserEvents(to.params.userId),
+              API.EventService.getPlannedUserEvents({id: Number(to.params.userId)}),
             publicUserData: () =>
               API.UserService.getUserPublicProfile(to.params.userId),
             usersData,
