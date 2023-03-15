@@ -82,10 +82,6 @@ const router = createRouter({
           beforeEnter: routerAuthResolver.routeInterceptor(() => ({
             usersData,
             allReviewsData: () => API.ReviewService.getMyReviews(),
-            reviewsData: () =>
-              API.ReviewService.getUserReviews({id: 368}),
-            eventsData: () =>
-              API.EventService.getPlannedUserEvents({id: 368}),
           })),
           component: () => import('../views/application/profile/index.vue'),
           meta: {
@@ -196,10 +192,6 @@ const router = createRouter({
           path: ROUTES.APPLICATION.USERS.GET_ONE.relative,
           name: ROUTES.APPLICATION.USERS.GET_ONE.name,
           beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-            reviewsData: () =>
-              API.ReviewService.getUserReviews({id: Number(to.params.userId)}),
-            eventsData: () =>
-              API.EventService.getPlannedUserEvents({id: Number(to.params.userId)}),
             publicUserData: () =>
               API.UserService.getUserPublicProfile(to.params.userId),
             usersData,

@@ -4,75 +4,52 @@
       {{ $t('player_page.planned-events') }}
     </div>
     <div class="b-public-profile__events-list">
-      <div v-if="paginationElements">
-        <SmartList
-          :list="paginationElements"
-          ref="refList"
-          v-model:scrollbar-existing="blockScrollToTopIfExist"
-        >
-          <template #smartListItem="slotProps">
-            <div class="b-event">
-              <div class="b-event__top-side">
-                <img class="b-event__top-side-arrow" 
-                  src="../../assets/img/arrow-right-black.svg" alt=""
-                  @click="goToTheEvent(slotProps.smartListItem.id)">
-                <div class="b-event__type">
-                  {{ $t('events.friendly-match') }}
-                </div>
-                <div class="b-event__user-role">
-                  {{ $t(`hashtags.${slotProps.smartListItem.pk_user_role}`) }}
-                </div>
+      <SimpleListWrapper :requestForGetData="getPlannedEvents">
+        <template #default="{ smartListItem: item }">
+          <div class="b-event">
+            <div class="b-event__top-side">
+              <img
+                class="b-event__top-side-arrow"
+                src="../../assets/img/arrow-right-black.svg"
+                alt=""
+                @click="goToTheEvent(item.id)"
+              />
+              <div class="b-event__type">
+                {{ $t('events.friendly-match') }}
               </div>
-              <div class="b-event__main-side">
-                <div class="b-event_date-and-time">
-                  {{ slotProps.smartListItem.date_and_time }}
-                </div>
-
-                <div class="b-event__labels">
-                  <div class="b-event__label">
-                    {{ $t(`hashtags.${slotProps.smartListItem.type}`) }}
-                  </div>
-                  <div class="b-event__label">
-                    {{ $t(`events.${slotProps.smartListItem.gender}`) }}
-                  </div>
-                  <div class="b-event__label">...</div>
-                </div>
+              <div class="b-event__user-role">
+                {{ $t(`hashtags.${item.pk_user_role}`) }}
               </div>
             </div>
-          </template>
-          <template #after>
-            <InfiniteLoading
-              :identifier="triggerForRestart"
-              ref="scrollbar"
-              @infinite="loadDataPaginationData(paginationPage + 1, $event)"
-            >
-              <template #complete>
+            <div class="b-event__main-side">
+              <div class="b-event_date-and-time">
+                {{ item.date_and_time }}
+              </div>
 
-                <ScrollToTop
-                  :element-length="paginationElements"
-                  :is-scroll-top-exist="blockScrollToTopIfExist"
-                  @scroll-button-clicked="scrollToFirstElement()"
-                />
-              </template>
-            </InfiniteLoading>
-          </template>
-        </SmartList>
-      </div>
+              <div class="b-event__labels">
+                <div class="b-event__label">
+                  {{ $t(`hashtags.${item.type}`) }}
+                </div>
+                <div class="b-event__label">
+                  {{ $t(`events.${item.gender}`) }}
+                </div>
+                <div class="b-event__label">...</div>
+              </div>
+            </div>
+          </div>
+        </template>
+        <template #emptyList>
+          Указать верстку что пустой список для отзывов юзера TODO
+        </template>
+      </SimpleListWrapper>
     </div>
   </div>
 </template>
 
 <script>
 import { ref, computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 
-import { v4 as uuid } from 'uuid';
-
-import { PaginationWorker } from '../../workers/pagination-worker';
-
-import SmartList from '../smart-list/SmartList.vue';
-import InfiniteLoading from '../../workers/infinit-load-worker/InfiniteLoading.vue';
-import ScrollToTop from '../ScrollToTop.vue';
+import SimpleListWrapper from '../simple-list/SimpleListWrapper.vue';
 
 import { getDate } from '../../utils/getDate';
 
@@ -83,92 +60,48 @@ import { ROUTES } from '../../router/router.const';
 export default {
   name: 'RatingCard',
   components: {
-    SmartList,
-    ScrollToTop,
-    InfiniteLoading,
+    SimpleListWrapper,
   },
   props: {
     userId: {
       type: Number,
-      required: true
+      required: true,
     },
   },
   setup(props) {
-    const refList = ref();
-    const route = useRoute();
-    const router = useRouter();
-    const blockScrollToTopIfExist = ref(false);
-
-    const triggerForRestart = ref(false);
-
-    const restartInfiniteScroll = () => {
-      triggerForRestart.value = uuid();
-    };
-
-    const goToTheEvent = (eventId) => {
-      return router.push(ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(eventId))
-    }
-
-    const {
-      paginationElements,
-      paginationPage,
-      paginationTotalCount,
-      paginationLoad,
-      paginationClearData,
-    } = PaginationWorker({
-      paginationDataRequest: (page) =>
-        API.EventService.getPlannedUserEvents({id: props.userId, page: page} ),
-      dataTransformation: (item) => {
-        item.metadata = {
-          expanding: false,
-        };
-        item.date_and_time = getDate(item.date_and_time);
-        return item;
-      },
-    });
-
-    paginationPage.value = 1;
-    paginationTotalCount.value = route.meta.eventsData.data.total_count;
-    paginationElements.value = route.meta.eventsData.data.results.map(
-      (item) => {
-        return {
-          ...item,
-          date_and_time: getDate(item.date_and_time),
-        };
-      }
-    );
-
-    const loadDataPaginationData = (pageNumber, $state) => {
-      paginationLoad({
-        pageNumber,
-        $state,
-        forceUpdate: paginationPage.value === 1,
+    const getPlannedEvents = (page) => {
+      return API.EventService.getPlannedUserEvents({
+        id: props.userId,
+        page: page,
+      }).then((res) => {
+        res.data.results = res.data.results.map((item) => {
+          return {
+            ...item,
+            date_and_time: getDate(item.date_and_time),
+          };
+        });
+        return res;
       });
     };
 
+    const goToTheEvent = (eventId) => {
+      return router.push(ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(eventId));
+    };
+
     return {
-      triggerForRestart,
-      paginationTotalCount,
-      blockScrollToTopIfExist,
-      paginationElements,
-      paginationPage,
       goToTheEvent,
-      restartInfiniteScroll,
-      loadDataPaginationData,
-      scrollToFirstElement: () => {
-        refList.value.scrollToFirstElement();
-      },
+      getPlannedEvents,
     };
   },
 };
 </script>
 
-<style lang="scss" scoped> 
- $color-ffffff: $--b-main-white-color;
- $color-efeff6: #efeff6;
- $color-dfdeed: #dfdeed;
- $color-f0f0f4: #f0f0f4;
- $color-575775: $--b-main-gray-color;
+<style lang="scss" scoped>
+$color-ffffff: $--b-main-white-color;
+$color-efeff6: #efeff6;
+$color-dfdeed: #dfdeed;
+$color-f0f0f4: #f0f0f4;
+$color-575775: $--b-main-gray-color;
 
 .b-public-profile__planned-events {
   background: $color-ffffff;

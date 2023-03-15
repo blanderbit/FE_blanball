@@ -6,7 +6,7 @@
           {{ $t('player_page.rates-feedbacks') }}
         </div>
         <div class="b-user-reviews__subtitle">
-          {{ paginationTotalCount }} {{  $t('player_page.rates') }}
+          {{ reviewsTotalCount }} {{ $t('player_page.rates') }}
         </div>
       </div>
       <div class="b-public-profile__raiting-star">
@@ -17,72 +17,49 @@
       </div>
     </div>
     <div class="b-public-profile__reviews-list">
-      <div v-if="paginationElements">
-        <SmartList
-          :list="paginationElements"
-          ref="refList"
-          v-model:scrollbar-existing="blockScrollToTopIfExist"
-        >
-          <template #smartListItem="slotProps">
-            <div class="b-public-profile__review">
-              <div class="b-review__top-side">
-                <div class="b-top-side__info">
-                  <div class="b-review__stars">
-                    <div class="b-review__grade">
-                      {{ slotProps.smartListItem.stars }}
-                    </div>
-                    <img src="../../assets/img/star.svg" alt="" />
+      <SimpleListWrapper :requestForGetData="getReviews">
+        <template #default="{ smartListItem: item }">
+          <div class="b-public-profile__review">
+            <div class="b-review__top-side">
+              <div class="b-top-side__info">
+                <div class="b-review__stars">
+                  <div class="b-review__grade">
+                    {{ item.stars }}
                   </div>
-                  <div class="b-review__author-full-name">
-                    {{ slotProps.smartListItem.author.profile.last_name }}
-                    {{ slotProps.smartListItem.author.profile.name }}
-                  </div>
+                  <img src="../../assets/img/star.svg" alt="" />
                 </div>
-                <div class="b-top-side__date">
-                  {{ slotProps.smartListItem.time_created }}
+                <div class="b-review__author-full-name">
+                  {{ item.author.profile.last_name }}
+                  {{ item.author.profile.name }}
                 </div>
               </div>
-              <div class="b-review__main-side">
-                <div class="b-review__text">
-                  {{ slotProps.smartListItem.text }}
-                </div>
+              <div class="b-top-side__date">
+                {{ item.time_created }}
               </div>
             </div>
-          </template>
-          <template #after>
-            <InfiniteLoading
-              ref="scrollbar"
-              @infinite="loadDataPaginationData(paginationPage + 1, $event)"
-            >
-              <template #complete>
-                
-                <ScrollToTop
-                  :element-length="paginationElements"
-                  :is-scroll-top-exist="blockScrollToTopIfExist"
-                  @scroll-button-clicked="scrollToFirstElement()"
-                />
-              </template>
-            </InfiniteLoading>
-          </template>
-        </SmartList>
-      </div>
+            <div class="b-review__main-side">
+              <div class="b-review__text">
+                {{ item.text }}
+              </div>
+            </div>
+          </div>
+        </template>
+        <template #emptyList>
+          Указать верстку что пустой список для отзывов юзера TODO
+        </template>
+      </SimpleListWrapper>
     </div>
   </div>
 </template>
 
 <script>
 import { ref, computed } from 'vue';
-import { useRoute } from 'vue-router';
-
 import StarRating from 'vue-star-rating';
-
-import { v4 as uuid } from 'uuid';
-
-import { PaginationWorker } from '../../workers/pagination-worker';
 
 import SmartList from '../smart-list/SmartList.vue';
 import InfiniteLoading from '../../workers/infinit-load-worker/InfiniteLoading.vue';
 import ScrollToTop from '../ScrollToTop.vue';
+import SimpleListWrapper from '../simple-list/SimpleListWrapper.vue';
 
 import { getDate } from '../../utils/getDate';
 
@@ -94,6 +71,7 @@ export default {
     SmartList,
     ScrollToTop,
     InfiniteLoading,
+    SimpleListWrapper,
     StarRating,
   },
   props: {
@@ -103,78 +81,42 @@ export default {
     },
     userId: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props) {
-    const usersReviews = ref(true);
-    const refList = ref();
-    const route = useRoute();
+    const reviewsTotalCount = ref(0);
 
-    const blockScrollToTopIfExist = ref(false);
-
-    const {
-      paginationElements,
-      paginationPage,
-      paginationTotalCount,
-      paginationLoad,
-      paginationClearData,
-    } = PaginationWorker({
-      paginationDataRequest: (page) =>
-        API.ReviewService.getUserReviews({id: props.userId, page: page}),
-      dataTransformation: (item) => {
-        item.metadata = {
-          expanding: false,
-        };
-        item.time_created = getDate(item.time_created);
-        return item;
-      },
-    });
-
-
-    console.log(route.meta)
-
-    paginationPage.value = 1;
-    paginationTotalCount.value = route.meta.reviewsData.data.total_count;
-    paginationElements.value = route.meta.reviewsData.data.results.map(
-      (item) => {
-        return {
-          ...item,
-          time_created: getDate(item.time_created),
-        };
-      }
-    );
-
-    const loadDataPaginationData = (pageNumber, $state) => {
-      paginationLoad({
-        pageNumber,
-        $state,
-        forceUpdate: paginationPage.value === 1,
+    const getReviews = (page) => {
+      return API.ReviewService.getUserReviews({
+        id: props.userId,
+        page: page,
+      }).then((res) => {
+        reviewsTotalCount.value = res.data.total_count;
+        res.data.results = res.data.results.map((item) => {
+          return {
+            ...item,
+            time_created: getDate(item.time_created),
+          };
+        });
+        return res;
       });
     };
 
     return {
-      usersReviews,
-      paginationTotalCount,
-      blockScrollToTopIfExist,
-      paginationElements,
-      paginationPage,
-      loadDataPaginationData,
-      scrollToFirstElement: () => {
-        refList.value.scrollToFirstElement();
-      },
+      reviewsTotalCount,
+      getReviews,
     };
   },
 };
 </script>
 
-<style lang="scss" scoped> 
- $color-ffffff: $--b-main-white-color;
- $color-6f6f77: #6f6f77;
- $color-dfdeed: #dfdeed;
- $color-f57125: #f57125;
- $color-575775: $--b-main-gray-color;
-
+<style lang="scss" scoped>
+$color-ffffff: $--b-main-white-color;
+$color-6f6f77: #6f6f77;
+$color-dfdeed: #dfdeed;
+$color-f57125: #f57125;
+$color-575775: $--b-main-gray-color;
 
 .b-public-profile-reviews__block {
   height: 550px;
