@@ -1,10 +1,12 @@
 <template>
   <div v-if="isActive">
-    <div
-      class="b-modal-feedback__modal-wrapper"
-    >
-      <div :class="['b-modal-feedback', 
-      {'b-modal-feedback__animation': animation}]">
+    <div class="b-modal-feedback__modal-wrapper">
+      <div
+        :class="[
+          'b-modal-feedback',
+          { 'b-modal-feedback__animation': animation },
+        ]"
+      >
         <!-- <div class="b-modal-feedback__windows-row"> -->
         <template v-for="step in steps" :key="step.id">
           <div v-if="currentStep === step.id" class="b-modal-feedback__window">
@@ -32,15 +34,15 @@
 </template>
 
 <script>
-import { computed, ref, watch, onBeforeUnmount } from 'vue'
+import { computed, ref, watch, onBeforeUnmount } from 'vue';
 
-import ModalTopCard from './ModalTopCard.vue'
-import ModalBottomCard from './ModalBottomCard.vue'
+import ModalTopCard from './ModalTopCard.vue';
+import ModalBottomCard from './ModalBottomCard.vue';
 
-import { API } from '../../../workers/api-worker/api.worker'
-import { NotificationsBus } from '../../../workers/event-bus-worker'
+import { API } from '../../../workers/api-worker/api.worker';
+import { NotificationsBus } from '../../../workers/event-bus-worker';
 
-import CONSTANTS from '../../../consts/index'
+import CONSTANTS from '../../../consts/index';
 
 export default {
   name: 'ModalFeedback',
@@ -51,58 +53,61 @@ export default {
   props: {
     isActive: {
       type: Boolean,
-      default: false
+      default: false,
     },
     eventData: Object,
     selectedEmojies: {
-      type: Array
+      type: Array,
     },
     animationActive: {
       type: Boolean,
-      default: false
+      default: false,
     },
   },
   setup(props, { emit }) {
-    const isCardTopOpened = ref(true)
-    const animation = ref(props.animationActive)
-    watch(() => props.animationActive, (value) => {
-      animation.value = value
-    })
+    const isCardTopOpened = ref(true);
+    const animation = ref(props.animationActive);
+    watch(
+      () => props.animationActive,
+      (value) => {
+        animation.value = value;
+      }
+    );
     const steps = computed(() => {
-      return CONSTANTS.modal_feedback.steps(props.eventData)
-    })
-    const currentStep = ref(0)
+      return CONSTANTS.modal_feedback.steps(props.eventData);
+    });
+    const currentStep = ref(0);
 
     const createEventReview = async (comment) => {
       API.ReviewService.createEventReview({
-        'event': props.eventData.id,
-        'stars': 4,
-        'text': comment
-      })
-    }
+        event: props.eventData.id,
+        stars: 4,
+        text: comment,
+      });
+    };
     const nextClick = (eventReviewComment) => {
       if (currentStep.value === 4) {
-        createEventReview(eventReviewComment)
+        createEventReview(eventReviewComment);
       }
-      currentStep.value++
-    }
+      currentStep.value++;
+    };
     const emojiSelect = (emoji) => {
-      emit('emojiSelection', emoji)
-    }
+      emit('emojiSelection', emoji);
+    };
     const closeModal = () => {
-      currentStep.value = 0
-      isCardTopOpened.value = true
-      emit('close-modal')
-    }
+      currentStep.value = 0;
+      isCardTopOpened.value = true;
+      emit('close-modal');
+    };
     const cancelClick = () => {
       if (currentStep.value === 0) {
-        closeModal()
+        closeModal();
       } else {
-        currentStep.value--
+        currentStep.value--;
       }
-    }
+    };
     function toggleCard() {
-      isCardTopOpened.value = !isCardTopOpened.value
+      isCardTopOpened.value = !isCardTopOpened.value;
     }
     return {
       steps,
@@ -114,35 +119,40 @@ export default {
       emojiSelect,
       animation,
       nextClick,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-  .b-modal-feedback__animation {
-    animation: shake 0.5s linear;
-  }
-  .b-modal-feedback {
-    position: absolute;
-    right: 0;
-    bottom: 40px;
-    display: flex;
-    flex-direction: column;
-    margin-right: 32px;
-  }
+.b-modal-feedback__animation {
+  animation: shake 0.5s linear;
+}
+.b-modal-feedback {
+  position: absolute;
+  right: 0;
+  bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  margin-right: 32px;
+}
 @keyframes shake {
-  10%, 90% {
+  10%,
+  90% {
     transform: translate3d(-1px, 0, 0);
   }
-  
-  20%, 80% {
+
+  20%,
+  80% {
     transform: translate3d(2px, 0, 0);
   }
-  30%, 50%, 70% {
+  30%,
+  50%,
+  70% {
     transform: translate3d(-4px, 0, 0);
   }
-  40%, 60% {
+  40%,
+  60% {
     transform: translate3d(4px, 0, 0);
   }
 }

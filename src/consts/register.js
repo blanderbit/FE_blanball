@@ -11,7 +11,7 @@ const monthNames = [
   'Жовтень',
   'Листопад',
   'Грудень',
-]
+];
 
 const jsonCityRegions = [
   {
@@ -2170,18 +2170,18 @@ const jsonCityRegions = [
       },
     ],
   },
-]
+];
 // }
 // ]
 
-const fullYear = new Date().getFullYear()
-const lastAvailableYear = fullYear - 6
+const fullYear = new Date().getFullYear();
+const lastAvailableYear = fullYear - 6;
 
 export default {
   days: new Array(31).fill('l').map((i, k) => ({
     id: `${k >= 8 ? k + 1 : '0' + (k + 1)}`,
     value: k + 1,
-    name: new String(k + 1)
+    name: new String(k + 1),
   })),
   months: Array.from({ length: 12 }, (v, k) => ({
     id: `${k > 8 ? k + 1 : '0' + (k + 1)}`,
@@ -2190,7 +2190,7 @@ export default {
   years: Array.from({ length: 80 }, (v, k) => ({
     id: k,
     value: lastAvailableYear - k,
-    name: new String(lastAvailableYear - k)
+    name: new String(lastAvailableYear - k),
   })),
   jsonCityRegions,
   authBlockTypes: {
@@ -2198,4 +2198,4 @@ export default {
     register: 'register',
     reset: 'reset',
   },
-}
+};

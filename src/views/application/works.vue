@@ -38,16 +38,13 @@
 </template>
 
 <script>
-export default {}
+export default {};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-f0f0f4: #f0f0f4;
- $color-8a8aa8: #8a8aa8;
-
+$color-f0f0f4: #f0f0f4;
+$color-8a8aa8: #8a8aa8;
 
 .b-tech-works {
   position: fixed;

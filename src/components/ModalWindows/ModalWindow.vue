@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 export default {
   name: 'modal-window',
@@ -56,23 +56,20 @@ export default {
       return {
         padding: props.isTitleShown ? '80px 20px 20px 20px' : '20px',
         width: `${props.windowWidth}px`,
-      }
-    })
+      };
+    });
     return {
       windowStyle,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss">
-
-
 // SCSS variables for hex colors
- $color-dfdeed: #dfdeed;
- $color-c10b0b: #c10b0b;
- $color-d3f8f7: #d3f8f7;
-
+$color-dfdeed: #dfdeed;
+$color-c10b0b: #c10b0b;
+$color-d3f8f7: #d3f8f7;
 
 .b_modal_wrapper {
   position: fixed;

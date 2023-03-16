@@ -1,4 +1,4 @@
-import { InitialMessage } from './initial.message'
+import { InitialMessage } from './initial.message';
 
 import {
   SetActions,
@@ -6,15 +6,15 @@ import {
   SetPushNotificationTheme,
   AuthWebSocketMessage,
   NotificationSetImage,
-} from '../../type.decorator'
+} from '../../type.decorator';
 
 import {
   MessageActionTypes,
   MessageActionDataTypes,
-} from '../../message.action.types'
-import { WebSocketTypes } from '../../web.socket.types'
-import { NotificationImage } from '../../../../assets/img/notifications/notification.images'
-import { ROUTES } from '../../../../router/router.const'
+} from '../../message.action.types';
+import { WebSocketTypes } from '../../web.socket.types';
+import { NotificationImage } from '../../../../assets/img/notifications/notification.images';
+import { ROUTES } from '../../../../router/router.const';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.EventDeleted)
@@ -37,10 +37,10 @@ export class EventDeletedMessage extends InitialMessage {
   createTexts(data) {
     return [
       `Подія, на якій ви брали участь, була видалена, але ви можете знайти інші події "${this.actions[1].text}."`,
-    ]
+    ];
   }
 
   createTitle() {
-    return 'Подія видалена'
+    return 'Подія видалена';
   }
 }

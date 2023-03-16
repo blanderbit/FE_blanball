@@ -248,10 +248,11 @@ export default {
       isSubmitModalOpened.value = false;
     };
 
-    const SKIPIDS = [eventData.value.author.id, 
+    const SKIPIDS = [
+      eventData.value.author.id,
       ...eventData.value.current_users.map((user) => user.id),
-      ...eventData.value.current_fans.map((fan) => fan.id)
-    ]
+      ...eventData.value.current_fans.map((fan) => fan.id),
+    ];
 
     const searchRelevantUsers = (searchValue) => {
       clearTimeout(searchTimeout);
@@ -265,14 +266,13 @@ export default {
       searchTimeout = setTimeout(relevantSearch, 500);
     };
 
-    getRelevantUsers({skipids: SKIPIDS});
+    getRelevantUsers({ skipids: SKIPIDS });
 
     async function editEvent(data) {
-
       const { valid } = await data.validate();
 
       if (!valid) {
-        return false
+        return false;
       }
 
       eventUpdateLoader.value = true;
@@ -317,9 +317,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped> 
- $color-8a8aa8: #8a8aa8;
-
+<style lang="scss" scoped>
+$color-8a8aa8: #8a8aa8;
 
 ::-webkit-scrollbar-track {
   background-color: $--b-main-white-color;

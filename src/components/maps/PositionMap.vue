@@ -3,12 +3,12 @@
 </template>
 
 <script>
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue';
 
-import { API } from '../../workers/api-worker/api.worker'
-import { PositionMapBus } from '../../workers/event-bus-worker'
+import { API } from '../../workers/api-worker/api.worker';
+import { PositionMapBus } from '../../workers/event-bus-worker';
 
-import { PositionMapBackgroundStyle, PositionMapStyles } from './map.styles'
+import { PositionMapBackgroundStyle, PositionMapStyles } from './map.styles';
 
 const Restrictions = {
   Ukraine: {
@@ -17,14 +17,14 @@ const Restrictions = {
     south: 44.184598,
     west: 22.137059,
   }, // //https://gist.github.com/graydon/11198540
-}
+};
 
 const getRestrictionCenter = (restriction) => {
   return {
     lat: (restriction.north - restriction.south) / 2 + restriction.south,
     lng: (restriction.east - restriction.west) / 2 + restriction.west,
-  }
-}
+  };
+};
 
 export default {
   name: 'PositionMap',
@@ -41,21 +41,21 @@ export default {
     const state = ref({
       centerOfCountry: getRestrictionCenter(Restrictions.Ukraine),
       userCenter: {},
-    })
+    });
 
-    const marker = ref({})
-    let map
+    const marker = ref({});
+    let map;
 
     function placeMarker(map, location) {
       return new google.maps.Marker({
         position: location,
         map: map,
-      })
+      });
     }
 
     const setDataAboutPosition = async (data) => {
-      emit('update:coords:loading')
-      PositionMapBus.emit('update:coords:loading')
+      emit('update:coords:loading');
+      PositionMapBus.emit('update:coords:loading');
       try {
         const dataForEmit = {
           lat: data?.lat,
@@ -65,29 +65,29 @@ export default {
               data || state.value.centerOfCountry
             )
           )?.data?.data,
-        }
+        };
 
-        emit('update:coords', dataForEmit)
-        PositionMapBus.emit('update:coords', dataForEmit)
+        emit('update:coords', dataForEmit);
+        PositionMapBus.emit('update:coords', dataForEmit);
       } catch (e) {
-        emit('update:coords-error')
-        PositionMapBus.emit('update:coords-error')
+        emit('update:coords-error');
+        PositionMapBus.emit('update:coords-error');
       }
 
-      emit('map-loaded')
-      PositionMapBus.emit('map-loaded')
-    }
+      emit('map-loaded');
+      PositionMapBus.emit('map-loaded');
+    };
     PositionMapBus.on('update:map:by:coords', (e) => {
       marker.value.setPosition({
         lat: +e.data.coordinates?.lat,
         lng: +e.data.coordinates?.lon,
-      })
+      });
       const myLatlng = new google.maps.LatLng(
         +e.data.coordinates?.lat,
         +e.data.coordinates?.lon
-      )
-      map.setCenter(myLatlng)
-    })
+      );
+      map.setCenter(myLatlng);
+    });
 
     const createMap = async (crd) => {
       state.userCenter = crd
@@ -95,7 +95,7 @@ export default {
             lat: crd.lat,
             lng: crd.lng,
           }
-        : state.value.centerOfCountry
+        : state.value.centerOfCountry;
 
       map = new google.maps.Map(document.getElementById('map'), {
         center: state.userCenter,
@@ -115,37 +115,37 @@ export default {
         streetViewControl: false,
         overviewMapControl: false,
         rotateControl: false,
-      })
+      });
 
-      map.data.setStyle(PositionMapBackgroundStyle)
+      map.data.setStyle(PositionMapBackgroundStyle);
 
-      marker.value = placeMarker(map, state.userCenter)
-      await setDataAboutPosition(state.userCenter)
+      marker.value = placeMarker(map, state.userCenter);
+      await setDataAboutPosition(state.userCenter);
 
       if (!props.disableChangeCoords) {
         google.maps.event.addListener(map, 'click', function (event) {
-          marker.value.setPosition(event.latLng)
-          setDataAboutPosition(event.latLng.toJSON())
-        })
+          marker.value.setPosition(event.latLng);
+          setDataAboutPosition(event.latLng.toJSON());
+        });
       }
 
-      if (crd?.currentPosition) return
+      if (crd?.currentPosition) return;
 
-      emit('map-loaded')
-      PositionMapBus.emit('map-loaded')
-    }
+      emit('map-loaded');
+      PositionMapBus.emit('map-loaded');
+    };
 
     watch(
       () => props.coords,
       () => {
-        marker.value.setPosition(props.coords)
-        map.setCenter(props.coords)
+        marker.value.setPosition(props.coords);
+        map.setCenter(props.coords);
       }
-    )
+    );
 
     onMounted(() => {
       if (props?.coords?.lat && props?.coords?.lng) {
-        createMap(props.coords)
+        createMap(props.coords);
       } else {
         navigator.geolocation.getCurrentPosition(
           (pos) =>
@@ -155,11 +155,11 @@ export default {
               lng: pos.coords.longitude,
             }),
           () => createMap()
-        )
+        );
       }
-    })
+    });
   },
-}
+};
 </script>
 
 <style scoped></style>

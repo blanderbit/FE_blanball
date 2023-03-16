@@ -11,7 +11,8 @@
           ></Avatar>
         </div>
         <span class="b-list-item__name">
-          {{ request.sender.profile.name }} {{ request.sender.profile.last_name }}
+          {{ request.sender.profile.name }}
+          {{ request.sender.profile.last_name }}
         </span>
       </div>
       <div class="b-list-item-right__side">
@@ -59,14 +60,13 @@ export default {
     },
   },
   setup(_, { emit }) {
-
     const clickDeclineButton = (requestId) => {
-      emit('declineRequest', requestId)
-    }
+      emit('declineRequest', requestId);
+    };
 
     const clickAcceptButton = (requestId) => {
-      emit('acceptRequest', requestId)
-    }
+      emit('acceptRequest', requestId);
+    };
 
     return {
       GrayCrossIcon,
@@ -79,12 +79,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-dfdeed: #dfdeed;
- $color-efeff6: #efeff6;
-
+$color-dfdeed: #dfdeed;
+$color-efeff6: #efeff6;
 
 .b-list-of-event-requests-to-participations {
   display: flex;

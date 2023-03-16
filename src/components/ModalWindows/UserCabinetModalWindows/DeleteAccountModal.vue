@@ -106,7 +106,7 @@ export default {
     const loading = ref(false);
 
     const schema = computed(() => {
-      return SCHEMAS.deleteAccount.schema(currentStep.value)
+      return SCHEMAS.deleteAccount.schema(currentStep.value);
     });
 
     function closeModal() {

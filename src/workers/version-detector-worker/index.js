@@ -1,28 +1,28 @@
-import pkg from '../../../package'
+import pkg from '../../../package';
 
 const VersionEmmitter = {
   set: (version) => localStorage.setItem('version', version),
   get: () => localStorage.getItem('version'),
-}
+};
 
-const fakeCallBack = () => {}
+const fakeCallBack = () => {};
 
 export const VersionDetectorWorker = (handleDifferentVersion) => {
   handleDifferentVersion =
     typeof handleDifferentVersion === 'function'
       ? handleDifferentVersion
-      : fakeCallBack
+      : fakeCallBack;
 
-  const browserVersion = VersionEmmitter.get()
-  const packageVersion = pkg.version
+  const browserVersion = VersionEmmitter.get();
+  const packageVersion = pkg.version;
 
   if (!browserVersion && packageVersion) {
-    VersionEmmitter.set(packageVersion)
-    return
+    VersionEmmitter.set(packageVersion);
+    return;
   }
 
   if (browserVersion !== packageVersion) {
-    handleDifferentVersion()
-    VersionEmmitter.set(packageVersion)
+    handleDifferentVersion();
+    VersionEmmitter.set(packageVersion);
   }
-}
+};

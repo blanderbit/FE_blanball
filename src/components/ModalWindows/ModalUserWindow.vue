@@ -16,7 +16,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .b_modal_user_wrapper {
   position: fixed;
   top: 0;

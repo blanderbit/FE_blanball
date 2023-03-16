@@ -24,16 +24,18 @@
         />
       </label>
     </div>
-    <p class="b-text-area__error-message">{{ modelErrorMessage ? $t(modelErrorMessage) : '' }}</p>
+    <p class="b-text-area__error-message">
+      {{ modelErrorMessage ? $t(modelErrorMessage) : '' }}
+    </p>
   </div>
 </template>
 
 <script>
-import { computed, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useToast } from 'vue-toastification'
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toastification';
 
-import { CustomModelWorker } from '../workers/custom-model-worker'
+import { CustomModelWorker } from '../workers/custom-model-worker';
 
 export default {
   name: 'InputComponent',
@@ -73,29 +75,28 @@ export default {
   emits: ['icon-click'],
   setup(props, { emit }) {
     const { modelValue, modelErrorMessage, modelHandlers } =
-      CustomModelWorker(props)
-    const toast = useToast()
-    const { t } = useI18n()
+      CustomModelWorker(props);
+    const toast = useToast();
+    const { t } = useI18n();
 
-    const IMAGE_TYPES = ['image/jpeg', 'image/png']
+    const IMAGE_TYPES = ['image/jpeg', 'image/png'];
 
     function onFileSelected(e) {
-
       for (let file of e.target.files) {
         if (!IMAGE_TYPES.includes(file.type)) {
-          toast.error(t('notifications.file-bad-format', {name: file.name}))
+          toast.error(t('notifications.file-bad-format', { name: file.name }));
         } else if (file.size > 1000000) {
-          toast.error(t('notifications.file-max-size', {name: file.name}))
+          toast.error(t('notifications.file-max-size', { name: file.name }));
         } else {
-          emit('icon-click', file)
+          emit('icon-click', file);
         }
       }
     }
     const inputWrapper = computed(() => {
       return {
         height: props.height ? props.height + 'px' : '100%',
-      }
-    })
+      };
+    });
 
     return {
       modelValue,
@@ -103,19 +104,16 @@ export default {
       modelHandlers,
       inputWrapper,
       onFileSelected,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-dfdeed: #dfdeed;
- $color-f9f9fc: #f9f9fc;
- $color-e2e2e9: #e2e2e9;
-
+$color-dfdeed: #dfdeed;
+$color-f9f9fc: #f9f9fc;
+$color-e2e2e9: #e2e2e9;
 
 .b-text-area__component {
   height: 100%;

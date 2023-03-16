@@ -10,12 +10,12 @@
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import StepWrapper from './StepWrapper.vue'
+import StepWrapper from './StepWrapper.vue';
 
-import arrowRight from '../../assets/img/arrow-right-white.svg'
+import arrowRight from '../../assets/img/arrow-right-white.svg';
 
 export default {
   name: 'Step6',
@@ -24,7 +24,7 @@ export default {
     StepWrapper,
   },
   setup() {
-    const { t } = useI18n()
+    const { t } = useI18n();
 
     const stepConfig = computed(() => {
       return {
@@ -40,15 +40,14 @@ export default {
           exist: true,
           text: t('register.skip-and-go-to-events'),
         },
-      }
-    })
+      };
+    });
 
     return {
       stepConfig,
-    }
+    };
   },
-}
+};
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -1,19 +1,18 @@
-import { InitialMessage } from './initial.message'
+import { InitialMessage } from './initial.message';
 
 import {
   SetActions,
   SetMessageType,
   AuthWebSocketMessage,
   NotificationSetUserImage,
-} from '../../type.decorator'
+} from '../../type.decorator';
 
 import {
   MessageActionTypes,
   MessageActionDataTypes,
-} from '../../message.action.types'
-import { WebSocketTypes } from '../../web.socket.types'
-import { API } from '../../../api-worker/api.worker'
-
+} from '../../message.action.types';
+import { WebSocketTypes } from '../../web.socket.types';
+import { API } from '../../../api-worker/api.worker';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.InviteUserToEvent)
@@ -27,8 +26,8 @@ import { API } from '../../../api-worker/api.worker'
         notificationInstance.data.invite.id,
         true
       ).then(() => {
-        notificationInstance.data.response = true
-        notificationInstance.update(notificationInstance.data)
+        notificationInstance.data.response = true;
+        notificationInstance.update(notificationInstance.data);
       }),
     actionType: MessageActionDataTypes.Callback,
     buttonColor: 'success',
@@ -41,8 +40,8 @@ import { API } from '../../../api-worker/api.worker'
         notificationInstance.data.invite.id,
         false
       ).then(() => {
-        notificationInstance.data.response = false
-        notificationInstance.update(notificationInstance.data)
+        notificationInstance.data.response = false;
+        notificationInstance.update(notificationInstance.data);
       }),
     actionType: MessageActionDataTypes.Callback,
     buttonColor: 'error',
@@ -53,7 +52,7 @@ export class InviteUserToEventMessage extends InitialMessage {
     return [
       `Користувач ${data.sender.name} запрошує вас на спільну гру у події "${data.event.name}"`,
       // TODO add inplementation for move to user profile
-    ]
+    ];
   }
 
   createTextsAfterAction() {
@@ -62,20 +61,20 @@ export class InviteUserToEventMessage extends InitialMessage {
       text: this.data.response
         ? 'Вы добавились на событие!'
         : 'Вы откзались от участия на событии!',
-    }
+    };
   }
 
   onInit() {
     this.textsAfterAction =
-      typeof this.data.response === 'boolean' && this.createTextsAfterAction()
+      typeof this.data.response === 'boolean' && this.createTextsAfterAction();
   }
 
   onUpdate() {
     this.textsAfterAction =
-      typeof this.data.response === 'boolean' && this.createTextsAfterAction()
+      typeof this.data.response === 'boolean' && this.createTextsAfterAction();
   }
 
   createTitle() {
-    return 'Запрошення на подію'
+    return 'Запрошення на подію';
   }
 }

@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
 export const useEventDataStore = defineStore('eventsData', {
   state: () => ({
@@ -12,4 +12,4 @@ export const useEventDataStore = defineStore('eventsData', {
     //   this.count++
     // },
   },
-})
+});

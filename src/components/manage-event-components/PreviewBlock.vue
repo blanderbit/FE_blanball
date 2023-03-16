@@ -1,8 +1,6 @@
 <template>
   <div class="b-event-preview" :style="wrapperStyle">
-    <div
-      :class="['b-event-preview__preview-block']"
-    >
+    <div :class="['b-event-preview__preview-block']">
       <div class="b-event-preview__preview-header">
         <div class="b-event-preview__title-block">
           <div class="b-event-preview__title">
@@ -15,14 +13,14 @@
         </div>
       </div>
       <div class="b-event-preview__form-block">
-        <EventCard :card="eventData"/>
+        <EventCard :card="eventData" />
       </div>
     </div>
   </div>
 </template>
 <script>
-import GreenBtn from '../../components/GreenBtn.vue'
-import EventCard from '../event-components/EventCard.vue'
+import GreenBtn from '../../components/GreenBtn.vue';
+import EventCard from '../event-components/EventCard.vue';
 
 export default {
   name: 'PreviewBlock',
@@ -34,16 +32,13 @@ export default {
     eventData: {
       type: Object,
       default: () => {},
-    }
+    },
   },
-}
+};
 </script>
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-f9f9fc: #f9f9fc;
-
+$color-f9f9fc: #f9f9fc;
 
 .b-event-preview {
   @include tabletAndMobile {
@@ -62,9 +57,9 @@ export default {
     overflow: hidden;
 
     @include tabletAndMobile {
-        display: none;
-      }
-    
+      display: none;
+    }
+
     &.active {
       height: auto;
       @include tabletAndMobile {
@@ -134,5 +129,4 @@ export default {
     }
   }
 }
-
 </style>

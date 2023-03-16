@@ -1,6 +1,8 @@
 <template>
-  <div class="b-small-event-card" @click="
-      $emit('clickSmallEventCard', item.id)">
+  <div
+    class="b-small-event-card"
+    @click="$emit('clickSmallEventCard', item.id)"
+  >
     <div class="b-small-event-card__top-line">
       <div class="b-small-event-card__icon-pic">
         <img src="../assets/img/hands-shake.svg" alt="" />
@@ -19,18 +21,20 @@
         </div>
       </div>
     </div>
-    <PlaceDetector 
-      :place="item.place">
-    </PlaceDetector>
+    <PlaceDetector :place="item.place"> </PlaceDetector>
     <div class="b-small-event-card__labels">
-      <div class="b-small-event-card__label">{{ $t(`hashtags.${item.type}`) }}</div>
-      <div class="b-small-event-card__label">{{ $t(`events.${item.gender}`) }}</div>
+      <div class="b-small-event-card__label">
+        {{ $t(`hashtags.${item.type}`) }}
+      </div>
+      <div class="b-small-event-card__label">
+        {{ $t(`events.${item.gender}`) }}
+      </div>
       <div class="b-small-event-card__label">...</div>
     </div>
   </div>
 </template>
 <script>
-import PlaceDetector from './../components/maps/PlaceDetector.vue'
+import PlaceDetector from './../components/maps/PlaceDetector.vue';
 
 export default {
   name: 'SmallEventCard',
@@ -43,16 +47,13 @@ export default {
       default: () => {},
     },
   },
-}
+};
 </script>
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-dfdeed: #dfdeed;
- $color-fafafa: #fafafa;
- $color-efeff6: #efeff6;
-
+$color-dfdeed: #dfdeed;
+$color-fafafa: #fafafa;
+$color-efeff6: #efeff6;
 
 .b-small-event-card {
   position: relative;

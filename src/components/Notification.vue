@@ -115,13 +115,13 @@
 </template>
 
 <script>
-import dayJs from 'dayjs'
+import dayJs from 'dayjs';
 
-import Loading from './../workers/loading-worker/Loading.vue'
-import NotificationButton from './../components/NotificationButton.vue'
-import Avatar from './../components/Avatar.vue'
-import Checkbox from './forms/Checkbox.vue'
-import CollapsiblePanel from './../components/collapsible/CollapsiblePanel.vue'
+import Loading from './../workers/loading-worker/Loading.vue';
+import NotificationButton from './../components/NotificationButton.vue';
+import Avatar from './../components/Avatar.vue';
+import Checkbox from './forms/Checkbox.vue';
+import CollapsiblePanel from './../components/collapsible/CollapsiblePanel.vue';
 
 export default {
   name: 'Notification',
@@ -162,23 +162,23 @@ export default {
   data() {
     return {
       loading: false,
-    }
+    };
   },
   watch: {
     active(value) {
       if (value) {
-        this.start()
+        this.start();
       } else {
-        this.finish()
+        this.finish();
       }
     },
   },
   methods: {
     start() {
-      this.loading = true
+      this.loading = true;
     },
     finish() {
-      this.loading = false
+      this.loading = false;
     },
   },
   computed: {
@@ -186,41 +186,40 @@ export default {
       return (
         this.notificationInstance?.parseDate ||
         dayJs(String(this.notificationInstance.date)).format('DD.MM.YYYY')
-      )
+      );
     },
     isPush() {
-      return this.notificationType === 'push'
+      return this.notificationType === 'push';
     },
     isStandard() {
-      return this.notificationType === 'standard'
+      return this.notificationType === 'standard';
     },
     expanding: {
       set(e) {
         this.notificationInstance.metadata.expanding =
-          this.notificationType === 'notification-sidebar' ? e : true
+          this.notificationType === 'notification-sidebar' ? e : true;
       },
       get() {
         if (this.notCollapsible) {
-          return true
+          return true;
         }
         return this.notificationType === 'notification-sidebar'
           ? !!this.notificationInstance.metadata.expanding
-          : true
+          : true;
       },
     },
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
 // SCSS variables for hex colors
- $color-8a8aa8: #8a8aa8;
- $color-dfdeed: #dfdeed;
- $color-a8a8bd: #a8a8bd;
- $color-efeff6: #efeff6;
- $color-d3d3d3: #d3d3d3;
- $color-000: #000;
-
+$color-8a8aa8: #8a8aa8;
+$color-dfdeed: #dfdeed;
+$color-a8a8bd: #a8a8bd;
+$color-efeff6: #efeff6;
+$color-d3d3d3: #d3d3d3;
+$color-000: #000;
 
 .notification-sender {
   font-family: 'Inter';
@@ -228,7 +227,7 @@ export default {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: $color-575775;
+  color: $--b-main-gray-color;
 }
 
 .notification-content {

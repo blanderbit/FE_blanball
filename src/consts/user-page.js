@@ -1,8 +1,8 @@
-import user from '../assets/img/user.png'
-import maleIcon from '../assets/img/male-icon.svg'
-import MaleIcon from '../assets/img/female-icon.svg'
-import FemaleIcon from '../assets/img/male-icon.svg'
-import UnisexIcon from '../assets/img/unisex.svg'
+import user from '../assets/img/user.png';
+import maleIcon from '../assets/img/male-icon.svg';
+import MaleIcon from '../assets/img/female-icon.svg';
+import FemaleIcon from '../assets/img/male-icon.svg';
+import UnisexIcon from '../assets/img/unisex.svg';
 
 export default {
   rateBlock: [
@@ -39,7 +39,7 @@ export default {
       gender: 'Чоловіча',
       gender_icon: maleIcon,
       isActive: false,
-    }
+    };
   }),
   userInfo: {
     id: 3,
@@ -102,4 +102,4 @@ export default {
       name: 'Всі',
     },
   ],
-}
+};

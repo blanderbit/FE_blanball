@@ -1,9 +1,9 @@
-import { UpdateWebSocketMessage } from '../../type.decorator'
+import { UpdateWebSocketMessage } from '../../type.decorator';
 
 @UpdateWebSocketMessage()
 export class InitialUpdation {
   constructor(data) {
-    this.data = data
+    this.data = data;
   }
 
   handleUpdate(notifications) {}

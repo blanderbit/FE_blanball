@@ -1,18 +1,20 @@
-import Maska from './maska'
-import { isString } from './utils'
+import Maska from './maska';
+import { isString } from './utils';
 
 function getOpts(mask) {
-  const opts = {}
+  const opts = {};
 
   if (mask.mask) {
-    opts.mask = Array.isArray(mask.mask) ? JSON.stringify(mask.mask) : mask.mask
-    opts.tokens = mask.tokens ? { ...mask.tokens } : {}
-    opts.preprocessor = mask.preprocessor
+    opts.mask = Array.isArray(mask.mask)
+      ? JSON.stringify(mask.mask)
+      : mask.mask;
+    opts.tokens = mask.tokens ? { ...mask.tokens } : {};
+    opts.preprocessor = mask.preprocessor;
   } else {
-    opts.mask = Array.isArray(mask) ? JSON.stringify(mask) : mask
+    opts.mask = Array.isArray(mask) ? JSON.stringify(mask) : mask;
   }
 
-  return opts
+  return opts;
 }
 
 function needUpdate(mask) {
@@ -25,21 +27,21 @@ function needUpdate(mask) {
       mask.oldValue &&
       mask.oldValue.mask &&
       mask.value.mask === mask.oldValue.mask)
-  )
+  );
 }
 
 const directive = () => {
-  const state = new WeakMap()
+  const state = new WeakMap();
 
   return (el, mask) => {
-    if (!mask.value) return
+    if (!mask.value) return;
 
     if (state.has(el) && !needUpdate(mask)) {
-      return
+      return;
     }
 
-    state.set(el, new Maska(el, getOpts(mask.value)))
-  }
-}
+    state.set(el, new Maska(el, getOpts(mask.value)));
+  };
+};
 
-export default directive()
+export default directive();

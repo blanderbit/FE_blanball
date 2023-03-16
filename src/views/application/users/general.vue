@@ -26,11 +26,11 @@
               />
             </Transition>
 
-      
             <img :src="tab.img" :alt="tab.name" />
-            <span 
+            <span
               @mouseenter="enterHoverSidebarItem(tab.id)"
-              @mouseleave="leaveHoverSidebarItem">
+              @mouseleave="leaveHoverSidebarItem"
+            >
               {{ $t('users.' + tab.name) }}
             </span>
           </div>
@@ -90,33 +90,33 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
+import { ref, computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 
-import InputComponent from '../../../components/forms/InputComponent.vue'
-import UserCard from '../../../components/UserCard.vue'
-import SmartList from '../../../components/smart-list/SmartList.vue'
-import EmptyList from '../../../components/EmptyList.vue'
-import ScrollToTop from '../../../components/ScrollToTop.vue'
-import RightSidebar from '../../../components/RightSidebar.vue'
-import TabLabel from '../../../components/TabLabel.vue'
+import InputComponent from '../../../components/forms/InputComponent.vue';
+import UserCard from '../../../components/UserCard.vue';
+import SmartList from '../../../components/smart-list/SmartList.vue';
+import EmptyList from '../../../components/EmptyList.vue';
+import ScrollToTop from '../../../components/ScrollToTop.vue';
+import RightSidebar from '../../../components/RightSidebar.vue';
+import TabLabel from '../../../components/TabLabel.vue';
 
-import members from '../../../assets/img/members.svg'
-import runner from '../../../assets/img/runner.svg'
-import ball from '../../../assets/img/ball.svg'
-import timer from '../../../assets/img/timer.svg'
-import tShirt from '../../../assets/img/t-shirt.svg'
-import searchIcon from '../../../assets/img/search.svg'
+import members from '../../../assets/img/members.svg';
+import runner from '../../../assets/img/runner.svg';
+import ball from '../../../assets/img/ball.svg';
+import timer from '../../../assets/img/timer.svg';
+import tShirt from '../../../assets/img/t-shirt.svg';
+import searchIcon from '../../../assets/img/search.svg';
 
-import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue'
-import { v4 as uuid } from 'uuid'
-import { PaginationWorker } from '../../../workers/pagination-worker'
-import { API } from '../../../workers/api-worker/api.worker'
+import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
+import { v4 as uuid } from 'uuid';
+import { PaginationWorker } from '../../../workers/pagination-worker';
+import { API } from '../../../workers/api-worker/api.worker';
 
-import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patch'
-import UsersFilters from '../../../components/filters/block-filters/UsersFilters.vue'
-import { ROUTES } from '../../../router/router.const'
+import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patch';
+import UsersFilters from '../../../components/filters/block-filters/UsersFilters.vue';
+import { ROUTES } from '../../../router/router.const';
 
 export default {
   name: 'RatingPage',
@@ -132,17 +132,17 @@ export default {
     TabLabel,
   },
   setup() {
-    const route = useRoute()
-    const router = useRouter()
-    const refList = ref()
-    const blockScrollToTopIfExist = ref(false)
-    const triggerForRestart = ref(false)
-    const currentHoverSideBarItemID = ref(0)
+    const route = useRoute();
+    const router = useRouter();
+    const refList = ref();
+    const blockScrollToTopIfExist = ref(false);
+    const triggerForRestart = ref(false);
+    const currentHoverSideBarItemID = ref(0);
     const { t } = useI18n();
 
     const restartInfiniteScroll = () => {
-      triggerForRestart.value = uuid()
-    }
+      triggerForRestart.value = uuid();
+    };
 
     const {
       paginationElements,
@@ -159,20 +159,20 @@ export default {
       dataTransformation: (item) => {
         item.metadata = {
           expanding: false,
-        }
-        return item
+        };
+        return item;
       },
-    })
+    });
 
     const emptyListMessages = computed(() => {
       return {
         title: t('no_records.noUsers.title'),
-        description: t('no_records.noUsers.description')
-      }
-    })
+        description: t('no_records.noUsers.description'),
+      };
+    });
 
-    paginationPage.value = 1
-    paginationElements.value = route.meta.allUsersData.data.results
+    paginationPage.value = 1;
+    paginationElements.value = route.meta.allUsersData.data.results;
 
     const { getRawFilters, filters, setFilters, clearFilters } = FilterPatch({
       router,
@@ -215,23 +215,23 @@ export default {
         },
       },
       afterUpdateFiltersCallBack: () => {
-        restartInfiniteScroll()
-        paginationClearData()
+        restartInfiniteScroll();
+        paginationClearData();
       },
-    })
+    });
 
     const loadDataPaginationData = (pageNumber, $state) => {
       paginationLoad({
         pageNumber,
         $state,
         forceUpdate: paginationPage.value === 1,
-      })
-    }
+      });
+    };
 
     const enterHoverSidebarItem = (itemId) =>
-      (currentHoverSideBarItemID.value = itemId)
+      (currentHoverSideBarItemID.value = itemId);
 
-    const leaveHoverSidebarItem = () => (currentHoverSideBarItemID.value = 0)
+    const leaveHoverSidebarItem = () => (currentHoverSideBarItemID.value = 0);
 
     return {
       paginationElements,
@@ -247,14 +247,14 @@ export default {
       leaveHoverSidebarItem,
       enterHoverSidebarItem,
       scrollToFirstElement: () => {
-        refList.value.scrollToFirstElement()
+        refList.value.scrollToFirstElement();
       },
       openUserProfile: (userId) => {
-        router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId))
+        router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId));
       },
       setFilters,
       clearFilters,
-    }
+    };
   },
   data() {
     return {
@@ -341,34 +341,32 @@ export default {
           ],
         },
       ],
-    }
+    };
   },
   computed: {
     // users() {
     //   return CONSTANTS.users_page.users
     // },
     searchIcon() {
-      return searchIcon
+      return searchIcon;
     },
   },
   methods: {},
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-dfdeed: #dfdeed;
- $color-f4f4f4: #f4f4f4;
- $color-efeff6: #efeff6;
- $color-fafafa: #fafafa;
- $color-4a7deb: #4a7deb;
- $color-8978ee: #8978ee;
- $color-d243c5: #d243c5;
- $color-4c4a82: #4c4a82;
- $color-393762: #393762;
- $color-71ba12: #71ba12;
+$color-dfdeed: #dfdeed;
+$color-f4f4f4: #f4f4f4;
+$color-efeff6: #efeff6;
+$color-fafafa: #fafafa;
+$color-4a7deb: #4a7deb;
+$color-8978ee: #8978ee;
+$color-d243c5: #d243c5;
+$color-4c4a82: #4c4a82;
+$color-393762: #393762;
+$color-71ba12: #71ba12;
 
 .events-page {
   display: grid;
@@ -1281,5 +1279,4 @@ export default {
     }
   }
 }
-
 </style>

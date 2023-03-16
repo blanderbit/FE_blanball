@@ -6,8 +6,8 @@ import Stepper from './stepper';
 import SelectForms from './selectForms';
 import BugReport from './bugReport';
 import ChangePassword from './changePassword';
-import EventReview from './eventReview'
-import VerifyEmail from './verifyEmail'
+import EventReview from './eventReview';
+import VerifyEmail from './verifyEmail';
 import DeleteAccount from './deleteAccount';
 import ChangeEmail from './changeEmail';
 import PositionMap from './positionMap';

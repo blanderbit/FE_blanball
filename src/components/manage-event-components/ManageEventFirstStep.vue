@@ -4,7 +4,7 @@
       {{ $t('events.general-info') }}
     </div>
     <Dropdown
-      style="margin-top: 10px;"
+      style="margin-top: 10px"
       :outside-title="true"
       :main-title="$t('events.event-type')"
       :placeholder="$t('events.event-type')"
@@ -91,7 +91,9 @@
         </v-date-picker>
         <img src="../../assets/img/calendar.svg" alt="" />
       </div>
-      <span class="b-event-m-1st__subtitle">Оберіть із запропонованих або встановіть час власноруч</span>
+      <span class="b-event-m-1st__subtitle"
+        >Оберіть із запропонованих або встановіть час власноруч</span
+      >
       <div class="b-event-m-1st__input-time">
         <InputComponent
           :outside-title="true"
@@ -114,75 +116,87 @@
       </div>
     </div>
     <div class="b-event-m-2st__duration-select">
-      <div v-for="option in eventDurationOptions" 
-        :class="['b-event-m-2st__duration-item', 
-        {'b-event-m-2st__duration-item-selected': option.id === selectedDurationID}]"
-        @click="selectEventDuration(option)">
+      <div
+        v-for="option in eventDurationOptions"
+        :class="[
+          'b-event-m-2st__duration-item',
+          {
+            'b-event-m-2st__duration-item-selected':
+              option.id === selectedDurationID,
+          },
+        ]"
+        @click="selectEventDuration(option)"
+      >
         <span>{{ option.text }}</span>
       </div>
     </div>
     <div class="b-event-m-1st__title mt-3 mb-2">
       {{ $t('events.place') }}
     </div>
-    <EventCreatePositionMap  
-        class="b-event-m-1st__input-location" 
-        name="place.place_name"
-        v-model="eventLocation">
+    <EventCreatePositionMap
+      class="b-event-m-1st__input-location"
+      name="place.place_name"
+      v-model="eventLocation"
+    >
     </EventCreatePositionMap>
-    <div v-if="eventLocation.lat && eventLocation.lng" class="b-event-m-1st__event-map">
+    <div
+      v-if="eventLocation.lat && eventLocation.lng"
+      class="b-event-m-1st__event-map"
+    >
       <position-map
-        :coords="eventLocationOnMap" 
+        :coords="eventLocationOnMap"
         @map-loaded="loading = false"
-        disable-change-coords>
+        disable-change-coords
+      >
       </position-map>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, watch, computed } from 'vue'
+import { ref, watch, computed } from 'vue';
 
-import { ErrorMessage } from '@system.it.flumx.com/vee-validate'
+import { ErrorMessage } from '@system.it.flumx.com/vee-validate';
 
-import dayjs from 'dayjs'
+import dayjs from 'dayjs';
 
-import Dropdown from '../forms/Dropdown.vue'
-import InputComponent from '../forms/InputComponent.vue'
-import RadioButton from '../forms/RadioButton.vue'
-import PositionMap from '../maps/PositionMap.vue'
-import EventCreatePositionMap from '../maps/EventCreatePositionMap.vue'
+import Dropdown from '../forms/Dropdown.vue';
+import InputComponent from '../forms/InputComponent.vue';
+import RadioButton from '../forms/RadioButton.vue';
+import PositionMap from '../maps/PositionMap.vue';
+import EventCreatePositionMap from '../maps/EventCreatePositionMap.vue';
 
-import CONSTANTS from '../../consts/index'
+import CONSTANTS from '../../consts/index';
 
-import CalendarPic from '../../assets/img/calendar.svg'
-import WatchPic from '../../assets/img/watch.svg'
-import LocationPic from '../../assets/img/location-point.svg'
-import UniPic from '../../assets/img/unisex.svg'
-import MalePic from '../../assets/img/male-icon.svg'
-import FemalePic from '../../assets/img/female-icon.svg'
+import CalendarPic from '../../assets/img/calendar.svg';
+import WatchPic from '../../assets/img/watch.svg';
+import LocationPic from '../../assets/img/location-point.svg';
+import UniPic from '../../assets/img/unisex.svg';
+import MalePic from '../../assets/img/male-icon.svg';
+import FemalePic from '../../assets/img/female-icon.svg';
 
 const eventDurationOptions = ref([
   {
     id: 0,
     text: '30 хв',
-    value: 30*60000
+    value: 30 * 60000,
   },
   {
     id: 1,
     text: '60 хв',
-    value: 60*60000
+    value: 60 * 60000,
   },
   {
     id: 2,
     text: '1,5 год',
-    value: 90*60000
+    value: 90 * 60000,
   },
   {
     id: 3,
     text: '2 год',
-    value: 120*60000
+    value: 120 * 60000,
   },
-])
+]);
 
 export default {
   components: {
@@ -205,45 +219,50 @@ export default {
     initialValues: {
       type: Object,
       default: () => {},
-    }
+    },
   },
-  emits: [
-    'changeEventLocation', 
-    'changeEventDate', 
-    'selectEventDuration'
-  ],
+  emits: ['changeEventLocation', 'changeEventDate', 'selectEventDuration'],
 
   setup(props, { emit }) {
-    const initialDate = ref(props.initialValues.date_and_time ? 
-      new Date(props.initialValues.date_and_time) : new Date())
+    const initialDate = ref(
+      props.initialValues.date_and_time
+        ? new Date(props.initialValues.date_and_time)
+        : new Date()
+    );
     const eventLocation = ref({
-      lat: props.initialValues.place.lat, 
-      lng: props.initialValues.place.lon
+      lat: props.initialValues.place.lat,
+      lng: props.initialValues.place.lon,
     });
     const eventLocationOnMap = ref({
-      lat: props.initialValues.place.lat, 
-      lng: props.initialValues.place.lon
+      lat: props.initialValues.place.lat,
+      lng: props.initialValues.place.lon,
     });
-    const selectedDurationID = ref(eventDurationOptions.value.findIndex(
-      element => element.value === props.initialValues.duration*60000
-    ));
-    const minEventDate = ref(new Date().toISOString().slice(0, 10))
+    const selectedDurationID = ref(
+      eventDurationOptions.value.findIndex(
+        (element) => element.value === props.initialValues.duration * 60000
+      )
+    );
+    const minEventDate = ref(new Date().toISOString().slice(0, 10));
 
-    watch(() => eventLocation.value, (newData, oldData) => {
-      emit('changeEventLocation', newData)
-      
-      eventLocationOnMap.value = {lat: newData.lat, lng: newData.lng}
-    })
+    watch(
+      () => eventLocation.value,
+      (newData, oldData) => {
+        emit('changeEventLocation', newData);
 
+        eventLocationOnMap.value = { lat: newData.lat, lng: newData.lng };
+      }
+    );
 
-    watch(() => initialDate.value, (newData, oldData) => {
-      emit('changeEventDate', newData)
-    })
-
+    watch(
+      () => initialDate.value,
+      (newData, oldData) => {
+        emit('changeEventDate', newData);
+      }
+    );
 
     const setEventInitDate = () => {
-      emit('changeEventDate', dayjs(initialDate.value).format('YYYY-MM-DD'))
-    }
+      emit('changeEventDate', dayjs(initialDate.value).format('YYYY-MM-DD'));
+    };
 
     const calendar = ref({
       inputMask: 'YYYY-MM-DD',
@@ -251,21 +270,22 @@ export default {
         type: 'string',
         mask: 'YYYY-MM-DD', // Uses 'iso' if missing
       },
-    })
+    });
 
     const selectEventDuration = (data) => {
-      selectedDurationID.value = data.id
+      selectedDurationID.value = data.id;
 
-      emit('selectEventDuration', data.value)
-    }
+      emit('selectEventDuration', data.value);
+    };
 
     const stepStyle = computed(() => {
       if (props?.currentStep) {
-        return props?.currentStep === 1 ? { height: 'auto' } : { height: '0px' }
+        return props?.currentStep === 1
+          ? { height: 'auto' }
+          : { height: '0px' };
       }
-    })
+    });
 
-  
     const icons = computed(() => {
       return {
         calendar: CalendarPic,
@@ -274,15 +294,15 @@ export default {
         unisexIcon: UniPic,
         maleIcon: MalePic,
         femaleIcon: FemalePic,
-      }
-    })
+      };
+    });
     const mockData = computed(() => {
       return {
         typeOfSportDropdown: CONSTANTS.manage_event.type_of_sport_dropdown,
-      }
-    })
+      };
+    });
 
-    setEventInitDate()
+    setEventInitDate();
 
     return {
       icons,
@@ -296,20 +316,17 @@ export default {
       minEventDate,
       selectedDurationID,
       selectEventDuration,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-dfdeed: #dfdeed;
- $color-f4f4f4: #f4f4f4;
- $color-6f6f77: #6f6f77;
- $color-f0f0f4: #f0f0f4;
-
+$color-dfdeed: #dfdeed;
+$color-f4f4f4: #f4f4f4;
+$color-6f6f77: #6f6f77;
+$color-f0f0f4: #f0f0f4;
 
 @import '../../assets/styles/calendar.scss';
 .b-event-m-1st {
@@ -373,7 +390,7 @@ export default {
   }
   .b-event-m-1st__input-location {
     min-width: 100%;
-    border: 1px solid #DFDEED;
+    border: 1px solid #dfdeed;
     border-radius: 6px;
     display: flex;
     align-items: center;
@@ -389,14 +406,14 @@ export default {
       width: 100%;
     }
   }
-    .b-event-m-1st__title {
-      font-family: 'Exo 2';
-      font-style: normal;
-      font-weight: 700;
-      font-size: 16px;
-      line-height: 24px;
-      color: $--b-main-black-color;
-    }
+  .b-event-m-1st__title {
+    font-family: 'Exo 2';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    color: $--b-main-black-color;
+  }
   .b-event-m-1st__radio-btn-wrapper {
     margin-top: 12px;
     $color1: $color-f4f4f4;
@@ -442,7 +459,7 @@ export default {
   margin-bottom: 10px;
 }
 .b-event-m-2st__duration-select {
-  border: 1px solid #DFDEED;
+  border: 1px solid #dfdeed;
   border-radius: 6px;
   margin-top: 20px;
   display: flex;
@@ -459,12 +476,12 @@ export default {
     font-weight: 400;
     font-size: 13px;
     line-height: 20px;
-    text-align: center;  
-    color: #6F6F77;
+    text-align: center;
+    color: #6f6f77;
     cursor: pointer;
 
     &-selected {
-      background: #F0F0F4;
+      background: #f0f0f4;
       color: $--b-main-black-color;
       font-weight: 500;
     }

@@ -1,5 +1,5 @@
-import CONSTANTS from '../../../../consts'
-import { Enum } from './filter.utils'
+import CONSTANTS from '../../../../consts';
+import { Enum } from './filter.utils';
 
 export const filterConfigForUsers = {
   page: Number,
@@ -23,7 +23,7 @@ export const filterConfigForUsers = {
   point: Number,
   profile__age_min: Number,
   profile__age_max: Number,
-}
+};
 
 export const filterConfigForRelevantUsers = {
   page: Number,
@@ -56,4 +56,4 @@ export const filterConfigForEvents = {
   place: String,
   date_and_time_after: String,
   date_and_time_before: String,
-} // TODO Add search by members list
+}; // TODO Add search by members list

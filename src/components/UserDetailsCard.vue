@@ -4,11 +4,7 @@
       <div class="b-user-card__top-part">
         <div class="b-user-card__picture-block">
           <div class="b-user-card__profile-picture">
-            <img
-              v-if="userData.avatar_url"
-              :src="userData.avatar_url"
-              alt=""
-            />
+            <img v-if="userData.avatar_url" :src="userData.avatar_url" alt="" />
             <Avatar v-else :full-name="fullUserName" />
             <div v-if="isEditMode" class="b-user-card__add-pic-icon">
               <label for="my_file">
@@ -109,7 +105,11 @@
             <div v-if="!isEditMode" class="b-user-card__about-me">
               {{ userData.about_me || $t('profile.about-myself') }}
               <div class="b-user-card__title">
-                {{ userData.about_me ? $t('profile.about-myself') : $t('profile.write-several-words') }}
+                {{
+                  userData.about_me
+                    ? $t('profile.about-myself')
+                    : $t('profile.write-several-words')
+                }}
               </div>
             </div>
             <TextAreaComponent
@@ -234,7 +234,10 @@
           <div class="b-user-card__position">
             <div v-if="!isEditMode" class="b-user-card__to-show">
               <div class="b-user-card__data">
-                {{ $t(`hashtags.position_full.${userData.position}`) || $t('profile.no-content') }}
+                {{
+                  $t(`hashtags.position_full.${userData.position}`) ||
+                  $t('profile.no-content')
+                }}
               </div>
               <div class="b-user-card__title">
                 {{ $t('profile.game-position') }}
@@ -293,8 +296,7 @@
                 {{ $t('profile.location') }}
               </div>
             </div>
-            <div v-else class="b-user-card__dropdowns">
-            </div>
+            <div v-else class="b-user-card__dropdowns"></div>
           </div>
         </div>
       </div>
@@ -303,7 +305,14 @@
 </template>
 
 <script>
-import { ref, computed, watch, watchEffect, onMounted, onBeforeUnmount } from 'vue';
+import {
+  ref,
+  computed,
+  watch,
+  watchEffect,
+  onMounted,
+  onBeforeUnmount,
+} from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import dayjs from 'dayjs';
@@ -313,7 +322,7 @@ import InputComponent from './forms/InputComponent.vue';
 import TextAreaComponent from '../components/TextAreaComponent.vue';
 import Dropdown from './forms/Dropdown.vue';
 import Avatar from '../components/Avatar.vue';
-import RatingCard from '../components/RatingCard.vue'
+import RatingCard from '../components/RatingCard.vue';
 
 import CONSTANTS from '../consts';
 import useWindowWidth from '../utils/widthScreen';
@@ -321,7 +330,7 @@ import useWindowWidth from '../utils/widthScreen';
 import sortArrowHorizontally from '../assets/img/sort-arrows-horizontal.svg';
 import tick from '../assets/img/tick.svg';
 import edit from '../assets/img/edit.svg';
-import arrows from '../assets/img/sort-arrows-horizontal.svg'
+import arrows from '../assets/img/sort-arrows-horizontal.svg';
 
 const IMAGE_TYPES = ['image/jpeg', 'image/png'];
 
@@ -345,8 +354,8 @@ export default {
     },
     initValues: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   emits: ['openEditPictureModal'],
   setup(props, { emit }) {
@@ -361,18 +370,22 @@ export default {
     const labels = ref(setupLabels());
     const openedReviewId = ref(0);
 
-    watch(() => props.userData, (newData, oldData) => {
-      labels.value = setupLabels();
-    })
-
+    watch(
+      () => props.userData,
+      (newData, oldData) => {
+        labels.value = setupLabels();
+      }
+    );
 
     function setupLabels() {
       return [
         props.userData?.age ? `${props.userData?.age} років` : null,
-        props.userData?.position ? `hashtags.${props.userData?.position}` : null,
+        props.userData?.position
+          ? `hashtags.${props.userData?.position}`
+          : null,
         props.userData?.gender ? `hashtags.${props.userData?.gender}` : null,
         props.userData?.role ? `hashtags.${props.userData?.role}` : null,
-      ]
+      ];
     }
 
     const fileInput = ref(null);
@@ -432,9 +445,9 @@ export default {
 
     function clickReview(reviewId) {
       if (openedReviewId.value === reviewId) {
-        openedReviewId.value = 0
+        openedReviewId.value = 0;
       } else {
-        openedReviewId.value = reviewId
+        openedReviewId.value = reviewId;
       }
     }
 
@@ -485,8 +498,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
 $color-eeeef3: #eeeef3;
 $color-148581: #148581;
@@ -763,7 +774,7 @@ $color-efeff6: #efeff6;
           }
         }
         .b-user-card__position {
-          border-top: 1px solid #EFEFF6;
+          border-top: 1px solid #efeff6;
           padding-top: 12px;
           margin-top: 16px;
         }
@@ -779,7 +790,7 @@ $color-efeff6: #efeff6;
   }
 }
 .b-user__location {
-  border-top: 1px solid #EFEFF6;
+  border-top: 1px solid #efeff6;
   padding-top: 12px;
 }
 </style>

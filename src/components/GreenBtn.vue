@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="['b-green-btn', {'b-green-btn__animated': animation}]"
+    :class="['b-green-btn', { 'b-green-btn__animated': animation }]"
     :style="btnStyle"
     @click.stop="!disabled && $emit('click-function', $event)"
   >
@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import { computed, ref, watch } from 'vue'
-import Loading from './../workers/loading-worker/Loading.vue'
+import { computed, ref, watch } from 'vue';
+import Loading from './../workers/loading-worker/Loading.vue';
 
 export default {
   components: {
@@ -67,11 +67,11 @@ export default {
     },
     animation: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   setup(props) {
-    const loading = ref(false)
+    const loading = ref(false);
     const btnStyle = computed(() => {
       return {
         ...props.fontStyles,
@@ -80,52 +80,49 @@ export default {
         background: !props.disabled ? props.backgroundColor : '#EFEFF6',
         // 'justify-content': props.iconRight || props.icon ? 'space-around' : 'center'
         'justify-content': 'center',
-      }
-    })
+      };
+    });
 
     watch(
       () => props.loading,
       (value) => {
-        value ? start() : finish()
+        value ? start() : finish();
       }
-    )
+    );
 
     function start() {
-      loading.value = true
+      loading.value = true;
     }
     function finish() {
-      loading.value = false
+      loading.value = false;
     }
 
     return {
       btnStyle,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-c6c7c7: #c6c7c7;
-
+$color-c6c7c7: #c6c7c7;
 
 .b-green-btn__animated {
   &:hover {
-      &:before {
-        content: "";
-        display: block;
-        position: absolute;
-        opacity: 30%;
-        left: -100%;
-        width: 32px;
-        height: 100%;
-        background: $color-c6c7c7;
-        filter: blur(6px);
-        animation: blink 5s ease-in-out infinite;
-      }
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      opacity: 30%;
+      left: -100%;
+      width: 32px;
+      height: 100%;
+      background: $color-c6c7c7;
+      filter: blur(6px);
+      animation: blink 5s ease-in-out infinite;
     }
+  }
 }
 .b-green-btn {
   @include inter(14px, 500, $--b-main-white-color);
@@ -139,7 +136,6 @@ export default {
   align-items: center;
   cursor: pointer;
   user-select: none;
-
 
   &__left-icon {
     margin-right: 10px;

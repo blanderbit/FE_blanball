@@ -99,23 +99,22 @@
 </template>
 
 <script>
-import { ref, watch, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, watch, computed } from 'vue';
+import { useRouter } from 'vue-router';
 
-import InputComponent from '../forms/InputComponent.vue'
-import TextAreaComponent from '../TextAreaComponent.vue'
-import Switcher from '../../components/Switcher.vue'
-import SearchBlockAll from '../SearchBlockAll.vue'
-import RadioButton from '../forms/RadioButton.vue'
+import InputComponent from '../forms/InputComponent.vue';
+import TextAreaComponent from '../TextAreaComponent.vue';
+import Switcher from '../../components/Switcher.vue';
+import SearchBlockAll from '../SearchBlockAll.vue';
+import RadioButton from '../forms/RadioButton.vue';
 
-import { ROUTES } from '../../router/router.const'
+import { ROUTES } from '../../router/router.const';
 
-import HorArrow from '../../assets/img/sort-arrows-down.svg'
-import AddUser from '../../assets/img/add-user.svg'
-import Users from '../../assets/img/members.svg'
-import Search from '../../assets/img/search.svg'
-import PlusIcon from '../../assets/img/gray-plus.svg'
-
+import HorArrow from '../../assets/img/sort-arrows-down.svg';
+import AddUser from '../../assets/img/add-user.svg';
+import Users from '../../assets/img/members.svg';
+import Search from '../../assets/img/search.svg';
+import PlusIcon from '../../assets/img/gray-plus.svg';
 
 export default {
   props: {
@@ -130,10 +129,10 @@ export default {
     filteredUsersList: {
       type: Array,
       default: () => [],
-    }, 
+    },
     filterUsersListLoading: {
       type: Boolean,
-      default: false
+      default: false,
     },
     invitedUsersList: {
       type: Array,
@@ -142,7 +141,7 @@ export default {
     initialValues: {
       type: Object,
       default: () => {},
-    }
+    },
   },
   components: {
     InputComponent,
@@ -153,33 +152,33 @@ export default {
   },
 
   setup(props, { emit }) {
-    const isEventPayment = ref(props.initialValues.is_price)
-    const searchValue = ref('')
-    const router = useRouter()
-    const loading = ref(props.filterUsersListLoading)
+    const isEventPayment = ref(props.initialValues.is_price);
+    const searchValue = ref('');
+    const router = useRouter();
+    const loading = ref(props.filterUsersListLoading);
 
-    
     const invitedUsersIDS = computed(() => {
-      return props.invitedUsersList.map(user => user.id);
-    })
+      return props.invitedUsersList.map((user) => user.id);
+    });
 
     const inviteUser = (user_id, user_data) => {
-      emit('invite-user', user_data)
-    }
+      emit('invite-user', user_data);
+    };
 
-    
-    watch(() => props.filterUsersListLoading, (newData, oldData) => {
-      loading.value = newData
-    })
-  
+    watch(
+      () => props.filterUsersListLoading,
+      (newData, oldData) => {
+        loading.value = newData;
+      }
+    );
 
     watch(
       () => searchValue.value,
       () => {
-        emit('searchUsers', searchValue.value)
+        emit('searchUsers', searchValue.value);
       }
-    )
-  
+    );
+
     const icons = computed(() => {
       return {
         arrow: HorArrow,
@@ -187,29 +186,29 @@ export default {
         search: Search,
         plus: PlusIcon,
         users: Users,
-      }
-    })
+      };
+    });
 
     const stepStyle = computed(() => {
-      if (props?.currentStep) { 
-        return props?.currentStep === 2 ? { height: 'auto' } : { height: '0px' }
+      if (props?.currentStep) {
+        return props?.currentStep === 2
+          ? { height: 'auto' }
+          : { height: '0px' };
       }
-    })
+    });
 
-  
     const openUserProfile = (userId) => {
-      router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId))
-    }
+      router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId));
+    };
 
     function toggleEventPayment(val) {
-      isEventPayment.value = val ? true : false
-      
+      isEventPayment.value = val ? true : false;
+
       if (!isEventPayment.value) {
-        emit('changedEventPrivacyToFree')
+        emit('changedEventPrivacyToFree');
       }
     }
 
-    
     return {
       icons,
       isEventPayment,
@@ -220,17 +219,14 @@ export default {
       toggleEventPayment,
       openUserProfile,
       inviteUser,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-f4f4f4: #f4f4f4;
-
+$color-f4f4f4: #f4f4f4;
 
 .second-step {
   overflow: scroll;

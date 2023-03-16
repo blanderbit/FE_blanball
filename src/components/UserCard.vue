@@ -62,7 +62,9 @@
           </div>
           <div class="b-user-card__user-status">
             <img src="../assets/img/runner.svg" alt="runner icon" />
-            <div class="b-user-card__status">{{ $t(`hashtags.${userData.role}`) }}</div>
+            <div class="b-user-card__status">
+              {{ $t(`hashtags.${userData.role}`) }}
+            </div>
           </div>
           <!--<div-->
           <!--:class="['b_user_card_arrow', {active: userData.isActive}]"-->
@@ -81,7 +83,7 @@
             {{ $t(`hashtags.position_full.${userData.profile.position}`) }}
           </span>
         </div>
-        <div  v-if="userData.profile.gender" class="b-user-card__gender">
+        <div v-if="userData.profile.gender" class="b-user-card__gender">
           <span class="title">{{ $t('users.gender') }}</span>
           <span>: {{ $t(`hashtags.${userData.profile.gender}`) }}</span>
         </div>
@@ -91,12 +93,12 @@
 </template>
 
 <script>
-import StarRating from 'vue-star-rating'
+import StarRating from 'vue-star-rating';
 
-import Avatar from './../components/Avatar.vue'
-import CollapsiblePanel from './../components/collapsible/CollapsiblePanel.vue'
+import Avatar from './../components/Avatar.vue';
+import CollapsiblePanel from './../components/collapsible/CollapsiblePanel.vue';
 
-import CONSTANTS from '../consts/index'
+import CONSTANTS from '../consts/index';
 
 export default {
   name: 'UserCard',
@@ -114,27 +116,24 @@ export default {
   emits: ['openUserProfile'],
   computed: {
     userPosition() {
-      return CONSTANTS.users_page.user_position
+      return CONSTANTS.users_page.user_position;
     },
     expanding: {
       set() {
-        this.$emit('update:expanding', !this.userData?.metadata?.expanding)
+        this.$emit('update:expanding', !this.userData?.metadata?.expanding);
       },
       get() {
-        return !!this.userData?.metadata?.expanding
+        return !!this.userData?.metadata?.expanding;
       },
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-efeff6: #efeff6;
- $color-f7f7fc: #f7f7fc;
-
+$color-efeff6: #efeff6;
+$color-f7f7fc: #f7f7fc;
 
 @import '../assets/styles/mixins/device.scss';
 .b-user-card {

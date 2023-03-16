@@ -11,7 +11,10 @@
     ]"
   >
     <div :class="{ 'b-public-profile__wrapper': isPersonalPreview }">
-      <div v-if="isPersonalPreview" class="b-public-profile__wrapper-edit-buttons">
+      <div
+        v-if="isPersonalPreview"
+        class="b-public-profile__wrapper-edit-buttons"
+      >
         <div
           class="b-public-profile__continue"
           @click="$emit('closeModal', 'public_profile')"
@@ -182,9 +185,9 @@ export default {
       type: String,
       default: 'look',
       validator(value) {
-        return ['look', 'preview'].includes(value)
-      }
-    }
+        return ['look', 'preview'].includes(value);
+      },
+    },
   },
   components: {
     Avatar,
@@ -200,14 +203,13 @@ export default {
     const isInviteUserModalOpened = ref(false);
     const isPersonalPreview = ref(false);
 
-
-    switch(props.pageMode) {
+    switch (props.pageMode) {
       case 'look':
         isPersonalPreview.value = false;
-        break
+        break;
       case 'preview':
         isPersonalPreview.value = true;
-        break
+        break;
     }
 
     const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
@@ -246,7 +248,6 @@ export default {
     });
 
     const openInviteUserModal = () => {
-
       if (!isPersonalPreview.value) {
         isInviteUserModalOpened.value = true;
       }
@@ -256,7 +257,6 @@ export default {
       isInviteUserModalOpened.value = false;
     };
 
-
     const playFeatures = computed(() => {
       return [
         {
@@ -264,10 +264,11 @@ export default {
           name: t('player_page.position'),
           img: icons.value.flag,
           value: props.userData.profile?.position
-            ? t(!isPersonalPreview.value  
-              ? `hashtags.position_full.${props.userData.profile?.position}` 
-              : props.userData.profile?.position
-            )
+            ? t(
+                !isPersonalPreview.value
+                  ? `hashtags.position_full.${props.userData.profile?.position}`
+                  : props.userData.profile?.position
+              )
             : noFeatureData,
         },
         {
@@ -283,10 +284,11 @@ export default {
           name: t('profile.main-leg'),
           img: icons.value.gaming_leg,
           value: props.userData.profile?.working_leg
-            ? t(!isPersonalPreview.value 
-              ? `hashtags.${props.userData.profile?.working_leg}` 
-              : props.userData.profile?.working_leg
-            )
+            ? t(
+                !isPersonalPreview.value
+                  ? `hashtags.${props.userData.profile?.working_leg}`
+                  : props.userData.profile?.working_leg
+              )
             : noFeatureData,
         },
         {
@@ -334,10 +336,9 @@ $color-d2f6a2: #d2f6a2;
 }
 
 .b-wrapper-scroll {
-
   @media (max-width: 1200px) {
     overflow: scroll;
-  } 
+  }
 }
 .b-public-profile__wrapper {
   background: $--b-main-white-color;
@@ -398,7 +399,7 @@ $color-d2f6a2: #d2f6a2;
 
 .b-public-profile {
   position: relative;
-  
+
   @include beforeDesktop {
     overflow: scroll;
   }

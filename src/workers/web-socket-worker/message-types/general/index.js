@@ -1,1 +1,1 @@
-export { ChangeMaintenanceMessage } from './change-maintenance'
+export { ChangeMaintenanceMessage } from './change-maintenance';

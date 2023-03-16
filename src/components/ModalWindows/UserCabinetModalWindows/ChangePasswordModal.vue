@@ -1,5 +1,5 @@
 <template>
-  <Loading :is-loading="loading"/>
+  <Loading :is-loading="loading" />
   <Transition>
     <ModalWindow>
       <template #title>
@@ -97,12 +97,12 @@ export default {
   },
   setup(_, { emit }) {
     const { t } = useI18n();
-    const loading = ref(false)
+    const loading = ref(false);
     const toast = useToast();
     const currentStep = ref(1);
 
     const schema = computed(() => {
-      return SCHEMAS.changePassword.schema(currentStep.value)
+      return SCHEMAS.changePassword.schema(currentStep.value);
     });
 
     function closeModal() {

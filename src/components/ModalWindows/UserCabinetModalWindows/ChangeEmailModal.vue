@@ -118,7 +118,7 @@ export default {
     });
 
     const schema = computed(() => {
-      return SCHEMAS.changeEmail.schema(currentStep.value)
+      return SCHEMAS.changeEmail.schema(currentStep.value);
     });
 
     function closeModal() {
@@ -127,14 +127,14 @@ export default {
 
     function cancelClick() {
       if (currentStep.value === 1) {
-        closeModal()
+        closeModal();
       } else {
         currentStep.value--;
       }
     }
 
     async function sendCode(email) {
-      await API.UserService.changeUserEmail({email: email});
+      await API.UserService.changeUserEmail({ email: email });
     }
 
     async function nextStep(data) {

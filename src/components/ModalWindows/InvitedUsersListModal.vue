@@ -17,7 +17,7 @@
 <script>
 import InvitedUsersList from '../manage-event-components/InvitedUsersList.vue';
 
-import closeArrowUpIcon from '../../assets/img/close-arrow-up.svg'
+import closeArrowUpIcon from '../../assets/img/close-arrow-up.svg';
 
 export default {
   setup() {
@@ -26,39 +26,36 @@ export default {
   props: {
     invitedUsers: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     acceptedUsers: {
       type: Array,
-      default: () => [] 
+      default: () => [],
     },
     manageAction: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   components: {
     InvitedUsersList,
   },
-  emits: [
-    'removeInvitedUser',
-    'closeModal'
-  ],
+  emits: ['removeInvitedUser', 'closeModal'],
   setup(props, { emit }) {
     const removeInvitedUser = (userId) => {
-      emit('removeInvitedUser', userId)
-    }
+      emit('removeInvitedUser', userId);
+    };
 
     return {
-        removeInvitedUser,
-        closeArrowUpIcon,
-    }
-  }
+      removeInvitedUser,
+      closeArrowUpIcon,
+    };
+  },
 };
 </script>
 
-<style lang="scss" scoped> $color-f9f9fc: #f9f9fc;
-
+<style lang="scss" scoped>
+$color-f9f9fc: #f9f9fc;
 
 .b-invited-users-list-modal__wrapper {
   position: fixed;
@@ -76,7 +73,7 @@ export default {
     width: 100%;
     box-shadow: 2px 2px 10px rgb(56 56 251 / 10%);
     border-radius: 6px;
-    background: #F9F9FC;
+    background: #f9f9fc;
     height: 500px;
     border-radius: 15px 15px 0px 0px;
     padding: 12px 16px;

@@ -1,12 +1,13 @@
 <template>
-  <Loading :is-loading="loading"/>
-   <EventJoinModal
+  <Loading :is-loading="loading" />
+  <EventJoinModal
     v-if="isEventJoinModalActive"
     :clientX="eventJoinModalX"
     :clientY="eventJoinModalY"
     :modalItems="eventJoinToolTipItems"
     @closeModal="closeEventJoinModal"
-    @itemClick="joinEventModalItemClick"/>
+    @itemClick="joinEventModalItemClick"
+  />
   <div class="b-events-page">
     <div class="b-events-page__main-body" ref="mainEventsBlock">
       <div class="b-events-page__header-block">
@@ -26,7 +27,10 @@
             <div class="b-events-page__general-events-mobile">
               {{ $t('events.general-events') }}
             </div>
-            <div class="b-events-page__my-events-mobile" @click="switchToMyEvents">
+            <div
+              class="b-events-page__my-events-mobile"
+              @click="switchToMyEvents"
+            >
               {{ $t('events.my-events') }}
             </div>
           </div>
@@ -50,10 +54,12 @@
           :elementsCount="paginationTotalCount"
         ></events-filters>
 
-      
         <div class="b-events-page__all-events-block">
-          <div @click="goToCreateEvent" class="b-events-page__all-create-event-mobile-button">
-            <img src="../../../assets/img/plus.svg" alt="">
+          <div
+            @click="goToCreateEvent"
+            class="b-events-page__all-create-event-mobile-button"
+          >
+            <img src="../../../assets/img/plus.svg" alt="" />
           </div>
           <SmartGridList
             :list="paginationElements"
@@ -66,7 +72,9 @@
                 :key="slotProps.index"
                 :card="slotProps.smartListItem"
                 @go-to-event-page="goToEventPage(slotProps.smartListItem.id)"
-                @event-join="showEventJoinModal($event, slotProps.smartListItem)"
+                @event-join="
+                  showEventJoinModal($event, slotProps.smartListItem)
+                "
               />
             </template>
             <template #after>
@@ -101,46 +109,45 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
-import { useToast } from 'vue-toastification'
+import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toastification';
 
-import { v4 as uuid } from 'uuid'
+import { v4 as uuid } from 'uuid';
 
-import GreenBtn from '../../../components/GreenBtn.vue'
-import InputComponent from '../../../components/forms/InputComponent.vue'
-import ContextMenu from '../../../components/ModalWindows/ContextMenuModal.vue'
-import EventCard from '../../../components/event-components/EventCard.vue'
-import SmallLoader from '../../../components/SmallLoader.vue'
-import SearchBlockEvents from '../../../components/SearchBlockEvents.vue'
-import MyEventCard from '../../../components/MyEventCard.vue'
-import RightSidebar from '../../../components/RightSidebar.vue'
-import EmptyList from '../../../components/EmptyList.vue'
-import SmartGridList from '../../../components/smart-list/SmartGridList.vue'
-import CONSTANTS from '../../../consts/index'
-import ScrollToTop from '../../../components/ScrollToTop.vue'
-import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue'
-import Dropdown from '../../../components/forms/Dropdown.vue'
-import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue'
-import EventJoinModal from '../../../components/ModalWindows/EventJoinModal.vue'
-import Loading from '../../../workers/loading-worker/Loading.vue'
+import GreenBtn from '../../../components/GreenBtn.vue';
+import InputComponent from '../../../components/forms/InputComponent.vue';
+import ContextMenu from '../../../components/ModalWindows/ContextMenuModal.vue';
+import EventCard from '../../../components/event-components/EventCard.vue';
+import SmallLoader from '../../../components/SmallLoader.vue';
+import SearchBlockEvents from '../../../components/SearchBlockEvents.vue';
+import MyEventCard from '../../../components/MyEventCard.vue';
+import RightSidebar from '../../../components/RightSidebar.vue';
+import EmptyList from '../../../components/EmptyList.vue';
+import SmartGridList from '../../../components/smart-list/SmartGridList.vue';
+import CONSTANTS from '../../../consts/index';
+import ScrollToTop from '../../../components/ScrollToTop.vue';
+import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
+import Dropdown from '../../../components/forms/Dropdown.vue';
+import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue';
+import EventJoinModal from '../../../components/ModalWindows/EventJoinModal.vue';
+import Loading from '../../../workers/loading-worker/Loading.vue';
 
-import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue'
+import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue';
 
-import { useEventDataStore } from '../../../stores/eventsData'
-import { API } from '../../../workers/api-worker/api.worker'
-import { PaginationWorker } from '../../../workers/pagination-worker'
-import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patch'
-import { addMinutes } from '../../../utils/addMinutes'
-import { getDate } from '../../../utils/getDate'
-import { getTime } from '../../../utils/getTime'
+import { useEventDataStore } from '../../../stores/eventsData';
+import { API } from '../../../workers/api-worker/api.worker';
+import { PaginationWorker } from '../../../workers/pagination-worker';
+import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patch';
+import { addMinutes } from '../../../utils/addMinutes';
+import { getDate } from '../../../utils/getDate';
+import { getTime } from '../../../utils/getTime';
 
-import { ROUTES } from '../../../router/router.const'
+import { ROUTES } from '../../../router/router.const';
 
-import Plus from '../../../assets/img/plus.svg'
-import BallIcon from '../../../assets/img/ball.svg'
-
+import Plus from '../../../assets/img/plus.svg';
+import BallIcon from '../../../assets/img/ball.svg';
 
 export default {
   name: 'EventsPage',
@@ -164,20 +171,19 @@ export default {
     EventJoinModal,
   },
   setup() {
-    const eventStore = useEventDataStore()
-    const scrollComponent = ref(null)
-    const isEventJoinModalActive = ref(false)
-    const router = useRouter()
-    const toast = useToast()
-    const eventCards = ref([])
-    const loading = ref(false)
-    const joinEventData = ref(null)
-    const eventJoinModalX = ref(null)
-    const eventJoinModalY = ref(null)
-    const { t } = useI18n()
-    const isLoaderActive = ref(false)
-    const mainEventsBlock = ref()
-
+    const eventStore = useEventDataStore();
+    const scrollComponent = ref(null);
+    const isEventJoinModalActive = ref(false);
+    const router = useRouter();
+    const toast = useToast();
+    const eventCards = ref([]);
+    const loading = ref(false);
+    const joinEventData = ref(null);
+    const eventJoinModalX = ref(null);
+    const eventJoinModalY = ref(null);
+    const { t } = useI18n();
+    const isLoaderActive = ref(false);
+    const mainEventsBlock = ref();
 
     const eventJoinToolTipItems = computed(() => {
       return [
@@ -185,93 +191,92 @@ export default {
           id: 1,
           text: t('buttons.like-a-player'),
           img: BallIcon,
-          type: 'play'
+          type: 'play',
         },
         {
           id: 2,
           text: t('buttons.like-a-fan'),
           img: BallIcon,
-          type: 'view'
-        }
-      ]
-    })
+          type: 'view',
+        },
+      ];
+    });
 
     const mockData = computed(() => {
       return {
         event_cards: CONSTANTS.event_page.event_cards,
         sport_type_dropdown: CONSTANTS.event_page.sport_type_dropdown,
         gender_dropdown: CONSTANTS.event_page.gender_dropdown,
-      }
-    })
-    const iconPlus = computed(() => Plus)
+      };
+    });
+    const iconPlus = computed(() => Plus);
     const emptyListMessages = computed(() => {
       return {
         title: t('no_records.noEvents.title'),
         description: t('no_records.noEvents.description'),
-        button_text: t('no_records.noEvents.button_text')
-      }
-    })
-    
+        button_text: t('no_records.noEvents.button_text'),
+      };
+    });
+
     async function joinEvent(eventData, type) {
-      loading.value = true
-      switch(type) {
+      loading.value = true;
+      switch (type) {
         case 'play':
-          await API.EventService.eventJoinAsPlayer(eventData.id)
-          break
+          await API.EventService.eventJoinAsPlayer(eventData.id);
+          break;
         case 'view':
-          await API.EventService.eventJoinAsFan(eventData.id)
-          break
+          await API.EventService.eventJoinAsFan(eventData.id);
+          break;
       }
 
       const response = await API.EventService.getAllEvents({
-          ...filters,
-          paginationPage,
-      })
-      paginationElements.value = response.data.results
-      loading.value = false
+        ...filters,
+        paginationPage,
+      });
+      paginationElements.value = response.data.results;
+      loading.value = false;
 
-      switch(type) {
+      switch (type) {
         case 'play':
           if (eventData.privacy) {
-            toast.success(t('notifications.event-request-sent'))
+            toast.success(t('notifications.event-request-sent'));
           } else {
-            toast.success(t('notifications.event-join-as-player'))
+            toast.success(t('notifications.event-join-as-player'));
           }
-          break
+          break;
         case 'view':
-          toast.success(t('notifications.event-join-as-fan'))
-          break
+          toast.success(t('notifications.event-join-as-fan'));
+          break;
       }
     }
-    
+
     function joinEventModalItemClick(data) {
-      switch(data) {
+      switch (data) {
         case 'play':
-          joinEvent(joinEventData.value, 'play')
-          closeEventJoinModal()
-          break
+          joinEvent(joinEventData.value, 'play');
+          closeEventJoinModal();
+          break;
         case 'view':
-          joinEvent(joinEventData.value, 'view')
-          closeEventJoinModal()
-          break
+          joinEvent(joinEventData.value, 'view');
+          closeEventJoinModal();
+          break;
       }
     }
 
     const showEventJoinModal = (e, eventData) => {
-      eventJoinModalX.value = e.clientX
-      eventJoinModalY.value = e.clientY
-      joinEventData.value = eventData
-      isEventJoinModalActive.value = true
-    }
+      eventJoinModalX.value = e.clientX;
+      eventJoinModalY.value = e.clientY;
+      joinEventData.value = eventData;
+      isEventJoinModalActive.value = true;
+    };
 
     const closeEventJoinModal = () => {
-      isEventJoinModalActive.value = false
-      eventJoinModalX.value = null
-      eventJoinModalY.value = null
-      joinEventData.value = null
-    }
- 
-    
+      isEventJoinModalActive.value = false;
+      eventJoinModalX.value = null;
+      eventJoinModalY.value = null;
+      joinEventData.value = null;
+    };
+
     function handlingIncomeData(item) {
       return {
         ...item,
@@ -285,23 +290,23 @@ export default {
             ? t('events.need-uniform')
             : t('events.do-not-need-uniform'),
         ],
-      }
+      };
     }
     function goToEventPage(id) {
-      router.push(ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(id))
+      router.push(ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(id));
     }
     function goToCreateEvent() {
-      router.push(ROUTES.APPLICATION.EVENTS.CREATE.absolute)
+      router.push(ROUTES.APPLICATION.EVENTS.CREATE.absolute);
     }
     function switchToMyEvents() {
-      router.push(ROUTES.APPLICATION.MY_EVENTS.absolute)
+      router.push(ROUTES.APPLICATION.MY_EVENTS.absolute);
     }
-    const refList = ref()
-    const blockScrollToTopIfExist = ref(false)
-    const triggerForRestart = ref(false)
+    const refList = ref();
+    const blockScrollToTopIfExist = ref(false);
+    const triggerForRestart = ref(false);
     const restartInfiniteScroll = () => {
-      triggerForRestart.value = uuid()
-    }
+      triggerForRestart.value = uuid();
+    };
     const {
       paginationElements,
       paginationPage,
@@ -313,16 +318,17 @@ export default {
         return API.EventService.getAllEvents({
           ...getRawFilters(),
           page,
-        })
+        });
       },
       dataTransformation: handlingIncomeData,
-    })
-    paginationPage.value = 1
-    paginationTotalCount.value = router.currentRoute.value.meta.eventData.data.total_count
+    });
+    paginationPage.value = 1;
+    paginationTotalCount.value =
+      router.currentRoute.value.meta.eventData.data.total_count;
     paginationElements.value =
       router.currentRoute.value.meta.eventData.data.results.map(
         handlingIncomeData
-      )
+      );
     const { getRawFilters, updateFilter, filters, clearFilters, setFilters } =
       FilterPatch({
         router,
@@ -374,10 +380,10 @@ export default {
           },
         },
         afterUpdateFiltersCallBack: () => {
-          restartInfiniteScroll()
-          paginationClearData()
+          restartInfiniteScroll();
+          paginationClearData();
         },
-      })
+      });
     const detectSizesForCards = ({
       itemWidth,
       itemCount,
@@ -385,50 +391,52 @@ export default {
       itemMinHeight,
     }) => {
       if (window.matchMedia('(min-width: 1400px)').matches) {
-        itemHeight.value = 320
-        itemWidth.value = mainEventsBlock.value.clientWidth / 3
-        itemCount.value = 3
+        itemHeight.value = 320;
+        itemWidth.value = mainEventsBlock.value.clientWidth / 3;
+        itemCount.value = 3;
       } else if (
         window.matchMedia('(min-width: 1200px) and (max-width: 1400px)').matches
       ) {
-        itemHeight.value = 305
-        itemWidth.value = mainEventsBlock.value.clientWidth / 2
-        itemCount.value = 2
+        itemHeight.value = 305;
+        itemWidth.value = mainEventsBlock.value.clientWidth / 2;
+        itemCount.value = 2;
       } else if (
         window.matchMedia('(min-width: 992px) and (max-width: 1199px)').matches
       ) {
-        itemHeight.value = 320
-        itemWidth.value = mainEventsBlock.value.clientWidth / 2
-        itemCount.value = 2
+        itemHeight.value = 320;
+        itemWidth.value = mainEventsBlock.value.clientWidth / 2;
+        itemCount.value = 2;
       } else if (
         window.matchMedia('(min-width: 768px) and (max-width: 991px)').matches
       ) {
-        itemHeight.value = 320
-        itemWidth.value = mainEventsBlock.value.clientWidth / 2
-        itemCount.value = 2
+        itemHeight.value = 320;
+        itemWidth.value = mainEventsBlock.value.clientWidth / 2;
+        itemCount.value = 2;
       } else if (
         window.matchMedia('(min-width: 576px) and (max-width: 768px)').matches
       ) {
-        itemHeight.value = 300
-        itemWidth.value = mainEventsBlock.value.clientWidth
-        itemCount.value = 1
-      } else if (window.matchMedia('(min-width: 430px) and (max-width: 576px)').matches) {
-        itemHeight.value = 300
-        itemWidth.value = mainEventsBlock.value.clientWidth
-        itemCount.value = 1
+        itemHeight.value = 300;
+        itemWidth.value = mainEventsBlock.value.clientWidth;
+        itemCount.value = 1;
+      } else if (
+        window.matchMedia('(min-width: 430px) and (max-width: 576px)').matches
+      ) {
+        itemHeight.value = 300;
+        itemWidth.value = mainEventsBlock.value.clientWidth;
+        itemCount.value = 1;
       } else if (window.matchMedia('(max-width: 430px)').matches) {
-        itemHeight.value = 330
-        itemWidth.value = mainEventsBlock.value.clientWidth
-        itemCount.value = 1
+        itemHeight.value = 330;
+        itemWidth.value = mainEventsBlock.value.clientWidth;
+        itemCount.value = 1;
       }
-    }
+    };
     const loadDataPaginationData = (pageNumber, $state) => {
       paginationLoad({
         pageNumber,
         $state,
         forceUpdate: paginationPage.value === 1,
-      })
-    }
+      });
+    };
     return {
       emptyListMessages,
       scrollComponent,
@@ -463,20 +471,17 @@ export default {
       eventJoinToolTipItems,
 
       scrollToFirstElement: () => {
-        refList.value.scrollToFirstElement()
+        refList.value.scrollToFirstElement();
       },
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-148581: #148581;
- $color-f0f0f4: #f0f0f4;
-
+$color-148581: #148581;
+$color-f0f0f4: #f0f0f4;
 
 @import 'v-calendar/dist/style.css';
 .b-events-page {
@@ -563,7 +568,7 @@ export default {
           align-items: center;
           justify-content: space-between;
           width: 344px;
-          border: 1px solid #F0F0F4;
+          border: 1px solid #f0f0f4;
           border-radius: 6px;
           height: 36px;
           padding: 4px;
@@ -582,7 +587,7 @@ export default {
             line-height: 20px;
             text-align: center;
             color: $--b-main-black-color;
-            background: #F0F0F4;
+            background: #f0f0f4;
             border-radius: 4px;
             height: 100%;
             display: flex;

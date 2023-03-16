@@ -27,14 +27,14 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
-import { useI18n } from "vue-i18n";
+import { ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import { PaginationWorker } from '../../workers/pagination-worker'
-import SmartList from '../../components/smart-list/SmartList.vue'
-import EmptyList from '../../components/EmptyList.vue'
-import ScrollToTop from '../../components/ScrollToTop.vue'
-import InfiniteLoading from '../../workers/infinit-load-worker/InfiniteLoading.vue'
+import { PaginationWorker } from '../../workers/pagination-worker';
+import SmartList from '../../components/smart-list/SmartList.vue';
+import EmptyList from '../../components/EmptyList.vue';
+import ScrollToTop from '../../components/ScrollToTop.vue';
+import InfiniteLoading from '../../workers/infinit-load-worker/InfiniteLoading.vue';
 
 export default {
   name: 'SimpleListWrapper',
@@ -50,33 +50,33 @@ export default {
     },
   },
   setup(props) {
-    const refList = ref()
-    const blockScrollToTopIfExist = ref()
+    const refList = ref();
+    const blockScrollToTopIfExist = ref();
     const { t } = useI18n();
 
     const { paginationElements, paginationLoad, paginationPage } =
       PaginationWorker({
         paginationDataRequest: (page) => {
-          return props.requestForGetData(page)
+          return props.requestForGetData(page);
         },
-      })
+      });
 
-    paginationPage.value = 0
+    paginationPage.value = 0;
 
     const loadDataPaginationData = (pageNumber, $state) => {
       paginationLoad({
         pageNumber,
         $state,
         forceUpdate: paginationPage.value === 1,
-      })
-    }
+      });
+    };
 
     const emptyListMessages = computed(() => {
       return {
         title: t('no_records.noUsers.title'),
         description: t('no_records.noUsers.description'),
-      }
-    })
+      };
+    });
     return {
       paginationElements,
       blockScrollToTopIfExist,
@@ -85,11 +85,11 @@ export default {
       paginationPage,
       loadDataPaginationData,
       scrollToFirstElement: () => {
-        refList.value.scrollToFirstElement()
+        refList.value.scrollToFirstElement();
       },
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped></style>

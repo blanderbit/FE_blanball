@@ -11,16 +11,15 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
-import LoginComponent from '../../components/login-components/LoginComponent.vue'
-import AuthenticationMain from '../../components/AuthenticationMain.vue'
+import LoginComponent from '../../components/login-components/LoginComponent.vue';
+import AuthenticationMain from '../../components/AuthenticationMain.vue';
 
-import CONSTANTS from '../../consts/index'
+import CONSTANTS from '../../consts/index';
 
-
-import bgTabPicture from '../../assets/img/registration-back-tab1.svg'
-import rightSidePicture from '../../assets/img/registration-back-1.svg'
+import bgTabPicture from '../../assets/img/registration-back-tab1.svg';
+import rightSidePicture from '../../assets/img/registration-back-1.svg';
 
 export default {
   name: 'login',
@@ -32,20 +31,20 @@ export default {
     const mockData = computed(() => {
       return {
         LOGIN: CONSTANTS.register.authBlockTypes.login,
-      }
-    })
+      };
+    });
     const backgroundTab = computed(() => {
-      return bgTabPicture
-    })
+      return bgTabPicture;
+    });
     const rightSideStyle = computed(() => {
-      return { '--back-picture': `url(${rightSidePicture})` }
-    })
+      return { '--back-picture': `url(${rightSidePicture})` };
+    });
 
     return {
       mockData,
       backgroundTab,
       rightSideStyle,
-    }
+    };
   },
-}
+};
 </script>

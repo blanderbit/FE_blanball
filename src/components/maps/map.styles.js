@@ -230,11 +230,11 @@ export const PositionMapStyles = [
       },
     ],
   },
-]
+];
 
 export const PositionMapBackgroundStyle = {
   fillColor: 'white',
   strokeWeight: 2,
   strokeColor: '#448CCB',
   fillOpacity: 1,
-}
+};

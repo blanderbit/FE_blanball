@@ -1,5 +1,5 @@
-import { watch, ref } from 'vue'
-import { cloneDeep, isEqual } from 'lodash'
+import { watch, ref } from 'vue';
+import { cloneDeep, isEqual } from 'lodash';
 
 export const TransformedFiltersWorker = (config) => {
   const {
@@ -10,7 +10,7 @@ export const TransformedFiltersWorker = (config) => {
     emit,
     isMobile,
     isTablet,
-  } = config
+  } = config;
 
   if (
     !setupTransformedCallback ||
@@ -21,57 +21,57 @@ export const TransformedFiltersWorker = (config) => {
   ) {
     throw new Error(
       'TransformedFiltersWorker need emplement setupTransformedCallback, updateRealDataFromTransformed, props, props.modelValue, emit'
-    )
+    );
   }
 
-  const activeFilters = ref(false)
-  activeFilters.value = ifSecondLineWasUsed && ifSecondLineWasUsed()
+  const activeFilters = ref(false);
+  activeFilters.value = ifSecondLineWasUsed && ifSecondLineWasUsed();
 
-  const transformedFilters = ref(setupTransformedCallback(activeFilters))
+  const transformedFilters = ref(setupTransformedCallback(activeFilters));
 
   watch(
     () => props.modelValue,
     () => {
-      transformedFilters.value = setupTransformedCallback(activeFilters)
+      transformedFilters.value = setupTransformedCallback(activeFilters);
     },
     {
       deep: true,
     }
-  )
+  );
 
-  let timeout
+  let timeout;
   watch(
     () => cloneDeep(transformedFilters.value),
     (a, b) => {
-      console.log('transformedFilters.value')
+      console.log('transformedFilters.value');
       if (isEqual(a, b)) {
-        return
+        return;
       }
       if (a.ordering !== b.ordering || a.search !== b.search) {
-        updateRealData()
+        updateRealData();
       }
       if (!(isMobile.value || isTablet.value)) {
-        updateRealData()
+        updateRealData();
       }
     },
     {
       deep: true,
     }
-  )
+  );
 
   function updateRealData() {
-    clearTimeout(timeout)
+    clearTimeout(timeout);
     timeout = setTimeout(() => {
       emit(
         'update:value',
         updateRealDataFromTransformed(transformedFilters.value)
-      )
-    }, 500)
+      );
+    }, 500);
   }
 
   return {
     updateRealData,
     transformedFilters,
     activeFilters,
-  }
-}
+  };
+};

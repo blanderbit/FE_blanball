@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue'
+import { ref, watch } from 'vue';
 
-import Slider from '@vueform/slider'
+import Slider from '@vueform/slider';
 
 export default {
   components: {
@@ -36,27 +36,27 @@ export default {
     },
   },
   setup(props, { emit }) {
-    const minAge = ref(null)
-    const maxAge = ref(null)
-    const rangeValue = ref(null)
-    rangeValue.value = props.ageRange
+    const minAge = ref(null);
+    const maxAge = ref(null);
+    const rangeValue = ref(null);
+    rangeValue.value = props.ageRange;
 
-    minAge.value = props.ageRange[0]
-    maxAge.value = props.ageRange[1]
+    minAge.value = props.ageRange[0];
+    maxAge.value = props.ageRange[1];
 
     watch(
       () => props.ageRange,
       (newVal) => {
-        rangeValue.value = newVal
-        minAge.value = newVal[0]
-        maxAge.value = newVal[1]
+        rangeValue.value = newVal;
+        minAge.value = newVal[0];
+        maxAge.value = newVal[1];
       }
-    )
+    );
 
     function onSliderDrag(event) {
-      minAge.value = event[0]
-      maxAge.value = event[1]
-      emit('update:ageRange', event)
+      minAge.value = event[0];
+      maxAge.value = event[1];
+      emit('update:ageRange', event);
     }
 
     return {
@@ -64,20 +64,17 @@ export default {
       minAge,
       maxAge,
       rangeValue,
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
-
-
 // SCSS variables for hex colors
- $color-1ab2ad: #1ab2ad;
- $color-e9fcfb: #e9fcfb;
- $color-f9f9fc: #f9f9fc;
- $color-dfdeed: #dfdeed;
-
+$color-1ab2ad: #1ab2ad;
+$color-e9fcfb: #e9fcfb;
+$color-f9f9fc: #f9f9fc;
+$color-dfdeed: #dfdeed;
 
 .filter-style {
   --slider-connect-bg: $--b-main-green-color;

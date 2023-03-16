@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 export default {
   name: 'SearchModal',
@@ -27,14 +27,14 @@ export default {
       return {
         left: `${props.clientX}px`,
         top: `${props.clientY}px`,
-      }
-    })
+      };
+    });
 
     return {
       frameStyle,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

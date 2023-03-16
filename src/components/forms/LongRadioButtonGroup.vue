@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import RadioButton from './RadioButton.vue'
+import RadioButton from './RadioButton.vue';
 
 export default {
   name: 'LongRadioButtonGroup',
@@ -42,16 +42,13 @@ export default {
     },
   },
   emits: ['update:modelValue'],
-}
+};
 </script>
 
 <style scoped lang="scss">
-
-
 // SCSS variables for hex colors
- $color-f0f0f4: #f0f0f4;
- $color-efeff6: #efeff6;
-
+$color-f0f0f4: #f0f0f4;
+$color-efeff6: #efeff6;
 
 .b-long__radio-button {
   background: $--b-main-white-color;

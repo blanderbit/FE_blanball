@@ -6,4 +6,4 @@ export default {
   'read-all': 'Прочитати всі',
   'cancel-manage': 'Скасувати керування',
   'mark-as-viewed': 'Позначити як прочитане',
-}
+};

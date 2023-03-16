@@ -16,10 +16,10 @@
         </div>
         <div class="b-version-modal__buttons">
           <div class="b-version-modal__download">
-            {{  $t('versions.download-update') }}
+            {{ $t('versions.download-update') }}
           </div>
           <div class="b-version-modal__whats-new" @click="showVersionsPage">
-            {{  $t('versions.what-is-new') }}
+            {{ $t('versions.what-is-new') }}
           </div>
         </div>
       </div>
@@ -50,8 +50,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
 $color-fcfcfc: #fcfcfc;
 $color-8a8aa8: #8a8aa8;

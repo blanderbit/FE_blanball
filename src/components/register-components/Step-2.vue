@@ -77,14 +77,14 @@
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import InputComponent from '../forms/InputComponent.vue'
-import StepWrapper from './StepWrapper.vue'
+import InputComponent from '../forms/InputComponent.vue';
+import StepWrapper from './StepWrapper.vue';
 
-import tickWhite from '../../assets/img/tick-white.svg'
-import nikeIcon from '../../assets/img/nike-icon.svg'
+import tickWhite from '../../assets/img/tick-white.svg';
+import nikeIcon from '../../assets/img/nike-icon.svg';
 
 export default {
   name: 'Step2',
@@ -94,10 +94,10 @@ export default {
   },
   setup() {
     const tick = computed(() => {
-      return tickWhite
-    }) // TODO
+      return tickWhite;
+    }); // TODO
 
-    const { t } = useI18n()
+    const { t } = useI18n();
 
     const stepConfig = computed(() => {
       return {
@@ -117,19 +117,18 @@ export default {
           count: 2,
           active: 2,
           exist: true,
-        }
-      }
-    })
+        },
+      };
+    });
     return {
       tick,
       stepConfig,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
 .b-register-step__input {
   width: 384px;
   margin-top: 12px;

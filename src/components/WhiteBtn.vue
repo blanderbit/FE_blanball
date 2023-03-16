@@ -1,12 +1,16 @@
 <template>
-  <div class="b_white-btn" :style="styles" @click.stop="$emit('click-function')">
+  <div
+    class="b_white-btn"
+    :style="styles"
+    @click.stop="$emit('click-function')"
+  >
     <img v-if="icon" :src="icon" alt="" />
     {{ text }}
   </div>
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 export default {
   props: {
@@ -41,8 +45,8 @@ export default {
   },
   setup(props) {
     const btnWidth = computed(() => {
-      return props.width ? props.width + 'px' : '100%'
-    })
+      return props.width ? props.width + 'px' : '100%';
+    });
 
     const styles = computed(() => {
       return {
@@ -51,15 +55,15 @@ export default {
         color: props.mainColor,
         border: `${props.isBorder ? `1px solid ${props.mainColor}` : 'none'}`,
         height: props.height + 'px',
-      }
-    })
+      };
+    });
 
     return {
       btnWidth,
       styles,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

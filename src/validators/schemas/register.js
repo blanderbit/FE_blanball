@@ -3,7 +3,6 @@ import userNameValidator from '../methods/userName';
 
 userNameValidator('errors.invalid-name');
 
-
 export default {
   schema: (currentStep) => {
     if (currentStep === 1) {
@@ -46,7 +45,10 @@ export default {
         phone: yup
           .string()
           .required('errors.required')
-          .matches(/^\+38\s?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{2}[-.\s]?\d{2}$/, 'errors.invalid-phone'),
+          .matches(
+            /^\+38\s?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{2}[-.\s]?\d{2}$/,
+            'errors.invalid-phone'
+          ),
       });
     }
     if (currentStep === 8) {

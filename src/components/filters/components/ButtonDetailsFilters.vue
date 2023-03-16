@@ -11,10 +11,10 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
-import CrossIcon from '../../../assets/img/cross.svg'
-import SettingsIcon from '../../../assets/img/set-filter.svg'
+import CrossIcon from '../../../assets/img/cross.svg';
+import SettingsIcon from '../../../assets/img/set-filter.svg';
 
 export default {
   name: 'ButtonDetailsFilters',
@@ -27,22 +27,19 @@ export default {
   },
   setup(props) {
     const icon = computed(() => {
-      return props.active ? CrossIcon : SettingsIcon
-    })
+      return props.active ? CrossIcon : SettingsIcon;
+    });
 
     return {
       icon,
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
-
-
 // SCSS variables for hex colors
- $color-efeff6: #efeff6;
-
+$color-efeff6: #efeff6;
 
 .b-button-details__filters {
   width: 32px;

@@ -1,50 +1,59 @@
 <template>
-  <div
-    class="b-search-block"
-    :style="windowStyle"
-  >
+  <div class="b-search-block" :style="windowStyle">
     <div class="b-search-block__window">
-      <Spinner v-if="isSpinnerActive"/>
-          <div v-else class="b-modal-items__container" v-for="user in usersList">
-            <div  @click="itemListClick(user)"
-              :class="['b-user b-modal-item', 'w-100', 
-              {'b-modal-item__disabled': checkItemIsDisabled(user.id)}]">
-              <div>
-                <avatar
-                class="b-user__image"
-                @click="$emit('item-image-click', user.id)"
-                :link="user.profile.avatar_url"
-                :avatarType="'small-square'"
-                :full-name="`${user.profile.name} ${user.profile.last_name}`"
-              ></avatar>
-              </div>
-              <div class="b-user-main-info__container">
-                <div class="b-user__name">
-                {{ user.profile.name }} {{ user.profile.last_name }}
-              </div>
-                <img
-                  v-if="rightUserItemIcon"
-                  class="b-user-button" 
-                  :src="rightUserItemIcon" 
-                  alt="arrow-right-gray">
-              </div>
-              <span class="b-user-item__disabled-text" v-if="checkItemIsDisabled(user.id)">
-                {{ itemDisabledText }}
-              </span>
-            </div>
+      <Spinner v-if="isSpinnerActive" />
+      <div v-else class="b-modal-items__container" v-for="user in usersList">
+        <div
+          @click="itemListClick(user)"
+          :class="[
+            'b-user b-modal-item',
+            'w-100',
+            { 'b-modal-item__disabled': checkItemIsDisabled(user.id) },
+          ]"
+        >
+          <div>
+            <avatar
+              class="b-user__image"
+              @click="$emit('item-image-click', user.id)"
+              :link="user.profile.avatar_url"
+              :avatarType="'small-square'"
+              :full-name="`${user.profile.name} ${user.profile.last_name}`"
+            ></avatar>
           </div>
-          <span class="b-modal-no__results" v-if="!usersList.length && !isSpinnerActive">
-            {{ $t('errors.no-results') }}
+          <div class="b-user-main-info__container">
+            <div class="b-user__name">
+              {{ user.profile.name }} {{ user.profile.last_name }}
+            </div>
+            <img
+              v-if="rightUserItemIcon"
+              class="b-user-button"
+              :src="rightUserItemIcon"
+              alt="arrow-right-gray"
+            />
+          </div>
+          <span
+            class="b-user-item__disabled-text"
+            v-if="checkItemIsDisabled(user.id)"
+          >
+            {{ itemDisabledText }}
           </span>
+        </div>
+      </div>
+      <span
+        class="b-modal-no__results"
+        v-if="!usersList.length && !isSpinnerActive"
+      >
+        {{ $t('errors.no-results') }}
+      </span>
     </div>
   </div>
 </template>
 
 <script>
-import { computed, watch, ref } from 'vue'
+import { computed, watch, ref } from 'vue';
 
-import Spinner from '../workers/infinit-load-worker/Spinner.vue'
-import Avatar from './Avatar.vue'
+import Spinner from '../workers/infinit-load-worker/Spinner.vue';
+import Avatar from './Avatar.vue';
 
 export default {
   name: 'SearchBlockAll',
@@ -52,63 +61,61 @@ export default {
     Spinner,
     Avatar,
   },
-  emits: [
-    'item-image-click',
-    'item-list-click',
-  ],
+  emits: ['item-image-click', 'item-list-click'],
   props: {
     width: {
       type: [String, Number],
-      default: 'auto'
+      default: 'auto',
     },
     loading: {
       type: Boolean,
-      default: false
+      default: false,
     },
     itemIcon: {
       type: String,
-      default: ''
+      default: '',
     },
     itemDisabledText: {
       type: String,
-      default: ''
+      default: '',
     },
     disabladUsersIDSList: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     usersList: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   setup(props, { emit }) {
+    const isSpinnerActive = ref(props.loading);
+    const rightUserItemIcon = ref(props.itemIcon);
 
-    const isSpinnerActive = ref(props.loading)
-    const rightUserItemIcon = ref(props.itemIcon)
-
-    watch(() => props.loading, (newData, oldData) => {
-      isSpinnerActive.value = newData
-    })
+    watch(
+      () => props.loading,
+      (newData, oldData) => {
+        isSpinnerActive.value = newData;
+      }
+    );
 
     const checkItemIsDisabled = (user_id) => {
-      return props.disabladUsersIDSList.includes(user_id)
-    }
+      return props.disabladUsersIDSList.includes(user_id);
+    };
 
     const itemListClick = (user) => {
-
       if (!checkItemIsDisabled(user.id)) {
-        emit('item-list-click', user.id, user)
+        emit('item-list-click', user.id, user);
       }
-    }
+    };
 
     const windowStyle = computed(() => {
       if (String(props.width).split('').includes('%')) {
-        return { width: props.width }
+        return { width: props.width };
       } else {
-        return { width: `${props.width}px` }
+        return { width: `${props.width}px` };
       }
-    })
+    });
 
     return {
       windowStyle,
@@ -116,19 +123,16 @@ export default {
       rightUserItemIcon,
       itemListClick,
       checkItemIsDisabled,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-f0f0f4: #f0f0f4;
- $color-e2e2e9: #e2e2e9;
- $color-8a8aa8: #8a8aa8;
-
+$color-f0f0f4: #f0f0f4;
+$color-e2e2e9: #e2e2e9;
+$color-8a8aa8: #8a8aa8;
 
 .b-user-main-info__container {
   display: flex;
@@ -191,7 +195,7 @@ export default {
 
 .b-modal-item__disabled {
   opacity: 0.6;
-  border: 1px solid #E2E2E9;
+  border: 1px solid #e2e2e9;
 }
 .b-user-item__disabled-text {
   font-family: 'Inter';
@@ -199,6 +203,6 @@ export default {
   font-weight: 600;
   font-size: 12px;
   line-height: 20px;
-  color: #8A8AA8;
+  color: #8a8aa8;
 }
 </style>

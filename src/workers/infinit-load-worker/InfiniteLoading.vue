@@ -1,15 +1,15 @@
 <script setup>
-import Spinner from './Spinner.vue'
-import { onMounted, ref, toRefs, onUnmounted, watch, nextTick } from 'vue'
+import Spinner from './Spinner.vue';
+import { onMounted, ref, toRefs, onUnmounted, watch, nextTick } from 'vue';
 import {
   startObserver,
   stopObserver,
   stateHandler,
   initEmitter,
   isVisible,
-} from './utils.js'
+} from './utils.js';
 
-const emit = defineEmits(['infinite'])
+const emit = defineEmits(['infinite']);
 const props = defineProps({
   top: { type: Boolean, required: false },
   target: { type: [String, Boolean], required: false },
@@ -17,11 +17,11 @@ const props = defineProps({
   identifier: { required: false },
   firstload: { type: Boolean, required: false, default: true },
   slots: { type: Object, required: false },
-})
-const infiniteLoading = ref(null)
-const state = ref('ready')
-const { top, firstload, target, distance } = props
-const { identifier } = toRefs(props)
+});
+const infiniteLoading = ref(null);
+const state = ref('ready');
+const { top, firstload, target, distance } = props;
+const { identifier } = toRefs(props);
 const params = {
   infiniteLoading,
   target,
@@ -30,34 +30,34 @@ const params = {
   distance,
   emit: initEmitter(emit, stateHandler(state)),
   parentEl: null,
-}
+};
 const stateWatcher = () =>
   watch(state, async (newVal) => {
-    const parentEl = params.parentEl || document.documentElement
-    const prevHeight = parentEl.scrollHeight
-    await nextTick()
+    const parentEl = params.parentEl || document.documentElement;
+    const prevHeight = parentEl.scrollHeight;
+    await nextTick();
     if (newVal == 'loaded' && top)
-      parentEl.scrollTop = parentEl.scrollHeight - prevHeight
+      parentEl.scrollTop = parentEl.scrollHeight - prevHeight;
     if (newVal == 'loaded' && isVisible(infiniteLoading.value, params.parentEl))
-      params.emit()
-    if (newVal == 'complete') stopObserver()
-  })
+      params.emit();
+    if (newVal == 'complete') stopObserver();
+  });
 const identifierWatcher = () =>
   watch(identifier, (value) => {
-    if (!value) return
+    if (!value) return;
 
-    state.value = 'ready'
-    stopObserver()
-    startObserver(params)
-  })
+    state.value = 'ready';
+    stopObserver();
+    startObserver(params);
+  });
 onMounted(() => {
-  startObserver(params)
-  stateWatcher()
-  if (identifier) identifierWatcher()
-})
+  startObserver(params);
+  stateWatcher();
+  if (identifier) identifierWatcher();
+});
 onUnmounted(() => {
-  stopObserver()
-})
+  stopObserver();
+});
 </script>
 
 <template>

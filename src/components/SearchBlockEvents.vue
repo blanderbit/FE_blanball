@@ -143,12 +143,12 @@
 </template>
 
 <script>
-import { computed, ref, reactive } from 'vue'
+import { computed, ref, reactive } from 'vue';
 
-import Dropdown from './forms/Dropdown.vue'
-import InputComponent from './forms/InputComponent.vue'
+import Dropdown from './forms/Dropdown.vue';
+import InputComponent from './forms/InputComponent.vue';
 
-import search from '../assets/img/search.svg'
+import search from '../assets/img/search.svg';
 
 export default {
   components: {
@@ -170,18 +170,18 @@ export default {
     },
   },
   setup() {
-    const plan = ref('free')
+    const plan = ref('free');
     const range = reactive({
       start: new Date(2020, 9, 12),
       end: new Date(2020, 9, 16),
-    })
+    });
 
     const searchIcon = computed(() => {
-      return search
-    })
+      return search;
+    });
 
     function changePlanSearch(val) {
-      plan.value = val
+      plan.value = val;
     }
 
     return {
@@ -189,9 +189,9 @@ export default {
       searchIcon,
       changePlanSearch,
       range,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

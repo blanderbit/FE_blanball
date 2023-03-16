@@ -11,7 +11,8 @@
             {{ $t('users.filters') }}
           </div>
           <div class="b-modal-filters__subtitle">
-            {{ $t('users.found') }} {{ elementsCount }} {{ $t('users.advertisments') }}
+            {{ $t('users.found') }} {{ elementsCount }}
+            {{ $t('users.advertisments') }}
           </div>
           <div class="b-modal-filters__game-type-input">
             <Dropdown
@@ -73,19 +74,19 @@
 </template>
 
 <script>
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue';
 
-import ModalWindow from '../ModalWindows/ModalWindow.vue'
-import Dropdown from '../forms/Dropdown.vue'
-import GreenBtn from '../GreenBtn.vue'
-import RadioGenderBox from './components/RadioGenderBox.vue'
-import ModalPositionMap from '../maps/ModalPositionMap.vue'
-import ClearFilters from './components/ClearFilters.vue'
-import InputComponent from '../forms/InputComponent.vue'
+import ModalWindow from '../ModalWindows/ModalWindow.vue';
+import Dropdown from '../forms/Dropdown.vue';
+import GreenBtn from '../GreenBtn.vue';
+import RadioGenderBox from './components/RadioGenderBox.vue';
+import ModalPositionMap from '../maps/ModalPositionMap.vue';
+import ClearFilters from './components/ClearFilters.vue';
+import InputComponent from '../forms/InputComponent.vue';
 
-import CONSTANTS from '../../consts/index'
+import CONSTANTS from '../../consts/index';
 
-import tickIcon from '../../assets/img/tick-white.svg'
+import tickIcon from '../../assets/img/tick-white.svg';
 
 export default {
   name: 'ModalUsersFilters',
@@ -125,8 +126,8 @@ export default {
     },
     elementsCount: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
   emits: [
     'closeModal',
@@ -137,20 +138,20 @@ export default {
     'update:status',
     'update:location',
     'update:dateAndTime',
-    'update:search'
+    'update:search',
   ],
   setup(props, { emit }) {
-    const gameTypeData = ref(props.dropdownGameType)
-    const gameStatusData = ref(props.status)
-    const genderData = ref(props.gender)
-    const searchData = ref(props.search)
-    const locationData = ref(props.location)
-    const dateAndTimeData = ref(props.dateAndTime)
+    const gameTypeData = ref(props.dropdownGameType);
+    const gameStatusData = ref(props.status);
+    const genderData = ref(props.gender);
+    const searchData = ref(props.search);
+    const locationData = ref(props.location);
+    const dateAndTimeData = ref(props.dateAndTime);
 
-    const sportTypeDropdown = CONSTANTS.event_page.sport_type_dropdown
-    const statusDropdown = CONSTANTS.event_page.status_ropdown
+    const sportTypeDropdown = CONSTANTS.event_page.sport_type_dropdown;
+    const statusDropdown = CONSTANTS.event_page.status_ropdown;
 
-    const icon = computed(() => tickIcon)
+    const icon = computed(() => tickIcon);
 
     const calendar = ref({
       inputMask: 'YYYY-MM-DD',
@@ -158,61 +159,61 @@ export default {
         type: 'string',
         mask: 'YYYY-MM-DD', // Uses 'iso' if missing
       },
-    })
+    });
 
     watch(
       () => genderData.value,
       (newVal) => {
-        emit('update:gender', newVal)
+        emit('update:gender', newVal);
       }
-    )
+    );
     watch(
       () => gameTypeData.value,
       (newVal) => {
-        emit('update:dropdownGameType', newVal)
+        emit('update:dropdownGameType', newVal);
       }
-    )
+    );
     watch(
       () => searchData.value,
       (newVal) => {
-        emit('update:search', newVal)
+        emit('update:search', newVal);
       }
-    )
+    );
     watch(
       () => gameStatusData.value,
       (newVal) => {
-        emit('update:status', newVal)
+        emit('update:status', newVal);
       }
-    )
+    );
     watch(
       () => locationData.value,
       (newVal) => {
-        emit('update:location', newVal)
+        emit('update:location', newVal);
       }
-    )
+    );
     watch(
       () => dateAndTimeData.value,
       (newVal) => {
-        emit('update:dateAndTime', newVal)
+        emit('update:dateAndTime', newVal);
       }
-    )
+    );
 
     function setFilters() {
-      emit('setModalWindowFilters')
-      emit('closeModal')
+      emit('setModalWindowFilters');
+      emit('closeModal');
     }
     function clearAllData() {
-      emit('clearFilters')
-      emit('closeModal')
-      gameStatusData.value = ''
-      gameTypeData.value = ''
-      searchData.value = ''
-      locationData.value = {}
-      genderData.value = ''
+      emit('clearFilters');
+      emit('closeModal');
+      gameStatusData.value = '';
+      gameTypeData.value = '';
+      searchData.value = '';
+      locationData.value = {};
+      genderData.value = '';
       dateAndTimeData.value = {
-        start: '', 
-        end: ''
-      }
+        start: '',
+        end: '',
+      };
     }
 
     return {
@@ -228,20 +229,17 @@ export default {
       genderData,
       dateAndTimeData,
       calendar,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-dfdeed: #dfdeed;
- $color-808181: #808181;
- $color-0a3435: #0a3435;
- $color-e9fcfb: #e9fcfb;
-
+$color-dfdeed: #dfdeed;
+$color-808181: #808181;
+$color-0a3435: #0a3435;
+$color-e9fcfb: #e9fcfb;
 
 .b-modal-filters {
   &__title {

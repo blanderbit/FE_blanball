@@ -34,11 +34,11 @@
 </template>
 
 <script>
-import Notification from '../Notification.vue'
-import { useRouter } from 'vue-router'
-import { ref, watch, nextTick } from 'vue'
-import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller'
-import { notificationButtonHandlerMessage } from '../../workers/utils-worker'
+import Notification from '../Notification.vue';
+import { useRouter } from 'vue-router';
+import { ref, watch, nextTick } from 'vue';
+import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller';
+import { notificationButtonHandlerMessage } from '../../workers/utils-worker';
 
 export default {
   name: 'Notifications',
@@ -63,19 +63,19 @@ export default {
   },
   emits: ['update:selected-list', 'update:scrollbar-existing'],
   setup(context, { emit, expose }) {
-    let activeNotification = ref(0)
-    let list = ref([])
-    let scroller = ref()
-    const router = useRouter()
+    let activeNotification = ref(0);
+    let list = ref([]);
+    let scroller = ref();
+    const router = useRouter();
 
     watch(
       () => context.selectedList,
       () => {
-        const array = [...context.selectedList]
-        list.value = Array.isArray(array) ? (!array.length ? [] : array) : []
-        scroller.value.forceUpdate()
+        const array = [...context.selectedList];
+        list.value = Array.isArray(array) ? (!array.length ? [] : array) : [];
+        scroller.value.forceUpdate();
       }
-    )
+    );
 
     watch(
       () => context.notifications,
@@ -84,13 +84,13 @@ export default {
           emit(
             'update:scrollbar-existing',
             scroller.value.$el.scrollHeight > scroller.value.$el.clientHeight
-          )
-        })
+          );
+        });
       },
       {
         immediate: true,
       }
-    )
+    );
 
     const handlerAction = async (button, notificationInstance) => {
       await notificationButtonHandlerMessage({
@@ -98,34 +98,34 @@ export default {
         notificationInstance,
         router,
         activeNotification,
-      })
-    }
+      });
+    };
 
     const handleSelected = (e) => {
       if (e.selected) {
-        list.value.push(e.notification.notification_id)
+        list.value.push(e.notification.notification_id);
       } else {
         const index = list.value.findIndex(
           (item) => item === e.notification.notification_id
-        )
-        list.value.splice(index, 1)
+        );
+        list.value.splice(index, 1);
       }
-      emit('update:selected-list', list.value)
-    }
+      emit('update:selected-list', list.value);
+    };
 
     expose({
       scrollToItem: (index) => scroller.value.scrollToItem(index),
       scrollToFirstElement: () => scroller.value.scrollToItem(0),
-    })
+    });
 
     return {
       activeNotification,
       handlerAction,
       handleSelected,
       scroller,
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped lang="scss">

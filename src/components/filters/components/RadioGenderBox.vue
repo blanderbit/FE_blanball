@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { watch, ref } from 'vue'
+import { watch, ref } from 'vue';
 
 export default {
   name: 'RadioGenderBox',
@@ -33,35 +33,32 @@ export default {
   },
   emits: ['update:gender'],
   setup(props, { emit }) {
-    const genderRadio = ref(props.gender)
+    const genderRadio = ref(props.gender);
 
     watch(
       () => props.gender,
       (newData) => {
-        genderRadio.value = newData
+        genderRadio.value = newData;
       }
-    )
+    );
     watch(
       () => genderRadio.value,
       () => {
-        emit('update:gender', genderRadio.value)
+        emit('update:gender', genderRadio.value);
       }
-    )
+    );
 
     return {
       genderRadio,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-dfdeed: #dfdeed;
- $color-148581: #148581;
-
+$color-dfdeed: #dfdeed;
+$color-148581: #148581;
 
 .b-radio-btns {
   display: flex;

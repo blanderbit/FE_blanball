@@ -41,11 +41,11 @@
 </template>
 
 <script>
-import { ref, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
+import { ref, watch, nextTick, onMounted, onBeforeUnmount } from 'vue';
 
-import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
+import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller';
 
-import Notification from '../Notification.vue'
+import Notification from '../Notification.vue';
 
 export default {
   name: 'Notifications',
@@ -78,28 +78,28 @@ export default {
   },
   emits: ['update:selected-list', 'update:scrollbar-existing'],
   setup(context, { emit, expose }) {
-    let activeNotification = ref(0)
-    let list = ref([])
-    const itemWidth = ref(0)
-    const itemHeight = ref(0)
-    const itemMinHeight = ref(0)
-    const itemCount = ref(0)
-    let scroller = ref()
+    let activeNotification = ref(0);
+    let list = ref([]);
+    const itemWidth = ref(0);
+    const itemHeight = ref(0);
+    const itemMinHeight = ref(0);
+    const itemCount = ref(0);
+    let scroller = ref();
 
     watch(
       () => context.selectedList,
       () => {
-        const array = [...context.selectedList]
-        list.value = Array.isArray(array) ? (!array.length ? [] : array) : []
-        scroller.value.forceUpdate()
+        const array = [...context.selectedList];
+        list.value = Array.isArray(array) ? (!array.length ? [] : array) : [];
+        scroller.value.forceUpdate();
       }
-    )
+    );
     watch(
       () => context.list,
       () => {
-        setTimeout(() => scroller.value.forceUpdate(true), 100)
+        setTimeout(() => scroller.value.forceUpdate(true), 100);
       }
-    )
+    );
 
     function detectResize() {
       if (context.detectSizesForCards) {
@@ -108,18 +108,18 @@ export default {
           itemCount,
           itemHeight,
           itemMinHeight,
-        })
+        });
       }
     }
 
     onMounted(() => {
-      window.addEventListener('resize', detectResize)
-      detectResize()
-    })
+      window.addEventListener('resize', detectResize);
+      detectResize();
+    });
 
     onBeforeUnmount(() => {
-      window.removeEventListener('resize', detectResize)
-    })
+      window.removeEventListener('resize', detectResize);
+    });
 
     watch(
       () => context.list,
@@ -129,19 +129,19 @@ export default {
             emit(
               'update:scrollbar-existing',
               scroller.value.$el.scrollHeight > scroller.value.$el.clientHeight
-            )
-          }, 0)
-        })
+            );
+          }, 0);
+        });
       },
       {
         immediate: true,
       }
-    )
+    );
 
     expose({
       scrollToItem: (index) => scroller.value.scrollToItem(index),
       scrollToFirstElement: () => scroller.value.scrollToItem(0),
-    })
+    });
 
     return {
       activeNotification,
@@ -150,17 +150,14 @@ export default {
       itemWidth,
       itemCount,
       itemMinHeight,
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
-
-
 // SCSS variables for hex colors
- $color-efeff6: #efeff6;
-
+$color-efeff6: #efeff6;
 
 .scroller {
   height: 100%;

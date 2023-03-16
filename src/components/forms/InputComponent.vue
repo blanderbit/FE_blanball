@@ -47,24 +47,25 @@
         />
       </slot>
     </div>
-    <p class="b-input__error-message">{{ modelErrorMessage ? t(modelErrorMessage) : '' }}</p>
+    <p class="b-input__error-message">
+      {{ modelErrorMessage ? t(modelErrorMessage) : '' }}
+    </p>
   </div>
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import { CustomModelWorker } from '../../workers/custom-model-worker/index'
+import { CustomModelWorker } from '../../workers/custom-model-worker/index';
 
-import eyeCross from '../../assets/img/eye-crossed.svg'
-import eyeOpen from '../../assets/img/eye-opened.svg'
-
+import eyeCross from '../../assets/img/eye-crossed.svg';
+import eyeOpen from '../../assets/img/eye-opened.svg';
 
 const PASSWORD_TYPES = {
   PASSWORD: 'password',
   TEXT: 'text',
-}
+};
 
 // TODO vue 3 fully, validate message
 export default {
@@ -126,7 +127,7 @@ export default {
     isReadOnly: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   emits: [
     'iconClick',
@@ -139,50 +140,50 @@ export default {
       modelValue: staticModelValue,
       modelErrorMessage,
       modelHandlers,
-    } = CustomModelWorker(props, emit)
+    } = CustomModelWorker(props, emit);
     if (props.modelValue) {
-      modelHandlers.value.input[0](props.modelValue)
-      modelHandlers.value.input[1](props.modelValue, true)
+      modelHandlers.value.input[0](props.modelValue);
+      modelHandlers.value.input[1](props.modelValue, true);
     }
     watch(
       () => props.modelValue,
       () => {
-        modelHandlers.value.input[0](props.modelValue)
-        modelHandlers.value.input[1](props.modelValue, true)
+        modelHandlers.value.input[0](props.modelValue);
+        modelHandlers.value.input[1](props.modelValue, true);
       },
       {
         immediate: props.immediate,
       }
-    )
-    const inputType = ref(null)
-    const rightIcon = ref('')
-    const input = ref(null)
+    );
+    const inputType = ref(null);
+    const rightIcon = ref('');
+    const input = ref(null);
 
-    expose({staticModelValue})
+    expose({ staticModelValue });
 
     const inputStyle = computed(() => {
       return {
         'padding-left': 10 + props.titleWidth + 'px',
         'padding-right': rightIcon.value?.length ? '50px' : '10px',
-      }
-    })
+      };
+    });
     const inputWrapper = computed(() => {
       return {
         height: props.height ? props.height + 2 + 'px' : '100%',
-      }
-    })
+      };
+    });
 
     function iconClickAction() {
       if (props.type === PASSWORD_TYPES.PASSWORD) {
         if (inputType.value === PASSWORD_TYPES.PASSWORD) {
-          rightIcon.value = eyeOpen
-          inputType.value = PASSWORD_TYPES.TEXT
+          rightIcon.value = eyeOpen;
+          inputType.value = PASSWORD_TYPES.TEXT;
         } else {
-          rightIcon.value = eyeCross
-          inputType.value = PASSWORD_TYPES.PASSWORD
+          rightIcon.value = eyeCross;
+          inputType.value = PASSWORD_TYPES.PASSWORD;
         }
       } else {
-        emit('icon-click')
+        emit('icon-click');
       }
     }
 
@@ -190,28 +191,31 @@ export default {
       emit('sendInputCoordinates', {
         x: input.value.parentNode.offsetLeft,
         y: input.value.parentNode.offsetHeight,
-      })
+      });
     }
 
     onMounted(() => {
       if (props.type === PASSWORD_TYPES.PASSWORD) {
-        rightIcon.value = eyeCross
-        inputType.value = props.type
+        rightIcon.value = eyeCross;
+        inputType.value = props.type;
       } else {
-        rightIcon.value = props.icon
+        rightIcon.value = props.icon;
       }
-      window.addEventListener('resize', resizeFunction)
-    })
+      window.addEventListener('resize', resizeFunction);
+    });
 
-    watch(() => props.icon, (newData, oldData) => {
-      rightIcon.value = newData
-    })
+    watch(
+      () => props.icon,
+      (newData, oldData) => {
+        rightIcon.value = newData;
+      }
+    );
 
     onBeforeUnmount(() => {
-      window.removeEventListener('resize', resizeFunction)
-    })
+      window.removeEventListener('resize', resizeFunction);
+    });
 
-    const { t } = useI18n()
+    const { t } = useI18n();
     return {
       iconClickAction,
       staticModelValue,
@@ -223,17 +227,14 @@ export default {
       inputWrapper,
       input,
       t,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-dfdeed: #dfdeed;
-
+$color-dfdeed: #dfdeed;
 
 @import '../../assets/styles/forms.scss';
 

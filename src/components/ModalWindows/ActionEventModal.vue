@@ -1,7 +1,7 @@
 <template>
   <div @click.self="$emit('closeModal')" class="b-action-event-modal__wrapper">
     <div class="b-action-event-modal__modal-window">
-     <img :src="modalData.image" alt="">
+      <img :src="modalData.image" alt="" />
       <div class="b-action-event-modal__title">
         {{ modalData.title }}
       </div>
@@ -14,18 +14,17 @@
 
 <script>
 export default {
-    emits: ['closeModal'],
-    props: {
-        modalData: {
-            type: Object,
-            default: () => {}
-        }
-    }
-}
+  emits: ['closeModal'],
+  props: {
+    modalData: {
+      type: Object,
+      default: () => {},
+    },
+  },
+};
 </script>
 
-<style lang="scss" scoped> 
-
+<style lang="scss" scoped>
 .b-action-event-modal__wrapper {
   position: fixed;
   top: 0;
@@ -59,7 +58,7 @@ export default {
       margin-bottom: 4px;
     }
     .b-action-event-modal__subtitle {
-      @include inter(14px, 400,$--b-main-gray-color);
+      @include inter(14px, 400, $--b-main-gray-color);
       line-height: 20px;
       display: flex;
       align-items: center;

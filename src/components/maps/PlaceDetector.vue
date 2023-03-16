@@ -29,12 +29,12 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-import ModalWindow from '../ModalWindows/ModalWindow.vue'
-import PositionMap from '../../components/maps/PositionMap.vue'
-import GreenBtn from '../../components/GreenBtn.vue'
-import Loading from '../../workers/loading-worker/Loading.vue'
+import ModalWindow from '../ModalWindows/ModalWindow.vue';
+import PositionMap from '../../components/maps/PositionMap.vue';
+import GreenBtn from '../../components/GreenBtn.vue';
+import Loading from '../../workers/loading-worker/Loading.vue';
 
 export default {
   name: 'PlaceDetector',
@@ -48,23 +48,20 @@ export default {
     place: {},
   },
   setup() {
-    const activeModal = ref(false)
-    const loading = ref(true)
+    const activeModal = ref(false);
+    const loading = ref(true);
 
     return {
       activeModal,
       loading,
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
-
-
 // SCSS variables for hex colors
- $color-fafafa: #fafafa;
-
+$color-fafafa: #fafafa;
 
 .b-place-detector {
   display: flex;

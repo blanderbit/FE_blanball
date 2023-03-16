@@ -1,6 +1,5 @@
 <template>
-  <div
-    class="b-invite-user-to-event-modal__wrapper">
+  <div class="b-invite-user-to-event-modal__wrapper">
     <div class="b-invite-user-to-event-modal__modal-window">
       <div class="b-invite-user-to-event-modal__top-side">
         <div class="b-invite-user-to-event-modal__title">
@@ -8,15 +7,19 @@
         </div>
         <div class="b-invite-user-to-event-modal__subtitle">
           {{ $t('modals.invite_user_to_event.main-text') }}
-          <span>{{ userData.profile.last_name }} {{ userData.profile.name }}</span>
+          <span
+            >{{ userData.profile.last_name }} {{ userData.profile.name }}</span
+          >
         </div>
       </div>
       <div class="b-invite-user-to-event-modal__main-side">
-        <div :class="[
-          'b-invite-user-to-event-modal__invite-button',
-          {'active': isEventsListOpened}
-        ]"
-          @click="openEventsList">
+        <div
+          :class="[
+            'b-invite-user-to-event-modal__invite-button',
+            { active: isEventsListOpened },
+          ]"
+          @click="openEventsList"
+        >
           Оберіть подію
         </div>
         <TextAreaComponent
@@ -34,10 +37,7 @@
           :isBorder="false"
           @click-function="$emit('closeModal')"
         />
-        <GreenBtn
-          :width="100"
-          :height="32"
-          :text="'Запросити'"/>
+        <GreenBtn :width="100" :height="32" :text="'Запросити'" />
       </div>
     </div>
   </div>
@@ -64,12 +64,11 @@ export default {
     WhiteBtn,
   },
   setup() {
-
-    const isEventsListOpened = ref(false)
+    const isEventsListOpened = ref(false);
 
     const openEventsList = () => {
-      isEventsListOpened.value = true
-    }
+      isEventsListOpened.value = true;
+    };
 
     return {
       isEventsListOpened,
@@ -135,7 +134,7 @@ $color-dfdeed: #dfdeed;
         color: $--b-main-black-color;
         margin: 16px 0px;
 
-        &.active{
+        &.active {
           border: 1px solid $--b-main-green-color;
         }
       }

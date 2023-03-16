@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router'
-import GreenBtn from '../components/GreenBtn.vue'
-import { ROUTES } from '../router/router.const'
+import { useRouter } from 'vue-router';
+import GreenBtn from '../components/GreenBtn.vue';
+import { ROUTES } from '../router/router.const';
 
 export default {
   name: '404',
@@ -37,25 +37,22 @@ export default {
     GreenBtn,
   },
   setup() {
-    const router = useRouter()
+    const router = useRouter();
 
     function goToMainPage() {
-      router.push(ROUTES.APPLICATION.EVENTS.absolute)
+      router.push(ROUTES.APPLICATION.EVENTS.absolute);
     }
 
     return {
       goToMainPage,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-f5fffe: #f5fffe;
-
+$color-f5fffe: #f5fffe;
 
 .b-error-page {
   background: $color-f5fffe;

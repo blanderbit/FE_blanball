@@ -13,7 +13,6 @@ import { ROUTES } from './router.const';
 import { useUserDataStore } from '../stores/userData';
 import { prepareEventUpdateData } from '../utils/prepareEventUpdateData';
 
-
 const usersData = () => {
   const userStore = useUserDataStore();
   if (!Object.keys(userStore.user).length) {
@@ -25,7 +24,6 @@ const usersData = () => {
     });
   }
 };
-
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

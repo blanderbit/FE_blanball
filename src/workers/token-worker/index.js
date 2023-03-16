@@ -1,5 +1,5 @@
-import { TokenServiceWorker } from './token.worker'
+import { TokenServiceWorker } from './token.worker';
 
-export const TokenWorker = new TokenServiceWorker()
+export const TokenWorker = new TokenServiceWorker();
 
-TokenWorker.setKeyName('token')
+TokenWorker.setKeyName('token');

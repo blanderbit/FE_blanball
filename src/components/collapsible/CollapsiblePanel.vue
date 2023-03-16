@@ -44,11 +44,11 @@ import {
   ref,
   onMounted,
   watch,
-} from 'vue'
+} from 'vue';
 
-import { toggleIcon } from './vue-collapsible-panel.constant'
-import { useCollapsiblePanelStore } from './composables/vue-collapsible-panel.store'
-import { v4 as uuid } from 'uuid'
+import { toggleIcon } from './vue-collapsible-panel.constant';
+import { useCollapsiblePanelStore } from './composables/vue-collapsible-panel.store';
+import { v4 as uuid } from 'uuid';
 
 export default defineComponent({
   name: 'CollapsiblePanel',
@@ -59,66 +59,66 @@ export default defineComponent({
     },
   },
   setup(props, context) {
-    const idPanel = `panel-${uuid()}`
-    const panelRef = ref()
-    const bodyRef = ref()
-    const bodyContentRef = ref()
+    const idPanel = `panel-${uuid()}`;
+    const panelRef = ref();
+    const bodyRef = ref();
+    const bodyContentRef = ref();
     const { panelExpanded, togglePanelExpandedStatus, setPanelExpandedStatus } =
-      useCollapsiblePanelStore()
+      useCollapsiblePanelStore();
 
     const body = computed(() => ({
       hasContent: context.slots.content,
       dataKey: uuid(),
-    }))
+    }));
 
     const idGroup = computed(() => {
-      return panelRef.value?.parentElement?.getAttribute('data-id-group') || ''
-    })
+      return panelRef.value?.parentElement?.getAttribute('data-id-group') || '';
+    });
 
     const isExpanded = computed(
       () => panelExpanded(idGroup.value, idPanel).value && body.value.hasContent
-    )
+    );
 
     const toggle = () => {
-      if (!body.value.hasContent) return
+      if (!body.value.hasContent) return;
 
       context.emit(
         'update:expanding',
         togglePanelExpandedStatus(idGroup.value, idPanel)
-      )
-    }
+      );
+    };
 
     const collapse = (element: HTMLElement) => {
-      element.style.height = '0'
-    }
+      element.style.height = '0';
+    };
 
     const expand = (element: HTMLElement) => {
-      element.style.height = `${element.scrollHeight}px`
-    }
+      element.style.height = `${element.scrollHeight}px`;
+    };
 
     const updateBodyHeight = async (): Promise<void> => {
-      await nextTick()
+      await nextTick();
 
-      if (!bodyRef.value || !bodyContentRef.value) return
+      if (!bodyRef.value || !bodyContentRef.value) return;
 
       bodyRef.value.style.height = `${Math.min(
         bodyContentRef.value.scrollHeight,
         bodyRef.value.scrollHeight
-      )}px`
-    }
+      )}px`;
+    };
 
     onMounted(() => {
-      setPanelExpandedStatus(idGroup.value, idPanel, props.expanding)
-    })
+      setPanelExpandedStatus(idGroup.value, idPanel, props.expanding);
+    });
 
     watch(
       () => props.expanding,
       () => setPanelExpandedStatus(idGroup.value, idPanel, props.expanding)
-    )
+    );
 
     onUpdated(() => {
-      updateBodyHeight()
-    })
+      updateBodyHeight();
+    });
 
     return {
       body,
@@ -130,9 +130,9 @@ export default defineComponent({
       expand,
       toggle,
       toggleIcon,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

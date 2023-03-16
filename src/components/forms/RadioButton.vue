@@ -31,11 +31,11 @@
 </template>
 
 <script>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch } from 'vue';
 
-import { v4 as uuid } from 'uuid'
+import { v4 as uuid } from 'uuid';
 
-import { CustomModelWorker } from '../../workers/custom-model-worker'
+import { CustomModelWorker } from '../../workers/custom-model-worker';
 
 export default {
   name: 'RadioButton',
@@ -80,21 +80,21 @@ export default {
       modelValue: staticModelValue,
       modelErrorMessage,
       modelHandlers,
-    } = CustomModelWorker(props, emit)
+    } = CustomModelWorker(props, emit);
 
     watch(
       () => staticModelValue.value,
       (newVal) => {
-        emit('getRadioValue', newVal)
+        emit('getRadioValue', newVal);
       }
-    )
+    );
 
     const labelStyle = computed(() => {
       return {
         width: props.width,
         color: `${props.isDisabled ? '#7F7DB5' : '$--b-main-black-color'}`,
-      }
-    })
+      };
+    });
 
     return {
       staticModelValue,
@@ -102,18 +102,15 @@ export default {
       modelHandlers,
       labelStyle,
       id: ref(uuid()),
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
-
-
 // SCSS variables for hex colors
- $color-f4f4f4: #f4f4f4;
- $color-dfdeed: #dfdeed;
-
+$color-f4f4f4: #f4f4f4;
+$color-dfdeed: #dfdeed;
 
 @import '../../assets/styles/forms.scss';
 

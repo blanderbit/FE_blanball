@@ -82,21 +82,20 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-import { Form } from '@system.it.flumx.com/vee-validate'
+import { Form } from '@system.it.flumx.com/vee-validate';
 
-import GreenBtn from '../GreenBtn.vue'
-import InputComponent from '../forms/InputComponent.vue'
-import Checkbox from '../forms/Checkbox.vue'
+import GreenBtn from '../GreenBtn.vue';
+import InputComponent from '../forms/InputComponent.vue';
+import Checkbox from '../forms/Checkbox.vue';
 
-import { API } from '../../workers/api-worker/api.worker'
-import { TokenWorker } from '../../workers/token-worker'
+import { API } from '../../workers/api-worker/api.worker';
+import { TokenWorker } from '../../workers/token-worker';
 
-import { ROUTES } from '../../router/router.const'
-import SCHEMAS  from '../../validators/schemas'
-
+import { ROUTES } from '../../router/router.const';
+import SCHEMAS from '../../validators/schemas';
 
 export default {
   name: 'LoginComponent',
@@ -107,77 +106,75 @@ export default {
     Checkbox,
   },
   setup() {
-    const router = useRouter()
+    const router = useRouter();
 
-    const isWrongCreds = ref(false)
+    const isWrongCreds = ref(false);
     const showInvalidCredentials = computed(() => {
-      return isWrongCreds.value
-    })
+      return isWrongCreds.value;
+    });
 
     const schema = computed(() => {
-      return SCHEMAS.login.schema
-    })
+      return SCHEMAS.login.schema;
+    });
 
     const warningTopStyle = computed(() => {
       return {
         top: showInvalidCredentials.value ? '20px' : '-50px',
-      }
-    })
+      };
+    });
 
-    const initialValues = ref({})
+    const initialValues = ref({});
 
     if (localStorage.getItem('email')) {
-      initialValues.value.email = localStorage.getItem('email')
+      initialValues.value.email = localStorage.getItem('email');
     }
 
     if (localStorage.getItem('password')) {
-      initialValues.value.password = localStorage.getItem('password')
+      initialValues.value.password = localStorage.getItem('password');
     }
 
-
-    
     const handleLogin = async (data) => {
-      const { valid } = await data.validate()
+      const { valid } = await data.validate();
 
       if (!valid) {
-        return false
+        return false;
       }
 
       try {
         const apiRequestResult = await API.AuthorizationService.login(
           data.controlledValues
-        )
+        );
 
-        TokenWorker.setToken(apiRequestResult.data.tokens.access)
+        TokenWorker.setToken(apiRequestResult.data.tokens.access);
 
         if (data.values.save_credentials) {
-          localStorage.setItem('password', data.controlledValues.password)
-          localStorage.setItem('email', data.controlledValues.email)
+          localStorage.setItem('password', data.controlledValues.password);
+          localStorage.setItem('email', data.controlledValues.email);
         }
-        const redirectUrl = router.currentRoute.value.query.redirectUrl
+        const redirectUrl = router.currentRoute.value.query.redirectUrl;
         if (redirectUrl) {
-          const resolveRouter = router.resolve(redirectUrl)
+          const resolveRouter = router.resolve(redirectUrl);
           if (
             !redirectUrl ||
             resolveRouter?.matched?.find((match) =>
               match?.path?.includes('pathMatch')
             )
           ) {
-            return router.push(ROUTES.APPLICATION.EVENTS.absolute)
+            return router.push(ROUTES.APPLICATION.EVENTS.absolute);
           }
-          return router.push(redirectUrl)
+          return router.push(redirectUrl);
         }
-        await router.push(ROUTES.APPLICATION.EVENTS.absolute)
+        await router.push(ROUTES.APPLICATION.EVENTS.absolute);
       } catch (e) {
-        isWrongCreds.value = true
+        isWrongCreds.value = true;
       }
-    }
+    };
 
     const openResetPasswordModal = () =>
-      router.push(ROUTES.AUTHENTICATIONS.RESET.absolute)
+      router.push(ROUTES.AUTHENTICATIONS.RESET.absolute);
 
     const openRegisterPage = () =>
-      router.push(ROUTES.AUTHENTICATIONS.REGISTER.absolute)
+      router.push(ROUTES.AUTHENTICATIONS.REGISTER.absolute);
 
     return {
       initialValues,
@@ -188,21 +185,19 @@ export default {
       openResetPasswordModal,
       openRegisterPage,
       disableSubmit: (e) => {
-        e.stopPropagation()
-        e.preventDefault()
+        e.stopPropagation();
+        e.preventDefault();
       },
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-fee7e7: #fee7e7;
- $color-e26767: #e26767;
- $color-8a8aa8: #8a8aa8;
+$color-fee7e7: #fee7e7;
+$color-e26767: #e26767;
+$color-8a8aa8: #8a8aa8;
 
 .remember-me__desktop {
   @include mobile {

@@ -175,8 +175,8 @@
         }
         .b-main-search-icon-status {
           @include mobile {
-            background: #1CCD62;
-            border: 1.5px solid #FFFFFF;
+            background: #1ccd62;
+            border: 1.5px solid #ffffff;
             border-radius: 6px;
             width: 8px;
             height: 8px;
@@ -206,13 +206,12 @@
 }
 
 .b-main-search__search-input {
-
-  @media(max-width: 992px) {
-    display: none; 
+  @media (max-width: 992px) {
+    display: none;
   }
 }
 .b-main-search__search-icon-mobile {
-  background: #FAFAFA;
+  background: #fafafa;
   border-radius: 6px;
   width: 32px;
   height: 32px;

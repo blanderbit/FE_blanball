@@ -21,4 +21,4 @@ export default {
   password: 'Пароль',
   'enter-account': 'Увійти в акаунт',
   'example-email': 'example@email.com',
-}
+};

@@ -1,90 +1,90 @@
-import userIcon from '../assets/img/user-icon.svg'
-import databaseDisabled from '../assets/img/database-disabled.svg'
-import notification from '../assets/img/notification-small.svg'
-import { ROUTES } from "../router/router.const";
+import userIcon from '../assets/img/user-icon.svg';
+import databaseDisabled from '../assets/img/database-disabled.svg';
+import notification from '../assets/img/notification-small.svg';
+import { ROUTES } from '../router/router.const';
 
 export default {
   mainLeg: [
     {
       value: 'Права',
       name: 'Права',
-      id: 'Right'  
+      id: 'Right',
     },
     {
       value: 'Ліва',
       name: 'Ліва',
-      id: 'Left'
-    }
+      id: 'Left',
+    },
   ],
   position: [
-    { 
+    {
       value: 'GK',
-      name: 'hashtags.position_full.GK'
+      name: 'hashtags.position_full.GK',
     },
-    { 
+    {
       value: 'LB',
-      name: 'hashtags.position_full.LB'
+      name: 'hashtags.position_full.LB',
     },
-    { 
+    {
       value: 'RB',
-      name: 'hashtags.position_full.RB'
+      name: 'hashtags.position_full.RB',
     },
-    { 
+    {
       value: 'CB',
-      name: 'hashtags.position_full.CB'
+      name: 'hashtags.position_full.CB',
     },
-    { 
+    {
       value: 'LWB',
-      name: 'hashtags.position_full.LWB'
+      name: 'hashtags.position_full.LWB',
     },
-    { 
+    {
       value: 'RWB',
-      name: 'hashtags.position_full.RWB'
+      name: 'hashtags.position_full.RWB',
     },
-    { 
+    {
       value: 'CDM',
-      name: 'hashtags.position_full.CDM'
+      name: 'hashtags.position_full.CDM',
     },
-    { 
+    {
       value: 'CM',
-      name: 'hashtags.position_full.CM'
+      name: 'hashtags.position_full.CM',
     },
-    { 
+    {
       value: 'CAM',
-      name: 'hashtags.position_full.CAM'
+      name: 'hashtags.position_full.CAM',
     },
-    { 
+    {
       value: 'RM',
-      name: 'hashtags.position_full.RM'
+      name: 'hashtags.position_full.RM',
     },
-    { 
+    {
       value: 'LM',
-      name: 'hashtags.position_full.LM'
+      name: 'hashtags.position_full.LM',
     },
-    { 
+    {
       value: 'RW',
-      name: 'hashtags.position_full.RW'
+      name: 'hashtags.position_full.RW',
     },
-    { 
+    {
       value: 'LW',
-      name: 'hashtags.position_full.LW'
+      name: 'hashtags.position_full.LW',
     },
-    { 
+    {
       value: 'RF',
-      name: 'hashtags.position_full.RF'
+      name: 'hashtags.position_full.RF',
     },
-    { 
+    {
       value: 'CF',
-      name: 'hashtags.position_full.CF'
+      name: 'hashtags.position_full.CF',
     },
-    { 
+    {
       value: 'LF',
-      name: 'hashtags.position_full.LF'
+      name: 'hashtags.position_full.LF',
     },
-    { 
+    {
       value: 'ST',
-      name: 'hashtags.position_full.ST'
-    }
+      name: 'hashtags.position_full.ST',
+    },
   ],
   tabs: [
     {
@@ -93,7 +93,7 @@ export default {
       img: userIcon,
       url: ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute,
       isActive: true,
-      isDisabled: false
+      isDisabled: false,
     },
     {
       id: 1,
@@ -101,8 +101,8 @@ export default {
       img: databaseDisabled,
       url: ROUTES.APPLICATION.PROFILE.RATE_PLAN.absolute,
       isActive: false,
-      isDisabled: true
-    }
+      isDisabled: true,
+    },
   ],
   tabTitles: [
     { id: 0, title: 'Про мене', width: '119px' },
@@ -114,5 +114,5 @@ export default {
     { title: 'asdf' },
     { title: 'as' },
     { title: 'asdfk' },
-  ]
-}
+  ],
+};

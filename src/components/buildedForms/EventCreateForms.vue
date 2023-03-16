@@ -84,7 +84,7 @@ export default {
     const formsType = ref(props.formsData.type);
 
     if (formsDataValue.value.type) {
-      delete formsDataValue.value.type
+      delete formsDataValue.value.type;
     }
 
     watch(
@@ -107,7 +107,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 // SCSS variables for hex colors
 $color-f9f9fc: #f9f9fc;
 $color-dfdeed: #dfdeed;

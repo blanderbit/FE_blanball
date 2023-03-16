@@ -1,7 +1,7 @@
 <template>
   <div class="b_header">
     <SearchModal
-      v-if="isSearchBlock && searchValue.length" 
+      v-if="isSearchBlock && searchValue.length"
       :client-x="clientX"
       :client-y="clientY"
       @close-modal="closeSearchBlock"
@@ -14,7 +14,7 @@
           :itemIcon="icons.arrow"
           @item-list-click="openUserProfile"
         >
-      </SearchBlockAll>
+        </SearchBlockAll>
       </template>
     </SearchModal>
     <div class="b_header_mob-menu-icon" @click="$emit('menuIconClick')">
@@ -40,22 +40,21 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
-import BreadCrumbs from './Breadcrumbs.vue'
-import InputComponent from './forms/InputComponent.vue'
-import SearchModal from './ModalWindows/SearchModal.vue'
-import SearchBlockAll from './SearchBlockAll.vue'
-import SmallLoader from './SmallLoader.vue'
+import BreadCrumbs from './Breadcrumbs.vue';
+import InputComponent from './forms/InputComponent.vue';
+import SearchModal from './ModalWindows/SearchModal.vue';
+import SearchBlockAll from './SearchBlockAll.vue';
+import SmallLoader from './SmallLoader.vue';
 
-import CONSTANTS from '../consts/index'
-import { ROUTES } from "../router/router.const";
-import { API } from '../workers/api-worker/api.worker'
+import CONSTANTS from '../consts/index';
+import { ROUTES } from '../router/router.const';
+import { API } from '../workers/api-worker/api.worker';
 
-import searchIcon from '../assets/img/search.svg'
-import arrowIcon from '../assets/img/arrow-right-gray.svg'
-
+import searchIcon from '../assets/img/search.svg';
+import arrowIcon from '../assets/img/arrow-right-gray.svg';
 
 export default {
   components: {
@@ -66,89 +65,89 @@ export default {
     SmallLoader,
   },
   setup() {
-    const isSearchBlock = ref(false)
-    const clientX = ref(0)
-    const router = useRouter()
-    const clientY = ref(0)
-    const modalSearchWidth = ref(369)
-    const inputWidth = ref(0)
-    const screenWidth = ref(window.innerWidth)
-    const relevantUsersList = ref([])
-    const searchValue = ref('')
-    const loading = ref(false)
-    let searchTimeout
+    const isSearchBlock = ref(false);
+    const clientX = ref(0);
+    const router = useRouter();
+    const clientY = ref(0);
+    const modalSearchWidth = ref(369);
+    const inputWidth = ref(0);
+    const screenWidth = ref(window.innerWidth);
+    const relevantUsersList = ref([]);
+    const searchValue = ref('');
+    const loading = ref(false);
+    let searchTimeout;
 
     const openUserProfile = (userId) => {
-      router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId))
-      isSearchBlock.value = false
-    }
+      router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId));
+      isSearchBlock.value = false;
+    };
 
     watch(searchValue, (searchValue, previous) => {
-      clearTimeout(searchTimeout)
-      loading.value = true
-      const relevantSearch = () =>  {
-        getRelevantUsers({'search': searchValue})
-      }
+      clearTimeout(searchTimeout);
+      loading.value = true;
+      const relevantSearch = () => {
+        getRelevantUsers({ search: searchValue });
+      };
       searchTimeout = setTimeout(relevantSearch, 500);
-    })
+    });
 
-    const getRelevantUsers =  async (options) => {
-      loading.value = true
-      let response = await API.UserService.getRelevantUsers(options)
-      relevantUsersList.value = response.data.results
-      loading.value = false
-    }
+    const getRelevantUsers = async (options) => {
+      loading.value = true;
+      let response = await API.UserService.getRelevantUsers(options);
+      relevantUsersList.value = response.data.results;
+      loading.value = false;
+    };
 
     if (screenWidth.value < 576) {
-      modalSearchWidth.value = '100%'
-      clientX.value = 0
+      modalSearchWidth.value = '100%';
+      clientX.value = 0;
     }
 
     const icons = computed(() => {
       return {
         search: searchIcon,
         arrow: arrowIcon,
-      }
-    })
+      };
+    });
 
     const mockData = computed(() => {
       return {
         tags: CONSTANTS.manage_event.tags,
-      }
-    })
+      };
+    });
 
     function showSearchBlock(e) {
-      isSearchBlock.value = true
+      isSearchBlock.value = true;
       inputWidth.value =
-        modalSearchWidth.value - e.target.parentNode.clientWidth
-      clientX.value = e.target.parentNode.offsetLeft - inputWidth.value
-      clientY.value = e.target.parentNode.offsetHeight + 20
+        modalSearchWidth.value - e.target.parentNode.clientWidth;
+      clientX.value = e.target.parentNode.offsetLeft - inputWidth.value;
+      clientY.value = e.target.parentNode.offsetHeight + 20;
     }
     function setInputCoordinates({ x, y }) {
-      clientX.value = x - inputWidth.value
-      clientY.value = y + 20
+      clientX.value = x - inputWidth.value;
+      clientY.value = y + 20;
     }
     function closeSearchBlock() {
-      isSearchBlock.value = false
-      searchValue.value = ''
+      isSearchBlock.value = false;
+      searchValue.value = '';
     }
     function setScreenWidth() {
-      screenWidth.value = window.innerWidth
+      screenWidth.value = window.innerWidth;
       if (screenWidth.value < 576) {
-        modalSearchWidth.value = '100%'
-        clientX.value = 0
+        modalSearchWidth.value = '100%';
+        clientX.value = 0;
       } else {
-        modalSearchWidth.value = 369
+        modalSearchWidth.value = 369;
       }
     }
 
     onMounted(() => {
-      window.addEventListener('resize', setScreenWidth)
-    })
+      window.addEventListener('resize', setScreenWidth);
+    });
 
     onBeforeUnmount(() => {
-      window.removeEventListener('resize', setScreenWidth)
-    })
+      window.removeEventListener('resize', setScreenWidth);
+    });
 
     return {
       showSearchBlock,
@@ -163,18 +162,15 @@ export default {
       clientX,
       clientY,
       mockData,
-      modalSearchWidth
-    }
+      modalSearchWidth,
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-fafafa: #fafafa;
-
+$color-fafafa: #fafafa;
 
 @import '../assets/styles/mixins/device.scss';
 
@@ -187,7 +183,7 @@ export default {
     display: none;
     @media (max-width: 992px) {
       display: block;
-      background: #FAFAFA;
+      background: #fafafa;
       border-radius: 6px;
       width: 32px;
       height: 32px;

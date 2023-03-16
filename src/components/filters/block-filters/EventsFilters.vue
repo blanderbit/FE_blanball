@@ -21,7 +21,7 @@
               class="b-main-search__soring-button"
               @click="sortingButtonClick"
             >
-              <img :src="sortingBtnData.icon" alt="">
+              <img :src="sortingBtnData.icon" alt="" />
               <span class="b-main-search__soring-title">
                 {{ sortingBtnData.title }}
               </span>
@@ -84,13 +84,13 @@
             </div>
             <div class="b-main-search__dropdown-wrapper-cities">
               <Dropdown
-                  :check-value-immediate="true"
-                  :placeholder="$t('events.gender')"
-                  :options="gender"
-                  :height="32"
-                  display-value="value"
-                  display-name="name"
-                  v-model="transformedFilters.gender"
+                :check-value-immediate="true"
+                :placeholder="$t('events.gender')"
+                :options="gender"
+                :height="32"
+                display-value="value"
+                display-name="name"
+                v-model="transformedFilters.gender"
               />
             </div>
           </div>
@@ -102,9 +102,7 @@
         </div>
       </div>
       <div class="b-main-search__search-block-mob">
-        <div
-          class="b-main-search__filters-block"
-        >
+        <div class="b-main-search__filters-block">
           <div v-if="!isMobileSearchOpened" class="b-main-search__left-part">
             <div
               class="b-main-search__soring-button"
@@ -128,27 +126,30 @@
               />
             </div>
             <InputComponent
-                v-if="isMobileSearchOpened"
-                :title-width="0"
-                :placeholder="$t('events.search-events')"
-                :height="32"
-                :icon="icons.cross"
-                name="search"
-                v-model="transformedFilters.search"
-                @icon-click="closeMobileSearch"
-              />
-              <InputComponent
-                class="b-main-search__search-input-tablet"
-                :title-width="0"
-                :placeholder="$t('events.search-events')"
-                :height="36"
-                :icon="icons.search"
-                name="search"
-                v-model="transformedFilters.search"
-              />
-            <div v-if="!isMobileSearchOpened" class="b-main-search__search-icon-mobile"
-            @click="openMobileSearch">
-              <img :src="icons.search" alt="">
+              v-if="isMobileSearchOpened"
+              :title-width="0"
+              :placeholder="$t('events.search-events')"
+              :height="32"
+              :icon="icons.cross"
+              name="search"
+              v-model="transformedFilters.search"
+              @icon-click="closeMobileSearch"
+            />
+            <InputComponent
+              class="b-main-search__search-input-tablet"
+              :title-width="0"
+              :placeholder="$t('events.search-events')"
+              :height="36"
+              :icon="icons.search"
+              name="search"
+              v-model="transformedFilters.search"
+            />
+            <div
+              v-if="!isMobileSearchOpened"
+              class="b-main-search__search-icon-mobile"
+              @click="openMobileSearch"
+            >
+              <img :src="icons.search" alt="" />
             </div>
             <div
               class="b-main-search__filtering-block sort-item d-flex align-items-center"
@@ -164,7 +165,10 @@
                 <div class="b-main-search__title">
                   {{ $t('events.filters') }}
                 </div>
-                <span class="b-found-count">{{ $t('users.found')  }} {{ elementsCount }} {{ $t('users.advertisments') }}</span>
+                <span class="b-found-count"
+                  >{{ $t('users.found') }} {{ elementsCount }}
+                  {{ $t('users.advertisments') }}</span
+                >
               </div>
             </div>
           </div>
@@ -175,33 +179,33 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
+import { useRoute } from 'vue-router';
 import dayjs from 'dayjs';
 
-import Slider from '@vueform/slider'
+import Slider from '@vueform/slider';
 
-import Dropdown from '../../forms/Dropdown.vue'
-import FilterBlock from '../FilterBlock.vue'
-import InputComponent from '../../forms/InputComponent.vue'
-import ButtonDetailsFilters from '../components/ButtonDetailsFilters.vue'
-import ClearFilters from '../components/ClearFilters.vue'
-import ModalPositionMap from '../../maps/ModalPositionMap.vue'
-import ModalFilters from '../ModalEventsFilters.vue'
+import Dropdown from '../../forms/Dropdown.vue';
+import FilterBlock from '../FilterBlock.vue';
+import InputComponent from '../../forms/InputComponent.vue';
+import ButtonDetailsFilters from '../components/ButtonDetailsFilters.vue';
+import ClearFilters from '../components/ClearFilters.vue';
+import ModalPositionMap from '../../maps/ModalPositionMap.vue';
+import ModalFilters from '../ModalEventsFilters.vue';
 
-import { TransformedFiltersWorker } from './transformed.filters.worker'
-import useWindowWidth from '../../../utils/widthScreen'
-import useTodaysDate from '../../../utils/todaysDate'
+import { TransformedFiltersWorker } from './transformed.filters.worker';
+import useWindowWidth from '../../../utils/widthScreen';
+import useTodaysDate from '../../../utils/todaysDate';
 
-import CONSTANTS from '../../../consts'
+import CONSTANTS from '../../../consts';
 
-import MaleIcon from '../../../assets/img/female-icon.svg'
-import FemaleIcon from '../../../assets/img/male-icon.svg'
-import UnisexIcon from '../../../assets/img/unisex.svg'
-import SearchIcon from '../../../assets/img/search.svg'
-import arrowsUpIcon from '../../../assets/img/sort-arrows.svg'
-import arrowsDownIcon from '../../../assets/img/sort-arrows-down.svg'
-import crossIcon from '../../../assets/img/cross.svg'
+import MaleIcon from '../../../assets/img/female-icon.svg';
+import FemaleIcon from '../../../assets/img/male-icon.svg';
+import UnisexIcon from '../../../assets/img/unisex.svg';
+import SearchIcon from '../../../assets/img/search.svg';
+import arrowsUpIcon from '../../../assets/img/sort-arrows.svg';
+import arrowsDownIcon from '../../../assets/img/sort-arrows-down.svg';
+import crossIcon from '../../../assets/img/cross.svg';
 
 export default {
   name: 'EventsFilters',
@@ -234,36 +238,34 @@ export default {
     },
     elementsCount: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
-    emits: ['update:value', 'clearFilters'],
-    setup(props, {emit}) {
-      const isModalFiltersActive = ref(false)
-      const route = useRoute()
-      const isMobileSearchOpened = ref(false);
-      const todaysDate = useTodaysDate()
-      const { isMobile, isTablet, onResize } = useWindowWidth()
-      const icons = computed(() => {
-        return {
-          female: FemaleIcon,
-          male: MaleIcon,
-          unisex: UnisexIcon,
-          search: SearchIcon,
-          arrowUp: arrowsUpIcon,
-          arrowDown: arrowsDownIcon,
-          cross: crossIcon,
-        }
-      })
-      const ordering = computed(() => [
-        {value: 'id'},
-        {value: '-id'},
-      ]);
-      const sortingBtnData = computed(() => {
-        return transformedFilters.value.ordering === ordering.value[0].value ?
-          {title: 'Cпочатку нові', icon: arrowsUpIcon} : {title: 'Cпочатку старі', icon: arrowsDownIcon}
-      })
-      const gender = computed(() => CONSTANTS.users_page.gender);
+  emits: ['update:value', 'clearFilters'],
+  setup(props, { emit }) {
+    const isModalFiltersActive = ref(false);
+    const route = useRoute();
+    const isMobileSearchOpened = ref(false);
+    const todaysDate = useTodaysDate();
+    const { isMobile, isTablet, onResize } = useWindowWidth();
+    const icons = computed(() => {
+      return {
+        female: FemaleIcon,
+        male: MaleIcon,
+        unisex: UnisexIcon,
+        search: SearchIcon,
+        arrowUp: arrowsUpIcon,
+        arrowDown: arrowsDownIcon,
+        cross: crossIcon,
+      };
+    });
+    const ordering = computed(() => [{ value: 'id' }, { value: '-id' }]);
+    const sortingBtnData = computed(() => {
+      return transformedFilters.value.ordering === ordering.value[0].value
+        ? { title: 'Cпочатку нові', icon: arrowsUpIcon }
+        : { title: 'Cпочатку старі', icon: arrowsDownIcon };
+    });
+    const gender = computed(() => CONSTANTS.users_page.gender);
 
     const { activeFilters, updateRealData, transformedFilters } =
       TransformedFiltersWorker({
@@ -272,7 +274,7 @@ export default {
         isMobile,
         isTablet,
         setupTransformedCallback() {
-          const [lng, lat] = props.modelValue?.point?.value?.split?.(',') || []
+          const [lng, lat] = props.modelValue?.point?.value?.split?.(',') || [];
           return {
             gender: props.modelValue?.gender?.value,
             type: props.modelValue?.type?.value,
@@ -291,7 +293,7 @@ export default {
               place: props.modelValue?.place?.value,
             },
             status: props.modelValue?.status?.value,
-          }
+          };
         },
         updateRealDataFromTransformed(transformedFilters) {
           return {
@@ -310,7 +312,7 @@ export default {
                 ? `${transformedFilters.location.lng},${transformedFilters.location.lat}`
                 : null,
             place: transformedFilters.location.place,
-          }
+          };
         },
         ifSecondLineWasUsed() {
           return !!(
@@ -318,24 +320,24 @@ export default {
             props.modelValue.date_and_time_before.value !== todaysDate ||
             props.modelValue.status.value ||
             props.modelValue.place.value
-          )
+          );
         },
-      })
+      });
 
-    const sportTypeDropdown = CONSTANTS.event_page.sport_type_dropdown
-    const genderDropdown = CONSTANTS.event_page.gender_dropdown
-    const statusDropdown = CONSTANTS.event_page.status_ropdown
+    const sportTypeDropdown = CONSTANTS.event_page.sport_type_dropdown;
+    const genderDropdown = CONSTANTS.event_page.gender_dropdown;
+    const statusDropdown = CONSTANTS.event_page.status_ropdown;
 
     const filterStatus = computed(() => {
       return !!(
-        route.query.gender || 
+        route.query.gender ||
         route.query.type ||
-        route.query.point || 
+        route.query.point ||
         route.query.dist ||
-        route.query.date_and_time_before || 
+        route.query.date_and_time_before ||
         route.query.date_and_time_after
-      )
-    })
+      );
+    });
 
     const calendar = ref({
       inputMask: 'YYYY-MM-DD',
@@ -343,30 +345,30 @@ export default {
         type: 'string',
         mask: 'YYYY-MM-DD', // Uses 'iso' if missing
       },
-    })
+    });
 
     onMounted(() => {
-      window.addEventListener('resize', onResize)
-    })
+      window.addEventListener('resize', onResize);
+    });
 
     onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize)
-    })
+      window.removeEventListener('resize', onResize);
+    });
 
     function sortingButtonClick() {
       transformedFilters.value.ordering =
-        transformedFilters.value.ordering === 'id' ? '-id' : 'id'
+        transformedFilters.value.ordering === 'id' ? '-id' : 'id';
     }
     function setModalFilters() {
-      updateRealData()
+      updateRealData();
     }
 
     function openMobileSearch() {
-      isMobileSearchOpened.value = true
+      isMobileSearchOpened.value = true;
     }
 
     function closeMobileSearch() {
-      isMobileSearchOpened.value = false
+      isMobileSearchOpened.value = false;
     }
 
     return {
@@ -387,9 +389,9 @@ export default {
       icons,
       sortingBtnData,
       isModalFiltersActive,
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped lang="scss">

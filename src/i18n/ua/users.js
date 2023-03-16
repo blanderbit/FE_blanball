@@ -17,7 +17,7 @@ export default {
   found: 'знайдено',
   advertisments: 'оголошень',
   'users-search': 'Пошук користувачів',
-  'search': 'Пошук',
+  search: 'Пошук',
   filters: 'Фільтри',
   'chose-date': 'Обрати дату',
   'planned-events': 'Заплановані події',
@@ -27,4 +27,4 @@ export default {
   gender: 'Стать',
   'age-area': 'Віковий діапазон',
   'game-type': 'Тип гри',
-}
+};

@@ -29,12 +29,12 @@
 </template>
 
 <script>
-import { ref } from "vue"
+import { ref } from 'vue';
 
-import InputComponent from '../forms/InputComponent.vue'
-import GreenBtn from '../GreenBtn.vue'
+import InputComponent from '../forms/InputComponent.vue';
+import GreenBtn from '../GreenBtn.vue';
 
-import CopyIcon from '../../assets/img/copy.svg'
+import CopyIcon from '../../assets/img/copy.svg';
 
 export default {
   components: {
@@ -49,14 +49,14 @@ export default {
   },
   emits: ['copyLinkButtonClick', 'closeModal'],
   setup(props) {
-    const eventShareLink = ref(props.shareLink)
+    const eventShareLink = ref(props.shareLink);
 
     return {
-      eventShareLink, 
+      eventShareLink,
       CopyIcon,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

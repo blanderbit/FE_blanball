@@ -143,7 +143,6 @@ export default {
       return SCHEMAS.stepper.schema(currentStep.value);
     });
 
-
     const handleBackClick = () => {
       if (currentStep.value === 1) {
         return router.back();
@@ -242,7 +241,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 // SCSS variables for hex colors
 $color-efeff6: #efeff6;
 $color-1ab2ad: #1ab2ad;

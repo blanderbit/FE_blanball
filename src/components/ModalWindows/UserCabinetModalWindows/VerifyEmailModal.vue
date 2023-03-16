@@ -1,5 +1,5 @@
 <template>
-  <Loading :is-loading="loading"/>
+  <Loading :is-loading="loading" />
   <Transition>
     <ModalWindow>
       <template #title>
@@ -92,7 +92,7 @@ export default {
     const { t } = useI18n();
 
     const schema = computed(() => {
-      return SCHEMAS.verifyEmail.schema
+      return SCHEMAS.verifyEmail.schema;
     });
 
     function closeModal() {

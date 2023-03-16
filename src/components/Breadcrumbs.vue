@@ -18,21 +18,21 @@
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
-import { useI18n } from 'vue-i18n'
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 
 export default {
   setup() {
-    const { tm } = useI18n()
-    const route = useRoute()
-    const getBreadcrumbsList = computed(() => tm(route.meta.breadcrumbs.i18n))
+    const { tm } = useI18n();
+    const route = useRoute();
+    const getBreadcrumbsList = computed(() => tm(route.meta.breadcrumbs.i18n));
 
-    return  {
+    return {
       getBreadcrumbsList,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

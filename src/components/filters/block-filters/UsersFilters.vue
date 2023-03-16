@@ -114,27 +114,26 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 
-import RangeFilter from '../../filters/components/RangeFilter.vue'
-import Dropdown from '../../forms/Dropdown.vue'
-import FilterBlock from '../FilterBlock.vue'
-import InputComponent from '../../forms/InputComponent.vue'
-import Checkbox from '../../forms/Checkbox.vue'
-import ButtonDetailsFilters from '../components/ButtonDetailsFilters.vue'
-import ClearFilters from '../components/ClearFilters.vue'
-import ModalPositionMap from '../../maps/ModalPositionMap.vue'
-import ModalFilters from '../ModalUsersFilters.vue'
+import RangeFilter from '../../filters/components/RangeFilter.vue';
+import Dropdown from '../../forms/Dropdown.vue';
+import FilterBlock from '../FilterBlock.vue';
+import InputComponent from '../../forms/InputComponent.vue';
+import Checkbox from '../../forms/Checkbox.vue';
+import ButtonDetailsFilters from '../components/ButtonDetailsFilters.vue';
+import ClearFilters from '../components/ClearFilters.vue';
+import ModalPositionMap from '../../maps/ModalPositionMap.vue';
+import ModalFilters from '../ModalUsersFilters.vue';
 
-import { TransformedFiltersWorker } from './transformed.filters.worker'
-import useWindowWidth from '../../../utils/widthScreen'
+import { TransformedFiltersWorker } from './transformed.filters.worker';
+import useWindowWidth from '../../../utils/widthScreen';
 
-import CONSTANTS from '../../../consts'
+import CONSTANTS from '../../../consts';
 
-import SearchIcon from '../../../assets/img/search.svg'
-import ArrowTopIcon from '../../../assets/img/arrow-top.svg'
-import ArrowDownIcon from '../../../assets/img/arrow-down2.svg'
-
+import SearchIcon from '../../../assets/img/search.svg';
+import ArrowTopIcon from '../../../assets/img/arrow-top.svg';
+import ArrowDownIcon from '../../../assets/img/arrow-down2.svg';
 
 export default {
   name: 'UsersFilters',
@@ -167,25 +166,25 @@ export default {
   },
   emits: ['update:value', 'clearFilters'],
   setup(props, { emit }) {
-    const { isMobile, isTablet, onResize } = useWindowWidth()
-    const isModalFiltersActive = ref(false)
+    const { isMobile, isTablet, onResize } = useWindowWidth();
+    const isModalFiltersActive = ref(false);
     const calendar = ref({
       inputMask: 'YYYY-MM-DD',
       modelConfig: {
         type: 'string',
         mask: 'YYYY-MM-DD', // Uses 'iso' if missing
       },
-    })
+    });
 
     const icons = computed(() => {
       return {
         search: SearchIcon,
         arrowDown: ArrowDownIcon,
         arrowTop: ArrowTopIcon,
-      }
-    })
-    const positions = computed(() => CONSTANTS.profile.position)
-    const gender = computed(() => CONSTANTS.users_page.gender)
+      };
+    });
+    const positions = computed(() => CONSTANTS.profile.position);
+    const gender = computed(() => CONSTANTS.users_page.gender);
     const ordering = computed(() => [
       {
         value: 'id',
@@ -217,7 +216,7 @@ export default {
         name: 'рейтинг',
         iconSrc: icons.value.arrowDown,
       },
-    ])
+    ]);
 
     const { activeFilters, transformedFilters, updateRealData } =
       TransformedFiltersWorker({
@@ -242,7 +241,7 @@ export default {
               point: props.modelValue?.point?.value,
             },
             is_online: props.modelValue.is_online.value,
-          }
+          };
         },
         updateRealDataFromTransformed(transformedFilters) {
           return {
@@ -255,7 +254,7 @@ export default {
             ordering: transformedFilters.ordering,
             dist: transformedFilters.place.dist,
             point: transformedFilters.place.point,
-          }
+          };
         },
         ifSecondLineWasUsed() {
           if (
@@ -267,23 +266,23 @@ export default {
                 props.modelValue.profile__age_min.default &&
               props.modelValue.profile__age_max.value ===
                 props.modelValue.profile__age_max.default
-            )
+            );
           } else {
-            return false
+            return false;
           }
         },
-      })
+      });
 
     onMounted(() => {
-      window.addEventListener('resize', onResize)
-    })
+      window.addEventListener('resize', onResize);
+    });
 
     onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize)
-    })
+      window.removeEventListener('resize', onResize);
+    });
 
     function setModalFilters() {
-      updateRealData()
+      updateRealData();
     }
 
     return {
@@ -296,16 +295,14 @@ export default {
       icons,
       isModalFiltersActive,
       calendar,
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
-
-
 // SCSS variables for hex colors
- $color-fafafa: #fafafa;
+$color-fafafa: #fafafa;
 
 .b-users-filters {
   * {

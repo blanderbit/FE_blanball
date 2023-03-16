@@ -21,14 +21,14 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import { computed, ref } from 'vue';
 
-import emoji_1 from '../assets/img/emojies/1.svg'
-import emoji_2 from '../assets/img/emojies/2.svg'
-import emoji_3 from '../assets/img/emojies/3.svg'
-import emoji_4 from '../assets/img/emojies/4.svg'
-import emoji_5 from '../assets/img/emojies/5.svg'
-import noReviews from '../assets/img/no-records/no-reviews.svg'
+import emoji_1 from '../assets/img/emojies/1.svg';
+import emoji_2 from '../assets/img/emojies/2.svg';
+import emoji_3 from '../assets/img/emojies/3.svg';
+import emoji_4 from '../assets/img/emojies/4.svg';
+import emoji_5 from '../assets/img/emojies/5.svg';
+import noReviews from '../assets/img/no-records/no-reviews.svg';
 
 const COLORS = {
   0: '#DFDEED',
@@ -37,7 +37,7 @@ const COLORS = {
   3: '#B2FF8E',
   4: '#79FFC7',
   5: '#62C7FF',
-}
+};
 
 export default {
   name: 'ReviewDetailsComponent',
@@ -48,55 +48,55 @@ export default {
     },
   },
   setup(props) {
-    const rateNumber = ref(Math.round(+props.userRate))
+    const rateNumber = ref(Math.round(+props.userRate));
     const lines = computed(() => {
       const arr = Array.from({ length: 5 }, (v, idx) => {
         return Array.from({ length: 5 }, (v, idx) => ({
           id: idx,
           color: COLORS[0],
-        }))
-      })
+        }));
+      });
 
       return arr.map((item, idx) => {
         if (idx < rateNumber.value) {
           return item.map((element) => ({
             ...element,
             color: COLORS[rateNumber.value],
-          }))
+          }));
         } else {
-          return item
+          return item;
         }
-      })
-    })
+      });
+    });
 
     const emoji = computed(() => {
       switch (rateNumber.value) {
         case 5:
-          return emoji_5
-          break
+          return emoji_5;
+          break;
         case 4:
-          return emoji_4
-          break
+          return emoji_4;
+          break;
         case 3:
-          return emoji_3
-          break
+          return emoji_3;
+          break;
         case 2:
-          return emoji_2
-          break
+          return emoji_2;
+          break;
         case 1:
-          return emoji_1
-          break
+          return emoji_1;
+          break;
         default:
-          return noReviews
+          return noReviews;
       }
-    })
+    });
 
     return {
       lines,
       emoji,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

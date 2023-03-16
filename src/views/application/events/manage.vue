@@ -5,7 +5,8 @@
     :config="changeDataModalConfig"
     @closeModal="closeSubmitModal"
     @goToTheEvents="goToTheEventPage"
-    @continue="closeSubmitModal"/>
+    @continue="closeSubmitModal"
+  />
   <div class="b-manage-event">
     <Form
       v-slot="data"
@@ -13,19 +14,19 @@
       :validation-schema="schema"
       @submit="disableSubmit"
     >
-    <SelectFormsColorsModal
-      v-if="isSelectFormColarModalOpened"
-      :formsData="eventForms"
-      :selectedTab="formsModalSelectedTabId"
-      @closeModal="closeSelectFormsModal"
-      @saveData="saveForms($event, data)"
-    />
+      <SelectFormsColorsModal
+        v-if="isSelectFormColarModalOpened"
+        :formsData="eventForms"
+        :selectedTab="formsModalSelectedTabId"
+        @closeModal="closeSelectFormsModal"
+        @saveData="saveForms($event, data)"
+      />
       <div class="b-manage-event__page-title">
         <span v-if="manageAction === manageEventActionTypes.CREATE">
           {{ $t('events.event-creation') }}
         </span>
-        <span v-else> 
-          {{ $t('events.event-update') }} 
+        <span v-else>
+          {{ $t('events.event-update') }}
         </span>
         <div class="b-manage-event__btns-mob-block">
           <ButtonsBlock
@@ -56,13 +57,14 @@
             @invite-user="inviteUsetToTheEvent"
             @changedEventPrivacyToFree="updateEventPriceAfterSelectFree(data)"
           />
-          <ManageEventThirdStep 
+          <ManageEventThirdStep
             :currentStep="currentStep"
             :formsValue="eventForms"
             :initialValues="eventPreviewData"
             @selectNeedForm="selectNeedForm($event, data)"
             @setForms="openSelectFormsModal"
-            @changeForms="openSelectFormsModal"/>
+            @changeForms="openSelectFormsModal"
+          />
 
           <div class="b-manage-event__progress-line">
             <div class="b-manage-event__sections">
@@ -98,7 +100,7 @@
               {{ $t('buttons.preview') }}
             </span>
             <span @click="showEventInvitedUsersListModal">
-            {{ $t('buttons.invited-users') }}
+              {{ $t('buttons.invited-users') }}
             </span>
           </div>
         </div>
@@ -111,25 +113,25 @@
             :manageAction="manageAction"
             @removeInvitedUser="removeInvitedUser"
             @closeModal="closeEventInvitedUsersListModal"
-          />            
+          />
         </Transition>
 
         <div class="b-manage-event-preview__block">
           <PreviewBlock :eventData="data.values" />
           <Transition name="slide">
-          <PreviewEventModal
-            v-if="isEventPreivewModalOpened"
-            :eventData="data.values"
-            @closeModal="closePreviewEventModal"
+            <PreviewEventModal
+              v-if="isEventPreivewModalOpened"
+              :eventData="data.values"
+              @closeModal="closePreviewEventModal"
+            />
+          </Transition>
+
+          <RemoveInvitedUsersModal
+            v-if="removeInvitedUsersModalOpened"
+            @closeModal="closeRemoveUsersModal"
+            @deleteUsers="removeAllInvitedUsers"
           />
-        </Transition>
-    
-            <RemoveInvitedUsersModal
-              v-if="removeInvitedUsersModalOpened"
-              @closeModal="closeRemoveUsersModal"
-              @deleteUsers="removeAllInvitedUsers"
-          />
-      
+
           <InvitedUsersList
             class="b-manage-event-invited-users__list"
             :invitedUsers="invitedUsers"
@@ -152,42 +154,42 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useRouter, useRoute } from 'vue-router'
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter, useRoute } from 'vue-router';
 
-import { Form } from '@system.it.flumx.com/vee-validate'
+import { Form } from '@system.it.flumx.com/vee-validate';
 
-import { storeToRefs } from "pinia"
+import { storeToRefs } from 'pinia';
 
-import InputComponent from '../../../components/forms/InputComponent.vue'
-import GreenBtn from '../../../components/GreenBtn.vue'
-import WhiteBtn from '../../../components/WhiteBtn.vue'
-import ManageEventFirstStep from '../../../components/manage-event-components/ManageEventFirstStep.vue'
-import Avatar from '../../../components/Avatar.vue'
-import PreviewBlock from '../../../components/manage-event-components/PreviewBlock.vue'
-import EventCard from '../../../components/event-components/EventCard.vue'
-import ManageEventSecondStep from '../../../components/manage-event-components/ManageEventSecondStep.vue'
-import ManageEventThirdStep from '../../../components/manage-event-components/ManageEventThirdStep.vue'
-import ButtonsBlock from '../../../components/manage-event-components/ButtonsBlock.vue'
-import RemoveInvitedUsersModal from '../../../components/manage-event-components/RemoveInvitedUsersModal.vue'
-import Loading from '../../../workers/loading-worker/Loading.vue'
-import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue'
-import InvitedUsersList from '../../../components/manage-event-components/InvitedUsersList.vue'
-import InvitedUsersListModal from '../../../components/ModalWindows/InvitedUsersListModal.vue'
-import PreviewEventModal from '../../../components/ModalWindows/PreviewEventModal.vue'
-import ChangeUserDataModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangeUserDataModal.vue'
+import InputComponent from '../../../components/forms/InputComponent.vue';
+import GreenBtn from '../../../components/GreenBtn.vue';
+import WhiteBtn from '../../../components/WhiteBtn.vue';
+import ManageEventFirstStep from '../../../components/manage-event-components/ManageEventFirstStep.vue';
+import Avatar from '../../../components/Avatar.vue';
+import PreviewBlock from '../../../components/manage-event-components/PreviewBlock.vue';
+import EventCard from '../../../components/event-components/EventCard.vue';
+import ManageEventSecondStep from '../../../components/manage-event-components/ManageEventSecondStep.vue';
+import ManageEventThirdStep from '../../../components/manage-event-components/ManageEventThirdStep.vue';
+import ButtonsBlock from '../../../components/manage-event-components/ButtonsBlock.vue';
+import RemoveInvitedUsersModal from '../../../components/manage-event-components/RemoveInvitedUsersModal.vue';
+import Loading from '../../../workers/loading-worker/Loading.vue';
+import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue';
+import InvitedUsersList from '../../../components/manage-event-components/InvitedUsersList.vue';
+import InvitedUsersListModal from '../../../components/ModalWindows/InvitedUsersListModal.vue';
+import PreviewEventModal from '../../../components/ModalWindows/PreviewEventModal.vue';
+import ChangeUserDataModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangeUserDataModal.vue';
 
-import { API } from '../../../workers/api-worker/api.worker'
-import { useUserDataStore } from '../../../stores/userData'
-import { BlanballEventBus } from '../../../workers/event-bus-worker'
+import { API } from '../../../workers/api-worker/api.worker';
+import { useUserDataStore } from '../../../stores/userData';
+import { BlanballEventBus } from '../../../workers/event-bus-worker';
 
-import { runOnSelectEventDuration } from '../../../utils/runOnSelectEventDuration'
+import { runOnSelectEventDuration } from '../../../utils/runOnSelectEventDuration';
 
-import { ROUTES } from '../../../router/router.const'
-import SCHEMAS from '../../../validators/schemas'
+import { ROUTES } from '../../../router/router.const';
+import SCHEMAS from '../../../validators/schemas';
 
-import Arrow from '../../../assets/img/arrow-right-white.svg'
+import Arrow from '../../../assets/img/arrow-right-white.svg';
 
 export default {
   name: 'CreateEventPage',
@@ -214,128 +216,130 @@ export default {
   setup() {
     const router = useRouter();
     const route = useRoute();
-    const { t } = useI18n()
-    const currentStep = ref(1)
-    const startDate = ref('')
-    const userStore = useUserDataStore()
-    const { user } = storeToRefs(userStore)
-    const searchUsersLoading = ref(false)
-    const relevantUsersList = ref([])
-    const eventCreateLoader = ref(false)
-    const isSelectFormColarModalOpened = ref(false)
+    const { t } = useI18n();
+    const currentStep = ref(1);
+    const startDate = ref('');
+    const userStore = useUserDataStore();
+    const { user } = storeToRefs(userStore);
+    const searchUsersLoading = ref(false);
+    const relevantUsersList = ref([]);
+    const eventCreateLoader = ref(false);
+    const isSelectFormColarModalOpened = ref(false);
     const removeInvitedUsersModalOpened = ref(false);
     const manageAction = ref(route.meta.action);
     const isEventInvitedUsersListModal = ref(false);
     const isEventPreivewModalOpened = ref(false);
     const isSubmitModalOpened = ref(false);
-    const changeDataModalConfig = ref('')
+    const changeDataModalConfig = ref('');
 
-    const manageEventActionTypes = ref(
-      {
-        CREATE: 'CREATE',
-        EDIT: 'EDIT'
+    const manageEventActionTypes = ref({
+      CREATE: 'CREATE',
+      EDIT: 'EDIT',
+    });
+
+    const eventPreviewData = ref(
+      route.meta?.eventData || {
+        name: '',
+        place: {},
+        status: 'Planned',
+        gender: null,
+        description: '',
+        type: '',
+        need_ball: false,
+        duration: null,
+        need_form: null,
+        date_and_time: '',
+        forms: {},
+        contact_number: user.value.phone,
+        count_current_users: 0,
+        count_current_fans: 0,
+        current_users: [],
       }
-    )
-    
-    const eventPreviewData = ref(route.meta?.eventData ||
-    {
-      name: '',
-      place: {},
-      status: 'Planned',
-      gender: null,
-      description: '',
-      type: '',
-      need_ball: false,
-      duration: null,
-      need_form: null,
-      date_and_time: '',
-      forms: {},
-      contact_number: user.value.phone,
-      count_current_users: 0,
-      count_current_fans: 0,
-      current_users: [],
-    })
+    );
 
-    const invitedUsers = ref([])
-    const acceptedUsers = ref(eventPreviewData.value.current_users)
+    const invitedUsers = ref([]);
+    const acceptedUsers = ref(eventPreviewData.value.current_users);
 
     const formsModalSelectedTabId = ref(
       eventPreviewData.value.need_form ? 1 : 2
-    )
+    );
 
     const eventForms = ref(eventPreviewData.value.forms);
-    let searchTimeout
+    let searchTimeout;
 
     const schema = computed(() => {
-      return SCHEMAS.manageEvent.schema(currentStep.value)
-    })
+      return SCHEMAS.manageEvent.schema(currentStep.value);
+    });
 
     const getNewEventLocation = (location, data) => {
       data.values.place = {
         place_name: location.place,
         lat: location.lat,
         lon: location.lng,
-      }
-    }
+      };
+    };
 
     const greenBtn = computed(() => {
       let text;
       if (currentStep.value !== 3) {
-        text = t('buttons.next')
-      } else if (currentStep.value === 3 && manageAction.value === manageEventActionTypes.value.CREATE) {
-        text = t('buttons.publish')
+        text = t('buttons.next');
+      } else if (
+        currentStep.value === 3 &&
+        manageAction.value === manageEventActionTypes.value.CREATE
+      ) {
+        text = t('buttons.publish');
       } else {
-        text = t('buttons.save-changes')
+        text = t('buttons.save-changes');
       }
       return {
         text: text,
-        icon: currentStep.value !== 3 ? Arrow : null
-      }
-    })
+        icon: currentStep.value !== 3 ? Arrow : null,
+      };
+    });
 
     const whiteBtn = computed(() => {
       let text;
       if (currentStep.value !== 1) {
-        text = t('buttons.back')
+        text = t('buttons.back');
       } else {
-        text = t('buttons.cancel')
+        text = t('buttons.cancel');
       }
       return {
         text: text,
-      }
-    })
+      };
+    });
 
     const openRemoveUsersModal = () => {
-      removeInvitedUsersModalOpened.value = true
-    }
+      removeInvitedUsersModalOpened.value = true;
+    };
 
     const setEventDate = (date_value, data) => {
-      data.values.date = date_value
-    }
+      data.values.date = date_value;
+    };
 
     const openSelectFormsModal = () => {
-      isSelectFormColarModalOpened.value = true
-    }
+      isSelectFormColarModalOpened.value = true;
+    };
 
     const closeSelectFormsModal = () => {
-      isSelectFormColarModalOpened.value = false
-    }
+      isSelectFormColarModalOpened.value = false;
+    };
 
     const selectNeedForm = (needForm, data) => {
-      eventForms.value = {}
-      data.values.forms = {}
-      switch(needForm) {
+      eventForms.value = {};
+      data.values.forms = {};
+      switch (needForm) {
         case true:
-          formsModalSelectedTabId.value = 1
-          break
+          formsModalSelectedTabId.value = 1;
+          break;
         case false:
-          formsModalSelectedTabId.value = 2
-          break
+          formsModalSelectedTabId.value = 2;
+          break;
       }
-    }
+    };
 
     const saveForms = (forms, data) => {
-      switch(data.values.need_form) {
+      switch (data.values.need_form) {
         case true:
           data.values.forms = {
             type: 'Forms',
@@ -346,9 +350,9 @@ export default {
             second_team: {
               t_shirts: forms.second_team.t_shirts,
               shorts: forms.second_team.shorts,
-            }
-          }
-          break
+            },
+          };
+          break;
         case false:
           data.values.forms = {
             type: 'ShirtFronts',
@@ -357,30 +361,30 @@ export default {
             },
             second_team: {
               shirtfronts: forms.second_team.shirtfronts,
-            }
-          }
-          break
+            },
+          };
+          break;
       }
-      eventForms.value = data.values.forms
-      closeSelectFormsModal()
-    }
+      eventForms.value = data.values.forms;
+      closeSelectFormsModal();
+    };
 
     const updateEventPriceAfterSelectFree = (data) => {
-      data.values.price = null
-      data.values.price_description = null
-    }
+      data.values.price = null;
+      data.values.price_description = null;
+    };
 
-   
     const closeRemoveUsersModal = () => {
-      removeInvitedUsersModalOpened.value = false
-    }
+      removeInvitedUsersModalOpened.value = false;
+    };
 
-    const SKIPIDS = [eventPreviewData.value.author?.id 
-      ? eventPreviewData.value.author.id 
-      : user.value.id, 
-      ...eventPreviewData.value?.current_users?.map((user) => user.id) ?? [],
-      ...eventPreviewData.value?.current_fans?.map((fan) => fan.id) ?? []
-    ]
+    const SKIPIDS = [
+      eventPreviewData.value.author?.id
+        ? eventPreviewData.value.author.id
+        : user.value.id,
+      ...(eventPreviewData.value?.current_users?.map((user) => user.id) ?? []),
+      ...(eventPreviewData.value?.current_fans?.map((fan) => fan.id) ?? []),
+    ];
 
     const getRelevantUsers = async (options) => {
       searchUsersLoading.value = true;
@@ -392,89 +396,89 @@ export default {
       searchUsersLoading.value = false;
     };
 
-
     const inviteUsetToTheEvent = (user_data) => {
-      invitedUsers.value.push(user_data)
-    }
+      invitedUsers.value.push(user_data);
+    };
 
     const searchRelevantUsers = (searchValue) => {
-      clearTimeout(searchTimeout)
-      searchUsersLoading.value = true
+      clearTimeout(searchTimeout);
+      searchUsersLoading.value = true;
       const relevantSearch = () => {
-        getRelevantUsers({ search: searchValue, skipids: SKIPIDS })
-      }
-      searchTimeout = setTimeout(relevantSearch, 500)
-    }
+        getRelevantUsers({ search: searchValue, skipids: SKIPIDS });
+      };
+      searchTimeout = setTimeout(relevantSearch, 500);
+    };
 
-    getRelevantUsers({ skipids: SKIPIDS })
+    getRelevantUsers({ skipids: SKIPIDS });
 
     const removeInvitedUser = (user_id) => {
       invitedUsers.value = invitedUsers.value.filter(function (item) {
-        return item.id !== user_id
-      })
-    }
+        return item.id !== user_id;
+      });
+    };
 
     const removeAllInvitedUsers = () => {
-      invitedUsers.value = []
-      closeRemoveUsersModal()
-    }
+      invitedUsers.value = [];
+      closeRemoveUsersModal();
+    };
 
     const icons = computed(() => {
       return {
         arrowRight: Arrow,
-      }
-    })
-
+      };
+    });
 
     const showEventInvitedUsersListModal = () => {
       if (invitedUsers.value.length) {
-        isEventInvitedUsersListModal.value = true
+        isEventInvitedUsersListModal.value = true;
       }
-    }
+    };
 
     const closeEventInvitedUsersListModal = () => {
-      isEventInvitedUsersListModal.value = false
-    }
+      isEventInvitedUsersListModal.value = false;
+    };
 
     const showPreviewEventModal = () => {
-      isEventPreivewModalOpened.value = true
-    }
+      isEventPreivewModalOpened.value = true;
+    };
 
     const closePreviewEventModal = () => {
-      isEventPreivewModalOpened.value = false
-    }
-
+      isEventPreivewModalOpened.value = false;
+    };
 
     async function saveEvent(data) {
-      eventCreateLoader.value = true
-      const createEventData = data.values
+      eventCreateLoader.value = true;
+      const createEventData = data.values;
 
-      createEventData.date_and_time = `${createEventData.date} ${createEventData.time}`
+      createEventData.date_and_time = `${createEventData.date} ${createEventData.time}`;
 
-      createEventData.current_users = invitedUsers.value.map((user) => user.id)
+      createEventData.current_users = invitedUsers.value.map((user) => user.id);
 
       try {
-        switch(manageAction.value) {
+        switch (manageAction.value) {
           case manageEventActionTypes.value.CREATE:
-            await API.EventService.createOneEvent(createEventData)
-            eventCreateLoader.value = false
-            break
+            await API.EventService.createOneEvent(createEventData);
+            eventCreateLoader.value = false;
+            break;
           case manageEventActionTypes.value.EDIT:
-            await API.EventService.editOneEvent(route.params.id, createEventData)
-            eventCreateLoader.value = false
-            break
+            await API.EventService.editOneEvent(
+              route.params.id,
+              createEventData
+            );
+            eventCreateLoader.value = false;
+            break;
         }
-        goToTheEventPage()
+        goToTheEventPage();
         setTimeout(() => {
-          switch(manageAction.value) {
+          switch (manageAction.value) {
             case manageEventActionTypes.value.CREATE:
-              BlanballEventBus.emit('EventCreated')
-              break
+              BlanballEventBus.emit('EventCreated');
+              break;
             case manageEventActionTypes.value.EDIT:
-              BlanballEventBus.emit('EventUpdated')
-              break
-        }
-        }, 100)
+              BlanballEventBus.emit('EventUpdated');
+              break;
+          }
+        }, 100);
       } catch {}
     }
 
@@ -490,7 +494,7 @@ export default {
             left_btn_action: 'continue',
             btn_with_1: 132,
             btn_with_2: 132,
-          }
+          };
           isSubmitModalOpened.value = true;
           break;
         case manageEventActionTypes.value.EDIT:
@@ -503,42 +507,41 @@ export default {
             left_btn_action: 'continue',
             btn_with_1: 132,
             btn_with_2: 132,
-          }
+          };
           isSubmitModalOpened.value = true;
           break;
       }
-    }
+    };
 
     const closeSubmitModal = () => {
       isSubmitModalOpened.value = false;
-    }
+    };
 
     function goToTheEventPage() {
-      router.push(ROUTES.APPLICATION.EVENTS.absolute)
+      router.push(ROUTES.APPLICATION.EVENTS.absolute);
     }
 
     async function changeStep(val, data) {
-      
       if (currentStep.value === 1 && val === '-') {
-        return openSumbitModal()
+        return openSumbitModal();
       }
 
       if (val === '-') {
-        return this.currentStep--
+        return this.currentStep--;
       }
 
-      const { valid } = await data.validate()
+      const { valid } = await data.validate();
 
       if (!valid) {
-        return false
+        return false;
       }
 
       if (currentStep.value === 3 && val === '+') {
-        return saveEvent(data)
+        return saveEvent(data);
       }
 
       if (val === '+') {
-        this.currentStep++
+        this.currentStep++;
       }
     }
 
@@ -587,16 +590,15 @@ export default {
       openRemoveUsersModal,
       closeRemoveUsersModal,
       setEventDate,
-    }
+    };
   },
-}
+};
 </script>
 
-<style lang="scss" scoped> 
- $color-dfdeed: #dfdeed;
- $color-1ab2ad: #1ab2ad;
- $color-8a8aa8: #8a8aa8;
-
+<style lang="scss" scoped>
+$color-dfdeed: #dfdeed;
+$color-1ab2ad: #1ab2ad;
+$color-8a8aa8: #8a8aa8;
 
 .b-manage-event__main-body {
   margin-top: 0px;
@@ -694,7 +696,7 @@ export default {
         margin-top: 20px;
 
         ::v-deep(.b_white-btn) {
-          border: 1px solid #DFDEED;
+          border: 1px solid #dfdeed;
           font-family: 'Inter';
           font-style: normal;
           font-weight: 400;
@@ -711,7 +713,7 @@ export default {
       .b-manage-event__manage-buttons-block {
         width: 100%;
         background: rgba(239, 239, 246, 0.7);
-        border: 1px solid #DFDEED;
+        border: 1px solid #dfdeed;
         border-radius: 8px;
         align-items: center;
         justify-content: space-between;
@@ -722,7 +724,7 @@ export default {
         @include tabletAndMobile {
           display: flex;
         }
-        
+
         span {
           font-family: 'Inter';
           font-style: normal;
@@ -757,5 +759,4 @@ export default {
 .slide-leave-to {
   transform: translateY(100%);
 }
-
 </style>

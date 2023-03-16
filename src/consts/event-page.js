@@ -1,8 +1,8 @@
-import circleTick from '../assets/img/tick-in-circle.svg'
-import bucket from '../assets/img/bucket.svg'
-import pin from '../assets/img/pin.svg'
-import unpin from '../assets/img/unpin.svg'
-import edit from '../assets/img/edit-gray.svg'
+import circleTick from '../assets/img/tick-in-circle.svg';
+import bucket from '../assets/img/bucket.svg';
+import pin from '../assets/img/pin.svg';
+import unpin from '../assets/img/unpin.svg';
+import edit from '../assets/img/edit-gray.svg';
 
 export default {
   sport_type_dropdown: [
@@ -74,25 +74,25 @@ export default {
       id: 0,
       text: 'Виділити',
       img: circleTick,
-      type: 'select'
+      type: 'select',
     },
     {
       id: 1,
       text: 'Видалити',
       img: bucket,
-      type: 'delete'
+      type: 'delete',
     },
     {
       id: 2,
       text: !eventPinned ? 'Закріпити' : 'Відкріпити',
       img: !eventPinned ? pin : unpin,
-      type: !eventPinned ? 'pin' : 'unpin'
+      type: !eventPinned ? 'pin' : 'unpin',
     },
     {
       id: 3,
       text: 'Редагувати',
       img: edit,
-      type: 'edit'
+      type: 'edit',
     },
   ],
   status_ropdown: [
@@ -109,4 +109,4 @@ export default {
       name: 'Завершенi',
     },
   ],
-}
+};

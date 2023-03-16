@@ -33,26 +33,23 @@ export default {
     getNotificationType() {
       switch (this.notificationType) {
         case 'notification-push':
-          return 'notification-type__notification-push'
+          return 'notification-type__notification-push';
         case 'notification-sidebar':
-          return 'notification-type__notification-sidebar'
+          return 'notification-type__notification-sidebar';
       }
     },
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
-
-
 // SCSS variables for hex colors
- $color-efeff6: #efeff6;
- $color-c5c5d3: #c5c5d3;
- $color-fcfcfc: #fcfcfc;
- $color-424257: #424257;
- $color-148581: #148581;
- $color-a4284d: #a4284d;
-
+$color-efeff6: #efeff6;
+$color-c5c5d3: #c5c5d3;
+$color-fcfcfc: #fcfcfc;
+$color-424257: #424257;
+$color-148581: #148581;
+$color-a4284d: #a4284d;
 
 .notification-button {
   cursor: pointer;

@@ -2,90 +2,79 @@
   <div class="b-modal-top-card">
     <div class="b-modal-top-card__arrow-cross-block">
       <div
-        v-if="step.id !== 5" 
+        v-if="step.id !== 5"
         class="b-modal-top-card__arrow"
         :style="arrowStyle"
         @click="$emit('arrowClick')"
       >
-        <img src="../../../assets/img/arrow-down.svg" alt="">
+        <img src="../../../assets/img/arrow-down.svg" alt="" />
       </div>
-      <div
-        v-else
-        class="b-modal-top-card__cross"
-        @click="$emit('crossClick')"
-      >
-        <img src="../../../assets/img/cross.svg" alt="">
+      <div v-else class="b-modal-top-card__cross" @click="$emit('crossClick')">
+        <img src="../../../assets/img/cross.svg" alt="" />
       </div>
     </div>
     <div class="b-modal-top-card__title-wrapper">
       <img
         v-if="step.id === 5"
-        src="../../../assets/img/cloud-hands.svg" 
+        src="../../../assets/img/cloud-hands.svg"
         alt="cloud-hands"
-      >
+      />
       <div
         class="b-modal-top-card__title"
         :style="step.id === 5 && lastTitleStyle"
       >
-        {{step.title}}
+        {{ step.title }}
       </div>
     </div>
-    <Form
-         v-slot="data"
-         @submit="disableSubmit"
-         :validation-schema="schema"
-     >
-    <div 
-      class="b-modal-top-card__main-block"
-      :style="mainBlockCardStyle"
-    >
-      <div class="b-modal-top-card__subtitle">
-        {{step.subtitle}}
-      </div>
-      <div class="b-modal-top-card__last-subtitle">
-        {{step.last_subtitle}}
-      </div>
-
-      <Emotions
-        name="emoji"
-        :currentStepEmojies="step.emojies" 
-        :selectedEmojies="selectedEmojies"
-        @emojiSelect="emojiSelect"/>
-
-      <TextAreaComponent v-if="step.id === 4 && !step.emojies" 
-        :placeholder="$t('events.event-description')" 
-        :height="120"
-        v-model="eventComment"
-        :title="$t('modals.event_feedback.your-comment')"
-        name="comment" />
-
-      <div
-        v-if="step.buttons"
-        class="b-modal-top-card__btns-block"
-      >
-        <div 
-          class="b-modal-top-card__cancel-btn"
-          @click="$emit('cancelClick')"
-        >
-          {{step.buttons.cancel}}
+    <Form v-slot="data" @submit="disableSubmit" :validation-schema="schema">
+      <div class="b-modal-top-card__main-block" :style="mainBlockCardStyle">
+        <div class="b-modal-top-card__subtitle">
+          {{ step.subtitle }}
+        </div>
+        <div class="b-modal-top-card__last-subtitle">
+          {{ step.last_subtitle }}
         </div>
 
-        <GreenBtn
+        <Emotions
+          name="emoji"
+          :currentStepEmojies="step.emojies"
+          :selectedEmojies="selectedEmojies"
+          @emojiSelect="emojiSelect"
+        />
+
+        <TextAreaComponent
+          v-if="step.id === 4 && !step.emojies"
+          :placeholder="$t('events.event-description')"
+          :height="120"
+          v-model="eventComment"
+          :title="$t('modals.event_feedback.your-comment')"
+          name="comment"
+        />
+
+        <div v-if="step.buttons" class="b-modal-top-card__btns-block">
+          <div
+            class="b-modal-top-card__cancel-btn"
+            @click="$emit('cancelClick')"
+          >
+            {{ step.buttons.cancel }}
+          </div>
+
+          <GreenBtn
             :text="step.buttons.next"
             :class="['b-modal-top-card__next-btn']"
             :style="greenButtonWidth"
             @click-function="goToTheNextStep(data)"
           />
+        </div>
       </div>
-    </div>
-  </Form>
+    </Form>
   </div>
 </template>
 
 <script>
 import { computed, ref } from 'vue';
 
-import { Form, ErrorMessage } from "@system.it.flumx.com/vee-validate";
+import { Form, ErrorMessage } from '@system.it.flumx.com/vee-validate';
 
 import GreenBtn from '../../GreenBtn.vue';
 import TextAreaComponent from '../../TextAreaComponent.vue';
@@ -105,62 +94,62 @@ export default {
   props: {
     step: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     isOpened: {
       type: Boolean,
-      default: true
+      default: true,
     },
     selectedEmojies: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   setup(props, { emit }) {
-    const eventComment = ref('')
+    const eventComment = ref('');
     const arrowStyle = computed(() => {
       return {
-        transform: props.isOpened ? 'rotate(-180deg)' : 'rotate(-90deg)'
-      }
-    })
+        transform: props.isOpened ? 'rotate(-180deg)' : 'rotate(-90deg)',
+      };
+    });
     const emojiSelect = (emoji) => {
-      emit('emojiSelect', emoji)
-    }
+      emit('emojiSelect', emoji);
+    };
 
     const schema = computed(() => {
-      return SCHEMAS.eventReview.schema
-    })
+      return SCHEMAS.eventReview.schema;
+    });
 
     const goToTheNextStep = async (data) => {
-      const { valid } = await data.validate()
+      const { valid } = await data.validate();
       if (!valid) {
-        return false
+        return false;
       }
-      emit('nextClick', eventComment.value)
-    }
-  
+      emit('nextClick', eventComment.value);
+    };
+
     const greenButtonWidth = computed(() => {
       if ([0, 4].includes(props.step.id)) {
         return {
-          'width': '150px'
-        }
+          width: '150px',
+        };
       }
       return {
-        'width': '100px'
-      }
-    })
+        width: '100px',
+      };
+    });
     const lastTitleStyle = computed(() => {
       return {
         'font-weight': 700,
         'font-size': '24px',
         'line-height': '28px',
-        color: '$--b-main-black-color'
-      }
-    })
+        color: '$--b-main-black-color',
+      };
+    });
     const mainBlockCardStyle = computed(() => {
       return {
-        height: props.isOpened ? 'auto' : 0
-      }
-    })
+        height: props.isOpened ? 'auto' : 0,
+      };
+    });
     return {
       lastTitleStyle,
       mainBlockCardStyle,
@@ -171,12 +160,12 @@ export default {
       emojiSelect,
       goToTheNextStep,
       disableSubmit: (e) => {
-          e.stopPropagation()
-          e.preventDefault()
+        e.stopPropagation();
+        e.preventDefault();
       },
-    }
-  }
-}
+    };
+  },
+};
 </script>
 <style lang="scss" scoped>
 .b-modal-top-card {
@@ -228,14 +217,14 @@ export default {
       font-weight: 400;
       font-size: 14px;
       line-height: 20px;
-      color: $--b-main-black-color
+      color: $--b-main-black-color;
     }
-    .b-modal-top-card__btns-block { 
+    .b-modal-top-card__btns-block {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-top: 20px;
-      .b-modal-top-card__cancel-btn { 
+      .b-modal-top-card__cancel-btn {
         font-family: 'Inter';
         font-style: normal;
         font-weight: 400;
@@ -244,7 +233,7 @@ export default {
         color: $--b-main-gray-color;
         cursor: pointer;
       }
-      .b-modal-top-card__next-btn { 
+      .b-modal-top-card__next-btn {
         padding: 4px 16px;
       }
     }

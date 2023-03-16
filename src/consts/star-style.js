@@ -3,4 +3,4 @@ export default {
   emptyStarColor: '#bbb',
   starWidth: 15,
   starHeight: 15,
-}
+};

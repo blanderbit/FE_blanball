@@ -2,11 +2,11 @@
   <div class="b-modal-position__map-wrapper">
     <div class="b-modal-position__map-main" @click="activeModal = true">
       <span class="b-modal-position__map-title">
-      {{ $t('register.select-on-map') }}
-    </span>
-    <div>
-      <img src="../../assets/img/location-point.svg" />
-    </div>
+        {{ $t('register.select-on-map') }}
+      </span>
+      <div>
+        <img src="../../assets/img/location-point.svg" />
+      </div>
     </div>
     <span class="b-modal-position__map-optional">
       {{ $t('register.optionally') }}
@@ -34,12 +34,12 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-import PositionMap from './PositionMap.vue'
-import ModalWindow from '../ModalWindows/ModalWindow.vue'
-import GreenBtn from '../../components/GreenBtn.vue'
-import Loading from '../../workers/loading-worker/Loading.vue'
+import PositionMap from './PositionMap.vue';
+import ModalWindow from '../ModalWindows/ModalWindow.vue';
+import GreenBtn from '../../components/GreenBtn.vue';
+import Loading from '../../workers/loading-worker/Loading.vue';
 
 export default {
   components: {
@@ -53,38 +53,35 @@ export default {
     default: () => ({}),
     title: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   emits: ['update:modelValue'],
   setup(props) {
-    const coords = ref({})
-    const activeModal = ref(false)
+    const coords = ref({});
+    const activeModal = ref(false);
     function updateCoords(e) {
       coords.value = {
         lat: e.lat,
         lng: e.lng,
-      }
+      };
     }
 
     return {
       async save(data) {
-        activeModal.value = false
+        activeModal.value = false;
       },
       coords,
       updateCoords,
       activeModal,
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
-
-
 // SCSS variables for hex colors
- $color-efeff6: #efeff6;
-
+$color-efeff6: #efeff6;
 
 .b-modal-position__block {
   display: flex;
@@ -122,14 +119,14 @@ export default {
   color: $--b-main-black-color;
 }
 
-.b-modal-position__map-optional{
+.b-modal-position__map-optional {
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
   color: $--b-main-gray-color;
-  background: #EFEFF6;
+  background: #efeff6;
   border-radius: 4px;
   padding: 0px 2px;
 }

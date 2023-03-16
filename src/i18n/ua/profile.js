@@ -1,6 +1,6 @@
 export default {
   title: 'Особистий кабінет',
-  'subtitle': 'Керуйте своїми персональними даними',
+  subtitle: 'Керуйте своїми персональними даними',
   'my-profile': 'Мій профіль',
   'rate-plan': 'Тарифний план',
   notifications: 'Сповіщення',
@@ -14,7 +14,8 @@ export default {
   'change-password': 'Змінити пароль',
   'delete-account': 'Видалити акаунт',
   confidentiality: 'Конфіденційність',
-  'set-personal-details': 'Налаштуйте видимість ваших персональних даних іншим користувачам',
+  'set-personal-details':
+    'Налаштуйте видимість ваших персональних даних іншим користувачам',
   'phone-number': 'Номер телефону',
   'e-mail': 'E-mail',
   'my-feedbacks': 'Показувати відгуки',
@@ -61,4 +62,4 @@ export default {
   'no-role': 'Роль не вказана',
   'no-content': 'Не вказано',
   'write-several-words': 'Напишіть декілька слів про себе',
-}
+};

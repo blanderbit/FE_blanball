@@ -240,11 +240,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-dfdeed: #dfdeed;
-
+$color-dfdeed: #dfdeed;
 
 @import '../../assets/styles/forms.scss';
 
@@ -388,7 +385,7 @@ export default {
     }
   }
 }
-.b-form-error  {
+.b-form-error {
   border-radius: 6px;
 }
 </style>

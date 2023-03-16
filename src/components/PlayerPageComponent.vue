@@ -199,26 +199,25 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
-  
-import StarRating from 'vue-star-rating'
+import { computed, ref } from 'vue';
 
-import dayjs from 'dayjs'
-import dayjsUkrLocale from 'dayjs/locale/uk'
+import StarRating from 'vue-star-rating';
 
-import SimpleListWrapper from './simple-list/SimpleListWrapper.vue'
-import Avatar from './Avatar.vue'
-import Loading from './../workers/loading-worker/Loading.vue'
+import dayjs from 'dayjs';
+import dayjsUkrLocale from 'dayjs/locale/uk';
 
-import { API } from '../workers/api-worker/api.worker'
+import SimpleListWrapper from './simple-list/SimpleListWrapper.vue';
+import Avatar from './Avatar.vue';
+import Loading from './../workers/loading-worker/Loading.vue';
 
-import publicPageBack from '../assets/img/public-page-back.svg'
-import userPageBack from '../assets/img/user-page-back.svg'
-import fitWeight from '../assets/img/fit-weight.svg'
-import measureTape from '../assets/img/measure-tape.svg'
+import { API } from '../workers/api-worker/api.worker';
 
+import publicPageBack from '../assets/img/public-page-back.svg';
+import userPageBack from '../assets/img/user-page-back.svg';
+import fitWeight from '../assets/img/fit-weight.svg';
+import measureTape from '../assets/img/measure-tape.svg';
 
-const PAGE_MODE = 'public'
+const PAGE_MODE = 'public';
 
 export default {
   name: 'PlayerPage',
@@ -239,7 +238,7 @@ export default {
     },
   },
   setup(props) {
-    const reviewQuantity = ref(0)
+    const reviewQuantity = ref(0);
     const playFeatures = ref([
       {
         id: 3,
@@ -265,17 +264,17 @@ export default {
         img: measureTape,
         featureName: props.userData.profile?.height,
       },
-    ])
+    ]);
 
     const userRating = computed(() => {
-      return Math.round(props.userData.raiting) || 0
-    })
+      return Math.round(props.userData.raiting) || 0;
+    });
     const isFeedbackShown = computed(() => {
-      return props.userData.configuration?.show_reviews
-    })
+      return props.userData.configuration?.show_reviews;
+    });
     const isEventsShown = computed(() => {
-      return props.userData.configuration?.planned_events
-    })
+      return props.userData.configuration?.planned_events;
+    });
 
     // const getPlanedEvents = (page) => {
     //   return API.EventService.getPlannedUserEvents(props.userData.id, {
@@ -309,12 +308,12 @@ export default {
               date: `${dayjs(item.time_created)
                 .locale(dayjsUkrLocale)
                 .format('D MMMM')}`,
-            }
-          }) || []
-        reviewQuantity.value = res.data.results.length
-        return res
-      })
-    }
+            };
+          }) || [];
+        reviewQuantity.value = res.data.results.length;
+        return res;
+      });
+    };
 
     return {
       userRating,
@@ -325,28 +324,25 @@ export default {
       isFeedbackShown,
       getReviews,
       getPlanedEvents,
-    }
+    };
   },
   computed: {
     backPic() {
-      return this.pageMode === PAGE_MODE ? publicPageBack : userPageBack
+      return this.pageMode === PAGE_MODE ? publicPageBack : userPageBack;
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-6f6f77: #6f6f77;
- $color-dfdeed: #dfdeed;
- $color-395d09: #395d09;
- $color-d2f6a2: #d2f6a2;
- $color-c5c5d3: #c5c5d3;
- $color-efeff6: #efeff6;
- $color-f0f0f4: #f0f0f4;
-
+$color-6f6f77: #6f6f77;
+$color-dfdeed: #dfdeed;
+$color-395d09: #395d09;
+$color-d2f6a2: #d2f6a2;
+$color-c5c5d3: #c5c5d3;
+$color-efeff6: #efeff6;
+$color-f0f0f4: #f0f0f4;
 
 @import '../assets/styles/mixins/device.scss';
 

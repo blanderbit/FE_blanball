@@ -1,5 +1,9 @@
 <template>
-  <div v-if="data.length" class="b-users-table" :style="border ? tableStyle : null">
+  <div
+    v-if="data.length"
+    class="b-users-table"
+    :style="border ? tableStyle : null"
+  >
     <div v-if="border" class="b-users-table__table-label" :style="labelStyle">
       {{ tableTitle }}
       <span v-if="maxPlayersCount"
@@ -14,18 +18,18 @@
   </div>
   <EmptyList
     v-else
-      :title="emptyListData.title"
-      :description="emptyListData.description"
-      :buttonText="emptyListData.button_text"
-      :image="emptyListData.image"
-    />
+    :title="emptyListData.title"
+    :description="emptyListData.description"
+    :buttonText="emptyListData.button_text"
+    :image="emptyListData.image"
+  />
 </template>
 
 <script>
-import { ref, reactive } from 'vue'
+import { ref, reactive } from 'vue';
 
-import SmallPlayerCard from './SmallPlayerCard.vue'
-import EmptyList  from './EmptyList.vue'
+import SmallPlayerCard from './SmallPlayerCard.vue';
+import EmptyList from './EmptyList.vue';
 
 export default {
   props: {
@@ -51,32 +55,31 @@ export default {
     emptyListData: {
       type: Object,
       default: () => {},
-    }
+    },
   },
   components: {
     SmallPlayerCard,
     EmptyList,
   },
   setup(props) {
-    const tableTitle = ref(props.tableTitleText)
+    const tableTitle = ref(props.tableTitleText);
     const tableStyle = reactive({
       border: `1px solid ${props.tableColor}`,
-    })
+    });
     const labelStyle = reactive({
       background: props.tableColor,
-    })
+    });
 
     return {
       tableTitle,
       tableStyle,
       labelStyle,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
 .b-users-table {
   padding: 24px 20px 12px 20px;
   margin-bottom: 32px;

@@ -1,4 +1,4 @@
-import { addZeroBefore } from './addZeroBefore'
+import { addZeroBefore } from './addZeroBefore';
 
 export const runOnSelectEventDuration = (durationValue, data) => {
   let eventStartTime;

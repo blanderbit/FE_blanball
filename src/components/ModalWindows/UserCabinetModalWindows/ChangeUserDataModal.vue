@@ -11,7 +11,11 @@
           </div>
         </div>
         <div class="b-change-data__main-text">
-          {{ config.description ? config.description : $t('modals.change_user_data.main-text') }}
+          {{
+            config.description
+              ? config.description
+              : $t('modals.change_user_data.main-text')
+          }}
         </div>
         <div class="b-change-data__btns-block">
           <div class="b-change-data__first-btn">
@@ -49,8 +53,8 @@
 </template>
 
 <script>
-import GreenBtn from '../../GreenBtn.vue'
-import WhiteBtn from '../../WhiteBtn.vue'
+import GreenBtn from '../../GreenBtn.vue';
+import WhiteBtn from '../../WhiteBtn.vue';
 
 export default {
   name: 'ChangeUserDataModal',
@@ -71,27 +75,24 @@ export default {
   emits: ['closeModal', 'showPreview', 'saveChanges', 'declineChanges'],
   setup(props, context) {
     function closeModal(isEditMode) {
-      context.emit('closeModal', isEditMode)
+      context.emit('closeModal', isEditMode);
     }
     function greenBtnFunction() {
-      context.emit(props.config.left_btn_action, false)
+      context.emit(props.config.left_btn_action, false);
     }
 
     return {
       closeModal,
       greenBtnFunction,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-dfdeed: #dfdeed;
- $color-e2e2e9: #e2e2e9;
-
+$color-dfdeed: #dfdeed;
+$color-e2e2e9: #e2e2e9;
 
 .b-change-data__wrapper {
   position: fixed;

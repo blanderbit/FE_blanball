@@ -1,19 +1,26 @@
 <template>
-  <div :class="['b-my-event-card', 
-    { active: card.status === 'Active' },
-    { finished: card.status === 'Finished' },
-    { selected: isCardSelected}]" 
+  <div
+    :class="[
+      'b-my-event-card',
+      { active: card.status === 'Active' },
+      { finished: card.status === 'Finished' },
+      { selected: isCardSelected },
+    ]"
     @click.right.prevent="$emit('cardRightClick', $event)"
     @click.prevent="$emit('cardLeftClick', card.id)"
     @touchstart="startHoldOpenMenu"
-    @touchend="endHoldOpenMenu">
+    @touchend="endHoldOpenMenu"
+  >
     <div v-if="isCardSelected" class="b-my-event-card-selected-icon">
-      <img src="../assets/img/green-nike-icon.svg" alt="">
+      <img src="../assets/img/green-nike-icon.svg" alt="" />
     </div>
-    <div v-if="card.pinned && !isCardSelected" class="b-my-event-card-pinned-icon">
-      <img src="../assets/img/gray-pin.svg" alt="">
+    <div
+      v-if="card.pinned && !isCardSelected"
+      class="b-my-event-card-pinned-icon"
+    >
+      <img src="../assets/img/gray-pin.svg" alt="" />
     </div>
-    <div :class="['b-my-event-card__left-block',  { selected: isCardSelected}]">
+    <div :class="['b-my-event-card__left-block', { selected: isCardSelected }]">
       <div class="b-my-event-card__col-1">
         <div class="b-my-event-card__card-icon">
           <img src="../assets/img/hands-shake.svg" alt="" />
@@ -21,7 +28,11 @@
       </div>
       <div class="b-my-event-card__col-2">
         <div class="b-my-event-card__title">{{ card.name }}</div>
-        <PlaceDetector class="b-my-event-card__place" v-if="card.place.place_name" :place="card.place">
+        <PlaceDetector
+          class="b-my-event-card__place"
+          v-if="card.place.place_name"
+          :place="card.place"
+        >
         </PlaceDetector>
         <div class="b-my-event-card__labels">
           <div v-if="card.gender" class="b-my-event-card__label">
@@ -30,14 +41,25 @@
           <div v-if="card.type" class="b-my-event-card__label">
             {{ $t(`events.${card.type}`) }}
           </div>
-          <div v-if="card.need_ball" class="b-my-event-card__label">{{ $t('hashtags.need_ball') }}</div>
-          <div v-if="card.need_form" class="b-my-event-card__label">{{ $t('hashtags.need_form') }}</div>
+          <div v-if="card.need_ball" class="b-my-event-card__label">
+            {{ $t('hashtags.need_ball') }}
+          </div>
+          <div v-if="card.need_form" class="b-my-event-card__label">
+            {{ $t('hashtags.need_form') }}
+          </div>
         </div>
       </div>
     </div>
-    <div :class="['b-my-event-card__right-block',  { selected: isCardSelected}]">
+    <div
+      :class="['b-my-event-card__right-block', { selected: isCardSelected }]"
+    >
       <div class="b-my-event-card__col-3">
-        <span :class="['b-my-event-card__status', `b-my-event-card__status-${card.status.toLowerCase()}`]">
+        <span
+          :class="[
+            'b-my-event-card__status',
+            `b-my-event-card__status-${card.status.toLowerCase()}`,
+          ]"
+        >
           {{ $t(`events.${card.status}`) }}
         </span>
         <div class="b-my-event-card__date">
@@ -54,7 +76,7 @@
 <script>
 import { computed } from 'vue';
 
-import PlaceDetector from './maps/PlaceDetector.vue'
+import PlaceDetector from './maps/PlaceDetector.vue';
 
 export default {
   components: {
@@ -68,48 +90,45 @@ export default {
     selected: {
       type: Array,
       default: () => [],
-    }
+    },
   },
   setup(props, context) {
     const isCardSelected = computed(() => {
-      return props.selected.includes(props.card.id)
-    })
+      return props.selected.includes(props.card.id);
+    });
 
-    let timeout
+    let timeout;
 
     const startHoldOpenMenu = (e) => {
       const touch = e.touches[0];
-      const data = {'clientX': touch.pageX, 'clientY': touch.pageY}
+      const data = { clientX: touch.pageX, clientY: touch.pageY };
       timeout = setTimeout(() => {
-        context.emit('cardRightClick', data)
+        context.emit('cardRightClick', data);
       }, 500);
-    }
+    };
 
     const endHoldOpenMenu = (e) => {
       clearTimeout(timeout);
-    }
+    };
 
     return {
       isCardSelected,
       startHoldOpenMenu,
       endHoldOpenMenu,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-dfdeed: #dfdeed;
- $color-71ba12: #71ba12;
- $color-e184a0: #e184a0;
- $color-1ab2ad: #1ab2ad;
- $color-f0f0f4: #f0f0f4;
- $color-efeff6: #efeff6;
- $color-4c4a82: #4c4a82;
-
+$color-dfdeed: #dfdeed;
+$color-71ba12: #71ba12;
+$color-e184a0: #e184a0;
+$color-1ab2ad: #1ab2ad;
+$color-f0f0f4: #f0f0f4;
+$color-efeff6: #efeff6;
+$color-4c4a82: #4c4a82;
 
 .b-my-event-card {
   padding: 12px;
@@ -125,10 +144,10 @@ export default {
     border: 1px solid $color-71ba12;
   }
   &.finished {
-    border: 1px solid #E184A0;
+    border: 1px solid #e184a0;
   }
   &.selected {
-    border: 1px solid #1AB2AD;
+    border: 1px solid #1ab2ad;
   }
 
   .b-my-event-card-selected-icon {
@@ -152,7 +171,7 @@ export default {
     padding: 4px;
     display: flex;
     align-items: center;
-    border: 2px solid #F0F0F4;
+    border: 2px solid #f0f0f4;
     border-radius: 20px;
   }
 
@@ -238,17 +257,17 @@ export default {
 
       &-planned {
         color: $--b-main-black-color;
-        background: #EFEFF6;
+        background: #efeff6;
       }
 
       &-active {
         color: $--b-main-white-color;
-        background: #71BA12;
+        background: #71ba12;
       }
 
       &-finished {
         color: $--b-main-white-color;
-        background: #E184A0;
+        background: #e184a0;
       }
     }
 
@@ -294,7 +313,7 @@ export default {
 }
 
 .b-my-event-card__place::v-deep(.b-place-detector) {
-  background: #EFEFF6;
+  background: #efeff6;
   border-radius: 4px;
   margin-top: 10px;
   width: fit-content;

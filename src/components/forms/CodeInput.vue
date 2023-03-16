@@ -22,7 +22,7 @@
           :value="v"
           :ref="
             (el) => {
-              if (el) inputs[index + 1] = el
+              if (el) inputs[index + 1] = el;
             }
           "
           v-on:input="onValueChange"
@@ -48,12 +48,12 @@ import {
   onBeforeUpdate,
   onMounted,
   onBeforeUnmount,
-} from 'vue'
-import { useI18n } from 'vue-i18n'
+} from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import { CustomModelWorker } from '../../workers/custom-model-worker/index'
+import { CustomModelWorker } from '../../workers/custom-model-worker/index';
 
-const { t } = useI18n()
+const { t } = useI18n();
 
 const props = defineProps({
   className: String,
@@ -87,8 +87,8 @@ const props = defineProps({
   },
   name: String,
   title: String,
-})
-const emit = defineEmits(['change', 'complete'])
+});
+const emit = defineEmits(['change', 'complete']);
 const KEY_CODE = {
   backspace: 8,
   delete: 46,
@@ -96,136 +96,136 @@ const KEY_CODE = {
   up: 38,
   right: 39,
   down: 40,
-}
+};
 
 const { modelValue, modelErrorMessage, modelHandlers } =
-  CustomModelWorker(props)
+  CustomModelWorker(props);
 
-const values = ref([])
-const iRefs = ref([])
-const inputs = ref([])
-const fields = toRef(props, 'fields')
-const autoFocusIndex = ref(0)
-const autoFocus = true
+const values = ref([]);
+const iRefs = ref([]);
+const inputs = ref([]);
+const fields = toRef(props, 'fields');
+const autoFocusIndex = ref(0);
+const autoFocus = true;
 const initVals = () => {
-  let vals
+  let vals;
   if (values.value && values.value.length) {
-    vals = []
+    vals = [];
     for (let i = 0; i < fields.value; i++) {
-      vals.push(values.value[i] || '')
+      vals.push(values.value[i] || '');
     }
     autoFocusIndex.value =
-      values.value.length >= fields.value ? 0 : values.value.length
+      values.value.length >= fields.value ? 0 : values.value.length;
   } else {
-    vals = Array(fields.value).fill('')
+    vals = Array(fields.value).fill('');
   }
-  iRefs.value = []
+  iRefs.value = [];
   for (let i = 0; i < fields.value; i++) {
-    iRefs.value.push(i + 1)
+    iRefs.value.push(i + 1);
   }
-  values.value = vals
-}
+  values.value = vals;
+};
 const onFocus = (e) => {
-  e.target.select(e)
-}
+  e.target.select(e);
+};
 const onValueChange = (e) => {
-  const index = parseInt(e.target.dataset.id)
+  const index = parseInt(e.target.dataset.id);
 
-  const pattern = props.type === 'number' ? '[0-9]' : ''
+  const pattern = props.type === 'number' ? '[0-9]' : '';
 
   if (
     e.target.value === '' ||
     (pattern ? pattern.match(e.target.value) : false)
   ) {
-    return
+    return;
   }
 
-  let next
-  const value = e.target.value.toUpperCase()
-  values.value = Object.assign([], values.value)
+  let next;
+  const value = e.target.value.toUpperCase();
+  values.value = Object.assign([], values.value);
   if (value.length > 1) {
-    let nextIndex = value.length + index - 1
+    let nextIndex = value.length + index - 1;
     if (nextIndex >= fields.value) {
-      nextIndex = fields.value - 1
+      nextIndex = fields.value - 1;
     }
-    next = iRefs.value[nextIndex]
-    const split = value.split('')
+    next = iRefs.value[nextIndex];
+    const split = value.split('');
     split.forEach((item, i) => {
-      const cursor = index + i
+      const cursor = index + i;
       if (cursor < fields.value) {
-        values.value[cursor] = item
+        values.value[cursor] = item;
       }
-    })
+    });
   } else {
-    next = iRefs.value[index + 1]
-    values.value[index] = value
+    next = iRefs.value[index + 1];
+    values.value[index] = value;
   }
   if (next) {
-    const element = inputs.value[next]
-    element.focus()
-    element.select()
+    const element = inputs.value[next];
+    element.focus();
+    element.select();
   }
-  triggerChange(values.value)
-}
+  triggerChange(values.value);
+};
 const onKeyDown = (e) => {
-  const index = parseInt(e.target.dataset.id)
-  const prevIndex = index - 1
-  const nextIndex = index + 1
-  const prev = iRefs.value[prevIndex]
-  const next = iRefs.value[nextIndex]
+  const index = parseInt(e.target.dataset.id);
+  const prevIndex = index - 1;
+  const nextIndex = index + 1;
+  const prev = iRefs.value[prevIndex];
+  const next = iRefs.value[nextIndex];
   switch (e.keyCode) {
     case KEY_CODE.backspace: {
-      e.preventDefault()
+      e.preventDefault();
 
-      const vals = [...values.value]
+      const vals = [...values.value];
       if (values.value[index]) {
-        vals[index] = ''
-        values.value = vals
-        triggerChange(vals)
+        vals[index] = '';
+        values.value = vals;
+        triggerChange(vals);
       } else if (prev) {
-        vals[prevIndex] = ''
-        inputs.value[prev].focus()
-        values.value = vals
-        triggerChange(vals)
+        vals[prevIndex] = '';
+        inputs.value[prev].focus();
+        values.value = vals;
+        triggerChange(vals);
       }
-      break
+      break;
     }
     case KEY_CODE.delete: {
-      e.preventDefault()
-      const vals = [...values.value]
+      e.preventDefault();
+      const vals = [...values.value];
       if (values.value[index]) {
-        vals[index] = ''
-        values.value = vals
-        triggerChange(vals)
+        vals[index] = '';
+        values.value = vals;
+        triggerChange(vals);
       } else if (next) {
-        vals[nextIndex] = ''
-        inputs.value[next].focus()
-        values.value = vals
-        triggerChange(vals)
+        vals[nextIndex] = '';
+        inputs.value[next].focus();
+        values.value = vals;
+        triggerChange(vals);
       }
-      break
+      break;
     }
     case KEY_CODE.left:
-      e.preventDefault()
+      e.preventDefault();
       if (prev) {
-        inputs.value[prev].focus()
+        inputs.value[prev].focus();
       }
-      break
+      break;
     case KEY_CODE.right:
-      e.preventDefault()
+      e.preventDefault();
       if (next) {
-        inputs.value[next].focus()
+        inputs.value[next].focus();
       }
-      break
+      break;
     case KEY_CODE.up:
     case KEY_CODE.down:
-      e.preventDefault()
-      break
+      e.preventDefault();
+      break;
     default:
       // this.handleKeys[index] = true;
-      break
+      break;
   }
-}
+};
 
 function pasteHandler() {
   navigator.clipboard
@@ -234,41 +234,37 @@ function pasteHandler() {
       text
         .split('')
         .filter((_, index) => index < 5)
-        .forEach((item, index) => (values.value[index] = item))
+        .forEach((item, index) => (values.value[index] = item));
     })
-    .catch((err) => {
-    })
+    .catch((err) => {});
 }
 
 onMounted(() => {
-  window.addEventListener('paste', pasteHandler)
-})
+  window.addEventListener('paste', pasteHandler);
+});
 onBeforeUnmount(() => {
-  window.removeEventListener('paste', pasteHandler)
-})
+  window.removeEventListener('paste', pasteHandler);
+});
 
-modelHandlers.value.input[0]('')
-modelHandlers.value.input[1]('', false)
+modelHandlers.value.input[0]('');
+modelHandlers.value.input[1]('', false);
 const triggerChange = (values = values.value) => {
-  const val = values.join('')
-  modelHandlers.value.input[0](val)
-  modelHandlers.value.input[1](val, true)
-  emit('complete', val.length >= fields.value)
-}
-initVals()
+  const val = values.join('');
+  modelHandlers.value.input[0](val);
+  modelHandlers.value.input[1](val, true);
+  emit('complete', val.length >= fields.value);
+};
+initVals();
 onBeforeUpdate(() => {
-  inputs.value = []
-})
+  inputs.value = [];
+});
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-a8adb7: #a8adb7;
- $color-525461: #525461;
- $color-8a8aa8: #8a8aa8;
-
+$color-a8adb7: #a8adb7;
+$color-525461: #525461;
+$color-8a8aa8: #8a8aa8;
 
 @import '../../assets/styles/forms.scss';
 

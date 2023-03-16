@@ -1,13 +1,13 @@
-import UsersPage from './user-page'
-import starStyle from './star-style'
-import modalFeedback from './modal-feedback'
-import Register from './register'
-import EventInfo from './event-info'
-import EventPage from './event-page'
-import ManageEvent from './manage-event'
-import Dates from './dates'
-import Profile from './profile'
-import Forms from './forms'
+import UsersPage from './user-page';
+import starStyle from './star-style';
+import modalFeedback from './modal-feedback';
+import Register from './register';
+import EventInfo from './event-info';
+import EventPage from './event-page';
+import ManageEvent from './manage-event';
+import Dates from './dates';
+import Profile from './profile';
+import Forms from './forms';
 
 export default {
   users_page: UsersPage,
@@ -20,4 +20,4 @@ export default {
   dates: Dates,
   profile: Profile,
   forms: Forms,
-}
+};

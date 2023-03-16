@@ -18,7 +18,7 @@
     </div>
     <div class="b-public-profile__reviews-list">
       <div v-if="!userShowReviews" class="b-public-profile__reviews-hidden">
-        <img src="../../assets/img/information.svg" alt="">
+        <img src="../../assets/img/information.svg" alt="" />
         <span>{{ $t('player_page.feedback-hidden') }}</span>
       </div>
       <SimpleListWrapper :requestForGetData="getReviews" v-else>
@@ -90,7 +90,7 @@ export default {
     userShowReviews: {
       type: Boolean,
       required: true,
-    }
+    },
   },
   setup(props) {
     const reviewsTotalCount = ref(0);
@@ -176,10 +176,10 @@ $color-f57125: #f57125;
   }
 
   .b-public-profile__reviews-hidden {
-    @include inter(12px, 400, #6F6F77);
+    @include inter(12px, 400, #6f6f77);
     line-height: 20px;
     padding-top: 16px;
-    border-top: 1px solid #DFDEED;
+    border-top: 1px solid #dfdeed;
     display: flex;
     gap: 8px;
     word-break: break-word;

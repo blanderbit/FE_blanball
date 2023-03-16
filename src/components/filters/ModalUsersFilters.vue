@@ -49,17 +49,17 @@
 </template>
 
 <script>
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue';
 
-import ModalWindow from '../ModalWindows/ModalWindow.vue'
-import Dropdown from '../forms/Dropdown.vue'
-import GreenBtn from '../GreenBtn.vue'
-import RangeFilter from './components/RangeFilter.vue'
-import RadioGenderBox from './components/RadioGenderBox.vue'
+import ModalWindow from '../ModalWindows/ModalWindow.vue';
+import Dropdown from '../forms/Dropdown.vue';
+import GreenBtn from '../GreenBtn.vue';
+import RangeFilter from './components/RangeFilter.vue';
+import RadioGenderBox from './components/RadioGenderBox.vue';
 
-import tickIcon from '../../assets/img/tick-white.svg'
+import tickIcon from '../../assets/img/tick-white.svg';
 
-import CONSTANTS from '../../consts/index'
+import CONSTANTS from '../../consts/index';
 
 export default {
   name: 'ModalUsersFilters',
@@ -93,41 +93,41 @@ export default {
     'update:gender',
   ],
   setup(props, { emit }) {
-    const positionData = ref(props.dropdownPosition)
-    const ageRangeData = ref(props.rangeSlider)
-    const genderData = ref(props.gender)
+    const positionData = ref(props.dropdownPosition);
+    const ageRangeData = ref(props.rangeSlider);
+    const genderData = ref(props.gender);
 
-    const positions = computed(() => CONSTANTS.profile.position)
-    const icon = computed(() => tickIcon)
+    const positions = computed(() => CONSTANTS.profile.position);
+    const icon = computed(() => tickIcon);
 
     watch(
       () => genderData.value,
       (newVal) => {
-        emit('update:gender', newVal)
+        emit('update:gender', newVal);
       }
-    )
+    );
     watch(
       () => ageRangeData.value,
       (newVal) => {
-        emit('update:rangeSlider', newVal)
+        emit('update:rangeSlider', newVal);
       }
-    )
+    );
     watch(
       () => positionData.value,
       (newVal) => {
-        emit('update:dropdownPosition', newVal)
+        emit('update:dropdownPosition', newVal);
       }
-    )
+    );
 
     function setFilters() {
-      emit('setModalWindowFilters')
-      emit('closeModal')
+      emit('setModalWindowFilters');
+      emit('closeModal');
     }
     function clearAllData() {
-      emit('clearFilters')
-      positionData.value = ''
+      emit('clearFilters');
+      positionData.value = '';
       // ageRangeData.value = []
-      genderData.value = ''
+      genderData.value = '';
     }
 
     return {
@@ -138,9 +138,9 @@ export default {
       positionData,
       ageRangeData,
       genderData,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

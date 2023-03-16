@@ -29,18 +29,18 @@
       class="forms-block"
       @click="openSelectFormsModal"
     >
-      <div class="forms-select-form"
-        @click="$emit('setForms')">
+      <div class="forms-select-form" @click="$emit('setForms')">
         <span>{{ $t('events.set-forms-colors') }}</span>
         <img src="../../assets/img/set-filter.svg" alt="" />
       </div>
     </div>
-    <ErrorMessage class="b-forms-block-error-message" name="forms"/>   
-    
+    <ErrorMessage class="b-forms-block-error-message" name="forms" />
+
     <EventCreateForms
       v-if="formsValue"
       :formsData="formsValue"
-      @changeForms="changeForms"/>
+      @changeForms="changeForms"
+    />
 
     <div class="prize-switcher">
       <div class="title">
@@ -63,22 +63,21 @@
 
     <div class="phone-block">
       <span class="title">{{ $t('events.my-contacts') }}</span>
-      <div class="input"
-      :class="{'phone-read': !isEditPhone}">
-      <InputComponent
-        ref="phoneValue"
-        :placeholder="phoneValue?.staticModelValue"
-        :title-width="0"
-        :readonly="!isEditPhone"
-        name="contact_number"
-        v-maska="'+38 (0##) ### ## ##'"
-        :icon="icons.editPhone"
-        @icon-click="changeEditPhoneMode"
-      >
-      </InputComponent>
+      <div class="input" :class="{ 'phone-read': !isEditPhone }">
+        <InputComponent
+          ref="phoneValue"
+          :placeholder="phoneValue?.staticModelValue"
+          :title-width="0"
+          :readonly="!isEditPhone"
+          name="contact_number"
+          v-maska="'+38 (0##) ### ## ##'"
+          :icon="icons.editPhone"
+          @icon-click="changeEditPhoneMode"
+        >
+        </InputComponent>
+      </div>
     </div>
-    </div>
-    
+
     <div class="title-block">
       <span class="title-margin">{{ $t('events.additional-info') }}</span>
     </div>
@@ -94,23 +93,23 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import { computed, ref } from 'vue';
 
-import { ErrorMessage } from '@system.it.flumx.com/vee-validate'
+import { ErrorMessage } from '@system.it.flumx.com/vee-validate';
 
-import { useUserDataStore } from '../../stores/userData'
+import { useUserDataStore } from '../../stores/userData';
 
-import Switcher from '../../components/Switcher.vue'
-import RadioButton from '../../components/forms/RadioButton.vue'
-import InputComponent from '../../components/forms/InputComponent.vue'
-import TextAreaComponent from '../TextAreaComponent.vue'
-import EventCreateForms from '../buildedForms/EventCreateForms.vue'
+import Switcher from '../../components/Switcher.vue';
+import RadioButton from '../../components/forms/RadioButton.vue';
+import InputComponent from '../../components/forms/InputComponent.vue';
+import TextAreaComponent from '../TextAreaComponent.vue';
+import EventCreateForms from '../buildedForms/EventCreateForms.vue';
 
-import AimIcon from '../../assets/img/aim.svg'
-import { storeToRefs } from 'pinia'
+import AimIcon from '../../assets/img/aim.svg';
+import { storeToRefs } from 'pinia';
 
-import editPhoneIcon from '../../assets/img/sort-arrows-horizontal.svg'
-import checkMarkIcon from '../../assets/img/check-mark.svg'
+import editPhoneIcon from '../../assets/img/sort-arrows-horizontal.svg';
+import checkMarkIcon from '../../assets/img/check-mark.svg';
 
 export default {
   name: 'ManageEventThirdStep',
@@ -135,7 +134,7 @@ export default {
     initialValues: {
       type: Object,
       default: () => {},
-    }
+    },
   },
   setup(props, { emit }) {
     const store = useUserDataStore();
@@ -148,31 +147,33 @@ export default {
       return {
         aim: AimIcon,
         editPhone: isEditPhone.value ? editPhoneIcon : checkMarkIcon,
-      }
-    })
+      };
+    });
 
     function showHidePhone(val) {
-      isPhoneShown.value = val
+      isPhoneShown.value = val;
     }
 
     const selectForms = (value) => {
-      needForm.value = value
-      emit('selectNeedForm', needForm.value)
-    }
+      needForm.value = value;
+      emit('selectNeedForm', needForm.value);
+    };
 
     const changeForms = () => {
-      emit('changeForms')
-    }
+      emit('changeForms');
+    };
 
     function changeEditPhoneMode() {
-      isEditPhone.value = !isEditPhone.value
+      isEditPhone.value = !isEditPhone.value;
     }
 
     const stepStyle = computed(() => {
       if (props?.currentStep) {
-        return props?.currentStep === 3 ? { height: 'auto' } : { height: '0px' }
+        return props?.currentStep === 3
+          ? { height: 'auto' }
+          : { height: '0px' };
       }
-    })
+    });
 
     return {
       icons,
@@ -185,20 +186,18 @@ export default {
       changeEditPhoneMode,
       changeForms,
       selectForms,
-    }
+    };
   },
-}
+};
 </script>
 
-<style lang="scss" scoped> $color-f9f9fc: #f9f9fc;
-
-
+<style lang="scss" scoped>
+$color-f9f9fc: #f9f9fc;
 
 // SCSS variables for hex colors
- $color-f4f4f4: #f4f4f4;
- $color-efeff6: #efeff6;
- $color-dfdeed: #dfdeed;
-
+$color-f4f4f4: #f4f4f4;
+$color-efeff6: #efeff6;
+$color-dfdeed: #dfdeed;
 
 .third-step {
   overflow: hidden;
@@ -398,7 +397,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #F9F9FC;
+    background: #f9f9fc;
     border-radius: 6px;
     padding: 8px;
     line-height: 20px;
@@ -411,7 +410,7 @@ export default {
 }
 .phone-read {
   ::v-deep(input) {
-    background: #F9F9FC;
+    background: #f9f9fc;
   }
   ::v-deep(.b-input__wrapper) {
     border: none;

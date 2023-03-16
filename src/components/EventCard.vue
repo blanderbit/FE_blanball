@@ -72,11 +72,11 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router';
 
-import GreenBtn from '../components/GreenBtn.vue'
+import GreenBtn from '../components/GreenBtn.vue';
 
-import { ROUTES } from '../router/router.const'
+import { ROUTES } from '../router/router.const';
 
 export default {
   props: {
@@ -89,32 +89,29 @@ export default {
     GreenBtn,
   },
   setup() {
-    const router = useRouter()
+    const router = useRouter();
 
     function goToEventPage() {
-      router.push(ROUTES.APPLICATION.EVENTS.GET_ONE.absolute('3'))
+      router.push(ROUTES.APPLICATION.EVENTS.GET_ONE.absolute('3'));
     }
 
     return {
       goToEventPage,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-4a7deb: #4a7deb;
- $color-8978ee: #8978ee;
- $color-d243c5: #d243c5;
- $color-fafafa: #fafafa;
- $color-4c4a82: #4c4a82;
- $color-efeff6: #efeff6;
- $color-393762: #393762;
- $color-dfdeed: #dfdeed;
-
+$color-4a7deb: #4a7deb;
+$color-8978ee: #8978ee;
+$color-d243c5: #d243c5;
+$color-fafafa: #fafafa;
+$color-4c4a82: #4c4a82;
+$color-efeff6: #efeff6;
+$color-393762: #393762;
+$color-dfdeed: #dfdeed;
 
 .b-event-card {
   position: relative;

@@ -9,4 +9,4 @@ export default {
   judge: 'Суддя',
   coach: 'Тренер',
   'registered-audience': 'Зареєстровані глядачі',
-}
+};

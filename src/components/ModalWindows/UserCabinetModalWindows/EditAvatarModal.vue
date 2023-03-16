@@ -7,7 +7,7 @@
             <div class="b-edit-avatar__right-side">
               <vue-cropper
                 ref="cropper"
-                :aspectRatio="1/1"
+                :aspectRatio="1 / 1"
                 :minContainerHeight="200"
                 :viewMode="2"
                 :styles="{ border: '2px solid red' }"
@@ -185,10 +185,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped> 
- $color-d9d9d9: #d9d9d9;
- $color-dfdeed: #dfdeed;
- $color-efeff6: #efeff6;
+<style lang="scss" scoped>
+$color-d9d9d9: #d9d9d9;
+$color-dfdeed: #dfdeed;
+$color-efeff6: #efeff6;
 
 .b-edit-avatar {
   &__main-part {
@@ -204,7 +204,7 @@ export default {
     ::v-deep(.b-edit-avatar__right-side) {
       width: 200px;
       @include mobile {
-          width: 100%;
+        width: 100%;
       }
 
       .b-edit-avatar__crop-pic {
@@ -340,7 +340,7 @@ export default {
   }
 }
 ::v-deep(.cropper-modal) {
-  background: #D9D9D9;;
+  background: #d9d9d9;
 }
 ::v-deep(.cropper-line) {
   background: transparent;

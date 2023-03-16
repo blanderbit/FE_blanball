@@ -16,12 +16,12 @@
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import StepWrapper from './StepWrapper.vue'
+import StepWrapper from './StepWrapper.vue';
 
-import arrowRight from '../../assets/img/arrow-right-white.svg'
+import arrowRight from '../../assets/img/arrow-right-white.svg';
 
 export default {
   name: 'Step5',
@@ -29,7 +29,7 @@ export default {
     StepWrapper,
   },
   setup() {
-    const { t } = useI18n()
+    const { t } = useI18n();
     const stepConfig = computed(() => {
       return {
         title: t('register.affect-on-rates'),
@@ -43,21 +43,18 @@ export default {
           text: t('register.continue'),
           icon: arrowRight,
         },
-      }
-    })
+      };
+    });
     return {
       stepConfig,
-    }
+    };
   },
-}
+};
 </script>
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-f7f7fe: #f7f7fe;
- $color-dfdeed: #dfdeed;
-
+$color-f7f7fe: #f7f7fe;
+$color-dfdeed: #dfdeed;
 
 .b-register-step__info-block {
   padding: 6px 6px 6px 38px;

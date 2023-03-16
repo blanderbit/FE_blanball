@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { ref, onBeforeUnmount } from 'vue'
+import { ref, onBeforeUnmount } from 'vue';
 
 export default {
   name: 'Counter',
@@ -37,31 +37,31 @@ export default {
   },
   emits: ['resendCodeAction'],
   setup(props, { emit }) {
-    const seconds = ref(props.startTime)
-    const interval = ref()
+    const seconds = ref(props.startTime);
+    const interval = ref();
 
     const resendCodeMethod = () => {
-      emit('resendCodeAction')
-      seconds.value = props.startTime
-    }
+      emit('resendCodeAction');
+      seconds.value = props.startTime;
+    };
 
     interval.value = setInterval(() => {
       if (seconds.value !== 0) {
-        seconds.value--
+        seconds.value--;
       }
-    }, 1000)
+    }, 1000);
 
     onBeforeUnmount(() => {
-      clearInterval(interval.value)
-      seconds.value = props.startTime
-    })
+      clearInterval(interval.value);
+      seconds.value = props.startTime;
+    });
 
     return {
       seconds,
       resendCodeMethod,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

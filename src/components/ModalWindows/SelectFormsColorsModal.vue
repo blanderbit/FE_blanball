@@ -146,7 +146,7 @@ export default {
     });
 
     const schema = computed(() => {
-      return SCHEMAS.selectForms.schema(props.selectedTab)
+      return SCHEMAS.selectForms.schema(props.selectedTab);
     });
 
     const saveData = async (data) => {
@@ -171,8 +171,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
 $color-f0f0f4: #f0f0f4;
 $color-efeff6: #efeff6;

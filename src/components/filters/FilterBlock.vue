@@ -8,15 +8,12 @@
 <script>
 export default {
   name: 'FilterBlock',
-}
+};
 </script>
 
 <style scoped lang="scss">
-
-
 // SCSS variables for hex colors
- $color-f9f9fc: #f9f9fc;
-
+$color-f9f9fc: #f9f9fc;
 
 .b-filters {
   &__wrapper {

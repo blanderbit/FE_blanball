@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue'
+import { ref, watch } from 'vue';
 
 export default {
   name: 'loadingSamll',
@@ -28,20 +28,20 @@ export default {
     },
   },
   setup(props) {
-    const loading = ref(props.isActive)
+    const loading = ref(props.isActive);
 
     watch(
       () => props.isActive,
       (newData, oldData) => {
-        loading.value = newData
+        loading.value = newData;
       }
-    )
+    );
 
     return {
       loading,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

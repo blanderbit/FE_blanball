@@ -26,8 +26,11 @@
             <li
               v-for="(item, index) in menuItems"
               :key="index"
-              :class="['b_sidebar_menu-item', item.class, 
-              {'b_sidebar_menu-item__disabled': disabled}]"
+              :class="[
+                'b_sidebar_menu-item',
+                item.class,
+                { 'b_sidebar_menu-item__disabled': disabled },
+              ]"
               @click="item.action && item.action()"
             >
               <Transition>
@@ -92,35 +95,38 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeUnmount, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, onBeforeUnmount, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
-import { storeToRefs } from "pinia";
+import { storeToRefs } from 'pinia';
 
-import SlideMenu from '../components/SlideMenu.vue'
-import Avatar from './../components/Avatar.vue'
-import BugReportModal from './ModalWindows/BugReportModal.vue'
-import TabLabel from './TabLabel.vue'
+import SlideMenu from '../components/SlideMenu.vue';
+import Avatar from './../components/Avatar.vue';
+import BugReportModal from './ModalWindows/BugReportModal.vue';
+import TabLabel from './TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';
 
-import { useUserDataStore } from '../stores/userData'
-import { useEventDataStore } from '../stores/eventsData'
-import { createNotificationFromData } from '../workers/utils-worker'
-import { AuthWebSocketWorkerInstance } from './../workers/web-socket-worker'
-import { API } from '../workers/api-worker/api.worker'
-import { PaginationWorker } from '../workers/pagination-worker'
-import { TokenWorker } from '../workers/token-worker'
-import { NotificationsBus, BlanballEventBus } from '../workers/event-bus-worker'
+import { useUserDataStore } from '../stores/userData';
+import { useEventDataStore } from '../stores/eventsData';
+import { createNotificationFromData } from '../workers/utils-worker';
+import { AuthWebSocketWorkerInstance } from './../workers/web-socket-worker';
+import { API } from '../workers/api-worker/api.worker';
+import { PaginationWorker } from '../workers/pagination-worker';
+import { TokenWorker } from '../workers/token-worker';
+import {
+  NotificationsBus,
+  BlanballEventBus,
+} from '../workers/event-bus-worker';
 
-import { ROUTES } from '../router/router.const'
+import { ROUTES } from '../router/router.const';
 
-import notification from '../assets/img/notification.svg'
-import notificationUnread from '../assets/img/notificationUnread.svg'
-import record from '../assets/img/record.svg'
-import members from '../assets/img/members.svg'
-import medal from '../assets/img/medal.svg'
-import settings from '../assets/img/settings.svg'
-import bugReport from '../assets/img/warning-black.svg'
+import notification from '../assets/img/notification.svg';
+import notificationUnread from '../assets/img/notificationUnread.svg';
+import record from '../assets/img/record.svg';
+import members from '../assets/img/members.svg';
+import medal from '../assets/img/medal.svg';
+import settings from '../assets/img/settings.svg';
+import bugReport from '../assets/img/warning-black.svg';
 
 const findDublicates = (list, newList) => {
   return newList.filter((item) =>
@@ -129,8 +135,8 @@ const findDublicates = (list, newList) => {
           (oldItem) => oldItem.notification_id === item.notification_id
         )
       : true
-  )
-}
+  );
+};
 
 export default {
   name: 'MainSidebar',
@@ -142,31 +148,30 @@ export default {
     MobileMenu,
   },
   setup() {
-    const userStore = useUserDataStore()
-    const { user } = storeToRefs(userStore)
-    const eventStore = useEventDataStore()
-    const notReadNotificationCount = ref(0)
+    const userStore = useUserDataStore();
+    const { user } = storeToRefs(userStore);
+    const eventStore = useEventDataStore();
+    const notReadNotificationCount = ref(0);
     const isMobMenuActive = ref(false);
-    const skipids = ref([])
+    const skipids = ref([]);
     const userFullName = computed(
       () => `${user.value.profile.name} ${user.value.profile.last_name}`
-    )
-    const userAvatar = ref(user.value.profile.avatar_url)
-    const router = useRouter()
-    const isMenuOpened = ref(false)
-    const isBugReportModalOpened = ref(false)
-    const currentHoverSideBarItemID = ref(0)
+    );
+    const userAvatar = ref(user.value.profile.avatar_url);
+    const router = useRouter();
+    const isMenuOpened = ref(false);
+    const isBugReportModalOpened = ref(false);
+    const currentHoverSideBarItemID = ref(0);
 
     const foundBug = () => {
-      isMobMenuActive.value = false
-      isBugReportModalOpened.value = true
-    }
+      isMobMenuActive.value = false;
+      isBugReportModalOpened.value = true;
+    };
 
     watch(
       () => user,
-      (newData, oldData) => {
-      }
-    )
+      (newData, oldData) => {}
+    );
 
     const menuItems = computed(() => [
       {
@@ -211,21 +216,21 @@ export default {
         action: () => (isBugReportModalOpened.value = true),
         disabled: false,
       },
-    ])
+    ]);
 
     const getNotificationsCount = async () =>
       API.NotificationService.getNotificationsCount().then(
         (item) =>
           (notReadNotificationCount.value =
             item.data.not_read_notifications_count || 0)
-      )
+      );
 
-    const closeBugReportModal = () => (isBugReportModalOpened.value = false)
+    const closeBugReportModal = () => (isBugReportModalOpened.value = false);
 
     const enterHoverSidebarItem = (itemId) =>
-      (currentHoverSideBarItemID.value = itemId)
+      (currentHoverSideBarItemID.value = itemId);
 
-    const leaveHoverSidebarItem = () => (currentHoverSideBarItemID.value = 0)
+    const leaveHoverSidebarItem = () => (currentHoverSideBarItemID.value = 0);
 
     const {
       paginationElements,
@@ -241,20 +246,20 @@ export default {
         }),
       dataTransformation: (item) => createNotificationFromData(item),
       beforeConcat: (elements, newList) => findDublicates(elements, newList),
-    })
+    });
 
     const loadDataNotifications = (pageNumber, $state, forceUpdate) => {
       if (forceUpdate) {
-        paginationClearData()
-        skipids.value = []
+        paginationClearData();
+        skipids.value = [];
       }
 
-      paginationLoad({ pageNumber, $state, forceUpdate })
-    }
+      paginationLoad({ pageNumber, $state, forceUpdate });
+    };
 
     const handleMessageInSidebar = (instanceType) => {
       if (instanceType.notification) {
-        skipids.value.push(instanceType.notification_id)
+        skipids.value.push(instanceType.notification_id);
       }
 
       if (instanceType.updateWebSocketMessage) {
@@ -265,41 +270,41 @@ export default {
             paginationPage,
           },
           getNotificationsCount
-        )
+        );
       }
 
-      getNotificationsCount()
-    }
+      getNotificationsCount();
+    };
 
     const goToProfile = () => {
-      router.push(ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute)
-      isMenuOpened.value = false
-    }
+      router.push(ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute);
+      isMenuOpened.value = false;
+    };
 
-    AuthWebSocketWorkerInstance.registerCallback(handleMessageInSidebar)
+    AuthWebSocketWorkerInstance.registerCallback(handleMessageInSidebar);
 
     NotificationsBus.on('SidebarClearData', () => {
-      skipids.value = []
-      paginationClearData()
-    })
+      skipids.value = [];
+      paginationClearData();
+    });
 
     BlanballEventBus.on('OpenMobileMenu', () => {
-      isMobMenuActive.value = true
-    })
+      isMobMenuActive.value = true;
+    });
 
     onBeforeUnmount(() => {
-      NotificationsBus.off('SidebarClearData')
-      BlanballEventBus.off('OpenMobileMenu')
-      AuthWebSocketWorkerInstance.destroyCallback(handleMessageInSidebar)
-    })
+      NotificationsBus.off('SidebarClearData');
+      BlanballEventBus.off('OpenMobileMenu');
+      AuthWebSocketWorkerInstance.destroyCallback(handleMessageInSidebar);
+    });
 
-    getNotificationsCount()
+    getNotificationsCount();
     const logOut = () => {
-      userStore.user = {}
-      eventStore.events = {}
-      TokenWorker.clearToken()
-      router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute)
-    }
+      userStore.user = {};
+      eventStore.events = {};
+      TokenWorker.clearToken();
+      router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute);
+    };
     return {
       paginationElements,
       paginationTotalCount,
@@ -321,19 +326,16 @@ export default {
       goToProfile,
       logOut,
       closeBugReportModal,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-efeff6: #efeff6;
- $color-d3f8f7: #d3f8f7;
- $color-fff4ec: #fff4ec;
-
+$color-efeff6: #efeff6;
+$color-d3f8f7: #d3f8f7;
+$color-fff4ec: #fff4ec;
 
 .b_sidebar_wrapper {
   position: relative;

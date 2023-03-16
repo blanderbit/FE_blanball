@@ -1,19 +1,19 @@
-import { InitialMessage } from './initial.message'
+import { InitialMessage } from './initial.message';
 
 import {
   SetActions,
   SetMessageType,
   AuthWebSocketMessage,
   NotificationSetImage,
-} from '../../type.decorator'
+} from '../../type.decorator';
 
 import {
   MessageActionTypes,
   MessageActionDataTypes,
-} from '../../message.action.types'
-import { WebSocketTypes } from '../../web.socket.types'
-import { NotificationImage } from '../../../../assets/img/notifications/notification.images'
-import { ROUTES } from '../../../../router/router.const'
+} from '../../message.action.types';
+import { WebSocketTypes } from '../../web.socket.types';
+import { NotificationImage } from '../../../../assets/img/notifications/notification.images';
+import { ROUTES } from '../../../../router/router.const';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.EventUpdated)
@@ -38,10 +38,10 @@ export class EventUpdatedMessage extends InitialMessage {
   createTexts(data) {
     return [
       `${data.recipient.name} - событие обновилось. Для того что бы просмотреть подробности обновления нажмите кнопку "${this.actions[1].text}"`,
-    ]
+    ];
   }
 
   createTitle() {
-    return 'Подія була оновлена'
+    return 'Подія була оновлена';
   }
 }

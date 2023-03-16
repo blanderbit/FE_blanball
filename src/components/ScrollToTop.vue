@@ -32,15 +32,12 @@ export default {
     },
   },
   emits: ['scrollButtonClicked'],
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-efeff6: #efeff6;
-
+$color-efeff6: #efeff6;
 
 .b-scroll-top {
   &__return-top {

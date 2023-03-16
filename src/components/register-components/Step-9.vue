@@ -1,164 +1,165 @@
 <template>
   <step-wrapper
-      :returnButton="stepConfig.returnButton"
-      :nextButton="stepConfig.nextButton"
-      :title="stepConfig.title"
-      :subTitle="stepConfig.subTitle"
-      :stepperLines="stepConfig.stepperLines"
+    :returnButton="stepConfig.returnButton"
+    :nextButton="stepConfig.nextButton"
+    :title="stepConfig.title"
+    :subTitle="stepConfig.subTitle"
+    :stepperLines="stepConfig.stepperLines"
   >
     <template #content>
       <div class="b-register-step__small-title mb-3">
-        {{$t('register.you-played-params')}}
+        {{ $t('register.you-played-params') }}
       </div>
 
-      <div class="b-sport-info d-flex justify-content-between align-baseline mb-3">
+      <div
+        class="b-sport-info d-flex justify-content-between align-baseline mb-3"
+      >
         <InputComponent
-            v-model="height"
-            :outside-title="true"
-            :title="height ? $t('register.height') : ''"
-            :placeholder="!height ? $t('register.height') : ''"
-            :title-width="0"
-            type="number"
-            name="height"
-            v-maska="'###'"
+          v-model="height"
+          :outside-title="true"
+          :title="height ? $t('register.height') : ''"
+          :placeholder="!height ? $t('register.height') : ''"
+          :title-width="0"
+          type="number"
+          name="height"
+          v-maska="'###'"
         ></InputComponent>
         <InputComponent
-            v-model="weight"
-            :outside-title="true"
-            :title="weight ? $t('register.weight') : ''"
-            :placeholder="!weight ? $t('register.weight') : ''"
-            :title-width="0"
-            type="number"
-            name="weight"
-            v-maska="'###'"
+          v-model="weight"
+          :outside-title="true"
+          :title="weight ? $t('register.weight') : ''"
+          :placeholder="!weight ? $t('register.weight') : ''"
+          :title-width="0"
+          type="number"
+          name="weight"
+          v-maska="'###'"
         ></InputComponent>
         <Dropdown
-            v-model="workingLeg"
-            :placeholder="!workingLeg ? $t('register.main-leg'): ''"
-            :outside-title="true"
-            :main-title="workingLeg ? $t('register.main-leg') : ''"
-            :options="mockData.main_lag"
-            :width="200"
-            :height="40"
-            display-name="value"
-            display-value="id"
-            name="working_leg"
+          v-model="workingLeg"
+          :placeholder="!workingLeg ? $t('register.main-leg') : ''"
+          :outside-title="true"
+          :main-title="workingLeg ? $t('register.main-leg') : ''"
+          :options="mockData.main_lag"
+          :width="200"
+          :height="40"
+          display-name="value"
+          display-value="id"
+          name="working_leg"
         />
       </div>
       <div class="b-register-step__small-title mb-3">
-        {{$t('register.you-played-position')}}
+        {{ $t('register.you-played-position') }}
       </div>
       <div class="b-register-step__dropdown">
         <Dropdown
-            v-model="position"
-            :placeholder="!position ? $t('register.position') : ''"
-            :outside-title="true"
-            :main-title="position ? $t('register.position') : ''"
-            :options="mockData.position"
-            :width="200"
-            :height="40"
-            display-name="name"
-            display-value="value"
-            name="position"
+          v-model="position"
+          :placeholder="!position ? $t('register.position') : ''"
+          :outside-title="true"
+          :main-title="position ? $t('register.position') : ''"
+          :options="mockData.position"
+          :width="200"
+          :height="40"
+          display-name="name"
+          display-value="value"
+          name="position"
         />
       </div>
-
     </template>
   </step-wrapper>
 </template>
 
 <script>
-  import { computed, ref } from 'vue'
-  import { useI18n } from 'vue-i18n'
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-  import GreenBtn from '../GreenBtn.vue'
-  import Dropdown from '../forms/Dropdown.vue'
-  import InputComponent from '../forms/InputComponent.vue'
-  import StepWrapper from './StepWrapper.vue'
+import GreenBtn from '../GreenBtn.vue';
+import Dropdown from '../forms/Dropdown.vue';
+import InputComponent from '../forms/InputComponent.vue';
+import StepWrapper from './StepWrapper.vue';
 
-  import CONSTANTS from "../../consts";
+import CONSTANTS from '../../consts';
 
-  import arrowRight from '../../assets/img/arrow-right-white.svg'
-  import clipIcon from '../../assets/img/clip.svg'
+import arrowRight from '../../assets/img/arrow-right-white.svg';
+import clipIcon from '../../assets/img/clip.svg';
 
-  export default {
-    name: 'Step9',
-    components: {
-      GreenBtn,
-      Dropdown,
-      InputComponent,
-      StepWrapper
-    },
-    setup() {
-      const position = ref(null)
-      const height = ref(null)
-      const weight = ref(null)
-      const workingLeg = ref(null)
+export default {
+  name: 'Step9',
+  components: {
+    GreenBtn,
+    Dropdown,
+    InputComponent,
+    StepWrapper,
+  },
+  setup() {
+    const position = ref(null);
+    const height = ref(null);
+    const weight = ref(null);
+    const workingLeg = ref(null);
 
-      const profesionaLevel = ref('');
-      const clip = computed(() => {
-        return clipIcon
-      });
-      const isDocumentNeeded = computed(() => {
-        return profesionaLevel.value === 'Професійно'
-      });
-      const mockData = computed(() => {
-        return {
-          main_lag: CONSTANTS.profile.mainLeg,
-          position: CONSTANTS.profile.position,
-        }
-      })
-      const {t} = useI18n();
-      const stepConfig = computed(() => {
-        return {
-          title: t('register.sportData'),
-          returnButton: {
-            exist: true,
-            text: t('register.return')
-          },
-          nextButton: {
-            exist: true,
-            text: t('register.next'),
-            icon: arrowRight,
-          },
-          stepperLines: {
-            exist: true,
-            count: 3,
-            active: 2
-          }
-        }
-      });
+    const profesionaLevel = ref('');
+    const clip = computed(() => {
+      return clipIcon;
+    });
+    const isDocumentNeeded = computed(() => {
+      return profesionaLevel.value === 'Професійно';
+    });
+    const mockData = computed(() => {
       return {
-        clip,
-        profesionaLevel,
-        isDocumentNeeded,
-        mockData,
-        stepConfig,
-        position,
-        height,
-        weight,
-        workingLeg,
-      }
-    },
-  }
+        main_lag: CONSTANTS.profile.mainLeg,
+        position: CONSTANTS.profile.position,
+      };
+    });
+    const { t } = useI18n();
+    const stepConfig = computed(() => {
+      return {
+        title: t('register.sportData'),
+        returnButton: {
+          exist: true,
+          text: t('register.return'),
+        },
+        nextButton: {
+          exist: true,
+          text: t('register.next'),
+          icon: arrowRight,
+        },
+        stepperLines: {
+          exist: true,
+          count: 3,
+          active: 2,
+        },
+      };
+    });
+    return {
+      clip,
+      profesionaLevel,
+      isDocumentNeeded,
+      mockData,
+      stepConfig,
+      position,
+      height,
+      weight,
+      workingLeg,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-  .b-register-step__small-title {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 20px;
-    margin-bottom: 10px;
-    color: $--b-main-black-color;
+.b-register-step__small-title {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 10px;
+  color: $--b-main-black-color;
+}
+::v-deep {
+  .b-input__input-component {
+    width: 20%;
   }
-  ::v-deep {
-    .b-input__input-component {
-      width: 20%;
-    }
-    .b-sport-info .b-dropdown {
-      width: 55%;
-    }
+  .b-sport-info .b-dropdown {
+    width: 55%;
   }
+}
 </style>

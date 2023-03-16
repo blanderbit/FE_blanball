@@ -8,15 +8,12 @@
 export default {
   emits: ['clear'],
   name: 'ClearFilters',
-}
+};
 </script>
 
 <style scoped lang="scss">
-
-
 // SCSS variables for hex colors
- $color-dfdeed: #dfdeed;
-
+$color-dfdeed: #dfdeed;
 
 .b-clear-filters {
   width: 32px;

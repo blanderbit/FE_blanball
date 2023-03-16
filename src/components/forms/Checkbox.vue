@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { v4 as uuid } from 'uuid'
+import { v4 as uuid } from 'uuid';
 
 export default {
   props: {
@@ -25,18 +25,15 @@ export default {
       type: Boolean,
     },
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
-
-
 // SCSS variables for hex colors
- $color-2d3137: #2d3137;
- $color-329e78: #329e78;
- $color-d6d6d6: #d6d6d6;
- $color-dd3c3a: #dd3c3a;
-
+$color-2d3137: #2d3137;
+$color-329e78: #329e78;
+$color-d6d6d6: #d6d6d6;
+$color-dd3c3a: #dd3c3a;
 
 /* Checkbox styles */
 

@@ -1,81 +1,88 @@
 <template>
   <div>
-  <div v-if="invitedUsers.length" class="b-manage-event__invited-users__list">
-    <span class="b-user-what-you__invited">
-      {{title ?  title : $t('events.invited-people')}}
-      <img v-if="headerIcon" :src="headerIcon" alt=""
-        @click="$emit('headerIconClick')">
-    </span>
-    <span
-      v-if="removeAllOption"
-      class="b-remove-all__invited-users"
-      @click="$emit('openRemoveUsersModal')"
-      >{{ $t('buttons.remove-all') }}</span
-    >
-    <div class="b-manage-event__invited-users">
-      <div class="b-manage-event__invited-user" v-for="user in invitedUsers">
-        <div class="b-manage-event__invited-user-left__side">
-          <Avatar
-            class="b-invited-user__avatar"
-            :link="user.profile.avatar_url"
-            :avatarType="'small-square'"
-            :full-name="`${user.profile.name} ${user.profile.last_name}`"
-          ></Avatar>
-          <span v-if="user.profile.position" class="b-invited-user__position">
-            {{ $t(`hashtags.${user.profile.position}`) }}
-          </span>
-          <span class="b-invited-user__full-name">
-            {{ user.profile.name }} {{ user.profile.last_name }}
-          </span>
-        </div>
-        <div class="b-invited-user-right__side">
-          <img
-            class="b-remove-invited__user"
-            src="../../assets/img/gray-cross.svg"
-            alt="gray-cross"
-            @click="$emit('removeInvitedUser', user.id)"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-  <div v-if="acceptedUsers.length" class="b-manage-event__invited-users__list">
-    <span class="b-user-what-you__invited">
-      {{ $t('my_events.already-accepted') }}
-    </span>
-    <span
-      v-if="removeAllOption"
-      class="b-remove-all__invited-users"
-      @click="$emit('openRemoveUsersModal')"
-      >{{ $t('buttons.remove-all') }}</span
-    >
-    <div class="b-manage-event__invited-users">
-      <div class="b-manage-event__invited-user" v-for="user in acceptedUsers">
-        <div class="b-manage-event__invited-user-left__side">
-          <Avatar
-            class="b-invited-user__avatar"
-            :link="user.profile.avatar_url"
-            :avatarType="'small-square'"
-            :full-name="`${user.profile.name} ${user.profile.last_name}`"
-          ></Avatar>
-          <span v-if="user.profile.position" class="b-invited-user__position">
-            {{ $t(`hashtags.${user.profile.position}`) }}
-          </span>
-          <span class="b-invited-user__full-name">
-            {{ user.profile.name }} {{ user.profile.last_name }}
-          </span>
-        </div>
-        <div class="b-invited-user-right__side">
-          <img
-            class="b-remove-invited__user"
-            src="../../assets/img/gray-cross.svg"
-            alt="gray-cross"
-            @click="$emit('removeInvitedUser', user.id)"
-          />
+    <div v-if="invitedUsers.length" class="b-manage-event__invited-users__list">
+      <span class="b-user-what-you__invited">
+        {{ title ? title : $t('events.invited-people') }}
+        <img
+          v-if="headerIcon"
+          :src="headerIcon"
+          alt=""
+          @click="$emit('headerIconClick')"
+        />
+      </span>
+      <span
+        v-if="removeAllOption"
+        class="b-remove-all__invited-users"
+        @click="$emit('openRemoveUsersModal')"
+        >{{ $t('buttons.remove-all') }}</span
+      >
+      <div class="b-manage-event__invited-users">
+        <div class="b-manage-event__invited-user" v-for="user in invitedUsers">
+          <div class="b-manage-event__invited-user-left__side">
+            <Avatar
+              class="b-invited-user__avatar"
+              :link="user.profile.avatar_url"
+              :avatarType="'small-square'"
+              :full-name="`${user.profile.name} ${user.profile.last_name}`"
+            ></Avatar>
+            <span v-if="user.profile.position" class="b-invited-user__position">
+              {{ $t(`hashtags.${user.profile.position}`) }}
+            </span>
+            <span class="b-invited-user__full-name">
+              {{ user.profile.name }} {{ user.profile.last_name }}
+            </span>
+          </div>
+          <div class="b-invited-user-right__side">
+            <img
+              class="b-remove-invited__user"
+              src="../../assets/img/gray-cross.svg"
+              alt="gray-cross"
+              @click="$emit('removeInvitedUser', user.id)"
+            />
+          </div>
         </div>
       </div>
     </div>
-  </div>
+    <div
+      v-if="acceptedUsers.length"
+      class="b-manage-event__invited-users__list"
+    >
+      <span class="b-user-what-you__invited">
+        {{ $t('my_events.already-accepted') }}
+      </span>
+      <span
+        v-if="removeAllOption"
+        class="b-remove-all__invited-users"
+        @click="$emit('openRemoveUsersModal')"
+        >{{ $t('buttons.remove-all') }}</span
+      >
+      <div class="b-manage-event__invited-users">
+        <div class="b-manage-event__invited-user" v-for="user in acceptedUsers">
+          <div class="b-manage-event__invited-user-left__side">
+            <Avatar
+              class="b-invited-user__avatar"
+              :link="user.profile.avatar_url"
+              :avatarType="'small-square'"
+              :full-name="`${user.profile.name} ${user.profile.last_name}`"
+            ></Avatar>
+            <span v-if="user.profile.position" class="b-invited-user__position">
+              {{ $t(`hashtags.${user.profile.position}`) }}
+            </span>
+            <span class="b-invited-user__full-name">
+              {{ user.profile.name }} {{ user.profile.last_name }}
+            </span>
+          </div>
+          <div class="b-invited-user-right__side">
+            <img
+              class="b-remove-invited__user"
+              src="../../assets/img/gray-cross.svg"
+              alt="gray-cross"
+              @click="$emit('removeInvitedUser', user.id)"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -89,12 +96,12 @@ export default {
       default: () => [],
     },
     title: {
-        type: String,
-        default: ''
+      type: String,
+      default: '',
     },
     headerIcon: {
-        type: String,
-        default: ''
+      type: String,
+      default: '',
     },
     removeAllOption: {
       type: Boolean,
@@ -103,7 +110,7 @@ export default {
     acceptedUsers: {
       type: Array,
       default: () => [],
-    }
+    },
   },
   emits: ['removeInvitedUser', 'openRemoveUsersModal'],
   components: {
@@ -113,7 +120,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 $color-dfdeed: #dfdeed;
 $color-8a8aa8: #8a8aa8;
 
@@ -192,8 +198,8 @@ $color-8a8aa8: #8a8aa8;
   cursor: pointer;
 }
 .b-manage-event__invited-users {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 </style>

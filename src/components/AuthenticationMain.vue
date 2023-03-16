@@ -53,10 +53,10 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
-import PositionMap from './maps/PositionMap.vue'
-import CONSTANTS from '../consts/index'
-import useWindowWidth from '../utils/widthScreen'
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
+import PositionMap from './maps/PositionMap.vue';
+import CONSTANTS from '../consts/index';
+import useWindowWidth from '../utils/widthScreen';
 
 export default {
   name: 'Auth',
@@ -86,37 +86,37 @@ export default {
     },
   },
   setup(props) {
-    const { windowWidth, isMobileSmall, onResize } = useWindowWidth()
+    const { windowWidth, isMobileSmall, onResize } = useWindowWidth();
     const mockData = computed(() => {
       return {
         LOGIN: CONSTANTS.register.authBlockTypes.login,
-      }
-    })
+      };
+    });
 
     const authBlockStyles = computed(() => {
       if (isMobileSmall.value) {
         return {
           'align-items': props.currentStep < 3 ? 'flex-start' : 'flex-end',
-        }
+        };
       } else {
-        return { 'align-items': 'center' }
+        return { 'align-items': 'center' };
       }
-    })
+    });
 
     onMounted(() => {
-      window.addEventListener('resize', onResize)
-    })
+      window.addEventListener('resize', onResize);
+    });
 
     onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize)
-    })
+      window.removeEventListener('resize', onResize);
+    });
     return {
       mockData,
       windowWidth,
       authBlockStyles,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -202,7 +202,7 @@ export default {
       left: -30px;
       @media (min-width: 576px) {
         display: none;
-      } 
+      }
     }
     .b-auth__ball-small {
       position: absolute;
@@ -239,7 +239,7 @@ export default {
         bottom: 0;
         display: flex;
         align-items: center;
-        @include inter(14px, 400,$--b-main-gray-color);
+        @include inter(14px, 400, $--b-main-gray-color);
         line-height: 20px;
         padding: 24px;
         img {

@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-import StarRating from 'vue-star-rating'
+import StarRating from 'vue-star-rating';
 
 export default {
   name: 'RatePlayerCard',
@@ -44,22 +44,19 @@ export default {
     },
   },
   setup(props) {
-    const rating = ref(3)
+    const rating = ref(3);
 
     return {
       rating,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-dfdeed: #dfdeed;
- $color-2946e1: #2946e1;
-
+$color-dfdeed: #dfdeed;
+$color-2946e1: #2946e1;
 
 .b-player-card {
   border-top: 1px dashed $color-dfdeed;

@@ -10,12 +10,12 @@
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import StepWrapper from './StepWrapper.vue'
+import StepWrapper from './StepWrapper.vue';
 
-import arrowRight from '../../assets/img/arrow-right-white.svg'
+import arrowRight from '../../assets/img/arrow-right-white.svg';
 
 export default {
   name: 'Step4',
@@ -23,7 +23,7 @@ export default {
     StepWrapper,
   },
   setup() {
-    const { t } = useI18n()
+    const { t } = useI18n();
     const stepConfig = computed(() => {
       return {
         title: t('register.choose-activities'),
@@ -37,11 +37,11 @@ export default {
           text: t('register.continue'),
           icon: arrowRight,
         },
-      }
-    })
+      };
+    });
     return {
       stepConfig,
-    }
+    };
   },
-}
+};
 </script>

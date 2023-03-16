@@ -2,10 +2,12 @@
   <div class="event-card" @click="$emit('goToEventPage')">
     <div class="top-title">
       <div class="left-side">
-          <div class="card-icon">
+        <div class="card-icon">
           <img src="../../assets/img/hands-shake.svg" alt="" />
         </div>
-        <span :class="['status', `status-${card.status.toLowerCase()}`]">{{ $t(`events.${card.status}`) }}</span>
+        <span :class="['status', `status-${card.status.toLowerCase()}`]">{{
+          $t(`events.${card.status}`)
+        }}</span>
         <span class="active-time">{{ card.time }} - {{ card.end_time }}</span>
         <div class="text-block">
           <div class="title">{{ $t('events.friendly-match') }}</div>
@@ -25,8 +27,9 @@
     </div>
     <PlaceDetector
       class="event-place"
-      v-if="card.place.place_name" 
-      :place="card.place">
+      v-if="card.place.place_name"
+      :place="card.place"
+    >
     </PlaceDetector>
     <div class="main-text">
       {{ card.description }}
@@ -38,8 +41,12 @@
       <div v-if="card.type" class="label">
         {{ $t(`events.${card.type}`) }}
       </div>
-      <div v-if="card.need_ball" class="label">{{ $t('hashtags.need_ball') }}</div>
-      <div v-if="card.need_form" class="label">{{ $t('hashtags.need_form') }}</div>
+      <div v-if="card.need_ball" class="label">
+        {{ $t('hashtags.need_ball') }}
+      </div>
+      <div v-if="card.need_form" class="label">
+        {{ $t('hashtags.need_form') }}
+      </div>
     </div>
     <div class="bottom-block">
       <div class="top-line">
@@ -71,16 +78,16 @@
             @click-function="eventJoin"
           />
           <WhiteBtn
-          v-else
-          class="right-side-white-btn"
-          :text="$t(whiteButtonText)"
-          :width="120"
-          :height="35"
-          :main-color="'$--b-main-black-color'"
-          :is-border="true"
-          :font-styles="{ 'font-weight': 400 }"
-          @click-function="$emit('goToEventPage')"
-        />
+            v-else
+            class="right-side-white-btn"
+            :text="$t(whiteButtonText)"
+            :width="120"
+            :height="35"
+            :main-color="'$--b-main-black-color'"
+            :is-border="true"
+            :font-styles="{ 'font-weight': 400 }"
+            @click-function="$emit('goToEventPage')"
+          />
         </div>
       </div>
     </div>
@@ -88,16 +95,16 @@
 </template>
 
 <script>
-import { computed } from "vue"
+import { computed } from 'vue';
 
-import { useDevice } from 'next-vue-device-detector'
-import { storeToRefs } from "pinia"
+import { useDevice } from 'next-vue-device-detector';
+import { storeToRefs } from 'pinia';
 
-import GreenBtn from '../../components/GreenBtn.vue'
-import PlaceDetector from '../../components/maps/PlaceDetector.vue'
-import WhiteBtn from "../WhiteBtn.vue"
+import GreenBtn from '../../components/GreenBtn.vue';
+import PlaceDetector from '../../components/maps/PlaceDetector.vue';
+import WhiteBtn from '../WhiteBtn.vue';
 
-import { useUserDataStore } from "../../stores/userData"
+import { useUserDataStore } from '../../stores/userData';
 
 export default {
   props: {
@@ -112,32 +119,32 @@ export default {
     WhiteBtn,
   },
   setup(props, context) {
-    const device = useDevice()
+    const device = useDevice();
     const userStore = useUserDataStore();
     const { user } = storeToRefs(userStore);
 
     const eventJoin = (e) => {
-      context.emit('eventJoin', e)
-    }
+      context.emit('eventJoin', e);
+    };
 
     const greenButtonAvalable = computed(() => {
-      return props.card.status === 'Planned' && !props.card.request_user_role
-    })
+      return props.card.status === 'Planned' && !props.card.request_user_role;
+    });
 
     const whiteButtonText = computed(() => {
-      switch(props.card.request_user_role) {
+      switch (props.card.request_user_role) {
         case 'author':
-          return 'events.watch'
+          return 'events.watch';
         case 'player':
-          return 'events.you-are-player'
+          return 'events.you-are-player';
         case 'fan':
-          return 'events.you-are-fan'
+          return 'events.you-are-fan';
         case 'request_participation':
-          return 'events.request-sent'
+          return 'events.request-sent';
         default:
-          return ''
+          return '';
       }
-    })
+    });
 
     return {
       device,
@@ -145,26 +152,22 @@ export default {
       greenButtonAvalable,
       whiteButtonText,
       eventJoin,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-fafafa: #fafafa;
- $color-4c4a82: #4c4a82;
- $color-efeff6: #efeff6;
- $color-393762: #393762;
- $color-dfdeed: #dfdeed;
- $color-ebbb53: #ebbb53;
- $color-71ba12: #71ba12;
- $color-e184a0: #e184a0;
- $color-f0f0f4: #f0f0f4;
-
-
+$color-fafafa: #fafafa;
+$color-4c4a82: #4c4a82;
+$color-efeff6: #efeff6;
+$color-393762: #393762;
+$color-dfdeed: #dfdeed;
+$color-ebbb53: #ebbb53;
+$color-71ba12: #71ba12;
+$color-e184a0: #e184a0;
+$color-f0f0f4: #f0f0f4;
 
 .event-card {
   position: relative;
@@ -180,7 +183,7 @@ export default {
   justify-content: space-between;
   width: 100%;
   cursor: pointer;
-  
+
   &:before {
     content: '';
     display: block;
@@ -405,7 +408,7 @@ export default {
   }
 }
 .event-place::v-deep(.b-place-detector) {
-  background: #EFEFF6;
+  background: #efeff6;
   border-radius: 4px;
   margin-top: 10px;
   width: fit-content;
@@ -431,11 +434,11 @@ export default {
   }
 
   &-active {
-     background: #71BA12;
+    background: #71ba12;
   }
 
   &-finished {
-    background: #E184A0;
+    background: #e184a0;
   }
 }
 .active-time {
@@ -451,7 +454,7 @@ export default {
   color: $--b-main-gray-color;
 }
 .right-side-white-btn {
-  background: #F0F0F4;
+  background: #f0f0f4;
   border: none !important;
 }
 </style>

@@ -1,4 +1,4 @@
-import { InitialMessage } from './initial.message'
+import { InitialMessage } from './initial.message';
 
 import {
   SetActions,
@@ -6,14 +6,14 @@ import {
   AuthWebSocketMessage,
   NotificationSetUserImage,
   SetPushNotificationTheme,
-} from '../../type.decorator'
+} from '../../type.decorator';
 
 import {
   MessageActionTypes,
   MessageActionDataTypes,
-} from '../../message.action.types'
-import { WebSocketTypes } from '../../web.socket.types'
-import { ROUTES } from '../../../../router/router.const'
+} from '../../message.action.types';
+import { WebSocketTypes } from '../../web.socket.types';
+import { ROUTES } from '../../../../router/router.const';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.ResponseToRequestForParticipation)
@@ -25,13 +25,13 @@ export class ResponseToRequestForParticipationMessage extends InitialMessage {
       data.request.response
         ? `Владелец ивента ${data.sender.name} подтвердил ваш запрос участие на ивенте;`
         : `Владелец ивента ${data.sender.name} отклонил ваш запрос участие на ивенте;`,
-    ]
+    ];
   }
 
   createTitle(data) {
     return data.request.response
       ? 'Автор події прийняв вашу заявку на участь'
-      : 'Автор події відхилив вашу заявку на участь'
+      : 'Автор події відхилив вашу заявку на участь';
   }
 
   onInit() {
@@ -40,7 +40,7 @@ export class ResponseToRequestForParticipationMessage extends InitialMessage {
         type: MessageActionTypes.ActionClose,
         text: 'Зрозуміло',
       },
-    ]
+    ];
 
     if (this.data.request.response) {
       this.actions.push({
@@ -52,8 +52,8 @@ export class ResponseToRequestForParticipationMessage extends InitialMessage {
           ),
         actionType: MessageActionDataTypes.UrlCallback,
         buttonType: 'stroked',
-      })
-      SetPushNotificationTheme('success')(this)
+      });
+      SetPushNotificationTheme('success')(this);
     } else {
       this.actions.push({
         type: MessageActionTypes.Action,
@@ -61,8 +61,8 @@ export class ResponseToRequestForParticipationMessage extends InitialMessage {
         action: ROUTES.APPLICATION.EVENTS.absolute,
         actionType: MessageActionDataTypes.Url,
         buttonType: 'stroked',
-      })
-      SetPushNotificationTheme('error')(this)
+      });
+      SetPushNotificationTheme('error')(this);
     }
   }
 }

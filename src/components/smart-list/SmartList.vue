@@ -26,12 +26,12 @@
 </template>
 
 <script>
-import { ref, watch, nextTick } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, watch, nextTick } from 'vue';
+import { useRouter } from 'vue-router';
 
-import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller'
+import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller';
 
-import Notification from '../Notification.vue'
+import Notification from '../Notification.vue';
 
 export default {
   name: 'Notifications',
@@ -60,19 +60,19 @@ export default {
   },
   emits: ['update:selected-list', 'update:scrollbar-existing'],
   setup(context, { emit, expose }) {
-    let activeNotification = ref(0)
-    let list = ref([])
-    let scroller = ref()
-    const router = useRouter()
+    let activeNotification = ref(0);
+    let list = ref([]);
+    let scroller = ref();
+    const router = useRouter();
 
     watch(
       () => context.selectedList,
       () => {
-        const array = [...context.selectedList]
-        list.value = Array.isArray(array) ? (!array.length ? [] : array) : []
-        scroller.value.forceUpdate()
+        const array = [...context.selectedList];
+        list.value = Array.isArray(array) ? (!array.length ? [] : array) : [];
+        scroller.value.forceUpdate();
       }
-    )
+    );
 
     watch(
       () => context.list,
@@ -81,33 +81,30 @@ export default {
           emit(
             'update:scrollbar-existing',
             scroller.value.$el.scrollHeight > scroller.value.$el.clientHeight
-          )
-        })
+          );
+        });
       },
       {
         immediate: true,
       }
-    )
+    );
 
     expose({
       scrollToItem: (index) => scroller.value.scrollToItem(index),
       scrollToFirstElement: () => scroller.value.scrollToItem(0),
-    })
+    });
 
     return {
       activeNotification,
       scroller,
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
-
-
 // SCSS variables for hex colors
- $color-efeff6: #efeff6;
-
+$color-efeff6: #efeff6;
 
 .scroller {
   height: 100%;

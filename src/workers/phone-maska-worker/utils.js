@@ -1,17 +1,17 @@
 /* global HTMLInputElement */
 
 function event(name, inputType = null) {
-  const event = document.createEvent('Event')
-  event.initEvent(name, true, true)
+  const event = document.createEvent('Event');
+  event.initEvent(name, true, true);
   if (inputType) {
-    event.inputType = inputType
+    event.inputType = inputType;
   }
 
-  return event
+  return event;
 }
 
 function findInputElement(el) {
-  return el instanceof HTMLInputElement ? el : el.querySelector('input') || el
+  return el instanceof HTMLInputElement ? el : el.querySelector('input') || el;
 }
 
 function fixInputSelection(el, position, digit) {
@@ -20,22 +20,22 @@ function fixInputSelection(el, position, digit) {
     position < el.value.length &&
     el.value.charAt(position - 1) !== digit
   ) {
-    position++
+    position++;
   }
 
   const selectionRange = el.type
     ? el.type.match(/^(text|search|password|tel|url)$/i)
-    : !el.type
+    : !el.type;
   if (selectionRange && el === document.activeElement) {
-    el.setSelectionRange(position, position)
+    el.setSelectionRange(position, position);
     setTimeout(function () {
-      el.setSelectionRange(position, position)
-    }, 0)
+      el.setSelectionRange(position, position);
+    }, 0);
   }
 }
 
 function isString(val) {
-  return Object.prototype.toString.call(val) === '[object String]'
+  return Object.prototype.toString.call(val) === '[object String]';
 }
 
-export { event, findInputElement, fixInputSelection, isString }
+export { event, findInputElement, fixInputSelection, isString };

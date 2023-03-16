@@ -23,7 +23,8 @@ export const EndpointsEnum = {
     GetAllEvents: '/events/client/planned/events/list',
     GetAllMyEvents: '/events/client/my/events/list',
     getOneEvent: (eventId) => `/events/client/event/${eventId}`,
-    DeclineOrAcceptInvites: '/events/client/accept/or/decline/invites/to/events',
+    DeclineOrAcceptInvites:
+      '/events/client/accept/or/decline/invites/to/events',
     PopularEventsList: '/events/client/popular/events/list',
     CreateOneEvent: '/events/client/event/create',
     EditOneEvent: (eventId) => `/events/client/event/update/${eventId}`,
@@ -32,10 +33,12 @@ export const EndpointsEnum = {
     EventJoinAsFan: '/events/client/fan/event/join',
     PinEvents: '/events/client/events/pin',
     UnPinEvents: '/events/client/events/unpin',
-    EventRequestsToParticipations: (eventId) => `/events/client/requests/participations/list${eventId}`,
+    EventRequestsToParticipations: (eventId) =>
+      `/events/client/requests/participations/list${eventId}`,
     DeclineOrAcceptParticipations:
       '/events/client/accept/or/decline/participations',
-    getPlannedUserEvents: (userId) => `/events/client/user/planned/events/list/${userId}`,
+    getPlannedUserEvents: (userId) =>
+      `/events/client/user/planned/events/list/${userId}`,
   },
   Users: {
     getMyProfile: '/authentication/client/me',
@@ -51,7 +54,7 @@ export const EndpointsEnum = {
   Reviews: {
     getUserReviews: (userId) => `/reviews/client/user/reviews/list/${userId}`,
     getMyReviews: '/reviews/client/my/reviews/list',
-    createEventReview: '/reviews/client/review/event/review/create'
+    createEventReview: '/reviews/client/review/event/review/create',
   },
   Versions: {
     getAllVersions: '/versions/client/versions/list',
@@ -60,4 +63,4 @@ export const EndpointsEnum = {
   BugReports: {
     createBugReport: '/bugs/client/create/bug',
   },
-}
+};

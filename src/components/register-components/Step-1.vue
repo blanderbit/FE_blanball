@@ -65,17 +65,17 @@
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import GreenBtn from '../GreenBtn.vue'
-import InputComponent from '../forms/InputComponent.vue'
-import StepWrapper from './StepWrapper.vue'
+import GreenBtn from '../GreenBtn.vue';
+import InputComponent from '../forms/InputComponent.vue';
+import StepWrapper from './StepWrapper.vue';
 
-import arrowRight from '../../assets/img/arrow-right-white.svg'
-import RadioButton from '../forms/RadioButton.vue'
-import MaleIcon from '../../assets/img/male-icon.svg'
-import FemaleIcon from '../../assets/img/female-icon.svg'
+import arrowRight from '../../assets/img/arrow-right-white.svg';
+import RadioButton from '../forms/RadioButton.vue';
+import MaleIcon from '../../assets/img/male-icon.svg';
+import FemaleIcon from '../../assets/img/female-icon.svg';
 
 export default {
   name: 'Step1',
@@ -86,13 +86,13 @@ export default {
     RadioButton,
   },
   setup() {
-    const { t } = useI18n()
+    const { t } = useI18n();
     const icons = computed(() => {
       return {
         MaleIcon,
         FemaleIcon,
-      }
-    })
+      };
+    });
     const stepConfig = computed(() => {
       return {
         title: t('register.title'),
@@ -103,30 +103,27 @@ export default {
         nextButton: {
           exist: true,
           text: t('register.next'),
-          icon: arrowRight
+          icon: arrowRight,
         },
         stepperLines: {
           count: 2,
           active: 1,
           exist: true,
-        }
-      }
-    })
+        },
+      };
+    });
     return {
       stepConfig,
       icons,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-f4f4f4: #f4f4f4;
- $color-efeff6: #efeff6;
-
+$color-f4f4f4: #f4f4f4;
+$color-efeff6: #efeff6;
 
 .b-register-step__input {
   width: 384px;

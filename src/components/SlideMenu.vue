@@ -27,7 +27,8 @@
             class="b_slide_menu_items d-flex justify-content-between align-items-center mb-2"
             v-if="notifications.length"
           >
-          <div class="b-read-all-notifications__button d-flex align-items-center"
+            <div
+              class="b-read-all-notifications__button d-flex align-items-center"
               v-if="notifications.length && notReadNotificationCount"
               @click="HandleAction.readAll()"
             >
@@ -39,13 +40,16 @@
               <span class="b-button-text">
                 {{ $t('slide_menu.read-all') }}
               </span>
-          </div>
+            </div>
 
-            <button class="b-notifictions-actions__button" @click=";(selectable = !selectable), clearSelectedList()">
+            <button
+              class="b-notifictions-actions__button"
+              @click="(selectable = !selectable), clearSelectedList();"
+            >
               <span v-if="!selectable" class="b-button-text">
                 {{ $t('slide_menu.notifications-manage') }}
               </span>
-              <span v-else  class="b-button-text">
+              <span v-else class="b-button-text">
                 {{ $t('slide_menu.cancel-manage') }}
               </span>
             </button>
@@ -142,7 +146,9 @@
             <div class="b_slide_menu_name">
               {{ userData.profile.name }} {{ userData.profile.last_name }}
             </div>
-            <div class="b_slide_menu_position">{{ $t(`hashtags.${userData.role}`) }}</div>
+            <div class="b_slide_menu_position">
+              {{ $t(`hashtags.${userData.role}`) }}
+            </div>
           </div>
           <div class="b_slide_menu_bottom-line">
             {{ $t('slide_menu.version') }}
@@ -160,26 +166,26 @@
 </template>
 
 <script>
-import { ref, inject, computed, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { ref, inject, computed, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import { v4 as uuid } from 'uuid'
-import { storeToRefs } from 'pinia'
+import { v4 as uuid } from 'uuid';
+import { storeToRefs } from 'pinia';
 
-import Notifications from './sitebar-notifications/Notifications.vue'
-import Notification from './Notification.vue'
-import EmptyList from './EmptyList.vue'
-import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue'
-import ScrollToTop from './ScrollToTop.vue'
+import Notifications from './sitebar-notifications/Notifications.vue';
+import Notification from './Notification.vue';
+import EmptyList from './EmptyList.vue';
+import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue';
+import ScrollToTop from './ScrollToTop.vue';
 
-import { useUserDataStore } from '../stores/userData'
-import { NewNotifications } from '../workers/web-socket-worker/not-includes-to-socket/new_notifications'
-import { API } from '../workers/api-worker/api.worker'
+import { useUserDataStore } from '../stores/userData';
+import { NewNotifications } from '../workers/web-socket-worker/not-includes-to-socket/new_notifications';
+import { API } from '../workers/api-worker/api.worker';
 
-import { ROUTES } from '../router/router.const'
+import { ROUTES } from '../router/router.const';
 
-import sidebarArrowBack from '../assets/img/sidebar-arrow-back.svg'
-import sidebarArrow from '../assets/img/sidebar-arrow.svg'
+import sidebarArrowBack from '../assets/img/sidebar-arrow-back.svg';
+import sidebarArrow from '../assets/img/sidebar-arrow.svg';
 
 export default {
   components: {
@@ -220,82 +226,82 @@ export default {
     'update:isMenuOpened',
   ],
   setup(context, { emit }) {
-    const notificationList = ref()
-    const selectable = ref(false)
-    const blockScrollToTopIfExist = ref(false)
-    const triggerForRestart = ref('')
-    const selectedList = ref([])
-    const userStore = useUserDataStore()
-    const { user } = storeToRefs(userStore)
-    const newNotificationInstance = ref(new NewNotifications())
-    const clientVersion = ref(inject('clientVersion'))
-    const { t } = useI18n()
+    const notificationList = ref();
+    const selectable = ref(false);
+    const blockScrollToTopIfExist = ref(false);
+    const triggerForRestart = ref('');
+    const selectedList = ref([]);
+    const userStore = useUserDataStore();
+    const { user } = storeToRefs(userStore);
+    const newNotificationInstance = ref(new NewNotifications());
+    const clientVersion = ref(inject('clientVersion'));
+    const { t } = useI18n();
 
     const userData = computed(() => {
-      return user.value
-    })
+      return user.value;
+    });
 
     watch(
       () => context.isMenuOpened,
       () => {
         if (!context.isMenuOpened) {
-          emit('closed')
-          selectedList.value = []
+          emit('closed');
+          selectedList.value = [];
         }
       }
-    )
+    );
 
     const arrowPosition = computed(() => {
-      return context.isMenuOpened ? sidebarArrowBack : sidebarArrow
-    })
+      return context.isMenuOpened ? sidebarArrowBack : sidebarArrow;
+    });
 
     const routeObject = computed(() => {
-      return ROUTES
-    })
+      return ROUTES;
+    });
 
     function toggleMenu() {
-      emit('update:isMenuOpened', !context.isMenuOpened)
+      emit('update:isMenuOpened', !context.isMenuOpened);
     }
 
     const getNewNotificationInstance = computed(() => {
       newNotificationInstance.value.countOfNewNotifications =
-        context.newNotifications
-      return newNotificationInstance.value
-    })
+        context.newNotifications;
+      return newNotificationInstance.value;
+    });
 
     const emptyListMessages = computed(() => {
       return {
         title: t('no_records.noNotifications.title'),
-        description: t('no_records.noNotifications.description')
-      }
-    })
+        description: t('no_records.noNotifications.description'),
+      };
+    });
 
     const clearSelectedList = () => {
-      selectedList.value = []
-    }
+      selectedList.value = [];
+    };
 
     const HandleAction = {
       deleteAll: () => {
-        if (!context.notifications.length && !context.newNotifications) return
-        API.NotificationService.deleteAllMyNotifications()
-        clearSelectedList()
+        if (!context.notifications.length && !context.newNotifications) return;
+        API.NotificationService.deleteAllMyNotifications();
+        clearSelectedList();
       },
       readAll: () => {
-        if (!context.notifications.length && !context.newNotifications) return
-        API.NotificationService.readAllMyNotifications()
-        clearSelectedList()
+        if (!context.notifications.length && !context.newNotifications) return;
+        API.NotificationService.readAllMyNotifications();
+        clearSelectedList();
       },
       deleteSelected: () => {
-        if (!selectedList.value) return
-        API.NotificationService.deleteNotifications(selectedList.value)
-        clearSelectedList()
+        if (!selectedList.value) return;
+        API.NotificationService.deleteNotifications(selectedList.value);
+        clearSelectedList();
       },
       readSelected: () => {
-        if (!selectedList.value) return
-        API.NotificationService.readNotifications(selectedList.value)
-        clearSelectedList()
+        if (!selectedList.value) return;
+        API.NotificationService.readNotifications(selectedList.value);
+        clearSelectedList();
       },
-    }
+    };
 
     return {
       clientVersion,
@@ -313,26 +319,24 @@ export default {
       blockScrollToTopIfExist,
       clearSelectedList,
       restartInfiniteScroll: () => {
-        triggerForRestart.value = uuid()
+        triggerForRestart.value = uuid();
       },
       scrollToFirstElement: () => {
-        notificationList.value.scrollToFirstElement()
+        notificationList.value.scrollToFirstElement();
       },
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
- 
- $color-f0f0f4: #f0f0f4;
- $color-8a8aa8: #8a8aa8;
- $color-fcfcfc: #fcfcfc;
- $color-dfdeed: #dfdeed;
- $color-e9f6ff: #e9f6ff;
- $color-1c4fc5: #1c4fc5;
- $color-efeff6: #efeff6;
-
+$color-f0f0f4: #f0f0f4;
+$color-8a8aa8: #8a8aa8;
+$color-fcfcfc: #fcfcfc;
+$color-dfdeed: #dfdeed;
+$color-e9f6ff: #e9f6ff;
+$color-1c4fc5: #1c4fc5;
+$color-efeff6: #efeff6;
 
 .b_slide_menu_back {
   position: fixed;

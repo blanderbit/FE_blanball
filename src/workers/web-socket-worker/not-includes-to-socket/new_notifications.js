@@ -1,9 +1,9 @@
-import { InitialMessage } from '../message-types/notifications/initial.message'
+import { InitialMessage } from '../message-types/notifications/initial.message';
 
-import { SetActions, NotificationSetImage } from '../type.decorator'
+import { SetActions, NotificationSetImage } from '../type.decorator';
 
-import { MessageActionTypes } from '../message.action.types'
-import { NotificationImage } from '../../../assets/img/notifications/notification.images'
+import { MessageActionTypes } from '../message.action.types';
+import { NotificationImage } from '../../../assets/img/notifications/notification.images';
 
 @NotificationSetImage(NotificationImage.NotificationInfo)
 @SetActions([
@@ -13,15 +13,15 @@ import { NotificationImage } from '../../../assets/img/notifications/notificatio
   },
 ])
 export class NewNotifications extends InitialMessage {
-  countOfNewNotifications = 0
+  countOfNewNotifications = 0;
 
   set texts(value) {}
 
   get texts() {
-    return [`У вас новіе уведомления - ${this.countOfNewNotifications}`]
+    return [`У вас новіе уведомления - ${this.countOfNewNotifications}`];
   }
 
   createTitle() {
-    return 'System notification'
+    return 'System notification';
   }
 }

@@ -5,7 +5,6 @@
     </div>
     <div class="b-manage-tem-btns__btns-block">
       <div class="b-manage-tem-btns__white-btn-wrapper">
-
         <div class="b-manage-tem-white__btn">
           <WhiteBtn
             class="b-manage-tem-download-template__button"
@@ -28,16 +27,16 @@
 
         <div class="b-manage-tem-white__btn">
           <WhiteBtn
-          class="b-manage-tem-save-template__button"
-          :text="$t('buttons.download-template')"
-          :height="40"
-          :width="200"
-          :main-color="'$--b-main-black-color'"
-          :is-border="false"
-          :font-styles="{ 'font-weight': 400 }"
-          :icon="icons.iconSave"
-          @click-function="$emit('cancelBtnClick')"
-        />
+            class="b-manage-tem-save-template__button"
+            :text="$t('buttons.download-template')"
+            :height="40"
+            :width="200"
+            :main-color="'$--b-main-black-color'"
+            :is-border="false"
+            :font-styles="{ 'font-weight': 400 }"
+            :icon="icons.iconSave"
+            @click-function="$emit('cancelBtnClick')"
+          />
           <!-- <Transition>
             <TabLabel
               :title="$t('profile.coming-soon-title')"
@@ -102,10 +101,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped> 
- $color-f0f0f4: #f0f0f4;
- $color-dfdeed: #dfdeed;
- $color-f9f9fc: #f9f9fc;
+<style lang="scss" scoped>
+$color-f0f0f4: #f0f0f4;
+$color-dfdeed: #dfdeed;
+$color-f9f9fc: #f9f9fc;
 
 .b-manage-tem-btns {
   @media (max-width: 1200px) {

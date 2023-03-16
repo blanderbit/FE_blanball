@@ -3,17 +3,14 @@
     <div class="b-empty-list__left-side">
       <div class="b-empty-list__titles-block">
         <div class="b-empty-list__title">
-        {{ title }}
-      </div>
-      <div class="b-empty-list__description">
-        {{ description }}
-      </div>
+          {{ title }}
+        </div>
+        <div class="b-empty-list__description">
+          {{ description }}
+        </div>
       </div>
       <div v-if="buttonText" class="b-empty-list__actions">
-        <GreenBtn
-          :width="170"
-          :height="40"
-          :text="buttonText"/>
+        <GreenBtn :width="170" :height="40" :text="buttonText" />
       </div>
     </div>
     <div class="b-empty-list__right-side">
@@ -23,12 +20,12 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
-import GreenBtn from './GreenBtn.vue'
+import GreenBtn from './GreenBtn.vue';
 
-import EmptyNotificationsSvg from '../assets/img/no-records/empty-notifications.svg'
-import NoData from '../assets/img/no-records/no-data.svg'
+import EmptyNotificationsSvg from '../assets/img/no-records/empty-notifications.svg';
+import NoData from '../assets/img/no-records/no-data.svg';
 
 export default {
   name: 'EmptyList',
@@ -43,7 +40,7 @@ export default {
     },
     buttonText: {
       type: String,
-      default: ''
+      default: '',
     },
     isNotification: {
       type: Boolean,
@@ -52,34 +49,31 @@ export default {
     },
     image: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   components: {
-    GreenBtn
+    GreenBtn,
   },
   setup(props) {
     const imageLink = computed(() => {
       if (props.image) {
-        return props.image
+        return props.image;
       } else {
-        return props.isNotification ? EmptyNotificationsSvg : NoData
+        return props.isNotification ? EmptyNotificationsSvg : NoData;
       }
-    })
+    });
 
     return {
       imageLink,
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
-
-
 // SCSS variables for hex colors
- $color-f9f9fc: #f9f9fc;
-
+$color-f9f9fc: #f9f9fc;
 
 .b-empty-list {
   padding: 20px;

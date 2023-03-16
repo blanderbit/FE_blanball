@@ -49,8 +49,7 @@
                     },
                   ]"
                   :style="{ 'border-top': idx !== 0 && '1px dashed #DFDEED' }"
-                  @click="$emit('clickReview', 
-                  slotProps.smartListItem.id)"
+                  @click="$emit('clickReview', slotProps.smartListItem.id)"
                 >
                   <div class="b-rating-card__top-line">
                     <div class="b-rating-card__name">
@@ -119,25 +118,25 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
-import StarRating from 'vue-star-rating'
+import StarRating from 'vue-star-rating';
 
-import dayjs from 'dayjs'
+import dayjs from 'dayjs';
 
-import { v4 as uuid } from 'uuid'
+import { v4 as uuid } from 'uuid';
 
-import { PaginationWorker } from '../workers/pagination-worker'
-import { FilterPatch } from '../workers/api-worker/http/filter/filter.patch'
+import { PaginationWorker } from '../workers/pagination-worker';
+import { FilterPatch } from '../workers/api-worker/http/filter/filter.patch';
 
-import ReviewDetailsComponent from '../components/ReviewDetails.vue'
-import SmartList from './smart-list/SmartList.vue'
-import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue'
+import ReviewDetailsComponent from '../components/ReviewDetails.vue';
+import SmartList from './smart-list/SmartList.vue';
+import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue';
 
-import { API } from '../workers/api-worker/api.worker'
+import { API } from '../workers/api-worker/api.worker';
 
-import CONSTANTS from '../consts/index'
+import CONSTANTS from '../consts/index';
 
 export default {
   name: 'RatingCard',
@@ -145,7 +144,7 @@ export default {
     ReviewDetailsComponent,
     SmartList,
     InfiniteLoading,
-    StarRating
+    StarRating,
   },
   props: {
     ratingScale: {
@@ -158,32 +157,32 @@ export default {
     },
   },
   setup() {
-    const rateStatus = ref(false)
-    const usersReviews = ref(true)
-    const isLoader = ref(false)
-    const refList = ref()
+    const rateStatus = ref(false);
+    const usersReviews = ref(true);
+    const isLoader = ref(false);
+    const refList = ref();
     const route = useRoute();
     const router = useRouter();
-    const blockScrollToTopIfExist = ref(false)
+    const blockScrollToTopIfExist = ref(false);
 
-    const triggerForRestart = ref(false)
+    const triggerForRestart = ref(false);
 
     const restartInfiniteScroll = () => {
-      triggerForRestart.value = uuid()
-    }
+      triggerForRestart.value = uuid();
+    };
 
     const mockData = computed(() => {
       return {
         rateBlock: CONSTANTS.users_page.rateBlock,
-      }
-    })
+      };
+    });
 
     const emptyListMessages = computed(() => {
       return {
         title: 'Немає повідомлень для відображення',
         description: 'Вам ще не надходили сповіщення від інших користувачів',
-      }
-    })
+      };
+    });
 
     const {
       paginationElements,
@@ -193,44 +192,45 @@ export default {
       paginationClearData,
     } = PaginationWorker({
       paginationDataRequest: (page) =>
-        API.ReviewService.getMyReviews({'page': page}),
+        API.ReviewService.getMyReviews({ page: page }),
       dataTransformation: (item) => {
         item.metadata = {
           expanding: false,
-        }
-        item.time_created = dayjs(item.time_created).format('DD.MM.YYYY')
-        return item
+        };
+        item.time_created = dayjs(item.time_created).format('DD.MM.YYYY');
+        return item;
       },
-    })
+    });
 
-    paginationPage.value = 1
-    paginationElements.value = route.meta.allReviewsData.data.results.map((item) => {
-      return {
-        ...item,
-        time_created: `${dayjs(item.time_created)
-          .format('D.MM.YYYY')}`,
+    paginationPage.value = 1;
+    paginationElements.value = route.meta.allReviewsData.data.results.map(
+      (item) => {
+        return {
+          ...item,
+          time_created: `${dayjs(item.time_created).format('D.MM.YYYY')}`,
+        };
       }
-    })
+    );
 
     const { getRawFilters, filters, setFilters, clearFilters } = FilterPatch({
       router,
       filters: {},
       afterUpdateFiltersCallBack: () => {
-        restartInfiniteScroll()
-        paginationClearData()
+        restartInfiniteScroll();
+        paginationClearData();
       },
-    })
+    });
 
     const loadDataPaginationData = (pageNumber, $state) => {
       paginationLoad({
         pageNumber,
         $state,
         forceUpdate: paginationPage.value === 1,
-      })
-    }
+      });
+    };
 
     function switchRate(val) {
-      rateStatus.value = val
+      rateStatus.value = val;
     }
 
     return {
@@ -246,26 +246,22 @@ export default {
       loadDataPaginationData,
       switchRate,
       scrollToFirstElement: () => {
-        refList.value.scrollToFirstElement()
+        refList.value.scrollToFirstElement();
       },
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-a8a8bd: #a8a8bd;
- $color-f9f9fc: #f9f9fc;
- $color-f0f0f4: #f0f0f4;
- $color-efeff6: #efeff6;
-
-
+$color-a8a8bd: #a8a8bd;
+$color-f9f9fc: #f9f9fc;
+$color-f0f0f4: #f0f0f4;
+$color-efeff6: #efeff6;
 
 ::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 .b-rating-card {
   height: fit-content;
@@ -306,7 +302,6 @@ export default {
       margin-bottom: 12px;
     }
     .b-rating-card__btns-block {
-      
       font-family: 'Inter';
       font-style: normal;
       font-weight: 500;

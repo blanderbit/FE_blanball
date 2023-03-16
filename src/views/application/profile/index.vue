@@ -30,7 +30,7 @@
 
     <PublicProfile
       v-if="isModalActive.public_profile"
-      :pageMode="'preview'" 
+      :pageMode="'preview'"
       :userData="restData"
       @saveChanges="saveDataFromPreviewWindow"
       @closeModal="toggleModal"
@@ -79,32 +79,32 @@
         @submit="disableSubmit"
         ref="myForm"
       >
+        <ButtonsBlock
+          v-if="!isMobile"
+          class="b-user-cabinet__buttons-block"
+          :cancel-btn-width="'auto'"
+          :save-btn-width="'auto'"
+          :is-edit-mode-profile="isEditModeProfile"
+          @cancel-data-edit="cancelDataEdit"
+          @save-data-edit="saveDataEdit(data)"
+          @toggle-modal="toggleModal"
+          @toggle-edit-mode="toggleEditMode"
+        />
 
-      <ButtonsBlock
-        v-if="!isMobile"
-        class="b-user-cabinet__buttons-block"
-        :cancel-btn-width="'auto'"
-        :save-btn-width="'auto'"
-        :is-edit-mode-profile="isEditModeProfile"
-        @cancel-data-edit="cancelDataEdit"
-        @save-data-edit="saveDataEdit(data)"
-        @toggle-modal="toggleModal"
-        @toggle-edit-mode="toggleEditMode"
-      />
-
-      <ChangeUserDataModal
-        v-if="isModalActive.change_data"
-        :config="changeDataModalConfig"
-        @close-modal="closeChangeUserDataModal"
-        @save-changes="handleSaveDataChanges"
-        @decline-changes="declineUserDataChanges"
-        @show-preview="showPreview"
-      />
-        <RatingCard 
-          v-if="!isTabletSize && !isMobile" 
+        <ChangeUserDataModal
+          v-if="isModalActive.change_data"
+          :config="changeDataModalConfig"
+          @close-modal="closeChangeUserDataModal"
+          @save-changes="handleSaveDataChanges"
+          @decline-changes="declineUserDataChanges"
+          @show-preview="showPreview"
+        />
+        <RatingCard
+          v-if="!isTabletSize && !isMobile"
           :rating-scale="userRating"
           :openedReviewID="openedReviewId"
-          @clickReview="clickReview"/>
+          @clickReview="clickReview"
+        />
         <UserDetailsCard
           :user-data="userData"
           :phone="userPhone"
@@ -113,11 +113,12 @@
           :initValues="formValues"
         />
         <div class="b-user-cabinet__mobile-tablet-block">
-          <RatingCard 
-            v-if="isTabletSize" 
-            :rating-scale="userRating" 
+          <RatingCard
+            v-if="isTabletSize"
+            :rating-scale="userRating"
             :openedReviewID="openedReviewId"
-            @clickReview="clickReview"/>
+            @clickReview="clickReview"
+          />
           <SecurityBlock
             @toggle-modal="toggleModal"
             :user-email="userEmail"
@@ -142,42 +143,42 @@
 </template>
 
 <script>
-import { ref, computed, reactive, onMounted, onBeforeUnmount } from 'vue'
-import { useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
-import { useToast } from "vue-toastification";
+import { ref, computed, reactive, onMounted, onBeforeUnmount } from 'vue';
+import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toastification';
 
-import { Form } from '@system.it.flumx.com/vee-validate'
-import { storeToRefs } from "pinia"
+import { Form } from '@system.it.flumx.com/vee-validate';
+import { storeToRefs } from 'pinia';
 
-import GreenBtn from '../../../components/GreenBtn.vue'
-import WhiteBtn from '../../../components/WhiteBtn.vue'
-import InputComponent from '../../../components/forms/InputComponent.vue'
-import ModalWindow from '../../../components/ModalWindows/ModalWindow.vue'
-import RatingCard from '../../../components/RatingCard.vue'
-import UserDetailsCard from '../../../components/UserDetailsCard.vue'
-import SecurityBlock from '../../../components/SecurityBlock.vue'
-import TabLabel from '../../../components/TabLabel.vue'
-import DeleteAccountModal from '../../../components/ModalWindows/UserCabinetModalWindows/DeleteAccountModal.vue'
-import ChangePasswordModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangePasswordModal.vue'
-import ChangeUserDataModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangeUserDataModal.vue'
-import ChangeEmailModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangeEmailModal.vue'
-import ButtonsBlock from '../../../components/user-cabinet/ButtonsBlock.vue'
-import EditAvatarModal from '../../../components/ModalWindows/UserCabinetModalWindows/EditAvatarModal.vue'
-import Loading from '../../../workers/loading-worker/Loading.vue'
+import GreenBtn from '../../../components/GreenBtn.vue';
+import WhiteBtn from '../../../components/WhiteBtn.vue';
+import InputComponent from '../../../components/forms/InputComponent.vue';
+import ModalWindow from '../../../components/ModalWindows/ModalWindow.vue';
+import RatingCard from '../../../components/RatingCard.vue';
+import UserDetailsCard from '../../../components/UserDetailsCard.vue';
+import SecurityBlock from '../../../components/SecurityBlock.vue';
+import TabLabel from '../../../components/TabLabel.vue';
+import DeleteAccountModal from '../../../components/ModalWindows/UserCabinetModalWindows/DeleteAccountModal.vue';
+import ChangePasswordModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangePasswordModal.vue';
+import ChangeUserDataModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangeUserDataModal.vue';
+import ChangeEmailModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangeEmailModal.vue';
+import ButtonsBlock from '../../../components/user-cabinet/ButtonsBlock.vue';
+import EditAvatarModal from '../../../components/ModalWindows/UserCabinetModalWindows/EditAvatarModal.vue';
+import Loading from '../../../workers/loading-worker/Loading.vue';
 import PublicProfile from '../../../components/PublicProfile/PublicProfile.vue';
 
-import { API } from '../../../workers/api-worker/api.worker'
-import { useUserDataStore } from '@/stores/userData'
-import useWindowWidth from '../../../utils/widthScreen'
+import { API } from '../../../workers/api-worker/api.worker';
+import { useUserDataStore } from '@/stores/userData';
+import useWindowWidth from '../../../utils/widthScreen';
 
-import CONSTANTS from '../../../consts'
-import SCHEMAS from '../../../validators/schemas'
+import CONSTANTS from '../../../consts';
+import SCHEMAS from '../../../validators/schemas';
 
 const EDIT_BUTTON_ACTIONS = {
   SAVE: 'save',
   CANCEL: 'cancel',
-}
+};
 
 export default {
   name: 'UserCabinet',
@@ -201,32 +202,32 @@ export default {
     EditAvatarModal,
   },
   setup(props) {
-    const { t } = useI18n()
-    const toast = useToast()
-    const store = useUserDataStore()
+    const { t } = useI18n();
+    const toast = useToast();
+    const store = useUserDataStore();
 
-    const { user } = storeToRefs(store)
-    const router = useRouter()
+    const { user } = storeToRefs(store);
+    const router = useRouter();
     const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
-      useWindowWidth()
+      useWindowWidth();
 
-    const userInfo = ref(null)
-    const userRating = ref(null)
-    const userPhone = ref('')
-    const userEmail = ref('')
-    const userData = ref(null)
-    const isEditModeProfile = ref(false)
-    const changeDataModalConfig = ref(null)
-    const myForm = ref(null)
-    const isLoading = ref(false)
-    const isTabLabel = ref(false)
-    const userAvatar = ref('')
-    const restData = ref()
-    const openedReviewId = ref(0)
+    const userInfo = ref(null);
+    const userRating = ref(null);
+    const userPhone = ref('');
+    const userEmail = ref('');
+    const userData = ref(null);
+    const isEditModeProfile = ref(false);
+    const changeDataModalConfig = ref(null);
+    const myForm = ref(null);
+    const isLoading = ref(false);
+    const isTabLabel = ref(false);
+    const userAvatar = ref('');
+    const restData = ref();
+    const openedReviewId = ref(0);
 
     const isTabletSize = computed(() => {
-      return isBetweenTabletAndDesktop.value || isTablet.value
-    })
+      return isBetweenTabletAndDesktop.value || isTablet.value;
+    });
 
     const mockData = computed(() => {
       return {
@@ -234,15 +235,15 @@ export default {
         tabs: CONSTANTS.profile.tabs,
         monthFromNumber: CONSTANTS.users_page.months.monthFromNumber,
         numberFromMonth: CONSTANTS.users_page.months.numberFromMonth,
-      }
-    })
+      };
+    });
     restData.value = {
       ...store.user,
       configuration: {
         ...store.user.configuration,
         planned_events: true,
       },
-    }
+    };
 
     const formValues = ref({
       last_name: store.user.profile.last_name,
@@ -260,9 +261,9 @@ export default {
       config_email: store.user.configuration.email,
       show_reviews: store.user.configuration.show_reviews,
       planned_events: true,
-    })
+    });
 
-    const checkboxData = reactive({})
+    const checkboxData = reactive({});
     const isModalActive = reactive({
       phone: false,
       email: false,
@@ -271,11 +272,11 @@ export default {
       public_profile: false,
       change_data: false,
       edit_avatar: false,
-    })
+    });
 
     const schema = computed(() => {
-      return SCHEMAS.profile.schema
-    })
+      return SCHEMAS.profile.schema;
+    });
 
     userInfo.value = {
       ...store.user,
@@ -283,80 +284,80 @@ export default {
         ...store.user.profile,
         working_leg: getWorkingLeg(store.user.profile.working_leg),
       },
-    }
-    userRating.value = store.user.raiting
-    userPhone.value = store.user.phone
-    userEmail.value = store.user.email
+    };
+    userRating.value = store.user.raiting;
+    userPhone.value = store.user.phone;
+    userEmail.value = store.user.email;
     userData.value = {
       ...store.user.profile,
       phone: store.user.phone,
       raiting: store.user.raiting,
       working_leg: getWorkingLeg(store.user.profile.working_leg),
       role: store.user.role,
-    }
+    };
 
     checkboxData.value = {
       checkboxPhone: store.user.configuration.phone,
       checkboxEmail: store.user.configuration.email,
       checkboxReviews: store.user.configuration.show_reviews,
-    }
+    };
 
     onMounted(() => {
-      window.addEventListener('resize', onResize)
-    })
+      window.addEventListener('resize', onResize);
+    });
 
     onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize)
-    })
+      window.removeEventListener('resize', onResize);
+    });
 
     function clickReview(reviewId) {
       if (openedReviewId.value === reviewId) {
-        openedReviewId.value = 0
+        openedReviewId.value = 0;
       } else {
-        openedReviewId.value = reviewId
+        openedReviewId.value = reviewId;
       }
     }
 
     function switchTabLabel(isDisabled) {
       if (isDisabled) {
-        isTabLabel.value = !isTabLabel.value
+        isTabLabel.value = !isTabLabel.value;
       }
     }
     function getBirthDay(val) {
-      return val?.split('-')[2]
+      return val?.split('-')[2];
     }
     function getBirthMonth(val) {
-      return mockData.value.monthFromNumber[val?.split('-')[1]]
+      return mockData.value.monthFromNumber[val?.split('-')[1]];
     }
     function getBirthYear(val) {
-      return val?.split('-')[0]
+      return val?.split('-')[0];
     }
     function getWorkingLeg(val) {
       switch (val) {
         case 'Left':
-          return 'Ліва'
-          break
+          return 'Ліва';
+          break;
         case 'Right':
-          return 'Права'
-          break
+          return 'Права';
+          break;
         case 'Ліва':
-          return 'Left'
-          break
+          return 'Left';
+          break;
         case 'Права':
-          return 'Right'
-          break
+          return 'Right';
+          break;
       }
     }
 
     async function saveDataEdit(data) {
-      const { valid } = await data.validate()
-      
+      const { valid } = await data.validate();
+
       if (!valid) {
-        toast.error(t('errors.check-data'))
-        return false
+        toast.error(t('errors.check-data'));
+        return false;
       }
 
-      toggleModal('change_data')
+      toggleModal('change_data');
       changeDataModalConfig.value = {
         title: 'Подивитись зі сторони',
         button_1: 'Так, перейти до демонстрації',
@@ -366,10 +367,10 @@ export default {
         left_btn_action: 'showPreview',
         btn_with_1: 200,
         btn_with_2: 140,
-      }
+      };
     }
     function cancelDataEdit() {
-      toggleModal('change_data')
+      toggleModal('change_data');
       changeDataModalConfig.value = {
         title: 'Вийти без збереження змін?',
         description: 'Ви дійсно хочете вийти, скасувавши всі внесені зміни?',
@@ -379,29 +380,29 @@ export default {
         left_btn_action: 'closeModal',
         btn_with_1: 124,
         btn_with_2: 90,
-      }
+      };
     }
 
     function showPreview() {
-      closeChangeUserDataModal(false)
-      toggleModal('public_profile')
+      closeChangeUserDataModal(false);
+      toggleModal('public_profile');
     }
 
     function toggleEditMode() {
-      isEditModeProfile.value = !isEditModeProfile.value
+      isEditModeProfile.value = !isEditModeProfile.value;
     }
 
     function declineUserDataChanges(val = true) {
-      closeChangeUserDataModal(val)
+      closeChangeUserDataModal(val);
     }
 
     async function handleSaveDataChanges() {
-      saveUserDataChanges()
-      closeChangeUserDataModal(true)
+      saveUserDataChanges();
+      closeChangeUserDataModal(true);
     }
 
     function saveUserDataChanges() {
-      const refProfileData = { ...myForm.value.getControledValues() }
+      const refProfileData = { ...myForm.value.getControledValues() };
       const {
         day,
         month,
@@ -411,21 +412,21 @@ export default {
         config_phone,
         show_reviews,
         phone,
-      } = refProfileData
+      } = refProfileData;
       const profileData = {
         ...refProfileData,
         birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
         gender: store.user.profile.gender,
         working_leg: getWorkingLeg(working_leg),
-      }
+      };
 
-      delete profileData.day
-      delete profileData.month
-      delete profileData.year
-      delete profileData.phone
-      delete profileData.config_email
-      delete profileData.config_phone
-      delete profileData.show_reviews
+      delete profileData.day;
+      delete profileData.month;
+      delete profileData.year;
+      delete profileData.phone;
+      delete profileData.config_email;
+      delete profileData.config_phone;
+      delete profileData.show_reviews;
 
       const payload = {
         configuration: {
@@ -443,16 +444,15 @@ export default {
         },
         get_planned_events: '1y',
         phone: phone,
-      }
+      };
 
-      API.UserService.updateProfileData(payload)
-        .then(() => {
-          getMyProfile()
-        })
+      API.UserService.updateProfileData(payload).then(() => {
+        getMyProfile();
+      });
     }
 
     function getMyProfile() {
-      isLoading.value = true
+      isLoading.value = true;
       API.UserService.getMyProfile()
         .then((res) => {
           formValues.value = {
@@ -470,55 +470,55 @@ export default {
             config_phone: res.data.configuration?.phone,
             config_email: res.data.configuration?.email,
             show_reviews: res.data.configuration?.show_reviews,
-          }
-          userInfo.value = res.data
+          };
+          userInfo.value = res.data;
           userData.value = {
             ...res.data?.profile,
             phone: res.data?.phone,
             raiting: res.data?.raiting,
             working_leg: getWorkingLeg(res.data.profile?.working_leg),
             role: res.data?.role,
-          }
-          userEmail.value = res.data?.email
-          userPhone.value = res.data?.phone
-          isLoading.value = false
-          toast.success(t('profile.data-updated'))
+          };
+          userEmail.value = res.data?.email;
+          userPhone.value = res.data?.phone;
+          isLoading.value = false;
+          toast.success(t('profile.data-updated'));
         })
         .catch((e) => {
-          isLoading.value = false
-        })
+          isLoading.value = false;
+        });
     }
 
     function changeTab(id, url, isDisabled) {
-      if (isDisabled) return
+      if (isDisabled) return;
       mockData.tabs = mockData.tabs
         .map((item) => ({ ...item, isActive: false }))
         .map((item) => {
-          return item.id === id ? { ...item, isActive: true } : item
-        })
-      router.push(url)
+          return item.id === id ? { ...item, isActive: true } : item;
+        });
+      router.push(url);
     }
 
     function closeChangeUserDataModal(isEditMode) {
-      toggleModal('change_data')
+      toggleModal('change_data');
       if (isEditMode) {
-        toggleEditMode()
+        toggleEditMode();
       }
     }
 
     function toggleModal(val) {
       switch (val) {
         case 'edit_avatar':
-          isModalActive.edit_avatar = !isModalActive.edit_avatar
-          break
+          isModalActive.edit_avatar = !isModalActive.edit_avatar;
+          break;
         case 'email':
-          isModalActive.email = !isModalActive.email
-          break
+          isModalActive.email = !isModalActive.email;
+          break;
         case 'delete_acc':
-          isModalActive.delete_acc = !isModalActive.delete_acc
-          break
+          isModalActive.delete_acc = !isModalActive.delete_acc;
+          break;
         case 'public_profile':
-          const refProfileData = { ...myForm.value.getControledValues() }
+          const refProfileData = { ...myForm.value.getControledValues() };
           const {
             day,
             month,
@@ -529,21 +529,21 @@ export default {
             config_phone,
             show_reviews,
             position,
-          } = refProfileData
+          } = refProfileData;
           const profileData = {
             ...refProfileData,
             birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
             gender: store.user.profile.gender,
             avatar_url: store.getUserAvatar,
             position: getUserPositionText(position),
-          }
-          delete profileData.day
-          delete profileData.month
-          delete profileData.year
-          delete profileData.phone
-          delete profileData.config_email
-          delete profileData.config_phone
-          delete profileData.show_reviews
+          };
+          delete profileData.day;
+          delete profileData.month;
+          delete profileData.year;
+          delete profileData.phone;
+          delete profileData.config_email;
+          delete profileData.config_phone;
+          delete profileData.show_reviews;
 
           restData.value = {
             ...restData.value,
@@ -562,15 +562,15 @@ export default {
               ...profileData,
             },
             get_planned_events: '1y',
-          }
-          isModalActive.public_profile = !isModalActive.public_profile
-          break
+          };
+          isModalActive.public_profile = !isModalActive.public_profile;
+          break;
         case 'change_data':
-          isModalActive.change_data = !isModalActive.change_data
-          break
+          isModalActive.change_data = !isModalActive.change_data;
+          break;
         case 'change_password':
-          isModalActive.change_password = !isModalActive.change_password
-          break
+          isModalActive.change_password = !isModalActive.change_password;
+          break;
       }
     }
 
@@ -578,21 +578,21 @@ export default {
       if (position) {
         return CONSTANTS.profile.position.find(
           (item) => item.value === position
-        )?.name
+        )?.name;
       } else {
-        return t('profile.no-position')
+        return t('profile.no-position');
       }
     }
 
     function openEditPictureModal(modal, picture) {
-      userAvatar.value = picture
-      toggleModal(modal)
+      userAvatar.value = picture;
+      toggleModal(modal);
     }
 
     function saveDataFromPreviewWindow() {
-      toggleModal('public_profile')
-      saveUserDataChanges()
-      toggleEditMode()
+      toggleModal('public_profile');
+      saveUserDataChanges();
+      toggleEditMode();
     }
 
     return {
@@ -633,22 +633,19 @@ export default {
       restData,
       userAvatar,
       disableSubmit: (e) => {
-        e.stopPropagation()
-        e.preventDefault()
+        e.stopPropagation();
+        e.preventDefault();
       },
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-e2e2e9: #e2e2e9;
- $color-6f6f77: #6f6f77;
- $color-dfdeed: #dfdeed;
-
+$color-e2e2e9: #e2e2e9;
+$color-6f6f77: #6f6f77;
+$color-dfdeed: #dfdeed;
 
 ::-webkit-scrollbar {
   display: none;
@@ -781,8 +778,8 @@ export default {
       display: block;
     }
     .b-user-cabinet__buttons-block {
-      position: absolute; 
-      top: 5px; 
+      position: absolute;
+      top: 5px;
       right: 0;
     }
     .b-user-cabinet__mobile-tablet-block {

@@ -7,4 +7,4 @@ export default {
   a: { pattern: /[a-zA-Z]/, lowercase: true },
   '!': { escape: true },
   '*': { repeat: true },
-}
+};

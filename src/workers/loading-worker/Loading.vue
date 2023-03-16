@@ -23,11 +23,10 @@ export default {
       default: false,
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
 .spiner-wrapper {
   background: rgba(255, 255, 255, 0.514);
   position: fixed;

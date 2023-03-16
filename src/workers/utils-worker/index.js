@@ -1,12 +1,12 @@
-import { AuthWebSocketWorkerInstance } from '../web-socket-worker'
+import { AuthWebSocketWorkerInstance } from '../web-socket-worker';
 import {
   MessageActionDataTypes,
   MessageActionTypes,
-} from '../../workers/web-socket-worker/message.action.types'
-import { DETAILS_TYPE_ENUM_VALUES } from '../type-request-message-worker'
+} from '../../workers/web-socket-worker/message.action.types';
+import { DETAILS_TYPE_ENUM_VALUES } from '../type-request-message-worker';
 
 export const AxiosQuery = (params) => {
-  params = typeof params === 'object' ? params : {}
+  params = typeof params === 'object' ? params : {};
   const filteredObject = Object.keys(params)
     .filter((key) => params[key])
     .reduce(
@@ -15,76 +15,83 @@ export const AxiosQuery = (params) => {
         [key]: params[key],
       }),
       {}
-    )
+    );
   return {
     meta: 'AxiosQuery',
     data: filteredObject,
-  }
-}
+  };
+};
 
 export const AxiosSkipErrorMessageType = (enumList = []) => {
   enumList = enumList.filter((enumKey) =>
     DETAILS_TYPE_ENUM_VALUES.includes(enumKey)
-  )
+  );
   return {
     meta: 'AxiosSkipErrorMessageType',
     data: enumList,
-  }
-}
+  };
+};
 
 export const AxiosParams = (...results) => {
-  const allParameters = {}
+  const allParameters = {};
 
   results.forEach((resultFromFunction) => {
     if (resultFromFunction.meta.includes('AxiosQuery')) {
-      allParameters.params = resultFromFunction.data
+      allParameters.params = resultFromFunction.data;
     } else if (resultFromFunction.meta.includes('AxiosSkipErrorMessageType')) {
-      allParameters.skipErrorMessageType = resultFromFunction.data
+      allParameters.skipErrorMessageType = resultFromFunction.data;
     }
-  })
+  });
 
-  return allParameters
-}
+  return allParameters;
+};
 
 export const createQueryStringFromObject = (objQuery) => {
   if (typeof objQuery !== 'object') {
-    return ''
+    return '';
   }
 
-  const elements = Object.keys(objQuery).map((key) => `${key}=${objQuery[key]}`)
+  const elements = Object.keys(objQuery).map(
+    (key) => `${key}=${objQuery[key]}`
+  );
 
-  return elements.length ? '?' + elements.join('&') : ''
-}
+  return elements.length ? '?' + elements.join('&') : '';
+};
 
-const fakeFunc = () => {}
+const fakeFunc = () => {};
 export const checkIfFunction = (method) =>
-  typeof method === 'function' ? method : fakeFunc
+  typeof method === 'function' ? method : fakeFunc;
 
 export const createNotificationFromData = (message) => {
-  message.notification_id = message.id
+  message.notification_id = message.id;
   const constructor = AuthWebSocketWorkerInstance?.messages?.find(
     (item) => item.messageType === message.message_type
-  )
+  );
 
   if (constructor) {
-    return new constructor(message)
+    return new constructor(message);
   }
-}
+};
 
-export const notificationButtonHandlerMessage = async ({ button, notificationInstance, activeNotification, router }) => {
+export const notificationButtonHandlerMessage = async ({
+  button,
+  notificationInstance,
+  activeNotification,
+  router,
+}) => {
   if (activeNotification) {
     activeNotification.value = notificationInstance.notification_id;
   }
   if (button.actionType === MessageActionDataTypes.Url) {
-    router.push(button.action)
+    router.push(button.action);
   }
 
   if (button.actionType === MessageActionDataTypes.UrlCallback) {
-    router.push(button.action({ router, notificationInstance }))
+    router.push(button.action({ router, notificationInstance }));
   }
 
   if (button.actionType === MessageActionDataTypes.Callback) {
-    await button.action({ notificationInstance })
+    await button.action({ notificationInstance });
   }
 
   if (
@@ -94,7 +101,7 @@ export const notificationButtonHandlerMessage = async ({ button, notificationIns
       MessageActionTypes.Close,
     ].includes(button.type)
   ) {
-    notificationInstance.readAfterActiveActionCallBack(notificationInstance)
+    notificationInstance.readAfterActiveActionCallBack(notificationInstance);
   }
   if (activeNotification) {
     activeNotification.value = 0;

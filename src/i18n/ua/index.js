@@ -1,30 +1,30 @@
-import EventsPage from './events'
-import ProfilePage from './profile'
-import Modals from './modals'
-import Buttons from './buttons'
-import MyEvents from './my_events'
-import Users from './users'
-import Login from './login'
-import ModalFeedback from './modal_feedback'
-import Register from './register'
-import Reset from './reset'
-import Header from './header'
-import Menu from './menu'
-import PlayerPage from './player-page'
-import SlideMenu from './slide-menu'
-import Versions from './versions'
-import Page404 from './404'
-import Works from './works'
-import ResponseMessageTypes from './response.message.types'
-import Counter from './counter'
-import ScrollTopComponent from './scroll_top_component'
-import Errors from './errors'
-import Notifications from './notifications'
-import Breadcrumbs from './breadcrumbs'
-import Hashtags from './hashtags'
-import Colors from './colors'
-import Alts from './alts'
-import NoRecords from './no_records'
+import EventsPage from './events';
+import ProfilePage from './profile';
+import Modals from './modals';
+import Buttons from './buttons';
+import MyEvents from './my_events';
+import Users from './users';
+import Login from './login';
+import ModalFeedback from './modal_feedback';
+import Register from './register';
+import Reset from './reset';
+import Header from './header';
+import Menu from './menu';
+import PlayerPage from './player-page';
+import SlideMenu from './slide-menu';
+import Versions from './versions';
+import Page404 from './404';
+import Works from './works';
+import ResponseMessageTypes from './response.message.types';
+import Counter from './counter';
+import ScrollTopComponent from './scroll_top_component';
+import Errors from './errors';
+import Notifications from './notifications';
+import Breadcrumbs from './breadcrumbs';
+import Hashtags from './hashtags';
+import Colors from './colors';
+import Alts from './alts';
+import NoRecords from './no_records';
 
 export const UA_LANGUAGE = {
   events: EventsPage,
@@ -54,4 +54,4 @@ export const UA_LANGUAGE = {
   colors: Colors,
   alts: Alts,
   no_records: NoRecords,
-}
+};

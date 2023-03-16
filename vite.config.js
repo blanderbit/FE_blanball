@@ -1,14 +1,14 @@
-import { fileURLToPath, URL } from 'node:url'
+import { fileURLToPath, URL } from 'node:url';
 
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
 
-require('dotenv').config({ path: './stack.env' })
-import { babel } from '@rollup/plugin-babel'
+require('dotenv').config({ path: './stack.env' });
+import { babel } from '@rollup/plugin-babel';
 
 const globalVariables = {
   'process.env': process.env,
-}
+};
 
 export default defineConfig({
   plugins: [
@@ -57,4 +57,4 @@ export default defineConfig({
     },
   },
   define: globalVariables,
-})
+});

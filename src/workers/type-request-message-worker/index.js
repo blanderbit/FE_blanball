@@ -69,63 +69,63 @@ export const DETAILS_TYPE_ENUM = {
   PROFILE_AVATAR_UPDATED: 'profile_avatar_updated',
   CODE_IS_VALID: 'code_is_valid',
   METHOD_NOT_ALLOWED: 'method_get_not_allowed.',
-}
+};
 
-export const DETAILS_TYPE_ENUM_VALUES = Object.values(DETAILS_TYPE_ENUM)
+export const DETAILS_TYPE_ENUM_VALUES = Object.values(DETAILS_TYPE_ENUM);
 
-export const DETAILS_TYPE_ENUM_KEYS = Object.keys(DETAILS_TYPE_ENUM)
+export const DETAILS_TYPE_ENUM_KEYS = Object.keys(DETAILS_TYPE_ENUM);
 
 const excludeColumnParameter = (key) => {
-  const elements = key?.split(':') || [key]
+  const elements = key?.split(':') || [key];
 
   return {
     field: elements.length > 1 && elements[0],
     type: elements.length > 1 ? elements[1] : key,
-  }
-}
+  };
+};
 
 const excludeOneRowParam = (typeInitial, typeCounted) => {
-  return typeInitial?.replace(typeCounted, '')
-}
+  return typeInitial?.replace(typeCounted, '');
+};
 
 const detectMessageByKey = (type) => {
   const foundKey = DETAILS_TYPE_ENUM_KEYS.find((key) => {
-    return type.includes(excludeColumnParameter(DETAILS_TYPE_ENUM[key]).type)
-  })
+    return type.includes(excludeColumnParameter(DETAILS_TYPE_ENUM[key]).type);
+  });
 
-  return foundKey || 'FE:DETAIL_NOT_FOUND'
-}
+  return foundKey || 'FE:DETAIL_NOT_FOUND';
+};
 
 export const TypeRequestMessageWorker = (result = {}) => {
   if (result?.status === 'success') {
     return [result.message].map((detail) => {
       return {
         errorType: detectMessageByKey(detail)?.toLowerCase(),
-      }
-    })
+      };
+    });
   } else if (result?.status === 'error') {
     if (result.data.error) {
       return [result.data.error].map((error) => {
         return {
-          errorType:detectMessageByKey(error)?.toLowerCase(),
-        }
-      })
+          errorType: detectMessageByKey(error)?.toLowerCase(),
+        };
+      });
     } else {
       return (
         result?.data?.errors?.map((error) => {
-          const detectedType = detectMessageByKey(error.detail)
+          const detectedType = detectMessageByKey(error.detail);
           const excludedColumnParameter = excludeColumnParameter(
             DETAILS_TYPE_ENUM[detectedType]
-          )
+          );
           return {
             errorType: detectedType?.toLowerCase(),
             field:
               excludedColumnParameter.field &&
               excludeOneRowParam(error.detail, excludedColumnParameter.type),
-          }
+          };
         }) || []
-      )
+      );
     }
   }
-  return []
-}
+  return [];
+};

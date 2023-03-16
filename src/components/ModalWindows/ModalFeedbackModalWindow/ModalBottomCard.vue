@@ -3,7 +3,7 @@
     <div class="b-modal-bottom-card" :style="bottomCardStyle">
       <div class="b-modal-bottom-card__title-line">
         <div class="b-modal-bottom-card__title">
-          {{$t('modal_feedback.evaluate_game')}}
+          {{ $t('modal_feedback.evaluate_game') }}
         </div>
         <div
           class="b-modal-bottom-card__arrow"
@@ -14,7 +14,7 @@
         </div>
         <div class="b-modal-bottom-card__send-complain" v-if="isOpened">
           <img src="../../../assets/img/warning-red.svg" alt="" />
-          {{$t('modal_feedback.complain')}}
+          {{ $t('modal_feedback.complain') }}
         </div>
       </div>
       <div v-if="isOpened" class="b-modal-bottom-card__players-viewport">
@@ -40,11 +40,11 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
-import RatePlayerCard from './RatePlayerCard.vue'
+import RatePlayerCard from './RatePlayerCard.vue';
 
-import CONSTANTS from '../../../consts/index'
+import CONSTANTS from '../../../consts/index';
 
 export default {
   name: 'ModalBottomCard',
@@ -62,31 +62,28 @@ export default {
       return {
         width: props.isOpened ? '888px' : '400px',
         height: props.isOpened ? '656px' : 'auto',
-      }
-    })
+      };
+    });
     const arrowStyle = computed(() => {
       return {
         transform: props.isOpened ? 'rotate(-180deg)' : 'rotate(-90deg)',
-      }
-    })
+      };
+    });
     const players = computed(() => {
-      return CONSTANTS.modal_feedback.players
-    })
+      return CONSTANTS.modal_feedback.players;
+    });
     return {
       bottomCardStyle,
       arrowStyle,
       players,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-fee7e7: #fee7e7;
-
+$color-fee7e7: #fee7e7;
 
 .b-modal-bottom-card {
   overflow-y: scroll;
@@ -95,10 +92,10 @@ export default {
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 6px;
   transition: all 0.3s ease;
-  
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
-  &::-webkit-scrollbar { 
+
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
     display: none;
   }
   .b-modal-bottom-card__title-line {

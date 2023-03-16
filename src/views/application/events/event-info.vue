@@ -7,10 +7,10 @@
     @closeModal="closeShareEventModal"
   />
   <ActionEventModal
-      v-if="isActionEventModalOpened"
-      :modalData="actionEventModalConfig"
-      @closeModal="closeEventActiondModal"
-    />
+    v-if="isActionEventModalOpened"
+    :modalData="actionEventModalConfig"
+    @closeModal="closeEventActiondModal"
+  />
   <div class="b-event-info">
     <div class="b-event-info__main-body">
       <div class="b-event-info__header-block">
@@ -23,22 +23,22 @@
           </div>
         </div>
         <div class="b-event-info__right-part">
-            <GreenBtn
-              class="b-event-info__right-part-green-btn"
-              :text="greenButton.text"
-              :width="150"
-              :icon="greenButton?.icon"
-              :height="40"
-              @click-function="greenButtonClick"
-            />
-            <GreenBtn
-              class="b-event-info__right-part-green-mobile"
-              :text="greenButton.text"
-              :icon="greenButton?.icon"
-              :width="115"
-              :height="32"
-              @click-function="greenButtonClick"
-            />
+          <GreenBtn
+            class="b-event-info__right-part-green-btn"
+            :text="greenButton.text"
+            :width="150"
+            :icon="greenButton?.icon"
+            :height="40"
+            @click-function="greenButtonClick"
+          />
+          <GreenBtn
+            class="b-event-info__right-part-green-mobile"
+            :text="greenButton.text"
+            :icon="greenButton?.icon"
+            :width="115"
+            :height="32"
+            @click-function="greenButtonClick"
+          />
           <div @click="openEventShareModal" class="b-event-info__share-link">
             <img src="../../../assets/img/share-icon.svg" alt="" />
             <span>
@@ -232,7 +232,7 @@ import ListOfEventRequestsToParticipations from '../../../components/ListOfEvent
 import Loading from '../../../workers/loading-worker/Loading.vue';
 import EventInfoForms from '../../../components/buildedForms/EventInfoForms.vue';
 import ActionEventModal from '../../../components/ModalWindows/ActionEventModal.vue';
-import EditEventModal from '../../../components/ModalWindows/EditEventModal.vue'
+import EditEventModal from '../../../components/ModalWindows/EditEventModal.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
@@ -250,7 +250,7 @@ import emoji_4 from '../../../assets/img/emojies/4.svg';
 import emoji_5 from '../../../assets/img/emojies/5.svg';
 import noReviews from '../../../assets/img/no-records/no-reviews.svg';
 import noUserRecords from '../../../assets/img/no-records/no-user-records.svg';
-import editEvent from '../../../assets/img/edit-white.svg'
+import editEvent from '../../../assets/img/edit-white.svg';
 import NoEditPermIcon from '../../../assets/img/no-edit-perm-modal-icon.svg';
 
 export default {
@@ -311,15 +311,15 @@ export default {
     const activeTab = ref(0);
     const eventPriceHover = ref(false);
 
-    const isActionEventModalOpened = ref(false)
+    const isActionEventModalOpened = ref(false);
     const actionEventModalConfig = computed(() => {
       return {
         title: t('modals.no_perm_to_edit.title'),
         description: t('modals.no_perm_to_edit.main-text'),
         image: NoEditPermIcon,
-      }
-    })
-  
+      };
+    });
+
     handleIncomeEventData(eventData.value);
 
     const mockData = computed(() => {
@@ -336,55 +336,57 @@ export default {
     const noUsersData = computed(() => {
       if (eventData.value.author.id === user.value.id) {
         return {
-          title:  t('no_records.noEventPlayers.title'),
+          title: t('no_records.noEventPlayers.title'),
           description: t('no_records.noEventPlayers.description_author'),
           button_text: t('buttons.invite-players'),
-          image: noUserRecords
-        }
+          image: noUserRecords,
+        };
       } else {
         return {
           title: t('no_records.noEventPlayers.title'),
           description: t('no_records.noEventPlayers.description_user'),
-          button_text: !eventData.value.privacy ? t('buttons.join-participate') : t('events.apply'),
-          image: noUserRecords
-        }
+          button_text: !eventData.value.privacy
+            ? t('buttons.join-participate')
+            : t('events.apply'),
+          image: noUserRecords,
+        };
       }
-    })
+    });
 
     const noFansData = computed(() => {
       if (eventData.value.author.id === user.value.id) {
         return {
           title: t('no_records.noEventFans.title'),
           description: t('no_records.noEventFans.description_author'),
-          image: noUserRecords
-        }
+          image: noUserRecords,
+        };
       } else {
         return {
           title: t('no_records.noEventFans.title'),
-          description:  t('no_records.noEventFans.description_user'),
+          description: t('no_records.noEventFans.description_user'),
           button_text: t('buttons.become-a-fan'),
-          image: noUserRecords
-        }
+          image: noUserRecords,
+        };
       }
-    })
+    });
 
-    const greenButton =  computed(() => {
+    const greenButton = computed(() => {
       if (eventData.value.author.id === user.value.id) {
         return {
           text: t('buttons.edit'),
           icon: editEvent,
-        }
-      } else if (eventData.value.privacy ) {
+        };
+      } else if (eventData.value.privacy) {
         return {
-          text: t('buttons.join')
-        }
+          text: t('buttons.join'),
+        };
       } else {
         return {
-          text: t('events.apply')
-        }
+          text: t('events.apply'),
+        };
       }
-    })
-    
+    });
+
     const acceptRequestToParticipation = async (id) => {
       loading.value = true;
 
@@ -428,11 +430,11 @@ export default {
     }
 
     const closeEventActiondModal = () => {
-      isActionEventModalOpened.value = false
-    }
+      isActionEventModalOpened.value = false;
+    };
     const openEventActionModal = () => {
-      isActionEventModalOpened.value = true
-    }
+      isActionEventModalOpened.value = true;
+    };
 
     function handleIncomeEventData(data) {
       data.date = getDate(data.date_and_time);
@@ -444,13 +446,21 @@ export default {
       }
     }
 
-    const greenButtonClick  = () => {
-      if (eventData.value.author.id === user.value.id && eventData.value.status === 'Planned') { 
-        return router.push(ROUTES.APPLICATION.EVENTS.EDIT.absolute(eventData.value.id))
-      } else if (eventData.value.author.id === user.value.id && eventData.value.status !== 'Planned') {
-        openEventActionModal()
+    const greenButtonClick = () => {
+      if (
+        eventData.value.author.id === user.value.id &&
+        eventData.value.status === 'Planned'
+      ) {
+        return router.push(
+          ROUTES.APPLICATION.EVENTS.EDIT.absolute(eventData.value.id)
+        );
+      } else if (
+        eventData.value.author.id === user.value.id &&
+        eventData.value.status !== 'Planned'
+      ) {
+        openEventActionModal();
       }
-    }
+    };
 
     const copyLinkButtonClick = () => {
       navigator.clipboard.writeText(currentFullRoute.value);
@@ -510,15 +520,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
 $color-dfdeed: #dfdeed;
 $color-000: #000;
 $color-e3fbfa: #e3fbfa;
 $color-f9f9fc: #f9f9fc;
 $color-8a8aa8: #8a8aa8;
-
 
 ::-webkit-scrollbar {
   display: none;
@@ -855,7 +862,6 @@ $color-8a8aa8: #8a8aa8;
   border-bottom: 1px solid $color-dfdeed;
   margin-bottom: 30px;
   overflow-x: scroll;
-  
 
   .b-event-info__tab-element {
     font-family: 'Inter';

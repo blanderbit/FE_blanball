@@ -71,11 +71,11 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed } from 'vue';
 
-import Switcher from '../components/Switcher.vue'
-import sortArrowHorizontally from '../assets/img/sort-arrows-horizontal.svg'
-import InputComponent from './forms/InputComponent.vue'
+import Switcher from '../components/Switcher.vue';
+import sortArrowHorizontally from '../assets/img/sort-arrows-horizontal.svg';
+import InputComponent from './forms/InputComponent.vue';
 
 export default {
   name: 'SecurityBlock',
@@ -99,30 +99,27 @@ export default {
   },
   emits: ['toggleModal'],
   setup(props, context) {
-    const checkboxForm = ref(null)
+    const checkboxForm = ref(null);
 
-    const sortArrowHorizontal = computed(() => sortArrowHorizontally)
+    const sortArrowHorizontal = computed(() => sortArrowHorizontally);
 
     function toggleModalWindow(val) {
-      context.emit('toggleModal', val)
+      context.emit('toggleModal', val);
     }
 
     return {
       toggleModalWindow,
       sortArrowHorizontal,
       checkboxForm,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-dfdeed: #dfdeed;
- $color-d3f8f7: #d3f8f7;
-
+$color-dfdeed: #dfdeed;
+$color-d3f8f7: #d3f8f7;
 
 .b-security {
   background: $--b-main-white-color;
@@ -182,7 +179,7 @@ export default {
         align-items: center;
 
         @media (min-width: 768px) and (max-width: 1200px) {
-          border-bottom: 1px solid #DFDEED; 
+          border-bottom: 1px solid #dfdeed;
         }
 
         @include tabletAndMobile {

@@ -1,20 +1,20 @@
-import { InitialUpdation } from './initial.message'
+import { InitialUpdation } from './initial.message';
 
-import { SetMessageType, AuthWebSocketMessage } from '../../type.decorator'
-import { NotificationsBus } from '../../../event-bus-worker'
+import { SetMessageType, AuthWebSocketMessage } from '../../type.decorator';
+import { NotificationsBus } from '../../../event-bus-worker';
 
-import { WebSocketTypes } from '../../web.socket.types'
+import { WebSocketTypes } from '../../web.socket.types';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.AllDeletedNotifications)
 export class NotificationAllDeletedNotificationsUpdation extends InitialUpdation {
   handleUpdate({ paginationElements }, callbackAfterAction) {
-    paginationElements.value = []
+    paginationElements.value = [];
 
     if (typeof callbackAfterAction === 'function') {
-      callbackAfterAction()
+      callbackAfterAction();
     }
 
-    NotificationsBus.emit('SidebarClearData')
+    NotificationsBus.emit('SidebarClearData');
   }
 }

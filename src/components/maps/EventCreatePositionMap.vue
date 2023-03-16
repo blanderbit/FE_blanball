@@ -12,71 +12,71 @@
     </div>
     <Teleport to="body">
       <ModalWindow v-if="activeModal" :isTitleShown="false">
-      <Loading :is-loading="loading" />
-      <Form v-slot="data" @submit="disableSubmit" :validation-schema="schema">
-        <div class="b-modal-position__block">
-          <Dropdown
-            :outside-title="true"
-            :placeholder="$t('register.district')"
-            :main-title="$t('register.district')"
-            :options="mockData.district"
-            v-model="region"
-            taggable
-            @new-value="changeRegions"
-            display-name="name"
-            display-value="name"
-            name="region"
-          />
-        </div>
-        <div class="b-modal-position__block">
-          <Dropdown
-            :outside-title="true"
-            :placeholder="$t('register.city')"
-            :main-title="$t('register.city')"
-            :options="mockData.cities"
-            v-model="city"
-            taggable
-            @new-value="changeCity"
-            display-name="name"
-            display-value="name"
-            name="city"
-          />
-        </div>
-
-        <div class="b-modal-position__block">
-          <InputComponent
-            :title="$t('register.address')"
-            :placeholder="$t('register.address-placeholder')"
-            :model-value="address"
-            :title-width="0"
-            outsideTitle
-            :height="40"
-            @input="changeAddress($event)"
-            name="address"
-          ></InputComponent>
-        </div>
-
-        <div class="b-modal-position__block b-modal-position__map">
-          <position-map
-            @map-loaded="loading = false"
-            :coords="coords"
-            @update:coords="updateCoords"
-          ></position-map>
-        </div>
-        <div class="d-flex justify-content-between align-items-center">
-          <div class="b-modal-position__clear" @click="activeModal = false">
-            {{ $t('buttons.cancel') }}
+        <Loading :is-loading="loading" />
+        <Form v-slot="data" @submit="disableSubmit" :validation-schema="schema">
+          <div class="b-modal-position__block">
+            <Dropdown
+              :outside-title="true"
+              :placeholder="$t('register.district')"
+              :main-title="$t('register.district')"
+              :options="mockData.district"
+              v-model="region"
+              taggable
+              @new-value="changeRegions"
+              display-name="name"
+              display-value="name"
+              name="region"
+            />
           </div>
-          <GreenBtn
-            :text="$t('buttons.save')"
-            :width="140"
-            :height="40"
-            :disabled="nextButton"
-            @click-function="save(data)"
-          />
-        </div>
-      </Form>
-    </ModalWindow>
+          <div class="b-modal-position__block">
+            <Dropdown
+              :outside-title="true"
+              :placeholder="$t('register.city')"
+              :main-title="$t('register.city')"
+              :options="mockData.cities"
+              v-model="city"
+              taggable
+              @new-value="changeCity"
+              display-name="name"
+              display-value="name"
+              name="city"
+            />
+          </div>
+
+          <div class="b-modal-position__block">
+            <InputComponent
+              :title="$t('register.address')"
+              :placeholder="$t('register.address-placeholder')"
+              :model-value="address"
+              :title-width="0"
+              outsideTitle
+              :height="40"
+              @input="changeAddress($event)"
+              name="address"
+            ></InputComponent>
+          </div>
+
+          <div class="b-modal-position__block b-modal-position__map">
+            <position-map
+              @map-loaded="loading = false"
+              :coords="coords"
+              @update:coords="updateCoords"
+            ></position-map>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="b-modal-position__clear" @click="activeModal = false">
+              {{ $t('buttons.cancel') }}
+            </div>
+            <GreenBtn
+              :text="$t('buttons.save')"
+              :width="140"
+              :height="40"
+              :disabled="nextButton"
+              @click-function="save(data)"
+            />
+          </div>
+        </Form>
+      </ModalWindow>
     </Teleport>
   </div>
 </template>

@@ -84,7 +84,6 @@ import SCHEMAS from '../../validators/schemas';
 
 import addFileIcon from '../../assets/img/add-file-icon.svg';
 
-
 export default {
   components: {
     InputComponent,
@@ -99,7 +98,7 @@ export default {
     const { t } = useI18n();
 
     const schema = computed(() => {
-      return SCHEMAS.bugReport.schema
+      return SCHEMAS.bugReport.schema;
     });
 
     const afterLoadImage = (image) => {
@@ -153,7 +152,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 // SCSS variables for hex colors
 $color-4c4a82: #4c4a82;
 

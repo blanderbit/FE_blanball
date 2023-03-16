@@ -1,18 +1,18 @@
-import { InitialMessage } from './initial.message'
+import { InitialMessage } from './initial.message';
 
 import {
   SetActions,
   SetMessageType,
   AuthWebSocketMessage,
   NotificationSetUserImage,
-} from '../../type.decorator'
+} from '../../type.decorator';
 
 import {
   MessageActionTypes,
   MessageActionDataTypes,
-} from '../../message.action.types'
-import { WebSocketTypes } from '../../web.socket.types'
-import { ROUTES } from '../../../../router/router.const'
+} from '../../message.action.types';
+import { WebSocketTypes } from '../../web.socket.types';
+import { ROUTES } from '../../../../router/router.const';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.LeftFeedback)
@@ -34,10 +34,10 @@ export class LeftFeedbackMessage extends InitialMessage {
   createTexts(data) {
     return [
       `Один из учасников события оставил вам отзыв! Что бы просмотреть все отзывы нажмите на кнопку "${this.actions[1].text}"`,
-    ]
+    ];
   }
 
   createTitle() {
-    return 'Вам оставили отзыв!'
+    return 'Вам оставили отзыв!';
   }
 }

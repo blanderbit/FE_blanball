@@ -1,29 +1,29 @@
 export class TokenServiceWorker {
   _getKeyName() {
-    return this._keyName
+    return this._keyName;
   }
 
   setKeyName(name) {
     if (typeof name !== 'string') {
-      return
+      return;
     }
-    this._keyName = name
-    return this
+    this._keyName = name;
+    return this;
   }
 
   getToken() {
-    return localStorage.getItem(this._getKeyName())
+    return localStorage.getItem(this._getKeyName());
   }
 
   clearToken() {
-    localStorage.removeItem(this._getKeyName())
+    localStorage.removeItem(this._getKeyName());
   }
 
   setToken(data) {
-    localStorage.setItem(this._getKeyName(), data)
+    localStorage.setItem(this._getKeyName(), data);
   }
 
   isToken() {
-    return !!this.getToken()
+    return !!this.getToken();
   }
 }

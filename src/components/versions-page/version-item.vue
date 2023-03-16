@@ -26,15 +26,12 @@ export default {
     id: Number,
   },
   emits: ['versionClick'],
-}
+};
 </script>
 
 <style scoped lang="scss">
-
-
 // SCSS variables for hex colors
- $color-d3f8f7: #d3f8f7;
-
+$color-d3f8f7: #d3f8f7;
 
 .b-version-item {
   background: $--b-main-white-color;

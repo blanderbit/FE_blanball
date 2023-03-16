@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue'
+import { ref, watch } from 'vue';
 
-import { CustomModelWorker } from '../workers/custom-model-worker'
+import { CustomModelWorker } from '../workers/custom-model-worker';
 
 export default {
   name: 'switch-component',
@@ -46,29 +46,26 @@ export default {
   emits: ['getValue'],
   setup(props, { emit }) {
     const { modelValue, modelErrorMessage, modelHandlers } =
-      CustomModelWorker(props)
+      CustomModelWorker(props);
 
     function valueChange(val) {
-      modelHandlers.value.input[0](val)
-      modelHandlers.value.input[1](val, false)
-      emit('getValue', val)
+      modelHandlers.value.input[0](val);
+      modelHandlers.value.input[1](val, false);
+      emit('getValue', val);
     }
 
     return {
       modelValue,
       modelHandlers,
       valueChange,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-
 // SCSS variables for hex colors
- $color-ccc: #ccc;
-
+$color-ccc: #ccc;
 
 .b_switch_wrapper {
   position: relative;

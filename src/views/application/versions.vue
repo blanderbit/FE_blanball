@@ -96,16 +96,16 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref } from 'vue';
+import { useRoute } from 'vue-router';
 
-import dayjs from 'dayjs'
-import dayjsUkrLocale from 'dayjs/locale/uk'
+import dayjs from 'dayjs';
+import dayjsUkrLocale from 'dayjs/locale/uk';
 
-import Loading from '../../workers/loading-worker/Loading.vue'
-import VersionItem from '../../components/versions-page/version-item.vue'
+import Loading from '../../workers/loading-worker/Loading.vue';
+import VersionItem from '../../components/versions-page/version-item.vue';
 
-import { API } from '../../workers/api-worker/api.worker'
+import { API } from '../../workers/api-worker/api.worker';
 
 export default {
   name: 'VersionsPage',
@@ -114,14 +114,14 @@ export default {
     Loading,
   },
   setup() {
-    const route = useRoute()
-    const versions = ref()
-    const currentVersion = ref()
-    const versionType = ref()
-    const versionNumber = ref()
-    const loading = ref(false)
+    const route = useRoute();
+    const versions = ref();
+    const currentVersion = ref();
+    const versionType = ref();
+    const versionNumber = ref();
+    const loading = ref(false);
 
-    versions.value = route.meta.allVersions?.results
+    versions.value = route.meta.allVersions?.results;
 
     versions.value = versions.value.map((item) => {
       return {
@@ -129,23 +129,23 @@ export default {
         date: dayjs(item.created_at)
           .locale(dayjsUkrLocale)
           .format('DD MM YYYY'),
-      }
-    })
+      };
+    });
 
-    const currentVersionId = versions.value[versions.value.length - 1]?.id
+    const currentVersionId = versions.value[versions.value.length - 1]?.id;
 
     if (currentVersionId) {
-      gerVersion(currentVersionId)
+      gerVersion(currentVersionId);
     }
 
     function gerVersion(id) {
-      loading.value = true
+      loading.value = true;
       API.VersionsService.getCurrentVersion(id).then((res) => {
-        versionType.value = res.type
-        versionNumber.value = res.version
-        currentVersion.value = res.data
-        loading.value = false
-      })
+        versionType.value = res.type;
+        versionNumber.value = res.version;
+        currentVersion.value = res.data;
+        loading.value = false;
+      });
     }
 
     return {
@@ -155,19 +155,16 @@ export default {
       versionNumber,
       versionType,
       loading,
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
-
-
 // SCSS variables for hex colors
- $color-c5c5d3: #c5c5d3;
- $color-fbfbfb: #fbfbfb;
- $color-e2e2e9: #e2e2e9;
-
+$color-c5c5d3: #c5c5d3;
+$color-fbfbfb: #fbfbfb;
+$color-e2e2e9: #e2e2e9;
 
 .b-versions {
   overflow-y: scroll;

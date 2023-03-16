@@ -271,11 +271,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
- $color-eeeef3: #eeeef3;
- $color-148581: #148581;
- $color-f9f9fc: #f9f9fc;
- $color-6f6f77: #6f6f77;
-
+$color-eeeef3: #eeeef3;
+$color-148581: #148581;
+$color-f9f9fc: #f9f9fc;
+$color-6f6f77: #6f6f77;
 
 .b-user-info {
   background: $color-eeeef3;

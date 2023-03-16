@@ -1,7 +1,7 @@
-import ball_icon from '../assets/img/ball-icon.svg'
-import members from '../assets/img/members.svg'
-import couch from '../assets/img/couch.svg'
-import user_with_plus from '../assets/img/add-user.svg'
+import ball_icon from '../assets/img/ball-icon.svg';
+import members from '../assets/img/members.svg';
+import couch from '../assets/img/couch.svg';
+import user_with_plus from '../assets/img/add-user.svg';
 
 export default {
   tabs: (eventData, userId) => {
@@ -11,14 +11,14 @@ export default {
         name: 'events.list-of-users',
         img: ball_icon,
         isDisabled: false,
-        isShown: true
+        isShown: true,
       },
       {
         id: 1,
         name: 'events.registered-fans',
         img: members,
         isDisabled: false,
-        isShown: true
+        isShown: true,
       },
       {
         id: 2,
@@ -34,6 +34,6 @@ export default {
         isDisabled: true,
         isShown: true,
       },
-    ]
-  }
-}
+    ];
+  },
+};

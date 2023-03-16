@@ -5,8 +5,11 @@
         <div class="b-preview-event-modal__title">
           {{ $t('events.poster-preview') }}
         </div>
-        <img src="../../assets/img/close-arrow-up.svg" alt=""
-            @click="$emit('closeModal')">
+        <img
+          src="../../assets/img/close-arrow-up.svg"
+          alt=""
+          @click="$emit('closeModal')"
+        />
       </div>
       <div class="b-preview-event-modal__main-side">
         <EventCard :card="eventData" />
@@ -27,12 +30,12 @@ export default {
       default: () => {},
     },
   },
-  emits: ['closeModal']
+  emits: ['closeModal'],
 };
 </script>
 
-<style lang="scss" scoped> $color-f9f9fc: #f9f9fc;
-
+<style lang="scss" scoped>
+$color-f9f9fc: #f9f9fc;
 
 .b-preview-event-modal__wrapper {
   position: fixed;
