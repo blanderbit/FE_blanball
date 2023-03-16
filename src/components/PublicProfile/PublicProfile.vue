@@ -14,12 +14,12 @@
       <div v-if="isPersonalPreview" class="b-public-profile__wrapper-edit-buttons">
         <div
           class="b-public-profile__continue"
-          @click="toggleModal('public_profile')"
+          @click="$emit('closeModal', 'public_profile')"
         >
           <span>{{ $t('buttons.keep-editing') }}</span>
           <img src="../../assets/img/arrow-left-small.svg" alt="" />
         </div>
-        <div @click="saveDataFromPreviewWindow" class="b-public-profile__exit">
+        <div @click="$emit('saveChanges')" class="b-public-profile__exit">
           <span>{{ $t('buttons.save-and-out') }}</span>
           <img src="../../assets/img/cross-white.svg" alt="" />
         </div>
@@ -138,6 +138,7 @@
               <PublicProfileReviews
                 :userRating="userRating"
                 :userId="userData.id"
+                :userShowReviews="userData.configuration.show_reviews"
               />
             </div>
             <PublicProfilePlannedEvents :userId="userData.id" />
@@ -176,6 +177,7 @@ export default {
       type: Object,
       default: () => {},
     },
+    emits: ['saveChanges', 'closeModal'],
     pageMode: {
       type: String,
       default: 'look',
@@ -244,12 +246,16 @@ export default {
     });
 
     const openInviteUserModal = () => {
-      isInviteUserModalOpened.value = true;
+
+      if (!isPersonalPreview.value) {
+        isInviteUserModalOpened.value = true;
+      }
     };
 
     const closeInviteUserModal = () => {
       isInviteUserModalOpened.value = false;
     };
+
 
     const playFeatures = computed(() => {
       return [
@@ -258,7 +264,10 @@ export default {
           name: t('player_page.position'),
           img: icons.value.flag,
           value: props.userData.profile?.position
-            ? t(`hashtags.${props.userData.profile?.position}`)
+            ? t(!isPersonalPreview.value  
+              ? `hashtags.position_full.${props.userData.profile?.position}` 
+              : props.userData.profile?.position
+            )
             : noFeatureData,
         },
         {
@@ -274,7 +283,10 @@ export default {
           name: t('profile.main-leg'),
           img: icons.value.gaming_leg,
           value: props.userData.profile?.working_leg
-            ? t(`hashtags.${props.userData.profile?.working_leg}`)
+            ? t(!isPersonalPreview.value 
+              ? `hashtags.${props.userData.profile?.working_leg}` 
+              : props.userData.profile?.working_leg
+            )
             : noFeatureData,
         },
         {
@@ -324,7 +336,10 @@ $color-d2f6a2: #d2f6a2;
 }
 
 .b-wrapper-scroll {
-  overflow: scroll;
+
+  @media (max-width: 1200px) {
+    overflow: scroll;
+  } 
 }
 .b-public-profile__wrapper {
   background: #fff;
@@ -334,6 +349,10 @@ $color-d2f6a2: #d2f6a2;
   top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  @media (max-width: 1200px) {
+    top: 90%;
+  }
 
   @include beforeDesktop {
     top: 75%;
@@ -363,6 +382,7 @@ $color-d2f6a2: #d2f6a2;
     display: flex;
     align-items: center;
     gap: 12px;
+    cursor: pointer;
   }
   .b-public-profile__exit {
     @include inter(12px, 500, $--b-main-white-color);
@@ -374,12 +394,13 @@ $color-d2f6a2: #d2f6a2;
     display: flex;
     align-items: center;
     gap: 12px;
+    cursor: pointer;
   }
 }
 
 .b-public-profile {
   position: relative;
-
+  
   @include beforeDesktop {
     overflow: scroll;
   }
@@ -594,6 +615,10 @@ $color-d2f6a2: #d2f6a2;
     .b-public-profile__main-side-left-block {
       display: flex;
 
+      @media (max-width: 1200px) {
+        flex-direction: column;
+      }
+
       @include beforeDesktop {
         flex-direction: column;
         align-items: center;
@@ -627,7 +652,8 @@ $color-d2f6a2: #d2f6a2;
 
         @media (max-width: 1200px) {
           padding: 16px;
-          width: 310px;
+          width: 400px;
+          border-radius: 12px;
         }
 
         @include beforeDesktop {
@@ -635,6 +661,7 @@ $color-d2f6a2: #d2f6a2;
           background: transparent;
           box-shadow: none;
           border: none;
+          width: 310px;
         }
 
         @include tabletAndMobile {

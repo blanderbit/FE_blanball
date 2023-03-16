@@ -17,7 +17,12 @@
               <div class="b-event__type">
                 {{ $t('events.friendly-match') }}
               </div>
-              <div class="b-event__user-role">
+              <div
+                :class="[
+                  'b-event__user-role',
+                  `b-event__user-role-${item.pk_user_role}`,
+                ]"
+              >
                 {{ $t(`hashtags.${item.pk_user_role}`) }}
               </div>
             </div>
@@ -103,6 +108,10 @@ $color-dfdeed: #dfdeed;
 $color-f0f0f4: #f0f0f4;
 $color-575775: $--b-main-gray-color;
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 .b-public-profile__planned-events {
   background: $color-ffffff;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
@@ -117,16 +126,17 @@ $color-575775: $--b-main-gray-color;
   }
 
   @media (max-width: 1200px) {
-    width: 310px;
+    width: 400px;
     padding: 16px;
+    margin-left: 16px;
+    border-radius: 12px;
+    margin-top: 20px;
   }
 
   @include beforeDesktop {
     background: $color-ffffff;
-    border-radius: 12px;
-    margin-top: 20px;
     height: 400px;
-    margin-left: 16px;
+    width: 310px;
   }
   @include tabletAndMobile {
     margin-left: 0px;
@@ -176,9 +186,16 @@ $color-575775: $--b-main-gray-color;
       .b-event__user-role {
         @include inter(12px, 400);
         line-height: 20px;
-        background: $color-f0f0f4;
         border-radius: 4px;
         padding: 0px 4px;
+
+        &-fan {
+          background: $color-f0f0f4;
+        }
+
+        &-player {
+          background: #feefe7;
+        }
       }
     }
     .b-event__main-side {

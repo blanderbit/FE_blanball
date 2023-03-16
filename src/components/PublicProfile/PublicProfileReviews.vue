@@ -17,7 +17,11 @@
       </div>
     </div>
     <div class="b-public-profile__reviews-list">
-      <SimpleListWrapper :requestForGetData="getReviews">
+      <div v-if="!userShowReviews" class="b-public-profile__reviews-hidden">
+        <img src="../../assets/img/information.svg" alt="">
+        <span>{{ $t('player_page.feedback-hidden') }}</span>
+      </div>
+      <SimpleListWrapper :requestForGetData="getReviews" v-else>
         <template #default="{ smartListItem: item }">
           <div class="b-public-profile__review">
             <div class="b-review__top-side">
@@ -83,6 +87,10 @@ export default {
       type: Number,
       required: true,
     },
+    userShowReviews: {
+      type: Boolean,
+      required: true,
+    }
   },
   setup(props) {
     const reviewsTotalCount = ref(0);
@@ -167,6 +175,16 @@ $color-575775: $--b-main-gray-color;
   @include beforeDesktop {
     margin-top: 10px;
     height: 320px;
+  }
+
+  .b-public-profile__reviews-hidden {
+    @include inter(12px, 400, #6F6F77);
+    line-height: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #DFDEED;
+    display: flex;
+    gap: 8px;
+    word-break: break-word;
   }
 
   .b-public-profile__review {

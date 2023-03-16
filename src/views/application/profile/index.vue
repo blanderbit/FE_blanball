@@ -28,7 +28,13 @@
       @close-modal="toggleModal"
     />
 
-    <PublicProfile :page-mode="'preview'" :user-data="restData"/>
+    <PublicProfile
+      v-if="isModalActive.public_profile"
+      :pageMode="'preview'" 
+      :userData="restData"
+      @saveChanges="saveDataFromPreviewWindow"
+      @closeModal="toggleModal"
+    />
 
     <div class="b-user-cabinet__title-block">
       <div class="b-user-cabinet__titles">
@@ -137,7 +143,7 @@
 
 <script>
 import { ref, computed, reactive, onMounted, onBeforeUnmount } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useToast } from "vue-toastification";
 
@@ -201,7 +207,6 @@ export default {
 
     const { user } = storeToRefs(store)
     const router = useRouter()
-    const route = useRoute();
     const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
       useWindowWidth()
 
@@ -354,19 +359,20 @@ export default {
       toggleModal('change_data')
       changeDataModalConfig.value = {
         title: 'Подивитись зі сторони',
-        button_1: 'Перейти до демонстрації',
-        button_2: 'Просто зберегти',
+        button_1: 'Так, перейти до демонстрації',
+        button_2: 'Ні, просто зберегти',
         btn_cancel_changes: EDIT_BUTTON_ACTIONS.CANCEL,
         right_btn_action: 'saveChanges',
         left_btn_action: 'showPreview',
-        btn_with_1: 189,
-        btn_with_2: 132,
+        btn_with_1: 200,
+        btn_with_2: 140,
       }
     }
     function cancelDataEdit() {
       toggleModal('change_data')
       changeDataModalConfig.value = {
         title: 'Вийти без збереження змін?',
+        description: 'Ви дійсно хочете вийти, скасувавши всі внесені зміни?',
         button_1: 'Ні, не виходити',
         button_2: 'Так, вийти',
         right_btn_action: 'declineChanges',
@@ -472,13 +478,6 @@ export default {
             raiting: res.data?.raiting,
             working_leg: getWorkingLeg(res.data.profile?.working_leg),
             role: res.data?.role,
-          }
-          restData.value = {
-            ...res.data,
-            configuration: {
-              ...res.data?.configuration,
-              planned_events: true,
-            },
           }
           userEmail.value = res.data?.email
           userPhone.value = res.data?.phone
