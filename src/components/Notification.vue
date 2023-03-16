@@ -260,6 +260,7 @@ $color-000: #000;
 .notification-title {
   @include inter(14px, 600, $--b-main-white-color);
   line-height: 20px;
+  max-width: 250px;
 }
 
 .notification-date {
