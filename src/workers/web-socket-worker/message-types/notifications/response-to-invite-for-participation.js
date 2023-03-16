@@ -49,7 +49,7 @@ export class ResponseToInviteForParticipationMessage extends InitialMessage {
         action: () =>
           ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(this.data.event.id),
         actionType: MessageActionDataTypes.UrlCallback,
-        buttonType: 'stroked',
+        buttonType: 'default',
       });
       SetPushNotificationTheme('success')(this);
     } else {
@@ -58,7 +58,7 @@ export class ResponseToInviteForParticipationMessage extends InitialMessage {
         text: 'Найти юзеров',
         action: ROUTES.APPLICATION.USERS.absolute,
         actionType: MessageActionDataTypes.Url,
-        buttonType: 'stroked',
+        buttonType: 'default',
       });
       SetPushNotificationTheme('error')(this);
     }

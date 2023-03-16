@@ -27,7 +27,7 @@ import { ROUTES } from '../../../../router/router.const';
     text: 'Просмотреть все отзывы', // TODO should add right button
     action: ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute,
     actionType: MessageActionDataTypes.Url,
-    buttonType: 'stroked',
+    buttonType: 'default',
   },
 ])
 export class LeftFeedbackMessage extends InitialMessage {

@@ -30,7 +30,7 @@ import { ROUTES } from '../../../../router/router.const';
     text: 'Знайти інші події',
     action: ROUTES.APPLICATION.EVENTS.absolute,
     actionType: MessageActionDataTypes.Url,
-    buttonType: 'stroked',
+    buttonType: 'default',
   },
 ])
 export class EventDeletedMessage extends InitialMessage {

@@ -51,7 +51,7 @@ export class ResponseToRequestForParticipationMessage extends InitialMessage {
             notificationInstance.data.event.id
           ),
         actionType: MessageActionDataTypes.UrlCallback,
-        buttonType: 'stroked',
+        buttonType: 'default',
       });
       SetPushNotificationTheme('success')(this);
     } else {
@@ -60,7 +60,7 @@ export class ResponseToRequestForParticipationMessage extends InitialMessage {
         text: 'Знайти інші події',
         action: ROUTES.APPLICATION.EVENTS.absolute,
         actionType: MessageActionDataTypes.Url,
-        buttonType: 'stroked',
+        buttonType: 'default',
       });
       SetPushNotificationTheme('error')(this);
     }

@@ -28,7 +28,7 @@ import { ROUTES } from '../../../../router/router.const';
     text: 'Найти ивенты',
     action: ROUTES.APPLICATION.EVENTS.absolute,
     actionType: MessageActionDataTypes.Url,
-    buttonType: 'stroked',
+    buttonType: 'default',
   },
 ])
 export class RemoveUserFromTheEventMessage extends InitialMessage {

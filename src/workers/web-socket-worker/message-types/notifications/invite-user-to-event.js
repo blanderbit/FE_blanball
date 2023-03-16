@@ -20,7 +20,6 @@ import { API } from '../../../api-worker/api.worker';
 @SetActions([
   {
     type: MessageActionTypes.Action,
-    text: 'Прийняти',
     action: ({ notificationInstance }) =>
       API.EventService.declineOrAcceptInvites(
         notificationInstance.data.invite.id,
@@ -30,11 +29,13 @@ import { API } from '../../../api-worker/api.worker';
         notificationInstance.update(notificationInstance.data);
       }),
     actionType: MessageActionDataTypes.Callback,
-    buttonColor: 'success',
+    buttonType: 'success',
+    buttonText: 'Прийняти',
+    buttonWidth: 88,
+    buttonHeight: 28,
   },
   {
     type: MessageActionTypes.Action,
-    text: 'Відхилити',
     action: ({ notificationInstance }) =>
       API.EventService.declineOrAcceptInvites(
         notificationInstance.data.invite.id,
@@ -44,7 +45,10 @@ import { API } from '../../../api-worker/api.worker';
         notificationInstance.update(notificationInstance.data);
       }),
     actionType: MessageActionDataTypes.Callback,
-    buttonColor: 'error',
+    buttonType: 'default',
+    buttonText: 'Відхилити',
+    buttonWidth: 88,
+    buttonHeight: 28,
   },
 ])
 export class InviteUserToEventMessage extends InitialMessage {

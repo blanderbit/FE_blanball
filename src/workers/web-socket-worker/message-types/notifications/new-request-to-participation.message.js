@@ -30,7 +30,7 @@ import { API } from '../../../api-worker/api.worker';
         notificationInstance.update(notificationInstance.data);
       }),
     actionType: MessageActionDataTypes.Callback,
-    buttonColor: 'success',
+    buttonType: 'success',
   },
   {
     type: MessageActionTypes.Action,
@@ -44,7 +44,7 @@ import { API } from '../../../api-worker/api.worker';
         notificationInstance.update(notificationInstance.data);
       }),
     actionType: MessageActionDataTypes.Callback,
-    buttonColor: 'error',
+    buttonType: 'default',
   },
 ])
 export class NewRequestToParticipationMessage extends InitialMessage {

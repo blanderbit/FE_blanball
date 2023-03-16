@@ -1,7 +1,16 @@
 <template>
   <div
     class="notification"
-    :class="[notificationType, notCollapsible && 'not-collapsible']"
+    :class="[
+      notificationType,
+      notCollapsible && 'not-collapsible',
+      { 'notification-read': notificationInstance.isRead },
+      {
+        'notification-sidebar-not-read':
+          !notificationInstance.isRead &&
+          notificationType === 'notification-sidebar',
+      },
+    ]"
   >
     <loading :is-loading="loading"> </loading>
     <div class="notification-parts d-flex justify-content-between">
@@ -20,9 +29,11 @@
         ></avatar>
       </div>
       <div class="notification-data flex-grow-1">
-        <div class="notification-read" v-if="notificationInstance.isRead"></div>
         <div class="notification-header d-flex justify-content-between">
-          <div class="notification-sender">
+          <div
+            v-if="notificationType === 'notification-sidebar'"
+            class="notification-sender"
+          >
             {{ notificationInstance.sender }}
           </div>
           <div class="b-selectable" v-if="selectable">
@@ -40,15 +51,26 @@
           </div>
           <div
             v-if="notificationType === 'notification-sidebar' && !selectable"
-            class="notification-date"
+            class="notification-header-right-side"
           >
-            {{ formatDate }}
+            <div class="notification-date">
+              {{ formatDate }}
+            </div>
+            <img src="../assets/img/cross.svg" alt="" />
           </div>
         </div>
         <collapsible-panel v-model:expanding="expanding">
           <template #title>
-            <div class="notification-title">
-              {{ notificationInstance.title }}
+            <div class="notification__top-side">
+              <div class="notification-title">
+                {{ notificationInstance.title }}
+              </div>
+              <div
+                v-if="notificationType === 'notification-push'"
+                class="notification-time"
+              >
+                Сьогодні: 21:35
+              </div>
             </div>
           </template>
           <template #content>
@@ -78,11 +100,9 @@
               <template v-for="item in notificationInstance.actions">
                 <NotificationButton
                   @click="$emit('handler-action', item)"
-                  :button-type="item.buttonType"
-                  :button-color="item.buttonColor"
-                  :notification-type="notificationType"
+                  :buttonData="item"
+                  :notificationType="notificationType"
                 >
-                  {{ item.text }}
                 </NotificationButton>
               </template>
             </div>
@@ -122,6 +142,7 @@ import NotificationButton from './../components/NotificationButton.vue';
 import Avatar from './../components/Avatar.vue';
 import Checkbox from './forms/Checkbox.vue';
 import CollapsiblePanel from './../components/collapsible/CollapsiblePanel.vue';
+
 
 export default {
   name: 'Notification',
@@ -316,12 +337,16 @@ $color-000: #000;
   padding: 0 12px;
 }
 
+.notification-sidebar-not-read {
+  background: #ecfcfb;
+  border-bottom: 1px solid #148783;
+}
+
 .notification-sidebar {
   * {
     color: $color-000;
   }
-  border-bottom: 1px solid $color-efeff6;
-  padding: 16px 0;
+  padding: 16px 0px 16px 16px;
 
   .notification-title {
     color: $--b-main-black-color;
@@ -366,17 +391,6 @@ $color-000: #000;
   }
 }
 
-.notification-read {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: white;
-  left: 0;
-  top: 0;
-  opacity: 0.6;
-  z-index: 50;
-}
-
 .notification-response {
   font-weight: 600;
   font-size: 14px;
@@ -401,6 +415,7 @@ $color-000: #000;
     z-index: 1000;
   }
   .vcp__header-icon {
+    margin-right: 4px;
     svg {
       fill: $color-8a8aa8;
     }
@@ -425,5 +440,29 @@ $color-000: #000;
 .b-selectable {
   width: 20px;
   height: 20px;
+}
+.notification-header-right-side {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-right: 5px;
+}
+.notification-read {
+  background: #fff;
+  border-bottom: 1px solid #efeff6;
+}
+
+.notification__top-side {
+  margin-bottom: 8px;
+}
+.notification-time {
+  @include inter(13px, 400, #f0f0f4);
+  line-height: 20px;
+}
+
+.notification-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 </style>

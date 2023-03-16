@@ -476,10 +476,6 @@ $color-efeff6: #efeff6;
   }
 }
 
-.b-new-notification {
-  border-bottom: 1px solid $--b-main-black-color;
-}
-
 button {
   font-family: 'Inter';
   padding: 4px 8px;

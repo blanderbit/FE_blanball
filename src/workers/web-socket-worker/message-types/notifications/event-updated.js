@@ -31,7 +31,7 @@ import { ROUTES } from '../../../../router/router.const';
         notificationInstance.data.event.id
       ),
     actionType: MessageActionDataTypes.UrlCallback,
-    buttonType: 'stroked',
+    buttonType: 'default',
   },
 ])
 export class EventUpdatedMessage extends InitialMessage {
