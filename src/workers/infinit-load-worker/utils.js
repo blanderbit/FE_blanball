@@ -37,11 +37,13 @@ const startObserver = (params) => {
     (entries) => {
       const entry = entries[0]
       if (entry.isIntersecting) {
-        if (params.firstload) params.emit()
+        if (params.firstload) {
+          params.emit()
+        }
         params.firstload = true
       }
     },
-    { root: params.parentEl, rootMargin, threshold: 0.2 }
+    { root: params.parentEl, rootMargin, threshold: 1 }
   )
   observer.observe(params.infiniteLoading.value)
 }

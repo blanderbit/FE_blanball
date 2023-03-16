@@ -35,8 +35,7 @@ export const EndpointsEnum = {
     EventRequestsToParticipations: (eventId) => `/events/client/requests/participations/list${eventId}`,
     DeclineOrAcceptParticipations:
       '/events/client/accept/or/decline/participations',
-    getPlannedUserEvents: (userId) =>
-      `/events/client/user/planned/events/list/${userId}`,
+    getPlannedUserEvents: (userId) => `/events/client/user/planned/events/list/${userId}`,
   },
   Users: {
     getMyProfile: '/authentication/client/me',
@@ -50,7 +49,7 @@ export const EndpointsEnum = {
     userPublicProfile: (userId) => `/authentication/client/profile/${userId}`,
   },
   Reviews: {
-    getUserReviews: '/reviews/client/user/reviews/list/',
+    getUserReviews: (userId) => `/reviews/client/user/reviews/list/${userId}`,
     getMyReviews: '/reviews/client/my/reviews/list',
     createEventReview: '/reviews/client/review/event/review/create'
   },

@@ -106,7 +106,9 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 361px;
+    width: fit-content;
+    max-width: 400px;
+    min-width: 350px;
     background: $--b-main-black-color;
     border-radius: 6px;
     padding: 16px;

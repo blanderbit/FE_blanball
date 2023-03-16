@@ -21,6 +21,8 @@ export default {
     CF: 'ЦФ',
     LF: 'ЛФ',
     ST: 'ФС',
+    fan: 'Вболівальник',
+    player: 'Гравець',
     Football: 'Футбол',
     'need_ball': 'Потрібен м`яч',
     'need_form': 'Потрібна форма',

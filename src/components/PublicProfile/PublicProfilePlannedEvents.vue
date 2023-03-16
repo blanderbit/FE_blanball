@@ -4,162 +4,115 @@
       {{ $t('player_page.planned-events') }}
     </div>
     <div class="b-public-profile__events-list">
-      <div v-if="paginationElements">
-        <SmartList
-          :list="paginationElements"
-          ref="refList"
-          v-model:scrollbar-existing="blockScrollToTopIfExist"
-        >
-          <template #smartListItem="slotProps">
-            <div class="b-event">
-              <div class="b-event__top-side">
-                <div class="b-event__type">
-                  {{ $t('events.friendly-match') }}
-                </div>
-                <div class="b-event__user-role">Вболівальник</div>
+      <SimpleListWrapper :requestForGetData="getPlannedEvents">
+        <template #default="{ smartListItem: item }">
+          <div class="b-event">
+            <div class="b-event__top-side">
+              <img
+                class="b-event__top-side-arrow"
+                src="../../assets/img/arrow-right-black.svg"
+                alt=""
+                @click="goToTheEvent(item.id)"
+              />
+              <div class="b-event__type">
+                {{ $t('events.friendly-match') }}
               </div>
-              <div class="b-event__main-side">
-                <div class="b-event_date-and-time">
-                  {{ slotProps.smartListItem.date_and_time }}
-                </div>
-
-                <div class="b-event__labels">
-                  <div class="b-event__label">
-                    {{ $t(`hashtags.${slotProps.smartListItem.type}`) }}
-                  </div>
-                  <div class="b-event__label">
-                    {{ $t(`events.${slotProps.smartListItem.gender}`) }}
-                  </div>
-                  <div class="b-event__label">...</div>
-                </div>
+              <div
+                :class="[
+                  'b-event__user-role',
+                  `b-event__user-role-${item.pk_user_role}`,
+                ]"
+              >
+                {{ $t(`hashtags.${item.pk_user_role}`) }}
               </div>
             </div>
-          </template>
-          <template #after>
-            <InfiniteLoading
-              :identifier="triggerForRestart"
-              ref="scrollbar"
-              @infinite="loadDataPaginationData(paginationPage + 1, $event)"
-            >
-              <template #complete>
+            <div class="b-event__main-side">
+              <div class="b-event_date-and-time">
+                {{ item.date_and_time }}
+              </div>
 
-                <ScrollToTop
-                  :element-length="paginationElements"
-                  :is-scroll-top-exist="blockScrollToTopIfExist"
-                  @scroll-button-clicked="scrollToFirstElement()"
-                />
-              </template>
-            </InfiniteLoading>
-          </template>
-        </SmartList>
-      </div>
+              <div class="b-event__labels">
+                <div class="b-event__label">
+                  {{ $t(`hashtags.${item.type}`) }}
+                </div>
+                <div class="b-event__label">
+                  {{ $t(`events.${item.gender}`) }}
+                </div>
+                <div class="b-event__label">...</div>
+              </div>
+            </div>
+          </div>
+        </template>
+        <template #emptyList>
+          Указать верстку что пустой список для отзывов юзера TODO
+        </template>
+      </SimpleListWrapper>
     </div>
   </div>
 </template>
 
 <script>
 import { ref, computed } from 'vue';
-import { useRoute } from 'vue-router';
 
-import { v4 as uuid } from 'uuid';
-
-import { PaginationWorker } from '../../workers/pagination-worker';
-
-import SmartList from '../smart-list/SmartList.vue';
-import InfiniteLoading from '../../workers/infinit-load-worker/InfiniteLoading.vue';
-import ScrollToTop from '../ScrollToTop.vue';
+import SimpleListWrapper from '../simple-list/SimpleListWrapper.vue';
 
 import { getDate } from '../../utils/getDate';
 
 import { API } from '../../workers/api-worker/api.worker';
 
+import { ROUTES } from '../../router/router.const';
+
 export default {
   name: 'RatingCard',
   components: {
-    SmartList,
-    ScrollToTop,
-    InfiniteLoading,
+    SimpleListWrapper,
   },
   props: {
-    userRating: {
+    userId: {
       type: Number,
-      default: 0,
+      required: true,
     },
   },
-  setup() {
-    const refList = ref();
-    const route = useRoute();
-    const blockScrollToTopIfExist = ref(false);
-
-    const triggerForRestart = ref(false);
-
-    const restartInfiniteScroll = () => {
-      triggerForRestart.value = uuid();
-    };
-
-
-    const {
-      paginationElements,
-      paginationPage,
-      paginationTotalCount,
-      paginationLoad,
-      paginationClearData,
-    } = PaginationWorker({
-      paginationDataRequest: (page) =>
-        API.EventService.getPlannedUserEvents({ page: page }),
-      dataTransformation: (item) => {
-        item.metadata = {
-          expanding: false,
-        };
-        item.date_and_time = getDate(item.date_and_time);
-        return item;
-      },
-    });
-
-    paginationPage.value = 1;
-    paginationTotalCount.value = route.meta.eventsData.data.total_count;
-    paginationElements.value = route.meta.eventsData.data.results.map(
-      (item) => {
-        return {
-          ...item,
-          date_and_time: getDate(item.date_and_time),
-        };
-      }
-    );
-
-    const loadDataPaginationData = (pageNumber, $state) => {
-      paginationLoad({
-        pageNumber,
-        $state,
-        forceUpdate: paginationPage.value === 1,
+  setup(props) {
+    const getPlannedEvents = (page) => {
+      return API.EventService.getPlannedUserEvents({
+        id: props.userId,
+        page: page,
+      }).then((res) => {
+        res.data.results = res.data.results.map((item) => {
+          return {
+            ...item,
+            date_and_time: getDate(item.date_and_time),
+          };
+        });
+        return res;
       });
     };
 
+    const goToTheEvent = (eventId) => {
+      return router.push(ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(eventId));
+    };
+
     return {
-      triggerForRestart,
-      paginationTotalCount,
-      blockScrollToTopIfExist,
-      paginationElements,
-      paginationPage,
-      restartInfiniteScroll,
-      loadDataPaginationData,
-      scrollToFirstElement: () => {
-        refList.value.scrollToFirstElement();
-      },
+      goToTheEvent,
+      getPlannedEvents,
     };
   },
 };
 </script>
 
-<style lang="scss" scoped> 
- $color-ffffff: $--b-main-white-color;
- $color-efeff6: #efeff6;
- $color-dfdeed: #dfdeed;
- $color-f0f0f4: #f0f0f4;
- $color-575775: $--b-main-gray-color;
+<style lang="scss" scoped>
+$color-feefe7: #feefe7;
+$color-efeff6: #efeff6;
+$color-dfdeed: #dfdeed;
+$color-f0f0f4: #f0f0f4;
+
+::-webkit-scrollbar {
+  display: none;
+}
 
 .b-public-profile__planned-events {
-  background: $color-ffffff;
+  background: $--b-main-white-color;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 0px 12px 12px 0px;
   padding: 24px;
@@ -172,20 +125,25 @@ export default {
   }
 
   @media (max-width: 1200px) {
-    width: 310px;
+    width: 400px;
     padding: 16px;
+    margin-left: 16px;
+    border-radius: 12px;
+    margin-top: 20px;
   }
 
   @include beforeDesktop {
-    background: $color-ffffff;
-    border-radius: 12px;
-    margin-top: 20px;
+    background: $--b-main-white-color;
     height: 400px;
-    margin-left: 16px;
+    width: 310px;
   }
   @include tabletAndMobile {
     margin-left: 0px;
     width: 400px;
+  }
+
+  @media (max-width: 430px) {
+    width: 100%;
   }
 
   .b-planned-events__title {
@@ -210,24 +168,39 @@ export default {
       display: flex;
       align-items: center;
       gap: 6px;
+      position: relative;
+
+      .b-event__top-side-arrow {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        cursor: pointer;
+      }
 
       .b-event__type {
         @include exo(14px, 600);
-        line-height: 20px;
+        line-height: 10px;
       }
 
       .b-event__user-role {
         @include inter(12px, 400);
         line-height: 20px;
-        background: $color-f0f0f4;
         border-radius: 4px;
         padding: 0px 4px;
+
+        &-fan {
+          background: $color-f0f0f4;
+        }
+
+        &-player {
+          background: $color-feefe7;
+        }
       }
     }
     .b-event__main-side {
       margin: 6px 0px;
       .b-event_date-and-time {
-        @include inter(12px, 400, $color-575775);
+        @include inter(12px, 400, $--b-main-gray-color);
         line-height: 20px;
       }
       .b-event__labels {

@@ -77,11 +77,6 @@ export default {
 
 <style lang="scss" scoped>
 
-
-// SCSS variables for hex colors
- $color-ffffff: $--b-main-white-color;
-
-
 .b-users-table {
   padding: 24px 20px 12px 20px;
   margin-bottom: 32px;
@@ -94,7 +89,7 @@ export default {
     width: 100%;
   }
   .b-users-table__table-label {
-    @include inter(14px, 500, $color-ffffff);
+    @include inter(14px, 500, $--b-main-white-color);
     position: absolute;
     left: 20px;
     top: -12px;

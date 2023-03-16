@@ -1,29 +1,29 @@
-import { AxiosInstance } from '../../../../plugins/axios.plugin'
-import { EndpointsEnum } from '../http-common/prefix.enum'
+import { AxiosInstance } from '../../../../plugins/axios.plugin';
+import { EndpointsEnum } from '../http-common/prefix.enum';
 import {
   AxiosParams,
   AxiosQuery,
   AxiosSkipErrorMessageType,
-} from '../../../utils-worker'
-import { FilterParamsDecorator } from '../filter/filter.utils'
+} from '../../../utils-worker';
+import { FilterParamsDecorator } from '../filter/filter.utils';
 import {
   filterConfigForEvents,
   filterConfigForUsers,
-} from '../filter/filter.config'
-import { DETAILS_TYPE_ENUM } from '../../../type-request-message-worker'
+} from '../filter/filter.config';
+import { DETAILS_TYPE_ENUM } from '../../../type-request-message-worker';
 
 export class EventService {
   declineOrAcceptInvites(id, isAccept) {
     return AxiosInstance.post(EndpointsEnum.Events.DeclineOrAcceptInvites, {
       ids: [id],
       type: isAccept,
-    })
+    });
   }
 
   requestsToParticipations(eventId) {
     return AxiosInstance.get(
-      EndpointsEnum.Events.EventRequestsToParticipations(eventId),
-    )
+      EndpointsEnum.Events.EventRequestsToParticipations(eventId)
+    );
   }
 
   declineOrAcceptParticipations(id, isAccept) {
@@ -33,52 +33,37 @@ export class EventService {
         ids: [id],
         type: isAccept,
       }
-    )
+    );
   }
 
   pinEvents(ids) {
-    return AxiosInstance.post(
-      EndpointsEnum.Events.PinEvents,
-      {
-        ids: ids,
-      }
-    )
+    return AxiosInstance.post(EndpointsEnum.Events.PinEvents, {
+      ids: ids,
+    });
   }
 
   unPinEvents(ids) {
-    return AxiosInstance.post(
-      EndpointsEnum.Events.UnPinEvents,
-      {
-        ids: ids,
-      }
-    )
+    return AxiosInstance.post(EndpointsEnum.Events.UnPinEvents, {
+      ids: ids,
+    });
   }
 
   deleteEvents(ids) {
-    return AxiosInstance.post(
-      EndpointsEnum.Events.DeleteEvents,
-      {
-        ids: ids,
-      }
-    )
+    return AxiosInstance.post(EndpointsEnum.Events.DeleteEvents, {
+      ids: ids,
+    });
   }
 
   eventJoinAsPlayer(eventId) {
-    return AxiosInstance.post(
-      EndpointsEnum.Events.EventJoinAsPlayer,
-      {
-        event_id: eventId,
-      }
-    )
+    return AxiosInstance.post(EndpointsEnum.Events.EventJoinAsPlayer, {
+      event_id: eventId,
+    });
   }
 
   eventJoinAsFan(eventId) {
-    return AxiosInstance.post(
-      EndpointsEnum.Events.EventJoinAsFan,
-      {
-        event_id: eventId,
-      }
-    )
+    return AxiosInstance.post(EndpointsEnum.Events.EventJoinAsFan, {
+      event_id: eventId,
+    });
   }
 
   @FilterParamsDecorator(filterConfigForEvents)
@@ -89,7 +74,7 @@ export class EventService {
         AxiosQuery(options),
         AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_PAGE])
       )
-    )
+    );
   }
 
   @FilterParamsDecorator(filterConfigForEvents)
@@ -100,27 +85,35 @@ export class EventService {
         AxiosQuery(options),
         AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_PAGE])
       )
-    )
+    );
   }
 
   getOneEvent(eventId) {
-    return AxiosInstance.get(
-      EndpointsEnum.Events.getOneEvent(eventId),
-    )
+    return AxiosInstance.get(EndpointsEnum.Events.getOneEvent(eventId));
   }
 
   createOneEvent(eventData) {
-    return AxiosInstance.post(EndpointsEnum.Events.CreateOneEvent, eventData)
+    return AxiosInstance.post(EndpointsEnum.Events.CreateOneEvent, eventData);
   }
 
   editOneEvent(eventID, eventData) {
-    return AxiosInstance.put(EndpointsEnum.Events.EditOneEvent(eventID), eventData)
+    return AxiosInstance.put(
+      EndpointsEnum.Events.EditOneEvent(eventID),
+      eventData
+    );
   }
 
-  getPlannedUserEvents(userId) {
-    return AxiosInstance.get(EndpointsEnum.Events.getPlannedUserEvents(userId))
+  @FilterParamsDecorator(filterConfigForEvents)
+  getPlannedUserEvents(options) {
+    return AxiosInstance.get(
+      EndpointsEnum.Events.getPlannedUserEvents(options.id),
+      AxiosParams(
+        AxiosQuery(options),
+        AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_PAGE])
+      )
+    );
   }
   getPopularEventsListEvents() {
-    return AxiosInstance.get(EndpointsEnum.Events.PopularEventsList)
+    return AxiosInstance.get(EndpointsEnum.Events.PopularEventsList);
   }
 }

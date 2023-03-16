@@ -45,6 +45,7 @@ export function FilterParamsDecorator(config) {
             ? config[cur]?.isExistValue(options[cur])
             : options[cur]?.constructor === config[cur]
 
+
         if (isType) {
           acc[cur] = options[cur]
         }

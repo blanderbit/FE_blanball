@@ -28,11 +28,6 @@ export default {
 
 <style lang="scss" scoped>
 
-
-// SCSS variables for hex colors
- $color-148783: $--b-main-green-color;
-
-
 .spiner-wrapper {
   background: rgba(255, 255, 255, 0.514);
   position: fixed;
@@ -74,7 +69,7 @@ export default {
         border: 8px solid $--b-main-green-color;
         border-radius: 50%;
         animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-        border-color: $color-148783 transparent transparent transparent;
+        border-color: $--b-main-green-color transparent transparent transparent;
       }
       .lds-ring div:nth-child(1) {
         animation-delay: -0.45s;

@@ -28,26 +28,13 @@
       @close-modal="toggleModal"
     />
 
-    <ModalUserWindow v-if="isModalActive.public_profile">
-      <template #top-buttons>
-        <div class="b-player-page__outer-btns">
-          <div
-            class="b-player-page__continue"
-            @click="toggleModal('public_profile')"
-          >
-            <span>{{ $t('buttons.keep-editing') }}</span>
-            <img src="../../../assets/img/arrow-left-small.svg" alt="" />
-          </div>
-          <div @click="saveDataFromPreviewWindow" class="b-player-page__exit">
-            <span>{{ $t('buttons.save-and-out') }}</span>
-            <img src="../../../assets/img/cross-white.svg" alt="" />
-          </div>
-        </div>
-      </template>
-      <template #user-content>
-        <PlayerPageComponent :page-mode="'public'" :user-data="restData" />
-      </template>
-    </ModalUserWindow>
+    <PublicProfile
+      v-if="isModalActive.public_profile"
+      :pageMode="'preview'" 
+      :userData="restData"
+      @saveChanges="saveDataFromPreviewWindow"
+      @closeModal="toggleModal"
+    />
 
     <div class="b-user-cabinet__title-block">
       <div class="b-user-cabinet__titles">
@@ -156,7 +143,7 @@
 
 <script>
 import { ref, computed, reactive, onMounted, onBeforeUnmount } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useToast } from "vue-toastification";
 
@@ -167,8 +154,6 @@ import GreenBtn from '../../../components/GreenBtn.vue'
 import WhiteBtn from '../../../components/WhiteBtn.vue'
 import InputComponent from '../../../components/forms/InputComponent.vue'
 import ModalWindow from '../../../components/ModalWindows/ModalWindow.vue'
-import ModalUserWindow from '../../../components/ModalWindows/ModalUserWindow.vue'
-import PlayerPageComponent from '../../../components/PlayerPageComponent.vue'
 import RatingCard from '../../../components/RatingCard.vue'
 import UserDetailsCard from '../../../components/UserDetailsCard.vue'
 import SecurityBlock from '../../../components/SecurityBlock.vue'
@@ -180,6 +165,7 @@ import ChangeEmailModal from '../../../components/ModalWindows/UserCabinetModalW
 import ButtonsBlock from '../../../components/user-cabinet/ButtonsBlock.vue'
 import EditAvatarModal from '../../../components/ModalWindows/UserCabinetModalWindows/EditAvatarModal.vue'
 import Loading from '../../../workers/loading-worker/Loading.vue'
+import PublicProfile from '../../../components/PublicProfile/PublicProfile.vue';
 
 import { API } from '../../../workers/api-worker/api.worker'
 import { useUserDataStore } from '@/stores/userData'
@@ -200,8 +186,7 @@ export default {
     WhiteBtn,
     InputComponent,
     ModalWindow,
-    ModalUserWindow,
-    PlayerPageComponent,
+    PublicProfile,
     RatingCard,
     UserDetailsCard,
     SecurityBlock,
@@ -374,19 +359,20 @@ export default {
       toggleModal('change_data')
       changeDataModalConfig.value = {
         title: 'Подивитись зі сторони',
-        button_1: 'Перейти до демонстрації',
-        button_2: 'Просто зберегти',
+        button_1: 'Так, перейти до демонстрації',
+        button_2: 'Ні, просто зберегти',
         btn_cancel_changes: EDIT_BUTTON_ACTIONS.CANCEL,
         right_btn_action: 'saveChanges',
         left_btn_action: 'showPreview',
-        btn_with_1: 189,
-        btn_with_2: 132,
+        btn_with_1: 200,
+        btn_with_2: 140,
       }
     }
     function cancelDataEdit() {
       toggleModal('change_data')
       changeDataModalConfig.value = {
         title: 'Вийти без збереження змін?',
+        description: 'Ви дійсно хочете вийти, скасувавши всі внесені зміни?',
         button_1: 'Ні, не виходити',
         button_2: 'Так, вийти',
         right_btn_action: 'declineChanges',
@@ -492,13 +478,6 @@ export default {
             raiting: res.data?.raiting,
             working_leg: getWorkingLeg(res.data.profile?.working_leg),
             role: res.data?.role,
-          }
-          restData.value = {
-            ...res.data,
-            configuration: {
-              ...res.data?.configuration,
-              planned_events: true,
-            },
           }
           userEmail.value = res.data?.email
           userPhone.value = res.data?.phone

@@ -646,7 +646,7 @@ $color-8a8aa8: #8a8aa8;
           position: relative;
           gap: 6px;
           padding: 6px;
-          max-width: fit-content;
+          width: fit-content;
           cursor: pointer;
 
           &.fee {
@@ -702,7 +702,7 @@ $color-8a8aa8: #8a8aa8;
           .b-event-info__price-tooltip-wrapper {
             position: absolute;
             top: 8px;
-            left: 65px;
+            right: -100%;
             width: fit-content;
             z-index: 2;
 
