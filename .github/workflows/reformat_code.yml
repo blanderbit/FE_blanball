@@ -33,7 +33,7 @@ jobs:
                   git config --local user.email "action@github.com"
                   git config --local user.name "GitHub Action"
                   git add .
-                  git commit -am "auto reformated code using: black, isort and prettier for branch ${{ github.ref_name }}"
+                  git commit -am "auto reformated code using prettier for branch ${{ github.ref_name }}"
                   git tag ${{ steps.semantic_release_info.outputs.git_tag }}
             - name: Push changes
               uses: ad-m/github-push-action@v0.6.0
