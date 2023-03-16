@@ -13,6 +13,7 @@ import { ROUTES } from './router.const';
 import { useUserDataStore } from '../stores/userData';
 import { prepareEventUpdateData } from '../utils/prepareEventUpdateData';
 
+
 const usersData = () => {
   const userStore = useUserDataStore();
   if (!Object.keys(userStore.user).length) {
@@ -24,6 +25,7 @@ const usersData = () => {
     });
   }
 };
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -190,10 +192,6 @@ const router = createRouter({
           path: ROUTES.APPLICATION.USERS.GET_ONE.relative,
           name: ROUTES.APPLICATION.USERS.GET_ONE.name,
           beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-            reviewsData: () =>
-              API.ReviewService.getUserReviews(to.params.userId),
-            eventsData: () =>
-              API.EventService.getPlannedUserEvents(to.params.userId),
             publicUserData: () =>
               API.UserService.getUserPublicProfile(to.params.userId),
             usersData,
