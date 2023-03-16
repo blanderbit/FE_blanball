@@ -317,8 +317,6 @@ export default {
 <style lang="scss" scoped>
 $color-e2e2e9: #e2e2e9;
 $color-efeff6: #efeff6;
-$color-575775: $--b-main-gray-color;
-$color-fff: $--b-main-white-color;
 $color-c5c5d3: #c5c5d3;
 $color-6f6f77: #6f6f77;
 $color-dfdeed: #dfdeed;
@@ -342,7 +340,7 @@ $color-d2f6a2: #d2f6a2;
   } 
 }
 .b-public-profile__wrapper {
-  background: $color-fff;
+  background: $--b-main-white-color;
   border-radius: 20px 20px 0px 0px;
   padding: 20px;
   position: absolute;
@@ -543,11 +541,11 @@ $color-d2f6a2: #d2f6a2;
           }
 
           .b-public-profile__role {
-            @include inter(12px, 500, $color-575775);
+            @include inter(12px, 500, $--b-main-gray-color);
             line-height: 20px;
 
             @include tabletAndMobile {
-              @include inter(14px, 500, $color-575775);
+              @include inter(14px, 500, $--b-main-gray-color);
             }
           }
         }
@@ -558,7 +556,7 @@ $color-d2f6a2: #d2f6a2;
       margin-top: 16px;
 
       .b-public-profile__invite-button {
-        @include inter(14px, 500, $color-fff);
+        @include inter(14px, 500, $--b-main-white-color);
         line-height: 24px;
         text-align: center;
         background: $--b-main-black-color;
@@ -578,7 +576,7 @@ $color-d2f6a2: #d2f6a2;
           border: 1px solid $color-c5c5d3 !important;
           border-radius: 4px;
           @include inter(12px, 500);
-          color: $color-575775 !important;
+          color: $--b-main-gray-color !important;
           line-height: 20px;
         }
 
@@ -677,7 +675,7 @@ $color-d2f6a2: #d2f6a2;
           @include beforeDesktop {
             padding: 16px;
             box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
-            background: $color-fff;
+            background: $--b-main-white-color;
             border-radius: 12px;
           }
           .b-user-features__title {
@@ -747,7 +745,7 @@ $color-d2f6a2: #d2f6a2;
   }
 
   .b-qualification__text {
-    @include inter(12px, 400, $color-575775);
+    @include inter(12px, 400, $--b-main-gray-color);
     line-height: 20px;
   }
 

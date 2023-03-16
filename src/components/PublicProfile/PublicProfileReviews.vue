@@ -123,7 +123,6 @@ export default {
 $color-6f6f77: #6f6f77;
 $color-dfdeed: #dfdeed;
 $color-f57125: #f57125;
-$color-575775: $--b-main-gray-color;
 
 .b-public-profile-reviews__block {
   height: 550px;
@@ -211,14 +210,14 @@ $color-575775: $--b-main-gray-color;
         }
 
         .b-review__author-full-name {
-          @include inter(14px, 500, $color-575775);
+          @include inter(14px, 500, $--b-main-gray-color);
           line-height: 16px;
           margin-left: 8px;
         }
       }
 
       .b-top-side__date {
-        @include inter(13px, 500, $color-575775);
+        @include inter(13px, 500, $--b-main-gray-color);
         line-height: 20px;
       }
     }

@@ -317,13 +317,12 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped> $color-fff: $--b-main-white-color;
+<style lang="scss" scoped> 
  $color-8a8aa8: #8a8aa8;
- $color-575775: $--b-main-gray-color;
 
 
 ::-webkit-scrollbar-track {
-  background-color: $color-fff;
+  background-color: $--b-main-white-color;
   border-radius: 100px;
 }
 
@@ -382,7 +381,7 @@ export default {
         font-weight: 400;
         font-size: 12px;
         line-height: 20px;
-        color: $color-575775;
+        color: $--b-main-gray-color;
         margin-top: 4px;
       }
     }
@@ -419,7 +418,7 @@ export default {
 
       ::v-deep(.b_white-btn) {
         font-weight: 400;
-        color: $color-575775;
+        color: $--b-main-gray-color;
         width: 164px !important;
       }
       ::v-deep(.b-green-btn) {

@@ -80,9 +80,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$color-575775: #575775;
 $color-dfdeed: #dfdeed;
-$color-262541: #262541;
 .b-invite-user-to-event-modal__wrapper {
   position: fixed;
   top: 0;
@@ -115,7 +113,7 @@ $color-262541: #262541;
         line-height: 24px;
       }
       .b-invite-user-to-event-modal__subtitle {
-        @include inter(12px, 400, $color-575775);
+        @include inter(12px, 400, $--b-main-gray-color);
         line-height: 20px;
 
         span {
@@ -134,7 +132,7 @@ $color-262541: #262541;
         font-weight: 400;
         font-size: 13px;
         line-height: 24px;
-        color: $color-262541;
+        color: $--b-main-black-color;
         margin: 16px 0px;
 
         &.active{

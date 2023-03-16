@@ -106,7 +106,6 @@ $color-feefe7: #feefe7;
 $color-efeff6: #efeff6;
 $color-dfdeed: #dfdeed;
 $color-f0f0f4: #f0f0f4;
-$color-575775: $--b-main-gray-color;
 
 ::-webkit-scrollbar {
   display: none;
@@ -201,7 +200,7 @@ $color-575775: $--b-main-gray-color;
     .b-event__main-side {
       margin: 6px 0px;
       .b-event_date-and-time {
-        @include inter(12px, 400, $color-575775);
+        @include inter(12px, 400, $--b-main-gray-color);
         line-height: 20px;
       }
       .b-event__labels {

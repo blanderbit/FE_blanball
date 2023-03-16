@@ -213,9 +213,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
- $color-575775: $--b-main-gray-color;
-
-
 // SCSS variables for hex colors
  $color-8a8aa8: #8a8aa8;
  $color-dfdeed: #dfdeed;

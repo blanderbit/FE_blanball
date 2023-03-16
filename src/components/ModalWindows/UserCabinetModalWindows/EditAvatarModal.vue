@@ -185,12 +185,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped> $color-575775: $--b-main-gray-color;
+<style lang="scss" scoped> 
  $color-d9d9d9: #d9d9d9;
  $color-148783: $--b-main-green-color;
-
-
-// SCSS variables for hex colors
  $color-dfdeed: #dfdeed;
  $color-efeff6: #efeff6;
 
@@ -257,7 +254,7 @@ export default {
         font-weight: 400;
         font-size: 13px;
         line-height: 24px;
-        color: $color-575775;
+        color: $--b-main-gray-color;
         margin-bottom: 12px;
         cursor: pointer;
         @include mobile {
@@ -337,7 +334,7 @@ export default {
       font-weight: 400;
       font-size: 14px;
       line-height: 24px;
-      color: $color-575775;
+      color: $--b-main-gray-color;
       padding: 4px 16px;
       cursor: pointer;
     }

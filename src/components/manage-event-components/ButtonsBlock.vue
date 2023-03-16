@@ -102,13 +102,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped> $color-f0f0f4: #f0f0f4;
+<style lang="scss" scoped> 
+ $color-f0f0f4: #f0f0f4;
  $color-dfdeed: #dfdeed;
- $color-575775: $--b-main-gray-color;
-
-
-// SCSS variables for hex colors
-$color-f9f9fc: #f9f9fc;
+ $color-f9f9fc: #f9f9fc;
 
 .b-manage-tem-btns {
   @media (max-width: 1200px) {
@@ -172,7 +169,7 @@ $color-f9f9fc: #f9f9fc;
   border-radius: 6px;
 }
 .b-manage-tem-save-template__button {
-  background-color: $color-575775;
+  background-color: $--b-main-gray-color;
   color: $--b-main-white-color;
 }
 .b-manage-tem-white__btn {
