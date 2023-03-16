@@ -102,7 +102,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$color-ffffff: $--b-main-white-color;
+$color-feefe7: #feefe7;
 $color-efeff6: #efeff6;
 $color-dfdeed: #dfdeed;
 $color-f0f0f4: #f0f0f4;
@@ -113,7 +113,7 @@ $color-575775: $--b-main-gray-color;
 }
 
 .b-public-profile__planned-events {
-  background: $color-ffffff;
+  background: $--b-main-white-color;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 0px 12px 12px 0px;
   padding: 24px;
@@ -134,7 +134,7 @@ $color-575775: $--b-main-gray-color;
   }
 
   @include beforeDesktop {
-    background: $color-ffffff;
+    background: $--b-main-white-color;
     height: 400px;
     width: 310px;
   }
@@ -194,7 +194,7 @@ $color-575775: $--b-main-gray-color;
         }
 
         &-player {
-          background: #feefe7;
+          background: $color-feefe7;
         }
       }
     }

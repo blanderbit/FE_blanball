@@ -343,7 +343,6 @@ export default {
  $color-dfdeed: #dfdeed;
  $color-395d09: #395d09;
  $color-d2f6a2: #d2f6a2;
- $color-ffffff: $--b-main-white-color;
  $color-c5c5d3: #c5c5d3;
  $color-efeff6: #efeff6;
  $color-f0f0f4: #f0f0f4;
@@ -464,7 +463,7 @@ export default {
             text-align: center;
           }
           .b-player-page__invite {
-            @include inter(14px, 500, $color-ffffff);
+            @include inter(14px, 500, $--b-main-white-color);
             line-height: 24px;
             padding: 6px;
             margin-top: 16px;

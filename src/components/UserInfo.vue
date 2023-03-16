@@ -272,7 +272,6 @@ export default {
 
 <style lang="scss" scoped>
  $color-eeeef3: #eeeef3;
- $color-ffffff: $--b-main-white-color;
  $color-262541: $--b-main-black-color;
  $color-148581: #148581;
  $color-f9f9fc: #f9f9fc;
@@ -288,7 +287,7 @@ export default {
   width: 100%;
   max-width: 464px;
   .b-user-info__top-side {
-    background: $color-ffffff;
+    background: $--b-main-white-color;
     border-radius: 8px;
     width: 100%;
     padding: 16px;
@@ -320,7 +319,7 @@ export default {
           font-weight: 500;
           font-size: 12px;
           line-height: 20px;
-          color: $color-ffffff;
+          color: $--b-main-white-color;
         }
       }
     }
@@ -344,7 +343,7 @@ export default {
         cursor: pointer;
 
         &.active {
-          background: $color-ffffff;
+          background: $--b-main-white-color;
           font-family: 'Inter';
           font-style: normal;
           font-weight: 400;

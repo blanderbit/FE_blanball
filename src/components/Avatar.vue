@@ -69,7 +69,7 @@ export default {
 
 <style scoped lang="scss">
 $color-1ccd62: #1ccd62;
-$color-ffffff: $--b-main-white-color;
+$--b-main-white-color: $--b-main-white-color;
 
 // SCSS variables for hex colors
 $color-c8ebe7: #c8ebe7;
@@ -141,7 +141,7 @@ $color-c8ebe7: #c8ebe7;
 //   &-small-square {
 //     background: $color-1ccd62;
 //     border-radius: 6px;
-//     border: 1.5px solid $color-ffffff;
+//     border: 1.5px solid $--b-main-white-color;
 //     width: 8px;
 //     height: 8px;
 //     position: absolute;
@@ -151,7 +151,7 @@ $color-c8ebe7: #c8ebe7;
 //   &-circle {
 //     background: $color-1ccd62;
 //     border-radius: 6px;
-//     border: 1.5px solid $color-ffffff;
+//     border: 1.5px solid $--b-main-white-color;
 //     width: 10px;
 //     height: 10px;
 //     position: absolute;

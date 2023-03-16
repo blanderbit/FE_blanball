@@ -315,7 +315,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$color-ffffff: $--b-main-white-color;
+$color-e2e2e9: #e2e2e9;
 $color-efeff6: #efeff6;
 $color-575775: $--b-main-gray-color;
 $color-fff: $--b-main-white-color;
@@ -342,7 +342,7 @@ $color-d2f6a2: #d2f6a2;
   } 
 }
 .b-public-profile__wrapper {
-  background: #fff;
+  background: $color-fff;
   border-radius: 20px 20px 0px 0px;
   padding: 20px;
   position: absolute;
@@ -376,7 +376,7 @@ $color-d2f6a2: #d2f6a2;
   gap: 12px;
 
   .b-public-profile__continue {
-    @include inter(12px, 400, #e2e2e9);
+    @include inter(12px, 400, $color-e2e2e9);
     line-height: 24px;
     text-align: center;
     display: flex;
@@ -388,7 +388,7 @@ $color-d2f6a2: #d2f6a2;
     @include inter(12px, 500, $--b-main-white-color);
     line-height: 24px;
     text-align: center;
-    background: #6f6f77;
+    background: $color-6f6f77;
     border-radius: 6px;
     padding: 2px 8px;
     display: flex;
@@ -441,7 +441,7 @@ $color-d2f6a2: #d2f6a2;
     }
 
     .b-public-profile__first-block {
-      background: $color-ffffff;
+      background: $--b-main-white-color;
       box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
       border-radius: 12px;
       width: 325px;
@@ -629,7 +629,7 @@ $color-d2f6a2: #d2f6a2;
       }
 
       .b-public-profile__second-block {
-        background: $color-ffffff;
+        background: $--b-main-white-color;
         box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
         border-radius: 12px 0px 0px 12px;
         margin-left: 16px;

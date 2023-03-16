@@ -84,6 +84,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-f0f0f4: #f0f0f4;
 // SCSS variables for hex colors
 $color-dfdeed: #dfdeed;
 
@@ -105,7 +106,7 @@ $color-dfdeed: #dfdeed;
       display: flex;
       flex-direction: column;
       background: rgba(255, 255, 255, 0.8);
-      border-top: 1.5px solid #f0f0f4;
+      border-top: 1.5px solid $color-f0f0f4;
       backdrop-filter: blur(1px);
     }
     .b-user-cabinet__btns-line {

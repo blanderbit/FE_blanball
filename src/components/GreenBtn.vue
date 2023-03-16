@@ -109,7 +109,6 @@ export default {
 
 // SCSS variables for hex colors
  $color-c6c7c7: #c6c7c7;
- $color-ffffff: $--b-main-white-color;
 
 
 .b-green-btn__animated {
@@ -129,7 +128,7 @@ export default {
     }
 }
 .b-green-btn {
-  @include inter(14px, 500, $color-ffffff);
+  @include inter(14px, 500, $--b-main-white-color);
 
   box-shadow: 0px 4px 12px rgba(42, 145, 141, 0.2);
   position: relative;

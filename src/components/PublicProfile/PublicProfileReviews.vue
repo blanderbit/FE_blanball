@@ -120,7 +120,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$color-ffffff: $--b-main-white-color;
 $color-6f6f77: #6f6f77;
 $color-dfdeed: #dfdeed;
 $color-f57125: #f57125;
@@ -130,7 +129,7 @@ $color-575775: $--b-main-gray-color;
   height: 550px;
   @include beforeDesktop {
     padding: 16px;
-    background: $color-ffffff;
+    background: $--b-main-white-color;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 12px;
     margin-top: 20px;

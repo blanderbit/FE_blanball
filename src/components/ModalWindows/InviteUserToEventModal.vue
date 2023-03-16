@@ -80,6 +80,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-575775: #575775;
+$color-dfdeed: #dfdeed;
+$color-262541: #262541;
 .b-invite-user-to-event-modal__wrapper {
   position: fixed;
   top: 0;
@@ -112,7 +115,7 @@ export default {
         line-height: 24px;
       }
       .b-invite-user-to-event-modal__subtitle {
-        @include inter(12px, 400, #575775);
+        @include inter(12px, 400, $color-575775);
         line-height: 20px;
 
         span {
@@ -123,7 +126,7 @@ export default {
     }
     .b-invite-user-to-event-modal__main-side {
       .b-invite-user-to-event-modal__invite-button {
-        border: 1px solid #dfdeed;
+        border: 1px solid $color-dfdeed;
         border-radius: 6px;
         padding: 6px 12px;
         font-family: 'Inter';
@@ -131,7 +134,7 @@ export default {
         font-weight: 400;
         font-size: 13px;
         line-height: 24px;
-        color: #262541;
+        color: $color-262541;
         margin: 16px 0px;
 
         &.active{
