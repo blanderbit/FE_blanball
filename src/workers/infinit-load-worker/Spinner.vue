@@ -5,12 +5,6 @@
 </template>
 
 <style lang="scss" scoped>
-
-
-// SCSS variables for hex colors
- $color-148783: $--b-main-green-color;
-
-
 .loader-wrapper {
   padding: 1em;
 }
@@ -25,7 +19,7 @@
   background: $--b-main-white-color;
   background: linear-gradient(
     to right,
-    $color-148783 10%,
+    $--b-main-green-color 10%,
     rgba(255, 255, 255, 0) 42%
   );
   position: relative;

@@ -216,7 +216,6 @@ export default {
 // SCSS variables for hex colors
  $color-8a8aa8: #8a8aa8;
  $color-dfdeed: #dfdeed;
- $color-fff: $--b-main-white-color;
  $color-a8a8bd: #a8a8bd;
  $color-efeff6: #efeff6;
  $color-d3d3d3: #d3d3d3;
@@ -239,7 +238,7 @@ export default {
 }
 
 .notification-title {
-  @include inter(14px, 600, $color-fff);
+  @include inter(14px, 600, $--b-main-white-color);
   line-height: 20px;
 }
 

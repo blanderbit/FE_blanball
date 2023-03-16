@@ -187,7 +187,6 @@ export default {
 
 <style lang="scss" scoped> 
  $color-d9d9d9: #d9d9d9;
- $color-148783: $--b-main-green-color;
  $color-dfdeed: #dfdeed;
  $color-efeff6: #efeff6;
 
@@ -356,7 +355,7 @@ export default {
 ::v-deep(.cropper-view-box) {
   border-width: 2px;
   border-style: solid;
-  border: 3px dashed $color-148783;
+  border: 3px dashed $--b-main-green-color;
   background: transparent;
   outline: none;
 }

@@ -410,7 +410,6 @@ export default {
  $color-148581: #148581;
  $color-dfdeed: #dfdeed;
  $color-1ccd62: #1ccd62;
- $color-fff: #fff;
 
 .b-mob-menu__wrapper {
   height: 100%;
@@ -624,7 +623,7 @@ export default {
   transform: translateX(-50%);
 
   span {
-    @include inter(14px, 500, $color-fff);
+    @include inter(14px, 500, $--b-main-white-color);
     line-height: 24px;
   }
 }

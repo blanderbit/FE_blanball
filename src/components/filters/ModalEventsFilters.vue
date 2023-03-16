@@ -240,7 +240,6 @@ export default {
  $color-dfdeed: #dfdeed;
  $color-808181: #808181;
  $color-0a3435: #0a3435;
- $color-148783: $--b-main-green-color;
  $color-e9fcfb: #e9fcfb;
 
 
@@ -334,7 +333,7 @@ export default {
               }
               .vc-highlights {
                 & + span {
-                  color: $color-148783 !important;
+                  color: $--b-main-green-color !important;
                   font-family: 'Inter';
                   font-style: normal;
                   font-weight: 400 !important;
