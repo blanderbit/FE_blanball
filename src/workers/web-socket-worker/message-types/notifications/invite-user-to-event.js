@@ -54,8 +54,9 @@ import { API } from '../../../api-worker/api.worker';
 export class InviteUserToEventMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `Користувач ${data.sender.name} запрошує вас на спільну гру у події "${data.event.name}"`,
+      `${data.sender.name} ${data.sender.last_name} запросив вас на дружній матч «${data.event.name}»`,
       // TODO add inplementation for move to user profile
+       // TODO Максим добавить отображение даты и времени ивента
     ];
   }
 
