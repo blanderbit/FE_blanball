@@ -55,6 +55,7 @@ $color-f9f9fc: #f9f9fc;
     border-radius: 12px;
     width: 564px;
     overflow: hidden;
+    margin-left: 50px;
 
     @include tabletAndMobile {
       display: none;

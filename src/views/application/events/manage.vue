@@ -28,15 +28,6 @@
         <span v-else>
           {{ $t('events.event-update') }}
         </span>
-        <div class="b-manage-event__btns-mob-block">
-          <ButtonsBlock
-            :save-btn-text="$t('buttons.save')"
-            :white-btn-width="null"
-            :green-btn-width="105"
-            :green-btn-height="28"
-            @save-btn-click="saveEvent(data)"
-          />
-        </div>
       </div>
       <div class="b-manage-event__main-body">
         <div class="b-manage-event__create-event-block">
@@ -140,14 +131,6 @@
             @openRemoveUsersModal="openRemoveUsersModal"
           />
         </div>
-
-        <div class="b-manage-event__btns-desktop-block">
-          <ButtonsBlock
-            :save-btn-text="$t('buttons.save-as-template')"
-            :white-btn-width="208"
-            :green-btn-width="208"
-          />
-        </div>
       </div>
     </Form>
   </div>
@@ -171,7 +154,6 @@ import PreviewBlock from '../../../components/manage-event-components/PreviewBlo
 import EventCard from '../../../components/event-components/EventCard.vue';
 import ManageEventSecondStep from '../../../components/manage-event-components/ManageEventSecondStep.vue';
 import ManageEventThirdStep from '../../../components/manage-event-components/ManageEventThirdStep.vue';
-import ButtonsBlock from '../../../components/manage-event-components/ButtonsBlock.vue';
 import RemoveInvitedUsersModal from '../../../components/manage-event-components/RemoveInvitedUsersModal.vue';
 import Loading from '../../../workers/loading-worker/Loading.vue';
 import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue';
@@ -200,7 +182,6 @@ export default {
     ManageEventFirstStep,
     ManageEventSecondStep,
     ManageEventThirdStep,
-    ButtonsBlock,
     EventCard,
     Form,
     SelectFormsColorsModal,
@@ -625,11 +606,6 @@ $color-8a8aa8: #8a8aa8;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    span {
-      @include tabletAndMobile {
-        display: none;
-      }
-    }
     @include tabletAndMobile {
       padding: 0;
     }
@@ -668,6 +644,7 @@ $color-8a8aa8: #8a8aa8;
       @include tabletAndMobile {
         width: 100%;
         padding: 20px 0px;
+        padding-top: 0px;
       }
       .b-manage-event__progress-line {
         margin-top: 20px;
