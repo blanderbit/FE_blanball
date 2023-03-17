@@ -1,5 +1,8 @@
 import { InitialMessage } from './initial.message';
 
+import dayjs from 'dayjs';
+import dayjsUkrLocale from 'dayjs/locale/uk';
+
 import {
   SetActions,
   SetMessageType,
@@ -23,46 +26,51 @@ export class ResponseToRequestForParticipationMessage extends InitialMessage {
   createTexts(data) {
     return [
       data.request.response
-        ? `Владелец ивента ${data.sender.name} подтвердил ваш запрос участие на ивенте;`
-        : `Владелец ивента ${data.sender.name} отклонил ваш запрос участие на ивенте;`,
+        ? `${data.sender.last_name} ${data.sender.name} 
+          підтвердив вашу участь у події «${data.event.name}, ${dayjs(
+            new Date()
+          )
+            .locale(dayjsUkrLocale)
+            .format('DD.MM.YYYY')}»`
+        : `${data.sender.last_name} ${data.sender.name} 
+        відхилив вашу участь у події «${data.event.name}, ${dayjs(new Date())
+            .locale(dayjsUkrLocale)
+            .format('DD.MM.YYYY')}»`,
     ];
   }
 
   createTitle(data) {
     return data.request.response
-      ? 'Автор події прийняв вашу заявку на участь'
-      : 'Автор події відхилив вашу заявку на участь';
+      ? 'Ваша заявка на участь у події прийнята'
+      : 'Ваша заявка на участь у події відхилена';
   }
 
   onInit() {
     this.actions = [
       {
         type: MessageActionTypes.ActionClose,
-        text: 'Зрозуміло',
+        buttonType: 'success',
+        buttonText: 'Зрозуміло',
+        buttonWidth: 88,
+        buttonHeight: 28,
       },
     ];
 
     if (this.data.request.response) {
+      SetPushNotificationTheme('error')(this);
+    } else {
       this.actions.push({
         type: MessageActionTypes.Action,
-        text: 'Переглянути подію',
         action: ({ notificationInstance }) =>
           ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(
             notificationInstance.data.event.id
           ),
         actionType: MessageActionDataTypes.UrlCallback,
         buttonType: 'default',
+        buttonText: 'На сторінку події',
+        buttonWidth: 133,
+        buttonHeight: 28,
       });
-      SetPushNotificationTheme('success')(this);
-    } else {
-      this.actions.push({
-        type: MessageActionTypes.Action,
-        text: 'Знайти інші події',
-        action: ROUTES.APPLICATION.EVENTS.absolute,
-        actionType: MessageActionDataTypes.Url,
-        buttonType: 'default',
-      });
-      SetPushNotificationTheme('error')(this);
     }
   }
 }

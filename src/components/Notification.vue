@@ -59,21 +59,55 @@
             <img src="../assets/img/cross.svg" alt="" />
           </div>
         </div>
-        <collapsible-panel v-model:expanding="expanding">
-          <template #title>
-            <div class="notification__top-side">
-              <div class="notification-title">
-                {{ notificationInstance.title }}
-              </div>
+        
+        <div v-if="notCollapsible" class="notification-main-content no-exanding">
+          <div class="top-side">
+            <div class="notification-title">
+              {{ notificationInstance.title }}
+            </div>
+            <div class="top-side-content">
               <div
-                v-if="notificationType === 'notification-push'"
-                class="notification-time"
+              class="notification-header-content"
+              v-if="
+                notificationType === 'notification-sidebar' &&
+                !notificationInstance.textsAfterAction &&
+                notificationInstance?.actions?.length
+              "
+            >
+              <div
+                class="notification-content not-full-content"
+                v-for="item in notificationInstance.texts"
               >
-                Сьогодні: 21:35
+                {{ item }}
+              </div>
+              <div class="notification-expand-button">Показати більше</div>
+              <div class="notification-actions">
+                <template v-for="item in notificationInstance.actions">
+                  <NotificationButton
+                    @click="$emit('handler-action', item)"
+                    :buttonData="item"
+                    :notificationType="notificationType"
+                  >
+                  </NotificationButton>
+                </template>
               </div>
             </div>
+            </div>
+          </div>
+        </div>
+
+        <collapsible-panel v-else v-model:expanding="expanding">
+          <template #title>
+            <div class="notification-title">
+              {{ notificationInstance.title }}
+            </div>
           </template>
-          <template #content>
+
+          <template
+            v-if="notificationType === 'notification-sidebar'"
+            #content
+            clas="notification-expandle-content"
+          >
             <template v-if="notificationInstance.textsAfterAction">
               <div class="notification-response d-flex align-items-center">
                 <img
@@ -110,6 +144,44 @@
         </collapsible-panel>
 
         <div
+          v-if="notificationType === 'notification-push'"
+          class="push-notification-main-content"
+        >
+          <template v-if="notificationInstance.textsAfterAction">
+            <div class="notification-response d-flex align-items-center">
+              <img
+                v-if="notificationInstance.textsAfterAction.response"
+                src="../assets/img/true-check.svg"
+              />
+              <img v-else src="../assets/img/red-cross.svg" />
+              {{ notificationInstance.textsAfterAction.text }}
+            </div>
+          </template>
+          <div
+            class="notification-content"
+            v-for="item in notificationInstance.texts"
+          >
+            {{ item }}
+          </div>
+          <div
+            class="notification-actions"
+            v-if="
+              !notificationInstance.textsAfterAction &&
+              notificationInstance?.actions?.length &&
+              notificationType === 'notification-push'
+            "
+          >
+            <template v-for="item in notificationInstance.actions">
+              <NotificationButton
+                @click="$emit('handler-action', item)"
+                :buttonData="item"
+                :notificationType="notificationType"
+              >
+              </NotificationButton>
+            </template>
+          </div>
+        </div>
+        <div
           class="notification-close"
           v-if="isPush"
           @click="$emit('handler-close')"
@@ -118,7 +190,7 @@
             width="10"
             height="10"
             viewBox="0 0 10 10"
-            fill="none"
+            fill="#fff"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
@@ -142,7 +214,6 @@ import NotificationButton from './../components/NotificationButton.vue';
 import Avatar from './../components/Avatar.vue';
 import Checkbox from './forms/Checkbox.vue';
 import CollapsiblePanel from './../components/collapsible/CollapsiblePanel.vue';
-
 
 export default {
   name: 'Notification',
@@ -173,7 +244,7 @@ export default {
     },
     notCollapsible: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     notificationType: {
       type: String,
@@ -254,7 +325,7 @@ $color-000: #000;
 .notification-content {
   @include inter(13px, 400, $color-dfdeed);
   line-height: 20px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .notification-title {
@@ -288,12 +359,15 @@ $color-000: #000;
   width: 10px;
   transition: 0.4s all;
   transform-origin: center;
+
   svg {
     transform: translateY(-6px);
   }
+
   &:hover {
     cursor: pointer;
     transform: rotateZ(90deg);
+
     path {
       fill: $color-d3d3d3;
     }
@@ -305,6 +379,7 @@ $color-000: #000;
     .spiner-text {
       display: none;
     }
+
     .spiner-wrapper {
       position: absolute;
       left: 0;
@@ -312,6 +387,7 @@ $color-000: #000;
       background: rgba(239, 239, 246, 0.38);
       width: 100%;
     }
+
     .spiner-wrapper .spiner-body {
       background: transparent;
       height: 100%;
@@ -326,6 +402,7 @@ $color-000: #000;
           width: 50px;
           height: 50px;
         }
+
         .lds-ring div {
           border-color: white transparent transparent transparent;
         }
@@ -347,7 +424,8 @@ $color-000: #000;
   * {
     color: $color-000;
   }
-  padding: 16px 0px 16px 16px;
+
+  padding: 16px 0px 12px 16px;
 
   .notification-title {
     color: $--b-main-black-color;
@@ -356,13 +434,16 @@ $color-000: #000;
   .notification-date {
     color: $--b-main-gray-color;
   }
+
   .notification-content {
     color: $--b-main-gray-color;
   }
+
   ::v-deep {
     .spiner-text {
       display: none;
     }
+
     .spiner-wrapper {
       background: rgba(239, 239, 246, 0.38);
       width: 100%;
@@ -370,6 +451,7 @@ $color-000: #000;
       left: 0;
       top: 0;
     }
+
     .spiner-wrapper .spiner-body {
       box-shadow: none;
       background: transparent;
@@ -378,12 +460,14 @@ $color-000: #000;
       align-items: center;
       justify-content: center;
       width: 100%;
+
       .spiner {
         .lds-ring,
         .lds-ring div {
           width: 50px;
           height: 50px;
         }
+
         .lds-ring div {
           border-color: $--b-main-gray-color transparent transparent transparent;
         }
@@ -398,6 +482,7 @@ $color-000: #000;
   line-height: 20px;
   color: $color-8a8aa8;
   margin-bottom: 8px;
+
   > img {
     margin-right: 5px;
   }
@@ -407,19 +492,22 @@ $color-000: #000;
   .vcp__body {
     z-index: 1 !important;
   }
+  .vcp__body-content {
+    padding: 8px 12px 0px 12px;
+  }
+
   .vcp__header {
     padding-right: 7px;
     padding-bottom: 0;
+    flex-direction: column;
   }
-  .vcp__header-icon,
+
   .b-selectable {
     z-index: 1000;
   }
+
   .vcp__header-icon {
-    margin-right: 4px;
-    svg {
-      fill: $color-8a8aa8;
-    }
+    display: none;
   }
 }
 
@@ -432,6 +520,7 @@ $color-000: #000;
     .notification-header {
       padding: 0;
     }
+
     .vcp__header-icon {
       display: none;
     }
@@ -442,12 +531,14 @@ $color-000: #000;
   width: 20px;
   height: 20px;
 }
+
 .notification-header-right-side {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-right: 5px;
 }
+
 .notification-read {
   background: #fff;
   border-bottom: 1px solid #efeff6;
@@ -456,6 +547,7 @@ $color-000: #000;
 .notification__top-side {
   margin-bottom: 8px;
 }
+
 .notification-time {
   @include inter(13px, 400, #f0f0f4);
   line-height: 20px;
@@ -464,6 +556,30 @@ $color-000: #000;
 .notification-actions {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.notification-expand-button {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 20px;
+  color: #148783;
+  cursor: pointer;
+}
+.not-full-content {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-top: 10px;
+}
+.notification-main-content {
+  margin-top: 10px;
+}
+.notification-image {
+  margin-right: 10px;
 }
 </style>

@@ -9,10 +9,8 @@ import {
 
 import {
   MessageActionTypes,
-  MessageActionDataTypes,
 } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
-import { ROUTES } from '../../../../router/router.const';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.LeftFeedback)
@@ -20,24 +18,20 @@ import { ROUTES } from '../../../../router/router.const';
 @SetActions([
   {
     type: MessageActionTypes.ActionClose,
-    text: 'Зрозуміло',
-  },
-  {
-    type: MessageActionTypes.Action,
-    text: 'Просмотреть все отзывы', // TODO should add right button
-    action: ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute,
-    actionType: MessageActionDataTypes.Url,
-    buttonType: 'default',
+    buttonType: 'success',
+    buttonText: 'Зрозуміло',
+    buttonWidth: 88,
+    buttonHeight: 28,
   },
 ])
 export class LeftFeedbackMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `Один из учасников события оставил вам отзыв! Что бы просмотреть все отзывы нажмите на кнопку "${this.actions[1].text}"`,
     ];
+    // TODO Максим не работает вот эта нотификация 
   }
 
   createTitle() {
-    return 'Вам оставили отзыв!';
+    return 'Новий відгук про вас';
   }
 }

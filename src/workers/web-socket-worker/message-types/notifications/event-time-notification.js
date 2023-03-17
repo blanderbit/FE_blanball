@@ -18,29 +18,27 @@ import { NotificationImage } from '../../../../assets/img/notifications/notifica
 @SetActions([
   {
     type: MessageActionTypes.ActionClose,
-    text: 'Зрозуміло',
+    buttonType: 'success',
+    buttonText: 'Зрозуміло',
+    buttonWidth: 88,
+    buttonHeight: 28,
   },
 ])
 export class EventTimeNotificationMessage extends InitialMessage {
   createTexts(data) {
-    const start_time = dayjs
-      .duration({
-        minutes: data.start.start_time,
-      })
-      .format('MM.DD HH:mm');
 
     const time_to_start = dayjs
       .duration({
         minutes: data.start.time_to_start,
       })
       .asHours();
-
+    
     return [
-      `Команда Blanball нагадує вам, що подія "${data.recipient.name}" почнеться через ${time_to_start}`,
+      `${data.recipient.name}, початок запланованої події «${data.event.name}» за ${time_to_start} годин`,
     ];
   }
 
   createTitle() {
-    return 'Не пропустіть подію';
+    return 'Нагадування про майбутню подію';
   }
 }

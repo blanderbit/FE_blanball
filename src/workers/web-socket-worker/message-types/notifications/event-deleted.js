@@ -1,6 +1,7 @@
 import { InitialMessage } from './initial.message';
 
 import dayjs from 'dayjs';
+import dayjsUkrLocale from 'dayjs/locale/uk';
 
 import {
   SetActions,
@@ -41,7 +42,7 @@ export class EventDeletedMessage extends InitialMessage {
   createTexts(data) {
     return [
       `${data.sender.name} ${data.sender.last_name} скасував проведення події «${data.event.name}, 
-      ${dayjs(new Date()).format('DD.MM.YYYY')}»"`,
+      ${dayjs(new Date()).locale(dayjsUkrLocale).format('DD.MM.YYYY')}»"`,
     ];
   }
 

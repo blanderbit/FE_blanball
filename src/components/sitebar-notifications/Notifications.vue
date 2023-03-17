@@ -21,6 +21,7 @@
           :selectable="selectable"
           :active="activeNotification === item.notification_id"
           :checked="selectedList.includes(item.notification_id)"
+          :notCollapsible="!isMobileSmall"
           @handler-action="handlerAction($event, item)"
           @selected="handleSelected($event)"
         >
@@ -36,9 +37,10 @@
 <script>
 import Notification from '../Notification.vue';
 import { useRouter } from 'vue-router';
-import { ref, watch, nextTick } from 'vue';
+import { ref, watch, nextTick, onMounted, onBeforeUnmount } from 'vue';
 import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller';
 import { notificationButtonHandlerMessage } from '../../workers/utils-worker';
+import useWindowWidth from '../../utils/widthScreen';
 
 export default {
   name: 'Notifications',
@@ -67,6 +69,17 @@ export default {
     let list = ref([]);
     let scroller = ref();
     const router = useRouter();
+
+
+    const { isMobileSmall, onResize } = useWindowWidth();
+
+    onMounted(() => {
+      window.addEventListener('resize', onResize);
+    });
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', onResize);
+    });
 
     watch(
       () => context.selectedList,
@@ -122,6 +135,7 @@ export default {
       activeNotification,
       handlerAction,
       handleSelected,
+      isMobileSmall,
       scroller,
     };
   },

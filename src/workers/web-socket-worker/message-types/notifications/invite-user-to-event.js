@@ -55,7 +55,6 @@ export class InviteUserToEventMessage extends InitialMessage {
   createTexts(data) {
     return [
       `${data.sender.last_name} ${data.sender.name} запросив вас на дружній матч «${data.event.name}»`,
-      // TODO add inplementation for move to user profile
        // TODO Максим добавить отображение даты и времени ивента
     ];
   }

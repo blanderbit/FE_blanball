@@ -20,28 +20,27 @@ import { ROUTES } from '../../../../router/router.const';
 @NotificationSetImage(NotificationImage.NotificationInfo)
 @SetActions([
   {
-    type: MessageActionTypes.ActionClose,
-    text: 'Зрозуміло',
-  },
-  {
     type: MessageActionTypes.Action,
-    text: 'Переглянути зміни',
     action: ({ notificationInstance }) =>
       ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(
         notificationInstance.data.event.id
       ),
     actionType: MessageActionDataTypes.UrlCallback,
-    buttonType: 'default',
+    buttonType: 'success',
+    buttonText: 'На сторінку події',
+    buttonWidth: 134,
+    buttonHeight: 28,
   },
 ])
 export class EventUpdatedMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `${data.recipient.name} - событие обновилось. Для того что бы просмотреть подробности обновления нажмите кнопку "${this.actions[1].text}"`,
+      `Організатор події «${data.event.name}» вніс зміни до умов участі в заході. 
+      За детальною інформацією зверніться до сторінки події`,
     ];
   }
 
   createTitle() {
-    return 'Подія була оновлена';
+    return 'Змінення умов участі у події';
   }
 }

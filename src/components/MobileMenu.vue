@@ -142,7 +142,7 @@
 </template>
 
 <script>
-import { ref, computed, inject } from 'vue';
+import { ref, computed, inject, onMounted, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
@@ -557,7 +557,6 @@ $color-1ccd62: #1ccd62;
         top: 0;
         left: 0;
         width: 100%;
-        padding: 0px 16px;
         .b-mob-menu__message {
           padding: 14px 12px;
           display: flex;
