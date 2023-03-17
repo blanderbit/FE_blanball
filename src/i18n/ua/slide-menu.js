@@ -5,5 +5,5 @@ export default {
   'notifications-manage': 'Керування повідомленнями',
   'read-all': 'Прочитати всі',
   'cancel-manage': 'Скасувати керування',
-  'mark-as-viewed': 'Позначити як прочитане',
+  'mark-as-viewed': 'Відмітити як прочитане',
 };

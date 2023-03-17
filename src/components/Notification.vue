@@ -10,6 +10,7 @@
           !notificationInstance.isRead &&
           notificationType === 'notification-sidebar',
       },
+      { 'notification-selected': checked },
     ]"
   >
     <loading :is-loading="loading"> </loading>
@@ -24,6 +25,7 @@
         />
         <avatar
           v-if="notificationInstance.notificationUserImage"
+          :class="{ checked: checked }"
           :link="notificationInstance.profileImage"
           :full-name="notificationInstance.fullName"
         ></avatar>
@@ -32,7 +34,7 @@
         <div class="notification-header d-flex justify-content-between">
           <div
             v-if="notificationType === 'notification-sidebar'"
-            class="notification-sender"
+            :class="['notification-sender', { checked: checked }]"
           >
             {{ notificationInstance.sender }}
           </div>
@@ -59,39 +61,48 @@
             <img src="../assets/img/cross.svg" alt="" />
           </div>
         </div>
-        
-        <div v-if="notCollapsible" class="notification-main-content no-exanding">
-          <div class="top-side">
+
+        <div
+          v-if="notCollapsible"
+          class="notification-main-content no-exanding"
+        >
+          <div :class="['top-side', { checked: checked }]">
             <div class="notification-title">
               {{ notificationInstance.title }}
             </div>
             <div class="top-side-content">
               <div
-              class="notification-header-content"
-              v-if="
-                notificationType === 'notification-sidebar' &&
-                !notificationInstance.textsAfterAction &&
-                notificationInstance?.actions?.length
-              "
-            >
-              <div
-                class="notification-content not-full-content"
-                v-for="item in notificationInstance.texts"
+                class="notification-header-content"
+                v-if="
+                  notificationType === 'notification-sidebar' &&
+                  !notificationInstance.textsAfterAction &&
+                  notificationInstance?.actions?.length
+                "
               >
-                {{ item }}
+                <div
+                  class="notification-content not-full-content"
+                  v-for="item in notificationInstance.texts"
+                >
+                  {{ item }}
+                </div>
+                <div
+                  class="notification-expand-button"
+                  @click="clickExpandTextButton"
+                >
+                  {{ isTextShow ? 'Згорнути' : 'Показати більше' }}
+                </div>
+                <div class="notification-actions">
+                  <template v-for="item in notificationInstance.actions">
+                    <NotificationButton
+                      @click-function="$emit('handler-action', item)"
+                      :buttonData="item"
+                      :notificationType="notificationType"
+                      :buttonDisabled="checked"
+                    >
+                    </NotificationButton>
+                  </template>
+                </div>
               </div>
-              <div class="notification-expand-button">Показати більше</div>
-              <div class="notification-actions">
-                <template v-for="item in notificationInstance.actions">
-                  <NotificationButton
-                    @click="$emit('handler-action', item)"
-                    :buttonData="item"
-                    :notificationType="notificationType"
-                  >
-                  </NotificationButton>
-                </template>
-              </div>
-            </div>
             </div>
           </div>
         </div>
@@ -136,6 +147,7 @@
                   @click="$emit('handler-action', item)"
                   :buttonData="item"
                   :notificationType="notificationType"
+                  :buttonDisabled="checked"
                 >
                 </NotificationButton>
               </template>
@@ -254,6 +266,7 @@ export default {
   data() {
     return {
       loading: false,
+      isTextShow: false,
     };
   },
   watch: {
@@ -271,6 +284,9 @@ export default {
     },
     finish() {
       this.loading = false;
+    },
+    clickExpandTextButton() {
+      this.isTextShow = !this.isTextShow;
     },
   },
   computed: {
@@ -326,6 +342,7 @@ $color-000: #000;
   @include inter(13px, 400, $color-dfdeed);
   line-height: 20px;
   margin-bottom: 8px;
+  width: fit-content;
 }
 
 .notification-title {
@@ -425,7 +442,11 @@ $color-000: #000;
     color: $color-000;
   }
 
-  padding: 16px 0px 12px 16px;
+  padding: 16px 16px 12px 16px;
+
+  @include mobile {
+    padding: 16px 0px 12px 16px;
+  }
 
   .notification-title {
     color: $--b-main-black-color;
@@ -575,11 +596,23 @@ $color-000: #000;
   -webkit-box-orient: vertical;
   overflow: hidden;
   margin-top: 10px;
+  width: fit-content;
 }
 .notification-main-content {
   margin-top: 10px;
 }
 .notification-image {
-  margin-right: 10px;
+  margin-right: 12px;
+  @include mobile {
+    margin: 0px;
+  }
+}
+
+.notification-selected {
+  background: #f0f0f4;
+  border-bottom: 1px solid #8a8aa8;
+}
+.checked {
+  opacity: 0.6;
 }
 </style>

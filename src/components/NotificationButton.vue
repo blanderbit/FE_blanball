@@ -1,10 +1,12 @@
 <template>
-    <GreenBtn
+  <GreenBtn
     class="b-notification-btn"
     v-if="buttonData.buttonType === 'success'"
     :text="buttonData.buttonText"
     :height="buttonData.buttonHeight"
+    :disabled="buttonDisabled"
     :width="buttonData.buttonWidth"
+    @click-function="$emit('click-function')"
   />
   <WhiteBtn
     class="b-notification-btn"
@@ -12,8 +14,10 @@
     :text="buttonData.buttonText"
     :height="buttonData.buttonHeight"
     :width="buttonData.buttonWidth"
+    :disabed="buttonDisabled"
     :main-color="notificationType === 'notification-push' ? '#FFFFFF' : '#575775'"
     :is-border="notificationType === 'notification-push'? true : false"
+    @click-function="$emit('click-function')"
   />
   <GreenBtn
     class="b-notification-btn"
@@ -21,6 +25,8 @@
     :text="buttonData.buttonText"
     :height="buttonData.buttonHeight"
     :width="buttonData.buttonWidth"
+    :disabed="buttonDisabled"
+    @click-function="$emit('click-function')"
   />
 </template>
 
@@ -38,6 +44,10 @@ export default {
     notificationType: {
       type: String,
       required: true
+    },
+    buttonDisabled: {
+      type: Boolean,
+      default: false
     }
   },
   components: {

@@ -9,14 +9,12 @@ import {
 
 import {
   MessageActionTypes,
-  MessageActionDataTypes,
 } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
 import { NotificationImage } from '../../../../assets/img/notifications/notification.images';
-import { ROUTES } from '../../../../router/router.const';
 
 @AuthWebSocketMessage()
-@SetMessageType(WebSocketTypes.RemoveUserFromTheEventMessage)
+@SetMessageType(WebSocketTypes.UserRemoveFromEvent)
 @NotificationSetImage(NotificationImage.NotificationError)
 @SetActions([
   {
@@ -30,7 +28,7 @@ import { ROUTES } from '../../../../router/router.const';
 export class RemoveUserFromTheEventMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `Шкода, але організатори «${data.event.name}» відкликали вашу участь у події`,
+      `Шкода, але організатори «${data?.event.name}» відкликали вашу участь у події`,
     ];
   }
 

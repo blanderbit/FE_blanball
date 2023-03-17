@@ -44,7 +44,7 @@
 
             <button
               class="b-notifictions-actions__button"
-              @click="(selectable = !selectable), clearSelectedList();"
+              @click="(selectable = !selectable), clearSelectedList()"
             >
               <span v-if="!selectable" class="b-button-text">
                 {{ $t('slide_menu.notifications-manage') }}
@@ -54,31 +54,38 @@
               </span>
             </button>
           </div>
-          <div class="d-flex mb-2">
-            <button
-              v-if="selectable && notifications.length && selectedList.length"
-              @click="HandleAction.deleteSelected()"
-              class="d-flex align-items-center"
-            >
-              <img
-                src="../assets/img/notifications/trash.svg"
-                height="16"
-                alt=""
-              />
-              {{ $t('buttons.delete') }}
-            </button>
-            <button
-              v-if="selectable && notifications.length && selectedList.length"
-              @click="HandleAction.readSelected()"
-              class="d-flex align-items-center"
-            >
-              <img
-                src="../assets/img/notifications/double-check.svg"
-                height="16"
-                alt=""
-              />
-              {{ $t('slide_menu.mark-as-viewed') }}
-            </button>
+          <div v-if="selectable && notifications.length && selectedList.length" class="d-flex mb-2 justify-content-between">
+            <div class="b-selected-elements__count">
+              <img src="../assets/img/cross.svg" alt="" 
+                @click="clearSelectedList"/>
+              <span>{{ selectedList.length }}</span>
+            </div>
+
+            <div class="d-flex">
+              <button
+                @click="HandleAction.readSelected()"
+                class="d-flex align-items-center"
+              >
+                <img
+                  src="../assets/img/notifications/double-check.svg"
+                  height="16"
+                  alt=""
+                />
+                {{ $t('slide_menu.mark-as-viewed') }}
+              </button>
+
+              <button
+                @click="HandleAction.deleteSelected()"
+                class="d-flex align-items-center"
+              >
+                <img
+                  src="../assets/img/notifications/trash.svg"
+                  height="16"
+                  alt=""
+                />
+                {{ $t('buttons.delete') }}
+              </button>
+            </div>
           </div>
           <div class="b-notifications__tabs">
             <div v-if="notifications.length" class="b-notifications-title me-1">
@@ -86,7 +93,7 @@
             </div>
             <div
               class="b-notification-unreaded d-flex align-items-center justify-content-center me-1"
-              v-if="notReadNotificationCount"
+              v-if="notReadNotificationCount && !selectable"
             >
               {{ notReadNotificationCount }}
             </div>
@@ -166,7 +173,7 @@
 </template>
 
 <script>
-import { ref, inject, computed, watch } from 'vue';
+import { ref, inject, computed, watch, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { v4 as uuid } from 'uuid';
@@ -302,6 +309,7 @@ export default {
         clearSelectedList();
       },
     };
+
 
     return {
       clientVersion,
@@ -495,14 +503,19 @@ button {
 }
 
 .b-selected-elements__count {
-  background: $--b-main-gray-color;
-  border-radius: 6px;
-  padding: 0px 4px;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 20px;
-  color: $--b-main-white-color;
+  span {
+    background: $--b-main-gray-color;
+    border-radius: 6px;
+    padding: 0px 4px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 20px;
+    color: $--b-main-white-color;
+  }
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 .b-button-text {
   font-family: 'Inter';
