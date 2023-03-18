@@ -1,10 +1,11 @@
 <template>
-   <ContextModal
+  <ContextModal
     v-if="isContextModalOpened"
     :clientX="contextModalX"
     :clientY="contextModalY"
     :modalItems="contextModalItems"
     @closeModal="closeContextModal"
+    @itemClick="contextModalItemClick"
   />
   <div>
     <div
@@ -51,10 +52,9 @@
 
             <button
               class="b-notifictions-actions__button"
-              @click="(selectable = !selectable), clearSelectedList()"
+              @click="manageNotificationsButtonClick"
             >
-              <span v-if="!selectable" class="b-button-text"
-                @click="showContextModal">
+              <span v-if="!selectable" class="b-button-text">
                 {{ $t('slide_menu.notifications-manage') }}
               </span>
               <span v-else class="b-button-text">
@@ -62,10 +62,16 @@
               </span>
             </button>
           </div>
-          <div v-if="selectable && notifications.length && selectedList.length" class="d-flex mb-2 justify-content-between">
+          <div
+            v-if="selectable && notifications.length && selectedList.length"
+            class="d-flex mb-2 justify-content-between"
+          >
             <div class="b-selected-elements__count">
-              <img src="../assets/img/cross.svg" alt="" 
-                @click="clearSelectedList"/>
+              <img
+                src="../assets/img/cross.svg"
+                alt=""
+                @click="clearSelectedList"
+              />
               <span>{{ selectedList.length }}</span>
             </div>
 
@@ -202,8 +208,8 @@ import { ROUTES } from '../router/router.const';
 
 import sidebarArrowBack from '../assets/img/sidebar-arrow-back.svg';
 import sidebarArrow from '../assets/img/sidebar-arrow.svg';
-import selectOneIcon from '../assets/img/select-one-icon.svg'
-import selectAllIcon from '../assets/img/select-all-icon.svg'
+import selectOneIcon from '../assets/img/select-one-icon.svg';
+import selectAllIcon from '../assets/img/select-all-icon.svg';
 
 export default {
   components: {
@@ -269,13 +275,13 @@ export default {
           id: 1,
           text: t('buttons.select-all'),
           img: selectAllIcon,
-          type: 'play',
+          type: 'selectAll',
         },
         {
           id: 2,
           text: t('buttons.select-one-mode'),
           img: selectOneIcon,
-          type: 'view',
+          type: 'selectOne',
         },
       ];
     });
@@ -285,7 +291,6 @@ export default {
       () => {
         if (!context.isMenuOpened) {
           emit('closed');
-          selectedList.value = [];
         }
       }
     );
@@ -352,8 +357,32 @@ export default {
       isContextModalOpened.value = false;
       contextModalX.value = null;
       contextModalY.value = null;
-    }
+    };
 
+    const handleSelectableMode = () => {
+      selectable.value = !selectable.value;
+      clearSelectedList();
+    };
+
+    const manageNotificationsButtonClick = (e) => {
+      if (!selectable.value) {
+        showContextModal(e);
+      } else {
+        handleSelectableMode();
+      }
+    };
+
+    const contextModalItemClick = (itemType) => {
+      handleSelectableMode();
+      closeContextModal();
+      switch (itemType) {
+        case 'selectOne':
+          console.log(context.notifications)
+          break;
+        case 'selectAll':
+          break;
+      }
+    };
 
     return {
       clientVersion,
@@ -372,8 +401,10 @@ export default {
       selectable,
       notificationList,
       blockScrollToTopIfExist,
+      contextModalItemClick,
       showContextModal,
       closeContextModal,
+      manageNotificationsButtonClick,
       toggleMenu,
       clearSelectedList,
       restartInfiniteScroll: () => {

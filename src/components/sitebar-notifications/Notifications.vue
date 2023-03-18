@@ -66,7 +66,7 @@ export default {
   emits: ['update:selected-list', 'update:scrollbar-existing'],
   setup(context, { emit, expose }) {
     let activeNotification = ref(0);
-    let list = ref([]);
+    let list = ref(context.selectedList);
     let scroller = ref();
     const router = useRouter();
 
