@@ -1,4 +1,11 @@
 <template>
+   <ContextModal
+    v-if="isContextModalOpened"
+    :clientX="contextModalX"
+    :clientY="contextModalY"
+    :modalItems="contextModalItems"
+    @closeModal="closeContextModal"
+  />
   <div>
     <div
       v-if="isMenuOpened"
@@ -46,7 +53,8 @@
               class="b-notifictions-actions__button"
               @click="(selectable = !selectable), clearSelectedList()"
             >
-              <span v-if="!selectable" class="b-button-text">
+              <span v-if="!selectable" class="b-button-text"
+                @click="showContextModal">
                 {{ $t('slide_menu.notifications-manage') }}
               </span>
               <span v-else class="b-button-text">
@@ -184,6 +192,7 @@ import Notification from './Notification.vue';
 import EmptyList from './EmptyList.vue';
 import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue';
 import ScrollToTop from './ScrollToTop.vue';
+import ContextModal from './ModalWindows/ContextModal.vue';
 
 import { useUserDataStore } from '../stores/userData';
 import { NewNotifications } from '../workers/web-socket-worker/not-includes-to-socket/new_notifications';
@@ -193,11 +202,14 @@ import { ROUTES } from '../router/router.const';
 
 import sidebarArrowBack from '../assets/img/sidebar-arrow-back.svg';
 import sidebarArrow from '../assets/img/sidebar-arrow.svg';
+import selectOneIcon from '../assets/img/select-one-icon.svg'
+import selectAllIcon from '../assets/img/select-all-icon.svg'
 
 export default {
   components: {
     InfiniteLoading,
     Notification,
+    ContextModal,
     EmptyList,
     Notifications,
     ScrollToTop,
@@ -243,9 +255,29 @@ export default {
     const newNotificationInstance = ref(new NewNotifications());
     const clientVersion = ref(inject('clientVersion'));
     const { t } = useI18n();
+    const isContextModalOpened = ref(false);
+    const contextModalX = ref(null);
+    const contextModalY = ref(null);
 
     const userData = computed(() => {
       return user.value;
+    });
+
+    const contextModalItems = computed(() => {
+      return [
+        {
+          id: 1,
+          text: t('buttons.select-all'),
+          img: selectAllIcon,
+          type: 'play',
+        },
+        {
+          id: 2,
+          text: t('buttons.select-one-mode'),
+          img: selectOneIcon,
+          type: 'view',
+        },
+      ];
     });
 
     watch(
@@ -310,21 +342,39 @@ export default {
       },
     };
 
+    const showContextModal = (e) => {
+      contextModalX.value = e.clientX;
+      contextModalY.value = e.clientY;
+      isContextModalOpened.value = true;
+    };
+
+    const closeContextModal = () => {
+      isContextModalOpened.value = false;
+      contextModalX.value = null;
+      contextModalY.value = null;
+    }
+
 
     return {
       clientVersion,
       arrowPosition,
+      contextModalX,
+      contextModalY,
+      isContextModalOpened,
       userData,
-      toggleMenu,
       getNewNotificationInstance,
       emptyListMessages,
       routeObject,
       selectedList,
       HandleAction,
+      contextModalItems,
       triggerForRestart,
       selectable,
       notificationList,
       blockScrollToTopIfExist,
+      showContextModal,
+      closeContextModal,
+      toggleMenu,
       clearSelectedList,
       restartInfiniteScroll: () => {
         triggerForRestart.value = uuid();

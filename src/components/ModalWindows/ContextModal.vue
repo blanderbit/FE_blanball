@@ -64,7 +64,8 @@ $color-f0f0f4: #f0f0f4;
 
   .context-modal__tooltip {
     background: $--b-main-white-color;
-    width: 180px;
+    width: fit-content;
+    min-width: 180px;
     position: absolute;
     border-radius: 6px;
 
