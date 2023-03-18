@@ -29,7 +29,7 @@
       </div>
       <div class="b-public-profile">
         <div class="b-public-profile__background-image">
-          <img src="../../assets/img/user-page-back.svg" alt="" />
+          <img :src="backgroundTop" alt="" />
         </div>
         <div class="b-public-profile__main-side">
           <div class="b-public-profile__first-block">
@@ -121,7 +121,7 @@
           </div>
           <div class="b-public-profile__main-side-left-block">
             <div class="b-public-profile__second-block">
-              <div class="b-second-block__user-features-block">
+                <div class="b-second-block__user-features-block">
                 <div class="b-user-features__title">
                   {{ $t('profile.game-features') }}
                 </div>
@@ -173,6 +173,7 @@ import GamingLegIcon from '../../assets/img/gaming-leg.svg';
 import DumbbellIcon from '../../assets/img/dumbbell.svg';
 import RulerIcon from '../../assets/img/ruler.svg';
 import StarIcon from '../../assets/img/star.svg';
+import BackgroundTop from '../../assets/img/user-page-back.svg'
 
 export default {
   props: {
@@ -215,6 +216,11 @@ export default {
     const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
       useWindowWidth();
 
+
+    const backgroundTop = computed(() => {
+        return BackgroundTop
+    })
+
     const icons = computed(() => {
       return {
         phone: PhoneIcon,
@@ -240,7 +246,7 @@ export default {
     });
 
     const avatarType = computed(() => {
-      if (isMobile.value) {
+      if (isMobile.value || isTablet.value) {
         return 'big-circle';
       } else {
         return 'square';
@@ -308,6 +314,7 @@ export default {
       isInviteUserModalOpened,
       userRating,
       playFeatures,
+      backgroundTop,
       isPersonalPreview,
       openInviteUserModal,
       closeInviteUserModal,
@@ -416,6 +423,10 @@ $color-d2f6a2: #d2f6a2;
       z-index: 2;
     }
 
+    @include bigTablet {
+      z-index: 2;
+    }
+
     img {
       width: 100%;
     }
@@ -477,11 +488,11 @@ $color-d2f6a2: #d2f6a2;
         position: absolute;
         top: 90px;
         right: 22px;
-        display: none;
+        display: flex;
         gap: 4px;
 
-        @include tabletAndMobile {
-          display: flex;
+        @include tablet {
+          top: 65px;
         }
 
         @media (max-width: 500px) {
@@ -645,6 +656,7 @@ $color-d2f6a2: #d2f6a2;
           display: none;
         }
 
+
         @media (max-width: 1400px) {
           width: 350px;
         }
@@ -668,6 +680,10 @@ $color-d2f6a2: #d2f6a2;
           width: 410px;
         }
 
+        @include bigTablet {
+          z-index: 3;
+        }
+
         @media (max-width: 430px) {
           width: 100%;
         }
@@ -678,6 +694,12 @@ $color-d2f6a2: #d2f6a2;
             box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
             background: $--b-main-white-color;
             border-radius: 12px;
+          }
+          @include bigTablet {
+            // position: absolute;
+            // left: 35px;
+            // width: 300px;
+            // bottom: 130px;
           }
           .b-user-features__title {
             @include exo(16px, 700);

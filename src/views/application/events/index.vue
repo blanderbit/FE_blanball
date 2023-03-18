@@ -1,6 +1,6 @@
 <template>
   <Loading :is-loading="loading" />
-  <EventJoinModal
+  <ContextModal
     v-if="isEventJoinModalActive"
     :clientX="eventJoinModalX"
     :clientY="eventJoinModalY"
@@ -131,7 +131,7 @@ import ScrollToTop from '../../../components/ScrollToTop.vue';
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
 import Dropdown from '../../../components/forms/Dropdown.vue';
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue';
-import EventJoinModal from '../../../components/ModalWindows/EventJoinModal.vue';
+import ContextModal from '../../../components/ModalWindows/ContextModal.vue';
 import Loading from '../../../workers/loading-worker/Loading.vue';
 
 import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue';
@@ -168,7 +168,7 @@ export default {
     EventsFilters,
     Loading,
     SelectFormsColorsModal,
-    EventJoinModal,
+    ContextModal,
   },
   setup() {
     const eventStore = useEventDataStore();
