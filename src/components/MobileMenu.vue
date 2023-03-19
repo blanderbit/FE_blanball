@@ -89,7 +89,7 @@
                 <template #complete>
                   <empty-list
                     style="margin-top: 16px"
-                    v-if="!notifications.length"
+                    v-if="!notifications.length && !newNotifications"
                     :title="emptyListMessages.title"
                     :description="emptyListMessages.description"
                     :is-notification="true"

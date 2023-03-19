@@ -26,6 +26,7 @@
         <avatar
           v-if="notificationInstance.notificationUserImage"
           :class="{ checked: checked }"
+          :online="notificationInstance.data.sender.is_online"
           :link="notificationInstance.profileImage"
           :full-name="notificationInstance.fullName"
         ></avatar>
@@ -58,7 +59,8 @@
             <div class="notification-date">
               {{ formatDate }}
             </div>
-            <img src="../assets/img/cross.svg" alt="" />
+            <img class="delete-notfication-cross" src="../assets/img/cross.svg" alt=""
+              @click="$emit('delete', notificationInstance?.notification_id)"/>
           </div>
         </div>
 
@@ -236,7 +238,7 @@ export default {
     Checkbox,
     CollapsiblePanel,
   },
-  emits: ['handler-action', 'selected', 'force'],
+  emits: ['handler-action', 'selected', 'force', 'delete'],
   props: {
     notificationInstance: {
       type: Object,
@@ -614,5 +616,8 @@ $color-000: #000;
 }
 .checked {
   opacity: 0.6;
+}
+.delete-notfication-cross {
+  cursor: pointer;
 }
 </style>

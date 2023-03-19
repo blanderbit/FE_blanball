@@ -1,5 +1,5 @@
 <template>
-  <Loading :is-loading="loading"/>
+  <Loading :is-loading="loading" />
   <ContextModal
     v-if="isContextModalOpened"
     :clientX="contextModalX"
@@ -108,9 +108,9 @@
             </div>
             <div
               class="b-notification-unreaded d-flex align-items-center justify-content-center me-1"
-              v-if="notReadNotificationCount && !selectable"
+              v-if="notReadNotificationCount - newNotifications > 0 && !selectable"
             >
-              {{ notReadNotificationCount }}
+              {{ notReadNotificationCount - newNotifications }}
             </div>
           </div>
           <ul
@@ -127,6 +127,7 @@
               ref="notificationList"
               v-model:selected-list="selectedList"
               v-model:scrollbar-existing="blockScrollToTopIfExist"
+              @delete="HandleAction.deleteOne"
             >
               <template #before>
                 <Notification
@@ -146,7 +147,7 @@
                 >
                   <template #complete>
                     <empty-list
-                      v-if="!notifications.length"
+                      v-if="!notifications.length && !newNotifications"
                       :title="emptyListMessages.title"
                       :description="emptyListMessages.description"
                       :is-notification="true"
@@ -277,12 +278,24 @@ export default {
       return [
         {
           id: 1,
-          text: t('buttons.select-all'),
+          text: t('buttons.select-10'),
           img: selectAllIcon,
-          type: 'selectAll',
+          type: 'select10',
         },
         {
           id: 2,
+          text: t('buttons.select-50'),
+          img: selectAllIcon,
+          type: 'select50',
+        },
+        {
+          id: 3,
+          text: t('buttons.select-100'),
+          img: selectAllIcon,
+          type: 'select100',
+        },
+        {
+          id: 4,
           text: t('buttons.select-one-mode'),
           img: selectOneIcon,
           type: 'selectOne',
@@ -329,12 +342,17 @@ export default {
     };
 
     const startLoader = () => {
-      loading.value = true
-    }
+      loading.value = true;
+    };
 
     const stopLoader = () => {
-      loading.value = false
-    }
+      loading.value = false;
+    };
+
+    const handleSelectableMode = () => {
+      selectable.value = !selectable.value;
+      clearSelectedList();
+    };
 
     const HandleAction = {
       deleteAll: async () => {
@@ -342,29 +360,38 @@ export default {
         startLoader();
         await API.NotificationService.deleteAllMyNotifications();
         clearSelectedList();
+        handleSelectableMode();
         stopLoader();
       },
       readAll: async () => {
         if (!context.notifications.length && !context.newNotifications) return;
-        startLoader()
+        startLoader();
         await API.NotificationService.readAllMyNotifications();
         clearSelectedList();
-        stopLoader()
+        handleSelectableMode();
+        stopLoader();
       },
       deleteSelected: async () => {
         if (!selectedList.value) return;
-        startLoader()
+        startLoader();
         await API.NotificationService.deleteNotifications(selectedList.value);
         clearSelectedList();
-        stopLoader()
+        handleSelectableMode();
+        stopLoader();
       },
       readSelected: async () => {
         if (!selectedList.value) return;
-        startLoader()
+        startLoader();
         await API.NotificationService.readNotifications(selectedList.value);
         clearSelectedList();
-        stopLoader()
+        handleSelectableMode();
+        stopLoader();
       },
+      deleteOne: async (id) => {
+        startLoader();
+        await API.NotificationService.deleteNotifications([id]);
+        stopLoader();
+      }
     };
 
     const showContextModal = (e) => {
@@ -379,11 +406,6 @@ export default {
       contextModalY.value = null;
     };
 
-    const handleSelectableMode = () => {
-      selectable.value = !selectable.value;
-      clearSelectedList();
-    };
-
     const manageNotificationsButtonClick = (e) => {
       if (!selectable.value) {
         showContextModal(e);
@@ -394,19 +416,15 @@ export default {
 
     const selectAllNotifciations = async () => {
       const response = await API.NotificationService.getAllMyNotificationsIds();
-      selectedList.value = response.data.ids
-    }
+      selectedList.value = response.data.ids;
+    };
 
     const contextModalItemClick = (itemType) => {
+      handleSelectableMode();
+      closeContextModal();
       switch (itemType) {
-        case 'selectOne':
-          handleSelectableMode();
-          closeContextModal();
-          break;
         case 'selectAll':
-          handleSelectableMode();
-          closeContextModal();
-          selectAllNotifciations()
+          selectAllNotifciations();
           break;
       }
     };
@@ -613,14 +631,20 @@ button {
 
 .b-selected-elements__count {
   span {
+    font-family: 'Inter';
     background: $--b-main-gray-color;
-    border-radius: 6px;
+    border-radius: 50%;
     padding: 0px 4px;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 12px;
-    line-height: 20px;
+    line-height: 16px;
+    width: 20px;
+    height: 20px;
     color: $--b-main-white-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   display: flex;
   align-items: center;
@@ -645,16 +669,19 @@ button {
 
 .b-notification-unreaded {
   font-family: 'Inter';
-  padding: 4px 4px;
   background: $--b-main-gray-color;
+  border-radius: 50%;
+  padding: 0px 4px;
   font-style: normal;
-  border-radius: 100px;
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  min-height: 16px;
-  min-width: 16px;
+  width: 20px;
+  height: 20px;
   color: $--b-main-white-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .b-button-scroll__to-first-element {

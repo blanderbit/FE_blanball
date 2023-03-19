@@ -24,6 +24,7 @@
           :notCollapsible="!isMobileSmall"
           @handler-action="handlerAction($event, item)"
           @selected="handleSelected($event)"
+          @delete="deleteNotification"
         >
         </Notification>
       </DynamicScrollerItem>
@@ -63,7 +64,7 @@ export default {
       default: false,
     },
   },
-  emits: ['update:selected-list', 'update:scrollbar-existing'],
+  emits: ['update:selected-list', 'update:scrollbar-existing', 'delete'],
   setup(context, { emit, expose }) {
     let activeNotification = ref(0);
     let list = ref(context.selectedList);
@@ -131,9 +132,14 @@ export default {
       scrollToFirstElement: () => scroller.value.scrollToItem(0),
     });
 
+    const deleteNotification = (id) => {
+      emit('delete', id)
+    }
+
     return {
       activeNotification,
       handlerAction,
+      deleteNotification,
       handleSelected,
       isMobileSmall,
       scroller,
