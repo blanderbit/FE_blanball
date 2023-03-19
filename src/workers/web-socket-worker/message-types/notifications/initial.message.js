@@ -19,7 +19,7 @@ dayjs.updateLocale('uk', {
   relativeTime: {
     future: 'через %s',
     past: '%s тому',
-    s: 'щойно',
+    s: 'дeкілька c.',
     m: 'хв.',
     mm: '%d хв.',
     h: 'год.',

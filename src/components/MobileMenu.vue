@@ -158,6 +158,7 @@ import ScrollToTop from './ScrollToTop.vue';
 
 import { TokenWorker } from '../workers/token-worker';
 import { useUserDataStore } from '../stores/userData';
+import { NewNotifications } from '../workers/web-socket-worker/not-includes-to-socket/new_notifications';
 
 import { ROUTES } from '../router/router.const';
 
@@ -264,6 +265,7 @@ export default {
     const { user } = storeToRefs(userStore);
     const notificationList = ref();
     const selectable = ref(false);
+    const newNotificationInstance = ref(new NewNotifications());
     const selectedList = ref([]);
     const blockScrollToTopIfExist = ref(false);
     const triggerForRestart = ref('');
@@ -276,6 +278,12 @@ export default {
         title: t('no_records.noNotifications.title'),
         description: t('no_records.noNotifications.description'),
       };
+    });
+
+    const getNewNotificationInstance = computed(() => {
+      newNotificationInstance.value.countOfNewNotifications =
+        props.newNotifications;
+      return newNotificationInstance.value;
     });
 
     const userData = computed(() => {
@@ -382,6 +390,7 @@ export default {
       clientVersion,
       isShowingFoundBug,
       notificationList,
+      getNewNotificationInstance,
       menuBlockStyle,
       userData,
       mobMenuStyle,

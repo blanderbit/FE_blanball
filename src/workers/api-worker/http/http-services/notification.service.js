@@ -50,4 +50,8 @@ export class NotificationService {
   static readAllMyNotifications() {
     return AxiosInstance.get(EndpointsEnum.Notification.ReadAllMyNotifications);
   }
+
+  static getAllMyNotificationsIds() {
+    return AxiosInstance.get(EndpointsEnum.Notification.GetAllMyNotificationsIds);
+  }
 }

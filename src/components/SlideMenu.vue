@@ -1,4 +1,5 @@
 <template>
+  <Loading :is-loading="loading"/>
   <ContextModal
     v-if="isContextModalOpened"
     :clientX="contextModalX"
@@ -115,7 +116,7 @@
           <ul
             class="b_slide_menu_notification"
             :style="{
-              height: `calc(100vh - ${selectable ? 95 : 60}px - 100px - 70px)`,
+              height: `calc(100vh - ${60}px - 100px - 70px)`,
             }"
             v-if="isMenuOpened"
             ref="test"
@@ -199,6 +200,7 @@ import EmptyList from './EmptyList.vue';
 import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue';
 import ScrollToTop from './ScrollToTop.vue';
 import ContextModal from './ModalWindows/ContextModal.vue';
+import Loading from '../workers/loading-worker/Loading.vue';
 
 import { useUserDataStore } from '../stores/userData';
 import { NewNotifications } from '../workers/web-socket-worker/not-includes-to-socket/new_notifications';
@@ -215,6 +217,7 @@ export default {
   components: {
     InfiniteLoading,
     Notification,
+    Loading,
     ContextModal,
     EmptyList,
     Notifications,
@@ -252,6 +255,7 @@ export default {
   ],
   setup(context, { emit }) {
     const notificationList = ref();
+    const loading = ref(false);
     const selectable = ref(false);
     const blockScrollToTopIfExist = ref(false);
     const triggerForRestart = ref('');
@@ -324,26 +328,42 @@ export default {
       selectedList.value = [];
     };
 
+    const startLoader = () => {
+      loading.value = true
+    }
+
+    const stopLoader = () => {
+      loading.value = false
+    }
+
     const HandleAction = {
-      deleteAll: () => {
+      deleteAll: async () => {
         if (!context.notifications.length && !context.newNotifications) return;
-        API.NotificationService.deleteAllMyNotifications();
+        startLoader();
+        await API.NotificationService.deleteAllMyNotifications();
         clearSelectedList();
+        stopLoader();
       },
-      readAll: () => {
+      readAll: async () => {
         if (!context.notifications.length && !context.newNotifications) return;
-        API.NotificationService.readAllMyNotifications();
+        startLoader()
+        await API.NotificationService.readAllMyNotifications();
         clearSelectedList();
+        stopLoader()
       },
-      deleteSelected: () => {
+      deleteSelected: async () => {
         if (!selectedList.value) return;
-        API.NotificationService.deleteNotifications(selectedList.value);
+        startLoader()
+        await API.NotificationService.deleteNotifications(selectedList.value);
         clearSelectedList();
+        stopLoader()
       },
-      readSelected: () => {
+      readSelected: async () => {
         if (!selectedList.value) return;
-        API.NotificationService.readNotifications(selectedList.value);
+        startLoader()
+        await API.NotificationService.readNotifications(selectedList.value);
         clearSelectedList();
+        stopLoader()
       },
     };
 
@@ -372,14 +392,21 @@ export default {
       }
     };
 
+    const selectAllNotifciations = async () => {
+      const response = await API.NotificationService.getAllMyNotificationsIds();
+      selectedList.value = response.data.ids
+    }
+
     const contextModalItemClick = (itemType) => {
-      handleSelectableMode();
-      closeContextModal();
       switch (itemType) {
         case 'selectOne':
-          console.log(context.notifications)
+          handleSelectableMode();
+          closeContextModal();
           break;
         case 'selectAll':
+          handleSelectableMode();
+          closeContextModal();
+          selectAllNotifciations()
           break;
       }
     };
@@ -400,6 +427,7 @@ export default {
       triggerForRestart,
       selectable,
       notificationList,
+      loading,
       blockScrollToTopIfExist,
       contextModalItemClick,
       showContextModal,
