@@ -203,9 +203,12 @@
                 :userRating="userRating"
                 :userId="userData.id"
                 :userShowReviews="userData.configuration.show_reviews"
+                :userFullName="`${userData.profile.last_name} ${userData.profile.name}`"
               />
             </div>
-            <PublicProfilePlannedEvents :userId="userData.id" />
+            <PublicProfilePlannedEvents 
+              :userId="userData.id"
+              :userFullName="`${userData.profile.last_name} ${userData.profile.name}`" />
           </div>
         </div>
       </div>
@@ -402,7 +405,9 @@ export default {
     }
 
     const showCopyEmailModal = () => {
-      isCopyUserEmailModalActive.value = true
+      if (props.pageMode === 'look') {
+        isCopyUserEmailModalActive.value = true
+      }
     }
 
     const closeCopyEmailModal = () => {
@@ -410,7 +415,9 @@ export default {
     }
 
     const showCopyPhoneModal = () => {
-      isCopyUserPhoneModalActive.value = true
+      if (props.pageMode === 'look') {
+        isCopyUserPhoneModalActive.value = true
+      }
     }
 
     const closeCopyPhoneModal = () => {
@@ -609,14 +616,14 @@ $color-d2f6a2: #d2f6a2;
         gap: 4px;
 
         @include tablet {
-          top: 65px;
+          top: 80px;
         }
 
         @include desktop {
         }
 
         @media (max-width: 500px) {
-          top: 65px;
+          top: 70px;
         }
 
         @media (max-width: 350px) {

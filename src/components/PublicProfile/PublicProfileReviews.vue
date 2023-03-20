@@ -6,19 +6,21 @@
           {{ $t('player_page.rates-feedbacks') }}
         </div>
         <div class="b-user-reviews__subtitle">
-          {{ reviewsTotalCount }} {{ $t('player_page.rates') }}
+         <span v-if="reviewsTotalCount > 0">{{ reviewsTotalCount }} {{ $t('player_page.rates') }}</span>
+         <span v-else>{{ $t('player_page.no-grades') }}</span>
         </div>
       </div>
       <div class="b-public-profile__raiting-star">
         <div class="b-public-profile__user-raiting">
           {{ userRating }}
         </div>
-        <img src="../../assets/img/star.svg" alt="" />
+        <img v-if="reviewsTotalCount > 0" src="../../assets/img/star.svg" alt="" />
+        <img v-else src="../../assets/img/dashed-star.svg" alt="" />
       </div>
     </div>
     <div class="b-public-profile__reviews-list">
       <div v-if="!userShowReviews" class="b-public-profile__reviews-hidden">
-        <img src="../../assets/img/information.svg" alt="" />
+        <img src="../../assets/img/info-black.svg" alt="" />
         <span>{{ $t('player_page.feedback-hidden') }}</span>
       </div>
       <SimpleListWrapper :requestForGetData="getReviews" v-else>
@@ -49,7 +51,10 @@
           </div>
         </template>
         <template #emptyList>
-          Указать верстку что пустой список для отзывов юзера TODO
+          <div class="b-public-profile__reviews-hidden">
+            <img src="../../assets/img/info-black.svg" alt="" />
+            <span>{{ userFullName }} ще не отримував оцінок та коментарів</span>
+          </div>
         </template>
       </SimpleListWrapper>
     </div>
@@ -91,6 +96,9 @@ export default {
       type: Boolean,
       required: true,
     },
+    userFullName: {
+      type: String,
+    }
   },
   setup(props) {
     const reviewsTotalCount = ref(0);
@@ -125,7 +133,8 @@ $color-dfdeed: #dfdeed;
 $color-f57125: #f57125;
 
 .b-public-profile-reviews__block {
-  height: 550px;
+  height: calc(100vh - 45px - 133px - 40px - 90px - 60px);
+  overflow: scroll;
   @include beforeDesktop {
     padding: 16px;
     background: $--b-main-white-color;
@@ -176,13 +185,15 @@ $color-f57125: #f57125;
   }
 
   .b-public-profile__reviews-hidden {
-    @include inter(12px, 400, #6f6f77);
+    @include inter(13px, 400);
     line-height: 20px;
-    padding-top: 16px;
-    border-top: 1px solid #dfdeed;
     display: flex;
     gap: 8px;
     word-break: break-word;
+    border-radius: 6px;
+    background: #f9f9fc;
+    padding: 8px;
+    padding-left: 12px;
   }
 
   .b-public-profile__review {

@@ -360,7 +360,10 @@ $color-f0f0f4: #f0f0f4;
   align-items: flex-start;
   border-top: 1px solid $color-dfdeed;
   margin-top: 12px;
+  border-radius: 6px;
+  background: #F9F9FC;
   padding-top: 16px;
+  padding: 8px;
   img {
     margin-right: 9px;
   }
