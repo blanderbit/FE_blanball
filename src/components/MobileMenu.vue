@@ -1,4 +1,5 @@
 <template>
+  <Loading :is-loading="loading"/>
   <div class="b-mob-menu" :style="mobMenuStyle">
     <div class="b-mob-menu__logo-block">
       <div class="b-mob-menu__logo-left">
@@ -70,6 +71,7 @@
             ref="notificationList"
             v-model:selected-list="selectedList"
             v-model:scrollbar-existing="blockScrollToTopIfExist"
+            @delete="HandleAction.deleteOne"
           >
             <template #before>
               <Notification
@@ -157,12 +159,15 @@ import Notification from './Notification.vue';
 import EmptyList from './EmptyList.vue';
 import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue';
 import ScrollToTop from './ScrollToTop.vue';
+import Loading from '../workers/loading-worker/Loading.vue';
 
 import { TokenWorker } from '../workers/token-worker';
 import { useUserDataStore } from '../stores/userData';
 import { NewNotifications } from '../workers/web-socket-worker/not-includes-to-socket/new_notifications';
+import { API } from '../workers/api-worker/api.worker';
 
 import { ROUTES } from '../router/router.const';
+
 
 import NotificationIcon from '../assets/img/notification-mob-default.svg';
 import NotificationUnreadIcon from '../assets/img/notification-mob-unread-default.svg';
@@ -205,6 +210,7 @@ export default {
     EmptyList,
     InfiniteLoading,
     ScrollToTop,
+    Loading,
   },
   emit: ['closeMenu'],
   setup(props, { emit }) {
@@ -213,6 +219,7 @@ export default {
     const { user } = storeToRefs(userStore);
     const notificationList = ref();
     const selectable = ref(false);
+    const loading = ref(false);
     const newNotificationInstance = ref(new NewNotifications());
     const selectedList = ref([]);
     const blockScrollToTopIfExist = ref(false);
@@ -380,6 +387,22 @@ export default {
       });
     }
 
+    const startLoader = () => {
+      loading.value = true
+    }
+
+    const stopLoader = () => {
+      loading.value = false
+    }
+
+    const HandleAction = {
+      deleteOne: async (id) => {
+        startLoader();
+        await API.NotificationService.deleteNotifications([id]);
+        stopLoader();
+      }
+    };
+
     const logOut = () => {
       TokenWorker.clearToken();
       router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute);
@@ -400,6 +423,8 @@ export default {
       userData,
       mobMenuStyle,
       routeObject,
+      HandleAction,
+      loading,
       triggerForRestart,
       lineMenuClick,
       closeMobMenu,
