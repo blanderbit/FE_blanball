@@ -77,9 +77,7 @@
                 class="b-new-notification"
                 :notificationInstance="getNewNotificationInstance"
                 :not-collapsible="true"
-                :headerBtnText="$t('buttons.load')"
                 :deletable="false"
-                @headerBtnClick="$emit('showNewNotifications')"
                 @handler-action="$emit('reLoading'), restartInfiniteScroll()"
               >
               </Notification>

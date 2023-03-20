@@ -9,7 +9,10 @@ import { NotificationImage } from '../../../assets/img/notifications/notificatio
 @SetActions([
   {
     type: MessageActionTypes.Action,
-    text: 'Завантажити нові повідомлення',
+    buttonType: 'success',
+    buttonText: 'Завантажити нові повідомлення',
+    buttonWidth: 232,
+    buttonHeight: 28,
   },
 ])
 export class NewNotifications extends InitialMessage {
@@ -18,10 +21,9 @@ export class NewNotifications extends InitialMessage {
   set texts(value) {}
 
   get texts() {
-    return [`У вас ${this.countOfNewNotifications} нових повідомлень`];
   }
 
   createTitle() {
-    return 'System notification';
+    return `У вас є ${this.countOfNewNotifications} нових повідомлень`;
   }
 }

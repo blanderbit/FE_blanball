@@ -90,9 +90,9 @@
                 </div>
                 <div
                   class="notification-expand-button"
-                  @click="headerBtnText ? $emit('headerBtnClick') : clickExpandTextButton"
+                  @click="clickExpandTextButton"
                 >
-                  {{ headerBtnTextValue }}
+                  {{  isTextShow ? 'Згорнути' : 'Показати більше' }}
                 </div>
                 <div class="notification-actions">
                   <template v-for="item in notificationInstance.actions">
@@ -269,10 +269,6 @@ export default {
       type: Number,
       default: 0
     },
-    headerBtnText: {
-      type: String,
-      default: ''
-    },
     deletable: {
       type: Boolean,
       default: true,
@@ -324,13 +320,6 @@ export default {
       }
 
       return this.selectable
-    },
-    headerBtnTextValue() {
-      if (this.headerBtnText) {
-        return this.headerBtnText
-      } else {
-        return this.isTextShow ? 'Згорнути' : 'Показати більше'
-      }
     },
     expanding: {
       set(e) {
