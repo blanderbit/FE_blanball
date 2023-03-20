@@ -133,15 +133,13 @@ $color-dfdeed: #dfdeed;
 $color-f57125: #f57125;
 
 .b-public-profile-reviews__block {
-  height: calc(100vh - 45px - 133px - 40px - 90px - 60px);
-  overflow: scroll;
+  overflow: hidden;
   @include beforeDesktop {
     padding: 16px;
     background: $--b-main-white-color;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 12px;
     margin-top: 20px;
-    height: 400px;
   }
 }
 .b-public-profile-reviews__info {
@@ -173,15 +171,10 @@ $color-f57125: #f57125;
   margin-top: 20px;
   position: relative;
   overflow-y: scroll;
-  height: 500px;
-
-  @media (max-width: 1400px) {
-    height: 400px;
-  }
+  height: 430px;
 
   @include beforeDesktop {
     margin-top: 10px;
-    height: 320px;
   }
 
   .b-public-profile__reviews-hidden {

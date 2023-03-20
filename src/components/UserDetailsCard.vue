@@ -4,8 +4,11 @@
       <div class="b-user-card__top-part">
         <div class="b-user-card__picture-block">
           <div class="b-user-card__profile-picture">
-            <img v-if="userData.avatar_url" :src="userData.avatar_url" alt="" />
-            <Avatar v-else :full-name="fullUserName" />
+            <Avatar
+              class="b-user-card__profile-avatar"
+              :link="userData.avatar_url"
+              :full-name="fullUserName"
+            />
             <div v-if="isEditMode" class="b-user-card__add-pic-icon">
               <label for="my_file">
                 <input
@@ -235,8 +238,9 @@
             <div v-if="!isEditMode" class="b-user-card__to-show">
               <div class="b-user-card__data">
                 {{
-                  userData.position ? $t(`hashtags.position_full.${userData.position}`) :
-                  $t('profile.no-content')
+                  userData.position
+                    ? $t(`hashtags.position_full.${userData.position}`)
+                    : $t('profile.no-content')
                 }}
               </div>
               <div class="b-user-card__title">
@@ -545,12 +549,13 @@ $color-efeff6: #efeff6;
         height: 52px;
         overflow: hidden;
         border-radius: 8px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        img {
-          display: block;
-          width: 100%;
+        .b-user-card__profile-avatar {
+          ::v-deep(.b-avatar) {
+            width: 52px;
+            height: 52px;
+            border-radius: 8px;
+            font-size: 23px;
+          }
         }
         .b-user-card__add-pic-icon {
           position: absolute;

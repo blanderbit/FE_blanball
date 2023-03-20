@@ -646,6 +646,7 @@ $color-d2f6a2: #d2f6a2;
               width: 96px;
               height: 96px;
               border-radius: 4px;
+              font-size: 42px;
             }
           }
         }
@@ -768,7 +769,7 @@ $color-d2f6a2: #d2f6a2;
         overflow: hidden;
 
         @include desktop {
-          height: calc(100vh - 90px - 70px);
+          height: calc(100vh - 90px - 60px);
         }
 
         ::-webkit-scrollbar {

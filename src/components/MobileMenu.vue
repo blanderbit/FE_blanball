@@ -48,7 +48,6 @@
             height: item.height,
             'justify-content': item.alignement,
             background: item.background,
-            color: item.textColor,
           }"
           @click="lineMenuClick(item.id, item.url, 'top-menu')"
         >
@@ -56,7 +55,9 @@
             :src="item.isIconActive ? item.imgActive : item.imgInactive"
             alt=""
           />
-          <span v-if="item.value_show">
+          <span :style="{
+            color: item.textColor,
+          }" v-if="item.value_show">
             {{ item.value }}
           </span>
         </div>
@@ -163,7 +164,7 @@ import { NewNotifications } from '../workers/web-socket-worker/not-includes-to-s
 import { ROUTES } from '../router/router.const';
 
 import NotificationIcon from '../assets/img/notification-small.svg';
-import NotificationWhite from '../assets/img/notification-white.svg';
+import NotificationWhite from '../assets/img/notifications-not-read-mobile-icon.svg';
 import Record from '../assets/img/record.svg';
 import RecordWhite from '../assets/img/record-white.svg';
 import Members from '../assets/img/members.svg';
@@ -217,6 +218,7 @@ export default {
         height: '76px',
         alignement: 'flex-start',
         background: '#FFFFFF',
+        textColor: '#262541'
       },
       {
         id: 1,
@@ -322,7 +324,7 @@ export default {
           height: '76px',
           alignement: 'flex-start',
           background: '#FFFFFF',
-          textColor: '$--b-main-gray-color',
+          textColor: '#575775',
         };
       });
     }
@@ -350,7 +352,7 @@ export default {
             width: '80%',
             height: '52px',
             alignement: 'flex-start',
-            background: '$--b-main-gray-color',
+            background: '#575775',
             textColor: '#fff',
           };
         } else {
@@ -367,7 +369,7 @@ export default {
             height: '52px',
             alignement: 'center',
             background: '#FFFFFF',
-            textColor: '$--b-main-gray-color',
+            textColor: '#575775',
           };
         } else {
           return item;
@@ -547,6 +549,8 @@ $color-1ccd62: #1ccd62;
           border: none;
         }
         img {
+          width: 21.5px;
+          height: 21.5px;
         }
         span {
           @include inter(12px, 500);
@@ -622,7 +626,7 @@ $color-1ccd62: #1ccd62;
   gap: 8px;
   max-width: 193px;
   position: absolute;
-  width: max-content;
+  min-width: max-content;
   bottom: 70px;
   cursor: pointer;
   left: 50%;

@@ -91,17 +91,16 @@ $color-c8ebe7: #c8ebe7;
   }
 
   &-big-circle {
-    width: 144px;
-    height: 144px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
     z-index: 2;
 
-    @include mobile {
-      width: 120px;
-      height: 120px;
+    &.b-avatar-words {
+      font-size: 54px;
     }
   }
 
@@ -121,17 +120,21 @@ $color-c8ebe7: #c8ebe7;
     font-family: 'Exo 2';
     font-style: normal;
     font-weight: 600;
-    font-size: 14px;
     line-height: 20px;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
+
+    &.b-avatar-words {
+      font-size: 15px;
+    }
   }
 
   &-words {
     color: $--b-main-green-color;
     font-family: 'Exo 2';
     font-style: normal;
+    font-size: 18px;
     font-weight: 700;
     background: $color-c8ebe7;
   }
