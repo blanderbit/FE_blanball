@@ -59,7 +59,8 @@
             <div class="notification-date">
               {{ formatDate }}
             </div>
-            <img class="delete-notfication-cross" src="../assets/img/cross.svg" alt=""
+            <img v-if="deletable" class="delete-notfication-cross" 
+              src="../assets/img/cross.svg" alt=""
               @click="$emit('delete', notificationInstance?.notification_id)"/>
           </div>
         </div>
@@ -89,9 +90,9 @@
                 </div>
                 <div
                   class="notification-expand-button"
-                  @click="clickExpandTextButton"
+                  @click="headerBtnText ? $emit('headerBtnClick') : clickExpandTextButton"
                 >
-                  {{ isTextShow ? 'Згорнути' : 'Показати більше' }}
+                  {{ headerBtnTextValue }}
                 </div>
                 <div class="notification-actions">
                   <template v-for="item in notificationInstance.actions">
@@ -267,6 +268,14 @@ export default {
     selectedCount: {
       type: Number,
       default: 0
+    },
+    headerBtnText: {
+      type: String,
+      default: ''
+    },
+    deletable: {
+      type: Boolean,
+      default: true,
     }
   },
   data() {
@@ -315,6 +324,13 @@ export default {
       }
 
       return this.selectable
+    },
+    headerBtnTextValue() {
+      if (this.headerBtnText) {
+        return this.headerBtnText
+      } else {
+        return this.isTextShow ? 'Згорнути' : 'Показати більше'
+      }
     },
     expanding: {
       set(e) {

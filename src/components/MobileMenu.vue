@@ -77,6 +77,9 @@
                 class="b-new-notification"
                 :notificationInstance="getNewNotificationInstance"
                 :not-collapsible="true"
+                :headerBtnText="$t('buttons.load')"
+                :deletable="false"
+                @headerBtnClick="$emit('showNewNotifications')"
                 @handler-action="$emit('reLoading'), restartInfiniteScroll()"
               >
               </Notification>
@@ -143,7 +146,7 @@
 </template>
 
 <script>
-import { ref, computed, inject, onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed, inject, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
@@ -163,7 +166,8 @@ import { NewNotifications } from '../workers/web-socket-worker/not-includes-to-s
 
 import { ROUTES } from '../router/router.const';
 
-import NotificationIcon from '../assets/img/notification-small.svg';
+import NotificationIcon from '../assets/img/notification-mob-default.svg';
+import NotificationUnreadIcon from '../assets/img/notification-mob-unread-default.svg';
 import NotificationWhite from '../assets/img/notifications-not-read-mobile-icon.svg';
 import Record from '../assets/img/record.svg';
 import RecordWhite from '../assets/img/record-white.svg';
@@ -206,6 +210,19 @@ export default {
   },
   emit: ['closeMenu'],
   setup(props, { emit }) {
+    const router = useRouter();
+    const userStore = useUserDataStore();
+    const { user } = storeToRefs(userStore);
+    const notificationList = ref();
+    const selectable = ref(false);
+    const newNotificationInstance = ref(new NewNotifications());
+    const selectedList = ref([]);
+    const blockScrollToTopIfExist = ref(false);
+    const triggerForRestart = ref('');
+    const isShowingFoundBug = ref(true);
+    const clientVersion = ref(inject('clientVersion'));
+    const { t } = useI18n();
+
     const topMenu = ref([
       {
         id: 0,
@@ -262,18 +279,6 @@ export default {
         url: ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute,
       },
     ]);
-    const router = useRouter();
-    const userStore = useUserDataStore();
-    const { user } = storeToRefs(userStore);
-    const notificationList = ref();
-    const selectable = ref(false);
-    const newNotificationInstance = ref(new NewNotifications());
-    const selectedList = ref([]);
-    const blockScrollToTopIfExist = ref(false);
-    const triggerForRestart = ref('');
-    const isShowingFoundBug = ref(true);
-    const clientVersion = ref(inject('clientVersion'));
-    const { t } = useI18n();
 
     const emptyListMessages = computed(() => {
       return {

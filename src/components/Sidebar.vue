@@ -1,4 +1,5 @@
 <template>
+  <Loading :is-loading="loading" />
   <BugReportModal
     v-if="isBugReportModalOpened"
     @close-modal="closeBugReportModal"
@@ -15,6 +16,7 @@
       @loadingInfinite="loadDataNotifications(paginationPage + 1, $event)"
       @reLoading="loadDataNotifications(1, null, true)"
       @loading="loadDataNotifications(1, null, true)"
+      @showNewNotifications="loadDataNotifications(1, null, true, true)"
     />
     <div class="b_sidebar">
       <div class="b_sidebar_top-block">
@@ -91,6 +93,7 @@
     @loading="loadDataNotifications(1, null, true)"
     @close-menu="isMobMenuActive = false"
     @foundBug="foundBug"
+    @showNewNotifications="loadDataNotifications(1, null, true, true)"
   />
 </template>
 
@@ -105,6 +108,7 @@ import Avatar from './../components/Avatar.vue';
 import BugReportModal from './ModalWindows/BugReportModal.vue';
 import TabLabel from './TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';
+import Loading from '../workers/loading-worker/Loading.vue';
 
 import { useUserDataStore } from '../stores/userData';
 import { useEventDataStore } from '../stores/eventsData';
@@ -148,6 +152,7 @@ export default {
     Avatar,
     BugReportModal,
     TabLabel,
+    Loading,
     MobileMenu,
   },
   setup() {
@@ -155,6 +160,7 @@ export default {
     const { user } = storeToRefs(userStore);
     const eventStore = useEventDataStore();
     const notReadNotificationCount = ref(0);
+    const loading = ref(false);
     const isMobMenuActive = ref(false);
     const skipids = ref([]);
     const userFullName = computed(
@@ -170,11 +176,6 @@ export default {
       isMobMenuActive.value = false;
       isBugReportModalOpened.value = true;
     };
-
-    watch(
-      () => user,
-      (newData, oldData) => {}
-    );
 
     const menuItems = computed(() => [
       {
@@ -251,13 +252,25 @@ export default {
       beforeConcat: (elements, newList) => findDublicates(elements, newList),
     });
 
-    const loadDataNotifications = (pageNumber, $state, forceUpdate) => {
+    const loadDataNotifications = (
+      pageNumber,
+      $state,
+      forceUpdate,
+      isLoading
+    ) => {
+      if (isLoading) {
+        loading.value = true;
+      }
       if (forceUpdate) {
         paginationClearData();
         skipids.value = [];
       }
 
-      paginationLoad({ pageNumber, $state, forceUpdate });
+      paginationLoad({ pageNumber, $state, forceUpdate }).then(() => {
+        if (isLoading) {
+          loading.value = false;
+        }
+      });
     };
 
     const handleMessageInSidebar = (instanceType) => {
@@ -329,6 +342,7 @@ export default {
       isMenuOpened,
       currentHoverSideBarItemID,
       userFullName,
+      loading,
       isBugReportModalOpened,
       loadDataNotifications,
       leaveHoverSidebarItem,

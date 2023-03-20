@@ -18,7 +18,7 @@ export class NewNotifications extends InitialMessage {
   set texts(value) {}
 
   get texts() {
-    return [`У вас новіе уведомления - ${this.countOfNewNotifications}`];
+    return [`У вас ${this.countOfNewNotifications} нових повідомлень`];
   }
 
   createTitle() {
