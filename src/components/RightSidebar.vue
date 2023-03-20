@@ -11,8 +11,12 @@
 
     <div :style="eventCardsStyle" class="b-right-sidebar__cards-block">
       <Spinner v-if="loading" />
-      <div v-for="event in popularEvents">
+      <div v-if="popularEvents.length" v-for="event in popularEvents">
         <SmallEventCard :item="event" @clickSmallEventCard="goToEventPage" />
+      </div>
+      <div v-if="!popularEvents.length && !loading" class="b-right-sidebar__no-events">
+        <img src="../assets/img/info-black.svg" alt="">
+        <span>{{ $t('no_records.noPopularEvents.title') }}</span>
       </div>
     </div>
   </div>
@@ -121,6 +125,16 @@ function goToEventPage(id) {
     &::-webkit-scrollbar {
       display: none; /* for Chrome, Safari, and Opera */
     }
+  }
+  .b-right-sidebar__no-events {
+    @include inter(13px, 400);
+    line-height: 20px;
+    display: flex;
+    gap: 8px;
+    word-break: break-word;
+    border-radius: 6px;
+    background: #f9f9fc;
+    padding: 8px;
   }
 }
 </style>
