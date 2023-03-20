@@ -235,7 +235,7 @@
             <div v-if="!isEditMode" class="b-user-card__to-show">
               <div class="b-user-card__data">
                 {{
-                  $t(`hashtags.position_full.${userData.position}`) ||
+                  userData.position ? $t(`hashtags.position_full.${userData.position}`) :
                   $t('profile.no-content')
                 }}
               </div>
@@ -430,8 +430,6 @@ export default {
         return `${dayjs(props.userData?.birthday)
           .locale(dayjsUkrLocale)
           .format('D MMMM YYYY')} p.`;
-      } else {
-        return t('profile.no-birth-date');
       }
     });
 
@@ -510,6 +508,7 @@ $color-efeff6: #efeff6;
   height: fit-content;
   @media (max-width: 1200px) {
     background: none;
+    padding-top: 0px;
   }
   @media (min-width: 1400px) {
     flex-basis: 508px;

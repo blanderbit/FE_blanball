@@ -4,3 +4,4 @@ export { UpdateMessageAcceptOrDeclineParticipationToEventUpdation } from './upda
 export { NotificationBulkDeleteUpdation } from './notification_delete.js';
 export { NotificationAllDeletedNotificationsUpdation } from './all_user_notifications_deleted.js';
 export { NotificationAllReadedNotificationsUpdation } from './all_user_notifications_readed.js';
+export { UpdateMessageUserOnline } from './user_online.js';

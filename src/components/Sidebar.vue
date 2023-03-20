@@ -109,7 +109,10 @@ import MobileMenu from './MobileMenu.vue';
 import { useUserDataStore } from '../stores/userData';
 import { useEventDataStore } from '../stores/eventsData';
 import { createNotificationFromData } from '../workers/utils-worker';
-import { AuthWebSocketWorkerInstance } from './../workers/web-socket-worker';
+import {
+  AuthWebSocketWorkerInstance,
+  GeneralSocketWorkerInstance,
+} from './../workers/web-socket-worker';
 import { API } from '../workers/api-worker/api.worker';
 import { PaginationWorker } from '../workers/pagination-worker';
 import { TokenWorker } from '../workers/token-worker';
@@ -276,12 +279,21 @@ export default {
       getNotificationsCount();
     };
 
+    const handleGeneralMessageInSidebar = (instanceType) => {
+      instanceType.handleUpdate({
+        paginationElements,
+        paginationLoad,
+        paginationPage,
+      });
+    };
+
     const goToProfile = () => {
       router.push(ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute);
       isMenuOpened.value = false;
     };
 
     AuthWebSocketWorkerInstance.registerCallback(handleMessageInSidebar);
+    GeneralSocketWorkerInstance.registerCallback(handleGeneralMessageInSidebar);
 
     NotificationsBus.on('SidebarClearData', () => {
       skipids.value = [];
