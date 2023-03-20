@@ -1,6 +1,6 @@
 <template>
   <Loading :is-loading="loading" />
-  <ShareEventModal
+  <CopyModal
     v-if="isShareEventModalOpened"
     :shareLink="currentFullRoute"
     @copyLinkButtonClick="copyLinkButtonClick"
@@ -225,7 +225,7 @@ import GreenBtn from '../../../components/GreenBtn.vue';
 import RightSidebar from '../../../components/RightSidebar.vue';
 import EventInfoUsersTable from '../../../components/EventInfoUsersTable.vue';
 import PositionMap from '../../../components/maps/PositionMap.vue';
-import ShareEventModal from '../../../components/ModalWindows/ShareEventModal.vue';
+import CopyModal from '../../../components/ModalWindows/CopyModal.vue';
 import Avatar from '../../../components/Avatar.vue';
 import TabLabel from '../../../components/TabLabel.vue';
 import ListOfEventRequestsToParticipations from '../../../components/ListOfEventRequestsToParticipations.vue';
@@ -260,7 +260,7 @@ export default {
     RightSidebar,
     EventInfoUsersTable,
     PositionMap,
-    ShareEventModal,
+    CopyModal,
     Avatar,
     Loading,
     TabLabel,

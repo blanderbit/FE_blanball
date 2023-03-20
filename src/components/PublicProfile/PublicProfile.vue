@@ -1,4 +1,59 @@
 <template>
+  <CopyModal v-if="isCopyUserPhoneModalActive"
+  @closeModal="closeCopyPhoneModal">
+    <template #title>
+      {{ $t('profile.phone-number') }}
+    </template>
+    <template #header-image>
+      <img src="../../assets/img/white-phone-icon.svg" alt="" />
+    </template>
+    <template #input>
+      <InputComponent
+        :height="40"
+        :outsideTitle="true"
+        :title-width="0"
+        :title="getUkrainianOperator(userData.phone)"
+        :isReadOnly="true"
+        v-model="userData.phone"
+        v-maska="'+## ### ### ## ##'"
+      />
+    </template>
+    <template #button>
+      <GreenBtn
+        :text="$t('profile.copy-number')"
+        :height="40"
+        @click-function="copyToClipBoard(userData.phone)"
+      />
+    </template>
+  </CopyModal>
+
+  <CopyModal v-if="isCopyUserEmailModalActive"
+    @closeModal="closeCopyEmailModal">
+    <template #title>
+      {{ $t('profile.e-mail') }}
+    </template>
+    <template #header-image>
+      <img src="../../assets/img/white-letter-icon.svg" alt="" />
+    </template>
+    <template #input>
+      <InputComponent
+        :height="40"
+        :outsideTitle="true"
+        :title-width="0"
+        :title="getEmailProvider(userData.email)"
+        :isReadOnly="true"
+        v-model="userData.email"
+      />
+    </template>
+    <template #button>
+      <GreenBtn
+        :text="$t('profile.copy-address')"
+        :height="40"
+        @click-function="copyToClipBoard(userData.phone)"
+      />
+    </template>
+  </CopyModal>
+
   <InviteUserToEventModal
     v-if="isInviteUserModalOpened"
     :userData="userData"
@@ -91,12 +146,14 @@
                   :text="$t('player_page.write-email')"
                   :icon="icons.letter"
                   :height="36"
+                  @click-function="showCopyEmailModal"
                 />
                 <WhiteBtn
                   class="b-connection__button b-call-phone__button"
                   :text="$t('player_page.call')"
                   :icon="icons.phone"
                   :height="36"
+                  @click-function="showCopyPhoneModal"
                 />
               </div>
             </div>
@@ -121,7 +178,7 @@
           </div>
           <div class="b-public-profile__main-side-left-block">
             <div class="b-public-profile__second-block">
-                <div class="b-second-block__user-features-block">
+              <div class="b-second-block__user-features-block">
                 <div class="b-user-features__title">
                   {{ $t('profile.game-features') }}
                 </div>
@@ -163,6 +220,9 @@ import WhiteBtn from '../WhiteBtn.vue';
 import PublicProfileReviews from './PublicProfileReviews.vue';
 import PublicProfilePlannedEvents from './PublicProfilePlannedEvents.vue';
 import InviteUserToEventModal from '../ModalWindows/InviteUserToEventModal.vue';
+import CopyModal from '../ModalWindows/CopyModal.vue';
+import InputComponent from '../forms/InputComponent.vue';
+import GreenBtn from '../GreenBtn.vue';
 
 import useWindowWidth from '../../utils/widthScreen';
 
@@ -173,7 +233,7 @@ import GamingLegIcon from '../../assets/img/gaming-leg.svg';
 import DumbbellIcon from '../../assets/img/dumbbell.svg';
 import RulerIcon from '../../assets/img/ruler.svg';
 import StarIcon from '../../assets/img/star.svg';
-import BackgroundTop from '../../assets/img/user-page-back.svg'
+import BackgroundTop from '../../assets/img/user-page-back.svg';
 
 export default {
   props: {
@@ -195,7 +255,10 @@ export default {
     WhiteBtn,
     PublicProfilePlannedEvents,
     PublicProfileReviews,
+    CopyModal,
     InviteUserToEventModal,
+    InputComponent,
+    GreenBtn,
     StarRating,
   },
   setup(props) {
@@ -203,6 +266,8 @@ export default {
     const noFeatureData = '----';
     const isInviteUserModalOpened = ref(false);
     const isPersonalPreview = ref(false);
+    const isCopyUserPhoneModalActive = ref(false);
+    const isCopyUserEmailModalActive = ref(false);
 
     switch (props.pageMode) {
       case 'look':
@@ -216,10 +281,9 @@ export default {
     const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
       useWindowWidth();
 
-
     const backgroundTop = computed(() => {
-        return BackgroundTop
-    })
+      return BackgroundTop;
+    });
 
     const icons = computed(() => {
       return {
@@ -308,16 +372,65 @@ export default {
       ];
     });
 
+    function getUkrainianOperator(phoneNumber) {
+      phoneNumber = phoneNumber.replace(/\s|\+|-/g, '').substr(2);
+      const firstThreeDigits = phoneNumber.slice(0, 3);
+
+      const kyivstarRange = ['067', '068', '096', '097', '098'];
+      const vodafoneRange = ['050', '066', '095', '099'];
+      const lifecellRange = ['063', '073', '093'];
+
+      // Check which operator the phone number belongs to
+      if (kyivstarRange.includes(firstThreeDigits)) {
+        return 'Kyivstar';
+      } else if (vodafoneRange.includes(firstThreeDigits)) {
+        return 'Vodafone';
+      } else if (lifecellRange.includes(firstThreeDigits)) {
+        return 'Lifecell';
+      } else {
+        return 'Unknown operator';
+      }
+    }
+
+    function getEmailProvider(email) {
+      const domain = email.split('@')[1].split('.')[0];
+      return domain.charAt(0).toUpperCase() + domain.slice(1);
+    }
+
+    const showCopyEmailModal = () => {
+      isCopyUserEmailModalActive.value = true
+    }
+
+    const closeCopyEmailModal = () => {
+      isCopyUserEmailModalActive.value = false
+    }
+
+    const showCopyPhoneModal = () => {
+      isCopyUserPhoneModalActive.value = true
+    }
+
+    const closeCopyPhoneModal = () => {
+      isCopyUserPhoneModalActive.value = false
+    }
+
     return {
       icons,
       avatarType,
       isInviteUserModalOpened,
       userRating,
       playFeatures,
+      isCopyUserPhoneModalActive,
+      isCopyUserEmailModalActive,
       backgroundTop,
       isPersonalPreview,
+      getEmailProvider,
+      getUkrainianOperator,
       openInviteUserModal,
       closeInviteUserModal,
+      closeCopyPhoneModal,
+      showCopyPhoneModal,
+      closeCopyEmailModal,
+      showCopyEmailModal,
     };
   },
 };
@@ -655,7 +768,6 @@ $color-d2f6a2: #d2f6a2;
         ::-webkit-scrollbar {
           display: none;
         }
-
 
         @media (max-width: 1400px) {
           width: 350px;
