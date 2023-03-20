@@ -1,7 +1,7 @@
 <template>
   <label :for="fieldId" class="checkbox blue">
     <input
-      @input="(event) => $emit('update:checked', event.target.checked)"
+      @input="(event) => !disabled ? $emit('update:checked', event.target.checked) : null"
       type="checkbox"
       :checked="checked"
       :id="fieldId"
@@ -24,6 +24,10 @@ export default {
     checked: {
       type: Boolean,
     },
+    disabled: {
+      type: Boolean,
+      default: false
+    }
   },
 };
 </script>

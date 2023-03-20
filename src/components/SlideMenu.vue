@@ -53,6 +53,7 @@
               <span v-else class="b-button-text">
                 {{ $t('slide_menu.cancel-manage') }}
               </span>
+              <img v-if="!selectable" src="../assets/img/dots.svg" alt="">
             </button>
           </div>
           <div
@@ -66,6 +67,9 @@
                 @click="clearSelectedList"
               />
               <span>{{ selectedList.length }}</span>
+              <div v-if="selectedList.length >= 100" class="b-selected-elements__max">
+                (макс.)
+              </div>
             </div>
 
             <div class="d-flex">
@@ -181,7 +185,7 @@
 </template>
 
 <script>
-import { ref, inject, computed, watch, onBeforeUnmount } from 'vue';
+import { ref, inject, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { v4 as uuid } from 'uuid';
@@ -269,6 +273,7 @@ export default {
       }
     );
 
+  
     const arrowPosition = computed(() => {
       return context.isMenuOpened ? sidebarArrowBack : sidebarArrow;
     });
@@ -624,5 +629,24 @@ button {
   border-bottom: 1px dashed $color-dfdeed;
   gap: 6px;
   cursor: pointer;
+}
+
+.b-notifictions-actions__button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.b-selected-elements__max {
+  font-family: 'Inter';
+font-style: normal;
+font-weight: 400;
+font-size: 13px;
+line-height: 24px;
+/* or 185% */
+
+
+/* txt/primary */
+
+color: #262541;
 }
 </style>

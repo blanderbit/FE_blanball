@@ -142,6 +142,8 @@
               </div>
               <div class="b-public-profile__connection-buttons">
                 <WhiteBtn
+                  v-if="userData.configuration.email"
+                  :style="`flex-basis: ${userData.configuration.phone ? '57%' : '100%'}`"
                   class="b-connection__button b-send-email__button"
                   :text="$t('player_page.write-email')"
                   :icon="icons.letter"
@@ -149,6 +151,8 @@
                   @click-function="showCopyEmailModal"
                 />
                 <WhiteBtn
+                  v-if="userData.configuration.phone"
+                  :style="`flex-basis: ${userData.configuration.email ? '43%' : '100%'}`"
                   class="b-connection__button b-call-phone__button"
                   :text="$t('player_page.call')"
                   :icon="icons.phone"
@@ -166,7 +170,7 @@
                   {{ $t('player_page.approved') }}
                 </span>
               </div>
-              <div class="b-public-profile__description">
+              <div v-if="userData.profile.about_me" class="b-public-profile__description">
                 <div class="b-description__title">
                   {{ $t('player_page.about-yourself') }}
                 </div>
@@ -474,11 +478,11 @@ $color-d2f6a2: #d2f6a2;
   }
 
   @include beforeDesktop {
-    top: 75%;
+    top: 80%;
   }
 
   @include tabletAndMobile {
-    top: 100%;
+    top: 110%;
   }
 
   @media (max-width: 430px) {
@@ -608,6 +612,9 @@ $color-d2f6a2: #d2f6a2;
           top: 65px;
         }
 
+        @include desktop {
+        }
+
         @media (max-width: 500px) {
           top: 65px;
         }
@@ -703,14 +710,6 @@ $color-d2f6a2: #d2f6a2;
           @include inter(12px, 500);
           color: $--b-main-gray-color !important;
           line-height: 20px;
-        }
-
-        .b-send-email__button {
-          flex-basis: 57%;
-        }
-
-        .b-call-phone__button {
-          flex-basis: 43%;
         }
       }
     }

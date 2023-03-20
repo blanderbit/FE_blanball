@@ -20,6 +20,7 @@
           :notificationInstance="item"
           :selectable="selectable"
           :active="activeNotification === item.notification_id"
+          :selectedCount="list.length"
           :checked="selectedList.includes(item.notification_id)"
           :notCollapsible="!isMobileSmall"
           @handler-action="handlerAction($event, item)"
@@ -117,7 +118,9 @@ export default {
 
     const handleSelected = (e) => {
       if (e.selected) {
-        list.value.push(e.notification.notification_id);
+        if (list.value.length < 100) {
+          list.value.push(e.notification.notification_id);
+        }
       } else {
         const index = list.value.findIndex(
           (item) => item === e.notification.notification_id
@@ -138,6 +141,7 @@ export default {
 
     return {
       activeNotification,
+      list,
       handlerAction,
       deleteNotification,
       handleSelected,

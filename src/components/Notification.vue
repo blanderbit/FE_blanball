@@ -39,7 +39,7 @@
           >
             {{ notificationInstance.sender }}
           </div>
-          <div class="b-selectable" v-if="selectable">
+          <div class="b-selectable" v-if="selectableValue">
             <checkbox
               :checked="checked"
               :field-id="notificationInstance?.notification_id"
@@ -264,6 +264,10 @@ export default {
       type: String,
       default: 'notification-sidebar',
     },
+    selectedCount: {
+      type: Number,
+      default: 0
+    }
   },
   data() {
     return {
@@ -280,6 +284,7 @@ export default {
       }
     },
   },
+
   methods: {
     start() {
       this.loading = true;
@@ -303,6 +308,13 @@ export default {
     },
     isStandard() {
       return this.notificationType === 'standard';
+    },
+    selectableValue() {
+      if (this.selectedCount >= 100 && !this.checked) {
+        return false
+      }
+
+      return this.selectable
     },
     expanding: {
       set(e) {
