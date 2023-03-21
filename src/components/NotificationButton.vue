@@ -14,7 +14,7 @@
     :text="buttonData.buttonText"
     :height="buttonData.buttonHeight"
     :width="buttonData.buttonWidth"
-    :disabed="buttonDisabled"
+    :disabled="buttonDisabled"
     :main-color="notificationType === 'notification-push' ? '#FFFFFF' : '#575775'"
     :is-border="notificationType === 'notification-push'? true : false"
     @click-function="$emit('click-function')"
@@ -25,7 +25,7 @@
     :text="buttonData.buttonText"
     :height="buttonData.buttonHeight"
     :width="buttonData.buttonWidth"
-    :disabed="buttonDisabled"
+    :disabled="buttonDisabled"
     @click-function="$emit('click-function')"
   />
 </template>

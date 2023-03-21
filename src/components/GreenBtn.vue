@@ -77,7 +77,7 @@ export default {
         ...props.fontStyles,
         width: props.width ? props.width + 'px' : '100%',
         height: props.height + 'px',
-        background: !props.disabled ? props.backgroundColor : '#EFEFF6',
+        background: props.backgroundColor,
         // 'justify-content': props.iconRight || props.icon ? 'space-around' : 'center'
         'justify-content': 'center',
       };

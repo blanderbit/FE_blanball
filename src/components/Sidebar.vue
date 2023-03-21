@@ -278,7 +278,8 @@ export default {
       pageNumber,
       $state,
       forceUpdate,
-      isLoading
+      isLoading,
+      isClearData
     ) => {
       if (isLoading) {
         loading.value = true;
@@ -286,6 +287,10 @@ export default {
       if (forceUpdate) {
         paginationClearData();
         skipids.value = [];
+      }
+
+      if (isClearData) {
+        paginationClearData();
       }
 
       paginationLoad({ pageNumber, $state, forceUpdate }).then(() => {
@@ -299,11 +304,11 @@ export default {
       switch (tabType) {
         case 'NotReadNotifications':
           filters.value.type.value = 'Unread'
-          loadDataNotifications(1, null, false, true)
+          loadDataNotifications(1, null, false, true, true);
           break;
         case 'AllNotifications':
           filters.value.type.value = ''
-          loadDataNotifications(1, null, false, true);
+          loadDataNotifications(1, null, false, true, true);
           break;
       }
     };

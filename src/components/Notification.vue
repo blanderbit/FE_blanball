@@ -100,7 +100,7 @@
                       @click-function="$emit('handler-action', item)"
                       :buttonData="item"
                       :notificationType="notificationType"
-                      :buttonDisabled="checked"
+                      :buttonDisabled="selectable"
                     >
                     </NotificationButton>
                   </template>
@@ -147,10 +147,9 @@
             >
               <template v-for="item in notificationInstance.actions">
                 <NotificationButton
-                  @click="$emit('handler-action', item)"
+                  @click-function="$emit('handler-action', item)"
                   :buttonData="item"
                   :notificationType="notificationType"
-                  :buttonDisabled="checked"
                 >
                 </NotificationButton>
               </template>
@@ -188,7 +187,7 @@
           >
             <template v-for="item in notificationInstance.actions">
               <NotificationButton
-                @click="$emit('handler-action', item)"
+                @click-function="$emit('handler-action', item)"
                 :buttonData="item"
                 :notificationType="notificationType"
               >

@@ -23,7 +23,14 @@ export class NewNotifications extends InitialMessage {
   get texts() {
   }
 
-  createTitle() {
+  get title() {
     return `У вас є ${this.countOfNewNotifications} нових повідомлень`;
+  }
+
+  set title(value) {
+
+  }
+  
+  createTitle() {
   }
 }

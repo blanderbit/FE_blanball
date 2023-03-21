@@ -101,9 +101,12 @@
               </button>
             </div>
           </div>
-          <div v-if="isMenuOpened" class="b-notifications__tabs"
+          <div
+            v-if="isMenuOpened"
+            class="b-notifications__tabs"
             :style="`margin-top: ${notifications.length ? 16 : 28}px; 
-                     margin-bottom: ${notifications.length ? 0 : 16}px;`">
+                     margin-bottom: ${notifications.length ? 0 : 16}px;`"
+          >
             <div
               v-for="tab in tabs"
               :class="[
@@ -112,9 +115,7 @@
               ]"
               @click="changeTab(tab.id, tab.type)"
             >
-              <div
-                class="b-notifications-title me-1"
-              >
+              <div class="b-notifications-title me-1">
                 {{ $t(tab.text) }}
               </div>
               <div
@@ -129,7 +130,7 @@
             class="b_slide_menu_notification"
             :style="{
               height: `calc(100vh - ${
-                selectedList.length > 0 ? 105 : 75
+                selectedList.length > 0 ? 110 : 80
               }px - 100px - 70px)`,
             }"
             v-if="isMenuOpened"
@@ -189,13 +190,18 @@
             </div>
           </div>
           <div class="b_slide_menu_bottom-line">
-            {{ $t('slide_menu.version') }}
-            <router-link
-              :to="routeObject.APPLICATION.VERSION.absolute"
-              @click="$emit('close')"
-            >
-              <span>{{ clientVersion }}</span>
-            </router-link>
+            <div class="b-blanball-version">
+              {{ $t('slide_menu.version') }}
+              <router-link
+                :to="routeObject.APPLICATION.VERSION.absolute"
+                @click="$emit('close')"
+              >
+                <span>{{ clientVersion }}</span>
+              </router-link>
+            </div>
+            <div class="b-blanball-made-by-flumx">
+              Розроблено: FlumX
+            </div>
           </div>
         </div>
       </div>
@@ -560,14 +566,19 @@ $color-efeff6: #efeff6;
         font-size: 12px;
         line-height: 16px;
         color: $color-8a8aa8;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 16px;
 
-        span {
+        a {
           text-decoration: none;
-          font-style: normal;
-          font-weight: 600;
-          font-size: 12px;
-          line-height: 16px;
           color: $color-8a8aa8;
+        }
+
+        .b-blanball-version,
+        .b-blanball-made-by-flumx {
+          border-bottom: 1px dashed #dfdeed;
         }
       }
     }
