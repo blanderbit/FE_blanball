@@ -27,8 +27,8 @@ import { WebSocketTypes } from '../../web.socket.types';
 export class LeftFeedbackMessage extends InitialMessage {
   createTexts(data) {
     return [
+      data.review.text
     ];
-    // TODO Максим не работает вот эта нотификация 
   }
 
   createTitle() {
