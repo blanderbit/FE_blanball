@@ -6,4 +6,6 @@ export default {
   'read-all': 'Прочитати всі',
   'cancel-manage': 'Скасувати керування',
   'mark-as-viewed': 'Відмітити як прочитане',
+  'not-read': 'Непрочитані',
+  'all-notifications': 'Усі повідомлення'
 };

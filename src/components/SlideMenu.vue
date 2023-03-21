@@ -53,7 +53,7 @@
               <span v-else class="b-button-text">
                 {{ $t('slide_menu.cancel-manage') }}
               </span>
-              <img v-if="!selectable" src="../assets/img/dots.svg" alt="">
+              <img v-if="!selectable" src="../assets/img/dots.svg" alt="" />
             </button>
           </div>
           <div
@@ -67,7 +67,10 @@
                 @click="clearSelectedList"
               />
               <span>{{ selectedList.length }}</span>
-              <div v-if="selectedList.length >= 100" class="b-selected-elements__max">
+              <div
+                v-if="selectedList.length >= 100"
+                class="b-selected-elements__max"
+              >
                 (макс.)
               </div>
             </div>
@@ -98,21 +101,34 @@
               </button>
             </div>
           </div>
-          <div class="b-notifications__tabs">
-            <div v-if="notifications.length" class="b-notifications-title me-1">
-              {{ $t('slide_menu.notifications') }}
-            </div>
+          <div v-if="isMenuOpened" class="b-notifications__tabs">
             <div
-              class="b-notification-unreaded d-flex align-items-center justify-content-center me-1"
-              v-if="notReadNotificationCount - newNotifications > 0 && !selectable"
+              v-for="tab in tabs"
+              :class="[
+                'b-notification-tab',
+                { selected: tab.id === selectedTabId },
+              ]"
             >
-              {{ notReadNotificationCount - newNotifications }}
+              <div
+                class="b-notifications-title me-1"
+                @click="changeTab(tab.id, tab.type)"
+              >
+                {{ $t(tab.text) }}
+              </div>
+              <div
+                class="b-notification-unreaded d-flex align-items-center justify-content-center me-1"
+                v-if="tab.count > 0"
+              >
+                {{ tab.count }}
+              </div>
             </div>
           </div>
           <ul
             class="b_slide_menu_notification"
             :style="{
-              height: `calc(100vh - ${selectedList.length > 0 ? 90 : 60}px - 100px - 70px)`,
+              height: `calc(100vh - ${
+                selectedList.length > 0 ? 90 : 60
+              }px - 100px - 70px)`,
             }"
             v-if="isMenuOpened"
             ref="test"
@@ -259,12 +275,27 @@ export default {
     const newNotificationInstance = ref(new NewNotifications());
     const clientVersion = ref(inject('clientVersion'));
     const { t } = useI18n();
+    const selectedTabId = ref(1);
+
+    const tabs = computed(() => [
+      {
+        id: 1,
+        text: 'slide_menu.all-notifications',
+        type: 'AllNotifications',
+        count: context.totalNotificationsCount - context.newNotifications,
+      },
+      {
+        id: 2,
+        text: 'slide_menu.not-read',
+        type: 'NotReadNotifications',
+        count: context.notReadNotificationCount - context.newNotifications,
+      },
+    ]);
 
     const userData = computed(() => {
       return user.value;
     });
 
-    
     watch(
       () => context.isMenuOpened,
       () => {
@@ -274,7 +305,6 @@ export default {
       }
     );
 
-  
     const arrowPosition = computed(() => {
       return context.isMenuOpened ? sidebarArrowBack : sidebarArrow;
     });
@@ -354,13 +384,12 @@ export default {
         startLoader();
         await API.NotificationService.deleteNotifications([id]);
         stopLoader();
-      }
+      },
     };
 
-  
-    const selectAllNotifciations = async () => {
-      const response = await API.NotificationService.getAllMyNotificationsIds();
-      selectedList.value = response.data.ids;
+    const changeTab = (tabId, tabType) => {
+      selectedTabId.value = tabId;
+      emit('changeTab', tabType);
     };
 
     return {
@@ -377,8 +406,11 @@ export default {
       notificationList,
       loading,
       blockScrollToTopIfExist,
+      tabs,
+      selectedTabId,
       handleSelectableMode,
       toggleMenu,
+      changeTab,
       clearSelectedList,
       restartInfiniteScroll: () => {
         triggerForRestart.value = uuid();
@@ -560,14 +592,15 @@ button {
   span {
     font-family: 'Inter';
     background: $--b-main-gray-color;
-    border-radius: 50%;
+    border-radius: 100px;
     padding: 0px 4px;
     font-style: normal;
     font-weight: 400;
     font-size: 12px;
     line-height: 16px;
-    width: 20px;
+    width: fit-content;
     height: 20px;
+    min-width: 20px;
     color: $--b-main-white-color;
     display: flex;
     align-items: center;
@@ -597,14 +630,15 @@ button {
 .b-notification-unreaded {
   font-family: 'Inter';
   background: $--b-main-gray-color;
-  border-radius: 50%;
+  border-radius: 100px;
   padding: 0px 4px;
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  width: 20px;
+  width: fit-content;
   height: 20px;
+  min-width: 20px;
   color: $--b-main-white-color;
   display: flex;
   align-items: center;
@@ -624,14 +658,22 @@ button {
   display: flex;
   align-items: center;
   border-bottom: 1px solid $color-dfdeed;
-  padding-bottom: 12px;
+  gap: 32px;
 }
 .b-read-all-notifications__button {
   border-bottom: 1px dashed $color-dfdeed;
   gap: 6px;
   cursor: pointer;
 }
+.b-notification-tab {
+  display: flex;
+  align-items: center;
+  padding: 0px 4px 8px 8px;
 
+  &.selected {
+    border-bottom: 2px solid #262541;
+  }
+}
 .b-notifictions-actions__button {
   display: flex;
   align-items: center;
@@ -639,15 +681,14 @@ button {
 }
 .b-selected-elements__max {
   font-family: 'Inter';
-font-style: normal;
-font-weight: 400;
-font-size: 13px;
-line-height: 24px;
-/* or 185% */
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 24px;
+  /* or 185% */
 
+  /* txt/primary */
 
-/* txt/primary */
-
-color: #262541;
+  color: #262541;
 }
 </style>
