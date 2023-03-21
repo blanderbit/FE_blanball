@@ -10,13 +10,14 @@
       :notifications="paginationElements"
       :notReadNotificationCount="notReadNotificationCount"
       :newNotifications="skipids.length"
-      :total-notifications-count="paginationTotalCount"
+      :total-notifications-count="allNotificationsCount"
       @close="isMenuOpened = false"
       @closed="paginationClearData()"
       @loadingInfinite="loadDataNotifications(paginationPage + 1, $event)"
       @reLoading="loadDataNotifications(1, null, true)"
       @loading="loadDataNotifications(1, null, true)"
       @showNewNotifications="loadDataNotifications(1, null, true, true)"
+      @changeTab="onChangeTab"
     />
     <div class="b_sidebar">
       <div class="b_sidebar_top-block">
@@ -85,7 +86,7 @@
     :notifications="paginationElements"
     :notReadNotificationCount="notReadNotificationCount"
     :newNotifications="skipids.length"
-    :total-notifications-count="paginationTotalCount"
+    :total-notifications-count="allNotificationsCount"
     @close="isMenuOpened = false"
     @closed="paginationClearData()"
     @loadingInfinite="loadDataNotifications(paginationPage + 1, $event)"
@@ -98,7 +99,7 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeUnmount, watch } from 'vue';
+import { ref, computed, onBeforeUnmount, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { storeToRefs } from 'pinia';
@@ -124,6 +125,7 @@ import {
   NotificationsBus,
   BlanballEventBus,
 } from '../workers/event-bus-worker';
+import { FilterPatch } from '../workers/api-worker/http/filter/filter.patch';
 
 import { ROUTES } from '../router/router.const';
 
@@ -155,11 +157,12 @@ export default {
     Loading,
     MobileMenu,
   },
-  setup() {
+  setup(props, { emit }) {
     const userStore = useUserDataStore();
     const { user } = storeToRefs(userStore);
     const eventStore = useEventDataStore();
     const notReadNotificationCount = ref(0);
+    const allNotificationsCount = ref(0);
     const loading = ref(false);
     const isMobMenuActive = ref(false);
     const skipids = ref([]);
@@ -224,9 +227,10 @@ export default {
 
     const getNotificationsCount = async () =>
       API.NotificationService.getNotificationsCount().then(
-        (item) =>
-          (notReadNotificationCount.value =
-            item.data.not_read_notifications_count || 0)
+        (item) => {
+          notReadNotificationCount.value = item.data.not_read_notifications_count || 0
+          allNotificationsCount.value = item.data.all_notifications_count || 0
+        }
       );
 
     const closeBugReportModal = () => (isBugReportModalOpened.value = false);
@@ -245,12 +249,30 @@ export default {
     } = PaginationWorker({
       paginationDataRequest: (page) =>
         API.NotificationService.getNotifications({
+          ...getRawFilters(),
           page,
-          skipids: skipids.value,
         }),
       dataTransformation: (item) => createNotificationFromData(item),
       beforeConcat: (elements, newList) => findDublicates(elements, newList),
     });
+
+    const { getRawFilters, updateFilter, filters, clearFilters, setFilters } =
+      FilterPatch({
+        router,
+        filters: {
+          type: {
+            type: String,
+            value: ''
+          },
+          skipids: {
+            type: Array,
+            value: [],
+          },
+        },
+        afterUpdateFiltersCallBack: () => {
+          paginationClearData();
+        },
+      });
 
     const loadDataNotifications = (
       pageNumber,
@@ -271,6 +293,19 @@ export default {
           loading.value = false;
         }
       });
+    };
+
+    const onChangeTab = (tabType) => {
+      switch (tabType) {
+        case 'NotReadNotifications':
+          filters.value.type.value = 'Unread'
+          loadDataNotifications(1, null, false, true)
+          break;
+        case 'AllNotifications':
+          filters.value.type.value = ''
+          loadDataNotifications(1, null, false, true);
+          break;
+      }
     };
 
     const handleMessageInSidebar = (instanceType) => {
@@ -339,12 +374,14 @@ export default {
       menuItems,
       userAvatar,
       isMobMenuActive,
+      allNotificationsCount,
       isMenuOpened,
       currentHoverSideBarItemID,
       userFullName,
       loading,
       isBugReportModalOpened,
       loadDataNotifications,
+      onChangeTab,
       leaveHoverSidebarItem,
       enterHoverSidebarItem,
       paginationClearData,

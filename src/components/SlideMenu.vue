@@ -101,17 +101,19 @@
               </button>
             </div>
           </div>
-          <div v-if="isMenuOpened" class="b-notifications__tabs">
+          <div v-if="isMenuOpened" class="b-notifications__tabs"
+            :style="`margin-top: ${notifications.length ? 16 : 28}px; 
+                     margin-bottom: ${notifications.length ? 0 : 16}px;`">
             <div
               v-for="tab in tabs"
               :class="[
                 'b-notification-tab',
                 { selected: tab.id === selectedTabId },
               ]"
+              @click="changeTab(tab.id, tab.type)"
             >
               <div
                 class="b-notifications-title me-1"
-                @click="changeTab(tab.id, tab.type)"
               >
                 {{ $t(tab.text) }}
               </div>
@@ -127,7 +129,7 @@
             class="b_slide_menu_notification"
             :style="{
               height: `calc(100vh - ${
-                selectedList.length > 0 ? 90 : 60
+                selectedList.length > 0 ? 105 : 75
               }px - 100px - 70px)`,
             }"
             v-if="isMenuOpened"
@@ -388,8 +390,10 @@ export default {
     };
 
     const changeTab = (tabId, tabType) => {
-      selectedTabId.value = tabId;
-      emit('changeTab', tabType);
+      if (tabId !== selectedTabId.value && !selectable.value) {
+        selectedTabId.value = tabId;
+        emit('changeTab', tabType);
+      }
     };
 
     return {
@@ -669,6 +673,7 @@ button {
   display: flex;
   align-items: center;
   padding: 0px 4px 8px 8px;
+  cursor: pointer;
 
   &.selected {
     border-bottom: 2px solid #262541;

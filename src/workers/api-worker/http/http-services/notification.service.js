@@ -14,13 +14,15 @@ export class NotificationService {
     });
   }
 
-  static getNotifications({ page, skipids }) {
+  static getNotifications({ page, skipids, type }) {
+    console.log(type)
     return AxiosInstance.get(
       EndpointsEnum.Notification.Index,
       AxiosParams(
         AxiosQuery({
           page,
           skipids: skipids?.join(','),
+          type
         }),
         AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_PAGE])
       )
