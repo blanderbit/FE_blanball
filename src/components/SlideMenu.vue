@@ -143,7 +143,9 @@
               v-model:selected-list="selectedList"
               v-model:scrollbar-existing="blockScrollToTopIfExist"
               @delete="HandleAction.deleteOne"
-              @removePushNotificationAfterSidebarAction="removePushNotificationAfterSidebarAction"
+              @removePushNotificationAfterSidebarAction="
+                removePushNotificationAfterSidebarAction
+              "
             >
               <template #before>
                 <Notification
@@ -200,9 +202,7 @@
                 <span>{{ clientVersion }}</span>
               </router-link>
             </div>
-            <div class="b-blanball-made-by-flumx">
-              Розроблено: FlumX
-            </div>
+            <div class="b-blanball-made-by-flumx">Розроблено: FlumX</div>
           </div>
         </div>
       </div>
@@ -362,6 +362,9 @@ export default {
         if (!context.notifications.length && !context.newNotifications) return;
         startLoader();
         await API.NotificationService.deleteAllMyNotifications();
+        NotificationsBus.emit('removePushNotificationAfterSidebarAction', {
+          remove_all: true,
+        });
         clearSelectedList();
         handleSelectableMode();
         stopLoader();
@@ -370,6 +373,9 @@ export default {
         if (!context.notifications.length && !context.newNotifications) return;
         startLoader();
         await API.NotificationService.readAllMyNotifications();
+        NotificationsBus.emit('removePushNotificationAfterSidebarAction', {
+          remove_all: true,
+        });
         clearSelectedList();
         if (selectable.value) {
           handleSelectableMode();
@@ -383,6 +389,9 @@ export default {
         if (!selectedList.value) return;
         startLoader();
         await API.NotificationService.deleteNotifications(selectedList.value);
+        NotificationsBus.emit('removePushNotificationAfterSidebarAction', {
+          notification_ids: [...selectedList.value],
+        });
         clearSelectedList();
         handleSelectableMode();
         stopLoader();
@@ -391,6 +400,9 @@ export default {
         if (!selectedList.value) return;
         startLoader();
         await API.NotificationService.readNotifications(selectedList.value);
+        NotificationsBus.emit('removePushNotificationAfterSidebarAction', {
+          notification_ids: [...selectedList.value],
+        });
         clearSelectedList();
         handleSelectableMode();
         stopLoader();
@@ -398,6 +410,9 @@ export default {
       deleteOne: async (id) => {
         startLoader();
         await API.NotificationService.deleteNotifications([id]);
+        NotificationsBus.emit('removePushNotificationAfterSidebarAction', {
+          notification_id: id,
+        });
         stopLoader();
       },
     };
@@ -410,13 +425,16 @@ export default {
       if (tabId !== selectedTabId.value && !selectable.value) {
         selectedTabId.value = tabId;
         emit('changeTab', tabType);
-        restartInfiniteScroll()
+        restartInfiniteScroll();
       }
     };
 
     const removePushNotificationAfterSidebarAction = (notificationInstance) => {
-      NotificationsBus.emit('removePushNotificationAfterSidebarAction', notificationInstance)
-    }
+      NotificationsBus.emit(
+        'removePushNotificationAfterSidebarAction',
+        notificationInstance
+      );
+    };
 
     return {
       clientVersion,

@@ -298,11 +298,11 @@ export default {
       switch (tabType) {
         case 'NotReadNotifications':
           filters.value.type.value = 'Unread';
-          loadDataNotifications(1, null, true, true);
+          loadDataNotifications(1, null, false, true);
           break;
         case 'AllNotifications':
           filters.value.type.value = '';
-          loadDataNotifications(1, null, true, true);
+          loadDataNotifications(1, null, false, true);
           break;
       }
     };

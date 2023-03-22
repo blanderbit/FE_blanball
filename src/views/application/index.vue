@@ -195,10 +195,10 @@ const getToastOptions = (notificationInstance, toastId) => {
           toggleToastProgress(notificationInstance, toastId, true);
           await handlerAction(item, notificationInstance);
           toggleToastProgress(notificationInstance, toastId, false);
+          toast.dismiss(toastId);
           removePushFormActiveNotifications(
             notificationInstance.notification_id
           );
-          toast.dismiss(toastId);
         },
         handlerClose: async () => {
           if (close) {
@@ -206,10 +206,10 @@ const getToastOptions = (notificationInstance, toastId) => {
             await handlerAction(close, notificationInstance);
             toggleToastProgress(notificationInstance, toastId, false);
           }
+          toast.dismiss(toastId);
           removePushFormActiveNotifications(
             notificationInstance.notification_id
           );
-          toast.dismiss(toastId);
         },
       },
     },
@@ -233,22 +233,39 @@ const getToastOptions = (notificationInstance, toastId) => {
 NotificationsBus.on(
   'removePushNotificationAfterSidebarAction',
   (notificationInstance) => {
-    const notificationInActivePush = activePushNotifications.value.some(
-      (notification) =>
-        notification.notificationId === notificationInstance.notification_id
-    );
+    if (notificationInstance?.remove_all) {
+      dismissAllToasts();
+    } else {
+      if (notificationInstance?.notification_id) {
+        notificationInstance.notification_ids = [
+          notificationInstance.notification_id,
+        ];
+      }
 
-    if (activePushNotifications.value.length && notificationInActivePush) {
-      toast.dismiss(
-        activePushNotifications.value.find(
-          (notification) =>
-            notification.notificationId === notificationInstance.notification_id
-        ).toastId
-      );
-      removePushFormActiveNotifications(notificationInstance.notification_id);
+      for (let id of notificationInstance.notification_ids) {
+        const notificationInActivePush = activePushNotifications.value.some(
+          (notification) => notification.notificationId === id
+        );
+
+        if (activePushNotifications.value.length && notificationInActivePush) {
+          toast.dismiss(
+            activePushNotifications.value.find(
+              (notification) => notification.notificationId === id
+            ).toastId
+          );
+          removePushFormActiveNotifications(id);
+        }
+      }
     }
   }
 );
+
+function dismissAllToasts() {
+  for (let toastI of activePushNotifications.value) {
+    toast.dismiss(toastI.toastId);
+  }
+  activePushNotifications.value = [];
+}
 
 function addPushToActiveNotifications(pushData) {
   activePushNotifications.value.push(pushData);
