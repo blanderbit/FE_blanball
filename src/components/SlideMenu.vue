@@ -96,7 +96,11 @@
               </button>
 
               <button
-                @click="showSubmitModal"
+                @click="
+                  selectedList.length > 1
+                    ? showSubmitModal()
+                    : HandleAction.deleteSelected()
+                "
                 class="d-flex align-items-center"
               >
                 <img
@@ -299,7 +303,9 @@ export default {
     const submitModalConfig = computed(() => {
       return {
         title: t('slide_menu.submit-modal.title'),
-        description: t('slide_menu.submit-modal.description', {length: selectedList.value.length }),
+        description: t('slide_menu.submit-modal.description', {
+          length: selectedList.value.length,
+        }),
         button_1: t('slide_menu.submit-modal.button-1-text'),
         button_2: t('slide_menu.submit-modal.button-2-text'),
         right_btn_action: 'deleteNotifications',
