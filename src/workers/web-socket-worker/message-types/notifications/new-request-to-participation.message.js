@@ -1,5 +1,8 @@
 import { InitialMessage } from './initial.message';
 
+import dayjs from 'dayjs';
+import dayjsUkrLocale from 'dayjs/locale/uk';
+
 import {
   SetActions,
   SetMessageType,
@@ -20,7 +23,6 @@ import { API } from '../../../api-worker/api.worker';
 @SetActions([
   {
     type: MessageActionTypes.Action,
-    text: 'Принять',
     action: ({ notificationInstance }) =>
       API.EventService.declineOrAcceptParticipations(
         notificationInstance.data.request.id,
@@ -31,10 +33,12 @@ import { API } from '../../../api-worker/api.worker';
       }),
     actionType: MessageActionDataTypes.Callback,
     buttonType: 'success',
+    buttonText: 'Прийняти',
+    buttonWidth: 88,
+    buttonHeight: 28,
   },
   {
     type: MessageActionTypes.Action,
-    text: 'Отклонить',
     action: ({ notificationInstance }) =>
       API.EventService.declineOrAcceptParticipations(
         notificationInstance.data.request.id,
@@ -45,35 +49,22 @@ import { API } from '../../../api-worker/api.worker';
       }),
     actionType: MessageActionDataTypes.Callback,
     buttonType: 'default',
+    buttonText: 'Відхилити',
+    buttonWidth: 88,
+    buttonHeight: 28,
   },
 ])
 export class NewRequestToParticipationMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `Юзер ${data.sender.name} хочет добавится на ваше событие, выбирите пожалуйста действие!`,
+      `${data.sender.last_name} ${data.sender.name} хоче долучитися до події «${
+        data.event.name
+      }», 
+      ${dayjs(new Date()).locale(dayjsUkrLocale).format('DD.MM.YYYY')}`,
     ];
   }
 
-  createTextsAfterAction() {
-    return {
-      response: this.data.response,
-      text: this.data.response
-        ? 'Вы позволили добавится учаснику на событие!'
-        : 'Вы отказали учаснику в добавлении на событие!',
-    };
-  }
-
-  onInit() {
-    this.textsAfterAction =
-      typeof this.data.response === 'boolean' && this.createTextsAfterAction();
-  }
-
-  onUpdate() {
-    this.textsAfterAction =
-      typeof this.data.response === 'boolean' && this.createTextsAfterAction();
-  }
-
   createTitle() {
-    return 'Юзер хочет добавится на ивент.';
+    return 'Новий запит на участь у події';
   }
 }
