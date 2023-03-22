@@ -673,7 +673,7 @@ $color-8a8aa8: #8a8aa8;
         margin-top: 20px;
 
         ::v-deep(.b_white-btn) {
-          border: 1px solid #dfdeed;
+          border: 1px solid $color-dfdeed;
           font-family: 'Inter';
           font-style: normal;
           font-weight: 400;
@@ -690,7 +690,7 @@ $color-8a8aa8: #8a8aa8;
       .b-manage-event__manage-buttons-block {
         width: 100%;
         background: rgba(239, 239, 246, 0.7);
-        border: 1px solid #dfdeed;
+        border: 1px solid $color-dfdeed;
         border-radius: 8px;
         align-items: center;
         justify-content: space-between;

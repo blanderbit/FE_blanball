@@ -702,7 +702,7 @@ $color-dfdeed: #dfdeed;
           align-items: center;
           justify-content: space-between;
           width: 344px;
-          border: 1px solid #f0f0f4;
+          border: 1px solid $color-f0f0f4;
           border-radius: 6px;
           height: 36px;
           padding: 4px;
@@ -721,7 +721,7 @@ $color-dfdeed: #dfdeed;
             line-height: 20px;
             text-align: center;
             color: $--b-main-black-color;
-            background: #f0f0f4;
+            background: $color-f0f0f4;
             border-radius: 4px;
             height: 100%;
             display: flex;
@@ -762,7 +762,7 @@ $color-dfdeed: #dfdeed;
         position: relative;
 
         .b-left__side-cancel-button {
-          border: 1px solid #dfdeed !important;
+          border: 1px solid $color-dfdeed !important;
           color: $--b-main-gray-color !important;
         }
 

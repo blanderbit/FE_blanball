@@ -73,7 +73,7 @@ $color-f9f9fc: #f9f9fc;
     width: 100%;
     box-shadow: 2px 2px 10px rgb(56 56 251 / 10%);
     border-radius: 6px;
-    background: #f9f9fc;
+    background: $color-f9f9fc;
     height: 500px;
     border-radius: 15px 15px 0px 0px;
     padding: 12px 16px;

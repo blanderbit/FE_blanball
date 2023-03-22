@@ -397,7 +397,7 @@ $color-dfdeed: #dfdeed;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #f9f9fc;
+    background: $color-f9f9fc;
     border-radius: 6px;
     padding: 8px;
     line-height: 20px;
@@ -410,7 +410,7 @@ $color-dfdeed: #dfdeed;
 }
 .phone-read {
   ::v-deep(input) {
-    background: #f9f9fc;
+    background: $color-f9f9fc;
   }
   ::v-deep(.b-input__wrapper) {
     border: none;

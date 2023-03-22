@@ -126,7 +126,7 @@ $color-efeff6: #efeff6;
   font-size: 12px;
   line-height: 16px;
   color: $--b-main-gray-color;
-  background: #efeff6;
+  background: $color-efeff6;
   border-radius: 4px;
   padding: 0px 2px;
 }

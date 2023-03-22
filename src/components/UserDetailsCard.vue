@@ -778,7 +778,7 @@ $color-efeff6: #efeff6;
           }
         }
         .b-user-card__position {
-          border-top: 1px solid #efeff6;
+          border-top: 1px solid $color-efeff6;
           padding-top: 12px;
           margin-top: 16px;
         }
@@ -794,7 +794,7 @@ $color-efeff6: #efeff6;
   }
 }
 .b-user__location {
-  border-top: 1px solid #efeff6;
+  border-top: 1px solid $color-efeff6;
   padding-top: 12px;
 }
 </style>

@@ -195,7 +195,7 @@ $color-8a8aa8: #8a8aa8;
 
 .b-modal-item__disabled {
   opacity: 0.6;
-  border: 1px solid #e2e2e9;
+  border: 1px solid $color-e2e2e9;
 }
 .b-user-item__disabled-text {
   font-family: 'Inter';
@@ -203,6 +203,6 @@ $color-8a8aa8: #8a8aa8;
   font-weight: 600;
   font-size: 12px;
   line-height: 20px;
-  color: #8a8aa8;
+  color: $color-8a8aa8;
 }
 </style>

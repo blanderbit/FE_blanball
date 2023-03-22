@@ -508,6 +508,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-262541: #262541;
 $color-f0f0f4: #f0f0f4;
 $color-8a8aa8: #8a8aa8;
 $color-fcfcfc: #fcfcfc;
@@ -652,7 +653,7 @@ $color-efeff6: #efeff6;
 
         .b-blanball-version,
         .b-blanball-made-by-flumx {
-          border-bottom: 1px dashed #dfdeed;
+          border-bottom: 1px dashed $color-dfdeed;
         }
       }
     }
@@ -761,7 +762,7 @@ button {
   cursor: pointer;
 
   &.selected {
-    border-bottom: 2px solid #262541;
+    border-bottom: 2px solid $color-262541;
   }
 }
 .b-notifictions-actions__button {
@@ -779,6 +780,6 @@ button {
 
   /* txt/primary */
 
-  color: #262541;
+  color: $color-262541;
 }
 </style>

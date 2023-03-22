@@ -502,7 +502,7 @@ $color-1ccd62: #1ccd62;
         color: $--b-main-black-color;
       }
       .b-mob-menu__version {
-        @include inter(12px, 400, #8a8aa8);
+        @include inter(12px, 400, $color-8a8aa8);
         line-height: 16px;
 
         display: flex;

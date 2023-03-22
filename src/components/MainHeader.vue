@@ -183,7 +183,7 @@ $color-fafafa: #fafafa;
     display: none;
     @media (max-width: 992px) {
       display: block;
-      background: #fafafa;
+      background: $color-fafafa;
       border-radius: 6px;
       width: 32px;
       height: 32px;

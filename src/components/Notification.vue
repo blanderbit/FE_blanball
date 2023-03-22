@@ -361,6 +361,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+$color-ecfcfb: #ecfcfb;
+$color-148783: #148783;
+$color-fff: #fff;
+$color-f0f0f4: #f0f0f4;
 // SCSS variables for hex colors
 $color-8a8aa8: #8a8aa8;
 $color-dfdeed: #dfdeed;
@@ -474,8 +478,8 @@ $color-000: #000;
 }
 
 .notification-sidebar-not-read {
-  background: #ecfcfb;
-  border-bottom: 1px solid #148783;
+  background: $color-ecfcfb;
+  border-bottom: 1px solid $color-148783;
 }
 
 .notification-sidebar {
@@ -594,15 +598,15 @@ $color-000: #000;
 }
 
 .notification-read {
-  background: #fff;
-  border-bottom: 1px solid #efeff6;
+  background: $color-fff;
+  border-bottom: 1px solid $color-efeff6;
 }
 
 .notification__top-side {
   margin-bottom: 8px;
 }
 .push-notification-content {
-  @include inter(13px, 400, #f0f0f4);
+  @include inter(13px, 400, $color-f0f0f4);
   line-height: 20px;
   margin-bottom: 8px;
   position: relative;
@@ -627,7 +631,7 @@ $color-000: #000;
   font-weight: 400;
   font-size: 13px;
   line-height: 20px;
-  color: #148783;
+  color: $color-148783;
   cursor: pointer;
 }
 .not-full-content {
@@ -649,8 +653,8 @@ $color-000: #000;
 }
 
 .notification-selected {
-  background: #f0f0f4;
-  border-bottom: 1px solid #8a8aa8;
+  background: $color-f0f0f4;
+  border-bottom: 1px solid $color-8a8aa8;
 }
 .checked {
   opacity: 0.6;

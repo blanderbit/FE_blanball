@@ -108,6 +108,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-f9f9fc: #f9f9fc;
 $color-feefe7: #feefe7;
 $color-efeff6: #efeff6;
 $color-dfdeed: #dfdeed;
@@ -232,7 +233,7 @@ $color-f0f0f4: #f0f0f4;
     gap: 8px;
     word-break: break-word;
     border-radius: 6px;
-    background: #f9f9fc;
+    background: $color-f9f9fc;
     padding: 8px;
     padding-left: 12px;
 }

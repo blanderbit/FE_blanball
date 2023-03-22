@@ -340,7 +340,7 @@ $color-efeff6: #efeff6;
   }
 }
 ::v-deep(.cropper-modal) {
-  background: #d9d9d9;
+  background: $color-d9d9d9;
 }
 ::v-deep(.cropper-line) {
   background: transparent;
