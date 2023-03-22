@@ -175,11 +175,21 @@
               {{ notificationInstance.textsAfterAction.text }}
             </div>
           </template>
-          <div
-            class="notification-content"
-            v-for="item in notificationInstance.texts"
-          >
-            {{ item }}
+          <div class="push-notification-content">
+            <collapsible-panel>
+              <template #title> Сьогодні: 21:35 </template>
+              <template #content>
+                <div
+                  class="notification-content"
+                  v-for="item in notificationInstance.texts"
+                >
+                  {{ item }}
+                </div>
+              </template>
+              <template #icon>
+                <img src="../assets/img/collapsible-icon.svg" alt="" />
+              </template>
+            </collapsible-panel>
           </div>
           <div
             class="notification-actions"
@@ -549,10 +559,6 @@ $color-000: #000;
   .b-selectable {
     z-index: 1000;
   }
-
-  .vcp__header-icon {
-    display: none;
-  }
 }
 
 .notification-push,
@@ -563,10 +569,6 @@ $color-000: #000;
     .vcp__body-content,
     .notification-header {
       padding: 0;
-    }
-
-    .vcp__header-icon {
-      display: none;
     }
   }
 }
@@ -592,9 +594,17 @@ $color-000: #000;
   margin-bottom: 8px;
 }
 
-.notification-time {
+.push-notification-content {
   @include inter(13px, 400, #f0f0f4);
   line-height: 20px;
+  margin-bottom: 8px;
+  position: relative;
+
+  ::v-deep(.vcp__header-icon) {
+    position: absolute;
+    left: 105px;
+    top: 8px;
+  }
 }
 
 .notification-actions {

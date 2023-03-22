@@ -23,15 +23,15 @@ export class ResponseToInviteForParticipationMessage extends InitialMessage {
   createTexts(data) {
     return [
       data.invite.response
-        ? `Юзер ${data.sender.name} подтвердил свое участие на ивенте;`
-        : `Юзер ${data.sender.name} отклонил свое участие на ивенте;`,
+        ? `${data.sender.last_name} ${data.sender.name} прийняв ваше запрошення на участь у події`
+        : `${data.sender.last_name} ${data.sender.name} відхилив ваше запрошення на участь у події`
     ];
   }
 
   createTitle(data) {
     return data.invite.response
-      ? 'Юзер подтвердил свое участие на ивенте;'
-      : 'Юзер отклонил свое участие на ивенте;';
+      ? `${data.sender.last_name} ${data.sender.name} прийняв ваше запрошення на участь у події`
+      : `${data.sender.last_name} ${data.sender.name} відхилив ваше запрошення на участь у події`
   }
 
   onInit() {
