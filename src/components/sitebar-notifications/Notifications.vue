@@ -108,6 +108,7 @@ export default {
     );
 
     const handlerAction = async (button, notificationInstance) => {
+      emit('removeNewNotification', notificationInstance)
       await notificationButtonHandlerMessage({
         button,
         notificationInstance,

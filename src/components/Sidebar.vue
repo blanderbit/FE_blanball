@@ -226,12 +226,11 @@ export default {
     ]);
 
     const getNotificationsCount = async () =>
-      API.NotificationService.getNotificationsCount().then(
-        (item) => {
-          notReadNotificationCount.value = item.data.not_read_notifications_count || 0
-          allNotificationsCount.value = item.data.all_notifications_count || 0
-        }
-      );
+      API.NotificationService.getNotificationsCount().then((item) => {
+        notReadNotificationCount.value =
+          item.data.not_read_notifications_count || 0;
+        allNotificationsCount.value = item.data.all_notifications_count || 0;
+      });
 
     const closeBugReportModal = () => (isBugReportModalOpened.value = false);
 
@@ -262,7 +261,7 @@ export default {
         filters: {
           type: {
             type: String,
-            value: ''
+            value: '',
           },
           skipids: {
             type: Array,
@@ -278,8 +277,7 @@ export default {
       pageNumber,
       $state,
       forceUpdate,
-      isLoading,
-      isClearData
+      isLoading
     ) => {
       if (isLoading) {
         loading.value = true;
@@ -287,10 +285,6 @@ export default {
       if (forceUpdate) {
         paginationClearData();
         skipids.value = [];
-      }
-
-      if (isClearData) {
-        paginationClearData();
       }
 
       paginationLoad({ pageNumber, $state, forceUpdate }).then(() => {
@@ -303,12 +297,12 @@ export default {
     const onChangeTab = (tabType) => {
       switch (tabType) {
         case 'NotReadNotifications':
-          filters.value.type.value = 'Unread'
-          loadDataNotifications(1, null, false, true, true);
+          filters.value.type.value = 'Unread';
+          loadDataNotifications(1, null, true, true);
           break;
         case 'AllNotifications':
-          filters.value.type.value = ''
-          loadDataNotifications(1, null, false, true, true);
+          filters.value.type.value = '';
+          loadDataNotifications(1, null, true, true);
           break;
       }
     };

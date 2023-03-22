@@ -143,6 +143,7 @@
               v-model:selected-list="selectedList"
               v-model:scrollbar-existing="blockScrollToTopIfExist"
               @delete="HandleAction.deleteOne"
+              @removeNewNotification="removeNewNotification"
             >
               <template #before>
                 <Notification
@@ -395,12 +396,21 @@ export default {
       },
     };
 
+    function restartInfiniteScroll() {
+      triggerForRestart.value = uuid();
+    }
+
     const changeTab = (tabId, tabType) => {
       if (tabId !== selectedTabId.value && !selectable.value) {
         selectedTabId.value = tabId;
         emit('changeTab', tabType);
+        restartInfiniteScroll()
       }
     };
+
+    const removeNewNotification = (notification) => {
+      debugger
+    }
 
     return {
       clientVersion,
@@ -418,13 +428,12 @@ export default {
       blockScrollToTopIfExist,
       tabs,
       selectedTabId,
+      removeNewNotification,
       handleSelectableMode,
       toggleMenu,
       changeTab,
       clearSelectedList,
-      restartInfiniteScroll: () => {
-        triggerForRestart.value = uuid();
-      },
+      restartInfiniteScroll,
       scrollToFirstElement: () => {
         notificationList.value.scrollToFirstElement();
       },

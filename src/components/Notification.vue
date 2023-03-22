@@ -59,9 +59,13 @@
             <div class="notification-date">
               {{ formatDate }}
             </div>
-            <img v-if="deletable" class="delete-notfication-cross" 
-              src="../assets/img/cross.svg" alt=""
-              @click="$emit('delete', notificationInstance?.notification_id)"/>
+            <img
+              v-if="deletable"
+              class="delete-notfication-cross"
+              src="../assets/img/cross.svg"
+              alt=""
+              @click="$emit('delete', notificationInstance?.notification_id)"
+            />
           </div>
         </div>
 
@@ -92,7 +96,7 @@
                   class="notification-expand-button"
                   @click="clickExpandTextButton"
                 >
-                  {{  isTextShow ? 'Згорнути' : 'Показати більше' }}
+                  {{ isTextShow ? 'Згорнути' : 'Показати більше' }}
                 </div>
                 <div class="notification-actions">
                   <template v-for="item in notificationInstance.actions">
@@ -120,7 +124,7 @@
           <template
             v-if="notificationType === 'notification-sidebar'"
             #content
-            clas="notification-expandle-content"
+            class="notification-expandle-content"
           >
             <template v-if="notificationInstance.textsAfterAction">
               <div class="notification-response d-flex align-items-center">
@@ -266,12 +270,12 @@ export default {
     },
     selectedCount: {
       type: Number,
-      default: 0
+      default: 0,
     },
     deletable: {
       type: Boolean,
       default: true,
-    }
+    },
   },
   data() {
     return {
@@ -315,10 +319,10 @@ export default {
     },
     selectableValue() {
       if (this.selectedCount >= 100 && !this.checked) {
-        return false
+        return false;
       }
 
-      return this.selectable
+      return this.selectable;
     },
     expanding: {
       set(e) {
@@ -361,6 +365,7 @@ $color-000: #000;
   line-height: 20px;
   margin-bottom: 8px;
   width: fit-content;
+  word-break: break-word;
 }
 
 .notification-title {
