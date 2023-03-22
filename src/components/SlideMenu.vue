@@ -143,7 +143,7 @@
               v-model:selected-list="selectedList"
               v-model:scrollbar-existing="blockScrollToTopIfExist"
               @delete="HandleAction.deleteOne"
-              @removeNewNotification="removeNewNotification"
+              @removePushNotificationAfterSidebarAction="removePushNotificationAfterSidebarAction"
             >
               <template #before>
                 <Notification
@@ -226,6 +226,7 @@ import Loading from '../workers/loading-worker/Loading.vue';
 
 import { useUserDataStore } from '../stores/userData';
 import { NewNotifications } from '../workers/web-socket-worker/not-includes-to-socket/new_notifications';
+import { NotificationsBus } from '../workers/event-bus-worker';
 import { API } from '../workers/api-worker/api.worker';
 
 import { ROUTES } from '../router/router.const';
@@ -413,8 +414,8 @@ export default {
       }
     };
 
-    const removeNewNotification = (notification) => {
-      debugger
+    const removePushNotificationAfterSidebarAction = (notificationInstance) => {
+      NotificationsBus.emit('removePushNotificationAfterSidebarAction', notificationInstance)
     }
 
     return {
@@ -433,8 +434,8 @@ export default {
       blockScrollToTopIfExist,
       tabs,
       selectedTabId,
-      removeNewNotification,
       handleSelectableMode,
+      removePushNotificationAfterSidebarAction,
       toggleMenu,
       changeTab,
       clearSelectedList,

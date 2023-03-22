@@ -86,6 +86,7 @@ const modalFeedBackAnimation = ref(false);
 const isActionEventModalOpened = ref(false);
 const actionEventModalConfig = ref({});
 const { t } = useI18n();
+const activePushNotifications = ref([]);
 
 const closeEventActiondModal = () => {
   isActionEventModalOpened.value = false;
@@ -194,6 +195,9 @@ const getToastOptions = (notificationInstance, toastId) => {
           toggleToastProgress(notificationInstance, toastId, true);
           await handlerAction(item, notificationInstance);
           toggleToastProgress(notificationInstance, toastId, false);
+          removePushFormActiveNotifications(
+            notificationInstance.notification_id
+          );
           toast.dismiss(toastId);
         },
         handlerClose: async () => {
@@ -202,7 +206,9 @@ const getToastOptions = (notificationInstance, toastId) => {
             await handlerAction(close, notificationInstance);
             toggleToastProgress(notificationInstance, toastId, false);
           }
-
+          removePushFormActiveNotifications(
+            notificationInstance.notification_id
+          );
           toast.dismiss(toastId);
         },
       },
@@ -224,6 +230,39 @@ const getToastOptions = (notificationInstance, toastId) => {
     },
   };
 };
+NotificationsBus.on(
+  'removePushNotificationAfterSidebarAction',
+  (notificationInstance) => {
+    const notificationInActivePush = activePushNotifications.value.some(
+      (notification) =>
+        notification.notificationId === notificationInstance.notification_id
+    );
+
+    if (activePushNotifications.value.length && notificationInActivePush) {
+      toast.dismiss(
+        activePushNotifications.value.find(
+          (notification) =>
+            notification.notificationId === notificationInstance.notification_id
+        ).toastId
+      );
+      removePushFormActiveNotifications(notificationInstance.notification_id);
+    }
+  }
+);
+
+function addPushToActiveNotifications(pushData) {
+  activePushNotifications.value.push(pushData);
+}
+
+function removePushFormActiveNotifications(notificationId) {
+  const index = activePushNotifications.value.findIndex(
+    (notification) => notification.notificationId === notificationId
+  );
+
+  if (index !== -1) {
+    activePushNotifications.value.splice(index, 1);
+  }
+}
 
 const createToastFromInstanceType = (notificationInstance) => {
   const toastDataOptions = getToastOptions(notificationInstance, uuid());
@@ -232,6 +271,11 @@ const createToastFromInstanceType = (notificationInstance) => {
     toastDataOptions.componentOptions,
     toastDataOptions.options
   );
+
+  addPushToActiveNotifications({
+    toastId: toastId,
+    notificationId: notificationInstance.notification_id,
+  });
 
   if (notificationInstance.timeForClose) {
     timeout = setTimeout(() => {
@@ -253,6 +297,7 @@ AuthWebSocketWorkerInstance.registerCallback(handleNewMessage).connect({
 
 onBeforeUnmount(() => {
   NotificationsBus.off('openEventReviewModal');
+  NotificationsBus.off('removePushNotificationAfterSidebarAction');
   BlanballEventBus.off('EventCreated');
   BlanballEventBus.off('EventUpdated');
   AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect();
