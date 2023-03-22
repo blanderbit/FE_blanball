@@ -1,5 +1,12 @@
 <template>
   <Loading :is-loading="loading" />
+  <ChangeUserDataModal
+    v-if="isSubmitModalOpened"
+    :config="submitModalConfig"
+    @closeModal="closeSubmitModal"
+    @deleteNotifications="HandleAction.deleteSelected()"
+    @continue="closeSubmitModal"
+  />
   <div>
     <div
       v-if="isMenuOpened"
@@ -89,7 +96,7 @@
               </button>
 
               <button
-                @click="HandleAction.deleteSelected()"
+                @click="showSubmitModal"
                 class="d-flex align-items-center"
               >
                 <img
@@ -223,6 +230,7 @@ import EmptyList from './EmptyList.vue';
 import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue';
 import ScrollToTop from './ScrollToTop.vue';
 import Loading from '../workers/loading-worker/Loading.vue';
+import ChangeUserDataModal from './ModalWindows/UserCabinetModalWindows/ChangeUserDataModal.vue';
 
 import { useUserDataStore } from '../stores/userData';
 import { NewNotifications } from '../workers/web-socket-worker/not-includes-to-socket/new_notifications';
@@ -240,6 +248,7 @@ export default {
     Notification,
     Loading,
     EmptyList,
+    ChangeUserDataModal,
     Notifications,
     ScrollToTop,
   },
@@ -285,7 +294,20 @@ export default {
     const newNotificationInstance = ref(new NewNotifications());
     const clientVersion = ref(inject('clientVersion'));
     const { t } = useI18n();
+    const isSubmitModalOpened = ref(false);
     const selectedTabId = ref(1);
+    const submitModalConfig = computed(() => {
+      return {
+        title: t('slide_menu.submit-modal.title'),
+        description: t('slide_menu.submit-modal.description', {length: selectedList.value.length }),
+        button_1: t('slide_menu.submit-modal.button-1-text'),
+        button_2: t('slide_menu.submit-modal.button-2-text'),
+        right_btn_action: 'deleteNotifications',
+        left_btn_action: 'continue',
+        btn_with_1: 132,
+        btn_with_2: 132,
+      };
+    });
 
     const tabs = computed(() => [
       {
@@ -339,6 +361,14 @@ export default {
         description: t('no_records.noNotifications.description'),
       };
     });
+
+    const closeSubmitModal = () => {
+      isSubmitModalOpened.value = false;
+    };
+
+    const showSubmitModal = () => {
+      isSubmitModalOpened.value = true;
+    };
 
     const clearSelectedList = () => {
       selectedList.value = [];
@@ -394,6 +424,7 @@ export default {
         });
         clearSelectedList();
         handleSelectableMode();
+        closeSubmitModal();
         stopLoader();
       },
       readSelected: async () => {
@@ -447,11 +478,15 @@ export default {
       HandleAction,
       triggerForRestart,
       selectable,
+      submitModalConfig,
       notificationList,
       loading,
+      isSubmitModalOpened,
       blockScrollToTopIfExist,
       tabs,
       selectedTabId,
+      closeSubmitModal,
+      showSubmitModal,
       handleSelectableMode,
       removePushNotificationAfterSidebarAction,
       toggleMenu,

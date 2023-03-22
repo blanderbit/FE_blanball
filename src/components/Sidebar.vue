@@ -347,12 +347,25 @@ export default {
       paginationClearData();
     });
 
+    NotificationsBus.on(
+      'hanlderToRemoveNewNotificationsInSidebar',
+      (notificationId) => {
+        const index = skipids.value.indexOf(notificationId);
+
+        if (index !== -1) {
+          skipids.value.splice(index, 1);
+        }
+        loadDataNotifications(1, null, false, false);
+      }
+    );
+
     BlanballEventBus.on('OpenMobileMenu', () => {
       isMobMenuActive.value = true;
     });
 
     onBeforeUnmount(() => {
       NotificationsBus.off('SidebarClearData');
+      NotificationsBus.off('hanlderToRemoveNewNotificationsInSidebar');
       BlanballEventBus.off('OpenMobileMenu');
       AuthWebSocketWorkerInstance.destroyCallback(handleMessageInSidebar);
     });

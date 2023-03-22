@@ -199,6 +199,10 @@ const getToastOptions = (notificationInstance, toastId) => {
           removePushFormActiveNotifications(
             notificationInstance.notification_id
           );
+          NotificationsBus.emit(
+            'hanlderToRemoveNewNotificationsInSidebar',
+            notificationInstance.notification_id
+          );
         },
         handlerClose: async () => {
           if (close) {
