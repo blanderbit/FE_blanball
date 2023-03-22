@@ -392,7 +392,7 @@ export default {
         if (!context.notifications.length && !context.newNotifications) return;
         startLoader();
         await API.NotificationService.deleteAllMyNotifications();
-        NotificationsBus.emit('removePushNotificationAfterSidebarAction', {
+        removePushNotificationAfterSidebarAction({
           remove_all: true,
         });
         clearSelectedList();
@@ -403,7 +403,7 @@ export default {
         if (!context.notifications.length && !context.newNotifications) return;
         startLoader();
         await API.NotificationService.readAllMyNotifications();
-        NotificationsBus.emit('removePushNotificationAfterSidebarAction', {
+        removePushNotificationAfterSidebarAction({
           remove_all: true,
         });
         clearSelectedList();
@@ -419,7 +419,7 @@ export default {
         if (!selectedList.value) return;
         startLoader();
         await API.NotificationService.deleteNotifications(selectedList.value);
-        NotificationsBus.emit('removePushNotificationAfterSidebarAction', {
+        removePushNotificationAfterSidebarAction({
           notification_ids: [...selectedList.value],
         });
         clearSelectedList();
@@ -431,7 +431,7 @@ export default {
         if (!selectedList.value) return;
         startLoader();
         await API.NotificationService.readNotifications(selectedList.value);
-        NotificationsBus.emit('removePushNotificationAfterSidebarAction', {
+        removePushNotificationAfterSidebarAction({
           notification_ids: [...selectedList.value],
         });
         clearSelectedList();
@@ -441,7 +441,7 @@ export default {
       deleteOne: async (id) => {
         startLoader();
         await API.NotificationService.deleteNotifications([id]);
-        NotificationsBus.emit('removePushNotificationAfterSidebarAction', {
+        removePushNotificationAfterSidebarAction({
           notification_id: id,
         });
         stopLoader();

@@ -72,6 +72,9 @@
             v-model:selected-list="selectedList"
             v-model:scrollbar-existing="blockScrollToTopIfExist"
             @delete="HandleAction.deleteOne"
+            @removePushNotificationAfterSidebarAction="
+                removePushNotificationAfterSidebarAction
+              "
           >
             <template #before>
               <Notification
@@ -165,6 +168,7 @@ import { TokenWorker } from '../workers/token-worker';
 import { useUserDataStore } from '../stores/userData';
 import { NewNotifications } from '../workers/web-socket-worker/not-includes-to-socket/new_notifications';
 import { API } from '../workers/api-worker/api.worker';
+import { NotificationsBus } from '../workers/event-bus-worker';
 
 import { ROUTES } from '../router/router.const';
 
@@ -399,8 +403,18 @@ export default {
       deleteOne: async (id) => {
         startLoader();
         await API.NotificationService.deleteNotifications([id]);
+        NotificationsBus.emit('removePushNotificationAfterSidebarAction', {
+          notification_id: id,
+        });
         stopLoader();
-      }
+      },
+    };
+
+    const removePushNotificationAfterSidebarAction = (notificationInstance) => {
+      NotificationsBus.emit(
+        'removePushNotificationAfterSidebarAction',
+        notificationInstance
+      );
     };
 
     const logOut = () => {
@@ -428,6 +442,7 @@ export default {
       triggerForRestart,
       lineMenuClick,
       closeMobMenu,
+      removePushNotificationAfterSidebarAction,
       logOut,
       restartInfiniteScroll: () => {
         triggerForRestart.value = uuid();
