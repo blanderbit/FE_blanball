@@ -370,7 +370,12 @@ export default {
         startLoader();
         await API.NotificationService.readAllMyNotifications();
         clearSelectedList();
-        handleSelectableMode();
+        if (selectable.value) {
+          handleSelectableMode();
+        }
+        if (selectedTabId.value === 2) {
+          emit('reLoading');
+        }
         stopLoader();
       },
       deleteSelected: async () => {
