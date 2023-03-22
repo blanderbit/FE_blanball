@@ -31,7 +31,12 @@
           :full-name="notificationInstance.fullName"
         ></avatar>
       </div>
-      <div class="notification-data flex-grow-1">
+      <div
+        class="notification-data flex-grow-1"
+        :style="`margin-top: ${
+          notificationType === 'notification-push' ? -10 : 0
+        }px`"
+      >
         <div class="notification-header d-flex justify-content-between">
           <div
             v-if="notificationType === 'notification-sidebar'"
@@ -177,7 +182,7 @@
           </template>
           <div class="push-notification-content">
             <collapsible-panel>
-              <template #title> Сьогодні: 21:35 </template>
+              <template #title> Сьогодні: {{ getCurrentTime }}</template>
               <template #content>
                 <div
                   class="notification-content"
@@ -320,6 +325,9 @@ export default {
         this.notificationInstance?.parseDate ||
         dayJs(String(this.notificationInstance.date)).format('DD.MM.YYYY')
       );
+    },
+    getCurrentTime() {
+      return dayJs(new Date()).format('HH:mm');
     },
     isPush() {
       return this.notificationType === 'push';
@@ -593,7 +601,6 @@ $color-000: #000;
 .notification__top-side {
   margin-bottom: 8px;
 }
-
 .push-notification-content {
   @include inter(13px, 400, #f0f0f4);
   line-height: 20px;
