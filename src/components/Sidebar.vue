@@ -165,9 +165,7 @@ export default {
     const loading = ref(false);
     const isMobMenuActive = ref(false);
     const skipids = ref([]);
-    const userFullName = computed(
-      () => `${userStore.user.profile.name} ${userStore.user.profile.last_name}`
-    );
+    const userFullName = computed(() => userStore.getUserFullName);
     const userAvatar = ref(userStore.user.profile.avatar_url);
     const router = useRouter();
     const isMenuOpened = ref(false);

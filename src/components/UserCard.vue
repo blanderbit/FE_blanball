@@ -10,15 +10,13 @@
               <avatar
                 @clickByAvatar="$emit('openUserProfile')"
                 :link="userData.profile.avatar_url"
-                :full-name="
-                  userData.profile.name + ' ' + userData.profile.last_name
-                "
+                :full-name="`${userData.profile.last_name} ${userData.profile.name}`"
               ></avatar>
             </div>
             <div class="b-user-card__name-pnz">
               <div class="b-user-card__top-line-name-rating">
                 <div class="b-user-card__name">
-                  {{ userData.profile.name }} {{ userData.profile.last_name }}
+                  {{ userData.profile.last_name }} {{ userData.profile.name }}
                 </div>
                 <div class="b-user-card__team-rating-mob">
                   <star-rating

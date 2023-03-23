@@ -4,7 +4,7 @@
       <Avatar
         class=""
         :link="userData.profile.avatar_url"
-        :full-name="`${userData.profile.name} ${userData.profile.last_name}`"
+        :full-name="`${userData.profile.last_name} ${userData.profile.name}`"
       ></Avatar>
       <div class="b-user-info__top-side-user-info">
         <div class="b-user__full-name">

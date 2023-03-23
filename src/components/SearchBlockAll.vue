@@ -17,12 +17,12 @@
               @click="$emit('item-image-click', user.id)"
               :link="user.profile.avatar_url"
               :avatarType="'small-square'"
-              :full-name="`${user.profile.name} ${user.profile.last_name}`"
+              :full-name="`${user.profile.last_name} ${user.profile.name}`"
             ></avatar>
           </div>
           <div class="b-user-main-info__container">
             <div class="b-user__name">
-              {{ user.profile.name }} {{ user.profile.last_name }}
+              {{ user.profile.last_name }} {{ user.profile.name }}
             </div>
             <img
               v-if="rightUserItemIcon"

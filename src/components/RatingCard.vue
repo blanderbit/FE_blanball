@@ -53,8 +53,8 @@
                 >
                   <div class="b-rating-card__top-line">
                     <div class="b-rating-card__name">
-                      {{ slotProps.smartListItem.author.profile.name }}
                       {{ slotProps.smartListItem.author.profile.last_name }}
+                      {{ slotProps.smartListItem.author.profile.name }}
                     </div>
                     <div class="b-rating-card__rate">
                       <star-rating

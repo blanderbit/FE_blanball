@@ -31,8 +31,8 @@
         <div class="b-user-card__text-block">
           <div class="b-user-card__name-line-wrapper">
             <div class="b-user-card__user-name">
-              {{ userData.name || $t('profile.no-name') }}
-              {{ userData.last_name || $t('profile.no-last-name') }}
+              {{ userData.last_name || $t('profile.no-name') }}
+              {{ userData.name || $t('profile.no-last-name') }}
             </div>
           </div>
           <div class="b-user-card__labels">
@@ -401,7 +401,7 @@ export default {
     });
 
     const fullUserName = computed(
-      () => `${props.userData?.name} ${props.userData?.last_name}`
+      () => `${props.userData?.last_name} ${props.userData?.name}`
     );
 
     const mockData = computed(() => {

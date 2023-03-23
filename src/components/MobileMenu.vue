@@ -21,13 +21,13 @@
         <div class="b-mob-menu__user-img">
           <Avatar
             :link="userStore.user.profile.avatar_url"
-            :full-name="`${userStore.user.profile.name} ${userStore.user.profile.last_name}`"
+            :full-name="userStore.getUserFullName"
           >
           </Avatar>
         </div>
         <div class="b-mob-menu__text-block">
           <div class="b-mob-menu__user-name">
-            {{ userStore.user.profile.name }} {{ userStore.user.profile.last_name }}
+            {{ userStore.getUserFullName }}
           </div>
           <div class="b-mob-menu__account-type">
             {{ $t(`hashtags.${userStore.user.role}`) }}

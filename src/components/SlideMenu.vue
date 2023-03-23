@@ -197,7 +197,7 @@
         <div class="b_slide_menu_bottom-block">
           <div class="b_slide_menu_top-line d-flex justify-content-between">
             <div class="b_slide_menu_name">
-              {{ userStore.user.profile.name }} {{ userStore.user.profile.last_name }}
+              {{ userStore.getUserFullName }}
             </div>
             <div class="b_slide_menu_position">
               {{ $t(`hashtags.${userStore.user.role}`) }}

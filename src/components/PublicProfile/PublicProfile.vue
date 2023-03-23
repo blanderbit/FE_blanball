@@ -104,7 +104,7 @@
                 class="b-public-profile__avatar"
                 :avatarType="avatarType"
                 :link="userData.profile.avatar_url"
-                :full-name="`${userData.profile.name} ${userData.profile.last_name}`"
+                :full-name="`${userData.profile.last_name} ${userData.profile.name}`"
               />
               <div class="b-public-profile__user-main-info">
                 <div class="b-public-profile__full-name">

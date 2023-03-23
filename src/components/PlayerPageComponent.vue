@@ -9,9 +9,7 @@
           <div class="b-player-page__picture">
             <avatar
               :link="userData.profile.avatar_url"
-              :full-name="
-                userData.profile.name + ' ' + userData.profile.last_name
-              "
+              :full-name="`${userData.profile.last_name} ${userData.profile.name}`"
               avatarType="square"
             ></avatar>
           </div>

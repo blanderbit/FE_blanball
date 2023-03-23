@@ -58,7 +58,7 @@ export class InitialMessage {
   }
 
   get fullName() {
-    return [this?.data?.sender?.name, this.data?.sender?.last_name]
+    return [this?.data?.sender?.last_name, this.data?.sender?.name]
       .filter((_) => !!_)
       .join(' ');
   }

@@ -125,14 +125,14 @@
                   <avatar
                     :border="true"
                     :link="eventData.author.profile.avatar_url"
-                    :full-name="`${eventData.author.profile.name} ${eventData.author.profile.last_name}`"
+                    :full-name="`${eventData.author.profile.last_name} ${eventData.author.profile.name}`"
                     @clickByAvatar="goToUserProfile(eventData.author.id)"
                   ></avatar>
                 </div>
                 <div class="b-event-info__text-block">
                   <div class="b-event-info__name">
-                    {{ eventData.author.profile.name }}
                     {{ eventData.author.profile.last_name }}
+                    {{ eventData.author.profile.name }}
                   </div>
                   <div class="b-event-info__phone">
                     {{ eventData.author.phone }}
