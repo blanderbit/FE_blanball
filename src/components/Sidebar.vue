@@ -81,6 +81,7 @@
     </div>
   </div>
   <mobile-menu
+    v-if="isMobileMenuAvailableToOpen"
     class="b_mobile-menu"
     :isMenuActive="isMobMenuActive"
     :notifications="paginationElements"
@@ -126,6 +127,7 @@ import {
   BlanballEventBus,
 } from '../workers/event-bus-worker';
 import { FilterPatch } from '../workers/api-worker/http/filter/filter.patch';
+import useWindowWidth from '../utils/widthScreen';
 
 import { ROUTES } from '../router/router.const';
 
@@ -174,11 +176,17 @@ export default {
     const isMenuOpened = ref(false);
     const isBugReportModalOpened = ref(false);
     const currentHoverSideBarItemID = ref(0);
+    const { onResize, isMobile, isTablet } = useWindowWidth();
 
     const foundBug = () => {
       isMobMenuActive.value = false;
       isBugReportModalOpened.value = true;
     };
+
+
+    const isMobileMenuAvailableToOpen = computed(() => {
+      return isMobile.value || isTablet.value
+    })
 
     const menuItems = computed(() => [
       {
@@ -363,11 +371,16 @@ export default {
       isMobMenuActive.value = true;
     });
 
+    onMounted(() => {
+      window.addEventListener('resize', onResize);
+    });
+
     onBeforeUnmount(() => {
       NotificationsBus.off('SidebarClearData');
       NotificationsBus.off('hanlderToRemoveNewNotificationsInSidebar');
       BlanballEventBus.off('OpenMobileMenu');
       AuthWebSocketWorkerInstance.destroyCallback(handleMessageInSidebar);
+      window.removeEventListener('resize', onResize);
     });
 
     getNotificationsCount();
@@ -386,6 +399,7 @@ export default {
       menuItems,
       userAvatar,
       isMobMenuActive,
+      isMobileMenuAvailableToOpen,
       allNotificationsCount,
       isMenuOpened,
       currentHoverSideBarItemID,

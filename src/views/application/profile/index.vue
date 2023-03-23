@@ -98,6 +98,7 @@
           @save-changes="handleSaveDataChanges"
           @decline-changes="declineUserDataChanges"
           @show-preview="showPreview"
+          @cancel-changes="cancelChangesAndGoToTheNextRoute"
         />
         <RatingCard
           v-if="!isTabletSize && !isMobile"
@@ -144,7 +145,7 @@
 
 <script>
 import { ref, computed, reactive, onMounted, onBeforeUnmount } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
 
@@ -224,6 +225,7 @@ export default {
     const userAvatar = ref('');
     const restData = ref();
     const openedReviewId = ref(0);
+    const nextRoutePath = ref('');
 
     const isTabletSize = computed(() => {
       return isBetweenTabletAndDesktop.value || isTablet.value;
@@ -372,7 +374,7 @@ export default {
     function cancelDataEdit() {
       toggleModal('change_data');
       changeDataModalConfig.value = {
-        title: 'Вийти без збереження змін?',
+        title: 'Вийти без збереження змін',
         description: 'Ви дійсно хочете вийти, скасувавши всі внесені зміни?',
         button_1: 'Ні, не виходити',
         button_2: 'Так, вийти',
@@ -482,6 +484,9 @@ export default {
           userEmail.value = res.data?.email;
           userPhone.value = res.data?.phone;
           isLoading.value = false;
+          store.$patch({
+            user: res.data,
+          });
           toast.success(t('profile.data-updated'));
         })
         .catch((e) => {
@@ -595,6 +600,30 @@ export default {
       toggleEditMode();
     }
 
+    function cancelChangesAndGoToTheNextRoute() {
+      router.push(nextRoutePath.value)
+      nextRoutePath.value = ''
+    }
+
+    onBeforeRouteLeave((to, from, next) => {
+      if (isEditModeProfile.value && !isModalActive.change_data) {
+        toggleModal('change_data');
+        nextRoutePath.value = to.fullPath;
+        changeDataModalConfig.value = {
+          title: 'Вийти без збереження змін',
+          description: 'Ви дійсно хочете вийти, скасувавши всі внесені зміни?',
+          button_1: 'Ні, не виходити',
+          button_2: 'Так, вийти',
+          right_btn_action: 'cancelChanges',
+          left_btn_action: 'closeModal',
+          btn_with_1: 124,
+          btn_with_2: 90,
+        };
+      } else {
+        next();
+      }
+    });
+
     return {
       toggleEditMode,
       saveDataFromPreviewWindow,
@@ -610,6 +639,7 @@ export default {
       openEditPictureModal,
       getMyProfile,
       clickReview,
+      cancelChangesAndGoToTheNextRoute,
       showPreview,
       userRating,
       user,
