@@ -29,6 +29,7 @@
           <InputComponent
             :outside-title="true"
             :title="$t('reset.post')"
+            :swipeTitle="false"
             :placeholder="'example@email.com'"
             v-model="userEmail"
             :title-width="0"
@@ -61,6 +62,7 @@
             :title="$t('reset.enter-new-password')"
             :title-width="0"
             :type="'password'"
+            :swipeTitle="false"
             :outside-title="true"
             :placeholder="'********'"
             name="new_password"
@@ -71,6 +73,7 @@
             :title="$t('reset.repeat-new-password')"
             :title-width="0"
             :type="'password'"
+            :swipeTitle="false"
             :outside-title="true"
             :placeholder="'********'"
             name="confirm_new_password"

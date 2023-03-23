@@ -46,6 +46,7 @@
           <div class="b-modal-position__block">
             <InputComponent
               :title="$t('register.address')"
+              :swipeTitle="false"
               :placeholder="$t('register.address-placeholder')"
               :model-value="address"
               :title-width="0"

@@ -13,6 +13,7 @@
           <div class="inut-wrapper">
             <InputComponent
               :title="$t('modals.change_login.email')"
+              :swipeTitle="false"
               :placeholder="userEmail"
               :outside-title="true"
               :title-width="0"

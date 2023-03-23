@@ -422,6 +422,9 @@ export default {
       delete profileData.config_phone;
       delete profileData.show_reviews;
 
+      profileData.height = profileData.height ? profileData.height : null
+      profileData.weight = profileData.weight ? profileData.weight : null
+
       const payload = {
         configuration: {
           email: config_email,
@@ -439,8 +442,6 @@ export default {
         get_planned_events: '1y',
         phone: phone,
       };
-
-      console.log(payload)
 
       API.UserService.updateProfileData(payload).then(() => {
         getMyProfile();

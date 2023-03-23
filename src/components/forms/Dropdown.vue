@@ -2,13 +2,13 @@
   <div class="b-dropdown">
     <div class="b-dropdown__title">
       <span>
-        {{ mainTitle }}
+        {{ dropdownModelValue ? mainTitle : '' }}
       </span>
     </div>
     <v-select
       :searchable="false"
       :style="{ height: height + 'px' }"
-      :placeholder="placeholder"
+      :placeholder="!dropdownModelValue ? placeholder : ''"
       :options="options"
       :label="displayName || 'value'"
       :disabled="disabled"

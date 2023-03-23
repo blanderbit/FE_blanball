@@ -12,6 +12,7 @@
         <div v-if="currentStep === 1" class="inut-wrapper">
           <InputComponent
             :title="$t('modals.change_login.current-email')"
+            :swipeTitle="false"
             :placeholder="userEmail"
             :outside-title="true"
             :title-width="0"
@@ -27,6 +28,7 @@
                   : $t('modals.change_login.email')
               "
               :placeholder="'example@panda.com'"
+              :swipeTitle="false"
               :outside-title="true"
               :title-width="0"
               :is-disabled="currentStep === 1 ? false : true"

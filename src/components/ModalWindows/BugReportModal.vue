@@ -11,6 +11,7 @@
         <div class="b-bug-report-modal__main-side">
           <InputComponent
             :placeholder="$t('modals.bug_report.input-placeholder')"
+            :swipeTitle="false"
             :height="40"
             :outsideTitle="true"
             :title-width="0"

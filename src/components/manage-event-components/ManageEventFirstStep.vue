@@ -19,6 +19,7 @@
     <div class="b-event-m-2st__input-name">
       <InputComponent
         :outside-title="true"
+        :swipeTitle="false"
         :title="$t('events.event-name')"
         :placeholder="$t('events.event-name-placeholder')"
         :title-width="0"
@@ -100,6 +101,7 @@
           :title="$t('events.start')"
           :placeholder="'17:00'"
           :title-width="0"
+          :swipeTitle="false"
           name="time"
           v-maska="'##:##'"
         />
@@ -109,6 +111,7 @@
           :outside-title="true"
           :title="$t('events.end')"
           :placeholder="'18:10'"
+          :swipeTitle="false"
           :title-width="0"
           name="end_time"
           v-maska="'##:##'"

@@ -24,13 +24,25 @@ export default {
       .typeError('errors.type-number')
       .nullable()
       .min(145, 'errors.min145')
-      .max(250, 'errors.max250'),
+      .max(250, 'errors.max250')
+      .transform((value, originalValue) => {
+        if (originalValue === '') {
+          return null;
+        }
+        return value;
+      }),
     weight: yup
       .number()
       .typeError('errors.type-number')
       .nullable()
       .min(30, 'errors.min30')
-      .max(200, 'errors.max250'),
+      .max(200, 'errors.max250')
+      .transform((value, originalValue) => {
+        if (originalValue === '') {
+          return null;
+        }
+        return value;
+      }),
     working_leg: yup.string().nullable(),
     position: yup.string().nullable(),
     phone: yup

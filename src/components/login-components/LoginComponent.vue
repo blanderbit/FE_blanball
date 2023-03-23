@@ -12,6 +12,7 @@
         <div class="b-login-step__input">
           <InputComponent
             :outside-title="true"
+            :swipeTitle="false"
             :title="$t('login.login')"
             :placeholder="'example@email.com'"
             :title-width="0"
@@ -22,6 +23,7 @@
         <div class="b-login-step__input">
           <InputComponent
             :title="$t('login.password')"
+            :swipeTitle="false"
             :title-width="0"
             :outside-title="true"
             :placeholder="'********'"

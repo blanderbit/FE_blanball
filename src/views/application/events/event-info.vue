@@ -493,7 +493,6 @@ export default {
       isTabLabel,
       loading,
       greenButton,
-      user,
       activeTab,
       isActionEventModalOpened,
       noUsersData,

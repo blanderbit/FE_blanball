@@ -21,6 +21,7 @@
       <div class="b-register-step__input">
         <InputComponent
           :outside-title="true"
+          :swipeTitle="false"
           :title="$t('register.name')"
           :placeholder="$t('register.Olexandra')"
           :title-width="0"
@@ -31,6 +32,7 @@
       <div class="b-register-step__input mb-2">
         <InputComponent
           :outside-title="true"
+          :swipeTitle="false"
           :title="$t('register.last_name')"
           :placeholder="$t('register.Bilozerska')"
           :title-width="0"

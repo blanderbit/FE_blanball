@@ -89,6 +89,7 @@
               <InputComponent
                 :outside-title="true"
                 :title="$t('profile.surname')"
+                :placeholder="$t('profile.surname')"
                 :height="40"
                 :title-width="0"
                 name="last_name"
@@ -188,6 +189,7 @@
                 v-else
                 :outside-title="true"
                 :title="$t('profile.height')"
+                :placeholder="$t('profile.height')"
                 :height="40"
                 :title-width="0"
                 name="height"
@@ -208,6 +210,7 @@
                 v-else
                 :outside-title="true"
                 :title="$t('profile.weight')"
+                :placeholder="$t('profile.weight')"
                 :height="40"
                 :title-width="0"
                 name="weight"
