@@ -440,6 +440,9 @@ export default {
         removePushNotificationAfterSidebarAction({
           notification_ids: [...selectedList.value],
         });
+        if (selectedTabId.value === 2) {
+          emit('reLoading')
+        }
         clearSelectedList();
         handleSelectableMode();
         stopLoader();

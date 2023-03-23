@@ -119,13 +119,15 @@
           </div>
         </div>
 
-        <collapsible-panel v-else v-model:expanding="expanding">
+        <collapsible-panel v-else v-model:expanding="expanding"
+          class="notification-mobile">
           <template #title>
             <div class="notification-title">
               {{ notificationInstance.title }}
-            </div>
+            </div>            
           </template>
 
+        
           <template
             v-if="notificationType === 'notification-sidebar'"
             #content
@@ -163,6 +165,14 @@
                 </NotificationButton>
               </template>
             </div>
+          </template>
+
+          <template #icon>
+            <img
+              class="notification-collapsiple"
+              src="../assets/img/mob-notification-collapsible-icon.svg"
+              alt=""
+            />
           </template>
         </collapsible-panel>
 
@@ -661,5 +671,11 @@ $color-000: #000;
 }
 .delete-notfication-cross {
   cursor: pointer;
+}
+.notification-mobile {
+  ::v-deep(.vcp__header-icon) {
+    position: absolute;
+    right: 15px;
+  }
 }
 </style>
