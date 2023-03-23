@@ -20,17 +20,17 @@
       <div class="b-mob-menu__user-info">
         <div class="b-mob-menu__user-img">
           <Avatar
-            :link="userData.profile.avatar_url"
-            :full-name="`${userData.profile.name} ${userData.profile.last_name}`"
+            :link="userStore.user.profile.avatar_url"
+            :full-name="`${userStore.user.profile.name} ${userStore.user.profile.last_name}`"
           >
           </Avatar>
         </div>
         <div class="b-mob-menu__text-block">
           <div class="b-mob-menu__user-name">
-            {{ userData.profile.name }} {{ userData.profile.last_name }}
+            {{ userStore.user.profile.name }} {{ userStore.user.profile.last_name }}
           </div>
           <div class="b-mob-menu__account-type">
-            {{ $t(`hashtags.${userData.role}`) }}
+            {{ $t(`hashtags.${userStore.user.role}`) }}
           </div>
         </div>
       </div>
@@ -152,8 +152,6 @@
 import { ref, computed, inject, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-
-import { storeToRefs } from 'pinia';
 import { v4 as uuid } from 'uuid';
 
 import Avatar from './Avatar.vue';
@@ -220,7 +218,6 @@ export default {
   setup(props, { emit }) {
     const router = useRouter();
     const userStore = useUserDataStore();
-    const { user } = storeToRefs(userStore);
     const notificationList = ref();
     const selectable = ref(false);
     const loading = ref(false);
@@ -302,9 +299,6 @@ export default {
       return newNotificationInstance.value;
     });
 
-    const userData = computed(() => {
-      return user.value;
-    });
 
     const menuBlockHeight = ref('auto');
     const menuBlockStyle = computed(() => {
@@ -434,7 +428,7 @@ export default {
       notificationList,
       getNewNotificationInstance,
       menuBlockStyle,
-      userData,
+      userStore,
       mobMenuStyle,
       routeObject,
       HandleAction,

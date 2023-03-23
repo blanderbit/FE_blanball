@@ -197,10 +197,10 @@
         <div class="b_slide_menu_bottom-block">
           <div class="b_slide_menu_top-line d-flex justify-content-between">
             <div class="b_slide_menu_name">
-              {{ userData.profile.name }} {{ userData.profile.last_name }}
+              {{ userStore.user.profile.name }} {{ userStore.user.profile.last_name }}
             </div>
             <div class="b_slide_menu_position">
-              {{ $t(`hashtags.${userData.role}`) }}
+              {{ $t(`hashtags.${userStore.user.role}`) }}
             </div>
           </div>
           <div class="b_slide_menu_bottom-line">
@@ -226,7 +226,6 @@ import { ref, inject, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { v4 as uuid } from 'uuid';
-import { storeToRefs } from 'pinia';
 
 import Notifications from './sitebar-notifications/Notifications.vue';
 import Notification from './Notification.vue';
@@ -294,7 +293,6 @@ export default {
     const triggerForRestart = ref('');
     const selectedList = ref([]);
     const userStore = useUserDataStore();
-    const { user } = storeToRefs(userStore);
     const newNotificationInstance = ref(new NewNotifications());
     const clientVersion = ref(inject('clientVersion'));
     const { t } = useI18n();
@@ -329,10 +327,6 @@ export default {
         count: context.notReadNotificationCount - context.newNotifications,
       },
     ]);
-
-    const userData = computed(() => {
-      return user.value;
-    });
 
     watch(
       () => context.isMenuOpened,
@@ -479,13 +473,13 @@ export default {
     return {
       clientVersion,
       arrowPosition,
-      userData,
       getNewNotificationInstance,
       emptyListMessages,
       routeObject,
       selectedList,
       HandleAction,
       triggerForRestart,
+      userStore,
       selectable,
       submitModalConfig,
       notificationList,

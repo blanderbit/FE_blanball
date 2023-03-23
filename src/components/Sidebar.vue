@@ -103,8 +103,6 @@
 import { ref, computed, onBeforeUnmount, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { storeToRefs } from 'pinia';
-
 import SlideMenu from '../components/SlideMenu.vue';
 import Avatar from './../components/Avatar.vue';
 import BugReportModal from './ModalWindows/BugReportModal.vue';
@@ -161,7 +159,6 @@ export default {
   },
   setup(props, { emit }) {
     const userStore = useUserDataStore();
-    const { user } = storeToRefs(userStore);
     const eventStore = useEventDataStore();
     const notReadNotificationCount = ref(0);
     const allNotificationsCount = ref(0);
@@ -169,9 +166,9 @@ export default {
     const isMobMenuActive = ref(false);
     const skipids = ref([]);
     const userFullName = computed(
-      () => `${user.value.profile.name} ${user.value.profile.last_name}`
+      () => `${userStore.user.profile.name} ${userStore.user.profile.last_name}`
     );
-    const userAvatar = ref(user.value.profile.avatar_url);
+    const userAvatar = ref(userStore.user.profile.avatar_url);
     const router = useRouter();
     const isMenuOpened = ref(false);
     const isBugReportModalOpened = ref(false);

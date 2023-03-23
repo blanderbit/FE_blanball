@@ -150,7 +150,6 @@ import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
-import { storeToRefs } from 'pinia';
 
 import GreenBtn from '../../../components/GreenBtn.vue';
 import WhiteBtn from '../../../components/WhiteBtn.vue';
@@ -205,9 +204,8 @@ export default {
   setup(props) {
     const { t } = useI18n();
     const toast = useToast();
-    const store = useUserDataStore();
+    const userStore = useUserDataStore();
 
-    const { user } = storeToRefs(store);
     const router = useRouter();
     const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
       useWindowWidth();
@@ -240,28 +238,28 @@ export default {
       };
     });
     restData.value = {
-      ...store.user,
+      ...userStore.user,
       configuration: {
-        ...store.user.configuration,
+        ...userStore.user.configuration,
         planned_events: true,
       },
     };
 
     const formValues = ref({
-      last_name: store.user.profile.last_name,
-      name: store.user.profile.name,
-      about_me: store.user.profile.about_me,
-      day: getBirthDay(store.user.profile.birthday),
-      month: getBirthMonth(store.user.profile.birthday),
-      year: getBirthYear(store.user.profile.birthday),
-      height: store.user.profile.height,
-      weight: store.user.profile.weight,
-      working_leg: getWorkingLeg(store.user.profile.working_leg),
-      position: store.user.profile.position,
-      phone: store.user.phone,
-      config_phone: store.user.configuration.phone,
-      config_email: store.user.configuration.email,
-      show_reviews: store.user.configuration.show_reviews,
+      last_name: userStore.user.profile.last_name,
+      name: userStore.user.profile.name,
+      about_me: userStore.user.profile.about_me,
+      day: getBirthDay(userStore.user.profile.birthday),
+      month: getBirthMonth(userStore.user.profile.birthday),
+      year: getBirthYear(userStore.user.profile.birthday),
+      height: userStore.user.profile.height,
+      weight: userStore.user.profile.weight,
+      working_leg: getWorkingLeg(userStore.user.profile.working_leg),
+      position: userStore.user.profile.position,
+      phone: userStore.user.phone,
+      config_phone: userStore.user.configuration.phone,
+      config_email: userStore.user.configuration.email,
+      show_reviews: userStore.user.configuration.show_reviews,
       planned_events: true,
     });
 
@@ -281,27 +279,27 @@ export default {
     });
 
     userInfo.value = {
-      ...store.user,
+      ...userStore.user,
       profile: {
-        ...store.user.profile,
-        working_leg: getWorkingLeg(store.user.profile.working_leg),
+        ...userStore.user.profile,
+        working_leg: getWorkingLeg(userStore.user.profile.working_leg),
       },
     };
-    userRating.value = store.user.raiting;
-    userPhone.value = store.user.phone;
-    userEmail.value = store.user.email;
+    userRating.value = userStore.user.raiting;
+    userPhone.value = userStore.user.phone;
+    userEmail.value = userStore.user.email;
     userData.value = {
-      ...store.user.profile,
-      phone: store.user.phone,
-      raiting: store.user.raiting,
-      working_leg: getWorkingLeg(store.user.profile.working_leg),
-      role: store.user.role,
+      ...userStore.user.profile,
+      phone: userStore.user.phone,
+      raiting: userStore.user.raiting,
+      working_leg: getWorkingLeg(userStore.user.profile.working_leg),
+      role: userStore.user.role,
     };
 
     checkboxData.value = {
-      checkboxPhone: store.user.configuration.phone,
-      checkboxEmail: store.user.configuration.email,
-      checkboxReviews: store.user.configuration.show_reviews,
+      checkboxPhone: userStore.user.configuration.phone,
+      checkboxEmail: userStore.user.configuration.email,
+      checkboxReviews: userStore.user.configuration.show_reviews,
     };
 
     onMounted(() => {
@@ -418,7 +416,7 @@ export default {
       const profileData = {
         ...refProfileData,
         birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
-        gender: store.user.profile.gender,
+        gender: userStore.user.profile.gender,
         working_leg: getWorkingLeg(working_leg),
       };
 
@@ -484,7 +482,7 @@ export default {
           userEmail.value = res.data?.email;
           userPhone.value = res.data?.phone;
           isLoading.value = false;
-          store.$patch({
+          userStore.$patch({
             user: res.data,
           });
           toast.success(t('profile.data-updated'));
@@ -538,8 +536,8 @@ export default {
           const profileData = {
             ...refProfileData,
             birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
-            gender: store.user.profile.gender,
-            avatar_url: store.getUserAvatar,
+            gender: userStore.user.profile.gender,
+            avatar_url: userStore.getUserAvatar,
             position: getUserPositionText(position),
           };
           delete profileData.day;
@@ -642,7 +640,6 @@ export default {
       cancelChangesAndGoToTheNextRoute,
       showPreview,
       userRating,
-      user,
       userPhone,
       userEmail,
       isEditModeProfile,

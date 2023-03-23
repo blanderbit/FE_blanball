@@ -98,13 +98,10 @@
 import { computed } from 'vue';
 
 import { useDevice } from 'next-vue-device-detector';
-import { storeToRefs } from 'pinia';
 
 import GreenBtn from '../../components/GreenBtn.vue';
 import PlaceDetector from '../../components/maps/PlaceDetector.vue';
 import WhiteBtn from '../WhiteBtn.vue';
-
-import { useUserDataStore } from '../../stores/userData';
 
 export default {
   props: {
@@ -120,8 +117,6 @@ export default {
   },
   setup(props, context) {
     const device = useDevice();
-    const userStore = useUserDataStore();
-    const { user } = storeToRefs(userStore);
 
     const eventJoin = (e) => {
       context.emit('eventJoin', e);
@@ -148,7 +143,6 @@ export default {
 
     return {
       device,
-      user,
       greenButtonAvalable,
       whiteButtonText,
       eventJoin,
