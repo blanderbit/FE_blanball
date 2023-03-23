@@ -152,11 +152,6 @@ export default {
           emit('getProfileData');
         })
         .catch((e) => console.log(e));
-      API.UserService.getMyProfile().then((value) => {
-        userDataStore.$patch({
-          user: value.data,
-        });
-      });
     }
 
     fileReader.onload = (event) => {

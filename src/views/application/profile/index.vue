@@ -11,20 +11,20 @@
 
     <ChangeEmailModal
       v-if="isModalActive.email"
-      :user-email="userEmail"
+      :user-email="userStore.user.email"
       @close-modal="toggleModal"
       @email="getMyProfile"
     />
 
     <DeleteAccountModal
       v-if="isModalActive.delete_acc"
-      :user-email="userEmail"
+      :user-email="userStore.user.email"
       @close-modal="toggleModal"
     />
 
     <ChangePasswordModal
       v-if="isModalActive.change_password"
-      :user-email="userEmail"
+      :user-email="userStore.user.email"
       @close-modal="toggleModal"
     />
 
@@ -102,13 +102,13 @@
         />
         <RatingCard
           v-if="!isTabletSize && !isMobile"
-          :rating-scale="userRating"
+          :rating-scale="userStore.user.raiting"
           :openedReviewID="openedReviewId"
           @clickReview="clickReview"
         />
         <UserDetailsCard
           :user-data="userData"
-          :phone="userPhone"
+          :phone="userStore.user.phone"
           :is-edit-mode="isEditModeProfile"
           @openEditPictureModal="openEditPictureModal"
           :initValues="formValues"
@@ -116,13 +116,13 @@
         <div class="b-user-cabinet__mobile-tablet-block">
           <RatingCard
             v-if="isTabletSize"
-            :rating-scale="userRating"
+            :rating-scale="userStore.user.raiting"
             :openedReviewID="openedReviewId"
             @clickReview="clickReview"
           />
           <SecurityBlock
             @toggle-modal="toggleModal"
-            :user-email="userEmail"
+            :user-email="userStore.user.email"
             :checkbox-data="checkboxData"
             :is-edit-mode="isEditModeProfile"
           />
@@ -211,9 +211,6 @@ export default {
       useWindowWidth();
 
     const userInfo = ref(null);
-    const userRating = ref(null);
-    const userPhone = ref('');
-    const userEmail = ref('');
     const userData = ref(null);
     const isEditModeProfile = ref(false);
     const changeDataModalConfig = ref(null);
@@ -285,9 +282,6 @@ export default {
         working_leg: getWorkingLeg(userStore.user.profile.working_leg),
       },
     };
-    userRating.value = userStore.user.raiting;
-    userPhone.value = userStore.user.phone;
-    userEmail.value = userStore.user.email;
     userData.value = {
       ...userStore.user.profile,
       phone: userStore.user.phone,
@@ -415,7 +409,7 @@ export default {
       } = refProfileData;
       const profileData = {
         ...refProfileData,
-        birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
+        birthday: year && month && day ? `${year}-${mockData.value.numberFromMonth[month]}-${day}` : null,
         gender: userStore.user.profile.gender,
         working_leg: getWorkingLeg(working_leg),
       };
@@ -445,6 +439,8 @@ export default {
         get_planned_events: '1y',
         phone: phone,
       };
+
+      console.log(payload)
 
       API.UserService.updateProfileData(payload).then(() => {
         getMyProfile();
@@ -479,8 +475,6 @@ export default {
             working_leg: getWorkingLeg(res.data.profile?.working_leg),
             role: res.data?.role,
           };
-          userEmail.value = res.data?.email;
-          userPhone.value = res.data?.phone;
           isLoading.value = false;
           userStore.$patch({
             user: res.data,
@@ -639,13 +633,11 @@ export default {
       clickReview,
       cancelChangesAndGoToTheNextRoute,
       showPreview,
-      userRating,
-      userPhone,
-      userEmail,
       isEditModeProfile,
       changeDataModalConfig,
       mockData,
       isModalActive,
+      userStore,
       checkboxData,
       userData,
       schema,

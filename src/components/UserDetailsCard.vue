@@ -191,6 +191,7 @@
                 :height="40"
                 :title-width="0"
                 name="height"
+                v-maska="'###'"
               />
             </div>
             <div class="b-user-card__weight">
@@ -210,6 +211,7 @@
                 :height="40"
                 :title-width="0"
                 name="weight"
+                v-maska="'###'"
               />
             </div>
             <div class="b-user-card__main-leg">

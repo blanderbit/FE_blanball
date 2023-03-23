@@ -16,19 +16,19 @@ export default {
       .userName('errors.invalid-name')
       .max(20, 'errors.max20'),
     about_me: yup.string().nullable().max(110, 'errors.max110'),
-    day: yup.string().required('errors.required'),
-    month: yup.string().required('errors.required'),
-    year: yup.string().required('errors.required'),
+    day: yup.string().nullable(),
+    month: yup.string().nullable(),
+    year: yup.string().nullable(),
     height: yup
       .number()
       .typeError('errors.type-number')
-      .required('errors.required')
+      .nullable()
       .min(145, 'errors.min145')
       .max(250, 'errors.max250'),
     weight: yup
       .number()
       .typeError('errors.type-number')
-      .required('errors.required')
+      .nullable()
       .min(30, 'errors.min30')
       .max(200, 'errors.max250'),
     working_leg: yup.string().nullable(),

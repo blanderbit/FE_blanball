@@ -2,15 +2,17 @@
   <div class="main-wrapper">
     <VerifyEmailModal
       v-if="isVerifyModalActive"
-      :user-email="userEmail"
+      :user-email="userStore.user.email"
       @close-modal="isVerifyModalActive = false"
-      @email-verified="isUserVerified = true"
+      @email-verified="emailVerified"
     />
-
     <div class="b_header_validate-email-block-wrapper">
-      <div v-if="!isUserVerified" class="b_header_validate-email-block">
+      <div
+        v-if="!userStore.user.is_verified"
+        class="b_header_validate-email-block"
+      >
         <span class="b_header_text">
-          {{ $t('header.approve-your-email') }}: {{ userEmail }}
+          {{ $t('header.approve-your-email') }}: {{ userStore.user.email }}
         </span>
         <span class="b_header_verify-btn" @click="isVerifyModalActive = true">
           Підтвердити
@@ -76,8 +78,6 @@ import EventCreatedIcon from '../../assets/img/event-creted-modal-icon.svg';
 import message_audio from '../../assets/audio/message_audio.mp3';
 
 const isVerifyModalActive = ref(false);
-const userEmail = ref('');
-const isUserVerified = ref(true);
 const isCreateReviewModalActive = ref(false);
 const endedEventData = ref({});
 const selectedEmojies = ref([]);
@@ -86,6 +86,11 @@ const isActionEventModalOpened = ref(false);
 const actionEventModalConfig = ref({});
 const { t } = useI18n();
 const activePushNotifications = ref([]);
+const router = useRouter();
+const toast = useToast();
+const userStore = useUserDataStore();
+const audio = new Audio(message_audio);
+let timeout;
 
 const closeEventActiondModal = () => {
   isActionEventModalOpened.value = false;
@@ -100,6 +105,14 @@ const closeEventReviewModal = () => {
 };
 const openMobileMenu = () => {
   BlanballEventBus.emit('OpenMobileMenu');
+};
+
+const emailVerified = () => {
+  API.UserService.getMyProfile().then((res) => {
+    userStore.$patch({
+      user: res.data,
+    });
+  });
 };
 
 const openEventReviewModal = () => {
@@ -145,15 +158,6 @@ const emojiSelection = (emoji) => {
   }
   selectedEmojies.value.push(emoji);
 };
-
-const router = useRouter();
-const toast = useToast();
-const userStore = useUserDataStore();
-const audio = new Audio(message_audio);
-let timeout;
-
-isUserVerified.value = userStore.user.is_verified;
-userEmail.value = userStore.user.email || '';
 
 const handlerAction = async (button, notificationInstance) => {
   clearTimeout(timeout);
@@ -228,7 +232,6 @@ const getToastOptions = (notificationInstance, toastId) => {
       icon: false,
       rtl: false,
       toastClassName: [notificationInstance.getPushNotificationTheme()],
-      userEmail,
     },
   };
 };

@@ -66,8 +66,8 @@
       <div class="b_sidebar_bottom-block">
         <div class="b_sidebar_picture-bottom">
           <avatar
-            :link="userAvatar"
-            :full-name="userFullName"
+            :link="userStore.getUserAvatar"
+            :full-name="userStore.getUserFullName"
             @clickByAvatar="goToProfile"
           ></avatar>
           <div
@@ -165,8 +165,6 @@ export default {
     const loading = ref(false);
     const isMobMenuActive = ref(false);
     const skipids = ref([]);
-    const userFullName = computed(() => userStore.getUserFullName);
-    const userAvatar = ref(userStore.user.profile.avatar_url);
     const router = useRouter();
     const isMenuOpened = ref(false);
     const isBugReportModalOpened = ref(false);
@@ -392,13 +390,12 @@ export default {
       notReadNotificationCount,
       skipids,
       menuItems,
-      userAvatar,
       isMobMenuActive,
       isMobileMenuAvailableToOpen,
       allNotificationsCount,
       isMenuOpened,
+      userStore,
       currentHoverSideBarItemID,
-      userFullName,
       loading,
       isBugReportModalOpened,
       loadDataNotifications,

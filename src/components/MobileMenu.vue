@@ -20,7 +20,7 @@
       <div class="b-mob-menu__user-info">
         <div class="b-mob-menu__user-img">
           <Avatar
-            :link="userStore.user.profile.avatar_url"
+            :link="userStore.getUserAvatar"
             :full-name="userStore.getUserFullName"
           >
           </Avatar>
