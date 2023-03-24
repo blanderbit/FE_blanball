@@ -162,8 +162,10 @@
         </div>
       </div>
       <div class="b-control-block__block">
-        <img src="../assets/img/notifications/double-check-with-back.svg" alt="" />
-        <img src="../assets/img/notifications/trash-with-back.svg" alt="" />
+        <img src="../assets/img/notifications/double-check-with-back.svg" alt=""
+          @click="HandleAction.readSelected()" />
+        <img src="../assets/img/notifications/trash-with-back.svg" alt="" 
+          @click="HandleAction.deleteSelected()"/>
       </div>
     </div>
     <div
@@ -200,7 +202,6 @@ import { NotificationsBus } from '../workers/event-bus-worker';
 import { ROUTES } from '../router/router.const';
 
 import NotificationIcon from '../assets/img/notification-mob-default.svg';
-import NotificationUnreadIcon from '../assets/img/notification-mob-unread-default.svg';
 import NotificationWhite from '../assets/img/notifications-not-read-mobile-icon.svg';
 import Record from '../assets/img/record.svg';
 import RecordWhite from '../assets/img/record-white.svg';
@@ -360,7 +361,6 @@ export default {
 
     watch(selectedList.length,
       () => {
-        console.log(selectedList.value.length)
         if (selectedList.value.length === 0) {
           selectable.value = false
         }
@@ -454,11 +454,65 @@ export default {
       clearSelectedList();
     };
 
+
     const HandleAction = {
+      deleteAll: async () => {
+        if (!context.notifications.length && !context.newNotifications) return;
+        startLoader();
+        await API.NotificationService.deleteAllMyNotifications();
+        removePushNotificationAfterSidebarAction({
+          remove_all: true,
+        });
+        clearSelectedList();
+        handleSelectableMode();
+        stopLoader();
+      },
+      readAll: async () => {
+        if (!context.notifications.length && !context.newNotifications) return;
+        startLoader();
+        await API.NotificationService.readAllMyNotifications();
+        removePushNotificationAfterSidebarAction({
+          remove_all: true,
+        });
+        clearSelectedList();
+        if (selectable.value) {
+          handleSelectableMode();
+        }
+        if (selectedTabId.value === 2) {
+          emit('reLoading');
+        }
+        stopLoader();
+      },
+      deleteSelected: async () => {
+        if (!selectedList.value) return;
+        startLoader();
+        await API.NotificationService.deleteNotifications(selectedList.value);
+        removePushNotificationAfterSidebarAction({
+          notification_ids: [...selectedList.value],
+        });
+        clearSelectedList();
+        handleSelectableMode();
+        // closeSubmitModal();
+        stopLoader();
+      },
+      readSelected: async () => {
+        if (!selectedList.value) return;
+        startLoader();
+        await API.NotificationService.readNotifications(selectedList.value);
+        removePushNotificationAfterSidebarAction({
+          notification_ids: [...selectedList.value],
+        });
+        if (selectedTabId.value === 2) {
+          emit('reLoading')
+        }
+        clearSelectedList();
+        handleSelectableMode();
+        stopLoader();
+      },
       deleteOne: async (id) => {
         startLoader();
         await API.NotificationService.deleteNotifications([id]);
-        NotificationsBus.emit('removePushNotificationAfterSidebarAction', {
+        removePushNotificationAfterSidebarAction({
           notification_id: id,
         });
         stopLoader();

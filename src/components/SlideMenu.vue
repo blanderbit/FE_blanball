@@ -7,6 +7,14 @@
     @deleteNotifications="HandleAction.deleteSelected()"
     @continue="closeSubmitModal"
   />
+    <ContextMenu
+    v-if="isContextMenuActive"
+    :clientX="contextMenuX"
+    :clientY="contextMenuY"
+    :menu-text="mockData.menu_text"
+    @close-modal="closeContextMenu"
+    @itemClick="contextMenuItemClick"
+  />
   <div>
     <div
       v-if="isMenuOpened"
@@ -154,7 +162,7 @@
               v-model:selected-list="selectedList"
               v-model:scrollbar-existing="blockScrollToTopIfExist"
               @delete="HandleAction.deleteOne"
-              @openContextMenu="$emit('openContextMenu', $event)"
+              @openContextMenu="openContextMenu"
               @removePushNotificationAfterSidebarAction="
                 removePushNotificationAfterSidebarAction
               "
@@ -235,6 +243,7 @@ import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue'
 import ScrollToTop from './ScrollToTop.vue';
 import Loading from '../workers/loading-worker/Loading.vue';
 import ChangeUserDataModal from './ModalWindows/UserCabinetModalWindows/ChangeUserDataModal.vue';
+import ContextMenu from './ModalWindows/ContextMenuModal.vue';
 
 import { useUserDataStore } from '../stores/userData';
 import { NewNotifications } from '../workers/web-socket-worker/not-includes-to-socket/new_notifications';
@@ -242,6 +251,7 @@ import { NotificationsBus } from '../workers/event-bus-worker';
 import { API } from '../workers/api-worker/api.worker';
 
 import { ROUTES } from '../router/router.const';
+import CONSTANTS from '../consts';
 
 import sidebarArrowBack from '../assets/img/sidebar-arrow-back.svg';
 import sidebarArrow from '../assets/img/sidebar-arrow.svg';
@@ -252,6 +262,7 @@ export default {
     Notification,
     Loading,
     EmptyList,
+    ContextMenu,
     ChangeUserDataModal,
     Notifications,
     ScrollToTop,
@@ -299,6 +310,11 @@ export default {
     const { t } = useI18n();
     const isSubmitModalOpened = ref(false);
     const selectedTabId = ref(1);
+    const isContextMenuActive = ref(false);
+    const contextMenuX = ref(null);
+    const contextMenuY = ref(null);
+    const selectedByContextModalNotificationId = ref(null);
+
     const submitModalConfig = computed(() => {
       return {
         title: t('slide_menu.submit-modal.title'),
@@ -328,6 +344,12 @@ export default {
         count: context.notReadNotificationCount - context.newNotifications,
       },
     ]);
+
+    const mockData = computed(() => {
+      return {
+        menu_text: CONSTANTS.sidebar.menu_text,
+      };
+    });
 
     watch(
       () => context.isMenuOpened,
@@ -388,6 +410,7 @@ export default {
       clearSelectedList();
     };
 
+    
     const HandleAction = {
       deleteAll: async () => {
         if (!context.notifications.length && !context.newNotifications) return;
@@ -442,6 +465,17 @@ export default {
         handleSelectableMode();
         stopLoader();
       },
+      readOne: async (id) => {
+        startLoader();
+        await API.NotificationService.readNotifications([id]);
+        removePushNotificationAfterSidebarAction({
+          notification_ids: [id],
+        });
+        if (selectedTabId.value === 2) {
+          emit('reLoading')
+        }
+        stopLoader();
+      },
       deleteOne: async (id) => {
         startLoader();
         await API.NotificationService.deleteNotifications([id]);
@@ -455,6 +489,17 @@ export default {
     function restartInfiniteScroll() {
       triggerForRestart.value = uuid();
     }
+
+    const openContextMenu = (data) => {
+      selectedByContextModalNotificationId.value = data.notification_id;
+      contextMenuY.value = data.yPosition;
+      contextMenuX.value = data.xPosition;
+      isContextMenuActive.value = true;
+    };
+
+    const closeContextMenu = () => {
+      isContextMenuActive.value = false;
+    };
 
     const changeTab = (tabId, tabType) => {
       if (tabId !== selectedTabId.value && !selectable.value) {
@@ -471,6 +516,23 @@ export default {
       );
     };
 
+    const contextMenuItemClick = async (itemType) => {
+      switch (itemType) {
+        case 'select':
+          if (!selectable.value) {
+            handleSelectableMode();
+          }
+          selectedList.value.push(selectedByContextModalNotificationId.value);
+          break
+        case 'read':
+          HandleAction.readOne(selectedByContextModalNotificationId.value)
+          break
+        case 'delete':
+          HandleAction.deleteOne(selectedByContextModalNotificationId.value)
+          break
+      }
+    };
+
     return {
       clientVersion,
       arrowPosition,
@@ -479,9 +541,12 @@ export default {
       routeObject,
       selectedList,
       HandleAction,
+      contextMenuY,
+      contextMenuX,
       triggerForRestart,
       userStore,
       selectable,
+      mockData,
       submitModalConfig,
       notificationList,
       loading,
@@ -489,6 +554,10 @@ export default {
       blockScrollToTopIfExist,
       tabs,
       selectedTabId,
+      isContextMenuActive,
+      contextMenuItemClick,
+      closeContextMenu,
+      openContextMenu,
       closeSubmitModal,
       showSubmitModal,
       handleSelectableMode,

@@ -345,12 +345,13 @@ export default {
       }, 500);
     },
     openContextMenu(e) {
-      this.$emit(
-        'openContextMenu', {
+      if (!this.checked) {
+        this.$emit('openContextMenu', {
           notification_id: this.notificationInstance.notification_id,
           xPosition: e.clientX,
-          yPosition: e.clientY
-        })
+          yPosition: e.clientY,
+        });
+      }
     },
     endHoldSelectNotification() {
       clearTimeout(this.timeout);

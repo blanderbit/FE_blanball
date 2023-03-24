@@ -1,13 +1,5 @@
 <template>
   <Loading :is-loading="loading" />
-  <ContextMenu
-    v-if="isContextMenuActive"
-    :clientX="contextMenuX"
-    :clientY="contextMenuY"
-    :menu-text="mockData.menu_text"
-    @close-modal="closeContextMenu"
-    @itemClick="contextMenuItemClick"
-  />
   <BugReportModal
     v-if="isBugReportModalOpened"
     @close-modal="closeBugReportModal"
@@ -18,9 +10,6 @@
       :notifications="paginationElements"
       :notReadNotificationCount="notReadNotificationCount"
       :newNotifications="skipids.length"
-      :selectedByContextModalNotificationId="
-        selectedByContextModalNotificationId
-      "
       :total-notifications-count="allNotificationsCount"
       @close="isMenuOpened = false"
       @closed="paginationClearData()"
@@ -122,7 +111,6 @@ import BugReportModal from './ModalWindows/BugReportModal.vue';
 import TabLabel from './TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';
 import Loading from '../workers/loading-worker/Loading.vue';
-import ContextMenu from './ModalWindows/ContextMenuModal.vue';
 
 import { useUserDataStore } from '../stores/userData';
 import { useEventDataStore } from '../stores/eventsData';
@@ -142,7 +130,6 @@ import { FilterPatch } from '../workers/api-worker/http/filter/filter.patch';
 import useWindowWidth from '../utils/widthScreen';
 
 import { ROUTES } from '../router/router.const';
-import CONSTANTS from '../consts';
 
 import notification from '../assets/img/notification.svg';
 import notificationUnread from '../assets/img/notificationUnread.svg';
@@ -170,7 +157,6 @@ export default {
     BugReportModal,
     TabLabel,
     Loading,
-    ContextMenu,
     MobileMenu,
   },
   setup(props, { emit }) {
@@ -183,12 +169,8 @@ export default {
     const skipids = ref([]);
     const router = useRouter();
     const isMenuOpened = ref(false);
-    const isContextMenuActive = ref(false);
-    const contextMenuX = ref(null);
-    const contextMenuY = ref(null);
     const isBugReportModalOpened = ref(false);
     const currentHoverSideBarItemID = ref(0);
-    const selectedByContextModalNotificationId = ref(null);
     const { onResize, isMobile, isTablet } = useWindowWidth();
 
     const foundBug = () => {
@@ -245,11 +227,6 @@ export default {
       },
     ]);
 
-    const mockData = computed(() => {
-      return {
-        menu_text: CONSTANTS.sidebar.menu_text,
-      };
-    });
 
     const getNotificationsCount = async () =>
       API.NotificationService.getNotificationsCount().then((item) => {
@@ -365,17 +342,6 @@ export default {
       isMenuOpened.value = false;
     };
 
-    const openContextMenu = (data) => {
-      selectedByContextModalNotificationId.value = data.notificationId;
-      contextMenuY.value = data.yPosition;
-      contextMenuX.value = data.xPosition;
-      isContextMenuActive.value = true;
-    };
-
-    const closeContextMenu = () => {
-      isContextMenuActive.value = false;
-    };
-
     AuthWebSocketWorkerInstance.registerCallback(handleMessageInSidebar);
     GeneralSocketWorkerInstance.registerCallback(handleGeneralMessageInSidebar);
 
@@ -422,12 +388,6 @@ export default {
       });
     };
 
-    const contextMenuItemClick = async (itemType) => {
-      switch (itemType) {
-        case 'select':
-      }
-    };
-
     return {
       paginationElements,
       paginationTotalCount,
@@ -442,15 +402,7 @@ export default {
       userStore,
       currentHoverSideBarItemID,
       loading,
-      contextMenuY,
-      selectedByContextModalNotificationId,
-      contextMenuX,
-      mockData,
-      isContextMenuActive,
       isBugReportModalOpened,
-      closeContextMenu,
-      contextMenuItemClick,
-      openContextMenu,
       loadDataNotifications,
       onChangeTab,
       leaveHoverSidebarItem,
