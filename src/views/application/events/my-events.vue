@@ -1,31 +1,31 @@
 <template>
-  <div class="b-events-page">
-    <Loading :is-loading="loading" />
-    <EditEventModal
-      v-if="isEventUpdateModalOpened"
-      :eventDataValue="updateEventData"
-      @closeEventUpdateModal="closeEventUpdateModal"
-    />
-    <ActionEventModal
-      v-if="isActionEventModalOpened"
-      :modalData="actionEventModalConfig"
-      @closeModal="closeEventActiondModal"
-    />
-    <DeleteEventsModal
-      v-if="isDeleteEventsModalActive"
-      @closeModal="closeDeleteEventsModal"
-      @deleteEvents="deleteEvents"
-    />
-    <ContextMenu
-      class="b-context-menu"
-      v-if="isContextMenuActive"
-      :clientX="contextMenuX"
-      :clientY="contextMenuY"
-      :menu-text="mockData.menu_text"
-      @close-modal="isContextMenuActive = false"
-      @itemClick="contextMenuItemClick"
-    />
+  <ContextMenu
+    class="b-context-menu"
+    v-if="isContextMenuActive"
+    :clientX="contextMenuX"
+    :clientY="contextMenuY"
+    :menu-text="mockData.menu_text"
+    @close-modal="isContextMenuActive = false"
+    @itemClick="contextMenuItemClick"
+  />
 
+  <Loading :is-loading="loading" />
+  <EditEventModal
+    v-if="isEventUpdateModalOpened"
+    :eventDataValue="updateEventData"
+    @closeEventUpdateModal="closeEventUpdateModal"
+  />
+  <ActionEventModal
+    v-if="isActionEventModalOpened"
+    :modalData="actionEventModalConfig"
+    @closeModal="closeEventActiondModal"
+  />
+  <DeleteEventsModal
+    v-if="isDeleteEventsModalActive"
+    @closeModal="closeDeleteEventsModal"
+    @deleteEvents="deleteEvents"
+  />
+  <div class="b-events-page">
     <div class="b-events-page__main-body" ref="mainEventsBlock">
       <div class="b-events-page__header-block">
         <div class="b-events-page__left-part">
@@ -395,6 +395,7 @@ export default {
     }
 
     function myCardRightClick(e, event) {
+      console.log(e.clientY);
       contextMenuX.value = e.clientX;
       contextMenuY.value = e.clientY;
       selectedContextMenuEvent.value = event;

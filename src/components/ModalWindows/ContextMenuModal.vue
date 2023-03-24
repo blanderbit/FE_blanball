@@ -41,8 +41,8 @@ export default {
   setup(props, context) {
     const contextWindowStyle = computed(() => {
       return {
-        top: props.clientY - 200 + 'px',
-        left: props.clientX - 200 + 'px',
+        top: props.clientY + 'px',
+        left: props.clientX + 'px',
       };
     });
 

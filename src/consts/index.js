@@ -8,6 +8,7 @@ import ManageEvent from './manage-event';
 import Dates from './dates';
 import Profile from './profile';
 import Forms from './forms';
+import Sidebar from './sidebar';
 
 export default {
   users_page: UsersPage,
@@ -20,4 +21,5 @@ export default {
   dates: Dates,
   profile: Profile,
   forms: Forms,
+  sidebar: Sidebar
 };

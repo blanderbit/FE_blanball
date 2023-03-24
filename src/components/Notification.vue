@@ -12,6 +12,7 @@
       },
       { 'notification-selected': checked },
     ]"
+    @click.right.prevent="openContextMenu"
   >
     <loading :is-loading="loading"> </loading>
     <div class="notification-parts d-flex justify-content-between">
@@ -343,6 +344,14 @@ export default {
         );
       }, 500);
     },
+    openContextMenu(e) {
+      this.$emit(
+        'openContextMenu', {
+          notification_id: this.notificationInstance.notification_id,
+          xPosition: e.clientX,
+          yPosition: e.clientY
+        })
+    },
     endHoldSelectNotification() {
       clearTimeout(this.timeout);
     },
@@ -519,7 +528,7 @@ $color-000: #000;
 
   padding: 16px 16px 12px 16px;
 
-  @include mobile {
+  @include tabletAndMobile {
     padding: 16px 0px 12px 16px;
   }
 

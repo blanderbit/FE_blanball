@@ -154,6 +154,7 @@
               v-model:selected-list="selectedList"
               v-model:scrollbar-existing="blockScrollToTopIfExist"
               @delete="HandleAction.deleteOne"
+              @openContextMenu="$emit('openContextMenu', $event)"
               @removePushNotificationAfterSidebarAction="
                 removePushNotificationAfterSidebarAction
               "

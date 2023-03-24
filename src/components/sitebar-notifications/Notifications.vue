@@ -23,10 +23,11 @@
           :selectedCount="list.length"
           :checked="selectedList.includes(item.notification_id)"
           :deletable="deletable"
-          :notCollapsible="!isMobileSmall"
+          :notCollapsible="!isMobile"
           @handler-action="handlerAction($event, item)"
           @selected="handleSelected($event)"
           @delete="deleteNotification"
+          @openContextMenu="$emit('openContextMenu', $event)"
           @selectNotificationAfterHold="$emit('selectNotificationAfterHold', $event)"
         >
         </Notification>
@@ -79,7 +80,7 @@ export default {
     const router = useRouter();
 
 
-    const { isMobileSmall, onResize } = useWindowWidth();
+    const { isMobile, onResize } = useWindowWidth();
 
     onMounted(() => {
       window.addEventListener('resize', onResize);
@@ -152,7 +153,7 @@ export default {
       handlerAction,
       deleteNotification,
       handleSelected,
-      isMobileSmall,
+      isMobile,
       scroller,
     };
   },
