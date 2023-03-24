@@ -96,6 +96,7 @@
     @close-menu="isMobMenuActive = false"
     @foundBug="foundBug"
     @showNewNotifications="loadDataNotifications(1, null, true, true)"
+    @changeTab="onChangeTab"
   />
 </template>
 
@@ -176,10 +177,9 @@ export default {
       isBugReportModalOpened.value = true;
     };
 
-
     const isMobileMenuAvailableToOpen = computed(() => {
-      return isMobile.value || isTablet.value
-    })
+      return isMobile.value || isTablet.value;
+    });
 
     const menuItems = computed(() => [
       {
@@ -378,10 +378,12 @@ export default {
 
     getNotificationsCount();
     const logOut = () => {
-      userStore.user = {};
       eventStore.events = {};
       TokenWorker.clearToken();
       router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute);
+      userStore.$patch({
+        user: {},
+      });
     };
     return {
       paginationElements,

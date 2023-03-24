@@ -22,10 +22,12 @@
           :active="activeNotification === item.notification_id"
           :selectedCount="list.length"
           :checked="selectedList.includes(item.notification_id)"
+          :deletable="deletable"
           :notCollapsible="!isMobileSmall"
           @handler-action="handlerAction($event, item)"
           @selected="handleSelected($event)"
           @delete="deleteNotification"
+          @selectNotificationAfterHold="$emit('selectNotificationAfterHold', $event)"
         >
         </Notification>
       </DynamicScrollerItem>
@@ -64,6 +66,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    deletable: {
+      type: Boolean,
+      default: true,
+    }
   },
   emits: ['update:selected-list', 'update:scrollbar-existing', 'delete'],
   setup(context, { emit, expose }) {

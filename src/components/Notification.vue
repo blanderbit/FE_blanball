@@ -48,23 +48,25 @@
             v-if="notificationType === 'notification-sidebar'"
             class="notification-header-right-side"
           >
-            <div class="notification-date"
-              :style="`margin-top: ${selectable ? -4 : 0}px`">
+            <div
+              class="notification-date"
+              :style="`margin-top: ${selectable ? -4 : 0}px`"
+            >
               {{ formatDate }}
             </div>
             <div class="b-selectable" v-if="selectableValue">
-            <checkbox
-              :checked="checked"
-              :field-id="notificationInstance?.notification_id"
-              @update:checked="
-                $emit('selected', {
-                  notification: notificationInstance,
-                  selected: $event,
-                })
-              "
-            >
-            </checkbox>
-          </div>
+              <checkbox
+                :checked="checked"
+                :field-id="notificationInstance?.notification_id"
+                @update:checked="
+                  $emit('selected', {
+                    notification: notificationInstance,
+                    selected: $event,
+                  })
+                "
+              >
+              </checkbox>
+            </div>
             <img
               v-if="deletable && !selectable"
               class="delete-notfication-cross"
@@ -120,15 +122,19 @@
           </div>
         </div>
 
-        <collapsible-panel v-else v-model:expanding="expanding"
-          class="notification-mobile">
+        <collapsible-panel
+          v-else
+          v-model:expanding="expanding"
+          class="notification-mobile"
+          @touchstart="startHoldSelectNotification"
+          @touchend="endHoldSelectNotification"
+        >
           <template #title>
             <div class="notification-title">
               {{ notificationInstance.title }}
-            </div>            
+            </div>
           </template>
 
-        
           <template
             v-if="notificationType === 'notification-sidebar'"
             #content
@@ -329,7 +335,19 @@ export default {
     clickExpandTextButton() {
       this.isTextShow = !this.isTextShow;
     },
+    startHoldSelectNotification() {
+      this.timeout = setTimeout(() => {
+        this.$emit(
+          'selectNotificationAfterHold',
+          this.notificationInstance.notification_id
+        );
+      }, 500);
+    },
+    endHoldSelectNotification() {
+      clearTimeout(this.timeout);
+    },
   },
+
   computed: {
     formatDate() {
       return (
@@ -665,8 +683,8 @@ $color-000: #000;
 }
 
 .notification-selected {
-  background: $color-f0f0f4;
-  border-bottom: 1px solid $color-8a8aa8;
+  background: #f9f9fc;
+  border-bottom: none;
 }
 .checked {
   opacity: 0.6;
@@ -677,7 +695,7 @@ $color-000: #000;
 .notification-mobile {
   ::v-deep(.vcp__header-icon) {
     position: absolute;
-    right: 15px;
+    right: 22px;
   }
 }
 </style>

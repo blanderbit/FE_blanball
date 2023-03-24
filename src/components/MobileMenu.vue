@@ -1,5 +1,5 @@
 <template>
-  <Loading :is-loading="loading"/>
+  <Loading :is-loading="loading" />
   <div class="b-mob-menu" :style="mobMenuStyle">
     <div class="b-mob-menu__logo-block">
       <div class="b-mob-menu__logo-left">
@@ -56,25 +56,41 @@
             :src="item.isIconActive ? item.imgActive : item.imgInactive"
             alt=""
           />
-          <span :style="{
-            color: item.textColor,
-          }" v-if="item.value_show">
+          <span
+            :style="{
+              color: item.textColor,
+            }"
+            v-if="item.value_show"
+          >
             {{ item.value }}
           </span>
         </div>
       </div>
       <div class="b-mob-menu__content-block">
         <div class="b-mob-menu__message-list">
+          <div class="b-mob-menu__tabs">
+            <div
+              v-for="tab in tabs"
+              :class="[
+                'b-mob-menu__tab',
+                { selected: tab.id === selectedTabId },
+              ]"
+              @click="changeTab(tab.id, tab.type)"
+            >
+              {{ $t(tab.text) }}
+            </div>
+          </div>
           <Notifications
             :notifications="notifications"
             :selectable="selectable"
             ref="notificationList"
+            :deletable="false"
             v-model:selected-list="selectedList"
             v-model:scrollbar-existing="blockScrollToTopIfExist"
-            @delete="HandleAction.deleteOne"
+            @selectNotificationAfterHold="selectNotification"
             @removePushNotificationAfterSidebarAction="
-                removePushNotificationAfterSidebarAction
-              "
+              removePushNotificationAfterSidebarAction
+            "
           >
             <template #before>
               <Notification
@@ -113,7 +129,7 @@
           </Notifications>
         </div>
       </div>
-      <div class="b-mob-menu__line">
+      <div v-if="!selectedList.length" class="b-mob-menu__line">
         <div
           class="b-mob-menu__menu-item"
           v-for="item in bottomMenu"
@@ -135,6 +151,19 @@
             {{ item.value }}
           </span>
         </div>
+      </div>
+    </div>
+    <div v-if="selectedList.length" class="b-mob-menu__control-block">
+      <div class="b-control-block__block">
+        <img src="../assets/img/cross.svg" alt="" 
+          @click="clearSelectedList"/>
+        <div class="b-selected-elements-count">
+          <span>{{ selectedList.length }}</span>
+        </div>
+      </div>
+      <div class="b-control-block__block">
+        <img src="../assets/img/notifications/double-check-with-back.svg" alt="" />
+        <img src="../assets/img/notifications/trash-with-back.svg" alt="" />
       </div>
     </div>
     <div
@@ -169,7 +198,6 @@ import { API } from '../workers/api-worker/api.worker';
 import { NotificationsBus } from '../workers/event-bus-worker';
 
 import { ROUTES } from '../router/router.const';
-
 
 import NotificationIcon from '../assets/img/notification-mob-default.svg';
 import NotificationUnreadIcon from '../assets/img/notification-mob-unread-default.svg';
@@ -228,6 +256,7 @@ export default {
     const isShowingFoundBug = ref(true);
     const clientVersion = ref(inject('clientVersion'));
     const { t } = useI18n();
+    const selectedTabId = ref(1);
 
     const topMenu = ref([
       {
@@ -241,7 +270,7 @@ export default {
         height: '76px',
         alignement: 'flex-start',
         background: '#FFFFFF',
-        textColor: '#262541'
+        textColor: '#262541',
       },
       {
         id: 1,
@@ -299,21 +328,44 @@ export default {
       return newNotificationInstance.value;
     });
 
+    const tabs = computed(() => [
+      {
+        id: 1,
+        text: 'slide_menu.all-notifications',
+        type: 'AllNotifications',
+      },
+      {
+        id: 2,
+        text: 'slide_menu.not-read',
+        type: 'NotReadNotifications',
+      },
+    ]);
 
     const menuBlockHeight = ref('auto');
     const menuBlockStyle = computed(() => {
       return {
         height: menuBlockHeight.value,
+        'border-radius': `${selectedList.value.length ? 0 : 8}px`
       };
     });
     const mobMenuStyle = computed(() => {
       return {
         transform: `translateX(${props.isMenuActive ? 0 : -100}%)`,
+        'padding-bottom': `${selectedList.value.length ? 12 : 16}px`,
       };
     });
     const routeObject = computed(() => {
       return ROUTES;
     });
+
+    watch(selectedList.length,
+      () => {
+        console.log(selectedList.value.length)
+        if (selectedList.value.length === 0) {
+          selectable.value = false
+        }
+      }
+    );
 
     function closeMobMenu() {
       normalizeBlock(topMenu);
@@ -386,12 +438,21 @@ export default {
     }
 
     const startLoader = () => {
-      loading.value = true
-    }
+      loading.value = true;
+    };
 
     const stopLoader = () => {
-      loading.value = false
-    }
+      loading.value = false;
+    };
+
+    const clearSelectedList = () => {
+      selectedList.value = [];
+    };
+
+    const handleSelectableMode = () => {
+      selectable.value = !selectable.value;
+      clearSelectedList();
+    };
 
     const HandleAction = {
       deleteOne: async (id) => {
@@ -409,6 +470,24 @@ export default {
         'removePushNotificationAfterSidebarAction',
         notificationInstance
       );
+    };
+
+    function selectNotification(notificationId) {
+      selectable.value = true
+      selectedList.value.push(notificationId)
+    }
+
+
+    function restartInfiniteScroll() {
+      triggerForRestart.value = uuid();
+    }
+
+    const changeTab = (tabId, tabType) => {
+      if (tabId !== selectedTabId.value && !selectable.value) {
+        selectedTabId.value = tabId;
+        emit('changeTab', tabType);
+        restartInfiniteScroll();
+      }
     };
 
     const logOut = () => {
@@ -432,15 +511,18 @@ export default {
       mobMenuStyle,
       routeObject,
       HandleAction,
+      tabs,
       loading,
+      selectedTabId,
       triggerForRestart,
+      changeTab,
+      clearSelectedList,
       lineMenuClick,
+      selectNotification,
       closeMobMenu,
       removePushNotificationAfterSidebarAction,
       logOut,
-      restartInfiniteScroll: () => {
-        triggerForRestart.value = uuid();
-      },
+      restartInfiniteScroll,
       scrollToFirstElement: () => {
         notificationList.value.scrollToFirstElement();
       },
@@ -562,7 +644,6 @@ $color-1ccd62: #1ccd62;
   }
   .b-mob-menu__menu-block {
     margin-top: 16px;
-    border-radius: 8px;
     overflow: hidden;
     height: 100%;
     display: flex;
@@ -607,6 +688,26 @@ $color-1ccd62: #1ccd62;
         top: 0;
         left: 0;
         width: 100%;
+
+        .b-mob-menu__tabs {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 20px;
+
+          .b-mob-menu__tab {
+            line-height: 20px;
+            padding: 12px 0px;
+            cursor: pointer;
+            @include inter(13px, 400);
+
+            &.selected {
+              @include inter(13px, 500);
+              border-bottom: 2px solid $--b-main-black-color;
+              padding: 6px 0px;
+            }
+          }
+        }
         .b-mob-menu__message {
           padding: 14px 12px;
           display: flex;
@@ -651,7 +752,41 @@ $color-1ccd62: #1ccd62;
     }
   }
 }
+.b-mob-menu__control-block {
+  background: #fff;
+  width: 100%;
+  box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+  padding: 12px;
+  border-radius: 0px 0px 8px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
+  .b-control-block__block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: 12px;
+
+    .b-selected-elements-count {
+      font-family: 'Inter';
+      background: $--b-main-gray-color;
+      border-radius: 100px;
+      padding: 0px 4px;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+      width: fit-content;
+      height: 20px;
+      min-width: 20px;
+      color: $--b-main-white-color;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
 .b-mob-menu__found-error {
   background: $--b-main-gray-color;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);

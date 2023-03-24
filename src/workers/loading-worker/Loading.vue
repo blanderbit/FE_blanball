@@ -7,7 +7,7 @@
           <div></div>
           <div></div>
           <div></div>
-        </div>а
+        </div>
       </div>
       <div class="spiner-text">
         Завантаженя
@@ -46,7 +46,7 @@ export default {
 <style lang="scss" scoped>
 .spiner-wrapper {
   background: rgba(255, 255, 255, 0.514);
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -106,12 +106,8 @@ export default {
       }
     }
     .spiner-text {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 14px;
+      @include inter(14px, 400);
       line-height: 20px;
-      color: $--b-main-black-color;
     }
   }
 }
