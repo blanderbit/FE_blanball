@@ -44,7 +44,15 @@
           >
             {{ notificationInstance.sender }}
           </div>
-          <div class="b-selectable" v-if="selectableValue">
+          <div
+            v-if="notificationType === 'notification-sidebar'"
+            class="notification-header-right-side"
+          >
+            <div class="notification-date"
+              :style="`margin-top: ${selectable ? -4 : 0}px`">
+              {{ formatDate }}
+            </div>
+            <div class="b-selectable" v-if="selectableValue">
             <checkbox
               :checked="checked"
               :field-id="notificationInstance?.notification_id"
@@ -57,15 +65,8 @@
             >
             </checkbox>
           </div>
-          <div
-            v-if="notificationType === 'notification-sidebar' && !selectable"
-            class="notification-header-right-side"
-          >
-            <div class="notification-date">
-              {{ formatDate }}
-            </div>
             <img
-              v-if="deletable"
+              v-if="deletable && !selectable"
               class="delete-notfication-cross"
               src="../assets/img/cross.svg"
               alt=""
@@ -409,6 +410,7 @@ $color-000: #000;
 .notification-date {
   @include inter(13px, 400, $color-a8a8bd);
   line-height: 20px;
+  width: max-content;
 }
 
 .notification-action {

@@ -462,7 +462,7 @@ $color-d2f6a2: #d2f6a2;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(38, 37, 65, 0.2);
+  background: rgba(9, 9, 16, 0.8);
   z-index: 999;
 }
 
@@ -473,6 +473,7 @@ $color-d2f6a2: #d2f6a2;
 }
 .b-public-profile__wrapper {
   background: $--b-main-white-color;
+  width: max-content;
   border-radius: 20px 20px 0px 0px;
   padding: 20px;
   position: absolute;

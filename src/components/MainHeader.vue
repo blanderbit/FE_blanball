@@ -47,7 +47,6 @@ import BreadCrumbs from './Breadcrumbs.vue';
 import InputComponent from './forms/InputComponent.vue';
 import SearchModal from './ModalWindows/SearchModal.vue';
 import SearchBlockAll from './SearchBlockAll.vue';
-import SmallLoader from './SmallLoader.vue';
 
 import CONSTANTS from '../consts/index';
 import { ROUTES } from '../router/router.const';
@@ -62,7 +61,6 @@ export default {
     InputComponent,
     SearchModal,
     SearchBlockAll,
-    SmallLoader,
   },
   setup() {
     const isSearchBlock = ref(false);

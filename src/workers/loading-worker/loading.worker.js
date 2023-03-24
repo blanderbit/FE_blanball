@@ -1,14 +1,22 @@
+
+import { ref } from 'vue';
 import { createApp } from 'vue';
 import Loading from './Loading.vue';
 
 let loading;
 
-const startSpinner = () => loading?.start?.();
+const isLoading = ref(false);
 
-const finishSpinner = () => loading?.finish?.();
+const startSpinner = () => {
+  isLoading.value = true
+}
+
+const finishSpinner = () => {
+  isLoading.value = false
+}
 
 const createLoader = () => {
-  loading = createApp(Loading).mount('#loading');
+  loading = createApp(Loading, {isLoading: isLoading}).mount('#loading');
   startSpinner();
 };
 

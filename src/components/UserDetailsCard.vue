@@ -99,6 +99,7 @@
               <InputComponent
                 :outside-title="true"
                 :title="$t('profile.name')"
+                :placeholder="$t('profile.name')"
                 :height="40"
                 :title-width="0"
                 name="name"
@@ -177,7 +178,8 @@
             {{ $t('profile.game-features') }}
           </div>
           <div class="b-user-card__body-features">
-            <div class="b-user-card__height">
+            <div class="b-user-card__height"
+            :style="`border-right: ${!isEditMode ? '1px' : '0px'} solid #efeff6;`">
               <div v-if="!isEditMode" class="b-user-card__to-show">
                 <div class="b-user-card__data">
                   {{ userData.height || $t('profile.no-content') }}
@@ -196,7 +198,8 @@
                 v-maska="'###'"
               />
             </div>
-            <div class="b-user-card__weight">
+            <div class="b-user-card__weight"
+              :style="`border-right: ${!isEditMode ? '1px' : '0px'} solid #efeff6;`">
               <div v-if="!isEditMode" class="b-user-card__to-show">
                 <div class="b-user-card__data">
                   {{ userData.weight || $t('profile.no-content') }}
@@ -269,7 +272,7 @@
         </div>
 
         <div
-          v-if="currentTab === 2 || isMobTabletSize"
+          v-show="currentTab === 2 || isMobTabletSize"
           class="b-user-card__tab-body"
         >
           <div v-if="isMobTabletSize" class="b-user-card__mob-title">
@@ -769,7 +772,6 @@ $color-efeff6: #efeff6;
           .b-user-card__weight {
             flex-basis: 30%;
             margin-right: 8px;
-            border-right: 1px solid $color-efeff6;
           }
           .b-user-card__main-leg {
             flex-basis: 40%;

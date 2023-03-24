@@ -1,5 +1,5 @@
 <template>
-  <div class="spiner-wrapper" v-show="isLoading">
+  <div class="spiner-wrapper" v-show="loading">
     <div class="spiner-body">
       <div class="spiner">
         <div class="lds-ring">
@@ -7,21 +7,38 @@
           <div></div>
           <div></div>
           <div></div>
-        </div>
+        </div>а
       </div>
-      <div class="spiner-text">Завантаження</div>
+      <div class="spiner-text">
+        Завантаженя
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { ref, watch } from 'vue';
+
 export default {
-  name: 'loading',
   props: {
     isLoading: {
       type: Boolean,
       default: false,
     },
+  },
+  setup(props) {
+    const loading = ref(props.isLoading);
+
+    watch(
+      () => props.isLoading,
+      (newData, oldData) => {
+        loading.value = newData;
+      }
+    );
+
+    return {
+      loading,
+    };
   },
 };
 </script>
@@ -29,7 +46,7 @@ export default {
 <style lang="scss" scoped>
 .spiner-wrapper {
   background: rgba(255, 255, 255, 0.514);
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -89,8 +106,12 @@ export default {
       }
     }
     .spiner-text {
-      @include inter(14px, 400);
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
       line-height: 20px;
+      color: $--b-main-black-color;
     }
   }
 }
