@@ -13,7 +13,7 @@
 <script>
 import { computed } from 'vue';
 
-import LoginComponent from '../../components/login-components/LoginComponent.vue';
+import LoginComponent from '../../components/Login/LoginComponent.vue';
 import AuthenticationMain from '../../components/AuthenticationMain.vue';
 
 import CONSTANTS from '../../consts/index';

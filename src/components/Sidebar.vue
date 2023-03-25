@@ -388,6 +388,10 @@ export default {
       });
     };
 
+
+
+    
+
     return {
       paginationElements,
       paginationTotalCount,

@@ -97,10 +97,10 @@ import { computed, ref } from 'vue';
 
 import { ErrorMessage } from '@system.it.flumx.com/vee-validate';
 
-import Switcher from '../../components/Switcher.vue';
+import Switcher from '../Forms/Switcher.vue';
 import RadioButton from '../../components/Forms/RadioButton.vue';
 import InputComponent from '../../components/Forms/InputComponent.vue';
-import TextAreaComponent from '../TextAreaComponent.vue';
+import TextAreaComponent from '../Forms/TextAreaComponent.vue';
 import EventCreateForms from '../buildedForms/EventCreateForms.vue';
 
 import AimIcon from '../../assets/img/aim.svg';

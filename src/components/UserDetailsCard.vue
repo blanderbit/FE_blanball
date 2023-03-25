@@ -331,7 +331,7 @@ import dayjs from 'dayjs';
 import dayjsUkrLocale from 'dayjs/locale/uk';
 
 import InputComponent from './Forms/InputComponent.vue';
-import TextAreaComponent from '../components/TextAreaComponent.vue';
+import TextAreaComponent from './Forms/TextAreaComponent.vue';
 import Dropdown from './Forms/Dropdown.vue';
 import Avatar from '../components/Avatar.vue';
 import RatingCard from '../components/RatingCard.vue';

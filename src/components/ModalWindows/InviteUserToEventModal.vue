@@ -46,7 +46,7 @@
 <script>
 import { ref } from 'vue';
 
-import TextAreaComponent from '../TextAreaComponent.vue';
+import TextAreaComponent from '../Forms/TextAreaComponent.vue';
 import WhiteBtn from '../WhiteBtn.vue';
 import GreenBtn from '../GreenBtn.vue';
 

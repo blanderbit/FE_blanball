@@ -73,7 +73,7 @@
 <script>
 import { ref, computed } from 'vue';
 
-import Switcher from '../components/Switcher.vue';
+import Switcher from './Forms/Switcher.vue';
 import sortArrowHorizontally from '../assets/img/sort-arrows-horizontal.svg';
 import InputComponent from './Forms/InputComponent.vue';
 

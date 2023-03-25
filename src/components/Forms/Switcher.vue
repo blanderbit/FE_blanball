@@ -16,7 +16,7 @@
 <script>
 import { ref, watch } from 'vue';
 
-import { CustomModelWorker } from '../workers/custom-model-worker';
+import { CustomModelWorker } from '../../workers/custom-model-worker';
 
 export default {
   name: 'switch-component',

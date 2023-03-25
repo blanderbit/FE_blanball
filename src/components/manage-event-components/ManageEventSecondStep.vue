@@ -103,8 +103,8 @@ import { ref, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 import InputComponent from '../Forms/InputComponent.vue';
-import TextAreaComponent from '../TextAreaComponent.vue';
-import Switcher from '../../components/Switcher.vue';
+import TextAreaComponent from '../Forms/TextAreaComponent.vue';
+import Switcher from '../Forms/Switcher.vue';
 import SearchBlockAll from '../SearchBlockAll.vue';
 import RadioButton from '../Forms/RadioButton.vue';
 
