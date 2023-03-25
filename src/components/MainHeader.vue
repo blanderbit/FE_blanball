@@ -44,7 +44,7 @@ import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import BreadCrumbs from './Breadcrumbs.vue';
-import InputComponent from './forms/InputComponent.vue';
+import InputComponent from './Forms/InputComponent.vue';
 import SearchModal from './ModalWindows/SearchModal.vue';
 import SearchBlockAll from './SearchBlockAll.vue';
 

@@ -69,8 +69,8 @@
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import Dropdown from '../forms/Dropdown.vue';
-import InputComponent from '../forms/InputComponent.vue';
+import Dropdown from '../Forms/Dropdown.vue';
+import InputComponent from '../Forms/InputComponent.vue';
 import RegisterModalPositionMap from '../Maps/RegisterModalPositionMap.vue';
 import StepWrapper from './StepWrapper.vue';
 

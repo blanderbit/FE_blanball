@@ -77,12 +77,12 @@
 import { computed, ref, watch } from 'vue';
 
 import ModalWindow from '../ModalWindows/ModalWindow.vue';
-import Dropdown from '../forms/Dropdown.vue';
+import Dropdown from '../Forms/Dropdown.vue';
 import GreenBtn from '../GreenBtn.vue';
 import RadioGenderBox from './components/RadioGenderBox.vue';
 import ModalPositionMap from '../Maps/ModalPositionMap.vue';
 import ClearFilters from './components/ClearFilters.vue';
-import InputComponent from '../forms/InputComponent.vue';
+import InputComponent from '../Forms/InputComponent.vue';
 
 import CONSTANTS from '../../consts/index';
 

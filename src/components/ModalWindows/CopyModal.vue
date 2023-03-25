@@ -18,7 +18,7 @@
 <script>
 import { ref } from 'vue';
 
-import InputComponent from '../forms/InputComponent.vue';
+import InputComponent from '../Forms/InputComponent.vue';
 import GreenBtn from '../GreenBtn.vue';
 
 import CopyIcon from '../../assets/img/copy.svg';

@@ -228,7 +228,7 @@ import PublicProfileReviews from './PublicProfileReviews.vue';
 import PublicProfilePlannedEvents from './PublicProfilePlannedEvents.vue';
 import InviteUserToEventModal from '../ModalWindows/InviteUserToEventModal.vue';
 import CopyModal from '../ModalWindows/CopyModal.vue';
-import InputComponent from '../forms/InputComponent.vue';
+import InputComponent from '../Forms/InputComponent.vue';
 import GreenBtn from '../GreenBtn.vue';
 
 import useWindowWidth from '../../utils/widthScreen';

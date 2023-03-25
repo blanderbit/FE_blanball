@@ -330,9 +330,9 @@ import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
 import dayjsUkrLocale from 'dayjs/locale/uk';
 
-import InputComponent from './forms/InputComponent.vue';
+import InputComponent from './Forms/InputComponent.vue';
 import TextAreaComponent from '../components/TextAreaComponent.vue';
-import Dropdown from './forms/Dropdown.vue';
+import Dropdown from './Forms/Dropdown.vue';
 import Avatar from '../components/Avatar.vue';
 import RatingCard from '../components/RatingCard.vue';
 

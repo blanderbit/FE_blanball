@@ -90,8 +90,8 @@ import { useRouter } from 'vue-router';
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import GreenBtn from '../GreenBtn.vue';
-import InputComponent from '../forms/InputComponent.vue';
-import Checkbox from '../forms/Checkbox.vue';
+import InputComponent from '../Forms/InputComponent.vue';
+import Checkbox from '../Forms/Checkbox.vue';
 
 import { API } from '../../workers/api-worker/api.worker';
 import { TokenWorker } from '../../workers/token-worker';

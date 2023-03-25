@@ -143,7 +143,7 @@ import { useRouter, useRoute } from 'vue-router';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import InputComponent from '../../../components/forms/InputComponent.vue';
+import InputComponent from '../../../components/Forms/InputComponent.vue';
 import GreenBtn from '../../../components/GreenBtn.vue';
 import WhiteBtn from '../../../components/WhiteBtn.vue';
 import ManageEventFirstStep from '../../../components/manage-event-components/ManageEventFirstStep.vue';

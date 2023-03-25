@@ -62,8 +62,8 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 
 import ModalWindow from '../ModalWindow.vue';
 import Counter from '../../Counter.vue';
-import CodeInput from '../../forms/CodeInput.vue';
-import InputComponent from '../../forms/InputComponent.vue';
+import CodeInput from '../../Forms/CodeInput.vue';
+import InputComponent from '../../Forms/InputComponent.vue';
 import Loading from '../../../workers/loading-worker/Loading.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';

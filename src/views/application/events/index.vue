@@ -117,7 +117,7 @@ import { useToast } from 'vue-toastification';
 import { v4 as uuid } from 'uuid';
 
 import GreenBtn from '../../../components/GreenBtn.vue';
-import InputComponent from '../../../components/forms/InputComponent.vue';
+import InputComponent from '../../../components/Forms/InputComponent.vue';
 import ContextMenu from '../../../components/ModalWindows/ContextMenuModal.vue';
 import EventCard from '../../../components/event-components/EventCard.vue';
 import SearchBlockEvents from '../../../components/SearchBlockEvents.vue';
@@ -128,7 +128,7 @@ import SmartGridList from '../../../components/smart-list/SmartGridList.vue';
 import CONSTANTS from '../../../consts/index';
 import ScrollToTop from '../../../components/ScrollToTop.vue';
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
-import Dropdown from '../../../components/forms/Dropdown.vue';
+import Dropdown from '../../../components/Forms/Dropdown.vue';
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue';
 import ContextModal from '../../../components/ModalWindows/ContextModal.vue';
 import Loading from '../../../workers/loading-worker/Loading.vue';

@@ -52,7 +52,7 @@
 import { computed, ref, watch } from 'vue';
 
 import ModalWindow from '../ModalWindows/ModalWindow.vue';
-import Dropdown from '../forms/Dropdown.vue';
+import Dropdown from '../Forms/Dropdown.vue';
 import GreenBtn from '../GreenBtn.vue';
 import RangeFilter from './components/RangeFilter.vue';
 import RadioGenderBox from './components/RadioGenderBox.vue';

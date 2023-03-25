@@ -78,7 +78,7 @@ import { Form, ErrorMessage } from '@system.it.flumx.com/vee-validate';
 
 import GreenBtn from '../../GreenBtn.vue';
 import TextAreaComponent from '../../TextAreaComponent.vue';
-import Emotions from '../../forms/Emotions.vue';
+import Emotions from '../../Forms/Emotions.vue';
 
 import SCHEMAS from '../../../validators/schemas';
 

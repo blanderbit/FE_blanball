@@ -153,7 +153,7 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 
 import GreenBtn from '../../../components/GreenBtn.vue';
 import WhiteBtn from '../../../components/WhiteBtn.vue';
-import InputComponent from '../../../components/forms/InputComponent.vue';
+import InputComponent from '../../../components/Forms/InputComponent.vue';
 import ModalWindow from '../../../components/ModalWindows/ModalWindow.vue';
 import RatingCard from '../../../components/RatingCard.vue';
 import UserDetailsCard from '../../../components/UserDetailsCard.vue';

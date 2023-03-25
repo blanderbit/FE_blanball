@@ -84,7 +84,7 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import InputComponent from '../forms/InputComponent.vue';
+import InputComponent from '../Forms/InputComponent.vue';
 import StepWrapper from './StepWrapper.vue';
 
 import tickWhite from '../../assets/img/tick-white.svg';

@@ -185,9 +185,9 @@ import dayjs from 'dayjs';
 
 import Slider from '@vueform/slider';
 
-import Dropdown from '../../forms/Dropdown.vue';
+import Dropdown from '../../Forms/Dropdown.vue';
 import FilterBlock from '../FilterBlock.vue';
-import InputComponent from '../../forms/InputComponent.vue';
+import InputComponent from '../../Forms/InputComponent.vue';
 import ButtonDetailsFilters from '../components/ButtonDetailsFilters.vue';
 import ClearFilters from '../components/ClearFilters.vue';
 import ModalPositionMap from '../../Maps/ModalPositionMap.vue';

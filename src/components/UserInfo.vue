@@ -215,8 +215,8 @@
 import { ref, computed } from 'vue';
 
 import Avatar from './Avatar.vue';
-import InputComponent from './forms/InputComponent.vue';
-import Dropdown from './forms/Dropdown.vue';
+import InputComponent from './Forms/InputComponent.vue';
+import Dropdown from './Forms/Dropdown.vue';
 import TextAreaComponent from './TextAreaComponent.vue';
 
 import CONSTANTS from '../consts';

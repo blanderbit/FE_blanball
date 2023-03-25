@@ -163,9 +163,9 @@ import { ErrorMessage } from '@system.it.flumx.com/vee-validate';
 
 import dayjs from 'dayjs';
 
-import Dropdown from '../forms/Dropdown.vue';
-import InputComponent from '../forms/InputComponent.vue';
-import RadioButton from '../forms/RadioButton.vue';
+import Dropdown from '../Forms/Dropdown.vue';
+import InputComponent from '../Forms/InputComponent.vue';
+import RadioButton from '../Forms/RadioButton.vue';
 import PositionMap from '../Maps/PositionMap.vue';
 import EventCreatePositionMap from '../Maps/EventCreatePositionMap.vue';
 

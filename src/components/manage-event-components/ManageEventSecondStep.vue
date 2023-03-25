@@ -102,11 +102,11 @@
 import { ref, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
-import InputComponent from '../forms/InputComponent.vue';
+import InputComponent from '../Forms/InputComponent.vue';
 import TextAreaComponent from '../TextAreaComponent.vue';
 import Switcher from '../../components/Switcher.vue';
 import SearchBlockAll from '../SearchBlockAll.vue';
-import RadioButton from '../forms/RadioButton.vue';
+import RadioButton from '../Forms/RadioButton.vue';
 
 import { ROUTES } from '../../router/router.const';
 

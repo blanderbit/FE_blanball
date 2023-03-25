@@ -145,8 +145,8 @@
 <script>
 import { computed, ref, reactive } from 'vue';
 
-import Dropdown from './forms/Dropdown.vue';
-import InputComponent from './forms/InputComponent.vue';
+import Dropdown from './Forms/Dropdown.vue';
+import InputComponent from './Forms/InputComponent.vue';
 
 import search from '../assets/img/search.svg';
 

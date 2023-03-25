@@ -105,8 +105,8 @@ import { useToast } from 'vue-toastification';
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import GreenBtn from '../GreenBtn.vue';
-import InputComponent from '../forms/InputComponent.vue';
-import CodeInput from '../forms/CodeInput.vue';
+import InputComponent from '../Forms/InputComponent.vue';
+import CodeInput from '../Forms/CodeInput.vue';
 import Counter from '../Counter.vue';
 
 import { API } from '../../workers/api-worker/api.worker';

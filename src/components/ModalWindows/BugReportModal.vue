@@ -76,7 +76,7 @@ import { useToast } from 'vue-toastification';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import InputComponent from '../forms/InputComponent.vue';
+import InputComponent from '../Forms/InputComponent.vue';
 import TextAreaComponent from '../TextAreaComponent.vue';
 
 import { API } from '../../workers/api-worker/api.worker';

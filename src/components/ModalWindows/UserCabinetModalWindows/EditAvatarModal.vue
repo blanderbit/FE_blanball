@@ -79,7 +79,7 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
 import ModalWindow from '../ModalWindow.vue';
-import InputComponent from '../../forms/InputComponent.vue';
+import InputComponent from '../../Forms/InputComponent.vue';
 import GreenBtn from '../../GreenBtn.vue';
 
 import SaveIcon from '../../../assets/img/save-icon.svg';

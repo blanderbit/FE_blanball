@@ -81,8 +81,8 @@ import { ref, computed, watch } from 'vue';
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import PositionMap from './PositionMap.vue';
-import Dropdown from './../forms/Dropdown.vue';
-import InputComponent from './../forms/InputComponent.vue';
+import Dropdown from './../Forms/Dropdown.vue';
+import InputComponent from './../Forms/InputComponent.vue';
 import ModalWindow from '../ModalWindows/ModalWindow.vue';
 import GreenBtn from '../../components/GreenBtn.vue';
 import Loading from '../../workers/loading-worker/Loading.vue';

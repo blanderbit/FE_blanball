@@ -98,8 +98,8 @@ import { computed, ref } from 'vue';
 import { ErrorMessage } from '@system.it.flumx.com/vee-validate';
 
 import Switcher from '../../components/Switcher.vue';
-import RadioButton from '../../components/forms/RadioButton.vue';
-import InputComponent from '../../components/forms/InputComponent.vue';
+import RadioButton from '../../components/Forms/RadioButton.vue';
+import InputComponent from '../../components/Forms/InputComponent.vue';
 import TextAreaComponent from '../TextAreaComponent.vue';
 import EventCreateForms from '../buildedForms/EventCreateForms.vue';
 
