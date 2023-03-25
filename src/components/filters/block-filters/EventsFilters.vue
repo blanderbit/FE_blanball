@@ -190,7 +190,7 @@ import FilterBlock from '../FilterBlock.vue';
 import InputComponent from '../../forms/InputComponent.vue';
 import ButtonDetailsFilters from '../components/ButtonDetailsFilters.vue';
 import ClearFilters from '../components/ClearFilters.vue';
-import ModalPositionMap from '../../maps/ModalPositionMap.vue';
+import ModalPositionMap from '../../Maps/ModalPositionMap.vue';
 import ModalFilters from '../ModalEventsFilters.vue';
 
 import { TransformedFiltersWorker } from './transformed.filters.worker';

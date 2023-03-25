@@ -222,7 +222,7 @@ import { useI18n } from 'vue-i18n';
 import GreenBtn from '../../../components/GreenBtn.vue';
 import RightSidebar from '../../../components/RightSidebar.vue';
 import EventInfoUsersTable from '../../../components/EventInfoUsersTable.vue';
-import PositionMap from '../../../components/maps/PositionMap.vue';
+import PositionMap from '../../../components/Maps/PositionMap.vue';
 import CopyModal from '../../../components/ModalWindows/CopyModal.vue';
 import Avatar from '../../../components/Avatar.vue';
 import TabLabel from '../../../components/TabLabel.vue';

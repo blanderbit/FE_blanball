@@ -100,7 +100,7 @@ import { computed } from 'vue';
 import { useDevice } from 'next-vue-device-detector';
 
 import GreenBtn from '../../components/GreenBtn.vue';
-import PlaceDetector from '../../components/maps/PlaceDetector.vue';
+import PlaceDetector from '../../components/Maps/PlaceDetector.vue';
 import WhiteBtn from '../WhiteBtn.vue';
 
 export default {

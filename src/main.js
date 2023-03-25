@@ -14,7 +14,7 @@ import Maska from './workers/phone-maska-worker';
 import App from './App.vue';
 import router from './router';
 import pkg from '../package';
-import '../src/components/maps/map.init';
+import '../src/components/Maps/map.init';
 import { UA_LANGUAGE } from './i18n/ua';
 
 import './assets/styles/main.scss';

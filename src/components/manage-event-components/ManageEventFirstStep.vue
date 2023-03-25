@@ -166,8 +166,8 @@ import dayjs from 'dayjs';
 import Dropdown from '../forms/Dropdown.vue';
 import InputComponent from '../forms/InputComponent.vue';
 import RadioButton from '../forms/RadioButton.vue';
-import PositionMap from '../maps/PositionMap.vue';
-import EventCreatePositionMap from '../maps/EventCreatePositionMap.vue';
+import PositionMap from '../Maps/PositionMap.vue';
+import EventCreatePositionMap from '../Maps/EventCreatePositionMap.vue';
 
 import CONSTANTS from '../../consts/index';
 

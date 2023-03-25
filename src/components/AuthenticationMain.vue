@@ -54,7 +54,7 @@
 
 <script>
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
-import PositionMap from './maps/PositionMap.vue';
+import PositionMap from './Maps/PositionMap.vue';
 import CONSTANTS from '../consts/index';
 import useWindowWidth from '../utils/widthScreen';
 

@@ -76,7 +76,7 @@
 <script>
 import { computed } from 'vue';
 
-import PlaceDetector from './maps/PlaceDetector.vue';
+import PlaceDetector from './Maps/PlaceDetector.vue';
 
 export default {
   components: {
