@@ -15,7 +15,7 @@
           {{ $t('header.approve-your-email') }}: {{ userStore.user.email }}
         </span>
         <span class="b_header_verify-btn" @click="isVerifyModalActive = true">
-          Підтвердити
+          {{ $t('register.accept') }}
         </span>
       </div>
     </div>

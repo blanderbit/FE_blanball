@@ -13,6 +13,7 @@ import {
 } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
 import { API } from '../../../api-worker/api.worker';
+import dayjs from 'dayjs';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.InviteUserToEvent)
@@ -54,8 +55,11 @@ import { API } from '../../../api-worker/api.worker';
 export class InviteUserToEventMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `${data.sender.last_name} ${data.sender.name} запросив вас на дружній матч «${data.event.name}»`,
-       // TODO Максим добавить отображение даты и времени ивента
+      `${data.sender.last_name} ${
+        data.sender.name
+      } запросив вас на дружній матч «${data.event.name}» о ${dayjs(
+        data.event?.date_and_time
+      ).format('MM:DD o HH:mm')}`,
     ];
   }
 
