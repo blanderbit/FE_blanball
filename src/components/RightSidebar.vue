@@ -9,10 +9,14 @@
       </div>
     </div>
 
-    <div :style="eventCardsStyle" class="b-right-sidebar__cards-block">
+    <div class="b-right-sidebar__cards-block">
       <Spinner v-if="loading" />
-      <div v-for="event in popularEvents">
+      <div v-if="popularEvents.length" v-for="event in popularEvents">
         <SmallEventCard :item="event" @clickSmallEventCard="goToEventPage" />
+      </div>
+      <div v-if="!popularEvents.length && !loading" class="b-right-sidebar__no-events">
+        <img src="../assets/img/info-black.svg" alt="">
+        <span>{{ $t('no_records.noPopularEvents.title') }}</span>
       </div>
     </div>
   </div>
@@ -21,8 +25,6 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
-
-import { useElementSize } from '@vueuse/core';
 
 import SmallEventCard from './SmallEventCard.vue';
 import Spinner from '../workers/infinit-load-worker/Spinner.vue';
@@ -34,19 +36,9 @@ import { getTime } from '../utils/getTime';
 
 import { ROUTES } from '../router/router.const';
 
-const el = ref(null);
-const { width, height } = useElementSize(el);
-
 const popularEvents = ref([]);
 const router = useRouter();
 const loading = ref(false);
-
-const eventCardsStyle = computed(() => {
-  return {
-    height: height.value - 126 + 'px',
-    overflow: 'scroll',
-  };
-});
 
 const getPopularEvents = (page) => {
   loading.value = true;
@@ -83,6 +75,7 @@ function goToEventPage(id) {
 </script>
 
 <style lang="scss" scoped>
+$color-f9f9fc: #f9f9fc;
 .b-right-sidebar {
   display: block;
   margin: 0;
@@ -116,11 +109,23 @@ function goToEventPage(id) {
 
   .b-right-sidebar__cards-block {
     margin-top: 20px;
+    height: calc(100vh - 72px - 90px - 20px);
+    overflow: scroll;
     -ms-overflow-style: none; /* for Internet Explorer, Edge */
     scrollbar-width: none; /* for Firefox */
     &::-webkit-scrollbar {
       display: none; /* for Chrome, Safari, and Opera */
     }
+  }
+  .b-right-sidebar__no-events {
+    @include inter(13px, 400);
+    line-height: 20px;
+    display: flex;
+    gap: 8px;
+    word-break: break-word;
+    border-radius: 6px;
+    background: $color-f9f9fc;
+    padding: 8px;
   }
 }
 </style>

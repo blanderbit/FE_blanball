@@ -32,7 +32,7 @@
             <WhiteBtn
               :text="config.button_2"
               :width="config.btn_with_2"
-              :main-color="'#C5C5D3'"
+              :main-color="'#FFFFFF'"
               :font-styles="{
                 'font-size': '13px',
               }"
@@ -108,7 +108,7 @@ $color-e2e2e9: #e2e2e9;
     left: 50%;
     transform: translate(-50%, -50%);
     width: fit-content;
-    max-width: 400px;
+    max-width: 380px;
     min-width: 350px;
     background: $--b-main-black-color;
     border-radius: 6px;
@@ -138,6 +138,7 @@ $color-e2e2e9: #e2e2e9;
       font-weight: 400;
       font-size: 13px;
       line-height: 20px;
+      width: fit-content;
       color: $color-dfdeed;
     }
     .b-change-data__btns-block {

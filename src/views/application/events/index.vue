@@ -1,6 +1,6 @@
 <template>
   <Loading :is-loading="loading" />
-  <EventJoinModal
+  <ContextModal
     v-if="isEventJoinModalActive"
     :clientX="eventJoinModalX"
     :clientY="eventJoinModalY"
@@ -120,7 +120,6 @@ import GreenBtn from '../../../components/GreenBtn.vue';
 import InputComponent from '../../../components/forms/InputComponent.vue';
 import ContextMenu from '../../../components/ModalWindows/ContextMenuModal.vue';
 import EventCard from '../../../components/event-components/EventCard.vue';
-import SmallLoader from '../../../components/SmallLoader.vue';
 import SearchBlockEvents from '../../../components/SearchBlockEvents.vue';
 import MyEventCard from '../../../components/MyEventCard.vue';
 import RightSidebar from '../../../components/RightSidebar.vue';
@@ -131,7 +130,7 @@ import ScrollToTop from '../../../components/ScrollToTop.vue';
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
 import Dropdown from '../../../components/forms/Dropdown.vue';
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue';
-import EventJoinModal from '../../../components/ModalWindows/EventJoinModal.vue';
+import ContextModal from '../../../components/ModalWindows/ContextModal.vue';
 import Loading from '../../../workers/loading-worker/Loading.vue';
 
 import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue';
@@ -158,7 +157,6 @@ export default {
     InputComponent,
     ContextMenu,
     EventCard,
-    SmallLoader,
     SearchBlockEvents,
     MyEventCard,
     RightSidebar,
@@ -168,7 +166,7 @@ export default {
     EventsFilters,
     Loading,
     SelectFormsColorsModal,
-    EventJoinModal,
+    ContextModal,
   },
   setup() {
     const eventStore = useEventDataStore();
@@ -568,7 +566,7 @@ $color-f0f0f4: #f0f0f4;
           align-items: center;
           justify-content: space-between;
           width: 344px;
-          border: 1px solid #f0f0f4;
+          border: 1px solid $color-f0f0f4;
           border-radius: 6px;
           height: 36px;
           padding: 4px;
@@ -587,7 +585,7 @@ $color-f0f0f4: #f0f0f4;
             line-height: 20px;
             text-align: center;
             color: $--b-main-black-color;
-            background: #f0f0f4;
+            background: $color-f0f0f4;
             border-radius: 4px;
             height: 100%;
             display: flex;

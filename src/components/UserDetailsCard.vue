@@ -4,8 +4,11 @@
       <div class="b-user-card__top-part">
         <div class="b-user-card__picture-block">
           <div class="b-user-card__profile-picture">
-            <img v-if="userData.avatar_url" :src="userData.avatar_url" alt="" />
-            <Avatar v-else :full-name="fullUserName" />
+            <Avatar
+              class="b-user-card__profile-avatar"
+              :link="userData.avatar_url"
+              :full-name="fullUserName"
+            />
             <div v-if="isEditMode" class="b-user-card__add-pic-icon">
               <label for="my_file">
                 <input
@@ -28,8 +31,8 @@
         <div class="b-user-card__text-block">
           <div class="b-user-card__name-line-wrapper">
             <div class="b-user-card__user-name">
-              {{ userData.name || $t('profile.no-name') }}
-              {{ userData.last_name || $t('profile.no-last-name') }}
+              {{ userData.last_name || $t('profile.no-name') }}
+              {{ userData.name || $t('profile.no-last-name') }}
             </div>
           </div>
           <div class="b-user-card__labels">
@@ -86,6 +89,7 @@
               <InputComponent
                 :outside-title="true"
                 :title="$t('profile.surname')"
+                :placeholder="$t('profile.surname')"
                 :height="40"
                 :title-width="0"
                 name="last_name"
@@ -95,6 +99,7 @@
               <InputComponent
                 :outside-title="true"
                 :title="$t('profile.name')"
+                :placeholder="$t('profile.name')"
                 :height="40"
                 :title-width="0"
                 name="name"
@@ -173,7 +178,8 @@
             {{ $t('profile.game-features') }}
           </div>
           <div class="b-user-card__body-features">
-            <div class="b-user-card__height">
+            <div class="b-user-card__height"
+            :style="`border-right: ${!isEditMode ? '1px' : '0px'} solid #efeff6;`">
               <div v-if="!isEditMode" class="b-user-card__to-show">
                 <div class="b-user-card__data">
                   {{ userData.height || $t('profile.no-content') }}
@@ -185,12 +191,15 @@
                 v-else
                 :outside-title="true"
                 :title="$t('profile.height')"
+                :placeholder="$t('profile.height')"
                 :height="40"
                 :title-width="0"
                 name="height"
+                v-maska="'###'"
               />
             </div>
-            <div class="b-user-card__weight">
+            <div class="b-user-card__weight"
+              :style="`border-right: ${!isEditMode ? '1px' : '0px'} solid #efeff6;`">
               <div v-if="!isEditMode" class="b-user-card__to-show">
                 <div class="b-user-card__data">
                   {{ userData.weight || $t('profile.no-content') }}
@@ -204,9 +213,11 @@
                 v-else
                 :outside-title="true"
                 :title="$t('profile.weight')"
+                :placeholder="$t('profile.weight')"
                 :height="40"
                 :title-width="0"
                 name="weight"
+                v-maska="'###'"
               />
             </div>
             <div class="b-user-card__main-leg">
@@ -235,8 +246,9 @@
             <div v-if="!isEditMode" class="b-user-card__to-show">
               <div class="b-user-card__data">
                 {{
-                  $t(`hashtags.position_full.${userData.position}`) ||
-                  $t('profile.no-content')
+                  userData.position
+                    ? $t(`hashtags.position_full.${userData.position}`)
+                    : $t('profile.no-content')
                 }}
               </div>
               <div class="b-user-card__title">
@@ -260,7 +272,7 @@
         </div>
 
         <div
-          v-if="currentTab === 2 || isMobTabletSize"
+          v-show="currentTab === 2 || isMobTabletSize"
           class="b-user-card__tab-body"
         >
           <div v-if="isMobTabletSize" class="b-user-card__mob-title">
@@ -397,7 +409,7 @@ export default {
     });
 
     const fullUserName = computed(
-      () => `${props.userData?.name} ${props.userData?.last_name}`
+      () => `${props.userData?.last_name} ${props.userData?.name}`
     );
 
     const mockData = computed(() => {
@@ -430,8 +442,6 @@ export default {
         return `${dayjs(props.userData?.birthday)
           .locale(dayjsUkrLocale)
           .format('D MMMM YYYY')} p.`;
-      } else {
-        return t('profile.no-birth-date');
       }
     });
 
@@ -510,6 +520,7 @@ $color-efeff6: #efeff6;
   height: fit-content;
   @media (max-width: 1200px) {
     background: none;
+    padding-top: 0px;
   }
   @media (min-width: 1400px) {
     flex-basis: 508px;
@@ -546,12 +557,13 @@ $color-efeff6: #efeff6;
         height: 52px;
         overflow: hidden;
         border-radius: 8px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        img {
-          display: block;
-          width: 100%;
+        .b-user-card__profile-avatar {
+          ::v-deep(.b-avatar) {
+            width: 52px;
+            height: 52px;
+            border-radius: 8px;
+            font-size: 23px;
+          }
         }
         .b-user-card__add-pic-icon {
           position: absolute;
@@ -760,7 +772,6 @@ $color-efeff6: #efeff6;
           .b-user-card__weight {
             flex-basis: 30%;
             margin-right: 8px;
-            border-right: 1px solid $color-efeff6;
           }
           .b-user-card__main-leg {
             flex-basis: 40%;
@@ -774,7 +785,7 @@ $color-efeff6: #efeff6;
           }
         }
         .b-user-card__position {
-          border-top: 1px solid #efeff6;
+          border-top: 1px solid $color-efeff6;
           padding-top: 12px;
           margin-top: 16px;
         }
@@ -790,7 +801,7 @@ $color-efeff6: #efeff6;
   }
 }
 .b-user__location {
-  border-top: 1px solid #efeff6;
+  border-top: 1px solid $color-efeff6;
   padding-top: 12px;
 }
 </style>

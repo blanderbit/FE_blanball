@@ -1,9 +1,9 @@
 <template>
-  <div class="b-event-join__tooltip-wrapper" @click.self="$emit('closeModal')">
-    <div :style="modalStyle" class="b-event-join__tooltip">
+  <div class="context-modal__tooltip-wrapper" @click.self="$emit('closeModal')">
+    <div :style="modalStyle" class="context-modal__tooltip">
       <div
         v-for="item in modalItems"
-        class="b-event-join__tooltip-item"
+        class="context-modal__tooltip-item"
         @click="$emit('itemClick', item.type)"
       >
         <img :src="item.img" alt="" />
@@ -53,7 +53,7 @@ export default {
 // SCSS variables for hex colors
 $color-f0f0f4: #f0f0f4;
 
-.b-event-join__tooltip-wrapper {
+.context-modal__tooltip-wrapper {
   position: fixed;
   top: 0;
   left: 0;
@@ -62,13 +62,14 @@ $color-f0f0f4: #f0f0f4;
   background: rgba(38, 37, 65, 0.2);
   z-index: 999;
 
-  .b-event-join__tooltip {
+  .context-modal__tooltip {
     background: $--b-main-white-color;
-    width: 180px;
+    width: fit-content;
+    min-width: 180px;
     position: absolute;
     border-radius: 6px;
 
-    .b-event-join__tooltip-item {
+    .context-modal__tooltip-item {
       display: flex;
       align-items: center;
       gap: 8px 8px;

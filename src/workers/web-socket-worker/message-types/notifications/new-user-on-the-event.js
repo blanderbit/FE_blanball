@@ -1,5 +1,8 @@
 import { InitialMessage } from './initial.message';
 
+import dayjs from 'dayjs';
+import dayjsUkrLocale from 'dayjs/locale/uk';
+
 import {
   SetActions,
   SetMessageType,
@@ -20,27 +23,35 @@ import { ROUTES } from '../../../../router/router.const';
 @SetActions([
   {
     type: MessageActionTypes.ActionClose,
-    text: 'Зрозуміло',
+    buttonType: 'success',
+    buttonText: 'Зрозуміло',
+    buttonWidth: 88,
+    buttonHeight: 28,
   },
   {
     type: MessageActionTypes.Action,
-    text: 'Просмотреть ивент',
     action: ({ notificationInstance }) =>
-      ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(
-        notificationInstance.data.event.id
+      ROUTES.APPLICATION.USERS.GET_ONE.absolute(
+        notificationInstance.data.sender.id
       ),
     actionType: MessageActionDataTypes.UrlCallback,
-    buttonType: 'stroked',
+    buttonType: 'default',
+    buttonText: 'Переглянути профіль',
+    buttonWidth: 160,
+    buttonHeight: 28,
   },
 ])
 export class NewUserOnTheEventMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `Юзер ${data.sender.name} добавился на событие - для того что бы просмотреть событие нажмите кнопку "${this.actions[1].text}`,
+      `${data.sender.last_name} ${data.sender.name} 
+       долучився до «${data.event.name}, ${dayjs(
+        new Date()
+      ).locale(dayjsUkrLocale).format('DD.MM.YYYY')}» як гравець`,
     ];
   }
 
   createTitle() {
-    return 'Юзер добавился на событие!';
+    return 'Новий учасник події';
   }
 }

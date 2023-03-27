@@ -3,26 +3,13 @@
     <div class="b-share-event-modal">
       <div class="b-share-event-modal__top-side">
         <div class="b-share-event-modal__title">
-          {{ $t('modals.share_event.title') }}
+          <slot name="title"></slot>
         </div>
-        <img src="../../assets/img/share-arrow.svg" alt="" />
+        <slot name="header-image"></slot>
       </div>
       <div class="b-share-event-modal__main-side">
-        <InputComponent
-          :height="40"
-          :outsideTitle="true"
-          :title-width="0"
-          :icon="CopyIcon"
-          :title="$t('modals.share_event.input-text')"
-          :isReadOnly="true"
-          v-model="eventShareLink"
-          name="title"
-        />
-        <GreenBtn
-          :text="$t('buttons.copy-link')"
-          :height="40"
-          @click-function="$emit('copyLinkButtonClick')"
-        />
+        <slot name="input"></slot>
+        <slot name="button"></slot>
       </div>
     </div>
   </div>

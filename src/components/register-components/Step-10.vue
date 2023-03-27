@@ -44,6 +44,7 @@
       <div class="b-register-step__dropdown">
         <InputComponent
           :title="$t('register.address')"
+          :swipeTitle="false"
           :placeholder="$t('register.address-placeholder')"
           :model-value="address"
           :title-width="0"

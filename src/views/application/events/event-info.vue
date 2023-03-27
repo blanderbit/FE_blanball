@@ -1,6 +1,6 @@
 <template>
   <Loading :is-loading="loading" />
-  <ShareEventModal
+  <CopyModal
     v-if="isShareEventModalOpened"
     :shareLink="currentFullRoute"
     @copyLinkButtonClick="copyLinkButtonClick"
@@ -125,14 +125,14 @@
                   <avatar
                     :border="true"
                     :link="eventData.author.profile.avatar_url"
-                    :full-name="`${eventData.author.profile.name} ${eventData.author.profile.last_name}`"
+                    :full-name="`${eventData.author.profile.last_name} ${eventData.author.profile.name}`"
                     @clickByAvatar="goToUserProfile(eventData.author.id)"
                   ></avatar>
                 </div>
                 <div class="b-event-info__text-block">
                   <div class="b-event-info__name">
-                    {{ eventData.author.profile.name }}
                     {{ eventData.author.profile.last_name }}
+                    {{ eventData.author.profile.name }}
                   </div>
                   <div class="b-event-info__phone">
                     {{ eventData.author.phone }}
@@ -219,13 +219,11 @@ import { useRoute, useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
 
-import { storeToRefs } from 'pinia';
-
 import GreenBtn from '../../../components/GreenBtn.vue';
 import RightSidebar from '../../../components/RightSidebar.vue';
 import EventInfoUsersTable from '../../../components/EventInfoUsersTable.vue';
 import PositionMap from '../../../components/maps/PositionMap.vue';
-import ShareEventModal from '../../../components/ModalWindows/ShareEventModal.vue';
+import CopyModal from '../../../components/ModalWindows/CopyModal.vue';
 import Avatar from '../../../components/Avatar.vue';
 import TabLabel from '../../../components/TabLabel.vue';
 import ListOfEventRequestsToParticipations from '../../../components/ListOfEventRequestsToParticipations.vue';
@@ -260,7 +258,7 @@ export default {
     RightSidebar,
     EventInfoUsersTable,
     PositionMap,
-    ShareEventModal,
+    CopyModal,
     Avatar,
     Loading,
     TabLabel,
@@ -296,7 +294,6 @@ export default {
     const router = useRouter();
     const toast = useToast();
     const userStore = useUserDataStore();
-    const { user } = storeToRefs(userStore);
     const isTabLabel = ref(false);
     const loading = ref(false);
     const { t } = useI18n();
@@ -325,7 +322,7 @@ export default {
     const mockData = computed(() => {
       return {
         tabs: CONSTANTS.event_info
-          .tabs(eventData.value, user.value.id)
+          .tabs(eventData.value, userStore.user.id)
           .map((item) => ({
             ...item,
             name: t(item.name),
@@ -334,7 +331,7 @@ export default {
     });
 
     const noUsersData = computed(() => {
-      if (eventData.value.author.id === user.value.id) {
+      if (eventData.value.author.id === userStore.user.id) {
         return {
           title: t('no_records.noEventPlayers.title'),
           description: t('no_records.noEventPlayers.description_author'),
@@ -354,7 +351,7 @@ export default {
     });
 
     const noFansData = computed(() => {
-      if (eventData.value.author.id === user.value.id) {
+      if (eventData.value.author.id === userStore.user.id) {
         return {
           title: t('no_records.noEventFans.title'),
           description: t('no_records.noEventFans.description_author'),
@@ -371,7 +368,7 @@ export default {
     });
 
     const greenButton = computed(() => {
-      if (eventData.value.author.id === user.value.id) {
+      if (eventData.value.author.id === userStore.user.id) {
         return {
           text: t('buttons.edit'),
           icon: editEvent,
@@ -448,14 +445,14 @@ export default {
 
     const greenButtonClick = () => {
       if (
-        eventData.value.author.id === user.value.id &&
+        eventData.value.author.id === userStore.user.id &&
         eventData.value.status === 'Planned'
       ) {
         return router.push(
           ROUTES.APPLICATION.EVENTS.EDIT.absolute(eventData.value.id)
         );
       } else if (
-        eventData.value.author.id === user.value.id &&
+        eventData.value.author.id === userStore.user.id &&
         eventData.value.status !== 'Planned'
       ) {
         openEventActionModal();
@@ -496,7 +493,6 @@ export default {
       isTabLabel,
       loading,
       greenButton,
-      user,
       activeTab,
       isActionEventModalOpened,
       noUsersData,

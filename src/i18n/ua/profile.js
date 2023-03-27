@@ -62,4 +62,6 @@ export default {
   'no-role': 'Роль не вказана',
   'no-content': 'Не вказано',
   'write-several-words': 'Напишіть декілька слів про себе',
+  'copy-number': 'Скопіювати номер',
+  'copy-address': 'Скопіювати адресу'
 };

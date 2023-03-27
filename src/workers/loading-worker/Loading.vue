@@ -1,5 +1,5 @@
 <template>
-  <div class="spiner-wrapper" v-show="isLoading">
+  <div class="spiner-wrapper" v-show="loading">
     <div class="spiner-body">
       <div class="spiner">
         <div class="lds-ring">
@@ -9,19 +9,33 @@
           <div></div>
         </div>
       </div>
-      <div class="spiner-text">Завантаження</div>
+      <div class="spiner-text">Завантаженя</div>
     </div>
   </div>
 </template>
 
 <script>
+import { ref, watch } from 'vue';
+
 export default {
-  name: 'loading',
   props: {
     isLoading: {
       type: Boolean,
       default: false,
     },
+  },
+  setup(props) {
+    const loading = ref(props.isLoading);
+
+    watch(() => props.isLoading,
+      (newData, oldData) => {
+        loading.value = newData;
+      }
+    );
+
+    return {
+      loading,
+    };
   },
 };
 </script>

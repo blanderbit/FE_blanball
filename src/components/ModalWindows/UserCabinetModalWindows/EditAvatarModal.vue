@@ -152,11 +152,6 @@ export default {
           emit('getProfileData');
         })
         .catch((e) => console.log(e));
-      API.UserService.getMyProfile().then((value) => {
-        userDataStore.$patch({
-          user: value.data,
-        });
-      });
     }
 
     fileReader.onload = (event) => {
@@ -340,7 +335,7 @@ $color-efeff6: #efeff6;
   }
 }
 ::v-deep(.cropper-modal) {
-  background: #d9d9d9;
+  background: $color-d9d9d9;
 }
 ::v-deep(.cropper-line) {
   background: transparent;

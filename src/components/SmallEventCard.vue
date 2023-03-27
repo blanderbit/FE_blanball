@@ -94,9 +94,8 @@ $color-efeff6: #efeff6;
           font-weight: 400;
           font-size: 12px;
           line-height: 20px;
-          text-align: right;
           color: $--b-main-gray-color;
-          margin-right: 21px;
+          margin-right: 12px;
         }
         .b-small-event-card__date {
           font-family: 'Inter';

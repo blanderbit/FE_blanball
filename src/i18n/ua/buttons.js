@@ -37,4 +37,7 @@ export default {
   edit: 'Редагувати',
   preview: 'Попередній перегляд',
   'invited-users': 'Запрошені учасники',
+  'select-all': 'Виділити всі',
+  'select-one-mode': 'Вибіркове виділення',
+  'load': 'Завантажити',
 };

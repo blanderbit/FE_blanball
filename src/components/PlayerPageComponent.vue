@@ -9,9 +9,7 @@
           <div class="b-player-page__picture">
             <avatar
               :link="userData.profile.avatar_url"
-              :full-name="
-                userData.profile.name + ' ' + userData.profile.last_name
-              "
+              :full-name="`${userData.profile.last_name} ${userData.profile.name}`"
               avatarType="square"
             ></avatar>
           </div>
@@ -335,6 +333,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-f9f9fc: #f9f9fc;
 // SCSS variables for hex colors
 $color-6f6f77: #6f6f77;
 $color-dfdeed: #dfdeed;
@@ -360,7 +359,10 @@ $color-f0f0f4: #f0f0f4;
   align-items: flex-start;
   border-top: 1px solid $color-dfdeed;
   margin-top: 12px;
+  border-radius: 6px;
+  background: #F9F9FC;
   padding-top: 16px;
+  padding: 8px;
   img {
     margin-right: 9px;
   }

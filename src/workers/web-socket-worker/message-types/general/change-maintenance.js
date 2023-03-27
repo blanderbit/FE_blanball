@@ -18,15 +18,18 @@ import { ROUTES } from '../../../../router/router.const';
 @SetActions([
   {
     type: MessageActionTypes.Action,
-    text: 'Понятно',
+    text: 'Зрозуміло',
     action: ROUTES.WORKS.absolute,
     actionType: MessageActionDataTypes.Url,
+    buttonType: 'success',
+    buttonWidth: 91,
+    buttonHeight: 28,
   },
   {
     type: MessageActionTypes.Close,
     action: ROUTES.WORKS.absolute,
     actionType: MessageActionDataTypes.Url,
-    buttonType: 'stroked',
+    buttonType: 'default',
   },
 ])
 export class ChangeMaintenanceMessage extends InitialMessage {

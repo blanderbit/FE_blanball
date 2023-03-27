@@ -6,19 +6,21 @@
           {{ $t('player_page.rates-feedbacks') }}
         </div>
         <div class="b-user-reviews__subtitle">
-          {{ reviewsTotalCount }} {{ $t('player_page.rates') }}
+         <span v-if="reviewsTotalCount > 0">{{ reviewsTotalCount }} {{ $t('player_page.rates') }}</span>
+         <span v-else>{{ $t('player_page.no-grades') }}</span>
         </div>
       </div>
       <div class="b-public-profile__raiting-star">
         <div class="b-public-profile__user-raiting">
           {{ userRating }}
         </div>
-        <img src="../../assets/img/star.svg" alt="" />
+        <img v-if="reviewsTotalCount > 0" src="../../assets/img/star.svg" alt="" />
+        <img v-else src="../../assets/img/dashed-star.svg" alt="" />
       </div>
     </div>
     <div class="b-public-profile__reviews-list">
       <div v-if="!userShowReviews" class="b-public-profile__reviews-hidden">
-        <img src="../../assets/img/information.svg" alt="" />
+        <img src="../../assets/img/info-black.svg" alt="" />
         <span>{{ $t('player_page.feedback-hidden') }}</span>
       </div>
       <SimpleListWrapper :requestForGetData="getReviews" v-else>
@@ -49,7 +51,10 @@
           </div>
         </template>
         <template #emptyList>
-          Указать верстку что пустой список для отзывов юзера TODO
+          <div class="b-public-profile__reviews-hidden">
+            <img src="../../assets/img/info-black.svg" alt="" />
+            <span>{{ $t('no_records.noPublicProfileReviews.title', {fullName: userFullName}) }}</span>
+          </div>
         </template>
       </SimpleListWrapper>
     </div>
@@ -91,6 +96,9 @@ export default {
       type: Boolean,
       required: true,
     },
+    userFullName: {
+      type: String,
+    }
   },
   setup(props) {
     const reviewsTotalCount = ref(0);
@@ -120,19 +128,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-f9f9fc: #f9f9fc;
 $color-6f6f77: #6f6f77;
 $color-dfdeed: #dfdeed;
 $color-f57125: #f57125;
 
 .b-public-profile-reviews__block {
-  height: 550px;
+  overflow: hidden;
   @include beforeDesktop {
     padding: 16px;
     background: $--b-main-white-color;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 12px;
     margin-top: 20px;
-    height: 400px;
   }
 }
 .b-public-profile-reviews__info {
@@ -164,25 +172,22 @@ $color-f57125: #f57125;
   margin-top: 20px;
   position: relative;
   overflow-y: scroll;
-  height: 500px;
-
-  @media (max-width: 1400px) {
-    height: 400px;
-  }
+  height: 430px;
 
   @include beforeDesktop {
     margin-top: 10px;
-    height: 320px;
   }
 
   .b-public-profile__reviews-hidden {
-    @include inter(12px, 400, #6f6f77);
+    @include inter(13px, 400);
     line-height: 20px;
-    padding-top: 16px;
-    border-top: 1px solid #dfdeed;
     display: flex;
     gap: 8px;
     word-break: break-word;
+    border-radius: 6px;
+    background: $color-f9f9fc;
+    padding: 8px;
+    padding-left: 12px;
   }
 
   .b-public-profile__review {

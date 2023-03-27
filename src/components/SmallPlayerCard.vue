@@ -5,13 +5,13 @@
         <Avatar
           :border="true"
           :link="dataPlayer.profile.avatar_url"
-          :full-name="`${dataPlayer.profile.name} ${dataPlayer.profile.last_name}`"
+          :full-name="`${dataPlayer.profile.last_name} ${dataPlayer.profile.name}`"
           @clickByAvatar="goToUserProfile(dataPlayer.id)"
         ></Avatar>
       </div>
       <div class="b-small-player-card__name-duty">
         <div class="b-small-player-card__name">
-          {{ dataPlayer.profile.name }} {{ dataPlayer.profile.last_name }}
+          {{ dataPlayer.profile.last_name }} {{ dataPlayer.profile.name }}
         </div>
         <div class="b-small-player-card__duty">
           {{ dataPlayer.duty }}

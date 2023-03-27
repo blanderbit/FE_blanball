@@ -11,6 +11,9 @@
       <div class="vcp__header-title">
         <slot name="title" />
       </div>
+      <div class="vcp__header-content">
+        <slot name="header-content" />
+      </div>
       <div v-if="body.hasContent" class="vcp__header-icon">
         <slot name="icon">
           <span v-html="toggleIcon"></span>

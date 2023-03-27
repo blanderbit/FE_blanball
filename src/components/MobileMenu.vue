@@ -1,4 +1,12 @@
 <template>
+  <Loading :is-loading="loading" />
+  <ChangeUserDataModal
+    v-if="isSubmitModalOpened"
+    :config="submitModalConfig"
+    @closeModal="closeSubmitModal"
+    @deleteNotifications="HandleAction.deleteSelected()"
+    @continue="closeSubmitModal"
+  />
   <div class="b-mob-menu" :style="mobMenuStyle">
     <div class="b-mob-menu__logo-block">
       <div class="b-mob-menu__logo-left">
@@ -19,17 +27,17 @@
       <div class="b-mob-menu__user-info">
         <div class="b-mob-menu__user-img">
           <Avatar
-            :link="userData.profile.avatar_url"
-            :full-name="`${userData.profile.name} ${userData.profile.last_name}`"
+            :link="userStore.getUserAvatar"
+            :full-name="userStore.getUserFullName"
           >
           </Avatar>
         </div>
         <div class="b-mob-menu__text-block">
           <div class="b-mob-menu__user-name">
-            {{ userData.profile.name }} {{ userData.profile.last_name }}
+            {{ userStore.getUserFullName }}
           </div>
           <div class="b-mob-menu__account-type">
-            {{ $t(`hashtags.${userData.role}`) }}
+            {{ $t(`hashtags.${userStore.user.role}`) }}
           </div>
         </div>
       </div>
@@ -48,7 +56,6 @@
             height: item.height,
             'justify-content': item.alignement,
             background: item.background,
-            color: item.textColor,
           }"
           @click="lineMenuClick(item.id, item.url, 'top-menu')"
         >
@@ -56,19 +63,40 @@
             :src="item.isIconActive ? item.imgActive : item.imgInactive"
             alt=""
           />
-          <span v-if="item.value_show">
-            {{ item.value }}
+          <span
+            :style="{
+              color: item.textColor,
+            }"
+            v-if="item.value_show"
+          >
+            {{ $t(item.value) }}
           </span>
         </div>
       </div>
       <div class="b-mob-menu__content-block">
         <div class="b-mob-menu__message-list">
+          <div class="b-mob-menu__tabs">
+            <div
+              v-for="tab in tabs"
+              :class="[
+                'b-mob-menu__tab',
+                { selected: tab.id === selectedTabId },
+              ]"
+              @click="changeTab(tab.id, tab.type)"
+            >
+              {{ $t(tab.text) }}
+            </div>
+          </div>
           <Notifications
             :notifications="notifications"
             :selectable="selectable"
             ref="notificationList"
             v-model:selected-list="selectedList"
             v-model:scrollbar-existing="blockScrollToTopIfExist"
+            @selectNotificationAfterHold="selectNotification"
+            @removePushNotificationAfterSidebarAction="
+              removePushNotificationAfterSidebarAction
+            "
           >
             <template #before>
               <Notification
@@ -89,7 +117,7 @@
                 <template #complete>
                   <empty-list
                     style="margin-top: 16px"
-                    v-if="!notifications.length"
+                    v-if="!notifications.length && !newNotifications"
                     :title="emptyListMessages.title"
                     :description="emptyListMessages.description"
                     :is-notification="true"
@@ -106,7 +134,7 @@
           </Notifications>
         </div>
       </div>
-      <div class="b-mob-menu__line">
+      <div v-if="!selectedList.length" class="b-mob-menu__line">
         <div
           class="b-mob-menu__menu-item"
           v-for="item in bottomMenu"
@@ -125,9 +153,33 @@
             alt=""
           />
           <span v-if="item.value_show">
-            {{ item.value }}
+            {{ $t(item.value) }}
           </span>
         </div>
+      </div>
+    </div>
+    <div v-if="selectedList.length" class="b-mob-menu__control-block">
+      <div class="b-control-block__block">
+        <img src="../assets/img/cross.svg" alt="" @click="clearSelectedList" />
+        <div class="b-selected-elements-count">
+          <span>{{ selectedList.length }}</span>
+        </div>
+      </div>
+      <div class="b-control-block__block">
+        <img
+          src="../assets/img/notifications/double-check-with-back.svg"
+          alt=""
+          @click="HandleAction.readSelected()"
+        />
+        <img
+          src="../assets/img/notifications/trash-with-back.svg"
+          alt=""
+          @click="
+            selectedList.length > 1
+              ? showSubmitModal()
+              : HandleAction.deleteSelected()
+          "
+        />
       </div>
     </div>
     <div
@@ -136,17 +188,15 @@
       @click="$emit('foundBug')"
     >
       <img src="../assets/img/white-warning-icon.svg" alt="" />
-      <span>Знайшли помилку?</span>
+      <span>{{ $t('slide_menu.found-error') }}</span>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, computed, inject } from 'vue';
+import { ref, computed, inject, watch, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-
-import { storeToRefs } from 'pinia';
 import { v4 as uuid } from 'uuid';
 
 import Avatar from './Avatar.vue';
@@ -155,14 +205,19 @@ import Notification from './Notification.vue';
 import EmptyList from './EmptyList.vue';
 import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue';
 import ScrollToTop from './ScrollToTop.vue';
+import Loading from '../workers/loading-worker/Loading.vue';
+import ChangeUserDataModal from './ModalWindows/UserCabinetModalWindows/ChangeUserDataModal.vue';
 
 import { TokenWorker } from '../workers/token-worker';
 import { useUserDataStore } from '../stores/userData';
+import { NewNotifications } from '../workers/web-socket-worker/not-includes-to-socket/new_notifications';
+import { API } from '../workers/api-worker/api.worker';
+import { NotificationsBus } from '../workers/event-bus-worker';
 
 import { ROUTES } from '../router/router.const';
 
-import NotificationIcon from '../assets/img/notification-small.svg';
-import NotificationWhite from '../assets/img/notification-white.svg';
+import NotificationIcon from '../assets/img/notification-mob-default.svg';
+import NotificationWhite from '../assets/img/notifications-not-read-mobile-icon.svg';
 import Record from '../assets/img/record.svg';
 import RecordWhite from '../assets/img/record-white.svg';
 import Members from '../assets/img/members.svg';
@@ -201,13 +256,45 @@ export default {
     EmptyList,
     InfiniteLoading,
     ScrollToTop,
+    Loading,
+    ChangeUserDataModal,
   },
   emit: ['closeMenu'],
   setup(props, { emit }) {
+    const router = useRouter();
+    const userStore = useUserDataStore();
+    const notificationList = ref();
+    const selectable = ref(false);
+    const loading = ref(false);
+    const newNotificationInstance = ref(new NewNotifications());
+    const selectedList = ref([]);
+    const blockScrollToTopIfExist = ref(false);
+    const triggerForRestart = ref('');
+    const isShowingFoundBug = ref(true);
+    const clientVersion = ref(inject('clientVersion'));
+    const { t } = useI18n();
+    const selectedTabId = ref(1);
+    const isSubmitModalOpened = ref(false);
+
+    const submitModalConfig = computed(() => {
+      return {
+        title: t('slide_menu.submit-modal.title'),
+        description: t('slide_menu.submit-modal.description', {
+          length: selectedList.value.length,
+        }),
+        button_1: t('slide_menu.submit-modal.button-1-text'),
+        button_2: t('slide_menu.submit-modal.button-2-text'),
+        right_btn_action: 'deleteNotifications',
+        left_btn_action: 'continue',
+        btn_with_1: 132,
+        btn_with_2: 132,
+      };
+    });
+
     const topMenu = ref([
       {
         id: 0,
-        value: 'Сповіщення',
+        value: 'slide_menu.messages',
         value_show: true,
         imgInactive: NotificationIcon,
         imgActive: NotificationWhite,
@@ -216,10 +303,11 @@ export default {
         height: '76px',
         alignement: 'flex-start',
         background: '#FFFFFF',
+        textColor: '#262541',
       },
       {
         id: 1,
-        value: 'Події',
+        value: 'slide_menu.events',
         value_show: true,
         imgInactive: Record,
         imgActive: RecordWhite,
@@ -234,7 +322,7 @@ export default {
     const bottomMenu = ref([
       {
         id: 0,
-        value: 'Рейтинг користувачів',
+        value: 'slide_menu.user-raiting',
         value_show: true,
         imgInactive: Members,
         imgActive: MembersWhite,
@@ -247,7 +335,7 @@ export default {
       },
       {
         id: 1,
-        value: 'Налаштуваня',
+        value: 'slide_menu.settings',
         value_show: true,
         imgInactive: Settings,
         imgActive: SettingsWhite,
@@ -259,17 +347,15 @@ export default {
         url: ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute,
       },
     ]);
-    const router = useRouter();
-    const userStore = useUserDataStore();
-    const { user } = storeToRefs(userStore);
-    const notificationList = ref();
-    const selectable = ref(false);
-    const selectedList = ref([]);
-    const blockScrollToTopIfExist = ref(false);
-    const triggerForRestart = ref('');
-    const isShowingFoundBug = ref(true);
-    const clientVersion = ref(inject('clientVersion'));
-    const { t } = useI18n();
+
+    watchEffect(
+      () => {
+        if (selectedList.value.length === 0) {
+          selectable.value = false;
+        }
+      },
+      { deep: true }
+    );
 
     const emptyListMessages = computed(() => {
       return {
@@ -278,26 +364,50 @@ export default {
       };
     });
 
-    const userData = computed(() => {
-      return user.value;
+    const getNewNotificationInstance = computed(() => {
+      newNotificationInstance.value.countOfNewNotifications =
+        props.newNotifications;
+      return newNotificationInstance.value;
     });
+
+    const tabs = computed(() => [
+      {
+        id: 1,
+        text: 'slide_menu.all-notifications',
+        type: 'AllNotifications',
+      },
+      {
+        id: 2,
+        text: 'slide_menu.not-read',
+        type: 'NotReadNotifications',
+      },
+    ]);
 
     const menuBlockHeight = ref('auto');
     const menuBlockStyle = computed(() => {
       return {
         height: menuBlockHeight.value,
+        'border-radius': `${selectedList.value.length ? 0 : 8}px`,
       };
     });
     const mobMenuStyle = computed(() => {
       return {
         transform: `translateX(${props.isMenuActive ? 0 : -100}%)`,
+        'padding-bottom': `${selectedList.value.length ? 12 : 16}px`,
       };
     });
     const routeObject = computed(() => {
       return ROUTES;
     });
 
+    watch(selectedList.length, () => {
+      if (selectedList.value.length === 0) {
+        selectable.value = false;
+      }
+    });
+
     function closeMobMenu() {
+      selectedList.value = [];
       normalizeBlock(topMenu);
       normalizeBlock(bottomMenu);
       menuBlockHeight.value = 'auto';
@@ -314,7 +424,7 @@ export default {
           height: '76px',
           alignement: 'flex-start',
           background: '#FFFFFF',
-          textColor: '$--b-main-gray-color',
+          textColor: '#575775',
         };
       });
     }
@@ -342,7 +452,7 @@ export default {
             width: '80%',
             height: '52px',
             alignement: 'flex-start',
-            background: '$--b-main-gray-color',
+            background: '#575775',
             textColor: '#fff',
           };
         } else {
@@ -359,13 +469,137 @@ export default {
             height: '52px',
             alignement: 'center',
             background: '#FFFFFF',
-            textColor: '$--b-main-gray-color',
+            textColor: '#575775',
           };
         } else {
           return item;
         }
       });
     }
+
+    const startLoader = () => {
+      loading.value = true;
+    };
+
+    const stopLoader = () => {
+      loading.value = false;
+    };
+
+    const clearSelectedList = () => {
+      selectedList.value = [];
+    };
+
+    const closeSubmitModal = () => {
+      isSubmitModalOpened.value = false;
+    };
+
+    const showSubmitModal = () => {
+      isSubmitModalOpened.value = true;
+    };
+
+    const handleSelectableMode = () => {
+      selectable.value = !selectable.value;
+      clearSelectedList();
+    };
+
+    const HandleAction = {
+      deleteAll: async () => {
+        if (!context.notifications.length && !context.newNotifications) return;
+        startLoader();
+        await API.NotificationService.deleteAllMyNotifications();
+        removePushNotificationAfterSidebarAction({
+          remove_all: true,
+        });
+        clearSelectedList();
+        handleSelectableMode();
+        stopLoader();
+      },
+      readAll: async () => {
+        if (!context.notifications.length && !context.newNotifications) return;
+        startLoader();
+        await API.NotificationService.readAllMyNotifications();
+        removePushNotificationAfterSidebarAction({
+          remove_all: true,
+        });
+        clearSelectedList();
+        if (selectable.value) {
+          handleSelectableMode();
+        }
+        if (selectedTabId.value === 2) {
+          emit('removeNotifications', 'All')
+        }
+        stopLoader();
+      },
+      deleteSelected: async () => {
+        if (!selectedList.value) return;
+        startLoader();
+        await API.NotificationService.deleteNotifications(selectedList.value);
+        removePushNotificationAfterSidebarAction({
+          notification_ids: selectedList.value,
+        });
+        clearSelectedList();
+        handleSelectableMode();
+        closeSubmitModal();
+        stopLoader();
+      },
+      readSelected: async () => {
+        if (!selectedList.value) return;
+        startLoader();
+        await API.NotificationService.readNotifications(selectedList.value);
+        removePushNotificationAfterSidebarAction({
+          notification_ids: selectedList.value,
+        });
+        if (selectedTabId.value === 2) {
+          emit('removeNotifications', selectedList.value)
+        }
+        clearSelectedList();
+        handleSelectableMode();
+        stopLoader();
+      },
+      readOne: async (id) => {
+        startLoader();
+        await API.NotificationService.readNotifications([id]);
+        removePushNotificationAfterSidebarAction({
+          notification_ids: [id],
+        });
+        if (selectedTabId.value === 2) {
+          emit('removeNotifications', [id])
+        }
+        stopLoader();
+      },
+      deleteOne: async (id) => {
+        startLoader();
+        await API.NotificationService.deleteNotifications([id]);
+        removePushNotificationAfterSidebarAction({
+          notification_id: id,
+        });
+        stopLoader();
+      },
+    };
+
+    const removePushNotificationAfterSidebarAction = (notificationInstance) => {
+      NotificationsBus.emit(
+        'removePushNotificationAfterSidebarAction',
+        notificationInstance
+      );
+    };
+
+    function selectNotification(notificationId) {
+      selectable.value = true;
+      selectedList.value.push(notificationId);
+    }
+
+    function restartInfiniteScroll() {
+      triggerForRestart.value = uuid();
+    }
+
+    const changeTab = (tabId, tabType) => {
+      if (tabId !== selectedTabId.value && !selectable.value) {
+        selectedTabId.value = tabId;
+        emit('changeTab', tabType);
+        restartInfiniteScroll()
+      }
+    };
 
     const logOut = () => {
       TokenWorker.clearToken();
@@ -382,17 +616,28 @@ export default {
       clientVersion,
       isShowingFoundBug,
       notificationList,
+      getNewNotificationInstance,
       menuBlockStyle,
-      userData,
+      userStore,
       mobMenuStyle,
       routeObject,
+      HandleAction,
+      tabs,
+      loading,
+      selectedTabId,
       triggerForRestart,
+      isSubmitModalOpened,
+      submitModalConfig,
+      showSubmitModal,
+      closeSubmitModal,
+      changeTab,
+      clearSelectedList,
       lineMenuClick,
+      selectNotification,
       closeMobMenu,
+      removePushNotificationAfterSidebarAction,
       logOut,
-      restartInfiniteScroll: () => {
-        triggerForRestart.value = uuid();
-      },
+      restartInfiniteScroll,
       scrollToFirstElement: () => {
         notificationList.value.scrollToFirstElement();
       },
@@ -417,7 +662,7 @@ $color-1ccd62: #1ccd62;
   background: $color-efeff6;
   padding: 16px;
   height: 100%;
-  z-index: 999;
+  z-index: 990;
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease-out;
@@ -448,7 +693,7 @@ $color-1ccd62: #1ccd62;
         color: $--b-main-black-color;
       }
       .b-mob-menu__version {
-        @include inter(12px, 400, #8a8aa8);
+        @include inter(12px, 400, $color-8a8aa8);
         line-height: 16px;
 
         display: flex;
@@ -514,7 +759,6 @@ $color-1ccd62: #1ccd62;
   }
   .b-mob-menu__menu-block {
     margin-top: 16px;
-    border-radius: 8px;
     overflow: hidden;
     height: 100%;
     display: flex;
@@ -538,6 +782,8 @@ $color-1ccd62: #1ccd62;
           border: none;
         }
         img {
+          width: 21.5px;
+          height: 21.5px;
         }
         span {
           @include inter(12px, 500);
@@ -550,14 +796,35 @@ $color-1ccd62: #1ccd62;
       background: $--b-main-white-color;
       height: 100%;
       position: relative;
-      overflow-y: scroll;
+      overflow: hidden;
       transition: all 0.3s ease-out;
       .b-mob-menu__message-list {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
-        padding: 0px 16px;
+
+        height: calc(100% - 50px);
+
+        .b-mob-menu__tabs {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 20px;
+
+          .b-mob-menu__tab {
+            line-height: 20px;
+            padding: 12px 0px;
+            cursor: pointer;
+            @include inter(13px, 400);
+
+            &.selected {
+              @include inter(13px, 500);
+              border-bottom: 2px solid $--b-main-black-color;
+              padding: 6px 0px;
+            }
+          }
+        }
         .b-mob-menu__message {
           padding: 14px 12px;
           display: flex;
@@ -602,7 +869,41 @@ $color-1ccd62: #1ccd62;
     }
   }
 }
+.b-mob-menu__control-block {
+  background: #fff;
+  width: 100%;
+  box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+  padding: 12px;
+  border-radius: 0px 0px 8px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
+  .b-control-block__block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: 12px;
+
+    .b-selected-elements-count {
+      font-family: 'Inter';
+      background: $--b-main-gray-color;
+      border-radius: 100px;
+      padding: 0px 4px;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+      width: fit-content;
+      height: 20px;
+      min-width: 20px;
+      color: $--b-main-white-color;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
 .b-mob-menu__found-error {
   background: $--b-main-gray-color;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
@@ -614,7 +915,7 @@ $color-1ccd62: #1ccd62;
   gap: 8px;
   max-width: 193px;
   position: absolute;
-  width: max-content;
+  min-width: max-content;
   bottom: 70px;
   cursor: pointer;
   left: 50%;

@@ -6,7 +6,7 @@
       :style="inputWrapper"
     >
       <div v-if="outsideTitle" class="b-input__outer-title">
-        <span>{{ title }}</span>
+        <span>{{ titleValue }}</span>
       </div>
       <div
         v-if="insideTitle"
@@ -36,7 +36,7 @@
       >
         <input
           :type="inputType"
-          :placeholder="placeholder"
+          :placeholder="placeholderValue"
           v-on="modelHandlers"
           :value="staticModelValue"
           :readonly="isReadOnly"
@@ -128,6 +128,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    swipeTitle: {
+      type: Boolean,
+      default: true,
+    },
   },
   emits: [
     'iconClick',
@@ -215,10 +219,28 @@ export default {
       window.removeEventListener('resize', resizeFunction);
     });
 
+    const placeholderValue = computed(() => {
+      if (props.swipeTitle) {
+        return !staticModelValue.value ? props.placeholder : ''
+      } else {
+        return props.placeholder
+      }
+    })
+
+    const titleValue = computed(() => {
+      if (props.swipeTitle) {
+        return staticModelValue.value ? props.title : ''
+      } else {
+        return props.title
+      }
+    })
+
     const { t } = useI18n();
     return {
       iconClickAction,
+      titleValue,
       staticModelValue,
+      placeholderValue,
       modelErrorMessage,
       modelHandlers,
       inputType,

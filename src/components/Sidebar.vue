@@ -1,4 +1,5 @@
 <template>
+  <Loading :is-loading="loading" />
   <BugReportModal
     v-if="isBugReportModalOpened"
     @close-modal="closeBugReportModal"
@@ -9,12 +10,15 @@
       :notifications="paginationElements"
       :notReadNotificationCount="notReadNotificationCount"
       :newNotifications="skipids.length"
-      :total-notifications-count="paginationTotalCount"
+      :total-notifications-count="allNotificationsCount"
       @close="isMenuOpened = false"
       @closed="paginationClearData()"
       @loadingInfinite="loadDataNotifications(paginationPage + 1, $event)"
       @reLoading="loadDataNotifications(1, null, true)"
       @loading="loadDataNotifications(1, null, true)"
+      @showNewNotifications="loadDataNotifications(1, null, true, true)"
+      @changeTab="onChangeTab"
+      @removeNotifications="removeNotifications"
     />
     <div class="b_sidebar">
       <div class="b_sidebar_top-block">
@@ -63,8 +67,8 @@
       <div class="b_sidebar_bottom-block">
         <div class="b_sidebar_picture-bottom">
           <avatar
-            :link="userAvatar"
-            :full-name="userFullName"
+            :link="userStore.getUserAvatar"
+            :full-name="userStore.getUserFullName"
             @clickByAvatar="goToProfile"
           ></avatar>
           <div
@@ -78,12 +82,13 @@
     </div>
   </div>
   <mobile-menu
+    v-if="isMobileMenuAvailableToOpen"
     class="b_mobile-menu"
     :isMenuActive="isMobMenuActive"
     :notifications="paginationElements"
     :notReadNotificationCount="notReadNotificationCount"
     :newNotifications="skipids.length"
-    :total-notifications-count="paginationTotalCount"
+    :total-notifications-count="allNotificationsCount"
     @close="isMenuOpened = false"
     @closed="paginationClearData()"
     @loadingInfinite="loadDataNotifications(paginationPage + 1, $event)"
@@ -91,25 +96,30 @@
     @loading="loadDataNotifications(1, null, true)"
     @close-menu="isMobMenuActive = false"
     @foundBug="foundBug"
+    @showNewNotifications="loadDataNotifications(1, null, true, true)"
+    @changeTab="onChangeTab"
+    @removeNotifications="removeNotifications"
   />
 </template>
 
 <script>
-import { ref, computed, onBeforeUnmount, watch } from 'vue';
+import { ref, computed, onBeforeUnmount, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
-
-import { storeToRefs } from 'pinia';
 
 import SlideMenu from '../components/SlideMenu.vue';
 import Avatar from './../components/Avatar.vue';
 import BugReportModal from './ModalWindows/BugReportModal.vue';
 import TabLabel from './TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';
+import Loading from '../workers/loading-worker/Loading.vue';
 
 import { useUserDataStore } from '../stores/userData';
 import { useEventDataStore } from '../stores/eventsData';
 import { createNotificationFromData } from '../workers/utils-worker';
-import { AuthWebSocketWorkerInstance } from './../workers/web-socket-worker';
+import {
+  AuthWebSocketWorkerInstance,
+  GeneralSocketWorkerInstance,
+} from './../workers/web-socket-worker';
 import { API } from '../workers/api-worker/api.worker';
 import { PaginationWorker } from '../workers/pagination-worker';
 import { TokenWorker } from '../workers/token-worker';
@@ -117,6 +127,8 @@ import {
   NotificationsBus,
   BlanballEventBus,
 } from '../workers/event-bus-worker';
+import { FilterPatch } from '../workers/api-worker/http/filter/filter.patch';
+import useWindowWidth from '../utils/widthScreen';
 
 import { ROUTES } from '../router/router.const';
 
@@ -138,6 +150,11 @@ const findDublicates = (list, newList) => {
   );
 };
 
+const tabTypes = {
+  notRead: 'NotReadNotifications',
+  allNotifications: 'AllNotifications',
+};
+
 export default {
   name: 'MainSidebar',
   components: {
@@ -145,33 +162,31 @@ export default {
     Avatar,
     BugReportModal,
     TabLabel,
+    Loading,
     MobileMenu,
   },
-  setup() {
+  setup(props, { emit }) {
     const userStore = useUserDataStore();
-    const { user } = storeToRefs(userStore);
     const eventStore = useEventDataStore();
     const notReadNotificationCount = ref(0);
+    const allNotificationsCount = ref(0);
+    const loading = ref(false);
     const isMobMenuActive = ref(false);
     const skipids = ref([]);
-    const userFullName = computed(
-      () => `${user.value.profile.name} ${user.value.profile.last_name}`
-    );
-    const userAvatar = ref(user.value.profile.avatar_url);
     const router = useRouter();
     const isMenuOpened = ref(false);
     const isBugReportModalOpened = ref(false);
     const currentHoverSideBarItemID = ref(0);
+    const { onResize, isMobile, isTablet } = useWindowWidth();
 
     const foundBug = () => {
       isMobMenuActive.value = false;
       isBugReportModalOpened.value = true;
     };
 
-    watch(
-      () => user,
-      (newData, oldData) => {}
-    );
+    const isMobileMenuAvailableToOpen = computed(() => {
+      return isMobile.value || isTablet.value;
+    });
 
     const menuItems = computed(() => [
       {
@@ -218,12 +233,12 @@ export default {
       },
     ]);
 
-    const getNotificationsCount = async () =>
-      API.NotificationService.getNotificationsCount().then(
-        (item) =>
-          (notReadNotificationCount.value =
-            item.data.not_read_notifications_count || 0)
-      );
+    const getNotificationsCount = () =>
+      API.NotificationService.getNotificationsCount().then((item) => {
+        notReadNotificationCount.value =
+          item.data.not_read_notifications_count || 0;
+        allNotificationsCount.value = item.data.all_notifications_count || 0;
+      });
 
     const closeBugReportModal = () => (isBugReportModalOpened.value = false);
 
@@ -241,20 +256,63 @@ export default {
     } = PaginationWorker({
       paginationDataRequest: (page) =>
         API.NotificationService.getNotifications({
+          ...getRawFilters(),
           page,
-          skipids: skipids.value,
         }),
       dataTransformation: (item) => createNotificationFromData(item),
       beforeConcat: (elements, newList) => findDublicates(elements, newList),
     });
 
-    const loadDataNotifications = (pageNumber, $state, forceUpdate) => {
+    const { getRawFilters, updateFilter, filters, clearFilters, setFilters } =
+      FilterPatch({
+        router,
+        filters: {
+          type: {
+            type: String,
+            value: '',
+          },
+          skipids: {
+            type: Array,
+            value: [],
+          },
+        },
+        afterUpdateFiltersCallBack: () => {
+          paginationClearData();
+        },
+      });
+
+    const loadDataNotifications = (
+      pageNumber,
+      $state,
+      forceUpdate,
+      isLoading
+    ) => {
+      if (isLoading) {
+        loading.value = true;
+      }
       if (forceUpdate) {
         paginationClearData();
         skipids.value = [];
       }
 
-      paginationLoad({ pageNumber, $state, forceUpdate });
+      paginationLoad({ pageNumber, $state, forceUpdate }).then(() => {
+        if (isLoading) {
+          loading.value = false;
+        }
+      });
+    };
+
+    const onChangeTab = (tabType) => {
+      switch (tabType) {
+        case tabTypes.notRead:
+          filters.value.type.value = 'Unread';
+          loadDataNotifications(1, null, false, true);
+          break;
+        case tabTypes.allNotifications:
+          filters.value.type.value = '';
+          loadDataNotifications(1, null, false, true);
+          break;
+      }
     };
 
     const handleMessageInSidebar = (instanceType) => {
@@ -276,35 +334,75 @@ export default {
       getNotificationsCount();
     };
 
+    const handleGeneralMessageInSidebar = (instanceType) => {
+      instanceType.handleUpdate({
+        paginationElements,
+        paginationLoad,
+        paginationPage,
+      });
+    };
+
     const goToProfile = () => {
       router.push(ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute);
       isMenuOpened.value = false;
     };
 
     AuthWebSocketWorkerInstance.registerCallback(handleMessageInSidebar);
+    GeneralSocketWorkerInstance.registerCallback(handleGeneralMessageInSidebar);
 
     NotificationsBus.on('SidebarClearData', () => {
       skipids.value = [];
       paginationClearData();
     });
 
+    NotificationsBus.on(
+      'hanlderToRemoveNewNotificationsInSidebar',
+      (notificationId) => {
+        const index = skipids.value.indexOf(notificationId);
+
+        if (index > -1) {
+          skipids.value.splice(index, 1);
+        }
+        loadDataNotifications(1, null, false, false);
+      }
+    );
+
     BlanballEventBus.on('OpenMobileMenu', () => {
       isMobMenuActive.value = true;
     });
 
+    onMounted(() => {
+      window.addEventListener('resize', onResize);
+    });
+
     onBeforeUnmount(() => {
       NotificationsBus.off('SidebarClearData');
+      NotificationsBus.off('hanlderToRemoveNewNotificationsInSidebar');
       BlanballEventBus.off('OpenMobileMenu');
       AuthWebSocketWorkerInstance.destroyCallback(handleMessageInSidebar);
+      window.removeEventListener('resize', onResize);
     });
 
     getNotificationsCount();
     const logOut = () => {
-      userStore.user = {};
       eventStore.events = {};
       TokenWorker.clearToken();
       router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute);
+      userStore.$patch({
+        user: {},
+      });
     };
+
+    const removeNotifications = (ids) => {
+      if (ids === 'All') {
+        paginationElements.value = [];
+      } else {
+        paginationElements.value = paginationElements.value.filter(
+          (item) => !ids.includes(item.notification_id)
+        );
+      }
+    };
+
     return {
       paginationElements,
       paginationTotalCount,
@@ -312,13 +410,17 @@ export default {
       notReadNotificationCount,
       skipids,
       menuItems,
-      userAvatar,
       isMobMenuActive,
+      isMobileMenuAvailableToOpen,
+      allNotificationsCount,
       isMenuOpened,
+      userStore,
       currentHoverSideBarItemID,
-      userFullName,
+      loading,
       isBugReportModalOpened,
       loadDataNotifications,
+      removeNotifications,
+      onChangeTab,
       leaveHoverSidebarItem,
       enterHoverSidebarItem,
       paginationClearData,

@@ -34,4 +34,13 @@ export default {
     title: 'Немає повідомлень для відображення',
     description: 'Вам ще не надходили сповіщення від інших користувачів',
   },
+  noPopularEvents: {
+    title: 'Тут відображатимуться події, що мають найбільшу кількість активних учасників'
+  },
+  noPublicProfilePlannedEvents: {
+    title: '{fullName} ще не додав жодної події до запланованих'
+  },
+  noPublicProfileReviews: {
+    title: '{fullName} ще не отримував оцінок та коментарів'
+  }
 };

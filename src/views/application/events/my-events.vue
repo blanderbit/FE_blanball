@@ -1,31 +1,31 @@
 <template>
-  <div class="b-events-page">
-    <Loading :is-loading="loading" />
-    <EditEventModal
-      v-if="isEventUpdateModalOpened"
-      :eventDataValue="updateEventData"
-      @closeEventUpdateModal="closeEventUpdateModal"
-    />
-    <ActionEventModal
-      v-if="isActionEventModalOpened"
-      :modalData="actionEventModalConfig"
-      @closeModal="closeEventActiondModal"
-    />
-    <DeleteEventsModal
-      v-if="isDeleteEventsModalActive"
-      @closeModal="closeDeleteEventsModal"
-      @deleteEvents="deleteEvents"
-    />
-    <ContextMenu
-      class="b-context-menu"
-      v-if="isContextMenuActive"
-      :clientX="contextMenuX"
-      :clientY="contextMenuY"
-      :menu-text="mockData.menu_text"
-      @close-modal="isContextMenuActive = false"
-      @itemClick="contextMenuItemClick"
-    />
+  <ContextMenu
+    class="b-context-menu"
+    v-if="isContextMenuActive"
+    :clientX="contextMenuX"
+    :clientY="contextMenuY"
+    :menu-text="mockData.menu_text"
+    @close-modal="isContextMenuActive = false"
+    @itemClick="contextMenuItemClick"
+  />
 
+  <Loading :is-loading="loading" />
+  <EditEventModal
+    v-if="isEventUpdateModalOpened"
+    :eventDataValue="updateEventData"
+    @closeEventUpdateModal="closeEventUpdateModal"
+  />
+  <ActionEventModal
+    v-if="isActionEventModalOpened"
+    :modalData="actionEventModalConfig"
+    @closeModal="closeEventActiondModal"
+  />
+  <DeleteEventsModal
+    v-if="isDeleteEventsModalActive"
+    @closeModal="closeDeleteEventsModal"
+    @deleteEvents="deleteEvents"
+  />
+  <div class="b-events-page">
     <div class="b-events-page__main-body" ref="mainEventsBlock">
       <div class="b-events-page__header-block">
         <div class="b-events-page__left-part">
@@ -162,7 +162,6 @@ import GreenBtn from '../../../components/GreenBtn.vue';
 import InputComponent from '../../../components/forms/InputComponent.vue';
 import ContextMenu from '../../../components/ModalWindows/ContextMenuModal.vue';
 import EventCard from '../../../components/event-components/EventCard.vue';
-import SmallLoader from '../../../components/SmallLoader.vue';
 import SearchBlockEvents from '../../../components/SearchBlockEvents.vue';
 import MyEventCard from '../../../components/MyEventCard.vue';
 import RightSidebar from '../../../components/RightSidebar.vue';
@@ -201,7 +200,6 @@ export default {
     InputComponent,
     ContextMenu,
     EventCard,
-    SmallLoader,
     SearchBlockEvents,
     MyEventCard,
     RightSidebar,
@@ -702,7 +700,7 @@ $color-dfdeed: #dfdeed;
           align-items: center;
           justify-content: space-between;
           width: 344px;
-          border: 1px solid #f0f0f4;
+          border: 1px solid $color-f0f0f4;
           border-radius: 6px;
           height: 36px;
           padding: 4px;
@@ -721,7 +719,7 @@ $color-dfdeed: #dfdeed;
             line-height: 20px;
             text-align: center;
             color: $--b-main-black-color;
-            background: #f0f0f4;
+            background: $color-f0f0f4;
             border-radius: 4px;
             height: 100%;
             display: flex;
@@ -762,7 +760,7 @@ $color-dfdeed: #dfdeed;
         position: relative;
 
         .b-left__side-cancel-button {
-          border: 1px solid #dfdeed !important;
+          border: 1px solid $color-dfdeed !important;
           color: $--b-main-gray-color !important;
         }
 

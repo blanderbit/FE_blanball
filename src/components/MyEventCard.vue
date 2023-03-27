@@ -144,10 +144,10 @@ $color-4c4a82: #4c4a82;
     border: 1px solid $color-71ba12;
   }
   &.finished {
-    border: 1px solid #e184a0;
+    border: 1px solid $color-e184a0;
   }
   &.selected {
-    border: 1px solid #1ab2ad;
+    border: 1px solid $color-1ab2ad;
   }
 
   .b-my-event-card-selected-icon {
@@ -171,7 +171,7 @@ $color-4c4a82: #4c4a82;
     padding: 4px;
     display: flex;
     align-items: center;
-    border: 2px solid #f0f0f4;
+    border: 2px solid $color-f0f0f4;
     border-radius: 20px;
   }
 
@@ -257,17 +257,17 @@ $color-4c4a82: #4c4a82;
 
       &-planned {
         color: $--b-main-black-color;
-        background: #efeff6;
+        background: $color-efeff6;
       }
 
       &-active {
         color: $--b-main-white-color;
-        background: #71ba12;
+        background: $color-71ba12;
       }
 
       &-finished {
         color: $--b-main-white-color;
-        background: #e184a0;
+        background: $color-e184a0;
       }
     }
 
@@ -313,7 +313,7 @@ $color-4c4a82: #4c4a82;
 }
 
 .b-my-event-card__place::v-deep(.b-place-detector) {
-  background: #efeff6;
+  background: $color-efeff6;
   border-radius: 4px;
   margin-top: 10px;
   width: fit-content;

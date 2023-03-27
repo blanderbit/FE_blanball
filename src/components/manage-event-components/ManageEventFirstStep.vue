@@ -19,6 +19,7 @@
     <div class="b-event-m-2st__input-name">
       <InputComponent
         :outside-title="true"
+        :swipeTitle="false"
         :title="$t('events.event-name')"
         :placeholder="$t('events.event-name-placeholder')"
         :title-width="0"
@@ -100,6 +101,7 @@
           :title="$t('events.start')"
           :placeholder="'17:00'"
           :title-width="0"
+          :swipeTitle="false"
           name="time"
           v-maska="'##:##'"
         />
@@ -109,6 +111,7 @@
           :outside-title="true"
           :title="$t('events.end')"
           :placeholder="'18:10'"
+          :swipeTitle="false"
           :title-width="0"
           name="end_time"
           v-maska="'##:##'"
@@ -390,7 +393,7 @@ $color-f0f0f4: #f0f0f4;
   }
   .b-event-m-1st__input-location {
     min-width: 100%;
-    border: 1px solid #dfdeed;
+    border: 1px solid $color-dfdeed;
     border-radius: 6px;
     display: flex;
     align-items: center;
@@ -459,7 +462,7 @@ $color-f0f0f4: #f0f0f4;
   margin-bottom: 10px;
 }
 .b-event-m-2st__duration-select {
-  border: 1px solid #dfdeed;
+  border: 1px solid $color-dfdeed;
   border-radius: 6px;
   margin-top: 20px;
   display: flex;
@@ -477,11 +480,11 @@ $color-f0f0f4: #f0f0f4;
     font-size: 13px;
     line-height: 20px;
     text-align: center;
-    color: #6f6f77;
+    color: $color-6f6f77;
     cursor: pointer;
 
     &-selected {
-      background: #f0f0f4;
+      background: $color-f0f0f4;
       color: $--b-main-black-color;
       font-weight: 500;
     }

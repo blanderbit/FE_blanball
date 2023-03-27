@@ -41,8 +41,8 @@ export default {
   setup(props, context) {
     const contextWindowStyle = computed(() => {
       return {
-        top: props.clientY - 200 + 'px',
-        left: props.clientX - 200 + 'px',
+        top: props.clientY + 'px',
+        left: props.clientX + 'px',
       };
     });
 
@@ -70,8 +70,8 @@ $color-f0f0f4: #f0f0f4;
 
 .b-context-modal__wrapper {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   z-index: 999;
 
   .b-context-modal {

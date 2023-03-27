@@ -9,11 +9,9 @@ import {
 
 import {
   MessageActionTypes,
-  MessageActionDataTypes,
 } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
 import { NotificationImage } from '../../../../assets/img/notifications/notification.images';
-import { ROUTES } from '../../../../router/router.const';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.UserRemoveFromEvent)
@@ -21,25 +19,20 @@ import { ROUTES } from '../../../../router/router.const';
 @SetActions([
   {
     type: MessageActionTypes.ActionClose,
-    text: 'Зрозуміло',
-  },
-  {
-    type: MessageActionTypes.Action,
-    text: 'Найти ивенты',
-    action: ROUTES.APPLICATION.EVENTS.absolute,
-    actionType: MessageActionDataTypes.Url,
-    buttonType: 'stroked',
+    buttonType: 'default',
+    buttonText: 'Зрозуміло',
+    buttonWidth: 86,
+    buttonHeight: 28,
   },
 ])
 export class RemoveUserFromTheEventMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `${data.recipient.name} - вас удалили с события. По причине - "${data.reason.text}"`,
-      `Для того что бы подобрать другое событие нажмите кнопку "${this.actions[1].text}"`,
+      `Шкода, але організатори «${data?.event.name}» відкликали вашу участь у події`,
     ];
   }
 
   createTitle() {
-    return 'Вы удалены с ивента!';
+    return 'Вас було виключено з переліку учасників';
   }
 }

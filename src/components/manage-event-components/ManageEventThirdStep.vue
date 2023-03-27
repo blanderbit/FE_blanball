@@ -97,8 +97,6 @@ import { computed, ref } from 'vue';
 
 import { ErrorMessage } from '@system.it.flumx.com/vee-validate';
 
-import { useUserDataStore } from '../../stores/userData';
-
 import Switcher from '../../components/Switcher.vue';
 import RadioButton from '../../components/forms/RadioButton.vue';
 import InputComponent from '../../components/forms/InputComponent.vue';
@@ -106,7 +104,6 @@ import TextAreaComponent from '../TextAreaComponent.vue';
 import EventCreateForms from '../buildedForms/EventCreateForms.vue';
 
 import AimIcon from '../../assets/img/aim.svg';
-import { storeToRefs } from 'pinia';
 
 import editPhoneIcon from '../../assets/img/sort-arrows-horizontal.svg';
 import checkMarkIcon from '../../assets/img/check-mark.svg';
@@ -137,8 +134,6 @@ export default {
     },
   },
   setup(props, { emit }) {
-    const store = useUserDataStore();
-    const { user } = storeToRefs(store);
     const needForm = ref(props.initialValues?.need_form);
     const phoneValue = ref(null);
     const isEditPhone = ref(false);
@@ -180,7 +175,6 @@ export default {
       needForm,
       stepStyle,
       isEditPhone,
-      user,
       phoneValue,
       showHidePhone,
       changeEditPhoneMode,
@@ -397,7 +391,7 @@ $color-dfdeed: #dfdeed;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #f9f9fc;
+    background: $color-f9f9fc;
     border-radius: 6px;
     padding: 8px;
     line-height: 20px;
@@ -410,7 +404,7 @@ $color-dfdeed: #dfdeed;
 }
 .phone-read {
   ::v-deep(input) {
-    background: #f9f9fc;
+    background: $color-f9f9fc;
   }
   ::v-deep(.b-input__wrapper) {
     border: none;

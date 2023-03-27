@@ -13,6 +13,7 @@
           <div class="inut-wrapper">
             <InputComponent
               :title="$t('modals.change_login.email')"
+              :swipeTitle="false"
               :placeholder="userEmail"
               :outside-title="true"
               :title-width="0"
@@ -117,6 +118,7 @@ export default {
         await API.AuthorizationService.VerifyCode({
           verify_code: data.values.verify_code,
         });
+        emit('emailVerified')
         closeModal();
         loading.value = false;
         toast.success(t('notifications.email-verified'));
