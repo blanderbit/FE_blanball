@@ -22,6 +22,9 @@ import { NotificationsBus } from '../../../event-bus-worker';
   {
     type: MessageActionTypes.ActionClose,
     text: 'Зрозуміло',
+    buttonType: 'success',
+    buttonWidth: 91,
+    buttonHeight: 28,
   },
   {
     type: MessageActionTypes.Action,
@@ -30,7 +33,9 @@ import { NotificationsBus } from '../../../event-bus-worker';
       NotificationsBus.emit('openEventReviewModal', notificationInstance);
     },
     actionType: MessageActionDataTypes.Callback,
-    buttonType: 'stroked',
+    buttonType: 'default',
+    buttonWidth: 150,
+    buttonHeight: 28,
   },
 ])
 export class EventHasBeenEndedMessage extends InitialMessage {

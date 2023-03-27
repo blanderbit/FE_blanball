@@ -48,7 +48,7 @@ export default {
     },
     online: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   emits: ['clickByAvatar'],
@@ -91,17 +91,16 @@ $color-c8ebe7: #c8ebe7;
   }
 
   &-big-circle {
-    width: 144px;
-    height: 144px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
     z-index: 2;
 
-    @include mobile {
-      width: 120px;
-      height: 120px;
+    &.b-avatar-words {
+      font-size: 54px;
     }
   }
 
@@ -121,42 +120,46 @@ $color-c8ebe7: #c8ebe7;
     font-family: 'Exo 2';
     font-style: normal;
     font-weight: 600;
-    font-size: 14px;
     line-height: 20px;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
+
+    &.b-avatar-words {
+      font-size: 15px;
+    }
   }
 
   &-words {
     color: $--b-main-green-color;
     font-family: 'Exo 2';
     font-style: normal;
+    font-size: 18px;
     font-weight: 700;
     background: $color-c8ebe7;
   }
 }
 
-// .b-avatar-online__indicator {
-//   &-small-square {
-//     background: $color-1ccd62;
-//     border-radius: 6px;
-//     border: 1.5px solid $--b-main-white-color;
-//     width: 8px;
-//     height: 8px;
-//     position: absolute;
-//     right: 0;
-//     bottom: 0;
-//   }
-//   &-circle {
-//     background: $color-1ccd62;
-//     border-radius: 6px;
-//     border: 1.5px solid $--b-main-white-color;
-//     width: 10px;
-//     height: 10px;
-//     position: absolute;
-//     right: 0px;
-//     bottom: 2px;
-//   }
-// }
+.b-avatar-online__indicator {
+  &-small-square {
+    background: $color-1ccd62;
+    border-radius: 6px;
+    border: 1.5px solid $--b-main-white-color;
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+  &-circle {
+    background: $color-1ccd62;
+    border-radius: 6px;
+    border: 1.5px solid $--b-main-white-color;
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    right: 0px;
+    bottom: 2px;
+  }
+}
 </style>

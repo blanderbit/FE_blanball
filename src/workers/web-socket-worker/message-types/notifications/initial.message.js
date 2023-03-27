@@ -18,18 +18,18 @@ dayjs.extend(updateLocale);
 dayjs.updateLocale('uk', {
   relativeTime: {
     future: 'через %s',
-    past: '%s назад',
-    s: 'декілька секунд',
-    m: 'хвилина',
-    mm: '%d хвилин',
-    h: 'година',
-    hh: '%d годин',
-    d: 'день',
-    dd: '%d днів',
-    M: 'місяць',
-    MM: '%d місяців',
-    y: 'рік',
-    yy: '%d років',
+    past: '%s тому',
+    s: 'дeкілька c.',
+    m: 'хв.',
+    mm: '%d хв.',
+    h: 'год.',
+    hh: '%d год.',
+    d: 'дн.',
+    dd: '%d дн.',
+    M: 'м.',
+    MM: '%d м.',
+    y: 'р.',
+    yy: '%d р.',
   },
 });
 
@@ -58,7 +58,7 @@ export class InitialMessage {
   }
 
   get fullName() {
-    return [this?.data?.sender?.name, this.data?.sender?.last_name]
+    return [this?.data?.sender?.last_name, this.data?.sender?.name]
       .filter((_) => !!_)
       .join(' ');
   }

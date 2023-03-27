@@ -1,4 +1,63 @@
 <template>
+  <CopyModal
+    v-if="isCopyUserPhoneModalActive"
+    @closeModal="closeCopyPhoneModal"
+  >
+    <template #title>
+      {{ $t('profile.phone-number') }}
+    </template>
+    <template #header-image>
+      <img src="../../assets/img/white-phone-icon.svg" alt="" />
+    </template>
+    <template #input>
+      <InputComponent
+        :height="40"
+        :outsideTitle="true"
+        :title-width="0"
+        :title="getUkrainianOperator(userData.phone)"
+        :isReadOnly="true"
+        v-model="userData.phone"
+        v-maska="'+## ### ### ## ##'"
+      />
+    </template>
+    <template #button>
+      <GreenBtn
+        :text="$t('profile.copy-number')"
+        :height="40"
+        @click-function="copyToClipBoard(userData.phone)"
+      />
+    </template>
+  </CopyModal>
+
+  <CopyModal
+    v-if="isCopyUserEmailModalActive"
+    @closeModal="closeCopyEmailModal"
+  >
+    <template #title>
+      {{ $t('profile.e-mail') }}
+    </template>
+    <template #header-image>
+      <img src="../../assets/img/white-letter-icon.svg" alt="" />
+    </template>
+    <template #input>
+      <InputComponent
+        :height="40"
+        :outsideTitle="true"
+        :title-width="0"
+        :title="getEmailProvider(userData.email)"
+        :isReadOnly="true"
+        v-model="userData.email"
+      />
+    </template>
+    <template #button>
+      <GreenBtn
+        :text="$t('profile.copy-address')"
+        :height="40"
+        @click-function="copyToClipBoard(userData.phone)"
+      />
+    </template>
+  </CopyModal>
+
   <InviteUserToEventModal
     v-if="isInviteUserModalOpened"
     :userData="userData"
@@ -29,7 +88,7 @@
       </div>
       <div class="b-public-profile">
         <div class="b-public-profile__background-image">
-          <img src="../../assets/img/user-page-back.svg" alt="" />
+          <img :src="backgroundTop" alt="" />
         </div>
         <div class="b-public-profile__main-side">
           <div class="b-public-profile__first-block">
@@ -49,7 +108,7 @@
                 class="b-public-profile__avatar"
                 :avatarType="avatarType"
                 :link="userData.profile.avatar_url"
-                :full-name="`${userData.profile.name} ${userData.profile.last_name}`"
+                :full-name="`${userData.profile.last_name} ${userData.profile.name}`"
               />
               <div class="b-public-profile__user-main-info">
                 <div class="b-public-profile__full-name">
@@ -87,16 +146,26 @@
               </div>
               <div class="b-public-profile__connection-buttons">
                 <WhiteBtn
+                  v-if="userData.configuration.email"
+                  :style="`flex-basis: ${
+                    userData.configuration.phone ? '57%' : '100%'
+                  }`"
                   class="b-connection__button b-send-email__button"
                   :text="$t('player_page.write-email')"
                   :icon="icons.letter"
                   :height="36"
+                  @click-function="showCopyEmailModal"
                 />
                 <WhiteBtn
+                  v-if="userData.configuration.phone"
+                  :style="`flex-basis: ${
+                    userData.configuration.email ? '43%' : '100%'
+                  }`"
                   class="b-connection__button b-call-phone__button"
                   :text="$t('player_page.call')"
                   :icon="icons.phone"
                   :height="36"
+                  @click-function="showCopyPhoneModal"
                 />
               </div>
             </div>
@@ -109,7 +178,10 @@
                   {{ $t('player_page.approved') }}
                 </span>
               </div>
-              <div class="b-public-profile__description">
+              <div
+                v-if="userData.profile.about_me"
+                class="b-public-profile__description"
+              >
                 <div class="b-description__title">
                   {{ $t('player_page.about-yourself') }}
                 </div>
@@ -142,9 +214,13 @@
                 :userRating="userRating"
                 :userId="userData.id"
                 :userShowReviews="userData.configuration.show_reviews"
+                :userFullName="`${userData.profile.last_name} ${userData.profile.name}`"
               />
             </div>
-            <PublicProfilePlannedEvents :userId="userData.id" />
+            <PublicProfilePlannedEvents
+              :userId="userData.id"
+              :userFullName="`${userData.profile.last_name} ${userData.profile.name}`"
+            />
           </div>
         </div>
       </div>
@@ -163,8 +239,14 @@ import WhiteBtn from '../WhiteBtn.vue';
 import PublicProfileReviews from './PublicProfileReviews.vue';
 import PublicProfilePlannedEvents from './PublicProfilePlannedEvents.vue';
 import InviteUserToEventModal from '../ModalWindows/InviteUserToEventModal.vue';
+import CopyModal from '../ModalWindows/CopyModal.vue';
+import InputComponent from '../forms/InputComponent.vue';
+import GreenBtn from '../GreenBtn.vue';
 
 import useWindowWidth from '../../utils/widthScreen';
+
+import { getEmailProvider } from '../../utils/getEmailProvider';
+import { getUkrainianOperator } from '../../utils/getPhoneOperator';
 
 import PhoneIcon from '../../assets/img/phone-arrow.svg';
 import LetterIcon from '../../assets/img/letter.svg';
@@ -173,6 +255,7 @@ import GamingLegIcon from '../../assets/img/gaming-leg.svg';
 import DumbbellIcon from '../../assets/img/dumbbell.svg';
 import RulerIcon from '../../assets/img/ruler.svg';
 import StarIcon from '../../assets/img/star.svg';
+import BackgroundTop from '../../assets/img/user-page-back.svg';
 
 export default {
   props: {
@@ -194,7 +277,10 @@ export default {
     WhiteBtn,
     PublicProfilePlannedEvents,
     PublicProfileReviews,
+    CopyModal,
     InviteUserToEventModal,
+    InputComponent,
+    GreenBtn,
     StarRating,
   },
   setup(props) {
@@ -202,6 +288,8 @@ export default {
     const noFeatureData = '----';
     const isInviteUserModalOpened = ref(false);
     const isPersonalPreview = ref(false);
+    const isCopyUserPhoneModalActive = ref(false);
+    const isCopyUserEmailModalActive = ref(false);
 
     switch (props.pageMode) {
       case 'look':
@@ -214,6 +302,10 @@ export default {
 
     const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
       useWindowWidth();
+
+    const backgroundTop = computed(() => {
+      return BackgroundTop;
+    });
 
     const icons = computed(() => {
       return {
@@ -240,7 +332,7 @@ export default {
     });
 
     const avatarType = computed(() => {
-      if (isMobile.value) {
+      if (isMobile.value || isTablet.value) {
         return 'big-circle';
       } else {
         return 'square';
@@ -302,15 +394,44 @@ export default {
       ];
     });
 
+    const showCopyEmailModal = () => {
+      if (props.pageMode === 'look') {
+        isCopyUserEmailModalActive.value = true;
+      }
+    };
+
+    const closeCopyEmailModal = () => {
+      isCopyUserEmailModalActive.value = false;
+    };
+
+    const showCopyPhoneModal = () => {
+      if (props.pageMode === 'look') {
+        isCopyUserPhoneModalActive.value = true;
+      }
+    };
+
+    const closeCopyPhoneModal = () => {
+      isCopyUserPhoneModalActive.value = false;
+    };
+
     return {
       icons,
       avatarType,
       isInviteUserModalOpened,
       userRating,
       playFeatures,
+      isCopyUserPhoneModalActive,
+      isCopyUserEmailModalActive,
+      backgroundTop,
       isPersonalPreview,
+      getEmailProvider,
+      getUkrainianOperator,
       openInviteUserModal,
       closeInviteUserModal,
+      closeCopyPhoneModal,
+      showCopyPhoneModal,
+      closeCopyEmailModal,
+      showCopyEmailModal,
     };
   },
 };
@@ -331,7 +452,7 @@ $color-d2f6a2: #d2f6a2;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(38, 37, 65, 0.2);
+  background: rgba(9, 9, 16, 0.8);
   z-index: 999;
 }
 
@@ -342,6 +463,7 @@ $color-d2f6a2: #d2f6a2;
 }
 .b-public-profile__wrapper {
   background: $--b-main-white-color;
+  width: max-content;
   border-radius: 20px 20px 0px 0px;
   padding: 20px;
   position: absolute;
@@ -354,11 +476,11 @@ $color-d2f6a2: #d2f6a2;
   }
 
   @include beforeDesktop {
-    top: 75%;
+    top: 80%;
   }
 
   @include tabletAndMobile {
-    top: 100%;
+    top: 110%;
   }
 
   @media (max-width: 430px) {
@@ -413,6 +535,10 @@ $color-d2f6a2: #d2f6a2;
     width: 100%;
 
     @include tabletAndMobile {
+      z-index: 2;
+    }
+
+    @include bigTablet {
       z-index: 2;
     }
 
@@ -477,15 +603,18 @@ $color-d2f6a2: #d2f6a2;
         position: absolute;
         top: 90px;
         right: 22px;
-        display: none;
+        display: flex;
         gap: 4px;
 
-        @include tabletAndMobile {
-          display: flex;
+        @include tablet {
+          top: 80px;
+        }
+
+        @include desktop {
         }
 
         @media (max-width: 500px) {
-          top: 65px;
+          top: 70px;
         }
 
         @media (max-width: 350px) {
@@ -508,6 +637,7 @@ $color-d2f6a2: #d2f6a2;
               width: 96px;
               height: 96px;
               border-radius: 4px;
+              font-size: 42px;
             }
           }
         }
@@ -580,14 +710,6 @@ $color-d2f6a2: #d2f6a2;
           color: $--b-main-gray-color !important;
           line-height: 20px;
         }
-
-        .b-send-email__button {
-          flex-basis: 57%;
-        }
-
-        .b-call-phone__button {
-          flex-basis: 43%;
-        }
       }
     }
 
@@ -638,7 +760,7 @@ $color-d2f6a2: #d2f6a2;
         overflow: hidden;
 
         @include desktop {
-          height: calc(100vh - 90px - 70px);
+          height: calc(100vh - 90px - 60px);
         }
 
         ::-webkit-scrollbar {
@@ -668,6 +790,10 @@ $color-d2f6a2: #d2f6a2;
           width: 410px;
         }
 
+        @include bigTablet {
+          z-index: 3;
+        }
+
         @media (max-width: 430px) {
           width: 100%;
         }
@@ -678,6 +804,12 @@ $color-d2f6a2: #d2f6a2;
             box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
             background: $--b-main-white-color;
             border-radius: 12px;
+          }
+          @include bigTablet {
+            // position: absolute;
+            // left: 35px;
+            // width: 300px;
+            // bottom: 130px;
           }
           .b-user-features__title {
             @include exo(16px, 700);

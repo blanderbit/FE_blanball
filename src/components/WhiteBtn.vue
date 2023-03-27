@@ -2,7 +2,7 @@
   <div
     class="b_white-btn"
     :style="styles"
-    @click.stop="$emit('click-function')"
+    @click.stop="!disabled && $emit('click-function', $event)"
   >
     <img v-if="icon" :src="icon" alt="" />
     {{ text }}
@@ -42,6 +42,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    }
   },
   setup(props) {
     const btnWidth = computed(() => {

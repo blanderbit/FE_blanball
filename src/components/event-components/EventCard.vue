@@ -98,13 +98,10 @@
 import { computed } from 'vue';
 
 import { useDevice } from 'next-vue-device-detector';
-import { storeToRefs } from 'pinia';
 
 import GreenBtn from '../../components/GreenBtn.vue';
 import PlaceDetector from '../../components/maps/PlaceDetector.vue';
 import WhiteBtn from '../WhiteBtn.vue';
-
-import { useUserDataStore } from '../../stores/userData';
 
 export default {
   props: {
@@ -120,8 +117,6 @@ export default {
   },
   setup(props, context) {
     const device = useDevice();
-    const userStore = useUserDataStore();
-    const { user } = storeToRefs(userStore);
 
     const eventJoin = (e) => {
       context.emit('eventJoin', e);
@@ -148,7 +143,6 @@ export default {
 
     return {
       device,
-      user,
       greenButtonAvalable,
       whiteButtonText,
       eventJoin,
@@ -408,7 +402,7 @@ $color-f0f0f4: #f0f0f4;
   }
 }
 .event-place::v-deep(.b-place-detector) {
-  background: #efeff6;
+  background: $color-efeff6;
   border-radius: 4px;
   margin-top: 10px;
   width: fit-content;
@@ -434,11 +428,11 @@ $color-f0f0f4: #f0f0f4;
   }
 
   &-active {
-    background: #71ba12;
+    background: $color-71ba12;
   }
 
   &-finished {
-    background: #e184a0;
+    background: $color-e184a0;
   }
 }
 .active-time {
@@ -454,7 +448,7 @@ $color-f0f0f4: #f0f0f4;
   color: $--b-main-gray-color;
 }
 .right-side-white-btn {
-  background: #f0f0f4;
+  background: $color-f0f0f4;
   border: none !important;
 }
 </style>

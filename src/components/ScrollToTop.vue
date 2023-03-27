@@ -1,7 +1,7 @@
 <template>
   <div class="b-scroll-top">
     <div
-      class="b-scroll-top__return-top my-3"
+      class="b-scroll-top__return-top"
       v-if="elementLength.length && isScrollTopExist"
     >
       <div class="b-scroll-top__scroll-text">
@@ -44,6 +44,7 @@ $color-efeff6: #efeff6;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 16px;
   }
   &__scroll-text {
     font-family: 'Inter';

@@ -20,6 +20,7 @@ export class WebSocketTypes {
     'update_message_accept_or_decline_invite_to_event';
   static UpdateMessageAcceptOrDeclineParticipationToEvent =
     'update_message_accept_or_decline_invite_to_participation';
+  static UpdateMessageUserOnline = 'user_online';
   static BulkNotificationDelete = 'bulk_notifications_delete';
   static AllDeletedNotifications = 'all_user_notifications_deleted';
   static AllReadedNotifications = 'all_user_notifications_readed';

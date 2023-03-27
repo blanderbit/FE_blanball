@@ -20,9 +20,13 @@
           :notificationInstance="item"
           :selectable="selectable"
           :active="activeNotification === item.notification_id"
+          :selectedCount="list.length"
           :checked="selectedList.includes(item.notification_id)"
+          :notCollapsible="isCollapsible"
           @handler-action="handlerAction($event, item)"
           @selected="handleSelected($event)"
+          @openContextMenu="$emit('openContextMenu', $event)"
+          @selectNotificationAfterHold="$emit('selectNotificationAfterHold', $event)"
         >
         </Notification>
       </DynamicScrollerItem>
@@ -36,9 +40,10 @@
 <script>
 import Notification from '../Notification.vue';
 import { useRouter } from 'vue-router';
-import { ref, watch, nextTick } from 'vue';
+import { ref, watch, nextTick, onMounted, onBeforeUnmount, computed } from 'vue';
 import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller';
 import { notificationButtonHandlerMessage } from '../../workers/utils-worker';
+import useWindowWidth from '../../utils/widthScreen';
 
 export default {
   name: 'Notifications',
@@ -61,12 +66,27 @@ export default {
       default: false,
     },
   },
-  emits: ['update:selected-list', 'update:scrollbar-existing'],
+  emits: ['update:selected-list', 'update:scrollbar-existing', 'delete'],
   setup(context, { emit, expose }) {
     let activeNotification = ref(0);
-    let list = ref([]);
+    let list = ref(context.selectedList);
     let scroller = ref();
     const router = useRouter();
+    const maxSelectedNotificationsCount = 100
+
+
+    const { isMobile, isTablet, onResize } = useWindowWidth();
+
+
+    const isCollapsible = computed(() => !(isMobile.value || isTablet.value))
+
+    onMounted(() => {
+      window.addEventListener('resize', onResize);
+    });
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', onResize);
+    });
 
     watch(
       () => context.selectedList,
@@ -93,6 +113,7 @@ export default {
     );
 
     const handlerAction = async (button, notificationInstance) => {
+      emit('removePushNotificationAfterSidebarAction', notificationInstance)
       await notificationButtonHandlerMessage({
         button,
         notificationInstance,
@@ -103,7 +124,9 @@ export default {
 
     const handleSelected = (e) => {
       if (e.selected) {
-        list.value.push(e.notification.notification_id);
+        if (list.value.length < maxSelectedNotificationsCount) {
+          list.value.push(e.notification.notification_id);
+        }
       } else {
         const index = list.value.findIndex(
           (item) => item === e.notification.notification_id
@@ -120,9 +143,11 @@ export default {
 
     return {
       activeNotification,
+      list,
       handlerAction,
       handleSelected,
       scroller,
+      isCollapsible,
     };
   },
 };

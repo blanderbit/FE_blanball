@@ -17,12 +17,12 @@
               @click="$emit('item-image-click', user.id)"
               :link="user.profile.avatar_url"
               :avatarType="'small-square'"
-              :full-name="`${user.profile.name} ${user.profile.last_name}`"
+              :full-name="`${user.profile.last_name} ${user.profile.name}`"
             ></avatar>
           </div>
           <div class="b-user-main-info__container">
             <div class="b-user__name">
-              {{ user.profile.name }} {{ user.profile.last_name }}
+              {{ user.profile.last_name }} {{ user.profile.name }}
             </div>
             <img
               v-if="rightUserItemIcon"
@@ -195,7 +195,7 @@ $color-8a8aa8: #8a8aa8;
 
 .b-modal-item__disabled {
   opacity: 0.6;
-  border: 1px solid #e2e2e9;
+  border: 1px solid $color-e2e2e9;
 }
 .b-user-item__disabled-text {
   font-family: 'Inter';
@@ -203,6 +203,6 @@ $color-8a8aa8: #8a8aa8;
   font-weight: 600;
   font-size: 12px;
   line-height: 20px;
-  color: #8a8aa8;
+  color: $color-8a8aa8;
 }
 </style>

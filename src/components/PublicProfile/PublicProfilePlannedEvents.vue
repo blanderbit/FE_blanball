@@ -44,7 +44,10 @@
           </div>
         </template>
         <template #emptyList>
-          Указать верстку что пустой список для отзывов юзера TODO
+          <div class="b-no-events">
+            <img src="../../assets/img/info-black.svg" alt="" />
+            <span>{{ $t('no_records.noPublicProfilePlannedEvents.title', {fullName: userFullName}) }}</span>
+          </div>
         </template>
       </SimpleListWrapper>
     </div>
@@ -52,7 +55,6 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
 
 import SimpleListWrapper from '../simple-list/SimpleListWrapper.vue';
 
@@ -72,6 +74,9 @@ export default {
       type: Number,
       required: true,
     },
+    userFullName: {
+      type: String,
+    }
   },
   setup(props) {
     const getPlannedEvents = (page) => {
@@ -102,6 +107,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-f9f9fc: #f9f9fc;
 $color-feefe7: #feefe7;
 $color-efeff6: #efeff6;
 $color-dfdeed: #dfdeed;
@@ -150,7 +156,6 @@ $color-f0f0f4: #f0f0f4;
     @include exo(16px, 700);
     line-height: 24px;
     padding-bottom: 16px;
-    border-bottom: 1px solid $color-dfdeed;
   }
 }
 .b-public-profile__events-list {
@@ -219,5 +224,16 @@ $color-f0f0f4: #f0f0f4;
       }
     }
   }
+}
+.b-no-events {
+  @include inter(13px, 400);
+    line-height: 20px;
+    display: flex;
+    gap: 8px;
+    word-break: break-word;
+    border-radius: 6px;
+    background: $color-f9f9fc;
+    padding: 8px;
+    padding-left: 12px;
 }
 </style>

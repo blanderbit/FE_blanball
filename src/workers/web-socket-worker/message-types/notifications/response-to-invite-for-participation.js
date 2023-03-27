@@ -23,43 +23,41 @@ export class ResponseToInviteForParticipationMessage extends InitialMessage {
   createTexts(data) {
     return [
       data.invite.response
-        ? `Юзер ${data.sender.name} подтвердил свое участие на ивенте;`
-        : `Юзер ${data.sender.name} отклонил свое участие на ивенте;`,
+        ? `${data.sender.last_name} ${data.sender.name} прийняв ваше запрошення на участь у «${data?.event.name}»`
+        : `${data.sender.last_name} ${data.sender.name} відхилив ваше запрошення на участь у «${data?.event.name}»`,
     ];
   }
 
   createTitle(data) {
     return data.invite.response
-      ? 'Юзер подтвердил свое участие на ивенте;'
-      : 'Юзер отклонил свое участие на ивенте;';
+      ? `${data.sender.last_name} ${data.sender.name} прийняв ваше запрошення на участь у події`
+      : `${data.sender.last_name} ${data.sender.name} відхилив ваше запрошення на участь у події`;
   }
 
   onInit() {
     this.actions = [
       {
         type: MessageActionTypes.ActionClose,
-        text: 'Зрозуміло',
+        buttonType: 'success',
+        buttonText: 'Зрозуміло',
+        buttonWidth: 88,
+        buttonHeight: 28,
+      },
+      {
+        type: MessageActionTypes.Action,
+        action: ({ notificationInstance }) =>
+          ROUTES.APPLICATION.USERS.GET_ONE.absolute(
+            notificationInstance.data.sender.id
+          ),
+        actionType: MessageActionDataTypes.UrlCallback,
+        buttonType: 'default',
+        buttonText: 'Переглянути профіль',
+        buttonWidth: 160,
+        buttonHeight: 28,
       },
     ];
 
-    if (this.data.invite.response) {
-      this.actions.push({
-        type: MessageActionTypes.Action,
-        text: 'Просмотреть ивент',
-        action: () =>
-          ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(this.data.event.id),
-        actionType: MessageActionDataTypes.UrlCallback,
-        buttonType: 'stroked',
-      });
-      SetPushNotificationTheme('success')(this);
-    } else {
-      this.actions.push({
-        type: MessageActionTypes.Action,
-        text: 'Найти юзеров',
-        action: ROUTES.APPLICATION.USERS.absolute,
-        actionType: MessageActionDataTypes.Url,
-        buttonType: 'stroked',
-      });
+    if (!this.data.invite.response) {
       SetPushNotificationTheme('error')(this);
     }
   }

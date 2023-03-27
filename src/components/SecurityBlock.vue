@@ -179,7 +179,7 @@ $color-d3f8f7: #d3f8f7;
         align-items: center;
 
         @media (min-width: 768px) and (max-width: 1200px) {
-          border-bottom: 1px solid #dfdeed;
+          border-bottom: 1px solid $color-dfdeed;
         }
 
         @include tabletAndMobile {

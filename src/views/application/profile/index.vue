@@ -11,20 +11,20 @@
 
     <ChangeEmailModal
       v-if="isModalActive.email"
-      :user-email="userEmail"
+      :user-email="userStore.user.email"
       @close-modal="toggleModal"
       @email="getMyProfile"
     />
 
     <DeleteAccountModal
       v-if="isModalActive.delete_acc"
-      :user-email="userEmail"
+      :user-email="userStore.user.email"
       @close-modal="toggleModal"
     />
 
     <ChangePasswordModal
       v-if="isModalActive.change_password"
-      :user-email="userEmail"
+      :user-email="userStore.user.email"
       @close-modal="toggleModal"
     />
 
@@ -98,16 +98,17 @@
           @save-changes="handleSaveDataChanges"
           @decline-changes="declineUserDataChanges"
           @show-preview="showPreview"
+          @cancel-changes="cancelChangesAndGoToTheNextRoute"
         />
         <RatingCard
           v-if="!isTabletSize && !isMobile"
-          :rating-scale="userRating"
+          :rating-scale="userStore.user.raiting"
           :openedReviewID="openedReviewId"
           @clickReview="clickReview"
         />
         <UserDetailsCard
           :user-data="userData"
-          :phone="userPhone"
+          :phone="userStore.user.phone"
           :is-edit-mode="isEditModeProfile"
           @openEditPictureModal="openEditPictureModal"
           :initValues="formValues"
@@ -115,13 +116,13 @@
         <div class="b-user-cabinet__mobile-tablet-block">
           <RatingCard
             v-if="isTabletSize"
-            :rating-scale="userRating"
+            :rating-scale="userStore.user.raiting"
             :openedReviewID="openedReviewId"
             @clickReview="clickReview"
           />
           <SecurityBlock
             @toggle-modal="toggleModal"
-            :user-email="userEmail"
+            :user-email="userStore.user.email"
             :checkbox-data="checkboxData"
             :is-edit-mode="isEditModeProfile"
           />
@@ -144,12 +145,11 @@
 
 <script>
 import { ref, computed, reactive, onMounted, onBeforeUnmount } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
-import { storeToRefs } from 'pinia';
 
 import GreenBtn from '../../../components/GreenBtn.vue';
 import WhiteBtn from '../../../components/WhiteBtn.vue';
@@ -204,17 +204,13 @@ export default {
   setup(props) {
     const { t } = useI18n();
     const toast = useToast();
-    const store = useUserDataStore();
+    const userStore = useUserDataStore();
 
-    const { user } = storeToRefs(store);
     const router = useRouter();
     const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
       useWindowWidth();
 
     const userInfo = ref(null);
-    const userRating = ref(null);
-    const userPhone = ref('');
-    const userEmail = ref('');
     const userData = ref(null);
     const isEditModeProfile = ref(false);
     const changeDataModalConfig = ref(null);
@@ -224,6 +220,7 @@ export default {
     const userAvatar = ref('');
     const restData = ref();
     const openedReviewId = ref(0);
+    const nextRoutePath = ref('');
 
     const isTabletSize = computed(() => {
       return isBetweenTabletAndDesktop.value || isTablet.value;
@@ -238,28 +235,28 @@ export default {
       };
     });
     restData.value = {
-      ...store.user,
+      ...userStore.user,
       configuration: {
-        ...store.user.configuration,
+        ...userStore.user.configuration,
         planned_events: true,
       },
     };
 
     const formValues = ref({
-      last_name: store.user.profile.last_name,
-      name: store.user.profile.name,
-      about_me: store.user.profile.about_me,
-      day: getBirthDay(store.user.profile.birthday),
-      month: getBirthMonth(store.user.profile.birthday),
-      year: getBirthYear(store.user.profile.birthday),
-      height: store.user.profile.height,
-      weight: store.user.profile.weight,
-      working_leg: getWorkingLeg(store.user.profile.working_leg),
-      position: store.user.profile.position,
-      phone: store.user.phone,
-      config_phone: store.user.configuration.phone,
-      config_email: store.user.configuration.email,
-      show_reviews: store.user.configuration.show_reviews,
+      last_name: userStore.user.profile.last_name,
+      name: userStore.user.profile.name,
+      about_me: userStore.user.profile.about_me,
+      day: getBirthDay(userStore.user.profile.birthday),
+      month: getBirthMonth(userStore.user.profile.birthday),
+      year: getBirthYear(userStore.user.profile.birthday),
+      height: userStore.user.profile.height,
+      weight: userStore.user.profile.weight,
+      working_leg: getWorkingLeg(userStore.user.profile.working_leg),
+      position: userStore.user.profile.position,
+      phone: userStore.user.phone,
+      config_phone: userStore.user.configuration.phone,
+      config_email: userStore.user.configuration.email,
+      show_reviews: userStore.user.configuration.show_reviews,
       planned_events: true,
     });
 
@@ -279,27 +276,24 @@ export default {
     });
 
     userInfo.value = {
-      ...store.user,
+      ...userStore.user,
       profile: {
-        ...store.user.profile,
-        working_leg: getWorkingLeg(store.user.profile.working_leg),
+        ...userStore.user.profile,
+        working_leg: getWorkingLeg(userStore.user.profile.working_leg),
       },
     };
-    userRating.value = store.user.raiting;
-    userPhone.value = store.user.phone;
-    userEmail.value = store.user.email;
     userData.value = {
-      ...store.user.profile,
-      phone: store.user.phone,
-      raiting: store.user.raiting,
-      working_leg: getWorkingLeg(store.user.profile.working_leg),
-      role: store.user.role,
+      ...userStore.user.profile,
+      phone: userStore.user.phone,
+      raiting: userStore.user.raiting,
+      working_leg: getWorkingLeg(userStore.user.profile.working_leg),
+      role: userStore.user.role,
     };
 
     checkboxData.value = {
-      checkboxPhone: store.user.configuration.phone,
-      checkboxEmail: store.user.configuration.email,
-      checkboxReviews: store.user.configuration.show_reviews,
+      checkboxPhone: userStore.user.configuration.phone,
+      checkboxEmail: userStore.user.configuration.email,
+      checkboxReviews: userStore.user.configuration.show_reviews,
     };
 
     onMounted(() => {
@@ -372,7 +366,7 @@ export default {
     function cancelDataEdit() {
       toggleModal('change_data');
       changeDataModalConfig.value = {
-        title: 'Вийти без збереження змін?',
+        title: 'Вийти без збереження змін',
         description: 'Ви дійсно хочете вийти, скасувавши всі внесені зміни?',
         button_1: 'Ні, не виходити',
         button_2: 'Так, вийти',
@@ -415,8 +409,8 @@ export default {
       } = refProfileData;
       const profileData = {
         ...refProfileData,
-        birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
-        gender: store.user.profile.gender,
+        birthday: year && month && day ? `${year}-${mockData.value.numberFromMonth[month]}-${day}` : null,
+        gender: userStore.user.profile.gender,
         working_leg: getWorkingLeg(working_leg),
       };
 
@@ -427,6 +421,9 @@ export default {
       delete profileData.config_email;
       delete profileData.config_phone;
       delete profileData.show_reviews;
+
+      profileData.height = profileData.height ? profileData.height : null
+      profileData.weight = profileData.weight ? profileData.weight : null
 
       const payload = {
         configuration: {
@@ -479,9 +476,10 @@ export default {
             working_leg: getWorkingLeg(res.data.profile?.working_leg),
             role: res.data?.role,
           };
-          userEmail.value = res.data?.email;
-          userPhone.value = res.data?.phone;
           isLoading.value = false;
+          userStore.$patch({
+            user: res.data,
+          });
           toast.success(t('profile.data-updated'));
         })
         .catch((e) => {
@@ -533,8 +531,8 @@ export default {
           const profileData = {
             ...refProfileData,
             birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
-            gender: store.user.profile.gender,
-            avatar_url: store.getUserAvatar,
+            gender: userStore.user.profile.gender,
+            avatar_url: userStore.getUserAvatar,
             position: getUserPositionText(position),
           };
           delete profileData.day;
@@ -595,6 +593,30 @@ export default {
       toggleEditMode();
     }
 
+    function cancelChangesAndGoToTheNextRoute() {
+      router.push(nextRoutePath.value)
+      nextRoutePath.value = ''
+    }
+
+    onBeforeRouteLeave((to, from, next) => {
+      if (isEditModeProfile.value && !isModalActive.change_data) {
+        toggleModal('change_data');
+        nextRoutePath.value = to.fullPath;
+        changeDataModalConfig.value = {
+          title: 'Вийти без збереження змін',
+          description: 'Ви дійсно хочете вийти, скасувавши всі внесені зміни?',
+          button_1: 'Ні, не виходити',
+          button_2: 'Так, вийти',
+          right_btn_action: 'cancelChanges',
+          left_btn_action: 'closeModal',
+          btn_with_1: 124,
+          btn_with_2: 90,
+        };
+      } else {
+        next();
+      }
+    });
+
     return {
       toggleEditMode,
       saveDataFromPreviewWindow,
@@ -610,15 +632,13 @@ export default {
       openEditPictureModal,
       getMyProfile,
       clickReview,
+      cancelChangesAndGoToTheNextRoute,
       showPreview,
-      userRating,
-      user,
-      userPhone,
-      userEmail,
       isEditModeProfile,
       changeDataModalConfig,
       mockData,
       isModalActive,
+      userStore,
       checkboxData,
       userData,
       schema,

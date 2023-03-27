@@ -7,12 +7,12 @@
             class="b-list-item__avatar"
             :border="true"
             :link="request.sender.profile.avatar_url"
-            :full-name="`${request.sender.profile.name} ${request.sender.profile.last_name}`"
+            :full-name="`${request.sender.profile.last_name} ${request.sender.profile.name}`"
           ></Avatar>
         </div>
         <span class="b-list-item__name">
-          {{ request.sender.profile.name }}
           {{ request.sender.profile.last_name }}
+          {{ request.sender.profile.name }}
         </span>
       </div>
       <div class="b-list-item-right__side">

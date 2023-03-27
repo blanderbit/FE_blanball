@@ -143,8 +143,6 @@ import { useRouter, useRoute } from 'vue-router';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import { storeToRefs } from 'pinia';
-
 import InputComponent from '../../../components/forms/InputComponent.vue';
 import GreenBtn from '../../../components/GreenBtn.vue';
 import WhiteBtn from '../../../components/WhiteBtn.vue';
@@ -201,7 +199,6 @@ export default {
     const currentStep = ref(1);
     const startDate = ref('');
     const userStore = useUserDataStore();
-    const { user } = storeToRefs(userStore);
     const searchUsersLoading = ref(false);
     const relevantUsersList = ref([]);
     const eventCreateLoader = ref(false);
@@ -231,7 +228,7 @@ export default {
         need_form: null,
         date_and_time: '',
         forms: {},
-        contact_number: user.value.phone,
+        contact_number: userStore.user.phone,
         count_current_users: 0,
         count_current_fans: 0,
         current_users: [],
@@ -362,7 +359,7 @@ export default {
     const SKIPIDS = [
       eventPreviewData.value.author?.id
         ? eventPreviewData.value.author.id
-        : user.value.id,
+        : userStore.user.id,
       ...(eventPreviewData.value?.current_users?.map((user) => user.id) ?? []),
       ...(eventPreviewData.value?.current_fans?.map((fan) => fan.id) ?? []),
     ];
@@ -673,7 +670,7 @@ $color-8a8aa8: #8a8aa8;
         margin-top: 20px;
 
         ::v-deep(.b_white-btn) {
-          border: 1px solid #dfdeed;
+          border: 1px solid $color-dfdeed;
           font-family: 'Inter';
           font-style: normal;
           font-weight: 400;
@@ -690,7 +687,7 @@ $color-8a8aa8: #8a8aa8;
       .b-manage-event__manage-buttons-block {
         width: 100%;
         background: rgba(239, 239, 246, 0.7);
-        border: 1px solid #dfdeed;
+        border: 1px solid $color-dfdeed;
         border-radius: 8px;
         align-items: center;
         justify-content: space-between;

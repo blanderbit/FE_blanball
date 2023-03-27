@@ -21,27 +21,32 @@ import { ROUTES } from '../../../../router/router.const';
 @SetActions([
   {
     type: MessageActionTypes.ActionClose,
-    text: 'Зрозуміло',
+    buttonType: 'success',
+    buttonText: 'Чудово',
+    buttonWidth: 76,
+    buttonHeight: 28,
   },
   {
     type: MessageActionTypes.Action,
-    text: 'Переглянути подію',
     action: ({ notificationInstance }) =>
       ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(
         notificationInstance.data.event.id
       ),
     actionType: MessageActionDataTypes.UrlCallback,
-    buttonType: 'stroked',
+    buttonType: 'default',
+    buttonText: 'На сторінку події',
+    buttonWidth: 133,
+    buttonHeight: 28,
   },
 ])
 export class LastUserOnTheEventMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `${data.event.name} - на событие добавился последний учасник! Вас ждет что то чудесное:)"`,
+      `Подія «${data.event.name}» вже набрала необхідну кількість учасників"`,
     ];
   }
 
   createTitle() {
-    return 'Набраны все учасники!';
+    return 'Реєстрацію завершено';
   }
 }

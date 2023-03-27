@@ -13,6 +13,7 @@
           <div class="inut-wrapper">
             <InputComponent
               :title="$t('modals.change_password.current-pass')"
+              :swipeTitle="false"
               :title-width="0"
               :type="'password'"
               :outside-title="true"
@@ -22,6 +23,7 @@
           <div class="inut-wrapper">
             <InputComponent
               :title="$t('modals.change_password.new-pass')"
+              :swipeTitle="false"
               :title-width="0"
               :type="'password'"
               :outside-title="true"

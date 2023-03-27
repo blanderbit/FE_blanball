@@ -23,13 +23,13 @@
               class="b-invited-user__avatar"
               :link="user.profile.avatar_url"
               :avatarType="'small-square'"
-              :full-name="`${user.profile.name} ${user.profile.last_name}`"
+              :full-name="`${user.profile.last_name} ${user.profile.name}`"
             ></Avatar>
             <span v-if="user.profile.position" class="b-invited-user__position">
               {{ $t(`hashtags.${user.profile.position}`) }}
             </span>
             <span class="b-invited-user__full-name">
-              {{ user.profile.name }} {{ user.profile.last_name }}
+              {{ user.profile.last_name }} {{ user.profile.name }}
             </span>
           </div>
           <div class="b-invited-user-right__side">
@@ -63,13 +63,13 @@
               class="b-invited-user__avatar"
               :link="user.profile.avatar_url"
               :avatarType="'small-square'"
-              :full-name="`${user.profile.name} ${user.profile.last_name}`"
+              :full-name="`${user.profile.last_name} ${user.profile.name}`"
             ></Avatar>
             <span v-if="user.profile.position" class="b-invited-user__position">
               {{ $t(`hashtags.${user.profile.position}`) }}
             </span>
             <span class="b-invited-user__full-name">
-              {{ user.profile.name }} {{ user.profile.last_name }}
+              {{ user.profile.last_name }} {{ user.profile.name }}
             </span>
           </div>
           <div class="b-invited-user-right__side">

@@ -2,18 +2,20 @@
   <div class="main-wrapper">
     <VerifyEmailModal
       v-if="isVerifyModalActive"
-      :user-email="userEmail"
+      :user-email="userStore.user.email"
       @close-modal="isVerifyModalActive = false"
-      @email-verified="isUserVerified = true"
+      @email-verified="emailVerified"
     />
-
     <div class="b_header_validate-email-block-wrapper">
-      <div v-if="!isUserVerified" class="b_header_validate-email-block">
+      <div
+        v-if="!userStore.user.is_verified"
+        class="b_header_validate-email-block"
+      >
         <span class="b_header_text">
-          {{ $t('header.approve-your-email') }}: {{ userEmail }}
+          {{ $t('header.approve-your-email') }}: {{ userStore.user.email }}
         </span>
         <span class="b_header_verify-btn" @click="isVerifyModalActive = true">
-          Підтвердити
+          {{ $t('register.accept') }}
         </span>
       </div>
     </div>
@@ -45,13 +47,12 @@
 </template>
 
 <script setup>
-import { ref, onBeforeUnmount } from 'vue';
+import { ref, onBeforeUnmount, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
 
 import { v4 as uuid } from 'uuid';
-import { storeToRefs } from 'pinia';
 
 import Sidebar from './../../components/Sidebar.vue';
 import MainHeader from './../../components/MainHeader.vue';
@@ -77,8 +78,6 @@ import EventCreatedIcon from '../../assets/img/event-creted-modal-icon.svg';
 import message_audio from '../../assets/audio/message_audio.mp3';
 
 const isVerifyModalActive = ref(false);
-const userEmail = ref('');
-const isUserVerified = ref(true);
 const isCreateReviewModalActive = ref(false);
 const endedEventData = ref({});
 const selectedEmojies = ref([]);
@@ -86,6 +85,12 @@ const modalFeedBackAnimation = ref(false);
 const isActionEventModalOpened = ref(false);
 const actionEventModalConfig = ref({});
 const { t } = useI18n();
+const activePushNotifications = ref([]);
+const router = useRouter();
+const toast = useToast();
+const userStore = useUserDataStore();
+const audio = new Audio(message_audio);
+let timeout;
 
 const closeEventActiondModal = () => {
   isActionEventModalOpened.value = false;
@@ -100,6 +105,14 @@ const closeEventReviewModal = () => {
 };
 const openMobileMenu = () => {
   BlanballEventBus.emit('OpenMobileMenu');
+};
+
+const emailVerified = () => {
+  API.UserService.getMyProfile().then((res) => {
+    userStore.$patch({
+      user: res.data,
+    });
+  });
 };
 
 const openEventReviewModal = () => {
@@ -146,16 +159,6 @@ const emojiSelection = (emoji) => {
   selectedEmojies.value.push(emoji);
 };
 
-const router = useRouter();
-const toast = useToast();
-const store = useUserDataStore();
-const { user } = storeToRefs(store);
-const audio = new Audio(message_audio);
-let timeout;
-
-isUserVerified.value = user.value?.is_verified;
-userEmail.value = user.value?.email || '';
-
 const handlerAction = async (button, notificationInstance) => {
   clearTimeout(timeout);
   await notificationButtonHandlerMessage({
@@ -195,6 +198,13 @@ const getToastOptions = (notificationInstance, toastId) => {
           await handlerAction(item, notificationInstance);
           toggleToastProgress(notificationInstance, toastId, false);
           toast.dismiss(toastId);
+          removePushFormActiveNotifications(
+            notificationInstance.notification_id
+          );
+          NotificationsBus.emit(
+            'hanlderToRemoveNewNotificationsInSidebar',
+            notificationInstance.notification_id
+          );
         },
         handlerClose: async () => {
           if (close) {
@@ -202,8 +212,10 @@ const getToastOptions = (notificationInstance, toastId) => {
             await handlerAction(close, notificationInstance);
             toggleToastProgress(notificationInstance, toastId, false);
           }
-
           toast.dismiss(toastId);
+          removePushFormActiveNotifications(
+            notificationInstance.notification_id
+          );
         },
       },
     },
@@ -220,10 +232,47 @@ const getToastOptions = (notificationInstance, toastId) => {
       icon: false,
       rtl: false,
       toastClassName: [notificationInstance.getPushNotificationTheme()],
-      userEmail,
     },
   };
 };
+NotificationsBus.on('removePushNotificationAfterSidebarAction', (notificationInstance) => {
+  if (notificationInstance?.remove_all) {
+    dismissAllToasts();
+    return;
+  }
+
+  const { notification_id, notification_ids } = notificationInstance || {};
+
+  const idsToDismiss = notification_ids || [notification_id];
+
+  activePushNotifications.value
+    .filter((notification) => idsToDismiss.includes(notification.notificationId))
+    .forEach((notification) => {
+      toast.dismiss(notification.toastId);
+      removePushFormActiveNotifications(notification.notificationId);
+    });
+});
+
+function dismissAllToasts() {
+  activePushNotifications.value.forEach((notification) => {
+    toast.dismiss(notification.toastId);
+  });
+  activePushNotifications.value = [];
+}
+
+function addPushToActiveNotifications(pushData) {
+  activePushNotifications.value.push(pushData);
+}
+
+function removePushFormActiveNotifications(notificationId) {
+  const index = activePushNotifications.value.findIndex(
+    (notification) => notification.notificationId === notificationId
+  );
+
+  if (index > -1) {
+    activePushNotifications.value.splice(index, 1);
+  }
+}
 
 const createToastFromInstanceType = (notificationInstance) => {
   const toastDataOptions = getToastOptions(notificationInstance, uuid());
@@ -232,6 +281,11 @@ const createToastFromInstanceType = (notificationInstance) => {
     toastDataOptions.componentOptions,
     toastDataOptions.options
   );
+
+  addPushToActiveNotifications({
+    toastId: toastId,
+    notificationId: notificationInstance.notification_id,
+  });
 
   if (notificationInstance.timeForClose) {
     timeout = setTimeout(() => {
@@ -253,6 +307,7 @@ AuthWebSocketWorkerInstance.registerCallback(handleNewMessage).connect({
 
 onBeforeUnmount(() => {
   NotificationsBus.off('openEventReviewModal');
+  NotificationsBus.off('removePushNotificationAfterSidebarAction');
   BlanballEventBus.off('EventCreated');
   BlanballEventBus.off('EventUpdated');
   AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect();
