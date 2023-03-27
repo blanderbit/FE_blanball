@@ -36,5 +36,11 @@ export default {
   },
   noPopularEvents: {
     title: 'Тут відображатимуться події, що мають найбільшу кількість активних учасників'
+  },
+  noPublicProfilePlannedEvents: {
+    title: '{fullName} ще не додав жодної події до запланованих'
+  },
+  noPublicProfileReviews: {
+    title: '{fullName} ще не отримував оцінок та коментарів'
   }
 };

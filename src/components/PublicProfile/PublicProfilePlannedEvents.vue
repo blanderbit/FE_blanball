@@ -46,7 +46,7 @@
         <template #emptyList>
           <div class="b-no-events">
             <img src="../../assets/img/info-black.svg" alt="" />
-            <span>{{ userFullName }} ще не додав жодної події до запланованих</span>
+            <span>{{ $t('no_records.noPublicProfilePlannedEvents.title', {fullName: userFullName}) }}</span>
           </div>
         </template>
       </SimpleListWrapper>
@@ -55,7 +55,6 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
 
 import SimpleListWrapper from '../simple-list/SimpleListWrapper.vue';
 

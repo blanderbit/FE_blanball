@@ -1,6 +1,8 @@
 <template>
-  <CopyModal v-if="isCopyUserPhoneModalActive"
-  @closeModal="closeCopyPhoneModal">
+  <CopyModal
+    v-if="isCopyUserPhoneModalActive"
+    @closeModal="closeCopyPhoneModal"
+  >
     <template #title>
       {{ $t('profile.phone-number') }}
     </template>
@@ -27,8 +29,10 @@
     </template>
   </CopyModal>
 
-  <CopyModal v-if="isCopyUserEmailModalActive"
-    @closeModal="closeCopyEmailModal">
+  <CopyModal
+    v-if="isCopyUserEmailModalActive"
+    @closeModal="closeCopyEmailModal"
+  >
     <template #title>
       {{ $t('profile.e-mail') }}
     </template>
@@ -143,7 +147,9 @@
               <div class="b-public-profile__connection-buttons">
                 <WhiteBtn
                   v-if="userData.configuration.email"
-                  :style="`flex-basis: ${userData.configuration.phone ? '57%' : '100%'}`"
+                  :style="`flex-basis: ${
+                    userData.configuration.phone ? '57%' : '100%'
+                  }`"
                   class="b-connection__button b-send-email__button"
                   :text="$t('player_page.write-email')"
                   :icon="icons.letter"
@@ -152,7 +158,9 @@
                 />
                 <WhiteBtn
                   v-if="userData.configuration.phone"
-                  :style="`flex-basis: ${userData.configuration.email ? '43%' : '100%'}`"
+                  :style="`flex-basis: ${
+                    userData.configuration.email ? '43%' : '100%'
+                  }`"
                   class="b-connection__button b-call-phone__button"
                   :text="$t('player_page.call')"
                   :icon="icons.phone"
@@ -170,7 +178,10 @@
                   {{ $t('player_page.approved') }}
                 </span>
               </div>
-              <div v-if="userData.profile.about_me" class="b-public-profile__description">
+              <div
+                v-if="userData.profile.about_me"
+                class="b-public-profile__description"
+              >
                 <div class="b-description__title">
                   {{ $t('player_page.about-yourself') }}
                 </div>
@@ -206,9 +217,10 @@
                 :userFullName="`${userData.profile.last_name} ${userData.profile.name}`"
               />
             </div>
-            <PublicProfilePlannedEvents 
+            <PublicProfilePlannedEvents
               :userId="userData.id"
-              :userFullName="`${userData.profile.last_name} ${userData.profile.name}`" />
+              :userFullName="`${userData.profile.last_name} ${userData.profile.name}`"
+            />
           </div>
         </div>
       </div>
@@ -232,6 +244,9 @@ import InputComponent from '../forms/InputComponent.vue';
 import GreenBtn from '../GreenBtn.vue';
 
 import useWindowWidth from '../../utils/widthScreen';
+
+import { getEmailProvider } from '../../utils/getEmailProvider';
+import { getUkrainianOperator } from '../../utils/getPhoneOperator';
 
 import PhoneIcon from '../../assets/img/phone-arrow.svg';
 import LetterIcon from '../../assets/img/letter.svg';
@@ -379,50 +394,25 @@ export default {
       ];
     });
 
-    function getUkrainianOperator(phoneNumber) {
-      phoneNumber = phoneNumber.replace(/\s|\+|-/g, '').substr(2);
-      const firstThreeDigits = phoneNumber.slice(0, 3);
-
-      const kyivstarRange = ['067', '068', '096', '097', '098'];
-      const vodafoneRange = ['050', '066', '095', '099'];
-      const lifecellRange = ['063', '073', '093'];
-
-      // Check which operator the phone number belongs to
-      if (kyivstarRange.includes(firstThreeDigits)) {
-        return 'Kyivstar';
-      } else if (vodafoneRange.includes(firstThreeDigits)) {
-        return 'Vodafone';
-      } else if (lifecellRange.includes(firstThreeDigits)) {
-        return 'Lifecell';
-      } else {
-        return 'Unknown operator';
-      }
-    }
-
-    function getEmailProvider(email) {
-      const domain = email.split('@')[1].split('.')[0];
-      return domain.charAt(0).toUpperCase() + domain.slice(1);
-    }
-
     const showCopyEmailModal = () => {
       if (props.pageMode === 'look') {
-        isCopyUserEmailModalActive.value = true
+        isCopyUserEmailModalActive.value = true;
       }
-    }
+    };
 
     const closeCopyEmailModal = () => {
-      isCopyUserEmailModalActive.value = false
-    }
+      isCopyUserEmailModalActive.value = false;
+    };
 
     const showCopyPhoneModal = () => {
       if (props.pageMode === 'look') {
-        isCopyUserPhoneModalActive.value = true
+        isCopyUserPhoneModalActive.value = true;
       }
-    }
+    };
 
     const closeCopyPhoneModal = () => {
-      isCopyUserPhoneModalActive.value = false
-    }
+      isCopyUserPhoneModalActive.value = false;
+    };
 
     return {
       icons,

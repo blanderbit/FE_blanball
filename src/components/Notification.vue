@@ -68,13 +68,6 @@
               >
               </checkbox>
             </div>
-            <img
-              v-if="deletable && !selectable"
-              class="delete-notfication-cross"
-              src="../assets/img/cross.svg"
-              alt=""
-              @click="$emit('delete', notificationInstance?.notification_id)"
-            />
           </div>
         </div>
 
@@ -199,7 +192,8 @@
             </div>
           </template>
           <div class="push-notification-content">
-            <collapsible-panel>
+            <collapsible-panel
+              :expanding="false">
               <template #title> Сьогодні: {{ getCurrentTime }}</template>
               <template #content>
                 <div
@@ -304,10 +298,6 @@ export default {
     selectedCount: {
       type: Number,
       default: 0,
-    },
-    deletable: {
-      type: Boolean,
-      default: true,
     },
   },
   data() {
@@ -529,7 +519,7 @@ $color-000: #000;
 
   padding: 16px 16px 12px 16px;
 
-  @include tabletAndMobile {
+  @include beforeDesktop {
     padding: 16px 0px 12px 16px;
   }
 

@@ -7,7 +7,7 @@
     @deleteNotifications="HandleAction.deleteSelected()"
     @continue="closeSubmitModal"
   />
-    <ContextMenu
+  <ContextMenu
     v-if="isContextMenuActive"
     :clientX="contextMenuX"
     :clientY="contextMenuY"
@@ -173,7 +173,6 @@
                   class="b-new-notification"
                   :notificationInstance="getNewNotificationInstance"
                   :not-collapsible="true"
-                  :deletable="false"
                   @handler-action="$emit('reLoading'), restartInfiniteScroll()"
                 >
                 </Notification>
@@ -296,6 +295,7 @@ export default {
     'loading',
     'loadingInfinite',
     'update:isMenuOpened',
+    'removeNotifications'
   ],
   setup(context, { emit }) {
     const notificationList = ref();
@@ -308,12 +308,12 @@ export default {
     const newNotificationInstance = ref(new NewNotifications());
     const clientVersion = ref(inject('clientVersion'));
     const { t } = useI18n();
-    const isSubmitModalOpened = ref(false);
     const selectedTabId = ref(1);
     const isContextMenuActive = ref(false);
     const contextMenuX = ref(null);
     const contextMenuY = ref(null);
     const selectedByContextModalNotificationId = ref(null);
+    const isSubmitModalOpened = ref(false);
 
     const submitModalConfig = computed(() => {
       return {
@@ -410,7 +410,6 @@ export default {
       clearSelectedList();
     };
 
-    
     const HandleAction = {
       deleteAll: async () => {
         if (!context.notifications.length && !context.newNotifications) return;
@@ -435,7 +434,7 @@ export default {
           handleSelectableMode();
         }
         if (selectedTabId.value === 2) {
-          emit('reLoading');
+          emit('removeNotifications', 'All')
         }
         stopLoader();
       },
@@ -444,7 +443,7 @@ export default {
         startLoader();
         await API.NotificationService.deleteNotifications(selectedList.value);
         removePushNotificationAfterSidebarAction({
-          notification_ids: [...selectedList.value],
+          notification_ids: selectedList.value,
         });
         clearSelectedList();
         handleSelectableMode();
@@ -456,10 +455,10 @@ export default {
         startLoader();
         await API.NotificationService.readNotifications(selectedList.value);
         removePushNotificationAfterSidebarAction({
-          notification_ids: [...selectedList.value],
+          notification_ids: selectedList.value,
         });
         if (selectedTabId.value === 2) {
-          emit('reLoading')
+          emit('removeNotifications', selectedList.value)
         }
         clearSelectedList();
         handleSelectableMode();
@@ -472,7 +471,7 @@ export default {
           notification_ids: [id],
         });
         if (selectedTabId.value === 2) {
-          emit('reLoading')
+          emit('removeNotifications', [id])
         }
         stopLoader();
       },
@@ -485,6 +484,7 @@ export default {
         stopLoader();
       },
     };
+    
 
     function restartInfiniteScroll() {
       triggerForRestart.value = uuid();
@@ -523,13 +523,13 @@ export default {
             handleSelectableMode();
           }
           selectedList.value.push(selectedByContextModalNotificationId.value);
-          break
+          break;
         case 'read':
-          HandleAction.readOne(selectedByContextModalNotificationId.value)
-          break
+          HandleAction.readOne(selectedByContextModalNotificationId.value);
+          break;
         case 'delete':
-          HandleAction.deleteOne(selectedByContextModalNotificationId.value)
-          break
+          HandleAction.deleteOne(selectedByContextModalNotificationId.value);
+          break;
       }
     };
 

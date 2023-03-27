@@ -18,7 +18,7 @@
       @loading="loadDataNotifications(1, null, true)"
       @showNewNotifications="loadDataNotifications(1, null, true, true)"
       @changeTab="onChangeTab"
-      @openContextMenu="openContextMenu"
+      @removeNotifications="removeNotifications"
     />
     <div class="b_sidebar">
       <div class="b_sidebar_top-block">
@@ -98,6 +98,7 @@
     @foundBug="foundBug"
     @showNewNotifications="loadDataNotifications(1, null, true, true)"
     @changeTab="onChangeTab"
+    @removeNotifications="removeNotifications"
   />
 </template>
 
@@ -226,7 +227,6 @@ export default {
         disabled: false,
       },
     ]);
-
 
     const getNotificationsCount = async () =>
       API.NotificationService.getNotificationsCount().then((item) => {
@@ -388,6 +388,16 @@ export default {
       });
     };
 
+    const removeNotifications = (ids) => {
+      if (ids === 'All') {
+        paginationElements.value = [];
+      } else {
+        paginationElements.value = paginationElements.value.filter(
+          (item) => !ids.includes(item.notification_id)
+        );
+      }
+    };
+
     return {
       paginationElements,
       paginationTotalCount,
@@ -404,6 +414,7 @@ export default {
       loading,
       isBugReportModalOpened,
       loadDataNotifications,
+      removeNotifications,
       onChangeTab,
       leaveHoverSidebarItem,
       enterHoverSidebarItem,

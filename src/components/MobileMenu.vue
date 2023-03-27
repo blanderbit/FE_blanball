@@ -1,5 +1,12 @@
 <template>
   <Loading :is-loading="loading" />
+  <ChangeUserDataModal
+    v-if="isSubmitModalOpened"
+    :config="submitModalConfig"
+    @closeModal="closeSubmitModal"
+    @deleteNotifications="HandleAction.deleteSelected()"
+    @continue="closeSubmitModal"
+  />
   <div class="b-mob-menu" :style="mobMenuStyle">
     <div class="b-mob-menu__logo-block">
       <div class="b-mob-menu__logo-left">
@@ -62,7 +69,7 @@
             }"
             v-if="item.value_show"
           >
-            {{ item.value }}
+            {{ $t(item.value) }}
           </span>
         </div>
       </div>
@@ -84,7 +91,6 @@
             :notifications="notifications"
             :selectable="selectable"
             ref="notificationList"
-            :deletable="false"
             v-model:selected-list="selectedList"
             v-model:scrollbar-existing="blockScrollToTopIfExist"
             @selectNotificationAfterHold="selectNotification"
@@ -98,7 +104,6 @@
                 class="b-new-notification"
                 :notificationInstance="getNewNotificationInstance"
                 :not-collapsible="true"
-                :deletable="false"
                 @handler-action="$emit('reLoading'), restartInfiniteScroll()"
               >
               </Notification>
@@ -148,24 +153,33 @@
             alt=""
           />
           <span v-if="item.value_show">
-            {{ item.value }}
+            {{ $t(item.value) }}
           </span>
         </div>
       </div>
     </div>
     <div v-if="selectedList.length" class="b-mob-menu__control-block">
       <div class="b-control-block__block">
-        <img src="../assets/img/cross.svg" alt="" 
-          @click="clearSelectedList"/>
+        <img src="../assets/img/cross.svg" alt="" @click="clearSelectedList" />
         <div class="b-selected-elements-count">
           <span>{{ selectedList.length }}</span>
         </div>
       </div>
       <div class="b-control-block__block">
-        <img src="../assets/img/notifications/double-check-with-back.svg" alt=""
-          @click="HandleAction.readSelected()" />
-        <img src="../assets/img/notifications/trash-with-back.svg" alt="" 
-          @click="HandleAction.deleteSelected()"/>
+        <img
+          src="../assets/img/notifications/double-check-with-back.svg"
+          alt=""
+          @click="HandleAction.readSelected()"
+        />
+        <img
+          src="../assets/img/notifications/trash-with-back.svg"
+          alt=""
+          @click="
+            selectedList.length > 1
+              ? showSubmitModal()
+              : HandleAction.deleteSelected()
+          "
+        />
       </div>
     </div>
     <div
@@ -174,13 +188,13 @@
       @click="$emit('foundBug')"
     >
       <img src="../assets/img/white-warning-icon.svg" alt="" />
-      <span>Знайшли помилку?</span>
+      <span>{{ $t('slide_menu.found-error') }}</span>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, computed, inject, watch, onMounted } from 'vue';
+import { ref, computed, inject, watch, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { v4 as uuid } from 'uuid';
@@ -192,6 +206,7 @@ import EmptyList from './EmptyList.vue';
 import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue';
 import ScrollToTop from './ScrollToTop.vue';
 import Loading from '../workers/loading-worker/Loading.vue';
+import ChangeUserDataModal from './ModalWindows/UserCabinetModalWindows/ChangeUserDataModal.vue';
 
 import { TokenWorker } from '../workers/token-worker';
 import { useUserDataStore } from '../stores/userData';
@@ -242,6 +257,7 @@ export default {
     InfiniteLoading,
     ScrollToTop,
     Loading,
+    ChangeUserDataModal,
   },
   emit: ['closeMenu'],
   setup(props, { emit }) {
@@ -258,11 +274,27 @@ export default {
     const clientVersion = ref(inject('clientVersion'));
     const { t } = useI18n();
     const selectedTabId = ref(1);
+    const isSubmitModalOpened = ref(false);
+
+    const submitModalConfig = computed(() => {
+      return {
+        title: t('slide_menu.submit-modal.title'),
+        description: t('slide_menu.submit-modal.description', {
+          length: selectedList.value.length,
+        }),
+        button_1: t('slide_menu.submit-modal.button-1-text'),
+        button_2: t('slide_menu.submit-modal.button-2-text'),
+        right_btn_action: 'deleteNotifications',
+        left_btn_action: 'continue',
+        btn_with_1: 132,
+        btn_with_2: 132,
+      };
+    });
 
     const topMenu = ref([
       {
         id: 0,
-        value: 'Сповіщення',
+        value: 'slide_menu.messages',
         value_show: true,
         imgInactive: NotificationIcon,
         imgActive: NotificationWhite,
@@ -275,7 +307,7 @@ export default {
       },
       {
         id: 1,
-        value: 'Події',
+        value: 'slide_menu.events',
         value_show: true,
         imgInactive: Record,
         imgActive: RecordWhite,
@@ -290,7 +322,7 @@ export default {
     const bottomMenu = ref([
       {
         id: 0,
-        value: 'Рейтинг користувачів',
+        value: 'slide_menu.user-raiting',
         value_show: true,
         imgInactive: Members,
         imgActive: MembersWhite,
@@ -303,7 +335,7 @@ export default {
       },
       {
         id: 1,
-        value: 'Налаштуваня',
+        value: 'slide_menu.settings',
         value_show: true,
         imgInactive: Settings,
         imgActive: SettingsWhite,
@@ -315,6 +347,15 @@ export default {
         url: ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute,
       },
     ]);
+
+    watchEffect(
+      () => {
+        if (selectedList.value.length === 0) {
+          selectable.value = false;
+        }
+      },
+      { deep: true }
+    );
 
     const emptyListMessages = computed(() => {
       return {
@@ -346,7 +387,7 @@ export default {
     const menuBlockStyle = computed(() => {
       return {
         height: menuBlockHeight.value,
-        'border-radius': `${selectedList.value.length ? 0 : 8}px`
+        'border-radius': `${selectedList.value.length ? 0 : 8}px`,
       };
     });
     const mobMenuStyle = computed(() => {
@@ -359,15 +400,14 @@ export default {
       return ROUTES;
     });
 
-    watch(selectedList.length,
-      () => {
-        if (selectedList.value.length === 0) {
-          selectable.value = false
-        }
+    watch(selectedList.length, () => {
+      if (selectedList.value.length === 0) {
+        selectable.value = false;
       }
-    );
+    });
 
     function closeMobMenu() {
+      selectedList.value = [];
       normalizeBlock(topMenu);
       normalizeBlock(bottomMenu);
       menuBlockHeight.value = 'auto';
@@ -449,11 +489,18 @@ export default {
       selectedList.value = [];
     };
 
+    const closeSubmitModal = () => {
+      isSubmitModalOpened.value = false;
+    };
+
+    const showSubmitModal = () => {
+      isSubmitModalOpened.value = true;
+    };
+
     const handleSelectableMode = () => {
       selectable.value = !selectable.value;
       clearSelectedList();
     };
-
 
     const HandleAction = {
       deleteAll: async () => {
@@ -479,7 +526,7 @@ export default {
           handleSelectableMode();
         }
         if (selectedTabId.value === 2) {
-          emit('reLoading');
+          emit('removeNotifications', 'All')
         }
         stopLoader();
       },
@@ -488,11 +535,11 @@ export default {
         startLoader();
         await API.NotificationService.deleteNotifications(selectedList.value);
         removePushNotificationAfterSidebarAction({
-          notification_ids: [...selectedList.value],
+          notification_ids: selectedList.value,
         });
         clearSelectedList();
         handleSelectableMode();
-        // closeSubmitModal();
+        closeSubmitModal();
         stopLoader();
       },
       readSelected: async () => {
@@ -500,13 +547,24 @@ export default {
         startLoader();
         await API.NotificationService.readNotifications(selectedList.value);
         removePushNotificationAfterSidebarAction({
-          notification_ids: [...selectedList.value],
+          notification_ids: selectedList.value,
         });
         if (selectedTabId.value === 2) {
-          emit('reLoading')
+          emit('removeNotifications', selectedList.value)
         }
         clearSelectedList();
         handleSelectableMode();
+        stopLoader();
+      },
+      readOne: async (id) => {
+        startLoader();
+        await API.NotificationService.readNotifications([id]);
+        removePushNotificationAfterSidebarAction({
+          notification_ids: [id],
+        });
+        if (selectedTabId.value === 2) {
+          emit('removeNotifications', [id])
+        }
         stopLoader();
       },
       deleteOne: async (id) => {
@@ -527,10 +585,9 @@ export default {
     };
 
     function selectNotification(notificationId) {
-      selectable.value = true
-      selectedList.value.push(notificationId)
+      selectable.value = true;
+      selectedList.value.push(notificationId);
     }
-
 
     function restartInfiniteScroll() {
       triggerForRestart.value = uuid();
@@ -540,7 +597,7 @@ export default {
       if (tabId !== selectedTabId.value && !selectable.value) {
         selectedTabId.value = tabId;
         emit('changeTab', tabType);
-        restartInfiniteScroll();
+        restartInfiniteScroll()
       }
     };
 
@@ -569,6 +626,10 @@ export default {
       loading,
       selectedTabId,
       triggerForRestart,
+      isSubmitModalOpened,
+      submitModalConfig,
+      showSubmitModal,
+      closeSubmitModal,
       changeTab,
       clearSelectedList,
       lineMenuClick,
@@ -601,7 +662,7 @@ $color-1ccd62: #1ccd62;
   background: $color-efeff6;
   padding: 16px;
   height: 100%;
-  z-index: 999;
+  z-index: 990;
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease-out;
@@ -735,13 +796,15 @@ $color-1ccd62: #1ccd62;
       background: $--b-main-white-color;
       height: 100%;
       position: relative;
-      overflow-y: scroll;
+      overflow: hidden;
       transition: all 0.3s ease-out;
       .b-mob-menu__message-list {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
+
+        height: calc(100% - 50px);
 
         .b-mob-menu__tabs {
           display: flex;

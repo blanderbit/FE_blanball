@@ -22,8 +22,7 @@
           :active="activeNotification === item.notification_id"
           :selectedCount="list.length"
           :checked="selectedList.includes(item.notification_id)"
-          :deletable="deletable"
-          :notCollapsible="!isMobile"
+          :notCollapsible="isCollapsible"
           @handler-action="handlerAction($event, item)"
           @selected="handleSelected($event)"
           @delete="deleteNotification"
@@ -42,7 +41,7 @@
 <script>
 import Notification from '../Notification.vue';
 import { useRouter } from 'vue-router';
-import { ref, watch, nextTick, onMounted, onBeforeUnmount } from 'vue';
+import { ref, watch, nextTick, onMounted, onBeforeUnmount, computed } from 'vue';
 import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller';
 import { notificationButtonHandlerMessage } from '../../workers/utils-worker';
 import useWindowWidth from '../../utils/widthScreen';
@@ -67,10 +66,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    deletable: {
-      type: Boolean,
-      default: true,
-    }
   },
   emits: ['update:selected-list', 'update:scrollbar-existing', 'delete'],
   setup(context, { emit, expose }) {
@@ -80,7 +75,10 @@ export default {
     const router = useRouter();
 
 
-    const { isMobile, onResize } = useWindowWidth();
+    const { isMobile, isTablet, onResize } = useWindowWidth();
+
+
+    const isCollapsible = computed(() => !(isMobile.value || isTablet.value))
 
     onMounted(() => {
       window.addEventListener('resize', onResize);
@@ -153,8 +151,8 @@ export default {
       handlerAction,
       deleteNotification,
       handleSelected,
-      isMobile,
       scroller,
+      isCollapsible,
     };
   },
 };

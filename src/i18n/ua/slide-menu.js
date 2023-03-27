@@ -8,6 +8,11 @@ export default {
   'mark-as-viewed': 'Відмітити як прочитане',
   'not-read': 'Непрочитані',
   'all-notifications': 'Усі повідомлення',
+  'messages': 'Сповіщення',
+  'events': 'Події',
+  'user-raiting': 'Рейтинг користувачів',
+  'settings': 'Налаштуваня',
+  'found-error': 'Знайшли помилку?',
   'submit-modal': {
     'title': 'Видалення повідомлень',
     'description': 'Ви впевнені, що хочете видалити {length} повідомлень?',

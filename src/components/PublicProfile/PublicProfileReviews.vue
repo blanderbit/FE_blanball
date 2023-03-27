@@ -53,7 +53,7 @@
         <template #emptyList>
           <div class="b-public-profile__reviews-hidden">
             <img src="../../assets/img/info-black.svg" alt="" />
-            <span>{{ userFullName }} ще не отримував оцінок та коментарів</span>
+            <span>{{ $t('no_records.noPublicProfileReviews.title', {fullName: userFullName}) }}</span>
           </div>
         </template>
       </SimpleListWrapper>
