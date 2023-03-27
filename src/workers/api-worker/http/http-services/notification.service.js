@@ -15,7 +15,6 @@ export class NotificationService {
   }
 
   static getNotifications({ page, skipids, type }) {
-    console.log(type)
     return AxiosInstance.get(
       EndpointsEnum.Notification.Index,
       AxiosParams(

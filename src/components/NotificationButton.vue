@@ -1,7 +1,7 @@
 <template>
   <GreenBtn
     class="b-notification-btn"
-    v-if="buttonData.buttonType === 'success'"
+    v-if="buttonData.buttonType === notificationTypes.SUCCESS"
     :text="buttonData.buttonText"
     :height="buttonData.buttonHeight"
     :disabled="buttonDisabled"
@@ -10,7 +10,7 @@
   />
   <WhiteBtn
     class="b-notification-btn"
-    v-if="buttonData.buttonType === 'default'"
+    v-if="buttonData.buttonType === notificationTypes.DEFAULT"
     :text="buttonData.buttonText"
     :height="buttonData.buttonHeight"
     :width="buttonData.buttonWidth"
@@ -21,7 +21,7 @@
   />
   <GreenBtn
     class="b-notification-btn"
-    v-if="buttonData.buttonType === 'error'"
+    v-if="buttonData.buttonType === notificationTypes.ERROR"
     :text="buttonData.buttonText"
     :height="buttonData.buttonHeight"
     :width="buttonData.buttonWidth"
@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+
 import WhiteBtn from './WhiteBtn.vue';
 import GreenBtn from './GreenBtn.vue';
 
@@ -54,6 +56,17 @@ export default {
     WhiteBtn,
     GreenBtn,
   },
+  setup() {
+    const notificationTypes = ref({
+      DEFAULT: 'default',
+      ERROR: 'error',
+      SUCCESS: 'success',
+    })
+
+    return { 
+      notificationTypes
+    }
+  }
 };
 </script>
 

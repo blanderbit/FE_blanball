@@ -9,9 +9,7 @@
           <div></div>
         </div>
       </div>
-      <div class="spiner-text">
-        Завантаженя
-      </div>
+      <div class="spiner-text">Завантаженя</div>
     </div>
   </div>
 </template>
@@ -29,8 +27,7 @@ export default {
   setup(props) {
     const loading = ref(props.isLoading);
 
-    watch(
-      () => props.isLoading,
+    watch(() => props.isLoading,
       (newData, oldData) => {
         loading.value = newData;
       }

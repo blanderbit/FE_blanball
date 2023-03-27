@@ -150,6 +150,11 @@ const findDublicates = (list, newList) => {
   );
 };
 
+const tabTypes = {
+  notRead: 'NotReadNotifications',
+  allNotifications: 'AllNotifications',
+};
+
 export default {
   name: 'MainSidebar',
   components: {
@@ -228,7 +233,7 @@ export default {
       },
     ]);
 
-    const getNotificationsCount = async () =>
+    const getNotificationsCount = () =>
       API.NotificationService.getNotificationsCount().then((item) => {
         notReadNotificationCount.value =
           item.data.not_read_notifications_count || 0;
@@ -299,11 +304,11 @@ export default {
 
     const onChangeTab = (tabType) => {
       switch (tabType) {
-        case 'NotReadNotifications':
+        case tabTypes.notRead:
           filters.value.type.value = 'Unread';
           loadDataNotifications(1, null, false, true);
           break;
-        case 'AllNotifications':
+        case tabTypes.allNotifications:
           filters.value.type.value = '';
           loadDataNotifications(1, null, false, true);
           break;
@@ -355,7 +360,7 @@ export default {
       (notificationId) => {
         const index = skipids.value.indexOf(notificationId);
 
-        if (index !== -1) {
+        if (index > -1) {
           skipids.value.splice(index, 1);
         }
         loadDataNotifications(1, null, false, false);

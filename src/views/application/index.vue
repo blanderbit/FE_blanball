@@ -235,40 +235,28 @@ const getToastOptions = (notificationInstance, toastId) => {
     },
   };
 };
-NotificationsBus.on(
-  'removePushNotificationAfterSidebarAction',
-  (notificationInstance) => {
-    if (notificationInstance?.remove_all) {
-      dismissAllToasts();
-    } else {
-      if (notificationInstance?.notification_id) {
-        notificationInstance.notification_ids = [
-          notificationInstance.notification_id,
-        ];
-      }
-
-      for (let id of notificationInstance.notification_ids) {
-        const notificationInActivePush = activePushNotifications.value.some(
-          (notification) => notification.notificationId === id
-        );
-
-        if (activePushNotifications.value.length && notificationInActivePush) {
-          toast.dismiss(
-            activePushNotifications.value.find(
-              (notification) => notification.notificationId === id
-            ).toastId
-          );
-          removePushFormActiveNotifications(id);
-        }
-      }
-    }
+NotificationsBus.on('removePushNotificationAfterSidebarAction', (notificationInstance) => {
+  if (notificationInstance?.remove_all) {
+    dismissAllToasts();
+    return;
   }
-);
+
+  const { notification_id, notification_ids } = notificationInstance || {};
+
+  const idsToDismiss = notification_ids || [notification_id];
+
+  activePushNotifications.value
+    .filter((notification) => idsToDismiss.includes(notification.notificationId))
+    .forEach((notification) => {
+      toast.dismiss(notification.toastId);
+      removePushFormActiveNotifications(notification.notificationId);
+    });
+});
 
 function dismissAllToasts() {
-  for (let toastI of activePushNotifications.value) {
-    toast.dismiss(toastI.toastId);
-  }
+  activePushNotifications.value.forEach((notification) => {
+    toast.dismiss(notification.toastId);
+  });
   activePushNotifications.value = [];
 }
 
@@ -281,7 +269,7 @@ function removePushFormActiveNotifications(notificationId) {
     (notification) => notification.notificationId === notificationId
   );
 
-  if (index !== -1) {
+  if (index > -1) {
     activePushNotifications.value.splice(index, 1);
   }
 }

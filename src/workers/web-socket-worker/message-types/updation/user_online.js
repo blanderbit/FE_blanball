@@ -2,6 +2,8 @@ import { InitialUpdation } from './initial.message';
 import { SetMessageType, GeneralWebSocketMessage } from '../../type.decorator';
 import { WebSocketTypes } from '../../web.socket.types';
 
+const itemsPerPage = 10;
+
 @GeneralWebSocketMessage()
 @SetMessageType(WebSocketTypes.UpdateMessageUserOnline)
 export class UpdateMessageUserOnline extends InitialUpdation {
@@ -9,7 +11,6 @@ export class UpdateMessageUserOnline extends InitialUpdation {
     { paginationElements, paginationLoad, paginationPage },
     callbackAfterAction
   ) {
-    const itemsPerPage = 10;
     
     if (typeof callbackAfterAction === 'function') {
       callbackAfterAction();

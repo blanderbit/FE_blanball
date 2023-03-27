@@ -25,7 +25,6 @@
           :notCollapsible="isCollapsible"
           @handler-action="handlerAction($event, item)"
           @selected="handleSelected($event)"
-          @delete="deleteNotification"
           @openContextMenu="$emit('openContextMenu', $event)"
           @selectNotificationAfterHold="$emit('selectNotificationAfterHold', $event)"
         >
@@ -73,6 +72,7 @@ export default {
     let list = ref(context.selectedList);
     let scroller = ref();
     const router = useRouter();
+    const maxSelectedNotificationsCount = 100
 
 
     const { isMobile, isTablet, onResize } = useWindowWidth();
@@ -124,7 +124,7 @@ export default {
 
     const handleSelected = (e) => {
       if (e.selected) {
-        if (list.value.length < 100) {
+        if (list.value.length < maxSelectedNotificationsCount) {
           list.value.push(e.notification.notification_id);
         }
       } else {
@@ -141,15 +141,10 @@ export default {
       scrollToFirstElement: () => scroller.value.scrollToItem(0),
     });
 
-    const deleteNotification = (id) => {
-      emit('delete', id)
-    }
-
     return {
       activeNotification,
       list,
       handlerAction,
-      deleteNotification,
       handleSelected,
       scroller,
       isCollapsible,

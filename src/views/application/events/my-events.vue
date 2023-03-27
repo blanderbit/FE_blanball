@@ -395,7 +395,6 @@ export default {
     }
 
     function myCardRightClick(e, event) {
-      console.log(e.clientY);
       contextMenuX.value = e.clientX;
       contextMenuY.value = e.clientY;
       selectedContextMenuEvent.value = event;

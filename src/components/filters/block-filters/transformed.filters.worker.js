@@ -43,7 +43,6 @@ export const TransformedFiltersWorker = (config) => {
   watch(
     () => cloneDeep(transformedFilters.value),
     (a, b) => {
-      console.log('transformedFilters.value');
       if (isEqual(a, b)) {
         return;
       }

@@ -4,6 +4,8 @@ import { SetMessageType, AuthWebSocketMessage } from '../../type.decorator';
 
 import { WebSocketTypes } from '../../web.socket.types';
 
+const itemsPerPage = 10;
+
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.BulkNotificationDelete)
 export class NotificationBulkDeleteUpdation extends InitialUpdation {
@@ -11,7 +13,6 @@ export class NotificationBulkDeleteUpdation extends InitialUpdation {
     { paginationElements, paginationLoad, paginationPage },
     callbackAfterAction
   ) {
-    const itemsPerPage = 10;
     const deletedItems = this.data.objects;
 
     paginationElements.value = paginationElements.value.filter((item) => {
