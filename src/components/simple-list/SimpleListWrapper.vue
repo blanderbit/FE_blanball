@@ -64,6 +64,7 @@ export default {
     paginationPage.value = 0;
 
     const loadDataPaginationData = (pageNumber, $state) => {
+      console.log(1)
       paginationLoad({
         pageNumber,
         $state,

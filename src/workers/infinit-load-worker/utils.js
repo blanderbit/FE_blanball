@@ -29,12 +29,14 @@ const isVisible = (el, view) => {
 
 let observer;
 const startObserver = (params) => {
+  params.emit();
   params.parentEl = document.querySelector(params.target) || null;
 
   let rootMargin = `0px 0px ${params.distance}px 0px`;
   if (params.top) rootMargin = `${params.distance}px 0px 0px 0px`;
   observer = new IntersectionObserver(
     (entries) => {
+      console.log(3)
       const entry = entries[0];
       if (entry.isIntersecting) {
         if (params.firstload) {

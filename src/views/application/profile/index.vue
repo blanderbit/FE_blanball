@@ -533,7 +533,7 @@ export default {
             birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
             gender: userStore.user.profile.gender,
             avatar_url: userStore.getUserAvatar,
-            position: getUserPositionText(position),
+            position: position,
           };
           delete profileData.day;
           delete profileData.month;
@@ -552,11 +552,6 @@ export default {
               planned_events: planned_events,
             },
             profile: {
-              place: {
-                place_name: 'string',
-                lat: 90,
-                lon: 180,
-              },
               ...profileData,
             },
             get_planned_events: '1y',
@@ -569,16 +564,6 @@ export default {
         case 'change_password':
           isModalActive.change_password = !isModalActive.change_password;
           break;
-      }
-    }
-
-    function getUserPositionText(position) {
-      if (position) {
-        return CONSTANTS.profile.position.find(
-          (item) => item.value === position
-        )?.name;
-      } else {
-        return t('profile.no-position');
       }
     }
 
