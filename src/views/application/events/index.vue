@@ -135,7 +135,6 @@ import Loading from '../../../workers/loading-worker/Loading.vue';
 
 import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue';
 
-import { useEventDataStore } from '../../../stores/eventsData';
 import { API } from '../../../workers/api-worker/api.worker';
 import { PaginationWorker } from '../../../workers/pagination-worker';
 import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patch';
@@ -169,7 +168,6 @@ export default {
     ContextModal,
   },
   setup() {
-    const eventStore = useEventDataStore();
     const scrollComponent = ref(null);
     const isEventJoinModalActive = ref(false);
     const router = useRouter();
