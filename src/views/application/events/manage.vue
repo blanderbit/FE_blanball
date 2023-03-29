@@ -139,7 +139,7 @@
 <script>
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter, useRoute, onBeforeRouteLeave } from 'vue-router';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
@@ -209,6 +209,7 @@ export default {
     const isEventPreivewModalOpened = ref(false);
     const isSubmitModalOpened = ref(false);
     const changeDataModalConfig = ref('');
+    const isEventCreated = ref(false);
 
     const manageEventActionTypes = ref({
       CREATE: 'CREATE',
@@ -426,6 +427,7 @@ export default {
 
     async function saveEvent(data) {
       eventCreateLoader.value = true;
+      isEventCreated.value = true
       const createEventData = data.values;
 
       createEventData.date_and_time = `${createEventData.date} ${createEventData.time}`;
@@ -495,6 +497,7 @@ export default {
       isSubmitModalOpened.value = false;
     };
 
+
     function goToTheEventPage() {
       router.push(ROUTES.APPLICATION.EVENTS.absolute);
     }
@@ -522,6 +525,15 @@ export default {
         this.currentStep++;
       }
     }
+
+
+    onBeforeRouteLeave((to, from, next) => {
+      if (!isSubmitModalOpened.value && !isEventCreated.value) {
+        openSumbitModal();
+      } else {
+        next();
+      }
+    });
 
     return {
       currentStep,
