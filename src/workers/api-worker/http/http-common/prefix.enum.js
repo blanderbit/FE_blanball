@@ -23,6 +23,8 @@ export const EndpointsEnum = {
   Events: {
     GetAllEvents: '/events/client/planned/events/list',
     GetAllMyEvents: '/events/client/my/events/list',
+    GetMyTopicalEvents: '/events/client/my/topical/events/list',
+    GetMyFinishedEvents: '/events/client/my/finished/events/list',
     getOneEvent: (eventId) => `/events/client/event/${eventId}`,
     DeclineOrAcceptInvites:
       '/events/client/accept/or/decline/invites/to/events',

@@ -73,10 +73,15 @@
         >
           <template #tabs>
             <div class="b-events-page__tabs">
-              <div v-for="tab in tabs" 
-                :class="['b-events-page__tab', {'selected': tab.id === selectedTabId}]"
-                @click="changeTab(tab.id)">
-                <img :src="tab.img" alt="">
+              <div
+                v-for="tab in tabs"
+                :class="[
+                  'b-events-page__tab',
+                  { selected: tab.id === selectedTabId },
+                ]"
+                @click="changeTab(tab.id)"
+              >
+                <img :src="tab.img" alt="" />
                 {{ tab.text }}
               </div>
             </div>
@@ -204,7 +209,12 @@ import WhiteBucket from '../../../assets/img/white-bucket.svg';
 import PinIcon from '../../../assets/img/pin.svg';
 import NoEditPermIcon from '../../../assets/img/no-edit-perm-modal-icon.svg';
 import CalendarIcon from '../../../assets/img/calendar.svg';
-import WatchIcon from '../../../assets/img/watch-gray.svg'
+import WatchIcon from '../../../assets/img/watch-gray.svg';
+
+const TABS_ENUM = {
+  ACTUAL: 1,
+  FINISHED: 2,
+};
 
 export default {
   name: 'EventsPage',
@@ -374,8 +384,7 @@ export default {
         (value) => ![oneEventToUnPinId.value].includes(value)
       );
       oneEventToUnPinId.value = null;
-      let response = await API.EventService.getAllMyEvents();
-      paginationElements.value = response.data.results.map(handlingIncomeData);
+      loadDataPaginationData(paginationPage.value, null, false, false);
       loading.value = false;
       toast.success(t('notifications.event-unpinned'));
     }
@@ -394,8 +403,7 @@ export default {
         );
         oneEventToPinId.value = null;
       }
-      let response = await API.EventService.getAllMyEvents();
-      paginationElements.value = response.data.results.map(handlingIncomeData);
+      loadDataPaginationData(paginationPage.value, null, false, false);
       loading.value = false;
       toast.success(t('notifications.events-pinned'));
     }
@@ -415,8 +423,7 @@ export default {
         );
         oneEventToDeleteId.value = null;
       }
-      let response = await API.EventService.getAllMyEvents();
-      paginationElements.value = response.data.results.map(handlingIncomeData);
+      loadDataPaginationData(paginationPage.value, null, false, false);
       loading.value = false;
       toast.success(t('notifications.events-deleted'));
     }
@@ -448,14 +455,18 @@ export default {
       router.push(ROUTES.APPLICATION.EVENTS.CREATE.absolute);
     }
     function changeTab(tabId) {
-      selectedTabId.value = tabId
+      if (tabId !== selectedTabId.value) {
+        selectedTabId.value = tabId;
+        loadDataPaginationData(1, null, true, true);
+        restartInfiniteScroll()
+      }
     }
 
     function declineSelect() {
       selected.value = [];
     }
 
-    const restartInfiniteScroll = () => {
+    function restartInfiniteScroll() {
       triggerForRestart.value = uuid();
     };
 
@@ -467,10 +478,17 @@ export default {
       paginationClearData,
     } = PaginationWorker({
       paginationDataRequest: (page) => {
-        return API.EventService.getAllMyEvents({
-          ...getRawFilters(),
-          page,
-        });
+        if (selectedTabId.value === TABS_ENUM.ACTUAL) {
+          return API.EventService.getMyTopicalEvents({
+            ...getRawFilters(),
+            page,
+          });
+        } else {
+          return API.EventService.getMyFinishedEvents({
+            ...getRawFilters(),
+            page,
+          });
+        }
       },
       dataTransformation: handlingIncomeData,
     });
@@ -579,13 +597,25 @@ export default {
       }
     };
 
-    const loadDataPaginationData = (pageNumber, $state) => {
+    function loadDataPaginationData(pageNumber, $state, forceUpdate, isLoading) {
+
+      if (isLoading) {
+        loading.value = true;
+      }
+      if (forceUpdate) {
+        paginationClearData();
+      }
+
       paginationLoad({
         pageNumber,
         $state,
-        forceUpdate: paginationPage.value === 1,
+        forceUpdate
+      }).then(() => {
+        if (isLoading) {
+          loading.value = false;
+        }
       });
-    };
+    }
     return {
       scrollComponent,
       eventCards,
@@ -846,7 +876,7 @@ $color-dfdeed: #dfdeed;
         justify-content: center;
         margin-bottom: 8px;
         gap: 32px;
-        border-bottom: 1px solid #F0F0F4;
+        border-bottom: 1px solid #f0f0f4;
 
         .b-events-page__tab {
           @include inter(13px, 400, $--b-main-gray-color);

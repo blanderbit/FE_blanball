@@ -93,7 +93,7 @@ const router = createRouter({
           name: ROUTES.APPLICATION.MY_EVENTS.name,
           beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
             eventData: () =>
-              API.EventService.getAllMyEvents(
+              API.EventService.getMyTopicalEvents(
                 transpileInterseptorQueryToConfig(filterConfigForEvents, to)
               ),
             usersData,
