@@ -70,7 +70,18 @@
           @update:value="setFilters"
           @clearFilters="clearFilters"
           :elementsCount="paginationTotalCount"
-        ></events-filters>
+        >
+          <template #tabs>
+            <div class="b-events-page__tabs">
+              <div v-for="tab in tabs" 
+                :class="['b-events-page__tab', {'selected': tab.id === selectedTabId}]"
+                @click="changeTab(tab.id)">
+                <img :src="tab.img" alt="">
+                {{ tab.text }}
+              </div>
+            </div>
+          </template>
+        </events-filters>
 
         <FilterBlock v-if="selected.length">
           <div class="b-events-page__after-select-block">
@@ -192,6 +203,8 @@ import Plus from '../../../assets/img/plus.svg';
 import WhiteBucket from '../../../assets/img/white-bucket.svg';
 import PinIcon from '../../../assets/img/pin.svg';
 import NoEditPermIcon from '../../../assets/img/no-edit-perm-modal-icon.svg';
+import CalendarIcon from '../../../assets/img/calendar.svg';
+import WatchIcon from '../../../assets/img/watch-gray.svg'
 
 export default {
   name: 'EventsPage',
@@ -239,8 +252,9 @@ export default {
     const refList = ref();
     const blockScrollToTopIfExist = ref(false);
     const triggerForRestart = ref(false);
-
+    const selectedTabId = ref(1);
     const isActionEventModalOpened = ref(false);
+
     const actionEventModalConfig = computed(() => {
       return {
         title: t('modals.no_perm_to_edit.title'),
@@ -248,6 +262,19 @@ export default {
         image: NoEditPermIcon,
       };
     });
+
+    const tabs = computed(() => [
+      {
+        id: 1,
+        text: 'Актуальні',
+        img: CalendarIcon,
+      },
+      {
+        id: 2,
+        text: 'Завершені',
+        img: WatchIcon,
+      },
+    ]);
 
     const iconPlus = computed(() => Plus);
 
@@ -420,6 +447,9 @@ export default {
     function goToCreateEvent() {
       router.push(ROUTES.APPLICATION.EVENTS.CREATE.absolute);
     }
+    function changeTab(tabId) {
+      selectedTabId.value = tabId
+    }
 
     function declineSelect() {
       selected.value = [];
@@ -582,8 +612,11 @@ export default {
       triggerForRestart,
       paginationElements,
       paginationPage,
+      selectedTabId,
       mainEventsBlock,
+      tabs,
       filters,
+      changeTab,
       paginationLoad,
       loadDataPaginationData,
       detectSizesForCards,
@@ -806,6 +839,30 @@ $color-dfdeed: #dfdeed;
       position: relative;
       @media (max-width: 992px) {
         padding: 0;
+      }
+      .b-events-page__tabs {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 8px;
+        gap: 32px;
+        border-bottom: 1px solid #F0F0F4;
+
+        .b-events-page__tab {
+          @include inter(13px, 400, $--b-main-gray-color);
+          line-height: 20px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 0px 4px 8px 0px;
+          cursor: pointer;
+
+          &.selected {
+            @include inter(13px, 500);
+            line-height: 20px;
+            border-bottom: 2px solid $--b-main-black-color;
+          }
+        }
       }
       .b-events-page__all-events-block {
         position: relative;

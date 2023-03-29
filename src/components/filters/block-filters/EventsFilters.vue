@@ -14,6 +14,7 @@
       @clearFilters="$emit('clearFilters')"
     />
     <div class="b-main-search__wrapper">
+      <slot name="tabs"></slot>
       <div class="b-main-search__search-block">
         <div class="b-main-search__first-line">
           <div class="b-main-search__left-block">
