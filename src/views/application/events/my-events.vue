@@ -379,14 +379,25 @@ export default {
 
     async function unPinEvents() {
       loading.value = true;
-      await API.EventService.unPinEvents([oneEventToUnPinId.value]);
-      selected.value = selected.value.filter(
-        (value) => ![oneEventToUnPinId.value].includes(value)
-      );
-      oneEventToUnPinId.value = null;
-      loadDataPaginationData(paginationPage.value, null, false, false);
+      let eventsIDSToUnPin = oneEventToUnPinId.value
+        ? [oneEventToUnPinId.value]
+        : selected.value;
+      await API.EventService.unPinEvents(eventsIDSToUnPin);
+      if (!oneEventToUnPinId.value) {
+        selected.value = [];
+      } else {
+        selected.value = selected.value.filter(
+          (value) => !eventsIDSToUnPin.includes(value)
+        );
+        oneEventToUnPinId.value = null;
+      }
+      paginationElements.value.forEach((event) => {
+        if (eventsIDSToUnPin.includes(event.id)) {
+          event.pinned = false;
+        }
+      });
       loading.value = false;
-      toast.success(t('notifications.event-unpinned'));
+      toast.success(t('notifications.events-unpinned'));
     }
 
     async function pinEvents() {
@@ -403,7 +414,11 @@ export default {
         );
         oneEventToPinId.value = null;
       }
-      loadDataPaginationData(paginationPage.value, null, false, false);
+      paginationElements.value.forEach((event) => {
+        if (eventsIDSToPin.includes(event.id)) {
+          event.pinned = true;
+        }
+      });
       loading.value = false;
       toast.success(t('notifications.events-pinned'));
     }
@@ -423,7 +438,9 @@ export default {
         );
         oneEventToDeleteId.value = null;
       }
-      loadDataPaginationData(paginationPage.value, null, false, false);
+      paginationElements.value = paginationElements.value.filter(
+        (event) => !eventsIDSToDelete.includes(event.id)
+      );
       loading.value = false;
       toast.success(t('notifications.events-deleted'));
     }
@@ -458,7 +475,7 @@ export default {
       if (tabId !== selectedTabId.value) {
         selectedTabId.value = tabId;
         loadDataPaginationData(1, null, true, true);
-        restartInfiniteScroll()
+        restartInfiniteScroll();
       }
     }
 
@@ -468,7 +485,7 @@ export default {
 
     function restartInfiniteScroll() {
       triggerForRestart.value = uuid();
-    };
+    }
 
     const {
       paginationElements,
@@ -597,8 +614,12 @@ export default {
       }
     };
 
-    function loadDataPaginationData(pageNumber, $state, forceUpdate, isLoading) {
-
+    function loadDataPaginationData(
+      pageNumber,
+      $state,
+      forceUpdate,
+      isLoading
+    ) {
       if (isLoading) {
         loading.value = true;
       }
@@ -609,7 +630,7 @@ export default {
       paginationLoad({
         pageNumber,
         $state,
-        forceUpdate
+        forceUpdate,
       }).then(() => {
         if (isLoading) {
           loading.value = false;

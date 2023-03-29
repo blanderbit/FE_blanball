@@ -7,7 +7,7 @@
       { selected: isCardSelected },
     ]"
     @click.right.prevent="$emit('cardRightClick', $event)"
-    @click.prevent="$emit('cardLeftClick', card.id)"
+    @click.prevent="$emit('cardLeftClick', card)"
     @touchstart="startHoldOpenMenu"
     @touchend="endHoldOpenMenu"
   >

@@ -91,10 +91,10 @@
           @toggle-edit-mode="toggleEditMode"
         />
 
-        <ChangeUserDataModal
+        <SubmitModal
           v-if="isModalActive.change_data"
           :config="changeDataModalConfig"
-          @close-modal="closeChangeUserDataModal"
+          @close-modal="closeSubmitModal"
           @save-changes="handleSaveDataChanges"
           @decline-changes="declineUserDataChanges"
           @show-preview="showPreview"
@@ -161,7 +161,7 @@ import SecurityBlock from '../../../components/SecurityBlock.vue';
 import TabLabel from '../../../components/TabLabel.vue';
 import DeleteAccountModal from '../../../components/ModalWindows/UserCabinetModalWindows/DeleteAccountModal.vue';
 import ChangePasswordModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangePasswordModal.vue';
-import ChangeUserDataModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangeUserDataModal.vue';
+import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue';
 import ChangeEmailModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangeEmailModal.vue';
 import ButtonsBlock from '../../../components/user-cabinet/ButtonsBlock.vue';
 import EditAvatarModal from '../../../components/ModalWindows/UserCabinetModalWindows/EditAvatarModal.vue';
@@ -193,7 +193,7 @@ export default {
     SecurityBlock,
     DeleteAccountModal,
     ChangePasswordModal,
-    ChangeUserDataModal,
+    SubmitModal,
     Form,
     Loading,
     ChangeEmailModal,
@@ -378,7 +378,7 @@ export default {
     }
 
     function showPreview() {
-      closeChangeUserDataModal(false);
+      closeSubmitModal(false);
       toggleModal('public_profile');
     }
 
@@ -387,12 +387,12 @@ export default {
     }
 
     function declineUserDataChanges(val = true) {
-      closeChangeUserDataModal(val);
+      closeSubmitModal(val);
     }
 
     async function handleSaveDataChanges() {
       saveUserDataChanges();
-      closeChangeUserDataModal(true);
+      closeSubmitModal(true);
     }
 
     function saveUserDataChanges() {
@@ -497,7 +497,7 @@ export default {
       router.push(url);
     }
 
-    function closeChangeUserDataModal(isEditMode) {
+    function closeSubmitModal(isEditMode) {
       toggleModal('change_data');
       if (isEditMode) {
         toggleEditMode();
@@ -624,7 +624,7 @@ export default {
       handleSaveDataChanges,
       declineUserDataChanges,
       changeTab,
-      closeChangeUserDataModal,
+      closeSubmitModal,
       toggleModal,
       switchTabLabel,
       saveDataEdit,

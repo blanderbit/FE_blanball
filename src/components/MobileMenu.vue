@@ -1,6 +1,6 @@
 <template>
   <Loading :is-loading="loading" />
-  <ChangeUserDataModal
+  <SubmitModal
     v-if="isSubmitModalOpened"
     :config="submitModalConfig"
     @closeModal="closeSubmitModal"
@@ -206,7 +206,7 @@ import EmptyList from './EmptyList.vue';
 import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue';
 import ScrollToTop from './ScrollToTop.vue';
 import Loading from '../workers/loading-worker/Loading.vue';
-import ChangeUserDataModal from './ModalWindows/UserCabinetModalWindows/ChangeUserDataModal.vue';
+import SubmitModal from './ModalWindows/SubmitModal.vue';
 
 import { TokenWorker } from '../workers/token-worker';
 import { useUserDataStore } from '../stores/userData';
@@ -257,7 +257,7 @@ export default {
     InfiniteLoading,
     ScrollToTop,
     Loading,
-    ChangeUserDataModal,
+    SubmitModal,
   },
   emit: ['closeMenu'],
   setup(props, { emit }) {

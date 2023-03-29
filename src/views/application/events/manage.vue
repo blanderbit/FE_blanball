@@ -1,6 +1,6 @@
 <template>
   <Loading :is-loading="eventCreateLoader"></Loading>
-  <ChangeUserDataModal
+  <SubmitModal
     v-if="isSubmitModalOpened"
     :config="changeDataModalConfig"
     @closeModal="closeSubmitModal"
@@ -158,7 +158,7 @@ import SelectFormsColorsModal from '../../../components/ModalWindows/SelectForms
 import InvitedUsersList from '../../../components/manage-event-components/InvitedUsersList.vue';
 import InvitedUsersListModal from '../../../components/ModalWindows/InvitedUsersListModal.vue';
 import PreviewEventModal from '../../../components/ModalWindows/PreviewEventModal.vue';
-import ChangeUserDataModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangeUserDataModal.vue';
+import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
@@ -190,7 +190,7 @@ export default {
     InvitedUsersListModal,
     RemoveInvitedUsersModal,
     PreviewEventModal,
-    ChangeUserDataModal,
+    SubmitModal,
   },
   setup() {
     const router = useRouter();
@@ -427,7 +427,7 @@ export default {
 
     async function saveEvent(data) {
       eventCreateLoader.value = true;
-      isEventCreated.value = true
+      isEventCreated.value = true;
       const createEventData = data.values;
 
       createEventData.date_and_time = `${createEventData.date} ${createEventData.time}`;
@@ -497,7 +497,6 @@ export default {
       isSubmitModalOpened.value = false;
     };
 
-
     function goToTheEventPage() {
       router.push(ROUTES.APPLICATION.EVENTS.absolute);
     }
@@ -525,7 +524,6 @@ export default {
         this.currentStep++;
       }
     }
-
 
     onBeforeRouteLeave((to, from, next) => {
       if (!isSubmitModalOpened.value && !isEventCreated.value) {

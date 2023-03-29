@@ -1,7 +1,7 @@
 <template>
   <Loading :is-loading="eventUpdateLoader"></Loading>
   <div class="b-edit-event-modal__wrapper">
-    <ChangeUserDataModal
+    <SubmitModal
       v-if="isSubmitModalOpened"
       :config="changeDataModalConfig"
       @closeModal="closeSubmitModal"
@@ -98,7 +98,7 @@ import ManageEventThirdStep from '../manage-event-components/ManageEventThirdSte
 import SelectFormsColorsModal from './SelectFormsColorsModal.vue';
 import WhiteBtn from '../WhiteBtn.vue';
 import GreenBtn from '../GreenBtn.vue';
-import ChangeUserDataModal from './UserCabinetModalWindows/ChangeUserDataModal.vue';
+import SubmitModal from './SubmitModal.vue';
 import Loading from '../../workers/loading-worker/Loading.vue';
 
 import { API } from '../../workers/api-worker/api.worker';
@@ -118,7 +118,7 @@ export default {
     GreenBtn,
     Loading,
     Form,
-    ChangeUserDataModal,
+    SubmitModal,
   },
   props: {
     eventDataValue: {
