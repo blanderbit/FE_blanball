@@ -647,6 +647,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-fff: #fff;
 // SCSS variables for hex colors
 $color-efeff6: #efeff6;
 $color-8a8aa8: #8a8aa8;
@@ -870,7 +871,7 @@ $color-1ccd62: #1ccd62;
   }
 }
 .b-mob-menu__control-block {
-  background: #fff;
+  background: $color-fff;
   width: 100%;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   padding: 12px;

@@ -54,9 +54,12 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+$color-f0f0f4: #f0f0f4;
+$color-148783: #148783;
+$color-efeff6: #efeff6;
 .b-small-event-card {
   border-radius: 6px;
-  border: 1px solid #f0f0f4;
+  border: 1px solid $color-f0f0f4;
   padding: 12px 0px;
   margin-bottom: 16px;
   cursor: pointer;
@@ -64,7 +67,7 @@ export default {
   .b-small-event-card__top-side {
     padding: 0px 12px 8px;
     padding-right: 0px;
-    border-bottom: 1px solid #f0f0f4;
+    border-bottom: 1px solid $color-f0f0f4;
 
     .b-small-event-card__header {
       display: flex;
@@ -92,13 +95,13 @@ export default {
         &.author,
         &.player {
           @include inter(12px, 400, #ffff);
-          background: #148783;
+          background: $color-148783;
         }
 
         &.request_participation,
         &.fan {
           @include inter(12px, 400, $--b-main-gray-color);
-          background: #efeff6;
+          background: $color-efeff6;
         }
       }
     }
@@ -130,7 +133,7 @@ export default {
         line-height: 20px;
         color: $--b-main-gray-color;
         padding: 0px 8px;
-        border: 1px solid #efeff6;
+        border: 1px solid $color-efeff6;
         border-radius: 100px;
       }
     }

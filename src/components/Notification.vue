@@ -390,6 +390,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+$color-f9f9fc: #f9f9fc;
 $color-ecfcfb: #ecfcfb;
 $color-148783: #148783;
 $color-fff: #fff;
@@ -683,7 +684,7 @@ $color-000: #000;
 }
 
 .notification-selected {
-  background: #f9f9fc;
+  background: $color-f9f9fc;
   border-bottom: none;
 }
 .checked {
