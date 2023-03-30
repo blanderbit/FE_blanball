@@ -33,6 +33,7 @@ const router = createRouter({
       name: ROUTES.AUTHENTICATIONS.index.name,
       beforeEnter: routerResolverByLoginPage,
       component: () => import('../views/authentication/index.vue'),
+      redirect: ROUTES.AUTHENTICATIONS.LOGIN.absolute,
       children: [
         {
           path: ROUTES.AUTHENTICATIONS.LOGIN.relative,
@@ -59,6 +60,7 @@ const router = createRouter({
       name: ROUTES.APPLICATION.index.name,
       beforeEnter: routerAuthResolver.routeInterceptor(),
       component: () => import('../views/application/index.vue'),
+      redirect: ROUTES.APPLICATION.EVENTS.absolute,
       children: [
         {
           path: ROUTES.APPLICATION.VERSION.relative,

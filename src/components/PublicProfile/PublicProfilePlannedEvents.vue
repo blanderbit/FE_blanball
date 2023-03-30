@@ -117,6 +117,10 @@ $color-f0f0f4: #f0f0f4;
   display: none;
 }
 
+::v-deep(.b-scroll-top__return-top) {
+  margin: 16px;
+}
+
 .b-public-profile__planned-events {
   background: $--b-main-white-color;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);

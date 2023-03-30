@@ -41,7 +41,7 @@
           </div>
         </div>
       </div>
-      <div class="b-mob-menu__logout-icon" @click="logOut">
+      <div class="b-mob-menu__logout-icon" @click="$emit('logOut')">
         <img src="../assets/img/logout-icon.svg" alt="" />
       </div>
     </div>
@@ -601,11 +601,6 @@ export default {
       }
     };
 
-    const logOut = () => {
-      TokenWorker.clearToken();
-      router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute);
-    };
-
     return {
       topMenu,
       selectable,
@@ -636,7 +631,6 @@ export default {
       selectNotification,
       closeMobMenu,
       removePushNotificationAfterSidebarAction,
-      logOut,
       restartInfiniteScroll,
       scrollToFirstElement: () => {
         notificationList.value.scrollToFirstElement();

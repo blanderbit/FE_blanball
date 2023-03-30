@@ -24,7 +24,7 @@
       <GreenBtn
         :text="$t('profile.copy-number')"
         :height="40"
-        @click-function="copyToClipBoard(userData.phone)"
+        @click-function="copyUserPhone(userData.phone)"
       />
     </template>
   </CopyModal>
@@ -53,7 +53,7 @@
       <GreenBtn
         :text="$t('profile.copy-address')"
         :height="40"
-        @click-function="copyToClipBoard(userData.phone)"
+        @click-function="copyUserEmail(userData.email)"
       />
     </template>
   </CopyModal>
@@ -91,18 +91,7 @@
           <img :src="backgroundTop" alt="" />
         </div>
         <div class="b-public-profile__main-side">
-          <div class="b-public-profile__first-block">
-            <div
-              v-if="userData.is_verified"
-              class="b-public-profile__verified-status"
-            >
-              {{ $t('player_page.verified') }}
-              <img src="../../assets/img/profile-ball.svg" alt="" />
-            </div>
-            <div v-else class="b-public-profile__verified-status not-verified">
-              {{ $t('player_page.not_verified') }}
-              <img src="../../assets/img/profile-ball.svg" alt="" />
-            </div>
+          <div ref="profileFirstBlock" class="b-public-profile__first-block">
             <div class="b-public-profile__profile-info">
               <Avatar
                 class="b-public-profile__avatar"
@@ -134,7 +123,12 @@
                 {{ $t('player_page.qualification') }}
               </span>
               <span class="b-qualification__status">
-                {{ $t('player_page.approved') }}
+                {{
+                  userData.is_verified
+                    ? $t('player_page.verified')
+                    : $t('player_page.not_verified')
+                }}
+                <img src="../../assets/img/profile-ball.svg" alt="" />
               </span>
             </div>
             <div class="b-public-profile__buttons-block">
@@ -175,7 +169,12 @@
                   {{ $t('player_page.qualification') }}
                 </span>
                 <span class="b-qualification__status">
-                  {{ $t('player_page.approved') }}
+                  {{
+                    userData.is_verified
+                      ? $t('player_page.verified')
+                      : $t('player_page.not_verified')
+                  }}
+                  <img src="../../assets/img/profile-ball.svg" alt="" />
                 </span>
               </div>
               <div
@@ -193,7 +192,10 @@
           </div>
           <div class="b-public-profile__main-side-left-block">
             <div class="b-public-profile__second-block">
-              <div class="b-second-block__user-features-block">
+              <div
+                class="b-second-block__user-features-block"
+                :style="userFeaturesStyle"
+              >
                 <div class="b-user-features__title">
                   {{ $t('profile.game-features') }}
                 </div>
@@ -231,8 +233,10 @@
 <script>
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toastification';
 
 import StarRating from 'vue-star-rating';
+import { useElementSize } from '@vueuse/core';
 
 import Avatar from '../Avatar.vue';
 import WhiteBtn from '../WhiteBtn.vue';
@@ -257,6 +261,11 @@ import RulerIcon from '../../assets/img/ruler.svg';
 import StarIcon from '../../assets/img/star.svg';
 import BackgroundTop from '../../assets/img/user-page-back.svg';
 
+const profilePageMode = {
+  LOOK: 'look',
+  PREVIEW: 'preview',
+};
+
 export default {
   props: {
     userData: {
@@ -266,7 +275,7 @@ export default {
     emits: ['saveChanges', 'closeModal'],
     pageMode: {
       type: String,
-      default: 'look',
+      default: profilePageMode.LOOK,
       validator(value) {
         return ['look', 'preview'].includes(value);
       },
@@ -285,17 +294,20 @@ export default {
   },
   setup(props) {
     const { t } = useI18n();
+    const toast = useToast();
     const noFeatureData = '----';
     const isInviteUserModalOpened = ref(false);
     const isPersonalPreview = ref(false);
     const isCopyUserPhoneModalActive = ref(false);
     const isCopyUserEmailModalActive = ref(false);
+    const profileFirstBlock = ref();
+    const { width, height } = useElementSize(profileFirstBlock);
 
     switch (props.pageMode) {
-      case 'look':
+      case profilePageMode.LOOK:
         isPersonalPreview.value = false;
         break;
-      case 'preview':
+      case profilePageMode.PREVIEW:
         isPersonalPreview.value = true;
         break;
     }
@@ -316,6 +328,13 @@ export default {
         dumbbell: DumbbellIcon,
         ruler: RulerIcon,
         star: StarIcon,
+      };
+    });
+
+    const userFeaturesStyle = computed(() => {
+      return {
+        top: `${height.value + 98}px`,
+        left: `${props.pageMode === profilePageMode.LOOK ? 35 : 20}px`,
       };
     });
 
@@ -356,11 +375,7 @@ export default {
           name: t('player_page.position'),
           img: icons.value.flag,
           value: props.userData.profile?.position
-            ? t(
-                !isPersonalPreview.value
-                  ? `hashtags.position_full.${props.userData.profile?.position}`
-                  : props.userData.profile?.position
-              )
+            ? t(`hashtags.${props.userData.profile?.position}`)
             : noFeatureData,
         },
         {
@@ -395,7 +410,7 @@ export default {
     });
 
     const showCopyEmailModal = () => {
-      if (props.pageMode === 'look') {
+      if (props.pageMode === profilePageMode.LOOK) {
         isCopyUserEmailModalActive.value = true;
       }
     };
@@ -405,13 +420,29 @@ export default {
     };
 
     const showCopyPhoneModal = () => {
-      if (props.pageMode === 'look') {
+      if (props.pageMode === profilePageMode.LOOK) {
         isCopyUserPhoneModalActive.value = true;
       }
     };
 
+    const copyToClipBoard = (value) => {
+      navigator.clipboard.writeText(value);
+    };
+
     const closeCopyPhoneModal = () => {
       isCopyUserPhoneModalActive.value = false;
+    };
+
+    const copyUserPhone = (value) => {
+      copyToClipBoard(value);
+      toast.success(t('notifications.phone-copied'));
+      closeCopyPhoneModal();
+    };
+
+    const copyUserEmail = (value) => {
+      copyToClipBoard(value);
+      toast.success(t('notifications.email-copied'));
+      closeCopyEmailModal();
     };
 
     return {
@@ -424,6 +455,9 @@ export default {
       isCopyUserEmailModalActive,
       backgroundTop,
       isPersonalPreview,
+      userFeaturesStyle,
+      profileFirstBlock,
+      showCopyEmailModal,
       getEmailProvider,
       getUkrainianOperator,
       openInviteUserModal,
@@ -431,7 +465,8 @@ export default {
       closeCopyPhoneModal,
       showCopyPhoneModal,
       closeCopyEmailModal,
-      showCopyEmailModal,
+      copyUserEmail,
+      copyUserPhone,
     };
   },
 };
@@ -465,14 +500,14 @@ $color-d2f6a2: #d2f6a2;
   background: $--b-main-white-color;
   width: max-content;
   border-radius: 20px 20px 0px 0px;
-  padding: 20px;
+  padding: 36px 28px 28px 28px;
   position: absolute;
   top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
 
   @media (max-width: 1200px) {
-    top: 90%;
+    top: 100%;
   }
 
   @include beforeDesktop {
@@ -480,7 +515,7 @@ $color-d2f6a2: #d2f6a2;
   }
 
   @include tabletAndMobile {
-    top: 110%;
+    top: 120%;
   }
 
   @media (max-width: 430px) {
@@ -806,10 +841,8 @@ $color-d2f6a2: #d2f6a2;
             border-radius: 12px;
           }
           @include bigTablet {
-            // position: absolute;
-            // left: 35px;
-            // width: 300px;
-            // bottom: 130px;
+            position: absolute;
+            width: 300px;
           }
           .b-user-features__title {
             @include exo(16px, 700);
@@ -883,11 +916,14 @@ $color-d2f6a2: #d2f6a2;
   }
 
   .b-qualification__status {
-    @include inter(12px, 400, $color-395d09);
+    @include inter(12px, 400);
+    width: max-content;
     line-height: 20px;
-    background: $color-d2f6a2;
+    background: $color-efeff6;
     border-radius: 4px;
-    padding: 0px 4px;
+    padding: 2px 4px;
+    display: flex;
+    gap: 4px;
   }
 }
 </style>
