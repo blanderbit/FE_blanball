@@ -33,6 +33,7 @@ export const EndpointsEnum = {
     EditOneEvent: (eventId) => `/events/client/event/update/${eventId}`,
     DeleteEvents: '/events/client/events/delete',
     EventJoinAsPlayer: '/events/client/event/join',
+    EventLeaveAsPlayer: '/events/client/event/leave',
     EventJoinAsFan: '/events/client/fan/event/join',
     PinEvents: '/events/client/events/pin',
     UnPinEvents: '/events/client/events/unpin',

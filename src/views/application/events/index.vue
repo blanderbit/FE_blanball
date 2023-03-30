@@ -125,7 +125,6 @@ import MyEventCard from '../../../components/MyEventCard.vue';
 import RightSidebar from '../../../components/RightSidebar.vue';
 import EmptyList from '../../../components/EmptyList.vue';
 import SmartGridList from '../../../components/smart-list/SmartGridList.vue';
-import CONSTANTS from '../../../consts/index';
 import ScrollToTop from '../../../components/ScrollToTop.vue';
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
 import Dropdown from '../../../components/forms/Dropdown.vue';
@@ -144,9 +143,15 @@ import { getDate } from '../../../utils/getDate';
 import { getTime } from '../../../utils/getTime';
 
 import { ROUTES } from '../../../router/router.const';
+import CONSTANTS from '../../../consts/index';
 
 import Plus from '../../../assets/img/plus.svg';
-import BallIcon from '../../../assets/img/ball.svg';
+
+
+const eventJoinTypes = {
+  PLAY: 'play',
+  VIEW: 'view'
+}
 
 export default {
   name: 'EventsPage',
@@ -184,20 +189,7 @@ export default {
     const mainEventsBlock = ref();
 
     const eventJoinToolTipItems = computed(() => {
-      return [
-        {
-          id: 1,
-          text: t('buttons.like-a-player'),
-          img: BallIcon,
-          type: 'play',
-        },
-        {
-          id: 2,
-          text: t('buttons.like-a-fan'),
-          img: BallIcon,
-          type: 'view',
-        },
-      ];
+      return CONSTANTS.eventJoin.items;
     });
 
     const mockData = computed(() => {
@@ -219,10 +211,10 @@ export default {
     async function joinEvent(eventData, type) {
       loading.value = true;
       switch (type) {
-        case 'play':
+        case eventJoinTypes.PLAY:
           await API.EventService.eventJoinAsPlayer(eventData.id);
           break;
-        case 'view':
+        case eventJoinTypes.VIEW:
           await API.EventService.eventJoinAsFan(eventData.id);
           break;
       }
@@ -235,14 +227,14 @@ export default {
       loading.value = false;
 
       switch (type) {
-        case 'play':
+        case eventJoinTypes.PLAY:
           if (eventData.privacy) {
             toast.success(t('notifications.event-request-sent'));
           } else {
             toast.success(t('notifications.event-join-as-player'));
           }
           break;
-        case 'view':
+        case eventJoinTypes.VIEW:
           toast.success(t('notifications.event-join-as-fan'));
           break;
       }
@@ -250,12 +242,12 @@ export default {
 
     function joinEventModalItemClick(data) {
       switch (data) {
-        case 'play':
-          joinEvent(joinEventData.value, 'play');
+        case eventJoinTypes.PLAY:
+          joinEvent(joinEventData.value, eventJoinTypes.PLAY);
           closeEventJoinModal();
           break;
-        case 'view':
-          joinEvent(joinEventData.value, 'view');
+        case eventJoinTypes.VIEW:
+          joinEvent(joinEventData.value, eventJoinTypes.VIEW);
           closeEventJoinModal();
           break;
       }
@@ -299,6 +291,7 @@ export default {
     function switchToMyEvents() {
       router.push(ROUTES.APPLICATION.MY_EVENTS.absolute);
     }
+
     const refList = ref();
     const blockScrollToTopIfExist = ref(false);
     const triggerForRestart = ref(false);

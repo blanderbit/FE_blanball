@@ -11,6 +11,20 @@
     :modalData="actionEventModalConfig"
     @closeModal="closeEventActiondModal"
   />
+  <SubmitModal
+    v-if="isSubmitModalOpened"
+    :config="submitModalConfig"
+    @closeModal="closeSubmitModal"
+    @leaveFromTheEvent="leaveFromTheEvent"
+  />
+  <ContextModal
+    v-if="isEventJoinModalActive"
+    :clientX="eventJoinModalX"
+    :clientY="eventJoinModalY"
+    :modalItems="eventJoinToolTipItems"
+    @closeModal="closeEventJoinModal"
+    @itemClick="joinEventModalItemClick"
+  />
   <div class="b-event-info">
     <div class="b-event-info__main-body">
       <div class="b-event-info__header-block">
@@ -26,18 +40,18 @@
           <GreenBtn
             class="b-event-info__right-part-green-btn"
             :text="greenButton.text"
-            :width="150"
+            :width="greenButton.width ? greenButton.width : 150"
             :icon="greenButton?.icon"
-            :height="40"
-            @click-function="greenButtonClick"
+            :height="greenButton.height ? greenButton.height : 40"
+            @click-function="greenButton?.action($event)"
           />
           <GreenBtn
             class="b-event-info__right-part-green-mobile"
             :text="greenButton.text"
             :icon="greenButton?.icon"
-            :width="115"
-            :height="32"
-            @click-function="greenButtonClick"
+            :width="greenButton.width ? greenButton.width : 115"
+            :height="greenButton.height ? greenButton.height : 32"
+            @click-function="greenButton?.action($event)"
           />
           <div @click="openEventShareModal" class="b-event-info__share-link">
             <img src="../../../assets/img/share-icon.svg" alt="" />
@@ -93,28 +107,36 @@
               </Transition>
             </div>
           </div>
-          <div class="b-event-info__labels">
-            <div class="b-event-info__label">
-              {{ $t(`events.${eventData.type}`) }}
-            </div>
-            <div class="b-event-info__label">
-              {{ $t(`events.${eventData.gender}`) }}
-            </div>
-            <div v-if="eventData.need_ball" class="b-event-info__label">
-              {{ $t('hashtags.need_ball') }}
-            </div>
-            <div v-if="eventData.need_form" class="b-event-info__label">
-              {{ $t('hashtags.need_form') }}
-            </div>
-          </div>
 
-          <EventInfoForms :formsData="eventData.forms" />
+          <div class="b-event-info__main-info">
+            <div class="b-event-info__labels">
+              <div class="b-event-info__label">
+                {{ $t(`events.${eventData.type}`) }}
+              </div>
+              <div class="b-event-info__label">
+                {{ $t(`events.${eventData.gender}`) }}
+              </div>
+              <div v-if="eventData.need_ball" class="b-event-info__label">
+                {{ $t('hashtags.need_ball') }}
+              </div>
+              <div v-if="eventData.need_form" class="b-event-info__label">
+                {{ $t('hashtags.need_form') }}
+              </div>
+            </div>
+            <EventInfoForms
+              class="b-event-info__forms-block"
+              v-if="Object.keys(eventData.forms).length !== 0"
+              :formsData="eventData.forms"
+            />
 
-          <div class="b-event-info__title">
-            {{ $t('my_events.description-event') }}
-          </div>
-          <div class="b-event-info__description">
-            {{ eventData.description }}
+            <div class="b-event-info__description-block">
+              <div class="b-event-info__title">
+                {{ $t('my_events.description-event') }}
+              </div>
+              <div class="b-event-info__description">
+                {{ eventData.description }}
+              </div>
+            </div>
           </div>
         </div>
         <div class="b-event-info__right-side">
@@ -231,6 +253,8 @@ import Loading from '../../../workers/loading-worker/Loading.vue';
 import EventInfoForms from '../../../components/buildedForms/EventInfoForms.vue';
 import ActionEventModal from '../../../components/ModalWindows/ActionEventModal.vue';
 import EditEventModal from '../../../components/ModalWindows/EditEventModal.vue';
+import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue';
+import ContextModal from '../../../components/ModalWindows/ContextModal.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
@@ -250,6 +274,12 @@ import noReviews from '../../../assets/img/no-records/no-reviews.svg';
 import noUserRecords from '../../../assets/img/no-records/no-user-records.svg';
 import editEvent from '../../../assets/img/edit-white.svg';
 import NoEditPermIcon from '../../../assets/img/no-edit-perm-modal-icon.svg';
+import ExitIcon from '../../../assets/img/exit-white.svg';
+
+const eventJoinTypes = {
+  PLAY: 'play',
+  VIEW: 'view',
+};
 
 export default {
   name: 'EventsPage',
@@ -266,30 +296,10 @@ export default {
     EditEventModal,
     ListOfEventRequestsToParticipations,
     ActionEventModal,
+    SubmitModal,
+    ContextModal,
   },
   setup() {
-    const setUserEmoji = (raiting) => {
-      switch (raiting) {
-        case 5:
-          return emoji_5;
-          break;
-        case 4:
-          return emoji_4;
-          break;
-        case 3:
-          return emoji_3;
-          break;
-        case 2:
-          return emoji_2;
-          break;
-        case 1:
-          return emoji_1;
-          break;
-        default:
-          return noReviews;
-      }
-    };
-
     const route = useRoute();
     const router = useRouter();
     const toast = useToast();
@@ -297,7 +307,9 @@ export default {
     const isTabLabel = ref(false);
     const loading = ref(false);
     const { t } = useI18n();
+    const joinEventData = ref(null);
     const eventData = ref(route.meta.eventData.data);
+    const isSubmitModalOpened = ref(false);
     const eventRequestsToParticipations = ref(
       handlePreloadRequestsParticipationsData(
         route.meta.eventRequestsToParticipationData.data
@@ -307,6 +319,9 @@ export default {
     const currentFullRoute = ref(window.location.href);
     const activeTab = ref(0);
     const eventPriceHover = ref(false);
+    const isEventJoinModalActive = ref(false);
+    const eventJoinModalX = ref(null);
+    const eventJoinModalY = ref(null);
 
     const isActionEventModalOpened = ref(false);
     const actionEventModalConfig = computed(() => {
@@ -327,6 +342,23 @@ export default {
             ...item,
             name: t(item.name),
           })),
+      };
+    });
+
+    const eventJoinToolTipItems = computed(() => {
+      return CONSTANTS.eventJoin.items;
+    });
+
+    const submitModalConfig = computed(() => {
+      return {
+        title: 'Скасувати участь у події',
+        description: `Ви дійсно хочете скасувати участь у події під назвою «${eventData.value.name}»?`,
+        button_1: 'Ні, не скасовувати ',
+        button_2: 'Так, скасувати',
+        left_btn_action: 'closeModal',
+        right_btn_action: 'leaveFromTheEvent',
+        btn_with_1: 130,
+        btn_with_2: 110,
       };
     });
 
@@ -366,23 +398,50 @@ export default {
         };
       }
     });
-
     const greenButton = computed(() => {
       if (eventData.value.author.id === userStore.user.id) {
         return {
           text: t('buttons.edit'),
           icon: editEvent,
+          action: () => editEventButtonClick(),
+        };
+      } else if (
+        eventData.value.current_users.some(
+          (user) => user.id === userStore.user.id
+        )
+      ) {
+        return {
+          text: t('events.leave'),
+          icon: ExitIcon,
+          width: 185,
+          height: 32,
+          action: () => eventLeaveButtonClick(),
         };
       } else if (eventData.value.privacy) {
         return {
-          text: t('buttons.join'),
+          text: t('events.apply'),
+          action: (e) => showEventJoinModal(e),
         };
       } else {
         return {
-          text: t('events.apply'),
+          text: t('events.join'),
+          action: (e) => showEventJoinModal(e),
         };
       }
     });
+
+    const leaveFromTheEvent = async () => {
+      loading.value = true;
+      await API.EventService.eventLeaveAsPlayer(eventData.value.id);
+      loading.value = false;
+      const index = eventData.value.current_users.findIndex(
+        (event) => event.id === userStore.user.id
+      );
+      if (index > -1) {
+        eventData.value.current_users.splice(index, 1);
+      }
+      closeSubmitModal();
+    };
 
     const acceptRequestToParticipation = async (id) => {
       loading.value = true;
@@ -417,6 +476,31 @@ export default {
       isShareEventModalOpened.value = false;
     };
 
+    const closeSubmitModal = () => {
+      isSubmitModalOpened.value = false;
+    };
+
+    const showSubmitModal = () => {
+      isSubmitModalOpened.value = true;
+    };
+
+    function setUserEmoji(raiting) {
+      switch (raiting) {
+        case 5:
+          return emoji_5;
+        case 4:
+          return emoji_4;
+        case 3:
+          return emoji_3;
+        case 2:
+          return emoji_2;
+        case 1:
+          return emoji_1;
+        default:
+          return noReviews;
+      }
+    }
+
     function handlePreloadRequestsParticipationsData(data) {
       return data.results.map((item) => {
         item.sender.emoji = setUserEmoji(item.raiting);
@@ -443,7 +527,7 @@ export default {
       }
     }
 
-    const greenButtonClick = () => {
+    function editEventButtonClick() {
       if (
         eventData.value.author.id === userStore.user.id &&
         eventData.value.status === 'Planned'
@@ -457,7 +541,11 @@ export default {
       ) {
         openEventActionModal();
       }
-    };
+    }
+
+    function eventLeaveButtonClick() {
+      showSubmitModal();
+    }
 
     const copyLinkButtonClick = () => {
       navigator.clipboard.writeText(currentFullRoute.value);
@@ -468,6 +556,59 @@ export default {
     const goToUserProfile = (userId) => {
       router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId));
     };
+
+    const showEventJoinModal = (e) => {
+      eventJoinModalX.value = e.clientX;
+      eventJoinModalY.value = e.clientY;
+      joinEventData.value = eventData.value;
+      isEventJoinModalActive.value = true;
+    };
+
+    const closeEventJoinModal = () => {
+      isEventJoinModalActive.value = false;
+      eventJoinModalX.value = null;
+      eventJoinModalY.value = null;
+      joinEventData.value = null;
+    };
+
+    async function joinEvent(eventData, type) {
+      loading.value = true;
+      switch (type) {
+        case eventJoinTypes.PLAY:
+          await API.EventService.eventJoinAsPlayer(eventData.id);
+          break;
+        case eventJoinTypes.VIEW:
+          await API.EventService.eventJoinAsFan(eventData.id);
+          break;
+      }
+      loading.value = false;
+
+      switch (type) {
+        case eventJoinTypes.PLAY:
+          if (eventData.privacy) {
+            toast.success(t('notifications.event-request-sent'));
+          } else {
+            toast.success(t('notifications.event-join-as-player'));
+          }
+          break;
+        case eventJoinTypes.VIEW:
+          toast.success(t('notifications.event-join-as-fan'));
+          break;
+      }
+    }
+
+    function joinEventModalItemClick(data) {
+      switch (data) {
+        case eventJoinTypes.PLAY:
+          joinEvent(joinEventData.value, eventJoinTypes.PLAY);
+          closeEventJoinModal();
+          break;
+        case eventJoinTypes.VIEW:
+          joinEvent(joinEventData.value, eventJoinTypes.VIEW);
+          closeEventJoinModal();
+          break;
+      }
+    }
 
     function changeTab(id, isDisabled) {
       if (isDisabled) return;
@@ -499,12 +640,21 @@ export default {
       actionEventModalConfig,
       noFansData,
       eventPriceHover,
+      isSubmitModalOpened,
+      isEventJoinModalActive,
       eventRequestsToParticipations,
+      submitModalConfig,
+      eventJoinModalX,
+      eventJoinModalY,
+      eventJoinToolTipItems,
+      closeEventJoinModal,
       copyLinkButtonClick,
-      greenButtonClick,
       switchTabLabel,
+      closeSubmitModal,
       closeEventActiondModal,
       changeTab,
+      joinEventModalItemClick,
+      leaveFromTheEvent,
       openEventShareModal,
       acceptRequestToParticipation,
       declineRequestToParticipation,
@@ -542,14 +692,6 @@ $color-8a8aa8: #8a8aa8;
   }
 
   .b-event-info__main-body {
-    height: calc(100vh - 90px);
-    overflow: scroll;
-
-    @media (max-width: 992px) {
-      height: calc(100vh + 240px);
-      overflow: scroll;
-    }
-
     .b-event-info__header-block {
       display: flex;
       justify-content: space-between;
@@ -563,6 +705,12 @@ $color-8a8aa8: #8a8aa8;
           line-height: 32px;
           color: $--b-main-black-color;
           margin-bottom: 4px;
+          width: 90%;
+          word-break: break-word;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
         .b-event-info__subtitle {
           font-family: 'Inter';
@@ -648,7 +796,7 @@ $color-8a8aa8: #8a8aa8;
           align-items: center;
           position: relative;
           gap: 6px;
-          padding: 6px;
+          padding: 6px 0px;
           width: fit-content;
           cursor: pointer;
 
@@ -726,46 +874,68 @@ $color-8a8aa8: #8a8aa8;
             }
           }
         }
-        .b-event-info__title {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 12px;
-          line-height: 20px;
-          color: $--b-main-gray-color;
-          margin-top: 20px;
-          margin-bottom: 16px;
-          max-width: 100%;
-          word-break: break-word;
-        }
-        .b-event-info__description {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 14px;
-          line-height: 24px;
-          color: $--b-main-black-color;
-          margin-bottom: 16px;
-          max-width: 100%;
-          word-break: break-word;
-        }
-        .b-event-info__labels {
+        .b-event-info__main-info {
           display: flex;
-          flex-wrap: wrap;
-          gap: 8px 0px;
-          margin-top: 20px;
-          .b-event-info__label {
-            margin-right: 4px;
+          flex-direction: column;
+
+          .b-event-info__forms-block {
+            @include mobile {
+              order: 3;
+            }
+          }
+          .b-event-info__description-block {
+
+            @include mobile {
+              order: 1;
+              margin-bottom: 6px;
+              margin-top: 16px;
+            }
+            .b-event-info__title {
             font-family: 'Inter';
             font-style: normal;
-            text-align: center;
             font-weight: 400;
             font-size: 12px;
             line-height: 20px;
+            color: $--b-main-gray-color;
+            margin-bottom: 16px;
+            max-width: 100%;
+            word-break: break-word;
+          }
+          .b-event-info__description {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 24px;
             color: $--b-main-black-color;
-            padding: 0px 8px;
-            border: 1px solid $color-dfdeed;
-            border-radius: 100px;
+            max-width: 100%;
+            word-break: break-word;
+          }
+          }
+          .b-event-info__labels {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 0px;
+            margin-top: 20px;
+            margin-bottom: 12px;
+
+            @include mobile {
+              order: 2;
+              margin-top: 8px;
+            }
+            .b-event-info__label {
+              margin-right: 4px;
+              font-family: 'Inter';
+              font-style: normal;
+              text-align: center;
+              font-weight: 400;
+              font-size: 12px;
+              line-height: 20px;
+              color: $--b-main-black-color;
+              padding: 0px 8px;
+              border: 1px solid $color-dfdeed;
+              border-radius: 100px;
+            }
           }
         }
       }
@@ -780,6 +950,10 @@ $color-8a8aa8: #8a8aa8;
             margin-bottom: 12px;
             padding-bottom: 12px;
             border-bottom: 1px solid $color-dfdeed;
+
+            @include beforeDesktop {
+              padding-top: 0px;
+            }
             .b-event-info__left-side {
               display: flex;
               align-items: center;

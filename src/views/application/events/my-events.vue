@@ -1,12 +1,18 @@
 <template>
   <ContextMenu
-    class="b-context-menu"
     v-if="isContextMenuActive"
     :clientX="contextMenuX"
     :clientY="contextMenuY"
     :menu-text="mockData.menu_text"
     @close-modal="isContextMenuActive = false"
     @itemClick="contextMenuItemClick"
+  />
+
+  <SubmitModal
+    v-if="isSubmitModalOpened"
+    :config="submitModalConfig"
+    @closeModal="closeSubmitModal"
+    @declineChanges="cancelChangesAndGoToTheNextRoute"
   />
 
   <Loading :is-loading="loading" />
@@ -168,7 +174,7 @@
 
 <script>
 import { ref, computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
 
@@ -192,6 +198,7 @@ import DeleteEventsModal from '../../../components/ModalWindows/DeleteEventsModa
 import Loading from '../../../workers/loading-worker/Loading.vue';
 import EditEventModal from '../../../components/ModalWindows/EditEventModal.vue';
 import ActionEventModal from '../../../components/ModalWindows/ActionEventModal.vue';
+import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue'
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { ROUTES } from '../../../router/router.const';
@@ -237,6 +244,7 @@ export default {
     ActionEventModal,
     Loading,
     DeleteEventsModal,
+    SubmitModal,
   },
   setup() {
     const scrollComponent = ref(null);
@@ -264,6 +272,8 @@ export default {
     const triggerForRestart = ref(false);
     const selectedTabId = ref(1);
     const isActionEventModalOpened = ref(false);
+    const isSubmitModalOpened = ref(false);
+    const nextRoutePath = ref('');
 
     const actionEventModalConfig = computed(() => {
       return {
@@ -285,6 +295,19 @@ export default {
         img: WatchIcon,
       },
     ]);
+
+    const submitModalConfig = computed(() => {
+      return {
+        title: 'Вийти без збереження змін',
+        description: 'Ви дійсно хочете вийти, скасувавши всі внесені зміни?',
+        button_1: 'Ні, не виходити',
+        button_2: 'Так, вийти',
+        right_btn_action: 'declineChanges',
+        left_btn_action: 'closeModal',
+        btn_with_1: 124,
+        btn_with_2: 90,
+      };
+    });
 
     const iconPlus = computed(() => Plus);
 
@@ -314,6 +337,13 @@ export default {
     };
     const closeEventActiondModal = () => {
       isActionEventModalOpened.value = false;
+    };
+    const closeSubmitModal = () => {
+      isSubmitModalOpened.value = false;
+    };
+
+    const showSubmitModal = () => {
+      isSubmitModalOpened.value = true;
     };
 
     const contextMenuItemClick = async (itemType) => {
@@ -391,11 +421,7 @@ export default {
         );
         oneEventToUnPinId.value = null;
       }
-      paginationElements.value.forEach((event) => {
-        if (eventsIDSToUnPin.includes(event.id)) {
-          event.pinned = false;
-        }
-      });
+      loadDataPaginationData(1, null, true, false);
       loading.value = false;
       toast.success(t('notifications.events-unpinned'));
     }
@@ -414,11 +440,7 @@ export default {
         );
         oneEventToPinId.value = null;
       }
-      paginationElements.value.forEach((event) => {
-        if (eventsIDSToPin.includes(event.id)) {
-          event.pinned = true;
-        }
-      });
+      loadDataPaginationData(1, null, true, false);
       loading.value = false;
       toast.success(t('notifications.events-pinned'));
     }
@@ -458,6 +480,7 @@ export default {
           let index = selected.value.indexOf(eventId);
           index !== -1 ? selected.value.splice(index, 1) : null;
         } else {
+          console
           selected.value.push(eventId);
         }
       } else {
@@ -474,8 +497,10 @@ export default {
     function changeTab(tabId) {
       if (tabId !== selectedTabId.value) {
         selectedTabId.value = tabId;
-        loadDataPaginationData(1, null, true, true);
-        restartInfiniteScroll();
+        if (selectedTabId.value === tabId) {
+          loadDataPaginationData(1, null, true, true)
+          restartInfiniteScroll();
+        }
       }
     }
 
@@ -485,6 +510,11 @@ export default {
 
     function restartInfiniteScroll() {
       triggerForRestart.value = uuid();
+    }
+
+    function cancelChangesAndGoToTheNextRoute() {
+      router.push(nextRoutePath.value)
+      nextRoutePath.value = ''
     }
 
     const {
@@ -637,6 +667,16 @@ export default {
         }
       });
     }
+
+    onBeforeRouteLeave((to, from, next) => {
+      nextRoutePath.value = to.fullPath;
+      if (selected.value.length && !isSubmitModalOpened.value) {
+        showSubmitModal();
+      } else {
+        next();
+      }
+    });
+
     return {
       scrollComponent,
       eventCards,
@@ -667,6 +707,8 @@ export default {
       mainEventsBlock,
       tabs,
       filters,
+      isSubmitModalOpened,
+      submitModalConfig,
       changeTab,
       paginationLoad,
       loadDataPaginationData,
@@ -674,6 +716,9 @@ export default {
       clearFilters,
       myCardRightClick,
       deleteEvents,
+      cancelChangesAndGoToTheNextRoute,
+      closeSubmitModal,
+      showSubmitModal,
       closeEventUpdateModal,
       pinEvents,
       contextMenuItemClick,

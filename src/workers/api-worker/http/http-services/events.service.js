@@ -60,6 +60,12 @@ export class EventService {
     });
   }
 
+  eventLeaveAsPlayer(eventId) {
+    return AxiosInstance.post(EndpointsEnum.Events.EventLeaveAsPlayer, {
+      event_id: eventId,
+    });
+  }
+
   eventJoinAsFan(eventId) {
     return AxiosInstance.post(EndpointsEnum.Events.EventJoinAsFan, {
       event_id: eventId,
