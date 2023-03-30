@@ -95,7 +95,7 @@ $color-efeff6: #efeff6;
           font-size: 12px;
           line-height: 20px;
           color: $--b-main-gray-color;
-          margin-right: 12px;
+          margin-right: 10px;
         }
         .b-small-event-card__date {
           font-family: 'Inter';

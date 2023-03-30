@@ -162,10 +162,10 @@ $color-1ab2ad: #1ab2ad;
         .b-register-step__section {
           width: 49%;
           height: 4px;
-          background: $color-efeff6;
+          background: #CDDDE0;
           border-radius: 2px;
           &.active {
-            background: $color-1ab2ad;
+            background: #578D95;
           }
         }
       }

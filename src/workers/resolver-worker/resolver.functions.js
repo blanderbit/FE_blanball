@@ -30,8 +30,12 @@ const isAuthorizedError = ({ to, next }) => {
 };
 
 const isResolveDataError = async (error) => {
+  if (error.errorDetails.code === 404) {
+    import('../../router').then((router) => {
+      return router.default.push('/404')
+    })
+  }
   finishSpinner();
-  console.log('TOAST_SHOWED_BY_ERROR', error);
 };
 
 export const resolverFunctions = {
