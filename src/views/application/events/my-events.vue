@@ -93,7 +93,12 @@
             </div>
           </template>
         </events-filters>
-
+        <div
+          @click="goToCreateEvent"
+          class="b-events-page__all-create-event-mobile-button"
+        >
+          <img src="../../../assets/img/plus.svg" alt="" />
+        </div>
         <FilterBlock v-if="selected.length">
           <div class="b-events-page__after-select-block">
             <div class="b-left__side">
@@ -198,7 +203,7 @@ import DeleteEventsModal from '../../../components/ModalWindows/DeleteEventsModa
 import Loading from '../../../workers/loading-worker/Loading.vue';
 import EditEventModal from '../../../components/ModalWindows/EditEventModal.vue';
 import ActionEventModal from '../../../components/ModalWindows/ActionEventModal.vue';
-import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue'
+import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { ROUTES } from '../../../router/router.const';
@@ -480,7 +485,7 @@ export default {
           let index = selected.value.indexOf(eventId);
           index !== -1 ? selected.value.splice(index, 1) : null;
         } else {
-          console
+          console;
           selected.value.push(eventId);
         }
       } else {
@@ -498,7 +503,7 @@ export default {
       if (tabId !== selectedTabId.value) {
         selectedTabId.value = tabId;
         if (selectedTabId.value === tabId) {
-          loadDataPaginationData(1, null, true, true)
+          loadDataPaginationData(1, null, true, true);
           restartInfiniteScroll();
         }
       }
@@ -513,8 +518,8 @@ export default {
     }
 
     function cancelChangesAndGoToTheNextRoute() {
-      router.push(nextRoutePath.value)
-      nextRoutePath.value = ''
+      router.push(nextRoutePath.value);
+      nextRoutePath.value = '';
     }
 
     const {
@@ -990,6 +995,25 @@ $color-dfdeed: #dfdeed;
         margin-top: 23px;
       }
     }
+  }
+}
+.b-events-page__all-create-event-mobile-button {
+  background: $--b-main-green-color;
+  box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+  border-radius: 100px;
+  padding: 12px;
+  position: absolute;
+  display: none;
+  font-size: 24px;
+  font-weight: 700px;
+  width: 44px;
+  height: 44px;
+  right: 25px;
+  z-index: 10;
+  bottom: 200px;
+
+  @media (max-width: 992px) {
+    display: flex;
   }
 }
 </style>

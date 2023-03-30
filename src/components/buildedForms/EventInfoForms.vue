@@ -93,14 +93,18 @@ $color-efeff6: #efeff6;
 
   @media (max-width: 455px) {
     flex-direction: column;
-    align-items: baseline;
-  } 
+  }
+
   .b-event-info__form {
     background: $color-f9f9fc;
     border-radius: 6px;
     padding: 12px;
     display: flex;
     flex-direction: column;
+
+    @media (max-width: 455px) {
+      width: 100%;
+    }
     .b-event-info__form-title {
       font-family: 'Inter';
       font-style: normal;
@@ -110,12 +114,29 @@ $color-efeff6: #efeff6;
       color: $--b-main-black-color;
     }
     .b-event-info__form-content {
+      .b-event-info__form-content-t-thirt {
+        @media (max-width: 455px) {
+          display: flex;
+          gap: 8px;
+        }
+      }
+      .b-event-info__form-content-shirt-front {
+        @media (max-width: 455px) {
+          display: flex;
+          gap: 8px;
+        }
+      }
       .b-event-info__form-item {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 8px;
         margin-top: 8px;
+
+        @media (max-width: 455px) {
+          flex-direction: column;
+          align-items: baseline;
+        }
         .b-event-info__form-item-name {
           font-family: 'Inter';
           font-style: normal;

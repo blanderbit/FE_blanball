@@ -236,7 +236,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
@@ -334,6 +334,20 @@ export default {
 
     handleIncomeEventData(eventData.value);
 
+    watch(
+      () => route.path,
+      async (value) => {
+        loading.value = true;
+        const response = await API.EventService.getOneEvent(
+          value.split('/').slice(-1)[0]
+        );
+        handleIncomeEventData(response.data);
+        eventData.value = response.data;
+        joinEventData.value = null;
+        loading.value = false;
+      }
+    );
+
     const mockData = computed(() => {
       return {
         tabs: CONSTANTS.event_info
@@ -408,6 +422,9 @@ export default {
       } else if (
         eventData.value.current_users.some(
           (user) => user.id === userStore.user.id
+        ) ||
+        eventData.value.current_fans.some(
+          (user) => user.id === userStore.user.id
         )
       ) {
         return {
@@ -425,6 +442,7 @@ export default {
       } else {
         return {
           text: t('events.join'),
+          width: 115,
           action: (e) => showEventJoinModal(e),
         };
       }
@@ -432,15 +450,27 @@ export default {
 
     const leaveFromTheEvent = async () => {
       loading.value = true;
-      await API.EventService.eventLeaveAsPlayer(eventData.value.id);
-      loading.value = false;
-      const index = eventData.value.current_users.findIndex(
+      let leaveFrom = [];
+      if (
+        eventData.value.current_users.some(
+          (user) => user.id === userStore.user.id
+        )
+      ) {
+        await API.EventService.eventLeaveAsPlayer(eventData.value.id);
+        leaveFrom = eventData.value.current_users;
+      } else {
+        await API.EventService.eventLeaveAsFan(eventData.value.id);
+        leaveFrom = eventData.value.current_fans;
+      }
+      const index = leaveFrom.findIndex(
         (event) => event.id === userStore.user.id
       );
       if (index > -1) {
-        eventData.value.current_users.splice(index, 1);
+        leaveFrom.splice(index, 1);
       }
+      loading.value = false;
       closeSubmitModal();
+      toast.info(t('notifications.event-leave'));
     };
 
     const acceptRequestToParticipation = async (id) => {
@@ -571,30 +601,30 @@ export default {
       joinEventData.value = null;
     };
 
-    async function joinEvent(eventData, type) {
+    async function joinEvent(data, type) {
       loading.value = true;
+      let toastText = '';
       switch (type) {
         case eventJoinTypes.PLAY:
-          await API.EventService.eventJoinAsPlayer(eventData.id);
-          break;
-        case eventJoinTypes.VIEW:
-          await API.EventService.eventJoinAsFan(eventData.id);
-          break;
-      }
-      loading.value = false;
-
-      switch (type) {
-        case eventJoinTypes.PLAY:
+          await API.EventService.eventJoinAsPlayer(data.id);
+          eventData.value.current_users.unshift(userStore.user);
+          handleIncomeEventData(eventData.value);
           if (eventData.privacy) {
-            toast.success(t('notifications.event-request-sent'));
+            toastText = t('notifications.event-request-sent');
           } else {
-            toast.success(t('notifications.event-join-as-player'));
+            toastText = t('notifications.event-join-as-player');
           }
           break;
         case eventJoinTypes.VIEW:
-          toast.success(t('notifications.event-join-as-fan'));
+          await API.EventService.eventJoinAsFan(data.id);
+          eventData.value.current_fans.unshift(userStore.user);
+          handleIncomeEventData(eventData.value);
+
+          toastText = t('notifications.event-join-as-fan');
           break;
       }
+      loading.value = false;
+      toast.success(toastText);
     }
 
     function joinEventModalItemClick(data) {
@@ -884,33 +914,32 @@ $color-8a8aa8: #8a8aa8;
             }
           }
           .b-event-info__description-block {
-
             @include mobile {
               order: 1;
               margin-bottom: 6px;
               margin-top: 16px;
             }
             .b-event-info__title {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 20px;
-            color: $--b-main-gray-color;
-            margin-bottom: 16px;
-            max-width: 100%;
-            word-break: break-word;
-          }
-          .b-event-info__description {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 24px;
-            color: $--b-main-black-color;
-            max-width: 100%;
-            word-break: break-word;
-          }
+              font-family: 'Inter';
+              font-style: normal;
+              font-weight: 400;
+              font-size: 12px;
+              line-height: 20px;
+              color: $--b-main-gray-color;
+              margin-bottom: 16px;
+              max-width: 100%;
+              word-break: break-word;
+            }
+            .b-event-info__description {
+              font-family: 'Inter';
+              font-style: normal;
+              font-weight: 400;
+              font-size: 14px;
+              line-height: 24px;
+              color: $--b-main-black-color;
+              max-width: 100%;
+              word-break: break-word;
+            }
           }
           .b-event-info__labels {
             display: flex;

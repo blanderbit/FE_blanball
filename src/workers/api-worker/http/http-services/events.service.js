@@ -66,6 +66,12 @@ export class EventService {
     });
   }
 
+  eventLeaveAsFan(eventId) {
+    return AxiosInstance.post(EndpointsEnum.Events.EventLeaveAsFan, {
+      event_id: eventId,
+    });
+  }
+
   eventJoinAsFan(eventId) {
     return AxiosInstance.post(EndpointsEnum.Events.EventJoinAsFan, {
       event_id: eventId,
