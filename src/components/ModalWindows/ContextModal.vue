@@ -7,7 +7,7 @@
         @click="$emit('itemClick', item.type)"
       >
         <img :src="item.img" alt="" />
-        <span class="b-item-text">{{ item.text }}</span>
+        <span class="b-item-text">{{ $t(item.text) }}</span>
       </div>
     </div>
   </div>
@@ -37,7 +37,7 @@ export default {
   setup(props) {
     const modalStyle = computed(() => {
       return {
-        top: props.clientY - 50 + 'px',
+        top: props.clientY + 'px',
         left: props.clientX + 'px',
       };
     });

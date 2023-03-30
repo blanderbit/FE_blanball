@@ -1,6 +1,6 @@
 <template>
   <Loading :is-loading="loading" />
-  <ChangeUserDataModal
+  <SubmitModal
     v-if="isSubmitModalOpened"
     :config="submitModalConfig"
     @closeModal="closeSubmitModal"
@@ -206,7 +206,7 @@ import EmptyList from './EmptyList.vue';
 import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue';
 import ScrollToTop from './ScrollToTop.vue';
 import Loading from '../workers/loading-worker/Loading.vue';
-import ChangeUserDataModal from './ModalWindows/UserCabinetModalWindows/ChangeUserDataModal.vue';
+import SubmitModal from './ModalWindows/SubmitModal.vue';
 
 import { TokenWorker } from '../workers/token-worker';
 import { useUserDataStore } from '../stores/userData';
@@ -257,7 +257,7 @@ export default {
     InfiniteLoading,
     ScrollToTop,
     Loading,
-    ChangeUserDataModal,
+    SubmitModal,
   },
   emit: ['closeMenu'],
   setup(props, { emit }) {
@@ -641,6 +641,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-fff: #fff;
 // SCSS variables for hex colors
 $color-efeff6: #efeff6;
 $color-8a8aa8: #8a8aa8;
@@ -864,7 +865,7 @@ $color-1ccd62: #1ccd62;
   }
 }
 .b-mob-menu__control-block {
-  background: #fff;
+  background: $color-fff;
   width: 100%;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   padding: 12px;

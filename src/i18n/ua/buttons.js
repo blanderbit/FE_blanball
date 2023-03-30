@@ -19,6 +19,7 @@ export default {
   decline: 'Відмінити',
   clear: 'Очистити',
   apply: 'Застосувати',
+  'unpin': 'Відкріпити',
   publish: 'Опублікувати',
   join: 'Долучитися',
   'close-this-window': 'Закрити це вікно',

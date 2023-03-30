@@ -60,6 +60,12 @@ export class EventService {
     });
   }
 
+  eventLeaveAsPlayer(eventId) {
+    return AxiosInstance.post(EndpointsEnum.Events.EventLeaveAsPlayer, {
+      event_id: eventId,
+    });
+  }
+
   eventJoinAsFan(eventId) {
     return AxiosInstance.post(EndpointsEnum.Events.EventJoinAsFan, {
       event_id: eventId,
@@ -81,6 +87,28 @@ export class EventService {
   getAllMyEvents(options) {
     return AxiosInstance.get(
       EndpointsEnum.Events.GetAllMyEvents,
+      AxiosParams(
+        AxiosQuery(options),
+        AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_PAGE])
+      )
+    );
+  }
+
+  @FilterParamsDecorator(filterConfigForEvents)
+  getMyTopicalEvents(options) {
+    return AxiosInstance.get(
+      EndpointsEnum.Events.GetMyTopicalEvents,
+      AxiosParams(
+        AxiosQuery(options),
+        AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_PAGE])
+      )
+    );
+  }
+
+  @FilterParamsDecorator(filterConfigForEvents)
+  getMyFinishedEvents(options) {
+    return AxiosInstance.get(
+      EndpointsEnum.Events.GetMyFinishedEvents,
       AxiosParams(
         AxiosQuery(options),
         AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_PAGE])

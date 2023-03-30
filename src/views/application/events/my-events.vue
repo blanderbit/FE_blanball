@@ -1,12 +1,18 @@
 <template>
   <ContextMenu
-    class="b-context-menu"
     v-if="isContextMenuActive"
     :clientX="contextMenuX"
     :clientY="contextMenuY"
     :menu-text="mockData.menu_text"
     @close-modal="isContextMenuActive = false"
     @itemClick="contextMenuItemClick"
+  />
+
+  <SubmitModal
+    v-if="isSubmitModalOpened"
+    :config="submitModalConfig"
+    @closeModal="closeSubmitModal"
+    @declineChanges="cancelChangesAndGoToTheNextRoute"
   />
 
   <Loading :is-loading="loading" />
@@ -70,7 +76,23 @@
           @update:value="setFilters"
           @clearFilters="clearFilters"
           :elementsCount="paginationTotalCount"
-        ></events-filters>
+        >
+          <template #tabs>
+            <div class="b-events-page__tabs">
+              <div
+                v-for="tab in tabs"
+                :class="[
+                  'b-events-page__tab',
+                  { selected: tab.id === selectedTabId },
+                ]"
+                @click="changeTab(tab.id)"
+              >
+                <img :src="tab.img" alt="" />
+                {{ tab.text }}
+              </div>
+            </div>
+          </template>
+        </events-filters>
 
         <FilterBlock v-if="selected.length">
           <div class="b-events-page__after-select-block">
@@ -152,7 +174,7 @@
 
 <script>
 import { ref, computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
 
@@ -176,6 +198,7 @@ import DeleteEventsModal from '../../../components/ModalWindows/DeleteEventsModa
 import Loading from '../../../workers/loading-worker/Loading.vue';
 import EditEventModal from '../../../components/ModalWindows/EditEventModal.vue';
 import ActionEventModal from '../../../components/ModalWindows/ActionEventModal.vue';
+import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue'
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { ROUTES } from '../../../router/router.const';
@@ -192,6 +215,13 @@ import Plus from '../../../assets/img/plus.svg';
 import WhiteBucket from '../../../assets/img/white-bucket.svg';
 import PinIcon from '../../../assets/img/pin.svg';
 import NoEditPermIcon from '../../../assets/img/no-edit-perm-modal-icon.svg';
+import CalendarIcon from '../../../assets/img/calendar.svg';
+import WatchIcon from '../../../assets/img/watch-gray.svg';
+
+const TABS_ENUM = {
+  ACTUAL: 1,
+  FINISHED: 2,
+};
 
 export default {
   name: 'EventsPage',
@@ -214,6 +244,7 @@ export default {
     ActionEventModal,
     Loading,
     DeleteEventsModal,
+    SubmitModal,
   },
   setup() {
     const scrollComponent = ref(null);
@@ -239,13 +270,42 @@ export default {
     const refList = ref();
     const blockScrollToTopIfExist = ref(false);
     const triggerForRestart = ref(false);
-
+    const selectedTabId = ref(1);
     const isActionEventModalOpened = ref(false);
+    const isSubmitModalOpened = ref(false);
+    const nextRoutePath = ref('');
+
     const actionEventModalConfig = computed(() => {
       return {
         title: t('modals.no_perm_to_edit.title'),
         description: t('modals.no_perm_to_edit.main-text'),
         image: NoEditPermIcon,
+      };
+    });
+
+    const tabs = computed(() => [
+      {
+        id: 1,
+        text: 'Актуальні',
+        img: CalendarIcon,
+      },
+      {
+        id: 2,
+        text: 'Завершені',
+        img: WatchIcon,
+      },
+    ]);
+
+    const submitModalConfig = computed(() => {
+      return {
+        title: 'Вийти без збереження змін',
+        description: 'Ви дійсно хочете вийти, скасувавши всі внесені зміни?',
+        button_1: 'Ні, не виходити',
+        button_2: 'Так, вийти',
+        right_btn_action: 'declineChanges',
+        left_btn_action: 'closeModal',
+        btn_with_1: 124,
+        btn_with_2: 90,
       };
     });
 
@@ -277,6 +337,13 @@ export default {
     };
     const closeEventActiondModal = () => {
       isActionEventModalOpened.value = false;
+    };
+    const closeSubmitModal = () => {
+      isSubmitModalOpened.value = false;
+    };
+
+    const showSubmitModal = () => {
+      isSubmitModalOpened.value = true;
     };
 
     const contextMenuItemClick = async (itemType) => {
@@ -342,15 +409,21 @@ export default {
 
     async function unPinEvents() {
       loading.value = true;
-      await API.EventService.unPinEvents([oneEventToUnPinId.value]);
-      selected.value = selected.value.filter(
-        (value) => ![oneEventToUnPinId.value].includes(value)
-      );
-      oneEventToUnPinId.value = null;
-      let response = await API.EventService.getAllMyEvents();
-      paginationElements.value = response.data.results.map(handlingIncomeData);
+      let eventsIDSToUnPin = oneEventToUnPinId.value
+        ? [oneEventToUnPinId.value]
+        : selected.value;
+      await API.EventService.unPinEvents(eventsIDSToUnPin);
+      if (!oneEventToUnPinId.value) {
+        selected.value = [];
+      } else {
+        selected.value = selected.value.filter(
+          (value) => !eventsIDSToUnPin.includes(value)
+        );
+        oneEventToUnPinId.value = null;
+      }
+      loadDataPaginationData(1, null, true, false);
       loading.value = false;
-      toast.success(t('notifications.event-unpinned'));
+      toast.success(t('notifications.events-unpinned'));
     }
 
     async function pinEvents() {
@@ -367,8 +440,7 @@ export default {
         );
         oneEventToPinId.value = null;
       }
-      let response = await API.EventService.getAllMyEvents();
-      paginationElements.value = response.data.results.map(handlingIncomeData);
+      loadDataPaginationData(1, null, true, false);
       loading.value = false;
       toast.success(t('notifications.events-pinned'));
     }
@@ -388,8 +460,9 @@ export default {
         );
         oneEventToDeleteId.value = null;
       }
-      let response = await API.EventService.getAllMyEvents();
-      paginationElements.value = response.data.results.map(handlingIncomeData);
+      paginationElements.value = paginationElements.value.filter(
+        (event) => !eventsIDSToDelete.includes(event.id)
+      );
       loading.value = false;
       toast.success(t('notifications.events-deleted'));
     }
@@ -407,6 +480,7 @@ export default {
           let index = selected.value.indexOf(eventId);
           index !== -1 ? selected.value.splice(index, 1) : null;
         } else {
+          console
           selected.value.push(eventId);
         }
       } else {
@@ -420,14 +494,28 @@ export default {
     function goToCreateEvent() {
       router.push(ROUTES.APPLICATION.EVENTS.CREATE.absolute);
     }
+    function changeTab(tabId) {
+      if (tabId !== selectedTabId.value) {
+        selectedTabId.value = tabId;
+        if (selectedTabId.value === tabId) {
+          loadDataPaginationData(1, null, true, true)
+          restartInfiniteScroll();
+        }
+      }
+    }
 
     function declineSelect() {
       selected.value = [];
     }
 
-    const restartInfiniteScroll = () => {
+    function restartInfiniteScroll() {
       triggerForRestart.value = uuid();
-    };
+    }
+
+    function cancelChangesAndGoToTheNextRoute() {
+      router.push(nextRoutePath.value)
+      nextRoutePath.value = ''
+    }
 
     const {
       paginationElements,
@@ -437,10 +525,17 @@ export default {
       paginationClearData,
     } = PaginationWorker({
       paginationDataRequest: (page) => {
-        return API.EventService.getAllMyEvents({
-          ...getRawFilters(),
-          page,
-        });
+        if (selectedTabId.value === TABS_ENUM.ACTUAL) {
+          return API.EventService.getMyTopicalEvents({
+            ...getRawFilters(),
+            page,
+          });
+        } else {
+          return API.EventService.getMyFinishedEvents({
+            ...getRawFilters(),
+            page,
+          });
+        }
       },
       dataTransformation: handlingIncomeData,
     });
@@ -549,13 +644,39 @@ export default {
       }
     };
 
-    const loadDataPaginationData = (pageNumber, $state) => {
+    function loadDataPaginationData(
+      pageNumber,
+      $state,
+      forceUpdate,
+      isLoading
+    ) {
+      if (isLoading) {
+        loading.value = true;
+      }
+      if (forceUpdate) {
+        paginationClearData();
+      }
+
       paginationLoad({
         pageNumber,
         $state,
-        forceUpdate: paginationPage.value === 1,
+        forceUpdate,
+      }).then(() => {
+        if (isLoading) {
+          loading.value = false;
+        }
       });
-    };
+    }
+
+    onBeforeRouteLeave((to, from, next) => {
+      nextRoutePath.value = to.fullPath;
+      if (selected.value.length && !isSubmitModalOpened.value) {
+        showSubmitModal();
+      } else {
+        next();
+      }
+    });
+
     return {
       scrollComponent,
       eventCards,
@@ -582,14 +703,22 @@ export default {
       triggerForRestart,
       paginationElements,
       paginationPage,
+      selectedTabId,
       mainEventsBlock,
+      tabs,
       filters,
+      isSubmitModalOpened,
+      submitModalConfig,
+      changeTab,
       paginationLoad,
       loadDataPaginationData,
       detectSizesForCards,
       clearFilters,
       myCardRightClick,
       deleteEvents,
+      cancelChangesAndGoToTheNextRoute,
+      closeSubmitModal,
+      showSubmitModal,
       closeEventUpdateModal,
       pinEvents,
       contextMenuItemClick,
@@ -806,6 +935,30 @@ $color-dfdeed: #dfdeed;
       position: relative;
       @media (max-width: 992px) {
         padding: 0;
+      }
+      .b-events-page__tabs {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 8px;
+        gap: 32px;
+        border-bottom: 1px solid #f0f0f4;
+
+        .b-events-page__tab {
+          @include inter(13px, 400, $--b-main-gray-color);
+          line-height: 20px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 0px 4px 8px 0px;
+          cursor: pointer;
+
+          &.selected {
+            @include inter(13px, 500);
+            line-height: 20px;
+            border-bottom: 2px solid $--b-main-black-color;
+          }
+        }
       }
       .b-events-page__all-events-block {
         position: relative;

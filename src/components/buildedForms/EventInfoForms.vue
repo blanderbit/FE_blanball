@@ -89,7 +89,12 @@ $color-efeff6: #efeff6;
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-top: 16px;
+  margin: 16px 0px;
+
+  @media (max-width: 455px) {
+    flex-direction: column;
+    align-items: baseline;
+  } 
   .b-event-info__form {
     background: $color-f9f9fc;
     border-radius: 6px;
