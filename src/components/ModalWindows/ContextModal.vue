@@ -1,6 +1,6 @@
 <template>
   <div class="context-modal__tooltip-wrapper" @click.self="$emit('closeModal')">
-    <div :style="modalStyle" class="context-modal__tooltip">
+    <div ref="modal" :style="modalStyle" class="context-modal__tooltip">
       <div
         v-for="item in modalItems"
         class="context-modal__tooltip-item"
@@ -14,7 +14,9 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import { useElementSize } from '@vueuse/core';
+import { he } from 'date-fns/locale';
 
 export default {
   props: {
@@ -35,15 +37,36 @@ export default {
     },
   },
   setup(props) {
+    const modal = ref();
+    const { width, height } = useElementSize(modal);
     const modalStyle = computed(() => {
+      const modalWidth = width.value;
+      const modalHeight = height.value;
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+
+      let top = props.clientY;
+      let left = props.clientX;
+
+      // Check if modal is going out of screen on the right side
+      if (left + modalWidth > screenWidth) {
+        left = screenWidth - modalWidth;
+      }
+
+      // Check if modal is going out of screen on the bottom
+      if (top + modalHeight > screenHeight) {
+        top = screenHeight - modalHeight;
+      }
+
       return {
-        top: props.clientY + 'px',
-        left: props.clientX + 'px',
+        top: top + 'px',
+        left: left + 'px',
       };
     });
 
     return {
       modalStyle,
+      modal,
     };
   },
 };

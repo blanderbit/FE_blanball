@@ -630,7 +630,7 @@ $color-f0f0f4: #f0f0f4;
           height: 44px;
           right: 25px;
           z-index: 10;
-          bottom: 200px;
+          bottom: 25%;
 
           @media (max-width: 992px) {
             display: flex;

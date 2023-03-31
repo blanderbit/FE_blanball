@@ -40,17 +40,10 @@
           <GreenBtn
             class="b-event-info__right-part-green-btn"
             :text="greenButton.text"
-            :width="greenButton.width ? greenButton.width : 150"
+            :width="greenButton.width"
             :icon="greenButton?.icon"
-            :height="greenButton.height ? greenButton.height : 40"
-            @click-function="greenButton?.action($event)"
-          />
-          <GreenBtn
-            class="b-event-info__right-part-green-mobile"
-            :text="greenButton.text"
-            :icon="greenButton?.icon"
-            :width="greenButton.width ? greenButton.width : 115"
-            :height="greenButton.height ? greenButton.height : 32"
+            :backgroundColor="greenButton?.color"
+            :height="greenButton.height"
             @click-function="greenButton?.action($event)"
           />
           <div @click="openEventShareModal" class="b-event-info__share-link">
@@ -257,6 +250,7 @@ import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue';
 import ContextModal from '../../../components/ModalWindows/ContextModal.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
+import { BlanballEventBus } from '../../../workers/event-bus-worker';
 import { useUserDataStore } from '../../../stores/userData';
 import { addMinutes } from '../../../utils/addMinutes';
 import { getDate } from '../../../utils/getDate';
@@ -275,6 +269,7 @@ import noUserRecords from '../../../assets/img/no-records/no-user-records.svg';
 import editEvent from '../../../assets/img/edit-white.svg';
 import NoEditPermIcon from '../../../assets/img/no-edit-perm-modal-icon.svg';
 import ExitIcon from '../../../assets/img/exit-white.svg';
+import PlusIcon from '../../../assets/img/plus.svg'
 
 const eventJoinTypes = {
   PLAY: 'play',
@@ -417,6 +412,8 @@ export default {
         return {
           text: t('buttons.edit'),
           icon: editEvent,
+          height: 32,
+          width: 140,
           action: () => editEventButtonClick(),
         };
       } else if (
@@ -432,17 +429,23 @@ export default {
           icon: ExitIcon,
           width: 185,
           height: 32,
+          color: '#575775',
           action: () => eventLeaveButtonClick(),
         };
       } else if (eventData.value.privacy) {
         return {
           text: t('events.apply'),
+          icon: PlusIcon,
+          height: 32,
+          width: 150,
           action: (e) => showEventJoinModal(e),
         };
       } else {
         return {
           text: t('events.join'),
-          width: 115,
+          icon: PlusIcon,
+          width: 125,
+          height: 32,
           action: (e) => showEventJoinModal(e),
         };
       }
@@ -450,6 +453,7 @@ export default {
 
     const leaveFromTheEvent = async () => {
       loading.value = true;
+      let participateType = '';
       let leaveFrom = [];
       if (
         eventData.value.current_users.some(
@@ -469,6 +473,7 @@ export default {
         leaveFrom.splice(index, 1);
       }
       loading.value = false;
+      emitAfterEventJoinOrLeave(participateType, 'leave');
       closeSubmitModal();
       toast.info(t('notifications.event-leave'));
     };
@@ -557,6 +562,19 @@ export default {
       }
     }
 
+    function emitAfterEventJoinOrLeave(participateType, action) {
+      let emitName = '';
+      if (action === 'join') {
+        emitName = 'userJoinedEvent';
+      } else {
+        emitName = 'userLeftEvent';
+      }
+      BlanballEventBus.emit(emitName, {
+        eventId: eventData.value.id,
+        participateType: participateType,
+      });
+    }
+
     function editEventButtonClick() {
       if (
         eventData.value.author.id === userStore.user.id &&
@@ -604,25 +622,29 @@ export default {
     async function joinEvent(data, type) {
       loading.value = true;
       let toastText = '';
+      let participateType = '';
       switch (type) {
         case eventJoinTypes.PLAY:
           await API.EventService.eventJoinAsPlayer(data.id);
           eventData.value.current_users.unshift(userStore.user);
           handleIncomeEventData(eventData.value);
-          if (eventData.privacy) {
+          if (eventData.value.privacy) {
             toastText = t('notifications.event-request-sent');
+            participateType = 'request_participation';
           } else {
             toastText = t('notifications.event-join-as-player');
+            participateType = 'player';
           }
           break;
         case eventJoinTypes.VIEW:
           await API.EventService.eventJoinAsFan(data.id);
           eventData.value.current_fans.unshift(userStore.user);
           handleIncomeEventData(eventData.value);
-
           toastText = t('notifications.event-join-as-fan');
+          participateType = 'fan';
           break;
       }
+      emitAfterEventJoinOrLeave(participateType, 'join');
       loading.value = false;
       toast.success(toastText);
     }
@@ -713,6 +735,7 @@ $color-8a8aa8: #8a8aa8;
   grid-gap: 28px;
   width: 100%;
   overflow: scroll;
+
   @media (max-width: 1200px) {
     grid-template-columns: 1fr;
 
@@ -726,6 +749,7 @@ $color-8a8aa8: #8a8aa8;
       display: flex;
       justify-content: space-between;
       align-items: center;
+
       .b-event-info__left-part {
         .b-event-info__title {
           font-family: 'Exo 2';
@@ -742,6 +766,7 @@ $color-8a8aa8: #8a8aa8;
           -webkit-box-orient: vertical;
           overflow: hidden;
         }
+
         .b-event-info__subtitle {
           font-family: 'Inter';
           font-style: normal;
@@ -751,24 +776,32 @@ $color-8a8aa8: #8a8aa8;
           color: $--b-main-gray-color;
         }
       }
+
       .b-event-info__right-part {
         display: flex;
         align-items: center;
+
         a {
           text-decoration: none;
         }
+
+        @include mobile {
+          position: fixed;
+          bottom: 0;
+          background: rgba(249, 249, 252, 0.9);
+          backdrop-filter: blur(1px);
+          border-radius: 12px 12px 0px 0px;
+          padding: 8px 16px 12px;
+          z-index: 2;
+          justify-content: space-between;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
         .b-event-info__right-part-green-btn {
           display: flex;
-          @include tabletAndMobile {
-            display: none;
-          }
         }
-        .b-event-info__right-part-green-mobile {
-          display: none;
-          @include tabletAndMobile {
-            display: flex;
-          }
-        }
+
         .b-event-info__share-link {
           font-family: 'Inter';
           font-style: normal;
@@ -780,19 +813,20 @@ $color-8a8aa8: #8a8aa8;
           display: flex;
           align-items: center;
           cursor: pointer;
+
           img {
             margin-right: 10px;
           }
         }
       }
     }
+
     .b-event-info__details-block {
-      border-top: 1px solid $color-dfdeed;
-      padding-top: 14px;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 48px;
       margin-top: 24px;
+
       @media (max-width: 992px) {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -814,13 +848,16 @@ $color-8a8aa8: #8a8aa8;
           color: $--b-main-black-color;
           margin-bottom: 10px;
           display: flex;
+
           img {
             margin-right: 8px;
           }
+
           span {
             border-bottom: 1px dashed $color-000;
           }
         }
+
         .b-event-info__price {
           display: flex;
           align-items: center;
@@ -834,6 +871,7 @@ $color-8a8aa8: #8a8aa8;
             border-bottom: 1px dashed $--b-main-green-color;
             border-radius: 4px 4px 0px 0px;
             background: $color-e3fbfa;
+
             span {
               font-family: 'Inter';
               font-style: normal;
@@ -859,6 +897,7 @@ $color-8a8aa8: #8a8aa8;
           &.free {
             background: $color-f9f9fc;
             border-radius: 4px;
+
             span {
               font-family: 'Inter';
               font-style: normal;
@@ -880,6 +919,7 @@ $color-8a8aa8: #8a8aa8;
               }
             }
           }
+
           .b-event-info__price-tooltip-wrapper {
             position: absolute;
             top: 8px;
@@ -891,10 +931,12 @@ $color-8a8aa8: #8a8aa8;
             .v-leave-active {
               transition: opacity 0.4s ease;
             }
+
             .v-enter-from,
             .v-leave-to {
               opacity: 0;
             }
+
             .b-event-info__price-tooltip {
               position: relative;
               height: fit-content;
@@ -904,6 +946,7 @@ $color-8a8aa8: #8a8aa8;
             }
           }
         }
+
         .b-event-info__main-info {
           display: flex;
           flex-direction: column;
@@ -913,12 +956,14 @@ $color-8a8aa8: #8a8aa8;
               order: 3;
             }
           }
+
           .b-event-info__description-block {
             @include mobile {
               order: 1;
               margin-bottom: 6px;
               margin-top: 16px;
             }
+
             .b-event-info__title {
               font-family: 'Inter';
               font-style: normal;
@@ -930,6 +975,7 @@ $color-8a8aa8: #8a8aa8;
               max-width: 100%;
               word-break: break-word;
             }
+
             .b-event-info__description {
               font-family: 'Inter';
               font-style: normal;
@@ -941,6 +987,7 @@ $color-8a8aa8: #8a8aa8;
               word-break: break-word;
             }
           }
+
           .b-event-info__labels {
             display: flex;
             flex-wrap: wrap;
@@ -952,6 +999,7 @@ $color-8a8aa8: #8a8aa8;
               order: 2;
               margin-top: 8px;
             }
+
             .b-event-info__label {
               margin-right: 4px;
               font-family: 'Inter';
@@ -983,13 +1031,16 @@ $color-8a8aa8: #8a8aa8;
             @include beforeDesktop {
               padding-top: 0px;
             }
+
             .b-event-info__left-side {
               display: flex;
               align-items: center;
+
               .b-event-info__picture {
                 margin-right: 12px;
                 cursor: pointer;
               }
+
               .b-event-info__name {
                 font-family: 'Inter';
                 font-style: normal;
@@ -998,6 +1049,7 @@ $color-8a8aa8: #8a8aa8;
                 line-height: 20px;
                 color: $--b-main-black-color;
               }
+
               .b-event-info__phone {
                 font-family: 'Inter';
                 font-style: normal;
@@ -1007,6 +1059,7 @@ $color-8a8aa8: #8a8aa8;
                 color: $--b-main-gray-color;
               }
             }
+
             .b-event-info__right-side {
               font-family: 'Inter';
               font-style: normal;
@@ -1017,6 +1070,7 @@ $color-8a8aa8: #8a8aa8;
             }
           }
         }
+
         .b-event-info__map {
           margin-top: 20px;
           height: 200px;
@@ -1024,14 +1078,18 @@ $color-8a8aa8: #8a8aa8;
           .b-event-map {
             border-radius: 6px;
           }
+
           img {
             width: 100%;
           }
         }
       }
     }
+
     .b-event-info__tables-block {
       margin-top: 36px;
+      padding-bottom: 70px;
+
       .b-event-info__tables-title {
         margin-bottom: 32px;
         font-family: 'Exo 2';
@@ -1041,10 +1099,12 @@ $color-8a8aa8: #8a8aa8;
         line-height: 24px;
         color: $--b-main-black-color;
       }
+
       .b-event-info__judge-trainer-tables {
         display: flex;
         justify-content: space-between;
         align-items: center;
+
         @include tabletAndMobile {
           flex-direction: column;
         }
@@ -1052,6 +1112,7 @@ $color-8a8aa8: #8a8aa8;
     }
   }
 }
+
 .b-event-info__tab-block {
   display: flex;
   gap: 25px;

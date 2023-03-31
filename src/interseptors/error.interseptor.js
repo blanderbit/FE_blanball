@@ -31,9 +31,7 @@ export const ErrorInterceptor = (error) => {
   const errorMessageType = TypeRequestMessageWorker(error).filter(
     (item) => !skipErrorMessageType?.includes(item.errorType)
   )[0];
-
-  console.log(errorMessageType);
-
+  
   if (errorMessageType) {
     toast.error(
       i18n.global.t(`responseMessageTypes.${errorMessageType.errorType}`, {

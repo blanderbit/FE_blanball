@@ -3,13 +3,18 @@
 
 .Vue-Toastification__toast {
   background: #262541;
-  width: 320px;
-  padding: 16px;
+  width: 308px;
+  padding: 8px;
+   
+
+  svg {
+    margin: 0px 8px 0px 0px;
+  }
 }
 
 .Vue-Toastification__toast--success {
-  background: #f4fde8;
-  border: 1px solid #71ba12;
+  background: #F4FDE8;
+  border: 1px solid #71BA12;
   border-radius: 6px;
   color: #262541;
   font-family: 'Inter';
@@ -43,8 +48,8 @@
   color: #262541;
 }
 .Vue-Toastification__toast--info {
-  background: #f7f7fe;
-  border: 1px solid #bfbeda;
+  background: #F9F9FC;
+  border: 1px solid #DFDEED;
   border-radius: 6px;
   color: #262541;
   font-family: 'Inter';
