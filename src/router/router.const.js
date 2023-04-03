@@ -76,9 +76,21 @@ export const ROUTES = {
       },
     },
     MY_EVENTS: {
-      relative: 'my-events',
-      absolute: '/application/my-events',
-      name: 'application-my_events',
+      index: {
+        relative: 'my-events',
+        absolute: '/application/my-events',
+        name: 'application-my-events',
+      },
+      TOPICAL: {
+        relative: 'my-events/topical',
+        absolute: '/application/my-events/topical',
+        name: 'application-my-events-topical',
+      },
+      FINISHED: {
+        relative: 'my-events/finished',
+        absolute: '/application/my-events/finished',
+        name: 'application-my-events-finished',
+      },
     },
     USERS: {
       relative: 'users',

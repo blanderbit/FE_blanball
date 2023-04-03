@@ -38,6 +38,7 @@ export const EndpointsEnum = {
     EventJoinAsFan: '/events/client/fan/event/join',
     PinEvents: '/events/client/events/pin',
     UnPinEvents: '/events/client/events/unpin',
+    GetCountPinnedEvents: '/events/client/my/pinned/events/count',
     EventRequestsToParticipations: (eventId) =>
       `/events/client/requests/participations/list${eventId}`,
     DeclineOrAcceptParticipations:

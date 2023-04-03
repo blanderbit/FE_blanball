@@ -13,6 +13,7 @@
     :config="submitModalConfig"
     @closeModal="closeSubmitModal"
     @declineChanges="cancelChangesAndGoToTheNextRoute"
+    @deleteEvents="deleteEvents"
   />
 
   <Loading :is-loading="loading" />
@@ -25,11 +26,6 @@
     v-if="isActionEventModalOpened"
     :modalData="actionEventModalConfig"
     @closeModal="closeEventActiondModal"
-  />
-  <DeleteEventsModal
-    v-if="isDeleteEventsModalActive"
-    @closeModal="closeDeleteEventsModal"
-    @deleteEvents="deleteEvents"
   />
   <div class="b-events-page">
     <div class="b-events-page__main-body" ref="mainEventsBlock">
@@ -115,7 +111,7 @@
                 :width="127"
                 :icon="WhiteBucket"
                 :height="32"
-                @click-function="openDeleteEventsModal"
+                @click-function="showSubmitModal('deleteEvents')"
               />
               <div v-if="selected.length" class="b-left__side-count-selected">
                 {{ selected.length }}
@@ -149,8 +145,8 @@
             </template>
             <template #after>
               <InfiniteLoading
-                :identifier="triggerForRestart"
                 ref="scrollbar"
+                :identifier="triggerForRestart"
                 @infinite="loadDataPaginationData(paginationPage + 1, $event)"
               >
                 <template #complete>
@@ -224,9 +220,25 @@ import CalendarIcon from '../../../assets/img/calendar.svg';
 import WatchIcon from '../../../assets/img/watch-gray.svg';
 
 const TABS_ENUM = {
-  ACTUAL: 1,
+  TOPICAL: 1,
   FINISHED: 2,
 };
+
+const MAX_PINNED_EVENTS_COUNT = 5;
+
+const SubmitModalTypes = {
+  CANCEL_CHANGES: 'cancelChanges',
+  DELETE_EVENTS: 'deleteEvents',
+  DELETE_EVENT: 'deleteEvent',
+};
+
+const CONTEXT_MENU_TYPES = {
+  SELECT: 'select',
+  DELETE: 'delete',
+  PIN: 'pin',
+  UNPIN: 'unpin',
+  EDIT: 'edit',
+}
 
 export default {
   name: 'EventsPage',
@@ -264,7 +276,6 @@ export default {
     const contextMenuX = ref(null);
     const contextMenuY = ref(null);
     const isContextMenuActive = ref(false);
-    const isDeleteEventsModalActive = ref(false);
     const mainEventsBlock = ref();
     const selectedContextMenuEvent = ref();
     const oneEventToDeleteId = ref(null);
@@ -274,18 +285,19 @@ export default {
     const updateEventData = ref({});
     const refList = ref();
     const blockScrollToTopIfExist = ref(false);
-    const triggerForRestart = ref(false);
-    const selectedTabId = ref(1);
+    const triggerForRestart = ref('');
+    const selectedTabId = ref(route.meta.tabId);
     const isActionEventModalOpened = ref(false);
     const isSubmitModalOpened = ref(false);
     const nextRoutePath = ref('');
+    const actionEventModalData = ref({});
+    const submitModalData = ref({});
 
-    const actionEventModalConfig = computed(() => {
-      return {
-        title: t('modals.no_perm_to_edit.title'),
-        description: t('modals.no_perm_to_edit.main-text'),
-        image: NoEditPermIcon,
-      };
+    const actionEventModalConfig = computed({
+      get() {
+        return actionEventModalData.value;
+      },
+      set() {},
     });
 
     const tabs = computed(() => [
@@ -301,17 +313,11 @@ export default {
       },
     ]);
 
-    const submitModalConfig = computed(() => {
-      return {
-        title: 'Вийти без збереження змін',
-        description: 'Ви дійсно хочете вийти, скасувавши всі внесені зміни?',
-        button_1: 'Ні, не виходити',
-        button_2: 'Так, вийти',
-        right_btn_action: 'declineChanges',
-        left_btn_action: 'closeModal',
-        btn_with_1: 124,
-        btn_with_2: 90,
-      };
+    const submitModalConfig = computed({
+      get() {
+        return submitModalData.value;
+      },
+      set() {},
     });
 
     const iconPlus = computed(() => Plus);
@@ -340,6 +346,10 @@ export default {
     const closeEventUpdateModal = () => {
       isEventUpdateModalOpened.value = false;
     };
+    const showEventActiondModal = (modalData) => {
+      actionEventModalConfig.value = modalData;
+      isActionEventModalOpened.value = true;
+    };
     const closeEventActiondModal = () => {
       isActionEventModalOpened.value = false;
     };
@@ -347,32 +357,60 @@ export default {
       isSubmitModalOpened.value = false;
     };
 
-    const showSubmitModal = () => {
+    const showSubmitModal = (modalType) => {
       isSubmitModalOpened.value = true;
+
+      switch (modalType) {
+        case SubmitModalTypes.CANCEL_CHANGES:
+          submitModalData.value = {
+            title: 'Вийти без збереження змін',
+            description:
+              'Ви дійсно хочете вийти, скасувавши всі внесені зміни?',
+            button_1: 'Ні, не виходити',
+            button_2: 'Так, вийти',
+            right_btn_action: 'declineChanges',
+            left_btn_action: 'closeModal',
+            btn_with_1: 124,
+            btn_with_2: 90,
+          };
+        case SubmitModalTypes.DELETE_EVENTS:
+          submitModalData.value = {
+            title: t('modals.delete_events.title'),
+            description: t('modals.delete_events.main-text', {
+              length: selected.value.length,
+            }),
+            button_1: t('modals.delete_events.button-1-text'),
+            button_2: t('modals.delete_events.button-2-text'),
+            right_btn_action: 'deleteEvents',
+            left_btn_action: 'closeModal',
+            btn_with_1: 132,
+            btn_with_2: 132,
+          };
+      }
     };
 
     const contextMenuItemClick = async (itemType) => {
       switch (itemType) {
-        case 'select':
+        case CONTEXT_MENU_TYPES.SELECT:
           if (
             selected.value.indexOf(selectedContextMenuEvent.value.id) === -1
           ) {
             selected.value.push(selectedContextMenuEvent.value.id);
           }
           break;
-        case 'delete':
+        case CONTEXT_MENU_TYPES.DELETE:
           oneEventToDeleteId.value = selectedContextMenuEvent.value.id;
-          openDeleteEventsModal();
+          deleteEvents()
           break;
-        case 'pin':
+        case CONTEXT_MENU_TYPES.PIN:
           oneEventToPinId.value = selectedContextMenuEvent.value.id;
           pinEvents();
           break;
-        case 'unpin':
+        case CONTEXT_MENU_TYPES.UNPIN:
           oneEventToUnPinId.value = selectedContextMenuEvent.value.id;
           unPinEvents();
           break;
-        case 'edit':
+        case CONTEXT_MENU_TYPES.EDIT:
           editEventsItemClick();
           break;
       }
@@ -391,24 +429,21 @@ export default {
       };
     }
 
-    function openDeleteEventsModal() {
-      isDeleteEventsModalActive.value = true;
-    }
-
-    function closeDeleteEventsModal() {
-      isDeleteEventsModalActive.value = false;
-    }
-
     async function editEventsItemClick() {
       if (selectedContextMenuEvent.value.status === 'Planned') {
         let data = await prepareEventUpdateData(
           selectedContextMenuEvent.value.id
         );
-        isActionEventModalOpened;
         updateEventData.value = data;
         isEventUpdateModalOpened.value = true;
       } else {
-        isActionEventModalOpened.value = true;
+        showEventActiondModal(
+          (actionEventModalData.value = {
+            title: t('modals.no_perm_to_edit.title'),
+            description: t('modals.no_perm_to_edit.main-text'),
+            image: NoEditPermIcon,
+          })
+        );
       }
     }
 
@@ -431,27 +466,43 @@ export default {
       toast.success(t('notifications.events-unpinned'));
     }
 
+    async function getCountPinnedEvents() {
+      const response = await API.EventService.getCountPinnedEvents();
+      return response.data.count;
+    }
+
     async function pinEvents() {
       loading.value = true;
-      let eventsIDSToPin = oneEventToPinId.value
-        ? [oneEventToPinId.value]
-        : selected.value;
-      await API.EventService.pinEvents(eventsIDSToPin);
-      if (!oneEventToPinId.value) {
-        selected.value = [];
-      } else {
-        selected.value = selected.value.filter(
-          (value) => !eventsIDSToPin.includes(value)
+      if ((await getCountPinnedEvents()) === MAX_PINNED_EVENTS_COUNT) {
+        loading.value = false;
+        showEventActiondModal(
+          (actionEventModalData.value = {
+            title: t('modals.no_perm_to_pin.title'),
+            description: t('modals.no_perm_to_pin.main-text'),
+            image: NoEditPermIcon,
+          })
         );
-        oneEventToPinId.value = null;
+      } else {
+        let eventsIDSToPin = oneEventToPinId.value
+          ? [oneEventToPinId.value]
+          : selected.value;
+        await API.EventService.pinEvents(eventsIDSToPin);
+        if (!oneEventToPinId.value) {
+          selected.value = [];
+        } else {
+          selected.value = selected.value.filter(
+            (value) => !eventsIDSToPin.includes(value)
+          );
+          oneEventToPinId.value = null;
+        }
+        loadDataPaginationData(1, null, true, false);
+        loading.value = false;
+        toast.success(t('notifications.events-pinned'));
       }
-      loadDataPaginationData(1, null, true, false);
-      loading.value = false;
-      toast.success(t('notifications.events-pinned'));
     }
 
     async function deleteEvents() {
-      closeDeleteEventsModal();
+      closeSubmitModal();
       loading.value = true;
       let eventsIDSToDelete = oneEventToDeleteId.value
         ? [oneEventToDeleteId.value]
@@ -485,7 +536,6 @@ export default {
           let index = selected.value.indexOf(eventId);
           index !== -1 ? selected.value.splice(index, 1) : null;
         } else {
-          console;
           selected.value.push(eventId);
         }
       } else {
@@ -499,13 +549,23 @@ export default {
     function goToCreateEvent() {
       router.push(ROUTES.APPLICATION.EVENTS.CREATE.absolute);
     }
-    function changeTab(tabId) {
+    async function changeTab(tabId) {
       if (tabId !== selectedTabId.value) {
         selectedTabId.value = tabId;
-        if (selectedTabId.value === tabId) {
-          loadDataPaginationData(1, null, true, true);
-          restartInfiniteScroll();
+        
+        switch (selectedTabId.value) {
+          case TABS_ENUM.TOPICAL:
+          await router.push(ROUTES.APPLICATION.MY_EVENTS.TOPICAL.absolute);
+            break
+          case TABS_ENUM.FINISHED:
+            await router.push(ROUTES.APPLICATION.MY_EVENTS.FINISHED.absolute);
+            break
         }
+        paginationPage.value = 1;
+        paginationTotalCount.value = route.meta.eventData.data.total_count;
+        paginationElements.value =
+          route.meta.eventData.data.results.map(handlingIncomeData);
+        restartInfiniteScroll();
       }
     }
 
@@ -530,7 +590,7 @@ export default {
       paginationClearData,
     } = PaginationWorker({
       paginationDataRequest: (page) => {
-        if (selectedTabId.value === TABS_ENUM.ACTUAL) {
+        if (selectedTabId.value === TABS_ENUM.TOPICAL) {
           return API.EventService.getMyTopicalEvents({
             ...getRawFilters(),
             page,
@@ -549,7 +609,6 @@ export default {
     paginationTotalCount.value = route.meta.eventData.data.total_count;
     paginationElements.value =
       route.meta.eventData.data.results.map(handlingIncomeData);
-
     const { getRawFilters, updateFilter, filters, clearFilters, setFilters } =
       FilterPatch({
         router,
@@ -676,7 +735,7 @@ export default {
     onBeforeRouteLeave((to, from, next) => {
       nextRoutePath.value = to.fullPath;
       if (selected.value.length && !isSubmitModalOpened.value) {
-        showSubmitModal();
+        showSubmitModal('cancelChanges');
       } else {
         next();
       }
@@ -703,7 +762,6 @@ export default {
       emptyListMessages,
       isContextMenuActive,
       refList,
-      isDeleteEventsModalActive,
       blockScrollToTopIfExist,
       triggerForRestart,
       paginationElements,
@@ -731,8 +789,6 @@ export default {
       declineSelect,
       goToEventPage,
       myCardLeftClick,
-      openDeleteEventsModal,
-      closeDeleteEventsModal,
       switchEvents,
       goToCreateEvent,
       setFilters,
@@ -751,24 +807,33 @@ $color-148581: #148581;
 $color-dfdeed: #dfdeed;
 
 @import 'v-calendar/dist/style.css';
+
 .b-events-page {
   display: grid;
   grid-template-columns: 1fr 256px;
   grid-gap: 28px;
+
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
   }
+
   .b-events-page__main-body {
     /*height: 90vh;*/
-    -ms-overflow-style: none; /* for Internet Explorer, Edge */
-    scrollbar-width: none; /* for Firefox */
+    -ms-overflow-style: none;
+    /* for Internet Explorer, Edge */
+    scrollbar-width: none;
+
+    /* for Firefox */
     &::-webkit-scrollbar {
-      display: none; /* for Chrome, Safari, and Opera */
+      display: none;
+      /* for Chrome, Safari, and Opera */
     }
+
     .b-events-page__header-block {
       display: flex;
       justify-content: space-between;
       align-items: center;
+
       .b-events-page__left-part {
         .b-events-page__title {
           font-family: 'Exo 2';
@@ -779,6 +844,7 @@ $color-dfdeed: #dfdeed;
           color: $--b-main-black-color;
           margin-bottom: 4px;
         }
+
         .b-events-page__subtitle {
           font-family: 'Inter';
           font-style: normal;
@@ -786,10 +852,12 @@ $color-dfdeed: #dfdeed;
           font-size: 13px;
           line-height: 20px;
           color: $--b-main-gray-color;
+
           @media (min-width: 992px) {
             display: none;
           }
         }
+
         .b-events-page__event-switcher {
           font-family: 'Inter';
           font-style: normal;
@@ -799,9 +867,11 @@ $color-dfdeed: #dfdeed;
           text-align: center;
           color: $--b-main-black-color;
           display: flex;
+
           @media (max-width: 992px) {
             display: none;
           }
+
           .b-events-page__general-events {
             display: flex;
             flex-direction: row;
@@ -816,6 +886,7 @@ $color-dfdeed: #dfdeed;
             border-bottom: 1px solid $color-f0f0f4;
             cursor: pointer;
           }
+
           .b-events-page__my-events {
             display: flex;
             flex-direction: row;
@@ -829,6 +900,7 @@ $color-dfdeed: #dfdeed;
             cursor: pointer;
           }
         }
+
         .b-events-page__event-switcher-mobile {
           display: none;
           align-items: center;
@@ -843,6 +915,7 @@ $color-dfdeed: #dfdeed;
           @media (max-width: 992px) {
             display: flex;
           }
+
           .b-events-page__my-events-mobile {
             flex: 50%;
             cursor: pointer;
@@ -860,6 +933,7 @@ $color-dfdeed: #dfdeed;
             align-items: center;
             justify-content: center;
           }
+
           .b-events-page__general-events-mobile {
             flex: 50%;
             cursor: pointer;
@@ -873,15 +947,18 @@ $color-dfdeed: #dfdeed;
           }
         }
       }
+
       .b-events-page__right-part {
         @media (max-width: 992px) {
           display: none;
         }
+
         a {
           text-decoration: none;
         }
       }
     }
+
     .b-events-page__after-select-block {
       display: flex;
       justify-content: space-between;
@@ -922,6 +999,7 @@ $color-dfdeed: #dfdeed;
 
       .b-right__side {
         z-index: 2;
+
         .b-right__side-cancel {
           font-family: 'Inter';
           font-style: normal;
@@ -934,13 +1012,16 @@ $color-dfdeed: #dfdeed;
         }
       }
     }
+
     .b-events-page__main-search-block {
       margin-top: 36px;
       margin-bottom: 20px;
       position: relative;
+
       @media (max-width: 992px) {
         padding: 0;
       }
+
       .b-events-page__tabs {
         display: flex;
         align-items: center;
@@ -965,29 +1046,40 @@ $color-dfdeed: #dfdeed;
           }
         }
       }
+
       .b-events-page__all-events-block {
         position: relative;
         margin-top: 23px;
         height: 76vh;
         overflow: scroll;
-        -ms-overflow-style: none; /* for Internet Explorer, Edge */
-        scrollbar-width: none; /* for Firefox */
+        -ms-overflow-style: none;
+        /* for Internet Explorer, Edge */
+        scrollbar-width: none;
+
+        /* for Firefox */
         &::-webkit-scrollbar {
-          display: none; /* for Chrome, Safari, and Opera */
+          display: none;
+          /* for Chrome, Safari, and Opera */
         }
+
         .b-events-page__cards-event-wrapper {
           display: flex;
           flex-wrap: wrap;
           justify-content: space-between;
           overflow-y: scroll;
           height: 100%;
-          -ms-overflow-style: none; /* for Internet Explorer, Edge */
-          scrollbar-width: none; /* for Firefox */
+          -ms-overflow-style: none;
+          /* for Internet Explorer, Edge */
+          scrollbar-width: none;
+
+          /* for Firefox */
           &::-webkit-scrollbar {
-            display: none; /* for Chrome, Safari, and Opera */
+            display: none;
+            /* for Chrome, Safari, and Opera */
           }
         }
       }
+
       .b-events-page__my-events-block {
         display: flex;
         flex-wrap: wrap;
@@ -997,6 +1089,7 @@ $color-dfdeed: #dfdeed;
     }
   }
 }
+
 .b-events-page__all-create-event-mobile-button {
   background: $--b-main-green-color;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);

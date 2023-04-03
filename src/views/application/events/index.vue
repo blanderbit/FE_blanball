@@ -287,7 +287,7 @@ export default {
       router.push(ROUTES.APPLICATION.EVENTS.CREATE.absolute);
     }
     function switchToMyEvents() {
-      router.push(ROUTES.APPLICATION.MY_EVENTS.absolute);
+      router.push(ROUTES.APPLICATION.MY_EVENTS.index.absolute);
     }
 
     const refList = ref();

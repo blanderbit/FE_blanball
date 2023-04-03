@@ -8,6 +8,7 @@ export const PaginationWorker = (options) => {
   const paginationPage = ref(0);
   const paginationTotalCount = ref(0);
   const paginationIsNextPage = ref(true);
+  const functionsResults = ref([]);
 
   const paginationClearData = () => {
     paginationElements.value = [];
@@ -28,8 +29,9 @@ export const PaginationWorker = (options) => {
     if ($state?.loading) $state.loading();
 
     paginationPage.value = pageNumber;
-
-    await paginationDataRequest(pageNumber)
+    await Promise.all(functionsResults.value);
+    functionsResults.value = [];
+    const functionResult = paginationDataRequest(pageNumber)
       .then((result) => {
         if (dataTransformation) {
           result.data.results = result.data.results.map(dataTransformation);
@@ -50,6 +52,7 @@ export const PaginationWorker = (options) => {
       .catch(() => {
         $state?.complete && $state.complete();
       });
+    functionsResults.value.push(functionResult);
   };
 
   return {

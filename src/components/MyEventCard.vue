@@ -33,6 +33,7 @@
           class="b-my-event-card__place"
           v-if="card.place.place_name"
           :place="card.place"
+          :disabled="isCardSelected"
         >
         </PlaceDetector>
         <div class="b-my-event-card__labels">

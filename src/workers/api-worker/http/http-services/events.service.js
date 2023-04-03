@@ -137,6 +137,10 @@ export class EventService {
     );
   }
 
+  getCountPinnedEvents() {
+    return AxiosInstance.get(EndpointsEnum.Events.GetCountPinnedEvents);
+  }
+
   @FilterParamsDecorator(filterConfigForEvents)
   getPlannedUserEvents(options) {
     return AxiosInstance.get(
