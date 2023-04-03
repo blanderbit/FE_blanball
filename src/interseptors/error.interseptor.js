@@ -43,6 +43,5 @@ export const ErrorInterceptor = (error) => {
   }
 
   error.errorMessageType = errorMessageType;
-
   return Promise.reject(error);
 };

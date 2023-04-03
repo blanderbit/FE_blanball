@@ -5,6 +5,7 @@
       { active: card.status === 'Active' },
       { finished: card.status === 'Finished' },
       { selected: isCardSelected },
+      { pinned: card.pinned }
     ]"
     @click.right.prevent="$emit('cardRightClick', $event)"
     @click.prevent="$emit('cardLeftClick', card.id)"
@@ -147,7 +148,10 @@ $color-4c4a82: #4c4a82;
     border: 1px solid $color-e184a0;
   }
   &.selected {
-    border: 1px solid $color-1ab2ad;
+    border: 1px solid $color-1ab2ad !important;
+  }
+  &.pinned {
+    border: 1px dashed #DFDEED;
   }
 
   .b-my-event-card-selected-icon {

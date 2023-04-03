@@ -1,11 +1,32 @@
 <template>
   <Loading :is-loading="loading" />
-  <CopyModal
-    v-if="isShareEventModalOpened"
-    :shareLink="currentFullRoute"
-    @copyLinkButtonClick="copyLinkButtonClick"
-    @closeModal="closeShareEventModal"
-  />
+
+  <CopyModal v-if="isShareEventModalOpened" @closeModal="closeShareEventModal">
+    <template #title>
+      {{ $t('modals.share_event.title') }}
+    </template>
+    <template #header-image>
+      <img src="../../../assets/img/share-arrow.svg" alt="" />
+    </template>
+    <template #input>
+      <InputComponent
+        :height="40"
+        :outsideTitle="true"
+        :title-width="0"
+        :title="$t('modals.share_event.input-text')"
+        :isReadOnly="true"
+        v-model="currentFullRoute"
+        name="title"
+      />
+    </template>
+    <template #button>
+      <GreenBtn
+        :text="$t('buttons.copy-link')"
+        :height="40"
+        @click-function="copyLinkButtonClick"
+      />
+    </template>
+  </CopyModal>
   <ActionEventModal
     v-if="isActionEventModalOpened"
     :modalData="actionEventModalConfig"
@@ -248,6 +269,7 @@ import ActionEventModal from '../../../components/ModalWindows/ActionEventModal.
 import EditEventModal from '../../../components/ModalWindows/EditEventModal.vue';
 import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue';
 import ContextModal from '../../../components/ModalWindows/ContextModal.vue';
+import InputComponent from '../../../components/forms/InputComponent.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { BlanballEventBus } from '../../../workers/event-bus-worker';
@@ -269,7 +291,7 @@ import noUserRecords from '../../../assets/img/no-records/no-user-records.svg';
 import editEvent from '../../../assets/img/edit-white.svg';
 import NoEditPermIcon from '../../../assets/img/no-edit-perm-modal-icon.svg';
 import ExitIcon from '../../../assets/img/exit-white.svg';
-import PlusIcon from '../../../assets/img/plus.svg'
+import PlusIcon from '../../../assets/img/plus.svg';
 
 const eventJoinTypes = {
   PLAY: 'play',
@@ -292,6 +314,7 @@ export default {
     ListOfEventRequestsToParticipations,
     ActionEventModal,
     SubmitModal,
+    InputComponent,
     ContextModal,
   },
   setup() {
@@ -998,6 +1021,7 @@ $color-8a8aa8: #8a8aa8;
             @include mobile {
               order: 2;
               margin-top: 8px;
+              margin-bottom: 0px;
             }
 
             .b-event-info__label {
@@ -1027,9 +1051,8 @@ $color-8a8aa8: #8a8aa8;
             margin-bottom: 12px;
             padding-bottom: 12px;
             border-bottom: 1px solid $color-dfdeed;
-
-            @include beforeDesktop {
-              padding-top: 0px;
+            @include mobile {
+              border-top: 1px solid $color-dfdeed;
             }
 
             .b-event-info__left-side {
@@ -1088,7 +1111,10 @@ $color-8a8aa8: #8a8aa8;
 
     .b-event-info__tables-block {
       margin-top: 36px;
-      padding-bottom: 70px;
+
+      @include mobile {
+        padding-bottom: 70px;
+      }
 
       .b-event-info__tables-title {
         margin-bottom: 32px;

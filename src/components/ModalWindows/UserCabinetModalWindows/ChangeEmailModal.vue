@@ -101,7 +101,7 @@ export default {
       default: '',
     },
   },
-  emits: ['closeModal', 'email'],
+  emits: ['closeModal', 'f'],
   setup(props, { emit }) {
     const { t } = useI18n();
     const loading = ref(false);
@@ -163,8 +163,8 @@ export default {
       await API.UserService.sendApproveCode({
         verify_code: data.values.verify_code,
       });
+      emit('email');
       closeModal();
-      toast.success(t('notifications.email-changed'));
     }
 
     return {

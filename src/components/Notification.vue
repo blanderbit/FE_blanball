@@ -84,12 +84,11 @@
                 class="notification-header-content"
                 v-if="
                   notificationType === 'notification-sidebar' &&
-                  !notificationInstance.textsAfterAction &&
                   notificationInstance?.actions?.length
                 "
               >
                 <div
-                  class="notification-content not-full-content"
+                  :class="['notification-content', {'not-full-content': !isTextShow}]"
                   v-for="item in notificationInstance.texts"
                 >
                   {{ item }}
@@ -134,16 +133,6 @@
             #content
             class="notification-expandle-content"
           >
-            <template v-if="notificationInstance.textsAfterAction">
-              <div class="notification-response d-flex align-items-center">
-                <img
-                  v-if="notificationInstance.textsAfterAction.response"
-                  src="../assets/img/true-check.svg"
-                />
-                <img v-else src="../assets/img/red-cross.svg" />
-                {{ notificationInstance.textsAfterAction.text }}
-              </div>
-            </template>
             <div
               class="notification-content"
               v-for="item in notificationInstance.texts"
@@ -153,7 +142,6 @@
             <div
               class="notification-actions"
               v-if="
-                !notificationInstance.textsAfterAction &&
                 notificationInstance?.actions?.length
               "
             >
@@ -181,16 +169,6 @@
           v-if="notificationType === 'notification-push'"
           class="push-notification-main-content"
         >
-          <template v-if="notificationInstance.textsAfterAction">
-            <div class="notification-response d-flex align-items-center">
-              <img
-                v-if="notificationInstance.textsAfterAction.response"
-                src="../assets/img/true-check.svg"
-              />
-              <img v-else src="../assets/img/red-cross.svg" />
-              {{ notificationInstance.textsAfterAction.text }}
-            </div>
-          </template>
           <div class="push-notification-content">
             <collapsible-panel
               :expanding="false">
@@ -211,7 +189,6 @@
           <div
             class="notification-actions"
             v-if="
-              !notificationInstance.textsAfterAction &&
               notificationInstance?.actions?.length &&
               notificationType === 'notification-push'
             "
