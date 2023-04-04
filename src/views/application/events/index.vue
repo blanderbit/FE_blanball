@@ -40,7 +40,7 @@
             :text="$t('buttons.create-event')"
             :width="168"
             :icon="iconPlus"
-            :height="40"
+            :height="32"
             @click-function="goToCreateEvent"
           />
         </div>
@@ -120,7 +120,6 @@ import GreenBtn from '../../../components/GreenBtn.vue';
 import InputComponent from '../../../components/forms/InputComponent.vue';
 import ContextMenu from '../../../components/ModalWindows/ContextMenuModal.vue';
 import EventCard from '../../../components/event-components/EventCard.vue';
-import SearchBlockEvents from '../../../components/SearchBlockEvents.vue';
 import MyEventCard from '../../../components/MyEventCard.vue';
 import RightSidebar from '../../../components/RightSidebar.vue';
 import EmptyList from '../../../components/EmptyList.vue';
@@ -161,7 +160,6 @@ export default {
     InputComponent,
     ContextMenu,
     EventCard,
-    SearchBlockEvents,
     MyEventCard,
     RightSidebar,
     SmartGridList,
@@ -482,11 +480,6 @@ $color-f0f0f4: #f0f0f4;
   }
   .b-events-page__main-body {
     height: 90vh;
-    -ms-overflow-style: none; /* for Internet Explorer, Edge */
-    scrollbar-width: none; /* for Firefox */
-    &::-webkit-scrollbar {
-      display: none; /* for Chrome, Safari, and Opera */
-    }
     .b-events-page__header-block {
       display: flex;
       justify-content: space-between;
@@ -642,11 +635,6 @@ $color-f0f0f4: #f0f0f4;
           justify-content: space-between;
           overflow-y: scroll;
           height: 100%;
-          -ms-overflow-style: none; /* for Internet Explorer, Edge */
-          scrollbar-width: none; /* for Firefox */
-          &::-webkit-scrollbar {
-            display: none; /* for Chrome, Safari, and Opera */
-          }
         }
       }
     }

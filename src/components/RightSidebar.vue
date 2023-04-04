@@ -137,11 +137,6 @@ $color-f9f9fc: #f9f9fc;
     margin-top: 20px;
     height: calc(100vh - 72px - 90px - 20px);
     overflow: scroll;
-    -ms-overflow-style: none; /* for Internet Explorer, Edge */
-    scrollbar-width: none; /* for Firefox */
-    &::-webkit-scrollbar {
-      display: none; /* for Chrome, Safari, and Opera */
-    }
   }
   .b-right-sidebar__no-events {
     @include inter(13px, 400);

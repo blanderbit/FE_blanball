@@ -319,24 +319,6 @@ export default {
 
 <style lang="scss" scoped>
 $color-8a8aa8: #8a8aa8;
-
-::-webkit-scrollbar-track {
-  background-color: $--b-main-white-color;
-  border-radius: 100px;
-}
-
-/* style for the scrollbar thumb */
-::-webkit-scrollbar-thumb {
-  background-color: $color-8a8aa8;
-  border-radius: 100px;
-  transform: matrix(-1, 0, 0, 1, 0, 0);
-}
-
-/* style for the scrollbar */
-::-webkit-scrollbar {
-  position: absolute;
-  width: 6px;
-}
 .b-edit-event-modal__block-title {
   @include exo(16px, 700);
   line-height: 24px;
@@ -389,11 +371,6 @@ $color-8a8aa8: #8a8aa8;
       display: flex;
       flex-direction: column;
       gap: 20px;
-      .b-main-side__second-step {
-        ::-webkit-scrollbar {
-          display: none;
-        }
-      }
       .b-edit-event-modal__general-info {
         display: flex;
         flex-direction: column;

@@ -1,5 +1,5 @@
 <template>
-  <div class="third-step" :style="stepStyle">
+  <div class="third-step">
     <div class="title">
       {{ $t('events.need-clothes') }}
     </div>
@@ -120,10 +120,6 @@ export default {
     EventCreateForms,
   },
   props: {
-    currentStep: {
-      type: Number,
-      default: null,
-    },
     formsValue: {
       type: Object,
       default: () => {},
@@ -162,18 +158,9 @@ export default {
       isEditPhone.value = !isEditPhone.value;
     }
 
-    const stepStyle = computed(() => {
-      if (props?.currentStep) {
-        return props?.currentStep === 3
-          ? { height: 'auto' }
-          : { height: '0px' };
-      }
-    });
-
     return {
       icons,
       needForm,
-      stepStyle,
       isEditPhone,
       phoneValue,
       showHidePhone,
@@ -339,7 +326,7 @@ $color-dfdeed: #dfdeed;
   align-items: center;
   margin-bottom: 8px;
   opacity: 0.6;
-  margin-top: 20px;
+  margin-top: 16px;
 
   span {
     font-family: 'Inter';

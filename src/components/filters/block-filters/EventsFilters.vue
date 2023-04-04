@@ -31,6 +31,7 @@
               <Dropdown
                 :check-value-immediate="true"
                 :placeholder="$t('events.game-type')"
+                :backgroundColor="'#fff'"
                 :options="sportTypeDropdown"
                 :height="32"
                 display-value="value"
@@ -45,7 +46,7 @@
                 :title-width="0"
                 :placeholder="$t('events.search-events')"
                 :height="32"
-                :icon="times"
+                :icon="icons.search"
                 name="search"
                 v-model="transformedFilters.search"
               />
@@ -58,6 +59,18 @@
         </div>
         <div class="b-main-search__second-line" v-if="activeFilters">
           <div class="b-main-search__left-side">
+            <div class="b-main-search__dropdown-wrapper-cities">
+              <Dropdown
+                :check-value-immediate="true"
+                :placeholder="$t('events.gender')"
+                :options="gender"
+                :backgroundColor="'#fff'"
+                :height="32"
+                display-value="value"
+                display-name="name"
+                v-model="transformedFilters.gender"
+              />
+            </div>
             <div class="b-main-search__calendar">
               <img src="../../../assets/img/calendar.svg" alt="" />
               <v-date-picker
@@ -82,17 +95,6 @@
                   </div>
                 </template>
               </v-date-picker>
-            </div>
-            <div class="b-main-search__dropdown-wrapper-cities">
-              <Dropdown
-                :check-value-immediate="true"
-                :placeholder="$t('events.gender')"
-                :options="gender"
-                :height="32"
-                display-value="value"
-                display-name="name"
-                v-model="transformedFilters.gender"
-              />
             </div>
           </div>
           <div class="b-main-search__right-side">

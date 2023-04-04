@@ -246,9 +246,6 @@ $color-f9f9fc: #f9f9fc;
 $color-f0f0f4: #f0f0f4;
 $color-efeff6: #efeff6;
 
-::-webkit-scrollbar {
-  display: none;
-}
 .b-rating-card {
   height: fit-content;
   background: $--b-main-white-color;

@@ -748,10 +748,6 @@ $color-e3fbfa: #e3fbfa;
 $color-f9f9fc: #f9f9fc;
 $color-8a8aa8: #8a8aa8;
 
-::-webkit-scrollbar {
-  display: none;
-}
-
 .b-event-info {
   display: grid;
   grid-template-columns: 1fr 256px;

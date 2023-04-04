@@ -798,10 +798,6 @@ $color-d2f6a2: #d2f6a2;
           height: calc(100vh - 90px - 60px);
         }
 
-        ::-webkit-scrollbar {
-          display: none;
-        }
-
         @media (max-width: 1400px) {
           width: 350px;
         }

@@ -1,5 +1,5 @@
 <template>
-  <div class="b-event-m-1st" :style="stepStyle">
+  <div class="b-event-m-1st">
     <div class="b-event-m-1st__title-general mb-2">
       {{ $t('events.general-info') }}
     </div>
@@ -215,10 +215,6 @@ export default {
       type: Object,
       default: () => {},
     },
-    currentStep: {
-      type: Number,
-      default: null,
-    },
     initialValues: {
       type: Object,
       default: () => {},
@@ -259,7 +255,7 @@ export default {
     watch(
       () => initialDate.value,
       (newData, oldData) => {
-        emit('changeEventDate', newData);
+        emit('changeEventDate', dayjs(newData).format('YYYY-MM-DD'));
       }
     );
 
@@ -280,14 +276,6 @@ export default {
 
       emit('selectEventDuration', data.value);
     };
-
-    const stepStyle = computed(() => {
-      if (props?.currentStep) {
-        return props?.currentStep === 1
-          ? { height: 'auto' }
-          : { height: '0px' };
-      }
-    });
 
     const icons = computed(() => {
       return {
@@ -312,7 +300,6 @@ export default {
       mockData,
       initialDate,
       calendar,
-      stepStyle,
       eventLocationOnMap,
       eventLocation,
       eventDurationOptions,

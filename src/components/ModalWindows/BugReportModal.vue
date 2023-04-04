@@ -170,10 +170,6 @@ $color-4c4a82: #4c4a82;
     color: $--b-main-gray-color;
   }
 
-  &::v-deep(textarea::-webkit-scrollbar) {
-    display: none;
-  }
-
   &::v-deep(.b-text-area__min-max-label) {
     display: none;
   }

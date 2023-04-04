@@ -44,6 +44,8 @@ export default {
   left: 0;
   width: 100%;
   z-index: 999;
+  width: 100%;
+  height: 100%;
 
   @media (max-width: 992px) {
     top: 40px;

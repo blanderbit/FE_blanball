@@ -92,12 +92,6 @@ $color-fee7e7: #fee7e7;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 6px;
   transition: all 0.3s ease;
-
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-  scrollbar-width: none; /* Firefox */
-  &::-webkit-scrollbar {
-    display: none;
-  }
   .b-modal-bottom-card__title-line {
     display: flex;
     justify-content: space-between;

@@ -102,4 +102,30 @@ export default {
       name: 'Всі',
     },
   ],
+  ordering: [
+    {
+      value: '-id',
+      name: 'Cпочатку старі',
+    },
+    {
+      value: 'id',
+      name: 'Cпочатку нові',
+    },
+    {
+      value: 'profile__age',
+      name: 'За збільшенням віку',
+    },
+    {
+      value: 'raiting',
+      name: 'За збільшенням рейтингу',
+    },
+    {
+      value: '-profile__age',
+      name: 'За спаданням віку',
+    },
+    {
+      value: '-raiting',
+      name: 'За спаданням рейтингу',
+    },
+  ]
 };

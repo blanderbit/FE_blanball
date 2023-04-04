@@ -24,6 +24,7 @@ export default {
   'your-events': 'Заходи у яких ви запланували участь',
   sorting: 'Сортування',
   position: 'Позицiя',
+  'gaming-position': 'Ігрова позицiя',
   gender: 'Стать',
   'age-area': 'Віковий діапазон',
   'game-type': 'Тип гри',

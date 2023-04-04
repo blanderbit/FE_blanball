@@ -128,8 +128,11 @@ $color-d3f8f7: #d3f8f7;
   padding: 20px 16px;
   height: fit-content;
 
-  @include tabletAndMobile {
+  @media (max-width: 1200px) {
     box-shadow: none;
+    padding: 16px 0px;
+  } 
+  @include tabletAndMobile {
     padding: 0px 16px;
   }
   .b-security__email-input {

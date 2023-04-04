@@ -652,9 +652,6 @@ $color-e2e2e9: #e2e2e9;
 $color-6f6f77: #6f6f77;
 $color-dfdeed: #dfdeed;
 
-::-webkit-scrollbar {
-  display: none;
-}
 .b-player-page__outer-btns {
   position: absolute;
   top: -30px;
@@ -703,9 +700,6 @@ $color-dfdeed: #dfdeed;
   @include tabletAndMobile {
     padding-bottom: 150px;
   }
-}
-.b-user-cabinet__user-cabinet::-webkit-scrollbar {
-  display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
@@ -788,6 +782,7 @@ $color-dfdeed: #dfdeed;
       right: 0;
     }
     .b-user-cabinet__mobile-tablet-block {
+      padding-right: 16px;
       @media (min-width: 1400px) {
         flex-basis: 372px;
       }
@@ -796,6 +791,9 @@ $color-dfdeed: #dfdeed;
       }
       @media (min-width: 768px) and (max-width: 1200px) {
         flex-basis: 49%;
+      }
+      @include mobile {
+        padding-right: 0px;
       }
     }
   }

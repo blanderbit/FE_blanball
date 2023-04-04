@@ -25,8 +25,8 @@
               :avatarType="'small-square'"
               :full-name="`${user.profile.last_name} ${user.profile.name}`"
             ></Avatar>
-            <span v-if="user.profile.position" class="b-invited-user__position">
-              {{ $t(`hashtags.${user.profile.position}`) }}
+            <span class="b-invited-user__position">
+              {{ user.profile.position ? $t(`hashtags.${user.profile.position}`) : '----' }}
             </span>
             <span class="b-invited-user__full-name">
               {{ user.profile.last_name }} {{ user.profile.name }}
