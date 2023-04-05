@@ -42,6 +42,8 @@ export const ErrorInterceptor = (error) => {
     );
   }
 
-  error.errorMessageType = errorMessageType;
+  if (errorMessageType) {
+    error.errorMessageType = errorMessageType;
+  }
   return Promise.reject(error);
 };

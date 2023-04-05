@@ -1,5 +1,5 @@
 <template>
-  <Loading :is-loading="eventCreateLoader"/>
+  <Loading :is-loading="eventCreateLoader" />
   <SubmitModal
     v-if="isSubmitModalOpened"
     :config="changeDataModalConfig"
@@ -9,8 +9,9 @@
   />
   <div class="b-manage-event">
     <Form
+      ref="myForm"
       v-slot="data"
-      :initial-values="eventPreviewData"
+      :initial-values="eventData"
       :validation-schema="schema"
       @submit="disableSubmit"
     >
@@ -33,7 +34,7 @@
         <div class="b-manage-event__create-event-block">
           <ManageEventFirstStep
             v-if="currentStep === 1"
-            :initialValues="eventPreviewData"
+            :initialValues="eventData"
             @changeEventLocation="getNewEventLocation($event, data)"
             @selectEventDuration="runOnSelectEventDuration($event, data)"
             @changeEventDate="setEventDate($event, data)"
@@ -43,7 +44,7 @@
             :filteredUsersList="relevantUsersList"
             :filterUsersListLoading="searchUsersLoading"
             :invitedUsersList="invitedUsers"
-            :initialValues="eventPreviewData"
+            :initialValues="eventData"
             @searchUsers="searchRelevantUsers"
             @invite-user="inviteUsetToTheEvent"
             @changedEventPrivacyToFree="updateEventPriceAfterSelectFree(data)"
@@ -51,7 +52,7 @@
           <ManageEventThirdStep
             v-if="currentStep === 3"
             :formsValue="eventForms"
-            :initialValues="eventPreviewData"
+            :initialValues="eventData"
             @selectNeedForm="selectNeedForm($event, data)"
             @setForms="openSelectFormsModal"
             @changeForms="openSelectFormsModal"
@@ -108,11 +109,11 @@
         </Transition>
 
         <div class="b-manage-event-preview__block">
-          <PreviewBlock :eventData="data.values" />
+          <PreviewBlock :eventData="eventPreviewData" />
           <Transition name="slide">
             <PreviewEventModal
               v-if="isEventPreivewModalOpened"
-              :eventData="data.values"
+              :eventData="eventPreviewData"
               @closeModal="closePreviewEventModal"
             />
           </Transition>
@@ -137,11 +138,13 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter, useRoute, onBeforeRouteLeave } from 'vue-router';
 
-import { Form, useForm } from '@system.it.flumx.com/vee-validate';
+import { Form } from '@system.it.flumx.com/vee-validate';
+
+import { merge, cloneDeep } from 'lodash';
 
 import InputComponent from '../../../components/forms/InputComponent.vue';
 import GreenBtn from '../../../components/GreenBtn.vue';
@@ -210,16 +213,15 @@ export default {
     const isSubmitModalOpened = ref(false);
     const changeDataModalConfig = ref('');
     const isEventCreated = ref(false);
+    const myForm = ref();
     const nextRoute = ref(ROUTES.APPLICATION.EVENTS.absolute);
-
-    const { values } = useForm()
 
     const manageEventActionTypes = ref({
       CREATE: 'CREATE',
       EDIT: 'EDIT',
     });
 
-    const eventPreviewData = ref(
+    const eventData = ref(
       route.meta?.eventData || {
         name: '',
         place: {},
@@ -239,14 +241,20 @@ export default {
       }
     );
 
+    const eventPreviewData = computed(() => {
+      eventData.value = merge(
+        eventData.value,
+        myForm.value?.getControledValues()
+      );
+      return eventData.value;
+    });
+
     const invitedUsers = ref([]);
-    const acceptedUsers = ref(eventPreviewData.value.current_users);
+    const acceptedUsers = ref(eventData.value.current_users);
 
-    const formsModalSelectedTabId = ref(
-      eventPreviewData.value.need_form ? 1 : 2
-    );
+    const formsModalSelectedTabId = ref(eventData.value.need_form ? 1 : 2);
 
-    const eventForms = ref(eventPreviewData.value.forms);
+    const eventForms = ref(eventData.value.forms);
     let searchTimeout;
 
     const schema = computed(() => {
@@ -361,11 +369,11 @@ export default {
     };
 
     const SKIPIDS = [
-      eventPreviewData.value.author?.id
-        ? eventPreviewData.value.author.id
+      eventData.value.author?.id
+        ? eventData.value.author.id
         : userStore.user.id,
-      ...(eventPreviewData.value?.current_users?.map((user) => user.id) ?? []),
-      ...(eventPreviewData.value?.current_fans?.map((fan) => fan.id) ?? []),
+      ...(eventData.value?.current_users?.map((user) => user.id) ?? []),
+      ...(eventData.value?.current_fans?.map((fan) => fan.id) ?? []),
     ];
 
     const getRelevantUsers = async (options) => {
@@ -429,29 +437,28 @@ export default {
     };
 
     async function saveEvent(data) {
-      let emitName
+      let emitName;
       eventCreateLoader.value = true;
       isEventCreated.value = true;
-      const createEventData = data.values;
+      
+      data.date_and_time = `${data.date} ${data.time}`;
 
-      createEventData.date_and_time = `${createEventData.date} ${createEventData.time}`;
-
-      createEventData.current_users = invitedUsers.value.map((user) => user.id);
+      data.current_users = invitedUsers.value.map((user) => user.id);
 
       try {
         switch (manageAction.value) {
           case manageEventActionTypes.value.CREATE:
-            await API.EventService.createOneEvent(createEventData);
+            await API.EventService.createOneEvent(data);
             eventCreateLoader.value = false;
-            emitName = 'EventCreated'
+            emitName = 'EventCreated';
             break;
           case manageEventActionTypes.value.EDIT:
             await API.EventService.editOneEvent(
               route.params.id,
-              createEventData
+              data
             );
             eventCreateLoader.value = false;
-            emitName = 'EventUpdated'
+            emitName = 'EventUpdated';
             break;
         }
         cancelAndGoToTheNextPage();
@@ -501,11 +508,12 @@ export default {
     }
 
     async function changeStep(val, data) {
-      if (currentStep.value === 1 && val === '-') {
-        return openSumbitModal();
-      }
+      eventData.value = merge(eventData.value, data.values);
 
       if (val === '-') {
+        if (currentStep.value === 1) {
+          return openSumbitModal();
+        }
         return this.currentStep--;
       }
 
@@ -515,11 +523,10 @@ export default {
         return false;
       }
 
-      if (currentStep.value === 3 && val === '+') {
-        return saveEvent(data);
-      }
-
       if (val === '+') {
+        if (currentStep.value === 3) {
+          return saveEvent(eventData.value);
+        }
         this.currentStep++;
       }
     }
@@ -546,11 +553,12 @@ export default {
       greenBtn,
       isSelectFormColarModalOpened,
       removeInvitedUsersModalOpened,
+      eventData,
       eventPreviewData,
-      values,
       isEventPreivewModalOpened,
       isEventInvitedUsersListModal,
       eventCreateLoader,
+      myForm,
       formsModalSelectedTabId,
       isSubmitModalOpened,
       eventForms,

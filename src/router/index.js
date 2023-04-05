@@ -235,10 +235,12 @@ const router = createRouter({
     {
       path: ROUTES.WORKS.relative,
       name: ROUTES.WORKS.name,
+      beforeEnter: routerAuthResolver.routeInterceptor(),
       component: () => import('../views/application/works.vue'),
     },
     {
       path: '/:pathMatch(.*)*',
+      beforeEnter: routerAuthResolver.routeInterceptor(),
       component: () => import('../views/404.vue'),
     },
     {

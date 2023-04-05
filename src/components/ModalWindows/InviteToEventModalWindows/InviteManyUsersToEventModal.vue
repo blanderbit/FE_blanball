@@ -86,6 +86,7 @@
           @click-function="closeModal"
         />
         <GreenBtn
+          v-if="invitedUsers.length"
           :text="$t('buttons.invite')"
           :width="115"
           :height="32"
@@ -108,10 +109,10 @@ import WhiteBtn from '../../WhiteBtn.vue';
 import InvitedUsersListModal from './InvitedUsersListModal.vue';
 import SubmitModal from '../SubmitModal.vue';
 
-import SearchIcon from '../../../assets/img/search.svg';
-
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
+
+import SearchIcon from '../../../assets/img/search.svg';
 
 export default {
   components: {

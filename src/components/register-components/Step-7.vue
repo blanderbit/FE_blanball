@@ -28,7 +28,7 @@ export default {
 
     const stepConfig = computed(() => {
       return {
-        title: t('register.create-account'),
+        title: t('register.set-up-profile'),
         subTitle: t('register.tell-about-yourself'),
         nextButton: {
           exist: true,

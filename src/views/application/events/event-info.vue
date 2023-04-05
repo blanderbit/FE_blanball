@@ -4,6 +4,7 @@
     v-if="isInviteUsersModalOpened"
     :eventData="eventData"
     @closeModal="closeInviteUsersModal"
+    @inviteUsers="inviteUsersToThisEvent"
   />
   <CopyModal v-if="isShareEventModalOpened" @closeModal="closeShareEventModal">
     <template #title>
@@ -185,7 +186,7 @@
           <div class="b-event-info__map">
             <position-map
               class="b-event-map"
-              :coords="{ lat: eventData.place.lat, lng: eventData.place.lon }"
+              :coords="{lat: eventData.place.lat, lng: eventData.place.lon}"
               @map-loaded="loading = false"
               disable-change-coords
             >
@@ -334,7 +335,7 @@ export default {
     const joinEventData = ref(null);
     const eventData = ref(route.meta.eventData.data);
     const isSubmitModalOpened = ref(false);
-    const isInviteUsersModalOpened = ref(true);
+    const isInviteUsersModalOpened = ref(false);
     const eventRequestsToParticipations = ref(
       handlePreloadRequestsParticipationsData(
         route.meta.eventRequestsToParticipationData.data
@@ -408,6 +409,7 @@ export default {
           description: t('no_records.noEventPlayers.description_author'),
           button_text: t('buttons.invite-players'),
           image: noUserRecords,
+          action: () => showInviteUsersModal()
         };
       } else {
         return {
@@ -600,6 +602,13 @@ export default {
       }
     }
 
+    async function inviteUsersToThisEvent(ids) {
+      loading.value = true;
+      closeInviteUsersModal();
+      loading.value = false;
+      toast.success(t('notifications.sent-invites'));
+    }
+
     function handlePreloadRequestsParticipationsData(data) {
       return data.results.map((item) => {
         item.sender.emoji = setUserEmoji(item.raiting);
@@ -766,6 +775,7 @@ export default {
       eventJoinToolTipItems,
       closeEventJoinModal,
       copyLinkButtonClick,
+      inviteUsersToThisEvent,
       switchTabLabel,
       closeSubmitModal,
       closeEventActiondModal,

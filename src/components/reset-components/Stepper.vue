@@ -282,12 +282,8 @@ form {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        @include mobile {
-          width: 266px;
-          margin: 0 auto;
-        }
         .b-reset-step__section {
-          width: 33%;
+          width: 32.5%;
           height: 4px;
           background: #CDDDE0;
           border-radius: 2px;

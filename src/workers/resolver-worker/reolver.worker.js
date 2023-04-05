@@ -26,7 +26,6 @@ export const routerResolverByLoginPage = routerAuthResolver.routeInterceptor(
       if (error !== 'FIRST_WORKER_ERROR') {
         next(ROUTES.APPLICATION.EVENTS.absolute);
       }
-
       finishSpinner();
     },
     resolveFirstWorkerError: ({ next }) => {

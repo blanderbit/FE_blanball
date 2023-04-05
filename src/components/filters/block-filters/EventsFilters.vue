@@ -11,7 +11,7 @@
       @close-modal="isModalFiltersActive = false"
       @set-modal-window-filters="setModalFilters"
       :elementsCount="elementsCount"
-      @clearFilters="$emit('clearFilters')"
+      @clearFilters="clearFilters"
     />
     <div class="b-main-search__wrapper">
       <slot name="tabs"></slot>
@@ -51,7 +51,7 @@
                 v-model="transformedFilters.search"
               />
             </div>
-            <clear-filters @clear="$emit('clearFilters')"></clear-filters>
+            <clear-filters @clear="clearFilters"></clear-filters>
             <button-details-filters
               v-model:active="activeFilters"
             ></button-details-filters>
@@ -76,7 +76,7 @@
               <v-date-picker
                 locale="ukr"
                 :model-config="calendar.modelConfig"
-                v-model="transformedFilters.date_and_time"
+                v-model="dateFilterValue"
                 is-range
               >
                 <template v-slot="options">
@@ -182,7 +182,7 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
+import { computed, ref, onMounted, onBeforeUnmount, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import dayjs from 'dayjs';
 
@@ -250,6 +250,7 @@ export default {
     const route = useRoute();
     const isMobileSearchOpened = ref(false);
     const todaysDate = useTodaysDate();
+    const dateFilterValue = ref(null);
     const { isMobile, isTablet, onResize } = useWindowWidth();
     const icons = computed(() => {
       return {
@@ -358,6 +359,22 @@ export default {
       window.removeEventListener('resize', onResize);
     });
 
+
+    watchEffect(() => {
+      if (dateFilterValue.value?.start) {
+        dateFilterValue.value.start = dayjs(dateFilterValue.value?.start).format('YYYY-MM-DD')
+      }
+      if (dateFilterValue.value?.end) {
+        dateFilterValue.value.end = dayjs(dateFilterValue.value?.end).format('YYYY-MM-DD')
+      }
+      transformedFilters.value.date_and_time = dateFilterValue.value
+    });
+
+    function clearFilters() {
+      dateFilterValue.value = null
+      emit('clearFilters')
+    }
+
     function sortingButtonClick() {
       transformedFilters.value.ordering =
         transformedFilters.value.ordering === 'id' ? '-id' : 'id';
@@ -378,6 +395,7 @@ export default {
       sortingButtonClick,
       setModalFilters,
       closeMobileSearch,
+      clearFilters,
       openMobileSearch,
       ordering,
       filterStatus,
@@ -387,6 +405,7 @@ export default {
       sportTypeDropdown,
       isMobileSearchOpened,
       genderDropdown,
+      dateFilterValue,
       statusDropdown,
       calendar,
       icons,

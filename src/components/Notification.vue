@@ -89,6 +89,7 @@
               >
                 <div
                   :class="['notification-content', {'not-full-content': !isTextShow}]"
+                  style="margin-top: 10px"
                   v-for="item in notificationInstance.texts"
                 >
                   {{ item }}
