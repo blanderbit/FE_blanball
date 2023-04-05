@@ -20,10 +20,9 @@
     </div>
     <div class="b-small-player-card__right-side">
       <div
-        v-if="dataPlayer.profile.position"
         class="b-small-player-card__status"
       >
-        {{ $t(`hashtags.${dataPlayer.profile.position}`) }}
+        {{ dataPlayer.profile.position ? $t(`hashtags.${dataPlayer.profile.position}`) : '----' }}
       </div>
       <div class="b-small-player-card__icon">
         <img :src="dataPlayer.emoji" alt="" />

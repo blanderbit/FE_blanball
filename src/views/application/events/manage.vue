@@ -97,7 +97,7 @@
         </div>
 
         <Transition name="slide">
-          <InvitedUsersListModal
+          <PreviewInvitedUsersListModal
             v-if="isEventInvitedUsersListModal && invitedUsers.length"
             :invitedUsers="invitedUsers"
             :acceptedUsers="acceptedUsers"
@@ -156,7 +156,7 @@ import RemoveInvitedUsersModal from '../../../components/manage-event-components
 import Loading from '../../../workers/loading-worker/Loading.vue';
 import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue';
 import InvitedUsersList from '../../../components/manage-event-components/InvitedUsersList.vue';
-import InvitedUsersListModal from '../../../components/ModalWindows/InvitedUsersListModal.vue';
+import PreviewInvitedUsersListModal from '../../../components/ModalWindows/PreviewInvitedUsersListModal.vue';
 import PreviewEventModal from '../../../components/ModalWindows/PreviewEventModal.vue';
 import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue';
 
@@ -187,7 +187,7 @@ export default {
     Avatar,
     Loading,
     InvitedUsersList,
-    InvitedUsersListModal,
+    PreviewInvitedUsersListModal,
     RemoveInvitedUsersModal,
     PreviewEventModal,
     SubmitModal,

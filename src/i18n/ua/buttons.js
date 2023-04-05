@@ -1,6 +1,7 @@
 export default {
   'cancel-editing': 'Скасувати редагування',
   'save-changes': 'Зберегти зміни',
+  'invite': 'Запросити',
   cancel: 'Скасувати',
   'create-event': 'Створити подію',
   save: 'Зберегти',

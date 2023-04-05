@@ -38,13 +38,7 @@ export default {
 $color-f9f9fc: #f9f9fc;
 
 .b-preview-event-modal__wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(38, 37, 65, 0.2);
-  z-index: 999;
+  @include modal-wrapper;
   .b-preview-event-modal__modal-window {
     position: absolute;
     bottom: 0;

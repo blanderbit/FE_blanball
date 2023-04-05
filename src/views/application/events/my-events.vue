@@ -153,8 +153,9 @@
                   <EmptyList
                     v-if="!paginationElements.length"
                     :title="emptyListMessages.title"
-                    :description="emptyListMessages.title"
+                    :description="emptyListMessages.description"
                     :buttonText="emptyListMessages.button_text"
+                    @buttonClick="goToCreateEvent"
                   />
 
                   <ScrollToTop
@@ -237,7 +238,7 @@ const CONTEXT_MENU_TYPES = {
   PIN: 'pin',
   UNPIN: 'unpin',
   EDIT: 'edit',
-}
+};
 
 export default {
   name: 'EventsPage',
@@ -321,11 +322,19 @@ export default {
     const iconPlus = computed(() => Plus);
 
     const emptyListMessages = computed(() => {
-      return {
-        title: t('no_records.noMyEvents.title'),
-        description: t('no_records.noMyEvents.description'),
-        button_text: t('no_records.noMyEvents.button_text'),
-      };
+      if (selectedTabId.value === TABS_ENUM.TOPICAL) {
+        return {
+          title: t('no_records.noMyTopicalEvents.title'),
+          description: t('no_records.noMyTopicalEvents.description'),
+          button_text: t('no_records.noMyTopicalEvents.button_text'),
+        };
+      } else {
+        return {
+          title: t('no_records.noMyFinishedEvents.title'),
+          description: t('no_records.noMyFinishedEvents.description'),
+          button_text: t('no_records.noMyFinishedEvents.button_text'),
+        };
+      }
     });
 
     const mockData = computed(() => {
@@ -398,7 +407,7 @@ export default {
           break;
         case CONTEXT_MENU_TYPES.DELETE:
           oneEventToDeleteId.value = selectedContextMenuEvent.value.id;
-          deleteEvents()
+          deleteEvents();
           break;
         case CONTEXT_MENU_TYPES.PIN:
           oneEventToPinId.value = selectedContextMenuEvent.value.id;
@@ -550,15 +559,16 @@ export default {
     async function changeTab(tabId) {
       if (tabId !== selectedTabId.value) {
         selectedTabId.value = tabId;
-        
+
         switch (selectedTabId.value) {
           case TABS_ENUM.TOPICAL:
-          await router.push(ROUTES.APPLICATION.MY_EVENTS.TOPICAL.absolute);
-            break
+            await router.push(ROUTES.APPLICATION.MY_EVENTS.TOPICAL.absolute);
+            break;
           case TABS_ENUM.FINISHED:
             await router.push(ROUTES.APPLICATION.MY_EVENTS.FINISHED.absolute);
-            break
+            break;
         }
+        clearFilters();
         paginationPage.value = 1;
         paginationTotalCount.value = route.meta.eventData.data.total_count;
         paginationElements.value =

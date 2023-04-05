@@ -72,13 +72,7 @@ $color-c10b0b: #c10b0b;
 $color-d3f8f7: #d3f8f7;
 
 .b_modal_wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(38, 37, 65, 0.2);
-  z-index: 999;
+  @include modal-wrapper;
   .b_modal_modal-window {
     position: absolute;
     top: 50%;

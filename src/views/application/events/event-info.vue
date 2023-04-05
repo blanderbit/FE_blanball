@@ -1,6 +1,7 @@
 <template>
   <Loading :is-loading="loading" />
-
+  <InviteManyUsersToEventModal 
+      :eventData="eventData"/>
   <CopyModal v-if="isShareEventModalOpened" @closeModal="closeShareEventModal">
     <template #title>
       {{ $t('modals.share_event.title') }}
@@ -270,6 +271,7 @@ import EditEventModal from '../../../components/ModalWindows/EditEventModal.vue'
 import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue';
 import ContextModal from '../../../components/ModalWindows/ContextModal.vue';
 import InputComponent from '../../../components/forms/InputComponent.vue';
+import InviteManyUsersToEventModal from '../../../components/ModalWindows/InviteToEventModalWindows/InviteManyUsersToEventModal.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { BlanballEventBus } from '../../../workers/event-bus-worker';
@@ -312,6 +314,7 @@ export default {
     EventInfoForms,
     EditEventModal,
     ListOfEventRequestsToParticipations,
+    InviteManyUsersToEventModal,
     ActionEventModal,
     SubmitModal,
     InputComponent,
@@ -406,10 +409,13 @@ export default {
         return {
           title: t('no_records.noEventPlayers.title'),
           description: t('no_records.noEventPlayers.description_user'),
-          button_text: !eventData.value.privacy
+          button_text: !eventData.value.current_fans.some((user) => user.id === userStore.user.id) 
+          ? !eventData.value.privacy
             ? t('buttons.join-participate')
-            : t('events.apply'),
+            : t('events.apply')
+          : null,
           image: noUserRecords,
+          action: (e) => showEventJoinModal(e),
         };
       }
     });
@@ -425,13 +431,25 @@ export default {
         return {
           title: t('no_records.noEventFans.title'),
           description: t('no_records.noEventFans.description_user'),
-          button_text: t('buttons.become-a-fan'),
+          button_text: !eventData.value.current_users.some((user) => user.id === userStore.user.id) 
+            ? t('buttons.become-a-fan')
+            : null,
           image: noUserRecords,
+          action: () =>  joinEvent(eventData.value, eventJoinTypes.VIEW)
         };
       }
     });
-    const greenButton = computed(() => {
-      if (eventData.value.author.id === userStore.user.id) {
+
+    function getButtonConfig() {
+      const isEventAuthor = eventData.value.author.id === userStore.user.id;
+      const isUserAttending = eventData.value.current_users.some(
+        (user) => user.id === userStore.user.id
+      );
+      const isUserFan = eventData.value.current_fans.some((user) => user.id === userStore.user.id);
+      const { privacy, request_user_role } = eventData.value;
+      const isSentRequest = request_user_role === 'request_participation'
+
+      if (isEventAuthor) {
         return {
           text: t('buttons.edit'),
           icon: editEvent,
@@ -439,14 +457,7 @@ export default {
           width: 140,
           action: () => editEventButtonClick(),
         };
-      } else if (
-        eventData.value.current_users.some(
-          (user) => user.id === userStore.user.id
-        ) ||
-        eventData.value.current_fans.some(
-          (user) => user.id === userStore.user.id
-        )
-      ) {
+      } else if (isUserAttending || isUserFan) {
         return {
           text: t('events.leave'),
           icon: ExitIcon,
@@ -455,14 +466,24 @@ export default {
           color: '#575775',
           action: () => eventLeaveButtonClick(),
         };
-      } else if (eventData.value.privacy) {
-        return {
-          text: t('events.apply'),
-          icon: PlusIcon,
+      } else if (privacy) {
+
+        if (isSentRequest) {
+          return {
+          text: t('events.request-sent'),
           height: 32,
           width: 150,
-          action: (e) => showEventJoinModal(e),
+          color: '#575775',
         };
+        } else {
+          return {
+            text: t('events.apply'),
+            icon: PlusIcon,
+            height: 32,
+            width: 150,
+            action: (e) => showEventJoinModal(e),
+          };
+        }
       } else {
         return {
           text: t('events.join'),
@@ -472,7 +493,11 @@ export default {
           action: (e) => showEventJoinModal(e),
         };
       }
+    }
+    const greenButton = computed(() => {
+      return getButtonConfig();
     });
+
 
     const leaveFromTheEvent = async () => {
       loading.value = true;

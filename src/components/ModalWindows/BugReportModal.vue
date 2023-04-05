@@ -176,14 +176,7 @@ $color-4c4a82: #4c4a82;
 }
 
 .b-bug-report-modal__wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(38, 37, 65, 0.2);
-  z-index: 999;
-
+  @include modal-wrapper;
   .b-bug-report-modal__modal-window {
     position: absolute;
     top: 50%;

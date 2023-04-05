@@ -1,6 +1,6 @@
 <template>
-  <div class="b-invited-users-list-modal__wrapper">
-    <div class="b-invited-users-list__modal-window">
+  <div class="b-preview-invited-users-list-modal__wrapper">
+    <div class="b-preview-invited-users-list__modal-window">
       <InvitedUsersList
         :invitedUsers="invitedUsers"
         :acceptedUsers="acceptedUsers"
@@ -57,15 +57,9 @@ export default {
 <style lang="scss" scoped>
 $color-f9f9fc: #f9f9fc;
 
-.b-invited-users-list-modal__wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(38, 37, 65, 0.2);
-  z-index: 999;
-  .b-invited-users-list__modal-window {
+.b-preview-invited-users-list-modal__wrapper {
+  @include modal-wrapper;
+  .b-preview-invited-users-list__modal-window {
     position: absolute;
     bottom: 0;
     display: flex;

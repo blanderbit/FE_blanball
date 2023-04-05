@@ -17,13 +17,8 @@ export default {
 
 <style lang="scss" scoped>
 .b_modal_user_wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgb(0 0 0 / 51%);
-  z-index: 999;
+  @include modal-wrapper(rgb(0 0 0 / 51%));
+
   .b_modal_user_modal-window {
     position: absolute;
     top: 50%;

@@ -25,6 +25,16 @@ export default {
     description: 'Організуйте вашу першу подію',
     button_text: 'Створити подію',
   },
+  noMyTopicalEvents: {
+    title: 'Наразі немає актуальних подій для відображення',
+    description: 'Ваша подія може стати першою',
+    button_text: 'Організувати подію!',
+  },
+  noMyFinishedEvents: {
+    title: 'Наразі немає завершених подій для відображення',
+    description: 'Ваша подія може стати першою',
+    button_text: 'Організувати подію!',
+  },
   noUsers: {
     title: 'Для такого фiльтру користувачiв не знайдено',
     description:

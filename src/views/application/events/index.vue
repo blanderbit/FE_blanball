@@ -89,6 +89,7 @@
                     :title="emptyListMessages.title"
                     :description="emptyListMessages.title"
                     :buttonText="emptyListMessages.button_text"
+                    @buttonClick="goToCreateEvent"
                   />
 
                   <ScrollToTop

@@ -58,7 +58,7 @@
     </template>
   </CopyModal>
 
-  <InviteUserToEventModal
+  <InviteOneUserToEventModal
     v-if="isInviteUserModalOpened"
     :userData="userData"
     @closeModal="closeInviteUserModal"
@@ -242,7 +242,7 @@ import Avatar from '../Avatar.vue';
 import WhiteBtn from '../WhiteBtn.vue';
 import PublicProfileReviews from './PublicProfileReviews.vue';
 import PublicProfilePlannedEvents from './PublicProfilePlannedEvents.vue';
-import InviteUserToEventModal from '../ModalWindows/InviteUserToEventModal.vue';
+import InviteOneUserToEventModal from '../ModalWindows/InviteToEventModalWindows/InviteOneUserToEventModal.vue';
 import CopyModal from '../ModalWindows/CopyModal.vue';
 import InputComponent from '../forms/InputComponent.vue';
 import GreenBtn from '../GreenBtn.vue';
@@ -287,7 +287,7 @@ export default {
     PublicProfilePlannedEvents,
     PublicProfileReviews,
     CopyModal,
-    InviteUserToEventModal,
+    InviteOneUserToEventModal,
     InputComponent,
     GreenBtn,
     StarRating,

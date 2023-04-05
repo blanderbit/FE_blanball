@@ -89,5 +89,10 @@ export default {
   no_perm_to_pin: {
     title: 'Закріплення не доступне',
     'main-text': 'Ви досягли ліміту 5 за кількістю закріплених подій',
+  },
+  invite_users_to_event: {
+    title: 'Запрошення учасників',
+    invited: 'Запрошені',
+    plus_users: '+ {count} користувачів'
   }
 };

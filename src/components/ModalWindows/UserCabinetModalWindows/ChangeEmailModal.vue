@@ -44,9 +44,9 @@
               @resend-code-action="sendCode(data.values.email)"
             />
           </div>
-          <div v-show="currentStep === 2" class="code-input-field">
+          <div v-if="currentStep === 2" class="code-input-field">
             <CodeInput
-              :fields="5"
+              :fields="5" 
               :fieldWidth="48"
               :fieldHeight="40"
               :required="true"
@@ -105,7 +105,6 @@ export default {
   setup(props, { emit }) {
     const { t } = useI18n();
     const loading = ref(false);
-    const toast = useToast();
     const currentStep = ref(1);
 
     const cancelBtnTitle = computed(() => {

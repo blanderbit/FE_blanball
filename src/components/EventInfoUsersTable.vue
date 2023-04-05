@@ -22,6 +22,7 @@
     :description="emptyListData.description"
     :buttonText="emptyListData.button_text"
     :image="emptyListData.image"
+    @buttonClick="emptyListData?.action"
   />
 </template>
 

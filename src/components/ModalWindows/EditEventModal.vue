@@ -324,13 +324,7 @@ $color-8a8aa8: #8a8aa8;
   line-height: 24px;
 }
 .b-edit-event-modal__wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(38, 37, 65, 0.2);
-  z-index: 999;
+  @include modal-wrapper;
   .b-edit-event-modal__modal-window {
     position: absolute;
     top: 50%;
@@ -357,12 +351,8 @@ $color-8a8aa8: #8a8aa8;
         line-height: 32px;
       }
       .b-edit-event-modal__subtitle {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 12px;
+        @include exo(12px, 400, $--b-main-gray-color);
         line-height: 20px;
-        color: $--b-main-gray-color;
         margin-top: 4px;
       }
     }
