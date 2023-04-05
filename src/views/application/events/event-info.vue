@@ -1,7 +1,10 @@
 <template>
   <Loading :is-loading="loading" />
-  <InviteManyUsersToEventModal 
-      :eventData="eventData"/>
+  <InviteManyUsersToEventModal
+    v-if="isInviteUsersModalOpened"
+    :eventData="eventData"
+    @closeModal="closeInviteUsersModal"
+  />
   <CopyModal v-if="isShareEventModalOpened" @closeModal="closeShareEventModal">
     <template #title>
       {{ $t('modals.share_event.title') }}
@@ -331,6 +334,7 @@ export default {
     const joinEventData = ref(null);
     const eventData = ref(route.meta.eventData.data);
     const isSubmitModalOpened = ref(false);
+    const isInviteUsersModalOpened = ref(true);
     const eventRequestsToParticipations = ref(
       handlePreloadRequestsParticipationsData(
         route.meta.eventRequestsToParticipationData.data
@@ -409,11 +413,13 @@ export default {
         return {
           title: t('no_records.noEventPlayers.title'),
           description: t('no_records.noEventPlayers.description_user'),
-          button_text: !eventData.value.current_fans.some((user) => user.id === userStore.user.id) 
-          ? !eventData.value.privacy
-            ? t('buttons.join-participate')
-            : t('events.apply')
-          : null,
+          button_text: !eventData.value.current_fans.some(
+            (user) => user.id === userStore.user.id
+          )
+            ? !eventData.value.privacy
+              ? t('buttons.join-participate')
+              : t('events.apply')
+            : null,
           image: noUserRecords,
           action: (e) => showEventJoinModal(e),
         };
@@ -431,11 +437,13 @@ export default {
         return {
           title: t('no_records.noEventFans.title'),
           description: t('no_records.noEventFans.description_user'),
-          button_text: !eventData.value.current_users.some((user) => user.id === userStore.user.id) 
+          button_text: !eventData.value.current_users.some(
+            (user) => user.id === userStore.user.id
+          )
             ? t('buttons.become-a-fan')
             : null,
           image: noUserRecords,
-          action: () =>  joinEvent(eventData.value, eventJoinTypes.VIEW)
+          action: () => joinEvent(eventData.value, eventJoinTypes.VIEW),
         };
       }
     });
@@ -445,9 +453,11 @@ export default {
       const isUserAttending = eventData.value.current_users.some(
         (user) => user.id === userStore.user.id
       );
-      const isUserFan = eventData.value.current_fans.some((user) => user.id === userStore.user.id);
+      const isUserFan = eventData.value.current_fans.some(
+        (user) => user.id === userStore.user.id
+      );
       const { privacy, request_user_role } = eventData.value;
-      const isSentRequest = request_user_role === 'request_participation'
+      const isSentRequest = request_user_role === 'request_participation';
 
       if (isEventAuthor) {
         return {
@@ -467,14 +477,13 @@ export default {
           action: () => eventLeaveButtonClick(),
         };
       } else if (privacy) {
-
         if (isSentRequest) {
           return {
-          text: t('events.request-sent'),
-          height: 32,
-          width: 150,
-          color: '#575775',
-        };
+            text: t('events.request-sent'),
+            height: 32,
+            width: 150,
+            color: '#575775',
+          };
         } else {
           return {
             text: t('events.apply'),
@@ -498,6 +507,13 @@ export default {
       return getButtonConfig();
     });
 
+    const showInviteUsersModal = () => {
+      isInviteUsersModalOpened.value = true;
+    };
+
+    const closeInviteUsersModal = () => {
+      isInviteUsersModalOpened.value = false;
+    };
 
     const leaveFromTheEvent = async () => {
       loading.value = true;
@@ -745,6 +761,7 @@ export default {
       eventRequestsToParticipations,
       submitModalConfig,
       eventJoinModalX,
+      isInviteUsersModalOpened,
       eventJoinModalY,
       eventJoinToolTipItems,
       closeEventJoinModal,
@@ -755,6 +772,8 @@ export default {
       changeTab,
       joinEventModalItemClick,
       leaveFromTheEvent,
+      showInviteUsersModal,
+      closeInviteUsersModal,
       openEventShareModal,
       acceptRequestToParticipation,
       declineRequestToParticipation,

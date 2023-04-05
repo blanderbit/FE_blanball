@@ -6,6 +6,13 @@
       @removeUser="removeInvitedUser"
     />
   </Teleport>
+  <Teleport v-if="isSubmitModalOpened" to="body">
+    <SubmitModal
+      v-if="isSubmitModalOpened"
+      :config="submitModalConfig"
+      @cancelInvites="$emit('closeModal')"
+      @closeModal="closeSubmitModal"/>
+  </Teleport>
   <div class="b-invite-users-to-event-modal__wrapper">
     <div class="b-invite-users-to-event-modal__modal-window">
       <div class="b-invite-users-to-event-modal__header">
@@ -13,7 +20,7 @@
           class="b-invite-users-to-event-modal__close"
           src="../../../assets/img/cross.svg"
           alt=""
-          @click="$emit('closeModal')"
+          @click="closeModal"
         />
         <div class="b-invite-users-to-event-modal__title">
           {{ $t('modals.invite_users_to_event.title') }}
@@ -76,7 +83,7 @@
           :height="24"
           :mainColor="'#575775'"
           :isBorder="false"
-          @click-function="$emit('closeModal')"
+          @click-function="closeModal"
         />
         <GreenBtn
           :text="$t('buttons.invite')"
@@ -91,6 +98,7 @@
 
 <script>
 import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import SearchBlockAll from '../../SearchBlockAll.vue';
 import InputComponent from '../../forms/InputComponent.vue';
@@ -98,6 +106,7 @@ import Avatar from '../../Avatar.vue';
 import GreenBtn from '../../GreenBtn.vue';
 import WhiteBtn from '../../WhiteBtn.vue';
 import InvitedUsersListModal from './InvitedUsersListModal.vue';
+import SubmitModal from '../SubmitModal.vue';
 
 import SearchIcon from '../../../assets/img/search.svg';
 
@@ -112,6 +121,7 @@ export default {
     GreenBtn,
     InvitedUsersListModal,
     WhiteBtn,
+    SubmitModal,
   },
   props: {
     eventData: {
@@ -120,14 +130,16 @@ export default {
     },
   },
   emits: ['closeModal', 'inviteUsers'],
-  setup(props) {
+  setup(props, { emit }) {
     const showUserAvatarCount = ref(5);
     const invitedUsers = ref([]);
     const relevantUsersList = ref([]);
+    const { t } = useI18n();
     const loading = ref(false);
     const isInvitedUsersListModalOpened = ref(false);
     const userStore = useUserDataStore();
     const searchValue = ref('');
+    const isSubmitModalOpened = ref(false);
     let searchTimeout;
 
     const invitedUsersIDS = computed(() => {
@@ -136,6 +148,19 @@ export default {
 
     const plusUsersCount = computed(() => {
       return invitedUsers.value.length - showUserAvatarCount.value;
+    });
+
+    const submitModalConfig = computed(() => {
+      return {
+        title: t('modals.cancel_invite_users.title'),
+        description: t('modals.cancel_invite_users.main-text', {count: invitedUsers.value.length}),
+        button_1: t('modals.cancel_invite_users.button-1-text'),
+        button_2: t('modals.cancel_invite_users.button-2-text'),
+        left_btn_action: 'closeModal',
+        right_btn_action: 'cancelInvites',
+        btn_with_1: 130,
+        btn_with_2: 110,
+      };
     });
 
     const SKIPIDS = [
@@ -153,6 +178,14 @@ export default {
     const closeInvitedUsersListModal = () => {
       isInvitedUsersListModalOpened.value = false;
     };
+
+    const showSubmitModal = () => {
+      isSubmitModalOpened.value = true
+    }
+
+    const closeSubmitModal = () => {
+      isSubmitModalOpened.value = false
+    }
 
     const getRelevantUsers = async (options) => {
       loading.value = true;
@@ -176,6 +209,14 @@ export default {
       };
       searchTimeout = setTimeout(relevantSearch, 500);
     };
+
+    const closeModal = () => {
+      if (!invitedUsers.value.length) {
+        emit('closeModal');
+      } else {
+        showSubmitModal();
+      }
+    }
 
     getRelevantUsers({ skipids: SKIPIDS });
 
@@ -212,6 +253,10 @@ export default {
       plusUsersCount,
       isInvitedUsersListModalOpened,
       showUserAvatarCount,
+      isSubmitModalOpened,
+      submitModalConfig,
+      closeModal,
+      closeSubmitModal,
       inviteUserToTheEvent,
       removeInvitedUser,
       closeInvitedUsersListModal,

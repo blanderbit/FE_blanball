@@ -94,5 +94,11 @@ export default {
     title: 'Запрошення учасників',
     invited: 'Запрошені',
     plus_users: '+ {count} користувачів'
+  },
+  cancel_invite_users: {
+    title: 'Скасувати запрошення',
+    'main-text': 'Ви обрали {count} учасників. Бажаєте скасувати запрошення цих людей?',
+    'button-1-text': 'Ні, не скасовувати',
+    'button-2-text': 'Так, скасувати',
   }
 };
