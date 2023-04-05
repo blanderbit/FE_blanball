@@ -81,6 +81,16 @@ $color-c8ebe7: #c8ebe7;
     position: relative;
   }
 
+  &-small-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 100px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    border: 1.5px solid #EFEFF6;
+  }
+
   &-circle {
     width: 40px;
     height: 40px;

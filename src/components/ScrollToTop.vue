@@ -69,7 +69,6 @@ $color-efeff6: #efeff6;
     border: none;
     align-items: center;
     cursor: pointer;
-    margin-bottom: 10px;
     img {
       margin-left: 12px;
     }

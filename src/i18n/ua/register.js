@@ -6,6 +6,7 @@ export default {
   next: 'Далі',
   'create-account': 'Створення облікового запису',
   email: 'E-mail',
+  'set-up-profile': 'Підготуймо ваш профіль для використання додатку',
   'create-password': 'Придумайте пароль',
   'repeat-password': 'Повторіть пароль',
   return: 'Повернутися назад',

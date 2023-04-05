@@ -9,6 +9,7 @@ import Dates from './dates';
 import Profile from './profile';
 import Forms from './forms';
 import Sidebar from './sidebar';
+import EventJoin from './event-join'
 
 export default {
   users_page: UsersPage,
@@ -21,5 +22,6 @@ export default {
   dates: Dates,
   profile: Profile,
   forms: Forms,
-  sidebar: Sidebar
+  sidebar: Sidebar,
+  eventJoin: EventJoin,
 };

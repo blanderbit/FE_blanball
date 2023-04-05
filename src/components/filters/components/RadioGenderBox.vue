@@ -1,22 +1,26 @@
 <template>
   <div class="b-radio-btns">
-    <input type="radio" id="men" :value="'Man'" v-model="genderRadio" />
-    <label for="men">
-      <img src="../../../assets/img/male-icon.svg" alt="" />
-      {{ $t('users.men') }}
-    </label>
-
-    <input type="radio" id="women" :value="'Woman'" v-model="genderRadio" />
-    <label for="women">
-      <img src="../../../assets/img/female-icon.svg" alt="" />
-      {{ $t('users.women') }}
-    </label>
-
-    <input type="radio" id="all" :value="'All'" v-model="genderRadio" />
-    <label for="all">
-      <img src="../../../assets/img/unisex.svg" alt="" />
-      {{ $t('users.all') }}</label
-    >
+    <div class="b-radio-button">
+      <input type="radio" id="men" :value="'Man'" v-model="genderRadio" />
+      <label for="men">
+        <img src="../../../assets/img/male-icon.svg" alt="" />
+        {{ $t('users.men') }}
+      </label>
+    </div>
+    <div class="b-radio-button">
+      <input type="radio" id="women" :value="'Woman'" v-model="genderRadio" />
+      <label for="women">
+        <img src="../../../assets/img/female-icon.svg" alt="" />
+        {{ $t('users.women') }}
+      </label>
+    </div>
+    <div class="b-radio-button">
+      <input type="radio" id="all" :value="'All'" v-model="genderRadio" />
+      <label for="all">
+        <img src="../../../assets/img/unisex.svg" alt="" />
+        {{ $t('users.all') }}</label
+      >
+    </div>
   </div>
 </template>
 
@@ -62,13 +66,22 @@ $color-148581: #148581;
 
 .b-radio-btns {
   display: flex;
+  gap: 8px;
+
+  .b-radio-button {
+    display: flex;
+    align-items: center;
+    flex-basis: 33%;
+    width: 1000px;
+  }
+
   input[type='radio'] {
     display: none;
+
     + label {
       padding: 8px 6px;
       border: 1px solid $color-dfdeed;
       border-radius: 6px;
-      margin-right: 8px;
       font-family: 'Inter';
       font-style: normal;
       font-weight: 400;
@@ -76,9 +89,11 @@ $color-148581: #148581;
       line-height: 24px;
       color: $--b-main-gray-color;
       min-width: 60px;
-      width: 60px;
       display: flex;
+      height: 36px;
+      width: 100%;
       align-items: center;
+      justify-content: center;
       img {
         margin-right: 6px;
       }

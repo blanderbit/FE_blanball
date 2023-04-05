@@ -57,29 +57,10 @@ export class InviteUserToEventMessage extends InitialMessage {
     return [
       `${data.sender.last_name} ${
         data.sender.name
-      } запросив вас на дружній матч «${data.event.name}» о ${dayjs(
+      } запросив вас на дружній матч «${data.event.name}» ${dayjs(
         data.event?.date_and_time
-      ).format('MM:DD o HH:mm')}`,
+      ).format('DD.MM o HH:mm')}`,
     ];
-  }
-
-  createTextsAfterAction() {
-    return {
-      response: this.data.response,
-      text: this.data.response
-        ? 'Вы добавились на событие!'
-        : 'Вы откзались от участия на событии!',
-    };
-  }
-
-  onInit() {
-    this.textsAfterAction =
-      typeof this.data.response === 'boolean' && this.createTextsAfterAction();
-  }
-
-  onUpdate() {
-    this.textsAfterAction =
-      typeof this.data.response === 'boolean' && this.createTextsAfterAction();
   }
 
   createTitle() {

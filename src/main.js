@@ -37,7 +37,6 @@ createLoader();
 
 const app = createApp(App);
 
-
 app
   .provide('clientVersion', pkg.version)
   .use(createPinia())

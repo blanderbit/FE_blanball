@@ -155,17 +155,13 @@ $color-1ab2ad: #1ab2ad;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        @include mobile {
-          width: 266px;
-          margin: 0 auto;
-        }
         .b-register-step__section {
           width: 49%;
           height: 4px;
-          background: $color-efeff6;
+          background: #CDDDE0;
           border-radius: 2px;
           &.active {
-            background: $color-1ab2ad;
+            background: #578D95;
           }
         }
       }

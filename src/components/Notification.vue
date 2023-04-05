@@ -84,12 +84,12 @@
                 class="notification-header-content"
                 v-if="
                   notificationType === 'notification-sidebar' &&
-                  !notificationInstance.textsAfterAction &&
                   notificationInstance?.actions?.length
                 "
               >
                 <div
-                  class="notification-content not-full-content"
+                  :class="['notification-content', {'not-full-content': !isTextShow}]"
+                  style="margin-top: 10px"
                   v-for="item in notificationInstance.texts"
                 >
                   {{ item }}
@@ -134,16 +134,6 @@
             #content
             class="notification-expandle-content"
           >
-            <template v-if="notificationInstance.textsAfterAction">
-              <div class="notification-response d-flex align-items-center">
-                <img
-                  v-if="notificationInstance.textsAfterAction.response"
-                  src="../assets/img/true-check.svg"
-                />
-                <img v-else src="../assets/img/red-cross.svg" />
-                {{ notificationInstance.textsAfterAction.text }}
-              </div>
-            </template>
             <div
               class="notification-content"
               v-for="item in notificationInstance.texts"
@@ -153,7 +143,6 @@
             <div
               class="notification-actions"
               v-if="
-                !notificationInstance.textsAfterAction &&
                 notificationInstance?.actions?.length
               "
             >
@@ -181,16 +170,6 @@
           v-if="notificationType === 'notification-push'"
           class="push-notification-main-content"
         >
-          <template v-if="notificationInstance.textsAfterAction">
-            <div class="notification-response d-flex align-items-center">
-              <img
-                v-if="notificationInstance.textsAfterAction.response"
-                src="../assets/img/true-check.svg"
-              />
-              <img v-else src="../assets/img/red-cross.svg" />
-              {{ notificationInstance.textsAfterAction.text }}
-            </div>
-          </template>
           <div class="push-notification-content">
             <collapsible-panel
               :expanding="false">
@@ -211,7 +190,6 @@
           <div
             class="notification-actions"
             v-if="
-              !notificationInstance.textsAfterAction &&
               notificationInstance?.actions?.length &&
               notificationType === 'notification-push'
             "
@@ -390,6 +368,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+$color-f9f9fc: #f9f9fc;
 $color-ecfcfb: #ecfcfb;
 $color-148783: #148783;
 $color-fff: #fff;
@@ -683,7 +662,7 @@ $color-000: #000;
 }
 
 .notification-selected {
-  background: #f9f9fc;
+  background: $color-f9f9fc;
   border-bottom: none;
 }
 .checked {

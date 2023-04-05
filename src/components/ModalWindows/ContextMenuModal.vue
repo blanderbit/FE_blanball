@@ -7,7 +7,7 @@
           v-for="item in menuText"
           :key="item.id"
         >
-          <img :src="item.img" alt="" />
+          <img :src="item?.img" alt="" />
           <span class="b-context-modal__text">{{ item.text }}</span>
         </li>
       </ul>

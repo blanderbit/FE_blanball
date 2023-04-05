@@ -60,6 +60,18 @@ export class EventService {
     });
   }
 
+  eventLeaveAsPlayer(eventId) {
+    return AxiosInstance.post(EndpointsEnum.Events.EventLeaveAsPlayer, {
+      event_id: eventId,
+    });
+  }
+
+  eventLeaveAsFan(eventId) {
+    return AxiosInstance.post(EndpointsEnum.Events.EventLeaveAsFan, {
+      event_id: eventId,
+    });
+  }
+
   eventJoinAsFan(eventId) {
     return AxiosInstance.post(EndpointsEnum.Events.EventJoinAsFan, {
       event_id: eventId,
@@ -88,6 +100,28 @@ export class EventService {
     );
   }
 
+  @FilterParamsDecorator(filterConfigForEvents)
+  getMyTopicalEvents(options) {
+    return AxiosInstance.get(
+      EndpointsEnum.Events.GetMyTopicalEvents,
+      AxiosParams(
+        AxiosQuery(options),
+        AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_PAGE])
+      )
+    );
+  }
+
+  @FilterParamsDecorator(filterConfigForEvents)
+  getMyFinishedEvents(options) {
+    return AxiosInstance.get(
+      EndpointsEnum.Events.GetMyFinishedEvents,
+      AxiosParams(
+        AxiosQuery(options),
+        AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_PAGE])
+      )
+    );
+  }
+
   getOneEvent(eventId) {
     return AxiosInstance.get(EndpointsEnum.Events.getOneEvent(eventId));
   }
@@ -101,6 +135,10 @@ export class EventService {
       EndpointsEnum.Events.EditOneEvent(eventID),
       eventData
     );
+  }
+
+  getCountPinnedEvents() {
+    return AxiosInstance.get(EndpointsEnum.Events.GetCountPinnedEvents);
   }
 
   @FilterParamsDecorator(filterConfigForEvents)

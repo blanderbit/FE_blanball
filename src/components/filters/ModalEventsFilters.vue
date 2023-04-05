@@ -7,12 +7,16 @@
     >
       <template #modal-filter>
         <div class="b-modal-filters">
-          <div class="b-modal-filters__title">
-            {{ $t('users.filters') }}
+          <div class="b-modal-filters__top-side">
+            <div class="b-modal-filters__title">
+              {{ $t('users.filters') }}
+            </div>
+            <div class="b-modal-filters__subtitle">
+              {{ elementsCount }} {{ $t('users.advertisments') }}
+            </div>
           </div>
-          <div class="b-modal-filters__subtitle">
-            {{ $t('users.found') }} {{ elementsCount }}
-            {{ $t('users.advertisments') }}
+          <div v-if="search" class="b-modal-filters__search-value">
+            Пошук за: <span>{{ search }}</span>
           </div>
           <div class="b-modal-filters__game-type-input">
             <Dropdown
@@ -250,6 +254,19 @@ $color-e9fcfb: #e9fcfb;
     line-height: 24px;
     color: $--b-main-black-color;
   }
+  &__top-side {
+    border-bottom: 1px solid #d5d5d6;
+    margin-bottom: 4px;
+    padding-bottom: 4px;
+  }
+  &__search-value {
+    @include inter(12px, 400, $--b-main-gray-color);
+    line-height: 20px;
+
+    span {
+      @include inter(12px, 400);
+    }
+  }
   &__subtitle {
     font-family: 'Inter';
     font-style: normal;
@@ -257,7 +274,6 @@ $color-e9fcfb: #e9fcfb;
     font-size: 12px;
     line-height: 20px;
     color: $--b-main-gray-color;
-    margin-bottom: 16px;
   }
   &__calendar {
     margin-top: 12px;
@@ -378,6 +394,7 @@ $color-e9fcfb: #e9fcfb;
     width: 100%;
     height: 40px;
     margin-bottom: 12px;
+    margin-top: 16px;
   }
   &__gender {
     margin-bottom: 12px;

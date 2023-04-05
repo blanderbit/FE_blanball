@@ -46,7 +46,6 @@ export class InitialMessage {
   title;
   isRead;
   notification_id;
-  textsAfterAction;
   metadata = {};
 
   get profileImage() {

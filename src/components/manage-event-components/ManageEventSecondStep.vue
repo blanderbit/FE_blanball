@@ -1,5 +1,5 @@
 <template>
-  <div class="second-step" :style="stepStyle">
+  <div class="second-step">
     <div class="title-block">
       <span>{{ $t('events.confidentiality') }}</span>
     </div>
@@ -122,10 +122,6 @@ export default {
       type: Array,
       default: () => [],
     },
-    currentStep: {
-      type: Number,
-      default: null,
-    },
     filteredUsersList: {
       type: Array,
       default: () => [],
@@ -189,13 +185,6 @@ export default {
       };
     });
 
-    const stepStyle = computed(() => {
-      if (props?.currentStep) {
-        return props?.currentStep === 2
-          ? { height: 'auto' }
-          : { height: '0px' };
-      }
-    });
 
     const openUserProfile = (userId) => {
       router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId));
@@ -213,7 +202,6 @@ export default {
       icons,
       isEventPayment,
       searchValue,
-      stepStyle,
       loading,
       invitedUsersIDS,
       toggleEventPayment,

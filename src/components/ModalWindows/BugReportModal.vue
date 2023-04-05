@@ -170,24 +170,13 @@ $color-4c4a82: #4c4a82;
     color: $--b-main-gray-color;
   }
 
-  &::v-deep(textarea::-webkit-scrollbar) {
-    display: none;
-  }
-
   &::v-deep(.b-text-area__min-max-label) {
     display: none;
   }
 }
 
 .b-bug-report-modal__wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(38, 37, 65, 0.2);
-  z-index: 999;
-
+  @include modal-wrapper;
   .b-bug-report-modal__modal-window {
     position: absolute;
     top: 50%;

@@ -10,7 +10,8 @@
         </div>
       </div>
       <div v-if="buttonText" class="b-empty-list__actions">
-        <GreenBtn :width="170" :height="40" :text="buttonText" />
+        <GreenBtn :width="170" :height="40" :text="buttonText"
+          @click-function="$emit('buttonClick')" />
       </div>
     </div>
     <div class="b-empty-list__right-side">

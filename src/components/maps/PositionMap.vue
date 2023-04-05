@@ -123,9 +123,9 @@ export default {
       await setDataAboutPosition(state.userCenter);
 
       if (!props.disableChangeCoords) {
-        google.maps.event.addListener(map, 'click', function (event) {
-          marker.value.setPosition(event.latLng);
-          setDataAboutPosition(event.latLng.toJSON());
+        google.maps.event.addListener(map, 'click', function () {
+          marker.value.setPosition(props.coords);
+          setDataAboutPosition(props.coords.toJSON());
         });
       }
 
@@ -138,8 +138,10 @@ export default {
     watch(
       () => props.coords,
       () => {
-        marker.value.setPosition(props.coords);
-        map.setCenter(props.coords);
+        if (marker.value.length) {
+          marker.value.setPosition(props.coords);
+          map.setCenter(props.coords);
+        }
       }
     );
 

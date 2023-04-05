@@ -23,6 +23,8 @@ export const EndpointsEnum = {
   Events: {
     GetAllEvents: '/events/client/planned/events/list',
     GetAllMyEvents: '/events/client/my/events/list',
+    GetMyTopicalEvents: '/events/client/my/topical/events/list',
+    GetMyFinishedEvents: '/events/client/my/finished/events/list',
     getOneEvent: (eventId) => `/events/client/event/${eventId}`,
     DeclineOrAcceptInvites:
       '/events/client/accept/or/decline/invites/to/events',
@@ -31,9 +33,12 @@ export const EndpointsEnum = {
     EditOneEvent: (eventId) => `/events/client/event/update/${eventId}`,
     DeleteEvents: '/events/client/events/delete',
     EventJoinAsPlayer: '/events/client/event/join',
+    EventLeaveAsPlayer: '/events/client/event/leave',
+    EventLeaveAsFan: '/events/client/fan/event/leave',
     EventJoinAsFan: '/events/client/fan/event/join',
     PinEvents: '/events/client/events/pin',
     UnPinEvents: '/events/client/events/unpin',
+    GetCountPinnedEvents: '/events/client/my/pinned/events/count',
     EventRequestsToParticipations: (eventId) =>
       `/events/client/requests/participations/list${eventId}`,
     DeclineOrAcceptParticipations:

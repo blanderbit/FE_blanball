@@ -99,6 +99,7 @@
     @showNewNotifications="loadDataNotifications(1, null, true, true)"
     @changeTab="onChangeTab"
     @removeNotifications="removeNotifications"
+    @logOut="logOut"
   />
 </template>
 
@@ -114,7 +115,6 @@ import MobileMenu from './MobileMenu.vue';
 import Loading from '../workers/loading-worker/Loading.vue';
 
 import { useUserDataStore } from '../stores/userData';
-import { useEventDataStore } from '../stores/eventsData';
 import { createNotificationFromData } from '../workers/utils-worker';
 import {
   AuthWebSocketWorkerInstance,
@@ -167,7 +167,6 @@ export default {
   },
   setup(props, { emit }) {
     const userStore = useUserDataStore();
-    const eventStore = useEventDataStore();
     const notReadNotificationCount = ref(0);
     const allNotificationsCount = ref(0);
     const loading = ref(false);
@@ -385,12 +384,9 @@ export default {
 
     getNotificationsCount();
     const logOut = () => {
-      eventStore.events = {};
       TokenWorker.clearToken();
       router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute);
-      userStore.$patch({
-        user: {},
-      });
+      userStore.$reset()
     };
 
     const removeNotifications = (ids) => {

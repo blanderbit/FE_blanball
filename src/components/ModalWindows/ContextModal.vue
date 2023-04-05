@@ -1,20 +1,22 @@
 <template>
   <div class="context-modal__tooltip-wrapper" @click.self="$emit('closeModal')">
-    <div :style="modalStyle" class="context-modal__tooltip">
+    <div ref="modal" :style="modalStyle" class="context-modal__tooltip">
       <div
         v-for="item in modalItems"
         class="context-modal__tooltip-item"
         @click="$emit('itemClick', item.type)"
       >
         <img :src="item.img" alt="" />
-        <span class="b-item-text">{{ item.text }}</span>
+        <span class="b-item-text">{{ $t(item.text) }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import { useElementSize } from '@vueuse/core';
+import { he } from 'date-fns/locale';
 
 export default {
   props: {
@@ -35,15 +37,36 @@ export default {
     },
   },
   setup(props) {
+    const modal = ref();
+    const { width, height } = useElementSize(modal);
     const modalStyle = computed(() => {
+      const modalWidth = width.value;
+      const modalHeight = height.value;
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+
+      let top = props.clientY;
+      let left = props.clientX;
+
+      // Check if modal is going out of screen on the right side
+      if (left + modalWidth > screenWidth) {
+        left = screenWidth - modalWidth;
+      }
+
+      // Check if modal is going out of screen on the bottom
+      if (top + modalHeight > screenHeight) {
+        top = screenHeight - modalHeight;
+      }
+
       return {
-        top: props.clientY - 50 + 'px',
-        left: props.clientX + 'px',
+        top: top + 'px',
+        left: left + 'px',
       };
     });
 
     return {
       modalStyle,
+      modal,
     };
   },
 };
@@ -54,13 +77,7 @@ export default {
 $color-f0f0f4: #f0f0f4;
 
 .context-modal__tooltip-wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(38, 37, 65, 0.2);
-  z-index: 999;
+  @include modal-wrapper;
 
   .context-modal__tooltip {
     background: $--b-main-white-color;

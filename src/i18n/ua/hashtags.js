@@ -23,6 +23,8 @@ export default {
   ST: 'ФС',
   fan: 'Вболівальник',
   player: 'Гравець',
+  request_participation: 'Заявку подано',
+  author: 'Автор',
   Football: 'Футбол',
   need_ball: 'Потрібен м`яч',
   need_form: 'Потрібна форма',

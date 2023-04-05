@@ -87,12 +87,6 @@
                   @infinite="loadDataPaginationData(paginationPage + 1, $event)"
                 >
                   <template #complete>
-                    <EmptyList
-                      v-if="!paginationElements.length"
-                      :title="emptyListMessages.title"
-                      :description="emptyListMessages.title"
-                    />
-
                     <ScrollToTop
                       :element-length="paginationElements"
                       :is-scroll-top-exist="blockScrollToTopIfExist"
@@ -177,13 +171,6 @@ export default {
       };
     });
 
-    const emptyListMessages = computed(() => {
-      return {
-        title: 'Немає повідомлень для відображення',
-        description: 'Вам ще не надходили сповіщення від інших користувачів',
-      };
-    });
-
     const {
       paginationElements,
       paginationPage,
@@ -237,7 +224,6 @@ export default {
       rateStatus,
       usersReviews,
       mockData,
-      emptyListMessages,
       triggerForRestart,
       blockScrollToTopIfExist,
       paginationElements,
@@ -260,9 +246,6 @@ $color-f9f9fc: #f9f9fc;
 $color-f0f0f4: #f0f0f4;
 $color-efeff6: #efeff6;
 
-::-webkit-scrollbar {
-  display: none;
-}
 .b-rating-card {
   height: fit-content;
   background: $--b-main-white-color;
@@ -337,7 +320,7 @@ $color-efeff6: #efeff6;
     .b-rating-card__cards-block {
       margin-top: 20px;
       position: relative;
-      max-height: 400px;
+      height: 400px;
       overflow-y: scroll;
 
       .b-rating-card__card-opened {

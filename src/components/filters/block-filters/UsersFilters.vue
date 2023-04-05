@@ -11,40 +11,18 @@
     />
     <div class="b-users-filters">
       <div class="b-users-filters__first-line">
-        <div class="b-users-filters__left-part d-flex">
-          <div class="b-users-filters__dropdown-sorting">
-            <dropdown
-              :check-value-immediate="true"
-              :options="ordering"
-              :placeholder="$t('users.sorting')"
-              :height="32"
-              display-name="name"
-              display-value="value"
-              v-model="transformedFilters.ordering"
-              name="sorting"
-            >
-            </dropdown>
+        <div class="b-users-filters__left-part">
+          <div class="b-users-filters__selected-ordering-value">
+            {{ orderingDisplayValue }}
           </div>
-          <div class="b-users-filters__dropdown-position">
-            <dropdown
-              :check-value-immediate="true"
-              :options="positions"
-              :placeholder="$t('users.position')"
-              :height="32"
-              display-name="name"
-              display-value="value"
-              v-model="transformedFilters.profile__position"
-              name="position"
-            >
-            </dropdown>
-          </div>
-          <div class="b-users-filters__dropdown-gender">
+          <div class="b-users-filters__dropdown">
             <dropdown
               :check-value-immediate="true"
               :options="gender"
               :placeholder="$t('users.gender')"
               :height="32"
               display-name="name"
+              :backgroundColor="'#fff'"
               display-value="value"
               v-model="transformedFilters.profile__gender"
               name="gender"
@@ -70,25 +48,27 @@
         </div>
       </div>
       <div class="b-users-filters__second-line" v-if="activeFilters">
-        <div class="b-users-filters__age-filter-wrapp">
+        <div class="b-users-filters__age-filter-wrap">
           <RangeFilter v-model:age-range="transformedFilters.profile__age" />
         </div>
-        <!-- <checkbox v-model:checked="transformedFilters.is_online"></checkbox> -->
-        <!--<modal-position-map></modal-position-map>-->
-      </div>
-      <div class="b-users-filters__mob-line">
-        <div class="b-users-filters__sorting">
+        <div class="b-users-filters__dropdown">
           <dropdown
             :check-value-immediate="true"
-            :options="ordering"
+            :options="positions"
+            :placeholder="$t('users.gaming-position')"
             :height="32"
-            :placeholder="$t('users.sorting')"
+            :backgroundColor="'#fff'"
             display-name="name"
             display-value="value"
-            v-model="transformedFilters.ordering"
-            name="sorting"
+            v-model="transformedFilters.profile__position"
+            name="position"
           >
           </dropdown>
+        </div>
+      </div>
+      <div class="b-users-filters__mob-line">
+        <div class="b-users-filters__selected-ordering-value">
+          {{ orderingDisplayValue }}
         </div>
         <div class="b-users-filters__fitering">
           <div
@@ -185,38 +165,18 @@ export default {
     });
     const positions = computed(() => CONSTANTS.profile.position);
     const gender = computed(() => CONSTANTS.users_page.gender);
-    const ordering = computed(() => [
-      {
-        value: 'id',
-        name: 'айди',
-        iconSrc: icons.value.arrowTop,
-      },
-      {
-        value: 'profile__age',
-        name: 'возраст',
-        iconSrc: icons.value.arrowTop,
-      },
-      {
-        value: 'raiting',
-        name: 'рейтинг',
-        iconSrc: icons.value.arrowTop,
-      },
-      {
-        value: '-id',
-        name: 'айди',
-        iconSrc: icons.value.arrowDown,
-      },
-      {
-        value: '-profile__age',
-        name: 'возраст',
-        iconSrc: icons.value.arrowDown,
-      },
-      {
-        value: '-raiting',
-        name: 'рейтинг',
-        iconSrc: icons.value.arrowDown,
-      },
-    ]);
+    const ordering = computed(() => CONSTANTS.users_page.ordering);
+
+    const orderingDisplayValue = computed(() => {
+      if (transformedFilters.value.ordering) {
+        return CONSTANTS.users_page.ordering.find(
+          (obj) => obj.value === transformedFilters.value.ordering
+        ).name;
+      } else {
+        return CONSTANTS.users_page.ordering.find((obj) => obj.value === '-id')
+          .name;
+      }
+    });
 
     const { activeFilters, transformedFilters, updateRealData } =
       TransformedFiltersWorker({
@@ -295,6 +255,7 @@ export default {
       icons,
       isModalFiltersActive,
       calendar,
+      orderingDisplayValue,
     };
   },
 };
@@ -303,10 +264,17 @@ export default {
 <style scoped lang="scss">
 // SCSS variables for hex colors
 $color-fafafa: #fafafa;
-
+.b-users-filters__dropdown {
+  width: 132px;
+  height: 32px;
+}
 .b-users-filters {
   * {
     z-index: 10;
+  }
+  .b-users-filters__selected-ordering-value {
+    @include inter(13px, 500);
+    line-height: 20px;
   }
   &__first-line {
     display: flex;
@@ -315,13 +283,9 @@ $color-fafafa: #fafafa;
       display: none;
     }
     .b-users-filters__left-part {
-      .b-users-filters__dropdown-sorting,
-      .b-users-filters__dropdown-position,
-      .b-users-filters__dropdown-gender {
-        width: 132px;
-        height: 32px;
-        margin-right: 20px;
-      }
+      display: flex;
+      align-items: center;
+      gap: 20px;
     }
     .b-users-filters__right-part {
       .b-users-filters__input {
@@ -330,11 +294,14 @@ $color-fafafa: #fafafa;
     }
   }
   &__second-line {
-    margin-top: 30px;
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
     @include tabletAndMobile {
       display: none;
     }
-    .b-users-filters__age-filter-wrapp {
+    .b-users-filters__age-filter-wrap {
       width: 300px;
     }
   }

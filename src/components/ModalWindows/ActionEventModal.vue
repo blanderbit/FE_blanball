@@ -26,13 +26,7 @@ export default {
 
 <style lang="scss" scoped>
 .b-action-event-modal__wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(38, 37, 65, 0.2);
-  z-index: 999;
+  @include modal-wrapper;
 
   .b-action-event-modal__modal-window {
     position: absolute;

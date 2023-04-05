@@ -1,7 +1,7 @@
 <template>
   <Loading :is-loading="eventUpdateLoader"></Loading>
   <div class="b-edit-event-modal__wrapper">
-    <ChangeUserDataModal
+    <SubmitModal
       v-if="isSubmitModalOpened"
       :config="changeDataModalConfig"
       @closeModal="closeSubmitModal"
@@ -98,7 +98,7 @@ import ManageEventThirdStep from '../manage-event-components/ManageEventThirdSte
 import SelectFormsColorsModal from './SelectFormsColorsModal.vue';
 import WhiteBtn from '../WhiteBtn.vue';
 import GreenBtn from '../GreenBtn.vue';
-import ChangeUserDataModal from './UserCabinetModalWindows/ChangeUserDataModal.vue';
+import SubmitModal from './SubmitModal.vue';
 import Loading from '../../workers/loading-worker/Loading.vue';
 
 import { API } from '../../workers/api-worker/api.worker';
@@ -118,7 +118,7 @@ export default {
     GreenBtn,
     Loading,
     Form,
-    ChangeUserDataModal,
+    SubmitModal,
   },
   props: {
     eventDataValue: {
@@ -319,36 +319,12 @@ export default {
 
 <style lang="scss" scoped>
 $color-8a8aa8: #8a8aa8;
-
-::-webkit-scrollbar-track {
-  background-color: $--b-main-white-color;
-  border-radius: 100px;
-}
-
-/* style for the scrollbar thumb */
-::-webkit-scrollbar-thumb {
-  background-color: $color-8a8aa8;
-  border-radius: 100px;
-  transform: matrix(-1, 0, 0, 1, 0, 0);
-}
-
-/* style for the scrollbar */
-::-webkit-scrollbar {
-  position: absolute;
-  width: 6px;
-}
 .b-edit-event-modal__block-title {
   @include exo(16px, 700);
   line-height: 24px;
 }
 .b-edit-event-modal__wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(38, 37, 65, 0.2);
-  z-index: 999;
+  @include modal-wrapper;
   .b-edit-event-modal__modal-window {
     position: absolute;
     top: 50%;
@@ -375,12 +351,8 @@ $color-8a8aa8: #8a8aa8;
         line-height: 32px;
       }
       .b-edit-event-modal__subtitle {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 12px;
+        @include exo(12px, 400, $--b-main-gray-color);
         line-height: 20px;
-        color: $--b-main-gray-color;
         margin-top: 4px;
       }
     }
@@ -389,11 +361,6 @@ $color-8a8aa8: #8a8aa8;
       display: flex;
       flex-direction: column;
       gap: 20px;
-      .b-main-side__second-step {
-        ::-webkit-scrollbar {
-          display: none;
-        }
-      }
       .b-edit-event-modal__general-info {
         display: flex;
         flex-direction: column;

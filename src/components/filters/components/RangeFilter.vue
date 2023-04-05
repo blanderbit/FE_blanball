@@ -20,10 +20,8 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue';
-
-import Slider from '@vueform/slider';
-
+import { ref, watch } from 'vue'
+import Slider from '@vueform/slider'
 export default {
   components: {
     Slider,
@@ -36,51 +34,41 @@ export default {
     },
   },
   setup(props, { emit }) {
-    const minAge = ref(null);
-    const maxAge = ref(null);
-    const rangeValue = ref(null);
-    rangeValue.value = props.ageRange;
-
-    minAge.value = props.ageRange[0];
-    maxAge.value = props.ageRange[1];
-
+    const minAge = ref(null)
+    const maxAge = ref(null)
+    const rangeValue = ref(null)
+    rangeValue.value = props.ageRange
+    minAge.value = props.ageRange[0]
+    maxAge.value = props.ageRange[1]
     watch(
       () => props.ageRange,
       (newVal) => {
-        rangeValue.value = newVal;
-        minAge.value = newVal[0];
-        maxAge.value = newVal[1];
+        rangeValue.value = newVal
+        minAge.value = newVal[0]
+        maxAge.value = newVal[1]
       }
-    );
-
+    )
     function onSliderDrag(event) {
-      minAge.value = event[0];
-      maxAge.value = event[1];
-      emit('update:ageRange', event);
+      minAge.value = event[0]
+      maxAge.value = event[1]
+      emit('update:ageRange', event)
     }
-
     return {
       onSliderDrag,
       minAge,
       maxAge,
       rangeValue,
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped lang="scss">
-// SCSS variables for hex colors
-$color-1ab2ad: #1ab2ad;
-$color-e9fcfb: #e9fcfb;
-$color-f9f9fc: #f9f9fc;
-$color-dfdeed: #dfdeed;
-
 .filter-style {
-  --slider-connect-bg: $--b-main-green-color;
+  --slider-connect-bg: #148783;
   --slider-height: 2px;
-  --slider-handle-border: 4px solid $color-1ab2ad;
-  --slider-handle-shadow: 0.5px 0.5px 2px 1px $color-e9fcfb;
+  --slider-handle-border: 4px solid #1ab2ad;
+  --slider-handle-shadow: 0.5px 0.5px 2px 1px #e9fcfb;
 }
 .b-range-filter__slider-wrapper {
   display: flex;
@@ -94,29 +82,29 @@ $color-dfdeed: #dfdeed;
     font-weight: 400;
     font-size: 12px;
     line-height: 16px;
-    color: $--b-main-black-color;
+    color: #262541;
     padding: 0px 4px;
-    background: $color-f9f9fc;
+    background: #f9f9fc;
     border-radius: 4px;
     z-index: 11;
   }
   .b-range-filter__left-side {
-    background: $--b-main-white-color;
+    background: #ffffff;
     padding: 0 12px;
     width: 100%;
     display: flex;
     align-items: center;
-    border: 1px solid $color-dfdeed;
+    border: 1px solid #dfdeed;
     border-radius: 6px 0 0 6px;
     .b-range-filter__slider {
       width: 100%;
     }
   }
   .b-range-filter__right-side {
-    border-top: 1px solid $color-dfdeed;
-    border-right: 1px solid $color-dfdeed;
-    border-bottom: 1px solid $color-dfdeed;
-    background: $--b-main-white-color;
+    border-top: 1px solid #dfdeed;
+    border-right: 1px solid #dfdeed;
+    border-bottom: 1px solid #dfdeed;
+    background: #ffffff;
     padding: 6px 12px;
     border-radius: 0 6px 6px 0;
     font-family: 'Inter';
@@ -124,7 +112,7 @@ $color-dfdeed: #dfdeed;
     font-weight: 400;
     font-size: 13px;
     line-height: 16px;
-    color: $--b-main-gray-color;
+    color: #575775;
     min-width: 76px;
   }
 }

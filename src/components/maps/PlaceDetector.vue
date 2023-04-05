@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="b-place-detector" @click.stop="activeModal = true">
+    <div class="b-place-detector" @click.stop="!disabled ? activeModal = true : null">
       <img src="../../assets/img/location-point.svg" alt="" />
       <p>{{ place?.place_name }}</p>
     </div>
@@ -46,6 +46,10 @@ export default {
   },
   props: {
     place: {},
+    disabled: {
+      type: Boolean,
+      default: false
+    }
   },
   setup() {
     const activeModal = ref(false);

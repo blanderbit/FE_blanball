@@ -14,8 +14,11 @@
       <div v-if="popularEvents.length" v-for="event in popularEvents">
         <SmallEventCard :item="event" @clickSmallEventCard="goToEventPage" />
       </div>
-      <div v-if="!popularEvents.length && !loading" class="b-right-sidebar__no-events">
-        <img src="../assets/img/info-black.svg" alt="">
+      <div
+        v-if="!popularEvents.length && !loading"
+        class="b-right-sidebar__no-events"
+      >
+        <img src="../assets/img/info-black.svg" alt="" />
         <span>{{ $t('no_records.noPopularEvents.title') }}</span>
       </div>
     </div>
@@ -23,7 +26,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onBeforeUnmount} from 'vue';
 import { useRouter } from 'vue-router';
 
 import SmallEventCard from './SmallEventCard.vue';
@@ -33,6 +36,7 @@ import { API } from '../workers/api-worker/api.worker';
 import { addMinutes } from '../utils/addMinutes';
 import { getDate } from '../utils/getDate';
 import { getTime } from '../utils/getTime';
+import { BlanballEventBus } from '../workers/event-bus-worker';
 
 import { ROUTES } from '../router/router.const';
 
@@ -59,6 +63,28 @@ getPopularEvents().then((value) => {
   popularEvents.value = value.data.results;
   loading.value = false;
 });
+
+BlanballEventBus.on('userJoinedEvent', (data) => {
+  const event = popularEvents.value.find((event) => event.id === data.eventId);
+
+  if (event) {
+    console.log(data.participateType)
+    event.request_user_role = data.participateType;
+  }
+});
+
+BlanballEventBus.on('userLeftEvent', (data) => {
+  const event = popularEvents.value.find((event) => event.id === data.eventId);
+
+  if (event) {
+    event.request_user_role = '';
+  }
+});
+
+onBeforeUnmount(() => {
+  BlanballEventBus.off('userLeftEvent');
+  BlanballEventBus.off('userJoinedEvent');
+})
 
 function handlingIncomeData(item) {
   return {
@@ -111,11 +137,6 @@ $color-f9f9fc: #f9f9fc;
     margin-top: 20px;
     height: calc(100vh - 72px - 90px - 20px);
     overflow: scroll;
-    -ms-overflow-style: none; /* for Internet Explorer, Edge */
-    scrollbar-width: none; /* for Firefox */
-    &::-webkit-scrollbar {
-      display: none; /* for Chrome, Safari, and Opera */
-    }
   }
   .b-right-sidebar__no-events {
     @include inter(13px, 400);

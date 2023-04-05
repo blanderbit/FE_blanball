@@ -72,8 +72,8 @@ const VersionHandling = {
   },
   closeVersionModal: () => (isModalActive.value = false),
 };
-
-API.NotificationService.getMaintenance().then((result) =>
+try {
+  API.NotificationService.getMaintenance().then((result) =>
   handleMessageGeneral({
     messageType: WebSocketTypes.ChangeMaintenance,
     data: {
@@ -83,6 +83,7 @@ API.NotificationService.getMaintenance().then((result) =>
     },
   })
 );
+} catch{}
 
 GeneralSocketWorkerInstance.registerCallback(handleMessageGeneral).connect();
 

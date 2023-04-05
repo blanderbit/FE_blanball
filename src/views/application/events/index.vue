@@ -40,7 +40,7 @@
             :text="$t('buttons.create-event')"
             :width="168"
             :icon="iconPlus"
-            :height="40"
+            :height="32"
             @click-function="goToCreateEvent"
           />
         </div>
@@ -89,6 +89,7 @@
                     :title="emptyListMessages.title"
                     :description="emptyListMessages.title"
                     :buttonText="emptyListMessages.button_text"
+                    @buttonClick="goToCreateEvent"
                   />
 
                   <ScrollToTop
@@ -120,12 +121,10 @@ import GreenBtn from '../../../components/GreenBtn.vue';
 import InputComponent from '../../../components/forms/InputComponent.vue';
 import ContextMenu from '../../../components/ModalWindows/ContextMenuModal.vue';
 import EventCard from '../../../components/event-components/EventCard.vue';
-import SearchBlockEvents from '../../../components/SearchBlockEvents.vue';
 import MyEventCard from '../../../components/MyEventCard.vue';
 import RightSidebar from '../../../components/RightSidebar.vue';
 import EmptyList from '../../../components/EmptyList.vue';
 import SmartGridList from '../../../components/smart-list/SmartGridList.vue';
-import CONSTANTS from '../../../consts/index';
 import ScrollToTop from '../../../components/ScrollToTop.vue';
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
 import Dropdown from '../../../components/forms/Dropdown.vue';
@@ -135,7 +134,6 @@ import Loading from '../../../workers/loading-worker/Loading.vue';
 
 import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue';
 
-import { useEventDataStore } from '../../../stores/eventsData';
 import { API } from '../../../workers/api-worker/api.worker';
 import { PaginationWorker } from '../../../workers/pagination-worker';
 import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patch';
@@ -144,9 +142,15 @@ import { getDate } from '../../../utils/getDate';
 import { getTime } from '../../../utils/getTime';
 
 import { ROUTES } from '../../../router/router.const';
+import CONSTANTS from '../../../consts/index';
 
 import Plus from '../../../assets/img/plus.svg';
-import BallIcon from '../../../assets/img/ball.svg';
+
+
+const eventJoinTypes = {
+  PLAY: 'play',
+  VIEW: 'view'
+}
 
 export default {
   name: 'EventsPage',
@@ -157,7 +161,6 @@ export default {
     InputComponent,
     ContextMenu,
     EventCard,
-    SearchBlockEvents,
     MyEventCard,
     RightSidebar,
     SmartGridList,
@@ -169,7 +172,6 @@ export default {
     ContextModal,
   },
   setup() {
-    const eventStore = useEventDataStore();
     const scrollComponent = ref(null);
     const isEventJoinModalActive = ref(false);
     const router = useRouter();
@@ -184,20 +186,7 @@ export default {
     const mainEventsBlock = ref();
 
     const eventJoinToolTipItems = computed(() => {
-      return [
-        {
-          id: 1,
-          text: t('buttons.like-a-player'),
-          img: BallIcon,
-          type: 'play',
-        },
-        {
-          id: 2,
-          text: t('buttons.like-a-fan'),
-          img: BallIcon,
-          type: 'view',
-        },
-      ];
+      return CONSTANTS.eventJoin.items;
     });
 
     const mockData = computed(() => {
@@ -219,10 +208,10 @@ export default {
     async function joinEvent(eventData, type) {
       loading.value = true;
       switch (type) {
-        case 'play':
+        case eventJoinTypes.PLAY:
           await API.EventService.eventJoinAsPlayer(eventData.id);
           break;
-        case 'view':
+        case eventJoinTypes.VIEW:
           await API.EventService.eventJoinAsFan(eventData.id);
           break;
       }
@@ -235,14 +224,14 @@ export default {
       loading.value = false;
 
       switch (type) {
-        case 'play':
+        case eventJoinTypes.PLAY:
           if (eventData.privacy) {
             toast.success(t('notifications.event-request-sent'));
           } else {
             toast.success(t('notifications.event-join-as-player'));
           }
           break;
-        case 'view':
+        case eventJoinTypes.VIEW:
           toast.success(t('notifications.event-join-as-fan'));
           break;
       }
@@ -250,12 +239,12 @@ export default {
 
     function joinEventModalItemClick(data) {
       switch (data) {
-        case 'play':
-          joinEvent(joinEventData.value, 'play');
+        case eventJoinTypes.PLAY:
+          joinEvent(joinEventData.value, eventJoinTypes.PLAY);
           closeEventJoinModal();
           break;
-        case 'view':
-          joinEvent(joinEventData.value, 'view');
+        case eventJoinTypes.VIEW:
+          joinEvent(joinEventData.value, eventJoinTypes.VIEW);
           closeEventJoinModal();
           break;
       }
@@ -297,8 +286,9 @@ export default {
       router.push(ROUTES.APPLICATION.EVENTS.CREATE.absolute);
     }
     function switchToMyEvents() {
-      router.push(ROUTES.APPLICATION.MY_EVENTS.absolute);
+      router.push(ROUTES.APPLICATION.MY_EVENTS.index.absolute);
     }
+
     const refList = ref();
     const blockScrollToTopIfExist = ref(false);
     const triggerForRestart = ref(false);
@@ -491,11 +481,6 @@ $color-f0f0f4: #f0f0f4;
   }
   .b-events-page__main-body {
     height: 90vh;
-    -ms-overflow-style: none; /* for Internet Explorer, Edge */
-    scrollbar-width: none; /* for Firefox */
-    &::-webkit-scrollbar {
-      display: none; /* for Chrome, Safari, and Opera */
-    }
     .b-events-page__header-block {
       display: flex;
       justify-content: space-between;
@@ -639,7 +624,7 @@ $color-f0f0f4: #f0f0f4;
           height: 44px;
           right: 25px;
           z-index: 10;
-          bottom: 200px;
+          bottom: 25%;
 
           @media (max-width: 992px) {
             display: flex;
@@ -651,11 +636,6 @@ $color-f0f0f4: #f0f0f4;
           justify-content: space-between;
           overflow-y: scroll;
           height: 100%;
-          -ms-overflow-style: none; /* for Internet Explorer, Edge */
-          scrollbar-width: none; /* for Firefox */
-          &::-webkit-scrollbar {
-            display: none; /* for Chrome, Safari, and Opera */
-          }
         }
       }
     }

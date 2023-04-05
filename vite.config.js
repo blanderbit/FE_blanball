@@ -52,7 +52,11 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "@/assets/styles/variables.scss"; @import "@/assets/styles/mixins/fonts.scss"; @import '@/assets/styles/mixins/device.scss';`,
+        additionalData: `
+        @import "@/assets/styles/variables.scss"; 
+        @import "@/assets/styles/mixins/fonts.scss"; 
+        @import '@/assets/styles/mixins/device.scss';
+        @import '@/assets/styles/mixins/modal-wrapper.scss';`,
       },
     },
   },

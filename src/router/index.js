@@ -33,6 +33,7 @@ const router = createRouter({
       name: ROUTES.AUTHENTICATIONS.index.name,
       beforeEnter: routerResolverByLoginPage,
       component: () => import('../views/authentication/index.vue'),
+      redirect: ROUTES.AUTHENTICATIONS.LOGIN.absolute,
       children: [
         {
           path: ROUTES.AUTHENTICATIONS.LOGIN.relative,
@@ -59,6 +60,7 @@ const router = createRouter({
       name: ROUTES.APPLICATION.index.name,
       beforeEnter: routerAuthResolver.routeInterceptor(),
       component: () => import('../views/application/index.vue'),
+      redirect: ROUTES.APPLICATION.EVENTS.absolute,
       children: [
         {
           path: ROUTES.APPLICATION.VERSION.relative,
@@ -89,21 +91,48 @@ const router = createRouter({
           },
         },
         {
-          path: ROUTES.APPLICATION.MY_EVENTS.relative,
-          name: ROUTES.APPLICATION.MY_EVENTS.name,
-          beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
-            eventData: () =>
-              API.EventService.getAllMyEvents(
-                transpileInterseptorQueryToConfig(filterConfigForEvents, to)
-              ),
-            usersData,
-          })),
-          component: () => import('../views/application/events/my-events.vue'),
-          meta: {
-            breadcrumbs: {
-              i18n: 'breadcrumbs.myEvents',
+          path: ROUTES.APPLICATION.MY_EVENTS.index.relative,
+          name: ROUTES.APPLICATION.MY_EVENTS.index.name,
+          beforeEnter: routerAuthResolver.routeInterceptor(),
+          redirect: ROUTES.APPLICATION.MY_EVENTS.TOPICAL.absolute,
+          children: [
+            {
+              path: ROUTES.APPLICATION.MY_EVENTS.TOPICAL.absolute,
+              name: ROUTES.APPLICATION.MY_EVENTS.TOPICAL.name,
+              beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
+                eventData: () =>
+                  API.EventService.getMyTopicalEvents(
+                    transpileInterseptorQueryToConfig(filterConfigForEvents, to)
+                  ),
+                usersData,
+              })),
+              component: () => import('../views/application/events/my-events.vue'),
+              meta: {
+                breadcrumbs: {
+                  i18n: 'breadcrumbs.myEvents',
+                },
+                tabId: 1
+              },
             },
-          },
+            {
+              path: ROUTES.APPLICATION.MY_EVENTS.FINISHED.absolute,
+              name: ROUTES.APPLICATION.MY_EVENTS.FINISHED.name,
+              beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
+                eventData: () =>
+                  API.EventService.getMyFinishedEvents(
+                    transpileInterseptorQueryToConfig(filterConfigForEvents, to)
+                  ),
+                usersData,
+              })),
+              component: () => import('../views/application/events/my-events.vue'),
+              meta: {
+                breadcrumbs: {
+                  i18n: 'breadcrumbs.myEvents',
+                },
+                tabId: 2
+              },
+            },
+          ]
         },
         {
           path: ROUTES.APPLICATION.EVENTS.relative,
@@ -206,10 +235,12 @@ const router = createRouter({
     {
       path: ROUTES.WORKS.relative,
       name: ROUTES.WORKS.name,
+      beforeEnter: routerAuthResolver.routeInterceptor(),
       component: () => import('../views/application/works.vue'),
     },
     {
       path: '/:pathMatch(.*)*',
+      beforeEnter: routerAuthResolver.routeInterceptor(),
       component: () => import('../views/404.vue'),
     },
     {

@@ -1,6 +1,7 @@
 export default {
   'cancel-editing': 'Скасувати редагування',
   'save-changes': 'Зберегти зміни',
+  'invite': 'Запросити',
   cancel: 'Скасувати',
   'create-event': 'Створити подію',
   save: 'Зберегти',
@@ -19,6 +20,7 @@ export default {
   decline: 'Відмінити',
   clear: 'Очистити',
   apply: 'Застосувати',
+  'unpin': 'Відкріпити',
   publish: 'Опублікувати',
   join: 'Долучитися',
   'close-this-window': 'Закрити це вікно',

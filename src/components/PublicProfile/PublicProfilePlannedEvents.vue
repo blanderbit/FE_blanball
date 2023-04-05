@@ -113,8 +113,9 @@ $color-efeff6: #efeff6;
 $color-dfdeed: #dfdeed;
 $color-f0f0f4: #f0f0f4;
 
-::-webkit-scrollbar {
-  display: none;
+
+::v-deep(.b-scroll-top__return-top) {
+  margin: 16px;
 }
 
 .b-public-profile__planned-events {

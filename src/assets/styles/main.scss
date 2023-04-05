@@ -3,8 +3,20 @@
 
 .Vue-Toastification__toast {
   background: #262541;
-  width: 320px;
+  width: 308px;
   padding: 16px;
+
+  svg {
+    margin: 0px 8px 0px 0px;
+  }
+}
+
+html {
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+  ::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+  }
 }
 
 .Vue-Toastification__toast--success {
@@ -43,8 +55,8 @@
   color: #262541;
 }
 .Vue-Toastification__toast--info {
-  background: #f7f7fe;
-  border: 1px solid #bfbeda;
+  background: #f9f9fc;
+  border: 1px solid #dfdeed;
   border-radius: 6px;
   color: #262541;
   font-family: 'Inter';

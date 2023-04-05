@@ -11,9 +11,10 @@
       @close-modal="isModalFiltersActive = false"
       @set-modal-window-filters="setModalFilters"
       :elementsCount="elementsCount"
-      @clearFilters="$emit('clearFilters')"
+      @clearFilters="clearFilters"
     />
     <div class="b-main-search__wrapper">
+      <slot name="tabs"></slot>
       <div class="b-main-search__search-block">
         <div class="b-main-search__first-line">
           <div class="b-main-search__left-block">
@@ -30,6 +31,7 @@
               <Dropdown
                 :check-value-immediate="true"
                 :placeholder="$t('events.game-type')"
+                :backgroundColor="'#fff'"
                 :options="sportTypeDropdown"
                 :height="32"
                 display-value="value"
@@ -44,12 +46,12 @@
                 :title-width="0"
                 :placeholder="$t('events.search-events')"
                 :height="32"
-                :icon="times"
+                :icon="icons.search"
                 name="search"
                 v-model="transformedFilters.search"
               />
             </div>
-            <clear-filters @clear="$emit('clearFilters')"></clear-filters>
+            <clear-filters @clear="clearFilters"></clear-filters>
             <button-details-filters
               v-model:active="activeFilters"
             ></button-details-filters>
@@ -57,12 +59,24 @@
         </div>
         <div class="b-main-search__second-line" v-if="activeFilters">
           <div class="b-main-search__left-side">
+            <div class="b-main-search__dropdown-wrapper-cities">
+              <Dropdown
+                :check-value-immediate="true"
+                :placeholder="$t('events.gender')"
+                :options="gender"
+                :backgroundColor="'#fff'"
+                :height="32"
+                display-value="value"
+                display-name="name"
+                v-model="transformedFilters.gender"
+              />
+            </div>
             <div class="b-main-search__calendar">
               <img src="../../../assets/img/calendar.svg" alt="" />
               <v-date-picker
                 locale="ukr"
                 :model-config="calendar.modelConfig"
-                v-model="transformedFilters.date_and_time"
+                v-model="dateFilterValue"
                 is-range
               >
                 <template v-slot="options">
@@ -81,17 +95,6 @@
                   </div>
                 </template>
               </v-date-picker>
-            </div>
-            <div class="b-main-search__dropdown-wrapper-cities">
-              <Dropdown
-                :check-value-immediate="true"
-                :placeholder="$t('events.gender')"
-                :options="gender"
-                :height="32"
-                display-value="value"
-                display-name="name"
-                v-model="transformedFilters.gender"
-              />
             </div>
           </div>
           <div class="b-main-search__right-side">
@@ -179,7 +182,7 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
+import { computed, ref, onMounted, onBeforeUnmount, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import dayjs from 'dayjs';
 
@@ -247,6 +250,7 @@ export default {
     const route = useRoute();
     const isMobileSearchOpened = ref(false);
     const todaysDate = useTodaysDate();
+    const dateFilterValue = ref(null);
     const { isMobile, isTablet, onResize } = useWindowWidth();
     const icons = computed(() => {
       return {
@@ -355,6 +359,22 @@ export default {
       window.removeEventListener('resize', onResize);
     });
 
+
+    watchEffect(() => {
+      if (dateFilterValue.value?.start) {
+        dateFilterValue.value.start = dayjs(dateFilterValue.value?.start).format('YYYY-MM-DD')
+      }
+      if (dateFilterValue.value?.end) {
+        dateFilterValue.value.end = dayjs(dateFilterValue.value?.end).format('YYYY-MM-DD')
+      }
+      transformedFilters.value.date_and_time = dateFilterValue.value
+    });
+
+    function clearFilters() {
+      dateFilterValue.value = null
+      emit('clearFilters')
+    }
+
     function sortingButtonClick() {
       transformedFilters.value.ordering =
         transformedFilters.value.ordering === 'id' ? '-id' : 'id';
@@ -375,6 +395,7 @@ export default {
       sortingButtonClick,
       setModalFilters,
       closeMobileSearch,
+      clearFilters,
       openMobileSearch,
       ordering,
       filterStatus,
@@ -384,6 +405,7 @@ export default {
       sportTypeDropdown,
       isMobileSearchOpened,
       genderDropdown,
+      dateFilterValue,
       statusDropdown,
       calendar,
       icons,

@@ -91,10 +91,10 @@
           @toggle-edit-mode="toggleEditMode"
         />
 
-        <ChangeUserDataModal
+        <SubmitModal
           v-if="isModalActive.change_data"
           :config="changeDataModalConfig"
-          @close-modal="closeChangeUserDataModal"
+          @close-modal="closeSubmitModal"
           @save-changes="handleSaveDataChanges"
           @decline-changes="declineUserDataChanges"
           @show-preview="showPreview"
@@ -161,7 +161,7 @@ import SecurityBlock from '../../../components/SecurityBlock.vue';
 import TabLabel from '../../../components/TabLabel.vue';
 import DeleteAccountModal from '../../../components/ModalWindows/UserCabinetModalWindows/DeleteAccountModal.vue';
 import ChangePasswordModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangePasswordModal.vue';
-import ChangeUserDataModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangeUserDataModal.vue';
+import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue';
 import ChangeEmailModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangeEmailModal.vue';
 import ButtonsBlock from '../../../components/user-cabinet/ButtonsBlock.vue';
 import EditAvatarModal from '../../../components/ModalWindows/UserCabinetModalWindows/EditAvatarModal.vue';
@@ -193,7 +193,7 @@ export default {
     SecurityBlock,
     DeleteAccountModal,
     ChangePasswordModal,
-    ChangeUserDataModal,
+    SubmitModal,
     Form,
     Loading,
     ChangeEmailModal,
@@ -378,7 +378,7 @@ export default {
     }
 
     function showPreview() {
-      closeChangeUserDataModal(false);
+      closeSubmitModal(false);
       toggleModal('public_profile');
     }
 
@@ -387,12 +387,12 @@ export default {
     }
 
     function declineUserDataChanges(val = true) {
-      closeChangeUserDataModal(val);
+      closeSubmitModal(val);
     }
 
     async function handleSaveDataChanges() {
       saveUserDataChanges();
-      closeChangeUserDataModal(true);
+      closeSubmitModal(true);
     }
 
     function saveUserDataChanges() {
@@ -497,7 +497,7 @@ export default {
       router.push(url);
     }
 
-    function closeChangeUserDataModal(isEditMode) {
+    function closeSubmitModal(isEditMode) {
       toggleModal('change_data');
       if (isEditMode) {
         toggleEditMode();
@@ -533,7 +533,7 @@ export default {
             birthday: `${year}-${mockData.value.numberFromMonth[month]}-${day}`,
             gender: userStore.user.profile.gender,
             avatar_url: userStore.getUserAvatar,
-            position: getUserPositionText(position),
+            position: position,
           };
           delete profileData.day;
           delete profileData.month;
@@ -552,11 +552,6 @@ export default {
               planned_events: planned_events,
             },
             profile: {
-              place: {
-                place_name: 'string',
-                lat: 90,
-                lon: 180,
-              },
               ...profileData,
             },
             get_planned_events: '1y',
@@ -569,16 +564,6 @@ export default {
         case 'change_password':
           isModalActive.change_password = !isModalActive.change_password;
           break;
-      }
-    }
-
-    function getUserPositionText(position) {
-      if (position) {
-        return CONSTANTS.profile.position.find(
-          (item) => item.value === position
-        )?.name;
-      } else {
-        return t('profile.no-position');
       }
     }
 
@@ -624,7 +609,7 @@ export default {
       handleSaveDataChanges,
       declineUserDataChanges,
       changeTab,
-      closeChangeUserDataModal,
+      closeSubmitModal,
       toggleModal,
       switchTabLabel,
       saveDataEdit,
@@ -667,9 +652,6 @@ $color-e2e2e9: #e2e2e9;
 $color-6f6f77: #6f6f77;
 $color-dfdeed: #dfdeed;
 
-::-webkit-scrollbar {
-  display: none;
-}
 .b-player-page__outer-btns {
   position: absolute;
   top: -30px;
@@ -718,9 +700,6 @@ $color-dfdeed: #dfdeed;
   @include tabletAndMobile {
     padding-bottom: 150px;
   }
-}
-.b-user-cabinet__user-cabinet::-webkit-scrollbar {
-  display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
@@ -803,6 +782,7 @@ $color-dfdeed: #dfdeed;
       right: 0;
     }
     .b-user-cabinet__mobile-tablet-block {
+      padding-right: 16px;
       @media (min-width: 1400px) {
         flex-basis: 372px;
       }
@@ -811,6 +791,9 @@ $color-dfdeed: #dfdeed;
       }
       @media (min-width: 768px) and (max-width: 1200px) {
         flex-basis: 49%;
+      }
+      @include mobile {
+        padding-right: 0px;
       }
     }
   }

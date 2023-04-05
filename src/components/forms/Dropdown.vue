@@ -1,5 +1,5 @@
 <template>
-  <div class="b-dropdown">
+  <div class="b-dropdown" :style="dropdownStyles">
     <div class="b-dropdown__title">
       <span>
         {{ dropdownModelValue ? mainTitle : '' }}
@@ -117,6 +117,10 @@ export default {
       type: String,
       default: '',
     },
+    backgroundColor: {
+      type: String,
+      default: ''
+    }
   },
   emits: ['new-value', 'update:modelValue'],
   setup(props, { emit }) {
@@ -129,6 +133,13 @@ export default {
       modelHandlers,
     } = CustomModelWorker(props);
     const icon = computed(() => SearchIcon);
+
+    
+    const dropdownStyles = computed(() => {
+      return {
+        'background-color': props.backgroundColor
+      }
+    })
 
     function selectValue(e) {
       dropdownModelValue.value =
@@ -231,6 +242,7 @@ export default {
       modelHandlers,
       isOpened,
       wrapper,
+      dropdownStyles,
       dropdownModelValue,
       icon,
       t,
@@ -272,6 +284,8 @@ $color-dfdeed: #dfdeed;
   .v-select .vs__dropdown-toggle {
     padding: 0;
     height: 100%;
+    border-radius: 6px;
+    border: 1px solid $color-dfdeed;
   }
   .v-select.vs--open.vs--single.vs--unsearchable .vs__dropdown-toggle {
     border-bottom: var(--vs-border-width) var(--vs-border-style)
@@ -318,7 +332,6 @@ $color-dfdeed: #dfdeed;
     height: 100%;
   }
   .vs--searchable .vs__dropdown-toggle {
-    border-color: $color-dfdeed;
     height: 100%;
     padding: 0;
   }

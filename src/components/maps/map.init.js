@@ -1,6 +1,6 @@
 const script = document.createElement('script');
 script.src =
-  'https://maps.googleapis.com/maps/api/js?key=AIzaSyAmUDDHhlOLNsCXDTnlSQHDPCW33iP0wXU&callback=initMap';
+  `https://maps.googleapis.com/maps/api/js?key=${process.env.MAP_KEY}&callback=initMap`;
 script.async = true;
 script.onload = () => {
   window.googleMapInfoStatus = 'onload';
