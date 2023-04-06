@@ -76,6 +76,21 @@
           </template>
         </InputComponent>
       </div>
+
+      <div class="b-register-step__remember-me">
+        <div class="b-register-step__check-block">
+          <Checkbox @update:checked="$emit('updateSaveCredentials', $event)">
+            <template #label>
+              <span class="remember-me__desktop">{{
+                $t('login.remember-me')
+              }}</span>
+              <span class="remember-me__mobile">{{
+                $t('login.remember-me-short')
+              }}</span>
+            </template>
+          </Checkbox>
+        </div>
+      </div>
     </template>
   </step-wrapper>
 </template>
@@ -86,6 +101,7 @@ import { useI18n } from 'vue-i18n';
 
 import InputComponent from '../forms/InputComponent.vue';
 import StepWrapper from './StepWrapper.vue';
+import Checkbox from '../forms/Checkbox.vue';
 
 import tickWhite from '../../assets/img/tick-white.svg';
 import nikeIcon from '../../assets/img/nike-icon.svg';
@@ -95,6 +111,7 @@ export default {
   components: {
     InputComponent,
     StepWrapper,
+    Checkbox,
   },
   setup() {
     const tick = computed(() => {
@@ -156,6 +173,41 @@ export default {
   right: 0;
   @include tablet {
     display: none;
+  }
+}
+.b-register-step__remember-me {
+  margin-top: 26px;
+  @include mobile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .b-register-step__check-block {
+    span {
+      margin-left: 30px;
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 20px;
+      color: $--b-main-black-color;
+      vertical-align: bottom;
+    }
+    ::v-deep .indicator {
+      border: 1px solid $--b-main-gray-color;
+      background: white;
+    }
+    
+    .remember-me__desktop {
+      @include mobile {
+        display: none;
+      }
+    }
+    .remember-me__mobile {
+      @media (min-width: 576px) {
+        display: none;
+      }
+    }
   }
 }
 </style>

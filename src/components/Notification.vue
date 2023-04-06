@@ -58,6 +58,7 @@
             <div class="b-selectable" v-if="selectableValue">
               <checkbox
                 :checked="checked"
+                :color="'blue'"
                 :field-id="notificationInstance?.notification_id"
                 @update:checked="
                   $emit('selected', {

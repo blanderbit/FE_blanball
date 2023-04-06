@@ -12,15 +12,26 @@ export class TokenServiceWorker {
   }
 
   getToken() {
-    return localStorage.getItem(this._getKeyName());
+    return localStorage.getItem(this._getKeyName()) || sessionStorage.getItem(this._getKeyName())
   }
 
   clearToken() {
     localStorage.removeItem(this._getKeyName());
+    sessionStorage.removeItem(this._getKeyName());
   }
 
-  setToken(data) {
-    localStorage.setItem(this._getKeyName(), data);
+  setToken(data, storage_type) {
+    switch(storage_type) {
+      case 'local_storage':
+        localStorage.setItem(this._getKeyName(), data);
+        break
+      case 'session_storage':
+        sessionStorage.setItem(this._getKeyName(), data);
+        break
+      default:
+        sessionStorage.setItem(this._getKeyName(), data);
+        break
+    }
   }
 
   isToken() {

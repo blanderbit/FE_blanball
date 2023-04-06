@@ -25,6 +25,7 @@
             v-if="currentStep === 2"
             @next="handleRegister(data)"
             @back="currentStep--"
+            @updateSaveCredentials="updateSaveCredentials"
           />
         </Transition>
         <Transition>
@@ -154,6 +155,7 @@ export default {
     const router = useRouter();
     const currentStep = ref(1);
     const initialValues = ref({});
+    const saveUserCredentials = ref(false);
     let profileValues = {
       profile: {},
     };
@@ -249,6 +251,10 @@ export default {
       router.push(ROUTES.APPLICATION.EVENTS.absolute);
     }
 
+    function updateSaveCredentials(value) {
+      saveUserCredentials.value = value;
+    }
+
     return {
       currentStep,
       rightSideStyle,
@@ -259,6 +265,7 @@ export default {
       initialValues,
       finishOnBoarding,
       goToEvents,
+      updateSaveCredentials,
       async handleRegister(data) {
         const { valid } = await data.validate();
         if (!valid) return;
@@ -270,7 +277,13 @@ export default {
             const apiRequestResult = await API.AuthorizationService.Register(
               data
             );
-            TokenWorker.setToken(apiRequestResult.data.access);
+            let tokenStorage;
+            if (saveUserCredentials.value) {
+              tokenStorage = 'local_storage';
+            } else {
+              tokenStorage = 'session_storage';
+            }
+            TokenWorker.setToken(apiRequestResult.data.access, tokenStorage);
             const apiRequestResultMyProfile =
               await API.UserService.getMyProfile();
             profileValues = apiRequestResultMyProfile.data;
