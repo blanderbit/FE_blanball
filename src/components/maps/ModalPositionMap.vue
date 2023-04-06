@@ -180,8 +180,9 @@ export default {
         lat: e.lat,
         lng: e.lng,
       };
+      console.log(e.place)
       region.value = e.place.state;
-      city.value = e.place.city || e.place.town || e.place.village;
+      city.value = e.place.city || e.place.town || e.place.village || e.place.hamlet || e.place.municipality;
       nextButton.value = !region.value || !city.value;
     }
     async function getCoordsByName(str) {
