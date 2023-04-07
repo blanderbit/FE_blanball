@@ -10,11 +10,20 @@
         />
         <div class="b-hide-events-modal__tabs-block">
           <div class="b-hide-events-modal__tabs">
-            <div v-for="tab in tabs"
-            :class="['b-hide-events-modal__tab', {'selected': selectedTabId === tab.id}]"
-                @click="changeTab(tab.id)">
+            <div
+              v-for="tab in tabs"
+              :class="[
+                'b-hide-events-modal__tab',
+                { selected: selectedTabId === tab.id },
+              ]"
+              @click="changeTab(tab.id)"
+            >
               {{ tab.text }}
             </div>
+          </div>
+          <div class="b-cancel-hide-button">
+            <span class="b-hide-button-desktop">Скасувати приховування</span>
+            <span class="b-hide-button-mobile">Скасувати</span>
           </div>
         </div>
       </div>
@@ -41,8 +50,8 @@ export default {
     ]);
 
     const changeTab = (tabId) => {
-        selectedTabId.value = tabId
-    }
+      selectedTabId.value = tabId;
+    };
 
     return {
       tabs,
@@ -72,10 +81,37 @@ export default {
     padding: 24px 20px;
     position: relative;
 
+    @include beforeDesktop {
+      width: 100%;
+      margin-top: 220px;
+      height: 100%;
+      box-shadow: 0px 0px 4px rgba(6, 95, 79, 0.04),
+        0px -4px 8px rgba(6, 95, 79, 0.06);
+      border-radius: 20px 20px 0px 0px;
+      padding: 20px;
+    }
+
+    @include mobile {
+      margin-top: 90px;
+      padding: 22px 0px 8px;
+      box-shadow: 0px 0px 4px rgba(6, 95, 79, 0.04),
+        0px -4px 8px rgba(6, 95, 79, 0.06);
+    }
+
     .b-hide-events-modal__top-side {
+      @include mobile {
+        position: fixed;
+        bottom: 12%;
+        width: 100%;
+        padding: 0px 20px;
+      }
       .b-hide-events-modal__title {
         @include inter(13px, 400);
         line-height: 24px;
+
+        @include mobile {
+          display: none;
+        }
       }
       .b-hide-events-modal__close-button {
         cursor: pointer;
@@ -84,11 +120,20 @@ export default {
         position: absolute;
         right: 20px;
         top: 20px;
+
+        @include beforeDesktop {
+          display: none;
+        }
       }
 
       .b-hide-events-modal__tabs-block {
         display: flex;
         margin-top: 8px;
+
+        @include mobile {
+          width: 100%;
+          justify-content: space-between;
+        }
         .b-hide-events-modal__tabs {
           display: flex;
           align-items: center;
@@ -97,18 +142,38 @@ export default {
 
           .b-hide-events-modal__tab {
             @include inter(13px, 400, $--b-main-gray-color);
-            line-height: 28px;
-            background: #FFFFFF;
+            line-height: 22px;
+            background: #ffffff;
             text-align: center;
             border-radius: 6px;
-            width: 85px;
+            width: 90px;
             padding: 2px;
             cursor: pointer;
-
+            max-height: 30px;
 
             &.selected {
-                background: #F0F0F4;
-                border: 2px solid #fff;
+              background: #f0f0f4;
+              border: 2px solid #fff;
+              @include inter(13px, 500);
+            }
+          }
+        }
+        .b-cancel-hide-button {
+          @include inter(13px, 400, $--b-main-gray-color);
+          line-height: 32px;
+          text-decoration-line: underline;
+          margin-left: 36px;
+          cursor: pointer;
+
+          .b-hide-button-desktop {
+            @include mobile {
+              display: none;
+            }
+          }
+          .b-hide-button-mobile {
+            display: none;
+            @include mobile {
+              display: block;
             }
           }
         }
