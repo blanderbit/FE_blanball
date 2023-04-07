@@ -36,6 +36,8 @@
       @closeModal="toggleModal"
     />
 
+    <HideMyEventsModal/>
+
     <div class="b-user-cabinet__title-block">
       <div class="b-user-cabinet__titles">
         <div class="b-user-cabinet__title">
@@ -167,6 +169,7 @@ import ButtonsBlock from '../../../components/user-cabinet/ButtonsBlock.vue';
 import EditAvatarModal from '../../../components/ModalWindows/UserCabinetModalWindows/EditAvatarModal.vue';
 import Loading from '../../../workers/loading-worker/Loading.vue';
 import PublicProfile from '../../../components/PublicProfile/PublicProfile.vue';
+import HideMyEventsModal from '../../../components/ModalWindows/HideMyEventsModalWindow/HideMyEventsModal.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '@/stores/userData';
@@ -199,6 +202,7 @@ export default {
     ChangeEmailModal,
     ButtonsBlock,
     TabLabel,
+    HideMyEventsModal,
     EditAvatarModal,
   },
   setup(props) {
