@@ -137,6 +137,13 @@ export class EventService {
     );
   }
 
+  inviteUsersToEvent(inviteUsersIds, event_id) {
+    return AxiosInstance.post(EndpointsEnum.Events.InviteUsersToEvent, {
+      ids: inviteUsersIds,
+      event_id: event_id
+    });
+  }
+
   getCountPinnedEvents() {
     return AxiosInstance.get(EndpointsEnum.Events.GetCountPinnedEvents);
   }

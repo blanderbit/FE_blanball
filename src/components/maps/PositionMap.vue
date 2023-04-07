@@ -64,7 +64,7 @@ export default {
             await API.LocationService.GetPlaceByCoords(
               data || state.value.centerOfCountry
             )
-          )?.data?.data,
+          )?.data,
         };
 
         emit('update:coords', dataForEmit);

@@ -124,11 +124,8 @@ export default {
       loading.value = true;
     });
     PositionMapBus.on('update:coords', (e) => {
-      region.value = e.place.state;
-      city.value = e.place.city || e.place.town || e.place.village;
-      address.value = `${e.place.neighbourhood || ''} ${e.place.road || ''} ${
-        e.place.house_number || ''
-      } ${e.place.postcode || ''}`;
+      region.value = e.place.region;
+      city.value = e.place.village || e.place.city
       loading.value = false;
       nextButton.value = !region.value || !city.value || !address.value;
     });

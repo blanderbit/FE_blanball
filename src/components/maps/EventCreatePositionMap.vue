@@ -196,11 +196,9 @@ export default {
         lat: e.lat,
         lng: e.lng,
       };
-      region.value = e.place.state;
-      city.value = e.place.city || e.place.town || e.place.village;
-      address.value = `${e.place.neighbourhood || ''} ${e.place.road || ''} ${
-        e.place.house_number || ''
-      } ${e.place.postcode || ''}`;
+      region.value = e.place.region;
+      city.value = e.place.village || e.place.city;
+      address.value = e.place.street;
       nextButton.value = !region.value || !city.value;
     }
     async function getCoordsByName(str) {

@@ -605,6 +605,7 @@ export default {
     async function inviteUsersToThisEvent(ids) {
       loading.value = true;
       closeInviteUsersModal();
+      await API.EventService.inviteUsersToEvent(ids, eventData.value.id);
       loading.value = false;
       toast.success(t('notifications.sent-invites'));
     }
