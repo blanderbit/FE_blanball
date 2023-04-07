@@ -7,6 +7,7 @@
           class="b-hide-events-modal__close-button"
           src="../../../assets/img/cross.svg"
           alt=""
+          @click="closeModal"
         />
         <div class="b-hide-events-modal__tabs-block">
           <div class="b-hide-events-modal__tabs">
@@ -21,7 +22,8 @@
               {{ tab.text }}
             </div>
           </div>
-          <div class="b-cancel-hide-button">
+          <div class="b-cancel-hide-button"
+            @click="closeModal">
             <span class="b-hide-button-desktop">Скасувати приховування</span>
             <span class="b-hide-button-mobile">Скасувати</span>
           </div>
@@ -34,8 +36,11 @@
 <script>
 import { ref, computed } from 'vue';
 
+import { API } from '../../../workers/api-worker/api.worker';
+
 export default {
-  setup() {
+  emits: ['closeModal'],
+  setup(_, { emit }) {
     const selectedTabId = ref(1);
 
     const tabs = computed(() => [
@@ -53,10 +58,15 @@ export default {
       selectedTabId.value = tabId;
     };
 
+    const closeModal = () => {
+      emit('closeModal');
+    };
+
     return {
       tabs,
       selectedTabId,
       changeTab,
+      closeModal,
     };
   },
 };

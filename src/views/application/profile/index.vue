@@ -36,7 +36,9 @@
       @closeModal="toggleModal"
     />
 
-    <HideMyEventsModal/>
+    <HideMyEventsModal
+      v-if="isHideMyEventsModalOpened"
+      @closeModal="closeHideMyEventsModal"/>
 
     <div class="b-user-cabinet__title-block">
       <div class="b-user-cabinet__titles">
@@ -127,6 +129,7 @@
             :user-email="userStore.user.email"
             :checkbox-data="checkboxData"
             :is-edit-mode="isEditModeProfile"
+            @openHideEventsModal="showHideMyEventsModal"
           />
         </div>
         <ButtonsBlock
@@ -225,6 +228,7 @@ export default {
     const restData = ref();
     const openedReviewId = ref(0);
     const nextRoutePath = ref('');
+    const isHideMyEventsModalOpened = ref(false);
 
     const isTabletSize = computed(() => {
       return isBetweenTabletAndDesktop.value || isTablet.value;
@@ -397,6 +401,14 @@ export default {
     async function handleSaveDataChanges() {
       saveUserDataChanges();
       closeSubmitModal(true);
+    }
+
+    const showHideMyEventsModal = () => {
+      isHideMyEventsModalOpened.value = true
+    }
+
+    const closeHideMyEventsModal = () => {
+      isHideMyEventsModalOpened.value = false
     }
 
     function saveUserDataChanges() {
@@ -623,6 +635,8 @@ export default {
       clickReview,
       cancelChangesAndGoToTheNextRoute,
       showPreview,
+      showHideMyEventsModal,
+      closeHideMyEventsModal,
       isEditModeProfile,
       changeDataModalConfig,
       mockData,
@@ -630,6 +644,7 @@ export default {
       userStore,
       checkboxData,
       userData,
+      isHideMyEventsModalOpened,
       schema,
       formValues,
       myForm,
