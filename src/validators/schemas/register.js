@@ -63,17 +63,21 @@ export default {
         height: yup
           .number()
           .typeError('errors.type-number')
-          .required('errors.required')
+          .nullable()
           .min(145, 'errors.min145')
           .max(210, 'errors.max210'),
         weight: yup
           .number()
           .typeError('errors.type-number')
-          .required('errors.required')
+          .nullable()
           .min(30, 'errors.min30')
           .max(210, 'errors.max210'),
-        position: yup.string().required('errors.required'),
-        working_leg: yup.string().required('errors.required'),
+        position: yup
+          .string()
+          .nullable(),
+        working_leg: yup
+          .string()
+          .nullable(),
       });
     }
     if (currentStep === 10) {

@@ -22,12 +22,10 @@ import { ROUTES } from '../../../../router/router.const';
 @NotificationSetUserImage()
 @SetActions([
   {
-    type: MessageActionTypes.Action,
-    action: ROUTES.WORKS.absolute,
-    actionType: MessageActionDataTypes.Url,
+    type: MessageActionTypes.ActionClose,
     buttonType: 'success',
     buttonText: 'Зрозуміло',
-    buttonWidth: 88,
+    buttonWidth: 86,
     buttonHeight: 28,
   },
   {

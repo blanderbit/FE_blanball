@@ -42,8 +42,9 @@
 
         <div class="b-modal-position__block">
           <InputComponent
-            :title="$t('register.weight')"
-            :placeholder="'dist'"
+            :outside-title="true"
+            :title="$t('register.search-radius')"
+            :placeholder="$t('register.search-radius')"
             v-model="dist"
             :title-width="0"
             name="dist"
@@ -120,7 +121,7 @@ export default {
     const activeModal = ref(false);
 
     const schema = computed(() => {
-      return SCHEMAS.positionMap.schema;
+      return SCHEMAS.positionMap.schema(true);
     });
 
     const icons = computed(() => {
@@ -133,7 +134,6 @@ export default {
       const [Sregion, SCity] = props.modelValue.place?.split?.(',') || [];
       region.value = Sregion ? new String(Sregion) : '';
       city.value = SCity ? new String(SCity) : '';
-      dist.value = props.modelValue.dist?.toString();
       coords.value = {
         lat: props.modelValue.lat,
         lng: props.modelValue.lng,

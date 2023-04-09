@@ -155,6 +155,11 @@ export default {
       selectValue(props.initValue);
     }
 
+    if (staticModelValue.value) {
+      selectValue(staticModelValue.value);
+    }
+
+
     vSelect.props.components.default = () => ({ OpenIndicator });
     watch(
       () => props.options,

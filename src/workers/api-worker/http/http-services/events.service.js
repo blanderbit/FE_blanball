@@ -144,6 +144,13 @@ export class EventService {
     });
   }
 
+
+  showOrHideMyEvents(ids) {
+    return AxiosInstance.post(EndpointsEnum.Events.ShowOrHideMyEvents, {
+      ids: ids
+    })
+  }
+
   getCountPinnedEvents() {
     return AxiosInstance.get(EndpointsEnum.Events.GetCountPinnedEvents);
   }

@@ -40,6 +40,9 @@ const router = createRouter({
           name: ROUTES.AUTHENTICATIONS.LOGIN.name,
           beforeEnter: routerResolverByLoginPage,
           component: () => import('../views/authentication/login.vue'),
+          meta: {
+            noGuards: true
+          }
         },
         {
           path: ROUTES.AUTHENTICATIONS.REGISTER.relative,

@@ -38,7 +38,8 @@
 
     <HideMyEventsModal
       v-if="isHideMyEventsModalOpened"
-      @closeModal="closeHideMyEventsModal"/>
+      @closeModal="closeHideMyEventsModal"
+      @closeAndSave="closeModalAndHideEvents"/>
 
     <div class="b-user-cabinet__title-block">
       <div class="b-user-cabinet__titles">
@@ -520,6 +521,13 @@ export default {
       }
     }
 
+    async function closeModalAndHideEvents(ids) {
+      isLoading.value = true;
+      closeHideMyEventsModal();
+      await API.EventService.showOrHideMyEvents(ids);
+      isLoading.value = false;
+    }
+
     function toggleModal(val) {
       switch (val) {
         case 'edit_avatar':
@@ -600,7 +608,7 @@ export default {
     }
 
     onBeforeRouteLeave((to, from, next) => {
-      if (isEditModeProfile.value && !isModalActive.change_data) {
+      if (isEditModeProfile.value && !isModalActive.change_data && !to.meta.noGuards) {
         toggleModal('change_data');
         nextRoutePath.value = to.fullPath;
         changeDataModalConfig.value = {
@@ -633,6 +641,7 @@ export default {
       openEditPictureModal,
       getMyProfile,
       clickReview,
+      closeModalAndHideEvents,
       cancelChangesAndGoToTheNextRoute,
       showPreview,
       showHideMyEventsModal,

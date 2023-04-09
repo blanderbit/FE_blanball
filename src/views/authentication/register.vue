@@ -24,7 +24,7 @@
           <Step_2
             v-if="currentStep === 2"
             @next="handleRegister(data)"
-            @back="currentStep--"
+            @back="backToPrevStep(data)"
             @updateSaveCredentials="updateSaveCredentials"
           />
         </Transition>
@@ -67,21 +67,21 @@
           <Step_8
             v-if="currentStep === 8"
             @next="handleUpdate(data)"
-            @back="currentStep--"
+            @back="backToPrevStep(data)"
           />
         </Transition>
         <Transition>
           <Step_9
             v-if="currentStep === 9"
             @next="handleUpdate(data)"
-            @back="currentStep--"
+            @back="backToPrevStep(data)"
           />
         </Transition>
         <Transition>
           <Step_10
             v-if="currentStep === 10"
             @next="handleUpdate(data)"
-            @back="currentStep--"
+            @back="backToPrevStep(data)"
           />
         </Transition>
       </Form>
@@ -292,6 +292,10 @@ export default {
           }
         }
         currentStep.value++;
+      },
+      async backToPrevStep(data) {
+        initialValues.value = merge(initialValues.value, data.controlledValues);
+        currentStep.value--
       },
       async handleUpdate(data) {
         const { valid } = await data.validate();

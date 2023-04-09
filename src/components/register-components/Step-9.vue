@@ -17,8 +17,8 @@
         <InputComponent
           v-model="height"
           :outside-title="true"
-          :title="height ? $t('register.height') : ''"
-          :placeholder="!height ? $t('register.height') : ''"
+          :title="$t('register.height')"
+          :placeholder="$t('register.height')"
           :title-width="0"
           type="number"
           name="height"
@@ -27,8 +27,8 @@
         <InputComponent
           v-model="weight"
           :outside-title="true"
-          :title="weight ? $t('register.weight') : ''"
-          :placeholder="!weight ? $t('register.weight') : ''"
+          :title="$t('register.weight')"
+          :placeholder="$t('register.weight')"
           :title-width="0"
           type="number"
           name="weight"
@@ -36,9 +36,9 @@
         ></InputComponent>
         <Dropdown
           v-model="workingLeg"
-          :placeholder="!workingLeg ? $t('register.main-leg') : ''"
+          :placeholder="$t('register.main-leg')"
           :outside-title="true"
-          :main-title="workingLeg ? $t('register.main-leg') : ''"
+          :main-title="$t('register.main-leg')"
           :options="mockData.main_lag"
           :width="200"
           :height="40"
@@ -53,9 +53,9 @@
       <div class="b-register-step__dropdown">
         <Dropdown
           v-model="position"
-          :placeholder="!position ? $t('register.position') : ''"
+          :placeholder="$t('register.position')"
           :outside-title="true"
-          :main-title="position ? $t('register.position') : ''"
+          :main-title="$t('register.position')"
           :options="mockData.position"
           :width="200"
           :height="40"

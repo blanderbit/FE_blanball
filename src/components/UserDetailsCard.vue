@@ -141,7 +141,6 @@
                   display-name="name"
                   display-value="value"
                   name="day"
-                  :initValue="initValues.day"
                 />
               </div>
               <div class="b-user-card__dropdown-months">
@@ -152,7 +151,6 @@
                   display-name="name"
                   display-value="value"
                   name="month"
-                  :initValue="initValues.month"
                 />
               </div>
               <div class="b-user-card__dropdown-years">
@@ -163,7 +161,6 @@
                   display-name="name"
                   display-value="value"
                   name="year"
-                  :initValue="initValues.year"
                 />
               </div>
             </div>
@@ -237,7 +234,6 @@
                   display-name="name"
                   display-value="value"
                   name="working_leg"
-                  :initValue="initValues.working_leg"
                 />
               </div>
             </div>
@@ -266,7 +262,6 @@
               display-name="name"
               display-value="value"
               name="position"
-              :initValue="initValues.position"
             />
           </div>
         </div>
