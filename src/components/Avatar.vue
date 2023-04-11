@@ -68,6 +68,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+$color-efeff6: #efeff6;
 $color-1ccd62: #1ccd62;
 $--b-main-white-color: $--b-main-white-color;
 

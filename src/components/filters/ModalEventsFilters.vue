@@ -239,6 +239,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-d5d5d6: #d5d5d6;
 // SCSS variables for hex colors
 $color-dfdeed: #dfdeed;
 $color-808181: #808181;
@@ -255,7 +256,7 @@ $color-e9fcfb: #e9fcfb;
     color: $--b-main-black-color;
   }
   &__top-side {
-    border-bottom: 1px solid #d5d5d6;
+    border-bottom: 1px solid $color-d5d5d6;
     margin-bottom: 4px;
     padding-bottom: 4px;
   }

@@ -1025,7 +1025,7 @@ $color-dfdeed: #dfdeed;
         justify-content: center;
         margin-bottom: 8px;
         gap: 32px;
-        border-bottom: 1px solid #f0f0f4;
+        border-bottom: 1px solid $color-f0f0f4;
 
         .b-events-page__tab {
           @include inter(13px, 400, $--b-main-gray-color);

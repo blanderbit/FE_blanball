@@ -64,6 +64,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-efeff6: #efeff6;
+$color-f0f0f4: #f0f0f4;
+$color-dfdeed: #dfdeed;
 .b-hide-event-card {
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 6px;
@@ -71,7 +74,7 @@ export default {
 
   @include tabletAndMobile {
     box-shadow: none;
-    border-bottom: 1px solid #efeff6;
+    border-bottom: 1px solid $color-efeff6;
     border-radius: 0px;
   }
 
@@ -80,11 +83,11 @@ export default {
   }
 
   &.hidden {
-    background: #f0f0f4;
+    background: $color-f0f0f4;
   }
 
   .b-hide-event-card__top-side {
-    border-bottom: 1px solid #efeff6;
+    border-bottom: 1px solid $color-efeff6;
 
     @include tabletAndMobile {
       width: 85%;
@@ -145,7 +148,7 @@ export default {
         margin-right: 4px;
         line-height: 20px;
         padding: 0px 8px;
-        border: 1px solid #dfdeed;
+        border: 1px solid $color-dfdeed;
         border-radius: 100px;
       }
       @include tabletAndMobile {
@@ -161,7 +164,7 @@ export default {
         margin-top: 8px;
         span {
           padding-bottom: 3px;
-          border-bottom: 1px dashed #dfdeed;
+          border-bottom: 1px dashed $color-dfdeed;
         }
       }
     }
