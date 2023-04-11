@@ -301,8 +301,6 @@ export default {
 
 <style lang="scss" scoped>
 $color-e2e2e4: #e2e2e4;
-$color-ffffff: #ffffff;
-$color-fff: #fff;
 $color-efeff6: #efeff6;
 :deep(.vue-recycle-scroller__item-view) {
   @include mobile {
@@ -320,7 +318,7 @@ $color-efeff6: #efeff6;
     height: 655px;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 6px;
-    background: $color-ffff;
+    background: $--b-main-white-color;
     padding: 24px 20px;
 
     @include desktop {
@@ -395,7 +393,7 @@ $color-efeff6: #efeff6;
           .b-hide-events-modal__tab {
             @include inter(13px, 400, $--b-main-gray-color);
             line-height: 22px;
-            background: $color-ffffff;
+            background:$--b-main-white-color;
             text-align: center;
             border-radius: 6px;
             width: 90px;
@@ -413,7 +411,7 @@ $color-efeff6: #efeff6;
 
             &.selected {
               background: $--b-main-green-color;
-              border: 2px solid $color-fff;
+              border: 2px solid $--b-main-white-color;
               @include inter(13px, 500, $--b-main-white-color);
               height: 32px;
 

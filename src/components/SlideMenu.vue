@@ -574,7 +574,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$color-262541: #262541;
 $color-f0f0f4: #f0f0f4;
 $color-8a8aa8: #8a8aa8;
 $color-fcfcfc: #fcfcfc;
@@ -828,7 +827,7 @@ button {
   cursor: pointer;
 
   &.selected {
-    border-bottom: 2px solid $color-262541;
+    border-bottom: 2px solid $--b-main-black-color;
   }
 }
 .b-notifictions-actions__button {
@@ -842,10 +841,6 @@ button {
   font-weight: 400;
   font-size: 13px;
   line-height: 24px;
-  /* or 185% */
-
-  /* txt/primary */
-
-  color: $color-262541;
+  color:$--b-main-black-color;
 }
 </style>

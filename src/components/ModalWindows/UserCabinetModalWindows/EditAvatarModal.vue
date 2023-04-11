@@ -357,14 +357,4 @@ $color-efeff6: #efeff6;
 :deep(.cropper-point) {
   background: transparent;
 }
-// :deep(.point-ne) {
-//   width: 14px;
-//   height: 14px;
-//   border-top: 3px solid $color-148783;
-//   border-right: 3px solid $color-148783;
-// }
-// :deep(.point-e) {
-//   height: 28px;
-//   border-right: 3px solid $color-148783;
-// }
 </style>

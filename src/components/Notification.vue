@@ -371,8 +371,6 @@ export default {
 <style scoped lang="scss">
 $color-f9f9fc: #f9f9fc;
 $color-ecfcfb: #ecfcfb;
-$color-148783: #148783;
-$color-fff: #fff;
 $color-f0f0f4: #f0f0f4;
 // SCSS variables for hex colors
 $color-8a8aa8: #8a8aa8;
@@ -489,7 +487,7 @@ $color-000: #000;
 
 .notification-sidebar-not-read {
   background: $color-ecfcfb;
-  border-bottom: 1px solid $color-148783;
+  border-bottom: 1px solid $--b-main-green-color;
 }
 
 .notification-sidebar {
@@ -608,7 +606,7 @@ $color-000: #000;
 }
 
 .notification-read {
-  background: $color-fff;
+  background: $--b-main-white-color;
   border-bottom: 1px solid $color-efeff6;
 }
 
@@ -641,7 +639,7 @@ $color-000: #000;
   font-weight: 400;
   font-size: 13px;
   line-height: 20px;
-  color: $color-148783;
+  color: $--b-main-green-color;
   cursor: pointer;
 }
 .not-full-content {
