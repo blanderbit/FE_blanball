@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "vite --port 4172",
-    "build": "vite build && cp deploy/.htaccess dist/.htaccess",
+    "build": "vite build && ls -l",
     "preview": "vite preview --port 4172",
     "test:unit": "vitest --environment jsdom",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
