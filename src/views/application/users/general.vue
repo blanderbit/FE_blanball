@@ -20,7 +20,6 @@
             <Transition>
               <TabLabel
                 v-if="tab.isDisabled && currentHoverSideBarItemID === tab.id"
-                class="b-comming-soon"
                 :title="$t('profile.coming-soon-title')"
                 :text="$t('profile.coming-soon-text')"
               />
@@ -367,7 +366,16 @@ $color-d243c5: #d243c5;
 $color-4c4a82: #4c4a82;
 $color-393762: #393762;
 $color-71ba12: #71ba12;
+:deep(.b-filters__wrapper) {
+  margin-top: -30px;
+  @include beforeDesktop {
+    margin-top: -50px;
+  }
+  @include mobile {
+    margin-top: -75px;
+  }
 
+}
 .events-page {
   display: grid;
   grid-template-columns: 1fr 256px;
@@ -438,10 +446,9 @@ $color-71ba12: #71ba12;
       }
     }
     .tab-block-wrapper {
-      margin-bottom: 35px;
-      overflow: scroll;
+      height: 125px;
+      overflow-x: scroll;
       @include mobile {
-        height: 36px;
         position: relative;
         margin-top: 24px;
       }
@@ -467,15 +474,6 @@ $color-71ba12: #71ba12;
           cursor: pointer;
           position: relative;
           user-select: none;
-
-          .b-comming-soon {
-            position: absolute;
-
-            @include tabletAndMobile {
-              left: 0;
-              top: 30px;
-            }
-          }
           img {
             margin-right: 8px;
           }
@@ -1154,7 +1152,11 @@ $color-71ba12: #71ba12;
       /*overflow-y: scroll;*/
       .users-cards {
         height: calc(100% - 20px);
-        margin-top: 20px;
+        margin-top: 20px; 
+
+        @include beforeDesktop {
+          height: calc(100% - 40px);
+        }
       }
     }
   }

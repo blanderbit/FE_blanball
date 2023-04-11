@@ -26,6 +26,7 @@ export default {
   request_participation: 'Заявку подано',
   author: 'Автор',
   Football: 'Футбол',
+  Futsal: 'Фут-зал',
   need_ball: 'Потрібен м`яч',
   need_form: 'Потрібна форма',
   position_full: {

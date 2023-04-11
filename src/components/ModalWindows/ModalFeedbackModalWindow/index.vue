@@ -40,7 +40,6 @@ import ModalTopCard from './ModalTopCard.vue';
 import ModalBottomCard from './ModalBottomCard.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
-import { NotificationsBus } from '../../../workers/event-bus-worker';
 
 import CONSTANTS from '../../../consts/index';
 
@@ -78,16 +77,9 @@ export default {
     });
     const currentStep = ref(0);
 
-    const createEventReview = async (comment) => {
-      API.ReviewService.createEventReview({
-        event: props.eventData.id,
-        stars: 4,
-        text: comment,
-      });
-    };
     const nextClick = (eventReviewComment) => {
       if (currentStep.value === 4) {
-        createEventReview(eventReviewComment);
+        emit('createEventReview', eventReviewComment)
       }
       currentStep.value++;
     };

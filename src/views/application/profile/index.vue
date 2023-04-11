@@ -243,6 +243,7 @@ export default {
         numberFromMonth: CONSTANTS.users_page.months.numberFromMonth,
       };
     });
+
     restData.value = {
       ...userStore.user,
       configuration: {
@@ -464,7 +465,6 @@ export default {
         getMyProfile();
       });
     }
-
     function getMyProfile() {
       isLoading.value = true;
       API.UserService.getMyProfile()
@@ -721,12 +721,11 @@ $color-dfdeed: #dfdeed;
 }
 .b-user-cabinet {
   overflow-y: scroll;
-  padding-bottom: 50px;
   @media (min-width: 768px) {
     position: relative;
   }
   @include tabletAndMobile {
-    padding-bottom: 150px;
+    height: calc(100% - 100px);
   }
 }
 

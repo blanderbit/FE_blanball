@@ -1,5 +1,5 @@
 <template>
-  <div class="b-hide-events-modal__wrapper">
+  <div v-if="paginationTotalCount" class="b-hide-events-modal__wrapper">
     <div class="b-hide-events-modal__modal-window">
       <div class="b-hide-events-modal__top-side">
         <div class="b-hide-events-modal__title">Приховати події</div>
@@ -7,7 +7,7 @@
           class="b-hide-events-modal__close-button"
           src="../../../assets/img/cross.svg"
           alt=""
-          @click="$emit('closeAndSave', requestIDs)"
+          @click="closeModal"
         />
         <div class="b-hide-events-modal__tabs-block">
           <div class="b-hide-events-modal__tabs">
@@ -22,9 +22,21 @@
               {{ tab.text }}
             </div>
           </div>
-          <div class="b-cancel-hide-button" @click="closeModal">
-            <span class="b-hide-button-desktop">Скасувати приховування</span>
-            <span class="b-hide-button-mobile">Скасувати</span>
+          <div class="b-hide-events-modal__buttons">
+            <WhiteBtn
+              :text="'Скасувати приховування'"
+              :width="195"
+              :height="32"
+              :main-color="'#575775'"
+              @click-function="closeModal"
+            />
+            <GreenBtn
+              :text="'Зберегти зміни'"
+              :width="167"
+              :height="32"
+              :icon="SaveIcon"
+              @click-function="$emit('closeAndSave', requestIDs)"
+            />
           </div>
         </div>
       </div>
@@ -39,6 +51,7 @@
             <template #smartGridListItem="slotProps">
               <HideEventCard
                 :data="slotProps.smartListItem"
+                :isAllHidden="isAllHidden"
                 @eyeClick="onEyeClick"
               />
             </template>
@@ -60,17 +73,39 @@
           </SmartGridList>
         </div>
       </div>
+      <div class="b-hide-events-modal__bottom-side">
+        <div class="b-hide-events-modal__buttons-mobile">
+          <WhiteBtn
+            :text="'Скасувати приховування'"
+            :width="195"
+            :height="32"
+            :main-color="'#575775'"
+            @click-function="closeModal"
+          />
+          <GreenBtn
+            :text="'Зберегти зміни'"
+            :width="167"
+            :height="32"
+            :icon="SaveIcon"
+            @click-function="$emit('closeAndSave', requestIDs)"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, onUnmounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import SmartGridList from '../../smart-list/SmartGridList.vue';
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
 import ScrollToTop from '../../ScrollToTop.vue';
 import HideEventCard from './HideEventCard.vue';
+import WhiteBtn from '../../WhiteBtn.vue';
+import GreenBtn from '../../GreenBtn.vue';
+import ActionEventModal from '../ActionEventModal.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { PaginationWorker } from '../../../workers/pagination-worker';
@@ -78,21 +113,42 @@ import { addMinutes } from '../../../utils/addMinutes';
 import { getDate } from '../../../utils/getDate';
 import { getTime } from '../../../utils/getTime';
 
+import SaveIcon from '../../../assets/img/save-icon.svg';
+import NoEditPermIcon from '../../../assets/img/no-edit-perm-modal-icon.svg';
+
+const TABS_ENUM = {
+  SOME: 1,
+  ALL: 2,
+};
+
 export default {
   components: {
     SmartGridList,
     InfiniteLoading,
     ScrollToTop,
+    WhiteBtn,
+    GreenBtn,
+    ActionEventModal,
     HideEventCard,
   },
   emits: ['closeModal', 'closeAndSave'],
   setup(_, { emit }) {
-    const selectedTabId = ref(1);
+    const selectedTabId = ref(TABS_ENUM.SOME);
     const refList = ref();
     const blockScrollToTopIfExist = ref(false);
+    const { t } = useI18n();
     const triggerForRestart = ref(false);
     const mainEventsBlock = ref();
     const requestIDs = ref([]);
+    const isAllHidden = ref(false);
+
+    const actionEventModalConfig = computed(() => {
+      return {
+        title: t('modals.no_perm_to_hide_events.title'),
+        description: t('modals.no_perm_to_hide_events.main-text'),
+        image: NoEditPermIcon,
+      };
+    });
 
     const tabs = computed(() => [
       {
@@ -106,7 +162,10 @@ export default {
     ]);
 
     const changeTab = (tabId) => {
-      selectedTabId.value = tabId;
+      if (selectedTabId.value !== tabId) {
+        selectedTabId.value = tabId;
+        isAllHidden.value = !isAllHidden.value;
+      }
     };
 
     const closeModal = () => {
@@ -131,6 +190,7 @@ export default {
       dataTransformation: handlingIncomeData,
     });
 
+
     function handlingIncomeData(item) {
       return {
         ...item,
@@ -146,9 +206,9 @@ export default {
       );
       if (event) {
         if (requestIDs.value.includes(eventId)) {
-            requestIDs.value.splice(requestIDs.value.indexOf(eventId), 1);
+          requestIDs.value.splice(requestIDs.value.indexOf(eventId), 1);
         } else {
-            requestIDs.value.push(eventId);
+          requestIDs.value.push(eventId);
         }
         event.hidden = !event.hidden;
       }
@@ -220,7 +280,10 @@ export default {
       refList,
       paginationPage,
       paginationTotalCount,
+      isAllHidden,
+      actionEventModalConfig,
       mainEventsBlock,
+      SaveIcon,
       requestIDs,
       restartInfiniteScroll,
       onEyeClick,
@@ -242,6 +305,7 @@ export default {
     padding: 0px;
   }
 }
+
 .b-hide-events-modal__wrapper {
   @include modal-wrapper;
 
@@ -256,10 +320,10 @@ export default {
     padding: 24px 20px;
 
     @include desktop {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
     @include beforeDesktop {
@@ -280,12 +344,6 @@ export default {
     }
 
     .b-hide-events-modal__top-side {
-      @include mobile {
-        position: fixed;
-        bottom: 20px;
-        width: 100%;
-        padding: 0px 20px;
-      }
       .b-hide-events-modal__title {
         @include inter(13px, 400);
         line-height: 24px;
@@ -294,6 +352,7 @@ export default {
           display: none;
         }
       }
+
       .b-hide-events-modal__close-button {
         cursor: pointer;
         width: 12px;
@@ -309,17 +368,25 @@ export default {
 
       .b-hide-events-modal__tabs-block {
         display: flex;
-        margin-top: 8px;
+        align-items: center;
+        justify-content: space-between;
 
         @include mobile {
-          width: 100%;
-          justify-content: space-between;
+          justify-content: center;
+          padding-bottom: 8px;
         }
+
         .b-hide-events-modal__tabs {
           display: flex;
           align-items: center;
           border: 1px solid #e2e2e4;
           border-radius: 6px;
+          height: 100%;
+
+          @include mobile {
+            width: 328px;
+            justify-content: center;
+          }
 
           .b-hide-events-modal__tab {
             @include inter(13px, 400, $--b-main-gray-color);
@@ -330,42 +397,51 @@ export default {
             width: 90px;
             padding: 2px;
             cursor: pointer;
-            max-height: 30px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            @include mobile {
+              height: 38px;
+              flex-basis: 50%;
+            }
 
             &.selected {
-              background: #f0f0f4;
+              background: $--b-main-green-color;
               border: 2px solid #fff;
-              @include inter(13px, 500);
+              @include inter(13px, 500, $--b-main-white-color);
+              height: 32px;
+
+              @include mobile {
+                height: 38px;
+              }
             }
           }
         }
-        .b-cancel-hide-button {
-          @include inter(13px, 400, $--b-main-gray-color);
-          line-height: 32px;
-          margin-left: 36px;
-          cursor: pointer;
 
-          span {
-            border-bottom: 1px solid $--b-main-gray-color;
+        .b-hide-events-modal__buttons {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-right: 8px;
+
+          @include desktop {
+            margin-right: 30px;
           }
-          .b-hide-button-desktop {
-            @include mobile {
-              display: none;
-            }
-          }
-          .b-hide-button-mobile {
+
+          @include mobile {
             display: none;
-            @include mobile {
-              display: block;
-            }
           }
         }
       }
     }
+
     .b-hide-events-modal__main-side {
       height: 100%;
       margin-top: 20px;
       overflow: hidden;
+
       @include mobile {
         margin-top: 0px;
       }
@@ -373,6 +449,24 @@ export default {
       .b-main-side__events-list {
         overflow-y: scroll;
         height: 100%;
+      }
+    }
+
+    .b-hide-events-modal__bottom-side {
+      padding: 8px 0px;
+      margin-top: 1px solid #efeff6;
+      display: none;
+
+      @include mobile {
+        display: block;
+      }
+
+      .b-hide-events-modal__buttons-mobile {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-right: 8px;
+        justify-content: center;
       }
     }
   }

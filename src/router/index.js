@@ -12,6 +12,7 @@ import { transpileInterseptorQueryToConfig } from '../workers/api-worker/http/fi
 import { ROUTES } from './router.const';
 import { useUserDataStore } from '../stores/userData';
 import { prepareEventUpdateData } from '../utils/prepareEventUpdateData';
+import { DETAILS_TYPE_ENUM } from '../workers/type-request-message-worker';
 
 const usersData = () => {
   const userStore = useUserDataStore();

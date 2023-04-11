@@ -53,9 +53,33 @@ export default {
     }
     if (currentStep === 8) {
       return yup.object({
-        day: yup.string().required('errors.required'),
-        month: yup.string().required('errors.required'),
-        year: yup.string().required('errors.required'),
+        day: yup
+          .string()
+          .test('required-if-filled', 'errors.required', function (value) {
+            const { month, year } = this.parent;
+            if ((month && month.length > 0) || (year && year.length > 0)) {
+              return !!value;
+            }
+            return true;
+          }),
+        month: yup
+          .string()
+          .test('required-if-filled', 'errors.required', function (value) {
+            const { day, year } = this.parent;
+            if ((day && day.length > 0) || (year && year.length > 0)) {
+              return !!value;
+            }
+            return true;
+          }),
+        year: yup
+          .string()
+          .test('required-if-filled', 'errors.required', function (value) {
+            const { day, month } = this.parent;
+            if ((day && day.length > 0) || (month && month.length > 0)) {
+              return !!value;
+            }
+            return true;
+          }),
       });
     }
     if (currentStep === 9) {
@@ -72,12 +96,8 @@ export default {
           .nullable()
           .min(30, 'errors.min30')
           .max(210, 'errors.max210'),
-        position: yup
-          .string()
-          .nullable(),
-        working_leg: yup
-          .string()
-          .nullable(),
+        position: yup.string().nullable(),
+        working_leg: yup.string().nullable(),
       });
     }
     if (currentStep === 10) {

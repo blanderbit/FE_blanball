@@ -21,14 +21,14 @@ import { NotificationsBus } from '../../../event-bus-worker';
 @SetActions([
   {
     type: MessageActionTypes.ActionClose,
-    text: 'Зрозуміло',
+    buttonText: 'Зрозуміло',
     buttonType: 'success',
     buttonWidth: 91,
     buttonHeight: 28,
   },
   {
     type: MessageActionTypes.Action,
-    text: 'Залишити відгук',
+    buttonText: 'Залишити відгук',
     action: ({ notificationInstance }) => {
       NotificationsBus.emit('openEventReviewModal', notificationInstance);
     },

@@ -1,14 +1,26 @@
 <template>
-  <div :class="['b-hide-event-card', {'hidden': data.hidden}]">
+  <div :class="['b-hide-event-card', { hidden: data.hidden || isAllHidden }]">
     <div class="b-hide-event-card__top-side">
       <div class="b-hide-event-card__name">
         <img src="../../../assets/img/hands-shake-small.svg" alt="" />
         <span>{{ data.name }}</span>
       </div>
-      <div class="b-show-or-hide__button"
-        @click="$emit('eyeClick', data.id)">
-        <img v-if="!data.hidden" class="b-show-or-hide__image" src="../../../assets/img/eye-opened.svg" alt="">
-        <img v-else class="b-show-or-hide__image" src="../../../assets/img/eye-crossed.svg" alt="">
+      <div
+        class="b-show-or-hide__button"
+        @click="!isAllHidden ? $emit('eyeClick', data.id) : null"
+      >
+        <img
+          v-if="isAllHidden ? !isAllHidden : !data.hidden"
+          class="b-show-or-hide__image"
+          src="../../../assets/img/eye-opened.svg"
+          alt=""
+        />
+        <img
+          v-else
+          class="b-show-or-hide__image"
+          src="../../../assets/img/eye-crossed.svg"
+          alt=""
+        />
       </div>
       <div class="b-hide-event-card__date-time">
         {{ data.date }}, {{ data.time }} - {{ data.end_time }}
@@ -43,6 +55,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    isAllHidden: {
+      type: Boolean,
+      default: false,
+    },
   },
 };
 </script>
@@ -55,7 +71,7 @@ export default {
 
   @include tabletAndMobile {
     box-shadow: none;
-    border-bottom: 1px solid #EFEFF6;
+    border-bottom: 1px solid #efeff6;
     border-radius: 0px;
   }
 
@@ -64,15 +80,15 @@ export default {
   }
 
   &.hidden {
-    background: #F0F0F4;
+    background: #f0f0f4;
   }
 
   .b-hide-event-card__top-side {
     border-bottom: 1px solid #efeff6;
 
     @include tabletAndMobile {
-        width: 85%;
-      }
+      width: 85%;
+    }
     .b-hide-event-card__name {
       display: flex;
       align-items: center;
@@ -82,7 +98,7 @@ export default {
 
       img {
         @include tabletAndMobile {
-            display: none;
+          display: none;
         }
       }
       span {
@@ -96,14 +112,14 @@ export default {
     }
 
     .b-show-or-hide__button {
-        position: absolute;
-        right: 20px;
-        top: 20px;
-        cursor: pointer;
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      cursor: pointer;
 
-        @include tabletAndMobile {
-            top: 45%;
-        }
+      @include tabletAndMobile {
+        top: 45%;
+      }
     }
     .b-hide-event-card__date-time {
       @include inter(12px, 500, $--b-main-gray-color);
@@ -144,8 +160,8 @@ export default {
         line-height: 20px;
         margin-top: 8px;
         span {
-            padding-bottom: 3px;
-            border-bottom: 1px dashed #DFDEED;
+          padding-bottom: 3px;
+          border-bottom: 1px dashed #dfdeed;
         }
       }
     }
