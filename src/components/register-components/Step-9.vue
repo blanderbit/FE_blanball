@@ -154,7 +154,7 @@ export default {
   margin-bottom: 10px;
   color: $--b-main-black-color;
 }
-::v-deep {
+:deep {
   .b-input__input-component {
     width: 20%;
   }

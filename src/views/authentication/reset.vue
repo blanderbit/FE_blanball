@@ -42,7 +42,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-::v-deep(.b-auth__left-part) {
+:deep(.b-auth__left-part) {
   @include mobile {
     margin-top: 170px;
   }

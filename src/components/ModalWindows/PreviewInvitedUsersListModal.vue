@@ -73,7 +73,7 @@ $color-f9f9fc: #f9f9fc;
     padding: 12px 16px;
   }
 
-  ::v-deep(.b-manage-event__invited-user) {
+  :deep(.b-manage-event__invited-user) {
     border: none;
     background-color: $--b-main-white-color;
   }

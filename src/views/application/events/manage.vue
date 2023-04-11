@@ -700,7 +700,7 @@ $color-8a8aa8: #8a8aa8;
         align-items: center;
         margin-top: 20px;
 
-        ::v-deep(.b_white-btn) {
+        :deep(.b_white-btn) {
           border: 1px solid $color-dfdeed;
           font-family: 'Inter';
           font-style: normal;
@@ -711,7 +711,7 @@ $color-8a8aa8: #8a8aa8;
           color: $--b-main-gray-color;
           flex-basis: 48%;
         }
-        ::v-deep(.b-green-btn) {
+        :deep(.b-green-btn) {
           flex-basis: 48%;
         }
       }

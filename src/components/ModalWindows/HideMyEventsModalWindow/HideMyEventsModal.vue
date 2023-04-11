@@ -300,7 +300,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep(.vue-recycle-scroller__item-view) {
+:deep(.vue-recycle-scroller__item-view) {
   @include mobile {
     padding: 0px;
   }

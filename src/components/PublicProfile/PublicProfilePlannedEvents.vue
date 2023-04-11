@@ -114,7 +114,7 @@ $color-dfdeed: #dfdeed;
 $color-f0f0f4: #f0f0f4;
 
 
-::v-deep(.b-scroll-top__return-top) {
+:deep(.b-scroll-top__return-top) {
   margin: 16px;
 }
 

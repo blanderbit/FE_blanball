@@ -249,7 +249,7 @@ $color-f0f0f4: #f0f0f4;
 $color-efeff6: #efeff6;
 
 
-::v-deep(.b-scroll-top__return-top) {
+:deep(.b-scroll-top__return-top) {
   margin: 8px 0px 0px 0px;
 }
 .b-rating-card {

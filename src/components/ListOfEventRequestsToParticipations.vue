@@ -131,13 +131,13 @@ $color-efeff6: #efeff6;
 
         .b-list-item__cancel-button {
           border: 1px solid $color-dfdeed !important;
-          ::v-deep(img) {
+          :deep(img) {
             margin: 0;
           }
         }
 
         .b-list-item__accept-button {
-          ::v-deep(img) {
+          :deep(img) {
             margin: 0;
           }
         }

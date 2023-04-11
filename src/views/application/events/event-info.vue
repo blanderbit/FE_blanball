@@ -813,7 +813,7 @@ $color-8a8aa8: #8a8aa8;
   @media (max-width: 1200px) {
     grid-template-columns: 1fr;
 
-    &::v-deep(.b-right-sidebar) {
+    &:deep(.b-right-sidebar) {
       display: none;
     }
   }
@@ -998,7 +998,7 @@ $color-8a8aa8: #8a8aa8;
             width: fit-content;
             z-index: 2;
 
-            ::v-deep(.b-tab-label__label-text) {
+            :deep(.b-tab-label__label-text) {
               max-width: 200px;
             }
 

@@ -369,7 +369,7 @@ form {
     }
   }
 }
-::v-deep .code-input input {
+:deep .code-input input {
   width: 20% !important;
 }
 </style>

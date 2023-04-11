@@ -106,7 +106,7 @@ $color-efeff6: #efeff6;
 .scroller {
   height: 100%;
 }
-::v-deep {
+:deep {
   .vcp--expandable {
     background: $--b-main-white-color;
     border-bottom: 1px solid $color-efeff6;

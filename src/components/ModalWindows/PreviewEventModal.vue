@@ -70,7 +70,7 @@ $color-f9f9fc: #f9f9fc;
       display: flex;
       justify-content: center;
 
-      ::v-deep(.event-card) {
+      :deep(.event-card) {
         max-width: 500px;
       }
     }

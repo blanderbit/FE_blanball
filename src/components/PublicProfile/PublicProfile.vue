@@ -668,7 +668,7 @@ $color-d2f6a2: #d2f6a2;
 
         .b-public-profile__avatar {
           @include desktop {
-            ::v-deep(.b-avatar) {
+            :deep(.b-avatar) {
               width: 96px;
               height: 96px;
               border-radius: 4px;
@@ -738,7 +738,7 @@ $color-d2f6a2: #d2f6a2;
         margin-top: 8px;
         gap: 8px;
 
-        ::v-deep(.b_white-btn) {
+        :deep(.b_white-btn) {
           border: 1px solid $color-c5c5d3 !important;
           border-radius: 4px;
           @include inter(12px, 500);

@@ -133,7 +133,7 @@ $color-6f6f77: #6f6f77;
 $color-dfdeed: #dfdeed;
 $color-f57125: #f57125;
 
-::v-deep(.b-scroll-top__return-top) {
+:deep(.b-scroll-top__return-top) {
   margin: 16px 0px;
 }
 

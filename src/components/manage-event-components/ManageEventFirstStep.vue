@@ -386,7 +386,7 @@ $color-f0f0f4: #f0f0f4;
     padding: 12px 8px 12px 12px;
     margin-top: 16px;
 
-    &::v-deep(.b-modal-position__address-text) {
+    &:deep(.b-modal-position__address-text) {
       justify-content: space-between;
       flex-direction: row-reverse;
     }
@@ -415,7 +415,7 @@ $color-f0f0f4: #f0f0f4;
       &:not(:last-child) {
         margin-right: 10px;
       }
-      ::v-deep {
+      :deep {
         .b-radio {
           margin-right: 0;
           .b-radio-label::before {

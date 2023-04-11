@@ -447,7 +447,7 @@ $color-000: #000;
 }
 
 .notification-push {
-  ::v-deep {
+  :deep {
     .spiner-text {
       display: none;
     }
@@ -515,7 +515,7 @@ $color-000: #000;
     color: $--b-main-gray-color;
   }
 
-  ::v-deep {
+  :deep {
     .spiner-text {
       display: none;
     }
@@ -564,7 +564,7 @@ $color-000: #000;
   }
 }
 
-::v-deep {
+:deep {
   .vcp__body {
     z-index: 1 !important;
   }
@@ -585,7 +585,7 @@ $color-000: #000;
 
 .notification-push,
 .not-collapsible {
-  ::v-deep {
+  :deep {
     .vcp__header,
     .vcp__body,
     .vcp__body-content,
@@ -621,7 +621,7 @@ $color-000: #000;
   margin-bottom: 8px;
   position: relative;
 
-  ::v-deep(.vcp__header-icon) {
+  :deep(.vcp__header-icon) {
     position: absolute;
     left: 105px;
     top: 8px;
@@ -673,7 +673,7 @@ $color-000: #000;
   cursor: pointer;
 }
 .notification-mobile {
-  ::v-deep(.vcp__header-icon) {
+  :deep(.vcp__header-icon) {
     position: absolute;
     right: 22px;
   }

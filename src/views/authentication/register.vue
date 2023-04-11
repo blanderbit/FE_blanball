@@ -344,7 +344,7 @@ form {
 .v-leave-to {
   opacity: 0;
 }
-.b-register__onboarding-step::v-deep(.b-auth__left-part) {
+.b-register__onboarding-step:deep(.b-auth__left-part) {
   @include mobile {
     margin-top: 150px;
   }

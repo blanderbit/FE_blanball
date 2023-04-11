@@ -194,7 +194,7 @@ $color-dfdeed: #dfdeed;
         margin-right: 8px;
       }
       flex-basis: 50%;
-      ::v-deep {
+      :deep {
         .b-radio {
           margin-right: 0;
           .b-radio-label::before {
@@ -390,10 +390,10 @@ $color-dfdeed: #dfdeed;
   }
 }
 .phone-read {
-  ::v-deep(input) {
+  :deep(input) {
     background: $color-f9f9fc;
   }
-  ::v-deep(.b-input__wrapper) {
+  :deep(.b-input__wrapper) {
     border: none;
   }
 }
