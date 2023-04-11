@@ -16,7 +16,7 @@ export class ReviewService {
   @FilterParamsDecorator(filterConfigForUserReviews)
   static getUserReviews(options) {
     return AxiosInstance.get(
-      EndpointsEnum.Reviews.getUserReviews(options.id),
+      EndpointsEnum.Reviews.GetUserReviews(options.id),
       AxiosParams(
         AxiosQuery(options),
         AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_PAGE])
@@ -27,7 +27,7 @@ export class ReviewService {
   @FilterParamsDecorator(filterConfigForReviews)
   static getMyReviews(options) {
     return AxiosInstance.get(
-      EndpointsEnum.Reviews.getMyReviews,
+      EndpointsEnum.Reviews.GetMyReviews,
       AxiosParams(
         AxiosQuery(options),
         AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_PAGE])
@@ -37,7 +37,7 @@ export class ReviewService {
 
   static createEventReview(eventReviewData) {
     return AxiosInstance.post(
-      EndpointsEnum.Reviews.createEventReview,
+      EndpointsEnum.Reviews.CreateEventReview,
       eventReviewData
     );
   }

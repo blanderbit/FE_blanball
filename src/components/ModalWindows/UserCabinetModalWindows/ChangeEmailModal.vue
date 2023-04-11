@@ -9,7 +9,7 @@
         <img src="../../../assets/img/envelop.svg" alt="" />
       </template>
       <template #change-login>
-        <div v-if="currentStep === 1" class="inut-wrapper">
+        <div v-if="currentStep === 1" class="input__wrapper">
           <InputComponent
             :title="$t('modals.change_login.current-email')"
             :swipeTitle="false"
@@ -20,7 +20,7 @@
           />
         </div>
         <Form v-slot="data" :validation-schema="schema" @submit="disableSubmit">
-          <div class="inut-wrapper">
+          <div class="input__wrapper">
             <InputComponent
               :title="
                 currentStep === 1

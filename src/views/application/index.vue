@@ -42,6 +42,7 @@
       :selectedEmojies="selectedEmojies"
       @emojiSelection="emojiSelection"
       @close-modal="closeEventReviewModal"
+      @createEventReview="createEventReview"
     />
   </div>
 </template>
@@ -168,6 +169,20 @@ const handlerAction = async (button, notificationInstance) => {
   });
 };
 
+const createEventReview = async (comment) => {
+  const grade = Math.round(
+    selectedEmojies.value.reduce(
+      (accumulator, currentValue) => accumulator + currentValue.id,
+      0
+    ) / 3
+  );
+  API.ReviewService.createEventReview({
+    event: endedEventData.value.id,
+    stars: grade,
+    text: comment,
+  });
+};
+
 const toggleToastProgress = (notificationInstance, toastId, active) => {
   const toastDataOptions = getToastOptions(notificationInstance, toastId);
   toastDataOptions.componentOptions.props.active = active;
@@ -235,23 +250,28 @@ const getToastOptions = (notificationInstance, toastId) => {
     },
   };
 };
-NotificationsBus.on('removePushNotificationAfterSidebarAction', (notificationInstance) => {
-  if (notificationInstance?.remove_all) {
-    dismissAllToasts();
-    return;
+NotificationsBus.on(
+  'removePushNotificationAfterSidebarAction',
+  (notificationInstance) => {
+    if (notificationInstance?.remove_all) {
+      dismissAllToasts();
+      return;
+    }
+
+    const { notification_id, notification_ids } = notificationInstance || {};
+
+    const idsToDismiss = notification_ids || [notification_id];
+
+    activePushNotifications.value
+      .filter((notification) =>
+        idsToDismiss.includes(notification.notificationId)
+      )
+      .forEach((notification) => {
+        toast.dismiss(notification.toastId);
+        removePushFormActiveNotifications(notification.notificationId);
+      });
   }
-
-  const { notification_id, notification_ids } = notificationInstance || {};
-
-  const idsToDismiss = notification_ids || [notification_id];
-
-  activePushNotifications.value
-    .filter((notification) => idsToDismiss.includes(notification.notificationId))
-    .forEach((notification) => {
-      toast.dismiss(notification.toastId);
-      removePushFormActiveNotifications(notification.notificationId);
-    });
-});
+);
 
 function dismissAllToasts() {
   activePushNotifications.value.forEach((notification) => {

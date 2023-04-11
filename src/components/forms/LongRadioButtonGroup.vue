@@ -9,6 +9,7 @@
       :name="name"
       :title="item.title"
       :value="item.value"
+      :isDisabled="isDisabled"
       :model-value="modelValue"
       @update:modelValue="$emit('update:modelValue', $event)"
     ></radio-button>
@@ -40,6 +41,10 @@ export default {
       type: String,
       default: 'aggressive',
     },
+    isDisabled: {
+      type: Boolean,
+      default: false,
+    }
   },
   emits: ['update:modelValue'],
 };

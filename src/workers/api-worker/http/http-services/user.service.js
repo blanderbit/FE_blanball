@@ -14,35 +14,35 @@ import { DETAILS_TYPE_ENUM } from '../../../type-request-message-worker';
 
 export class UserService {
   getMyProfile() {
-    return AxiosInstance.get(EndpointsEnum.Users.getMyProfile);
+    return AxiosInstance.get(EndpointsEnum.Users.GetMyProfile);
   }
 
   deleteMyProfile() {
-    return AxiosInstance.delete(EndpointsEnum.Users.deleteMyProfile);
+    return AxiosInstance.delete(EndpointsEnum.Users.DeleteMyProfile);
   }
 
   sendApproveCode(verificationCode) {
     return AxiosInstance.post(
-      EndpointsEnum.Users.sendApproveCode,
+      EndpointsEnum.Users.SendApproveCode,
       verificationCode
     );
   }
 
   changePassword(passwordsData) {
     return AxiosInstance.post(
-      EndpointsEnum.Users.changePassword,
+      EndpointsEnum.Users.ChangePassword,
       passwordsData
     );
   }
 
   updateProfileData(payload) {
-    return AxiosInstance.put(EndpointsEnum.Users.updateProfileData, payload);
+    return AxiosInstance.put(EndpointsEnum.Users.UpdateProfileData, payload);
   }
 
   @FilterParamsDecorator(filterConfigForRelevantUsers)
   getRelevantUsers({ search, skipids }) {
     return AxiosInstance.get(
-      EndpointsEnum.Users.getRelevantUsers,
+      EndpointsEnum.Users.GetRelevantUsers,
       AxiosParams(
         AxiosQuery({
           search: search,
@@ -56,7 +56,7 @@ export class UserService {
   @FilterParamsDecorator(filterConfigForUsers)
   getAllUsers(options) {
     return AxiosInstance.get(
-      EndpointsEnum.Users.getAllUsers,
+      EndpointsEnum.Users.GetAllUsers,
       AxiosParams(
         AxiosQuery(options),
         AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_PAGE])
@@ -65,10 +65,10 @@ export class UserService {
   }
 
   changeUserEmail(payload) {
-    return AxiosInstance.post(EndpointsEnum.Users.changeUserEmail, payload);
+    return AxiosInstance.post(EndpointsEnum.Users.ChangeUserEmail, payload);
   }
 
   getUserPublicProfile(userId) {
-    return AxiosInstance.get(EndpointsEnum.Users.userPublicProfile(userId));
+    return AxiosInstance.get(EndpointsEnum.Users.UserPublicProfile(userId));
   }
 }

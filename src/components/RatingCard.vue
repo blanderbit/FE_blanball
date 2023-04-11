@@ -33,7 +33,7 @@
       </div>
       <transition>
         <div v-if="rateStatus" class="b-rating-card__cards-block">
-          <div v-if="paginationElements">
+          <div class="b-rating-card__reviews-list" v-if="paginationElements">
             <SmartList
               :list="paginationElements"
               ref="refList"
@@ -127,6 +127,7 @@ import { FilterPatch } from '../workers/api-worker/http/filter/filter.patch';
 import ReviewDetailsComponent from '../components/ReviewDetails.vue';
 import SmartList from './smart-list/SmartList.vue';
 import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue';
+import ScrollToTop from './ScrollToTop.vue';
 
 import { API } from '../workers/api-worker/api.worker';
 
@@ -137,6 +138,7 @@ export default {
   components: {
     ReviewDetailsComponent,
     SmartList,
+    ScrollToTop,
     InfiniteLoading,
     StarRating,
   },
@@ -246,6 +248,10 @@ $color-f9f9fc: #f9f9fc;
 $color-f0f0f4: #f0f0f4;
 $color-efeff6: #efeff6;
 
+
+::v-deep(.b-scroll-top__return-top) {
+  margin: 8px 0px 0px 0px;
+}
 .b-rating-card {
   height: fit-content;
   background: $--b-main-white-color;
@@ -320,8 +326,11 @@ $color-efeff6: #efeff6;
     .b-rating-card__cards-block {
       margin-top: 20px;
       position: relative;
-      height: 400px;
-      overflow-y: scroll;
+
+      .b-rating-card__reviews-list {
+        overflow-y: scroll;
+        height: 400px;
+      }
 
       .b-rating-card__card-opened {
         background: $color-f9f9fc;

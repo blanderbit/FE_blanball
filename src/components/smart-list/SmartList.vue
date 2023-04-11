@@ -13,7 +13,7 @@
       <DynamicScrollerItem
         :item="item"
         :active="active"
-        :sizeDependencies="[list.length, item?.metadata?.expanding]"
+        :size-dependencies="[list.length, item?.metadata?.expanding]"
         :data-index="index"
       >
         <slot name="smartListItem" :index="index" :smartListItem="item"> </slot>
@@ -24,11 +24,9 @@
     </template>
   </DynamicScroller>
 </template>
-
 <script>
 import { ref, watch, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
-
 import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller';
 
 import Notification from '../Notification.vue';
@@ -59,23 +57,22 @@ export default {
     },
   },
   emits: ['update:selected-list', 'update:scrollbar-existing'],
-  setup(context, { emit, expose }) {
+  setup(props, { emit, expose }) {
     let activeNotification = ref(0);
-    let list = ref([]);
     let scroller = ref();
     const router = useRouter();
 
     watch(
-      () => context.selectedList,
+      () => props.selectedList,
       () => {
-        const array = [...context.selectedList];
+        const array = [...props.selectedList];
         list.value = Array.isArray(array) ? (!array.length ? [] : array) : [];
         scroller.value.forceUpdate();
       }
     );
 
     watch(
-      () => context.list,
+      () => props.list,
       () => {
         nextTick(() => {
           emit(

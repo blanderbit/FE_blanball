@@ -74,6 +74,7 @@ label {
     position: absolute;
     opacity: 0;
     cursor: pointer;
+    outline: none;
 
     &:focus ~ span {
       border: 2px solid lighten($black, 50%);

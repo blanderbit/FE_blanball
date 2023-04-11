@@ -123,7 +123,7 @@ export class EventService {
   }
 
   getOneEvent(eventId) {
-    return AxiosInstance.get(EndpointsEnum.Events.getOneEvent(eventId));
+    return AxiosInstance.get(EndpointsEnum.Events.GetOneEvent(eventId));
   }
 
   createOneEvent(eventData) {
@@ -144,6 +144,13 @@ export class EventService {
     });
   }
 
+
+  showOrHideMyEvents(ids) {
+    return AxiosInstance.post(EndpointsEnum.Events.ShowOrHideMyEvents, {
+      ids: ids
+    })
+  }
+
   getCountPinnedEvents() {
     return AxiosInstance.get(EndpointsEnum.Events.GetCountPinnedEvents);
   }
@@ -151,13 +158,26 @@ export class EventService {
   @FilterParamsDecorator(filterConfigForEvents)
   getPlannedUserEvents(options) {
     return AxiosInstance.get(
-      EndpointsEnum.Events.getPlannedUserEvents(options.id),
+      EndpointsEnum.Events.GetPlannedUserEvents(options.id),
       AxiosParams(
         AxiosQuery(options),
         AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_PAGE])
       )
     );
   }
+
+
+  @FilterParamsDecorator(filterConfigForEvents)
+  getMyPlannedEvents(options) {
+    return AxiosInstance.get(
+      EndpointsEnum.Events.GetMyPlannedEvents,
+      AxiosParams(
+        AxiosQuery(options),
+        AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_PAGE])
+      )
+    );
+  }
+
   getPopularEventsListEvents() {
     return AxiosInstance.get(EndpointsEnum.Events.PopularEventsList);
   }

@@ -36,6 +36,11 @@
       @closeModal="toggleModal"
     />
 
+    <HideMyEventsModal
+      v-if="isHideMyEventsModalOpened"
+      @closeModal="closeHideMyEventsModal"
+      @closeAndSave="closeModalAndHideEvents"/>
+
     <div class="b-user-cabinet__title-block">
       <div class="b-user-cabinet__titles">
         <div class="b-user-cabinet__title">
@@ -125,6 +130,7 @@
             :user-email="userStore.user.email"
             :checkbox-data="checkboxData"
             :is-edit-mode="isEditModeProfile"
+            @openHideEventsModal="showHideMyEventsModal"
           />
         </div>
         <ButtonsBlock
@@ -167,6 +173,7 @@ import ButtonsBlock from '../../../components/user-cabinet/ButtonsBlock.vue';
 import EditAvatarModal from '../../../components/ModalWindows/UserCabinetModalWindows/EditAvatarModal.vue';
 import Loading from '../../../workers/loading-worker/Loading.vue';
 import PublicProfile from '../../../components/PublicProfile/PublicProfile.vue';
+import HideMyEventsModal from '../../../components/ModalWindows/HideMyEventsModalWindow/HideMyEventsModal.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '@/stores/userData';
@@ -199,6 +206,7 @@ export default {
     ChangeEmailModal,
     ButtonsBlock,
     TabLabel,
+    HideMyEventsModal,
     EditAvatarModal,
   },
   setup(props) {
@@ -221,6 +229,7 @@ export default {
     const restData = ref();
     const openedReviewId = ref(0);
     const nextRoutePath = ref('');
+    const isHideMyEventsModalOpened = ref(false);
 
     const isTabletSize = computed(() => {
       return isBetweenTabletAndDesktop.value || isTablet.value;
@@ -234,6 +243,7 @@ export default {
         numberFromMonth: CONSTANTS.users_page.months.numberFromMonth,
       };
     });
+
     restData.value = {
       ...userStore.user,
       configuration: {
@@ -395,6 +405,14 @@ export default {
       closeSubmitModal(true);
     }
 
+    const showHideMyEventsModal = () => {
+      isHideMyEventsModalOpened.value = true
+    }
+
+    const closeHideMyEventsModal = () => {
+      isHideMyEventsModalOpened.value = false
+    }
+
     function saveUserDataChanges() {
       const refProfileData = { ...myForm.value.getControledValues() };
       const {
@@ -447,7 +465,6 @@ export default {
         getMyProfile();
       });
     }
-
     function getMyProfile() {
       isLoading.value = true;
       API.UserService.getMyProfile()
@@ -502,6 +519,13 @@ export default {
       if (isEditMode) {
         toggleEditMode();
       }
+    }
+
+    async function closeModalAndHideEvents(ids) {
+      isLoading.value = true;
+      closeHideMyEventsModal();
+      await API.EventService.showOrHideMyEvents(ids);
+      isLoading.value = false;
     }
 
     function toggleModal(val) {
@@ -584,7 +608,7 @@ export default {
     }
 
     onBeforeRouteLeave((to, from, next) => {
-      if (isEditModeProfile.value && !isModalActive.change_data) {
+      if (isEditModeProfile.value && !isModalActive.change_data && !to.meta.noGuards) {
         toggleModal('change_data');
         nextRoutePath.value = to.fullPath;
         changeDataModalConfig.value = {
@@ -617,8 +641,11 @@ export default {
       openEditPictureModal,
       getMyProfile,
       clickReview,
+      closeModalAndHideEvents,
       cancelChangesAndGoToTheNextRoute,
       showPreview,
+      showHideMyEventsModal,
+      closeHideMyEventsModal,
       isEditModeProfile,
       changeDataModalConfig,
       mockData,
@@ -626,6 +653,7 @@ export default {
       userStore,
       checkboxData,
       userData,
+      isHideMyEventsModalOpened,
       schema,
       formValues,
       myForm,
@@ -693,12 +721,11 @@ $color-dfdeed: #dfdeed;
 }
 .b-user-cabinet {
   overflow-y: scroll;
-  padding-bottom: 50px;
   @media (min-width: 768px) {
     position: relative;
   }
   @include tabletAndMobile {
-    padding-bottom: 150px;
+    height: calc(100% - 100px);
   }
 }
 

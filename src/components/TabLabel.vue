@@ -1,9 +1,9 @@
 <template>
-  <div :class="['b-tab-label__label', `b-tab-label__label-${position}`]">
+  <div :class="['b-tab-label__label', `b-tab-label__label-${labelPosition}`]">
     <div
       :class="[
         'b-tab-label__label-corner',
-        `b-tab-label__label-corner-${position}`,
+        `b-tab-label__label-corner-${labelPosition}`,
       ]"
     ></div>
     <div class="b-tab-label__label-title">
@@ -16,6 +16,9 @@
 </template>
 
 <script>
+import { onMounted, onBeforeUnmount, computed } from 'vue';
+import useWindowWidth from '../utils/widthScreen';
+
 export default {
   name: 'TabLabel',
   props: {
@@ -29,9 +32,31 @@ export default {
     },
     position: {
       type: String,
-      default: 'right',
       validator: (v) => ['left', 'right', 'top', 'bottom'].includes(v),
     },
+  },
+  setup(props) {
+    const { onResize, isMobile } = useWindowWidth();
+
+    const labelPosition = computed(() => {
+      if (props.position) {
+        return props.position
+      }
+      return isMobile.value ? 'bottom' : 'right';
+    });
+
+    onMounted(() => {
+      window.addEventListener('resize', onResize);
+    });
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', onResize);
+    });
+
+    return {
+      isMobile,
+      labelPosition,
+    };
   },
 };
 </script>
@@ -50,7 +75,7 @@ $color-efefef: #efefef;
     box-shadow: 3px 6px 15px rgba(8, 27, 130, 0.1);
     border-radius: 6px;
     padding: 4px 6px;
-    z-index: 1;
+    z-index: 20;
 
     &-right {
       left: calc(100% + 10px);

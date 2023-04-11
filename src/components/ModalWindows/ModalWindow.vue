@@ -29,7 +29,8 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, onMounted, onBeforeUnmount } from 'vue';
+import useWindowWidth from '../../utils/widthScreen';
 
 export default {
   name: 'modal-window',
@@ -50,13 +51,27 @@ export default {
       type: Number,
       default: 400,
     },
+    windowWidthMobile: {
+      type: Number,
+      default: 350,
+    },
   },
   setup(props) {
+    const { onResize, isMobileSmall } = useWindowWidth();
+
     const windowStyle = computed(() => {
       return {
         padding: props.isTitleShown ? '80px 20px 20px 20px' : '20px',
-        width: `${props.windowWidth}px`,
+        width: `${isMobileSmall.value ? props.windowWidthMobile : props.windowWidth}px`,
       };
+    });
+
+    onMounted(() => {
+      window.addEventListener('resize', onResize);
+    });
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', onResize);
     });
     return {
       windowStyle,
@@ -70,9 +85,9 @@ export default {
 $color-dfdeed: #dfdeed;
 $color-c10b0b: #c10b0b;
 $color-d3f8f7: #d3f8f7;
-
 .b_modal_wrapper {
   @include modal-wrapper;
+
   .b_modal_modal-window {
     position: absolute;
     top: 50%;
@@ -103,10 +118,11 @@ $color-d3f8f7: #d3f8f7;
       font-size: 16px;
       line-height: 24px;
     }
-    .inut-wrapper {
-      width: 360px;
+
+    .input__wrapper {
       margin-bottom: 16px;
     }
+
     .current-number {
       font-family: 'Inter';
       font-style: normal;
@@ -116,6 +132,7 @@ $color-d3f8f7: #d3f8f7;
       color: $--b-main-black-color;
       margin-bottom: 12px;
     }
+
     .description-title-second {
       font-family: 'Inter';
       font-style: normal;
@@ -125,6 +142,7 @@ $color-d3f8f7: #d3f8f7;
       color: $--b-main-black-color;
       margin-bottom: 16px;
     }
+
     .description-text {
       font-family: 'Inter';
       font-style: normal;
@@ -134,9 +152,11 @@ $color-d3f8f7: #d3f8f7;
       color: $--b-main-gray-color;
       margin-bottom: 20px;
     }
+
     .sms-code-block {
       display: flex;
       margin-bottom: 24px;
+
       input {
         padding: 8px;
         width: 48px;
@@ -147,6 +167,7 @@ $color-d3f8f7: #d3f8f7;
         margin-right: 4px;
         outline: none;
         text-align: center;
+
         &::-webkit-outer-spin-button,
         &::-webkit-inner-spin-button {
           -webkit-appearance: none;
@@ -159,6 +180,7 @@ $color-d3f8f7: #d3f8f7;
         }
       }
     }
+
     .error-message {
       font-family: 'Inter';
       font-style: normal;
@@ -167,10 +189,17 @@ $color-d3f8f7: #d3f8f7;
       line-height: 20px;
       color: $--b-error-color;
     }
+
     .btns-block {
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      @include mobile {
+        flex-direction: column;
+        gap: 8px;
+      }
+
       .cancle-delete-acc {
         font-family: 'Inter';
         font-style: normal;
@@ -182,6 +211,7 @@ $color-d3f8f7: #d3f8f7;
         padding: 4px 0;
         cursor: pointer;
       }
+
       .delete-acc {
         font-family: 'Inter';
         font-style: normal;
@@ -193,6 +223,7 @@ $color-d3f8f7: #d3f8f7;
         padding: 4px 0;
         cursor: pointer;
       }
+
       .cancle-btn {
         padding: 4px 0;
         border-radius: 6px;
@@ -204,6 +235,7 @@ $color-d3f8f7: #d3f8f7;
         color: $--b-main-green-color;
         cursor: pointer;
       }
+
       .save-btn {
         padding: 4px 16px;
         background: $color-d3f8f7;
@@ -215,6 +247,12 @@ $color-d3f8f7: #d3f8f7;
         line-height: 24px;
         color: $--b-main-green-color;
         cursor: pointer;
+
+        @include mobile {
+          text-align: center;
+          width: 100%;
+          padding: 8px 16px;
+        }
       }
     }
   }

@@ -10,7 +10,7 @@
       </template>
       <template #verify-email>
         <Form v-slot="data" :validation-schema="schema">
-          <div class="inut-wrapper">
+          <div class="input__wrapper">
             <InputComponent
               :title="$t('modals.change_login.email')"
               :swipeTitle="false"

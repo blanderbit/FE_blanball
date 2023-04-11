@@ -532,7 +532,7 @@ export default {
     }
 
     onBeforeRouteLeave((to, from, next) => {
-      if (!isSubmitModalOpened.value && !isEventCreated.value) {
+      if (!isSubmitModalOpened.value && !isEventCreated.value && !to.meta.noGuards) {
         nextRoute.value = to.fullPath;
         openSumbitModal();
       } else {
@@ -656,7 +656,7 @@ $color-8a8aa8: #8a8aa8;
       position: relative;
       box-shadow: 2px 6px 10px rgba(56, 56, 251, 0.1);
       border-radius: 0px 6px 6px 0px;
-      height: 100%;
+      height: calc(100vh - 90px - 32px - 20px);
       @media (min-width: 1200px) and (max-width: 1400px) {
         width: 360px;
       }
@@ -664,6 +664,10 @@ $color-8a8aa8: #8a8aa8;
         margin-right: 16px;
         width: 450px;
         min-width: 350px;
+      }
+
+      @include beforeDesktop {
+        height: calc(100vh - 90px - 32px - 20px - 40px);
       }
       @include tabletAndMobile {
         width: 100%;

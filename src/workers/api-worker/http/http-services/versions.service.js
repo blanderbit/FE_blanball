@@ -3,12 +3,12 @@ import { EndpointsEnum } from '../http-common/prefix.enum';
 
 export class VersionsService {
   static getAllVersions() {
-    return AxiosInstance.get(EndpointsEnum.Versions.getAllVersions);
+    return AxiosInstance.get(EndpointsEnum.Versions.GetAllVersions);
   }
 
   static getCurrentVersion(currentVersion) {
     return AxiosInstance.get(
-      EndpointsEnum.Versions.getCurrentVersion + currentVersion
+      EndpointsEnum.Versions.GetCurrentVersion + currentVersion
     );
   }
 }

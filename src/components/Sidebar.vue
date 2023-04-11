@@ -384,9 +384,9 @@ export default {
 
     getNotificationsCount();
     const logOut = () => {
+      router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute)
+      userStore.$reset();
       TokenWorker.clearToken();
-      router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute);
-      userStore.$reset()
     };
 
     const removeNotifications = (ids) => {

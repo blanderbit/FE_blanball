@@ -5,6 +5,7 @@ import {
 } from '../../workers/web-socket-worker/message.action.types';
 import { DETAILS_TYPE_ENUM_VALUES } from '../type-request-message-worker';
 
+
 export const AxiosQuery = (params) => {
   params = typeof params === 'object' ? params : {};
   const filteredObject = Object.keys(params)
@@ -16,6 +17,13 @@ export const AxiosQuery = (params) => {
       }),
       {}
     );
+
+  // Object.entries(filteredObject).forEach(([key, value]) => {
+  //   if (filterValidation[key]?.action(value)) {
+  //     filteredObject[key] = filterValidation[key]?.action(value)
+  //   }
+  // });
+
   return {
     meta: 'AxiosQuery',
     data: filteredObject,
@@ -54,7 +62,6 @@ export const createQueryStringFromObject = (objQuery) => {
   const elements = Object.keys(objQuery).map(
     (key) => `${key}=${objQuery[key]}`
   );
-
   return elements.length ? '?' + elements.join('&') : '';
 };
 

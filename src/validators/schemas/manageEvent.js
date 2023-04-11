@@ -97,6 +97,11 @@ export default {
           .number()
           .typeError('errors.type-number')
           .required('errors.required')
+          .transform((value, originalValue) =>
+            typeof originalValue === 'string' && originalValue?.trim() === ''
+              ? undefined
+              : value
+          )
           .min(6, 'errors.min6')
           .max(50, 'errors.max50'),
         price: yup
@@ -107,6 +112,12 @@ export default {
             then: yup
               .number()
               .typeError('errors.type-number')
+              .transform((value, originalValue) =>
+                typeof originalValue === 'string' &&
+                originalValue?.trim() === ''
+                  ? undefined
+                  : value
+              )
               .required('errors.required')
               .min(1, 'errors.min1')
               .max(32767, 'errors.max32767'),
@@ -169,6 +180,11 @@ export default {
       amount_members: yup
         .number()
         .typeError('errors.type-number')
+        .transform((value, originalValue) =>
+          typeof originalValue === 'string' && originalValue?.trim() === ''
+            ? undefined
+            : value
+        )
         .required('errors.required')
         .min(6, 'errors.min6')
         .max(50, 'errors.max50'),
@@ -180,6 +196,11 @@ export default {
           then: yup
             .number()
             .typeError('errors.type-number')
+            .transform((value, originalValue) =>
+              typeof originalValue === 'string' && originalValue?.trim() === ''
+                ? undefined
+                : value
+            )
             .required('errors.required')
             .min(1, 'errors.min1')
             .max(32767, 'errors.max32767'),

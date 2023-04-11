@@ -742,7 +742,7 @@ export default {
 
     onBeforeRouteLeave((to, from, next) => {
       nextRoutePath.value = to.fullPath;
-      if (selected.value.length && !isSubmitModalOpened.value) {
+      if (selected.value.length && !isSubmitModalOpened.value && !to.meta.noGuards) {
         showSubmitModal('cancelChanges');
       } else {
         next();

@@ -32,6 +32,17 @@
             name="show_reviews"
           />
         </div>
+        <div class="b-hide-events__button">
+        <InputComponent
+          :placeholder="'7 подій приховано'"
+          :isDisabled="true"
+          :title-width="0"
+          :outside-title="true"
+          :icon="sortArrowHorizontal"
+          @click="$emit('openHideEventsModal')"
+          name="change_email"
+        />
+      </div>
       </div>
     </div>
     <div class="b-security__top-table">
@@ -97,7 +108,7 @@ export default {
       default: false,
     },
   },
-  emits: ['toggleModal'],
+  emits: ['toggleModal', 'openHideEventsModal'],
   setup(props, context) {
     const checkboxForm = ref(null);
 
@@ -246,6 +257,14 @@ $color-d3f8f7: #d3f8f7;
     color: $--b-main-gray-color;
     text-align: right;
     cursor: pointer;
+  }
+
+  .b-hide-events__button {
+    margin-top: 8px;
+
+    @media (max-width: 1200px) {
+      margin-top: 12px;
+    }
   }
 }
 </style>

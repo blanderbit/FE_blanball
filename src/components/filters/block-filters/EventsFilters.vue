@@ -359,20 +359,23 @@ export default {
       window.removeEventListener('resize', onResize);
     });
 
-
     watchEffect(() => {
       if (dateFilterValue.value?.start) {
-        dateFilterValue.value.start = dayjs(dateFilterValue.value?.start).format('YYYY-MM-DD')
+        dateFilterValue.value.start = dayjs(
+          dateFilterValue.value?.start
+        ).format('YYYY-MM-DD');
       }
       if (dateFilterValue.value?.end) {
-        dateFilterValue.value.end = dayjs(dateFilterValue.value?.end).format('YYYY-MM-DD')
+        dateFilterValue.value.end = dayjs(dateFilterValue.value?.end).format(
+          'YYYY-MM-DD'
+        );
       }
-      transformedFilters.value.date_and_time = dateFilterValue.value
+      transformedFilters.value.date_and_time = dateFilterValue.value;
     });
 
     function clearFilters() {
-      dateFilterValue.value = null
-      emit('clearFilters')
+      dateFilterValue.value = null;
+      emit('clearFilters');
     }
 
     function sortingButtonClick() {

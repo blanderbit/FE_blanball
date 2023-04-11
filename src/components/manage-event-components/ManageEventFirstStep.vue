@@ -53,7 +53,6 @@
         :main-title="$t('events.sport-type')"
         :placeholder="$t('events.sport-type')"
         :options="mockData.typeOfSportDropdown"
-        :initValue="initialValues.type"
         display-name="name"
         display-value="value"
         :width="320"
