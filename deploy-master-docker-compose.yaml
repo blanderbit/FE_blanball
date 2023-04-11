@@ -4,6 +4,8 @@ services:
   blanball-fe-production:
     container_name: blanball-fe-production
     image: registry.it-flumx.com/production_blanball_fe:latest
+    args:
+      MODE: production
     expose:
       - "80"
     labels:
