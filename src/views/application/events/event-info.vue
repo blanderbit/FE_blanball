@@ -605,6 +605,7 @@ export default {
     async function inviteUsersToThisEvent(ids) {
       loading.value = true;
       closeInviteUsersModal();
+      await API.EventService.inviteUsersToEvent(ids, eventData.value.id);
       loading.value = false;
       toast.success(t('notifications.sent-invites'));
     }
@@ -934,11 +935,11 @@ $color-8a8aa8: #8a8aa8;
         .b-event-info__price {
           display: flex;
           align-items: center;
-          position: relative;
           gap: 6px;
           padding: 6px 0px;
           width: fit-content;
           cursor: pointer;
+          position: relative;
 
           &.fee {
             border-bottom: 1px dashed $--b-main-green-color;
@@ -994,11 +995,12 @@ $color-8a8aa8: #8a8aa8;
           }
 
           .b-event-info__price-tooltip-wrapper {
-            position: absolute;
-            top: 8px;
-            right: -100%;
             width: fit-content;
             z-index: 2;
+
+            ::v-deep(.b-tab-label__label-text) {
+              max-width: 200px;
+            }
 
             .v-enter-active,
             .v-leave-active {
@@ -1011,9 +1013,7 @@ $color-8a8aa8: #8a8aa8;
             }
 
             .b-event-info__price-tooltip {
-              position: relative;
               height: fit-content;
-              max-width: 390px;
               width: max-content;
               word-break: break-word;
             }

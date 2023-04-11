@@ -5,6 +5,8 @@ import { UrlInterceptor } from '../interseptors/url.interseptor';
 import { TokenInterceptor } from '../interseptors/token.interseptor';
 import { ResponseInterceptor } from '../interseptors/response.interseptor';
 
+import router from '../router';
+
 if (!process.env.API_BASE_URL) {
   throw new Error(
     `Please create .env (npm run create:env) and change variable correctly, focus on API_BASE_URL`

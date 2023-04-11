@@ -94,12 +94,6 @@ export default {
         scroller.value.forceUpdate();
       }
     );
-    watch(
-      () => context.list,
-      () => {
-        setTimeout(() => scroller.value.forceUpdate(true), 100);
-      }
-    );
 
     function detectResize() {
       if (context.detectSizesForCards) {

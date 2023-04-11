@@ -10,7 +10,7 @@
       </template>
       <template #change-password>
         <Form v-slot="data" @submit="disableSubmit" :validation-schema="schema">
-          <div class="inut-wrapper">
+          <div class="input__wrapper">
             <InputComponent
               :title="$t('modals.change_password.current-pass')"
               :swipeTitle="false"
@@ -20,7 +20,7 @@
               name="old_password"
             />
           </div>
-          <div class="inut-wrapper">
+          <div class="input__wrapper">
             <InputComponent
               :title="$t('modals.change_password.new-pass')"
               :swipeTitle="false"

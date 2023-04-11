@@ -13,76 +13,57 @@
         :validation-schema="schema"
         :initial-values="initialValues"
       >
-        <Transition>
           <Step_1
             v-if="currentStep === 1"
             @next="handleRegister(data)"
             @back="backToRoute"
           />
-        </Transition>
-        <Transition>
           <Step_2
             v-if="currentStep === 2"
             @next="handleRegister(data)"
-            @back="currentStep--"
+            @back="backToPrevStep(data)"
+            @updateSaveCredentials="updateSaveCredentials"
           />
-        </Transition>
-        <Transition>
           <Step_3
             v-if="currentStep === 3"
             @next="currentStep++"
             @back="finishOnBoarding()"
           />
-        </Transition>
-        <Transition>
           <Step_4
             v-if="currentStep === 4"
             @next="currentStep++"
             @back="finishOnBoarding()"
           />
-        </Transition>
-        <Transition>
           <Step_5
             v-if="currentStep === 5"
             @next="currentStep++"
             @back="finishOnBoarding()"
           />
-        </Transition>
-        <Transition>
           <Step_6
             v-if="currentStep === 6"
             @next="currentStep++"
             @back="finishOnBoarding()"
           />
-        </Transition>
-        <Transition>
           <Step_7
             v-if="currentStep === 7"
             @back="goToEvents()"
             @next="currentStep++"
           />
-        </Transition>
-        <Transition>
           <Step_8
             v-if="currentStep === 8"
             @next="handleUpdate(data)"
-            @back="currentStep--"
+            @back="backToPrevStep(data)"
           />
-        </Transition>
-        <Transition>
           <Step_9
             v-if="currentStep === 9"
             @next="handleUpdate(data)"
-            @back="currentStep--"
+            @back="backToPrevStep(data)"
           />
-        </Transition>
-        <Transition>
           <Step_10
             v-if="currentStep === 10"
             @next="handleUpdate(data)"
-            @back="currentStep--"
+            @back="backToPrevStep(data)"
           />
-        </Transition>
       </Form>
     </template>
   </AuthenticationMain>
@@ -154,6 +135,7 @@ export default {
     const router = useRouter();
     const currentStep = ref(1);
     const initialValues = ref({});
+    const saveUserCredentials = ref(false);
     let profileValues = {
       profile: {},
     };
@@ -249,6 +231,10 @@ export default {
       router.push(ROUTES.APPLICATION.EVENTS.absolute);
     }
 
+    function updateSaveCredentials(value) {
+      saveUserCredentials.value = value;
+    }
+
     return {
       currentStep,
       rightSideStyle,
@@ -259,6 +245,7 @@ export default {
       initialValues,
       finishOnBoarding,
       goToEvents,
+      updateSaveCredentials,
       async handleRegister(data) {
         const { valid } = await data.validate();
         if (!valid) return;
@@ -270,7 +257,13 @@ export default {
             const apiRequestResult = await API.AuthorizationService.Register(
               data
             );
-            TokenWorker.setToken(apiRequestResult.data.access);
+            let tokenStorage;
+            if (saveUserCredentials.value) {
+              tokenStorage = 'local_storage';
+            } else {
+              tokenStorage = 'session_storage';
+            }
+            TokenWorker.setToken(apiRequestResult.data.access, tokenStorage);
             const apiRequestResultMyProfile =
               await API.UserService.getMyProfile();
             profileValues = apiRequestResultMyProfile.data;
@@ -279,6 +272,10 @@ export default {
           }
         }
         currentStep.value++;
+      },
+      async backToPrevStep(data) {
+        initialValues.value = merge(initialValues.value, data.controlledValues);
+        currentStep.value--
       },
       async handleUpdate(data) {
         const { valid } = await data.validate();
@@ -294,7 +291,9 @@ export default {
         if (actionsSteps.includes(currentStep.value)) {
           try {
             profileValues.profile = {
-              birthday: `${initialValues.value.year}-${initialValues.value.month}-${initialValues.value.day}`,
+              birthday: initialValues.value.year && initialValues.value.month && initialValues.value.day 
+              ? `${initialValues.value.year}-${initialValues.value.month}-${initialValues.value.day}`
+              : null,
               gender:
                 initialValues.value.gender ?? profileValues.profile.gender,
               height:

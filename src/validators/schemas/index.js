@@ -6,7 +6,6 @@ import Stepper from './stepper';
 import SelectForms from './selectForms';
 import BugReport from './bugReport';
 import ChangePassword from './changePassword';
-import EventReview from './eventReview';
 import VerifyEmail from './verifyEmail';
 import DeleteAccount from './deleteAccount';
 import ChangeEmail from './changeEmail';
@@ -21,7 +20,6 @@ export default {
   selectForms: SelectForms,
   bugReport: BugReport,
   changePassword: ChangePassword,
-  eventReview: EventReview,
   verifyEmail: VerifyEmail,
   deleteAccount: DeleteAccount,
   changeEmail: ChangeEmail,

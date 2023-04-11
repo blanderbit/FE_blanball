@@ -14,8 +14,8 @@
       <div class="b-register-step__dropdown">
         <Dropdown
           :outside-title="true"
-          :main-title="region ? $t('register.district') : ''"
-          :placeholder="!region ? $t('register.district') : ''"
+          :main-title="$t('register.district')"
+          :placeholder="$t('register.district')"
           :options="mockData.district"
           :model-value="region"
           :height="40"
@@ -29,8 +29,8 @@
       <div class="b-register-step__dropdown">
         <Dropdown
           :outside-title="true"
-          :main-title="city ? $t('register.city') : ''"
-          :placeholder="!city ? $t('register.city') : ''"
+          :main-title="$t('register.city')"
+          :placeholder="$t('register.city')"
           :options="mockData.cities"
           :model-value="city"
           :height="40"
@@ -124,11 +124,8 @@ export default {
       loading.value = true;
     });
     PositionMapBus.on('update:coords', (e) => {
-      region.value = e.place.state;
-      city.value = e.place.city || e.place.town || e.place.village;
-      address.value = `${e.place.neighbourhood || ''} ${e.place.road || ''} ${
-        e.place.house_number || ''
-      } ${e.place.postcode || ''}`;
+      region.value = e.place.region;
+      city.value = e.place.village || e.place.city
       loading.value = false;
       nextButton.value = !region.value || !city.value || !address.value;
     });

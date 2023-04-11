@@ -1,5 +1,5 @@
 <template>
-  <label :for="fieldId" class="checkbox blue">
+  <label :for="fieldId" :class="['checkbox', color]">
     <input
       @input="(event) => !disabled ? $emit('update:checked', event.target.checked) : null"
       type="checkbox"
@@ -27,6 +27,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    color: {
+      type: String,
+      default: 'green'
     }
   },
 };
@@ -70,6 +74,7 @@ label {
     position: absolute;
     opacity: 0;
     cursor: pointer;
+    outline: none;
 
     &:focus ~ span {
       border: 2px solid lighten($black, 50%);
@@ -79,12 +84,13 @@ label {
       border: 2px solid darken($color, 15%);
     }
 
+
     &:checked ~ span {
       color: $white;
-      background: $--b-main-gray-color
+      background: $color
         url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+DQo8c3ZnIHdpZHRoPSIxMiIgaGVpZ2h0PSI5IiB2aWV3Qm94PSIwIDAgMTIgOSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCiAgPHBhdGggZD0iTTQuNTc1IDguOTc3cy0uNDA0LS4wMDctLjUzNi0uMTY1TC4wNTcgNS42NGwuODI5LTEuMjI3TDQuNDcgNy4yNjggMTAuOTIxLjA4NmwuOTIzIDEuMTAzLTYuODYzIDcuNjRjLS4xMzQtLjAwMy0uNDA2LjE0OC0uNDA2LjE0OHoiIGZpbGw9IiNGRkYiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPg0KPC9zdmc+)
         50% 40% no-repeat;
-      border: 2px solid $--b-main-gray-color;
+      border: 2px solid $color;
     }
   }
 
@@ -106,10 +112,13 @@ label {
 }
 
 label.checkbox {
-  @include checkbox($green);
 
   &.blue {
     @include checkbox($blue);
+  }
+
+  &.green {
+    @include checkbox($green);
   }
 
   &.red {

@@ -13,8 +13,8 @@
         <div class="b-register-step__dropdown">
           <Dropdown
             v-model="day"
-            :placeholder="!day ? $t('register.day') : ''"
-            :mainTitle="day ? $t('register.day') : ''"
+            :placeholder="$t('register.day')"
+            :mainTitle="$t('register.day')"
             :options="mockData.days"
             display-name="value"
             display-value="id"
@@ -24,8 +24,8 @@
         <div class="b-register-step__dropdown">
           <Dropdown
             v-model="month"
-            :placeholder="!month ? $t('register.month') : ''"
-            :mainTitle="month ? $t('register.month') : ''"
+            :placeholder="$t('register.month')"
+            :mainTitle="$t('register.month')"
             :options="mockData.months"
             display-name="value"
             display-value="id"
@@ -35,8 +35,8 @@
         <div class="b-register-step__dropdown">
           <Dropdown
             v-model="year"
-            :placeholder="!year ? $t('register.year') : ''"
-            :mainTitle="year ? $t('register.year') : ''"
+            :placeholder="$t('register.year')"
+            :mainTitle="$t('register.year')"
             :options="mockData.years"
             display-name="value"
             display-value="value"

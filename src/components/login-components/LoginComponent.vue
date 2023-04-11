@@ -3,7 +3,6 @@
     <Form
       v-slot="data"
       :validation-schema="schema"
-      :initial-values="initialValues"
       @submit="disableSubmit"
     >
       <div class="b-login-step__top-part">
@@ -125,15 +124,6 @@ export default {
       };
     });
 
-    const initialValues = ref({});
-
-    if (localStorage.getItem('email')) {
-      initialValues.value.email = localStorage.getItem('email');
-    }
-
-    if (localStorage.getItem('password')) {
-      initialValues.value.password = localStorage.getItem('password');
-    }
 
     const handleLogin = async (data) => {
       const { valid } = await data.validate();
@@ -147,12 +137,14 @@ export default {
           data.controlledValues
         );
 
-        TokenWorker.setToken(apiRequestResult.data.tokens.access);
+        let tokenStorage
 
         if (data.values.save_credentials) {
-          localStorage.setItem('password', data.controlledValues.password);
-          localStorage.setItem('email', data.controlledValues.email);
+          tokenStorage = 'local_storage'
+        } else {
+          tokenStorage = 'session_storage'
         }
+        TokenWorker.setToken(apiRequestResult.data.tokens.access, tokenStorage);
         const redirectUrl = router.currentRoute.value.query.redirectUrl;
         if (redirectUrl) {
           const resolveRouter = router.resolve(redirectUrl);
@@ -179,7 +171,6 @@ export default {
       router.push(ROUTES.AUTHENTICATIONS.REGISTER.absolute);
 
     return {
-      initialValues,
       showInvalidCredentials,
       warningTopStyle,
       schema,

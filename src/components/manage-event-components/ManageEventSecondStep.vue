@@ -48,6 +48,7 @@
     <div v-if="isEventPayment" class="input enter-sum-input">
       <InputComponent
         :outside-title="true"
+        :swipeTitle="false"
         :title="$t('events.enter-sum')"
         :placeholder="'45₴'"
         v-maska="'#####'"

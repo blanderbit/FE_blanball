@@ -64,7 +64,7 @@ export default {
             await API.LocationService.GetPlaceByCoords(
               data || state.value.centerOfCountry
             )
-          )?.data?.data,
+          )?.data,
         };
 
         emit('update:coords', dataForEmit);
@@ -100,6 +100,7 @@ export default {
       map = new google.maps.Map(document.getElementById('map'), {
         center: state.userCenter,
         zoom: 12,
+        language: "uk",
         overviewMapControlOptions: {
           opened: false,
         },
@@ -123,9 +124,9 @@ export default {
       await setDataAboutPosition(state.userCenter);
 
       if (!props.disableChangeCoords) {
-        google.maps.event.addListener(map, 'click', function () {
-          marker.value.setPosition(props.coords);
-          setDataAboutPosition(props.coords.toJSON());
+        google.maps.event.addListener(map, 'click', function (event) {
+          marker.value.setPosition(event.latLng);
+          setDataAboutPosition(event.latLng.toJSON());
         });
       }
 

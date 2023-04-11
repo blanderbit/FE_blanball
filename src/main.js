@@ -6,7 +6,6 @@ import { createDeviceDetector } from 'next-vue-device-detector';
 
 import VCalendar from 'v-calendar';
 import Toast from 'vue-toastification';
-import PortalVue from 'portal-vue';
 
 import { createLoader } from './workers/loading-worker/loading.worker';
 import Maska from './workers/phone-maska-worker';
@@ -41,7 +40,6 @@ app
   .provide('clientVersion', pkg.version)
   .use(createPinia())
   .use(router)
-  .use(PortalVue)
   .use(i18n)
   .use(VCalendar, {})
   .use(Toast)
