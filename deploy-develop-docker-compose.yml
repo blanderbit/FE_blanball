@@ -3,7 +3,7 @@ version: '3.7'
 services:
   blanball-fe-testing:
     build:
-      context: blanball-fe-production
+      context: registry.it-flumx.com/production_blanball_fe:latest
       args:
         MODE: test
     container_name: blanball-fe-testing
