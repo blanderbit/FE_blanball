@@ -1,15 +1,19 @@
 <template>
-    <div>
-        <router-view/>
-    </div>
+  <div>
+    <router-view />
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "index"
-    }
+export default {
+  name: 'index',
+};
 </script>
 
-<style scoped>
-
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 </style>

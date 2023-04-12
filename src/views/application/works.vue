@@ -2,29 +2,27 @@
   <div class="b-tech-works">
     <div class="b-tech-works__top-message-line">
       <div class="b-tech-works__text">
-        Наразі, сайт працює у тестовому режимі, тому може містити помилки. Будь
-        ласка, повідомте нас якщо помітите якусь із них :)
+        {{ $t('works.site-is-broken') }}
       </div>
-      <GreenBtn
-        :text="'Я знайшов помилку'"
-        :width="143"
-        :height="28"
-        :backgroundColor="'#575775'"
-      />
     </div>
     <div class="b-tech-works__main-part">
       <div class="b-tech-works__left-side">
         <div class="b-tech-works__title">
-          <div><span>На сервері</span> BlanBall</div>
-          <div>тривають<span> технічні роботи</span></div>
+          <div>
+            <span>
+              {{ $t('works.at-server') }}
+            </span>
+            BlanBall
+          </div>
+          <div>
+            {{ $t('works.is-going') }}
+            <span>
+              {{ $t('works.technical-works') }}
+            </span>
+          </div>
         </div>
         <div class="b-tech-works__subtitle">
-          Наша команда працює над тим, щоб ви могли користувалися додатком із
-          задоволенням, вибачте за тимчасові незручності
-        </div>
-        <div class="b-tech-works__not-have-account">Ще не маєте акаунту?</div>
-        <div class="b-tech-works__register-link">
-          Зареєструйтеся та будьте в курсі всіх оновлень
+          {{ $t('works.we-are-fixing') }}
         </div>
       </div>
       <div class="b-tech-works__right-side">
@@ -40,23 +38,31 @@
 </template>
 
 <script>
-import GreenBtn from '../../components/GreenBtn.vue'
-
-export default {
-  components: {
-    GreenBtn,
-  },
-}
+export default {};
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+$color-f0f0f4: #f0f0f4;
+$color-8a8aa8: #8a8aa8;
+
 .b-tech-works {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: $--b-main-white-color;
+  z-index: 999;
   .b-tech-works__top-message-line {
     padding: 8px 0 8px 0;
-    background: #f0f0f4;
+    background: $color-f0f0f4;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
+    @media (min-width: 992px) and (max-width: 1200px) {
+      padding: 8px;
+    }
     @media (max-width: 992px) {
       display: none;
     }
@@ -66,20 +72,25 @@ export default {
       font-weight: 500;
       font-size: 12px;
       line-height: 20px;
-      color: #8a8aa8;
+      color: $color-8a8aa8;
+      margin-right: 119px;
     }
   }
   .b-tech-works__main-part {
     display: flex;
     justify-content: center;
     align-items: center;
-    @media (max-width: 768px) {
+    margin-top: 20px;
+    padding: 0 16px;
+    @include tabletAndMobile {
       flex-direction: column;
     }
     .b-tech-works__left-side {
       width: 416px;
-      @media (max-width: 768px) {
+      margin-right: 40px;
+      @include tabletAndMobile {
         width: 100%;
+        margin: 0;
       }
       .b-tech-works__title {
         font-family: 'Exo 2';
@@ -88,14 +99,14 @@ export default {
         font-size: 28px;
         line-height: 36px;
         text-transform: uppercase;
-        color: #262541;
+        color: $--b-main-black-color;
         margin-bottom: 12px;
-        @media (max-width: 768px) {
+        @include tabletAndMobile {
           font-size: 20px;
           line-height: 28px;
         }
         span {
-          color: #575775;
+          color: $--b-main-gray-color;
         }
       }
       .b-tech-works__subtitle {
@@ -104,11 +115,10 @@ export default {
         font-weight: 400;
         font-size: 14px;
         line-height: 20px;
-        color: #575775;
+        color: $--b-main-gray-color;
         padding-bottom: 28px;
         margin-bottom: 12px;
-        border-bottom: 1px solid #dfdeed;
-        @media (max-width: 768px) {
+        @include tabletAndMobile {
           font-size: 12px;
         }
       }
@@ -118,7 +128,7 @@ export default {
         font-weight: 500;
         font-size: 12px;
         line-height: 20px;
-        color: #262541;
+        color: $--b-main-black-color;
       }
       .b-tech-works__register-link {
         font-family: 'Inter';
@@ -126,11 +136,14 @@ export default {
         font-weight: 500;
         font-size: 12px;
         line-height: 20px;
-        color: #148783;
+        color: $--b-main-green-color;
       }
     }
     .b-tech-works__right-side {
       position: relative;
+      @include tabletAndMobile {
+        margin-top: 20px;
+      }
       img {
         width: 100%;
       }
@@ -141,7 +154,7 @@ export default {
         margin: 0 20px;
         top: 5%;
         left: 5%;
-        @media (max-width: 576px) {
+        @include mobile {
           top: 0;
           left: 0;
         }
@@ -154,7 +167,7 @@ export default {
         width: 145px;
         height: 145px;
         animation: stid 2.5s linear infinite;
-        @media (max-width: 576px) {
+        @include mobile {
           left: 0;
         }
       }
@@ -166,7 +179,7 @@ export default {
         height: 180px;
         background: url('../../assets/img/wheel2.svg') no-repeat center / cover;
         animation: stidd 2.5s linear infinite;
-        @media (max-width: 576px) {
+        @include mobile {
           left: 40%;
         }
       }
@@ -178,7 +191,7 @@ export default {
         width: 110px;
         height: 110px;
         animation: stid 2.5s linear infinite;
-        @media (max-width: 576px) {
+        @include mobile {
           top: 66%;
         }
       }

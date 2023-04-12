@@ -1,1819 +1,767 @@
 <template>
-  <div class="create-events-page">
-    <div class="create-event-block">
-      <div
-        v-if="currentStep === 1"
-        class="first-step"
-      >
-        <Dropdown
-          :outside-title="true"
-          :main-title="'Тип події'"
-          :options="dataDropdown"
-          :width="320"
-          :height="40"
-          @new-value="setFormValue('title', $event)"
-        />
-        <div class="title">Гендер учасників події</div>
-        <div class="radio-btn-wrapper">
-          <div class="radio">
-            <input 
-              id="radio-1" 
-              v-model="eventData.labels[1].text"
-              name="radio" 
-              type="radio"
-              value="Чоловіки"
-              checked
-             >
-            <label for="radio-1" class="radio-label">
-              <img src="../../../assets/img/male-icon.svg" alt="">
-                Чоловіки
-            </label>
-          </div>
-          <div class="radio">
-            <input 
-              id="radio-2" 
-              v-model="eventData.labels[1].text"
-              name="radio" 
-              type="radio"
-              value="Жінки"
-            >
-            <label for="radio-2" class="radio-label">
-              <img src="../../../assets/img/female-icon.svg" alt="">
-                Жінки
-            </label>
-          </div>
-        </div>
-        <Dropdown
-          :outside-title="true"
-          :main-title="'Вид спорту'"
-          :options="dataDropdown2"
-          :width="320"
-          :height="40"
-          @new-value="setFormValue('gameType', $event)"
-        />
-        <div class="time-and-date">
-          <div class="input">
-            <InputComponent
-              :outside-title="true"
-              :title="'Дата'"
-              :placeholder="'02.09.2022'"
-              :title-width="0"
-              :has-icon="true"
-              :icon="[
-                '../../../assets/img/calendar.svg'
-              ]"
-              :v-model="eventData.date"
-              @new-value="setFormValue('date', $event)"
-            />
-          </div>
-          <div class="input">
-            <InputComponent
-              :outside-title="true"
-              :title="'Час'"
-              :placeholder="'17:00'"
-              :title-width="0"
-              :has-icon="true"
-              :icon="[
-                '../../../assets/img/watch.svg'
-              ]"
-              :v-model="eventData.date"
-              @new-value="setFormValue('time', $event)"
-            />
-          </div>
-        </div>
-        <div class="input">
-          <InputComponent
-            :placeholder="'Місце проведення'"
-            :title-width="0"
-            :has-icon="true"
-            :icon="[
-              '../../../assets/img/location-point.svg'
-            ]"
-            @new-value="setFormValue('place', $event)"
-          />
-        </div>
-        <div class="event-map">
-          <img src="../../../assets/img/map-manage-event.svg" alt="">
-        </div>
+  <Loading :is-loading="eventCreateLoader" />
+  <SubmitModal
+    v-if="isSubmitModalOpened"
+    :config="changeDataModalConfig"
+    @closeModal="closeSubmitModal"
+    @cancelAndGoToTheNextPage="cancelAndGoToTheNextPage"
+    @continue="closeSubmitModal"
+  />
+  <div class="b-manage-event">
+    <Form
+      ref="myForm"
+      v-slot="data"
+      :initial-values="eventData"
+      :validation-schema="schema"
+      @submit="disableSubmit"
+    >
+      <SelectFormsColorsModal
+        v-if="isSelectFormColarModalOpened"
+        :formsData="eventForms"
+        :selectedTab="formsModalSelectedTabId"
+        @closeModal="closeSelectFormsModal"
+        @saveData="saveForms($event, data)"
+      />
+      <div class="b-manage-event__page-title">
+        <span v-if="manageAction === manageEventActionTypes.CREATE">
+          {{ $t('events.event-creation') }}
+        </span>
+        <span v-else>
+          {{ $t('events.event-update') }}
+        </span>
       </div>
+      <div class="b-manage-event__main-body">
+        <div class="b-manage-event__create-event-block">
+          <ManageEventFirstStep
+            v-if="currentStep === 1"
+            :initialValues="eventData"
+            @changeEventLocation="getNewEventLocation($event, data)"
+            @selectEventDuration="runOnSelectEventDuration($event, data)"
+            @changeEventDate="setEventDate($event, data)"
+          />
+          <ManageEventSecondStep
+            v-if="currentStep === 2"
+            :filteredUsersList="relevantUsersList"
+            :filterUsersListLoading="searchUsersLoading"
+            :invitedUsersList="invitedUsers"
+            :initialValues="eventData"
+            @searchUsers="searchRelevantUsers"
+            @invite-user="inviteUsetToTheEvent"
+            @changedEventPrivacyToFree="updateEventPriceAfterSelectFree(data)"
+          />
+          <ManageEventThirdStep
+            v-if="currentStep === 3"
+            :formsValue="eventForms"
+            :initialValues="eventData"
+            @selectNeedForm="selectNeedForm($event, data)"
+            @setForms="openSelectFormsModal"
+            @changeForms="openSelectFormsModal"
+          />
 
-      <div 
-        v-if="currentStep === 2"
-        class="second-step"
-      >
-        <div class="title-block">
-          <span>Конфіденційність</span>
-          <div class="vip-only">
-            Тільки для ViP
-          </div>
-        </div>
-        <div class="subtitle">
-          Чи бажаєте ви отримувати запити на участьу події?
-        </div>
-        <div class="radio-btn-wrapper">
-          <div class="radio">
-            <input 
-              id="radio-3" 
-              v-model="eventData.isOpened"
-              name="openness" 
-              type="radio"
-              value="Долучитися"
-              checked
-             >
-            <label for="radio-3" class="radio-label">
-              <img src="../../../assets/img/lock-closed.svg" alt="">
-                Вільний
-            </label>
-          </div>
-          <div class="radio">
-            <input 
-              id="radio-4" 
-              v-model="eventData.isOpened"
-              name="openness" 
-              type="radio"
-              value="Подати заявку"
-            >
-            <label for="radio-4" class="radio-label">
-              <img src="../../../assets/img/lock-opened.svg" alt="">
-                Закритий
-            </label>
-          </div>
-        </div>
-        <div class="title">
-          Чи потребує участь у події внесків?
-        </div>
-        <div class="radio-btn-wrapper">
-          <div class="radio">
-            <input 
-              id="radio-5" 
-              v-model="eventData.payment"
-              name="payment" 
-              type="radio"
-              value="Безкоштовно"
-              checked
-             >
-            <label for="radio-5" class="radio-label">
-              Безкоштовно
-            </label>
-          </div>
-          <div class="radio">
-            <input 
-              id="radio-6" 
-              v-model="eventData.payment"
-              name="payment" 
-              type="radio"
-              value="Платно"
-            >
-            <label for="radio-6" class="radio-label">
-              Платно
-            </label>
-          </div>
-        </div>
-        <div 
-          v-if="eventData.payment === 'Платно'"
-          class="input"
-        >
-          <InputComponent
-            :outside-title="true"
-            :title="'Вкажіть суму'"
-            :placeholder="'45₴'"
-            :title-width="0"
-          />
-        </div>
-        <div class="contact-switcher">
-          <span>
-            Показувати мої контакти
-          </span>
-          <Switcher :id="'contacts'" />
-        </div>
-        <div class="input">
-          <InputComponent
-            :placeholder="'+38 025 67 98'"
-            :title-width="0"
-            :v-model="eventData.date"
-            :has-icon="true"
-            :icon="[
-              '../../../assets/img/sort-arrows-horizontal.svg'
-            ]"
-          />
-        </div>
-        <div class="title">
-          Запросити учасників
-        </div>
-        <div class="input">
-          <InputComponent
-            :placeholder="'Пошук користувачів'"
-            :title-width="30"
-            :v-model="eventData.date"
-            :has-icon="true"
-            :icon-left="'../../../assets/img/add-user.svg'"
-            :icon="[
-              '../../../assets/img/search.svg'
-            ]"
-          />
-        </div>
-        <div class="search-users-block">
-          <div class="title">
-            Шукати серед:
-          </div>
-          <div class="tegs-block">
-            <div
-              v-for="tag in tags"
-              :key="tag.id"
-              :class="['teg', { active: tag.isActive }]"
-              @click="chooseCategory(tag.id)"
-            >
-              {{ tag.text }}
+          <div class="b-manage-event__progress-line">
+            <div class="b-manage-event__sections">
+              <div
+                v-for="item of 3"
+                :key="item"
+                :class="[
+                  'b-manage-event__section',
+                  {
+                    active: item <= currentStep,
+                  },
+                ]"
+              ></div>
             </div>
           </div>
-          <div class="users-window">
-            <div
-              v-for="team of filteredTeams"
-              :key="team.id"
-              class="category-block"
-            >
-              <div class="category-name">
-                {{ team.category_name }}
-              </div>
-              <div class="users-list">
-                <div 
-                  v-for="user of team.users"
-                  :key="user.id"
-                  :class="['user', { taken: user.isChosen }]"
-                >
-                  <div class="user-data">
-                    <div class="user-img">
-                      <img :src="user.img" alt="">
-                    </div>
-                    <div class="user-name">
-                      {{ user.name }}
-                    </div>
-                  </div>
-                  <div 
-                    v-if="!user.isChosen"
-                    class="add-user"
-                    @click="inviteUser(team.id, user.id)"
-                  >
-                    <img
-                      :class="{ taken: user.isChosen  }"
-                      src="../../../assets/img/plus.svg" 
-                      alt=""
-                    >
-                  </div>
-                  <div 
-                    v-else
-                    class="invited"
-                  >
-                    Запрошено
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="show-more-results">
-            Показати ще 20 результатів
-          </div>
-        </div>
-      </div>
 
-      <div 
-        v-if="currentStep === 3"
-        class="third-step"
-      >
-        <div class="title-block">
-          <span>Додаткова інформація</span>
-        </div>
-        <div class="subtitle">
-          Додайте свій коментар до події та, за бажанням, визначте бонусні пропозиції для гравців
-        </div>
-        <div class="text-area-wrapper">
-          <textarea
-            placeholder="Опис подіїї"
-          ></textarea>
-          <div class="icon">
-            <img src="../../../assets/img/aim.svg" alt="">
+          <div class="b-manage-event__buttons-block">
+            <WhiteBtn
+              :text="whiteBtn.text"
+              :main-color="'$--b-main-black-color'"
+              :height="35"
+              @click-function="changeStep('-', data)"
+            />
+            <GreenBtn
+              :text="greenBtn.text"
+              :icon-right="greenBtn.icon"
+              :height="35"
+              @click-function="changeStep('+', data)"
+            />
           </div>
-        </div>
-        <div class="contact-switcher">
-          <div class="title-prize">
-            Чи буде розіграно приз?
-            <span>
-              VIP
+          <div class="b-manage-event__manage-buttons-block">
+            <span @click="showPreviewEventModal">
+              {{ $t('buttons.preview') }}
+            </span>
+            <span @click="showEventInvitedUsersListModal">
+              {{ $t('buttons.invited-users') }}
             </span>
           </div>
-          <Switcher :id="'contacts'" />
         </div>
-        <div class="input">
-          <InputComponent
-            :placeholder="'Яким буде приз?'"
-            :title-width="0"
-            :v-model="eventData.date"
-            :has-icon="true"
-            :icon="[
-              '../../../assets/img/aim.svg'
-            ]"
+
+        <Transition name="slide">
+          <PreviewInvitedUsersListModal
+            v-if="isEventInvitedUsersListModal && invitedUsers.length"
+            :invitedUsers="invitedUsers"
+            :acceptedUsers="acceptedUsers"
+            :manageAction="manageAction"
+            @removeInvitedUser="removeInvitedUser"
+            @closeModal="closeEventInvitedUsersListModal"
+          />
+        </Transition>
+
+        <div class="b-manage-event-preview__block">
+          <PreviewBlock :eventData="eventPreviewData" />
+          <Transition name="slide">
+            <PreviewEventModal
+              v-if="isEventPreivewModalOpened"
+              :eventData="eventPreviewData"
+              @closeModal="closePreviewEventModal"
+            />
+          </Transition>
+
+          <RemoveInvitedUsersModal
+            v-if="removeInvitedUsersModalOpened"
+            @closeModal="closeRemoveUsersModal"
+            @deleteUsers="removeAllInvitedUsers"
+          />
+
+          <InvitedUsersList
+            class="b-manage-event-invited-users__list"
+            :invitedUsers="invitedUsers"
+            :acceptedUsers="acceptedUsers"
+            @removeInvitedUser="removeInvitedUser"
+            @openRemoveUsersModal="openRemoveUsersModal"
           />
         </div>
-        <div class="title-outfit">
-          Чи потрібно мати свою форму?
-        </div>
-        <div class="radio-btn-wrapper">
-          <div class="radio">
-            <input 
-              id="radio-outfit"
-              name="outfit" 
-              type="radio"
-              value="Так"
-              checked
-             >
-            <label for="radio-outfit" class="radio-label">
-              Так
-            </label>
-          </div>
-          <div class="radio">
-            <input 
-              id="radio-outfit2" 
-              name="outfit" 
-              type="radio"
-              value="Ні, є маніжки"
-            >
-            <label for="radio-outfit2" class="radio-label">
-              Ні, є маніжки
-            </label>
-          </div>
-        </div>
-        <div class="title-outfit">
-          Вкажіть кольори форм
-        </div>
-        <div class="outfit-colors">
-          <div class="input">
-            <InputComponent
-              :placeholder="'Input'"
-              :title-width="0"
-              :outside-title="true"
-              :title="'Команда №1'"
-            />
-          </div>
-          <div class="input">
-            <InputComponent
-              :placeholder="'Input'"
-              :title-width="0"
-              :outside-title="true"
-              :title="'Команда №2'"
-            />
-          </div>
-        </div>
       </div>
-       
-      <div class="progress-line">
-        <div class="sections">
-          <div
-            v-for="item of 3"
-            :key="item"
-            :class="['section', { 
-              active : item <= currentStep
-            }]"
-          ></div>
-        </div>
-      </div>
-      <div class="buttons-block">
-        <WhiteBtn
-          :text="$t('buttons.back')"
-          :width="140"
-          :main-color="'#262541'"
-          @click-function="changeStep('-')"
-        />
-        <GreenBtn
-          :text="$t('buttons.next')"
-          :width="160"
-          :icon-right="'../../../assets/img/arrow-right.svg'"
-          @click-function="changeStep('+')"
-        />
-      </div>
-    </div>
-    <div class="tablet-block">
-      <div class="save-template-block">
-        <GreenBtn
-          :text="$t('buttons.save')"
-          :width="103"
-          :background-color="'#575775'"
-          :height="28"
-          :icon="'../../../assets/img/save-icon.svg'"
-          :font-styles="{'font-size': '13px'}"
-        />
-        <WhiteBtn
-          :text="$t('buttons.download-template')"
-          :width="177"
-          :height="28"
-          :font-styles="{
-            'font-size': '13px',
-            'font-weight': 400
-          }"
-          :main-color="'#575775'"
-          :icon="'../../../assets/img/download-cloud.svg'"
-        />
-        <div class="close-btn">
-          <img src="../../../assets/img/cross.svg" alt="">
-        </div>
-      </div>
-      <div class="preview-tablet-block">
-        <div class="left-block">
-          <div class="img-icon">
-            <img src="../../../assets/img/img-icon.svg" alt="">
-          </div>
-          <span>Попередній перегляд афіші</span>
-        </div>
-        <div class="arrow-down">
-          <img src="../../../assets/img/arrow-down.svg" alt="">
-        </div>
-      </div>
-    </div>
-    <div 
-      v-if="currentStep === 1"
-      class="preview-mob-block"
-    >
-      <div class="left-block">
-        <div class="img-icon">
-          <img src="../../../assets/img/img-icon.svg" alt="">
-        </div>
-        <span>Попередній перегляд афіші</span>
-      </div>
-      <div class="arrow-down">
-        <img src="../../../assets/img/arrow-down.svg" alt="">
-      </div>
-    </div>
-    <div 
-      v-if="currentStep === 2 || currentStep === 3"
-      class="preview-mob-block-second"
-    >
-      <div class="btn btn-previous">
-        <span>Попередній перегляд</span>
-      </div>
-      <div class="btn btn-users">
-        <span>Запрошені учасники</span>
-      </div>
-    </div>
-    <div class="wrapper-preview-block">
-      <div class="preview-block">
-        <div class="title">
-          Попередній перегляд афіші
-        </div>
-        <div class="subtitle">
-          Таким чином виглядатиме афіша вашої події для інших користувачів додатку BlanBall
-        </div>
-        <div class="form-block">
-          <div class="top-line">
-            <div class="left-block">
-              <div class="col-1">
-                <div class="card-icon">
-                  <img src="../../../assets/img/hands-shake.svg" alt="" />
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="title">{{eventData.title}}</div>
-                <div class="address">
-                  <img src="../../../assets/img/location-point.svg" alt="">
-                  <p>
-                    {{ eventData.place }}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="right-block">
-              <div class="col-3">
-                <div class="date">
-                  {{ eventData.date }}
-                </div>
-                <div class="time">
-                  {{ eventData.time }}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="text-area"></div>
-          <div class="labels">
-            <div 
-              v-for="label in eventData.labels"
-              :key="label.id"
-              class="label"
-              :style="
-                label.text.length ?  
-                labelStyle :
-                emptyLabelStyle
-              "
-            >
-              {{ label.text }}
-            </div>
-          </div>
-          <div class="bottom-part">
-            <div class="left-block">
-              В’ячеслав Залізняк
-            </div>
-            <div class="right-block">
-              {{ eventData.payment }}
-            </div>
-          </div>
-          <div class="bottom-line">
-            <div class="left-side">
-              <div class="titles">
-                <div class="players">{{ $t('events.players') }}:</div>
-                <div class="visitors">{{ $t('events.fans') }}:</div>
-              </div>
-              <div class="date">
-                <div class="players-date">10 / 22</div>
-                <div class="visitors-date">17 / 30</div>
-              </div>
-            </div>
-            <div class="right-side">
-              <GreenBtn 
-                :text="eventData.isOpened" 
-                :width="115"
-                :height="32"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        v-if="currentStep === 2" 
-        class="chosen-ppl"
-      >
-        <div class="title">
-          Люди, яких ви запросили
-        </div>
-        <div 
-          @click="deleteAll"
-          class="delete-all"
-        >
-          Видалити всіх
-        </div>
-        <div class="users-list">
-          <div 
-            v-for="user of chosenUsers"
-            :key="user.id"
-            class="user"
-          >
-            <div class="user-data">
-              <div class="user-img">
-                <img :src="user.img" alt="">
-              </div>
-              <div class="user-name">
-                {{ user.name }}
-              </div>
-            </div>
-            <div 
-              class="delete-user"
-              @click="deleteFromChosen(user.id, user.category)"
-            >
-              <img src="../../../assets/img/cross.svg" alt="">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="manage-template-block">
-      <div class="title">
-        Управління шаблонами
-      </div>
-      <div class="btns-block">
-        <div class="white-btn-wrapper">
-          <WhiteBtn
-            :text="$t('buttons.download-template')"
-            :width="208"
-            :height="40"
-            :main-color="'#262541'"
-            :font-styles="{ 'font-weight': 400 }"
-            :icon="'../../../assets/img/download-cloud.svg'"
-          />
-        </div>
-        <GreenBtn
-          :text="$t('buttons.save-as-template')"
-          :icon="'../../../assets/img/save-icon.svg'"
-          :width="208"
-          :height="40"
-          :background-color="'#575775'"
-          :font-styles="{ 'font-weight': 400 }"
-        />
-      </div>
-    </div>
+    </Form>
   </div>
 </template>
 
 <script>
-import Dropdown from '../../../components/Dropdown.vue'
-import InputComponent from '../../../components/InputComponent.vue'
-import GreenBtn from '../../../components/GreenBtn.vue'
-import WhiteBtn from '../../../components/WhiteBtn.vue'
-import Switcher from '../../../components/Switcher.vue'
+import { computed, ref, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter, useRoute, onBeforeRouteLeave } from 'vue-router';
 
-import User from '../../../assets/img/user.png'
+import { Form } from '@system.it.flumx.com/vee-validate';
 
+import { merge, cloneDeep } from 'lodash';
+
+import InputComponent from '../../../components/forms/InputComponent.vue';
+import GreenBtn from '../../../components/GreenBtn.vue';
+import WhiteBtn from '../../../components/WhiteBtn.vue';
+import ManageEventFirstStep from '../../../components/manage-event-components/ManageEventFirstStep.vue';
+import Avatar from '../../../components/Avatar.vue';
+import PreviewBlock from '../../../components/manage-event-components/PreviewBlock.vue';
+import EventCard from '../../../components/event-components/EventCard.vue';
+import ManageEventSecondStep from '../../../components/manage-event-components/ManageEventSecondStep.vue';
+import ManageEventThirdStep from '../../../components/manage-event-components/ManageEventThirdStep.vue';
+import RemoveInvitedUsersModal from '../../../components/manage-event-components/RemoveInvitedUsersModal.vue';
+import Loading from '../../../workers/loading-worker/Loading.vue';
+import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue';
+import InvitedUsersList from '../../../components/manage-event-components/InvitedUsersList.vue';
+import PreviewInvitedUsersListModal from '../../../components/ModalWindows/PreviewInvitedUsersListModal.vue';
+import PreviewEventModal from '../../../components/ModalWindows/PreviewEventModal.vue';
+import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue';
+
+import { API } from '../../../workers/api-worker/api.worker';
+import { useUserDataStore } from '../../../stores/userData';
+import { BlanballEventBus } from '../../../workers/event-bus-worker';
+
+import { runOnSelectEventDuration } from '../../../utils/runOnSelectEventDuration';
+
+import { ROUTES } from '../../../router/router.const';
+import SCHEMAS from '../../../validators/schemas';
+
+import Arrow from '../../../assets/img/arrow-right-white.svg';
 
 export default {
   name: 'CreateEventPage',
   components: {
-    Dropdown,
     InputComponent,
     GreenBtn,
     WhiteBtn,
-    Switcher
+    ManageEventFirstStep,
+    ManageEventSecondStep,
+    ManageEventThirdStep,
+    EventCard,
+    Form,
+    SelectFormsColorsModal,
+    PreviewBlock,
+    Avatar,
+    Loading,
+    InvitedUsersList,
+    PreviewInvitedUsersListModal,
+    RemoveInvitedUsersModal,
+    PreviewEventModal,
+    SubmitModal,
   },
-  data() {
-    return {
-      chosenUsers: [],
-      tags: [
-        {
-          id: 0,
-          text: 'Всі',
-          isActive: true
-        },
-        {
-          id: 1,
-          text: 'Гравці',
-          isActive: false
-        },
-        {
-          id: 2,
-          text: 'Події',
-          isActive: false
-        },
-        {
-          id: 3,
-          text: 'Організатори',
-          isActive: false
-        },
-        {
-          id: 4,
-          text: 'Тренери',
-          isActive: false
-        },
-        {
-          id: 5,
-          text: 'Рефері',
-          isActive: false
-        },
-        {
-          id: 6,
-          text: 'Команди',
-          isActive: false
-        }
-      ],
-      teams: [
-        {
-          id: 1,
-          category_name: 'Гравці',
-          users: [
-            {
-              id: 0,
-              img: User,
-              name: 'Oganez Gurgenovich',
-              category: 'Гравці',
-              isChosen: false
-            },
-            {
-              id: 1,
-              img: User,
-              name: 'Rubik Joraevich',
-              category: 'Гравці',
-              isChosen: false
-            },
-            {
-              id: 2,
-              img: User,
-              name: 'Ogli Timurlanovich',
-              category: 'Гравці',
-              isChosen: false
-            }
-          ]
-        },
-        {
-          id: 2,
-          category_name: 'Події',
-          users: [
-            {
-              id: 11,
-              img: User,
-              name: 'Rubik Joraevich',
-              category: 'Події',
-              isChosen: false
-            },
-            {
-              id: 21,
-              img: User,
-              name: 'Ogli Timurlanovich',
-              category: 'Події',
-              isChosen: false
-            },
-            {
-              id: 101,
-              img: User,
-              name: 'Oganez Gurgenovich',
-              category: 'Події',
-              isChosen: false
-            }
-          ]
-        },
-        {
-          id: 3,
-          category_name: 'Організатори',
-          users: [
-            {
-              id: 12,
-              img: User,
-              name: 'Rubik Joraevich',
-              category: 'Організатори',
-              isChosen: false
-            },
-            {
-              id: 22,
-              img: User,
-              name: 'Ogli Timurlanovich',
-              category: 'Організатори',
-              isChosen: false
-            }
-          ]
-        },
-        {
-          id: 4,
-          category_name: 'Тренери',
-          users: [
-            {
-              id: 3023,
-              img: User,
-              name: 'Oganez Gurgenovich',
-              category: 'Тренери',
-              isChosen: false
-            },
-            {
-              id: 223,
-              img: User,
-              name: 'Ogli Timurlanovich',
-              category: 'Тренери',
-              isChosen: false
-            }
-          ]
-        },
-        {
-          id: 5,
-          category_name: 'Рефері',
-          users: [
-            {
-              id: 4024,
-              img: User,
-              name: 'Oganez Gurgenovich',
-              category: 'Рефері',
-              isChosen: false
-            },
-            {
-              id: 124,
-              img: User,
-              name: 'Rubik Joraevich',
-              category: 'Рефері',
-              isChosen: false
-            },
-          ]
-        },
-        {
-          id: 6,
-          category_name: 'Команди',
-          users: [
-            {
-              id: 125,
-              img: User,
-              name: 'Rubik Joraevich',
-              category: 'Команди',
-              isChosen: false
-            },
-            {
-              id: 225,
-              img: User,
-              name: 'Ogli Timurlanovich',
-              category: 'Команди',
-              isChosen: false
-            },
-            {
-              id: 5025,
-              img: User,
-              name: 'Oganez Gurgenovich',
-              category: 'Команди',
-              isChosen: false
-            }
-          ]
-        },
-      ],
-      currentStep: 1,
-      eventData: {
-        title: '',
-        labels: [
-          {
-            id: 0,
-            text: ''
-          },
-          {
-            id: 1,
-            text: ''
-          }
-        ],
-        date: '',
-        time: '',
-        place: '',
-        payment: '',
-        isOpened: ''
-      },
-      dataDropdown: [
-        {
-          id: 0,
-          value: 'Дружній матч'
-        },
-        {
-          id: 1,
-          value: 'Не дружній матч'
-        },
-        {
-          id: 2,
-          value: 'Ворожий матч'
-        }
-      ],
-      dataDropdown2: [
-        {
-          id: 0,
-          value: 'Футбол'
-        },
-        {
-          id: 1,
-          value: 'Литрбол'
-        },
-        {
-          id: 2,
-          value: 'Метание кизяков'
-        },
-        {
-          id: 3,
-          value: 'Плевки в длину'
-        }
-      ]
-    }
-  },
-  computed: {
-    filteredTeams() {
-      if (this.currentCategory === 'Всі') {
-        return this.teams
+  setup() {
+    const router = useRouter();
+    const route = useRoute();
+    const { t } = useI18n();
+    const currentStep = ref(1);
+    const startDate = ref('');
+    const userStore = useUserDataStore();
+    const searchUsersLoading = ref(false);
+    const relevantUsersList = ref([]);
+    const eventCreateLoader = ref(false);
+    const isSelectFormColarModalOpened = ref(false);
+    const removeInvitedUsersModalOpened = ref(false);
+    const manageAction = ref(route.meta.action);
+    const isEventInvitedUsersListModal = ref(false);
+    const isEventPreivewModalOpened = ref(false);
+    const isSubmitModalOpened = ref(false);
+    const changeDataModalConfig = ref('');
+    const isEventCreated = ref(false);
+    const myForm = ref();
+    const nextRoute = ref(ROUTES.APPLICATION.EVENTS.absolute);
+
+    const manageEventActionTypes = ref({
+      CREATE: 'CREATE',
+      EDIT: 'EDIT',
+    });
+
+    const eventData = ref(
+      route.meta?.eventData || {
+        name: '',
+        place: {},
+        status: 'Planned',
+        gender: null,
+        description: '',
+        type: '',
+        need_ball: false,
+        duration: null,
+        need_form: null,
+        date_and_time: '',
+        forms: {},
+        contact_number: userStore.user.phone,
+        count_current_users: 0,
+        count_current_fans: 0,
+        current_users: [],
+      }
+    );
+
+    const eventPreviewData = computed(() => {
+      eventData.value = merge(
+        eventData.value,
+        myForm.value?.getControledValues()
+      );
+      return eventData.value;
+    });
+
+    const invitedUsers = ref([]);
+    const acceptedUsers = ref(eventData.value.current_users);
+
+    const formsModalSelectedTabId = ref(eventData.value.need_form ? 1 : 2);
+
+    const eventForms = ref(eventData.value.forms);
+    let searchTimeout;
+
+    const schema = computed(() => {
+      return SCHEMAS.manageEvent.schema(currentStep.value);
+    });
+
+    const getNewEventLocation = (location, data) => {
+      data.values.place = {
+        place_name: location.place,
+        lat: location.lat,
+        lon: location.lng,
+      };
+    };
+
+    const greenBtn = computed(() => {
+      let text;
+      if (currentStep.value !== 3) {
+        text = t('buttons.next');
+      } else if (
+        currentStep.value === 3 &&
+        manageAction.value === manageEventActionTypes.value.CREATE
+      ) {
+        text = t('buttons.publish');
       } else {
-        return [this.teams.find(item => item.category_name === this.currentCategory)]
+        text = t('buttons.save-changes');
       }
-    },
-    currentCategory() {
-      return this.tags.find(item => item.isActive).text
-    },
-    labelStyle() {
       return {
-        padding: '0px 8px',
-        border: '1px solid #EFEFF6',
-        'border-radius': '100px'
+        text: text,
+        icon: currentStep.value !== 3 ? Arrow : null,
+      };
+    });
+
+    const whiteBtn = computed(() => {
+      let text;
+      if (currentStep.value !== 1) {
+        text = t('buttons.back');
+      } else {
+        text = t('buttons.cancel');
       }
-    },
-    emptyLabelStyle() {
       return {
-        width: '70px',
-        height: '18px',
-        background: '#EFEFF6',
-        'border-radius': '100px'
+        text: text,
+      };
+    });
+
+    const openRemoveUsersModal = () => {
+      removeInvitedUsersModalOpened.value = true;
+    };
+
+    const setEventDate = (date_value, data) => {
+      data.values.date = date_value;
+    };
+
+    const openSelectFormsModal = () => {
+      isSelectFormColarModalOpened.value = true;
+    };
+
+    const closeSelectFormsModal = () => {
+      isSelectFormColarModalOpened.value = false;
+    };
+
+    const selectNeedForm = (needForm, data) => {
+      eventForms.value = {};
+      data.values.forms = {};
+      switch (needForm) {
+        case true:
+          formsModalSelectedTabId.value = 1;
+          break;
+        case false:
+          formsModalSelectedTabId.value = 2;
+          break;
       }
-    }
-  },
-  methods: {
-    deleteAll() {
-      this.chosenUsers = []
-    },
-    deleteFromChosen(id, category) {
-      this.chosenUsers = this.chosenUsers.filter(i => i.id !== id)
-      this.teams.find(item => item.category_name === category).users
-                              .find(item => item.id === id).isChosen = false
-    },
-    setFormValue(key, value) {
-      if (key === 'gameType') {
-        this.eventData.labels[0].text = value
-        return
+    };
+
+    const saveForms = (forms, data) => {
+      switch (data.values.need_form) {
+        case true:
+          data.values.forms = {
+            type: 'Forms',
+            first_team: {
+              t_shirts: forms.first_team.t_shirts,
+              shorts: forms.first_team.shorts,
+            },
+            second_team: {
+              t_shirts: forms.second_team.t_shirts,
+              shorts: forms.second_team.shorts,
+            },
+          };
+          break;
+        case false:
+          data.values.forms = {
+            type: 'ShirtFronts',
+            first_team: {
+              shirtfronts: forms.first_team.shirtfronts,
+            },
+            second_team: {
+              shirtfronts: forms.second_team.shirtfronts,
+            },
+          };
+          break;
       }
-      this.eventData[key] = value
-    },
-    changeStep(val) {
-      switch(val) {
-        case '+': this.currentStep++
-        break;
-        case '-': this.currentStep--
-        break;
+      eventForms.value = data.values.forms;
+      closeSelectFormsModal();
+    };
+
+    const updateEventPriceAfterSelectFree = (data) => {
+      data.values.price = null;
+      data.values.price_description = null;
+    };
+
+    const closeRemoveUsersModal = () => {
+      removeInvitedUsersModalOpened.value = false;
+    };
+
+    const SKIPIDS = [
+      eventData.value.author?.id
+        ? eventData.value.author.id
+        : userStore.user.id,
+      ...(eventData.value?.current_users?.map((user) => user.id) ?? []),
+      ...(eventData.value?.current_fans?.map((fan) => fan.id) ?? []),
+    ];
+
+    const getRelevantUsers = async (options) => {
+      searchUsersLoading.value = true;
+      let response = await API.UserService.getRelevantUsers({
+        search: options?.search,
+        skipids: options?.skipids,
+      });
+      relevantUsersList.value = response.data.results;
+      searchUsersLoading.value = false;
+    };
+
+    const inviteUsetToTheEvent = (user_data) => {
+      invitedUsers.value.push(user_data);
+    };
+
+    const searchRelevantUsers = (searchValue) => {
+      clearTimeout(searchTimeout);
+      searchUsersLoading.value = true;
+      const relevantSearch = () => {
+        getRelevantUsers({ search: searchValue, skipids: SKIPIDS });
+      };
+      searchTimeout = setTimeout(relevantSearch, 500);
+    };
+
+    getRelevantUsers({ skipids: SKIPIDS });
+
+    const removeInvitedUser = (user_id) => {
+      invitedUsers.value = invitedUsers.value.filter(function (item) {
+        return item.id !== user_id;
+      });
+    };
+
+    const removeAllInvitedUsers = () => {
+      invitedUsers.value = [];
+      closeRemoveUsersModal();
+    };
+
+    const icons = computed(() => {
+      return {
+        arrowRight: Arrow,
+      };
+    });
+
+    const showEventInvitedUsersListModal = () => {
+      if (invitedUsers.value.length) {
+        isEventInvitedUsersListModal.value = true;
       }
-    },
-    chooseCategory(id) {
-      this.tags = this.tags.map(item => ({...item, isActive: false}))
-      this.tags = this.tags.map(item => {
-        if (item.id === id) {
-          return {
-            ...item,
-            isActive: true
-          }
-        } else {
-          return item
+    };
+
+    const closeEventInvitedUsersListModal = () => {
+      isEventInvitedUsersListModal.value = false;
+    };
+
+    const showPreviewEventModal = () => {
+      isEventPreivewModalOpened.value = true;
+    };
+
+    const closePreviewEventModal = () => {
+      isEventPreivewModalOpened.value = false;
+    };
+
+    async function saveEvent(data) {
+      let emitName;
+      eventCreateLoader.value = true;
+      isEventCreated.value = true;
+      
+      data.date_and_time = `${data.date} ${data.time}`;
+
+      data.current_users = invitedUsers.value.map((user) => user.id);
+
+      try {
+        switch (manageAction.value) {
+          case manageEventActionTypes.value.CREATE:
+            await API.EventService.createOneEvent(data);
+            eventCreateLoader.value = false;
+            emitName = 'EventCreated';
+            break;
+          case manageEventActionTypes.value.EDIT:
+            await API.EventService.editOneEvent(
+              route.params.id,
+              data
+            );
+            eventCreateLoader.value = false;
+            emitName = 'EventUpdated';
+            break;
         }
-      })
-    },
-    inviteUser(teamId, userId) {
-      // let hasUser = this.chosenUsers.find(i => i.id === userId)
-      // if (hasUser) {
-      //   hasUser = null
-      //   return
-      // }
-      this.teams.find(item => item.id === teamId).users
-                .find(item => item.id === userId).isChosen = true
-                
-      const team = this.teams.find(i => i.id === teamId)
-      const user = team.users.find(i => i.id === userId)
-      this.chosenUsers.push(user)
+        cancelAndGoToTheNextPage();
+        setTimeout(() => {
+          BlanballEventBus.emit(emitName);
+        }, 100);
+      } catch {}
     }
-  }
-}
+
+    const openSumbitModal = () => {
+      switch (manageAction.value) {
+        case manageEventActionTypes.value.CREATE:
+          changeDataModalConfig.value = {
+            title: 'Скасування створення події',
+            description: 'Ви дійсно бажаєте скасувати створення події?',
+            button_1: 'Ні, продовжити',
+            button_2: 'Так, cкасувати',
+            right_btn_action: 'cancelAndGoToTheNextPage',
+            left_btn_action: 'continue',
+            btn_with_1: 132,
+            btn_with_2: 132,
+          };
+          isSubmitModalOpened.value = true;
+          break;
+        case manageEventActionTypes.value.EDIT:
+          changeDataModalConfig.value = {
+            title: 'Скасування редагування події',
+            description: 'Ви дійсно бажаєте скасувати редагування події?',
+            button_1: 'Ні, продовжити',
+            button_2: 'Так, cкасувати',
+            right_btn_action: 'cancelAndGoToTheNextPage',
+            left_btn_action: 'continue',
+            btn_with_1: 132,
+            btn_with_2: 132,
+          };
+          isSubmitModalOpened.value = true;
+          break;
+      }
+    };
+
+    const closeSubmitModal = () => {
+      isSubmitModalOpened.value = false;
+    };
+
+    function cancelAndGoToTheNextPage() {
+      router.push(nextRoute.value);
+    }
+
+    async function changeStep(val, data) {
+      eventData.value = merge(eventData.value, data.values);
+
+      if (val === '-') {
+        if (currentStep.value === 1) {
+          return openSumbitModal();
+        }
+        return this.currentStep--;
+      }
+
+      const { valid } = await data.validate();
+
+      if (!valid) {
+        return false;
+      }
+
+      if (val === '+') {
+        if (currentStep.value === 3) {
+          return saveEvent(eventData.value);
+        }
+        this.currentStep++;
+      }
+    }
+
+    onBeforeRouteLeave((to, from, next) => {
+      if (!isSubmitModalOpened.value && !isEventCreated.value && !to.meta.noGuards) {
+        nextRoute.value = to.fullPath;
+        openSumbitModal();
+      } else {
+        next();
+      }
+    });
+
+    return {
+      currentStep,
+      changeDataModalConfig,
+      icons,
+      schema,
+      searchUsersLoading,
+      relevantUsersList,
+      invitedUsers,
+      acceptedUsers,
+      startDate,
+      greenBtn,
+      isSelectFormColarModalOpened,
+      removeInvitedUsersModalOpened,
+      eventData,
+      eventPreviewData,
+      isEventPreivewModalOpened,
+      isEventInvitedUsersListModal,
+      eventCreateLoader,
+      myForm,
+      formsModalSelectedTabId,
+      isSubmitModalOpened,
+      eventForms,
+      manageAction,
+      whiteBtn,
+      manageEventActionTypes,
+      getNewEventLocation,
+      showEventInvitedUsersListModal,
+      openSelectFormsModal,
+      closeSubmitModal,
+      showPreviewEventModal,
+      selectNeedForm,
+      cancelAndGoToTheNextPage,
+      runOnSelectEventDuration,
+      closeEventInvitedUsersListModal,
+      updateEventPriceAfterSelectFree,
+      inviteUsetToTheEvent,
+      closePreviewEventModal,
+      changeStep,
+      saveForms,
+      removeAllInvitedUsers,
+      saveEvent,
+      removeInvitedUser,
+      closeSelectFormsModal,
+      searchRelevantUsers,
+      openRemoveUsersModal,
+      closeRemoveUsersModal,
+      setEventDate,
+      disableSubmit: (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+      },
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-  .create-events-page {
+$color-dfdeed: #dfdeed;
+$color-1ab2ad: #1ab2ad;
+$color-8a8aa8: #8a8aa8;
+
+.b-manage-event__main-body {
+  margin-top: 0px;
+  padding: 5px;
+  @include tabletAndMobile {
+    padding: 0px;
+  }
+}
+.b-manage-event {
+  overflow: hidden;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  form {
+    overflow: hidden;
+    height: 100%;
     display: flex;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    .create-event-block {
-      width: 360px;
-      padding: 20px;
-      background: #FFFFFF;
-      box-shadow: 2px 6px 10px rgba(56, 56, 251, 0.1);
-      border-radius: 0px 6px 6px 0px;
-      margin-right: 44px;
-      @media (min-width: 576px) and (max-width: 992px) {
-        margin-right: 16px;
-      }
-      @media (max-width: 768px) {
-        order: 2;
-        width: 100%;
-        margin-right: 0;
-      }
-      .radio-btn-wrapper {
-        $color1: #f4f4f4;
-        $color2: #148783;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        .radio {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          padding: 6px 12px;
-          background: #FFFFFF;
-          border: 1px solid #DFDEED;
-          border-radius: 6px;
-          min-width: 154px;
-          input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            + .radio-label {
-              display: flex;
-              align-items: center;
-              font-family: 'Inter';
-              font-style: normal;
-              font-weight: 400;
-              font-size: 13px;
-              line-height: 24px;
-              text-transform: capitalize;
-              color: #262541;
-              img {
-                margin-right: 4px;
-              }
-              &:after {
-                content: '';
-                border-radius: 100%;
-                border: 1px solid #262541;
-                display: inline-block;
-                width: 13px;
-                height: 13px;
-                position: relative;
-                top: 0px;
-                margin-left: 12px; 
-                vertical-align: top;
-                cursor: pointer;
-                text-align: center;
-                transition: all 250ms ease;
-              }
-            }
-            &:checked {
-              + .radio-label {
-                &:after {
-                  border: 1px solid $color2;
-                  background-color: $color2;
-                  box-shadow: inset 0 0 0 3px $color1;
-                }
-              }
-            }
-            &:focus {
-              + .radio-label {
-                &:before {
-                  outline: none;
-                  border-color: $color2;
-                }
-              }
-            }
-            &:disabled {
-              + .radio-label {
-                &:before {
-                  box-shadow: inset 0 0 0 4px $color1;
-                  border-color: darken($color1, 25%);
-                  background: darken($color1, 25%);
-                }
-              }
-            }
-            + .radio-label {
-              &:empty {
-                &:before {
-                  margin-right: 0;
-                }
-              }
-            }
-          }
-        }
-      }
-      .input {
-        width: 100%;
-        height: 40px;
-        margin-top: 16px;
-      }
-      .first-step {
-        .time-and-date {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          .input {
-            width: 154px;
-          }
-        }
-        .title {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 500;
-          font-size: 13px;
-          line-height: 20px;
-          color: #262541;
-          margin-bottom: 8px;
-        }
-        .event-map {
-          margin-top: 16px;
-        }
-      }
-      .second-step {
-        .title-block {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          span {
-            font-family: 'Exo 2';
-            font-style: normal;
-            font-weight: 700;
-            font-size: 16px;
-            line-height: 24px;
-            color: #262541;
-          }
-          .vip-only {
-            width: 93px;
-            height: 20px;
-            background: #EFEFF6;
-            border-radius: 4px;
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 20px;
-            color: #575775;
-            text-align: center;
-          }
-        }
-        .subtitle {
-          margin-top: 8px;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 13px;
-          line-height: 20px;
-          color: #575775;
-          margin-bottom: 20px;
-        }
-        .title {
-          margin-top: 20px;
-          margin-bottom: 8px;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 500;
-          font-size: 13px;
-          line-height: 20px;
-          color: #262541;
-        }
-        .contact-switcher {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-top: 20px;
-          margin-bottom: 8px;
-          span {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 500;
-            font-size: 13px;
-            line-height: 20px;
-            color: #262541;
-          }
-        }
-        .search-users-block {
-          padding: 12px;
-          height: 418px;
-          background: #FFFFFF;
-          box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
-          border-radius: 6px;
-          margin-top: 8px;
-          .title {
-            margin: 0;
-          }
-          .tegs-block {
-            display: flex;
-            flex-wrap: wrap;
-            border-bottom: 1px solid #DFDEED;
-            padding-bottom: 14px;
-            margin-top: 8px;
-            .teg {
-              padding: 2px 6px;
-              border-radius: 4px;
-              font-family: 'Inter';
-              font-style: normal;
-              font-weight: 400;
-              font-size: 12px;
-              line-height: 20px;
-              text-align: center;
-              color: #8A8AA8;
-              cursor: pointer;
-              &.active {
-                color: #262541;
-                background: #F0F0F4;
-              }
-            }
-          }
-          .users-window {
-            overflow: hidden;
-            height: 268px;
-            .category-block {
-              .category-name {
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 500;
-                font-size: 12px;
-                line-height: 20px;
-                color: #8A8AA8;
-                margin: 8px 0;
-              }
-              .users-list {
-                .user {
-                  padding: 4px;
-                  border-radius: 0px 6px 6px 0px;
-                  display: flex;
-                  align-items: center;
-                  justify-content: space-between;
-                  &.taken {
-                    border: 1px solid #E2E2E9;
-                    img {
-                      opacity: 0.5;
-                    }
-                  }
-                  .user-data {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    .user-img {
-                      img {
-                        display: block;
-                      }
-                    }
-                    .user-name {
-                      margin-left: 8px;
-                      font-family: 'Inter';
-                      font-style: normal;
-                      font-weight: 400;
-                      font-size: 12px;
-                      line-height: 20px;
-                      color: #262541;
-                      user-select: none;
-                    }
-                  }
-                  .add-user {
-                    cursor: pointer;
-                    img {
-                      margin-right: 12px;
-                    }
-                  }
-                  .invited {
-                    font-family: 'Inter';
-                    font-style: normal;
-                    font-weight: 400;
-                    font-size: 12px;
-                    line-height: 20px;
-                    color: #8A8AA8;
-                  }
-                  &:hover {
-                    background: #F0F0F4;
-                    .add-user img {
-                      filter: invert(61%) sepia(21%) saturate(354%) hue-rotate(202deg) brightness(87%) contrast(90%);
-                    }
-                  }
-                }
-              }
-            }
-          }
-          .show-more-results {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 20px;
-            color: #8A8AA8;
-            margin-top: 12px;
-            cursor: pointer;
-          }
-        }
-      }
-      .third-step {
-        .title-block {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          span {
-            font-family: 'Exo 2';
-            font-style: normal;
-            font-weight: 700;
-            font-size: 16px;
-            line-height: 24px;
-            color: #262541;
-          }
-        }
-        .subtitle {
-          margin-top: 8px;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 13px;
-          line-height: 20px;
-          color: #575775;
-          margin-bottom: 20px;
-        }
-        .text-area-wrapper {
-          position: relative;
-          textarea {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 13px;
-            line-height: 24px;
-            color: #575775;
-            padding: 8px 35px 8px 12px;
-            height: 88px;
-            width: 100%;
-            resize: none;
-            border: 1px solid #DFDEED;
-            border-radius: 6px;
-            outline: none;
-          }
-          .icon {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            border-radius: 6px;
-            img {
-              margin: auto;
-            }
-          }
-        }
-        .title {
-          margin-top: 20px;
-          margin-bottom: 8px;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 500;
-          font-size: 13px;
-          line-height: 20px;
-          color: #262541;
-        }
-        .title-outfit {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 13px;
-          line-height: 20px;
-          color: #575775;
-          margin-top: 16px;
-          margin-bottom: 8px;
-        }
-        .contact-switcher {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-top: 16px;
-          margin-bottom: 8px;
-          .title-prize {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 500;
-            font-size: 13px;
-            line-height: 20px;
-            color: #262541;
-            span {
-              font-family: 'Inter';
-              font-style: normal;
-              font-weight: 400;
-              font-size: 12px;
-              line-height: 20px;
-              color: #575775;
-              padding: 0px 4px;
-              background: #EFEFF6;
-              border-radius: 4px;
-            }
-          }
-        }
-        .outfit-colors {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          .input {
-            width: 154px;
-            margin-top: 0;
-          }
-        }
-      }
-
-      .progress-line {
-        margin-top: 20px;
-        padding-top: 24px;
-        border-top: 1px dashed #DFDEED;
-        .sections {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          width: 312px;
-          .section {
-            width: 102.67px;
-            height: 4px;
-            background: #EFEFF6;
-            border-radius: 2px;
-            &.active {
-              background: #1AB2AD;
-            }
-          }
-        }
-      }
-      .buttons-block {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 20px;
-      }
+    flex-direction: column;
+  }
+  &__page-title {
+    font-family: 'Exo 2';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 32px;
+    color: $--b-main-black-color;
+    padding-left: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @include tabletAndMobile {
+      padding: 0;
     }
-    .tablet-block {
-      display: none;
-      width: 320px;
-      @media (max-width: 992px) {
-        display: block;
-      }      
-      @media (max-width: 768px) {
-        order: 1;
-        margin-bottom: 16px;
-        width: 100%;
-      }
-      .save-template-block {
-        padding: 10px 12px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: rgba(239, 239, 246, 0.7);
-        border-radius: 8px;
-      }
-      .preview-tablet-block {
-        padding: 8px 12px;
-        background: rgba(239, 239, 246, 0.7);
-        border: 1px solid #DFDEED;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-top: 20px;
-        @media (max-width: 768px) {
-          display: none;
-        }
-        .left-block {
-          display: flex;
-          align-items: center;
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 500;
-          font-size: 13px;
-          line-height: 20px;
-          text-align: center;
-          color: #262541;
-          .img-icon {
-            margin-right: 10px;
-            display: flex;
-            img {
-              margin: auto;
-            }
-          }
-        }
-      }
-    }
-    .preview-mob-block {
-      display: none;
-      padding: 8px 12px;
-      background: rgba(239, 239, 246, 0.7);
-      border: 1px solid #DFDEED;
-      border-radius: 8px;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 20px;
-      @media (max-width: 768px) {
-        display: flex;
-        order: 3;
-        width: 100%;
-      }
-      .left-block {
-        display: flex;
-        align-items: center;
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 13px;
-        line-height: 20px;
-        text-align: center;
-        color: #262541;
-        .img-icon {
-          margin-right: 10px;
-          display: flex;
-          img {
-            margin: auto;
-          }
-        }
-      }
-    }
-
-
-
-    .preview-mob-block-second {
-      display: none;
-      margin-top: 36px;
-      margin-bottom: 8px;
-      position: relative;
-      height: 52px;
-      @media (max-width: 768px) {
-        display: flex;
-        order: 3;
-        width: 100%;
-      }
-      .btn {
-        height: 52px;
-        background: rgba(239, 239, 246, 0.7);
-        border-radius: 8px;
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 12px;
-        line-height: 20px;
-        text-align: center;
-        color: #262541;
-        position: absolute;
-        display: table;
-        overflow: hidden;
-        width: 53%;
-        cursor: pointer;
-        &-previous {
-          left: 0;
-          background: transparent;
-          z-index: 1;
-          border-left: 1px solid #DFDEED;
-          &:after {
-            content: " ";
-            position: absolute;
-            display: block;
-            width: 100%;
-            height: 96%;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            background: #EFEFF6;
-            transform-origin: bottom left;
-            -ms-transform: skew(10deg, 0deg);
-            -webkit-transform: skew(10deg, 0deg);
-            transform: skew(10deg, 0deg);
-            border: 1px solid #DFDEED;
-            border-radius: 8px;
-          }
-        }
-        &-users {
-          border: 1px solid #DFDEED;
-          right: 0;
-        }
-        span {
-          display: table-cell;
-          vertical-align: middle;
-        }
-      }
-    }
-    .wrapper-preview-block {
-      margin-right: 40px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      @media (min-width: 992px) and (max-width: 1199px) {
-        margin-right: 10px;
-      }
-      @media (max-width: 991px) {
+    .b-manage-event__btns-mob-block {
+      @media (min-width: 1200px) {
         display: none;
       }
-      .preview-block {
-        padding: 24px 44px;
-        width: 504px;
-        background: #F9F9FC;
-        border-radius: 12px;
-        .title {
-          font-family: 'Exo 2';
-          font-style: normal;
-          font-weight: 700;
-          font-size: 16px;
-          line-height: 24px;
-          color: #262541;
-        }
-        .subtitle {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 13px;
-          line-height: 20px;
-          color: #575775;
-          margin: 6px 0 20px;
-        }
-        .form-block {
-          padding: 20px 16px;
-          background: #FFFFFF;
-          box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
-          border-radius: 6px;
-          .top-line {
-            display: flex;
-            justify-content: space-between;
-            .left-block {
-              display: flex;
-              .col-1 {
-                margin-right: 8px;
-                min-width: 50px;
-                .card-icon {
-                  display: flex;
-                  flex-direction: row;
-                  justify-content: center;
-                  align-items: center;
-                  min-width: 48px;
-                  width: 48px;
-                  height: 48px;
-                  background: #EFEFF6;
-                  border-radius: 4px;
-                }
-              }
-              .col-2 {
-                width: 200px;
-                @media (min-width: 1200px) and (max-width: 1400px) {
-                  width: 230px;
-                }
-                @media (min-width: 992px) and (max-width: 1199px) {
-                  width: 150px;
-                }
-                @media (min-width: 768px) and (max-width: 991px) {
-                  width: 165px;
-                }
-                @media (max-width: 768px) {
-                  width: 70%;
-                }
-                .title {
-                  font-family: 'Exo 2';
-                  font-style: normal;
-                  font-weight: 700;
-                  font-size: 16px;
-                  line-height: 24px;
-                  color: #262541;
-                }
-                .address {
-                  display: flex;
-                  background: #FAFAFA;
-                  padding: 0px 4px;
-                  margin-top: 4px;
-                  img {
-                    margin-right: 5px;
-                  }
-                  p {
-                    font-family: "Inter";
-                    font-style: normal;
-                    font-weight: 400;
-                    font-size: 12px;
-                    line-height: 20px;
-                    color: #575775;
-                    border-radius: 4px;
-                    display: -webkit-box;
-                    -webkit-line-clamp: 1;
-                    -webkit-box-orient: vertical;
-                    overflow: hidden;
-                  }
-                }
-              }
-            }
-            .right-block {
-              .col-3 {
-                min-width: 100%;
-                display: flex;
-                flex-direction: column;
-                align-items: flex-end;
-                .state {
-                  font-family: 'Inter';
-                  font-style: normal;
-                  font-weight: 400;
-                  font-size: 13px;
-                  line-height: 20px;
-                  text-align: center;
-                  padding: 0px 4px;
-                  border-radius: 4px;
-                  background: #EFEFF6;
-                  color:  #262541;
-                  width: fit-content;
-                  &.active {
-                    background: #71BA12;
-                    color:  #fff;
-                  }
-                }
-                .date {
-                  font-family: 'Inter';
-                  font-style: normal;
-                  font-weight: 500;
-                  font-size: 14px;
-                  line-height: 20px;
-                  text-align: right;
-                  color: #262541;
-                  margin-bottom: 4px;
-                }
-                .time {
-                  font-family: 'Inter';
-                  font-style: normal;
-                  font-weight: 400;
-                  font-size: 12px;
-                  line-height: 20px;
-                  text-align: right;
-                  color: #4C4A82;
-                }
-              }
-            }
-          }
-          .text-area {
-            margin-top: 12px;
-            height: 80px;
-            background: #EFEFF6;
-            border-radius: 6px;
-          }
-          .labels {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-top: 8px;
-            .label {
-              font-family: 'Inter';
-              font-style: normal;
-              font-weight: 400;
-              font-size: 12px;
-              line-height: 20px;
-              color: #575775;
-              margin-right: 4px;
-              margin-bottom: 4px;
-            }
-          }
-          .bottom-part {
-            border-top: 1px dashed #DFDEED;
-            padding-top: 12px;
-            display: flex;
-            justify-content: space-between;
-          }
-          .bottom-line {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 12px;
-            .left-side {
-              display: flex;
-              align-items: center;
-              .titles {
-                margin-right: 30px;
-              }
-              .titles, .date {
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 400;
-                font-size: 12px;
-                line-height: 20px;
-              }
-              .players, .players-date {
-                color: #262541;
-              }
-              .visitors, .visitors-date {
-                color: #575775;
-              }
+      @include tabletAndMobile {
+        width: 100%;
+      }
+    }
+  }
+  &__main-body {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    height: 100%;
+    overflow: hidden;
+
+    .b-manage-event__create-event-block {
+      overflow-y: scroll;
+      width: 420px;
+      padding: 20px;
+      position: relative;
+      box-shadow: 2px 6px 10px rgba(56, 56, 251, 0.1);
+      border-radius: 0px 6px 6px 0px;
+      height: calc(100vh - 90px - 32px - 20px);
+      @media (min-width: 1200px) and (max-width: 1400px) {
+        width: 360px;
+      }
+      @media (min-width: 768px) and (max-width: 1199px) {
+        margin-right: 16px;
+        width: 450px;
+        min-width: 350px;
+      }
+
+      @include beforeDesktop {
+        height: calc(100vh - 90px - 32px - 20px - 40px);
+      }
+      @include tabletAndMobile {
+        width: 100%;
+        padding: 20px 0px;
+        padding-top: 0px;
+      }
+      .b-manage-event__progress-line {
+        margin-top: 20px;
+        padding-top: 24px;
+        border-top: 1px dashed $color-dfdeed;
+        .b-manage-event__sections {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          gap: 5px;
+          .b-manage-event__section {
+            flex-basis: 33%;
+            height: 4px;
+            border-radius: 2px;
+            &.active {
+              background: $color-1ab2ad;
             }
           }
         }
       }
-      .chosen-ppl {
-        width: 416px;
-        margin-top: 16px;
-        .title {
-          font-family: 'Exo 2';
+      .b-manage-event__buttons-block {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+
+        :deep(.b_white-btn) {
+          border: 1px solid $color-dfdeed;
+          font-family: 'Inter';
           font-style: normal;
-          font-weight: 700;
-          font-size: 16px;
+          font-weight: 400;
+          font-size: 14px;
           line-height: 24px;
-          color: #262541;
+          text-align: center;
+          color: $--b-main-gray-color;
+          flex-basis: 48%;
         }
-        .delete-all {
+        :deep(.b-green-btn) {
+          flex-basis: 48%;
+        }
+      }
+      .b-manage-event__manage-buttons-block {
+        width: 100%;
+        background: rgba(239, 239, 246, 0.7);
+        border: 1px solid $color-dfdeed;
+        border-radius: 8px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px;
+        margin-top: 8px;
+        display: none;
+
+        @include tabletAndMobile {
+          display: flex;
+        }
+
+        span {
           font-family: 'Inter';
           font-style: normal;
           font-weight: 500;
           font-size: 12px;
           line-height: 20px;
-          color: #575775;
-          margin-bottom: 8px;
           text-align: right;
-          cursor: pointer;
-        }
-        .users-list {
-          .user {
-            padding: 4px;
-            border-radius: 0px 6px 6px 0px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-top: 1px solid #F0F0F4;
-            .user-data {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              .user-img {
-                img {
-                  display: block;
-                }
-              }
-              .user-name {
-                margin-left: 8px;
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 400;
-                font-size: 12px;
-                line-height: 20px;
-                color: #262541;
-                user-select: none;
-              }
-            }
-            .delete-user {
-              cursor: pointer;
-              img {
-                margin-right: 12px;
-              }
-            }
-          }
+          color: $--b-main-gray-color;
         }
       }
     }
 
-    .manage-template-block {
-      @media (min-width: 992px) and (max-width: 1400px) {
-        margin-top: 20px;
-      }
-      @media (max-width: 991px) {
+    .b-manage-event-invited-users__list {
+      @include tabletAndMobile {
         display: none;
       }
-      .title {
-        font-family: 'Exo 2';
-        font-style: normal;
-        font-weight: 700;
-        font-size: 16px;
-        line-height: 24px;
-        color: #262541;
-      }
-      .btns-block {
-        margin-top: 20px;
-        .white-btn-wrapper {
-          margin-bottom: 12px;
-        }
+    }
+    .b-manage-event__btns-desktop-block {
+      @media (max-width: 1200px) {
+        display: none;
       }
     }
   }
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.5s;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateY(100%);
+}
 </style>

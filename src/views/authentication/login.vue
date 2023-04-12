@@ -1,13 +1,50 @@
 <template>
-    <div>LOGIN</div>
+  <AuthenticationMain
+    :block-type="mockData.LOGIN"
+    :backgroundTab="backgroundTab"
+    :right-side-style="rightSideStyle"
+  >
+    <template #main-content>
+      <LoginComponent />
+    </template>
+  </AuthenticationMain>
 </template>
 
 <script>
-    export default {
-        name: "login"
-    }
+import { computed } from 'vue';
+
+import LoginComponent from '../../components/login-components/LoginComponent.vue';
+import AuthenticationMain from '../../components/AuthenticationMain.vue';
+
+import CONSTANTS from '../../consts/index';
+
+import bgTabPicture from '../../assets/img/registration-back-tab1.svg';
+import rightSidePicture from '../../assets/img/registration-back-1.svg';
+
+export default {
+  name: 'login',
+  components: {
+    LoginComponent,
+    AuthenticationMain,
+  },
+  setup() {
+    const mockData = computed(() => {
+      return {
+        LOGIN: CONSTANTS.register.authBlockTypes.login,
+      };
+    });
+    const backgroundTab = computed(() => {
+      return bgTabPicture;
+    });
+    const rightSideStyle = computed(() => {
+      return { '--back-picture': `url(${rightSidePicture})` };
+    });
+
+    return {
+      mockData,
+      backgroundTab,
+      rightSideStyle,
+    };
+  },
+};
 </script>
-
-<style scoped>
-
-</style>

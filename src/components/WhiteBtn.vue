@@ -1,61 +1,77 @@
 <template>
-  <div 
-    class="white-btn"
+  <div
+    class="b_white-btn"
     :style="styles"
-    @click="$emit('click-function')"
+    @click.stop="!disabled && $emit('click-function', $event)"
   >
-    <img v-if="icon" :src="icon" alt="">
+    <img v-if="icon" :src="icon" alt="" />
     {{ text }}
   </div>
 </template>
 
 <script>
+import { computed } from 'vue';
+
 export default {
   props: {
     icon: {
       type: String,
-      default: null
+      default: null,
     },
     text: {
       type: String,
-      required: true
+      required: true,
     },
     width: {
-      type: Number,
-      default: null
+      type: [Number, String],
+      default: null,
     },
     height: {
       type: Number,
-      default: 32
+      default: 32,
     },
     mainColor: {
       type: String,
-      default: '#148783'
+      default: '#148783',
     },
     fontStyles: {
       type: Object,
-      default: () => {}
+      default: () => {},
+    },
+    isBorder: {
+      type: Boolean,
+      default: true,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     }
   },
-  computed: {
-    btnWidth() {
-      return this.width ? this.width + 'px' : '100%'
-    },
-    styles() {
+  setup(props) {
+    const btnWidth = computed(() => {
+      return props.width ? props.width + 'px' : '100%';
+    });
+
+    const styles = computed(() => {
       return {
-        ...this.fontStyles,
-        width: this.btnWidth,
-        color: this.mainColor,
-        border: `1px solid ${this.mainColor}`,
-        height: this.height + 'px'
-      }
-    }
-  }
-}
+        ...props.fontStyles,
+        width: btnWidth.value,
+        color: props.mainColor,
+        border: `${props.isBorder ? `1px solid ${props.mainColor}` : 'none'}`,
+        height: props.height + 'px',
+      };
+    });
+
+    return {
+      btnWidth,
+      styles,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-.white-btn {
+.b_white-btn {
   display: flex;
   justify-content: center;
   align-items: center;

@@ -1,51 +1,37 @@
-// import { AltesiaTokenWorkerPlugin } from "../plugins/token.plugin";
-// import { $api } from "../api";
-// import { finishSpinner } from "../../packages/blanball-loading-worker";
-import { ROUTES } from "../../router";
-import { finishSpinner } from "../loading-worker/loading.worker";
-
-const $createQuery = (objQuery) => Object
-    .keys(objQuery)
-    .map((key) => `${key}=${objQuery[key]}`)
-    .join('&');
+import { finishSpinner } from '../loading-worker/loading.worker';
+import { TokenWorker } from '../token-worker';
+import { createQueryStringFromObject } from '../utils-worker';
+import { ROUTES } from '../../router/router.const';
 
 const _createLoginPath = (redirectUrl) => {
-    const query = $createQuery({
-        redirectUrl
-    });
+  const query = createQueryStringFromObject({
+    redirectUrl,
+  });
 
-    return `${ROUTES.AUTHENTICATIONS.LOGIN.absolute}?${query}`
+  return `${ROUTES.AUTHENTICATIONS.LOGIN.absolute}?${query}`;
 };
 
-const _checkAsyncIsAdmin = async () => {
-    return true;
-    try {
-        // await $api.AuthRequest.getAdmin();
-        return true;
-    } catch ( e ) {
-        return false;
-    }
-};
-
-const isUserAuthorized = async (e) => {
-    // let loginned = AltesiaTokenWorkerPlugin.isToken() && await _checkAsyncIsAdmin();
-    // return Promise.resolve(!!loginned);
-    return Promise.resolve(true);
-};
+const isUserAuthorized = async () =>
+  !!TokenWorker.getToken();
 
 const isAuthorizedError = ({ to, next }) => {
-    return next(_createLoginPath(to.fullPath));
+  finishSpinner();
+  return next(_createLoginPath(to.fullPath));
 };
 
 const isResolveDataError = async (error) => {
-    // TOAST show
-    finishSpinner()
-    console.log('TOAST_SHOWED_BY_ERROR', error);
+  // TODO remove router import on every function call
+  if (error.errorDetails.code === 404) {
+    import('../../router').then((router) => {
+      return router.default.push('/404')
+    })
+  }
+  finishSpinner();
 };
 
 export const resolverFunctions = {
-    isUserAuthorized,
-    isAuthorizedError,
-    isResolveDataError,
-    _createLoginPath
+  isUserAuthorized,
+  isAuthorizedError,
+  isResolveDataError,
+  _createLoginPath,
 };

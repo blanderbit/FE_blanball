@@ -1,22 +1,25 @@
-import {createApp} from 'vue';
-import Loading from "./Loading.vue";
+
+import { ref } from 'vue';
+import { createApp } from 'vue';
+import Loading from './Loading.vue';
+
+let loading;
+
+const isLoading = ref(false);
 
 const startSpinner = () => {
-    window && window.loading && typeof window.loading.start === 'function' &&  window.loading.start();
-};
+  isLoading.value = true
+}
 
 const finishSpinner = () => {
-    window && window.loading && typeof window.loading.finish === 'function' &&  window.loading.finish();
-};
+  setTimeout(() => {
+    isLoading.value = false
+  }, 300);
+}
 
 const createLoader = () => {
-    window.loading = createApp(Loading)
-        .mount('#loading');
-    // startSpinner()
+  loading = createApp(Loading, {isLoading: isLoading}).mount('#loading');
+  startSpinner();
 };
 
-export {
-    startSpinner,
-    finishSpinner,
-    createLoader
-}
+export { startSpinner, finishSpinner, createLoader };

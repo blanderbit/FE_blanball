@@ -12,12 +12,14 @@
         alt="404 mobile image"
       />
       <div class="b-error-page__text-block">
-        <div class="b-error-page__text">Шкода, але такої сторінки не існує</div>
-        <GreenBtn 
-            :text="'Повернутися на головну'" 
-            :width="202" 
-            :height="40"
-            @click-function="goToMainPage"
+        <div class="b-error-page__text">
+          {{ $t('page_404.main-text') }}
+        </div>
+        <GreenBtn
+          :text="$t('page_404.return')"
+          :width="202"
+          :height="40"
+          @click-function="goToMainPage"
         />
       </div>
     </div>
@@ -25,10 +27,9 @@
 </template>
 
 <script>
-import {useRouter} from 'vue-router'
-import GreenBtn from '../components/GreenBtn.vue'
-
-import {ROUTES} from '../router/index'
+import { useRouter } from 'vue-router';
+import GreenBtn from '../components/GreenBtn.vue';
+import { ROUTES } from '../router/router.const';
 
 export default {
   name: '404',
@@ -36,22 +37,25 @@ export default {
     GreenBtn,
   },
   setup() {
-    const router = useRouter()
+    const router = useRouter();
 
     function goToMainPage() {
-        router.push(ROUTES.APPLICATION.HOME.absolute)
+      router.push(ROUTES.APPLICATION.EVENTS.absolute);
     }
 
     return {
-        goToMainPage
-    }
-  }
-}
+      goToMainPage,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
+$color-f5fffe: #f5fffe;
+
 .b-error-page {
-  background: #f5fffe;
+  background: $color-f5fffe;
   position: fixed;
   top: 0;
   left: 0;
@@ -61,7 +65,7 @@ export default {
   .b-error-page__main-block {
     position: relative;
     margin: auto;
-    @media (max-width: 768px) {
+    @include tabletAndMobile {
       margin: 0;
       width: 100%;
     }
@@ -69,14 +73,14 @@ export default {
       width: 100%;
     }
     .b-error-page__img-desk {
-      @media (max-width: 768px) {
+      @include tabletAndMobile {
         display: none;
       }
     }
     .b-error-page__img-mob {
       display: none;
       margin: 20px auto;
-      @media (max-width: 768px) {
+      @include tabletAndMobile {
         display: block;
       }
     }
@@ -84,7 +88,7 @@ export default {
       position: absolute;
       bottom: 145px;
       left: 95px;
-      @media (max-width: 768px) {
+      @include tabletAndMobile {
         position: static;
       }
       .b-error-page__text {
@@ -93,9 +97,9 @@ export default {
         font-weight: 700;
         font-size: 16px;
         line-height: 24px;
-        color: #262541;
+        color: $--b-main-black-color;
         margin-bottom: 16px;
-        @media (max-width: 768px) {
+        @include tabletAndMobile {
           text-align: center;
           font-weight: 700;
           font-size: 24px;
@@ -104,8 +108,8 @@ export default {
           margin: 20px auto;
         }
       }
-      .green-btn {
-        @media (max-width: 768px) {
+      .b-green-btn {
+        @include tabletAndMobile {
           margin: 0 auto;
         }
       }

@@ -1,9 +1,10 @@
-version: "3.7"
+version: '3.7'
 
 services:
- blanball-fe-testing:
-  container_name: blanball-fe-testing
-  image: registry.it-flumx.com/testing_blanball_fe:latest
-  command: 'bash build.sh'
-  ports:
-   - "49201:49201"
+  blanball-fe-testing:
+    container_name: blanball-fe-testing
+    image: registry.it-flumx.com/testing_blanball_fe:latest
+    args:
+      MODE: test
+    ports:
+      - '49201:49201'
