@@ -24,7 +24,7 @@
       "
     />
     <label :for="id" class="b-radio-label" :style="labelStyle">
-      {{ title }}
+      <span>{{ title }}</span>
       <img v-if="url" :src="url" alt="" />
     </label>
   </div>
@@ -140,7 +140,6 @@ $color2: $--b-main-green-color;
       font-weight: 400;
       font-size: 13px;
       line-height: 24px;
-      text-transform: capitalize;
       justify-content: space-between;
       img {
         margin-right: 4px;

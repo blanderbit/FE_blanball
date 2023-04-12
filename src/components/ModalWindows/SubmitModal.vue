@@ -155,6 +155,7 @@ $color-e2e2e9: #e2e2e9;
       color: $color-e2e2e9;
       margin-top: 14px;
       cursor: pointer;
+      max-width: fit-content;
     }
   }
 }

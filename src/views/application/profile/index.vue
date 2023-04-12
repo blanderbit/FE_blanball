@@ -1,4 +1,13 @@
 <template>
+  <PublicProfileWrapper
+    v-if="isModalActive.public_profile"
+    @saveChanges="saveDataFromPreviewWindow"
+    @closeModal="toggleModal"
+  >
+    <template #content>
+      <PublicProfile :pageMode="'preview'" :userData="restData" />
+    </template>
+  </PublicProfileWrapper>
   <div class="b-user-cabinet">
     <Loading :is-loading="isLoading" />
 
@@ -28,18 +37,11 @@
       @close-modal="toggleModal"
     />
 
-    <PublicProfile
-      v-if="isModalActive.public_profile"
-      :pageMode="'preview'"
-      :userData="restData"
-      @saveChanges="saveDataFromPreviewWindow"
-      @closeModal="toggleModal"
-    />
-
     <HideMyEventsModal
       v-if="isHideMyEventsModalOpened"
       @closeModal="closeHideMyEventsModal"
-      @closeAndSave="closeModalAndHideEvents"/>
+      @closeAndSave="closeModalAndHideEvents"
+    />
 
     <div class="b-user-cabinet__title-block">
       <div class="b-user-cabinet__titles">
@@ -60,13 +62,11 @@
           { active: tab.isActive, disabled: tab.isDisabled },
         ]"
         @click="changeTab(tab.id, tab.url, tab.isDisabled)"
+        @mouseenter="switchTabLabel(tab.isDisabled)"
+        @mouseleave="switchTabLabel(tab.isDisabled)"
       >
         <img :src="tab.img" :alt="tab.name" />
-        <span
-          @mouseenter="switchTabLabel(tab.isDisabled)"
-          @mouseleave="switchTabLabel(tab.isDisabled)"
-          >{{ $t(tab.name) }}</span
-        >
+        <span>{{ $t(tab.name) }}</span>
         <Transition>
           <TabLabel
             v-if="tab.isDisabled && isTabLabel"
@@ -76,7 +76,7 @@
         </Transition>
       </div>
     </div>
-    <div class="b-user-cabinet__my-profile-tab">
+    <div class="b-user-cabinet__my-profile-tab" :style="profileMainSideHeight">
       <Form
         v-slot="data"
         :validation-schema="schema"
@@ -174,6 +174,7 @@ import EditAvatarModal from '../../../components/ModalWindows/UserCabinetModalWi
 import Loading from '../../../workers/loading-worker/Loading.vue';
 import PublicProfile from '../../../components/PublicProfile/PublicProfile.vue';
 import HideMyEventsModal from '../../../components/ModalWindows/HideMyEventsModalWindow/HideMyEventsModal.vue';
+import PublicProfileWrapper from '../../../components/PublicProfile/PublicProfileWrapper.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '@/stores/userData';
@@ -206,6 +207,7 @@ export default {
     ChangeEmailModal,
     ButtonsBlock,
     TabLabel,
+    PublicProfileWrapper,
     HideMyEventsModal,
     EditAvatarModal,
   },
@@ -242,6 +244,20 @@ export default {
         monthFromNumber: CONSTANTS.users_page.months.monthFromNumber,
         numberFromMonth: CONSTANTS.users_page.months.numberFromMonth,
       };
+    });
+
+    const profileMainSideHeight = computed(() => {
+      if (!isMobile.value) {
+        return {
+          height: 'calc(100vh - 88px - 46px - 60px)',
+        };
+      } else {
+        return {
+          height: `calc(100vh - 88px - 46px - 60px - 60px - ${
+            userStore.user.is_verified ? 0 : 55
+          }px`,
+        };
+      }
     });
 
     restData.value = {
@@ -406,12 +422,12 @@ export default {
     }
 
     const showHideMyEventsModal = () => {
-      isHideMyEventsModalOpened.value = true
-    }
+      isHideMyEventsModalOpened.value = true;
+    };
 
     const closeHideMyEventsModal = () => {
-      isHideMyEventsModalOpened.value = false
-    }
+      isHideMyEventsModalOpened.value = false;
+    };
 
     function saveUserDataChanges() {
       const refProfileData = { ...myForm.value.getControledValues() };
@@ -427,7 +443,10 @@ export default {
       } = refProfileData;
       const profileData = {
         ...refProfileData,
-        birthday: year && month && day ? `${year}-${mockData.value.numberFromMonth[month]}-${day}` : null,
+        birthday:
+          year && month && day
+            ? `${year}-${mockData.value.numberFromMonth[month]}-${day}`
+            : null,
         gender: userStore.user.profile.gender,
         working_leg: getWorkingLeg(working_leg),
       };
@@ -440,8 +459,8 @@ export default {
       delete profileData.config_phone;
       delete profileData.show_reviews;
 
-      profileData.height = profileData.height ? profileData.height : null
-      profileData.weight = profileData.weight ? profileData.weight : null
+      profileData.height = profileData.height ? profileData.height : null;
+      profileData.weight = profileData.weight ? profileData.weight : null;
 
       const payload = {
         configuration: {
@@ -603,12 +622,16 @@ export default {
     }
 
     function cancelChangesAndGoToTheNextRoute() {
-      router.push(nextRoutePath.value)
-      nextRoutePath.value = ''
+      router.push(nextRoutePath.value);
+      nextRoutePath.value = '';
     }
 
     onBeforeRouteLeave((to, from, next) => {
-      if (isEditModeProfile.value && !isModalActive.change_data && !to.meta.noGuards) {
+      if (
+        isEditModeProfile.value &&
+        !isModalActive.change_data &&
+        !to.meta.noGuards
+      ) {
         toggleModal('change_data');
         nextRoutePath.value = to.fullPath;
         changeDataModalConfig.value = {
@@ -650,6 +673,7 @@ export default {
       changeDataModalConfig,
       mockData,
       isModalActive,
+      profileMainSideHeight,
       userStore,
       checkboxData,
       userData,
@@ -720,12 +744,8 @@ $color-dfdeed: #dfdeed;
   }
 }
 .b-user-cabinet {
-  overflow-y: scroll;
   @media (min-width: 768px) {
     position: relative;
-  }
-  @include tabletAndMobile {
-    height: calc(100% - 100px);
   }
 }
 
@@ -792,6 +812,7 @@ $color-dfdeed: #dfdeed;
   }
 }
 .b-user-cabinet__my-profile-tab {
+  overflow-y: scroll;
   form {
     display: flex;
     flex-wrap: wrap;

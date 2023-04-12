@@ -141,7 +141,7 @@ $color-4c4a82: #4c4a82;
   border: 1px solid $color-dfdeed;
   margin-bottom: 16px;
   cursor: pointer;
-  height: 100%;
+  height: fit-content;
   &.active {
     border: 1px solid $color-71ba12;
   }

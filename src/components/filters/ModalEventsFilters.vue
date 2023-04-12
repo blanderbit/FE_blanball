@@ -12,7 +12,7 @@
               {{ $t('users.filters') }}
             </div>
             <div class="b-modal-filters__subtitle">
-              {{ elementsCount }} {{ $t('users.advertisments') }}
+              {{  $t('events.found-events', { count: elementsCount }) }}
             </div>
           </div>
           <div v-if="search" class="b-modal-filters__search-value">

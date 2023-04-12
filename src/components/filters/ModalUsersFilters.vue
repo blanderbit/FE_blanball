@@ -11,7 +11,7 @@
             {{ $t('users.filters') }}
           </div>
           <div class="b-modal-filters__subtitle">
-            {{ $t('users.found') }} 15 {{ $t('users.advertisments') }}
+            {{  $t('users.found-users', { count: elementsCount }) }}
           </div>
           <div class="b-modal-filters__game-type-input">
             <Dropdown
@@ -83,6 +83,10 @@ export default {
       type: String,
       default: '',
     },
+    elementsCount: {
+      type: Number,
+      default: 0,
+    },
   },
   emits: [
     'closeModal',
@@ -125,8 +129,9 @@ export default {
     }
     function clearAllData() {
       emit('clearFilters');
+      emit('closeModal');
       positionData.value = '';
-      // ageRangeData.value = []
+      ageRangeData.value = []
       genderData.value = '';
     }
 

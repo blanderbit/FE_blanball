@@ -190,7 +190,6 @@ export default {
       dataTransformation: handlingIncomeData,
     });
 
-
     function handlingIncomeData(item) {
       return {
         ...item,
@@ -308,6 +307,10 @@ $color-efeff6: #efeff6;
   }
 }
 
+:deep(.b_white-btn) {
+  border: 1px solid #dfdeed !important;
+}
+
 .b-hide-events-modal__wrapper {
   @include modal-wrapper;
 
@@ -393,7 +396,7 @@ $color-efeff6: #efeff6;
           .b-hide-events-modal__tab {
             @include inter(13px, 400, $--b-main-gray-color);
             line-height: 22px;
-            background:$--b-main-white-color;
+            background: $--b-main-white-color;
             text-align: center;
             border-radius: 6px;
             width: 90px;

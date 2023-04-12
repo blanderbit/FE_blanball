@@ -31,7 +31,7 @@
         </span>
       </div>
       <div class="b-manage-event__main-body">
-        <div class="b-manage-event__create-event-block">
+        <div class="b-manage-event__create-event-block" :style="createEventMainBlockHeight">
           <ManageEventFirstStep
             v-if="currentStep === 1"
             :initialValues="eventData"
@@ -138,13 +138,13 @@
 </template>
 
 <script>
-import { computed, ref, watchEffect } from 'vue';
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter, useRoute, onBeforeRouteLeave } from 'vue-router';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import { merge, cloneDeep } from 'lodash';
+import { merge } from 'lodash';
 
 import InputComponent from '../../../components/forms/InputComponent.vue';
 import GreenBtn from '../../../components/GreenBtn.vue';
@@ -166,6 +166,7 @@ import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue';
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
 import { BlanballEventBus } from '../../../workers/event-bus-worker';
+import useWindowWidth from '../../../utils/widthScreen';
 
 import { runOnSelectEventDuration } from '../../../utils/runOnSelectEventDuration';
 
@@ -215,6 +216,7 @@ export default {
     const isEventCreated = ref(false);
     const myForm = ref();
     const nextRoute = ref(ROUTES.APPLICATION.EVENTS.absolute);
+    const { onResize, isMobile, isTablet } = useWindowWidth();
 
     const manageEventActionTypes = ref({
       CREATE: 'CREATE',
@@ -248,6 +250,18 @@ export default {
       );
       return eventData.value;
     });
+
+    const createEventMainBlockHeight = computed(() => {
+      if (isMobile.value || isTablet.value) {
+        return {
+          height: `calc(100vh - 90px - 32px - 20px - ${userStore.user.is_verified ? 0 : 40}px)`
+        }
+      } else {
+        return {
+          height: 'calc(100vh - 90px - 32px - 20px)'
+        }
+      }
+    })
 
     const invitedUsers = ref([]);
     const acceptedUsers = ref(eventData.value.current_users);
@@ -440,7 +454,7 @@ export default {
       let emitName;
       eventCreateLoader.value = true;
       isEventCreated.value = true;
-      
+
       data.date_and_time = `${data.date} ${data.time}`;
 
       data.current_users = invitedUsers.value.map((user) => user.id);
@@ -540,6 +554,13 @@ export default {
       }
     });
 
+    onMounted(() => {
+      window.addEventListener('resize', onResize);
+    });
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', onResize);
+    });
+
     return {
       currentStep,
       changeDataModalConfig,
@@ -561,6 +582,7 @@ export default {
       myForm,
       formsModalSelectedTabId,
       isSubmitModalOpened,
+      createEventMainBlockHeight,
       eventForms,
       manageAction,
       whiteBtn,
@@ -644,7 +666,6 @@ $color-8a8aa8: #8a8aa8;
   }
   &__main-body {
     display: flex;
-    justify-content: space-between;
     margin-top: 20px;
     height: 100%;
     overflow: hidden;
@@ -656,7 +677,6 @@ $color-8a8aa8: #8a8aa8;
       position: relative;
       box-shadow: 2px 6px 10px rgba(56, 56, 251, 0.1);
       border-radius: 0px 6px 6px 0px;
-      height: calc(100vh - 90px - 32px - 20px);
       @media (min-width: 1200px) and (max-width: 1400px) {
         width: 360px;
       }
@@ -664,10 +684,7 @@ $color-8a8aa8: #8a8aa8;
         margin-right: 16px;
         width: 450px;
         min-width: 350px;
-      }
-
-      @include beforeDesktop {
-        height: calc(100vh - 90px - 32px - 20px - 40px);
+        padding: 12px;
       }
       @include tabletAndMobile {
         width: 100%;
@@ -689,7 +706,7 @@ $color-8a8aa8: #8a8aa8;
             height: 4px;
             border-radius: 2px;
             &.active {
-              background: $color-1ab2ad;
+              background: #578D95;
             }
           }
         }
@@ -763,5 +780,12 @@ $color-8a8aa8: #8a8aa8;
 .slide-enter-from,
 .slide-leave-to {
   transform: translateY(100%);
+}
+
+.b-manage-event-preview__block {
+  margin-left: 50px;
+  @include tabletAndMobile {
+    margin-left: 0px;
+  }
 }
 </style>

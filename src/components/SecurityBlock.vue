@@ -145,6 +145,7 @@ $color-d3f8f7: #d3f8f7;
   } 
   @include tabletAndMobile {
     padding: 0px 16px;
+    margin-bottom: 50px;
   }
   .b-security__email-input {
     height: 40px;
