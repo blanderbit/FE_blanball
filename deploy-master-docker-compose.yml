@@ -4,7 +4,7 @@ services:
   blanball-fe-production:
     container_name: blanball-fe-production
     env_file:
-      - stack.env
+      - .env
     image: registry.it-flumx.com/production_blanball_fe:latest
     expose:
       - "80"
