@@ -1,5 +1,6 @@
 ARG NODE_VERSION=18-alpine
 ARG MODE
+ENV MODE=$APP_ENV
 FROM node:$NODE_VERSION as BUILD_IMAGE
 WORKDIR /frontend
 COPY package*.json ./
