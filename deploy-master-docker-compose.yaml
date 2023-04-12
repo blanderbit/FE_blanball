@@ -3,7 +3,7 @@ version: '3.7'
 services:
   blanball-fe-production:
     build:
-      context: blanball-fe-production
+      context: .
       args:
         MODE: prod
     container_name: blanball-fe-production

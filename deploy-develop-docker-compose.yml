@@ -3,7 +3,7 @@ version: '3.7'
 services:
   blanball-fe-testing:
     build:
-      context: blanball-fe-testing
+      context: .
       args:
         MODE: test
     container_name: blanball-fe-testing
