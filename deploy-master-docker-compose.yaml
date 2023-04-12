@@ -2,12 +2,10 @@ version: '3.7'
 
 services:
   blanball-fe-production:
-    build:
-      context: .
-      args:
-        MODE: prod
     container_name: blanball-fe-production
     image: registry.it-flumx.com/production_blanball_fe:latest
+    environment:
+      MODE: prod
     expose:
       - "80"
     labels:

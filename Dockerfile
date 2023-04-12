@@ -1,6 +1,4 @@
-ARG MODE \
-  NODE_VERSION=18-alpine
-ENV MODE=${MODE}
+ARG NODE_VERSION=18-alpine
 FROM node:$NODE_VERSION as BUILD_IMAGE
 WORKDIR /frontend
 COPY package*.json ./
