@@ -16,6 +16,8 @@
               { active: tab.isActive },
               { disabled: tab.isDisabled },
             ]"
+            @mouseenter="enterHoverSidebarItem(tab.id)"
+            @mouseleave="leaveHoverSidebarItem"
           >
             <Transition>
               <TabLabel
@@ -26,10 +28,7 @@
             </Transition>
 
             <img :src="tab.img" :alt="tab.name" />
-            <span
-              @mouseenter="enterHoverSidebarItem(tab.id)"
-              @mouseleave="leaveHoverSidebarItem"
-            >
+            <span>
               {{ $t('users.' + tab.name) }}
             </span>
           </div>
@@ -37,6 +36,7 @@
       </div>
       <users-filters
         :model-value="filters"
+        :elementsCount="paginationTotalCount"
         @update:value="setFilters"
         @clearFilters="clearFilters"
       >
@@ -374,7 +374,6 @@ $color-71ba12: #71ba12;
   @include mobile {
     margin-top: -75px;
   }
-
 }
 .events-page {
   display: grid;
@@ -1152,10 +1151,10 @@ $color-71ba12: #71ba12;
       /*overflow-y: scroll;*/
       .users-cards {
         height: calc(100% - 20px);
-        margin-top: 20px; 
+        margin-top: 20px;
 
         @include beforeDesktop {
-          height: calc(100% - 40px);
+          height: calc(100%);
         }
       }
     }

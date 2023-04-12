@@ -9,6 +9,12 @@
     @itemClick="joinEventModalItemClick"
   />
   <div class="b-events-page">
+    <div
+      @click="goToCreateEvent"
+      class="b-events-page-create-event-mobile-button"
+    >
+      <img src="../../../assets/img/plus.svg" alt="" />
+    </div>
     <div class="b-events-page__main-body" ref="mainEventsBlock">
       <div class="b-events-page__header-block">
         <div class="b-events-page__left-part">
@@ -55,12 +61,6 @@
         ></events-filters>
 
         <div class="b-events-page__all-events-block">
-          <div
-            @click="goToCreateEvent"
-            class="b-events-page__all-create-event-mobile-button"
-          >
-            <img src="../../../assets/img/plus.svg" alt="" />
-          </div>
           <SmartGridList
             :list="paginationElements"
             ref="refList"
@@ -146,11 +146,10 @@ import CONSTANTS from '../../../consts/index';
 
 import Plus from '../../../assets/img/plus.svg';
 
-
 const eventJoinTypes = {
   PLAY: 'play',
-  VIEW: 'view'
-}
+  VIEW: 'view',
+};
 
 export default {
   name: 'EventsPage',
@@ -476,11 +475,33 @@ $color-f0f0f4: #f0f0f4;
   display: grid;
   grid-template-columns: 1fr 256px;
   grid-gap: 28px;
+  position: relative;
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
   }
+
+  .b-events-page-create-event-mobile-button {
+    background: $--b-main-green-color;
+    box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+    border-radius: 100px;
+    padding: 12px;
+    position: absolute;
+    display: none;
+    font-size: 24px;
+    font-weight: 700px;
+    width: 44px;
+    height: 44px;
+    right: 25px;
+    z-index: 10;
+    bottom: 15%;
+
+    @media (max-width: 992px) {
+      display: flex;
+    }
+  }
   .b-events-page__main-body {
     height: 90vh;
+    position: relative;
     .b-events-page__header-block {
       display: flex;
       justify-content: space-between;
@@ -610,26 +631,6 @@ $color-f0f0f4: #f0f0f4;
         margin-top: 23px;
         height: 76vh;
         overflow: hidden;
-
-        .b-events-page__all-create-event-mobile-button {
-          background: $--b-main-green-color;
-          box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
-          border-radius: 100px;
-          padding: 12px;
-          position: absolute;
-          display: none;
-          font-size: 24px;
-          font-weight: 700px;
-          width: 44px;
-          height: 44px;
-          right: 25px;
-          z-index: 10;
-          bottom: 25%;
-
-          @media (max-width: 992px) {
-            display: flex;
-          }
-        }
         .b-events-page__cards-event-wrapper {
           display: flex;
           flex-wrap: wrap;

@@ -80,174 +80,178 @@
           </div>
         </div>
       </div>
-      <div class="b-event-info__details-block">
-        <div class="b-event-info__left-side">
-          <div class="b-event-info__timing">
-            <img src="../../../assets/img/watch.svg" alt="" />
-            {{ eventData.date }}, {{ eventData.time }} -
-            {{ eventData.end_time }}
+
+      <div class="b-event-info__main-content-block">
+        <div class="b-event-info__details-block">
+          <div class="b-event-info__left-side">
+            <div class="b-event-info__timing">
+              <img src="../../../assets/img/watch.svg" alt="" />
+              {{ eventData.date }}, {{ eventData.time }} -
+              {{ eventData.end_time }}
+            </div>
+            <div class="b-event-info__address">
+              <img src="../../../assets/img/address-icon.svg" alt="" />
+              <span>{{ eventData.place.place_name }}</span>
+            </div>
+            <div
+              :class="[
+                'b-event-info__price',
+                { fee: eventData.price },
+                { free: !eventData.price },
+              ]"
+              @mouseenter="eventPriceHover = true"
+              @mouseleave="eventPriceHover = false"
+            >
+              <img
+                v-if="!eventData.price"
+                src="../../../assets/img/info.svg"
+                alt=""
+              />
+              <img v-else src="../../../assets/img/green-info.svg" alt="" />
+              <span
+                >{{ $t('events.event-price') }}
+                <span v-if="eventData.price" class="b-price">{{
+                  `${eventData.price} грн`
+                }}</span>
+                <span class="b-price-free" v-else>{{
+                  $t('events.for-free')
+                }}</span>
+              </span>
+              <div class="b-event-info__price-tooltip-wrapper">
+                <Transition>
+                  <TabLabel
+                    v-if="eventData.price && eventPriceHover"
+                    class="b-event-info__price-tooltip"
+                    :title="$t('events.price_description')"
+                    :text="eventData.price_description"
+                  />
+                </Transition>
+              </div>
+            </div>
+
+            <div class="b-event-info__main-info">
+              <div class="b-event-info__labels">
+                <div class="b-event-info__label">
+                  {{ $t(`events.${eventData.type}`) }}
+                </div>
+                <div class="b-event-info__label">
+                  {{ $t(`events.${eventData.gender}`) }}
+                </div>
+                <div v-if="eventData.need_ball" class="b-event-info__label">
+                  {{ $t('hashtags.need_ball') }}
+                </div>
+                <div v-if="eventData.need_form" class="b-event-info__label">
+                  {{ $t('hashtags.need_form') }}
+                </div>
+              </div>
+              <EventInfoForms
+                class="b-event-info__forms-block"
+                v-if="Object.keys(eventData.forms).length !== 0"
+                :formsData="eventData.forms"
+              />
+
+              <div class="b-event-info__description-block">
+                <div class="b-event-info__title">
+                  {{ $t('my_events.description-event') }}
+                </div>
+                <div class="b-event-info__description">
+                  {{ eventData.description }}
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="b-event-info__address">
-            <img src="../../../assets/img/address-icon.svg" alt="" />
-            <span>{{ eventData.place.place_name }}</span>
+          <div class="b-event-info__right-side">
+            <div class="b-event-info__users">
+              <div class="b-event-info__user">
+                <div class="b-event-info__left-side">
+                  <div class="b-event-info__picture">
+                    <avatar
+                      :border="true"
+                      :link="eventData.author.profile.avatar_url"
+                      :full-name="`${eventData.author.profile.last_name} ${eventData.author.profile.name}`"
+                      @clickByAvatar="goToUserProfile(eventData.author.id)"
+                    ></avatar>
+                  </div>
+                  <div class="b-event-info__text-block">
+                    <div class="b-event-info__name">
+                      {{ eventData.author.profile.last_name }}
+                      {{ eventData.author.profile.name }}
+                    </div>
+                    <div class="b-event-info__phone">
+                      {{ eventData.author.phone }}
+                    </div>
+                  </div>
+                </div>
+                <div class="b-event-info__right-side">Організатор</div>
+              </div>
+            </div>
+            <div class="b-event-info__map">
+              <position-map
+                class="b-event-map"
+                :coords="{ lat: eventData.place.lat, lng: eventData.place.lon }"
+                @map-loaded="loading = false"
+                disable-change-coords
+              >
+              </position-map>
+            </div>
           </div>
-          <div
-            :class="[
-              'b-event-info__price',
-              { fee: eventData.price },
-              { free: !eventData.price },
-            ]"
-            @mouseenter="eventPriceHover = true"
-            @mouseleave="eventPriceHover = false"
-          >
-            <img
-              v-if="!eventData.price"
-              src="../../../assets/img/info.svg"
-              alt=""
-            />
-            <img v-else src="../../../assets/img/green-info.svg" alt="" />
-            <span
-              >{{ $t('events.event-price') }}
-              <span v-if="eventData.price" class="b-price">{{
-                `${eventData.price} грн`
-              }}</span>
-              <span class="b-price-free" v-else>{{
-                $t('events.for-free')
-              }}</span>
-            </span>
-            <div class="b-event-info__price-tooltip-wrapper">
+        </div>
+
+        <div class="b-event-info__tables-block">
+          <div class="b-event-info__tables-title">
+            {{ $t('my_events.already-accepted') }}
+          </div>
+
+          <div class="b-event-info__tab-block">
+            <div
+              v-for="tab in mockData.tabs"
+              v-show="tab.isShown"
+              :key="tab.id"
+              :class="[
+                'b-event-info__tab-element',
+                { active: activeTab === tab.id, disabled: tab.isDisabled },
+              ]"
+              @click="changeTab(tab.id, tab.isDisabled)"
+            >
+              <img :src="tab.img" :alt="tab.name" />
+              <span
+                @mouseenter="switchTabLabel(tab.isDisabled)"
+                @mouseleave="switchTabLabel(tab.isDisabled)"
+                >{{ tab.name }}</span
+              >
               <Transition>
                 <TabLabel
-                  v-if="eventData.price && eventPriceHover"
-                  class="b-event-info__price-tooltip"
-                  :title="$t('events.price_description')"
-                  :text="eventData.price_description"
+                  v-if="tab.isDisabled && isTabLabel"
+                  :title="$t('profile.coming-soon-title')"
+                  :text="$t('profile.coming-soon-text')"
                 />
               </Transition>
             </div>
           </div>
 
-          <div class="b-event-info__main-info">
-            <div class="b-event-info__labels">
-              <div class="b-event-info__label">
-                {{ $t(`events.${eventData.type}`) }}
-              </div>
-              <div class="b-event-info__label">
-                {{ $t(`events.${eventData.gender}`) }}
-              </div>
-              <div v-if="eventData.need_ball" class="b-event-info__label">
-                {{ $t('hashtags.need_ball') }}
-              </div>
-              <div v-if="eventData.need_form" class="b-event-info__label">
-                {{ $t('hashtags.need_form') }}
-              </div>
-            </div>
-            <EventInfoForms
-              class="b-event-info__forms-block"
-              v-if="Object.keys(eventData.forms).length !== 0"
-              :formsData="eventData.forms"
-            />
+          <EventInfoUsersTable
+            v-if="activeTab === 0"
+            :data="eventData.current_users"
+            :table-title-text="$t('my_events.players-list')"
+            :table-color="'#148783'"
+            :maxPlayersCount="eventData.amount_members"
+            :emptyListData="noUsersData"
+          />
 
-            <div class="b-event-info__description-block">
-              <div class="b-event-info__title">
-                {{ $t('my_events.description-event') }}
-              </div>
-              <div class="b-event-info__description">
-                {{ eventData.description }}
-              </div>
-            </div>
-          </div>
+          <EventInfoUsersTable
+            v-if="activeTab === 1"
+            :data="eventData.current_fans"
+            :border="false"
+            :emptyListData="noFansData"
+          />
+
+          <ListOfEventRequestsToParticipations
+            v-if="activeTab === 2"
+            :requestsToParticipationsData="eventRequestsToParticipations"
+            @acceptRequest="acceptRequestToParticipation"
+            @declineRequest="declineRequestToParticipation"
+          />
         </div>
-        <div class="b-event-info__right-side">
-          <div class="b-event-info__users">
-            <div class="b-event-info__user">
-              <div class="b-event-info__left-side">
-                <div class="b-event-info__picture">
-                  <avatar
-                    :border="true"
-                    :link="eventData.author.profile.avatar_url"
-                    :full-name="`${eventData.author.profile.last_name} ${eventData.author.profile.name}`"
-                    @clickByAvatar="goToUserProfile(eventData.author.id)"
-                  ></avatar>
-                </div>
-                <div class="b-event-info__text-block">
-                  <div class="b-event-info__name">
-                    {{ eventData.author.profile.last_name }}
-                    {{ eventData.author.profile.name }}
-                  </div>
-                  <div class="b-event-info__phone">
-                    {{ eventData.author.phone }}
-                  </div>
-                </div>
-              </div>
-              <div class="b-event-info__right-side">Організатор</div>
-            </div>
-          </div>
-          <div class="b-event-info__map">
-            <position-map
-              class="b-event-map"
-              :coords="{lat: eventData.place.lat, lng: eventData.place.lon}"
-              @map-loaded="loading = false"
-              disable-change-coords
-            >
-            </position-map>
-          </div>
-        </div>
-      </div>
-      <div class="b-event-info__tables-block">
-        <div class="b-event-info__tables-title">
-          {{ $t('my_events.already-accepted') }}
-        </div>
-
-        <div class="b-event-info__tab-block">
-          <div
-            v-for="tab in mockData.tabs"
-            v-show="tab.isShown"
-            :key="tab.id"
-            :class="[
-              'b-event-info__tab-element',
-              { active: activeTab === tab.id, disabled: tab.isDisabled },
-            ]"
-            @click="changeTab(tab.id, tab.isDisabled)"
-          >
-            <img :src="tab.img" :alt="tab.name" />
-            <span
-              @mouseenter="switchTabLabel(tab.isDisabled)"
-              @mouseleave="switchTabLabel(tab.isDisabled)"
-              >{{ tab.name }}</span
-            >
-            <Transition>
-              <TabLabel
-                v-if="tab.isDisabled && isTabLabel"
-                :title="$t('profile.coming-soon-title')"
-                :text="$t('profile.coming-soon-text')"
-              />
-            </Transition>
-          </div>
-        </div>
-
-        <EventInfoUsersTable
-          v-if="activeTab === 0"
-          :data="eventData.current_users"
-          :table-title-text="$t('my_events.players-list')"
-          :table-color="'#148783'"
-          :maxPlayersCount="eventData.amount_members"
-          :emptyListData="noUsersData"
-        />
-
-        <EventInfoUsersTable
-          v-if="activeTab === 1"
-          :data="eventData.current_fans"
-          :border="false"
-          :emptyListData="noFansData"
-        />
-
-        <ListOfEventRequestsToParticipations
-          v-if="activeTab === 2"
-          :requestsToParticipationsData="eventRequestsToParticipations"
-          @acceptRequest="acceptRequestToParticipation"
-          @declineRequest="declineRequestToParticipation"
-        />
       </div>
     </div>
     <RightSidebar />
@@ -283,6 +287,7 @@ import { useUserDataStore } from '../../../stores/userData';
 import { addMinutes } from '../../../utils/addMinutes';
 import { getDate } from '../../../utils/getDate';
 import { getTime } from '../../../utils/getTime';
+import { copyToClipboard } from '../../../utils/copyToClipBoard';
 
 import CONSTANTS from '../../../consts/index';
 import { ROUTES } from '../../../router/router.const';
@@ -409,7 +414,7 @@ export default {
           description: t('no_records.noEventPlayers.description_author'),
           button_text: t('buttons.invite-players'),
           image: noUserRecords,
-          action: () => showInviteUsersModal()
+          action: () => showInviteUsersModal(),
         };
       } else {
         return {
@@ -670,7 +675,7 @@ export default {
     }
 
     const copyLinkButtonClick = () => {
-      navigator.clipboard.writeText(currentFullRoute.value);
+      copyToClipboard(currentFullRoute.value);
       closeShareEventModal();
       toast.success(t('notifications.event-share-link-copied'));
     };
@@ -808,7 +813,6 @@ $color-8a8aa8: #8a8aa8;
   grid-template-columns: 1fr 256px;
   grid-gap: 28px;
   width: 100%;
-  overflow: scroll;
 
   @media (max-width: 1200px) {
     grid-template-columns: 1fr;
@@ -893,6 +897,11 @@ $color-8a8aa8: #8a8aa8;
           }
         }
       }
+    }
+
+    .b-event-info__main-content-block {
+      overflow-y: scroll;
+      height: calc(100vh - 90px - 60px);
     }
 
     .b-event-info__details-block {
