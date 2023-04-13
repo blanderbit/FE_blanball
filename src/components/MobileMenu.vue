@@ -29,6 +29,7 @@
           <Avatar
             :link="userStore.getUserAvatar"
             :full-name="userStore.getUserFullName"
+            @clickByAvatar="goToMyProfile"
           >
           </Avatar>
         </div>
@@ -357,6 +358,11 @@ export default {
       { deep: true }
     );
 
+    function goToMyProfile() {
+      router.push(ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute);
+      closeMobMenu();
+    }
+
     const emptyListMessages = computed(() => {
       return {
         title: t('no_records.noNotifications.title'),
@@ -526,7 +532,7 @@ export default {
           handleSelectableMode();
         }
         if (selectedTabId.value === 2) {
-          emit('removeNotifications', 'All')
+          emit('removeNotifications', 'All');
         }
         stopLoader();
       },
@@ -550,7 +556,7 @@ export default {
           notification_ids: selectedList.value,
         });
         if (selectedTabId.value === 2) {
-          emit('removeNotifications', selectedList.value)
+          emit('removeNotifications', selectedList.value);
         }
         clearSelectedList();
         handleSelectableMode();
@@ -563,7 +569,7 @@ export default {
           notification_ids: [id],
         });
         if (selectedTabId.value === 2) {
-          emit('removeNotifications', [id])
+          emit('removeNotifications', [id]);
         }
         stopLoader();
       },
@@ -597,7 +603,7 @@ export default {
       if (tabId !== selectedTabId.value && !selectable.value) {
         selectedTabId.value = tabId;
         emit('changeTab', tabType);
-        restartInfiniteScroll()
+        restartInfiniteScroll();
       }
     };
 
@@ -627,6 +633,7 @@ export default {
       closeSubmitModal,
       changeTab,
       clearSelectedList,
+      goToMyProfile,
       lineMenuClick,
       selectNotification,
       closeMobMenu,
@@ -641,7 +648,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$color-fff: #fff;
 // SCSS variables for hex colors
 $color-efeff6: #efeff6;
 $color-8a8aa8: #8a8aa8;
@@ -865,7 +871,7 @@ $color-1ccd62: #1ccd62;
   }
 }
 .b-mob-menu__control-block {
-  background: $color-fff;
+  background: $--b-main-white-color;
   width: 100%;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   padding: 12px;

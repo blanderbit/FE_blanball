@@ -168,10 +168,9 @@
                 <div class="b-main-search__title">
                   {{ $t('events.filters') }}
                 </div>
-                <span class="b-found-count"
-                  >{{ $t('users.found') }} {{ elementsCount }}
-                  {{ $t('users.advertisments') }}</span
-                >
+                <span class="b-found-count">{{
+                  $t('events.found-events', { count: elementsCount })
+                }}</span>
               </div>
             </div>
           </div>

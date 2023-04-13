@@ -371,8 +371,6 @@ export default {
 <style scoped lang="scss">
 $color-f9f9fc: #f9f9fc;
 $color-ecfcfb: #ecfcfb;
-$color-148783: #148783;
-$color-fff: #fff;
 $color-f0f0f4: #f0f0f4;
 // SCSS variables for hex colors
 $color-8a8aa8: #8a8aa8;
@@ -447,7 +445,7 @@ $color-000: #000;
 }
 
 .notification-push {
-  ::v-deep {
+  :deep {
     .spiner-text {
       display: none;
     }
@@ -489,7 +487,7 @@ $color-000: #000;
 
 .notification-sidebar-not-read {
   background: $color-ecfcfb;
-  border-bottom: 1px solid $color-148783;
+  border-bottom: 1px solid $--b-main-green-color;
 }
 
 .notification-sidebar {
@@ -515,7 +513,7 @@ $color-000: #000;
     color: $--b-main-gray-color;
   }
 
-  ::v-deep {
+  :deep {
     .spiner-text {
       display: none;
     }
@@ -564,7 +562,7 @@ $color-000: #000;
   }
 }
 
-::v-deep {
+:deep {
   .vcp__body {
     z-index: 1 !important;
   }
@@ -585,7 +583,7 @@ $color-000: #000;
 
 .notification-push,
 .not-collapsible {
-  ::v-deep {
+  :deep {
     .vcp__header,
     .vcp__body,
     .vcp__body-content,
@@ -608,7 +606,7 @@ $color-000: #000;
 }
 
 .notification-read {
-  background: $color-fff;
+  background: $--b-main-white-color;
   border-bottom: 1px solid $color-efeff6;
 }
 
@@ -621,7 +619,7 @@ $color-000: #000;
   margin-bottom: 8px;
   position: relative;
 
-  ::v-deep(.vcp__header-icon) {
+  :deep(.vcp__header-icon) {
     position: absolute;
     left: 105px;
     top: 8px;
@@ -641,7 +639,7 @@ $color-000: #000;
   font-weight: 400;
   font-size: 13px;
   line-height: 20px;
-  color: $color-148783;
+  color: $--b-main-green-color;
   cursor: pointer;
 }
 .not-full-content {
@@ -673,7 +671,7 @@ $color-000: #000;
   cursor: pointer;
 }
 .notification-mobile {
-  ::v-deep(.vcp__header-icon) {
+  :deep(.vcp__header-icon) {
     position: absolute;
     right: 22px;
   }

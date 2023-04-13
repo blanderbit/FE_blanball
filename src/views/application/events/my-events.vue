@@ -28,6 +28,12 @@
     @closeModal="closeEventActiondModal"
   />
   <div class="b-events-page">
+    <div
+            @click="goToCreateEvent"
+            class="b-events-page-create-event-mobile-button"
+          >
+            <img src="../../../assets/img/plus.svg" alt="" />
+          </div>
     <div class="b-events-page__main-body" ref="mainEventsBlock">
       <div class="b-events-page__header-block">
         <div class="b-events-page__left-part">
@@ -89,12 +95,6 @@
             </div>
           </template>
         </events-filters>
-        <div
-          @click="goToCreateEvent"
-          class="b-events-page__all-create-event-mobile-button"
-        >
-          <img src="../../../assets/img/plus.svg" alt="" />
-        </div>
         <FilterBlock v-if="selected.length">
           <div class="b-events-page__after-select-block">
             <div class="b-left__side">
@@ -151,7 +151,7 @@
               >
                 <template #complete>
                   <EmptyList
-                    v-if="!paginationElements.length"
+                    v-if="!paginationElements.length && !loading"
                     :title="emptyListMessages.title"
                     :description="emptyListMessages.description"
                     :buttonText="emptyListMessages.button_text"
@@ -558,6 +558,7 @@ export default {
     }
     async function changeTab(tabId) {
       if (tabId !== selectedTabId.value) {
+        loading.value = true;
         selectedTabId.value = tabId;
 
         switch (selectedTabId.value) {
@@ -574,6 +575,7 @@ export default {
         paginationElements.value =
           route.meta.eventData.data.results.map(handlingIncomeData);
         restartInfiniteScroll();
+        loading.value = false;
       }
     }
 
@@ -716,7 +718,7 @@ export default {
       }
     };
 
-    function loadDataPaginationData(
+    async function loadDataPaginationData(
       pageNumber,
       $state,
       forceUpdate,
@@ -729,7 +731,7 @@ export default {
         paginationClearData();
       }
 
-      paginationLoad({
+      await paginationLoad({
         pageNumber,
         $state,
         forceUpdate,
@@ -742,7 +744,11 @@ export default {
 
     onBeforeRouteLeave((to, from, next) => {
       nextRoutePath.value = to.fullPath;
-      if (selected.value.length && !isSubmitModalOpened.value && !to.meta.noGuards) {
+      if (
+        selected.value.length &&
+        !isSubmitModalOpened.value &&
+        !to.meta.noGuards
+      ) {
         showSubmitModal('cancelChanges');
       } else {
         next();
@@ -820,10 +826,31 @@ $color-dfdeed: #dfdeed;
   display: grid;
   grid-template-columns: 1fr 256px;
   grid-gap: 28px;
+  position: relative;
 
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
   }
+
+  .b-events-page-create-event-mobile-button {
+  background: $--b-main-green-color;
+  box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+  border-radius: 100px;
+  padding: 12px;
+  position: absolute;
+  display: none;
+  font-size: 24px;
+  font-weight: 700px;
+  width: 44px;
+  height: 44px;
+  right: 25px;
+  z-index: 10;
+  bottom: 30%;
+
+  @media (max-width: 992px) {
+    display: flex;
+  }
+}
 
   .b-events-page__main-body {
     .b-events-page__header-block {
@@ -1025,7 +1052,7 @@ $color-dfdeed: #dfdeed;
         justify-content: center;
         margin-bottom: 8px;
         gap: 32px;
-        border-bottom: 1px solid #f0f0f4;
+        border-bottom: 1px solid $color-f0f0f4;
 
         .b-events-page__tab {
           @include inter(13px, 400, $--b-main-gray-color);
@@ -1068,23 +1095,4 @@ $color-dfdeed: #dfdeed;
   }
 }
 
-.b-events-page__all-create-event-mobile-button {
-  background: $--b-main-green-color;
-  box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
-  border-radius: 100px;
-  padding: 12px;
-  position: absolute;
-  display: none;
-  font-size: 24px;
-  font-weight: 700px;
-  width: 44px;
-  height: 44px;
-  right: 25px;
-  z-index: 10;
-  bottom: 25%;
-
-  @media (max-width: 992px) {
-    display: flex;
-  }
-}
 </style>

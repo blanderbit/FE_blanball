@@ -55,7 +55,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 $color-f0f0f4: #f0f0f4;
-$color-148783: #148783;
 $color-efeff6: #efeff6;
 .b-small-event-card {
   border-radius: 6px;
@@ -95,7 +94,7 @@ $color-efeff6: #efeff6;
         &.author,
         &.player {
           @include inter(12px, 400, #ffff);
-          background: $color-148783;
+          background: $--b-main-green-color;
         }
 
         &.request_participation,

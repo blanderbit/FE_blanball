@@ -2,7 +2,6 @@ import * as yup from 'yup';
 import userNameValidator from '../methods/userName';
 
 userNameValidator('errors.invalid-name');
-
 export default {
   schema: (currentStep) => {
     if (currentStep === 1) {
@@ -24,7 +23,11 @@ export default {
     }
     if (currentStep === 2) {
       return yup.object({
-        email: yup.string().required('errors.required').email('errors.email'),
+        email: yup
+          .string()
+          .required('errors.required')
+          .email('errors.email')
+          .max(255, 'errors.max255'),
         password: yup
           .string()
           .required('errors.required')

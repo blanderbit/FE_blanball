@@ -335,7 +335,7 @@ $color-6f6f77: #6f6f77;
         font-weight: 400;
         font-size: 14px;
         line-height: 20px;
-        color: $color-575775;
+        color: $--b-main-gray-color;
         cursor: pointer;
 
         &.active {
@@ -345,7 +345,7 @@ $color-6f6f77: #6f6f77;
           font-weight: 400;
           font-size: 14px;
           line-height: 20px;
-          color: $color-575775;
+          color: $--b-main-gray-color;
         }
       }
     }

@@ -401,7 +401,7 @@ $color-f0f0f4: #f0f0f4;
     }
   }
 }
-.event-place::v-deep(.b-place-detector) {
+.event-place:deep(.b-place-detector) {
   background: $color-efeff6;
   border-radius: 4px;
   margin-top: 10px;

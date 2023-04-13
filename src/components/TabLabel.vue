@@ -80,9 +80,11 @@ $color-efefef: #efefef;
     &-right {
       left: calc(100% + 10px);
       top: 50%;
+      transform: translateY(-20%);
     }
     &-bottom {
       top: calc(100% + 10px);
+      transform: translateX(-20%);
     }
     &-left {
       right: calc(100% + 10px);

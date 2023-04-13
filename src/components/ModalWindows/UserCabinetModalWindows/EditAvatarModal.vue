@@ -193,10 +193,10 @@ $color-efeff6: #efeff6;
     @include mobile {
       display: block;
     }
-    ::v-deep(.cropper-move) {
+    :deep(.cropper-move) {
       display: none;
     }
-    ::v-deep(.b-edit-avatar__right-side) {
+    :deep(.b-edit-avatar__right-side) {
       width: 200px;
       @include mobile {
         width: 100%;
@@ -226,7 +226,7 @@ $color-efeff6: #efeff6;
           display: none;
         }
       }
-      ::v-deep(.b-edit-avatar__edited-pic) {
+      :deep(.b-edit-avatar__edited-pic) {
         img {
           display: block;
           height: 100%;
@@ -334,37 +334,27 @@ $color-efeff6: #efeff6;
     }
   }
 }
-::v-deep(.cropper-modal) {
+:deep(.cropper-modal) {
   background: $color-d9d9d9;
 }
-::v-deep(.cropper-line) {
+:deep(.cropper-line) {
   background: transparent;
   background-color: transparent;
 }
-::v-deep(.cropper-dashed) {
+:deep(.cropper-dashed) {
   opacity: 0;
 }
-::v-deep(.cropper-center) {
+:deep(.cropper-center) {
   display: none;
 }
-::v-deep(.cropper-view-box) {
+:deep(.cropper-view-box) {
   border-width: 2px;
   border-style: solid;
   border: 3px dashed $--b-main-green-color;
   background: transparent;
   outline: none;
 }
-::v-deep(.cropper-point) {
+:deep(.cropper-point) {
   background: transparent;
 }
-// ::v-deep(.point-ne) {
-//   width: 14px;
-//   height: 14px;
-//   border-top: 3px solid $color-148783;
-//   border-right: 3px solid $color-148783;
-// }
-// ::v-deep(.point-e) {
-//   height: 28px;
-//   border-right: 3px solid $color-148783;
-// }
 </style>

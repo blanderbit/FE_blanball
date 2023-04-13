@@ -156,12 +156,12 @@ export default {
 // SCSS variables for hex colors
 $color-4c4a82: #4c4a82;
 
-.b-bug-report-modal__description-input::v-deep(.b-input__icon) {
+.b-bug-report-modal__description-input:deep(.b-input__icon) {
   height: 10% !important;
   margin-top: 10px;
 }
 .b-bug-report-modal__description-input {
-  &::v-deep(span) {
+  &:deep(span) {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
@@ -170,7 +170,7 @@ $color-4c4a82: #4c4a82;
     color: $--b-main-gray-color;
   }
 
-  &::v-deep(.b-text-area__min-max-label) {
+  &:deep(.b-text-area__min-max-label) {
     display: none;
   }
 }

@@ -61,7 +61,7 @@ $color-efeff6: #efeff6;
   border: 1px solid $color-f0f0f4;
   border-radius: 6px;
 
-  ::v-deep {
+  :deep {
     .b-radio {
       border: none;
       &:last-child {

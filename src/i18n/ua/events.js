@@ -67,7 +67,7 @@ export default {
   'new-first': 'Cпочатку нові',
   'search-events': 'Пошук серед подій',
   'set-forms-colors': 'Призначте кольори форми команд',
-  found: 'знайдено',
+  'found-events': 'Знайдено {count} подій',
   advertisments: 'оголошень',
   'additional-info': 'Додаткова інформація',
   'add-comment':

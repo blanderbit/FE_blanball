@@ -244,6 +244,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-cddde0: #cddde0;
+$color-578d95: #578d95;
 // SCSS variables for hex colors
 $color-efeff6: #efeff6;
 $color-1ab2ad: #1ab2ad;
@@ -369,7 +371,7 @@ form {
     }
   }
 }
-::v-deep .code-input input {
+:deep .code-input input {
   width: 20% !important;
 }
 </style>

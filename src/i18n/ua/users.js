@@ -14,7 +14,7 @@ export default {
   'all-desk': 'Всі',
   sorting: 'Сортування',
   'new-first': 'Cпочатку нові',
-  found: 'знайдено',
+  'found-users': 'Знайдено {count} користувачів',
   advertisments: 'оголошень',
   'users-search': 'Пошук користувачів',
   search: 'Пошук',

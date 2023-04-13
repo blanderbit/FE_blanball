@@ -63,168 +63,143 @@
     :userData="userData"
     @closeModal="closeInviteUserModal"
   />
-  <div
-    :class="[
-      { 'b-public-profile__top-wrapper': isPersonalPreview },
-      'b-wrapper-scroll',
-    ]"
-  >
-    <div :class="{ 'b-public-profile__wrapper': isPersonalPreview }">
-      <div
-        v-if="isPersonalPreview"
-        class="b-public-profile__wrapper-edit-buttons"
-      >
-        <div
-          class="b-public-profile__continue"
-          @click="$emit('closeModal', 'public_profile')"
-        >
-          <span>{{ $t('buttons.keep-editing') }}</span>
-          <img src="../../assets/img/arrow-left-small.svg" alt="" />
-        </div>
-        <div @click="$emit('saveChanges')" class="b-public-profile__exit">
-          <span>{{ $t('buttons.save-and-out') }}</span>
-          <img src="../../assets/img/cross-white.svg" alt="" />
-        </div>
-      </div>
-      <div class="b-public-profile">
-        <div class="b-public-profile__background-image">
-          <img :src="backgroundTop" alt="" />
-        </div>
-        <div class="b-public-profile__main-side">
-          <div ref="profileFirstBlock" class="b-public-profile__first-block">
-            <div class="b-public-profile__profile-info">
-              <Avatar
-                class="b-public-profile__avatar"
-                :avatarType="avatarType"
-                :link="userData.profile.avatar_url"
-                :full-name="`${userData.profile.last_name} ${userData.profile.name}`"
+  <div class="b-public-profile">
+    <div class="b-public-profile__background-image">
+      <img :src="backgroundTop" alt="" />
+    </div>
+    <div class="b-public-profile__main-side">
+      <div ref="profileFirstBlock" class="b-public-profile__first-block">
+        <div class="b-public-profile__profile-info">
+          <Avatar
+            class="b-public-profile__avatar"
+            :avatarType="avatarType"
+            :link="userData.profile.avatar_url"
+            :full-name="`${userData.profile.last_name} ${userData.profile.name}`"
+          />
+          <div class="b-public-profile__user-main-info">
+            <div class="b-public-profile__full-name">
+              {{ userData.profile.last_name }} <br />
+              {{ userData.profile.name }}
+            </div>
+            <div class="b-user-role-raiting">
+              <div class="b-public-profile__role">
+                {{ $t(`hashtags.${userData.role}`) }}
+              </div>
+              <StarRating
+                :rating="userRating"
+                :star-size="14"
+                :show-rating="false"
+                :read-only="true"
+                :active-color="'#F57125'"
               />
-              <div class="b-public-profile__user-main-info">
-                <div class="b-public-profile__full-name">
-                  {{ userData.profile.last_name }} <br />
-                  {{ userData.profile.name }}
-                </div>
-                <div class="b-user-role-raiting">
-                  <div class="b-public-profile__role">
-                    {{ $t(`hashtags.${userData.role}`) }}
-                  </div>
-                  <StarRating
-                    :rating="userRating"
-                    :star-size="14"
-                    :show-rating="false"
-                    :read-only="true"
-                    :active-color="'#F57125'"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="b-public-profile__qualification tablet">
-              <span class="b-qualification__text">
-                {{ $t('player_page.qualification') }}
-              </span>
-              <span class="b-qualification__status">
-                {{
-                  userData.is_verified
-                    ? $t('player_page.verified')
-                    : $t('player_page.not_verified')
-                }}
-                <img src="../../assets/img/profile-ball.svg" alt="" />
-              </span>
-            </div>
-            <div class="b-public-profile__buttons-block">
-              <div
-                class="b-public-profile__invite-button"
-                @click="openInviteUserModal"
-              >
-                {{ $t('player_page.invite') }}
-              </div>
-              <div class="b-public-profile__connection-buttons">
-                <WhiteBtn
-                  v-if="userData.configuration.email"
-                  :style="`flex-basis: ${
-                    userData.configuration.phone ? '57%' : '100%'
-                  }`"
-                  class="b-connection__button b-send-email__button"
-                  :text="$t('player_page.write-email')"
-                  :icon="icons.letter"
-                  :height="36"
-                  @click-function="showCopyEmailModal"
-                />
-                <WhiteBtn
-                  v-if="userData.configuration.phone"
-                  :style="`flex-basis: ${
-                    userData.configuration.email ? '43%' : '100%'
-                  }`"
-                  class="b-connection__button b-call-phone__button"
-                  :text="$t('player_page.call')"
-                  :icon="icons.phone"
-                  :height="36"
-                  @click-function="showCopyPhoneModal"
-                />
-              </div>
-            </div>
-            <div class="b-public-profile__bottom-block">
-              <div class="b-public-profile__qualification desktop">
-                <span class="b-qualification__text">
-                  {{ $t('player_page.qualification') }}
-                </span>
-                <span class="b-qualification__status">
-                  {{
-                    userData.is_verified
-                      ? $t('player_page.verified')
-                      : $t('player_page.not_verified')
-                  }}
-                  <img src="../../assets/img/profile-ball.svg" alt="" />
-                </span>
-              </div>
-              <div
-                v-if="userData.profile.about_me"
-                class="b-public-profile__description"
-              >
-                <div class="b-description__title">
-                  {{ $t('player_page.about-yourself') }}
-                </div>
-                <div class="b-description__text">
-                  {{ userData.profile.about_me }}
-                </div>
-              </div>
             </div>
           </div>
-          <div class="b-public-profile__main-side-left-block">
-            <div class="b-public-profile__second-block">
-              <div
-                class="b-second-block__user-features-block"
-                :style="userFeaturesStyle"
-              >
-                <div class="b-user-features__title">
-                  {{ $t('profile.game-features') }}
-                </div>
-                <div class="b-second-block__user-features">
-                  <div
-                    v-for="feature in playFeatures"
-                    class="b-second-block__user-feature"
-                  >
-                    <img class="b-feature__image" :src="feature.img" alt="" />
-                    <div class="b-feature__info">
-                      <div class="b-feature__name">{{ feature.name }}</div>
-                      <div class="b-feature__value">{{ feature.value }}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <PublicProfileReviews
-                :userRating="userRating"
-                :userId="userData.id"
-                :userShowReviews="userData.configuration.show_reviews"
-                :userFullName="`${userData.profile.last_name} ${userData.profile.name}`"
-              />
-            </div>
-            <PublicProfilePlannedEvents
-              :userId="userData.id"
-              :userFullName="`${userData.profile.last_name} ${userData.profile.name}`"
+        </div>
+        <div class="b-public-profile__qualification tablet">
+          <span class="b-qualification__text">
+            {{ $t('player_page.qualification') }}
+          </span>
+          <span class="b-qualification__status">
+            {{
+              userData.is_verified
+                ? $t('player_page.verified')
+                : $t('player_page.not_verified')
+            }}
+            <img src="../../assets/img/profile-ball.svg" alt="" />
+          </span>
+        </div>
+        <div class="b-public-profile__buttons-block">
+          <div
+            class="b-public-profile__invite-button"
+            @click="openInviteUserModal"
+          >
+            {{ $t('player_page.invite') }}
+          </div>
+          <div class="b-public-profile__connection-buttons">
+            <WhiteBtn
+              v-if="userData.configuration.email"
+              :style="`flex-basis: ${
+                userData.configuration.phone ? '57%' : '100%'
+              }`"
+              class="b-connection__button b-send-email__button"
+              :text="$t('player_page.write-email')"
+              :icon="icons.letter"
+              :height="36"
+              @click-function="showCopyEmailModal"
+            />
+            <WhiteBtn
+              v-if="userData.configuration.phone"
+              :style="`flex-basis: ${
+                userData.configuration.email ? '43%' : '100%'
+              }`"
+              class="b-connection__button b-call-phone__button"
+              :text="$t('player_page.call')"
+              :icon="icons.phone"
+              :height="36"
+              @click-function="showCopyPhoneModal"
             />
           </div>
         </div>
+        <div class="b-public-profile__bottom-block">
+          <div class="b-public-profile__qualification desktop">
+            <span class="b-qualification__text">
+              {{ $t('player_page.qualification') }}
+            </span>
+            <span class="b-qualification__status">
+              {{
+                userData.is_verified
+                  ? $t('player_page.verified')
+                  : $t('player_page.not_verified')
+              }}
+              <img src="../../assets/img/profile-ball.svg" alt="" />
+            </span>
+          </div>
+          <div
+            v-if="userData.profile.about_me"
+            class="b-public-profile__description"
+          >
+            <div class="b-description__title">
+              {{ $t('player_page.about-yourself') }}
+            </div>
+            <div class="b-description__text">
+              {{ userData.profile.about_me }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="b-public-profile__main-side-left-block">
+        <div class="b-public-profile__second-block">
+          <div
+            class="b-second-block__user-features-block"
+            :style="userFeaturesStyle"
+          >
+            <div class="b-user-features__title">
+              {{ $t('profile.game-features') }}
+            </div>
+            <div class="b-second-block__user-features">
+              <div
+                v-for="feature in playFeatures"
+                class="b-second-block__user-feature"
+              >
+                <img class="b-feature__image" :src="feature.img" alt="" />
+                <div class="b-feature__info">
+                  <div class="b-feature__name">{{ feature.name }}</div>
+                  <div class="b-feature__value">{{ feature.value }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <PublicProfileReviews
+            :userRating="userRating"
+            :userId="userData.id"
+            :userShowReviews="userData.configuration.show_reviews"
+            :userFullName="`${userData.profile.last_name} ${userData.profile.name}`"
+          />
+        </div>
+        <PublicProfilePlannedEvents
+          :userId="userData.id"
+          :userFullName="`${userData.profile.last_name} ${userData.profile.name}`"
+        />
       </div>
     </div>
   </div>
@@ -248,7 +223,7 @@ import InputComponent from '../forms/InputComponent.vue';
 import GreenBtn from '../GreenBtn.vue';
 
 import useWindowWidth from '../../utils/widthScreen';
-
+import { copyToClipboard } from '../../utils/copyToClipBoard';
 import { getEmailProvider } from '../../utils/getEmailProvider';
 import { getUkrainianOperator } from '../../utils/getPhoneOperator';
 
@@ -272,7 +247,6 @@ export default {
       type: Object,
       default: () => {},
     },
-    emits: ['saveChanges', 'closeModal'],
     pageMode: {
       type: String,
       default: profilePageMode.LOOK,
@@ -425,22 +399,18 @@ export default {
       }
     };
 
-    const copyToClipBoard = (value) => {
-      navigator.clipboard.writeText(value);
-    };
-
     const closeCopyPhoneModal = () => {
       isCopyUserPhoneModalActive.value = false;
     };
 
     const copyUserPhone = (value) => {
-      copyToClipBoard(value);
+      copyToClipboard(value);
       toast.success(t('notifications.phone-copied'));
       closeCopyPhoneModal();
     };
 
     const copyUserEmail = (value) => {
-      copyToClipBoard(value);
+      copyToClipboard(value);
       toast.success(t('notifications.email-copied'));
       closeCopyEmailModal();
     };
@@ -505,6 +475,8 @@ $color-d2f6a2: #d2f6a2;
   top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
+  overflow: scroll;
+  height: calc(100vh);
 
   @media (max-width: 1200px) {
     top: 100%;
@@ -668,7 +640,7 @@ $color-d2f6a2: #d2f6a2;
 
         .b-public-profile__avatar {
           @include desktop {
-            ::v-deep(.b-avatar) {
+            :deep(.b-avatar) {
               width: 96px;
               height: 96px;
               border-radius: 4px;
@@ -738,7 +710,7 @@ $color-d2f6a2: #d2f6a2;
         margin-top: 8px;
         gap: 8px;
 
-        ::v-deep(.b_white-btn) {
+        :deep(.b_white-btn) {
           border: 1px solid $color-c5c5d3 !important;
           border-radius: 4px;
           @include inter(12px, 500);

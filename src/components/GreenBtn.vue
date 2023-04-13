@@ -145,7 +145,7 @@ $color-c6c7c7: #c6c7c7;
   }
 }
 
-::v-deep {
+:deep {
   // TODO using in two place
   .spiner-text {
     display: none;

@@ -141,7 +141,7 @@ $color-4c4a82: #4c4a82;
   border: 1px solid $color-dfdeed;
   margin-bottom: 16px;
   cursor: pointer;
-  height: 100%;
+  height: fit-content;
   &.active {
     border: 1px solid $color-71ba12;
   }
@@ -317,7 +317,7 @@ $color-4c4a82: #4c4a82;
   }
 }
 
-.b-my-event-card__place::v-deep(.b-place-detector) {
+.b-my-event-card__place:deep(.b-place-detector) {
   background: $color-efeff6;
   border-radius: 4px;
   margin-top: 10px;

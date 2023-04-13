@@ -193,7 +193,7 @@ export default {
       color: $--b-main-black-color;
       vertical-align: bottom;
     }
-    ::v-deep .indicator {
+    :deep .indicator {
       border: 1px solid $--b-main-gray-color;
       background: white;
     }

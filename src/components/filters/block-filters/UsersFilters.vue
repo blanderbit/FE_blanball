@@ -5,6 +5,7 @@
       v-model:dropdown-position="transformedFilters.profile__position"
       v-model:range-slider="transformedFilters.profile__age"
       v-model:gender="transformedFilters.profile__gender"
+      :elementsCount="elementsCount"
       @close-modal="isModalFiltersActive = false"
       @set-modal-window-filters="setModalFilters"
       @clearFilters="$emit('clearFilters')"
@@ -82,9 +83,7 @@
               {{ $t('users.filters') }}
             </div>
             <div class="b-users-filters__text">
-              {{ $t('users.found') }}
-              15
-              {{ $t('users.advertisments') }}
+              {{ $t('users.found-users', {count: elementsCount}) }}
             </div>
           </div>
         </div>
@@ -133,8 +132,8 @@ export default {
       type: Object,
       default: () => ({
         profile__gender: '',
-        profile__age_min: 6,
-        profile__age_max: 80,
+        profile__age_min: '',
+        profile__age_max: '',
         is_online: null,
         search: '',
         profile__position: '',
@@ -142,6 +141,10 @@ export default {
         dist: '',
         point: [],
       }),
+    },
+    elementsCount: {
+      type: Number,
+      default: 0,
     },
   },
   emits: ['update:value', 'clearFilters'],
@@ -354,6 +357,7 @@ $color-fafafa: #fafafa;
           font-size: 12px;
           line-height: 20px;
           color: $--b-main-gray-color;
+          width: max-content;
         }
       }
     }

@@ -553,7 +553,7 @@ $color-efeff6: #efeff6;
         overflow: hidden;
         border-radius: 8px;
         .b-user-card__profile-avatar {
-          ::v-deep(.b-avatar) {
+          :deep(.b-avatar) {
             width: 52px;
             height: 52px;
             border-radius: 8px;
@@ -771,7 +771,7 @@ $color-efeff6: #efeff6;
           .b-user-card__main-leg {
             flex-basis: 40%;
             .b-user-card__dropdown-main-leg {
-              ::v-deep {
+              :deep {
                 .vs__dropdown-toggle {
                   height: 40px;
                 }

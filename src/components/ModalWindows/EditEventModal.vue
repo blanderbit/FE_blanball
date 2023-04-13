@@ -382,12 +382,12 @@ $color-8a8aa8: #8a8aa8;
       align-items: center;
       justify-content: space-between;
 
-      ::v-deep(.b_white-btn) {
+      :deep(.b_white-btn) {
         font-weight: 400;
         color: $--b-main-gray-color;
         width: 164px !important;
       }
-      ::v-deep(.b-green-btn) {
+      :deep(.b-green-btn) {
         width: 130px !important;
       }
     }

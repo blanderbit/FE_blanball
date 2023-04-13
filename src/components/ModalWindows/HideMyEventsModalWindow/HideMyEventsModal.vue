@@ -190,7 +190,6 @@ export default {
       dataTransformation: handlingIncomeData,
     });
 
-
     function handlingIncomeData(item) {
       return {
         ...item,
@@ -300,10 +299,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep(.vue-recycle-scroller__item-view) {
+$color-e2e2e4: #e2e2e4;
+$color-efeff6: #efeff6;
+:deep(.vue-recycle-scroller__item-view) {
   @include mobile {
     padding: 0px;
   }
+}
+
+:deep(.b_white-btn) {
+  border: 1px solid #dfdeed !important;
 }
 
 .b-hide-events-modal__wrapper {
@@ -316,7 +321,7 @@ export default {
     height: 655px;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 6px;
-    background: #ffff;
+    background: $--b-main-white-color;
     padding: 24px 20px;
 
     @include desktop {
@@ -379,7 +384,7 @@ export default {
         .b-hide-events-modal__tabs {
           display: flex;
           align-items: center;
-          border: 1px solid #e2e2e4;
+          border: 1px solid $color-e2e2e4;
           border-radius: 6px;
           height: 100%;
 
@@ -391,7 +396,7 @@ export default {
           .b-hide-events-modal__tab {
             @include inter(13px, 400, $--b-main-gray-color);
             line-height: 22px;
-            background: #ffffff;
+            background: $--b-main-white-color;
             text-align: center;
             border-radius: 6px;
             width: 90px;
@@ -409,7 +414,7 @@ export default {
 
             &.selected {
               background: $--b-main-green-color;
-              border: 2px solid #fff;
+              border: 2px solid $--b-main-white-color;
               @include inter(13px, 500, $--b-main-white-color);
               height: 32px;
 
@@ -454,7 +459,7 @@ export default {
 
     .b-hide-events-modal__bottom-side {
       padding: 8px 0px;
-      margin-top: 1px solid #efeff6;
+      margin-top: 1px solid $color-efeff6;
       display: none;
 
       @include mobile {

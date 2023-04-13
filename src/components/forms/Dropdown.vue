@@ -262,7 +262,7 @@ $color-dfdeed: #dfdeed;
 
 @import '../../assets/styles/forms.scss';
 
-::v-deep {
+:deep {
   .vs__clear {
     display: none;
   }
@@ -308,7 +308,7 @@ $color-dfdeed: #dfdeed;
   }
 }
 
-::v-deep {
+:deep {
   #vs3__listbox {
     --vs-dropdown-min-width: auto;
   }

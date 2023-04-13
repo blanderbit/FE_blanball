@@ -170,7 +170,7 @@ $color-efeff6: #efeff6;
   }
 }
 
-::v-deep {
+:deep {
   .b-radio-label {
     font-weight: 400;
     font-size: 13px;

@@ -4,7 +4,11 @@ export default {
   schema: (currentStep) => {
     if (currentStep === 1) {
       return yup.object({
-        email: yup.string().email('errors.email').required('errors.required'),
+        email: yup
+          .string()
+          .email('errors.email')
+          .required('errors.required')
+          .max(255, 'errors.max255'),
       });
     }
     if (currentStep === 2) {

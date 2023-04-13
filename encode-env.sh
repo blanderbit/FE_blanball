@@ -1,0 +1,1 @@
+cat stack-prod.env | base64 -w 0 > stack-prod-env.txt

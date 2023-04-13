@@ -176,7 +176,7 @@ export default defineComponent({
       width: 24px;
     }
 
-    ::v-deep(svg) {
+    :deep(svg) {
       height: 100%;
       width: 100%;
     }

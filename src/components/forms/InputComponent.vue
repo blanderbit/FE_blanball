@@ -338,7 +338,7 @@ $color-dfdeed: #dfdeed;
         padding-left: 12px;
       }
     }
-    ::v-deep input {
+    :deep input {
       width: 100%;
       height: 100%;
       border: none;
