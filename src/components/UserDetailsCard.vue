@@ -570,7 +570,7 @@ $color-efeff6: #efeff6;
           align-items: center;
           cursor: pointer;
           label {
-            display: block;
+            display: flex;
             cursor: pointer;
           }
         }
