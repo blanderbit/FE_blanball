@@ -24,7 +24,7 @@ export default {
       .typeError('errors.type-number')
       .nullable()
       .min(145, 'errors.min145')
-      .max(250, 'errors.max250')
+      .max(210, 'errors.max210')
       .transform((value, originalValue) => {
         if (originalValue === '') {
           return null;
@@ -36,7 +36,7 @@ export default {
       .typeError('errors.type-number')
       .nullable()
       .min(30, 'errors.min30')
-      .max(200, 'errors.max250')
+      .max(210, 'errors.max210')
       .transform((value, originalValue) => {
         if (originalValue === '') {
           return null;
