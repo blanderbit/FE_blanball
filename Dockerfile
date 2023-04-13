@@ -6,6 +6,7 @@ WORKDIR /frontend
 COPY package*.json ./
 RUN npm i
 COPY ./ ./
+RUN echo $MODE
 RUN echo $ENV_FILE | base64 --decode > stack.env
 RUN cat stack.env
 RUN npm run build
