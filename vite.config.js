@@ -3,7 +3,7 @@ import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 
-require('dotenv').config({ path: './.env' });
+require('dotenv').config({ path: './stack.env' });
 import { babel } from '@rollup/plugin-babel';
 
 const globalVariables = {
