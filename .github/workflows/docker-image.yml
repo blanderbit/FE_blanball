@@ -11,6 +11,7 @@ jobs:
         if: github.ref == 'refs/heads/develop'
         run: |
           echo "DOCKERFILE_PATH=Dockerfile" >> $GITHUB_ENV
+          echo "ENV_FILE=${{ secrets.ENV_FILE_TEST }}" >> $GITHUB_ENV
           echo "NGINX_CONFIG_PATH=deploy/nginx/test/default.conf" >> $GITHUB_ENV
           echo "WEBHOOK=${{ secrets.PORTAINER_WEBHOOK_URL_TEST }}" >> $GITHUB_ENV
           echo "REGISTRY=${{ secrets.DOCKER_REGISTRY_TEST }}" >> $GITHUB_ENV
@@ -20,6 +21,7 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: |
           echo "DOCKERFILE_PATH=Dockerfile" >> $GITHUB_ENV
+          echo "ENV_FILE=${{ secrets.ENV_FILE_PROD }}" >> $GITHUB_ENV
           echo "NGINX_CONFIG_PATH=deploy/nginx/prod/default.conf" >> $GITHUB_ENV
           echo "REGISTRY=${{ secrets.DOCKER_REGISTRY_TEST }}" >> $GITHUB_ENV
           echo "WEBHOOK=${{ secrets.PORTAINER_WEBHOOK_URL_PROD }}" >> $GITHUB_ENV
@@ -35,6 +37,8 @@ jobs:
 
       - name: Change nginx config path
         run: cp ${{ env.NGINX_CONFIG_PATH }} deploy/nginx
+      - name: Encode env file
+        run: echo ${{ env.ENV_FILE }} | base64 --decode > stack.env
       - name: Pull latest image
         run: |
           docker pull ${LATEST_IMAGE} --ignore-pull-failures || true

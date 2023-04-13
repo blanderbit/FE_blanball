@@ -1,9 +1,10 @@
-ARG NODE_VERSION=18-alpine
+ARG NODE_VERSION=18-alpine 
 FROM node:$NODE_VERSION as BUILD_IMAGE
 WORKDIR /frontend
 COPY package*.json ./
 RUN npm i
 COPY ./ ./
+RUN cat stack.env
 RUN npm run build
 FROM nginx:latest
 RUN rm -rf /usr/share/nginx/html/*
