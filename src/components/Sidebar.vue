@@ -23,7 +23,8 @@
     <div class="b_sidebar">
       <div class="b_sidebar_top-block">
         <div class="b_sidebar_picture-top">
-          <img src="../assets/img/my-profile-logo.svg" alt="" />
+          <img src="../assets/img/my-profile-logo.svg" alt="" 
+            @click="goToMainPage"/>
         </div>
         <div class="b_sidebar_menu-block">
           <ul>
@@ -314,6 +315,10 @@ export default {
       }
     };
 
+    const goToMainPage = () => {
+      router.push(ROUTES.APPLICATION.index.path)
+    }
+
     const handleMessageInSidebar = (instanceType) => {
       if (instanceType.notification) {
         skipids.value.push(instanceType.notification_id);
@@ -416,6 +421,7 @@ export default {
       isBugReportModalOpened,
       loadDataNotifications,
       removeNotifications,
+      goToMainPage,
       onChangeTab,
       leaveHoverSidebarItem,
       enterHoverSidebarItem,
@@ -478,6 +484,7 @@ $color-fff4ec: #fff4ec;
         display: flex;
         img {
           margin: auto;
+          cursor: pointer;
         }
       }
       .b_sidebar_menu-block {
