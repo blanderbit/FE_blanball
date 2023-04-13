@@ -44,7 +44,7 @@ jobs:
           -f ${{ env.DOCKERFILE_PATH }} \
           --cache-from ${{ env.LATEST_IMAGE }} \
           -t ${{ env.COMMIT_IMAGE }} \
-          --build-arg MODE=${{ env.MODE }}
+          --build-arg MODE=${{ env.MODE }} \
           --build-arg ENV_FILE=${{ env.ENV_FILE }}  .
       - name: Tag latest image
         run: |
