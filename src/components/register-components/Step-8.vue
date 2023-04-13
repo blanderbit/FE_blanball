@@ -74,9 +74,9 @@ export default {
 
     const mockData = computed(() => {
       return {
-        days: CONSTANTS.register.days,
-        months: CONSTANTS.register.months,
-        years: CONSTANTS.register.years,
+        days: CONSTANTS.dates.days,
+        months: CONSTANTS.dates.months,
+        years: CONSTANTS.dates.years,
       };
     });
     const { t } = useI18n();
