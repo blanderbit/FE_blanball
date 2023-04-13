@@ -192,7 +192,7 @@ export default {
       {
         id: 1,
         img: notReadNotificationCount.value ? notificationUnread : notification,
-        action: () => (isMenuOpened.value = true),
+        action: () => (isMenuOpened.value = !isMenuOpened.value),
         disabled: false,
       },
       {
