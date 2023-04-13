@@ -36,9 +36,9 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
       - name: Change nginx config path
-        run: echo ${{ env.NGINX_CONFIG_PATH }} | base64 --decode > stack.env
+        run: cp ${{ env.NGINX_CONFIG_PATH }} deploy/nginx
       - name: Encode env file
-        run: cp ${{ env.ENV_FILE }} deploy/nginx
+        run: echo ${{ env.ENV_FILE }} | base64 --decode > stack.env
       - name: Pull latest image
         run: |
           docker pull ${LATEST_IMAGE} --ignore-pull-failures || true
