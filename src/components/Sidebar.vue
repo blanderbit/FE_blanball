@@ -463,9 +463,7 @@ $color-fff4ec: #fff4ec;
       background: $color-efeff6;
       border-radius: 24px;
       padding: 4px;
-      .b-avatar {
-        cursor: pointer;
-      }
+      cursor: pointer;
       .b_sidebar_logout {
         margin-top: 6px;
         width: 40px;

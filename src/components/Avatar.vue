@@ -1,5 +1,5 @@
 <template>
-  <div class="b-avatar-wrapper" :style="border ? avatarBorder : null">
+  <div class="b-avatar-wrapper" :style="avatarBorder" >
     <object
       class="b-avatar"
       :class="[`b-avatar-${avatarType}`]"
@@ -61,7 +61,9 @@ export default {
         .join('');
     },
     avatarBorder() {
-      return 'border: 2px dashed #dfdeed; border-radius: 100px; padding: 4px; display: flex; align-items: center;';
+      if (this.border) {
+        return 'border: 2px dashed #dfdeed; border-radius: 100px; padding: 4px; display: flex; align-items: center;';
+      }
     },
   },
 };
@@ -89,7 +91,7 @@ $color-c8ebe7: #c8ebe7;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
-    border: 1.5px solid #EFEFF6;
+    border: 1.5px solid #efeff6;
   }
 
   &-circle {

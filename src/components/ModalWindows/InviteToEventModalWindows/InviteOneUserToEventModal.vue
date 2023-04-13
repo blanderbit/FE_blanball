@@ -1,5 +1,5 @@
 <template>
-    <div class="b-invite-user-to-event-modal__wrapper">
+    <div @click.self="$emit('closeModal')" class="b-invite-user-to-event-modal__wrapper">
       <div class="b-invite-user-to-event-modal__modal-window">
         <div class="b-invite-user-to-event-modal__top-side">
           <div class="b-invite-user-to-event-modal__title">
