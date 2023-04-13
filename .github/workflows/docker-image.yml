@@ -12,7 +12,7 @@ jobs:
         run: |
           echo "DOCKERFILE_PATH=Dockerfile" >> $GITHUB_ENV
           echo "ENV_FILE=${{ secrets.ENV_FILE_TEST }}" >> $GITHUB_ENV
-          echo "MODE=test" >> $GITHUB_ENV
+          echo "NGINX_CONFIG_PATH=deploy/nginx/test/default.conf" >> $GITHUB_ENV
           echo "WEBHOOK=${{ secrets.PORTAINER_WEBHOOK_URL_TEST }}" >> $GITHUB_ENV
           echo "REGISTRY=${{ secrets.DOCKER_REGISTRY_TEST }}" >> $GITHUB_ENV
           echo "LATEST_IMAGE=${{ secrets.DOCKER_REGISTRY_TEST }}":latest >> $GITHUB_ENV
@@ -22,7 +22,7 @@ jobs:
         run: |
           echo "DOCKERFILE_PATH=Dockerfile" >> $GITHUB_ENV
           echo "ENV_FILE=${{ secrets.ENV_FILE_PROD }}" >> $GITHUB_ENV
-          echo "MODE=prod" >> $GITHUB_ENV
+          echo "NGINX_CONFIG_PATH=deploy/nginx/prod/default.conf" >> $GITHUB_ENV
           echo "REGISTRY=${{ secrets.DOCKER_REGISTRY_TEST }}" >> $GITHUB_ENV
           echo "WEBHOOK=${{ secrets.PORTAINER_WEBHOOK_URL_PROD }}" >> $GITHUB_ENV
           echo "LATEST_IMAGE=${{ secrets.DOCKER_REGISTRY_PROD }}":latest >> $GITHUB_ENV
@@ -34,18 +34,18 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Change nginx config path
+        run: echo ${{ env.NGINX_CONFIG_PATH }} | base64 --decode > stack.env
+      - name: Encode env file
+        run: cp ${{ env.ENV_FILE }} deploy/nginx
       - name: Pull latest image
         run: |
           docker pull ${LATEST_IMAGE} --ignore-pull-failures || true
       - name: Build image
         working-directory: .
         run: |
-          docker build \
-          -f ${{ env.DOCKERFILE_PATH }} \
-          --cache-from ${{ env.LATEST_IMAGE }} \
-          -t ${{ env.COMMIT_IMAGE }} \
-          --build-arg MODE=${{ env.MODE }} \
-          --build-arg ENV_FILE=${{ env.ENV_FILE }}  .
+          docker build -f ${{ env.DOCKERFILE_PATH }} --cache-from ${{ env.LATEST_IMAGE }} -t ${{ env.COMMIT_IMAGE }}  .
       - name: Tag latest image
         run: |
           docker tag ${{ env.COMMIT_IMAGE }} ${{ env.LATEST_IMAGE }}
