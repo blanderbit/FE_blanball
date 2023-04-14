@@ -43,7 +43,7 @@
         </div>
       </div>
       <div class="b-mob-menu__logout-icon" @click="$emit('logOut')">
-        <img src="../assets/img/logout-icon.svg" alt="" />
+        <img src="../../assets/img/logout-icon.svg" alt="" />
       </div>
     </div>
     <div class="b-mob-menu__menu-block" :style="menuBlockStyle">
@@ -161,19 +161,19 @@
     </div>
     <div v-if="selectedList.length" class="b-mob-menu__control-block">
       <div class="b-control-block__block">
-        <img src="../assets/img/cross.svg" alt="" @click="clearSelectedList" />
+        <img src=".../../assets/img/cross.svg" alt="" @click="clearSelectedList" />
         <div class="b-selected-elements-count">
           <span>{{ selectedList.length }}</span>
         </div>
       </div>
       <div class="b-control-block__block">
         <img
-          src="../assets/img/notifications/double-check-with-back.svg"
+          src="../../assets/img/notifications/double-check-with-back.svg"
           alt=""
           @click="HandleAction.readSelected()"
         />
         <img
-          src="../assets/img/notifications/trash-with-back.svg"
+          src="../../assets/img/notifications/trash-with-back.svg"
           alt=""
           @click="
             selectedList.length > 1
@@ -188,7 +188,7 @@
       class="b-mob-menu__found-error"
       @click="$emit('foundBug')"
     >
-      <img src="../assets/img/white-warning-icon.svg" alt="" />
+      <img src="../../assets/img/white-warning-icon.svg" alt="" />
       <span>{{ $t('slide_menu.found-error') }}</span>
     </div>
   </div>
@@ -200,31 +200,30 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { v4 as uuid } from 'uuid';
 
-import Avatar from './Avatar.vue';
-import Notifications from './sitebar-notifications/Notifications.vue';
-import Notification from './Notification.vue';
-import EmptyList from './EmptyList.vue';
-import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue';
-import ScrollToTop from './ScrollToTop.vue';
-import Loading from '../workers/loading-worker/Loading.vue';
-import SubmitModal from './ModalWindows/SubmitModal.vue';
+import Avatar from '../Avatar.vue';
+import Notifications from '../sitebar-notifications/Notifications.vue';
+import Notification from '../Notification.vue';
+import EmptyList from '../EmptyList.vue';
+import InfiniteLoading from '../../workers/infinit-load-worker/InfiniteLoading.vue';
+import ScrollToTop from '../ScrollToTop.vue';
+import Loading from '../../workers/loading-worker/Loading.vue';
+import SubmitModal from '../ModalWindows/SubmitModal.vue';
 
-import { TokenWorker } from '../workers/token-worker';
-import { useUserDataStore } from '../stores/userData';
-import { NewNotifications } from '../workers/web-socket-worker/not-includes-to-socket/new_notifications';
-import { API } from '../workers/api-worker/api.worker';
-import { NotificationsBus } from '../workers/event-bus-worker';
+import { useUserDataStore } from '../../stores/userData';
+import { NewNotifications } from '../../workers/web-socket-worker/not-includes-to-socket/new_notifications';
+import { API } from '../../workers/api-worker/api.worker';
+import { NotificationsBus } from '../../workers/event-bus-worker';
 
-import { ROUTES } from '../router/router.const';
+import { ROUTES } from '../../router/router.const';
 
-import NotificationIcon from '../assets/img/notification-mob-default.svg';
-import NotificationWhite from '../assets/img/notifications-not-read-mobile-icon.svg';
-import Record from '../assets/img/record.svg';
-import RecordWhite from '../assets/img/record-white.svg';
-import Members from '../assets/img/members.svg';
-import MembersWhite from '../assets/img/members-white.svg';
-import Settings from '../assets/img/settings.svg';
-import SettingsWhite from '../assets/img/settings-white.svg';
+import NotificationIcon from '../../assets/img/notification-mob-default.svg';
+import NotificationWhite from '../../assets/img/notifications-not-read-mobile-icon.svg';
+import Record from '../../assets/img/record.svg';
+import RecordWhite from '../../assets/img/record-white.svg';
+import Members from '../../assets/img/members.svg';
+import MembersWhite from '../../assets/img/members-white.svg';
+import Settings from '../../assets/img/settings.svg';
+import SettingsWhite from '../../assets/img/settings-white.svg';
 
 export default {
   name: 'MobileMenu',
