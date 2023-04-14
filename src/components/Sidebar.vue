@@ -12,7 +12,6 @@
       :newNotifications="skipids.length"
       :total-notifications-count="allNotificationsCount"
       @close="isMenuOpened = false"
-      @closed="paginationClearData()"
       @loadingInfinite="loadDataNotifications(paginationPage + 1, $event)"
       @reLoading="loadDataNotifications(1, null, true)"
       @loading="loadDataNotifications(1, null, true)"
@@ -281,7 +280,7 @@ export default {
         },
       });
 
-    const loadDataNotifications = (
+    const loadDataNotifications = async (
       pageNumber,
       $state,
       forceUpdate,
@@ -295,7 +294,7 @@ export default {
         skipids.value = [];
       }
 
-      paginationLoad({ pageNumber, $state, forceUpdate }).then(() => {
+      await paginationLoad({ pageNumber, $state, forceUpdate }).then(() => {
         if (isLoading) {
           loading.value = false;
         }

@@ -14,7 +14,7 @@ export default {
     {
       id: 2,
       value: 'Futsal',
-      name: 'Футсал',
+      name: 'Фут-зал',
     },
   ],
   gender_dropdown: [

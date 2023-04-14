@@ -148,7 +148,7 @@
                   :placeholder="$t('profile.month')"
                   :main-title="$t('profile.month')"
                   :options="mockData.months"
-                  display-name="name"
+                  display-name="value"
                   display-value="value"
                   name="month"
                 />

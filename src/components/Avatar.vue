@@ -82,6 +82,7 @@ $color-c8ebe7: #c8ebe7;
 
   &-wrapper {
     position: relative;
+    display: flex;
   }
 
   &-small-circle {
