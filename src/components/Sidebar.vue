@@ -12,7 +12,6 @@
       :newNotifications="skipids.length"
       :total-notifications-count="allNotificationsCount"
       @close="isMenuOpened = false"
-      @closed="paginationClearData()"
       @loadingInfinite="loadDataNotifications(paginationPage + 1, $event)"
       @reLoading="loadDataNotifications(1, null, true)"
       @loading="loadDataNotifications(1, null, true)"
@@ -23,7 +22,8 @@
     <div class="b_sidebar">
       <div class="b_sidebar_top-block">
         <div class="b_sidebar_picture-top">
-          <img src="../assets/img/my-profile-logo.svg" alt="" />
+          <img src="../assets/img/my-profile-logo.svg" alt="" 
+            @click="goToMainPage"/>
         </div>
         <div class="b_sidebar_menu-block">
           <ul>
@@ -191,7 +191,7 @@ export default {
       {
         id: 1,
         img: notReadNotificationCount.value ? notificationUnread : notification,
-        action: () => (isMenuOpened.value = true),
+        action: () => (isMenuOpened.value = !isMenuOpened.value),
         disabled: false,
       },
       {
@@ -280,7 +280,7 @@ export default {
         },
       });
 
-    const loadDataNotifications = (
+    const loadDataNotifications = async (
       pageNumber,
       $state,
       forceUpdate,
@@ -294,7 +294,7 @@ export default {
         skipids.value = [];
       }
 
-      paginationLoad({ pageNumber, $state, forceUpdate }).then(() => {
+      await paginationLoad({ pageNumber, $state, forceUpdate }).then(() => {
         if (isLoading) {
           loading.value = false;
         }
@@ -313,6 +313,10 @@ export default {
           break;
       }
     };
+
+    const goToMainPage = () => {
+      router.push(ROUTES.APPLICATION.index.path)
+    }
 
     const handleMessageInSidebar = (instanceType) => {
       if (instanceType.notification) {
@@ -416,6 +420,7 @@ export default {
       isBugReportModalOpened,
       loadDataNotifications,
       removeNotifications,
+      goToMainPage,
       onChangeTab,
       leaveHoverSidebarItem,
       enterHoverSidebarItem,
@@ -457,9 +462,7 @@ $color-fff4ec: #fff4ec;
       background: $color-efeff6;
       border-radius: 24px;
       padding: 4px;
-      .b-avatar {
-        cursor: pointer;
-      }
+      cursor: pointer;
       .b_sidebar_logout {
         margin-top: 6px;
         width: 40px;
@@ -478,6 +481,7 @@ $color-fff4ec: #fff4ec;
         display: flex;
         img {
           margin: auto;
+          cursor: pointer;
         }
       }
       .b_sidebar_menu-block {

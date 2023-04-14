@@ -148,7 +148,7 @@
                   :placeholder="$t('profile.month')"
                   :main-title="$t('profile.month')"
                   :options="mockData.months"
-                  display-name="name"
+                  display-name="value"
                   display-value="value"
                   name="month"
                 />
@@ -570,7 +570,7 @@ $color-efeff6: #efeff6;
           align-items: center;
           cursor: pointer;
           label {
-            display: block;
+            display: flex;
             cursor: pointer;
           }
         }

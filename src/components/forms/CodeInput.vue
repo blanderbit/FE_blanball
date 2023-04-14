@@ -234,7 +234,8 @@ function pasteHandler() {
       text
         .split('')
         .filter((_, index) => index < 5)
-        .forEach((item, index) => (values.value[index] = item));
+        .forEach((item, index) => (values.value[index] = item.toUpperCase()));
+      triggerChange(values.value);
     })
     .catch((err) => {});
 }

@@ -14,13 +14,6 @@ export default {
           .required('errors.required')
           .min(8, 'errors.min8')
           .max(68, 'errors.max68')
-          .when('old_password', (password, field) =>
-            password
-              ? field
-                  .required('errors.required')
-                  .oneOf([yup.ref('old_password')], 'errors.same-password')
-              : field
-          ),
       });
     }
     if (currentStep === 2) {
