@@ -19,12 +19,12 @@
       <div class="b-manage-event__invited-users">
         <div class="b-manage-event__invited-user" v-for="user in invitedUsers">
           <div class="b-manage-event__invited-user-left__side">
-            <Avatar
+            <userAvatar
               class="b-invited-user__avatar"
               :link="user.profile.avatar_url"
               :avatarType="'small-square'"
               :full-name="`${user.profile.last_name} ${user.profile.name}`"
-            ></Avatar>
+            />
             <span class="b-invited-user__position">
               {{ user.profile.position ? $t(`hashtags.${user.profile.position}`) : '----' }}
             </span>
@@ -59,12 +59,12 @@
       <div class="b-manage-event__invited-users">
         <div class="b-manage-event__invited-user" v-for="user in acceptedUsers">
           <div class="b-manage-event__invited-user-left__side">
-            <Avatar
+            <userAvatar
               class="b-invited-user__avatar"
               :link="user.profile.avatar_url"
               :avatarType="'small-square'"
               :full-name="`${user.profile.last_name} ${user.profile.name}`"
-            ></Avatar>
+            />
             <span v-if="user.profile.position" class="b-invited-user__position">
               {{ $t(`hashtags.${user.profile.position}`) }}
             </span>
@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import Avatar from '../Avatar.vue';
+ import userAvatar from '../shared/userAvatar/userAvatar.vue';
 
 export default {
   props: {
@@ -114,7 +114,7 @@ export default {
   },
   emits: ['removeInvitedUser', 'openRemoveUsersModal'],
   components: {
-    Avatar,
+    userAvatar,
   },
 };
 </script>

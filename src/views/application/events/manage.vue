@@ -150,7 +150,7 @@ import mainInput from '../../../components/shared/input/mainInput.vue';
 import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
 import WhiteBtn from '../../../components/shared/button/WhiteBtn.vue';
 import ManageEventFirstStep from '../../../components/manage-event-components/ManageEventFirstStep.vue';
-import Avatar from '../../../components/Avatar.vue';
+ import userAvatar from '../../../components/shared/userAvatar/userAvatar.vue';
 import PreviewBlock from '../../../components/manage-event-components/PreviewBlock.vue';
 import EventCard from '../../../components/event-components/EventCard.vue';
 import ManageEventSecondStep from '../../../components/manage-event-components/ManageEventSecondStep.vue';

@@ -117,7 +117,7 @@ import { ref, computed, onBeforeUnmount, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import NotificationsSlideMenu from '../SlideMenu/NotificationsSlideMenu.vue';
-import Avatar from '../Avatar.vue';
+ import userAvatar from '../shared/userAvatar/userAvatar.vue';
 import BugReportModal from '../ModalWindows/BugReportModal.vue';
 import TabLabel from '../TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';

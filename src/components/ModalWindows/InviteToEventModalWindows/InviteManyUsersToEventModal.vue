@@ -37,12 +37,12 @@
           <div class="b-invited-users-block__avatars-list-block">
             <div class="b-invited-users-block__avatars-list">
               <div v-for="user in invitedUsers.slice(0, showUserAvatarCount)">
-                <Avatar
+                <userAvatar
                   class="b-invited-user__avatar"
                   :link="user.profile.avatar_url"
                   :avatarType="'small-circle'"
                   :full-name="`${user.profile.last_name} ${user.profile.name}`"
-                ></Avatar>
+                />
               </div>
             </div>
             <div
@@ -103,7 +103,7 @@ import { useI18n } from 'vue-i18n';
 
 import SearchBlockAll from '../../SearchBlockAll.vue';
 import mainInput from '../../shared/input/mainInput.vue';
-import Avatar from '../../Avatar.vue';
+import userAvatar from '../../shared/userAvatar/userAvatar.vue';
 import GreenBtn from '../../shared/button/GreenBtn.vue';
 import WhiteBtn from '../../shared/button/WhiteBtn.vue';
 import InvitedUsersListModal from './InvitedUsersListModal.vue';
@@ -118,7 +118,7 @@ export default {
   components: {
     SearchBlockAll,
     mainInput,
-    Avatar,
+    userAvatar,
     GreenBtn,
     InvitedUsersListModal,
     WhiteBtn,

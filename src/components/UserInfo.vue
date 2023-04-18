@@ -1,11 +1,11 @@
 <template>
   <div class="b-user-info">
     <div class="b-user-info__top-side">
-      <Avatar
+      <userAvatar
         class=""
         :link="userData.profile.avatar_url"
         :full-name="`${userData.profile.last_name} ${userData.profile.name}`"
-      ></Avatar>
+      />
       <div class="b-user-info__top-side-user-info">
         <div class="b-user__full-name">
           {{ userData.profile.last_name }} {{ userData.profile.name }}
@@ -214,7 +214,7 @@
 <script>
 import { ref, computed } from 'vue';
 
-import Avatar from './Avatar.vue';
+ import userAvatar from './shared/userAvatar/userAvatar.vue';
 import mainInput from './shared/input/mainInput.vue';
 import dropdown from './shared/dropdown/dropdown.vue';
 import mainTextArea from './shared/textArea/mainTextArea.vue';
@@ -223,7 +223,7 @@ import CONSTANTS from '../consts';
 
 export default {
   components: {
-    Avatar,
+    userAvatar,
     dropdown,
     mainInput,
     mainTextArea,

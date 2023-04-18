@@ -53,7 +53,7 @@
 import { computed, watch, ref } from 'vue';
 
 import Spinner from '../workers/infinit-load-worker/Spinner.vue';
-import Avatar from './Avatar.vue';
+ import userAvatar from './shared/userAvatar/userAvatar.vue';
 
 export default {
   name: 'SearchBlockAll',

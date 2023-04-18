@@ -70,7 +70,7 @@
     <div class="b-public-profile__main-side">
       <div ref="profileFirstBlock" class="b-public-profile__first-block">
         <div class="b-public-profile__profile-info">
-          <Avatar
+          <userAvatar
             class="b-public-profile__avatar"
             :avatarType="avatarType"
             :link="userData.profile.avatar_url"
@@ -213,7 +213,7 @@ import { useToast } from 'vue-toastification';
 import StarRating from 'vue-star-rating';
 import { useElementSize } from '@vueuse/core';
 
-import Avatar from '../Avatar.vue';
+ import userAvatar from '../shared/userAvatar/userAvatar.vue';
 import WhiteBtn from '../shared/button/WhiteBtn.vue';
 import PublicProfileReviews from './PublicProfileReviews.vue';
 import PublicProfilePlannedEvents from './PublicProfilePlannedEvents.vue';
@@ -256,7 +256,7 @@ export default {
     },
   },
   components: {
-    Avatar,
+    userAvatar,
     WhiteBtn,
     PublicProfilePlannedEvents,
     PublicProfileReviews,

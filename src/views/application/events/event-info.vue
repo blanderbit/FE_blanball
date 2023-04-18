@@ -285,7 +285,7 @@ import RightSidebar from '../../../components/RightSidebar.vue';
 import EventInfoUsersTable from '../../../components/EventInfoUsersTable.vue';
 import PositionMap from '../../../components/maps/PositionMap.vue';
 import CopyModal from '../../../components/ModalWindows/CopyModal.vue';
-import Avatar from '../../../components/Avatar.vue';
+ import userAvatar from '../../../components/shared/userAvatar/userAvatar.vue';
 import TabLabel from '../../../components/TabLabel.vue';
 import ListOfEventRequestsToParticipations from '../../../components/ListOfEventRequestsToParticipations.vue';
 import Loading from '../../../workers/loading-worker/Loading.vue';

@@ -26,12 +26,11 @@
     <div class="b-mob-menu__user-data">
       <div class="b-mob-menu__user-info">
         <div class="b-mob-menu__user-img">
-          <Avatar
+          <userAvatar
             :link="userStore.getUserAvatar"
             :full-name="userStore.getUserFullName"
             @clickByAvatar="goToMyProfile"
-          >
-          </Avatar>
+          />
         </div>
         <div class="b-mob-menu__text-block">
           <div class="b-mob-menu__user-name">
@@ -200,7 +199,7 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { v4 as uuid } from 'uuid';
 
-import Avatar from '../Avatar.vue';
+import userAvatar from '../shared/userAvatar/userAvatar.vue';
 import Notifications from '../sitebar-notifications/Notifications.vue';
 import Notification from '../Notification.vue';
 import EmptyList from '../EmptyList.vue';
@@ -250,7 +249,7 @@ export default {
     },
   },
   components: {
-    Avatar,
+    userAvatar,
     Notifications,
     Notification,
     EmptyList,

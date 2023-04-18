@@ -4,7 +4,7 @@
       <div class="b-user-card__top-part">
         <div class="b-user-card__picture-block">
           <div class="b-user-card__profile-picture">
-            <Avatar
+            <userAvatar
               class="b-user-card__profile-avatar"
               :link="userData.avatar_url"
               :full-name="fullUserName"
@@ -328,7 +328,7 @@ import dayjsUkrLocale from 'dayjs/locale/uk';
 import mainInput from './shared/input/mainInput.vue';
 import mainTextArea from './shared/textArea/mainTextArea.vue';
 import dropdown from './shared/dropdown/dropdown.vue';
-import Avatar from '../components/Avatar.vue';
+ import userAvatar from './shared/userAvatar/userAvatar.vue';
 import RatingCard from '../components/RatingCard.vue';
 
 import CONSTANTS from '../consts';
@@ -347,7 +347,7 @@ export default {
     mainInput,
     dropdown,
     mainTextArea,
-    Avatar,
+    userAvatar,
     RatingCard,
   },
   props: {

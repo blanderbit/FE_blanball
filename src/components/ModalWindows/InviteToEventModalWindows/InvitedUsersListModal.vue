@@ -19,12 +19,12 @@
         <div class="b-main-side__invited-users-list">
           <div v-for="user in invitedUsers" class="b-main-side__invited-user">
             <div class="b-invited-user__info">
-              <Avatar
+              <userAvatar
                 class="b-invited-user__avatar"
                 :link="user.profile.avatar_url"
                 :avatarType="'small-circle'"
                 :full-name="`${user.profile.last_name} ${user.profile.name}`"
-              ></Avatar>
+              />
               <div class="b-invited-user__personal-data">
                 <div class="b-invited-user__full-name">
                   {{ user.profile.name }} {{ user.profile.last_name }}
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import Avatar from '../../Avatar.vue';
+ import userAvatar from '../../shared/userAvatar/userAvatar.vue';
 export default {
   emits: ['closeModal', 'removeUser'],
   components: {
