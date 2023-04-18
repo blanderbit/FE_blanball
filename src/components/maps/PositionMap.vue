@@ -145,7 +145,9 @@ export default {
       if (!props.disableChangeCoords) {
         google.maps.event.addListener(map, 'click', function (event) {
           marker.value.setPosition(event.latLng);
-          circle.setCenter(event.latLng);
+          if (props?.radius) {
+            circle.setCenter(event.latLng);
+          }
           setDataAboutPosition(event.latLng.toJSON());
         });
       }
