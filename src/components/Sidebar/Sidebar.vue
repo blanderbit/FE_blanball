@@ -5,7 +5,7 @@
     @close-modal="closeBugReportModal"
   />
   <div class="b_sidebar_wrapper">
-    <SlideMenu
+    <NotificationsSlideMenu
       v-model:is-menu-opened="isMenuOpened"
       :notifications="paginationElements"
       :notReadNotificationCount="notReadNotificationCount"
@@ -116,7 +116,7 @@
 import { ref, computed, onBeforeUnmount, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
-import SlideMenu from '../SlideMenu.vue';
+import NotificationsSlideMenu from '../SlideMenu/NotificationsSlideMenu.vue';
 import Avatar from '../Avatar.vue';
 import BugReportModal from '../ModalWindows/BugReportModal.vue';
 import TabLabel from '../TabLabel.vue';
@@ -138,6 +138,7 @@ import {
 } from '../../workers/event-bus-worker';
 import { FilterPatch } from '../../workers/api-worker/http/filter/filter.patch';
 import useWindowWidth from '../../utils/widthScreen';
+import { logOut } from '../../utils/logOut';
 
 import { ROUTES } from '../../router/router.const';
 
@@ -167,7 +168,7 @@ const tabTypes = {
 export default {
   name: 'MainSidebar',
   components: {
-    SlideMenu,
+    NotificationsSlideMenu,
     Avatar,
     BugReportModal,
     TabLabel,
@@ -396,11 +397,6 @@ export default {
     });
 
     getNotificationsCount();
-    const logOut = () => {
-      router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute);
-      userStore.$reset();
-      TokenWorker.clearToken();
-    };
 
     const removeNotifications = (ids) => {
       if (ids === 'All') {
