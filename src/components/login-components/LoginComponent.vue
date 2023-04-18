@@ -90,7 +90,7 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 
 import GreenBtn from '../GreenBtn.vue';
 import InputComponent from '../forms/InputComponent.vue';
-import Checkbox from '../forms/Checkbox.vue';
+import Checkbox from '../shared/checkbox/checkbox.vue';
 
 import { API } from '../../workers/api-worker/api.worker';
 import { TokenWorker } from '../../workers/token-worker';

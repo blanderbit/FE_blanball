@@ -12,7 +12,7 @@
         {{ $t('register.your-city') }}
       </div>
       <div class="b-register-step__dropdown">
-        <Dropdown
+        <dropdown
           :outside-title="true"
           :main-title="$t('register.district')"
           :placeholder="$t('register.district')"
@@ -27,7 +27,7 @@
         />
       </div>
       <div class="b-register-step__dropdown">
-        <Dropdown
+        <dropdown
           :outside-title="true"
           :main-title="$t('register.city')"
           :placeholder="$t('register.city')"
@@ -69,7 +69,7 @@
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import Dropdown from '../forms/Dropdown.vue';
+import dropdown from '../shared/dropdown/dropdown.vue';
 import InputComponent from '../forms/InputComponent.vue';
 import RegisterModalPositionMap from '../maps/RegisterModalPositionMap.vue';
 import StepWrapper from './StepWrapper.vue';
@@ -87,7 +87,7 @@ import nikeIcon from '../../assets/img/nike-icon.svg';
 export default {
   name: 'Step10',
   components: {
-    Dropdown,
+    dropdown,
     InputComponent,
     StepWrapper,
     RegisterModalPositionMap,

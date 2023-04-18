@@ -127,7 +127,7 @@ import EmptyList from '../../../components/EmptyList.vue';
 import SmartGridList from '../../../components/smart-list/SmartGridList.vue';
 import ScrollToTop from '../../../components/ScrollToTop.vue';
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
-import Dropdown from '../../../components/forms/Dropdown.vue';
+import dropdown from '../../../components/shared/dropdown/dropdown.vue';
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue';
 import ContextModal from '../../../components/ModalWindows/ContextModal.vue';
 import Loading from '../../../workers/loading-worker/Loading.vue';
@@ -155,7 +155,7 @@ export default {
   name: 'EventsPage',
   components: {
     GreenBtn,
-    Dropdown,
+    dropdown,
     EmptyList,
     InputComponent,
     ContextMenu,

@@ -19,7 +19,7 @@
             Пошук за: <span>{{ search }}</span>
           </div>
           <div class="b-modal-filters__game-type-input">
-            <Dropdown
+            <dropdown
               :check-value-immediate="true"
               :options="sportTypeDropdown"
               :placeholder="$t('events.game-type')"
@@ -81,7 +81,7 @@
 import { computed, ref, watch } from 'vue';
 
 import ModalWindow from '../ModalWindows/ModalWindow.vue';
-import Dropdown from '../forms/Dropdown.vue';
+import dropdown from '../shared/dropdown/dropdown.vue';
 import GreenBtn from '../GreenBtn.vue';
 import RadioGenderBox from './components/RadioGenderBox.vue';
 import ModalPositionMap from '../maps/ModalPositionMap.vue';

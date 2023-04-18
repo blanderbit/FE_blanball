@@ -101,7 +101,7 @@ import { useI18n } from 'vue-i18n';
 
 import InputComponent from '../forms/InputComponent.vue';
 import StepWrapper from './StepWrapper.vue';
-import Checkbox from '../forms/Checkbox.vue';
+import Checkbox from '../shared/checkbox/checkbox.vue';
 
 import tickWhite from '../../assets/img/tick-white.svg';
 import nikeIcon from '../../assets/img/nike-icon.svg';

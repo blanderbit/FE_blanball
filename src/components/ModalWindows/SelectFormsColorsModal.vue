@@ -45,7 +45,7 @@
                     <div class="b-item__name">
                       {{ $t('events.t-shirts') }}
                     </div>
-                    <Dropdown
+                    <dropdown
                       class="b-item__dropdown"
                       :height="36"
                       :options="mockData.colors"
@@ -57,7 +57,7 @@
                   </div>
                   <div class="b-main-side__form-select-item">
                     <div class="b-item__name">Шорти</div>
-                    <Dropdown
+                    <dropdown
                       class="b-item__dropdown"
                       :height="36"
                       :options="mockData.colors"
@@ -74,7 +74,7 @@
                     <div class="b-item__name">
                       {{ $t('events.shirtfronts') }}
                     </div>
-                    <Dropdown
+                    <dropdown
                       class="b-item__dropdown"
                       :height="36"
                       display-name="name"
@@ -112,7 +112,7 @@ import { ref, computed } from 'vue';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import Dropdown from '../forms/Dropdown.vue';
+import dropdown from '../shared/dropdown/dropdown.vue';
 import GreenBtn from '../GreenBtn.vue';
 
 import CONSTANTS from '../../consts/index';
@@ -120,7 +120,7 @@ import SCHEMAS from '../../validators/schemas';
 
 export default {
   components: {
-    Dropdown,
+    dropdown,
     GreenBtn,
     Form,
   },

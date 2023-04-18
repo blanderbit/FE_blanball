@@ -11,7 +11,7 @@
       </div>
       <div class="b-register-step__date-block mb-2">
         <div class="b-register-step__dropdown">
-          <Dropdown
+          <dropdown
             v-model="day"
             :placeholder="$t('register.day')"
             :mainTitle="$t('register.day')"
@@ -22,7 +22,7 @@
           />
         </div>
         <div class="b-register-step__dropdown">
-          <Dropdown
+          <dropdown
             v-model="month"
             :placeholder="$t('register.month')"
             :mainTitle="$t('register.month')"
@@ -33,7 +33,7 @@
           />
         </div>
         <div class="b-register-step__dropdown">
-          <Dropdown
+          <dropdown
             v-model="year"
             :placeholder="$t('register.year')"
             :mainTitle="$t('register.year')"
@@ -53,7 +53,7 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import GreenBtn from '../GreenBtn.vue';
-import Dropdown from '../forms/Dropdown.vue';
+import dropdown from '../shared/dropdown/dropdown.vue';
 import StepWrapper from './StepWrapper.vue';
 
 import CONSTANTS from '../../consts/index';
@@ -64,7 +64,7 @@ export default {
   name: 'Step8',
   components: {
     GreenBtn,
-    Dropdown,
+    dropdown,
     StepWrapper,
   },
   setup() {

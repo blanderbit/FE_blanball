@@ -12,7 +12,7 @@
       <Loading :is-loading="loading" />
       <Form v-slot="data" @submit="disableSubmit" :validation-schema="schema">
         <div class="b-modal-position__block">
-          <Dropdown
+          <dropdown
             :outside-title="true"
             :placeholder="$t('register.district')"
             :main-title="$t('register.district')"
@@ -26,7 +26,7 @@
           />
         </div>
         <div class="b-modal-position__block">
-          <Dropdown
+          <dropdown
             :outside-title="true"
             :placeholder="$t('register.city')"
             :main-title="$t('register.city')"
@@ -83,7 +83,7 @@ import { ref, computed, watch } from 'vue';
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import PositionMap from './PositionMap.vue';
-import Dropdown from './../forms/Dropdown.vue';
+import dropdown from '../shared/dropdown/dropdown.vue';
 import InputComponent from './../forms/InputComponent.vue';
 import ModalWindow from '../ModalWindows/ModalWindow.vue';
 import GreenBtn from '../../components/GreenBtn.vue';
@@ -101,7 +101,7 @@ export default {
   components: {
     ModalWindow,
     PositionMap,
-    Dropdown,
+    dropdown,
     InputComponent,
     Form,
     GreenBtn,

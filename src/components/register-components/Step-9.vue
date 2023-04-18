@@ -34,7 +34,7 @@
           name="weight"
           v-maska="'###'"
         ></InputComponent>
-        <Dropdown
+        <dropdown
           v-model="workingLeg"
           :placeholder="$t('register.main-leg')"
           :outside-title="true"
@@ -51,7 +51,7 @@
         {{ $t('register.you-played-position') }}
       </div>
       <div class="b-register-step__dropdown">
-        <Dropdown
+        <dropdown
           v-model="position"
           :placeholder="$t('register.position')"
           :outside-title="true"
@@ -73,7 +73,7 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import GreenBtn from '../GreenBtn.vue';
-import Dropdown from '../forms/Dropdown.vue';
+import dropdown from '../shared/dropdown/dropdown.vue';
 import InputComponent from '../forms/InputComponent.vue';
 import StepWrapper from './StepWrapper.vue';
 
@@ -86,7 +86,7 @@ export default {
   name: 'Step9',
   components: {
     GreenBtn,
-    Dropdown,
+    dropdown,
     InputComponent,
     StepWrapper,
   },

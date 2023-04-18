@@ -3,7 +3,7 @@
     <div class="b-event-m-1st__title-general mb-2">
       {{ $t('events.general-info') }}
     </div>
-    <Dropdown
+    <dropdown
       style="margin-top: 10px"
       :outside-title="true"
       :main-title="$t('events.event-type')"
@@ -48,7 +48,7 @@
       </div>
     </div>
     <div class="b-event-m-1st__sport-type mt-3">
-      <Dropdown
+      <dropdown
         :outside-title="true"
         :main-title="$t('events.sport-type')"
         :placeholder="$t('events.sport-type')"
@@ -162,7 +162,7 @@ import { ErrorMessage } from '@system.it.flumx.com/vee-validate';
 
 import dayjs from 'dayjs';
 
-import Dropdown from '../forms/Dropdown.vue';
+import dropdown from '../shared/dropdown/dropdown.vue';
 import InputComponent from '../forms/InputComponent.vue';
 import RadioButton from '../forms/RadioButton.vue';
 import PositionMap from '../maps/PositionMap.vue';
@@ -202,7 +202,7 @@ const eventDurationOptions = ref([
 
 export default {
   components: {
-    Dropdown,
+    dropdown,
     InputComponent,
     RadioButton,
     EventCreatePositionMap,

@@ -50,14 +50,13 @@ import { createPopper } from '@popperjs/core';
 
 import vSelect from 'vue-select';
 
-import OpenIndicator from './OpenIndicator.vue';
+import OpenIndicator from '../../forms/OpenIndicator.vue';
 
-import { CustomModelWorker } from '../../workers/custom-model-worker/index';
+import { CustomModelWorker } from '../../../workers/custom-model-worker/index';
 
 import SearchIcon from '../../assets/img/search.svg';
 
 export default {
-  name: 'dropdown-component',
   components: {
     vSelect,
     OpenIndicator,

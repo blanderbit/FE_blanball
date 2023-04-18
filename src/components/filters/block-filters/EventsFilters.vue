@@ -28,7 +28,7 @@
               </span>
             </div>
             <div class="b-main-search__dropdown-wrapper-tournament">
-              <Dropdown
+              <dropdown
                 :check-value-immediate="true"
                 :placeholder="$t('events.game-type')"
                 :backgroundColor="'#fff'"
@@ -60,7 +60,7 @@
         <div class="b-main-search__second-line" v-if="activeFilters">
           <div class="b-main-search__left-side">
             <div class="b-main-search__dropdown-wrapper-cities">
-              <Dropdown
+              <dropdown
                 :check-value-immediate="true"
                 :placeholder="$t('events.gender')"
                 :options="gender"
@@ -185,7 +185,7 @@ import { computed, ref, onMounted, onBeforeUnmount, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import dayjs from 'dayjs';
 
-import Dropdown from '../../forms/Dropdown.vue';
+import dropdown from '../../shared/dropdown/dropdown.vue';
 import FilterBlock from '../FilterBlock.vue';
 import InputComponent from '../../forms/InputComponent.vue';
 import ButtonDetailsFilters from '../components/ButtonDetailsFilters.vue';
@@ -210,7 +210,7 @@ import crossIcon from '../../../assets/img/cross.svg';
 export default {
   name: 'EventsFilters',
   components: {
-    Dropdown,
+    dropdown,
     InputComponent,
     ButtonDetailsFilters,
     ClearFilters,

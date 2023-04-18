@@ -91,7 +91,7 @@
           </div>
 
           <div class="b-edit-mode__bottom-side">
-            <Dropdown
+            <dropdown
               class="b-edit-mode__day-dropdown"
               :placeholder="$t('profile.day')"
               :main-title="$t('profile.day')"
@@ -100,7 +100,7 @@
               display-value="value"
               name="day"
             />
-            <Dropdown
+            <dropdown
               class="b-edit-mode__month-dropdown"
               :placeholder="$t('profile.month')"
               :main-title="$t('profile.month')"
@@ -109,7 +109,7 @@
               display-value="value"
               name="month"
             />
-            <Dropdown
+            <dropdown
               class="b-edit-mode__year-dropdown"
               :placeholder="$t('profile.year')"
               :main-title="$t('profile.year')"
@@ -168,7 +168,7 @@
           class="b-main-side-content__edit-mode"
         >
           <div class="b-edit-mode__top-side">
-            <Dropdown
+            <dropdown
               :outside-title="true"
               :placeholder="$t('profile.game-position')"
               :main-title="$t('profile.game-position')"
@@ -216,7 +216,7 @@ import { ref, computed } from 'vue';
 
 import Avatar from './Avatar.vue';
 import InputComponent from './forms/InputComponent.vue';
-import Dropdown from './forms/Dropdown.vue';
+import dropdown from './shared/dropdown/dropdown.vue';
 import TextAreaComponent from './TextAreaComponent.vue';
 
 import CONSTANTS from '../consts';

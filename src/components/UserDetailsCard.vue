@@ -134,7 +134,7 @@
             </div>
             <div v-else class="b-user-card__dropdowns">
               <div class="b-user-card__dropdown-days">
-                <Dropdown
+                <dropdown
                   :placeholder="$t('profile.day')"
                   :main-title="$t('profile.day')"
                   :options="mockData.days"
@@ -144,7 +144,7 @@
                 />
               </div>
               <div class="b-user-card__dropdown-months">
-                <Dropdown
+                <dropdown
                   :placeholder="$t('profile.month')"
                   :main-title="$t('profile.month')"
                   :options="mockData.months"
@@ -154,7 +154,7 @@
                 />
               </div>
               <div class="b-user-card__dropdown-years">
-                <Dropdown
+                <dropdown
                   :placeholder="$t('profile.year')"
                   :main-title="$t('profile.year')"
                   :options="mockData.years"
@@ -227,7 +227,7 @@
                 </div>
               </div>
               <div v-if="isEditMode" class="b-user-card__dropdown-main-leg">
-                <Dropdown
+                <dropdown
                   :main-title="$t('profile.main-leg')"
                   :placeholder="$t('profile.main-leg')"
                   :options="mockData.mainLag"
@@ -251,7 +251,7 @@
                 {{ $t('profile.game-position') }}
               </div>
             </div>
-            <Dropdown
+            <dropdown
               v-else
               :outside-title="true"
               :placeholder="$t('profile.game-position')"
@@ -327,7 +327,7 @@ import dayjsUkrLocale from 'dayjs/locale/uk';
 
 import InputComponent from './forms/InputComponent.vue';
 import TextAreaComponent from '../components/TextAreaComponent.vue';
-import Dropdown from './forms/Dropdown.vue';
+import dropdown from './shared/dropdown/dropdown.vue';
 import Avatar from '../components/Avatar.vue';
 import RatingCard from '../components/RatingCard.vue';
 
@@ -345,7 +345,7 @@ export default {
   name: 'UserDetailsCard',
   components: {
     InputComponent,
-    Dropdown,
+    dropdown,
     TextAreaComponent,
     Avatar,
     RatingCard,
