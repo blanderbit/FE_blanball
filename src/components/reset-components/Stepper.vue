@@ -106,7 +106,7 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 
 import GreenBtn from '../GreenBtn.vue';
 import mainInput from '../shared/input/mainInput.vue';
-import CodeInput from '../forms/CodeInput.vue';
+import inputCode from '../shared/inputCode/inputCode.vue';
 import Counter from '../Counter.vue';
 
 import { API } from '../../workers/api-worker/api.worker';
@@ -123,7 +123,7 @@ export default {
     GreenBtn,
     mainInput,
     Form,
-    CodeInput,
+    inputCode,
     Counter,
   },
   setup() {

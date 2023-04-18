@@ -117,7 +117,7 @@
                 }}
               </div>
             </div>
-            <TextAreaComponent
+            <mainTextArea
               v-else
               :height="88"
               :title="$t('profile.words-about-myself')"
@@ -326,7 +326,7 @@ import dayjs from 'dayjs';
 import dayjsUkrLocale from 'dayjs/locale/uk';
 
 import mainInput from './shared/input/mainInput.vue';
-import TextAreaComponent from '../components/TextAreaComponent.vue';
+import mainTextArea from './shared/textArea/mainTextArea.vue';
 import dropdown from './shared/dropdown/dropdown.vue';
 import Avatar from '../components/Avatar.vue';
 import RatingCard from '../components/RatingCard.vue';
@@ -346,7 +346,7 @@ export default {
   components: {
     mainInput,
     dropdown,
-    TextAreaComponent,
+    mainTextArea,
     Avatar,
     RatingCard,
   },

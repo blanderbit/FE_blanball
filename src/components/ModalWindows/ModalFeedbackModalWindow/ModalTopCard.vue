@@ -42,7 +42,7 @@
           @emojiSelect="emojiSelect"
         />
 
-        <TextAreaComponent
+        <mainTextArea
           v-if="step.id === 4 && !step.emojies"
           :placeholder="$t('events.event-description')"
           :height="120"
@@ -79,7 +79,7 @@ import * as yup from 'yup';
 import { Form, ErrorMessage } from '@system.it.flumx.com/vee-validate';
 
 import GreenBtn from '../../GreenBtn.vue';
-import TextAreaComponent from '../../TextAreaComponent.vue';
+import mainTextArea from '../../shared/textArea/mainTextArea.vue';
 import Emotions from '../../forms/Emotions.vue';
 
 
@@ -87,7 +87,7 @@ export default {
   name: 'ModalTopCard',
   components: {
     GreenBtn,
-    TextAreaComponent,
+    mainTextArea,
     Emotions,
     Form,
     ErrorMessage,

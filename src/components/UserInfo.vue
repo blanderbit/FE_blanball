@@ -80,7 +80,7 @@
             />
           </div>
           <div class="b-edit-mode__main-side">
-            <TextAreaComponent
+            <mainTextArea
               :outside-title="true"
               :title="$t('profile.words-about-myself')"
               :height="86"
@@ -217,7 +217,7 @@ import { ref, computed } from 'vue';
 import Avatar from './Avatar.vue';
 import mainInput from './shared/input/mainInput.vue';
 import dropdown from './shared/dropdown/dropdown.vue';
-import TextAreaComponent from './TextAreaComponent.vue';
+import mainTextArea from './shared/textArea/mainTextArea.vue';
 
 import CONSTANTS from '../consts';
 
@@ -226,7 +226,7 @@ export default {
     Avatar,
     dropdown,
     mainInput,
-    TextAreaComponent,
+    mainTextArea,
   },
   props: {
     userData: {

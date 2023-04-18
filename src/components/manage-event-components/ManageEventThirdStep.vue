@@ -84,7 +84,7 @@
     <div class="subtitle">
       {{ $t('events.add-comment') }}
     </div>
-    <TextAreaComponent
+    <mainTextArea
       :placeholder="$t('events.event-description')"
       :height="92"
       name="description"
@@ -100,7 +100,7 @@ import { ErrorMessage } from '@system.it.flumx.com/vee-validate';
 import Switcher from '../../components/Switcher.vue';
 import RadioButton from '../../components/forms/RadioButton.vue';
 import mainInput from '../shared/input/mainInput.vue';
-import TextAreaComponent from '../TextAreaComponent.vue';
+import mainTextArea from '../shared/textArea/mainTextArea.vue';
 import EventCreateForms from '../buildedForms/EventCreateForms.vue';
 
 import AimIcon from '../../assets/img/aim.svg';
@@ -114,7 +114,7 @@ export default {
     Switcher,
     mainInput,
     RadioButton,
-    TextAreaComponent,
+    mainTextArea,
     ErrorMessage,
 
     EventCreateForms,

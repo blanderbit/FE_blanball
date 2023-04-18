@@ -40,7 +40,7 @@
             @submit="disableSubmit"
           >
             <div class="code-input-field">
-              <CodeInput
+              <inputCode
                 :fields="5"
                 :fieldWidth="48"
                 :fieldHeight="40"
@@ -74,7 +74,7 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 
 import ModalWindow from '../ModalWindow.vue';
 import Counter from '../../Counter.vue';
-import CodeInput from '../../forms/CodeInput.vue';
+import inputCode from '../../shared/inputCode/inputCode.vue';
 import Loading from '../../../workers/loading-worker/Loading.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
@@ -87,7 +87,7 @@ export default {
   name: 'DeleteAccountModal',
   components: {
     ModalWindow,
-    CodeInput,
+    inputCode,
     Form,
     Counter,
     Loading,

@@ -19,7 +19,7 @@
             name="title"
           />
 
-          <TextAreaComponent
+          <mainTextArea
             :height="100"
             :textareaIcon="addFileIcon"
             class="b-bug-report-modal__description-input"
@@ -77,7 +77,7 @@ import { useToast } from 'vue-toastification';
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import mainInput from '../shared/input/mainInput.vue';
-import TextAreaComponent from '../TextAreaComponent.vue';
+import mainTextArea from '../shared/textArea/mainTextArea.vue';
 
 import { API } from '../../workers/api-worker/api.worker';
 
@@ -88,7 +88,7 @@ import addFileIcon from '../../assets/img/add-file-icon.svg';
 export default {
   components: {
     mainInput,
-    TextAreaComponent,
+    mainTextArea,
 
     Form,
   },

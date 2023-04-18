@@ -57,7 +57,7 @@
       />
     </div>
     <div v-if="isEventPayment" class="input describe-sum-input">
-      <TextAreaComponent
+      <mainTextArea
         :outside-title="true"
         :title="$t('events.describe-sum')"
         :height="80"
@@ -104,7 +104,7 @@ import { ref, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 import mainInput from '../shared/input/mainInput.vue';
-import TextAreaComponent from '../TextAreaComponent.vue';
+import mainTextArea from '../shared/textArea/mainTextArea.vue';
 import Switcher from '../../components/Switcher.vue';
 import SearchBlockAll from '../SearchBlockAll.vue';
 import RadioButton from '../forms/RadioButton.vue';
@@ -145,7 +145,7 @@ export default {
     Switcher,
     SearchBlockAll,
     RadioButton,
-    TextAreaComponent,
+    mainTextArea,
   },
 
   setup(props, { emit }) {

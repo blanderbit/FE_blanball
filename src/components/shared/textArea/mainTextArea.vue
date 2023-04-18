@@ -35,10 +35,9 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
 
-import { CustomModelWorker } from '../workers/custom-model-worker';
+import { CustomModelWorker } from '../../../workers/custom-model-worker';
 
 export default {
-  name: 'mainInput',
   props: {
     isDisabled: {
       type: Boolean,

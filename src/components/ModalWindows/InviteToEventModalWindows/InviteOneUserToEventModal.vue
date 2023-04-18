@@ -22,7 +22,7 @@
           >
             Оберіть подію
           </div>
-          <TextAreaComponent
+          <mainTextArea
             :placeholder="$t('modals.invite_user_to_event.message')"
             :height="92"
             name="message"
@@ -46,7 +46,7 @@
   <script>
   import { ref } from 'vue';
   
-  import TextAreaComponent from '../../TextAreaComponent.vue';
+  import mainTextArea from '../../shared/textArea/mainTextArea.vue';
   import WhiteBtn from '../../WhiteBtn.vue';
   import GreenBtn from '../../GreenBtn.vue';
   
@@ -59,7 +59,7 @@
     },
     emits: ['closeModal'],
     components: {
-      TextAreaComponent,
+      mainTextArea,
       GreenBtn,
       WhiteBtn,
     },

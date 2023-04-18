@@ -51,7 +51,7 @@ import {
 } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { CustomModelWorker } from '../../workers/custom-model-worker/index';
+import { CustomModelWorker } from '../../../workers/custom-model-worker/index';
 
 const { t } = useI18n();
 
@@ -267,7 +267,7 @@ $color-a8adb7: #a8adb7;
 $color-525461: #525461;
 $color-8a8aa8: #8a8aa8;
 
-@import '../../assets/styles/forms.scss';
+@import '../../../assets/styles/forms.scss';
 
 .code-input-container {
   position: relative;

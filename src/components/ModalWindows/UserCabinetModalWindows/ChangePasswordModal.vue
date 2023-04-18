@@ -41,7 +41,7 @@
           </div>
 
           <div v-if="currentStep === 2" class="sms-code-block">
-            <CodeInput
+            <inputCode
               :fields="5"
               :fieldWidth="48"
               :fieldHeight="40"
@@ -73,7 +73,7 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 
 import ModalWindow from '../ModalWindow.vue';
 import Counter from '../../Counter.vue';
-import CodeInput from '../../forms/CodeInput.vue';
+import inputCode from '../../shared/inputCode/inputCode.vue';
 import mainInput from '../../shared/input/mainInput.vue';
 import Loading from '../../../workers/loading-worker/Loading.vue';
 
@@ -92,7 +92,7 @@ export default {
   components: {
     Form,
     ModalWindow,
-    CodeInput,
+    inputCode,
     mainInput,
     Counter,
     Loading,

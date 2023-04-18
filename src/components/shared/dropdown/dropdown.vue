@@ -50,7 +50,7 @@ import { createPopper } from '@popperjs/core';
 
 import vSelect from 'vue-select';
 
-import OpenIndicator from '../../forms/OpenIndicator.vue';
+import OpenIndicator from './openIndicator.vue';
 
 import { CustomModelWorker } from '../../../workers/custom-model-worker/index';
 
