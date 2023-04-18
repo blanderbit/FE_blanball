@@ -64,7 +64,7 @@
         v-if="showInvalidCredentials"
         class="b-login-step__wrong-credentials-message d-flex align-baseline"
       >
-        <img src="../../assets/img/warning-red.svg" class="m-2" alt="" />
+        <img src="../../../assets/img/warning-red.svg" class="m-2" alt="" />
         {{ $t('login.wrong-credentials') }}
       </div>
       <div class="b-login-step__buttons">

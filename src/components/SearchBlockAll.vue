@@ -12,13 +12,13 @@
           ]"
         >
           <div>
-            <avatar
+            <userAvatar
               class="b-user__image"
               @click="$emit('item-image-click', user.id)"
               :link="user.profile.avatar_url"
               :avatarType="'small-square'"
               :full-name="`${user.profile.last_name} ${user.profile.name}`"
-            ></avatar>
+            />
           </div>
           <div class="b-user-main-info__container">
             <div class="b-user__name">
@@ -59,7 +59,7 @@ export default {
   name: 'SearchBlockAll',
   components: {
     Spinner,
-    Avatar,
+    userAvatar,
   },
   emits: ['item-image-click', 'item-list-click'],
   props: {

@@ -24,13 +24,13 @@
           v-if="notificationInstance.notificationImage"
           :src="notificationInstance.notificationImage"
         />
-        <avatar
+        <userAvatar
           v-if="notificationInstance.notificationUserImage"
           :class="{ checked: checked }"
           :online="notificationInstance.data.sender.is_online"
           :link="notificationInstance.profileImage"
           :full-name="notificationInstance.fullName"
-        ></avatar>
+        />
       </div>
       <div
         class="notification-data flex-grow-1"
@@ -235,17 +235,17 @@ import dayJs from 'dayjs';
 
 import Loading from './../workers/loading-worker/Loading.vue';
 import NotificationButton from './../components/NotificationButton.vue';
- import userAvatar from './shared/userAvatar/userAvatar.vue';
 import Checkbox from './shared/checkbox/checkbox.vue';
 import CollapsiblePanel from './../components/collapsible/CollapsiblePanel.vue';
+import userAvatar from './shared/userAvatar/userAvatar.vue';
 
 export default {
   name: 'Notification',
   components: {
     Loading,
     NotificationButton,
-    Avatar,
     Checkbox,
+    userAvatar,
     CollapsiblePanel,
   },
   emits: ['handler-action', 'selected', 'force', 'delete'],

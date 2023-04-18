@@ -7,11 +7,11 @@
         <div class="b-user-card__top-line">
           <div class="b-user-card__picture-name">
             <div class="b-user-card__picture">
-              <avatar
+              <userAvatar
                 @clickByAvatar="$emit('openUserProfile')"
                 :link="userData.profile.avatar_url"
                 :full-name="`${userData.profile.last_name} ${userData.profile.name}`"
-              ></avatar>
+              ></userAvatar>
             </div>
             <div class="b-user-card__name-pnz">
               <div class="b-user-card__top-line-name-rating">
@@ -50,13 +50,6 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="b-user-card__bottom-line">
-              <span class="title">{{$t('users.gender')}}</span>
-              <span class="icon">
-                <img :src="userData .gender_icon" alt="">
-              </span>
-              <span>{{userData.profile.gender}}</span>
-            </div> -->
           </div>
           <div class="b-user-card__user-status">
             <img src="../assets/img/runner.svg" alt="runner icon" />
@@ -64,11 +57,6 @@
               {{ $t(`hashtags.${userData.role}`) }}
             </div>
           </div>
-          <!--<div-->
-          <!--:class="['b_user_card_arrow', {active: userData.isActive}]"-->
-          <!--&gt;-->
-          <!--<img src="../assets/img/arrow-down.svg" alt="">-->
-          <!--</div>-->
         </div>
       </div>
     </template>
@@ -92,9 +80,8 @@
 
 <script>
 import StarRating from 'vue-star-rating';
-
- import userAvatar from './shared/userAvatar/userAvatar.vue';
 import CollapsiblePanel from './../components/collapsible/CollapsiblePanel.vue';
+import userAvatar from './shared/userAvatar/userAvatar.vue';
 
 import CONSTANTS from '../consts/index';
 
@@ -102,7 +89,7 @@ export default {
   name: 'UserCard',
   components: {
     StarRating,
-    Avatar,
+    userAvatar,
     CollapsiblePanel,
   },
   props: {

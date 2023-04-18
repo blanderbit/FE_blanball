@@ -74,12 +74,11 @@
       </div>
       <div class="b_sidebar_bottom-block">
         <div class="b_sidebar_picture-bottom">
-          <avatar
+          <userAvatar
             :link="userStore.getUserAvatar"
             :full-name="userStore.getUserFullName"
             @clickByAvatar="goToProfile"
-          >
-          </avatar>
+          />
           <div
             @click="logOut"
             class="b_sidebar_logout d-flex justify-content-center align-items-center"
@@ -117,7 +116,7 @@ import { ref, computed, onBeforeUnmount, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import NotificationsSlideMenu from '../SlideMenu/NotificationsSlideMenu.vue';
- import userAvatar from '../shared/userAvatar/userAvatar.vue';
+import userAvatar from '../shared/userAvatar/userAvatar.vue';
 import BugReportModal from '../ModalWindows/BugReportModal.vue';
 import TabLabel from '../TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';
@@ -168,7 +167,7 @@ export default {
   name: 'MainSidebar',
   components: {
     NotificationsSlideMenu,
-    Avatar,
+    userAvatar,
     BugReportModal,
     TabLabel,
     Loading,

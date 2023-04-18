@@ -150,7 +150,7 @@ import mainInput from '../../../components/shared/input/mainInput.vue';
 import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
 import WhiteBtn from '../../../components/shared/button/WhiteBtn.vue';
 import ManageEventFirstStep from '../../../components/manage-event-components/ManageEventFirstStep.vue';
- import userAvatar from '../../../components/shared/userAvatar/userAvatar.vue';
+import userAvatar from '../../../components/shared/userAvatar/userAvatar.vue';
 import PreviewBlock from '../../../components/manage-event-components/PreviewBlock.vue';
 import EventCard from '../../../components/event-components/EventCard.vue';
 import ManageEventSecondStep from '../../../components/manage-event-components/ManageEventSecondStep.vue';
@@ -188,7 +188,7 @@ export default {
     Form,
     SelectFormsColorsModal,
     PreviewBlock,
-    Avatar,
+    userAvatar,
     Loading,
     InvitedUsersList,
     PreviewInvitedUsersListModal,
@@ -705,6 +705,7 @@ $color-8a8aa8: #8a8aa8;
             flex-basis: 33%;
             height: 4px;
             border-radius: 2px;
+            background: #CDDDE0;
             &.active {
               background: #578D95;
             }

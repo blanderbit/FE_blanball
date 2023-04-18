@@ -165,12 +165,12 @@
               <div class="b-event-info__user">
                 <div class="b-event-info__left-side">
                   <div class="b-event-info__picture">
-                    <avatar
+                    <userAvatar
                       :border="true"
                       :link="eventData.author.profile.avatar_url"
                       :full-name="`${eventData.author.profile.last_name} ${eventData.author.profile.name}`"
                       @clickByAvatar="goToUserProfile(eventData.author.id)"
-                    ></avatar>
+                    />
                   </div>
                   <div class="b-event-info__text-block">
                     <div class="b-event-info__name">
@@ -285,7 +285,7 @@ import RightSidebar from '../../../components/RightSidebar.vue';
 import EventInfoUsersTable from '../../../components/EventInfoUsersTable.vue';
 import PositionMap from '../../../components/maps/PositionMap.vue';
 import CopyModal from '../../../components/ModalWindows/CopyModal.vue';
- import userAvatar from '../../../components/shared/userAvatar/userAvatar.vue';
+import userAvatar from '../../../components/shared/userAvatar/userAvatar.vue';
 import TabLabel from '../../../components/TabLabel.vue';
 import ListOfEventRequestsToParticipations from '../../../components/ListOfEventRequestsToParticipations.vue';
 import Loading from '../../../workers/loading-worker/Loading.vue';
