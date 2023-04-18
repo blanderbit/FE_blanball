@@ -20,7 +20,6 @@
 import { ref, onBeforeUnmount } from 'vue';
 
 export default {
-  name: 'Counter',
   props: {
     startTime: {
       type: Number,

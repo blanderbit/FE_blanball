@@ -72,15 +72,15 @@
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import GreenBtn from '../shared/button/GreenBtn.vue';
-import dropdown from '../shared/dropdown/dropdown.vue';
-import mainInput from '../shared/input/mainInput.vue';
+import GreenBtn from '../../shared/button/GreenBtn.vue';
+import dropdown from '../../shared/dropdown/dropdown.vue';
+import mainInput from '../../shared/input/mainInput.vue';
 import StepWrapper from './StepWrapper.vue';
 
-import CONSTANTS from '../../consts';
+import CONSTANTS from '../../../consts';
 
-import arrowRight from '../../assets/img/arrow-right-white.svg';
-import clipIcon from '../../assets/img/clip.svg';
+import arrowRight from '../../../assets/img/arrow-right-white.svg';
+import clipIcon from '../../../assets/img/clip.svg';
 
 export default {
   name: 'Step9',

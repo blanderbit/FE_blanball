@@ -76,7 +76,7 @@ import { useToast } from 'vue-toastification';
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import ModalWindow from '../ModalWindow.vue';
-import Counter from '../../Counter.vue';
+import Counter from '../../shared/counter/counter.vue';
 import inputCode from '../../shared/inputCode/inputCode.vue';
 import mainInput from '../../shared/input/mainInput.vue';
 import Loading from '../../../workers/loading-worker/Loading.vue';

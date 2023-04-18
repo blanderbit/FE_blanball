@@ -69,20 +69,20 @@
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import dropdown from '../shared/dropdown/dropdown.vue';
-import mainInput from '../shared/input/mainInput.vue';
-import RegisterModalPositionMap from '../maps/RegisterModalPositionMap.vue';
+import dropdown from '../../shared/dropdown/dropdown.vue';
+import mainInput from '../../shared/input/mainInput.vue';
+import RegisterModalPositionMap from '../../maps/RegisterModalPositionMap.vue';
 import StepWrapper from './StepWrapper.vue';
 
-import { PositionMapBus } from '../../workers/event-bus-worker';
-import { API } from '../../workers/api-worker/api.worker';
+import { PositionMapBus } from '../../../workers/event-bus-worker';
+import { API } from '../../../workers/api-worker/api.worker';
 import { useDevice } from 'next-vue-device-detector';
-import useWindowWidth from '../../utils/widthScreen';
+import useWindowWidth from '../../../utils/widthScreen';
 
-import CONSTANTS from '../../consts/index';
+import CONSTANTS from '../../../consts/index';
 
-import tickIcon from '../../assets/img/tick-white.svg';
-import nikeIcon from '../../assets/img/nike-icon.svg';
+import tickIcon from '../../../assets/img/tick-white.svg';
+import nikeIcon from '../../../assets/img/nike-icon.svg';
 
 export default {
   name: 'Step10',

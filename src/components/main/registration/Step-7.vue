@@ -2,8 +2,8 @@
   <step-wrapper
     :returnButton="stepConfig.returnButton"
     :nextButton="stepConfig.nextButton"
-    :title="stepConfig.title"
     :subTitle="stepConfig.subTitle"
+    :title="stepConfig.title"
     :stepperLines="stepConfig.stepperLines"
   >
   </step-wrapper>
@@ -15,33 +15,39 @@ import { useI18n } from 'vue-i18n';
 
 import StepWrapper from './StepWrapper.vue';
 
-import arrowRight from '../../assets/img/arrow-right-white.svg';
+import arrowRight from '../../../assets/img/arrow-right-white.svg';
 
 export default {
-  name: 'Step4',
+  name: 'Step6',
+
   components: {
     StepWrapper,
   },
   setup() {
     const { t } = useI18n();
+
     const stepConfig = computed(() => {
       return {
-        title: t('register.choose-activities'),
-        subTitle: t('register.app-description2'),
-        returnButton: {
-          exist: true,
-          text: t('register.skip'),
-        },
+        title: t('register.set-up-profile'),
+        subTitle: t('register.tell-about-yourself'),
         nextButton: {
           exist: true,
-          text: t('register.continue'),
+          text: t('register.adjust'),
+          width: 180,
           icon: arrowRight,
+        },
+        returnButton: {
+          exist: true,
+          text: t('register.skip-and-go-to-events'),
         },
       };
     });
+
     return {
       stepConfig,
     };
   },
 };
 </script>
+
+<style lang="scss" scoped></style>

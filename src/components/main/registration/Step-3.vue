@@ -15,10 +15,10 @@ import { useI18n } from 'vue-i18n';
 
 import StepWrapper from './StepWrapper.vue';
 
-import arrowRight from '../../assets/img/arrow-right-white.svg';
+import arrowRight from '../../../assets/img/arrow-right-white.svg';
 
 export default {
-  name: 'Step6',
+  name: 'Step3',
   components: {
     StepWrapper,
   },
@@ -26,8 +26,8 @@ export default {
     const { t } = useI18n();
     const stepConfig = computed(() => {
       return {
-        title: t('register.fill-profile'),
-        subTitle: t('register.app-description3'),
+        title: t('register.welcome'),
+        subTitle: t('register.app-description'),
         returnButton: {
           exist: true,
           text: t('register.skip'),

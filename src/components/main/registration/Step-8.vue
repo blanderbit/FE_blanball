@@ -52,13 +52,13 @@
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import GreenBtn from '../shared/button/GreenBtn.vue';
-import dropdown from '../shared/dropdown/dropdown.vue';
+import GreenBtn from '../../shared/button/GreenBtn.vue';
+import dropdown from '../../shared/dropdown/dropdown.vue';
 import StepWrapper from './StepWrapper.vue';
 
-import CONSTANTS from '../../consts/index';
+import CONSTANTS from '../../../consts/index';
 
-import arrowRight from '../../assets/img/arrow-right-white.svg';
+import arrowRight from '../../../assets/img/arrow-right-white.svg';
 
 export default {
   name: 'Step8',

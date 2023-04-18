@@ -37,8 +37,6 @@
               {{ $t('register.load-app') }}
             </span>
           </div>
-          <!--<template v-else>-->
-          <!--</template>-->
         </div>
       </Transition>
       <div

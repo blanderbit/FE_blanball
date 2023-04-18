@@ -43,7 +43,7 @@
 import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
-import BreadCrumbs from './Breadcrumbs.vue';
+import BreadCrumbs from './shared/breadcrumbs/breadcrumbs.vue';
 import mainInput from './shared/input/mainInput.vue';
 import SearchModal from './ModalWindows/SearchModal.vue';
 import SearchBlockAll from './SearchBlockAll.vue';
