@@ -104,8 +104,8 @@ import { useI18n } from 'vue-i18n';
 import SearchBlockAll from '../../SearchBlockAll.vue';
 import mainInput from '../../shared/input/mainInput.vue';
 import Avatar from '../../Avatar.vue';
-import GreenBtn from '../../GreenBtn.vue';
-import WhiteBtn from '../../WhiteBtn.vue';
+import GreenBtn from '../../shared/button/GreenBtn.vue';
+import WhiteBtn from '../../shared/button/WhiteBtn.vue';
 import InvitedUsersListModal from './InvitedUsersListModal.vue';
 import SubmitModal from '../SubmitModal.vue';
 

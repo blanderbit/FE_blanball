@@ -96,8 +96,8 @@ import ManageEventFirstStep from '../manage-event-components/ManageEventFirstSte
 import ManageEventSecondStep from '../manage-event-components/ManageEventSecondStep.vue';
 import ManageEventThirdStep from '../manage-event-components/ManageEventThirdStep.vue';
 import SelectFormsColorsModal from './SelectFormsColorsModal.vue';
-import WhiteBtn from '../WhiteBtn.vue';
-import GreenBtn from '../GreenBtn.vue';
+import WhiteBtn from '../shared/button/WhiteBtn.vue';
+import GreenBtn from '../shared/button/GreenBtn.vue';
 import SubmitModal from './SubmitModal.vue';
 import Loading from '../../workers/loading-worker/Loading.vue';
 

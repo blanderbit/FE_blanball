@@ -82,7 +82,7 @@ import { computed, ref, watch } from 'vue';
 
 import ModalWindow from '../ModalWindows/ModalWindow.vue';
 import dropdown from '../shared/dropdown/dropdown.vue';
-import GreenBtn from '../GreenBtn.vue';
+import GreenBtn from '../shared/button/GreenBtn.vue';
 import RadioGenderBox from './components/RadioGenderBox.vue';
 import ModalPositionMap from '../maps/ModalPositionMap.vue';
 import ClearFilters from './components/ClearFilters.vue';

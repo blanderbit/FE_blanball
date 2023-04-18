@@ -23,7 +23,7 @@
 <script>
 import { computed } from 'vue';
 
-import GreenBtn from './GreenBtn.vue';
+import GreenBtn from './shared/button/GreenBtn.vue';
 
 import EmptyNotificationsSvg from '../assets/img/no-records/empty-notifications.svg';
 import NoData from '../assets/img/no-records/no-data.svg';

@@ -72,7 +72,7 @@
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import GreenBtn from '../GreenBtn.vue';
+import GreenBtn from '../shared/button/GreenBtn.vue';
 import dropdown from '../shared/dropdown/dropdown.vue';
 import mainInput from '../shared/input/mainInput.vue';
 import StepWrapper from './StepWrapper.vue';

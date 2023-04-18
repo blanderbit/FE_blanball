@@ -35,10 +35,9 @@ import { ref, computed, watch } from 'vue';
 
 import { v4 as uuid } from 'uuid';
 
-import { CustomModelWorker } from '../../workers/custom-model-worker';
+import { CustomModelWorker } from '../../../workers/custom-model-worker';
 
 export default {
-  name: 'RadioButton',
   props: {
     title: {
       type: String,
@@ -112,7 +111,7 @@ export default {
 $color-f4f4f4: #f4f4f4;
 $color-dfdeed: #dfdeed;
 
-@import '../../assets/styles/forms.scss';
+@import '../../../assets/styles/forms.scss';
 
 $color1: $color-f4f4f4;
 $color2: $--b-main-green-color;

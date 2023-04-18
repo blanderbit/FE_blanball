@@ -18,7 +18,7 @@
 
 <script>
 import { computed, ref, watch } from 'vue';
-import Loading from './../workers/loading-worker/Loading.vue';
+import Loading from '../../../workers/loading-worker/Loading.vue';
 
 export default {
   components: {
@@ -61,6 +61,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    borderColor: {
+      type: String,
+      default: ''
+    },
     loading: {
       type: Boolean,
       default: false,
@@ -78,7 +82,7 @@ export default {
         width: props.width ? props.width + 'px' : '100%',
         height: props.height + 'px',
         background: props.backgroundColor,
-        // 'justify-content': props.iconRight || props.icon ? 'space-around' : 'center'
+        border: `${props.borderColor ? `1px solid ${props.borderColor}` : 'none'}`,
         'justify-content': 'center',
       };
     });

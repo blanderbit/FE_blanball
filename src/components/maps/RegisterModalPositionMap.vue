@@ -38,7 +38,7 @@ import { ref } from 'vue';
 
 import PositionMap from './PositionMap.vue';
 import ModalWindow from '../ModalWindows/ModalWindow.vue';
-import GreenBtn from '../../components/GreenBtn.vue';
+import GreenBtn from '../shared/button/GreenBtn.vue';
 import Loading from '../../workers/loading-worker/Loading.vue';
 
 export default {

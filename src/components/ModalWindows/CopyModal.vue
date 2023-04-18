@@ -19,7 +19,7 @@
 import { ref } from 'vue';
 
 import mainInput from '../shared/input/mainInput.vue';
-import GreenBtn from '../GreenBtn.vue';
+import GreenBtn from '../shared/button/GreenBtn.vue';
 
 import CopyIcon from '../../assets/img/copy.svg';
 

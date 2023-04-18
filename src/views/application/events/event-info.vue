@@ -280,7 +280,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
 
-import GreenBtn from '../../../components/GreenBtn.vue';
+import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
 import RightSidebar from '../../../components/RightSidebar.vue';
 import EventInfoUsersTable from '../../../components/EventInfoUsersTable.vue';
 import PositionMap from '../../../components/maps/PositionMap.vue';

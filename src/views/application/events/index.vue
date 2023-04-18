@@ -117,7 +117,7 @@ import { useToast } from 'vue-toastification';
 
 import { v4 as uuid } from 'uuid';
 
-import GreenBtn from '../../../components/GreenBtn.vue';
+import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
 import mainInput from '../../../components/shared/input/mainInput.vue';
 import ContextMenu from '../../../components/ModalWindows/ContextMenuModal.vue';
 import EventCard from '../../../components/event-components/EventCard.vue';

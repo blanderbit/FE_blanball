@@ -41,8 +41,8 @@
 
 <script>
 import Avatar from './Avatar.vue';
-import GreenBtn from './GreenBtn.vue';
-import WhiteBtn from './WhiteBtn.vue';
+import GreenBtn from './shared/button/GreenBtn.vue';
+import WhiteBtn from './shared/button/WhiteBtn.vue';
 
 import GrayCrossIcon from '../assets/img/gray-cross.svg';
 import NikeIcon from '../assets/img/nike-icon.svg';

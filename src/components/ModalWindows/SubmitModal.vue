@@ -53,8 +53,8 @@
 </template>
 
 <script>
-import GreenBtn from '../GreenBtn.vue';
-import WhiteBtn from '../WhiteBtn.vue';
+import GreenBtn from '../shared/button/GreenBtn.vue';
+import WhiteBtn from '../shared/button/WhiteBtn.vue';
 
 export default {
   name: 'SubmitModal',

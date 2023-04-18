@@ -70,12 +70,12 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import GreenBtn from '../GreenBtn.vue';
+import GreenBtn from '../shared/button/GreenBtn.vue';
 import mainInput from '../shared/input/mainInput.vue';
 import StepWrapper from './StepWrapper.vue';
 
 import arrowRight from '../../assets/img/arrow-right-white.svg';
-import RadioButton from '../forms/RadioButton.vue';
+import radioButton from '../shared/radioButton/radioButton.vue';
 import MaleIcon from '../../assets/img/male-icon.svg';
 import FemaleIcon from '../../assets/img/female-icon.svg';
 
@@ -85,7 +85,7 @@ export default {
     GreenBtn,
     mainInput,
     StepWrapper,
-    RadioButton,
+    radioButton,
   },
   setup() {
     const { t } = useI18n();

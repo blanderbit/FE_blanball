@@ -10,7 +10,7 @@
       <div class="b-security__settings-block">
         <div class="b-security__personal-settings">
           <p>{{ $t('profile.phone-number') }}</p>
-          <Switcher
+          <switcher
             :id="'phone'"
             :is-edit-mode="isEditMode"
             name="config_phone"
@@ -18,7 +18,7 @@
         </div>
         <div class="b-security__personal-settings">
           <p>{{ $t('profile.e-mail') }}</p>
-          <Switcher
+          <switcher
             :id="'email'"
             :is-edit-mode="isEditMode"
             name="config_email"
@@ -26,7 +26,7 @@
         </div>
         <div class="b-security__personal-settings">
           <p>{{ $t('profile.my-feedbacks') }}</p>
-          <Switcher
+          <switcher
             :id="'feedback'"
             :is-edit-mode="isEditMode"
             name="show_reviews"
@@ -84,14 +84,14 @@
 <script>
 import { ref, computed } from 'vue';
 
-import Switcher from '../components/Switcher.vue';
+import switcher from './shared/switcher/switcher.vue';
 import sortArrowHorizontally from '../assets/img/sort-arrows-horizontal.svg';
 import mainInput from './shared/input/mainInput.vue';
 
 export default {
   name: 'SecurityBlock',
   components: {
-    Switcher,
+    switcher,
     mainInput,
   },
   props: {

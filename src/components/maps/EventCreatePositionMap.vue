@@ -91,7 +91,7 @@ import PositionMap from './PositionMap.vue';
 import dropdown from '../shared/dropdown/dropdown.vue';
 import mainInput from '../shared/input/mainInput.vue';
 import ModalWindow from '../ModalWindows/ModalWindow.vue';
-import GreenBtn from '../../components/GreenBtn.vue';
+import GreenBtn from '../shared/button/GreenBtn.vue';
 import Loading from '../../workers/loading-worker/Loading.vue';
 
 import { PositionMapBus } from '../../workers/event-bus-worker';

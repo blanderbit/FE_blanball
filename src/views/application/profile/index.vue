@@ -157,8 +157,8 @@ import { useToast } from 'vue-toastification';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import GreenBtn from '../../../components/GreenBtn.vue';
-import WhiteBtn from '../../../components/WhiteBtn.vue';
+import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
+import WhiteBtn from '../../../components/shared/button/WhiteBtn.vue';
 import mainInput from '../../../components/shared/input/mainInput.vue';
 import ModalWindow from '../../../components/ModalWindows/ModalWindow.vue';
 import RatingCard from '../../../components/RatingCard.vue';

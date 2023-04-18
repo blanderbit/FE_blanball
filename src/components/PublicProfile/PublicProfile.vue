@@ -214,13 +214,13 @@ import StarRating from 'vue-star-rating';
 import { useElementSize } from '@vueuse/core';
 
 import Avatar from '../Avatar.vue';
-import WhiteBtn from '../WhiteBtn.vue';
+import WhiteBtn from '../shared/button/WhiteBtn.vue';
 import PublicProfileReviews from './PublicProfileReviews.vue';
 import PublicProfilePlannedEvents from './PublicProfilePlannedEvents.vue';
 import InviteOneUserToEventModal from '../ModalWindows/InviteToEventModalWindows/InviteOneUserToEventModal.vue';
 import CopyModal from '../ModalWindows/CopyModal.vue';
 import mainInput from '../shared/input/mainInput.vue';
-import GreenBtn from '../GreenBtn.vue';
+import GreenBtn from '../shared/button/GreenBtn.vue';
 
 import useWindowWidth from '../../utils/widthScreen';
 import { copyToClipboard } from '../../utils/copyToClipBoard';

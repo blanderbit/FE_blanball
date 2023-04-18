@@ -88,7 +88,7 @@ import { useRouter } from 'vue-router';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import GreenBtn from '../GreenBtn.vue';
+import GreenBtn from '../shared/button/GreenBtn.vue';
 import mainInput from '../shared/input/mainInput.vue';
 import Checkbox from '../shared/checkbox/checkbox.vue';
 

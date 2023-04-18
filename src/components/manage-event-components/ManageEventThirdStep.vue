@@ -46,7 +46,7 @@
       <div class="title">
         {{ $t('events.prize') }} <span>{{ $t('events.vip') }}</span>
       </div>
-      <Switcher
+      <switcher
         :is-edit-mode="false"
         name="is_prize"
         @get-value="showHidePhone"
@@ -55,7 +55,7 @@
 
     <div class="need-ball-switcher">
       <span class="title">{{ $t('events.is-ball-need') }}</span>
-      <Switcher :id="'need_ball'" :is-edit-mode="true" name="need_ball" />
+      <switcher :id="'need_ball'" :is-edit-mode="true" name="need_ball" />
     </div>
     <span class="subtitle">
       {{ $t('events.need-ball-subtitle') }}
@@ -97,8 +97,8 @@ import { computed, ref } from 'vue';
 
 import { ErrorMessage } from '@system.it.flumx.com/vee-validate';
 
-import Switcher from '../../components/Switcher.vue';
-import RadioButton from '../../components/forms/RadioButton.vue';
+import switcher from '../shared/switcher/switcher.vue';
+import radioButton from '../shared/radioButton/radioButton.vue';
 import mainInput from '../shared/input/mainInput.vue';
 import mainTextArea from '../shared/textArea/mainTextArea.vue';
 import EventCreateForms from '../buildedForms/EventCreateForms.vue';
@@ -111,9 +111,9 @@ import checkMarkIcon from '../../assets/img/check-mark.svg';
 export default {
   name: 'ManageEventThirdStep',
   components: {
-    Switcher,
+    switcher,
     mainInput,
-    RadioButton,
+    radioButton,
     mainTextArea,
     ErrorMessage,
 

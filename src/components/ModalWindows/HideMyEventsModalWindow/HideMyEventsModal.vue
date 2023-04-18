@@ -103,8 +103,8 @@ import SmartGridList from '../../smart-list/SmartGridList.vue';
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
 import ScrollToTop from '../../ScrollToTop.vue';
 import HideEventCard from './HideEventCard.vue';
-import WhiteBtn from '../../WhiteBtn.vue';
-import GreenBtn from '../../GreenBtn.vue';
+import WhiteBtn from '../../shared/button/WhiteBtn.vue';
+import GreenBtn from '../../shared/button/GreenBtn.vue';
 import ActionEventModal from '../ActionEventModal.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';

@@ -182,7 +182,7 @@ import { useToast } from 'vue-toastification';
 
 import { v4 as uuid } from 'uuid';
 
-import GreenBtn from '../../../components/GreenBtn.vue';
+import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
 import mainInput from '../../../components/shared/input/mainInput.vue';
 import ContextMenu from '../../../components/ModalWindows/ContextMenuModal.vue';
 import EventCard from '../../../components/event-components/EventCard.vue';
@@ -194,7 +194,7 @@ import SmartGridList from '../../../components/smart-list/SmartGridList.vue';
 import ScrollToTop from '../../../components/ScrollToTop.vue';
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue';
-import WhiteBtn from '../../../components/WhiteBtn.vue';
+import WhiteBtn from '../../../components/shared/button/WhiteBtn.vue';
 import DeleteEventsModal from '../../../components/ModalWindows/DeleteEventsModal.vue';
 import Loading from '../../../workers/loading-worker/Loading.vue';
 import EditEventModal from '../../../components/ModalWindows/EditEventModal.vue';

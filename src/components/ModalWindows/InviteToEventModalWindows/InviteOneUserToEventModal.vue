@@ -47,8 +47,8 @@
   import { ref } from 'vue';
   
   import mainTextArea from '../../shared/textArea/mainTextArea.vue';
-  import WhiteBtn from '../../WhiteBtn.vue';
-  import GreenBtn from '../../GreenBtn.vue';
+  import WhiteBtn from '../../shared/button/WhiteBtn.vue';
+  import GreenBtn from '../../shared/button/GreenBtn.vue';
   
   export default {
     props: {

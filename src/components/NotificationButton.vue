@@ -33,8 +33,8 @@
 <script>
 import { ref } from 'vue';
 
-import WhiteBtn from './WhiteBtn.vue';
-import GreenBtn from './GreenBtn.vue';
+import WhiteBtn from './shared/button/WhiteBtn.vue';
+import GreenBtn from './shared/button/GreenBtn.vue';
 
 export default {
   name: 'NotificationButton',

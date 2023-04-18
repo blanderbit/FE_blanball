@@ -164,7 +164,7 @@ import dayjs from 'dayjs';
 
 import dropdown from '../shared/dropdown/dropdown.vue';
 import mainInput from '../shared/input/mainInput.vue';
-import RadioButton from '../forms/RadioButton.vue';
+import radioButton from '../shared/radioButton/radioButton.vue';
 import PositionMap from '../maps/PositionMap.vue';
 import EventCreatePositionMap from '../maps/EventCreatePositionMap.vue';
 
@@ -204,7 +204,7 @@ export default {
   components: {
     dropdown,
     mainInput,
-    RadioButton,
+    radioButton,
     EventCreatePositionMap,
     PositionMap,
     ErrorMessage,

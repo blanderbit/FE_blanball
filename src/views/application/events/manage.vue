@@ -147,8 +147,8 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 import { merge } from 'lodash';
 
 import mainInput from '../../../components/shared/input/mainInput.vue';
-import GreenBtn from '../../../components/GreenBtn.vue';
-import WhiteBtn from '../../../components/WhiteBtn.vue';
+import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
+import WhiteBtn from '../../../components/shared/button/WhiteBtn.vue';
 import ManageEventFirstStep from '../../../components/manage-event-components/ManageEventFirstStep.vue';
 import Avatar from '../../../components/Avatar.vue';
 import PreviewBlock from '../../../components/manage-event-components/PreviewBlock.vue';

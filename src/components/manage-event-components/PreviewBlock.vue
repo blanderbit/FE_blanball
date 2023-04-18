@@ -19,7 +19,7 @@
   </div>
 </template>
 <script>
-import GreenBtn from '../../components/GreenBtn.vue';
+import GreenBtn from '../shared/button/GreenBtn.vue';
 import EventCard from '../event-components/EventCard.vue';
 
 export default {

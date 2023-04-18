@@ -62,9 +62,9 @@
 </template>
 <script>
 import { computed } from 'vue';
-import GreenBtn from '../GreenBtn.vue';
+import GreenBtn from '../shared/button/GreenBtn.vue';
 import Loading from '../../workers/loading-worker/Loading.vue';
-import WhiteBtn from '../WhiteBtn.vue';
+import WhiteBtn from '../shared/button/WhiteBtn.vue';
 
 export default {
   name: 'StepWrapper',

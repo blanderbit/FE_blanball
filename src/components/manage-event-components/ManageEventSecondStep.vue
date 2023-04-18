@@ -105,9 +105,9 @@ import { useRouter } from 'vue-router';
 
 import mainInput from '../shared/input/mainInput.vue';
 import mainTextArea from '../shared/textArea/mainTextArea.vue';
-import Switcher from '../../components/Switcher.vue';
+import switcher from '../shared/switcher/switcher.vue';
 import SearchBlockAll from '../SearchBlockAll.vue';
-import RadioButton from '../forms/RadioButton.vue';
+import radioButton from '../shared/radioButton/radioButton.vue';
 
 import { ROUTES } from '../../router/router.const';
 
@@ -142,9 +142,9 @@ export default {
   },
   components: {
     mainInput,
-    Switcher,
+    switcher,
     SearchBlockAll,
-    RadioButton,
+    radioButton,
     mainTextArea,
   },
 

@@ -104,7 +104,7 @@ import { useToast } from 'vue-toastification';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import GreenBtn from '../GreenBtn.vue';
+import GreenBtn from '../shared/button/GreenBtn.vue';
 import mainInput from '../shared/input/mainInput.vue';
 import inputCode from '../shared/inputCode/inputCode.vue';
 import Counter from '../Counter.vue';

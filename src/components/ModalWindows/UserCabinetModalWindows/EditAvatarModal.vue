@@ -80,7 +80,7 @@ import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
 import ModalWindow from '../ModalWindow.vue';
 import mainInput from '../../shared/input/mainInput.vue';
-import GreenBtn from '../../GreenBtn.vue';
+import GreenBtn from '../../shared/button/GreenBtn.vue';
 
 import SaveIcon from '../../../assets/img/save-icon.svg';
 
