@@ -42,7 +42,7 @@
         />
       </div>
       <div class="b-register-step__dropdown">
-        <InputComponent
+        <mainInput
           :title="$t('register.address')"
           :swipeTitle="false"
           :placeholder="$t('register.address-placeholder')"
@@ -52,7 +52,7 @@
           :height="40"
           @input="changeAddress($event)"
           name="address"
-        ></InputComponent>
+        ></mainInput>
       </div>
       <div class="b-register-step__map">
         <RegisterModalPositionMap
@@ -70,7 +70,7 @@ import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import dropdown from '../shared/dropdown/dropdown.vue';
-import InputComponent from '../forms/InputComponent.vue';
+import mainInput from '../shared/input/mainInput.vue';
 import RegisterModalPositionMap from '../maps/RegisterModalPositionMap.vue';
 import StepWrapper from './StepWrapper.vue';
 
@@ -88,7 +88,7 @@ export default {
   name: 'Step10',
   components: {
     dropdown,
-    InputComponent,
+    mainInput,
     StepWrapper,
     RegisterModalPositionMap,
   },

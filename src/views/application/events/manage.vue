@@ -146,7 +146,7 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 
 import { merge } from 'lodash';
 
-import InputComponent from '../../../components/forms/InputComponent.vue';
+import mainInput from '../../../components/shared/input/mainInput.vue';
 import GreenBtn from '../../../components/GreenBtn.vue';
 import WhiteBtn from '../../../components/WhiteBtn.vue';
 import ManageEventFirstStep from '../../../components/manage-event-components/ManageEventFirstStep.vue';
@@ -178,7 +178,7 @@ import Arrow from '../../../assets/img/arrow-right-white.svg';
 export default {
   name: 'CreateEventPage',
   components: {
-    InputComponent,
+    mainInput,
     GreenBtn,
     WhiteBtn,
     ManageEventFirstStep,

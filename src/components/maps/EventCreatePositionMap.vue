@@ -44,7 +44,7 @@
           </div>
 
           <div class="b-modal-position__block">
-            <InputComponent
+            <mainInput
               :title="$t('register.address')"
               :swipeTitle="false"
               :placeholder="$t('register.address-placeholder')"
@@ -54,7 +54,7 @@
               :height="40"
               @input="changeAddress($event)"
               name="address"
-            ></InputComponent>
+            ></mainInput>
           </div>
 
           <div class="b-modal-position__block b-modal-position__map">
@@ -89,7 +89,7 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 
 import PositionMap from './PositionMap.vue';
 import dropdown from '../shared/dropdown/dropdown.vue';
-import InputComponent from './../forms/InputComponent.vue';
+import mainInput from '../shared/input/mainInput.vue';
 import ModalWindow from '../ModalWindows/ModalWindow.vue';
 import GreenBtn from '../../components/GreenBtn.vue';
 import Loading from '../../workers/loading-worker/Loading.vue';
@@ -107,7 +107,7 @@ export default {
     ModalWindow,
     PositionMap,
     dropdown,
-    InputComponent,
+    mainInput,
     Form,
     GreenBtn,
     Loading,

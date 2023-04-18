@@ -54,7 +54,7 @@ import OpenIndicator from '../../forms/OpenIndicator.vue';
 
 import { CustomModelWorker } from '../../../workers/custom-model-worker/index';
 
-import SearchIcon from '../../assets/img/search.svg';
+import SearchIcon from '../../../assets/img/search.svg';
 
 export default {
   components: {
@@ -259,7 +259,7 @@ export default {
 // SCSS variables for hex colors
 $color-dfdeed: #dfdeed;
 
-@import '../../assets/styles/forms.scss';
+@import '../../../assets/styles/forms.scss';
 
 :deep {
   .vs__clear {

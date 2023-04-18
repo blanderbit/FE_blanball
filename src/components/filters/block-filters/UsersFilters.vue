@@ -40,7 +40,7 @@
           </div>
           <div class="b-main-search__right-block">
             <div class="b-main-search__search-input-desktop">
-              <InputComponent
+              <mainInput
                 :title-width="0"
                 :placeholder="$t('users.users-search')"
                 :height="32"
@@ -93,7 +93,7 @@
           </div>
           <div class="b-main-search__right-part d-flex align-items-center">
             <div class="b-main-search__search-input me-2">
-              <InputComponent
+              <mainInput
                 :title-width="0"
                 :placeholder="$t('users.users-search')"
                 :height="32"
@@ -102,7 +102,7 @@
                 v-model="transformedFilters.search"
               />
             </div>
-            <InputComponent
+            <mainInput
               v-if="isMobileSearchOpened"
               :title-width="0"
               :placeholder="$t('users.users-search')"
@@ -112,7 +112,7 @@
               v-model="transformedFilters.search"
               @icon-click="closeMobileSearch"
             />
-            <InputComponent
+            <mainInput
               class="b-main-search__search-input-tablet"
               :title-width="0"
               :placeholder="$t('users.users-search')"
@@ -160,7 +160,7 @@ import { useRoute } from 'vue-router';
 
 import dropdown from '../../shared/dropdown/dropdown.vue';
 import FilterBlock from '../FilterBlock.vue';
-import InputComponent from '../../forms/InputComponent.vue';
+import mainInput from '../../shared/input/mainInput.vue';
 import ButtonDetailsFilters from '../components/ButtonDetailsFilters.vue';
 import ClearFilters from '../components/ClearFilters.vue';
 import ModalFilters from '../ModalUsersFilters.vue';
@@ -180,7 +180,7 @@ export default {
   name: 'EventsFilters',
   components: {
     dropdown,
-    InputComponent,
+    mainInput,
     ButtonDetailsFilters,
     ClearFilters,
     RangeFilter,

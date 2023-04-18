@@ -26,7 +26,7 @@
     </div>
     <div class="b_header_search-block">
       <div class="b_header_search-input">
-        <InputComponent
+        <mainInput
           :title-width="0"
           :placeholder="$t('users.search')"
           :icon="icons.search"
@@ -44,7 +44,7 @@ import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import BreadCrumbs from './Breadcrumbs.vue';
-import InputComponent from './forms/InputComponent.vue';
+import mainInput from './shared/input/mainInput.vue';
 import SearchModal from './ModalWindows/SearchModal.vue';
 import SearchBlockAll from './SearchBlockAll.vue';
 
@@ -58,7 +58,7 @@ import arrowIcon from '../assets/img/arrow-right-gray.svg';
 export default {
   components: {
     BreadCrumbs,
-    InputComponent,
+    mainInput,
     SearchModal,
     SearchBlockAll,
   },

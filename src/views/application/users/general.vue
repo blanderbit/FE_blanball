@@ -93,7 +93,7 @@ import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
-import InputComponent from '../../../components/forms/InputComponent.vue';
+import mainInput from '../../../components/shared/input/mainInput.vue';
 import UserCard from '../../../components/UserCard.vue';
 import SmartList from '../../../components/smart-list/SmartList.vue';
 import EmptyList from '../../../components/EmptyList.vue';
@@ -120,7 +120,7 @@ import { ROUTES } from '../../../router/router.const';
 export default {
   name: 'RatingPage',
   components: {
-    InputComponent,
+    mainInput,
     UserCard,
     SmartList,
     InfiniteLoading,

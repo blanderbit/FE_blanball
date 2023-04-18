@@ -14,7 +14,7 @@
       <img src="../../../assets/img/share-arrow.svg" alt="" />
     </template>
     <template #input>
-      <InputComponent
+      <mainInput
         :height="40"
         :outsideTitle="true"
         :title-width="0"
@@ -294,7 +294,7 @@ import ActionEventModal from '../../../components/ModalWindows/ActionEventModal.
 import EditEventModal from '../../../components/ModalWindows/EditEventModal.vue';
 import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue';
 import ContextModal from '../../../components/ModalWindows/ContextModal.vue';
-import InputComponent from '../../../components/forms/InputComponent.vue';
+import mainInput from '../../../components/shared/input/mainInput.vue';
 import InviteManyUsersToEventModal from '../../../components/ModalWindows/InviteToEventModalWindows/InviteManyUsersToEventModal.vue';
 import SmallPlayerCard from '../../../components/SmallPlayerCard.vue';
 
@@ -344,7 +344,7 @@ export default {
     InviteManyUsersToEventModal,
     ActionEventModal,
     SubmitModal,
-    InputComponent,
+    mainInput,
     ContextModal,
   },
   setup() {

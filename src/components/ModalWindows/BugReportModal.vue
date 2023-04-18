@@ -9,7 +9,7 @@
       </div>
       <Form v-slot="data" :validation-schema="schema" @submit="disableSubmit">
         <div class="b-bug-report-modal__main-side">
-          <InputComponent
+          <mainInput
             :placeholder="$t('modals.bug_report.input-placeholder')"
             :swipeTitle="false"
             :height="40"
@@ -76,7 +76,7 @@ import { useToast } from 'vue-toastification';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import InputComponent from '../forms/InputComponent.vue';
+import mainInput from '../shared/input/mainInput.vue';
 import TextAreaComponent from '../TextAreaComponent.vue';
 
 import { API } from '../../workers/api-worker/api.worker';
@@ -87,7 +87,7 @@ import addFileIcon from '../../assets/img/add-file-icon.svg';
 
 export default {
   components: {
-    InputComponent,
+    mainInput,
     TextAreaComponent,
 
     Form,

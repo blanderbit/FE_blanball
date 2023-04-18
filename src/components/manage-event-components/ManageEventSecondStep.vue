@@ -46,7 +46,7 @@
       </div>
     </div>
     <div v-if="isEventPayment" class="input enter-sum-input">
-      <InputComponent
+      <mainInput
         :outside-title="true"
         :swipeTitle="false"
         :title="$t('events.enter-sum')"
@@ -69,7 +69,7 @@
     <div class="title">{{ $t('events.invite-users') }}</div>
     <div class="subtitle">{{ $t('events.enter-amount-members') }}</div>
     <div class="input">
-      <InputComponent
+      <mainInput
         :placeholder="$t('events.max-50')"
         v-maska="'##'"
         :icon="icons.users"
@@ -78,7 +78,7 @@
       />
     </div>
     <div class="input">
-      <InputComponent
+      <mainInput
         :placeholder="$t('events.search-users')"
         :title-width="30"
         v-model="searchValue"
@@ -103,7 +103,7 @@
 import { ref, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
-import InputComponent from '../forms/InputComponent.vue';
+import mainInput from '../shared/input/mainInput.vue';
 import TextAreaComponent from '../TextAreaComponent.vue';
 import Switcher from '../../components/Switcher.vue';
 import SearchBlockAll from '../SearchBlockAll.vue';
@@ -141,7 +141,7 @@ export default {
     },
   },
   components: {
-    InputComponent,
+    mainInput,
     Switcher,
     SearchBlockAll,
     RadioButton,

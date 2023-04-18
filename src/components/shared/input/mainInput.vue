@@ -57,10 +57,10 @@
 import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { CustomModelWorker } from '../../workers/custom-model-worker/index';
+import { CustomModelWorker } from '../../../workers/custom-model-worker/index';
 
-import eyeCross from '../../assets/img/eye-crossed.svg';
-import eyeOpen from '../../assets/img/eye-opened.svg';
+import eyeCross from '../../../assets/img/eye-crossed.svg';
+import eyeOpen from '../../../assets/img/eye-opened.svg';
 
 const PASSWORD_TYPES = {
   PASSWORD: 'password',
@@ -69,7 +69,7 @@ const PASSWORD_TYPES = {
 
 // TODO vue 3 fully, validate message
 export default {
-  name: 'InputComponent',
+  name: 'mainInput',
   props: {
     isDisabled: {
       type: Boolean,
@@ -258,7 +258,7 @@ export default {
 // SCSS variables for hex colors
 $color-dfdeed: #dfdeed;
 
-@import '../../assets/styles/forms.scss';
+@import '../../../assets/styles/forms.scss';
 
 .b-input__input-component {
   height: 100%;

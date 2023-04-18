@@ -10,7 +10,7 @@
       <img src="../../assets/img/white-phone-icon.svg" alt="" />
     </template>
     <template #input>
-      <InputComponent
+      <mainInput
         :height="40"
         :outsideTitle="true"
         :title-width="0"
@@ -40,7 +40,7 @@
       <img src="../../assets/img/white-letter-icon.svg" alt="" />
     </template>
     <template #input>
-      <InputComponent
+      <mainInput
         :height="40"
         :outsideTitle="true"
         :title-width="0"
@@ -219,7 +219,7 @@ import PublicProfileReviews from './PublicProfileReviews.vue';
 import PublicProfilePlannedEvents from './PublicProfilePlannedEvents.vue';
 import InviteOneUserToEventModal from '../ModalWindows/InviteToEventModalWindows/InviteOneUserToEventModal.vue';
 import CopyModal from '../ModalWindows/CopyModal.vue';
-import InputComponent from '../forms/InputComponent.vue';
+import mainInput from '../shared/input/mainInput.vue';
 import GreenBtn from '../GreenBtn.vue';
 
 import useWindowWidth from '../../utils/widthScreen';
@@ -262,7 +262,7 @@ export default {
     PublicProfileReviews,
     CopyModal,
     InviteOneUserToEventModal,
-    InputComponent,
+    mainInput,
     GreenBtn,
     StarRating,
   },

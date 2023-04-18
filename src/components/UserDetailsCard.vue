@@ -86,7 +86,7 @@
           </div>
           <div v-if="isEditMode" class="b-user-card__name-line">
             <div class="b-user-card__input-surname">
-              <InputComponent
+              <mainInput
                 :outside-title="true"
                 :title="$t('profile.surname')"
                 :placeholder="$t('profile.surname')"
@@ -96,7 +96,7 @@
               />
             </div>
             <div class="b-user-card__input-name">
-              <InputComponent
+              <mainInput
                 :outside-title="true"
                 :title="$t('profile.name')"
                 :placeholder="$t('profile.name')"
@@ -184,7 +184,7 @@
                 </div>
                 <div class="b-user-card__title">{{ $t('profile.height') }}</div>
               </div>
-              <InputComponent
+              <mainInput
                 v-else
                 :outside-title="true"
                 :title="$t('profile.height')"
@@ -206,7 +206,7 @@
                   {{ $t('profile.weight') }}
                 </div>
               </div>
-              <InputComponent
+              <mainInput
                 v-else
                 :outside-title="true"
                 :title="$t('profile.weight')"
@@ -282,7 +282,7 @@
                 {{ $t('profile.phone') }}
               </div>
             </div>
-            <InputComponent
+            <mainInput
               v-else
               :title="$t('profile.phone')"
               :placeholder="userData.phone"
@@ -325,7 +325,7 @@ import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
 import dayjsUkrLocale from 'dayjs/locale/uk';
 
-import InputComponent from './forms/InputComponent.vue';
+import mainInput from './shared/input/mainInput.vue';
 import TextAreaComponent from '../components/TextAreaComponent.vue';
 import dropdown from './shared/dropdown/dropdown.vue';
 import Avatar from '../components/Avatar.vue';
@@ -344,7 +344,7 @@ const IMAGE_TYPES = ['image/jpeg', 'image/png'];
 export default {
   name: 'UserDetailsCard',
   components: {
-    InputComponent,
+    mainInput,
     dropdown,
     TextAreaComponent,
     Avatar,

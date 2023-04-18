@@ -26,7 +26,7 @@
           {{ $t('reset.write-code') }}
         </div>
         <div class="b-reset-step__input" v-if="currentStep === 1">
-          <InputComponent
+          <mainInput
             :outside-title="true"
             :title="$t('reset.post')"
             :swipeTitle="false"
@@ -58,7 +58,7 @@
           {{ $t('reset.new-password') }}
         </div>
         <div class="b-reset-step__input" v-if="currentStep === 3">
-          <InputComponent
+          <mainInput
             :title="$t('reset.enter-new-password')"
             :title-width="0"
             :type="'password'"
@@ -69,7 +69,7 @@
           />
         </div>
         <div class="b-reset-step__input" v-if="currentStep === 3">
-          <InputComponent
+          <mainInput
             :title="$t('reset.repeat-new-password')"
             :title-width="0"
             :type="'password'"
@@ -105,7 +105,7 @@ import { useToast } from 'vue-toastification';
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import GreenBtn from '../GreenBtn.vue';
-import InputComponent from '../forms/InputComponent.vue';
+import mainInput from '../shared/input/mainInput.vue';
 import CodeInput from '../forms/CodeInput.vue';
 import Counter from '../Counter.vue';
 
@@ -121,7 +121,7 @@ export default {
   name: 'Step1',
   components: {
     GreenBtn,
-    InputComponent,
+    mainInput,
     Form,
     CodeInput,
     Counter,

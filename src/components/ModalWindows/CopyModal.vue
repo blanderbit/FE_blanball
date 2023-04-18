@@ -18,14 +18,14 @@
 <script>
 import { ref } from 'vue';
 
-import InputComponent from '../forms/InputComponent.vue';
+import mainInput from '../shared/input/mainInput.vue';
 import GreenBtn from '../GreenBtn.vue';
 
 import CopyIcon from '../../assets/img/copy.svg';
 
 export default {
   components: {
-    InputComponent,
+    mainInput,
     GreenBtn,
   },
   props: {

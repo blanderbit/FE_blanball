@@ -86,7 +86,7 @@ import GreenBtn from '../GreenBtn.vue';
 import RadioGenderBox from './components/RadioGenderBox.vue';
 import ModalPositionMap from '../maps/ModalPositionMap.vue';
 import ClearFilters from './components/ClearFilters.vue';
-import InputComponent from '../forms/InputComponent.vue';
+import mainInput from '../shared/input/mainInput.vue';
 
 import CONSTANTS from '../../consts/index';
 
@@ -97,11 +97,11 @@ export default {
   components: {
     ModalWindow,
     GreenBtn,
-    Dropdown,
+    dropdown,
     RadioGenderBox,
     ClearFilters,
     ModalPositionMap,
-    InputComponent,
+    mainInput,
   },
   props: {
     dropdownGameType: {

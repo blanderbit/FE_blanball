@@ -17,7 +17,7 @@
       name="game-type"
     />
     <div class="b-event-m-2st__input-name">
-      <InputComponent
+      <mainInput
         :outside-title="true"
         :swipeTitle="false"
         :title="$t('events.event-name')"
@@ -95,7 +95,7 @@
         >Оберіть із запропонованих або встановіть час власноруч</span
       >
       <div class="b-event-m-1st__input-time">
-        <InputComponent
+        <mainInput
           :outside-title="true"
           :title="$t('events.start')"
           :placeholder="'17:00'"
@@ -106,7 +106,7 @@
         />
       </div>
       <div class="b-event-m-2st__input-time">
-        <InputComponent
+        <mainInput
           :outside-title="true"
           :title="$t('events.end')"
           :placeholder="'18:10'"
@@ -163,7 +163,7 @@ import { ErrorMessage } from '@system.it.flumx.com/vee-validate';
 import dayjs from 'dayjs';
 
 import dropdown from '../shared/dropdown/dropdown.vue';
-import InputComponent from '../forms/InputComponent.vue';
+import mainInput from '../shared/input/mainInput.vue';
 import RadioButton from '../forms/RadioButton.vue';
 import PositionMap from '../maps/PositionMap.vue';
 import EventCreatePositionMap from '../maps/EventCreatePositionMap.vue';
@@ -203,7 +203,7 @@ const eventDurationOptions = ref([
 export default {
   components: {
     dropdown,
-    InputComponent,
+    mainInput,
     RadioButton,
     EventCreatePositionMap,
     PositionMap,

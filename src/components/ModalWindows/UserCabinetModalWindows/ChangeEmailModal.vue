@@ -10,7 +10,7 @@
       </template>
       <template #change-login>
         <div v-if="currentStep === 1" class="input__wrapper">
-          <InputComponent
+          <mainInput
             :title="$t('modals.change_login.current-email')"
             :swipeTitle="false"
             :placeholder="userEmail"
@@ -21,7 +21,7 @@
         </div>
         <Form v-slot="data" :validation-schema="schema" @submit="disableSubmit">
           <div class="input__wrapper">
-            <InputComponent
+            <mainInput
               :title="
                 currentStep === 1
                   ? $t('modals.change_login.new-email')
@@ -78,7 +78,7 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 import ModalWindow from '../ModalWindow.vue';
 import Counter from '../../Counter.vue';
 import CodeInput from '../../forms/CodeInput.vue';
-import InputComponent from '../../forms/InputComponent.vue';
+import mainInput from '../../shared/input/mainInput.vue';
 import Loading from '../../../workers/loading-worker/Loading.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
@@ -89,7 +89,7 @@ export default {
   name: 'ChangeEmailModal',
   components: {
     ModalWindow,
-    InputComponent,
+    mainInput,
     Counter,
     Loading,
     CodeInput,

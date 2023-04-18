@@ -11,7 +11,7 @@
       <template #change-password>
         <Form v-slot="data" @submit="disableSubmit" :validation-schema="schema">
           <div class="input__wrapper">
-            <InputComponent
+            <mainInput
               :title="$t('modals.change_password.current-pass')"
               :swipeTitle="false"
               :title-width="0"
@@ -21,7 +21,7 @@
             />
           </div>
           <div class="input__wrapper">
-            <InputComponent
+            <mainInput
               :title="$t('modals.change_password.new-pass')"
               :swipeTitle="false"
               :title-width="0"
@@ -74,7 +74,7 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 import ModalWindow from '../ModalWindow.vue';
 import Counter from '../../Counter.vue';
 import CodeInput from '../../forms/CodeInput.vue';
-import InputComponent from '../../forms/InputComponent.vue';
+import mainInput from '../../shared/input/mainInput.vue';
 import Loading from '../../../workers/loading-worker/Loading.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
@@ -93,7 +93,7 @@ export default {
     Form,
     ModalWindow,
     CodeInput,
-    InputComponent,
+    mainInput,
     Counter,
     Loading,
   },

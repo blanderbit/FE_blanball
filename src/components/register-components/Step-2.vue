@@ -19,7 +19,7 @@
     </template>
     <template #content>
       <div class="b-register-step__input">
-        <InputComponent
+        <mainInput
           :outside-title="true"
           :swipeTitle="false"
           :title="$t('register.email')"
@@ -30,7 +30,7 @@
         />
       </div>
       <div class="b-register-step__input">
-        <InputComponent
+        <mainInput
           placeholder="********"
           :swipeTitle="false"
           :title="$t('register.create-password')"
@@ -42,7 +42,7 @@
         />
       </div>
       <div class="b-register-step__input">
-        <InputComponent
+        <mainInput
           placeholder="********"
           :swipeTitle="false"
           :title-width="0"
@@ -54,7 +54,7 @@
         />
       </div>
       <div class="b-register-step__input">
-        <InputComponent
+        <mainInput
           :outside-title="true"
           :swipeTitle="false"
           :title="$t('register.phone-number')"
@@ -74,7 +74,7 @@
               v-maska="stepConfig.UkraineMask"
             />
           </template>
-        </InputComponent>
+        </mainInput>
       </div>
 
       <div class="b-register-step__remember-me">
@@ -99,7 +99,7 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import InputComponent from '../forms/InputComponent.vue';
+import mainInput from '../shared/input/mainInput.vue';
 import StepWrapper from './StepWrapper.vue';
 import Checkbox from '../shared/checkbox/checkbox.vue';
 
@@ -109,7 +109,7 @@ import nikeIcon from '../../assets/img/nike-icon.svg';
 export default {
   name: 'Step2',
   components: {
-    InputComponent,
+    mainInput,
     StepWrapper,
     Checkbox,
   },

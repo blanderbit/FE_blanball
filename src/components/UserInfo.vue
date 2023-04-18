@@ -60,7 +60,7 @@
           class="b-main-side-content__edit-mode"
         >
           <div class="b-edit-mode__top-side">
-            <InputComponent
+            <mainInput
               :outside-title="true"
               :placeholder="$t('profile.surname')"
               :title="$t('profile.surname')"
@@ -69,7 +69,7 @@
               v-model="userData.profile.last_name"
               name="name"
             />
-            <InputComponent
+            <mainInput
               :outside-title="true"
               :placeholder="$t('profile.words-about-myself')"
               :title="$t('profile.words-about-myself')"
@@ -215,7 +215,7 @@
 import { ref, computed } from 'vue';
 
 import Avatar from './Avatar.vue';
-import InputComponent from './forms/InputComponent.vue';
+import mainInput from './shared/input/mainInput.vue';
 import dropdown from './shared/dropdown/dropdown.vue';
 import TextAreaComponent from './TextAreaComponent.vue';
 
@@ -224,8 +224,8 @@ import CONSTANTS from '../consts';
 export default {
   components: {
     Avatar,
-    Dropdown,
-    InputComponent,
+    dropdown,
+    mainInput,
     TextAreaComponent,
   },
   props: {

@@ -33,7 +33,7 @@
           />
         </div>
         <div class="b-hide-events__button">
-        <InputComponent
+        <mainInput
           :placeholder="'7 подій приховано'"
           :isDisabled="true"
           :title-width="0"
@@ -53,7 +53,7 @@
         {{ $t('profile.change-login&password') }}
       </div>
       <div class="b-security__email-input">
-        <InputComponent
+        <mainInput
           :title="$t('profile.e-mail')"
           :placeholder="userEmail"
           :isDisabled="true"
@@ -86,13 +86,13 @@ import { ref, computed } from 'vue';
 
 import Switcher from '../components/Switcher.vue';
 import sortArrowHorizontally from '../assets/img/sort-arrows-horizontal.svg';
-import InputComponent from './forms/InputComponent.vue';
+import mainInput from './shared/input/mainInput.vue';
 
 export default {
   name: 'SecurityBlock',
   components: {
     Switcher,
-    InputComponent,
+    mainInput,
   },
   props: {
     userEmail: {

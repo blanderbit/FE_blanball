@@ -38,7 +38,7 @@ import { useToast } from 'vue-toastification';
 import { CustomModelWorker } from '../workers/custom-model-worker';
 
 export default {
-  name: 'InputComponent',
+  name: 'mainInput',
   props: {
     isDisabled: {
       type: Boolean,

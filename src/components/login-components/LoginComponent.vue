@@ -9,7 +9,7 @@
         <div class="b-login-step__main-title">{{ $t('login.app-name') }}</div>
         <div class="b-login-step__title">{{ $t('login.authorization') }}</div>
         <div class="b-login-step__input">
-          <InputComponent
+          <mainInput
             :outside-title="true"
             :swipeTitle="false"
             :title="$t('login.login')"
@@ -20,7 +20,7 @@
           />
         </div>
         <div class="b-login-step__input">
-          <InputComponent
+          <mainInput
             :title="$t('login.password')"
             :swipeTitle="false"
             :title-width="0"
@@ -89,7 +89,7 @@ import { useRouter } from 'vue-router';
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import GreenBtn from '../GreenBtn.vue';
-import InputComponent from '../forms/InputComponent.vue';
+import mainInput from '../shared/input/mainInput.vue';
 import Checkbox from '../shared/checkbox/checkbox.vue';
 
 import { API } from '../../workers/api-worker/api.worker';
@@ -102,7 +102,7 @@ export default {
   name: 'LoginComponent',
   components: {
     GreenBtn,
-    InputComponent,
+    mainInput,
     Form,
     Checkbox,
   },
