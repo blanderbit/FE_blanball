@@ -17,7 +17,7 @@ import { NotificationsBus } from '../../../event-bus-worker';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.EventHasBeenEnded)
-@NotificationSetImage(NotificationImage.NotificationSuccess)
+@NotificationSetImage(NotificationImage.NotificationInfo)
 @SetActions([
   {
     type: MessageActionTypes.ActionClose,

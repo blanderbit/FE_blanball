@@ -9,6 +9,7 @@ import { API } from '../../workers/api-worker/api.worker';
 import { PositionMapBus } from '../../workers/event-bus-worker';
 
 import { PositionMapBackgroundStyle, PositionMapStyles } from './map.styles';
+import { number } from '@intlify/core-base';
 
 const Restrictions = {
   Ukraine: {
@@ -36,12 +37,16 @@ export default {
       type: Boolean,
       default: false,
     },
+    radius: {
+      type: Number,
+    },
   },
   setup(props, { emit }) {
     const state = ref({
       centerOfCountry: getRestrictionCenter(Restrictions.Ukraine),
       userCenter: {},
     });
+    let circle;
 
     const marker = ref({});
     let map;
@@ -100,7 +105,7 @@ export default {
       map = new google.maps.Map(document.getElementById('map'), {
         center: state.userCenter,
         zoom: 12,
-        language: "uk",
+        language: 'uk',
         overviewMapControlOptions: {
           opened: false,
         },
@@ -118,6 +123,20 @@ export default {
         rotateControl: false,
       });
 
+      if (props?.radius) {
+        circle = new google.maps.Circle({
+          center: state.userCenter,
+          radius: props?.radius,
+          strokeColor: '#fff',
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: '#fff',
+          fillOpacity: 0.35,
+          map: map,
+        });
+        circle.setMap(map);
+      }
+
       map.data.setStyle(PositionMapBackgroundStyle);
 
       marker.value = placeMarker(map, state.userCenter);
@@ -126,6 +145,7 @@ export default {
       if (!props.disableChangeCoords) {
         google.maps.event.addListener(map, 'click', function (event) {
           marker.value.setPosition(event.latLng);
+          circle.setCenter(event.latLng);
           setDataAboutPosition(event.latLng.toJSON());
         });
       }
@@ -142,6 +162,17 @@ export default {
         if (marker.value.length) {
           marker.value.setPosition(props.coords);
           map.setCenter(props.coords);
+        }
+      }
+    );
+
+    watch(
+      () => props.radius,
+      () => {
+        if (props.radius) {
+          circle.setRadius(parseFloat(props.radius));
+        } else {
+          circle.setRadius(null);
         }
       }
     );
