@@ -94,6 +94,7 @@ $color-dfdeed: #dfdeed;
     align-items: center;
     .b-small-player-card__picture {
       margin-right: 16px;
+      cursor: pointer;
 
       .b-small-player-card__avatar {
         min-width: 32px;

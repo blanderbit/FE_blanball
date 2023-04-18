@@ -8,7 +8,7 @@
         :checked="modelValue"
         @input="valueChange($event.target.checked)"
       />
-      <div class="b_switch_slider round"></div>
+      <div :class="['b_switch_slider', 'round', {'disabled': !isEditMode}]"></div>
     </label>
   </div>
 </template>
@@ -115,6 +115,10 @@ $color-ccc: #ccc;
 
 input:checked + .b_switch_slider {
   background-color: $--b-main-green-color;
+}
+
+.b_switch_slider.disabled {
+  background: #A8A8BD !important;
 }
 
 input:checked + .b_switch_slider:before {

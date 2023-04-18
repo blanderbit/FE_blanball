@@ -78,6 +78,7 @@ import CodeInput from '../../forms/CodeInput.vue';
 import Loading from '../../../workers/loading-worker/Loading.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
+import { logOut } from '../../../utils/logOut';
 
 import { ROUTES } from '../../../router/router.const';
 import SCHEMAS from '../../../validators/schemas';
@@ -143,8 +144,7 @@ export default {
     async function deleteAcc(data) {
       await API.UserService.sendApproveCode(data.values);
       toast.success(t('notifications.account-deleted'));
-      localStorage.removeItem('token');
-      router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute);
+      logOut();
       closeModal();
     }
 

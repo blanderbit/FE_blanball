@@ -15,217 +15,207 @@
     @close-modal="closeContextMenu"
     @itemClick="contextMenuItemClick"
   />
-  <div>
-    <div
-      v-if="isMenuOpened"
-      class="b_slide_menu_back"
-      @click="toggleMenu"
-    ></div>
-    <div
-      class="b_slide_menu_wrapper"
-      :style="{
-        right: isMenuOpened ? '-464px' : '0px',
-      }"
-    >
+
+  <SlideMenuWrapper 
+    :isMenuOpened="isMenuOpened"
+    @close="$emit('update:isMenuOpened', $event)">
+    <template #logo>
+      <img src="../../assets/img/logo-sidebar.svg" alt="" />
+    </template>
+
+    <template #top-side>
+      <div
+        class="b_slide_menu_items d-flex justify-content-between align-items-center mb-2"
+        v-if="notifications.length"
+      >
+        <div
+          class="b-read-all-notifications__button d-flex align-items-center"
+          v-if="notifications.length && notReadNotificationCount"
+          @click="HandleAction.readAll()"
+        >
+          <img
+            src="../../assets/img/notifications/double-check.svg"
+            height="16"
+            alt=""
+          />
+          <span class="b-button-text">
+            {{ $t('slide_menu.read-all') }}
+          </span>
+        </div>
+
+        <button
+          class="b-notifictions-actions__button"
+          @click="handleSelectableMode"
+        >
+          <span v-if="!selectable" class="b-button-text">
+            {{ $t('slide_menu.notifications-manage') }}
+          </span>
+          <span v-else class="b-button-text">
+            {{ $t('slide_menu.cancel-manage') }}
+          </span>
+          <img v-if="!selectable" src="../../assets/img/dots.svg" alt="" />
+        </button>
+      </div>
+      <div
+        v-if="selectable && notifications.length && selectedList.length"
+        class="d-flex mb-2 justify-content-between"
+      >
+        <div class="b-selected-elements__count">
+          <img
+            src="../../assets/img/cross.svg"
+            alt=""
+            @click="clearSelectedList"
+          />
+          <span>{{ selectedList.length }}</span>
+          <div
+            v-if="selectedList.length >= 100"
+            class="b-selected-elements__max"
+          >
+            (макс.)
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <button
+            @click="HandleAction.readSelected()"
+            class="d-flex align-items-center"
+          >
+            <img
+              src="../../assets/img/notifications/double-check.svg"
+              height="16"
+              alt=""
+            />
+            {{ $t('slide_menu.mark-as-viewed') }}
+          </button>
+
+          <button
+            @click="
+              selectedList.length > 1
+                ? showSubmitModal()
+                : HandleAction.deleteSelected()
+            "
+            class="d-flex align-items-center"
+          >
+            <img
+              src="../../assets/img/notifications/trash.svg"
+              height="16"
+              alt=""
+            />
+            {{ $t('buttons.delete') }}
+          </button>
+        </div>
+      </div>
+    </template>
+
+    <template #tabs>
       <div
         v-if="isMenuOpened"
-        class="b_slide_menu_sidebar-arrow"
-        @click="toggleMenu"
-      >
-        <img :src="arrowPosition" alt="" />
-      </div>
-      <div class="b_slide_menu_main">
-        <div class="b_slide_menu_top-block">
-          <div class="b_slide_menu_logo">
-            <img src="../assets/img/logo-sidebar.svg" alt="" />
-          </div>
-          <div
-            class="b_slide_menu_items d-flex justify-content-between align-items-center mb-2"
-            v-if="notifications.length"
-          >
-            <div
-              class="b-read-all-notifications__button d-flex align-items-center"
-              v-if="notifications.length && notReadNotificationCount"
-              @click="HandleAction.readAll()"
-            >
-              <img
-                src="../assets/img/notifications/double-check.svg"
-                height="16"
-                alt=""
-              />
-              <span class="b-button-text">
-                {{ $t('slide_menu.read-all') }}
-              </span>
-            </div>
-
-            <button
-              class="b-notifictions-actions__button"
-              @click="handleSelectableMode"
-            >
-              <span v-if="!selectable" class="b-button-text">
-                {{ $t('slide_menu.notifications-manage') }}
-              </span>
-              <span v-else class="b-button-text">
-                {{ $t('slide_menu.cancel-manage') }}
-              </span>
-              <img v-if="!selectable" src="../assets/img/dots.svg" alt="" />
-            </button>
-          </div>
-          <div
-            v-if="selectable && notifications.length && selectedList.length"
-            class="d-flex mb-2 justify-content-between"
-          >
-            <div class="b-selected-elements__count">
-              <img
-                src="../assets/img/cross.svg"
-                alt=""
-                @click="clearSelectedList"
-              />
-              <span>{{ selectedList.length }}</span>
-              <div
-                v-if="selectedList.length >= 100"
-                class="b-selected-elements__max"
-              >
-                (макс.)
-              </div>
-            </div>
-
-            <div class="d-flex">
-              <button
-                @click="HandleAction.readSelected()"
-                class="d-flex align-items-center"
-              >
-                <img
-                  src="../assets/img/notifications/double-check.svg"
-                  height="16"
-                  alt=""
-                />
-                {{ $t('slide_menu.mark-as-viewed') }}
-              </button>
-
-              <button
-                @click="
-                  selectedList.length > 1
-                    ? showSubmitModal()
-                    : HandleAction.deleteSelected()
-                "
-                class="d-flex align-items-center"
-              >
-                <img
-                  src="../assets/img/notifications/trash.svg"
-                  height="16"
-                  alt=""
-                />
-                {{ $t('buttons.delete') }}
-              </button>
-            </div>
-          </div>
-          <div
-            v-if="isMenuOpened"
-            class="b-notifications__tabs"
-            :style="`margin-top: ${notifications.length ? 16 : 28}px; 
+        class="b-notifications__tabs"
+        :style="`margin-top: ${notifications.length ? 16 : 28}px; 
                      margin-bottom: ${notifications.length ? 0 : 16}px;`"
-          >
-            <div
-              v-for="tab in tabs"
-              :class="[
-                'b-notification-tab',
-                { selected: tab.id === selectedTabId },
-              ]"
-              @click="changeTab(tab.id, tab.type)"
-            >
-              <div class="b-notifications-title me-1">
-                {{ $t(tab.text) }}
-              </div>
-              <div
-                class="b-notification-unreaded d-flex align-items-center justify-content-center me-1"
-                v-if="tab.count > 0"
-              >
-                {{ tab.count }}
-              </div>
-            </div>
+      >
+        <div
+          v-for="tab in tabs"
+          :class="[
+            'b-notification-tab',
+            { selected: tab.id === selectedTabId },
+          ]"
+          @click="changeTab(tab.id, tab.type)"
+        >
+          <div class="b-notifications-title me-1">
+            {{ $t(tab.text) }}
           </div>
-          <ul
-            class="b_slide_menu_notification"
-            :style="{
-              height: `calc(100vh - ${
-                selectedList.length > 0 ? 110 : 80
-              }px - 100px - 70px)`,
-            }"
-            v-if="isMenuOpened"
-            ref="test"
+          <div
+            class="b-notification-unreaded d-flex align-items-center justify-content-center me-1"
+            v-if="tab.count > 0"
           >
-            <Notifications
-              :notifications="notifications"
-              :selectable="selectable"
-              ref="notificationList"
-              v-model:selected-list="selectedList"
-              v-model:scrollbar-existing="blockScrollToTopIfExist"
-              @openContextMenu="openContextMenu"
-              @removePushNotificationAfterSidebarAction="
-                removePushNotificationAfterSidebarAction
-              "
-            >
-              <template #before>
-                <Notification
-                  v-if="newNotifications"
-                  class="b-new-notification"
-                  :notificationInstance="getNewNotificationInstance"
-                  :not-collapsible="true"
-                  @handler-action="$emit('reLoading'), restartInfiniteScroll()"
-                >
-                </Notification>
-              </template>
-              <template #after>
-                <InfiniteLoading
-                  :identifier="triggerForRestart"
-                  ref="scrollbar"
-                  @infinite="$emit('loadingInfinite', $event)"
-                >
-                  <template #complete>
-                    <empty-list
-                      v-if="!notifications.length && !newNotifications"
-                      :title="emptyListMessages.title"
-                      :description="emptyListMessages.description"
-                      :is-notification="true"
-                    >
-                    </empty-list>
-                    <ScrollToTop
-                      :element-length="notifications"
-                      :is-scroll-top-exist="blockScrollToTopIfExist"
-                      @scroll-button-clicked="scrollToFirstElement()"
-                    />
-                  </template>
-                </InfiniteLoading>
-              </template>
-            </Notifications>
-          </ul>
-        </div>
-        <div class="b_slide_menu_bottom-block">
-          <div class="b_slide_menu_top-line d-flex justify-content-between">
-            <div class="b_slide_menu_name">
-              {{ userStore.getUserFullName }}
-            </div>
-            <div class="b_slide_menu_position">
-              {{ $t(`hashtags.${userStore.user.role}`) }}
-            </div>
-          </div>
-          <div class="b_slide_menu_bottom-line">
-            <div class="b-blanball-version">
-              {{ $t('slide_menu.version') }}
-              <router-link
-                :to="routeObject.APPLICATION.VERSION.absolute"
-                @click="$emit('close')"
-              >
-                <span>{{ clientVersion }}</span>
-              </router-link>
-            </div>
-            <div class="b-blanball-made-by-flumx">Розроблено: FlumX</div>
+            {{ tab.count }}
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </template>
+
+    <template #main-content>
+      <ul
+        class="b_slide_menu_notification"
+        :style="{
+          height: `calc(100vh - ${
+            selectedList.length > 0 ? 110 : 80
+          }px - 100px - 70px)`,
+        }"
+        v-if="isMenuOpened"
+        ref="test"
+      >
+        <Notifications
+          :notifications="notifications"
+          :selectable="selectable"
+          ref="notificationList"
+          v-model:selected-list="selectedList"
+          v-model:scrollbar-existing="blockScrollToTopIfExist"
+          @openContextMenu="openContextMenu"
+          @removePushNotificationAfterSidebarAction="
+            removePushNotificationAfterSidebarAction
+          "
+        >
+          <template #before>
+            <Notification
+              v-if="newNotifications"
+              class="b-new-notification"
+              :notificationInstance="getNewNotificationInstance"
+              :not-collapsible="true"
+              @handler-action="$emit('reLoading'), restartInfiniteScroll()"
+            >
+            </Notification>
+          </template>
+          <template #after>
+            <InfiniteLoading
+              :identifier="triggerForRestart"
+              ref="scrollbar"
+              @infinite="$emit('loadingInfinite', $event)"
+            >
+              <template #complete>
+                <empty-list
+                  v-if="!notifications.length && !newNotifications"
+                  :title="emptyListMessages.title"
+                  :description="emptyListMessages.description"
+                  :is-notification="true"
+                >
+                </empty-list>
+                <ScrollToTop
+                  :element-length="notifications"
+                  :is-scroll-top-exist="blockScrollToTopIfExist"
+                  @scroll-button-clicked="scrollToFirstElement()"
+                />
+              </template>
+            </InfiniteLoading>
+          </template>
+        </Notifications>
+      </ul>
+    </template>
+
+    <template #bottom-block>
+      <div class="b_slide_menu_top-line d-flex justify-content-between">
+        <div class="b_slide_menu_name">
+          {{ userStore.getUserFullName }}
+        </div>
+        <div class="b_slide_menu_position">
+          {{ $t(`hashtags.${userStore.user.role}`) }}
+        </div>
+      </div>
+      <div class="b_slide_menu_bottom-line">
+        <div class="b-blanball-version">
+          {{ $t('slide_menu.version') }}
+          <router-link
+            :to="routeObject.APPLICATION.VERSION.absolute"
+            @click="$emit('close')"
+          >
+            <span>{{ clientVersion }}</span>
+          </router-link>
+        </div>
+        <div class="b-blanball-made-by-flumx">Розроблено: FlumX</div>
+      </div>
+    </template>
+  </SlideMenuWrapper>
 </template>
 
 <script>
@@ -234,25 +224,26 @@ import { useI18n } from 'vue-i18n';
 
 import { v4 as uuid } from 'uuid';
 
-import Notifications from './sitebar-notifications/Notifications.vue';
-import Notification from './Notification.vue';
-import EmptyList from './EmptyList.vue';
-import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue';
-import ScrollToTop from './ScrollToTop.vue';
-import Loading from '../workers/loading-worker/Loading.vue';
-import SubmitModal from './ModalWindows/SubmitModal.vue';
-import ContextMenu from './ModalWindows/ContextMenuModal.vue';
+import Notifications from '../sitebar-notifications/Notifications.vue';
+import Notification from '../Notification.vue';
+import EmptyList from '../EmptyList.vue';
+import InfiniteLoading from '../../workers/infinit-load-worker/InfiniteLoading.vue';
+import ScrollToTop from '../ScrollToTop.vue';
+import Loading from '../../workers/loading-worker/Loading.vue';
+import SubmitModal from '../ModalWindows/SubmitModal.vue';
+import ContextMenu from '../ModalWindows/ContextMenuModal.vue';
+import SlideMenuWrapper from './SlideMenuWrapper.vue';
 
-import { useUserDataStore } from '../stores/userData';
-import { NewNotifications } from '../workers/web-socket-worker/not-includes-to-socket/new_notifications';
-import { NotificationsBus } from '../workers/event-bus-worker';
-import { API } from '../workers/api-worker/api.worker';
+import { useUserDataStore } from '../../stores/userData';
+import { NewNotifications } from '../../workers/web-socket-worker/not-includes-to-socket/new_notifications';
+import { NotificationsBus } from '../../workers/event-bus-worker';
+import { API } from '../../workers/api-worker/api.worker';
 
-import { ROUTES } from '../router/router.const';
-import CONSTANTS from '../consts';
+import { ROUTES } from '../../router/router.const';
+import CONSTANTS from '../../consts';
 
-import sidebarArrowBack from '../assets/img/sidebar-arrow-back.svg';
-import sidebarArrow from '../assets/img/sidebar-arrow.svg';
+import sidebarArrowBack from '../../assets/img/sidebar-arrow-back.svg';
+import sidebarArrow from '../../assets/img/sidebar-arrow.svg';
 
 export default {
   components: {
@@ -261,6 +252,7 @@ export default {
     Loading,
     EmptyList,
     ContextMenu,
+    SlideMenuWrapper,
     SubmitModal,
     Notifications,
     ScrollToTop,
@@ -294,7 +286,7 @@ export default {
     'loading',
     'loadingInfinite',
     'update:isMenuOpened',
-    'removeNotifications'
+    'removeNotifications',
   ],
   setup(context, { emit }) {
     const notificationList = ref();
@@ -367,10 +359,7 @@ export default {
       return ROUTES;
     });
 
-    function toggleMenu() {
-      emit('update:isMenuOpened', !context.isMenuOpened);
-    }
-
+    
     const getNewNotificationInstance = computed(() => {
       newNotificationInstance.value.countOfNewNotifications =
         context.newNotifications;
@@ -433,7 +422,7 @@ export default {
           handleSelectableMode();
         }
         if (selectedTabId.value === 2) {
-          emit('removeNotifications', 'All')
+          emit('removeNotifications', 'All');
         }
         stopLoader();
       },
@@ -457,7 +446,7 @@ export default {
           notification_ids: selectedList.value,
         });
         if (selectedTabId.value === 2) {
-          emit('removeNotifications', selectedList.value)
+          emit('removeNotifications', selectedList.value);
         }
         clearSelectedList();
         handleSelectableMode();
@@ -470,7 +459,7 @@ export default {
           notification_ids: [id],
         });
         if (selectedTabId.value === 2) {
-          emit('removeNotifications', [id])
+          emit('removeNotifications', [id]);
         }
         stopLoader();
       },
@@ -483,7 +472,6 @@ export default {
         stopLoader();
       },
     };
-    
 
     function restartInfiniteScroll() {
       triggerForRestart.value = uuid();
@@ -561,7 +549,6 @@ export default {
       showSubmitModal,
       handleSelectableMode,
       removePushNotificationAfterSidebarAction,
-      toggleMenu,
       changeTab,
       clearSelectedList,
       restartInfiniteScroll,
@@ -841,6 +828,6 @@ button {
   font-weight: 400;
   font-size: 13px;
   line-height: 24px;
-  color:$--b-main-black-color;
+  color: $--b-main-black-color;
 }
 </style>

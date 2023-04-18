@@ -479,9 +479,7 @@ export default {
     }
 
     async function pinEvents() {
-      loading.value = true;
       if ((await getCountPinnedEvents()) === MAX_PINNED_EVENTS_COUNT) {
-        loading.value = false;
         showEventActiondModal(
           (actionEventModalData.value = {
             title: t('modals.no_perm_to_pin.title'),
@@ -490,6 +488,7 @@ export default {
           })
         );
       } else {
+        loading.value = true;
         let eventsIDSToPin = oneEventToPinId.value
           ? [oneEventToPinId.value]
           : selected.value;

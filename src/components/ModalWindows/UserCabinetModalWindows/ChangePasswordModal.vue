@@ -40,7 +40,7 @@
             />
           </div>
 
-          <div v-show="currentStep === 2" class="sms-code-block">
+          <div v-if="currentStep === 2" class="sms-code-block">
             <CodeInput
               :fields="5"
               :fieldWidth="48"

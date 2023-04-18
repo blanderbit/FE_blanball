@@ -310,7 +310,7 @@ export default {
             };
             await API.UserService.updateProfileData(profileValues);
             if (currentStep.value === 10) {
-              goToEvents();
+              return goToEvents();
             }
           } catch (e) {
             return;

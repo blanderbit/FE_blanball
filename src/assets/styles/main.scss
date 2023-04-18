@@ -19,6 +19,10 @@ html {
   }
 }
 
+input[type="password"]::-ms-reveal {
+  display: none;
+}
+
 .Vue-Toastification__toast--success {
   background: #f4fde8;
   border: 1px solid #71ba12;
