@@ -10,11 +10,7 @@
         >{{ data.length }} / {{ maxPlayersCount }}</span
       >
     </div>
-    <SmallPlayerCard
-      v-for="player of data"
-      :key="player.id"
-      :data-player="player"
-    />
+    <slot name="user"></slot>
   </div>
   <EmptyList
     v-else
@@ -28,8 +24,6 @@
 
 <script>
 import { ref, reactive } from 'vue';
-
-import SmallPlayerCard from './SmallPlayerCard.vue';
 import EmptyList from './EmptyList.vue';
 
 export default {
@@ -59,7 +53,6 @@ export default {
     },
   },
   components: {
-    SmallPlayerCard,
     EmptyList,
   },
   setup(props) {

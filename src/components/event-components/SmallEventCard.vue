@@ -22,7 +22,7 @@
     </div>
     <div class="b-small-event-card__bottom-side">
       <div class="b-small-event-card__place">
-        <img src="../assets/img/location-point.svg" alt="" />
+        <img src="../../assets/img/location-point.svg" alt="" />
         <span>{{ item.place.place_name }}</span>
       </div>
       <div class="b-small-event-card__labels">
@@ -38,7 +38,7 @@
   </div>
 </template>
 <script>
-import PlaceDetector from './../components/maps/PlaceDetector.vue';
+import PlaceDetector from '../maps/PlaceDetector.vue';
 
 export default {
   name: 'SmallEventCard',

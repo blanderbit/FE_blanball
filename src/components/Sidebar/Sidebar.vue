@@ -131,7 +131,6 @@ import {
 } from '../../workers/web-socket-worker';
 import { API } from '../../workers/api-worker/api.worker';
 import { PaginationWorker } from '../../workers/pagination-worker';
-import { TokenWorker } from '../../workers/token-worker';
 import {
   NotificationsBus,
   BlanballEventBus,

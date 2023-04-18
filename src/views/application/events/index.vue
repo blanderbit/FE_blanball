@@ -121,7 +121,7 @@ import GreenBtn from '../../../components/GreenBtn.vue';
 import InputComponent from '../../../components/forms/InputComponent.vue';
 import ContextMenu from '../../../components/ModalWindows/ContextMenuModal.vue';
 import EventCard from '../../../components/event-components/EventCard.vue';
-import MyEventCard from '../../../components/MyEventCard.vue';
+import MyEventCard from '../../../components/event-components/MyEventCard.vue';
 import RightSidebar from '../../../components/RightSidebar.vue';
 import EmptyList from '../../../components/EmptyList.vue';
 import SmartGridList from '../../../components/smart-list/SmartGridList.vue';

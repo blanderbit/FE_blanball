@@ -236,14 +236,30 @@
             :table-color="'#148783'"
             :maxPlayersCount="eventData.amount_members"
             :emptyListData="noUsersData"
-          />
+          >
+            <template #user>
+              <SmallPlayerCard
+                v-for="user of eventData.current_users"
+                :key="user.id"
+                :data-player="user"
+              />
+            </template>
+          </EventInfoUsersTable>
 
           <EventInfoUsersTable
             v-if="activeTab === 1"
             :data="eventData.current_fans"
             :border="false"
             :emptyListData="noFansData"
-          />
+          >
+            <template #user>
+              <SmallPlayerCard
+                v-for="user of eventData.current_fans"
+                :key="user.id"
+                :data-player="user"
+              />
+            </template>
+          </EventInfoUsersTable>
 
           <ListOfEventRequestsToParticipations
             v-if="activeTab === 2"
@@ -280,6 +296,7 @@ import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue';
 import ContextModal from '../../../components/ModalWindows/ContextModal.vue';
 import InputComponent from '../../../components/forms/InputComponent.vue';
 import InviteManyUsersToEventModal from '../../../components/ModalWindows/InviteToEventModalWindows/InviteManyUsersToEventModal.vue';
+import SmallPlayerCard from '../../../components/SmallPlayerCard.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { BlanballEventBus } from '../../../workers/event-bus-worker';
@@ -320,6 +337,7 @@ export default {
     Avatar,
     Loading,
     TabLabel,
+    SmallPlayerCard,
     EventInfoForms,
     EditEventModal,
     ListOfEventRequestsToParticipations,

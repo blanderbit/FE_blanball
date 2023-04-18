@@ -240,3 +240,14 @@
   line-height: 20px;
   color: #575775;
 }
+
+
+:deep(.b-modal-position__address-text) {
+  @media (max-width: 1200px) {
+    max-width: 190px;
+  }
+}
+
+.b-users-filters__age-filter-wrap {
+  width: 300px;
+}

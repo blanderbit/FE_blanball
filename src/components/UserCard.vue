@@ -139,6 +139,7 @@ $color-f7f7fc: #f7f7fc;
   &__top-line {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
     @include tabletAndMobile {
       display: flex;
       justify-content: space-between;

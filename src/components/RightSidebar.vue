@@ -26,10 +26,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onBeforeUnmount} from 'vue';
+import { ref, onBeforeUnmount} from 'vue';
 import { useRouter } from 'vue-router';
 
-import SmallEventCard from './SmallEventCard.vue';
+import SmallEventCard from './event-components/SmallEventCard.vue';
 import Spinner from '../workers/infinit-load-worker/Spinner.vue';
 
 import { API } from '../workers/api-worker/api.worker';

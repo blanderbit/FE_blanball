@@ -185,8 +185,6 @@ import { computed, ref, onMounted, onBeforeUnmount, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import dayjs from 'dayjs';
 
-import Slider from '@vueform/slider';
-
 import Dropdown from '../../forms/Dropdown.vue';
 import FilterBlock from '../FilterBlock.vue';
 import InputComponent from '../../forms/InputComponent.vue';
@@ -214,7 +212,6 @@ export default {
   components: {
     Dropdown,
     InputComponent,
-    Slider,
     ButtonDetailsFilters,
     ClearFilters,
     ModalPositionMap,
@@ -318,13 +315,8 @@ export default {
           };
         },
         ifSecondLineWasUsed() {
-          return !!(
-            props.modelValue.date_and_time_after.value !== todaysDate ||
-            props.modelValue.date_and_time_before.value !== todaysDate ||
-            props.modelValue.status.value ||
-            props.modelValue.place.value
-          );
-        },
+          return true
+        }
       });
 
     const sportTypeDropdown = CONSTANTS.event_page.sport_type_dropdown;
