@@ -16,7 +16,7 @@
     @deleteEvents="deleteEvents"
   />
 
-  <Loading :is-loading="loading" />
+  <loader :is-loading="loading" />
   <EditEventModal
     v-if="isEventUpdateModalOpened"
     :eventDataValue="updateEventData"
@@ -150,7 +150,7 @@
                 @infinite="loadDataPaginationData(paginationPage + 1, $event)"
               >
                 <template #complete>
-                  <EmptyList
+                  <emptyList
                     v-if="!paginationElements.length && !loading"
                     :title="emptyListMessages.title"
                     :description="emptyListMessages.description"
@@ -188,7 +188,7 @@ import ContextMenu from '../../../components/ModalWindows/ContextMenuModal.vue';
 import EventCard from '../../../components/event-components/EventCard.vue';
 import MyEventCard from '../../../components/event-components/MyEventCard.vue';
 import RightSidebar from '../../../components/RightSidebar.vue';
-import EmptyList from '../../../components/EmptyList.vue';
+import emptyList from '../../../components/shared/emptyList/emptyList.vue';
 import FilterBlock from '../../../components/filters/FilterBlock.vue';
 import SmartGridList from '../../../components/smart-list/SmartGridList.vue';
 import ScrollToTop from '../../../components/ScrollToTop.vue';
@@ -196,7 +196,7 @@ import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoadin
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue';
 import WhiteBtn from '../../../components/shared/button/WhiteBtn.vue';
 import DeleteEventsModal from '../../../components/ModalWindows/DeleteEventsModal.vue';
-import Loading from '../../../workers/loading-worker/Loading.vue';
+import loader from '../../../components/shared/loader/loader.vue';
 import EditEventModal from '../../../components/ModalWindows/EditEventModal.vue';
 import ActionEventModal from '../../../components/ModalWindows/ActionEventModal.vue';
 import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue';
@@ -249,7 +249,7 @@ export default {
     EventCard,
     MyEventCard,
     RightSidebar,
-    EmptyList,
+    emptyList,
     SmartGridList,
     EditEventModal,
     InfiniteLoading,
@@ -258,7 +258,7 @@ export default {
     EventsFilters,
     WhiteBtn,
     ActionEventModal,
-    Loading,
+    loader,
     DeleteEventsModal,
     SubmitModal,
   },

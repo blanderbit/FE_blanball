@@ -1,5 +1,5 @@
 <script setup>
-import Spinner from './Spinner.vue';
+import smallLoader from '../../components/shared/loader/smallLoader.vue';
 import { onMounted, ref, toRefs, onUnmounted, watch, nextTick } from 'vue';
 import {
   startObserver,
@@ -63,7 +63,7 @@ onUnmounted(() => {
 <template>
   <div class="infiniteLoading" ref="infiniteLoading">
     <slot v-if="state == 'loading'" name="spinner">
-      <Spinner />
+      <smallLoader />
     </slot>
     <slot v-if="state == 'complete'" name="complete">
       <span> {{ slots?.complete || 'No more results!' }} </span>

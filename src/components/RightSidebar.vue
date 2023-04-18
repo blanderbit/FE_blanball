@@ -10,7 +10,7 @@
     </div>
 
     <div class="b-right-sidebar__cards-block">
-      <Spinner v-if="loading" />
+      <smallLoader v-if="loading" />
       <div v-if="popularEvents.length" v-for="event in popularEvents">
         <SmallEventCard :item="event" @clickSmallEventCard="goToEventPage" />
       </div>
@@ -30,7 +30,7 @@ import { ref, onBeforeUnmount} from 'vue';
 import { useRouter } from 'vue-router';
 
 import SmallEventCard from './event-components/SmallEventCard.vue';
-import Spinner from '../workers/infinit-load-worker/Spinner.vue';
+import smallLoader from './shared/loader/smallLoader.vue';
 
 import { API } from '../workers/api-worker/api.worker';
 import { addMinutes } from '../utils/addMinutes';

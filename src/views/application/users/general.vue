@@ -65,7 +65,7 @@
                 @infinite="loadDataPaginationData(paginationPage + 1, $event)"
               >
                 <template #complete>
-                  <EmptyList
+                  <emptyList
                     v-if="!paginationElements.length"
                     :title="emptyListMessages.title"
                     :description="emptyListMessages.title"
@@ -96,7 +96,7 @@ import { useI18n } from 'vue-i18n';
 import mainInput from '../../../components/shared/input/mainInput.vue';
 import UserCard from '../../../components/UserCard.vue';
 import SmartList from '../../../components/smart-list/SmartList.vue';
-import EmptyList from '../../../components/EmptyList.vue';
+import emptyList from '../../../components/shared/emptyList/emptyList.vue';
 import ScrollToTop from '../../../components/ScrollToTop.vue';
 import RightSidebar from '../../../components/RightSidebar.vue';
 import TabLabel from '../../../components/TabLabel.vue';
@@ -125,7 +125,7 @@ export default {
     SmartList,
     InfiniteLoading,
     ScrollToTop,
-    EmptyList,
+    emptyList,
     UsersFilters,
     RightSidebar,
     TabLabel,

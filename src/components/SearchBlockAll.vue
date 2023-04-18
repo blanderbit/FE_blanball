@@ -1,7 +1,7 @@
 <template>
   <div class="b-search-block" :style="windowStyle">
     <div class="b-search-block__window">
-      <Spinner v-if="isSpinnerActive" />
+      <smallLoader v-if="isSpinnerActive" />
       <div v-else class="b-modal-items__container" v-for="user in usersList">
         <div
           @click="itemListClick(user)"
@@ -52,13 +52,13 @@
 <script>
 import { computed, watch, ref } from 'vue';
 
-import Spinner from '../workers/infinit-load-worker/Spinner.vue';
+import smallLoader from './shared/loader/smallLoader.vue';
  import userAvatar from './shared/userAvatar/userAvatar.vue';
 
 export default {
   name: 'SearchBlockAll',
   components: {
-    Spinner,
+    smallLoader,
     userAvatar,
   },
   emits: ['item-image-click', 'item-list-click'],

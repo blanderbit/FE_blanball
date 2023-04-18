@@ -1,5 +1,5 @@
 <template>
-  <Loading :is-loading="loading" />
+  <loader :is-loading="loading" />
   <Transition>
     <ModalWindow :title-color="'#C10B0B'">
       <template #title>
@@ -75,7 +75,7 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 import ModalWindow from '../ModalWindow.vue';
 import Counter from '../../shared/counter/counter.vue';
 import inputCode from '../../shared/inputCode/inputCode.vue';
-import Loading from '../../../workers/loading-worker/Loading.vue';
+import loader from '../../shared/loader/loader.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { logOut } from '../../../utils/logOut';
@@ -90,7 +90,7 @@ export default {
     inputCode,
     Form,
     Counter,
-    Loading,
+    loader,
   },
   props: {
     userEmail: {

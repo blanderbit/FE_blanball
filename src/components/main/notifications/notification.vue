@@ -14,7 +14,7 @@
     ]"
     @click.right.prevent="openContextMenu"
   >
-    <loading :is-loading="loading"> </loading>
+    <loader :is-loading="loading"/> 
     <div class="notification-parts d-flex justify-content-between">
       <div
         class="notification-image"
@@ -161,7 +161,7 @@
           <template #icon>
             <img
               class="notification-collapsiple"
-              src="../assets/img/mob-notification-collapsible-icon.svg"
+              src="../../../assets/img/mob-notification-collapsible-icon.svg"
               alt=""
             />
           </template>
@@ -184,7 +184,7 @@
                 </div>
               </template>
               <template #icon>
-                <img src="../assets/img/collapsible-icon.svg" alt="" />
+                <img src="../../../assets/img/collapsible-icon.svg" alt="" />
               </template>
             </collapsible-panel>
           </div>
@@ -233,17 +233,16 @@
 <script>
 import dayJs from 'dayjs';
 
-import Loading from './../workers/loading-worker/Loading.vue';
-import NotificationButton from './../components/NotificationButton.vue';
-import checkBox from './shared/checkbox/checkbox.vue';
-import CollapsiblePanel from './../components/collapsible/CollapsiblePanel.vue';
-import userAvatar from './shared/userAvatar/userAvatar.vue';
+import loader from '../../shared/loader/loader.vue';
+import notificationButton from './notificationButton.vue';
+import checkBox from '../../shared/checkbox/checkbox.vue';
+import CollapsiblePanel from '../../collapsible/CollapsiblePanel.vue';
+import userAvatar from '../../shared/userAvatar/userAvatar.vue';
 
 export default {
-  name: 'Notification',
   components: {
-    Loading,
-    NotificationButton,
+    loader,
+    notificationButton,
     checkBox,
     userAvatar,
     CollapsiblePanel,

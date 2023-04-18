@@ -1,5 +1,5 @@
 <template>
-  <Loading :is-loading="loading" />
+  <loader :is-loading="loading" />
   <InviteManyUsersToEventModal
     v-if="isInviteUsersModalOpened"
     :eventData="eventData"
@@ -288,7 +288,7 @@ import CopyModal from '../../../components/ModalWindows/CopyModal.vue';
 import userAvatar from '../../../components/shared/userAvatar/userAvatar.vue';
 import TabLabel from '../../../components/TabLabel.vue';
 import ListOfEventRequestsToParticipations from '../../../components/ListOfEventRequestsToParticipations.vue';
-import Loading from '../../../workers/loading-worker/Loading.vue';
+import loader from '../../../components/shared/loader/loader.vue';
 import EventInfoForms from '../../../components/buildedForms/EventInfoForms.vue';
 import ActionEventModal from '../../../components/ModalWindows/ActionEventModal.vue';
 import EditEventModal from '../../../components/ModalWindows/EditEventModal.vue';
@@ -335,7 +335,7 @@ export default {
     PositionMap,
     CopyModal,
     Avatar,
-    Loading,
+    loader,
     TabLabel,
     SmallPlayerCard,
     EventInfoForms,

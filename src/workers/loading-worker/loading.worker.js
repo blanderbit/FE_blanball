@@ -1,7 +1,7 @@
 
 import { ref } from 'vue';
 import { createApp } from 'vue';
-import Loading from './Loading.vue';
+import loader from '../../components/shared/loader/loader.vue';
 
 let loading;
 
@@ -18,7 +18,7 @@ const finishSpinner = () => {
 }
 
 const createLoader = () => {
-  loading = createApp(Loading, {isLoading: isLoading}).mount('#loading');
+  loading = createApp(loader, {isLoading: isLoading}).mount('#loading');
   startSpinner();
 };
 

@@ -1,5 +1,5 @@
 <template>
-  <Loading :is-loading="eventUpdateLoader"></Loading>
+  <loader :is-loading="eventUpdateLoader"/>
   <div class="b-edit-event-modal__wrapper">
     <SubmitModal
       v-if="isSubmitModalOpened"
@@ -99,7 +99,7 @@ import SelectFormsColorsModal from './SelectFormsColorsModal.vue';
 import WhiteBtn from '../shared/button/WhiteBtn.vue';
 import GreenBtn from '../shared/button/GreenBtn.vue';
 import SubmitModal from './SubmitModal.vue';
-import Loading from '../../workers/loading-worker/Loading.vue';
+import loader from '../shared/loader/loader.vue';
 
 import { API } from '../../workers/api-worker/api.worker';
 import { BlanballEventBus } from '../../workers/event-bus-worker';
@@ -116,7 +116,7 @@ export default {
     SelectFormsColorsModal,
     WhiteBtn,
     GreenBtn,
-    Loading,
+    loader,
     Form,
     SubmitModal,
   },

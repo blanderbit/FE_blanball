@@ -1,5 +1,5 @@
 <template>
-  <Loading :is-loading="loading" />
+  <loader :is-loading="loading" />
   <BugReportModal
     v-if="isBugReportModalOpened"
     @close-modal="closeBugReportModal"
@@ -120,7 +120,7 @@ import userAvatar from '../shared/userAvatar/userAvatar.vue';
 import BugReportModal from '../ModalWindows/BugReportModal.vue';
 import TabLabel from '../TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';
-import Loading from '../../workers/loading-worker/Loading.vue';
+import loader from '../shared/loader/loader.vue';
 
 import { useUserDataStore } from '../../stores/userData';
 import { createNotificationFromData } from '../../workers/utils-worker';
@@ -170,7 +170,7 @@ export default {
     userAvatar,
     BugReportModal,
     TabLabel,
-    Loading,
+    loader,
     MobileMenu,
   },
   setup(props, { emit }) {

@@ -56,8 +56,8 @@ import { useI18n } from 'vue-i18n';
 import { v4 as uuid } from 'uuid';
 
 import Sidebar from '../../components/Sidebar/Sidebar.vue';
-import mainHeader from '../../components/MainHeader.vue';
-import Notification from '../../components/Notification.vue';
+import mainHeader from '../../components/main/header/mainHeader.vue';
+import Notification from '../../components/main/notifications/notification.vue';
 import VerifyEmailModal from '../../components/ModalWindows/UserCabinetModalWindows/VerifyEmailModal.vue';
 import ModalFeedback from '../../components/ModalWindows/ModalFeedbackModalWindow/index.vue';
 import ActionEventModal from '../../components/ModalWindows/ActionEventModal.vue';

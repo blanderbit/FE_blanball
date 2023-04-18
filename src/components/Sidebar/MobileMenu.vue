@@ -1,5 +1,5 @@
 <template>
-  <Loading :is-loading="loading" />
+  <loader :is-loading="loading" />
   <SubmitModal
     v-if="isSubmitModalOpened"
     :config="submitModalConfig"
@@ -200,12 +200,12 @@ import { useI18n } from 'vue-i18n';
 import { v4 as uuid } from 'uuid';
 
 import userAvatar from '../shared/userAvatar/userAvatar.vue';
-import Notifications from '../sitebar-notifications/Notifications.vue';
-import Notification from '../Notification.vue';
-import EmptyList from '../EmptyList.vue';
+import Notifications from '../main/notifications/notifications.vue';
+import Notification from '../main/notifications/notification.vue';
+import emptyList from '../shared/emptyList/emptyList.vue';
 import InfiniteLoading from '../../workers/infinit-load-worker/InfiniteLoading.vue';
 import ScrollToTop from '../ScrollToTop.vue';
-import Loading from '../../workers/loading-worker/Loading.vue';
+import loader from '../shared/loader/loader.vue';
 import SubmitModal from '../ModalWindows/SubmitModal.vue';
 
 import { useUserDataStore } from '../../stores/userData';
@@ -252,10 +252,10 @@ export default {
     userAvatar,
     Notifications,
     Notification,
-    EmptyList,
+    emptyList,
     InfiniteLoading,
     ScrollToTop,
-    Loading,
+    loader,
     SubmitModal,
   },
   emit: ['closeMenu'],

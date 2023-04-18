@@ -1,6 +1,6 @@
 <template>
   <div class="b-versions">
-    <Loading :is-loading="loading" />
+    <loader :is-loading="loading" />
     <div class="b-versions__title-level1 title-customs">
       {{ $t('versions.title') }}
     </div>
@@ -102,7 +102,7 @@ import { useRoute } from 'vue-router';
 import dayjs from 'dayjs';
 import dayjsUkrLocale from 'dayjs/locale/uk';
 
-import Loading from '../../workers/loading-worker/Loading.vue';
+import loader from '../../components/shared/loader/loader.vue';
 import VersionItem from '../../components/versions-page/version-item.vue';
 
 import { API } from '../../workers/api-worker/api.worker';
@@ -111,7 +111,7 @@ export default {
   name: 'VersionsPage',
   components: {
     VersionItem,
-    Loading,
+    loader,
   },
   setup() {
     const route = useRoute();

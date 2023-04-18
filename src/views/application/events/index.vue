@@ -1,5 +1,5 @@
 <template>
-  <Loading :is-loading="loading" />
+  <loader :is-loading="loading" />
   <ContextModal
     v-if="isEventJoinModalActive"
     :clientX="eventJoinModalX"
@@ -84,7 +84,7 @@
                 @infinite="loadDataPaginationData(paginationPage + 1, $event)"
               >
                 <template #complete>
-                  <EmptyList
+                  <emptyList
                     v-if="!paginationElements.length"
                     :title="emptyListMessages.title"
                     :description="emptyListMessages.title"
@@ -123,14 +123,14 @@ import ContextMenu from '../../../components/ModalWindows/ContextMenuModal.vue';
 import EventCard from '../../../components/event-components/EventCard.vue';
 import MyEventCard from '../../../components/event-components/MyEventCard.vue';
 import RightSidebar from '../../../components/RightSidebar.vue';
-import EmptyList from '../../../components/EmptyList.vue';
+import emptyList from '../../../components/shared/emptyList/emptyList.vue';
 import SmartGridList from '../../../components/smart-list/SmartGridList.vue';
 import ScrollToTop from '../../../components/ScrollToTop.vue';
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
 import dropdown from '../../../components/shared/dropdown/dropdown.vue';
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue';
 import ContextModal from '../../../components/ModalWindows/ContextModal.vue';
-import Loading from '../../../workers/loading-worker/Loading.vue';
+import loader from '../../../components/shared/loader/loader.vue';
 
 import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue';
 
@@ -156,7 +156,7 @@ export default {
   components: {
     GreenBtn,
     dropdown,
-    EmptyList,
+    emptyList,
     mainInput,
     ContextMenu,
     EventCard,
@@ -166,7 +166,7 @@ export default {
     InfiniteLoading,
     ScrollToTop,
     EventsFilters,
-    Loading,
+    loader,
     SelectFormsColorsModal,
     ContextModal,
   },

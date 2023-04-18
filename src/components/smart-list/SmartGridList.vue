@@ -45,7 +45,7 @@ import { ref, watch, nextTick, onMounted, onBeforeUnmount } from 'vue';
 
 import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller';
 
-import Notification from '../Notification.vue';
+import Notification from '../main/notifications/notification.vue';
 
 export default {
   name: 'Notifications',

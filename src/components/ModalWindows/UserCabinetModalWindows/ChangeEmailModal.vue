@@ -1,5 +1,5 @@
 <template>
-  <Loading :is-loading="loading" />
+  <loader :is-loading="loading" />
   <Transition>
     <ModalWindow>
       <template #title>
@@ -79,7 +79,7 @@ import ModalWindow from '../ModalWindow.vue';
 import Counter from '../../shared/counter/counter.vue';
 import inputCode from '../../shared/inputCode/inputCode.vue';
 import mainInput from '../../shared/input/mainInput.vue';
-import Loading from '../../../workers/loading-worker/Loading.vue';
+import loader from '../../shared/loader/loader.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 
@@ -91,7 +91,7 @@ export default {
     ModalWindow,
     mainInput,
     Counter,
-    Loading,
+    loader,
     inputCode,
     Form,
   },

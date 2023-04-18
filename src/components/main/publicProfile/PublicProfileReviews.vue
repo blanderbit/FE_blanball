@@ -14,8 +14,8 @@
         <div class="b-public-profile__user-raiting">
           {{ userRating }}
         </div>
-        <img v-if="reviewsTotalCount > 0" src="../../assets/img/star.svg" alt="" />
-        <img v-else src="../../assets/img/dashed-star.svg" alt="" />
+        <img v-if="reviewsTotalCount > 0" src="../../../assets/img/star.svg" alt="" />
+        <img v-else src="../../../assets/img/dashed-star.svg" alt="" />
       </div>
     </div>
     <div class="b-public-profile__reviews-list">
@@ -32,7 +32,7 @@
                   <div class="b-review__grade">
                     {{ item.stars }}
                   </div>
-                  <img src="../../assets/img/star.svg" alt="" />
+                  <img src="../../../assets/img/star.svg" alt="" />
                 </div>
                 <div class="b-review__author-full-name">
                   {{ item.author.profile.last_name }}
@@ -52,7 +52,7 @@
         </template>
         <template #emptyList>
           <div class="b-public-profile__reviews-hidden">
-            <img src="../../assets/img/info-black.svg" alt="" />
+            <img src="../../../assets/img/info-black.svg" alt="" />
             <span>{{ $t('no_records.noPublicProfileReviews.title', {fullName: userFullName}) }}</span>
           </div>
         </template>
@@ -65,14 +65,14 @@
 import { ref, computed } from 'vue';
 import StarRating from 'vue-star-rating';
 
-import SmartList from '../smart-list/SmartList.vue';
-import InfiniteLoading from '../../workers/infinit-load-worker/InfiniteLoading.vue';
-import ScrollToTop from '../ScrollToTop.vue';
-import SimpleListWrapper from '../simple-list/SimpleListWrapper.vue';
+import SmartList from '../../smart-list/SmartList.vue';
+import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
+import ScrollToTop from '../../ScrollToTop.vue';
+import SimpleListWrapper from '../../simple-list/SimpleListWrapper.vue';
 
-import { getDate } from '../../utils/getDate';
+import { getDate } from '../../../utils/getDate';
 
-import { API } from '../../workers/api-worker/api.worker';
+import { API } from '../../../workers/api-worker/api.worker';
 
 export default {
   name: 'RatingCard',

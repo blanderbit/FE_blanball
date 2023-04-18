@@ -12,17 +12,17 @@
       :src="iconRight"
       alt=""
     />
-    <loading :is-loading="loading"></loading>
+    <loader :is-loading="loading"/>
   </div>
 </template>
 
 <script>
 import { computed, ref, watch } from 'vue';
-import Loading from '../../../workers/loading-worker/Loading.vue';
+import loader from '../loader/loader.vue';
 
 export default {
   components: {
-    Loading,
+    loader,
   },
   props: {
     text: {

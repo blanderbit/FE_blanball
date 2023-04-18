@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import PublicProfile from '../../../components/PublicProfile/PublicProfile.vue';
+import PublicProfile from '../../../components/main/publicProfile/PublicProfile.vue';
 import { useRoute } from 'vue-router';
 import { ref, watch } from 'vue';
 import { API } from '../../../workers/api-worker/api.worker';

@@ -7,7 +7,7 @@
       {{ $t('profile.phone-number') }}
     </template>
     <template #header-image>
-      <img src="../../assets/img/white-phone-icon.svg" alt="" />
+      <img src="../../../assets/img/white-phone-icon.svg" alt="" />
     </template>
     <template #input>
       <mainInput
@@ -37,7 +37,7 @@
       {{ $t('profile.e-mail') }}
     </template>
     <template #header-image>
-      <img src="../../assets/img/white-letter-icon.svg" alt="" />
+      <img src="../../../assets/img/white-letter-icon.svg" alt="" />
     </template>
     <template #input>
       <mainInput
@@ -105,7 +105,7 @@
                 ? $t('player_page.verified')
                 : $t('player_page.not_verified')
             }}
-            <img src="../../assets/img/profile-ball.svg" alt="" />
+            <img src="../../../assets/img/profile-ball.svg" alt="" />
           </span>
         </div>
         <div class="b-public-profile__buttons-block">
@@ -151,7 +151,7 @@
                   ? $t('player_page.verified')
                   : $t('player_page.not_verified')
               }}
-              <img src="../../assets/img/profile-ball.svg" alt="" />
+              <img src="../../../assets/img/profile-ball.svg" alt="" />
             </span>
           </div>
           <div
@@ -213,28 +213,28 @@ import { useToast } from 'vue-toastification';
 import StarRating from 'vue-star-rating';
 import { useElementSize } from '@vueuse/core';
 
- import userAvatar from '../shared/userAvatar/userAvatar.vue';
-import WhiteBtn from '../shared/button/WhiteBtn.vue';
+ import userAvatar from '../../shared/userAvatar/userAvatar.vue';
+import WhiteBtn from '../../shared/button/WhiteBtn.vue';
 import PublicProfileReviews from './PublicProfileReviews.vue';
 import PublicProfilePlannedEvents from './PublicProfilePlannedEvents.vue';
-import InviteOneUserToEventModal from '../ModalWindows/InviteToEventModalWindows/InviteOneUserToEventModal.vue';
-import CopyModal from '../ModalWindows/CopyModal.vue';
-import mainInput from '../shared/input/mainInput.vue';
-import GreenBtn from '../shared/button/GreenBtn.vue';
+import InviteOneUserToEventModal from '../../ModalWindows/InviteToEventModalWindows/InviteOneUserToEventModal.vue';
+import CopyModal from '../../ModalWindows/CopyModal.vue';
+import mainInput from '../../shared/input/mainInput.vue';
+import GreenBtn from '../../shared/button/GreenBtn.vue';
 
-import useWindowWidth from '../../utils/widthScreen';
-import { copyToClipboard } from '../../utils/copyToClipBoard';
-import { getEmailProvider } from '../../utils/getEmailProvider';
-import { getUkrainianOperator } from '../../utils/getPhoneOperator';
+import useWindowWidth from '../../../utils/widthScreen';
+import { copyToClipboard } from '../../../utils/copyToClipBoard';
+import { getEmailProvider } from '../../../utils/getEmailProvider';
+import { getUkrainianOperator } from '../../../utils/getPhoneOperator';
 
-import PhoneIcon from '../../assets/img/phone-arrow.svg';
-import LetterIcon from '../../assets/img/letter.svg';
-import FlagIcon from '../../assets/img/flag.svg';
-import GamingLegIcon from '../../assets/img/gaming-leg.svg';
-import DumbbellIcon from '../../assets/img/dumbbell.svg';
-import RulerIcon from '../../assets/img/ruler.svg';
-import StarIcon from '../../assets/img/star.svg';
-import BackgroundTop from '../../assets/img/user-page-back.svg';
+import PhoneIcon from '../../../assets/img/phone-arrow.svg';
+import LetterIcon from '../../../assets/img/letter.svg';
+import FlagIcon from '../../../assets/img/flag.svg';
+import GamingLegIcon from '../../../assets/img/gaming-leg.svg';
+import DumbbellIcon from '../../../assets/img/dumbbell.svg';
+import RulerIcon from '../../../assets/img/ruler.svg';
+import StarIcon from '../../../assets/img/star.svg';
+import BackgroundTop from '../../../assets/img/user-page-back.svg';
 
 const profilePageMode = {
   LOOK: 'look',

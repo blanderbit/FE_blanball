@@ -9,7 +9,7 @@
     </template>
   </PublicProfileWrapper>
   <div class="b-user-cabinet">
-    <Loading :is-loading="isLoading" />
+    <loader :is-loading="isLoading" />
 
     <EditAvatarModal
       v-if="isModalActive.edit_avatar"
@@ -171,10 +171,10 @@ import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue';
 import ChangeEmailModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangeEmailModal.vue';
 import ButtonsBlock from '../../../components/user-cabinet/ButtonsBlock.vue';
 import EditAvatarModal from '../../../components/ModalWindows/UserCabinetModalWindows/EditAvatarModal.vue';
-import Loading from '../../../workers/loading-worker/Loading.vue';
-import PublicProfile from '../../../components/PublicProfile/PublicProfile.vue';
+import loader from '../../../components/shared/loader/loader.vue';
+import PublicProfile from '../../../components/main/publicProfile/PublicProfile.vue';
 import HideMyEventsModal from '../../../components/ModalWindows/HideMyEventsModalWindow/HideMyEventsModal.vue';
-import PublicProfileWrapper from '../../../components/PublicProfile/PublicProfileWrapper.vue';
+import PublicProfileWrapper from '../../../components/main/publicProfile/PublicProfileWrapper.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '@/stores/userData';
@@ -203,7 +203,7 @@ export default {
     ChangePasswordModal,
     SubmitModal,
     Form,
-    Loading,
+    loader,
     ChangeEmailModal,
     ButtonsBlock,
     TabLabel,

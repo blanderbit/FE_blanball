@@ -38,15 +38,14 @@
 </template>
 
 <script>
-import Notification from '../Notification.vue';
+import Notification from './notification.vue';
 import { useRouter } from 'vue-router';
 import { ref, watch, nextTick, onMounted, onBeforeUnmount, computed } from 'vue';
 import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller';
-import { notificationButtonHandlerMessage } from '../../workers/utils-worker';
-import useWindowWidth from '../../utils/widthScreen';
+import { notificationButtonHandlerMessage } from '../../../workers/utils-worker';
+import useWindowWidth from '../../../utils/widthScreen';
 
 export default {
-  name: 'Notifications',
   components: {
     Notification,
     DynamicScroller,

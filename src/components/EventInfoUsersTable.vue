@@ -12,7 +12,7 @@
     </div>
     <slot name="user"></slot>
   </div>
-  <EmptyList
+  <emptyList
     v-else
     :title="emptyListData.title"
     :description="emptyListData.description"
@@ -24,7 +24,7 @@
 
 <script>
 import { ref, reactive } from 'vue';
-import EmptyList from './EmptyList.vue';
+import emptyList from './shared/emptyList/emptyList.vue';
 
 export default {
   props: {
@@ -53,7 +53,7 @@ export default {
     },
   },
   components: {
-    EmptyList,
+    emptyList,
   },
   setup(props) {
     const tableTitle = ref(props.tableTitleText);

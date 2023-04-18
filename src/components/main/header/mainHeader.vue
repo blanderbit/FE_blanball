@@ -18,11 +18,11 @@
       </template>
     </SearchModal>
     <div class="b_header_mob-menu-icon" @click="$emit('menuIconClick')">
-      <img src="../assets/img/mob-menu-icon.svg" alt="" />
+      <img src="../../../assets/img/mob-menu-icon.svg" alt="" />
     </div>
     <BreadCrumbs />
     <div class="b_header_logo">
-      <img src="../assets/img/logo-header.svg" alt="" />
+      <img src="../../../assets/img/logo-header.svg" alt="" />
     </div>
     <div class="b_header_search-block">
       <div class="b_header_search-input">
@@ -43,17 +43,17 @@
 import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
-import BreadCrumbs from './shared/breadcrumbs/breadcrumbs.vue';
-import mainInput from './shared/input/mainInput.vue';
-import SearchModal from './ModalWindows/SearchModal.vue';
-import SearchBlockAll from './SearchBlockAll.vue';
+import BreadCrumbs from '../../shared/breadcrumbs/breadcrumbs.vue';
+import mainInput from '../../shared/input/mainInput.vue';
+import SearchModal from '../../ModalWindows/SearchModal.vue';
+import SearchBlockAll from '../../SearchBlockAll.vue';
 
-import CONSTANTS from '../consts/index';
-import { ROUTES } from '../router/router.const';
-import { API } from '../workers/api-worker/api.worker';
+import CONSTANTS from '../../../consts/index';
+import { ROUTES } from '../../../router/router.const';
+import { API } from '../../../workers/api-worker/api.worker';
 
-import searchIcon from '../assets/img/search.svg';
-import arrowIcon from '../assets/img/arrow-right-gray.svg';
+import searchIcon from '../../../assets/img/search.svg';
+import arrowIcon from '../../../assets/img/arrow-right-gray.svg';
 
 export default {
   components: {
@@ -170,7 +170,7 @@ export default {
 // SCSS variables for hex colors
 $color-fafafa: #fafafa;
 
-@import '../assets/styles/mixins/device.scss';
+@import '../../../assets/styles/mixins/device.scss';
 
 .b_header {
   display: flex;

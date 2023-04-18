@@ -9,7 +9,7 @@
       </span>
     </div>
     <ModalWindow v-if="activeModal" :isTitleShown="false">
-      <Loading :is-loading="loading" />
+      <loader :is-loading="loading" />
       <Form v-slot="data" @submit="disableSubmit" :validation-schema="schema">
         <div class="b-modal-position__block">
           <dropdown
@@ -87,7 +87,7 @@ import dropdown from '../shared/dropdown/dropdown.vue';
 import mainInput from '../shared/input/mainInput.vue';
 import ModalWindow from '../ModalWindows/ModalWindow.vue';
 import GreenBtn from '../shared/button/GreenBtn.vue';
-import Loading from '../../workers/loading-worker/Loading.vue';
+import loader from '../shared/loader/loader.vue';
 
 import { PositionMapBus } from '../../workers/event-bus-worker';
 import { API } from '../../workers/api-worker/api.worker';
@@ -105,7 +105,7 @@ export default {
     mainInput,
     Form,
     GreenBtn,
-    Loading,
+    loader,
   },
   props: {
     modelValue: Object,

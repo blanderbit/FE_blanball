@@ -6,7 +6,7 @@
     </div>
     <teleport to="body">
       <ModalWindow v-if="activeModal" :isTitleShown="false">
-        <Loading :is-loading="loading" />
+        <loader :is-loading="loading" />
         <div style="height: 400px">
           <position-map
             :coords="{ lat: place.lat, lng: place.lon }"
@@ -34,7 +34,7 @@ import { ref } from 'vue';
 import ModalWindow from '../ModalWindows/ModalWindow.vue';
 import PositionMap from '../../components/maps/PositionMap.vue';
 import GreenBtn from '../shared/button/GreenBtn.vue';
-import Loading from '../../workers/loading-worker/Loading.vue';
+import loader from '../shared/loader/loader.vue';
 
 export default {
   name: 'PlaceDetector',
@@ -42,7 +42,7 @@ export default {
     ModalWindow,
     PositionMap,
     GreenBtn,
-    Loading,
+    loader,
   },
   props: {
     place: {},

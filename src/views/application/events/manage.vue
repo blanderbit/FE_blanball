@@ -1,5 +1,5 @@
 <template>
-  <Loading :is-loading="eventCreateLoader" />
+  <loader :is-loading="eventCreateLoader" />
   <SubmitModal
     v-if="isSubmitModalOpened"
     :config="changeDataModalConfig"
@@ -156,7 +156,7 @@ import EventCard from '../../../components/event-components/EventCard.vue';
 import ManageEventSecondStep from '../../../components/manage-event-components/ManageEventSecondStep.vue';
 import ManageEventThirdStep from '../../../components/manage-event-components/ManageEventThirdStep.vue';
 import RemoveInvitedUsersModal from '../../../components/manage-event-components/RemoveInvitedUsersModal.vue';
-import Loading from '../../../workers/loading-worker/Loading.vue';
+import loader from '../../../components/shared/loader/loader.vue';
 import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue';
 import InvitedUsersList from '../../../components/manage-event-components/InvitedUsersList.vue';
 import PreviewInvitedUsersListModal from '../../../components/ModalWindows/PreviewInvitedUsersListModal.vue';
@@ -189,7 +189,7 @@ export default {
     SelectFormsColorsModal,
     PreviewBlock,
     userAvatar,
-    Loading,
+    loader,
     InvitedUsersList,
     PreviewInvitedUsersListModal,
     RemoveInvitedUsersModal,

@@ -13,7 +13,7 @@
     </span>
 
     <ModalWindow v-show="activeModal" :isTitleShown="false">
-      <Loading :is-loading="loading" />
+      <loader :is-loading="loading" />
       <div class="b-modal-position__block b-modal-position__map">
         <position-map
           @map-loaded="loading = false"
@@ -39,14 +39,14 @@ import { ref } from 'vue';
 import PositionMap from './PositionMap.vue';
 import ModalWindow from '../ModalWindows/ModalWindow.vue';
 import GreenBtn from '../shared/button/GreenBtn.vue';
-import Loading from '../../workers/loading-worker/Loading.vue';
+import loader from '../shared/loader/loader.vue';
 
 export default {
   components: {
     ModalWindow,
     PositionMap,
     GreenBtn,
-    Loading,
+    loader,
   },
   props: {
     modelValue: Object,
