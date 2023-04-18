@@ -54,9 +54,10 @@
 
         <div class="b-modal-position__block b-modal-position__map">
           <position-map
-            @map-loaded="loading = false"
             :coords="coords"
+            :radius="dist"
             @update:coords="updateCoords"
+            @map-loaded="loading = false"
           ></position-map>
         </div>
         <div class="d-flex justify-content-between align-items-center">

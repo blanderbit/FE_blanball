@@ -5,7 +5,7 @@
     @close-modal="closeBugReportModal"
   />
   <div class="b_sidebar_wrapper">
-    <SlideMenu
+    <NotificationsSlideMenu
       v-model:is-menu-opened="isMenuOpened"
       :notifications="paginationElements"
       :notReadNotificationCount="notReadNotificationCount"
@@ -22,8 +22,16 @@
     <div class="b_sidebar">
       <div class="b_sidebar_top-block">
         <div class="b_sidebar_picture-top">
-          <img src="../assets/img/my-profile-logo.svg" alt="" 
-            @click="goToMainPage"/>
+          <img
+            class="b_sidebar_arrow"
+            src="../../assets/img/open-sidebar-arrow.svg"
+            alt=""
+          />
+          <img
+            src="../../assets/img/my-profile-logo.svg"
+            alt=""
+            @click="goToMainPage"
+          />
         </div>
         <div class="b_sidebar_menu-block">
           <ul>
@@ -70,12 +78,13 @@
             :link="userStore.getUserAvatar"
             :full-name="userStore.getUserFullName"
             @clickByAvatar="goToProfile"
-          ></avatar>
+          >
+          </avatar>
           <div
             @click="logOut"
             class="b_sidebar_logout d-flex justify-content-center align-items-center"
           >
-            <img src="../assets/img/exit-icon.svg" alt="" />
+            <img src="../../assets/img/exit-icon.svg" alt="" />
           </div>
         </div>
       </div>
@@ -107,38 +116,39 @@
 import { ref, computed, onBeforeUnmount, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
-import SlideMenu from '../components/SlideMenu.vue';
-import Avatar from './../components/Avatar.vue';
-import BugReportModal from './ModalWindows/BugReportModal.vue';
-import TabLabel from './TabLabel.vue';
+import NotificationsSlideMenu from '../SlideMenu/NotificationsSlideMenu.vue';
+import Avatar from '../Avatar.vue';
+import BugReportModal from '../ModalWindows/BugReportModal.vue';
+import TabLabel from '../TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';
-import Loading from '../workers/loading-worker/Loading.vue';
+import Loading from '../../workers/loading-worker/Loading.vue';
 
-import { useUserDataStore } from '../stores/userData';
-import { createNotificationFromData } from '../workers/utils-worker';
+import { useUserDataStore } from '../../stores/userData';
+import { createNotificationFromData } from '../../workers/utils-worker';
 import {
   AuthWebSocketWorkerInstance,
   GeneralSocketWorkerInstance,
-} from './../workers/web-socket-worker';
-import { API } from '../workers/api-worker/api.worker';
-import { PaginationWorker } from '../workers/pagination-worker';
-import { TokenWorker } from '../workers/token-worker';
+} from '../../workers/web-socket-worker';
+import { API } from '../../workers/api-worker/api.worker';
+import { PaginationWorker } from '../../workers/pagination-worker';
+import { TokenWorker } from '../../workers/token-worker';
 import {
   NotificationsBus,
   BlanballEventBus,
-} from '../workers/event-bus-worker';
-import { FilterPatch } from '../workers/api-worker/http/filter/filter.patch';
-import useWindowWidth from '../utils/widthScreen';
+} from '../../workers/event-bus-worker';
+import { FilterPatch } from '../../workers/api-worker/http/filter/filter.patch';
+import useWindowWidth from '../../utils/widthScreen';
+import { logOut } from '../../utils/logOut';
 
-import { ROUTES } from '../router/router.const';
+import { ROUTES } from '../../router/router.const';
 
-import notification from '../assets/img/notification.svg';
-import notificationUnread from '../assets/img/notificationUnread.svg';
-import record from '../assets/img/record.svg';
-import members from '../assets/img/members.svg';
-import medal from '../assets/img/medal.svg';
-import settings from '../assets/img/settings.svg';
-import bugReport from '../assets/img/warning-black.svg';
+import notification from '../../assets/img/notification.svg';
+import notificationUnread from '../../assets/img/notificationUnread.svg';
+import record from '../../assets/img/record.svg';
+import members from '../../assets/img/members.svg';
+import medal from '../../assets/img/medal.svg';
+import settings from '../../assets/img/settings.svg';
+import bugReport from '../../assets/img/warning-black.svg';
 
 const findDublicates = (list, newList) => {
   return newList.filter((item) =>
@@ -158,7 +168,7 @@ const tabTypes = {
 export default {
   name: 'MainSidebar',
   components: {
-    SlideMenu,
+    NotificationsSlideMenu,
     Avatar,
     BugReportModal,
     TabLabel,
@@ -315,8 +325,8 @@ export default {
     };
 
     const goToMainPage = () => {
-      router.push(ROUTES.APPLICATION.index.path)
-    }
+      router.push(ROUTES.APPLICATION.index.path);
+    };
 
     const handleMessageInSidebar = (instanceType) => {
       if (instanceType.notification) {
@@ -387,11 +397,6 @@ export default {
     });
 
     getNotificationsCount();
-    const logOut = () => {
-      router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute)
-      userStore.$reset();
-      TokenWorker.clearToken();
-    };
 
     const removeNotifications = (ids) => {
       if (ids === 'All') {
@@ -442,9 +447,11 @@ $color-fff4ec: #fff4ec;
 
 .b_sidebar_wrapper {
   position: relative;
+
   @media (max-width: 992px) {
     display: none;
   }
+
   .b_sidebar {
     position: relative;
     height: 100vh;
@@ -458,11 +465,13 @@ $color-fff4ec: #fff4ec;
     align-items: center;
     z-index: 12;
     background: $--b-main-white-color;
+
     .b_sidebar_picture-bottom {
       background: $color-efeff6;
       border-radius: 24px;
       padding: 4px;
       cursor: pointer;
+
       .b_sidebar_logout {
         margin-top: 6px;
         width: 40px;
@@ -473,17 +482,27 @@ $color-fff4ec: #fff4ec;
         cursor: pointer;
       }
     }
+
     .b_sidebar_top-block {
       .b_sidebar_picture-top {
         padding-bottom: 30px;
         margin-bottom: 30px;
         border-bottom: 1px solid rgb(206, 206, 206);
         display: flex;
+        position: relative;
+
+        .b_sidebar_arrow {
+          position: absolute;
+          bottom: -5px;
+          right: -20px;
+        }
+
         img {
           margin: auto;
           cursor: pointer;
         }
       }
+
       .b_sidebar_menu-block {
         .b_sidebar_menu-item {
           width: 40px;
@@ -492,18 +511,22 @@ $color-fff4ec: #fff4ec;
           position: relative;
           cursor: pointer;
           transition: 0.3s all;
+
           .router-link-active {
             background: $color-d3f8f7;
           }
+
           &:hover {
             background: rgba(220, 255, 254, 0.65);
           }
+
           a {
             display: flex;
             height: 100%;
             border-radius: 6px;
             justify-content: center;
             align-items: center;
+
             img {
               &:hover {
                 animation: shake 0.4s linear;
@@ -513,28 +536,35 @@ $color-fff4ec: #fff4ec;
         }
       }
     }
+
     @keyframes shake {
       0% {
         transform: rotate(20deg);
       }
+
       20% {
         transform: rotate(-16deg);
       }
+
       40% {
         transform: rotate(12deg);
       }
+
       60% {
         transform: rotate(-8deg);
       }
+
       80% {
         transform: rotate(4deg);
       }
+
       100% {
         transform: rotate(0deg);
       }
     }
   }
 }
+
 .b-bug-report__icon {
   margin-top: 20px;
 
@@ -542,6 +572,7 @@ $color-fff4ec: #fff4ec;
     background: $color-fff4ec;
   }
 }
+
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.4s ease;
