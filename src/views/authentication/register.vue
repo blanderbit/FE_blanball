@@ -13,53 +13,53 @@
         :validation-schema="schema"
         :initial-values="initialValues"
       >
-          <Step_1
+          <step1
             v-if="currentStep === 1"
             @next="handleRegister(data)"
             @back="backToRoute"
           />
-          <Step_2
+          <step2
             v-if="currentStep === 2"
             @next="handleRegister(data)"
             @back="backToPrevStep(data)"
             @updateSaveCredentials="updateSaveCredentials"
           />
-          <Step_3
+          <step3
             v-if="currentStep === 3"
             @next="currentStep++"
             @back="finishOnBoarding()"
           />
-          <Step_4
+          <step4
             v-if="currentStep === 4"
             @next="currentStep++"
             @back="finishOnBoarding()"
           />
-          <Step_5
+          <step5
             v-if="currentStep === 5"
             @next="currentStep++"
             @back="finishOnBoarding()"
           />
-          <Step_6
+          <step6
             v-if="currentStep === 6"
             @next="currentStep++"
             @back="finishOnBoarding()"
           />
-          <Step_7
+          <step7
             v-if="currentStep === 7"
             @back="goToEvents()"
             @next="currentStep++"
           />
-          <Step_8
+          <step8
             v-if="currentStep === 8"
             @next="handleUpdate(data)"
             @back="backToPrevStep(data)"
           />
-          <Step_9
+          <step9
             v-if="currentStep === 9"
             @next="handleUpdate(data)"
             @back="backToPrevStep(data)"
           />
-          <Step_10
+          <step10
             v-if="currentStep === 10"
             @next="handleUpdate(data)"
             @back="backToPrevStep(data)"
@@ -77,16 +77,16 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 
 import { merge, cloneDeep } from 'lodash';
 
-import Step_1 from '../../components/main/registration/Step-1.vue';
-import Step_2 from '../../components/main/registration/Step-2.vue';
-import Step_3 from '../../components/main/registration/Step-3.vue';
-import Step_4 from '../../components/main/registration/Step-4.vue';
-import Step_5 from '../../components/main/registration/Step-5.vue';
-import Step_6 from '../../components/main/registration/Step-6.vue';
-import Step_7 from '../../components/main/registration/Step-7.vue';
-import Step_8 from '../../components/main/registration/Step-8.vue';
-import Step_9 from '../../components/main/registration/Step-9.vue';
-import Step_10 from '../../components/main/registration/Step-10.vue';
+import step1 from '../../components/main/registration/step1.vue';
+import step2 from '../../components/main/registration/step2.vue';
+import step3 from '../../components/main/registration/step3.vue';
+import step4 from '../../components/main/registration/step4.vue';
+import step5 from '../../components/main/registration/step5.vue';
+import step6 from '../../components/main/registration/step6.vue';
+import step7 from '../../components/main/registration/step7.vue';
+import step8 from '../../components/main/registration/step8.vue';
+import step9 from '../../components/main/registration/step9.vue';
+import step10 from '../../components/main/registration/step10.vue';
 import AuthenticationMain from '../../components/AuthenticationMain.vue';
 
 import { API } from '../../workers/api-worker/api.worker';
@@ -118,16 +118,16 @@ import onboardingStepMob_4 from '../../assets/img/onboarding-step-mob4.svg';
 export default {
   name: 'register',
   components: {
-    Step_1,
-    Step_2,
-    Step_3,
-    Step_4,
-    Step_5,
-    Step_6,
-    Step_7,
-    Step_8,
-    Step_9,
-    Step_10,
+    step1,
+    step2,
+    step3,
+    step4,
+    step5,
+    step6,
+    step7,
+    step8,
+    step9,
+    step10,
     Form,
     AuthenticationMain,
   },

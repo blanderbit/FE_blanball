@@ -104,18 +104,18 @@ import { useToast } from 'vue-toastification';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import GreenBtn from '../shared/button/GreenBtn.vue';
-import mainInput from '../shared/input/mainInput.vue';
-import inputCode from '../shared/inputCode/inputCode.vue';
-import Counter from '../shared/counter/counter.vue';
+import GreenBtn from '../../shared/button/GreenBtn.vue';
+import mainInput from '../../shared/input/mainInput.vue';
+import inputCode from '../../shared/inputCode/inputCode.vue';
+import Counter from '../../shared/counter/counter.vue';
 
-import { API } from '../../workers/api-worker/api.worker';
+import { API } from '../../../workers/api-worker/api.worker';
 
-import { ROUTES } from '../../router/router.const';
-import SCHEMAS from '../../validators/schemas';
+import { ROUTES } from '../../../router/router.const';
+import SCHEMAS from '../../../validators/schemas';
 
-import eyeCross from '../../assets/img/eye-crossed.svg';
-import eyeOpen from '../../assets/img/eye-opened.svg';
+import eyeCross from '../../../assets/img/eye-crossed.svg';
+import eyeOpen from '../../../assets/img/eye-opened.svg';
 
 export default {
   name: 'Step1',
@@ -244,14 +244,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// SCSS variables for hex colors
 $color-cddde0: #cddde0;
 $color-578d95: #578d95;
-// SCSS variables for hex colors
 $color-efeff6: #efeff6;
 $color-1ab2ad: #1ab2ad;
 $color-dfdeed: #dfdeed;
-
-@import '../../assets/styles/mixins/device.scss';
 
 form {
   height: 100%;
@@ -261,7 +259,6 @@ form {
   display: flex;
   height: 100%;
   flex-direction: column;
-  /*justify-content: space-between;*/
   @include mobile {
     padding: 44px 16px;
   }

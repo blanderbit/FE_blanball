@@ -43,7 +43,7 @@ $color-329e78: #329e78;
 $color-d6d6d6: #d6d6d6;
 $color-dd3c3a: #dd3c3a;
 
-/* Checkbox styles */
+/* checkBox styles */
 
 $black: $color-2d3137;
 $blue: $--b-main-gray-color;

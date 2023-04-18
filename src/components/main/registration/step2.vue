@@ -79,7 +79,7 @@
 
       <div class="b-register-step__remember-me">
         <div class="b-register-step__check-block">
-          <Checkbox @update:checked="$emit('updateSaveCredentials', $event)">
+          <checkBox @update:checked="$emit('updateSaveCredentials', $event)">
             <template #label>
               <span class="remember-me__desktop">{{
                 $t('login.remember-me')
@@ -88,7 +88,7 @@
                 $t('login.remember-me-short')
               }}</span>
             </template>
-          </Checkbox>
+          </checkBox>
         </div>
       </div>
     </template>
@@ -101,7 +101,7 @@ import { useI18n } from 'vue-i18n';
 
 import mainInput from '../../shared/input/mainInput.vue';
 import StepWrapper from './StepWrapper.vue';
-import Checkbox from '../../shared/checkbox/checkbox.vue';
+import checkBox from '../../shared/checkbox/checkbox.vue';
 
 import tickWhite from '../../../assets/img/tick-white.svg';
 import nikeIcon from '../../../assets/img/nike-icon.svg';
@@ -111,7 +111,7 @@ export default {
   components: {
     mainInput,
     StepWrapper,
-    Checkbox,
+    checkBox,
   },
   setup() {
     const tick = computed(() => {

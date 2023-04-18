@@ -88,23 +88,22 @@ import { useRouter } from 'vue-router';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import GreenBtn from '../shared/button/GreenBtn.vue';
-import mainInput from '../shared/input/mainInput.vue';
-import Checkbox from '../shared/checkbox/checkbox.vue';
+import GreenBtn from '../../shared/button/GreenBtn.vue';
+import mainInput from '../../shared/input/mainInput.vue';
+import checkBox from '../../shared/checkbox/checkbox.vue';
 
-import { API } from '../../workers/api-worker/api.worker';
-import { TokenWorker } from '../../workers/token-worker';
+import { API } from '../../../workers/api-worker/api.worker';
+import { TokenWorker } from '../../../workers/token-worker';
 
-import { ROUTES } from '../../router/router.const';
-import SCHEMAS from '../../validators/schemas';
+import { ROUTES } from '../../../router/router.const';
+import SCHEMAS from '../../../validators/schemas';
 
 export default {
-  name: 'LoginComponent',
   components: {
     GreenBtn,
     mainInput,
     Form,
-    Checkbox,
+    checkBox,
   },
   setup() {
     const router = useRouter();

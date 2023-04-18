@@ -13,7 +13,7 @@
 <script>
 import { computed } from 'vue';
 
-import Stepper from '../../components/reset-components/Stepper.vue';
+import Stepper from '../../components/main/passwordReset/Stepper.vue';
 import AuthenticationMain from '../../components/AuthenticationMain.vue';
 
 import backTab from '../../assets/img/registration-back-tab4.svg';

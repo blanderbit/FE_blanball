@@ -5,7 +5,7 @@
     :right-side-style="rightSideStyle"
   >
     <template #main-content>
-      <LoginComponent />
+      <login />
     </template>
   </AuthenticationMain>
 </template>
@@ -13,7 +13,7 @@
 <script>
 import { computed } from 'vue';
 
-import LoginComponent from '../../components/login-components/LoginComponent.vue';
+import login from '../../components/main/login/login.vue';
 import AuthenticationMain from '../../components/AuthenticationMain.vue';
 
 import CONSTANTS from '../../consts/index';
@@ -22,9 +22,8 @@ import bgTabPicture from '../../assets/img/registration-back-tab1.svg';
 import rightSidePicture from '../../assets/img/registration-back-1.svg';
 
 export default {
-  name: 'login',
   components: {
-    LoginComponent,
+    login,
     AuthenticationMain,
   },
   setup() {
