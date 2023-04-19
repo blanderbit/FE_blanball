@@ -10,7 +10,7 @@
       </template>
       <template #change-login>
         <div v-if="currentStep === 1" class="input__wrapper">
-          <mainInput
+          <MainInput
             :title="$t('modals.change_login.current-email')"
             :swipeTitle="false"
             :placeholder="userEmail"
@@ -21,7 +21,7 @@
         </div>
         <Form v-slot="data" :validation-schema="schema" @submit="disableSubmit">
           <div class="input__wrapper">
-            <mainInput
+            <MainInput
               :title="
                 currentStep === 1
                   ? $t('modals.change_login.new-email')
@@ -76,10 +76,10 @@ import { useToast } from 'vue-toastification';
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import ModalWindow from '../ModalWindow.vue';
-import Counter from '../../shared/counter/counter.vue';
-import inputCode from '../../shared/inputCode/inputCode.vue';
-import mainInput from '../../shared/input/mainInput.vue';
-import loader from '../../shared/loader/loader.vue';
+import Counter from '../../shared/counter/Counter.vue';
+import inputCode from '../../shared/inputCode/InputCode.vue';
+import MainInput from '../../shared/input/MainInput.vue';
+import loader from '../../shared/loader/Loader.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 
@@ -89,7 +89,7 @@ export default {
   name: 'ChangeEmailModal',
   components: {
     ModalWindow,
-    mainInput,
+    MainInput,
     Counter,
     loader,
     inputCode,

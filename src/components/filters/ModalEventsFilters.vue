@@ -81,12 +81,12 @@
 import { computed, ref, watch } from 'vue';
 
 import ModalWindow from '../ModalWindows/ModalWindow.vue';
-import dropdown from '../shared/dropdown/dropdown.vue';
+import dropdown from '../shared/dropdown/Dropdown.vue';
 import GreenBtn from '../shared/button/GreenBtn.vue';
 import RadioGenderBox from './components/RadioGenderBox.vue';
 import ModalPositionMap from '../maps/ModalPositionMap.vue';
 import ClearFilters from './components/ClearFilters.vue';
-import mainInput from '../shared/input/mainInput.vue';
+import MainInput from '../shared/input/MainInput.vue';
 
 import CONSTANTS from '../../consts/index';
 
@@ -101,7 +101,7 @@ export default {
     RadioGenderBox,
     ClearFilters,
     ModalPositionMap,
-    mainInput,
+    MainInput,
   },
   props: {
     dropdownGameType: {

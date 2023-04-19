@@ -29,12 +29,11 @@ import { ref, watch, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller';
 
-import Notification from '../main/notifications/notification.vue';
+import notification from '../../main/notifications/Notification.vue';
 
 export default {
-  name: 'Notifications',
   components: {
-    Notification,
+    notification,
     DynamicScroller,
     DynamicScrollerItem,
   },

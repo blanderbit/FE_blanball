@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import Notification from './notification.vue';
+import Notification from './Notification.vue';
 import { useRouter } from 'vue-router';
 import { ref, watch, nextTick, onMounted, onBeforeUnmount, computed } from 'vue';
 import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller';

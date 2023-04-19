@@ -199,13 +199,13 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { v4 as uuid } from 'uuid';
 
-import userAvatar from '../shared/userAvatar/userAvatar.vue';
-import Notifications from '../main/notifications/notifications.vue';
-import Notification from '../main/notifications/notification.vue';
-import emptyList from '../shared/emptyList/emptyList.vue';
+import userAvatar from '../shared/userAvatar/UserAvatar.vue';
+import Notifications from '../main/notifications/Notifications.vue';
+import Notification from '../main/notifications/Notification.vue';
+import emptyList from '../shared/emptyList/EmptyList.vue';
 import InfiniteLoading from '../../workers/infinit-load-worker/InfiniteLoading.vue';
 import ScrollToTop from '../ScrollToTop.vue';
-import loader from '../shared/loader/loader.vue';
+import loader from '../shared/loader/Loader.vue';
 import SubmitModal from '../ModalWindows/SubmitModal.vue';
 
 import { useUserDataStore } from '../../stores/userData';

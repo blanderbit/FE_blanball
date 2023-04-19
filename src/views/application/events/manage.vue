@@ -146,17 +146,17 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 
 import { merge } from 'lodash';
 
-import mainInput from '../../../components/shared/input/mainInput.vue';
+import MainInput from '../../../components/shared/input/MainInput.vue';
 import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
 import WhiteBtn from '../../../components/shared/button/WhiteBtn.vue';
 import ManageEventFirstStep from '../../../components/manage-event-components/ManageEventFirstStep.vue';
-import userAvatar from '../../../components/shared/userAvatar/userAvatar.vue';
+import userAvatar from '../../../components/shared/userAvatar/UserAvatar.vue';
 import PreviewBlock from '../../../components/manage-event-components/PreviewBlock.vue';
 import EventCard from '../../../components/event-components/EventCard.vue';
 import ManageEventSecondStep from '../../../components/manage-event-components/ManageEventSecondStep.vue';
 import ManageEventThirdStep from '../../../components/manage-event-components/ManageEventThirdStep.vue';
 import RemoveInvitedUsersModal from '../../../components/manage-event-components/RemoveInvitedUsersModal.vue';
-import loader from '../../../components/shared/loader/loader.vue';
+import loader from '../../../components/shared/loader/Loader.vue';
 import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue';
 import InvitedUsersList from '../../../components/manage-event-components/InvitedUsersList.vue';
 import PreviewInvitedUsersListModal from '../../../components/ModalWindows/PreviewInvitedUsersListModal.vue';
@@ -178,7 +178,7 @@ import Arrow from '../../../assets/img/arrow-right-white.svg';
 export default {
   name: 'CreateEventPage',
   components: {
-    mainInput,
+    MainInput,
     GreenBtn,
     WhiteBtn,
     ManageEventFirstStep,

@@ -1,7 +1,7 @@
 
 import { ref } from 'vue';
 import { createApp } from 'vue';
-import loader from '../../components/shared/loader/loader.vue';
+import loader from '../../components/shared/loader/Loader.vue';
 
 let loading;
 

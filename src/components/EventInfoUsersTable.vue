@@ -24,7 +24,7 @@
 
 <script>
 import { ref, reactive } from 'vue';
-import emptyList from './shared/emptyList/emptyList.vue';
+import emptyList from './shared/emptyList/EmptyList.vue';
 
 export default {
   props: {

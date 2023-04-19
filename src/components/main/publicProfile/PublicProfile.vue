@@ -10,7 +10,7 @@
       <img src="../../../assets/img/white-phone-icon.svg" alt="" />
     </template>
     <template #input>
-      <mainInput
+      <MainInput
         :height="40"
         :outsideTitle="true"
         :title-width="0"
@@ -40,7 +40,7 @@
       <img src="../../../assets/img/white-letter-icon.svg" alt="" />
     </template>
     <template #input>
-      <mainInput
+      <MainInput
         :height="40"
         :outsideTitle="true"
         :title-width="0"
@@ -213,13 +213,13 @@ import { useToast } from 'vue-toastification';
 import StarRating from 'vue-star-rating';
 import { useElementSize } from '@vueuse/core';
 
- import userAvatar from '../../shared/userAvatar/userAvatar.vue';
+ import userAvatar from '../../shared/userAvatar/UserAvatar.vue';
 import WhiteBtn from '../../shared/button/WhiteBtn.vue';
 import PublicProfileReviews from './PublicProfileReviews.vue';
 import PublicProfilePlannedEvents from './PublicProfilePlannedEvents.vue';
 import InviteOneUserToEventModal from '../../ModalWindows/InviteToEventModalWindows/InviteOneUserToEventModal.vue';
 import CopyModal from '../../ModalWindows/CopyModal.vue';
-import mainInput from '../../shared/input/mainInput.vue';
+import MainInput from '../../shared/input/MainInput.vue';
 import GreenBtn from '../../shared/button/GreenBtn.vue';
 
 import useWindowWidth from '../../../utils/widthScreen';
@@ -262,7 +262,7 @@ export default {
     PublicProfileReviews,
     CopyModal,
     InviteOneUserToEventModal,
-    mainInput,
+    MainInput,
     GreenBtn,
     StarRating,
   },

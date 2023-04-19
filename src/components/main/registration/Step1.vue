@@ -19,7 +19,7 @@
     </template>
     <template #content>
       <div class="b-register-step__input">
-        <mainInput
+        <MainInput
           :outside-title="true"
           :swipeTitle="false"
           :title="$t('register.name')"
@@ -30,7 +30,7 @@
         />
       </div>
       <div class="b-register-step__input mb-2">
-        <mainInput
+        <MainInput
           :outside-title="true"
           :swipeTitle="false"
           :title="$t('register.last_name')"
@@ -71,9 +71,9 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import GreenBtn from '../../shared/button/GreenBtn.vue';
-import mainInput from '../../shared/input/mainInput.vue';
+import MainInput from '../../shared/input/MainInput.vue';
 import StepWrapper from './StepWrapper.vue';
-import radioButton from '../../shared/radioButton/radioButton.vue';
+import radioButton from '../../shared/radioButton/RadioButton.vue';
 
 import MaleIcon from '../../../assets/img/male-icon.svg';
 import FemaleIcon from '../../../assets/img/female-icon.svg';
@@ -83,7 +83,7 @@ export default {
   name: 'Step1',
   components: {
     GreenBtn,
-    mainInput,
+    MainInput,
     StepWrapper,
     radioButton,
   },

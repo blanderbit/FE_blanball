@@ -116,11 +116,11 @@ import { ref, computed, onBeforeUnmount, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import NotificationsSlideMenu from '../SlideMenu/NotificationsSlideMenu.vue';
-import userAvatar from '../shared/userAvatar/userAvatar.vue';
+import userAvatar from '../shared/userAvatar/UserAvatar.vue';
 import BugReportModal from '../ModalWindows/BugReportModal.vue';
 import TabLabel from '../TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';
-import loader from '../shared/loader/loader.vue';
+import loader from '../shared/loader/Loader.vue';
 
 import { useUserDataStore } from '../../stores/userData';
 import { createNotificationFromData } from '../../workers/utils-worker';

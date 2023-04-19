@@ -33,7 +33,7 @@
           />
         </div>
         <div class="b-hide-events__button">
-        <mainInput
+        <MainInput
           :placeholder="'7 подій приховано'"
           :isDisabled="true"
           :title-width="0"
@@ -53,7 +53,7 @@
         {{ $t('profile.change-login&password') }}
       </div>
       <div class="b-security__email-input">
-        <mainInput
+        <MainInput
           :title="$t('profile.e-mail')"
           :placeholder="userEmail"
           :isDisabled="true"
@@ -69,7 +69,7 @@
         @click="toggleModalWindow('change_password')"
       >
         <span>{{ $t('profile.change-password') }}</span>
-        <img src="../assets/img/lock.svg" alt="" />
+        <img src="../../../assets/img/lock.svg" alt="" />
       </div>
     </div>
     <div
@@ -84,15 +84,15 @@
 <script>
 import { ref, computed } from 'vue';
 
-import switcher from './shared/switcher/switcher.vue';
-import sortArrowHorizontally from '../assets/img/sort-arrows-horizontal.svg';
-import mainInput from './shared/input/mainInput.vue';
+import switcher from '../../shared/switcher/Switcher.vue';
+import sortArrowHorizontally from '../../../assets/img/sort-arrows-horizontal.svg';
+import MainInput from '../../shared/input/MainInput.vue';
 
 export default {
   name: 'SecurityBlock',
   components: {
     switcher,
-    mainInput,
+    MainInput,
   },
   props: {
     userEmail: {

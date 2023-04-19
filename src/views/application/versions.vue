@@ -102,7 +102,7 @@ import { useRoute } from 'vue-router';
 import dayjs from 'dayjs';
 import dayjsUkrLocale from 'dayjs/locale/uk';
 
-import loader from '../../components/shared/loader/loader.vue';
+import loader from '../../components/shared/loader/Loader.vue';
 import VersionItem from '../../components/versions-page/version-item.vue';
 
 import { API } from '../../workers/api-worker/api.worker';

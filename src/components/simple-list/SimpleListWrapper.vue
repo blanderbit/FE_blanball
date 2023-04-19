@@ -1,5 +1,5 @@
 <template>
-  <SmartList
+  <smartList
     :list="paginationElements"
     ref="refList"
     v-model:scrollbar-existing="blockScrollToTopIfExist"
@@ -23,7 +23,7 @@
         </template>
       </InfiniteLoading>
     </template>
-  </SmartList>
+  </smartList>
 </template>
 
 <script>
@@ -31,15 +31,15 @@ import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { PaginationWorker } from '../../workers/pagination-worker';
-import SmartList from '../../components/smart-list/SmartList.vue';
-import emptyList from '../shared/emptyList/emptyList.vue';
+import smartList from '../shared/smartList/SmartList.vue';
+import emptyList from '../shared/emptyList/EmptyList.vue';
 import ScrollToTop from '../../components/ScrollToTop.vue';
 import InfiniteLoading from '../../workers/infinit-load-worker/InfiniteLoading.vue';
 
 export default {
   name: 'SimpleListWrapper',
   components: {
-    SmartList,
+    smartList,
     emptyList,
     InfiniteLoading,
     ScrollToTop,

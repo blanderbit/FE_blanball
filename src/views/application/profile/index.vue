@@ -159,19 +159,19 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 
 import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
 import WhiteBtn from '../../../components/shared/button/WhiteBtn.vue';
-import mainInput from '../../../components/shared/input/mainInput.vue';
+import MainInput from '../../../components/shared/input/MainInput.vue';
 import ModalWindow from '../../../components/ModalWindows/ModalWindow.vue';
-import RatingCard from '../../../components/RatingCard.vue';
-import UserDetailsCard from '../../../components/UserDetailsCard.vue';
-import SecurityBlock from '../../../components/SecurityBlock.vue';
+import RatingCard from '../../../components/main/profile/RatingCard.vue';
+import UserDetailsCard from '../../../components/main/profile/UserDetailsCard.vue';
+import SecurityBlock from '../../../components/main/profile/SecurityBlock.vue';
 import TabLabel from '../../../components/TabLabel.vue';
 import DeleteAccountModal from '../../../components/ModalWindows/UserCabinetModalWindows/DeleteAccountModal.vue';
 import ChangePasswordModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangePasswordModal.vue';
 import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue';
 import ChangeEmailModal from '../../../components/ModalWindows/UserCabinetModalWindows/ChangeEmailModal.vue';
-import ButtonsBlock from '../../../components/user-cabinet/ButtonsBlock.vue';
+import ButtonsBlock from '../../../components/main/profile/ButtonsBlock.vue';
 import EditAvatarModal from '../../../components/ModalWindows/UserCabinetModalWindows/EditAvatarModal.vue';
-import loader from '../../../components/shared/loader/loader.vue';
+import loader from '../../../components/shared/loader/Loader.vue';
 import PublicProfile from '../../../components/main/publicProfile/PublicProfile.vue';
 import HideMyEventsModal from '../../../components/ModalWindows/HideMyEventsModalWindow/HideMyEventsModal.vue';
 import PublicProfileWrapper from '../../../components/main/publicProfile/PublicProfileWrapper.vue';
@@ -193,7 +193,7 @@ export default {
   components: {
     GreenBtn,
     WhiteBtn,
-    mainInput,
+    MainInput,
     ModalWindow,
     PublicProfile,
     RatingCard,

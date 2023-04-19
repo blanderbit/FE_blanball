@@ -61,7 +61,7 @@
         ></events-filters>
 
         <div class="b-events-page__all-events-block">
-          <SmartGridList
+          <smartGridList
             :list="paginationElements"
             ref="refList"
             :detectSizesForCards="detectSizesForCards"
@@ -100,12 +100,12 @@
                 </template>
               </InfiniteLoading>
             </template>
-          </SmartGridList>
+          </smartGridList>
         </div>
       </div>
     </div>
 
-    <RightSidebar />
+    <rightSidebar />
   </div>
 </template>
 
@@ -118,19 +118,19 @@ import { useToast } from 'vue-toastification';
 import { v4 as uuid } from 'uuid';
 
 import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
-import mainInput from '../../../components/shared/input/mainInput.vue';
+import MainInput from '../../../components/shared/input/MainInput.vue';
 import ContextMenu from '../../../components/ModalWindows/ContextMenuModal.vue';
 import EventCard from '../../../components/event-components/EventCard.vue';
 import MyEventCard from '../../../components/event-components/MyEventCard.vue';
-import RightSidebar from '../../../components/RightSidebar.vue';
-import emptyList from '../../../components/shared/emptyList/emptyList.vue';
-import SmartGridList from '../../../components/smart-list/SmartGridList.vue';
+import rightSidebar from '../../../components/main/rightSidebar/RightSidebar.vue';
+import emptyList from '../../../components/shared/emptyList/EmptyList.vue';
+import smartGridList from '../../../components/shared/smartList/SmartGridList.vue';
 import ScrollToTop from '../../../components/ScrollToTop.vue';
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
-import dropdown from '../../../components/shared/dropdown/dropdown.vue';
+import dropdown from '../../../components/shared/dropdown/Dropdown.vue';
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue';
 import ContextModal from '../../../components/ModalWindows/ContextModal.vue';
-import loader from '../../../components/shared/loader/loader.vue';
+import loader from '../../../components/shared/loader/Loader.vue';
 
 import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue';
 
@@ -157,12 +157,12 @@ export default {
     GreenBtn,
     dropdown,
     emptyList,
-    mainInput,
+    MainInput,
     ContextMenu,
     EventCard,
     MyEventCard,
-    RightSidebar,
-    SmartGridList,
+    rightSidebar,
+    smartGridList,
     InfiniteLoading,
     ScrollToTop,
     EventsFilters,

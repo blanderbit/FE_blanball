@@ -59,7 +59,7 @@
           </div>
         </div>
         <div class="b-invite-users-to-event-modal__send-invite-block">
-          <mainInput
+          <MainInput
             :placeholder="$t('events.search-users')"
             :title-width="0"
             v-model="searchValue"
@@ -102,8 +102,8 @@ import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import SearchBlockAll from '../../SearchBlockAll.vue';
-import mainInput from '../../shared/input/mainInput.vue';
-import userAvatar from '../../shared/userAvatar/userAvatar.vue';
+import MainInput from '../../shared/input/MainInput.vue';
+import userAvatar from '../../shared/userAvatar/UserAvatar.vue';
 import GreenBtn from '../../shared/button/GreenBtn.vue';
 import WhiteBtn from '../../shared/button/WhiteBtn.vue';
 import InvitedUsersListModal from './InvitedUsersListModal.vue';
@@ -117,7 +117,7 @@ import SearchIcon from '../../../assets/img/search.svg';
 export default {
   components: {
     SearchBlockAll,
-    mainInput,
+    MainInput,
     userAvatar,
     GreenBtn,
     InvitedUsersListModal,

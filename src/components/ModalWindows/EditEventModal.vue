@@ -99,7 +99,7 @@ import SelectFormsColorsModal from './SelectFormsColorsModal.vue';
 import WhiteBtn from '../shared/button/WhiteBtn.vue';
 import GreenBtn from '../shared/button/GreenBtn.vue';
 import SubmitModal from './SubmitModal.vue';
-import loader from '../shared/loader/loader.vue';
+import loader from '../shared/loader/Loader.vue';
 
 import { API } from '../../workers/api-worker/api.worker';
 import { BlanballEventBus } from '../../workers/event-bus-worker';

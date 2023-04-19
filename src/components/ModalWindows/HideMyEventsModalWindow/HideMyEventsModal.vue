@@ -42,7 +42,7 @@
       </div>
       <div class="b-hide-events-modal__main-side" ref="mainEventsBlock">
         <div class="b-main-side__events-list">
-          <SmartGridList
+          <smartGridList
             :list="paginationElements"
             ref="refList"
             :detectSizesForCards="detectSizesForCards"
@@ -70,7 +70,7 @@
                 </template>
               </InfiniteLoading>
             </template>
-          </SmartGridList>
+          </smartGridList>
         </div>
       </div>
       <div class="b-hide-events-modal__bottom-side">
@@ -99,7 +99,7 @@
 import { ref, computed, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import SmartGridList from '../../smart-list/SmartGridList.vue';
+import smartGridList from '../../shared/smartList/SmartGridList.vue';
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
 import ScrollToTop from '../../ScrollToTop.vue';
 import HideEventCard from './HideEventCard.vue';
@@ -123,7 +123,7 @@ const TABS_ENUM = {
 
 export default {
   components: {
-    SmartGridList,
+    smartGridList,
     InfiniteLoading,
     ScrollToTop,
     WhiteBtn,

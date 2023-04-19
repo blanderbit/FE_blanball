@@ -69,7 +69,7 @@ const PASSWORD_TYPES = {
 
 // TODO vue 3 fully, validate message
 export default {
-  name: 'mainInput',
+  name: 'MainInput',
   props: {
     isDisabled: {
       type: Boolean,

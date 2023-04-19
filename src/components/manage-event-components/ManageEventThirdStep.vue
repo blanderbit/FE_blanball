@@ -64,7 +64,7 @@
     <div class="phone-block">
       <span class="title">{{ $t('events.my-contacts') }}</span>
       <div class="input" :class="{ 'phone-read': !isEditPhone }">
-        <mainInput
+        <MainInput
           ref="phoneValue"
           :placeholder="phoneValue?.staticModelValue"
           :title-width="0"
@@ -74,7 +74,7 @@
           :icon="icons.editPhone"
           @icon-click="changeEditPhoneMode"
         >
-        </mainInput>
+        </MainInput>
       </div>
     </div>
 
@@ -97,10 +97,10 @@ import { computed, ref } from 'vue';
 
 import { ErrorMessage } from '@system.it.flumx.com/vee-validate';
 
-import switcher from '../shared/switcher/switcher.vue';
-import radioButton from '../shared/radioButton/radioButton.vue';
-import mainInput from '../shared/input/mainInput.vue';
-import mainTextArea from '../shared/textArea/mainTextArea.vue';
+import switcher from '../shared/switcher/Switcher.vue';
+import radioButton from '../shared/radioButton/RadioButton.vue';
+import MainInput from '../shared/input/MainInput.vue';
+import mainTextArea from '../shared/textArea/MainTextArea.vue';
 import EventCreateForms from '../buildedForms/EventCreateForms.vue';
 
 import AimIcon from '../../assets/img/aim.svg';
@@ -112,7 +112,7 @@ export default {
   name: 'ManageEventThirdStep',
   components: {
     switcher,
-    mainInput,
+    MainInput,
     radioButton,
     mainTextArea,
     ErrorMessage,

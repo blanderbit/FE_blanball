@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import userAvatar from '../../shared/userAvatar/userAvatar.vue';
+import userAvatar from '../../shared/userAvatar/UserAvatar.vue';
 export default {
   emits: ['closeModal', 'removeUser'],
   components: {

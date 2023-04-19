@@ -43,7 +43,7 @@
       </users-filters>
       <div class="user-cards-wrapper">
         <div class="users-cards">
-          <SmartList
+          <smartList
             :list="paginationElements"
             ref="refList"
             v-model:scrollbar-existing="blockScrollToTopIfExist"
@@ -79,12 +79,12 @@
                 </template>
               </InfiniteLoading>
             </template>
-          </SmartList>
+          </smartList>
         </div>
       </div>
     </div>
 
-    <RightSidebar></RightSidebar>
+    <rightSidebar></rightSidebar>
   </div>
 </template>
 
@@ -93,12 +93,12 @@ import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
-import mainInput from '../../../components/shared/input/mainInput.vue';
+import MainInput from '../../../components/shared/input/MainInput.vue';
 import UserCard from '../../../components/UserCard.vue';
-import SmartList from '../../../components/smart-list/SmartList.vue';
-import emptyList from '../../../components/shared/emptyList/emptyList.vue';
+import smartList from '../../../components/shared/smartList/SmartList.vue';
+import emptyList from '../../../components/shared/emptyList/EmptyList.vue';
 import ScrollToTop from '../../../components/ScrollToTop.vue';
-import RightSidebar from '../../../components/RightSidebar.vue';
+import rightSidebar from '../../../components/main/rightSidebar/RightSidebar.vue';
 import TabLabel from '../../../components/TabLabel.vue';
 
 import members from '../../../assets/img/members.svg';
@@ -120,14 +120,14 @@ import { ROUTES } from '../../../router/router.const';
 export default {
   name: 'RatingPage',
   components: {
-    mainInput,
+    MainInput,
     UserCard,
-    SmartList,
+    smartList,
     InfiniteLoading,
     ScrollToTop,
     emptyList,
     UsersFilters,
-    RightSidebar,
+    rightSidebar,
     TabLabel,
   },
   setup() {

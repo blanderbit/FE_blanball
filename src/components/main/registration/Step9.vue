@@ -14,7 +14,7 @@
       <div
         class="b-sport-info d-flex justify-content-between align-baseline mb-3"
       >
-        <mainInput
+        <MainInput
           v-model="height"
           :outside-title="true"
           :title="$t('register.height')"
@@ -23,8 +23,8 @@
           type="number"
           name="height"
           v-maska="'###'"
-        ></mainInput>
-        <mainInput
+        ></MainInput>
+        <MainInput
           v-model="weight"
           :outside-title="true"
           :title="$t('register.weight')"
@@ -33,7 +33,7 @@
           type="number"
           name="weight"
           v-maska="'###'"
-        ></mainInput>
+        ></MainInput>
         <dropdown
           v-model="workingLeg"
           :placeholder="$t('register.main-leg')"
@@ -73,8 +73,8 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import GreenBtn from '../../shared/button/GreenBtn.vue';
-import dropdown from '../../shared/dropdown/dropdown.vue';
-import mainInput from '../../shared/input/mainInput.vue';
+import dropdown from '../../shared/dropdown/Dropdown.vue';
+import MainInput from '../../shared/input/MainInput.vue';
 import StepWrapper from './StepWrapper.vue';
 
 import CONSTANTS from '../../../consts';
@@ -87,7 +87,7 @@ export default {
   components: {
     GreenBtn,
     dropdown,
-    mainInput,
+    MainInput,
     StepWrapper,
   },
   setup() {

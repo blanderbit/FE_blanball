@@ -21,7 +21,7 @@
                   ref="fileInput"
                 />
                 <img
-                  src="../assets/img/add-user-pic2.svg"
+                  src="../../../assets/img/add-user-pic2.svg"
                   alt="add user picture"
                 />
               </label>
@@ -86,7 +86,7 @@
           </div>
           <div v-if="isEditMode" class="b-user-card__name-line">
             <div class="b-user-card__input-surname">
-              <mainInput
+              <MainInput
                 :outside-title="true"
                 :title="$t('profile.surname')"
                 :placeholder="$t('profile.surname')"
@@ -96,7 +96,7 @@
               />
             </div>
             <div class="b-user-card__input-name">
-              <mainInput
+              <MainInput
                 :outside-title="true"
                 :title="$t('profile.name')"
                 :placeholder="$t('profile.name')"
@@ -184,7 +184,7 @@
                 </div>
                 <div class="b-user-card__title">{{ $t('profile.height') }}</div>
               </div>
-              <mainInput
+              <MainInput
                 v-else
                 :outside-title="true"
                 :title="$t('profile.height')"
@@ -206,7 +206,7 @@
                   {{ $t('profile.weight') }}
                 </div>
               </div>
-              <mainInput
+              <MainInput
                 v-else
                 :outside-title="true"
                 :title="$t('profile.weight')"
@@ -282,7 +282,7 @@
                 {{ $t('profile.phone') }}
               </div>
             </div>
-            <mainInput
+            <MainInput
               v-else
               :title="$t('profile.phone')"
               :placeholder="userData.phone"
@@ -325,26 +325,26 @@ import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
 import dayjsUkrLocale from 'dayjs/locale/uk';
 
-import mainInput from './shared/input/mainInput.vue';
-import mainTextArea from './shared/textArea/mainTextArea.vue';
-import dropdown from './shared/dropdown/dropdown.vue';
- import userAvatar from './shared/userAvatar/userAvatar.vue';
-import RatingCard from '../components/RatingCard.vue';
+import MainInput from '../../shared/input/MainInput.vue';
+import mainTextArea from '../../shared/textArea/MainTextArea.vue';
+import dropdown from '../../shared/dropdown/Dropdown.vue';
+ import userAvatar from '../../shared/userAvatar/UserAvatar.vue';
+import RatingCard from './RatingCard.vue';
 
-import CONSTANTS from '../consts';
-import useWindowWidth from '../utils/widthScreen';
+import CONSTANTS from '../../../consts';
+import useWindowWidth from '../../../utils/widthScreen';
 
-import sortArrowHorizontally from '../assets/img/sort-arrows-horizontal.svg';
-import tick from '../assets/img/tick.svg';
-import edit from '../assets/img/edit.svg';
-import arrows from '../assets/img/sort-arrows-horizontal.svg';
+import sortArrowHorizontally from '../../../assets/img/sort-arrows-horizontal.svg';
+import tick from '../../../assets/img/tick.svg';
+import edit from '../../../assets/img/edit.svg';
+import arrows from '../../../assets/img/sort-arrows-horizontal.svg';
 
 const IMAGE_TYPES = ['image/jpeg', 'image/png'];
 
 export default {
   name: 'UserDetailsCard',
   components: {
-    mainInput,
+    MainInput,
     dropdown,
     mainTextArea,
     userAvatar,

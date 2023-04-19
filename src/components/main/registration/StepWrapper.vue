@@ -63,7 +63,7 @@
 <script>
 import { computed } from 'vue';
 import GreenBtn from '../../shared/button/GreenBtn.vue';
-import loader from '../../shared/loader/loader.vue';
+import loader from '../../shared/loader/Loader.vue';
 import WhiteBtn from '../../shared/button/WhiteBtn.vue';
 
 export default {

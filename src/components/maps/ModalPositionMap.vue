@@ -41,7 +41,7 @@
         </div>
 
         <div class="b-modal-position__block">
-          <mainInput
+          <MainInput
             :outside-title="true"
             :title="$t('register.search-radius')"
             :placeholder="$t('register.search-radius')"
@@ -49,7 +49,7 @@
             :title-width="0"
             name="dist"
             :immediate="true"
-          ></mainInput>
+          ></MainInput>
         </div>
 
         <div class="b-modal-position__block b-modal-position__map">
@@ -83,11 +83,11 @@ import { ref, computed, watch } from 'vue';
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import PositionMap from './PositionMap.vue';
-import dropdown from '../shared/dropdown/dropdown.vue';
-import mainInput from '../shared/input/mainInput.vue';
+import dropdown from '../shared/dropdown/Dropdown.vue';
+import MainInput from '../shared/input/MainInput.vue';
 import ModalWindow from '../ModalWindows/ModalWindow.vue';
 import GreenBtn from '../shared/button/GreenBtn.vue';
-import loader from '../shared/loader/loader.vue';
+import loader from '../shared/loader/Loader.vue';
 
 import { PositionMapBus } from '../../workers/event-bus-worker';
 import { API } from '../../workers/api-worker/api.worker';
@@ -102,7 +102,7 @@ export default {
     ModalWindow,
     PositionMap,
     dropdown,
-    mainInput,
+    MainInput,
     Form,
     GreenBtn,
     loader,

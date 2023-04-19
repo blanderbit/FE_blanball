@@ -14,7 +14,7 @@
       <img src="../../../assets/img/share-arrow.svg" alt="" />
     </template>
     <template #input>
-      <mainInput
+      <MainInput
         :height="40"
         :outsideTitle="true"
         :title-width="0"
@@ -270,7 +270,7 @@
         </div>
       </div>
     </div>
-    <RightSidebar />
+    <rightSidebar />
   </div>
 </template>
 
@@ -281,20 +281,20 @@ import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
 
 import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
-import RightSidebar from '../../../components/RightSidebar.vue';
+import rightSidebar from '../../../components/main/rightSidebar/RightSidebar.vue';
 import EventInfoUsersTable from '../../../components/EventInfoUsersTable.vue';
 import PositionMap from '../../../components/maps/PositionMap.vue';
 import CopyModal from '../../../components/ModalWindows/CopyModal.vue';
-import userAvatar from '../../../components/shared/userAvatar/userAvatar.vue';
+import userAvatar from '../../../components/shared/userAvatar/UserAvatar.vue';
 import TabLabel from '../../../components/TabLabel.vue';
 import ListOfEventRequestsToParticipations from '../../../components/ListOfEventRequestsToParticipations.vue';
-import loader from '../../../components/shared/loader/loader.vue';
+import loader from '../../../components/shared/loader/Loader.vue';
 import EventInfoForms from '../../../components/buildedForms/EventInfoForms.vue';
 import ActionEventModal from '../../../components/ModalWindows/ActionEventModal.vue';
 import EditEventModal from '../../../components/ModalWindows/EditEventModal.vue';
 import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue';
 import ContextModal from '../../../components/ModalWindows/ContextModal.vue';
-import mainInput from '../../../components/shared/input/mainInput.vue';
+import MainInput from '../../../components/shared/input/MainInput.vue';
 import InviteManyUsersToEventModal from '../../../components/ModalWindows/InviteToEventModalWindows/InviteManyUsersToEventModal.vue';
 import SmallPlayerCard from '../../../components/SmallPlayerCard.vue';
 
@@ -330,7 +330,7 @@ export default {
   name: 'EventsPage',
   components: {
     GreenBtn,
-    RightSidebar,
+    rightSidebar,
     EventInfoUsersTable,
     PositionMap,
     CopyModal,
@@ -344,7 +344,7 @@ export default {
     InviteManyUsersToEventModal,
     ActionEventModal,
     SubmitModal,
-    mainInput,
+    MainInput,
     ContextModal,
   },
   setup() {

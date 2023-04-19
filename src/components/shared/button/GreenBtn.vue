@@ -18,7 +18,7 @@
 
 <script>
 import { computed, ref, watch } from 'vue';
-import loader from '../loader/loader.vue';
+import loader from '../loader/Loader.vue';
 
 export default {
   components: {

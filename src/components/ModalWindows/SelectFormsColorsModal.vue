@@ -112,7 +112,7 @@ import { ref, computed } from 'vue';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import dropdown from '../shared/dropdown/dropdown.vue';
+import dropdown from '../shared/dropdown/Dropdown.vue';
 import GreenBtn from '../shared/button/GreenBtn.vue';
 
 import CONSTANTS from '../../consts/index';

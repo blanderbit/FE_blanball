@@ -46,7 +46,7 @@
   <script>
   import { ref } from 'vue';
   
-  import mainTextArea from '../../shared/textArea/mainTextArea.vue';
+  import mainTextArea from '../../shared/textArea/MainTextArea.vue';
   import WhiteBtn from '../../shared/button/WhiteBtn.vue';
   import GreenBtn from '../../shared/button/GreenBtn.vue';
   

@@ -34,7 +34,7 @@
       <transition>
         <div v-if="rateStatus" class="b-rating-card__cards-block">
           <div class="b-rating-card__reviews-list" v-if="paginationElements">
-            <SmartList
+            <smartList
               :list="paginationElements"
               ref="refList"
               v-model:scrollbar-existing="blockScrollToTopIfExist"
@@ -95,7 +95,7 @@
                   </template>
                 </InfiniteLoading>
               </template>
-            </SmartList>
+            </smartList>
           </div>
           <div v-else class="b-rating-card__no-reviews-block">
             <div class="b-rating-card__no-data-title">
@@ -121,23 +121,23 @@ import dayjs from 'dayjs';
 
 import { v4 as uuid } from 'uuid';
 
-import { PaginationWorker } from '../workers/pagination-worker';
-import { FilterPatch } from '../workers/api-worker/http/filter/filter.patch';
+import { PaginationWorker } from '../../../workers/pagination-worker';
+import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patch';
 
-import ReviewDetailsComponent from '../components/ReviewDetails.vue';
-import SmartList from './smart-list/SmartList.vue';
-import InfiniteLoading from '../workers/infinit-load-worker/InfiniteLoading.vue';
-import ScrollToTop from './ScrollToTop.vue';
+import ReviewDetailsComponent from './ReviewDetails.vue';
+import smartList from '../../shared/smartList/SmartList.vue';
+import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
+import ScrollToTop from '../../ScrollToTop.vue';
 
-import { API } from '../workers/api-worker/api.worker';
+import { API } from '../../../workers/api-worker/api.worker';
 
-import CONSTANTS from '../consts/index';
+import CONSTANTS from '../../../consts/index';
 
 export default {
   name: 'RatingCard',
   components: {
     ReviewDetailsComponent,
-    SmartList,
+    smartList,
     ScrollToTop,
     InfiniteLoading,
     StarRating,

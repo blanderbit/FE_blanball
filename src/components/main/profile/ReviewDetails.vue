@@ -23,12 +23,12 @@
 <script>
 import { computed, ref } from 'vue';
 
-import emoji_1 from '../assets/img/emojies/1.svg';
-import emoji_2 from '../assets/img/emojies/2.svg';
-import emoji_3 from '../assets/img/emojies/3.svg';
-import emoji_4 from '../assets/img/emojies/4.svg';
-import emoji_5 from '../assets/img/emojies/5.svg';
-import noReviews from '../assets/img/no-records/no-reviews.svg';
+import emoji_1 from '../../../assets/img/emojies/1.svg';
+import emoji_2 from '../../../assets/img/emojies/2.svg';
+import emoji_3 from '../../../assets/img/emojies/3.svg';
+import emoji_4 from '../../../assets/img/emojies/4.svg';
+import emoji_5 from '../../../assets/img/emojies/5.svg';
+import noReviews from '../../../assets/img/no-records/no-reviews.svg';
 
 const COLORS = {
   0: '#DFDEED',

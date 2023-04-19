@@ -1,5 +1,5 @@
 <script setup>
-import smallLoader from '../../components/shared/loader/smallLoader.vue';
+import smallLoader from '../../components/shared/loader/SmallLoader.vue';
 import { onMounted, ref, toRefs, onUnmounted, watch, nextTick } from 'vue';
 import {
   startObserver,

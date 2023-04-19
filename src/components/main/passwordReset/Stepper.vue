@@ -26,7 +26,7 @@
           {{ $t('reset.write-code') }}
         </div>
         <div class="b-reset-step__input" v-if="currentStep === 1">
-          <mainInput
+          <MainInput
             :outside-title="true"
             :title="$t('reset.post')"
             :swipeTitle="false"
@@ -58,7 +58,7 @@
           {{ $t('reset.new-password') }}
         </div>
         <div class="b-reset-step__input" v-if="currentStep === 3">
-          <mainInput
+          <MainInput
             :title="$t('reset.enter-new-password')"
             :title-width="0"
             :type="'password'"
@@ -69,7 +69,7 @@
           />
         </div>
         <div class="b-reset-step__input" v-if="currentStep === 3">
-          <mainInput
+          <MainInput
             :title="$t('reset.repeat-new-password')"
             :title-width="0"
             :type="'password'"
@@ -105,9 +105,9 @@ import { useToast } from 'vue-toastification';
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import GreenBtn from '../../shared/button/GreenBtn.vue';
-import mainInput from '../../shared/input/mainInput.vue';
-import inputCode from '../../shared/inputCode/inputCode.vue';
-import Counter from '../../shared/counter/counter.vue';
+import MainInput from '../../shared/input/MainInput.vue';
+import inputCode from '../../shared/inputCode/InputCode.vue';
+import Counter from '../../shared/counter/Counter.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 
@@ -121,7 +121,7 @@ export default {
   name: 'Step1',
   components: {
     GreenBtn,
-    mainInput,
+    MainInput,
     Form,
     inputCode,
     Counter,

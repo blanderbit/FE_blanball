@@ -39,10 +39,10 @@
 <script>
 import { computed } from 'vue';
 
-import GreenBtn from '../shared/button/GreenBtn.vue';
-import WhiteBtn from '../shared/button/WhiteBtn.vue';
+import GreenBtn from '../../shared/button/GreenBtn.vue';
+import WhiteBtn from '../../shared/button/WhiteBtn.vue';
 
-import edit from '../../assets/img/set-filter-white.svg';
+import edit from '../../../assets/img/set-filter-white.svg';
 
 export default {
   name: 'ButtonsBlock',

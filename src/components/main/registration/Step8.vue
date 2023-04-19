@@ -53,7 +53,7 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import GreenBtn from '../../shared/button/GreenBtn.vue';
-import dropdown from '../../shared/dropdown/dropdown.vue';
+import dropdown from '../../shared/dropdown/Dropdown.vue';
 import StepWrapper from './StepWrapper.vue';
 
 import CONSTANTS from '../../../consts/index';

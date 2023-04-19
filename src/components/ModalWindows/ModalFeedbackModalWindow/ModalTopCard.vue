@@ -79,7 +79,7 @@ import * as yup from 'yup';
 import { Form, ErrorMessage } from '@system.it.flumx.com/vee-validate';
 
 import GreenBtn from '../../shared/button/GreenBtn.vue';
-import mainTextArea from '../../shared/textArea/mainTextArea.vue';
+import mainTextArea from '../../shared/textArea/MainTextArea.vue';
 import Emotions from '../../forms/Emotions.vue';
 
 

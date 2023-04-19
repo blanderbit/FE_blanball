@@ -79,7 +79,7 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
 import ModalWindow from '../ModalWindow.vue';
-import mainInput from '../../shared/input/mainInput.vue';
+import MainInput from '../../shared/input/MainInput.vue';
 import GreenBtn from '../../shared/button/GreenBtn.vue';
 
 import SaveIcon from '../../../assets/img/save-icon.svg';
@@ -92,7 +92,7 @@ export default {
   name: 'EditAvatarModal',
   components: {
     ModalWindow,
-    mainInput,
+    MainInput,
     Form,
     GreenBtn,
     VueCropper,

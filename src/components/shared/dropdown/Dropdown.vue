@@ -50,7 +50,7 @@ import { createPopper } from '@popperjs/core';
 
 import vSelect from 'vue-select';
 
-import OpenIndicator from './openIndicator.vue';
+import OpenIndicator from './OpenIndicator.vue';
 
 import { CustomModelWorker } from '../../../workers/custom-model-worker/index';
 
@@ -159,7 +159,7 @@ export default {
     }
 
 
-    vSelect.props.components.default = () => ({ OpenIndicator });
+    vSelect.props.components.default = () => ({ openIndicator });
     watch(
       () => props.options,
       () => {

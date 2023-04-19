@@ -77,16 +77,16 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 
 import { merge, cloneDeep } from 'lodash';
 
-import step1 from '../../components/main/registration/step1.vue';
-import step2 from '../../components/main/registration/step2.vue';
-import step3 from '../../components/main/registration/step3.vue';
-import step4 from '../../components/main/registration/step4.vue';
-import step5 from '../../components/main/registration/step5.vue';
-import step6 from '../../components/main/registration/step6.vue';
-import step7 from '../../components/main/registration/step7.vue';
-import step8 from '../../components/main/registration/step8.vue';
-import step9 from '../../components/main/registration/step9.vue';
-import step10 from '../../components/main/registration/step10.vue';
+import step1 from '../../components/main/registration/Step1.vue';
+import step2 from '../../components/main/registration/Step2.vue';
+import step3 from '../../components/main/registration/Step3.vue';
+import step4 from '../../components/main/registration/Step4.vue';
+import step5 from '../../components/main/registration/Step5.vue';
+import step6 from '../../components/main/registration/Step6.vue';
+import step7 from '../../components/main/registration/Step7.vue';
+import step8 from '../../components/main/registration/Step8.vue';
+import step9 from '../../components/main/registration/Step9.vue';
+import step10 from '../../components/main/registration/Step10.vue';
 import AuthenticationMain from '../../components/AuthenticationMain.vue';
 
 import { API } from '../../workers/api-worker/api.worker';

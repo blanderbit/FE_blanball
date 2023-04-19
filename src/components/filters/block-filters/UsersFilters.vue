@@ -40,7 +40,7 @@
           </div>
           <div class="b-main-search__right-block">
             <div class="b-main-search__search-input-desktop">
-              <mainInput
+              <MainInput
                 :title-width="0"
                 :placeholder="$t('users.users-search')"
                 :height="32"
@@ -93,7 +93,7 @@
           </div>
           <div class="b-main-search__right-part d-flex align-items-center">
             <div class="b-main-search__search-input me-2">
-              <mainInput
+              <MainInput
                 :title-width="0"
                 :placeholder="$t('users.users-search')"
                 :height="32"
@@ -102,7 +102,7 @@
                 v-model="transformedFilters.search"
               />
             </div>
-            <mainInput
+            <MainInput
               v-if="isMobileSearchOpened"
               :title-width="0"
               :placeholder="$t('users.users-search')"
@@ -112,7 +112,7 @@
               v-model="transformedFilters.search"
               @icon-click="closeMobileSearch"
             />
-            <mainInput
+            <MainInput
               class="b-main-search__search-input-tablet"
               :title-width="0"
               :placeholder="$t('users.users-search')"
@@ -158,9 +158,9 @@
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
 
-import dropdown from '../../shared/dropdown/dropdown.vue';
+import dropdown from '../../shared/dropdown/Dropdown.vue';
 import FilterBlock from '../FilterBlock.vue';
-import mainInput from '../../shared/input/mainInput.vue';
+import MainInput from '../../shared/input/MainInput.vue';
 import ButtonDetailsFilters from '../components/ButtonDetailsFilters.vue';
 import ClearFilters from '../components/ClearFilters.vue';
 import ModalFilters from '../ModalUsersFilters.vue';
@@ -180,7 +180,7 @@ export default {
   name: 'EventsFilters',
   components: {
     dropdown,
-    mainInput,
+    MainInput,
     ButtonDetailsFilters,
     ClearFilters,
     RangeFilter,

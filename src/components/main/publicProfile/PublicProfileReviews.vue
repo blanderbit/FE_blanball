@@ -62,10 +62,10 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import StarRating from 'vue-star-rating';
 
-import SmartList from '../../smart-list/SmartList.vue';
+import smartList from '../../shared/smartList/SmartList.vue';
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
 import ScrollToTop from '../../ScrollToTop.vue';
 import SimpleListWrapper from '../../simple-list/SimpleListWrapper.vue';
@@ -77,7 +77,7 @@ import { API } from '../../../workers/api-worker/api.worker';
 export default {
   name: 'RatingCard',
   components: {
-    SmartList,
+    smartList,
     ScrollToTop,
     InfiniteLoading,
     SimpleListWrapper,

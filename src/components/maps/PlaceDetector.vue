@@ -34,7 +34,7 @@ import { ref } from 'vue';
 import ModalWindow from '../ModalWindows/ModalWindow.vue';
 import PositionMap from '../../components/maps/PositionMap.vue';
 import GreenBtn from '../shared/button/GreenBtn.vue';
-import loader from '../shared/loader/loader.vue';
+import loader from '../shared/loader/Loader.vue';
 
 export default {
   name: 'PlaceDetector',

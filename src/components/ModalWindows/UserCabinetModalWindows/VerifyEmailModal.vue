@@ -11,7 +11,7 @@
       <template #verify-email>
         <Form v-slot="data" :validation-schema="schema">
           <div class="input__wrapper">
-            <mainInput
+            <MainInput
               :title="$t('modals.change_login.email')"
               :swipeTitle="false"
               :placeholder="userEmail"
@@ -61,10 +61,10 @@ import { useI18n } from 'vue-i18n';
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import ModalWindow from '../ModalWindow.vue';
-import Counter from '../../shared/counter/counter.vue';
-import inputCode from '../../shared/inputCode/inputCode.vue';
-import mainInput from '../../shared/input/mainInput.vue';
-import loader from '../../shared/loader/loader.vue';
+import Counter from '../../shared/counter/Counter.vue';
+import inputCode from '../../shared/inputCode/InputCode.vue';
+import MainInput from '../../shared/input/MainInput.vue';
+import loader from '../../shared/loader/Loader.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 
@@ -74,7 +74,7 @@ export default {
   name: 'VerifyEmailModal',
   components: {
     ModalWindow,
-    mainInput,
+    MainInput,
     Counter,
     inputCode,
     Form,

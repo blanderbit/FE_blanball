@@ -46,7 +46,7 @@
       </div>
     </div>
     <div v-if="isEventPayment" class="input enter-sum-input">
-      <mainInput
+      <MainInput
         :outside-title="true"
         :swipeTitle="false"
         :title="$t('events.enter-sum')"
@@ -69,7 +69,7 @@
     <div class="title">{{ $t('events.invite-users') }}</div>
     <div class="subtitle">{{ $t('events.enter-amount-members') }}</div>
     <div class="input">
-      <mainInput
+      <MainInput
         :placeholder="$t('events.max-50')"
         v-maska="'##'"
         :icon="icons.users"
@@ -78,7 +78,7 @@
       />
     </div>
     <div class="input">
-      <mainInput
+      <MainInput
         :placeholder="$t('events.search-users')"
         :title-width="30"
         v-model="searchValue"
@@ -103,11 +103,11 @@
 import { ref, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
-import mainInput from '../shared/input/mainInput.vue';
-import mainTextArea from '../shared/textArea/mainTextArea.vue';
-import switcher from '../shared/switcher/switcher.vue';
+import MainInput from '../shared/input/MainInput.vue';
+import mainTextArea from '../shared/textArea/MainTextArea.vue';
+import switcher from '../shared/switcher/Switcher.vue';
 import SearchBlockAll from '../SearchBlockAll.vue';
-import radioButton from '../shared/radioButton/radioButton.vue';
+import radioButton from '../shared/radioButton/RadioButton.vue';
 
 import { ROUTES } from '../../router/router.const';
 
@@ -141,7 +141,7 @@ export default {
     },
   },
   components: {
-    mainInput,
+    MainInput,
     switcher,
     SearchBlockAll,
     radioButton,
