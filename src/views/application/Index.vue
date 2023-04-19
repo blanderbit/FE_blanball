@@ -58,9 +58,9 @@ import { v4 as uuid } from 'uuid';
 import Sidebar from '../../components/Sidebar/Sidebar.vue';
 import mainHeader from '../../components/main/header/MainHeader.vue';
 import Notification from '../../components/main/notifications/Notification.vue';
-import VerifyEmailModal from '../../components/ModalWindows/UserCabinetModalWindows/VerifyEmailModal.vue';
-import ModalFeedback from '../../components/ModalWindows/ModalFeedbackModalWindow/index.vue';
-import ActionEventModal from '../../components/ModalWindows/ActionEventModal.vue';
+import VerifyEmailModal from '../../components/main/profile/modals/VerifyEmailModal.vue';
+import ModalFeedback from '../../components/modals/createFeedBackModal/index.vue';
+import ActionEventModal from '../../components/main/events/modals/ActionEventModal.vue';
 
 import { AuthWebSocketWorkerInstance } from '../../workers/web-socket-worker';
 import { TokenWorker } from '../../workers/token-worker';

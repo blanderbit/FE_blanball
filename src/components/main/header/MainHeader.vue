@@ -45,7 +45,7 @@ import { useRouter } from 'vue-router';
 
 import BreadCrumbs from '../../shared/breadcrumbs/Breadcrumbs.vue';
 import MainInput from '../../shared/input/MainInput.vue';
-import SearchModal from '../../ModalWindows/SearchModal.vue';
+import SearchModal from '../../shared/modals/SearchModal.vue';
 import SearchBlockAll from '../../SearchBlockAll.vue';
 
 import CONSTANTS from '../../../consts/index';

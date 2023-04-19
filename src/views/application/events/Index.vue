@@ -119,9 +119,9 @@ import { v4 as uuid } from 'uuid';
 
 import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
 import MainInput from '../../../components/shared/input/MainInput.vue';
-import ContextMenu from '../../../components/ModalWindows/ContextMenuModal.vue';
-import EventCard from '../../../components/event-components/EventCard.vue';
-import MyEventCard from '../../../components/event-components/MyEventCard.vue';
+import ContextMenu from '../../../components/shared/modals/ContextMenuModal.vue';
+import EventCard from '../../../components/main/events/EventCard.vue';
+import MyEventCard from '../../../components/main/events/MyEventCard.vue';
 import rightSidebar from '../../../components/main/rightSidebar/RightSidebar.vue';
 import emptyList from '../../../components/shared/emptyList/EmptyList.vue';
 import smartGridList from '../../../components/shared/smartList/SmartGridList.vue';
@@ -129,10 +129,9 @@ import ScrollToTop from '../../../components/ScrollToTop.vue';
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
 import Dropdown from '../../../components/shared/dropdown/Dropdown.vue';
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue';
-import ContextModal from '../../../components/ModalWindows/ContextModal.vue';
+import ContextModal from '../../../components/shared/modals/ContextModal.vue';
 import loader from '../../../components/shared/loader/Loader.vue';
-
-import SelectFormsColorsModal from '../../../components/ModalWindows/SelectFormsColorsModal.vue';
+import SelectFormsColorsModal from '../../../components/main/manageEvent/modals/SelectFormsColorsModal.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { PaginationWorker } from '../../../workers/pagination-worker';

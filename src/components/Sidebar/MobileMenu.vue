@@ -206,7 +206,7 @@ import emptyList from '../shared/emptyList/EmptyList.vue';
 import InfiniteLoading from '../../workers/infinit-load-worker/InfiniteLoading.vue';
 import ScrollToTop from '../ScrollToTop.vue';
 import loader from '../shared/loader/Loader.vue';
-import SubmitModal from '../ModalWindows/SubmitModal.vue';
+import SubmitModal from '../shared/modals/SubmitModal.vue';
 
 import { useUserDataStore } from '../../stores/userData';
 import { NewNotifications } from '../../workers/web-socket-worker/not-includes-to-socket/new_notifications';

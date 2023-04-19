@@ -98,9 +98,9 @@
             </div>
           </div>
           <div class="b-main-search__right-side">
-            <ModalPositionMap
+            <PositionMapModal
               v-model="transformedFilters.location"
-            ></ModalPositionMap>
+            ></PositionMapModal>
           </div>
         </div>
       </div>
@@ -190,7 +190,7 @@ import FilterBlock from '../FilterBlock.vue';
 import MainInput from '../../shared/input/MainInput.vue';
 import ButtonDetailsFilters from '../components/ButtonDetailsFilters.vue';
 import ClearFilters from '../components/ClearFilters.vue';
-import ModalPositionMap from '../../maps/ModalPositionMap.vue';
+import PositionMapModal from '../../maps/PositionMapModal.vue';
 import ModalFilters from '../ModalEventsFilters.vue';
 
 import { TransformedFiltersWorker } from './transformed.filters.worker';
@@ -214,7 +214,7 @@ export default {
     MainInput,
     ButtonDetailsFilters,
     ClearFilters,
-    ModalPositionMap,
+    PositionMapModal,
     FilterBlock,
     ModalFilters,
   },

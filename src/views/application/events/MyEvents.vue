@@ -184,9 +184,9 @@ import { v4 as uuid } from 'uuid';
 
 import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
 import MainInput from '../../../components/shared/input/MainInput.vue';
-import ContextMenu from '../../../components/ModalWindows/ContextMenuModal.vue';
-import EventCard from '../../../components/event-components/EventCard.vue';
-import MyEventCard from '../../../components/event-components/MyEventCard.vue';
+import ContextMenu from '../../../components/shared/modals/ContextMenuModal.vue';
+import EventCard from '../../../components/main/events/EventCard.vue';
+import MyEventCard from '../../../components/main/events/MyEventCard.vue';
 import rightSidebar from '../../../components/main/rightSidebar/RightSidebar.vue';
 import emptyList from '../../../components/shared/emptyList/EmptyList.vue';
 import FilterBlock from '../../../components/filters/FilterBlock.vue';
@@ -195,11 +195,11 @@ import ScrollToTop from '../../../components/ScrollToTop.vue';
 import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue';
 import WhiteBtn from '../../../components/shared/button/WhiteBtn.vue';
-import DeleteEventsModal from '../../../components/ModalWindows/DeleteEventsModal.vue';
+import DeleteEventsModal from '../../../components/main/events/modals/DeleteEventsModal.vue';
 import loader from '../../../components/shared/loader/Loader.vue';
-import EditEventModal from '../../../components/ModalWindows/EditEventModal.vue';
-import ActionEventModal from '../../../components/ModalWindows/ActionEventModal.vue';
-import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue';
+import EditEventModal from '../../../components/main/manageEvent/modals/EditEventModal.vue';
+import ActionEventModal from '../../../components/main/events/modals/ActionEventModal.vue';
+import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { ROUTES } from '../../../router/router.const';

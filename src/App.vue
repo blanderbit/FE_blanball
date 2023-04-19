@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ModalVersion v-if="isModalActive" @close-modal-click="closeModal" />
+    <NewVersionModal v-if="isModalActive" @close-modal-click="closeModal" />
     <router-view />
   </div>
 </template>
@@ -9,7 +9,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import ModalVersion from './components/ModalWindows/ModalVersion.vue';
+import NewVersionModal from './components/modals/newVersionModal/NewVersionModal.vue';
 
 import { GeneralSocketWorkerInstance } from './workers/web-socket-worker';
 import { createQueryStringFromObject } from './workers/utils-worker';

@@ -51,7 +51,7 @@
 <script>
 import { computed, ref, watch } from 'vue';
 
-import ModalWindow from '../ModalWindows/ModalWindow.vue';
+import ModalWindow from '../shared/modals/ModalWindow.vue';
 import dropdown from '../shared/dropdown/Dropdown.vue';
 import GreenBtn from '../shared/button/GreenBtn.vue';
 import RangeFilter from './components/RangeFilter.vue';

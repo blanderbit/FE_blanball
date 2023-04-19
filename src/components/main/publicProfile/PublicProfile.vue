@@ -217,8 +217,8 @@ import { useElementSize } from '@vueuse/core';
 import WhiteBtn from '../../shared/button/WhiteBtn.vue';
 import PublicProfileReviews from './PublicProfileReviews.vue';
 import PublicProfilePlannedEvents from './PublicProfilePlannedEvents.vue';
-import InviteOneUserToEventModal from '../../ModalWindows/InviteToEventModalWindows/InviteOneUserToEventModal.vue';
-import CopyModal from '../../ModalWindows/CopyModal.vue';
+import InviteOneUserToEventModal from '../events/modals/InviteToEventModal/InviteOneUserToEventModal.vue';
+import CopyModal from '../../shared/modals/CopyModal.vue';
 import MainInput from '../../shared/input/MainInput.vue';
 import GreenBtn from '../../shared/button/GreenBtn.vue';
 

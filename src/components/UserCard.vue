@@ -80,7 +80,7 @@
 
 <script>
 import StarRating from 'vue-star-rating';
-import CollapsiblePanel from './../components/collapsible/CollapsiblePanel.vue';
+import CollapsiblePanel from './main/collapsible/CollapsiblePanel.vue';
 import userAvatar from './shared/userAvatar/UserAvatar.vue';
 
 import CONSTANTS from '../consts/index';

@@ -282,20 +282,20 @@ import { useI18n } from 'vue-i18n';
 
 import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
 import rightSidebar from '../../../components/main/rightSidebar/RightSidebar.vue';
-import EventInfoUsersTable from '../../../components/EventInfoUsersTable.vue';
+import EventInfoUsersTable from '../../../components/main/events/EventInfoUsersTable.vue';
 import PositionMap from '../../../components/maps/PositionMap.vue';
-import CopyModal from '../../../components/ModalWindows/CopyModal.vue';
+import CopyModal from '../../../components/shared/modals/CopyModal.vue';
 import userAvatar from '../../../components/shared/userAvatar/UserAvatar.vue';
 import TabLabel from '../../../components/TabLabel.vue';
 import ListOfEventRequestsToParticipations from '../../../components/ListOfEventRequestsToParticipations.vue';
 import loader from '../../../components/shared/loader/Loader.vue';
 import EventInfoForms from '../../../components/buildedForms/EventInfoForms.vue';
-import ActionEventModal from '../../../components/ModalWindows/ActionEventModal.vue';
-import EditEventModal from '../../../components/ModalWindows/EditEventModal.vue';
-import SubmitModal from '../../../components/ModalWindows/SubmitModal.vue';
-import ContextModal from '../../../components/ModalWindows/ContextModal.vue';
+import ActionEventModal from '../../../components/main/events/modals/ActionEventModal.vue';
+import EditEventModal from '../../../components/main/manageEvent/modals/EditEventModal.vue';
+import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
+import ContextModal from '../../../components/shared/modals/ContextModal.vue';
 import MainInput from '../../../components/shared/input/MainInput.vue';
-import InviteManyUsersToEventModal from '../../../components/ModalWindows/InviteToEventModalWindows/InviteManyUsersToEventModal.vue';
+import InviteManyUsersToEventModal from '../../../components/main/events/modals/InviteToEventModal/InviteManyUsersToEventModal.vue';
 import SmallPlayerCard from '../../../components/SmallPlayerCard.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';

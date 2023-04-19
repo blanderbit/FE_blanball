@@ -230,8 +230,8 @@ import emptyList from '../shared/emptyList/EmptyList.vue';
 import InfiniteLoading from '../../workers/infinit-load-worker/InfiniteLoading.vue';
 import ScrollToTop from '../ScrollToTop.vue';
 import loader from '../shared/loader/Loader.vue';
-import SubmitModal from '../ModalWindows/SubmitModal.vue';
-import ContextMenu from '../ModalWindows/ContextMenuModal.vue';
+import SubmitModal from '../shared/modals/SubmitModal.vue';
+import ContextMenu from '../shared/modals/ContextMenuModal.vue';
 import SlideMenuWrapper from './SlideMenuWrapper.vue';
 
 import { useUserDataStore } from '../../stores/userData';

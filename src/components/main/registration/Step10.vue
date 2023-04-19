@@ -71,7 +71,7 @@ import { useI18n } from 'vue-i18n';
 
 import dropdown from '../../shared/dropdown/Dropdown.vue';
 import MainInput from '../../shared/input/MainInput.vue';
-import RegisterModalPositionMap from '../../maps/RegisterModalPositionMap.vue';
+import RegisterModalPositionMap from './modals/RegisterModalPositionMap.vue';
 import StepWrapper from './StepWrapper.vue';
 
 import { PositionMapBus } from '../../../workers/event-bus-worker';

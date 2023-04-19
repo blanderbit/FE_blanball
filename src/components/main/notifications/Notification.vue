@@ -236,7 +236,7 @@ import dayJs from 'dayjs';
 import loader from '../../shared/loader/Loader.vue';
 import notificationButton from './NotificationButton.vue';
 import checkBox from '../../shared/checkbox/Checkbox.vue';
-import CollapsiblePanel from '../../collapsible/CollapsiblePanel.vue';
+import CollapsiblePanel from '../collapsible/CollapsiblePanel.vue';
 import userAvatar from '../../shared/userAvatar/UserAvatar.vue';
 
 export default {

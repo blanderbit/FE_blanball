@@ -33,7 +33,7 @@
             <RadioGenderBox v-model:gender="genderData" />
           </div>
           <div class="b-modal-filters__location">
-            <ModalPositionMap v-model="locationData"></ModalPositionMap>
+            <PositionMapModal v-model="locationData"></PositionMapModal>
           </div>
           <div class="b-modal-filters__calendar">
             <img src="../../assets/img/calendar.svg" alt="" />
@@ -80,11 +80,11 @@
 <script>
 import { computed, ref, watch } from 'vue';
 
-import ModalWindow from '../ModalWindows/ModalWindow.vue';
+import ModalWindow from '../shared/modals/ModalWindow.vue';
 import dropdown from '../shared/dropdown/Dropdown.vue';
 import GreenBtn from '../shared/button/GreenBtn.vue';
 import RadioGenderBox from './components/RadioGenderBox.vue';
-import ModalPositionMap from '../maps/ModalPositionMap.vue';
+import PositionMapModal from '../maps/PositionMapModal.vue';
 import ClearFilters from './components/ClearFilters.vue';
 import MainInput from '../shared/input/MainInput.vue';
 
@@ -100,7 +100,7 @@ export default {
     dropdown,
     RadioGenderBox,
     ClearFilters,
-    ModalPositionMap,
+    PositionMapModal,
     MainInput,
   },
   props: {

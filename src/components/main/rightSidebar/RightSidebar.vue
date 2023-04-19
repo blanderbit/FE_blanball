@@ -29,7 +29,7 @@
 import { ref, onBeforeUnmount} from 'vue';
 import { useRouter } from 'vue-router';
 
-import SmallEventCard from '../../event-components/SmallEventCard.vue';
+import SmallEventCard from '../events/SmallEventCard.vue';
 import smallLoader from '../../shared/loader/SmallLoader.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
