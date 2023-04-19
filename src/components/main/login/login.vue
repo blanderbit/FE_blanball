@@ -41,7 +41,7 @@
         </div>
         <div class="b-login-step__remember-me">
           <div class="b-login-step__check-block">
-            <checkbox v-model:checked="data.values.save_credentials">
+            <checkBox v-model:checked="data.values.save_credentials">
               <template #label>
                 <span class="remember-me__desktop">{{
                   $t('login.remember-me')
@@ -50,7 +50,7 @@
                   $t('login.remember-me-short')
                 }}</span>
               </template>
-            </checkbox>
+            </checkBox>
           </div>
           <div
             class="b-login-step__forgot-password-mob"

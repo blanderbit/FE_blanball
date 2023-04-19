@@ -41,12 +41,10 @@ const handleMessageGeneral = (instance) => {
         });
 
         return router.push(
-          `${ROUTES.WORKS.absolute}${query ? '?' + query : query}`
+          `${ROUTES.WORKS.absolute}${query}`
         );
-      } else if (!maintenance && !ifCurrentRouteApplication) {
-        const ifAuthentication = location.pathname.includes('authentication');
+      } else if (!maintenance && ifCurrentRouteMaintenance) {
 
-        if (ifAuthentication) return;
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
         const redirectUrl = params.redirectUrl;

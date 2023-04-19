@@ -334,7 +334,7 @@ export default {
     EventInfoUsersTable,
     PositionMap,
     CopyModal,
-    Avatar,
+    userAvatar,
     loader,
     TabLabel,
     SmallPlayerCard,

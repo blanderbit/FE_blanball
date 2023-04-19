@@ -6,7 +6,7 @@
     <div class="b-small-event-card__top-side">
       <div class="b-small-event-card__header">
         <div class="b-small-event-card__name">
-          <img src="../assets/img/hands-shake-small.svg" alt="" />
+          <img src="../../assets/img/hands-shake-small.svg" alt="" />
           <span>{{ item.name }}</span>
         </div>
         <div

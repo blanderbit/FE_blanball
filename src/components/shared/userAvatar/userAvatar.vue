@@ -30,7 +30,7 @@
 
 <script>
 export default {
-  name: 'Avatar',
+  name: 'userAvatar',
   props: {
     link: {
       type: String,

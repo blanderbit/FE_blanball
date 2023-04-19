@@ -119,7 +119,6 @@ export default {
       Object.values(uploadedImages.value).forEach((element) => {
         formData.append('images', element);
       });
-
       return formData;
     };
 

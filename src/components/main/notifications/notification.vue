@@ -56,7 +56,7 @@
               {{ formatDate }}
             </div>
             <div class="b-selectable" v-if="selectableValue">
-              <checkbox
+              <checkBox
                 :checked="checked"
                 :color="'blue'"
                 :field-id="notificationInstance?.notification_id"
@@ -67,7 +67,7 @@
                   })
                 "
               >
-              </checkbox>
+              </checkBox>
             </div>
           </div>
         </div>

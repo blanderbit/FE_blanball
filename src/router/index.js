@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import {
   routerResolverByLoginPage,
   routerAuthResolver,
+  routerDataResolver,
 } from '../workers/resolver-worker/reolver.worker';
 import { API } from '../workers/api-worker/api.worker';
 import {
@@ -239,16 +240,17 @@ const router = createRouter({
     {
       path: ROUTES.WORKS.relative,
       name: ROUTES.WORKS.name,
-      beforeEnter: routerAuthResolver.routeInterceptor(),
+      beforeEnter: routerDataResolver.routeInterceptor(),
       component: () => import('../views/application/works.vue'),
     },
     {
       path: '/:pathMatch(.*)*',
-      beforeEnter: routerAuthResolver.routeInterceptor(),
+      beforeEnter: routerDataResolver.routeInterceptor(),
       component: () => import('../views/404.vue'),
     },
     {
       path: '/',
+      beforeEnter: routerDataResolver.routeInterceptor(),
       redirect: ROUTES.AUTHENTICATIONS.LOGIN.absolute,
     },
   ],
