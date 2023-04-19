@@ -286,7 +286,7 @@ import EventInfoUsersTable from '../../../components/main/events/EventInfoUsersT
 import PositionMap from '../../../components/maps/PositionMap.vue';
 import CopyModal from '../../../components/shared/modals/CopyModal.vue';
 import userAvatar from '../../../components/shared/userAvatar/UserAvatar.vue';
-import TabLabel from '../../../components/TabLabel.vue';
+import TabLabel from '../../../components/shared/tabLabel/TabLabel.vue';
 import ListOfEventRequestsToParticipations from '../../../components/ListOfEventRequestsToParticipations.vue';
 import loader from '../../../components/shared/loader/Loader.vue';
 import EventInfoForms from '../../../components/buildedForms/EventInfoForms.vue';

@@ -30,14 +30,13 @@
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { PaginationWorker } from '../../workers/pagination-worker';
-import smartList from '../shared/smartList/SmartList.vue';
-import emptyList from '../shared/emptyList/EmptyList.vue';
-import ScrollToTop from '../../components/ScrollToTop.vue';
-import InfiniteLoading from '../../workers/infinit-load-worker/InfiniteLoading.vue';
+import { PaginationWorker } from '../../../workers/pagination-worker';
+import smartList from '../smartList/SmartList.vue';
+import emptyList from '../emptyList/EmptyList.vue';
+import ScrollToTop from '../../ScrollToTop.vue';
+import InfiniteLoading from '../../main/infiniteLoading/InfiniteLoading.vue';
 
 export default {
-  name: 'SimpleListWrapper',
   components: {
     smartList,
     emptyList,

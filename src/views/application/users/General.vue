@@ -99,7 +99,7 @@ import smartList from '../../../components/shared/smartList/SmartList.vue';
 import emptyList from '../../../components/shared/emptyList/EmptyList.vue';
 import ScrollToTop from '../../../components/ScrollToTop.vue';
 import rightSidebar from '../../../components/main/rightSidebar/RightSidebar.vue';
-import TabLabel from '../../../components/TabLabel.vue';
+import TabLabel from '../../../components/shared/tabLabel/TabLabel.vue';
 
 import members from '../../../assets/img/members.svg';
 import runner from '../../../assets/img/runner.svg';
@@ -108,7 +108,7 @@ import timer from '../../../assets/img/timer.svg';
 import tShirt from '../../../assets/img/t-shirt.svg';
 import searchIcon from '../../../assets/img/search.svg';
 
-import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
+import InfiniteLoading from '../../../components/main/infiniteLoading/InfiniteLoading.vue';
 import { v4 as uuid } from 'uuid';
 import { PaginationWorker } from '../../../workers/pagination-worker';
 import { API } from '../../../workers/api-worker/api.worker';

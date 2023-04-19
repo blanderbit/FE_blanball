@@ -192,7 +192,7 @@ import emptyList from '../../../components/shared/emptyList/EmptyList.vue';
 import FilterBlock from '../../../components/filters/FilterBlock.vue';
 import smartGridList from '../../../components/shared/smartList/SmartGridList.vue';
 import ScrollToTop from '../../../components/ScrollToTop.vue';
-import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
+import InfiniteLoading from '../../../components/main/infiniteLoading/InfiniteLoading.vue';
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue';
 import WhiteBtn from '../../../components/shared/button/WhiteBtn.vue';
 import DeleteEventsModal from '../../../components/main/events/modals/DeleteEventsModal.vue';

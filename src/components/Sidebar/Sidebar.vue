@@ -118,7 +118,7 @@ import { useRouter } from 'vue-router';
 import NotificationsSlideMenu from '../SlideMenu/NotificationsSlideMenu.vue';
 import userAvatar from '../shared/userAvatar/UserAvatar.vue';
 import BugReportModal from '../shared/modals/BugReportModal.vue';
-import TabLabel from '../TabLabel.vue';
+import TabLabel from '../shared/tabLabel/TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';
 import loader from '../shared/loader/Loader.vue';
 

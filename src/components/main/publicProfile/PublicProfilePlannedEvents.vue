@@ -56,7 +56,7 @@
 
 <script>
 
-import SimpleListWrapper from '../../simple-list/SimpleListWrapper.vue';
+import SimpleListWrapper from '../../shared/simpleList/SimpleList.vue';
 
 import { getDate } from '../../../utils/getDate';
 

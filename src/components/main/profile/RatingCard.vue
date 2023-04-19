@@ -126,7 +126,7 @@ import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patc
 
 import ReviewDetailsComponent from './ReviewDetails.vue';
 import smartList from '../../shared/smartList/SmartList.vue';
-import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
+import InfiniteLoading from '../infiniteLoading/InfiniteLoading.vue';
 import ScrollToTop from '../../ScrollToTop.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';

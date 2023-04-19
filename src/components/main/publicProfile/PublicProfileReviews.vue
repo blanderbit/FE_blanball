@@ -66,9 +66,9 @@ import { ref } from 'vue';
 import StarRating from 'vue-star-rating';
 
 import smartList from '../../shared/smartList/SmartList.vue';
-import InfiniteLoading from '../../../workers/infinit-load-worker/InfiniteLoading.vue';
+import InfiniteLoading from '../infiniteLoading/InfiniteLoading.vue';
 import ScrollToTop from '../../ScrollToTop.vue';
-import SimpleListWrapper from '../../simple-list/SimpleListWrapper.vue';
+import SimpleListWrapper from '../../shared/simpleList/SimpleList.vue';
 
 import { getDate } from '../../../utils/getDate';
 

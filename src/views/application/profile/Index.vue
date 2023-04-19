@@ -164,7 +164,7 @@ import ModalWindow from '../../../components/shared/modals/ModalWindow.vue';
 import RatingCard from '../../../components/main/profile/RatingCard.vue';
 import UserDetailsCard from '../../../components/main/profile/UserDetailsCard.vue';
 import SecurityBlock from '../../../components/main/profile/SecurityBlock.vue';
-import TabLabel from '../../../components/TabLabel.vue';
+import TabLabel from '../../../components/shared/tabLabel/TabLabel.vue';
 import DeleteAccountModal from '../../../components/main/profile/modals/DeleteAccountModal.vue';
 import ChangePasswordModal from '../../../components/main/profile/modals/ChangePasswordModal.vue';
 import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';

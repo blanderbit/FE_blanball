@@ -227,7 +227,7 @@ import { v4 as uuid } from 'uuid';
 import Notifications from '../main/notifications/Notifications.vue';
 import Notification from '../main/notifications/Notification.vue';
 import emptyList from '../shared/emptyList/EmptyList.vue';
-import InfiniteLoading from '../../workers/infinit-load-worker/InfiniteLoading.vue';
+import InfiniteLoading from '../main/infiniteLoading/InfiniteLoading.vue';
 import ScrollToTop from '../ScrollToTop.vue';
 import loader from '../shared/loader/Loader.vue';
 import SubmitModal from '../shared/modals/SubmitModal.vue';

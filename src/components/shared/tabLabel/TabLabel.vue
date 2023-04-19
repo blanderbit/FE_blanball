@@ -17,7 +17,7 @@
 
 <script>
 import { onMounted, onBeforeUnmount, computed } from 'vue';
-import useWindowWidth from '../utils/widthScreen';
+import useWindowWidth from '../../../utils/widthScreen';
 
 export default {
   name: 'TabLabel',

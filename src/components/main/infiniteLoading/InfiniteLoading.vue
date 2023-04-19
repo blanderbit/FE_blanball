@@ -1,5 +1,5 @@
 <script setup>
-import smallLoader from '../../components/shared/loader/SmallLoader.vue';
+import smallLoader from '../../shared/loader/SmallLoader.vue';
 import { onMounted, ref, toRefs, onUnmounted, watch, nextTick } from 'vue';
 import {
   startObserver,
@@ -7,7 +7,7 @@ import {
   stateHandler,
   initEmitter,
   isVisible,
-} from './utils.js';
+} from '../../../workers/infinit-load-worker/index.js';
 
 const emit = defineEmits(['infinite']);
 const props = defineProps({

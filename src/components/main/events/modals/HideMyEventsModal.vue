@@ -100,7 +100,7 @@ import { ref, computed, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import smartGridList from '../../../shared/smartList/SmartGridList.vue';
-import InfiniteLoading from '../../../../workers/infinit-load-worker/InfiniteLoading.vue';
+import InfiniteLoading from '../../infiniteLoading/InfiniteLoading.vue';
 import ScrollToTop from '../../../ScrollToTop.vue';
 import HideEventCard from '../HideEventCard.vue';
 import WhiteBtn from '../../../shared/button/WhiteBtn.vue';
