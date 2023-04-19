@@ -159,7 +159,7 @@ export default {
     }
 
 
-    vSelect.props.components.default = () => ({ openIndicator });
+    vSelect.props.components.default = () => ({ OpenIndicator });
     watch(
       () => props.options,
       () => {

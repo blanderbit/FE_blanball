@@ -34,14 +34,14 @@ const router = createRouter({
       path: ROUTES.AUTHENTICATIONS.index.path,
       name: ROUTES.AUTHENTICATIONS.index.name,
       beforeEnter: routerResolverByLoginPage,
-      component: () => import('../views/authentication/index.vue'),
+      component: () => import('../views/authentication/Index.vue'),
       redirect: ROUTES.AUTHENTICATIONS.LOGIN.absolute,
       children: [
         {
           path: ROUTES.AUTHENTICATIONS.LOGIN.relative,
           name: ROUTES.AUTHENTICATIONS.LOGIN.name,
           beforeEnter: routerResolverByLoginPage,
-          component: () => import('../views/authentication/login.vue'),
+          component: () => import('../views/authentication/Login.vue'),
           meta: {
             noGuards: true
           }
@@ -50,13 +50,13 @@ const router = createRouter({
           path: ROUTES.AUTHENTICATIONS.REGISTER.relative,
           name: ROUTES.AUTHENTICATIONS.REGISTER.name,
           beforeEnter: routerResolverByLoginPage,
-          component: () => import('../views/authentication/register.vue'),
+          component: () => import('../views/authentication/Register.vue'),
         },
         {
           path: ROUTES.AUTHENTICATIONS.RESET.relative,
           name: ROUTES.AUTHENTICATIONS.RESET.name,
           beforeEnter: routerResolverByLoginPage,
-          component: () => import('../views/authentication/reset.vue'),
+          component: () => import('../views/authentication/Reset.vue'),
         },
       ],
     },
@@ -64,7 +64,7 @@ const router = createRouter({
       path: ROUTES.APPLICATION.index.path,
       name: ROUTES.APPLICATION.index.name,
       beforeEnter: routerAuthResolver.routeInterceptor(),
-      component: () => import('../views/application/index.vue'),
+      component: () => import('../views/application/Index.vue'),
       redirect: ROUTES.APPLICATION.EVENTS.absolute,
       children: [
         {
@@ -74,7 +74,7 @@ const router = createRouter({
             allVersions: () => API.VersionsService.getAllVersions(),
             usersData,
           })),
-          component: () => import('../views/application/versions.vue'),
+          component: () => import('../views/application/Versions.vue'),
           meta: {
             breadcrumbs: {
               i18n: 'breadcrumbs.versions',
@@ -88,7 +88,7 @@ const router = createRouter({
             usersData,
             allReviewsData: () => API.ReviewService.getMyReviews(),
           })),
-          component: () => import('../views/application/profile/index.vue'),
+          component: () => import('../views/application/profile/Index.vue'),
           meta: {
             breadcrumbs: {
               i18n: 'breadcrumbs.profile',
@@ -111,7 +111,7 @@ const router = createRouter({
                   ),
                 usersData,
               })),
-              component: () => import('../views/application/events/my-events.vue'),
+              component: () => import('../views/application/events/MyEvents.vue'),
               meta: {
                 breadcrumbs: {
                   i18n: 'breadcrumbs.myEvents',
@@ -129,7 +129,7 @@ const router = createRouter({
                   ),
                 usersData,
               })),
-              component: () => import('../views/application/events/my-events.vue'),
+              component: () => import('../views/application/events/MyEvents.vue'),
               meta: {
                 breadcrumbs: {
                   i18n: 'breadcrumbs.myEvents',
@@ -149,7 +149,7 @@ const router = createRouter({
               ),
             usersData,
           })),
-          component: () => import('../views/application/events/index.vue'),
+          component: () => import('../views/application/events/Index.vue'),
           meta: {
             breadcrumbs: {
               i18n: 'breadcrumbs.events',
@@ -163,7 +163,7 @@ const router = createRouter({
             action: () => 'CREATE',
             usersData,
           })),
-          component: () => import('../views/application/events/manage.vue'),
+          component: () => import('../views/application/events/Manage.vue'),
           meta: {
             breadcrumbs: {
               i18n: 'breadcrumbs.createOneEvent',
@@ -180,7 +180,7 @@ const router = createRouter({
               return prepareEventUpdateData(to.params.id);
             },
           })),
-          component: () => import('../views/application/events/manage.vue'),
+          component: () => import('../views/application/events/Manage.vue'),
           meta: {
             breadcrumbs: {
               i18n: 'breadcrumbs.editOneEvent',
@@ -196,7 +196,7 @@ const router = createRouter({
             eventRequestsToParticipationData: () =>
               API.EventService.requestsToParticipations(to.params.id),
           })),
-          component: () => import('../views/application/events/event-info.vue'),
+          component: () => import('../views/application/events/EventInfo.vue'),
           meta: {
             breadcrumbs: {
               i18n: 'breadcrumbs.getOneEvent',
@@ -213,7 +213,7 @@ const router = createRouter({
               ),
             usersData,
           })),
-          component: () => import('../views/application/users/general.vue'),
+          component: () => import('../views/application/users/General.vue'),
           meta: {
             breadcrumbs: {
               i18n: 'breadcrumbs.users',
@@ -228,7 +228,7 @@ const router = createRouter({
               API.UserService.getUserPublicProfile(to.params.userId),
             usersData,
           })),
-          component: () => import('../views/application/users/profile.vue'),
+          component: () => import('../views/application/users/Profile.vue'),
           meta: {
             breadcrumbs: {
               i18n: 'breadcrumbs.userProfile',
@@ -241,7 +241,7 @@ const router = createRouter({
       path: ROUTES.WORKS.relative,
       name: ROUTES.WORKS.name,
       beforeEnter: routerDataResolver.routeInterceptor(),
-      component: () => import('../views/application/works.vue'),
+      component: () => import('../views/application/Works.vue'),
     },
     {
       path: '/:pathMatch(.*)*',

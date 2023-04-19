@@ -62,7 +62,7 @@ import VerifyEmailModal from '../../components/ModalWindows/UserCabinetModalWind
 import ModalFeedback from '../../components/ModalWindows/ModalFeedbackModalWindow/index.vue';
 import ActionEventModal from '../../components/ModalWindows/ActionEventModal.vue';
 
-import { AuthWebSocketWorkerInstance } from './../../workers/web-socket-worker';
+import { AuthWebSocketWorkerInstance } from '../../workers/web-socket-worker';
 import { TokenWorker } from '../../workers/token-worker';
 import { notificationButtonHandlerMessage } from '../../workers/utils-worker';
 import { useUserDataStore } from '@/stores/userData';
