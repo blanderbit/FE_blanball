@@ -244,6 +244,24 @@ const router = createRouter({
       component: () => import('../views/application/Works.vue'),
     },
     {
+      path: ROUTES.PRIVACY_POLICY.relative,
+      name: ROUTES.PRIVACY_POLICY.name,
+      beforeEnter: routerDataResolver.routeInterceptor(),
+      component: () => import('../views/policy/PrivacyPolicy.vue'),
+    },
+    {
+      path: ROUTES.COOKIE_POLICY.relative,
+      name: ROUTES.COOKIE_POLICY.name,
+      beforeEnter: routerDataResolver.routeInterceptor(),
+      component: () => import('../views/policy/CookiePolicy.vue'),
+    },
+    {
+      path: ROUTES.DISCLAMER.relative,
+      name: ROUTES.DISCLAMER.name,
+      beforeEnter: routerDataResolver.routeInterceptor(),
+      component: () => import('../views/policy/Disclamer.vue'),
+    },
+    {
       path: '/:pathMatch(.*)*',
       beforeEnter: routerDataResolver.routeInterceptor(),
       component: () => import('../views/404.vue'),

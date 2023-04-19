@@ -1148,13 +1148,13 @@ $color-71ba12: #71ba12;
     }
     .user-cards-wrapper {
       height: calc(100vh - 90px - 36px - 31px - 80px - 36px);
-      /*overflow-y: scroll;*/
       .users-cards {
         height: calc(100% - 20px);
         margin-top: 20px;
+        overflow-y: scroll;
 
         @include beforeDesktop {
-          height: calc(100%);
+          height: calc(100% - 100px);
         }
       }
     }
