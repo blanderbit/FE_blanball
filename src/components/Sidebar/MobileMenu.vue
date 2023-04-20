@@ -161,7 +161,7 @@
     </div>
     <div v-if="selectedList.length" class="b-mob-menu__control-block">
       <div class="b-control-block__block">
-        <img src=".../../assets/img/cross.svg" alt="" @click="clearSelectedList" />
+        <img src="../../assets/img/cross.svg" alt="" @click="clearSelectedList" />
         <div class="b-selected-elements-count">
           <span>{{ selectedList.length }}</span>
         </div>
