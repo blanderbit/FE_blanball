@@ -31,7 +31,7 @@
     >
       <div class="forms-select-form" @click="$emit('setForms')">
         <span>{{ $t('events.set-forms-colors') }}</span>
-        <img src="../../../../assets/img/set-filter.svg" alt="" />
+        <img src="../../../assets/img/set-filter.svg" alt="" />
       </div>
     </div>
     <ErrorMessage class="b-forms-block-error-message" name="forms" />

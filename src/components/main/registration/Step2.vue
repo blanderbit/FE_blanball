@@ -78,15 +78,17 @@
       </div>
 
       <div class="b-register-step__remember-me">
+        <switcher :is-edit-mode="true" name="save_user_cred" />
+        <span class="remember-me__desktop">{{ $t('login.remember-me') }}</span>
+        <span class="remember-me__mobile">{{
+          $t('login.remember-me-short')
+        }}</span>
+      </div>
+      <div class="b-register-step__accept-privacy">
         <div class="b-register-step__check-block">
-          <checkBox @update:checked="$emit('updateSaveCredentials', $event)">
+          <checkBox v-model:checked="acceptPrivacy">
             <template #label>
-              <span class="remember-me__desktop">{{
-                $t('login.remember-me')
-              }}</span>
-              <span class="remember-me__mobile">{{
-                $t('login.remember-me-short')
-              }}</span>
+              <span>{{ $t('Я приймаю умови політики конфіденційності') }}</span>
             </template>
           </checkBox>
         </div>
@@ -96,12 +98,13 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import MainInput from '../../shared/input/MainInput.vue';
 import StepWrapper from './StepWrapper.vue';
 import checkBox from '../../shared/checkbox/Checkbox.vue';
+import Switcher from '../../shared/switcher/Switcher.vue';
 
 import tickWhite from '../../../assets/img/tick-white.svg';
 import nikeIcon from '../../../assets/img/nike-icon.svg';
@@ -112,6 +115,7 @@ export default {
     MainInput,
     StepWrapper,
     checkBox,
+    Switcher,
   },
   setup() {
     const tick = computed(() => {
@@ -119,6 +123,7 @@ export default {
     }); // TODO
 
     const { t } = useI18n();
+    const acceptPrivacy = ref(false);
 
     const stepConfig = computed(() => {
       return {
@@ -130,6 +135,7 @@ export default {
         },
         nextButton: {
           exist: true,
+          disabled: !acceptPrivacy.value,
           text: t('register.register'),
           width: 180,
           icon: nikeIcon,
@@ -144,6 +150,7 @@ export default {
     return {
       tick,
       stepConfig,
+      acceptPrivacy,
     };
   },
 };
@@ -177,6 +184,45 @@ export default {
 }
 .b-register-step__remember-me {
   margin-top: 26px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  :deep(.b_switch) {
+    width: 32px;
+    height: 16px;
+  }
+  :deep(.round::before) {
+    height: 12px;
+    width: 12px;
+  }
+
+  :deep(input:checked + .b_switch_slider:before) {
+    transform: translateX(15px);
+  }
+
+  span {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    color: $--b-main-black-color;
+    vertical-align: bottom;
+  }
+  .remember-me__desktop {
+    @include mobile {
+      display: none;
+    }
+  }
+  .remember-me__mobile {
+    @media (min-width: 576px) {
+      display: none;
+    }
+  }
+}
+.b-register-step__accept-privacy {
+  margin-top: 16px;
   @include mobile {
     display: flex;
     align-items: center;
@@ -196,17 +242,6 @@ export default {
     :deep .indicator {
       border: 1px solid $--b-main-gray-color;
       background: white;
-    }
-    
-    .remember-me__desktop {
-      @include mobile {
-        display: none;
-      }
-    }
-    .remember-me__mobile {
-      @media (min-width: 576px) {
-        display: none;
-      }
     }
   }
 }

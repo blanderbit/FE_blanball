@@ -229,7 +229,8 @@
             </div>
           </div>
 
-          <EventInfoUsersTable
+          <div class="b-event-info__users-tables">
+            <EventInfoUsersTable
             v-if="activeTab === 0"
             :data="eventData.current_users"
             :table-title-text="$t('my_events.players-list')"
@@ -267,6 +268,7 @@
             @acceptRequest="acceptRequestToParticipation"
             @declineRequest="declineRequestToParticipation"
           />
+          </div>
         </div>
       </div>
     </div>
@@ -1219,12 +1221,10 @@ $color-8a8aa8: #8a8aa8;
 .b-event-info__tab-block {
   display: flex;
   gap: 25px;
-  align-items: center;
   width: 100%;
   flex-grow: 1;
-  border-bottom: 1px solid $color-dfdeed;
-  margin-bottom: 30px;
   overflow-x: scroll;
+  height: 180px;
 
   .b-event-info__tab-element {
     font-family: 'Inter';
@@ -1240,6 +1240,7 @@ $color-8a8aa8: #8a8aa8;
     cursor: pointer;
     padding-bottom: 10px;
     min-width: fit-content;
+    max-height: 30px;
 
     &.active {
       border-bottom: 2px solid $color-8a8aa8;
@@ -1263,5 +1264,11 @@ $color-8a8aa8: #8a8aa8;
       opacity: 0;
     }
   }
+}
+
+.b-event-info__users-tables {
+  border-top: 1px solid $color-dfdeed;
+  margin-top: -150px;
+  padding-top: 20px;
 }
 </style>

@@ -13,9 +13,10 @@
           <slot name="content"></slot>
         </div>
         <div class="b-policy-table-contents">
-          <div class="b-table-title">Document content</div>
+          <div class="b-table-title">{{ $t('privacy_policy.document-content') }}</div>
           <div class="b-table-items">
-            <div v-for="item in contentItems" class="b-tablet-item">
+            <div v-for="item in contentItems" class="b-tablet-item"
+              @click="scrollToBlockOfContent">
               {{ item }}
             </div>
           </div>
@@ -30,6 +31,8 @@ import { useRouter } from 'vue-router';
 
 import { ROUTES } from '../../../router/router.const';
 
+import VueScrollTo from 'vue-scrollto'
+
 export default {
   props: {
     contentItems: {
@@ -39,6 +42,10 @@ export default {
   },
   setup() {
     const router = useRouter();
+
+    const scrollToBlockOfContent = () => {
+      VueScrollTo.scrollTo('#acceptance-of-this-policy', 1500)
+    }
 
     const goBack = async () => {
       return await router.push(        
@@ -50,6 +57,7 @@ export default {
 
     return {
       goBack,
+      scrollToBlockOfContent,
     };
   },
 };

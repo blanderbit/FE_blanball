@@ -125,7 +125,7 @@ $color-1ab2ad: #1ab2ad;
   margin-top: 16px;
 }
 .b-register-step {
-  padding: 44px 24px;
+  padding: 44px 24px 24px 24px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -204,5 +204,21 @@ $color-1ab2ad: #1ab2ad;
       cursor: pointer;
     }
   }
+
+  // .b-register-step__bottom-side {
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: space-between;
+  //   @include inter(12px, 500, $--b-main-gray-color);
+  //   line-height: 20px;
+  //   margin-top: 20px;
+
+  //   @include beforeDesktop {
+  //     margin-top: 0px;
+  //   }
+  //   @include mobile {
+  //     display: none;
+  //   }
+  // }
 }
 </style>

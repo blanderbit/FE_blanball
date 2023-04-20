@@ -14,7 +14,7 @@
           <div>
             <userAvatar
               class="b-user__image"
-              @click="$emit('item-image-click', user.id)"
+              @clickByAvatar="itemListClick(user)"
               :link="user.profile.avatar_url"
               :avatarType="'small-square'"
               :full-name="`${user.profile.last_name} ${user.profile.name}`"

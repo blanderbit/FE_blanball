@@ -45,45 +45,24 @@
         efficient experience for you while visiting the Website and Services.
       </p>
       <p>
-        Cookies may be set by the Website (&#8220;first-party cookies&#8221;),
-        or by third parties, such as those who serve content or provide
-        advertising or analytics services on the Website (&#8220;third party
-        cookies&#8221;). These third parties can recognize you when you visit
-        our website and also when you visit certain other websites.
+        Файли cookies можуть бути встановлені веб-сайтом (“перші файли cookies”) або третіми сторонами, такими як ті, які надають контент або рекламні або аналітичні послуги на веб-сайті (“файли cookies третіх сторін”). Ці треті сторони можуть впізнавати вас, коли ви відвідуєте наш веб-сайт, а також коли ви відвідуєте певні інші веб-сайти.
       </p>
       <h2 id="what-type-of-cookies-do-we-use">
         What type of cookies do we use?
       </h2>
       <p>
-        We do not use cookies to track your internet or Website usage, to
-        collect or store your personal information or for any other reason.
-        However, please be advised that in some countries, data such as cookie
-        IDs is considered to be personal information. To the extent we process
-        such data that is considered personal information, we will process the
-        data in accordance with our privacy and cookie policies.
+        Ми не використовуємо файли cookies для відстеження вашого використання інтернету або веб-сайту, для збору або зберігання ваших персональних даних або з інших причин. Однак, будь ласка, зверніть увагу, що в деяких країнах дані, такі як ідентифікатори cookies, вважаються персональною інформацією. У випадку обробки таких даних, що вважаються персональною інформацією, ми будемо обробляти ці дані відповідно до наших політик конфіденційності та cookies.
       </p>
       <h2 id="changes-and-amendments">Changes and amendments</h2>
       <p>
-        We reserve the right to modify this Policy or its terms related to the
-        Website and Services at any time at our discretion. When we do, we will
-        revise the updated date at the bottom of this page. We may also provide
-        notice to you in other ways at our discretion, such as through the
-        contact information you have provided.
+        Ми залишаємо за собою право в будь-який момент нашої усвідомленої волі змінювати цю політику та її умови, що стосуються веб-сайту та послуг. При внесенні змін ми зазначимо дату оновлення внизу цієї сторінки. Також ми можемо повідомляти вас про зміни іншими способами, на наш розсуд, наприклад, через контактні дані, які ви надали.
       </p>
       <p>
-        An updated version of this Policy will be effective immediately upon the
-        posting of the revised Policy unless otherwise specified. Your continued
-        use of the Website and Services after the effective date of the revised
-        Policy (or such other act specified at that time) will constitute your
-        consent to those changes.
+        Оновлена версія цієї політики набуває чинності негайно після публікації переглянутої політики, якщо інше не вказано. Ваша подальша взаємодія з веб-сайтом та послугами після дати вступу в силу переглянутої політики (або будь-якої іншої вказаної дії) свідчить про вашу згоду з внесеними змінами.
       </p>
       <h2 id="acceptance-of-this-policy">Acceptance of this policy</h2>
       <p>
-        You acknowledge that you have read this Policy and agree to all its
-        terms and conditions. By accessing and using the Website and Services
-        you agree to be bound by this Policy. If you do not agree to abide by
-        the terms of this Policy, you are not authorized to access or use the
-        Website and Services.
+        Ви підтверджуєте, що прочитали цю політику та погоджуєтеся з усіма її умовами та положеннями. Звернення до веб-сайту та послуг означає згоду з цією політикою. Якщо ви не згодні дотримуватися умов цієї політики, ви не маєте дозволу звертатися до веб-сайту та послуг або користуватися ними.
       </p>
       <h2 id="contacting-us">Contacting us</h2>
       <p>

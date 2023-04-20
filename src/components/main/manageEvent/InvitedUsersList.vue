@@ -35,7 +35,7 @@
           <div class="b-invited-user-right__side">
             <img
               class="b-remove-invited__user"
-              src="../../assets/img/gray-cross.svg"
+              src="../../../assets/img/gray-cross.svg"
               alt="gray-cross"
               @click="$emit('removeInvitedUser', user.id)"
             />
@@ -75,7 +75,7 @@
           <div class="b-invited-user-right__side">
             <img
               class="b-remove-invited__user"
-              src="../../assets/img/gray-cross.svg"
+              src="../../../assets/img/gray-cross.svg"
               alt="gray-cross"
               @click="$emit('removeInvitedUser', user.id)"
             />

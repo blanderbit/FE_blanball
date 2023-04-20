@@ -86,7 +86,7 @@ export default {
     padding: 0px 4px;
     background: #f9f9fc;
     border-radius: 4px;
-    z-index: 11;
+    z-index: 1;
   }
   .b-range-filter__left-side {
     background: #ffffff;
