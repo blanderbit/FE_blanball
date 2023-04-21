@@ -10,7 +10,7 @@
         </div>
         <img
           class="b-invited-users-list-modal__close-button"
-          src="../../../assets/img/back-arrow.svg"
+          src="../../../../../assets/img/back-arrow.svg"
           alt=""
           @click="$emit('closeModal')"
         />
@@ -40,7 +40,7 @@
             </div>
             <img
               class="b-remove-invited-user__button"
-              src="../../../assets/img/cross.svg"
+              src="../../../../../assets/img/cross.svg"
               alt=""
               @click="$emit('removeUser', user.id)"
             />

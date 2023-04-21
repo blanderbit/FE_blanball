@@ -5,7 +5,7 @@
         <div class="b-hide-events-modal__title">Приховати події</div>
         <img
           class="b-hide-events-modal__close-button"
-          src="../../../assets/img/cross.svg"
+          src="../../../../assets/img/cross.svg"
           alt=""
           @click="closeModal"
         />
