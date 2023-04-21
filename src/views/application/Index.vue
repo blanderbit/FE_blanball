@@ -23,7 +23,11 @@
     <div class="main-block">
       <div class="container">
         <div class="main-body-inner">
-          <main-header @menu-icon-click="openMobileMenu" />
+          <main-header
+            :isSchedulerOpened="isSchedulerOpened"
+            @menu-icon-click="openMobileMenu"
+            @openСloseScheduler="openСloseScheduler"
+          />
           <router-view />
         </div>
       </div>
@@ -44,11 +48,66 @@
       @close-modal="closeEventReviewModal"
       @createEventReview="createEventReview"
     />
+
+    <Transition name="scheduler">
+      <Scheduler
+        v-if="isSchedulerOpened"
+        :config="config"
+        @closeWindow="isSchedulerOpened = false"
+      >
+        <template
+          #LeftSidebar="{
+            allUsers,
+            isFriendsVisible,
+            friendsBlockSwitcher,
+            activateUser,
+          }"
+        >
+          <LeftSidebar
+            :users="allUsers"
+            :is-friends-visible="isFriendsVisible"
+            @friendsBlockSwitcher="friendsBlockSwitcher"
+            @activateUser="activateUser"
+          />
+        </template>
+        <template
+          #TopFriendsBlock="{
+            isFriendsVisible,
+            minUsers,
+            usersNumber,
+            friendsBlockSwitcher,
+          }"
+        >
+          <TopLineFriends
+            :isFriendsVisible="isFriendsVisible"
+            :minUsers="minUsers"
+            :usersNumber="usersNumber"
+            :friendsBlockSwitcher="friendsBlockSwitcher"
+          />
+        </template>
+        <template #MyEventDots="{ events, bgColor }">
+          <div
+            v-for="event in events"
+            :key="event._eid"
+            class="c-myevents-dot"
+            :style="{ background: bgColor }"
+          ></div>
+        </template>
+        <template #OtherEventDots="{ bgColor }">
+          <div
+            v-for="i in 3"
+            :key="i"
+            class="c-otherevents-dot"
+            :style="{ background: bgColor }"
+          ></div>
+        </template>
+      </Scheduler>
+    </Transition>
   </div>
 </template>
 
 <script setup>
-import { ref, onBeforeUnmount, onMounted } from 'vue';
+import { ref, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
@@ -61,6 +120,9 @@ import Notification from '../../components/main/notifications/Notification.vue';
 import VerifyEmailModal from '../../components/main/profile/modals/VerifyEmailModal.vue';
 import ModalFeedback from '../../components/modals/createFeedBackModal/index.vue';
 import ActionEventModal from '../../components/main/events/modals/ActionEventModal.vue';
+import Scheduler from '../../components/main/scheduler/index.vue';
+import LeftSidebar from '../../components/main/scheduler/LeftSidebar.vue';
+import TopLineFriends from '../../components/main/scheduler/TopLineFriends.vue';
 
 import { AuthWebSocketWorkerInstance } from '../../workers/web-socket-worker';
 import { TokenWorker } from '../../workers/token-worker';
@@ -77,6 +139,12 @@ import EventUpdatedIcon from '../../assets/img/event-updated-modal-icon.svg';
 import EventCreatedIcon from '../../assets/img/event-creted-modal-icon.svg';
 
 import message_audio from '../../assets/audio/message_audio.mp3';
+
+import User_1 from '../../assets/img/scheduler/user-1.svg';
+import User_2 from '../../assets/img/scheduler/user-2.svg';
+import User_3 from '../../assets/img/scheduler/user-3.svg';
+import User_4 from '../../assets/img/scheduler/user-4.svg';
+import User_5 from '../../assets/img/scheduler/user-5.svg';
 
 const isVerifyModalActive = ref(false);
 const isCreateReviewModalActive = ref(false);
@@ -294,6 +362,10 @@ function removePushFormActiveNotifications(notificationId) {
   }
 }
 
+function openСloseScheduler() {
+  isSchedulerOpened.value = !isSchedulerOpened.value;
+}
+
 const createToastFromInstanceType = (notificationInstance) => {
   const toastDataOptions = getToastOptions(notificationInstance, uuid());
 
@@ -331,6 +403,83 @@ onBeforeUnmount(() => {
   BlanballEventBus.off('EventCreated');
   BlanballEventBus.off('EventUpdated');
   AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect();
+});
+
+const isSchedulerOpened = ref(false);
+const avatars = [User_1, User_2, User_3, User_4, User_5];
+
+const config = ref({
+  myEventsDotColor: '#148581',
+  otherEventsDotColor: '#D62953',
+  contextMenu: [
+    {
+      label: 'Створити подію',
+      icon: 'fa fa-plus',
+      onClick: () => {
+        alert('You click a menu item');
+      },
+    },
+    {
+      label: 'Зайнятість інших',
+      icon: 'fa fa-running',
+      onClick: () => {
+        alert('You click a menu item');
+      },
+    },
+  ],
+  users: Array.from({ length: 5 }, (_, i) => {
+    return {
+      id: i,
+      name: 'Хамон Бибулишвили',
+      role: 'Стрыбунэць',
+      img: avatars[i],
+      isActive: i === 0 ? true : false,
+      events: [
+        {
+          start: `2023-03-${i + 12} 19:00`,
+          end: `2023-03-${i + 12} 20:00`,
+          title: 'Need to drink pivasik',
+          content: 'Buhlishko is very good',
+          contentFull: 'Жигулевское самое лучшее',
+          class: 'drink party',
+        },
+        {
+          start: `2023-03-${i + 15} 19:00`,
+          end: `2023-03-${i + 15} 20:00`,
+          title: 'Need to drink pivasik',
+          content: 'Buhlishko is very good',
+          contentFull: 'Жигулевское самое лучшее',
+          class: 'drink party',
+        },
+        {
+          start: `2023-03-${i + 19} 14:00`,
+          end: `2023-03-${i + 19} 18:00`,
+          title: 'Need to go shopping',
+          content: 'Click to see my shopping list',
+          contentFull:
+            'My shopping list is rather long:<br><ul><li>Avocados</li><li>Tomatoes</li><li>Potatoes</li><li>Mangoes</li></ul>', // Custom attribute.
+          class: 'leisure',
+        },
+        {
+          start: `2023-03-${i + 24} 10:00`,
+          end: `2023-03-${i + 24} 15:00`,
+          title: 'Golf with John',
+          content: 'Do I need to tell how many holes?',
+          contentFull: 'Okay.<br>It will be a 18 hole golf course.',
+          class: 'sport',
+        },
+        {
+          start: `2023-03-${i + 24} 14:00`,
+          end: `2023-03-${i + 24} 18:00`,
+          title: 'Need to go shopping',
+          content: 'Click to see my shopping list',
+          contentFull:
+            'My shopping list is rather long:<br><ul><li>Avocados</li><li>Tomatoes</li><li>Potatoes</li><li>Mangoes</li></ul>', // Custom attribute.
+          class: 'leisure',
+        },
+      ],
+    };
+  }),
 });
 </script>
 
@@ -418,5 +567,34 @@ html {
       height: 100vh;
     }
   }
+}
+
+.c-myevents-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 4px;
+  &:last-child {
+    margin-right: 0;
+  }
+}
+.c-otherevents-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 4px;
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.scheduler-enter-active,
+.scheduler-leave-active {
+  transition: opacity 0.4s ease;
+}
+
+.scheduler-enter-from,
+.scheduler-leave-to {
+  opacity: 0;
 }
 </style>

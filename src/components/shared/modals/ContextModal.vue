@@ -96,6 +96,10 @@ $color-f0f0f4: #f0f0f4;
 
       &:hover {
         background: $color-f0f0f4;
+
+        .b-item-text {
+          color: $--b-main-black-color;
+        }
       }
 
       .b-item-text {
@@ -104,7 +108,7 @@ $color-f0f0f4: #f0f0f4;
         font-weight: 400;
         font-size: 13px;
         line-height: 20px;
-        color: $--b-main-black-color;
+        color: $--b-main-gray-color;
         z-index: 999;
       }
     }

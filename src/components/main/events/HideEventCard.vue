@@ -68,9 +68,14 @@ $color-efeff6: #efeff6;
 $color-f0f0f4: #f0f0f4;
 $color-dfdeed: #dfdeed;
 .b-hide-event-card {
-  box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   border-radius: 6px;
   padding: 12px 12px;
+  border: 1px solid $color-f0f0f4;
+  transition: box-shadow 0.3s linear;
+
+  &:hover {
+    box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+  }
 
   @include tabletAndMobile {
     box-shadow: none;
@@ -84,6 +89,9 @@ $color-dfdeed: #dfdeed;
 
   &.hidden {
     background: $color-f0f0f4;
+    .b-hide-event-card__top-side {
+      border-bottom: 1px solid $color-dfdeed;
+    }
   }
 
   .b-hide-event-card__top-side {

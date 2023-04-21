@@ -116,6 +116,12 @@ $color-efeff6: #efeff6;
       align-items: center;
       gap: 6px;
       span {
+        width: 80%;
+        word-break: break-word;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
         @include inter(12px, 400, $--b-main-gray-color);
       }
     }

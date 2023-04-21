@@ -18,6 +18,7 @@ const fullYear = new Date().getFullYear();
 const lastAvailableYear = fullYear - yearsToSkip;
 
 export default {
+  monthNames,
   days: new Array(31).fill('l').map((i, k) => ({
     id: `${k >= 8 ? k + 1 : '0' + (k + 1)}`,
     value: k + 1,

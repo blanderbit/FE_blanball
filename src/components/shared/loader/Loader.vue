@@ -1,15 +1,10 @@
 <template>
   <div class="spiner-wrapper" v-show="loading">
     <div class="spiner-body">
-      <div class="spiner">
-        <div class="lds-ring">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
-      <div class="spiner-text">Завантаженя</div>
+      <div class="spinner">
+    <div class="spinner__ring"></div>
+  </div>
+      <div class="spiner-text">Завантаження</div>
     </div>
   </div>
 </template>
@@ -65,47 +60,73 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    .spiner {
-      .lds-ring {
-        display: inline-block;
-        position: relative;
-        width: 140px;
-        height: 140px;
-      }
-      .lds-ring div {
-        box-sizing: border-box;
-        display: block;
-        position: absolute;
-        width: 140px;
-        height: 140px;
-        margin: 8px;
-        border: 8px solid $--b-main-green-color;
-        border-radius: 50%;
-        animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-        border-color: $--b-main-green-color transparent transparent transparent;
-      }
-      .lds-ring div:nth-child(1) {
-        animation-delay: -0.45s;
-      }
-      .lds-ring div:nth-child(2) {
-        animation-delay: -0.3s;
-      }
-      .lds-ring div:nth-child(3) {
-        animation-delay: -0.15s;
-      }
-      @keyframes lds-ring {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-    }
+  
     .spiner-text {
-      @include inter(14px, 400);
+      @include inter(14px, 400, $--b-main-gray-color);
       line-height: 20px;
+      margin-top: 20px;
     }
+  }
+}
+
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.spinner__ring {
+  width: 140px;
+  height: 140px;
+  border: 12px solid transparent;
+  border-top-color: #148783;
+  border-right-color: #148783;
+  border-left-color: #EFEFF6;
+  border-bottom-color: #EFEFF6;
+  border-radius: 50%;
+  position: relative;
+  animation: spinner-rotate 1.3s linear infinite;
+}
+
+.spinner__ring::before,
+.spinner__ring::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 100px;
+  background: linear-gradient(rgba(20,135,131,0) 50%, #148783 50%), linear-gradient(106.25deg, #148783 12.19%, rgba(69, 208, 204, 0.1) 102.49%);
+}
+
+.spinner__ring::before {
+  transform: rotate(45deg);
+}
+
+.spinner__ring::after {
+  transform: rotate(-45deg);
+}
+
+.spinner__ring::before {
+  position: absolute;
+  top: 8px;
+  left: 6px;
+}
+
+.spinner__ring::after {
+  position: absolute;
+  bottom: 8px;
+  right: 6px;
+}
+
+@keyframes spinner-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>

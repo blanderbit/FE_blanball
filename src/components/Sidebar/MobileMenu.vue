@@ -15,7 +15,7 @@
           {{ $t('slide_menu.version') }}
           <router-link
             :to="routeObject.APPLICATION.VERSION.absolute"
-            @click="$emit('close')"
+            @click="closeMobMenu"
           >
             <span>{{ clientVersion }}</span>
           </router-link>

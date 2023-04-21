@@ -83,7 +83,9 @@ try {
 );
 } catch{}
 
-GeneralSocketWorkerInstance.registerCallback(handleMessageGeneral).connect();
+try {
+  GeneralSocketWorkerInstance.registerCallback(handleMessageGeneral).connect();
+} catch{}
 
 VersionDetectorWorker(VersionHandling.handleDifferentVersion);
 

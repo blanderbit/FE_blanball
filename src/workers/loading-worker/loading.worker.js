@@ -13,7 +13,7 @@ const startSpinner = () => {
 
 const finishSpinner = () => {
   setTimeout(() => {
-    isLoading.value = false
+    isLoading.value = true
   }, 300);
 }
 

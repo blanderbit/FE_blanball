@@ -13,7 +13,7 @@
           <slot name="content"></slot>
         </div>
         <div class="b-policy-table-contents">
-          <div class="b-table-title">{{ $t('privacy_policy.document-content') }}</div>
+          <div class="b-table-title">{{ $t('policy.document-content') }}</div>
           <div class="b-table-items">
             <div v-for="item in contentItems" class="b-tablet-item"
               @click="scrollToBlockOfContent">
@@ -65,6 +65,7 @@ export default {
 <style lang="scss" scoped>
 .b-policy-wrapper {
   padding-top: 36px;
+  overflow: hidden;
   .b-go-back {
     @include inter(14px, 500);
     display: flex;

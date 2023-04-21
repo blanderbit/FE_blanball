@@ -24,16 +24,26 @@
     <div class="b_header_logo">
       <img src="../../../assets/img/logo-header.svg" alt="" />
     </div>
-    <div class="b_header_search-block">
-      <div class="b_header_search-input">
-        <MainInput
-          :title-width="0"
-          :placeholder="$t('users.search')"
-          :icon="icons.search"
-          v-model="searchValue"
-          @on-click-action="showSearchBlock"
-          @send-input-coordinates="setInputCoordinates"
-        />
+
+    <div class="b_header-right-side">
+      <img
+        class="b_scheduler_button"
+        src="../../../assets/img/calendar.svg"
+        alt=""
+        :style="`z-index: ${isSchedulerOpened ? 1000 : 0}`"
+        @click="$emit('openСloseScheduler')"
+      />
+      <div class="b_header_search-block">
+        <div class="b_header_search-input">
+          <MainInput
+            :title-width="0"
+            :placeholder="$t('users.search')"
+            :icon="icons.search"
+            v-model="searchValue"
+            @on-click-action="showSearchBlock"
+            @send-input-coordinates="setInputCoordinates"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -61,6 +71,12 @@ export default {
     MainInput,
     SearchModal,
     SearchBlockAll,
+  },
+  props: {
+    isSchedulerOpened: {
+      type: Boolean,
+      default: false
+    }
   },
   setup() {
     const isSearchBlock = ref(false);
@@ -195,6 +211,18 @@ $color-fafafa: #fafafa;
     @include tablet {
       display: block;
     }
+  }
+  .b_header-right-side {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .b_scheduler_button {
+    padding: 10px 16px;
+    border: 1px solid #dfdeed;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #fff;
   }
   .b_header_search-block {
     .b_header_search-input {
