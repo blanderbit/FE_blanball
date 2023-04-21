@@ -2,12 +2,12 @@
   <div :class="['b-small-player-card', { inactive: !dataPlayer.isActive }]">
     <div class="b-small-player-card__left-side">
       <div class="b-small-player-card__picture">
-        <Avatar
+        <userAvatar
           :border="true"
           :link="dataPlayer.profile.avatar_url"
           :full-name="`${dataPlayer.profile.last_name} ${dataPlayer.profile.name}`"
           @clickByAvatar="goToUserProfile(dataPlayer.id)"
-        ></Avatar>
+        />
       </div>
       <div class="b-small-player-card__name-duty">
         <div class="b-small-player-card__name">
@@ -34,13 +34,13 @@
 <script>
 import { useRouter } from 'vue-router';
 
-import Avatar from './Avatar.vue';
+ import userAvatar from './shared/userAvatar/UserAvatar.vue';
 
 import { ROUTES } from '../router/router.const';
 
 export default {
   components: {
-    Avatar,
+    userAvatar,
   },
   props: {
     dataPlayer: {

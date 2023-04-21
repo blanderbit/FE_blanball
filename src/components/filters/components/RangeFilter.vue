@@ -86,7 +86,7 @@ export default {
     padding: 0px 4px;
     background: #f9f9fc;
     border-radius: 4px;
-    z-index: 11;
+    z-index: 1;
   }
   .b-range-filter__left-side {
     background: #ffffff;
@@ -105,7 +105,7 @@ export default {
     border-right: 1px solid #dfdeed;
     border-bottom: 1px solid #dfdeed;
     background: #ffffff;
-    padding: 6px 12px;
+    padding: 6px;
     border-radius: 0 6px 6px 0;
     font-family: 'Inter';
     font-style: normal;
@@ -113,7 +113,7 @@ export default {
     font-size: 13px;
     line-height: 16px;
     color: #575775;
-    min-width: 76px;
+    min-width: 60px;
   }
 }
 </style>

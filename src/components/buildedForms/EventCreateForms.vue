@@ -130,6 +130,7 @@ $color-dfdeed: #dfdeed;
     padding-bottom: 12px;
     display: flex;
     flex-direction: column;
+    width: 100%;
     .b-event-info__form-title {
       font-family: 'Inter';
       font-style: normal;

@@ -1,1 +1,0 @@
-echo $ENV_FILE | base64 --decode > stack.env

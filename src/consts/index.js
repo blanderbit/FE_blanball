@@ -10,6 +10,7 @@ import Profile from './profile';
 import Forms from './forms';
 import Sidebar from './sidebar';
 import EventJoin from './event-join'
+import Policy from './policy';
 
 export default {
   users_page: UsersPage,
@@ -24,4 +25,5 @@ export default {
   forms: Forms,
   sidebar: Sidebar,
   eventJoin: EventJoin,
+  policy: Policy,
 };
