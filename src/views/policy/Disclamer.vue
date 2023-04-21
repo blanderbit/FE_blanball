@@ -121,24 +121,20 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { computed } from 'vue';
 
 import PolicyWrapper from '../../components/main/policyWrapper/PolicyWrapper.vue';
+
+import CONSTS from '../../consts'
 
 export default {
   components: {
     PolicyWrapper,
   },
   setup() {
-    const contentItems = ref([
-      'Представництво',
-      'Вміст та публікації',
-      'Відгуки та рекомендації',
-      'Компенсація та гарантії',
-      'Зміни та поправки',
-      'Прийняття цієї відмови',
-      "Зв'язок з нами",
-    ]);
+    const contentItems = computed(() => {
+      return CONSTS.policy.DISCLAMER_ITEMS
+    })
 
     return {
       contentItems,

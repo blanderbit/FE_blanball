@@ -2,9 +2,16 @@
   <div class="spiner-wrapper" v-show="loading">
     <div class="spiner-body">
       <div class="spinner">
-    <div class="spinner__ring"></div>
-  </div>
-      <div class="spiner-text">Завантаження</div>
+        <div class="spinner__ring"></div>
+      </div>
+      <div class="spinner__bottom-block">
+        <h1 class="spinner__text">Завантаження</h1>
+        <div class="spinner__text__dots">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -22,7 +29,8 @@ export default {
   setup(props) {
     const loading = ref(props.isLoading);
 
-    watch(() => props.isLoading,
+    watch(
+      () => props.isLoading,
       (newData, oldData) => {
         loading.value = newData;
       }
@@ -60,15 +68,8 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-  
-    .spiner-text {
-      @include inter(14px, 400, $--b-main-gray-color);
-      line-height: 20px;
-      margin-top: 20px;
-    }
   }
 }
-
 
 .spinner {
   display: flex;
@@ -83,8 +84,8 @@ export default {
   border: 12px solid transparent;
   border-top-color: #148783;
   border-right-color: #148783;
-  border-left-color: #EFEFF6;
-  border-bottom-color: #EFEFF6;
+  border-left-color: #efeff6;
+  border-bottom-color: #efeff6;
   border-radius: 50%;
   position: relative;
   animation: spinner-rotate 1.3s linear infinite;
@@ -92,13 +93,14 @@ export default {
 
 .spinner__ring::before,
 .spinner__ring::after {
-  content: "";
+  content: '';
   display: block;
   position: absolute;
   width: 12px;
   height: 12px;
   border-radius: 100px;
-  background: linear-gradient(rgba(20,135,131,0) 50%, #148783 50%), linear-gradient(106.25deg, #148783 12.19%, rgba(69, 208, 204, 0.1) 102.49%);
+  background: linear-gradient(rgba(20, 135, 131, 0) 50%, #148783 50%),
+    linear-gradient(106.25deg, #148783 12.19%, rgba(69, 208, 204, 0.1) 102.49%);
 }
 
 .spinner__ring::before {
@@ -127,6 +129,72 @@ export default {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+.spinner__bottom-block {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  height: 100vh;
+  margin-top: 20px;
+
+  .spinner__text {
+    @include inter(14px, 400, $--b-main-gray-color);
+    line-height: 20px;
+    animation: blink 2s infinite;
+  }
+
+  .spinner__text__dots {
+    display: flex;
+    height: 3px;
+
+    .dot {
+      width: 2px;
+      height: 2px;
+      margin: 2px;
+      border-radius: 50%;
+      background-color: $--b-main-gray-color;
+      animation: dot-pulse 3s infinite;
+
+      &:nth-child(2) {
+        animation-delay: 0.5s;
+      }
+      &:nth-child(3) {
+        animation-delay: 1s;
+      }
+    }
+  }
+}
+
+@keyframes blink {
+  0%,
+  50%,
+  100% {
+    color: $--b-main-gray-color;
+  }
+  25%,
+  75% {
+    color: $--b-main-black-color;
+  }
+}
+
+@keyframes dot-pulse {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  20% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
   }
 }
 </style>

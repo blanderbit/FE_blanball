@@ -16,8 +16,8 @@
           <div class="b-table-title">{{ $t('policy.document-content') }}</div>
           <div class="b-table-items">
             <div v-for="item in contentItems" class="b-tablet-item"
-              @click="scrollToBlockOfContent">
-              {{ item }}
+              @click="scrollToBlockOfContent(item.elementId)">
+              {{ item.text }}
             </div>
           </div>
         </div>
@@ -43,8 +43,9 @@ export default {
   setup() {
     const router = useRouter();
 
-    const scrollToBlockOfContent = () => {
-      VueScrollTo.scrollTo('#acceptance-of-this-policy', 1500)
+    const scrollToBlockOfContent = (elementHtmlId) => {
+      const element = document.getElementById(elementHtmlId);
+      element.scrollIntoView({ behavior: 'smooth' });
     }
 
     const goBack = async () => {
@@ -54,7 +55,6 @@ export default {
         : ROUTES.APPLICATION.EVENTS.absolute
       );
     };
-
     return {
       goBack,
       scrollToBlockOfContent,

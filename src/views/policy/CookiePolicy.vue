@@ -102,24 +102,21 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 
 import PolicyWrapper from '../../components/main/policyWrapper/PolicyWrapper.vue';
 
 import { ROUTES } from '../../router/router.const';
+import CONSTS from '../../consts'
 
 export default {
   components: {
     PolicyWrapper,
   },
   setup() {
-    const contentItems = ref([
-      'Що таке cookies?',
-      'Які типи файлів cookie ми використовуємо?',
-      'Зміни та доповнення',
-      'Прийняття цієї політики',
-      "Зв'язок з нами",
-    ]);
+    const contentItems = computed(() => {
+      return CONSTS.policy.COOKIE_POLICY_ITEMS
+    })
 
     const privacyPolicyUrl = computed(() => {
       return `https://client.blanball.com${ROUTES.PRIVACY_POLICY.absolute}`;
