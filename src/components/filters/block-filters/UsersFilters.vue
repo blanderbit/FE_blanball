@@ -25,7 +25,7 @@
               </span>
             </div>
             <div class="b-main-search__dropdown-wrapper-tournament">
-              <Dropdown
+              <dropdown
                 :check-value-immediate="true"
                 :options="gender"
                 :placeholder="$t('users.gender')"
@@ -40,7 +40,7 @@
           </div>
           <div class="b-main-search__right-block">
             <div class="b-main-search__search-input-desktop">
-              <InputComponent
+              <MainInput
                 :title-width="0"
                 :placeholder="$t('users.users-search')"
                 :height="32"
@@ -63,7 +63,7 @@
               />
             </div>
             <div class="b-main-search__dropdown-wrapper-cities">
-              <Dropdown
+              <dropdown
                 :check-value-immediate="true"
                 :options="positions"
                 :placeholder="$t('users.gaming-position')"
@@ -93,7 +93,7 @@
           </div>
           <div class="b-main-search__right-part d-flex align-items-center">
             <div class="b-main-search__search-input me-2">
-              <InputComponent
+              <MainInput
                 :title-width="0"
                 :placeholder="$t('users.users-search')"
                 :height="32"
@@ -102,7 +102,7 @@
                 v-model="transformedFilters.search"
               />
             </div>
-            <InputComponent
+            <MainInput
               v-if="isMobileSearchOpened"
               :title-width="0"
               :placeholder="$t('users.users-search')"
@@ -112,7 +112,7 @@
               v-model="transformedFilters.search"
               @icon-click="closeMobileSearch"
             />
-            <InputComponent
+            <MainInput
               class="b-main-search__search-input-tablet"
               :title-width="0"
               :placeholder="$t('users.users-search')"
@@ -158,9 +158,9 @@
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
 
-import Dropdown from '../../forms/Dropdown.vue';
+import dropdown from '../../shared/dropdown/Dropdown.vue';
 import FilterBlock from '../FilterBlock.vue';
-import InputComponent from '../../forms/InputComponent.vue';
+import MainInput from '../../shared/input/MainInput.vue';
 import ButtonDetailsFilters from '../components/ButtonDetailsFilters.vue';
 import ClearFilters from '../components/ClearFilters.vue';
 import ModalFilters from '../ModalUsersFilters.vue';
@@ -179,8 +179,8 @@ import crossIcon from '../../../assets/img/cross.svg';
 export default {
   name: 'EventsFilters',
   components: {
-    Dropdown,
-    InputComponent,
+    dropdown,
+    MainInput,
     ButtonDetailsFilters,
     ClearFilters,
     RangeFilter,

@@ -1,5 +1,5 @@
 <template>
-  <Loading :is-loading="loading" />
+  <loader :is-loading="loading" />
   <SubmitModal
     v-if="isSubmitModalOpened"
     :config="submitModalConfig"
@@ -15,7 +15,7 @@
           {{ $t('slide_menu.version') }}
           <router-link
             :to="routeObject.APPLICATION.VERSION.absolute"
-            @click="$emit('close')"
+            @click="closeMobMenu"
           >
             <span>{{ clientVersion }}</span>
           </router-link>
@@ -26,12 +26,11 @@
     <div class="b-mob-menu__user-data">
       <div class="b-mob-menu__user-info">
         <div class="b-mob-menu__user-img">
-          <Avatar
+          <userAvatar
             :link="userStore.getUserAvatar"
             :full-name="userStore.getUserFullName"
             @clickByAvatar="goToMyProfile"
-          >
-          </Avatar>
+          />
         </div>
         <div class="b-mob-menu__text-block">
           <div class="b-mob-menu__user-name">
@@ -200,14 +199,14 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { v4 as uuid } from 'uuid';
 
-import Avatar from '../Avatar.vue';
-import Notifications from '../sitebar-notifications/Notifications.vue';
-import Notification from '../Notification.vue';
-import EmptyList from '../EmptyList.vue';
-import InfiniteLoading from '../../workers/infinit-load-worker/InfiniteLoading.vue';
+import userAvatar from '../shared/userAvatar/UserAvatar.vue';
+import Notifications from '../main/notifications/Notifications.vue';
+import Notification from '../main/notifications/Notification.vue';
+import emptyList from '../shared/emptyList/EmptyList.vue';
+import InfiniteLoading from '../main/infiniteLoading/InfiniteLoading.vue';
 import ScrollToTop from '../ScrollToTop.vue';
-import Loading from '../../workers/loading-worker/Loading.vue';
-import SubmitModal from '../ModalWindows/SubmitModal.vue';
+import loader from '../shared/loader/Loader.vue';
+import SubmitModal from '../shared/modals/SubmitModal.vue';
 
 import { useUserDataStore } from '../../stores/userData';
 import { NewNotifications } from '../../workers/web-socket-worker/not-includes-to-socket/new_notifications';
@@ -250,13 +249,13 @@ export default {
     },
   },
   components: {
-    Avatar,
+    userAvatar,
     Notifications,
     Notification,
-    EmptyList,
+    emptyList,
     InfiniteLoading,
     ScrollToTop,
-    Loading,
+    loader,
     SubmitModal,
   },
   emit: ['closeMenu'],

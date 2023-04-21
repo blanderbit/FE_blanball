@@ -28,7 +28,7 @@
               </span>
             </div>
             <div class="b-main-search__dropdown-wrapper-tournament">
-              <Dropdown
+              <dropdown
                 :check-value-immediate="true"
                 :placeholder="$t('events.game-type')"
                 :backgroundColor="'#fff'"
@@ -42,7 +42,7 @@
           </div>
           <div class="b-main-search__right-block">
             <div class="b-main-search__search-input-desktop">
-              <InputComponent
+              <MainInput
                 :title-width="0"
                 :placeholder="$t('events.search-events')"
                 :height="32"
@@ -60,7 +60,7 @@
         <div class="b-main-search__second-line" v-if="activeFilters">
           <div class="b-main-search__left-side">
             <div class="b-main-search__dropdown-wrapper-cities">
-              <Dropdown
+              <dropdown
                 :check-value-immediate="true"
                 :placeholder="$t('events.gender')"
                 :options="gender"
@@ -98,9 +98,9 @@
             </div>
           </div>
           <div class="b-main-search__right-side">
-            <ModalPositionMap
+            <PositionMapModal
               v-model="transformedFilters.location"
-            ></ModalPositionMap>
+            ></PositionMapModal>
           </div>
         </div>
       </div>
@@ -119,7 +119,7 @@
           </div>
           <div class="b-main-search__right-part d-flex align-items-center">
             <div class="b-main-search__search-input me-2">
-              <InputComponent
+              <MainInput
                 :title-width="0"
                 :placeholder="$t('events.search-events')"
                 :height="32"
@@ -128,7 +128,7 @@
                 v-model="transformedFilters.search"
               />
             </div>
-            <InputComponent
+            <MainInput
               v-if="isMobileSearchOpened"
               :title-width="0"
               :placeholder="$t('events.search-events')"
@@ -138,7 +138,7 @@
               v-model="transformedFilters.search"
               @icon-click="closeMobileSearch"
             />
-            <InputComponent
+            <MainInput
               class="b-main-search__search-input-tablet"
               :title-width="0"
               :placeholder="$t('events.search-events')"
@@ -185,12 +185,12 @@ import { computed, ref, onMounted, onBeforeUnmount, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import dayjs from 'dayjs';
 
-import Dropdown from '../../forms/Dropdown.vue';
+import dropdown from '../../shared/dropdown/Dropdown.vue';
 import FilterBlock from '../FilterBlock.vue';
-import InputComponent from '../../forms/InputComponent.vue';
+import MainInput from '../../shared/input/MainInput.vue';
 import ButtonDetailsFilters from '../components/ButtonDetailsFilters.vue';
 import ClearFilters from '../components/ClearFilters.vue';
-import ModalPositionMap from '../../maps/ModalPositionMap.vue';
+import PositionMapModal from '../../maps/PositionMapModal.vue';
 import ModalFilters from '../ModalEventsFilters.vue';
 
 import { TransformedFiltersWorker } from './transformed.filters.worker';
@@ -210,11 +210,11 @@ import crossIcon from '../../../assets/img/cross.svg';
 export default {
   name: 'EventsFilters',
   components: {
-    Dropdown,
-    InputComponent,
+    dropdown,
+    MainInput,
     ButtonDetailsFilters,
     ClearFilters,
-    ModalPositionMap,
+    PositionMapModal,
     FilterBlock,
     ModalFilters,
   },

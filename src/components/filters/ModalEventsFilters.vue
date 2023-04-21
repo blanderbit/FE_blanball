@@ -19,7 +19,7 @@
             Пошук за: <span>{{ search }}</span>
           </div>
           <div class="b-modal-filters__game-type-input">
-            <Dropdown
+            <dropdown
               :check-value-immediate="true"
               :options="sportTypeDropdown"
               :placeholder="$t('events.game-type')"
@@ -33,7 +33,7 @@
             <RadioGenderBox v-model:gender="genderData" />
           </div>
           <div class="b-modal-filters__location">
-            <ModalPositionMap v-model="locationData"></ModalPositionMap>
+            <PositionMapModal v-model="locationData"></PositionMapModal>
           </div>
           <div class="b-modal-filters__calendar">
             <img src="../../assets/img/calendar.svg" alt="" />
@@ -80,13 +80,13 @@
 <script>
 import { computed, ref, watch } from 'vue';
 
-import ModalWindow from '../ModalWindows/ModalWindow.vue';
-import Dropdown from '../forms/Dropdown.vue';
-import GreenBtn from '../GreenBtn.vue';
+import ModalWindow from '../shared/modals/ModalWindow.vue';
+import dropdown from '../shared/dropdown/Dropdown.vue';
+import GreenBtn from '../shared/button/GreenBtn.vue';
 import RadioGenderBox from './components/RadioGenderBox.vue';
-import ModalPositionMap from '../maps/ModalPositionMap.vue';
+import PositionMapModal from '../maps/PositionMapModal.vue';
 import ClearFilters from './components/ClearFilters.vue';
-import InputComponent from '../forms/InputComponent.vue';
+import MainInput from '../shared/input/MainInput.vue';
 
 import CONSTANTS from '../../consts/index';
 
@@ -97,11 +97,11 @@ export default {
   components: {
     ModalWindow,
     GreenBtn,
-    Dropdown,
+    dropdown,
     RadioGenderBox,
     ClearFilters,
-    ModalPositionMap,
-    InputComponent,
+    PositionMapModal,
+    MainInput,
   },
   props: {
     dropdownGameType: {

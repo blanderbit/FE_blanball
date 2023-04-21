@@ -1,5 +1,5 @@
 <template>
-  <Loading :is-loading="loading" />
+  <loader :is-loading="loading" />
   <BugReportModal
     v-if="isBugReportModalOpened"
     @close-modal="closeBugReportModal"
@@ -74,12 +74,11 @@
       </div>
       <div class="b_sidebar_bottom-block">
         <div class="b_sidebar_picture-bottom">
-          <avatar
+          <userAvatar
             :link="userStore.getUserAvatar"
             :full-name="userStore.getUserFullName"
             @clickByAvatar="goToProfile"
-          >
-          </avatar>
+          />
           <div
             @click="logOut"
             class="b_sidebar_logout d-flex justify-content-center align-items-center"
@@ -117,11 +116,11 @@ import { ref, computed, onBeforeUnmount, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import NotificationsSlideMenu from '../SlideMenu/NotificationsSlideMenu.vue';
-import Avatar from '../Avatar.vue';
-import BugReportModal from '../ModalWindows/BugReportModal.vue';
-import TabLabel from '../TabLabel.vue';
+import userAvatar from '../shared/userAvatar/UserAvatar.vue';
+import BugReportModal from '../shared/modals/BugReportModal.vue';
+import TabLabel from '../shared/tabLabel/TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';
-import Loading from '../../workers/loading-worker/Loading.vue';
+import loader from '../shared/loader/Loader.vue';
 
 import { useUserDataStore } from '../../stores/userData';
 import { createNotificationFromData } from '../../workers/utils-worker';
@@ -168,10 +167,10 @@ export default {
   name: 'MainSidebar',
   components: {
     NotificationsSlideMenu,
-    Avatar,
+    userAvatar,
     BugReportModal,
     TabLabel,
-    Loading,
+    loader,
     MobileMenu,
   },
   setup(props, { emit }) {

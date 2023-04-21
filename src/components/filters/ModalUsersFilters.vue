@@ -14,7 +14,7 @@
             {{  $t('users.found-users', { count: elementsCount }) }}
           </div>
           <div class="b-modal-filters__game-type-input">
-            <Dropdown
+            <dropdown
               :check-value-immediate="true"
               :main-title="$t('users.position')"
               :options="positions"
@@ -51,9 +51,9 @@
 <script>
 import { computed, ref, watch } from 'vue';
 
-import ModalWindow from '../ModalWindows/ModalWindow.vue';
-import Dropdown from '../forms/Dropdown.vue';
-import GreenBtn from '../GreenBtn.vue';
+import ModalWindow from '../shared/modals/ModalWindow.vue';
+import dropdown from '../shared/dropdown/Dropdown.vue';
+import GreenBtn from '../shared/button/GreenBtn.vue';
 import RangeFilter from './components/RangeFilter.vue';
 import RadioGenderBox from './components/RadioGenderBox.vue';
 
@@ -66,7 +66,7 @@ export default {
   components: {
     ModalWindow,
     GreenBtn,
-    Dropdown,
+    dropdown,
     RangeFilter,
     RadioGenderBox,
   },

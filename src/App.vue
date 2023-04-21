@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ModalVersion v-if="isModalActive" @close-modal-click="closeModal" />
+    <NewVersionModal v-if="isModalActive" @close-modal-click="closeModal" />
     <router-view />
   </div>
 </template>
@@ -9,7 +9,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import ModalVersion from './components/ModalWindows/ModalVersion.vue';
+import NewVersionModal from './components/modals/newVersionModal/NewVersionModal.vue';
 
 import { GeneralSocketWorkerInstance } from './workers/web-socket-worker';
 import { createQueryStringFromObject } from './workers/utils-worker';
@@ -41,12 +41,10 @@ const handleMessageGeneral = (instance) => {
         });
 
         return router.push(
-          `${ROUTES.WORKS.absolute}${query ? '?' + query : query}`
+          `${ROUTES.WORKS.absolute}${query}`
         );
-      } else if (!maintenance && !ifCurrentRouteApplication) {
-        const ifAuthentication = location.pathname.includes('authentication');
+      } else if (!maintenance && ifCurrentRouteMaintenance) {
 
-        if (ifAuthentication) return;
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
         const redirectUrl = params.redirectUrl;
@@ -85,7 +83,9 @@ try {
 );
 } catch{}
 
-GeneralSocketWorkerInstance.registerCallback(handleMessageGeneral).connect();
+try {
+  GeneralSocketWorkerInstance.registerCallback(handleMessageGeneral).connect();
+} catch{}
 
 VersionDetectorWorker(VersionHandling.handleDifferentVersion);
 

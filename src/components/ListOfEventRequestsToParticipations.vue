@@ -3,12 +3,12 @@
     <div class="b-list-item" v-for="request in requestsToParticipationsData">
       <div class="b-list-item-left__side">
         <div class="b-list-item__picture">
-          <Avatar
+          <userAvatar
             class="b-list-item__avatar"
             :border="true"
             :link="request.sender.profile.avatar_url"
             :full-name="`${request.sender.profile.last_name} ${request.sender.profile.name}`"
-          ></Avatar>
+          />
         </div>
         <span class="b-list-item__name">
           {{ request.sender.profile.last_name }}
@@ -40,16 +40,16 @@
 </template>
 
 <script>
-import Avatar from './Avatar.vue';
-import GreenBtn from './GreenBtn.vue';
-import WhiteBtn from './WhiteBtn.vue';
+ import userAvatar from './shared/userAvatar/UserAvatar.vue';
+import GreenBtn from './shared/button/GreenBtn.vue';
+import WhiteBtn from './shared/button/WhiteBtn.vue';
 
 import GrayCrossIcon from '../assets/img/gray-cross.svg';
 import NikeIcon from '../assets/img/nike-icon.svg';
 
 export default {
   components: {
-    Avatar,
+    userAvatar,
     WhiteBtn,
     GreenBtn,
   },
