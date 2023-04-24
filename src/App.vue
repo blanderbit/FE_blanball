@@ -40,11 +40,8 @@ const handleMessageGeneral = (instance) => {
           redirectUrl: window.location.pathname,
         });
 
-        return router.push(
-          `${ROUTES.WORKS.absolute}${query}`
-        );
+        return router.push(`${ROUTES.WORKS.absolute}${query}`);
       } else if (!maintenance && ifCurrentRouteMaintenance) {
-
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
         const redirectUrl = params.redirectUrl;
@@ -72,20 +69,21 @@ const VersionHandling = {
 };
 try {
   API.NotificationService.getMaintenance().then((result) =>
-  handleMessageGeneral({
-    messageType: WebSocketTypes.ChangeMaintenance,
-    data: {
-      maintenance: {
-        type: result.data.isMaintenance,
+    handleMessageGeneral({
+      messageType: WebSocketTypes.ChangeMaintenance,
+      data: {
+        maintenance: {
+          type: result.data.isMaintenance,
+        },
       },
-    },
-  })
-);
-} catch{}
+    })
+  );
+} catch {
+}
 
 try {
   GeneralSocketWorkerInstance.registerCallback(handleMessageGeneral).connect();
-} catch{}
+} catch {}
 
 VersionDetectorWorker(VersionHandling.handleDifferentVersion);
 

@@ -107,7 +107,7 @@
 </template>
 
 <script setup>
-import { ref, onBeforeUnmount } from 'vue';
+import { ref, onBeforeMount, onBeforeUnmount, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
@@ -145,6 +145,7 @@ import User_2 from '../../assets/img/scheduler/user-2.svg';
 import User_3 from '../../assets/img/scheduler/user-3.svg';
 import User_4 from '../../assets/img/scheduler/user-4.svg';
 import User_5 from '../../assets/img/scheduler/user-5.svg';
+import Preloader from '../../components/shared/loader/Preloader.vue';
 
 const isVerifyModalActive = ref(false);
 const isCreateReviewModalActive = ref(false);
@@ -404,6 +405,7 @@ onBeforeUnmount(() => {
   BlanballEventBus.off('EventUpdated');
   AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect();
 });
+
 
 const isSchedulerOpened = ref(false);
 const avatars = [User_1, User_2, User_3, User_4, User_5];

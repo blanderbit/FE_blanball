@@ -529,7 +529,7 @@ $color-d2f6a2: #d2f6a2;
 .b-public-profile {
   position: relative;
 
-  @include beforeDesktop {
+  @media (max-width: 1200px) {
     overflow: scroll;
   }
 

@@ -1,16 +1,8 @@
 <template>
   <div class="b-event-info__forms">
-    <div
-      class="b-event-info__form"
-      v-for="(item, key, index) in formsDataValue"
-    >
+    <div class="b-event-info__form" v-for="(item, key, index) in formsData">
       <span class="b-event-info__form-title">
         {{ $t('events.team_num', { num: index + 1 }) }}
-        <img
-          src="../../assets/img/change-forms-arrow.svg"
-          alt=""
-          @click="$emit('changeForms')"
-        />
       </span>
       <div class="b-event-info__form-content">
         <div
@@ -18,40 +10,37 @@
           class="b-event-info__form-content-t-thirt"
         >
           <div class="b-event-info__form-item">
+            <div class="b-event-info__form-item-name">
+              {{ $t('events.t-shirts') }}
+            </div>
             <div class="b-event-info__form-item-color">
               <img :src="mockData.colors[item.t_shirts]" alt="" />
               <div class="b-event-info__form-item-color-name">
-                {{
-                  $t('events.color-t-shirts', {
-                    color: $t(`colors.forms.${item.t_shirts}`),
-                  })
-                }}
+                {{ $t(`colors.${item.t_shirts}`) }}
               </div>
             </div>
           </div>
           <div class="b-event-info__form-item">
+            <div class="b-event-info__form-item-name">
+              {{ $t('events.shorts') }}
+            </div>
             <div class="b-event-info__form-item-color">
               <img :src="mockData.colors[item.shorts]" alt="" />
               <div class="b-event-info__form-item-color-name">
-                {{
-                  $t('events.color-shorts', {
-                    color: $t(`colors.forms.${item.shorts}`),
-                  })
-                }}
+                {{ $t(`colors.${item.shorts}`) }}
               </div>
             </div>
           </div>
         </div>
         <div v-else class="b-event-info__form-content-shirt-front">
           <div class="b-event-info__form-item">
+            <div class="b-event-info__form-item-name">
+              {{ $t('events.shirtfronts') }}
+            </div>
             <div class="b-event-info__form-item-color">
               <img :src="mockData.colors[item.shirtfronts]" alt="" />
               <div class="b-event-info__form-item-color-name">
-                {{
-                  $t('events.color-shirtfronts', {
-                    color: $t(`colors.forms.${item.shirtfronts}`),
-                  })
-                }}
+                {{ $t(`colors.${item.shirtfronts}`) }}
               </div>
             </div>
           </div>
@@ -62,9 +51,9 @@
 </template>
 
 <script>
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 
-import CONSTANTS from '../../consts/index';
+import CONSTANTS from '../../../consts/index';
 
 export default {
   props: {
@@ -80,27 +69,12 @@ export default {
       };
     });
 
-    const formsDataValue = ref(props.formsData);
     const formsType = ref(props.formsData.type);
-
-    if (formsDataValue.value.type) {
-      delete formsDataValue.value.type;
-    }
-
-    watch(
-      () => props.formsData,
-      (newData, oldData) => {
-        let copyForms = JSON.parse(JSON.stringify(newData));
-        formsDataValue.value = copyForms;
-        formsType.value = copyForms.type;
-        delete formsDataValue.value.type;
-      }
-    );
+    delete props.formsData.type;
 
     return {
       mockData,
       formsType,
-      formsDataValue,
     };
   },
 };
@@ -109,62 +83,73 @@ export default {
 <style lang="scss" scoped>
 // SCSS variables for hex colors
 $color-f9f9fc: #f9f9fc;
-$color-dfdeed: #dfdeed;
+$color-efeff6: #efeff6;
 
 .b-event-info__forms {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 12px;
-  margin-top: 16px;
+  margin: 16px 0px;
 
-  @media (min-width: 768px) and (max-width: 992px) {
-    display: flex;
+  @media (max-width: 455px) {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 12px 12px;
   }
+
   .b-event-info__form {
     background: $color-f9f9fc;
     border-radius: 6px;
-    padding: 8px;
-    padding-bottom: 12px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
-    width: 100%;
+
+    @media (max-width: 455px) {
+      width: 100%;
+    }
     .b-event-info__form-title {
       font-family: 'Inter';
       font-style: normal;
-      font-weight: 500;
-      font-size: 13px;
-      line-height: 20px;
-      color: $--b-main-gray-color;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      img {
-        cursor: pointer;
-      }
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 24px;
+      color: $--b-main-black-color;
     }
     .b-event-info__form-content {
       .b-event-info__form-content-t-thirt {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        flex-wrap: wrap;
+        @media (max-width: 455px) {
+          display: flex;
+          gap: 8px;
+        }
+      }
+      .b-event-info__form-content-shirt-front {
+        @media (max-width: 455px) {
+          display: flex;
+          gap: 8px;
+        }
       }
       .b-event-info__form-item {
         display: flex;
-        align-items: flex-start;
+        align-items: center;
         justify-content: space-between;
         gap: 8px;
         margin-top: 8px;
 
+        @media (max-width: 455px) {
+          flex-direction: column;
+          align-items: baseline;
+        }
+        .b-event-info__form-item-name {
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 20px;
+          color: $--b-main-gray-color;
+        }
         .b-event-info__form-item-color {
-          background: $color-dfdeed;
+          background: $color-efeff6;
           border-radius: 4px;
           padding: 2px 8px;
-          width: max-content;
+          min-width: 115px;
           display: flex;
           align-items: center;
           gap: 8px;

@@ -33,16 +33,16 @@
           />
         </div>
         <div class="b-hide-events__button">
-        <MainInput
-          :placeholder="'7 подій приховано'"
-          :isDisabled="true"
-          :title-width="0"
-          :outside-title="true"
-          :icon="sortArrowHorizontal"
-          @click="$emit('openHideEventsModal')"
-          name="change_email"
-        />
-      </div>
+          <MainInput
+            :placeholder="'7 подій приховано'"
+            :isDisabled="true"
+            :title-width="0"
+            :outside-title="true"
+            :icon="sortArrowHorizontal"
+            @click="$emit('openHideEventsModal')"
+            name="change_email"
+          />
+        </div>
       </div>
     </div>
     <div class="b-security__top-table">
@@ -56,8 +56,9 @@
         <MainInput
           :title="$t('profile.e-mail')"
           :placeholder="userEmail"
-          :isDisabled="true"
+          :isReadOnly="true"
           :title-width="0"
+          :swipeTitle="false"
           :outside-title="true"
           :icon="sortArrowHorizontal"
           @icon-click="toggleModalWindow('email')"
@@ -72,11 +73,10 @@
         <img src="../../../assets/img/lock.svg" alt="" />
       </div>
     </div>
-    <div
-      class="b-security__delete-account"
-      @click="toggleModalWindow('delete_acc')"
-    >
-      {{ $t('profile.delete-account') }}
+    <div class="b-security__delete-account">
+      <span @click="toggleModalWindow('delete_acc')">
+        {{ $t('profile.delete-account') }}</span
+      >
     </div>
   </div>
 </template>
@@ -142,7 +142,7 @@ $color-d3f8f7: #d3f8f7;
   @media (max-width: 1200px) {
     box-shadow: none;
     padding: 16px 0px;
-  } 
+  }
   @include tabletAndMobile {
     padding: 0px 16px;
     margin-bottom: 50px;
@@ -254,10 +254,12 @@ $color-d3f8f7: #d3f8f7;
     font-style: normal;
     font-weight: 400;
     font-size: 12px;
-    text-decoration-line: underline;
     color: $--b-main-gray-color;
     text-align: right;
-    cursor: pointer;
+    span {
+      border-bottom: 1px solid $--b-main-gray-color;
+      cursor: pointer;
+    }
   }
 
   .b-hide-events__button {

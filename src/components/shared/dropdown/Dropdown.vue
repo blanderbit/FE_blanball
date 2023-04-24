@@ -1,6 +1,6 @@
 <template>
   <div class="b-dropdown" :style="dropdownStyles">
-    <div class="b-dropdown__title">
+    <div :class="['b-dropdown__title', {disabled: disabled}]">
       <span>
         {{ dropdownModelValue ? mainTitle : '' }}
       </span>
@@ -30,7 +30,7 @@
       <template #selected-option="options">
         <div class="b-dropdown__custom-option">
           <img v-if="options.iconSrc" :src="options.iconSrc" alt="icon" />
-          <span class="b-dropdown__custom-option-text">
+          <span :class="['b-dropdown__custom-option-text', {disabled: disabled}]">
             {{ $t(options[displayName].toString()) }}
           </span>
         </div>
@@ -118,8 +118,8 @@ export default {
     },
     backgroundColor: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   emits: ['new-value', 'update:modelValue'],
   setup(props, { emit }) {
@@ -133,12 +133,11 @@ export default {
     } = CustomModelWorker(props);
     const icon = computed(() => SearchIcon);
 
-    
     const dropdownStyles = computed(() => {
       return {
-        'background-color': props.backgroundColor
-      }
-    })
+        'background-color': props.backgroundColor,
+      };
+    });
 
     function selectValue(e) {
       dropdownModelValue.value =
@@ -157,7 +156,6 @@ export default {
     if (staticModelValue.value) {
       selectValue(staticModelValue.value);
     }
-
 
     vSelect.props.components.default = () => ({ OpenIndicator });
     watch(
@@ -290,10 +288,10 @@ $color-dfdeed: #dfdeed;
     height: 100%;
     border-radius: 6px;
     border: 1px solid $color-dfdeed;
+    background: transparent;
   }
   .v-select.vs--open.vs--single.vs--unsearchable .vs__dropdown-toggle {
-    border-bottom: var(--vs-border-width) var(--vs-border-style)
-      var(--vs-border-color);
+    border: 1px solid $--b-main-green-color;
   }
   .style-chooser .vs__search::placeholder,
   .style-chooser .vs__dropdown-toggle,
@@ -366,29 +364,32 @@ $color-dfdeed: #dfdeed;
   position: relative;
   text-align: left;
   &__title {
+
+    @include inter(12px, 400, $--b-main-gray-color);
     position: absolute;
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 12px;
     line-height: 16px;
-    color: $--b-main-gray-color;
     background: $--b-main-white-color;
     padding: 0px 4px;
     left: 8px;
     top: -8px;
     z-index: 10;
+
+    &.disabled {
+      @include inter(12px, 400, #A8A8BD);
+    }
   }
   &__custom-option {
     display: flex;
     align-items: center;
     height: 100%;
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
+    @include inter(14px, 400);
     line-height: 24px;
-    color: $--b-main-black-color;
+
+    &-text {
+      &.disabled {
+        @include inter(14px, 400);
+      }
+    }
 
     img {
       margin-right: 5px;

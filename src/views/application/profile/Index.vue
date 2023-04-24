@@ -107,9 +107,8 @@
         />
         <RatingCard
           v-if="!isTabletSize && !isMobile"
-          :rating-scale="userStore.user.raiting"
-          :openedReviewID="openedReviewId"
-          @clickReview="clickReview"
+          :rating-scale="userRating"
+          :reviewsCount="reviewsTotalCount"
         />
         <UserDetailsCard
           :user-data="userData"
@@ -121,9 +120,8 @@
         <div class="b-user-cabinet__mobile-tablet-block">
           <RatingCard
             v-if="isTabletSize"
-            :rating-scale="userStore.user.raiting"
-            :openedReviewID="openedReviewId"
-            @clickReview="clickReview"
+            :rating-scale="userRating"
+            :reviewsCount="reviewsTotalCount"
           />
           <SecurityBlock
             @toggle-modal="toggleModal"
@@ -229,7 +227,6 @@ export default {
     const isTabLabel = ref(false);
     const userAvatar = ref('');
     const restData = ref();
-    const openedReviewId = ref(0);
     const nextRoutePath = ref('');
     const isHideMyEventsModalOpened = ref(false);
 
@@ -259,6 +256,18 @@ export default {
         };
       }
     });
+
+    const schema = computed(() => {
+      return SCHEMAS.profile.schema;
+    });
+
+    const userRating = computed(() => {
+      return userStore.user.raiting ? userStore.user.raiting.toFixed(1) : null
+    })
+
+    const reviewsTotalCount = computed(() => {
+      return router.currentRoute.value.meta.allReviewsData?.data?.total_count
+    })
 
     restData.value = {
       ...userStore.user,
@@ -297,10 +306,6 @@ export default {
       edit_avatar: false,
     });
 
-    const schema = computed(() => {
-      return SCHEMAS.profile.schema;
-    });
-
     userInfo.value = {
       ...userStore.user,
       profile: {
@@ -311,7 +316,7 @@ export default {
     userData.value = {
       ...userStore.user.profile,
       phone: userStore.user.phone,
-      raiting: userStore.user.raiting,
+      raiting: userStore.user.raiting ? userStore.user.raiting.toFixed(1) : null,
       working_leg: getWorkingLeg(userStore.user.profile.working_leg),
       role: userStore.user.role,
     };
@@ -329,14 +334,6 @@ export default {
     onBeforeUnmount(() => {
       window.removeEventListener('resize', onResize);
     });
-
-    function clickReview(reviewId) {
-      if (openedReviewId.value === reviewId) {
-        openedReviewId.value = 0;
-      } else {
-        openedReviewId.value = reviewId;
-      }
-    }
 
     function switchTabLabel(isDisabled) {
       if (isDisabled) {
@@ -508,7 +505,7 @@ export default {
           userData.value = {
             ...res.data?.profile,
             phone: res.data?.phone,
-            raiting: res.data?.raiting,
+            raiting: res.data?.raiting ? res.data?.raiting.toFixed(1) : null,
             working_leg: getWorkingLeg(res.data.profile?.working_leg),
             role: res.data?.role,
           };
@@ -522,6 +519,7 @@ export default {
           isLoading.value = false;
         });
     }
+
 
     function changeTab(id, url, isDisabled) {
       if (isDisabled) return;
@@ -663,7 +661,6 @@ export default {
       cancelDataEdit,
       openEditPictureModal,
       getMyProfile,
-      clickReview,
       closeModalAndHideEvents,
       cancelChangesAndGoToTheNextRoute,
       showPreview,
@@ -682,9 +679,10 @@ export default {
       formValues,
       myForm,
       userInfo,
-      openedReviewId,
+      userRating,
       isLoading,
       isMobile,
+      reviewsTotalCount,
       isTabLabel,
       isTabletSize,
       restData,

@@ -1,8 +1,12 @@
 <template>
   <div class="b-input__input-component">
     <div
-      class="b-input__wrapper"
-      :class="{ 'b-form-error': modelErrorMessage }"
+      :class="[
+        'b-input__wrapper',
+        { focused: isFocused },
+        { disabled: isDisabled },
+        { 'b-form-error': modelErrorMessage },
+      ]"
       :style="inputWrapper"
     >
       <div v-if="outsideTitle" class="b-input__outer-title">
@@ -39,11 +43,14 @@
           :placeholder="placeholderValue"
           v-on="modelHandlers"
           :value="staticModelValue"
+          :class="{ disabled: isDisabled }"
           :readonly="isReadOnly"
           :style="inputStyle"
           :disabled="isDisabled"
           @click="$emit('onClickAction', $event)"
           ref="input"
+          @focus="onFocus"
+          @blur="onUnFocus"
         />
       </slot>
     </div>
@@ -67,7 +74,6 @@ const PASSWORD_TYPES = {
   TEXT: 'text',
 };
 
-// TODO vue 3 fully, validate message
 export default {
   name: 'MainInput',
   props: {
@@ -132,6 +138,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    backgroundColor: {
+      type: String,
+      default: '',
+    },
   },
   emits: [
     'iconClick',
@@ -161,6 +171,7 @@ export default {
     );
     const inputType = ref(null);
     const rightIcon = ref('');
+    const isFocused = ref(false);
     const input = ref(null);
 
     expose({ staticModelValue });
@@ -174,6 +185,7 @@ export default {
     const inputWrapper = computed(() => {
       return {
         height: props.height ? props.height + 2 + 'px' : '100%',
+        'background-color': props.backgroundColor,
       };
     });
 
@@ -221,24 +233,39 @@ export default {
 
     const placeholderValue = computed(() => {
       if (props.swipeTitle) {
-        return !staticModelValue.value ? props.placeholder : ''
+        return !staticModelValue.value ? props.placeholder : '';
       } else {
-        return props.placeholder
+        return props.placeholder;
       }
-    })
+    });
 
     const titleValue = computed(() => {
       if (props.swipeTitle) {
-        return staticModelValue.value ? props.title : ''
+        return staticModelValue.value ? props.title : '';
       } else {
-        return props.title
+        return props.title;
       }
-    })
+    });
+
+    const onFocus = () => {
+      if(!props.isReadOnly) {
+        isFocused.value = true;
+      }
+    };
+
+    const onUnFocus = () => {
+      if(isFocused.value) {
+        isFocused.value = false;
+      }
+    };
 
     const { t } = useI18n();
     return {
       iconClickAction,
+      onFocus,
+      onUnFocus,
       titleValue,
+      isFocused,
       staticModelValue,
       placeholderValue,
       modelErrorMessage,
@@ -259,7 +286,6 @@ export default {
 $color-dfdeed: #dfdeed;
 
 @import '../../../assets/styles/forms.scss';
-
 .b-input__input-component {
   height: 100%;
   width: 100%;
@@ -274,6 +300,12 @@ $color-dfdeed: #dfdeed;
     font-size: 13px;
     line-height: 24px;
     color: $--b-main-black-color;
+    &.focused {
+      border: 1.5px solid #8a8aa8;
+    }
+    &.disabled {
+      border: 1px solid #D9D9D9;
+    }
     .b-input__icon {
       display: flex;
       height: 100%;
@@ -281,7 +313,6 @@ $color-dfdeed: #dfdeed;
       position: absolute;
       top: 0;
       right: 0;
-      // background: $--b-main-white-color;
       border-radius: 6px;
       cursor: pointer;
       img {
@@ -344,6 +375,7 @@ $color-dfdeed: #dfdeed;
       border: none;
       outline: none;
       border-radius: 6px;
+      background: transparent;
       &::-webkit-outer-spin-button,
       &::-webkit-inner-spin-button {
         -webkit-appearance: none;
@@ -351,6 +383,10 @@ $color-dfdeed: #dfdeed;
       }
       &[type='number'] {
         -moz-appearance: textfield;
+      }
+
+      &.disabled{
+        color: #A8A8BD;
       }
     }
   }

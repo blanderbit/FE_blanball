@@ -13,7 +13,6 @@ import { transpileInterseptorQueryToConfig } from '../workers/api-worker/http/fi
 import { ROUTES } from './router.const';
 import { useUserDataStore } from '../stores/userData';
 import { prepareEventUpdateData } from '../utils/prepareEventUpdateData';
-import { DETAILS_TYPE_ENUM } from '../workers/type-request-message-worker';
 
 const usersData = () => {
   const userStore = useUserDataStore();
@@ -275,3 +274,17 @@ const router = createRouter({
 });
 
 export default router;
+
+
+router.beforeEach(async (to, from, next) => {
+  if (to.name === ROUTES.WORKS.name) {
+    const response = await API.NotificationService.getMaintenance();
+    if (response.data.isMaintenance) {
+      next();
+    } else {
+      next(ROUTES.APPLICATION.EVENTS.absolute);
+    }
+  } else {
+    next();
+  }
+});

@@ -1,6 +1,9 @@
 <template>
   <div class="b-text-area__component">
-    <div class="b-text-area__wrapper" :style="inputWrapper">
+    <div
+      :class="['b-text-area__wrapper', { focused: isFocused }]"
+      :style="inputWrapper"
+    >
       <div v-if="title" class="b-text-area__outer-title">
         <span>{{ title }}</span>
       </div>
@@ -12,6 +15,8 @@
         :placeholder="placeholder"
         :disabled="isDisabled"
         v-on="modelHandlers"
+        @focus="onFocus"
+        @blur="onUnFocus"
       >
       </textarea>
       <label v-if="textareaIcon">
@@ -76,6 +81,7 @@ export default {
     const { modelValue, modelErrorMessage, modelHandlers } =
       CustomModelWorker(props);
     const toast = useToast();
+    const isFocused = ref(false);
     const { t } = useI18n();
 
     const IMAGE_TYPES = ['image/jpeg', 'image/png'];
@@ -97,12 +103,23 @@ export default {
       };
     });
 
+    const onFocus = () => {
+      isFocused.value = true;
+    };
+
+    const onUnFocus = () => {
+      isFocused.value = false;
+    };
+
     return {
       modelValue,
       modelErrorMessage,
       modelHandlers,
       inputWrapper,
+      isFocused,
       onFileSelected,
+      onFocus,
+      onUnFocus,
     };
   },
 };
@@ -121,6 +138,10 @@ $color-e2e2e9: #e2e2e9;
     position: relative;
     border-radius: 6px;
     width: 100%;
+
+    &.focused {
+      border: 1.5px solid #8a8aa8;
+    }
     .b-text-area__min-max-label {
       font-family: 'Inter';
       font-style: normal;

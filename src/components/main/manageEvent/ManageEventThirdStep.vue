@@ -101,7 +101,7 @@ import switcher from '../../shared/switcher/Switcher.vue';
 import radioButton from '../../shared/radioButton/RadioButton.vue';
 import MainInput from '../../shared/input/MainInput.vue';
 import mainTextArea from '../../shared/textArea/MainTextArea.vue';
-import EventCreateForms from '../../buildedForms/EventCreateForms.vue';
+import EventCreateForms from './EventCreateForms.vue';
 
 import AimIcon from '../../../assets/img/aim.svg';
 import editPhoneIcon from '../../../assets/img/sort-arrows-horizontal.svg';

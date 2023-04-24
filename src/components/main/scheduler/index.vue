@@ -1,5 +1,5 @@
 <template>
-  <div class="c-scheduler-wrapper">
+  <div @click.self="$emit('closeWindow')" class="c-scheduler-wrapper">
     <div class="c-common-block">
       <!-- Sidebar Slot -->
       <slot
