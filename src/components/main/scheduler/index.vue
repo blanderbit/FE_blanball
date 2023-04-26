@@ -177,12 +177,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$color-ffffff: #ffffff;
-$color-fff: #fff;
 $color-efeff6: #efeff6;
-$color-575775: #575775;
 $color-bef0ef: #bef0ef;
-$color-148783: #148783;
 $color-e9fcfb: #e9fcfb;
 * {
   box-sizing: border-box;
@@ -197,7 +193,7 @@ $color-e9fcfb: #e9fcfb;
   font-family: 'Inter', sans-serif;
   padding: 8px;
   .c-common-block {
-    background: $color-ffffff;
+    background: $--b-main-white-color;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 8px;
     padding: 16px;
@@ -209,7 +205,7 @@ $color-e9fcfb: #e9fcfb;
 
     .c-right-block {
       z-index: 1;
-      background: $color-fff;
+      background: $--b-main-white-color;
       .c-friends-line {
         border-bottom: 1px solid $color-efeff6;
         padding-bottom: 14px;
@@ -240,7 +236,7 @@ $color-e9fcfb: #e9fcfb;
                 .c-title {
                   font-weight: 500;
                   font-size: 12px;
-                  color: $color-575775;
+                  color: $--b-main-green-color;
                 }
               }
               .vuecal__menu {
@@ -281,14 +277,14 @@ $color-e9fcfb: #e9fcfb;
                       .c-menu-dots {
                         width: 3px;
                         height: 3px;
-                        background: $color-148783;
+                        background: $--b-main-green-color;
                         border-radius: 50%;
                         margin-bottom: 2px;
                       }
                     }
                     &:hover {
                       background: $color-e9fcfb;
-                      color: $color-148783;
+                      color: $--b-main-green-color;
                     }
                     .c-event-dots {
                       margin-top: 10px;

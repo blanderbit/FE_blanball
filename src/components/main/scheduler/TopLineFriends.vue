@@ -49,7 +49,6 @@ export default {
 
 <style scoped lang="scss">
 $color-dfdeed: #dfdeed;
-$color-575775: #575775;
 .c-friends-block {
   display: flex;
   align-items: center;
@@ -73,12 +72,12 @@ $color-575775: #575775;
     font-weight: 400;
     font-size: 14px;
     line-height: 16px;
-    color: $color-575775;
+    color: $--b-main-green-color;
     cursor: pointer;
 
     span {
       padding-bottom: 2px;
-      border-bottom: 1px dashed $color-575775;
+      border-bottom: 1px dashed $--b-main-green-color;
       margin-right: 18px;
     }
   }

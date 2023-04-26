@@ -185,8 +185,6 @@ export default {
 
 <style lang="scss" scoped>
 $color-dfdeed: #dfdeed;
-$color-fff: #fff;
-// SCSS variables for hex colors
 $color-fafafa: #fafafa;
 
 @import '../../../assets/styles/mixins/device.scss';
@@ -225,7 +223,7 @@ $color-fafafa: #fafafa;
     border: 1px solid $color-dfdeed;
     border-radius: 6px;
     cursor: pointer;
-    background: $color-fff;
+    background: $--b-main-white-color;
   }
   .b_header_search-block {
     .b_header_search-input {

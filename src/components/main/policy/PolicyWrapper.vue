@@ -61,7 +61,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-$color-ffffff: #ffffff;
 .b-policy-wrapper {
   padding-top: 36px;
   overflow: hidden;
@@ -115,7 +114,7 @@ $color-ffffff: #ffffff;
       }
       .b-tablet-item {
         @include inter(14px, 500);
-        background: $color-ffffff;
+        background: $--b-main-white-color;
         box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
         border-radius: 6px;
         margin-top: 16px;

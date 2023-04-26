@@ -252,7 +252,6 @@ export default {
 <style lang="scss" scoped>
 $color-f9f9fc: #f9f9fc;
 $color-6f6f77: #6f6f77;
-$color-ffffff: #ffffff;
 $color-f0f0f4: #f0f0f4;
 $color-efeff6: #efeff6;
 $color-d3f8f7: #d3f8f7;
@@ -396,7 +395,7 @@ ul {
         gap: 12px 12px;
 
         .b-versions-list__version {
-          background: $color-ffffff;
+          background: $--b-main-white-color;
           border: 1px solid #F0F0F4;
           border-radius: 6px;
           padding: 16px;

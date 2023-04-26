@@ -55,7 +55,6 @@ export default {
 $color-efeff6: #efeff6;
 $color-f9f9fc: #f9f9fc;
 $color-fcfcfc: #fcfcfc;
-$color-262541: #262541;
 
 .b-rating-card {
   height: fit-content;
@@ -121,7 +120,7 @@ $color-262541: #262541;
       span {
         @include inter(22px, 700);
         line-height: 28px;
-        color: $color-262541;
+        color: $--b-main-black-color;
       }
     }
   }
