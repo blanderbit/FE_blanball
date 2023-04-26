@@ -79,6 +79,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
+$color-efeff6: #efeff6;
+$color-262541: #262541;
+$color-575775: #575775;
+$color-dfdeed: #dfdeed;
+$color-f9f9fc: #f9f9fc;
+$color-d62953: #d62953;
+$color-8a8aa8: #8a8aa8;
 * {
   box-sizing: border-box;
 }
@@ -95,7 +102,7 @@ export default {
       border-bottom: 1px solid #EFEFF6;
       font-weight: 500;
       font-size: 12px;
-      color: #262541;
+      color: $color-262541;
       padding-top: 6px;
       height: 51px;
     }
@@ -106,7 +113,7 @@ export default {
       span {
         font-weight: 400;
         font-size: 12px;
-        color: #575775;
+        color: $color-575775;
         margin-right: 9px;
       }
     }
@@ -159,7 +166,7 @@ export default {
           .name { 
             font-weight: 600;
             font-size: 14px;
-            color: #262541;
+            color: $color-262541;
           }
           .position { 
             font-weight: 500;

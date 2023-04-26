@@ -126,6 +126,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-8a8aa8: #8a8aa8;
 // SCSS variables for hex colors
 $color-dfdeed: #dfdeed;
 $color-f9f9fc: #f9f9fc;
@@ -140,7 +141,7 @@ $color-e2e2e9: #e2e2e9;
     width: 100%;
 
     &.focused {
-      border: 1.5px solid #8a8aa8;
+      border: 1.5px solid $color-8a8aa8;
     }
     .b-text-area__min-max-label {
       font-family: 'Inter';

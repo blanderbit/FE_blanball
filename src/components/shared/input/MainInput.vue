@@ -282,6 +282,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-8a8aa8: #8a8aa8;
+$color-d9d9d9: #d9d9d9;
+$color-a8a8bd: #a8a8bd;
 // SCSS variables for hex colors
 $color-dfdeed: #dfdeed;
 
@@ -301,7 +304,7 @@ $color-dfdeed: #dfdeed;
     line-height: 24px;
     color: $--b-main-black-color;
     &.focused {
-      border: 1.5px solid #8a8aa8;
+      border: 1.5px solid $color-8a8aa8;
     }
     &.disabled {
       border: 1px solid #D9D9D9;

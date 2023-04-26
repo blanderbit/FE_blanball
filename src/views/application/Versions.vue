@@ -250,6 +250,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-f9f9fc: #f9f9fc;
+$color-6f6f77: #6f6f77;
+$color-ffffff: #ffffff;
+$color-f0f0f4: #f0f0f4;
+$color-efeff6: #efeff6;
+$color-d3f8f7: #d3f8f7;
 .vueper-slides {
   box-shadow: none;
   background: none;
@@ -325,7 +331,7 @@ ul {
           max-width: none;
         }
         .b-what-new {
-          background: #f9f9fc;
+          background: $color-f9f9fc;
           border-radius: 8px;
           padding: 20px 12px;
 
@@ -337,7 +343,7 @@ ul {
               @include inter(12px, 400, $--b-main-white-color);
               line-height: 20px;
               padding: 3px 6px;
-              background: #6f6f77;
+              background: $color-6f6f77;
               border-radius: 4px;
               text-align: center;
               margin-left: 8px;
@@ -390,7 +396,7 @@ ul {
         gap: 12px 12px;
 
         .b-versions-list__version {
-          background: #ffffff;
+          background: $color-ffffff;
           border: 1px solid #F0F0F4;
           border-radius: 6px;
           padding: 16px;
@@ -400,7 +406,7 @@ ul {
           cursor: pointer;
 
           &.selected {
-            background: #efeff6;
+            background: $color-efeff6;
             box-shadow: none;
             border: none;
           }
@@ -417,7 +423,7 @@ ul {
               @include inter(12px, 500, $--b-main-green-color);
               line-height: 20px;
               text-align: center;
-              background: #d3f8f7;
+              background: $color-d3f8f7;
               border-radius: 4px;
               padding: 0px 8px;
             }

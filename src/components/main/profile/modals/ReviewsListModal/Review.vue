@@ -78,21 +78,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-dfdeed: #dfdeed;
+$color-f9f9fc: #f9f9fc;
 .b-review {
   padding: 16px 0px;
-  border-bottom: 1px dashed #dfdeed;
+  border-bottom: 1px dashed $color-dfdeed;
   height: fit-content;
 
   @include mobile {
     padding: 12px 0px;
-    border-top: 1px dashed #dfdeed;
+    border-top: 1px dashed $color-dfdeed;
     border-bottom: none;
   }
 
   &.opened {
-    background: #f9f9fc;
+    background: $color-f9f9fc;
     padding: 12px;
-    border: 1px dashed #dfdeed;
+    border: 1px dashed $color-dfdeed;
     border-radius: 8px;
   }
 

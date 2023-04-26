@@ -37,13 +37,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-575775: #575775;
 .b_breadcrumbs {
   ul {
     display: flex;
     li {
       list-style: none;
       a {
-        @include inter(12px, 400, #575775);
+        @include inter(12px, 400, $color-575775);
         text-decoration: none;
 
         &.b-current-route {

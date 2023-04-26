@@ -26,6 +26,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-e2e2e9: #e2e2e9;
+$color-6f6f77: #6f6f77;
 .b-public-profile__wrapper__wrapper {
   position: fixed;
   top: 0;
@@ -56,7 +58,7 @@ export default {
       right: 50px;
 
       .b-public-profile__continue {
-        @include inter(12px, 400, #e2e2e9);
+        @include inter(12px, 400, $color-e2e2e9);
         line-height: 24px;
         text-align: center;
         display: flex;
@@ -68,7 +70,7 @@ export default {
         @include inter(12px, 500, $--b-main-white-color);
         line-height: 24px;
         text-align: center;
-        background: #6f6f77;
+        background: $color-6f6f77;
         border-radius: 6px;
         padding: 2px 8px;
         display: flex;

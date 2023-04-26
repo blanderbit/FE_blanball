@@ -150,6 +150,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-dfdeed: #dfdeed;
 .b-reviews-list-modal__wrapper {
   @include modal-wrapper;
 
@@ -191,7 +192,7 @@ export default {
       align-items: center;
       justify-content: space-between;
       padding-bottom: 12px;
-      border-bottom: 1px solid #dfdeed;
+      border-bottom: 1px solid $color-dfdeed;
       position: relative;
 
       @include mobile {

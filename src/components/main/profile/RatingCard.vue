@@ -52,6 +52,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-efeff6: #efeff6;
+$color-f9f9fc: #f9f9fc;
+$color-fcfcfc: #fcfcfc;
+$color-262541: #262541;
 
 .b-rating-card {
   height: fit-content;
@@ -71,7 +75,7 @@ export default {
 
   @include tabletAndMobile {
     box-shadow: none;
-    background: #efeff6;
+    background: $color-efeff6;
     padding: 12px 16px;
     margin-bottom: 16px;
   }
@@ -96,7 +100,7 @@ export default {
   }
 
   .b-raiting-card-raiting-scale {
-    background: #f9f9fc;
+    background: $color-f9f9fc;
     border-radius: 100px;
     padding: 8px 16px 8px 12px;
     height: 44px;
@@ -106,7 +110,7 @@ export default {
     align-items: center;
 
     @include tabletAndMobile {
-      background: #fcfcfc;
+      background: $color-fcfcfc;
       margin-top: 8px;
     }
 
@@ -117,7 +121,7 @@ export default {
       span {
         @include inter(22px, 700);
         line-height: 28px;
-        color: #262541;
+        color: $color-262541;
       }
     }
   }

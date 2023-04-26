@@ -44,6 +44,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-148783: #148783;
+$color-efeff6: #efeff6;
 .spiner-wrapper {
   background: rgba(255, 255, 255, 0.514);
   position: fixed;
@@ -82,10 +84,10 @@ export default {
   width: 140px;
   height: 140px;
   border: 12px solid transparent;
-  border-top-color: #148783;
-  border-right-color: #148783;
-  border-left-color: #efeff6;
-  border-bottom-color: #efeff6;
+  border-top-color: $color-148783;
+  border-right-color: $color-148783;
+  border-left-color: $color-efeff6;
+  border-bottom-color: $color-efeff6;
   border-radius: 50%;
   position: relative;
   animation: spinner-rotate 1.3s linear infinite;
@@ -99,8 +101,8 @@ export default {
   width: 12px;
   height: 12px;
   border-radius: 100px;
-  background: linear-gradient(rgba(20, 135, 131, 0) 50%, #148783 50%),
-    linear-gradient(106.25deg, #148783 12.19%, rgba(69, 208, 204, 0.1) 102.49%);
+  background: linear-gradient(rgba(20, 135, 131, 0) 50%, $color-148783 50%),
+    linear-gradient(106.25deg, $color-148783 12.19%, rgba(69, 208, 204, 0.1) 102.49%);
 }
 
 .spinner__ring::before {

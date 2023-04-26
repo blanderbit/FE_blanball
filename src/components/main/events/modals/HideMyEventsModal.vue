@@ -299,6 +299,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-dfdeed: #dfdeed;
 $color-e2e2e4: #e2e2e4;
 $color-efeff6: #efeff6;
 :deep(.vue-recycle-scroller__item-view) {
@@ -308,7 +309,7 @@ $color-efeff6: #efeff6;
 }
 
 :deep(.b_white-btn) {
-  border: 1px solid #dfdeed !important;
+  border: 1px solid $color-dfdeed !important;
 }
 
 .b-hide-events-modal__wrapper {

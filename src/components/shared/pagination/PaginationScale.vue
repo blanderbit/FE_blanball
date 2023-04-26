@@ -90,6 +90,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-efeff6: #efeff6;
 .b-pagination-scale {
   display: flex;
   align-items: center;
@@ -119,7 +120,7 @@ export default {
       line-height: 17px;
       padding: 8px 12px;
       text-align: center;
-      background: #efeff6;
+      background: $color-efeff6;
       border-radius: 8px;
     }
   }

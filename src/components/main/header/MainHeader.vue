@@ -184,6 +184,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-dfdeed: #dfdeed;
+$color-fff: #fff;
 // SCSS variables for hex colors
 $color-fafafa: #fafafa;
 
@@ -220,10 +222,10 @@ $color-fafafa: #fafafa;
   }
   .b_scheduler_button {
     padding: 10px 16px;
-    border: 1px solid #dfdeed;
+    border: 1px solid $color-dfdeed;
     border-radius: 6px;
     cursor: pointer;
-    background: #fff;
+    background: $color-fff;
   }
   .b_header_search-block {
     .b_header_search-input {

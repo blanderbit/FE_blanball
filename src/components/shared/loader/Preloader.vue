@@ -68,6 +68,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-262541: #262541;
 .b-preloader__wrapper {
   background: rgba(255, 255, 255, 1);
   position: fixed;
@@ -107,7 +108,7 @@ export default {
       font-size: 14px;
       line-height: 24px;
       text-align: center;
-      color: #262541;
+      color: $color-262541;
     }
   }
 }

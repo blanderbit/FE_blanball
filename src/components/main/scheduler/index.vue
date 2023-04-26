@@ -177,6 +177,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
+$color-ffffff: #ffffff;
+$color-fff: #fff;
+$color-efeff6: #efeff6;
+$color-575775: #575775;
+$color-bef0ef: #bef0ef;
+$color-148783: #148783;
+$color-e9fcfb: #e9fcfb;
 * {
   box-sizing: border-box;
 }
@@ -190,7 +197,7 @@ export default {
   font-family: 'Inter', sans-serif;
   padding: 8px;
   .c-common-block {
-    background: #ffffff;
+    background: $color-ffffff;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 8px;
     padding: 16px;
@@ -202,9 +209,9 @@ export default {
 
     .c-right-block {
       z-index: 1;
-      background: #fff;
+      background: $color-fff;
       .c-friends-line {
-        border-bottom: 1px solid #efeff6;
+        border-bottom: 1px solid $color-efeff6;
         padding-bottom: 14px;
         height: 51px;
         position: relative;
@@ -233,7 +240,7 @@ export default {
                 .c-title {
                   font-weight: 500;
                   font-size: 12px;
-                  color: #575775;
+                  color: $color-575775;
                 }
               }
               .vuecal__menu {
@@ -264,7 +271,7 @@ export default {
                       width: 28px;
                       height: 28px;
                       right: 0px;
-                      background: #bef0ef;
+                      background: $color-bef0ef;
                       border-radius: 0px 0px 0px 4px;
                       display: flex;
                       flex-direction: column;
@@ -274,14 +281,14 @@ export default {
                       .c-menu-dots {
                         width: 3px;
                         height: 3px;
-                        background: #148783;
+                        background: $color-148783;
                         border-radius: 50%;
                         margin-bottom: 2px;
                       }
                     }
                     &:hover {
-                      background: #e9fcfb;
-                      color: #148783;
+                      background: $color-e9fcfb;
+                      color: $color-148783;
                     }
                     .c-event-dots {
                       margin-top: 10px;

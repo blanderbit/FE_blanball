@@ -92,7 +92,7 @@ $color-c8ebe7: #c8ebe7;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
-    border: 1.5px solid #efeff6;
+    border: 1.5px solid $color-efeff6;
   }
 
   &-circle {
