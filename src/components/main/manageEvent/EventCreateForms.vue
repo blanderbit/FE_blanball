@@ -7,7 +7,7 @@
       <span class="b-event-info__form-title">
         {{ $t('events.team_num', { num: index + 1 }) }}
         <img
-          src="../../assets/img/change-forms-arrow.svg"
+          src="../../../assets/img/change-forms-arrow.svg"
           alt=""
           @click="$emit('changeForms')"
         />
