@@ -16,9 +16,10 @@
     @itemClick="contextMenuItemClick"
   />
 
-  <SlideMenuWrapper 
+  <SlideMenuWrapper
     :isMenuOpened="isMenuOpened"
-    @close="$emit('update:isMenuOpened', $event)">
+    @close="$emit('update:isMenuOpened', $event)"
+  >
     <template #logo>
       <img src="../../assets/img/logo-sidebar.svg" alt="" />
     </template>
@@ -203,15 +204,14 @@
         </div>
       </div>
       <div class="b_slide_menu_bottom-line">
-        <div class="b-blanball-version">
+        <router-link
+          class="b-blanball-version"
+          :to="routeObject.APPLICATION.VERSIONS.absolute"
+          @click="$emit('close')"
+        >
           {{ $t('slide_menu.version') }}
-          <router-link
-            :to="routeObject.APPLICATION.VERSION.absolute"
-            @click="$emit('close')"
-          >
-            <span>{{ clientVersion }}</span>
-          </router-link>
-        </div>
+          <span>{{ clientVersion }}</span>
+        </router-link>
         <div class="b-blanball-made-by-flumx">Розроблено: FlumX</div>
       </div>
     </template>
@@ -359,7 +359,6 @@ export default {
       return ROUTES;
     });
 
-    
     const getNewNotificationInstance = computed(() => {
       newNotificationInstance.value.countOfNewNotifications =
         context.newNotifications;

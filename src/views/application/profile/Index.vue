@@ -10,6 +10,10 @@
   </PublicProfileWrapper>
   <div class="b-user-cabinet">
     <loader :is-loading="isLoading" />
+    <ReviewsListModal
+      v-if="isReviewsListModalOpened"
+      @closeModal="closeReviewsModal"
+    />
 
     <EditAvatarModal
       v-if="isModalActive.edit_avatar"
@@ -109,6 +113,7 @@
           v-if="!isTabletSize && !isMobile"
           :rating-scale="userRating"
           :reviewsCount="reviewsTotalCount"
+          @showReviewsModal="showReviewsModal"
         />
         <UserDetailsCard
           :user-data="userData"
@@ -122,6 +127,7 @@
             v-if="isTabletSize"
             :rating-scale="userRating"
             :reviewsCount="reviewsTotalCount"
+            @showReviewsModal="showReviewsModal"
           />
           <SecurityBlock
             @toggle-modal="toggleModal"
@@ -173,6 +179,7 @@ import loader from '../../../components/shared/loader/Loader.vue';
 import PublicProfile from '../../../components/main/publicProfile/PublicProfile.vue';
 import HideMyEventsModal from '../../../components/main/events/modals/HideMyEventsModal.vue';
 import PublicProfileWrapper from '../../../components/main/publicProfile/PublicProfileWrapper.vue';
+import ReviewsListModal from '../../../components/main/profile/modals/ReviewsListModal/ReviewsListModal.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '@/stores/userData';
@@ -201,6 +208,7 @@ export default {
     ChangePasswordModal,
     SubmitModal,
     Form,
+    ReviewsListModal,
     loader,
     ChangeEmailModal,
     ButtonsBlock,
@@ -228,6 +236,7 @@ export default {
     const userAvatar = ref('');
     const restData = ref();
     const nextRoutePath = ref('');
+    const isReviewsListModalOpened = ref(false);
     const isHideMyEventsModalOpened = ref(false);
 
     const isTabletSize = computed(() => {
@@ -262,12 +271,12 @@ export default {
     });
 
     const userRating = computed(() => {
-      return userStore.user.raiting ? userStore.user.raiting.toFixed(1) : null
-    })
+      return userStore.user.raiting ? userStore.user.raiting.toFixed(1) : null;
+    });
 
     const reviewsTotalCount = computed(() => {
-      return router.currentRoute.value.meta.allReviewsData?.data?.total_count
-    })
+      return router.currentRoute.value.meta.allReviewsData?.data?.total_count;
+    });
 
     restData.value = {
       ...userStore.user,
@@ -316,7 +325,9 @@ export default {
     userData.value = {
       ...userStore.user.profile,
       phone: userStore.user.phone,
-      raiting: userStore.user.raiting ? userStore.user.raiting.toFixed(1) : null,
+      raiting: userStore.user.raiting
+        ? userStore.user.raiting.toFixed(1)
+        : null,
       working_leg: getWorkingLeg(userStore.user.profile.working_leg),
       role: userStore.user.role,
     };
@@ -426,6 +437,14 @@ export default {
       isHideMyEventsModalOpened.value = false;
     };
 
+    const closeReviewsModal = () => {
+      isReviewsListModalOpened.value = false;
+    };
+
+    const showReviewsModal = () => {
+      isReviewsListModalOpened.value = true;
+    };
+
     function saveUserDataChanges() {
       const refProfileData = { ...myForm.value.getControledValues() };
       const {
@@ -519,7 +538,6 @@ export default {
           isLoading.value = false;
         });
     }
-
 
     function changeTab(id, url, isDisabled) {
       if (isDisabled) return;
@@ -662,6 +680,8 @@ export default {
       openEditPictureModal,
       getMyProfile,
       closeModalAndHideEvents,
+      closeReviewsModal,
+      showReviewsModal,
       cancelChangesAndGoToTheNextRoute,
       showPreview,
       showHideMyEventsModal,
@@ -673,6 +693,7 @@ export default {
       profileMainSideHeight,
       userStore,
       checkboxData,
+      isReviewsListModalOpened,
       userData,
       isHideMyEventsModalOpened,
       schema,

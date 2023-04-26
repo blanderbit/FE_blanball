@@ -25,7 +25,7 @@ export const ROUTES = {
       path: '/application',
       name: 'application',
     },
-    VERSION: {
+    VERSIONS: {
       relative: 'versions',
       absolute: '/application/versions',
       name: 'application-versions',

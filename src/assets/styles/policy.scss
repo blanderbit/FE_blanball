@@ -20,6 +20,7 @@ p {
 ul {
   list-style: none;
   li {
+    margin-left: 20px;
     @include inter(14px, 500);
     line-height: 22px;
     &::before {
@@ -28,7 +29,6 @@ ul {
       font-weight: bold;
       display: inline-block;
       width: 1em;
-      margin-left: -1em;
     }
   }
 }

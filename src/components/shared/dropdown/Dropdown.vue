@@ -387,7 +387,7 @@ $color-dfdeed: #dfdeed;
 
     &-text {
       &.disabled {
-        @include inter(14px, 400);
+        @include inter(14px, 400, #A8A8BD);
       }
     }
 

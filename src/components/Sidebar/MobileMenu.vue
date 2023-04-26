@@ -11,15 +11,13 @@
     <div class="b-mob-menu__logo-block">
       <div class="b-mob-menu__logo-left">
         <div class="b-mob-menu__logo">{{ $t('menu.blanball') }}</div>
-        <div class="b-mob-menu__version">
-          {{ $t('slide_menu.version') }}
-          <router-link
-            :to="routeObject.APPLICATION.VERSION.absolute"
-            @click="closeMobMenu"
-          >
-            <span>{{ clientVersion }}</span>
-          </router-link>
-        </div>
+        <router-link
+          class="b-mob-menu__version"
+          :to="routeObject.APPLICATION.VERSIONS.absolute"
+          @click="closeMobMenu"
+        >
+          <span>{{ $t('slide_menu.version') }} {{ clientVersion }}</span>
+        </router-link>
       </div>
       <div class="b-mob-menu__close" @click="closeMobMenu">&times;</div>
     </div>
@@ -160,7 +158,11 @@
     </div>
     <div v-if="selectedList.length" class="b-mob-menu__control-block">
       <div class="b-control-block__block">
-        <img src="../../assets/img/cross.svg" alt="" @click="clearSelectedList" />
+        <img
+          src="../../assets/img/cross.svg"
+          alt=""
+          @click="clearSelectedList"
+        />
         <div class="b-selected-elements-count">
           <span>{{ selectedList.length }}</span>
         </div>
@@ -692,23 +694,13 @@ $color-1ccd62: #1ccd62;
         color: $--b-main-black-color;
       }
       .b-mob-menu__version {
-        @include inter(12px, 400, $color-8a8aa8);
+        @include inter(12px, 400, $--b-main-gray-color);
         line-height: 16px;
-
         display: flex;
         align-items: center;
         text-align: center;
         margin-top: 10px;
         cursor: pointer;
-
-        span {
-          text-decoration: none;
-          font-style: normal;
-          font-weight: 600;
-          font-size: 12px;
-          line-height: 16px;
-          color: $color-8a8aa8;
-        }
       }
     }
     .b-mob-menu__close {

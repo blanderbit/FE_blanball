@@ -31,8 +31,6 @@ import { useRouter } from 'vue-router';
 
 import { ROUTES } from '../../../router/router.const';
 
-import VueScrollTo from 'vue-scrollto'
-
 export default {
   props: {
     contentItems: {

@@ -24,7 +24,8 @@
         <span>{{ ratingScale || 0 }}</span> / 5.0
       </div>
     </div>
-    <div v-if="ratingScale && reviewsCount" class="b-show-reviews-button">
+    <div v-if="ratingScale && reviewsCount" class="b-show-reviews-button"
+      @click="$emit('showReviewsModal')">
       Переглянути відгуки ({{ reviewsCount }})
     </div>
   </div>

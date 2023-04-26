@@ -40,7 +40,7 @@ export default {
 
     function showVersionsPage() {
       context.emit('closeModalClick');
-      router.push(ROUTES.APPLICATION.VERSION.absolute);
+      router.push(ROUTES.APPLICATION.VERSIONS.absolute);
     }
     return {
       showVersionsPage,

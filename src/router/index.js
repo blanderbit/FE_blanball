@@ -67,8 +67,8 @@ const router = createRouter({
       redirect: ROUTES.APPLICATION.EVENTS.absolute,
       children: [
         {
-          path: ROUTES.APPLICATION.VERSION.relative,
-          name: ROUTES.APPLICATION.VERSION.name,
+          path: ROUTES.APPLICATION.VERSIONS.relative,
+          name: ROUTES.APPLICATION.VERSIONS.name,
           beforeEnter: routerAuthResolver.routeInterceptor(() => ({
             allVersions: () => API.VersionsService.getAllVersions(),
             usersData,
@@ -284,6 +284,8 @@ router.beforeEach(async (to, from, next) => {
     } else {
       next(ROUTES.APPLICATION.EVENTS.absolute);
     }
+  } else if (to.name === ROUTES.APPLICATION.VERSIONS.name) {
+    next();
   } else {
     next();
   }
