@@ -94,7 +94,7 @@ import MainInput from '../../shared/input/MainInput.vue';
 import checkBox from '../../shared/checkbox/Checkbox.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
-import { TokenWorker } from '../../../workers/token-worker';
+import { accessToken, refreshToken } from '../../../workers/token-worker';
 
 import { ROUTES } from '../../../router/router.const';
 import SCHEMAS from '../../../validators/schemas';
@@ -144,7 +144,8 @@ export default {
         } else {
           tokenStorage = 'session_storage'
         }
-        TokenWorker.setToken(apiRequestResult.data.tokens.access, tokenStorage);
+        accessToken.setToken(apiRequestResult.data.tokens.access, tokenStorage);
+        refreshToken.setToken(apiRequestResult.data.tokens.refresh, tokenStorage);
         const redirectUrl = router.currentRoute.value.query.redirectUrl;
         if (redirectUrl) {
           const resolveRouter = router.resolve(redirectUrl);

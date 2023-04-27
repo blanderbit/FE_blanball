@@ -89,7 +89,7 @@ import step10 from '../../components/main/registration/Step10.vue';
 import AuthenticationMain from '../../components/AuthenticationMain.vue';
 
 import { API } from '../../workers/api-worker/api.worker';
-import { TokenWorker } from '../../workers/token-worker';
+import { accessToken, refreshToken } from '../../workers/token-worker';
 import { PositionMapBus } from '../../workers/event-bus-worker';
 
 import { ROUTES } from '../../router/router.const';
@@ -256,7 +256,8 @@ export default {
             } else {
               tokenStorage = 'session_storage';
             }
-            TokenWorker.setToken(apiRequestResult.data.access, tokenStorage);
+            accessToken.setToken(apiRequestResult.data.access, tokenStorage);
+            refreshToken.setToken(apiRequestResult.data.refresh, tokenStorage);
             const apiRequestResultMyProfile =
               await API.UserService.getMyProfile();
             profileValues = apiRequestResultMyProfile.data;

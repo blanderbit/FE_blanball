@@ -125,7 +125,7 @@ import LeftSidebar from '../../components/main/scheduler/LeftSidebar.vue';
 import TopLineFriends from '../../components/main/scheduler/TopLineFriends.vue';
 
 import { AuthWebSocketWorkerInstance } from '../../workers/web-socket-worker';
-import { TokenWorker } from '../../workers/token-worker';
+import { accessToken, refreshToken } from '../../workers/token-worker';
 import { notificationButtonHandlerMessage } from '../../workers/utils-worker';
 import { useUserDataStore } from '@/stores/userData';
 import {
@@ -395,7 +395,7 @@ const handleNewMessage = (instanceType) => {
 };
 
 AuthWebSocketWorkerInstance.registerCallback(handleNewMessage).connect({
-  token: TokenWorker.getToken(),
+  token: accessToken.getToken(),
 });
 
 onBeforeUnmount(() => {

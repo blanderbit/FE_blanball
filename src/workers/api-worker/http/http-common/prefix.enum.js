@@ -2,6 +2,7 @@ export const EndpointsEnum = {
   Authorization: {
     Register: '/authentication/client/register',
     Login: '/authentication/client/login',
+    Logout: '/authentication/client/logout',
     ResetPasswordRequest: '/authentication/client/request-reset/password',
     VerifyCode: '/authentication/client/check/code',
     VerifyCodeResetPassword:

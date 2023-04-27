@@ -1,7 +1,7 @@
 import { useToast } from 'vue-toastification';
 
 import { resolverFunctions } from '../workers/resolver-worker/resolver.functions';
-import { TokenWorker } from '../workers/token-worker';
+import { accessToken, refreshToken } from '../workers/token-worker';
 import { TypeRequestMessageWorker } from '../workers/type-request-message-worker';
 
 import router from '../router';
@@ -17,9 +17,8 @@ export const ErrorInterceptor = (error) => {
   error = error?.response?.data || getJsonErrorData;
 
   if (error?.status === 401 || getJsonErrorData?.status === 401) {
-    const findCurRouteFromList =
-      window.location.pathname.includes('application');
-    TokenWorker.clearToken();
+    const findCurRouteFromList = window.location.pathname.includes('application');
+    accessToken.clearToken();
 
     router.push(
       findCurRouteFromList
@@ -31,7 +30,7 @@ export const ErrorInterceptor = (error) => {
   const errorMessageType = TypeRequestMessageWorker(error).filter(
     (item) => !skipErrorMessageType?.includes(item.errorType)
   )[0];
-  
+
   if (errorMessageType) {
     toast.error(
       i18n.global.t(`responseMessageTypes.${errorMessageType.errorType}`, {

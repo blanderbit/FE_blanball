@@ -12,6 +12,13 @@ export class AuthorizationService {
     );
   }
 
+  static Logout(data) {
+    return AxiosInstance.post(
+      EndpointsEnum.Authorization.Logout,
+      data,
+    );
+  }
+
   static ResetPasswordRequest(data) {
     return AxiosInstance.post(
       EndpointsEnum.Authorization.ResetPasswordRequest,
