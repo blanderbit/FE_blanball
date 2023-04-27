@@ -43,7 +43,7 @@ export default {
     li {
       list-style: none;
       a {
-        @include inter(12px, 400, $--b-main-green-color);
+        @include inter(12px, 400, $--b-main-gray-color);
         text-decoration: none;
 
         &.b-current-route {

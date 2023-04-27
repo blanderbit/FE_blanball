@@ -1,7 +1,7 @@
 <template>
   <div class="b-versions">
     <div class="b-versions__title">
-      Тут буде написано що саме ми додали до наявного функціоналу
+      Тут буде написано що саме мидодали до наявного функціоналу
     </div>
     <div class="b-versions-content">
       <div v-if="selectedVersionData" class="b-versions__main-side">
@@ -12,6 +12,7 @@
             :allowTouchMove="false"
             :bullets="false"
             :loop="true"
+            :simulateTouch=false
             :gap="2"
             :draggingDistance="10"
             :arrows-outside="false"
@@ -84,44 +85,48 @@
       </div>
       <div class="b-versions__history-side">
         <div class="b-history-side__title">{{ $t('versions.history') }}</div>
-        <div class="b-history-side__versions-list">
-          <div
-            v-for="version in paginationElements"
-            :class="[
-              'b-versions-list__version',
-              { selected: version.id === selectedVersionData.id },
-            ]"
-            @click="switchVersion(version)"
-          >
-            <div class="b-version-left__side">
-              <div class="b-version__number">
-                {{ $t('versions.version-number', { number: version.version }) }}
+        <div class="b-history-side__content">
+          <div class="b-history-side__versions-list">
+            <div
+              v-for="version in paginationElements"
+              :class="[
+                'b-versions-list__version',
+                { selected: version.id === selectedVersionData.id },
+              ]"
+              @click="switchVersion(version)"
+            >
+              <div class="b-version-left__side">
+                <div class="b-version__number">
+                  {{
+                    $t('versions.version-number', { number: version.version })
+                  }}
+                </div>
+                <div v-if="version.id === newVersionId" class="b-version__new">
+                  {{ $t('versions.new') }}
+                </div>
               </div>
-              <div v-if="version.id === newVersionId" class="b-version__new">
-                {{ $t('versions.new') }}
+              <div class="b-version-right__side">
+                <div class="b-version-date">{{ version.created_at }}</div>
+                <img
+                  v-if="version.id === selectedVersionData.id"
+                  src="../../assets/img/cross.svg"
+                  alt=""
+                />
+                <img
+                  v-else
+                  width="8"
+                  src="../../assets/img/arrow-right.svg"
+                  alt=""
+                />
               </div>
-            </div>
-            <div class="b-version-right__side">
-              <div class="b-version-date">{{ version.created_at }}</div>
-              <img
-                v-if="version.id === selectedVersionData.id"
-                src="../../assets/img/cross.svg"
-                alt=""
-              />
-              <img
-                v-else
-                width="8"
-                src="../../assets/img/arrow-right.svg"
-                alt=""
-              />
             </div>
           </div>
+          <PaginationScale
+            :currentPage="paginationPage"
+            :pagesTotalCount="totalPagesCount"
+            @changePage="loadVersions"
+          />
         </div>
-        <PaginationScale
-          :currentPage="paginationPage"
-          :pagesTotalCount="totalPagesCount"
-          @changePage="changePaginationPage"
-        />
       </div>
     </div>
   </div>
@@ -192,7 +197,6 @@ export default {
       paginationPage,
       paginationTotalCount,
       paginationLoad,
-      paginationClearData,
     } = PaginationWorker({
       paginationDataRequest: (page) =>
         API.VersionsService.getAllVersions({ page: page }),
@@ -216,9 +220,8 @@ export default {
       });
     };
 
-    const changePaginationPage = (pageNumber) => {
-      paginationPage.value = pageNumber;
-      loadDataPaginationData(paginationPage.value, null);
+    const loadVersions = (pageNumber) => {
+      loadDataPaginationData(pageNumber, null);
     };
 
     const totalPagesCount = computed(() => {
@@ -241,7 +244,7 @@ export default {
       totalPagesCount,
       paginationPage,
       newVersionId,
-      changePaginationPage,
+      loadVersions,
       switchVersion,
       loadDataPaginationData,
     };
@@ -277,10 +280,6 @@ ul {
 }
 
 .b-versions {
-  @include beforeDesktop {
-    overflow-y: scroll;
-    padding-bottom: 20px;
-  }
   .b-versions__title {
     @include exo(20px, 700);
     line-height: 28px;
@@ -295,6 +294,9 @@ ul {
     @include beforeDesktop {
       display: flex;
       flex-direction: column;
+      overflow-y: scroll;
+      padding-bottom: 20px;
+      height: calc(100vh - 120px - 75px);
     }
 
     .b-versions__main-side {
@@ -375,8 +377,6 @@ ul {
     .b-versions__history-side {
       padding: 0px 5px;
       max-width: 464px;
-      overflow-y: scroll;
-
       @media (min-width: 992px) and (max-width: 1200px) {
         margin-left: 30px;
       }
@@ -388,15 +388,17 @@ ul {
         @include exo(16px, 600);
         line-height: 24px;
       }
-      .b-history-side__versions-list {
-        margin-top: 16px;
-        display: flex;
-        flex-direction: column;
-        gap: 12px 12px;
+
+      .b-history-side__content {
+        @include desktop {
+          overflow-y: scroll;
+          height: calc(100vh - 90px - 60px - 20px);
+          padding-bottom: 20px;
+        }
 
         .b-versions-list__version {
           background: $--b-main-white-color;
-          border: 1px solid #F0F0F4;
+          border: 1px solid #f0f0f4;
           border-radius: 6px;
           padding: 16px;
           display: flex;
@@ -439,6 +441,12 @@ ul {
             }
           }
         }
+      }
+      .b-history-side__versions-list {
+        margin-top: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px 12px;
       }
     }
   }
