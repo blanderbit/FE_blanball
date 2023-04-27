@@ -3,7 +3,7 @@
     <ModalWindow
       :is-title-shown="false"
       :window-width="332"
-      @close-modal="$emit('closeModal')"
+      @closeModal="$emit('closeModal')"
     >
       <template #modal-filter>
         <div class="b-modal-filters">

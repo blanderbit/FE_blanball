@@ -1,0 +1,14 @@
+# Set default behavior for text files
+* text=auto
+
+# Treat certain files as binary
+*.png binary
+*.jpg binary
+*.gif binary
+*.ico binary
+*.svg binary
+
+# Ignore some files and directories
+/node_modules/ linguist-generated=true
+/dist/ linguist-generated=true
+.DS_Store linguist-generated=true

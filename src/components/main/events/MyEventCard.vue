@@ -317,12 +317,12 @@ $color-4c4a82: #4c4a82;
   }
 }
 
-.b-my-event-card__place:deep(.b-place-detector) {
+:deep(.b-place-detector) {
   background: $color-efeff6;
   border-radius: 4px;
   margin-top: 10px;
-  width: fit-content;
-  max-width: 70%;
+  width: 212px;
   cursor: pointer;
+  background: #FAFAFA;
 }
 </style>

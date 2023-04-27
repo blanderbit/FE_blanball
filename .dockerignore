@@ -6,3 +6,8 @@
 swagger.json
 node_modules
 scripts
+.gitattributes
+CNAME
+CODE_OF_CONDUCT
+LICENSE
+README

@@ -6,8 +6,8 @@
       v-model:range-slider="transformedFilters.profile__age"
       v-model:gender="transformedFilters.profile__gender"
       :elementsCount="elementsCount"
-      @close-modal="isModalFiltersActive = false"
-      @set-modal-window-filters="setModalFilters"
+      @closeModal="isModalFiltersActive = false"
+      @setModalWindowFilters="setModalFilters"
       @clearFilters="$emit('clearFilters')"
     />
     <div class="b-main-search__wrapper">
