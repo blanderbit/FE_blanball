@@ -20,6 +20,14 @@ export class AuthorizationService {
     );
   }
 
+  static refreshTokens(data) {
+    return AxiosInstance.post(
+      EndpointsEnum.Authorization.RefreshTokens,
+      data,
+      AxiosParams(AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_REFRESH_TOKEN]))
+    );
+  }
+
   static ResetPasswordRequest(data) {
     return AxiosInstance.post(
       EndpointsEnum.Authorization.ResetPasswordRequest,

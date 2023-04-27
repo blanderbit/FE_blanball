@@ -97,6 +97,7 @@ import { API } from '../../../workers/api-worker/api.worker';
 import { accessToken, refreshToken } from '../../../workers/token-worker';
 
 import { ROUTES } from '../../../router/router.const';
+import CONSTS from '../../../consts';
 import SCHEMAS from '../../../validators/schemas';
 
 export default {
@@ -140,9 +141,9 @@ export default {
         let tokenStorage
 
         if (data.values.save_credentials) {
-          tokenStorage = 'local_storage'
+          tokenStorage = CONSTS.storages.LOCAL_STORAGE;
         } else {
-          tokenStorage = 'session_storage'
+          tokenStorage = CONSTS.storages.SESSION_STORAGE;
         }
         accessToken.setToken(apiRequestResult.data.tokens.access, tokenStorage);
         refreshToken.setToken(apiRequestResult.data.tokens.refresh, tokenStorage);

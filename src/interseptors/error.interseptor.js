@@ -1,14 +1,14 @@
 import { useToast } from 'vue-toastification';
-
-import { resolverFunctions } from '../workers/resolver-worker/resolver.functions';
-import { accessToken, refreshToken } from '../workers/token-worker';
 import { TypeRequestMessageWorker } from '../workers/type-request-message-worker';
 
-import router from '../router';
+import { refreshTokens } from '../utils/refreshTokens';
+import { useRefreshTokenStore } from '../stores/refresh';
+
 import { i18n } from '../main';
-import { ROUTES } from '../router/router.const';
 
 const toast = useToast();
+
+const refreshTokenStore = useRefreshTokenStore();
 
 export const ErrorInterceptor = (error) => {
   const getJsonErrorData = error.toJSON();
@@ -16,15 +16,12 @@ export const ErrorInterceptor = (error) => {
     error?.response?.config?.skipErrorMessageType || [];
   error = error?.response?.data || getJsonErrorData;
 
-  if (error?.status === 401 || getJsonErrorData?.status === 401) {
-    const findCurRouteFromList = window.location.pathname.includes('application');
-    accessToken.clearToken();
-
-    router.push(
-      findCurRouteFromList
-        ? resolverFunctions._createLoginPath(window.location.pathname)
-        : ROUTES.AUTHENTICATIONS.LOGIN.absolute
-    );
+  if (error?.status === 404 || getJsonErrorData?.status === 404) {
+    if (!refreshTokenStore.isTokensRefreshing) {
+      refreshTokens();
+    } else {
+      refreshTokenStore.waitingRequests.push(getJsonErrorData);
+    }
   }
 
   const errorMessageType = TypeRequestMessageWorker(error).filter(
