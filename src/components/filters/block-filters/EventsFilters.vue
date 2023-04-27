@@ -45,6 +45,7 @@
               <MainInput
                 :title-width="0"
                 :placeholder="$t('events.search-events')"
+                :inputmode="'search'"
                 :height="32"
                 :backgroundColor="'#fff'"
                 :icon="icons.search"
@@ -123,6 +124,7 @@
               <MainInput
                 :title-width="0"
                 :placeholder="$t('events.search-events')"
+                :inputmode="'search'"
                 :height="32"
                 :backgroundColor="'#fff'"
                 :icon="icons.search"
@@ -134,6 +136,7 @@
               v-if="isMobileSearchOpened"
               :title-width="0"
               :placeholder="$t('events.search-events')"
+              :inputmode="'search'"
               :height="32"
               :icon="icons.cross"
               :backgroundColor="'#fff'"
@@ -146,6 +149,7 @@
               :title-width="0"
               :backgroundColor="'#fff'"
               :placeholder="$t('events.search-events')"
+              :inputmode="'search'"
               :height="36"
               :icon="icons.search"
               name="search"

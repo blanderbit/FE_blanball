@@ -1,6 +1,8 @@
 <template>
   <div>
-    <NewVersionModal v-if="isModalActive" @close-modal-click="closeModal" />
+    <NewVersionModal
+      v-if="isNewVersionModalActive"
+      @closeModal="closeNewVersionModal" />
     <router-view />
   </div>
 </template>
@@ -20,7 +22,7 @@ import { WebSocketTypes } from './workers/web-socket-worker/web.socket.types';
 import { ROUTES } from './router/router.const';
 
 const router = useRouter();
-const isModalActive = ref(false);
+const isNewVersionModalActive = ref(false);
 
 const handleMessageGeneral = (instance) => {
   switch (instance.messageType) {
@@ -28,9 +30,6 @@ const handleMessageGeneral = (instance) => {
       const maintenance = instance.data.maintenance.type;
       const ifCurrentRouteMaintenance = location.pathname.includes(
         ROUTES.WORKS.absolute
-      );
-      const ifCurrentRouteApplication = location.pathname.includes(
-        ROUTES.APPLICATION.index.name
       );
 
       if (ifCurrentRouteMaintenance && maintenance) {
@@ -63,9 +62,9 @@ const handleMessageGeneral = (instance) => {
 
 const VersionHandling = {
   handleDifferentVersion: () => {
-    isModalActive.value = true;
+    isNewVersionModalActive.value = true;
   },
-  closeVersionModal: () => (isModalActive.value = false),
+  closeVersionModal: () => (isNewVersionModalActive.value = false),
 };
 try {
   API.NotificationService.getMaintenance().then((result) =>
@@ -78,8 +77,7 @@ try {
       },
     })
   );
-} catch {
-}
+} catch {}
 
 try {
   GeneralSocketWorkerInstance.registerCallback(handleMessageGeneral).connect();
@@ -87,7 +85,7 @@ try {
 
 VersionDetectorWorker(VersionHandling.handleDifferentVersion);
 
-function closeModal() {
+function closeNewVersionModal() {
   VersionHandling.closeVersionModal();
 }
 </script>

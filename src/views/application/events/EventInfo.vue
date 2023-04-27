@@ -847,6 +847,7 @@ $color-8a8aa8: #8a8aa8;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding-bottom: 5px;
 
       .b-event-info__left-part {
         .b-event-info__title {

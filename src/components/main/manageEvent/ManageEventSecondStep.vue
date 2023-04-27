@@ -50,6 +50,7 @@
         :outside-title="true"
         :swipeTitle="false"
         :title="$t('events.enter-sum')"
+        :inputmode="'numeric'"
         :placeholder="'45₴'"
         v-maska="'#####'"
         :title-width="0"
@@ -71,6 +72,7 @@
     <div class="input">
       <MainInput
         :placeholder="$t('events.max-50')"
+        :inputmode="'numeric'"
         v-maska="'##'"
         :icon="icons.users"
         :title-width="0"
@@ -80,6 +82,7 @@
     <div class="input">
       <MainInput
         :placeholder="$t('events.search-users')"
+        :inputmode="'search'"
         :title-width="30"
         v-model="searchValue"
         :icon-left="icons.addUser"

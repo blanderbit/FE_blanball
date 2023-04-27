@@ -43,6 +43,7 @@
               <MainInput
                 :title-width="0"
                 :placeholder="$t('users.users-search')"
+                :inputmode="'search'"
                 :height="32"
                 :icon="icons.search"
                 :backgroundColor="'#fff'"
@@ -97,6 +98,7 @@
               <MainInput
                 :title-width="0"
                 :placeholder="$t('users.users-search')"
+                :inputmode="'search'"
                 :height="32"
                 :backgroundColor="'#fff'"
                 :icon="icons.search"
@@ -108,6 +110,7 @@
               v-if="isMobileSearchOpened"
               :title-width="0"
               :placeholder="$t('users.users-search')"
+              :inputmode="'search'"
               :height="32"
               :backgroundColor="'#fff'"
               :icon="icons.cross"
@@ -119,6 +122,7 @@
               class="b-main-search__search-input-tablet"
               :title-width="0"
               :placeholder="$t('users.users-search')"
+              :inputmode="'search'"
               :height="36"
               :backgroundColor="'#fff'"
               :icon="icons.search"

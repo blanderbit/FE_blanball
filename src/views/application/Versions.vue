@@ -296,7 +296,7 @@ ul {
       flex-direction: column;
       overflow-y: scroll;
       padding-bottom: 20px;
-      height: calc(100vh - 120px - 75px);
+      height: calc(100vh - 120px - 80px);
     }
 
     .b-versions__main-side {

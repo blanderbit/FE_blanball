@@ -41,6 +41,7 @@
         <input
           :type="inputType"
           :placeholder="placeholderValue"
+          :inputmode="inputMode"
           v-on="modelHandlers"
           :value="staticModelValue"
           :class="{ disabled: isDisabled }"
@@ -111,6 +112,10 @@ export default {
       default: 108,
     },
     type: {
+      type: String,
+      default: 'text',
+    },
+    inputMode: {
       type: String,
       default: 'text',
     },

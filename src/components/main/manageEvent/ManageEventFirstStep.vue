@@ -98,6 +98,7 @@
         <MainInput
           :outside-title="true"
           :title="$t('events.start')"
+          :inputmode="'numeric'"
           :placeholder="'17:00'"
           :title-width="0"
           :swipeTitle="false"
@@ -110,6 +111,7 @@
           :outside-title="true"
           :title="$t('events.end')"
           :placeholder="'18:10'"
+          :inputmode="'numeric'"
           :swipeTitle="false"
           :title-width="0"
           name="end_time"
