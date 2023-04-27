@@ -8,11 +8,13 @@ import { API } from '../workers/api-worker/api.worker';
 const userStore = useUserDataStore();
 
 export const logOut = async () => {
+  try {
     await API.AuthorizationService.Logout({
-        refresh: refreshToken.getToken()
+      refresh: refreshToken.getToken(),
     });
-    router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute);
-    userStore.$reset();
-    accessToken.clearToken();
-    refreshToken.clearToken();
-}
+  } catch {}
+  router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute);
+  userStore.$reset();
+  accessToken.clearToken();
+  refreshToken.clearToken();
+};

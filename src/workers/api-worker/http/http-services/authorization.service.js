@@ -16,6 +16,7 @@ export class AuthorizationService {
     return AxiosInstance.post(
       EndpointsEnum.Authorization.Logout,
       data,
+      AxiosParams(AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_REFRESH_TOKEN]))
     );
   }
 
