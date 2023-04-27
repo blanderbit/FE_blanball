@@ -105,7 +105,7 @@ export default {
     border-right: 1px solid #dfdeed;
     border-bottom: 1px solid #dfdeed;
     background: #ffffff;
-    padding: 6px;
+    padding: 6px 12px;
     border-radius: 0 6px 6px 0;
     font-family: 'Inter';
     font-style: normal;
@@ -113,7 +113,7 @@ export default {
     font-size: 13px;
     line-height: 16px;
     color: #575775;
-    min-width: 60px;
+    min-width: 76px;
   }
 }
 </style>

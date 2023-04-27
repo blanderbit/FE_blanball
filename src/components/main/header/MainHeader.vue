@@ -38,6 +38,7 @@
           <MainInput
             :title-width="0"
             :placeholder="$t('users.search')"
+            :inputmode="'search'"
             :icon="icons.search"
             v-model="searchValue"
             @on-click-action="showSearchBlock"
@@ -93,6 +94,7 @@ export default {
 
     const openUserProfile = (userId) => {
       router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId));
+      searchValue.value = '';
       isSearchBlock.value = false;
     };
 
@@ -183,7 +185,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// SCSS variables for hex colors
+$color-dfdeed: #dfdeed;
 $color-fafafa: #fafafa;
 
 @import '../../../assets/styles/mixins/device.scss';
@@ -219,10 +221,10 @@ $color-fafafa: #fafafa;
   }
   .b_scheduler_button {
     padding: 10px 16px;
-    border: 1px solid #dfdeed;
+    border: 1px solid $color-dfdeed;
     border-radius: 6px;
     cursor: pointer;
-    background: #fff;
+    background: $--b-main-white-color;
   }
   .b_header_search-block {
     .b_header_search-input {

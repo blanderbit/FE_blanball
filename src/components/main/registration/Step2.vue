@@ -23,6 +23,7 @@
           :outside-title="true"
           :swipeTitle="false"
           :title="$t('register.email')"
+          :inputmode="'email'"
           :placeholder="'example@email.com'"
           :title-width="0"
           :height="40"
@@ -57,6 +58,8 @@
         <MainInput
           :outside-title="true"
           :swipeTitle="false"
+          :inputmode="'tel'"
+          :type="'tel'"
           :title="$t('register.phone-number')"
           :placeholder="stepConfig.UkraineMask"
           :title-width="0"

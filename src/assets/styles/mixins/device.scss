@@ -4,6 +4,12 @@
   }
 }
 
+@mixin afterMobile {
+  @media (min-width: 576px) {
+    @content;
+  }
+}
+
 @mixin tablet {
   @media (min-width: 576px) and (max-width: 992px) {
     @content;

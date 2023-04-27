@@ -5,7 +5,7 @@
         <div class="b-hide-events-modal__title">Приховати події</div>
         <img
           class="b-hide-events-modal__close-button"
-          src="../../../assets/img/cross.svg"
+          src="../../../../assets/img/cross.svg"
           alt=""
           @click="closeModal"
         />
@@ -299,6 +299,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-dfdeed: #dfdeed;
 $color-e2e2e4: #e2e2e4;
 $color-efeff6: #efeff6;
 :deep(.vue-recycle-scroller__item-view) {
@@ -308,7 +309,7 @@ $color-efeff6: #efeff6;
 }
 
 :deep(.b_white-btn) {
-  border: 1px solid #dfdeed !important;
+  border: 1px solid $color-dfdeed !important;
 }
 
 .b-hide-events-modal__wrapper {

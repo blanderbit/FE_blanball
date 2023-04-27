@@ -291,7 +291,7 @@ import userAvatar from '../../../components/shared/userAvatar/UserAvatar.vue';
 import TabLabel from '../../../components/shared/tabLabel/TabLabel.vue';
 import ListOfEventRequestsToParticipations from '../../../components/ListOfEventRequestsToParticipations.vue';
 import loader from '../../../components/shared/loader/Loader.vue';
-import EventInfoForms from '../../../components/buildedForms/EventInfoForms.vue';
+import EventInfoForms from '../../../components/main/events/EventInfoForms.vue';
 import ActionEventModal from '../../../components/main/events/modals/ActionEventModal.vue';
 import EditEventModal from '../../../components/main/manageEvent/modals/EditEventModal.vue';
 import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
@@ -847,6 +847,7 @@ $color-8a8aa8: #8a8aa8;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding-bottom: 5px;
 
       .b-event-info__left-part {
         .b-event-info__title {

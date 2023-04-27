@@ -8,7 +8,7 @@
   >
     <template #content>
       <div class="b-register-step__info-block">
-        <img src="../../assets/img/info-icon.svg" alt="" />
+        <img src="../../../assets/img/info-icon.svg" alt="" />
         {{ $t('register.honest-game') }}
       </div>
     </template>

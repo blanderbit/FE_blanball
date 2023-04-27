@@ -51,8 +51,6 @@
     <RatingCard
       v-if="isMobile"
       :rating-scale="userData.raiting"
-      :openedReviewID="openedReviewId"
-      @clickReview="clickReview"
     />
 
     <div class="b-user-card__tabs-block">
@@ -187,6 +185,7 @@
               <MainInput
                 v-else
                 :outside-title="true"
+                :inputmode="'numeric'"
                 :title="$t('profile.height')"
                 :placeholder="$t('profile.height')"
                 :height="40"
@@ -209,6 +208,7 @@
               <MainInput
                 v-else
                 :outside-title="true"
+                :inputmode="'numeric'"
                 :title="$t('profile.weight')"
                 :placeholder="$t('profile.weight')"
                 :height="40"
@@ -285,6 +285,8 @@
             <MainInput
               v-else
               :title="$t('profile.phone')"
+              :inputmode="'tel'"
+              :type="'tel'"
               :placeholder="userData.phone"
               :title-width="0"
               :outside-title="true"
@@ -328,7 +330,7 @@ import dayjsUkrLocale from 'dayjs/locale/uk';
 import MainInput from '../../shared/input/MainInput.vue';
 import mainTextArea from '../../shared/textArea/MainTextArea.vue';
 import dropdown from '../../shared/dropdown/Dropdown.vue';
- import userAvatar from '../../shared/userAvatar/UserAvatar.vue';
+import userAvatar from '../../shared/userAvatar/UserAvatar.vue';
 import RatingCard from './RatingCard.vue';
 
 import CONSTANTS from '../../../consts';
@@ -448,13 +450,6 @@ export default {
       window.removeEventListener('resize', onResize);
     });
 
-    function clickReview(reviewId) {
-      if (openedReviewId.value === reviewId) {
-        openedReviewId.value = 0;
-      } else {
-        openedReviewId.value = reviewId;
-      }
-    }
 
     function changeUserTab(id) {
       currentTab.value = id;
@@ -486,7 +481,6 @@ export default {
       changeUserTab,
       onFileSelected,
       clearFileInputValue,
-      clickReview,
       openedReviewId,
       currentTab,
       icons,

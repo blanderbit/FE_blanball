@@ -1,5 +1,5 @@
 <template>
-  <div class="c-scheduler-wrapper">
+  <div @click.self="$emit('closeWindow')" class="c-scheduler-wrapper">
     <div class="c-common-block">
       <!-- Sidebar Slot -->
       <slot
@@ -177,6 +177,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+$color-efeff6: #efeff6;
+$color-bef0ef: #bef0ef;
+$color-e9fcfb: #e9fcfb;
 * {
   box-sizing: border-box;
 }
@@ -190,7 +193,7 @@ export default {
   font-family: 'Inter', sans-serif;
   padding: 8px;
   .c-common-block {
-    background: #ffffff;
+    background: $--b-main-white-color;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 8px;
     padding: 16px;
@@ -202,9 +205,9 @@ export default {
 
     .c-right-block {
       z-index: 1;
-      background: #fff;
+      background: $--b-main-white-color;
       .c-friends-line {
-        border-bottom: 1px solid #efeff6;
+        border-bottom: 1px solid $color-efeff6;
         padding-bottom: 14px;
         height: 51px;
         position: relative;
@@ -233,7 +236,7 @@ export default {
                 .c-title {
                   font-weight: 500;
                   font-size: 12px;
-                  color: #575775;
+                  color: $--b-main-green-color;
                 }
               }
               .vuecal__menu {
@@ -264,7 +267,7 @@ export default {
                       width: 28px;
                       height: 28px;
                       right: 0px;
-                      background: #bef0ef;
+                      background: $color-bef0ef;
                       border-radius: 0px 0px 0px 4px;
                       display: flex;
                       flex-direction: column;
@@ -274,14 +277,14 @@ export default {
                       .c-menu-dots {
                         width: 3px;
                         height: 3px;
-                        background: #148783;
+                        background: $--b-main-green-color;
                         border-radius: 50%;
                         margin-bottom: 2px;
                       }
                     }
                     &:hover {
-                      background: #e9fcfb;
-                      color: #148783;
+                      background: $color-e9fcfb;
+                      color: $--b-main-green-color;
                     }
                     .c-event-dots {
                       margin-top: 10px;

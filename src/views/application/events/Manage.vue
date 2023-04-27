@@ -619,6 +619,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-cddde0: #cddde0;
+$color-578d95: #578d95;
 $color-dfdeed: #dfdeed;
 $color-1ab2ad: #1ab2ad;
 $color-8a8aa8: #8a8aa8;

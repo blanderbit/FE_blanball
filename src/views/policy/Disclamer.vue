@@ -123,7 +123,7 @@
 <script>
 import { computed } from 'vue';
 
-import PolicyWrapper from '../../components/main/policyWrapper/PolicyWrapper.vue';
+import PolicyWrapper from '../../components/main/policy/PolicyWrapper.vue';
 
 import CONSTS from '../../consts'
 

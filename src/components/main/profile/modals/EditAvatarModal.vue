@@ -10,9 +10,10 @@
                 :aspectRatio="1 / 1"
                 :minContainerHeight="200"
                 :viewMode="2"
-                :styles="{ border: '2px solid red' }"
+                :toggleDragModeOnDblclick="false"
                 :src="userImage"
                 alt="Source Image"
+                :background="false"
                 @crop="cropFile"
                 preview=".preview"
               >
@@ -132,6 +133,7 @@ export default {
       });
     }
 
+    
     async function setAvatar() {
       if (!blobFile.value) {
         return;
@@ -233,7 +235,6 @@ $color-efeff6: #efeff6;
           margin: 0 auto;
         }
         .preview {
-          background: gainsboro;
           width: 100% !important;
           height: 100%;
           border-radius: 4px;

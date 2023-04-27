@@ -29,11 +29,11 @@
   />
   <div class="b-events-page">
     <div
-            @click="goToCreateEvent"
-            class="b-events-page-create-event-mobile-button"
-          >
-            <img src="../../../assets/img/plus.svg" alt="" />
-          </div>
+      @click="goToCreateEvent"
+      class="b-events-page-create-event-mobile-button"
+    >
+      <img src="../../../assets/img/plus.svg" alt="" />
+    </div>
     <div class="b-events-page__main-body" ref="mainEventsBlock">
       <div class="b-events-page__header-block">
         <div class="b-events-page__left-part">
@@ -832,24 +832,24 @@ $color-dfdeed: #dfdeed;
   }
 
   .b-events-page-create-event-mobile-button {
-  background: $--b-main-green-color;
-  box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
-  border-radius: 100px;
-  padding: 12px;
-  position: absolute;
-  display: none;
-  font-size: 24px;
-  font-weight: 700px;
-  width: 44px;
-  height: 44px;
-  right: 25px;
-  z-index: 10;
-  bottom: 30%;
+    background: $--b-main-green-color;
+    box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+    border-radius: 100px;
+    padding: 12px;
+    position: absolute;
+    display: none;
+    font-size: 24px;
+    font-weight: 700px;
+    width: 44px;
+    height: 44px;
+    right: 25px;
+    z-index: 10;
+    bottom: 30%;
 
-  @media (max-width: 992px) {
-    display: flex;
+    @media (max-width: 992px) {
+      display: flex;
+    }
   }
-}
 
   .b-events-page__main-body {
     .b-events-page__header-block {
@@ -1093,5 +1093,4 @@ $color-dfdeed: #dfdeed;
     }
   }
 }
-
 </style>

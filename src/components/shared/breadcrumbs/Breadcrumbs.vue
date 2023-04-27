@@ -4,6 +4,7 @@
       <li v-for="(item, idx) in getBreadcrumbsList" :key="item.name">
         <router-link
           :to="idx + 1 === getBreadcrumbsList.length ? '' : item.path"
+          :class="{'b-current-route': idx + 1 === getBreadcrumbsList.length }"
         >
           {{ item.name }}
         </router-link>
@@ -42,8 +43,12 @@ export default {
     li {
       list-style: none;
       a {
-        @include inter(12px, 400);
+        @include inter(12px, 400, $--b-main-gray-color);
         text-decoration: none;
+
+        &.b-current-route {
+          @include inter(12px, 400);
+        }
       }
       img {
         margin-left: 13.5px;

@@ -20,7 +20,7 @@
     </div>
     <div class="b-public-profile__reviews-list">
       <div v-if="!userShowReviews" class="b-public-profile__reviews-hidden">
-        <img src="../../assets/img/info-black.svg" alt="" />
+        <img src="../../../assets/img/info-black.svg" alt="" />
         <span>{{ $t('player_page.feedback-hidden') }}</span>
       </div>
       <SimpleListWrapper :requestForGetData="getReviews" v-else>

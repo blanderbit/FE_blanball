@@ -6,8 +6,8 @@
       v-model:range-slider="transformedFilters.profile__age"
       v-model:gender="transformedFilters.profile__gender"
       :elementsCount="elementsCount"
-      @close-modal="isModalFiltersActive = false"
-      @set-modal-window-filters="setModalFilters"
+      @closeModal="isModalFiltersActive = false"
+      @setModalWindowFilters="setModalFilters"
       @clearFilters="$emit('clearFilters')"
     />
     <div class="b-main-search__wrapper">
@@ -43,8 +43,10 @@
               <MainInput
                 :title-width="0"
                 :placeholder="$t('users.users-search')"
+                :inputmode="'search'"
                 :height="32"
                 :icon="icons.search"
+                :backgroundColor="'#fff'"
                 name="search"
                 v-model="transformedFilters.search"
               />
@@ -96,7 +98,9 @@
               <MainInput
                 :title-width="0"
                 :placeholder="$t('users.users-search')"
+                :inputmode="'search'"
                 :height="32"
+                :backgroundColor="'#fff'"
                 :icon="icons.search"
                 name="search"
                 v-model="transformedFilters.search"
@@ -106,7 +110,9 @@
               v-if="isMobileSearchOpened"
               :title-width="0"
               :placeholder="$t('users.users-search')"
+              :inputmode="'search'"
               :height="32"
+              :backgroundColor="'#fff'"
               :icon="icons.cross"
               name="search"
               v-model="transformedFilters.search"
@@ -116,7 +122,9 @@
               class="b-main-search__search-input-tablet"
               :title-width="0"
               :placeholder="$t('users.users-search')"
+              :inputmode="'search'"
               :height="36"
+              :backgroundColor="'#fff'"
               :icon="icons.search"
               name="search"
               v-model="transformedFilters.search"

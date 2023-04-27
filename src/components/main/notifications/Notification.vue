@@ -14,7 +14,7 @@
     ]"
     @click.right.prevent="openContextMenu"
   >
-    <loader :is-loading="loading"/> 
+    <BlackSpinner :is-loading="loading"/> 
     <div class="notification-parts d-flex justify-content-between">
       <div
         class="notification-image"
@@ -233,16 +233,16 @@
 <script>
 import dayJs from 'dayjs';
 
-import loader from '../../shared/loader/Loader.vue';
-import notificationButton from './NotificationButton.vue';
+import BlackSpinner from '../../shared/loader/BlackSpinner.vue';
+import NotificationButton from './NotificationButton.vue';
 import checkBox from '../../shared/checkbox/Checkbox.vue';
 import CollapsiblePanel from '../collapsible/CollapsiblePanel.vue';
 import userAvatar from '../../shared/userAvatar/UserAvatar.vue';
 
 export default {
   components: {
-    loader,
-    notificationButton,
+    BlackSpinner,
+    NotificationButton,
     checkBox,
     userAvatar,
     CollapsiblePanel,
@@ -439,43 +439,6 @@ $color-000: #000;
 
     path {
       fill: $color-d3d3d3;
-    }
-  }
-}
-
-.notification-push {
-  :deep {
-    .spiner-text {
-      display: none;
-    }
-
-    .spiner-wrapper {
-      position: absolute;
-      left: 0;
-      top: 0;
-      background: rgba(239, 239, 246, 0.38);
-      width: 100%;
-    }
-
-    .spiner-wrapper .spiner-body {
-      background: transparent;
-      height: 100%;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-
-      .spiner {
-        .lds-ring,
-        .lds-ring div {
-          width: 50px;
-          height: 50px;
-        }
-
-        .lds-ring div {
-          border-color: white transparent transparent transparent;
-        }
-      }
     }
   }
 }

@@ -10,6 +10,10 @@
   </PublicProfileWrapper>
   <div class="b-user-cabinet">
     <loader :is-loading="isLoading" />
+    <ReviewsListModal
+      v-if="isReviewsListModalOpened"
+      @closeModal="closeReviewsModal"
+    />
 
     <EditAvatarModal
       v-if="isModalActive.edit_avatar"
@@ -107,9 +111,9 @@
         />
         <RatingCard
           v-if="!isTabletSize && !isMobile"
-          :rating-scale="userStore.user.raiting"
-          :openedReviewID="openedReviewId"
-          @clickReview="clickReview"
+          :rating-scale="userRating"
+          :reviewsCount="reviewsTotalCount"
+          @showReviewsModal="showReviewsModal"
         />
         <UserDetailsCard
           :user-data="userData"
@@ -121,9 +125,9 @@
         <div class="b-user-cabinet__mobile-tablet-block">
           <RatingCard
             v-if="isTabletSize"
-            :rating-scale="userStore.user.raiting"
-            :openedReviewID="openedReviewId"
-            @clickReview="clickReview"
+            :rating-scale="userRating"
+            :reviewsCount="reviewsTotalCount"
+            @showReviewsModal="showReviewsModal"
           />
           <SecurityBlock
             @toggle-modal="toggleModal"
@@ -175,6 +179,7 @@ import loader from '../../../components/shared/loader/Loader.vue';
 import PublicProfile from '../../../components/main/publicProfile/PublicProfile.vue';
 import HideMyEventsModal from '../../../components/main/events/modals/HideMyEventsModal.vue';
 import PublicProfileWrapper from '../../../components/main/publicProfile/PublicProfileWrapper.vue';
+import ReviewsListModal from '../../../components/main/profile/modals/ReviewsListModal/ReviewsListModal.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '@/stores/userData';
@@ -203,6 +208,7 @@ export default {
     ChangePasswordModal,
     SubmitModal,
     Form,
+    ReviewsListModal,
     loader,
     ChangeEmailModal,
     ButtonsBlock,
@@ -229,8 +235,8 @@ export default {
     const isTabLabel = ref(false);
     const userAvatar = ref('');
     const restData = ref();
-    const openedReviewId = ref(0);
     const nextRoutePath = ref('');
+    const isReviewsListModalOpened = ref(false);
     const isHideMyEventsModalOpened = ref(false);
 
     const isTabletSize = computed(() => {
@@ -258,6 +264,18 @@ export default {
           }px`,
         };
       }
+    });
+
+    const schema = computed(() => {
+      return SCHEMAS.profile.schema;
+    });
+
+    const userRating = computed(() => {
+      return userStore.user.raiting ? userStore.user.raiting.toFixed(1) : null;
+    });
+
+    const reviewsTotalCount = computed(() => {
+      return router.currentRoute.value.meta.allReviewsData?.data?.total_count;
     });
 
     restData.value = {
@@ -297,10 +315,6 @@ export default {
       edit_avatar: false,
     });
 
-    const schema = computed(() => {
-      return SCHEMAS.profile.schema;
-    });
-
     userInfo.value = {
       ...userStore.user,
       profile: {
@@ -311,7 +325,9 @@ export default {
     userData.value = {
       ...userStore.user.profile,
       phone: userStore.user.phone,
-      raiting: userStore.user.raiting,
+      raiting: userStore.user.raiting
+        ? userStore.user.raiting.toFixed(1)
+        : null,
       working_leg: getWorkingLeg(userStore.user.profile.working_leg),
       role: userStore.user.role,
     };
@@ -329,14 +345,6 @@ export default {
     onBeforeUnmount(() => {
       window.removeEventListener('resize', onResize);
     });
-
-    function clickReview(reviewId) {
-      if (openedReviewId.value === reviewId) {
-        openedReviewId.value = 0;
-      } else {
-        openedReviewId.value = reviewId;
-      }
-    }
 
     function switchTabLabel(isDisabled) {
       if (isDisabled) {
@@ -429,6 +437,14 @@ export default {
       isHideMyEventsModalOpened.value = false;
     };
 
+    const closeReviewsModal = () => {
+      isReviewsListModalOpened.value = false;
+    };
+
+    const showReviewsModal = () => {
+      isReviewsListModalOpened.value = true;
+    };
+
     function saveUserDataChanges() {
       const refProfileData = { ...myForm.value.getControledValues() };
       const {
@@ -508,7 +524,7 @@ export default {
           userData.value = {
             ...res.data?.profile,
             phone: res.data?.phone,
-            raiting: res.data?.raiting,
+            raiting: res.data?.raiting ? res.data?.raiting.toFixed(1) : null,
             working_leg: getWorkingLeg(res.data.profile?.working_leg),
             role: res.data?.role,
           };
@@ -663,8 +679,9 @@ export default {
       cancelDataEdit,
       openEditPictureModal,
       getMyProfile,
-      clickReview,
       closeModalAndHideEvents,
+      closeReviewsModal,
+      showReviewsModal,
       cancelChangesAndGoToTheNextRoute,
       showPreview,
       showHideMyEventsModal,
@@ -676,15 +693,17 @@ export default {
       profileMainSideHeight,
       userStore,
       checkboxData,
+      isReviewsListModalOpened,
       userData,
       isHideMyEventsModalOpened,
       schema,
       formValues,
       myForm,
       userInfo,
-      openedReviewId,
+      userRating,
       isLoading,
       isMobile,
+      reviewsTotalCount,
       isTabLabel,
       isTabletSize,
       restData,

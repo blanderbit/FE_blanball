@@ -1,8 +1,8 @@
 <template>
-  <div @click.self="$emit('closeModalClick')" class="b-version-modal">
+  <div @click.self="$emit('closeModal')" class="b-version-modal">
     <div class="b-version-modal__window">
       <div class="b-version-modal__left-side">
-        <img src="../../assets/img/logo-modal-versions.svg" alt="" />
+        <img src="../../../assets/img/logo-modal-versions.svg" alt="" />
       </div>
       <div class="b-version-modal__right-side">
         <div class="b-version-modal__name">
@@ -15,12 +15,19 @@
           {{ $t('versions.go-to-the-event-page-for-more-details') }}
         </div>
         <div class="b-version-modal__buttons">
-          <div class="b-version-modal__download">
-            {{ $t('versions.download-update') }}
-          </div>
-          <div class="b-version-modal__whats-new" @click="showVersionsPage">
-            {{ $t('versions.what-is-new') }}
-          </div>
+          <GreenBtn
+            :text="$t('versions.what-is-new')"
+            :width="100"
+            @click-function="showVersionsPage"
+          />
+          <WhiteBtn
+            :text="$t('register.remind-later')"
+            :width="130"
+            :height="24"
+            :isBorder="false"
+            :main-color="'#575775'"
+            @click-function="clickDeclineButton(request.id)"
+          />
         </div>
       </div>
     </div>
@@ -30,17 +37,24 @@
 <script>
 import { useRouter } from 'vue-router';
 
+import GreenBtn from '../../shared/button/GreenBtn.vue';
+import WhiteBtn from '../../shared/button/WhiteBtn.vue';
+
 import { ROUTES } from '../../../router/router.const';
 
 export default {
   name: 'ModalVersion',
-  emits: ['closeModalClick'],
+  emits: ['closeModal'],
+  components: {
+    GreenBtn,
+    WhiteBtn,
+  },
   setup(props, context) {
     const router = useRouter();
 
     function showVersionsPage() {
-      context.emit('closeModalClick');
-      router.push(ROUTES.APPLICATION.VERSION.absolute);
+      context.emit('closeModal');
+      router.push(ROUTES.APPLICATION.VERSIONS.absolute);
     }
     return {
       showVersionsPage,
@@ -58,38 +72,21 @@ $color-424257: #424257;
 $color-e2e2e9: #e2e2e9;
 
 .b-version-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.514);
-  z-index: 999;
+  @include modal-wrapper;
 
   .b-version-modal__window {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 420px;
-    padding: 18px;
+    width: 432px;
+    padding: 16px 12px;
     background: $color-fcfcfc;
     display: flex;
 
-    .b-version-modal__left-side {
-      img {
-      }
-    }
-
     .b-version-modal__right-side {
       .b-version-modal__name {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 20px;
-        color: $color-8a8aa8;
-        margin-bottom: 8px;
+        @include inter(14, 400, $--b-main-gray-color);
       }
 
       .b-version-modal__title {
@@ -99,23 +96,19 @@ $color-e2e2e9: #e2e2e9;
         font-size: 14px;
         line-height: 20px;
         color: $--b-main-black-color;
-        margin-bottom: 8px;
+        margin: 8px 0px;
       }
 
       .b-version-modal__description {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 14px;
+        @include inter(14px, 400, $--b-main-gray-color);
         line-height: 20px;
-        color: $--b-main-gray-color;
         margin-bottom: 12px;
       }
 
       .b-version-modal__buttons {
         display: flex;
-        justify-content: space-between;
-
+        gap: 12px;
+        align-items: center;
         .b-version-modal__download {
           font-family: 'Inter';
           font-style: normal;

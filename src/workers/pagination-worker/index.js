@@ -39,8 +39,8 @@ export const PaginationWorker = (options) => {
 
         paginationElements.value = beforeConcat
           ? paginationElements.value.concat(
-              beforeConcat(paginationElements.value, result.data.results)
-            )
+            beforeConcat(paginationElements.value, result.data.results)
+          )
           : paginationElements.value.concat(result.data.results);
 
         paginationTotalCount.value = result.data.total_count;

@@ -13,6 +13,7 @@
             :outside-title="true"
             :swipeTitle="false"
             :title="$t('login.login')"
+            :inputmode="'email'"
             :placeholder="'example@email.com'"
             :title-width="0"
             :height="40"

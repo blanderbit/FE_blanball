@@ -22,6 +22,7 @@ import pkg from '../package';
 import './workers/map-worker/map.init';
 import { UA_LANGUAGE } from './i18n/ua';
 
+
 import './assets/styles/main.scss';
 import './assets/styles/contextMenu.scss'
 import 'v-calendar/dist/style.css';

@@ -61,6 +61,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-a8a8bd: #a8a8bd;
 // SCSS variables for hex colors
 $color-ccc: #ccc;
 

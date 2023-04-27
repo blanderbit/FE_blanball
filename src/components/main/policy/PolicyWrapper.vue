@@ -15,7 +15,7 @@
         <div class="b-policy-table-contents">
           <div class="b-table-title">{{ $t('policy.document-content') }}</div>
           <div class="b-table-items">
-            <div v-for="item in contentItems" class="b-tablet-item"
+            <div v-for="item in contentItems" class="b-table-item"
               @click="scrollToBlockOfContent(item.elementId)">
               {{ item.text }}
             </div>
@@ -30,8 +30,6 @@
 import { useRouter } from 'vue-router';
 
 import { ROUTES } from '../../../router/router.const';
-
-import VueScrollTo from 'vue-scrollto'
 
 export default {
   props: {
@@ -114,10 +112,10 @@ export default {
           height: calc(100vh - 200px);
         }
       }
-      .b-tablet-item {
+      .b-table-item {
         @include inter(14px, 500);
-        background: #ffffff;
-        box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+        background: $--b-main-white-color;
+        border: 1px solid #F0F0F4;
         border-radius: 6px;
         margin-top: 16px;
         padding: 16px;

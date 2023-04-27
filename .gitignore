@@ -93,3 +93,4 @@ sw.*
 
 *.env
 stack-prod-env.txt
+dist

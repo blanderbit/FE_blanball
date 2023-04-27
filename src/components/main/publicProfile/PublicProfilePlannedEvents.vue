@@ -10,7 +10,7 @@
             <div class="b-event__top-side">
               <img
                 class="b-event__top-side-arrow"
-                src="../../assets/img/arrow-right-black.svg"
+                src="../../../assets/img/arrow-right-black.svg"
                 alt=""
                 @click="goToTheEvent(item.id)"
               />

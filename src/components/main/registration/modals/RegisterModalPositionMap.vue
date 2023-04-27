@@ -5,7 +5,7 @@
         {{ $t('register.select-on-map') }}
       </span>
       <div>
-        <img src="../../assets/img/location-point.svg" />
+        <img src="../../../../assets/img/location-point.svg" />
       </div>
     </div>
     <span class="b-modal-position__map-optional">
