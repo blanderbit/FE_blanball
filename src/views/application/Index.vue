@@ -1,5 +1,9 @@
 <template>
   <div class="main-wrapper">
+    <NewVersionModal
+      v-if="isNewVersionModalActive"
+      @closeModal="closeNewVersionModal"
+    />
     <VerifyEmailModal
       v-if="isVerifyModalActive"
       :user-email="userStore.user.email"
@@ -123,9 +127,10 @@ import ActionEventModal from '../../components/main/events/modals/ActionEventMod
 import Scheduler from '../../components/main/scheduler/index.vue';
 import LeftSidebar from '../../components/main/scheduler/LeftSidebar.vue';
 import TopLineFriends from '../../components/main/scheduler/TopLineFriends.vue';
+import NewVersionModal from '../../components/main/versions/modals/NewVersionModal.vue';
 
 import { AuthWebSocketWorkerInstance } from '../../workers/web-socket-worker';
-import { TokenWorker } from '../../workers/token-worker';
+import { accessToken } from '../../workers/token-worker';
 import { notificationButtonHandlerMessage } from '../../workers/utils-worker';
 import { useUserDataStore } from '@/stores/userData';
 import {
@@ -134,24 +139,25 @@ import {
 } from '../../workers/event-bus-worker';
 import { MessageActionTypes } from '../../workers/web-socket-worker/message.action.types';
 import { API } from '../../workers/api-worker/api.worker';
+import { VersionDetectorWorker } from '../../workers/version-detector-worker';
 
 import EventUpdatedIcon from '../../assets/img/event-updated-modal-icon.svg';
 import EventCreatedIcon from '../../assets/img/event-creted-modal-icon.svg';
 
-import message_audio from '../../assets/audio/message_audio.mp3';
+import notification_audio from '../../assets/audio/notification-audio.mp3';
 
 import User_1 from '../../assets/img/scheduler/user-1.svg';
 import User_2 from '../../assets/img/scheduler/user-2.svg';
 import User_3 from '../../assets/img/scheduler/user-3.svg';
 import User_4 from '../../assets/img/scheduler/user-4.svg';
 import User_5 from '../../assets/img/scheduler/user-5.svg';
-import Preloader from '../../components/shared/loader/Preloader.vue';
 
 const isVerifyModalActive = ref(false);
 const isCreateReviewModalActive = ref(false);
 const endedEventData = ref({});
 const selectedEmojies = ref([]);
 const modalFeedBackAnimation = ref(false);
+const isNewVersionModalActive = ref(false);
 const isActionEventModalOpened = ref(false);
 const actionEventModalConfig = ref({});
 const { t } = useI18n();
@@ -159,7 +165,7 @@ const activePushNotifications = ref([]);
 const router = useRouter();
 const toast = useToast();
 const userStore = useUserDataStore();
-const audio = new Audio(message_audio);
+const audio = new Audio(notification_audio);
 let timeout;
 
 const closeEventActiondModal = () => {
@@ -395,8 +401,21 @@ const handleNewMessage = (instanceType) => {
 };
 
 AuthWebSocketWorkerInstance.registerCallback(handleNewMessage).connect({
-  token: TokenWorker.getToken(),
+  token: accessToken.getToken(),
 });
+
+const VersionHandling = {
+  handleDifferentVersion: () => {
+    isNewVersionModalActive.value = true;
+  },
+  closeVersionModal: () => (isNewVersionModalActive.value = false),
+};
+
+VersionDetectorWorker(VersionHandling.handleDifferentVersion);
+
+function closeNewVersionModal() {
+  VersionHandling.closeVersionModal();
+}
 
 onBeforeUnmount(() => {
   NotificationsBus.off('openEventReviewModal');
@@ -405,7 +424,6 @@ onBeforeUnmount(() => {
   BlanballEventBus.off('EventUpdated');
   AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect();
 });
-
 
 const isSchedulerOpened = ref(false);
 const avatars = [User_1, User_2, User_3, User_4, User_5];

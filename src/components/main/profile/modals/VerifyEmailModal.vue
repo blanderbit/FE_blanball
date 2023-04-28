@@ -13,7 +13,7 @@
           <div class="input__wrapper">
             <MainInput
               :title="$t('modals.change_login.email')"
-              :inputmode="'email'"
+              :inputMode="'email'"
               :swipeTitle="false"
               :placeholder="userEmail"
               :outside-title="true"

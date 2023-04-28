@@ -1,5 +1,7 @@
 import { TokenServiceWorker } from './token.worker';
 
-export const TokenWorker = new TokenServiceWorker();
+export const accessToken = new TokenServiceWorker();
+export const refreshToken = new TokenServiceWorker();
 
-TokenWorker.setKeyName('token');
+accessToken.setKeyName('accessToken');
+refreshToken.setKeyName('refreshToken');

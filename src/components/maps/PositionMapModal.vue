@@ -43,7 +43,7 @@
         <div class="b-modal-position__block">
           <MainInput
             :outside-title="true"
-            :inputmode="'numeric'"
+            :inputMode="'numeric'"
             :title="$t('register.search-radius')"
             :placeholder="$t('register.search-radius')"
             v-model="dist"

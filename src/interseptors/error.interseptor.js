@@ -1,49 +1,63 @@
 import { useToast } from 'vue-toastification';
-
-import { resolverFunctions } from '../workers/resolver-worker/resolver.functions';
-import { TokenWorker } from '../workers/token-worker';
 import { TypeRequestMessageWorker } from '../workers/type-request-message-worker';
 
-import router from '../router';
+import { refreshTokens } from '../utils/refreshTokens';
+import { useTokensStore } from '../stores/tokens';
+
+import { AxiosInstance } from '../plugins/axios.plugin';
+
 import { i18n } from '../main';
-import { ROUTES } from '../router/router.const';
+import { EndpointsEnum } from '../workers/api-worker/http/http-common/prefix.enum';
 
 const toast = useToast();
 
-export const ErrorInterceptor = (error) => {
+const tokenStore = useTokensStore();
+
+let retryRequest = false;
+
+export const ErrorInterceptor = async (error) => {
   const getJsonErrorData = error.toJSON();
+
+  const requestConfig = getJsonErrorData.config;
   const skipErrorMessageType =
     error?.response?.config?.skipErrorMessageType || [];
   error = error?.response?.data || getJsonErrorData;
+  if (
+    (error?.status === 401 || getJsonErrorData?.status === 401) &&
+    requestConfig.url.replace(requestConfig.baseURL, '') !==
+      EndpointsEnum.Authorization.RefreshTokens
+  ) {
+    if (!tokenStore.isTokensRefreshing) {
+      await refreshTokens();
+      retryRequest = true;
+    }
+    if (retryRequest) {
+      return await new Promise(async (resolve) => {
+        requestConfig.url = requestConfig.url.replace(
+          requestConfig.baseURL,
+          ''
+        );
+        resolve(await AxiosInstance(requestConfig));
+      });
+    }
 
-  if (error?.status === 401 || getJsonErrorData?.status === 401) {
-    const findCurRouteFromList =
-      window.location.pathname.includes('application');
-    TokenWorker.clearToken();
+    const errorMessageType = TypeRequestMessageWorker(error).filter(
+      (item) => !skipErrorMessageType?.includes(item.errorType)
+    )[0];
 
-    router.push(
-      findCurRouteFromList
-        ? resolverFunctions._createLoginPath(window.location.pathname)
-        : ROUTES.AUTHENTICATIONS.LOGIN.absolute
-    );
+    if (errorMessageType) {
+      toast.error(
+        i18n.global.t(`responseMessageTypes.${errorMessageType.errorType}`, {
+          field: i18n.global.t(
+            `responseMessageTypes.fields.${errorMessageType.field}`
+          ),
+        })
+      );
+    }
+
+    if (errorMessageType) {
+      error.errorMessageType = errorMessageType;
+    }
+    return Promise.reject(error);
   }
-
-  const errorMessageType = TypeRequestMessageWorker(error).filter(
-    (item) => !skipErrorMessageType?.includes(item.errorType)
-  )[0];
-  
-  if (errorMessageType) {
-    toast.error(
-      i18n.global.t(`responseMessageTypes.${errorMessageType.errorType}`, {
-        field: i18n.global.t(
-          `responseMessageTypes.fields.${errorMessageType.field}`
-        ),
-      })
-    );
-  }
-
-  if (errorMessageType) {
-    error.errorMessageType = errorMessageType;
-  }
-  return Promise.reject(error);
 };

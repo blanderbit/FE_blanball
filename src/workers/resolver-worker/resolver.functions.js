@@ -1,5 +1,5 @@
 import { finishSpinner } from '../loading-worker/loading.worker';
-import { TokenWorker } from '../token-worker';
+import { accessToken } from '../token-worker';
 import { createQueryStringFromObject } from '../utils-worker';
 import { ROUTES } from '../../router/router.const';
 
@@ -12,7 +12,7 @@ const _createLoginPath = (redirectUrl) => {
 };
 
 const isUserAuthorized = async () =>
-  !!TokenWorker.getToken();
+  !!accessToken.getToken();
 
 const isAuthorizedError = ({ to, next }) => {
   finishSpinner();

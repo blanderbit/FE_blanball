@@ -253,13 +253,13 @@ export default {
     });
 
     const onFocus = () => {
-      if(!props.isReadOnly) {
+      if (!props.isReadOnly) {
         isFocused.value = true;
       }
     };
 
     const onUnFocus = () => {
-      if(isFocused.value) {
+      if (isFocused.value) {
         isFocused.value = false;
       }
     };
@@ -312,7 +312,7 @@ $color-dfdeed: #dfdeed;
       border: 1.5px solid $color-8a8aa8;
     }
     &.disabled {
-      border: 1px solid #D9D9D9;
+      border: 1px solid #d9d9d9;
     }
     .b-input__icon {
       display: flex;
@@ -393,8 +393,8 @@ $color-dfdeed: #dfdeed;
         -moz-appearance: textfield;
       }
 
-      &.disabled{
-        color: #A8A8BD;
+      &.disabled {
+        color: #a8a8bd;
       }
     }
   }

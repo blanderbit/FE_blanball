@@ -11,7 +11,7 @@
     </template>
     <template #input>
       <MainInput
-        :inputmode="'tel'"
+        :inputMode="'tel'"
         :type="'tel'"
         :height="40"
         :outsideTitle="true"
@@ -45,7 +45,7 @@
       <MainInput
         :height="40"
         :outsideTitle="true"
-        :inputmode="'email'"
+        :inputMode="'email'"
         :title-width="0"
         :title="getEmailProvider(userData.email)"
         :isReadOnly="true"

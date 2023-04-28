@@ -9,7 +9,7 @@ import { API } from '../../workers/api-worker/api.worker';
 import { PositionMapBus } from '../../workers/event-bus-worker';
 
 import { PositionMapBackgroundStyle, PositionMapStyles } from '../../workers/map-worker/map.styles';
-import { number } from '@intlify/core-base';
+
 
 const Restrictions = {
   Ukraine: {

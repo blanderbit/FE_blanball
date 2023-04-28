@@ -1,10 +1,6 @@
 <template>
   <div class="b-login-step">
-    <Form
-      v-slot="data"
-      :validation-schema="schema"
-      @submit="disableSubmit"
-    >
+    <Form v-slot="data" :validation-schema="schema" @submit="disableSubmit">
       <div class="b-login-step__top-part">
         <div class="b-login-step__main-title">{{ $t('login.app-name') }}</div>
         <div class="b-login-step__title">{{ $t('login.authorization') }}</div>
@@ -13,7 +9,7 @@
             :outside-title="true"
             :swipeTitle="false"
             :title="$t('login.login')"
-            :inputmode="'email'"
+            :inputMode="'email'"
             :placeholder="'example@email.com'"
             :title-width="0"
             :height="40"
@@ -34,11 +30,10 @@
           />
         </div>
 
-        <div
-          class="b-login-step__forgot-password"
-          @click="openResetPasswordModal()"
-        >
-          <span> {{ $t('login.forgot-password') }} </span>
+        <div class="b-login-step__forgot-password">
+          <span @click="openResetPasswordModal()">
+            {{ $t('login.forgot-password') }}
+          </span>
         </div>
         <div class="b-login-step__remember-me">
           <div class="b-login-step__check-block">
@@ -53,11 +48,10 @@
               </template>
             </checkBox>
           </div>
-          <div
-            class="b-login-step__forgot-password-mob"
-            @click="openResetPasswordModal()"
-          >
-            {{ $t('login.forgot-password') }}
+          <div class="b-login-step__forgot-password-mob">
+            <span @click="openResetPasswordModal()">{{
+              $t('login.forgot-password')
+            }}</span>
           </div>
         </div>
       </div>
@@ -94,9 +88,10 @@ import MainInput from '../../shared/input/MainInput.vue';
 import checkBox from '../../shared/checkbox/Checkbox.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
-import { TokenWorker } from '../../../workers/token-worker';
+import { accessToken, refreshToken } from '../../../workers/token-worker';
 
 import { ROUTES } from '../../../router/router.const';
+import CONSTS from '../../../consts';
 import SCHEMAS from '../../../validators/schemas';
 
 export default {
@@ -124,7 +119,6 @@ export default {
       };
     });
 
-
     const handleLogin = async (data) => {
       const { valid } = await data.validate();
 
@@ -137,14 +131,18 @@ export default {
           data.controlledValues
         );
 
-        let tokenStorage
+        let tokenStorage;
 
         if (data.values.save_credentials) {
-          tokenStorage = 'local_storage'
+          tokenStorage = CONSTS.storages.LOCAL_STORAGE;
         } else {
-          tokenStorage = 'session_storage'
+          tokenStorage = CONSTS.storages.SESSION_STORAGE;
         }
-        TokenWorker.setToken(apiRequestResult.data.tokens.access, tokenStorage);
+        accessToken.setToken(apiRequestResult.data.tokens.access, tokenStorage);
+        refreshToken.setToken(
+          apiRequestResult.data.tokens.refresh,
+          tokenStorage
+        );
         const redirectUrl = router.currentRoute.value.query.redirectUrl;
         if (redirectUrl) {
           const resolveRouter = router.resolve(redirectUrl);

@@ -89,10 +89,11 @@ import step10 from '../../components/main/registration/Step10.vue';
 import AuthenticationMain from '../../components/AuthenticationMain.vue';
 
 import { API } from '../../workers/api-worker/api.worker';
-import { TokenWorker } from '../../workers/token-worker';
+import { accessToken, refreshToken } from '../../workers/token-worker';
 import { PositionMapBus } from '../../workers/event-bus-worker';
 
 import { ROUTES } from '../../router/router.const';
+import CONSTS from '../../consts';
 import SCHEMAS from '../../validators/schemas';
 
 import imageStep_1 from '../../assets/img/registration-back-1.svg';
@@ -252,11 +253,12 @@ export default {
             );
             let tokenStorage;
             if (data.save_user_cred ? data.save_user_cred : false) {
-              tokenStorage = 'local_storage';
+              tokenStorage = CONSTS.storages.LOCAL_STORAGE;
             } else {
-              tokenStorage = 'session_storage';
+              tokenStorage = CONSTS.storages.SESSION_STORAGE;
             }
-            TokenWorker.setToken(apiRequestResult.data.access, tokenStorage);
+            accessToken.setToken(apiRequestResult.data.access, tokenStorage);
+            refreshToken.setToken(apiRequestResult.data.refresh, tokenStorage);
             const apiRequestResultMyProfile =
               await API.UserService.getMyProfile();
             profileValues = apiRequestResultMyProfile.data;
