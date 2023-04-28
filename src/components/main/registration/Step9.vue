@@ -17,7 +17,7 @@
         <MainInput
           v-model="height"
           :outside-title="true"
-          :inputmode="'numeric'"
+          :inputMode="'numeric'"
           :title="$t('register.height')"
           :placeholder="$t('register.height')"
           :title-width="0"
@@ -28,7 +28,7 @@
         <MainInput
           v-model="weight"
           :outside-title="true"
-          :inputmode="'numeric'"
+          :inputMode="'numeric'"
           :title="$t('register.weight')"
           :placeholder="$t('register.weight')"
           :title-width="0"

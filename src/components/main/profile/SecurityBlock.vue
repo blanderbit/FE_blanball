@@ -55,7 +55,7 @@
       <div class="b-security__email-input">
         <MainInput
           :title="$t('profile.e-mail')"
-          :inputmode="'email'"
+          :inputMode="'email'"
           :placeholder="userEmail"
           :isReadOnly="true"
           :title-width="0"

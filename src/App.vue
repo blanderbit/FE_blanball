@@ -11,7 +11,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import NewVersionModal from './components/modals/newVersionModal/NewVersionModal.vue';
+import NewVersionModal from './components/main/versions/modals/NewVersionModal.vue';
 
 import { GeneralSocketWorkerInstance } from './workers/web-socket-worker';
 import { createQueryStringFromObject } from './workers/utils-worker';

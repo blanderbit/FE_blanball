@@ -38,7 +38,7 @@
           <MainInput
             :title-width="0"
             :placeholder="$t('users.search')"
-            :inputmode="'search'"
+            :inputMode="'search'"
             :icon="icons.search"
             v-model="searchValue"
             @on-click-action="showSearchBlock"

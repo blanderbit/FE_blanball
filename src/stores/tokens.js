@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 
-export const useRefreshTokenStore = defineStore('refreshTokenData', {
+export const useTokensStore = defineStore('tokensData', {
   state: () => ({
     isTokensRefreshing: false,
-    waitingRequests: []
+    tokenSettedStoreType: null
   }),
 });

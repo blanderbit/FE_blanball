@@ -138,7 +138,7 @@ import { API } from '../../workers/api-worker/api.worker';
 import EventUpdatedIcon from '../../assets/img/event-updated-modal-icon.svg';
 import EventCreatedIcon from '../../assets/img/event-creted-modal-icon.svg';
 
-import message_audio from '../../assets/audio/message_audio.mp3';
+import notification_audio from '../../assets/audio/notification-audio.mp3';
 
 import User_1 from '../../assets/img/scheduler/user-1.svg';
 import User_2 from '../../assets/img/scheduler/user-2.svg';
@@ -159,7 +159,7 @@ const activePushNotifications = ref([]);
 const router = useRouter();
 const toast = useToast();
 const userStore = useUserDataStore();
-const audio = new Audio(message_audio);
+const audio = new Audio(notification_audio);
 let timeout;
 
 const closeEventActiondModal = () => {
@@ -405,7 +405,6 @@ onBeforeUnmount(() => {
   BlanballEventBus.off('EventUpdated');
   AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect();
 });
-
 
 const isSchedulerOpened = ref(false);
 const avatars = [User_1, User_2, User_3, User_4, User_5];
