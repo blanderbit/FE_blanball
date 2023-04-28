@@ -17,7 +17,7 @@ export async function refreshTokens() {
   tokensStore.$patch({
     isTokensRefreshing: true,
   });
-  AuthWebSocketWorkerInstance.disconnect();
+  AuthWebSocketWorkerInstance?.disconnect();
 
   try {
     const response = await API.AuthorizationService.refreshTokens({
@@ -31,7 +31,7 @@ export async function refreshTokens() {
       response.data.refresh,
       tokensStore.tokenSettedStoreType
     );
-    AuthWebSocketWorkerInstance.connect({
+    AuthWebSocketWorkerInstance?.connect({
       token: accessToken.getToken(),
     });
   } catch {

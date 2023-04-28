@@ -239,7 +239,7 @@
             :emptyListData="noUsersData"
           >
             <template #user>
-              <SmallPlayerCard
+              <SmallUserCard
                 v-for="user of eventData.current_users"
                 :key="user.id"
                 :data-player="user"
@@ -254,7 +254,7 @@
             :emptyListData="noFansData"
           >
             <template #user>
-              <SmallPlayerCard
+              <SmallUserCard
                 v-for="user of eventData.current_fans"
                 :key="user.id"
                 :data-player="user"
@@ -298,7 +298,7 @@ import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
 import ContextModal from '../../../components/shared/modals/ContextModal.vue';
 import MainInput from '../../../components/shared/input/MainInput.vue';
 import InviteManyUsersToEventModal from '../../../components/main/events/modals/InviteToEventModal/InviteManyUsersToEventModal.vue';
-import SmallPlayerCard from '../../../components/SmallPlayerCard.vue';
+import SmallUserCard from '../../../components/SmallUserCard.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { BlanballEventBus } from '../../../workers/event-bus-worker';
@@ -339,7 +339,7 @@ export default {
     userAvatar,
     loader,
     TabLabel,
-    SmallPlayerCard,
+    SmallUserCard,
     EventInfoForms,
     EditEventModal,
     ListOfEventRequestsToParticipations,
