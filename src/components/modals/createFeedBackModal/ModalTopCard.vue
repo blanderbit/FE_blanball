@@ -23,7 +23,7 @@
         class="b-modal-top-card__title"
         :style="step.id === 5 && lastTitleStyle"
       >
-        {{ step.title }}
+        {{ step.title || title }}
       </div>
     </div>
     <Form v-slot="data" @submit="disableSubmit" :validation-schema="schema">
@@ -82,7 +82,6 @@ import GreenBtn from '../../shared/button/GreenBtn.vue';
 import mainTextArea from '../../shared/textArea/MainTextArea.vue';
 import Emotions from './Emotions.vue';
 
-
 export default {
   name: 'ModalTopCard',
   components: {
@@ -104,6 +103,10 @@ export default {
     selectedEmojies: {
       type: Array,
     },
+    title: {
+      type: String,
+      default: ''
+    }
   },
   setup(props, { emit }) {
     const eventComment = ref('');
@@ -116,22 +119,29 @@ export default {
       emit('emojiSelect', emoji);
     };
 
-    yup.addMethod(yup.string, "emojiRequired", function (errorMessage) {
+    yup.addMethod(yup.string, 'emojiRequired', function (errorMessage) {
       return this.test(`test-emoji-required`, errorMessage, function (value) {
         const { path, createError } = this;
-        const emoji = props.selectedEmojies.filter((value) => value.step === props.step.id)
-        return (
-          ([0, 4].includes(props.step.id) ? true : !!emoji?.length) || createError({ path, errorMessage })
-        );
+        if (props.isOpened) {
+          const emoji = props.selectedEmojies.filter(
+            (value) => value.step === props.step.id
+          );
+          return (
+            ([0, 4].includes(props.step.id) ? true : !!emoji?.length) ||
+            createError({ path, errorMessage })
+          );
+        } else {
+          return true;
+        }
       });
     });
 
     const schema = computed(() => {
       return yup.object({
         emoji: yup.string().emojiRequired('errors.required'),
-        comment: yup.string().max(200 , 'errors.max200')
-      })
-    })
+        comment: yup.string().max(200, 'errors.max200'),
+      });
+    });
 
     const goToTheNextStep = async (data) => {
       const { valid } = await data.validate();

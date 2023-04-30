@@ -28,7 +28,7 @@
                   : $t('modals.change_login.email')
               "
               :placeholder="'example@panda.com'"
-              :inputMode="'email'"
+              inputMode="email"
               :swipeTitle="false"
               :outside-title="true"
               :title-width="0"

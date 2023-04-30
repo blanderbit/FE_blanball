@@ -9,7 +9,7 @@
             :outside-title="true"
             :swipeTitle="false"
             :title="$t('login.login')"
-            :inputMode="'email'"
+            inputMode="email"
             :placeholder="'example@email.com'"
             :title-width="0"
             :height="40"

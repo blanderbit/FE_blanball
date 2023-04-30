@@ -13,7 +13,7 @@
       <div class="b-player-card__rating">
         <star-rating
           :rating="rating"
-          :star-size="14"
+          :star-size="16"
           :show-rating="false"
           :read-only="true"
           :active-color="'#148783'"
@@ -83,12 +83,8 @@ $color-2946e1: #2946e1;
     }
 
     .b-player-card__player-name {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 13px;
+      @include inter(13px, 400);
       line-height: 20px;
-      color: $--b-main-gray-color;
     }
   }
 

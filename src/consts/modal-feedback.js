@@ -9,8 +9,8 @@ import dayjs from 'dayjs';
 export default {
   steps(eventData) {
     const calculateEventEndTime = () => {
-      const eventDurationMS = eventData.duration * 60 * 1000;
-      const eventDateTime = new Date(eventData.date_and_time);
+      const eventDurationMS = eventData?.duration * 60 * 1000;
+      const eventDateTime = new Date(eventData?.date_and_time);
 
       eventDateTime.setTime(eventDateTime.getTime() + eventDurationMS);
       return dayjs(eventDateTime).format('DD MM YYYY HH:mm');
@@ -29,7 +29,7 @@ export default {
       {
         id: 1,
         title: 'Місце проведення',
-        subtitle: `Дайте оцінку місцю проведення «${eventData.place.place_name}»`,
+        subtitle: `Дайте оцінку місцю проведення «${eventData?.place?.place_name}»`,
         emojies: [
           { id: 1, emoji: Emoji_1, step: 1 },
           { id: 2, emoji: Emoji_2, step: 1 },

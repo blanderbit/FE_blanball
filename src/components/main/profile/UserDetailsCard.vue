@@ -185,7 +185,7 @@
               <MainInput
                 v-else
                 :outside-title="true"
-                :inputMode="'numeric'"
+                inputMode="numeric"
                 :title="$t('profile.height')"
                 :placeholder="$t('profile.height')"
                 :height="40"
@@ -208,7 +208,7 @@
               <MainInput
                 v-else
                 :outside-title="true"
-                :inputMode="'numeric'"
+                inputMode="numeric"
                 :title="$t('profile.weight')"
                 :placeholder="$t('profile.weight')"
                 :height="40"
@@ -285,7 +285,7 @@
             <MainInput
               v-else
               :title="$t('profile.phone')"
-              :inputMode="'tel'"
+              inputMode="tel"
               :type="'tel'"
               :placeholder="userData.phone"
               :title-width="0"

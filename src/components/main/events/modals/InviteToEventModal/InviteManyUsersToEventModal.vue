@@ -61,7 +61,7 @@
         <div class="b-invite-users-to-event-modal__send-invite-block">
           <MainInput
             :placeholder="$t('events.search-users')"
-            :inputMode="'search'"
+            inputMode="search"
             :title-width="0"
             v-model="searchValue"
             :icon="SearchIcon"
