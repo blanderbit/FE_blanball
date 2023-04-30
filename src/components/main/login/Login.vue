@@ -133,11 +133,10 @@ export default {
 
         let tokenStorage;
 
-        if (data.values.save_credentials) {
-          tokenStorage = CONSTS.storages.LOCAL_STORAGE;
-        } else {
-          tokenStorage = CONSTS.storages.SESSION_STORAGE;
-        }
+        data.values.save_credentials
+          ? (tokenStorage = CONSTS.storages.LOCAL_STORAGE)
+          : (tokenStorage = CONSTS.storages.SESSION_STORAGE);
+
         accessToken.setToken(apiRequestResult.data.tokens.access, tokenStorage);
         refreshToken.setToken(
           apiRequestResult.data.tokens.refresh,

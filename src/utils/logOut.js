@@ -22,7 +22,9 @@ export const logOut = async () => {
     await API.AuthorizationService.Logout({
       refresh: refreshToken.getToken(),
     });
-  } catch {}
-  router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute);
-  resetUserData();
+  } catch {
+  } finally {
+    router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute);
+    resetUserData();
+  }
 };

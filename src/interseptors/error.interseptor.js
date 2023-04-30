@@ -15,6 +15,16 @@ const tokenStore = useTokensStore();
 
 let retryRequest = false;
 
+const showToastAfterError = (errorMessageType) => {
+  toast.error(
+    i18n.global.t(`responseMessageTypes.${errorMessageType.errorType}`, {
+      field: i18n.global.t(
+        `responseMessageTypes.fields.${errorMessageType.field}`
+      ),
+    })
+  );
+};
+
 export const ErrorInterceptor = async (error) => {
   const getJsonErrorData = error.toJSON();
 
@@ -40,24 +50,17 @@ export const ErrorInterceptor = async (error) => {
         resolve(await AxiosInstance(requestConfig));
       });
     }
-
-    const errorMessageType = TypeRequestMessageWorker(error).filter(
-      (item) => !skipErrorMessageType?.includes(item.errorType)
-    )[0];
-
-    if (errorMessageType) {
-      toast.error(
-        i18n.global.t(`responseMessageTypes.${errorMessageType.errorType}`, {
-          field: i18n.global.t(
-            `responseMessageTypes.fields.${errorMessageType.field}`
-          ),
-        })
-      );
-    }
-
-    if (errorMessageType) {
-      error.errorMessageType = errorMessageType;
-    }
-    return Promise.reject(error);
   }
+  const errorMessageType = TypeRequestMessageWorker(error).filter(
+    (item) => !skipErrorMessageType?.includes(item.errorType)
+  )[0];
+
+  if (errorMessageType) {
+    showToastAfterError(errorMessageType);
+  }
+
+  if (errorMessageType) {
+    error.errorMessageType = errorMessageType;
+  }
+  return Promise.reject(error);
 };
