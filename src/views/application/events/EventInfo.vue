@@ -922,7 +922,7 @@ $color-8a8aa8: #8a8aa8;
 
     .b-event-info__main-content-block {
       overflow-y: scroll;
-      height: calc(100vh - 90px - 60px);
+      @include calc-height(90px, 60px);
     }
 
     .b-event-info__details-block {

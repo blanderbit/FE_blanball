@@ -29,6 +29,7 @@ export const ErrorInterceptor = async (error) => {
   const getJsonErrorData = error.toJSON();
 
   const requestConfig = getJsonErrorData.config;
+
   const skipErrorMessageType =
     error?.response?.config?.skipErrorMessageType || [];
   error = error?.response?.data || getJsonErrorData;

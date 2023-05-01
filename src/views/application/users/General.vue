@@ -1147,7 +1147,7 @@ $color-71ba12: #71ba12;
       }
     }
     .user-cards-wrapper {
-      height: calc(100vh - 90px - 36px - 31px - 80px - 36px);
+      @include calc-height(90px, 36px, 31px, 80px, 36px);
       .users-cards {
         height: calc(100% - 20px);
         margin-top: 20px;

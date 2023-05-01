@@ -131,7 +131,7 @@ export default {
 }
 .b-auth {
   position: relative;
-  height: 100vh;
+  @include calc-height;
   display: flex;
   justify-content: center;
   @include tablet {

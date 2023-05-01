@@ -47,7 +47,8 @@ export default defineConfig({
         @import "@/assets/styles/variables.scss"; 
         @import "@/assets/styles/mixins/fonts.scss"; 
         @import '@/assets/styles/mixins/device.scss';
-        @import '@/assets/styles/mixins/modal-wrapper.scss';`,
+        @import '@/assets/styles/mixins/modal-wrapper.scss';
+        @import '@/assets/styles/mixins/calc-height.scss';`
       },
     },
   },

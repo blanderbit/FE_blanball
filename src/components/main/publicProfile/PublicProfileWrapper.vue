@@ -47,7 +47,7 @@ $color-6f6f77: #6f6f77;
     left: 50%;
     transform: translate(-50%, -50%);
     overflow: scroll;
-    height: calc(100vh);
+    @include calc-height;
 
     .b-public-profile__wrapper-edit-buttons {
       right: 0;

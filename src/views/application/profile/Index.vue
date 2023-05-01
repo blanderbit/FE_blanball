@@ -80,7 +80,10 @@
         </Transition>
       </div>
     </div>
-    <div class="b-user-cabinet__my-profile-tab" :style="profileMainSideHeight">
+    <div
+      class="b-user-cabinet__my-profile-tab"
+      :style="`height: ${profileMainSideHeight}`"
+    >
       <Form
         v-slot="data"
         :validation-schema="schema"
@@ -184,6 +187,7 @@ import ReviewsListModal from '../../../components/main/profile/modals/ReviewsLis
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '@/stores/userData';
 import useWindowWidth from '../../../utils/widthScreen';
+import { calcHeight } from '../../../utils/calcHeight';
 
 import CONSTANTS from '../../../consts';
 import SCHEMAS from '../../../validators/schemas';
@@ -252,18 +256,15 @@ export default {
       };
     });
 
+    const { appHeightValue, calculatedHeight, onAppHeightResize } = calcHeight(
+      88,
+      46,
+      60,
+      userStore.user.is_verified ? 0 : 55
+    );
+
     const profileMainSideHeight = computed(() => {
-      if (!isMobile.value) {
-        return {
-          height: 'calc(100vh - 88px - 46px - 60px)',
-        };
-      } else {
-        return {
-          height: `calc(100vh - 88px - 46px - 60px - 60px - ${
-            userStore.user.is_verified ? 0 : 55
-          }px`,
-        };
-      }
+      return `${calculatedHeight.value}px`;
     });
 
     const schema = computed(() => {
@@ -340,10 +341,12 @@ export default {
 
     onMounted(() => {
       window.addEventListener('resize', onResize);
+      window.addEventListener('resize', onAppHeightResize);
     });
 
     onBeforeUnmount(() => {
       window.removeEventListener('resize', onResize);
+      window.removeEventListener('resize', onAppHeightResize);
     });
 
     function switchTabLabel(isDisabled) {

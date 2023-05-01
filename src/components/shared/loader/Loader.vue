@@ -137,7 +137,7 @@ $color-efeff6: #efeff6;
   display: flex;
   justify-content: center;
   align-items: baseline;
-  height: 100vh;
+  @include calc-height;
   margin-top: 20px;
 
   .spinner__text {

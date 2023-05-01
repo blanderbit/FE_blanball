@@ -5,6 +5,7 @@
 </template>
 
 <script setup>
+import { onMounted, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { GeneralSocketWorkerInstance } from './workers/web-socket-worker';
@@ -15,6 +16,19 @@ import { WebSocketTypes } from './workers/web-socket-worker/web.socket.types';
 import { ROUTES } from './router/router.const';
 
 const router = useRouter();
+
+function calculateAppHeight() {
+  const doc = document.documentElement;
+  doc.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
+}
+
+onMounted(() => {
+  window.addEventListener('resize', calculateAppHeight);
+  calculateAppHeight();
+});
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', calculateAppHeight);
+});
 
 const handleMessageGeneral = (instance) => {
   switch (instance.messageType) {

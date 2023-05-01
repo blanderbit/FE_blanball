@@ -520,8 +520,7 @@ html {
 .main-wrapper {
   display: grid;
   grid-template-columns: 64px 1fr;
-  height: 100vh;
-  // overflow: hidden;
+  @include calc-height;
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
   }
@@ -580,11 +579,10 @@ html {
   }
   .main-block {
     height: 100%;
-    // overflow: hidden;
     .main-body-inner {
       display: grid;
       grid-template-rows: 90px 1fr;
-      height: 100vh;
+      @include calc-height;
     }
   }
 }
