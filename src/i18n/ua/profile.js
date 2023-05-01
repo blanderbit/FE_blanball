@@ -63,5 +63,7 @@ export default {
   'no-content': 'Не вказано',
   'write-several-words': 'Напишіть декілька слів про себе',
   'copy-number': 'Скопіювати номер',
-  'copy-address': 'Скопіювати адресу'
+  'copy-address': 'Скопіювати адресу',
+  'my-rating': 'Мій рейтинг',
+  'based-on-reviews': 'Складається на основі оцінок інших користувачів'
 };

@@ -6,84 +6,154 @@
       v-model:range-slider="transformedFilters.profile__age"
       v-model:gender="transformedFilters.profile__gender"
       :elementsCount="elementsCount"
-      @close-modal="isModalFiltersActive = false"
-      @set-modal-window-filters="setModalFilters"
+      @closeModal="isModalFiltersActive = false"
+      @setModalWindowFilters="setModalFilters"
       @clearFilters="$emit('clearFilters')"
     />
-    <div class="b-users-filters">
-      <div class="b-users-filters__first-line">
-        <div class="b-users-filters__left-part">
-          <div class="b-users-filters__selected-ordering-value">
-            {{ orderingDisplayValue }}
-          </div>
-          <div class="b-users-filters__dropdown">
-            <dropdown
-              :check-value-immediate="true"
-              :options="gender"
-              :placeholder="$t('users.gender')"
-              :height="32"
-              display-name="name"
-              :backgroundColor="'#fff'"
-              display-value="value"
-              v-model="transformedFilters.profile__gender"
-              name="gender"
+    <div class="b-main-search__wrapper">
+      <slot name="tabs"></slot>
+      <div class="b-main-search__search-block">
+        <div class="b-main-search__first-line">
+          <div class="b-main-search__left-block">
+            <div
+              class="b-main-search__soring-button"
+              @click="sortingButtonClick"
             >
-            </dropdown>
-          </div>
-        </div>
-        <div class="b-users-filters__right-part d-flex">
-          <div class="b-users-filters__input">
-            <input-component
-              :placeholder="$t('users.users-search')"
-              :height="32"
-              :title-width="0"
-              :icon="icons.search"
-              v-model="transformedFilters.search"
-              name="search"
-            ></input-component>
-          </div>
-          <clear-filters @clear="$emit('clearFilters')"></clear-filters>
-          <button-details-filters
-            v-model:active="activeFilters"
-          ></button-details-filters>
-        </div>
-      </div>
-      <div class="b-users-filters__second-line" v-if="activeFilters">
-        <div class="b-users-filters__age-filter-wrap">
-          <RangeFilter v-model:age-range="transformedFilters.profile__age" />
-        </div>
-        <div class="b-users-filters__dropdown">
-          <dropdown
-            :check-value-immediate="true"
-            :options="positions"
-            :placeholder="$t('users.gaming-position')"
-            :height="32"
-            :backgroundColor="'#fff'"
-            display-name="name"
-            display-value="value"
-            v-model="transformedFilters.profile__position"
-            name="position"
-          >
-          </dropdown>
-        </div>
-      </div>
-      <div class="b-users-filters__mob-line">
-        <div class="b-users-filters__selected-ordering-value">
-          {{ orderingDisplayValue }}
-        </div>
-        <div class="b-users-filters__fitering">
-          <div
-            class="b-users-filters__icon"
-            @click="isModalFiltersActive = true"
-          >
-            <img src="../../../assets/img/set-filter.svg" alt="" />
-          </div>
-          <div class="b-users-filters__text-block">
-            <div class="b-users-filters__title">
-              {{ $t('users.filters') }}
+              <img :src="sortingBtnData.icon" alt="" />
+              <span class="b-main-search__soring-title">
+                {{ sortingBtnData.title }}
+              </span>
             </div>
-            <div class="b-users-filters__text">
-              {{ $t('users.found-users', {count: elementsCount}) }}
+            <div class="b-main-search__dropdown-wrapper-tournament">
+              <dropdown
+                :check-value-immediate="true"
+                :options="gender"
+                :placeholder="$t('users.gender')"
+                :height="32"
+                display-name="name"
+                :backgroundColor="'#fff'"
+                display-value="value"
+                v-model="transformedFilters.profile__gender"
+                name="gender"
+              />
+            </div>
+          </div>
+          <div class="b-main-search__right-block">
+            <div class="b-main-search__search-input-desktop">
+              <MainInput
+                :title-width="0"
+                :placeholder="$t('users.users-search')"
+                inputMode="search"
+                :height="32"
+                :icon="icons.search"
+                :backgroundColor="'#fff'"
+                name="search"
+                v-model="transformedFilters.search"
+              />
+            </div>
+            <clear-filters @clear="clearFilters"></clear-filters>
+            <button-details-filters
+              v-model:active="activeFilters"
+            ></button-details-filters>
+          </div>
+        </div>
+        <div class="b-main-search__second-line" v-if="activeFilters">
+          <div class="b-main-search__left-side">
+            <div class="b-users-filters__age-filter-wrap">
+              <RangeFilter
+                v-model:age-range="transformedFilters.profile__age"
+              />
+            </div>
+            <div class="b-main-search__dropdown-wrapper-cities">
+              <dropdown
+                :check-value-immediate="true"
+                :options="positions"
+                :placeholder="$t('users.gaming-position')"
+                :height="32"
+                :backgroundColor="'#fff'"
+                display-name="name"
+                display-value="value"
+                v-model="transformedFilters.profile__position"
+                name="position"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="b-main-search__search-block-mob">
+        <div class="b-main-search__filters-block">
+          <div v-if="!isMobileSearchOpened" class="b-main-search__left-part">
+            <div
+              class="b-main-search__soring-button"
+              @click="sortingButtonClick"
+            >
+              <img :src="sortingBtnData.icon" alt="" />
+              <span class="b-main-search__soring-title">
+                {{ sortingBtnData.title }}
+              </span>
+            </div>
+          </div>
+          <div class="b-main-search__right-part d-flex align-items-center">
+            <div class="b-main-search__search-input me-2">
+              <MainInput
+                :title-width="0"
+                :placeholder="$t('users.users-search')"
+                inputMode="search"
+                :height="32"
+                :backgroundColor="'#fff'"
+                :icon="icons.search"
+                name="search"
+                v-model="transformedFilters.search"
+              />
+            </div>
+            <MainInput
+              v-if="isMobileSearchOpened"
+              :title-width="0"
+              :placeholder="$t('users.users-search')"
+              inputMode="search"
+              :height="32"
+              :backgroundColor="'#fff'"
+              :icon="icons.cross"
+              name="search"
+              v-model="transformedFilters.search"
+              @icon-click="closeMobileSearch"
+            />
+            <MainInput
+              class="b-main-search__search-input-tablet"
+              :title-width="0"
+              :placeholder="$t('users.users-search')"
+              inputMode="search"
+              :height="36"
+              :backgroundColor="'#fff'"
+              :icon="icons.search"
+              name="search"
+              v-model="transformedFilters.search"
+            />
+            <div
+              v-if="!isMobileSearchOpened"
+              class="b-main-search__search-icon-mobile"
+              @click="openMobileSearch"
+            >
+              <img :src="icons.search" alt="" />
+            </div>
+            <div
+              class="b-main-search__filtering-block sort-item d-flex align-items-center"
+              @click="isModalFiltersActive = true"
+            >
+              <div
+                class="b-main-search__icon d-flex align-items-center justify-content-center"
+              >
+                <img src="../../../assets/img/set-filter.svg" alt="" />
+              </div>
+              <div v-if="filterStatus" class="b-main-search-icon-status"></div>
+              <div class="b-main-search__text-block">
+                <div class="b-main-search__title">
+                  {{ $t('users.filters') }}
+                </div>
+                <span class="b-found-count">
+                  {{ $t('users.found-users', { count: elementsCount }) }}
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -94,16 +164,15 @@
 
 <script>
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
+import { useRoute } from 'vue-router';
 
-import RangeFilter from '../../filters/components/RangeFilter.vue';
-import Dropdown from '../../forms/Dropdown.vue';
+import dropdown from '../../shared/dropdown/Dropdown.vue';
 import FilterBlock from '../FilterBlock.vue';
-import InputComponent from '../../forms/InputComponent.vue';
-import Checkbox from '../../forms/Checkbox.vue';
+import MainInput from '../../shared/input/MainInput.vue';
 import ButtonDetailsFilters from '../components/ButtonDetailsFilters.vue';
 import ClearFilters from '../components/ClearFilters.vue';
-import ModalPositionMap from '../../maps/ModalPositionMap.vue';
 import ModalFilters from '../ModalUsersFilters.vue';
+import RangeFilter from '../components/RangeFilter.vue';
 
 import { TransformedFiltersWorker } from './transformed.filters.worker';
 import useWindowWidth from '../../../utils/widthScreen';
@@ -111,20 +180,19 @@ import useWindowWidth from '../../../utils/widthScreen';
 import CONSTANTS from '../../../consts';
 
 import SearchIcon from '../../../assets/img/search.svg';
-import ArrowTopIcon from '../../../assets/img/arrow-top.svg';
-import ArrowDownIcon from '../../../assets/img/arrow-down2.svg';
+import arrowsUpIcon from '../../../assets/img/sort-arrows.svg';
+import arrowsDownIcon from '../../../assets/img/sort-arrows-down.svg';
+import crossIcon from '../../../assets/img/cross.svg';
 
 export default {
-  name: 'UsersFilters',
+  name: 'EventsFilters',
   components: {
-    Checkbox,
-    Dropdown,
-    InputComponent,
+    dropdown,
+    MainInput,
     ButtonDetailsFilters,
     ClearFilters,
-    ModalPositionMap,
-    FilterBlock,
     RangeFilter,
+    FilterBlock,
     ModalFilters,
   },
   props: {
@@ -149,39 +217,26 @@ export default {
   },
   emits: ['update:value', 'clearFilters'],
   setup(props, { emit }) {
-    const { isMobile, isTablet, onResize } = useWindowWidth();
     const isModalFiltersActive = ref(false);
-    const calendar = ref({
-      inputMask: 'YYYY-MM-DD',
-      modelConfig: {
-        type: 'string',
-        mask: 'YYYY-MM-DD', // Uses 'iso' if missing
-      },
-    });
-
+    const route = useRoute();
+    const isMobileSearchOpened = ref(false);
+    const { isMobile, isTablet, onResize } = useWindowWidth();
     const icons = computed(() => {
       return {
         search: SearchIcon,
-        arrowDown: ArrowDownIcon,
-        arrowTop: ArrowTopIcon,
+        cross: crossIcon,
       };
     });
-    const positions = computed(() => CONSTANTS.profile.position);
-    const gender = computed(() => CONSTANTS.users_page.gender);
-    const ordering = computed(() => CONSTANTS.users_page.ordering);
-
-    const orderingDisplayValue = computed(() => {
-      if (transformedFilters.value.ordering) {
-        return CONSTANTS.users_page.ordering.find(
-          (obj) => obj.value === transformedFilters.value.ordering
-        ).name;
-      } else {
-        return CONSTANTS.users_page.ordering.find((obj) => obj.value === '-id')
-          .name;
-      }
+    const ordering = computed(() => [{ value: 'id' }, { value: '-id' }]);
+    const sortingBtnData = computed(() => {
+      return transformedFilters.value.ordering === ordering.value[0].value
+        ? { title: 'Cпочатку нові', icon: arrowsUpIcon }
+        : { title: 'Cпочатку старі', icon: arrowsDownIcon };
     });
+    const gender = computed(() => CONSTANTS.users_page.gender);
+    const positions = computed(() => CONSTANTS.profile.position);
 
-    const { activeFilters, transformedFilters, updateRealData } =
+    const { activeFilters, updateRealData, transformedFilters } =
       TransformedFiltersWorker({
         props,
         emit,
@@ -220,21 +275,20 @@ export default {
           };
         },
         ifSecondLineWasUsed() {
-          if (
-            props.modelValue.profile__age_min.value ||
-            props.modelValue.profile__age_max.value
-          ) {
-            return !(
-              props.modelValue.profile__age_min.value ===
-                props.modelValue.profile__age_min.default &&
-              props.modelValue.profile__age_max.value ===
-                props.modelValue.profile__age_max.default
-            );
-          } else {
-            return false;
-          }
+          return true
         },
       });
+
+    const filterStatus = computed(() => {
+      return !!(
+        route.query.gender ||
+        route.query.type ||
+        route.query.point ||
+        route.query.dist ||
+        route.query.date_and_time_before ||
+        route.query.date_and_time_after
+      );
+    });
 
     onMounted(() => {
       window.addEventListener('resize', onResize);
@@ -244,123 +298,55 @@ export default {
       window.removeEventListener('resize', onResize);
     });
 
+    function clearFilters() {
+      emit('clearFilters');
+    }
+
+    function sortingButtonClick() {
+      transformedFilters.value.ordering =
+        transformedFilters.value.ordering === 'id' ? '-id' : 'id';
+    }
     function setModalFilters() {
       updateRealData();
     }
 
+    function openMobileSearch() {
+      isMobileSearchOpened.value = true;
+    }
+
+    function closeMobileSearch() {
+      isMobileSearchOpened.value = false;
+    }
+
     return {
+      sortingButtonClick,
       setModalFilters,
+      closeMobileSearch,
+      clearFilters,
+      openMobileSearch,
       ordering,
+      filterStatus,
       gender,
-      positions,
       activeFilters,
       transformedFilters,
+      positions,
+      isMobileSearchOpened,
       icons,
+      sortingBtnData,
       isModalFiltersActive,
-      calendar,
-      orderingDisplayValue,
     };
   },
 };
 </script>
 
 <style scoped lang="scss">
-// SCSS variables for hex colors
-$color-fafafa: #fafafa;
-.b-users-filters__dropdown {
-  width: 132px;
-  height: 32px;
+@import '../../../assets/styles/search-event.block.scss';
+
+:deep(.b-main-search__second-line) {
+  margin-top: 15px !important;
 }
-.b-users-filters {
-  * {
-    z-index: 10;
-  }
-  .b-users-filters__selected-ordering-value {
-    @include inter(13px, 500);
-    line-height: 20px;
-  }
-  &__first-line {
-    display: flex;
-    justify-content: space-between;
-    @media (max-width: 992px) {
-      display: none;
-    }
-    .b-users-filters__left-part {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .b-users-filters__right-part {
-      .b-users-filters__input {
-        margin-right: 8px;
-      }
-    }
-  }
-  &__second-line {
-    margin-top: 16px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    @include tabletAndMobile {
-      display: none;
-    }
-    .b-users-filters__age-filter-wrap {
-      width: 300px;
-    }
-  }
-  &__mob-line {
-    display: none;
-    justify-content: space-between;
-    @include tablet {
-      justify-content: flex-start;
-    }
-    @media (max-width: 992px) {
-      display: flex;
-    }
-    .b-users-filters__sorting {
-      width: 160px;
-    }
-    .b-users-filters__fitering {
-      display: flex;
-      width: 180px;
 
-      @include tablet {
-        margin-left: 50px;
-      }
-
-      .b-users-filters__icon {
-        width: 36px;
-        min-width: 36px;
-        height: 36px;
-        background: $color-fafafa;
-        border-radius: 6px;
-        margin-right: 4px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-      }
-
-      .b-users-filters__text-block {
-        .b-users-filters__title {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 500;
-          font-size: 13px;
-          line-height: 20px;
-          color: $--b-main-black-color;
-        }
-        .b-users-filters__text {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 12px;
-          line-height: 20px;
-          color: $--b-main-gray-color;
-          width: max-content;
-        }
-      }
-    }
-  }
+:deep(.b-main-search__wrapper) {
+  margin-top: 0px;
 }
 </style>

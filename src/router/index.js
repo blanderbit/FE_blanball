@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import {
   routerResolverByLoginPage,
   routerAuthResolver,
+  routerDataResolver,
 } from '../workers/resolver-worker/reolver.worker';
 import { API } from '../workers/api-worker/api.worker';
 import {
@@ -12,7 +13,6 @@ import { transpileInterseptorQueryToConfig } from '../workers/api-worker/http/fi
 import { ROUTES } from './router.const';
 import { useUserDataStore } from '../stores/userData';
 import { prepareEventUpdateData } from '../utils/prepareEventUpdateData';
-import { DETAILS_TYPE_ENUM } from '../workers/type-request-message-worker';
 
 const usersData = () => {
   const userStore = useUserDataStore();
@@ -33,14 +33,14 @@ const router = createRouter({
       path: ROUTES.AUTHENTICATIONS.index.path,
       name: ROUTES.AUTHENTICATIONS.index.name,
       beforeEnter: routerResolverByLoginPage,
-      component: () => import('../views/authentication/index.vue'),
+      component: () => import('../views/authentication/Index.vue'),
       redirect: ROUTES.AUTHENTICATIONS.LOGIN.absolute,
       children: [
         {
           path: ROUTES.AUTHENTICATIONS.LOGIN.relative,
           name: ROUTES.AUTHENTICATIONS.LOGIN.name,
           beforeEnter: routerResolverByLoginPage,
-          component: () => import('../views/authentication/login.vue'),
+          component: () => import('../views/authentication/Login.vue'),
           meta: {
             noGuards: true
           }
@@ -49,13 +49,13 @@ const router = createRouter({
           path: ROUTES.AUTHENTICATIONS.REGISTER.relative,
           name: ROUTES.AUTHENTICATIONS.REGISTER.name,
           beforeEnter: routerResolverByLoginPage,
-          component: () => import('../views/authentication/register.vue'),
+          component: () => import('../views/authentication/Register.vue'),
         },
         {
           path: ROUTES.AUTHENTICATIONS.RESET.relative,
           name: ROUTES.AUTHENTICATIONS.RESET.name,
           beforeEnter: routerResolverByLoginPage,
-          component: () => import('../views/authentication/reset.vue'),
+          component: () => import('../views/authentication/Reset.vue'),
         },
       ],
     },
@@ -63,17 +63,17 @@ const router = createRouter({
       path: ROUTES.APPLICATION.index.path,
       name: ROUTES.APPLICATION.index.name,
       beforeEnter: routerAuthResolver.routeInterceptor(),
-      component: () => import('../views/application/index.vue'),
+      component: () => import('../views/application/Index.vue'),
       redirect: ROUTES.APPLICATION.EVENTS.absolute,
       children: [
         {
-          path: ROUTES.APPLICATION.VERSION.relative,
-          name: ROUTES.APPLICATION.VERSION.name,
+          path: ROUTES.APPLICATION.VERSIONS.relative,
+          name: ROUTES.APPLICATION.VERSIONS.name,
           beforeEnter: routerAuthResolver.routeInterceptor(() => ({
             allVersions: () => API.VersionsService.getAllVersions(),
             usersData,
           })),
-          component: () => import('../views/application/versions.vue'),
+          component: () => import('../views/application/Versions.vue'),
           meta: {
             breadcrumbs: {
               i18n: 'breadcrumbs.versions',
@@ -87,7 +87,7 @@ const router = createRouter({
             usersData,
             allReviewsData: () => API.ReviewService.getMyReviews(),
           })),
-          component: () => import('../views/application/profile/index.vue'),
+          component: () => import('../views/application/profile/Index.vue'),
           meta: {
             breadcrumbs: {
               i18n: 'breadcrumbs.profile',
@@ -110,7 +110,7 @@ const router = createRouter({
                   ),
                 usersData,
               })),
-              component: () => import('../views/application/events/my-events.vue'),
+              component: () => import('../views/application/events/MyEvents.vue'),
               meta: {
                 breadcrumbs: {
                   i18n: 'breadcrumbs.myEvents',
@@ -128,7 +128,7 @@ const router = createRouter({
                   ),
                 usersData,
               })),
-              component: () => import('../views/application/events/my-events.vue'),
+              component: () => import('../views/application/events/MyEvents.vue'),
               meta: {
                 breadcrumbs: {
                   i18n: 'breadcrumbs.myEvents',
@@ -148,7 +148,7 @@ const router = createRouter({
               ),
             usersData,
           })),
-          component: () => import('../views/application/events/index.vue'),
+          component: () => import('../views/application/events/Index.vue'),
           meta: {
             breadcrumbs: {
               i18n: 'breadcrumbs.events',
@@ -162,7 +162,7 @@ const router = createRouter({
             action: () => 'CREATE',
             usersData,
           })),
-          component: () => import('../views/application/events/manage.vue'),
+          component: () => import('../views/application/events/Manage.vue'),
           meta: {
             breadcrumbs: {
               i18n: 'breadcrumbs.createOneEvent',
@@ -179,7 +179,7 @@ const router = createRouter({
               return prepareEventUpdateData(to.params.id);
             },
           })),
-          component: () => import('../views/application/events/manage.vue'),
+          component: () => import('../views/application/events/Manage.vue'),
           meta: {
             breadcrumbs: {
               i18n: 'breadcrumbs.editOneEvent',
@@ -195,7 +195,7 @@ const router = createRouter({
             eventRequestsToParticipationData: () =>
               API.EventService.requestsToParticipations(to.params.id),
           })),
-          component: () => import('../views/application/events/event-info.vue'),
+          component: () => import('../views/application/events/EventInfo.vue'),
           meta: {
             breadcrumbs: {
               i18n: 'breadcrumbs.getOneEvent',
@@ -212,7 +212,7 @@ const router = createRouter({
               ),
             usersData,
           })),
-          component: () => import('../views/application/users/general.vue'),
+          component: () => import('../views/application/users/General.vue'),
           meta: {
             breadcrumbs: {
               i18n: 'breadcrumbs.users',
@@ -227,7 +227,7 @@ const router = createRouter({
               API.UserService.getUserPublicProfile(to.params.userId),
             usersData,
           })),
-          component: () => import('../views/application/users/profile.vue'),
+          component: () => import('../views/application/users/Profile.vue'),
           meta: {
             breadcrumbs: {
               i18n: 'breadcrumbs.userProfile',
@@ -239,19 +239,54 @@ const router = createRouter({
     {
       path: ROUTES.WORKS.relative,
       name: ROUTES.WORKS.name,
-      beforeEnter: routerAuthResolver.routeInterceptor(),
-      component: () => import('../views/application/works.vue'),
+      beforeEnter: routerDataResolver.routeInterceptor(),
+      component: () => import('../views/application/Works.vue'),
+    },
+    {
+      path: ROUTES.PRIVACY_POLICY.relative,
+      name: ROUTES.PRIVACY_POLICY.name,
+      beforeEnter: routerDataResolver.routeInterceptor(),
+      component: () => import('../views/policy/PrivacyPolicy.vue'),
+    },
+    {
+      path: ROUTES.COOKIE_POLICY.relative,
+      name: ROUTES.COOKIE_POLICY.name,
+      beforeEnter: routerDataResolver.routeInterceptor(),
+      component: () => import('../views/policy/CookiePolicy.vue'),
+    },
+    {
+      path: ROUTES.DISCLAMER.relative,
+      name: ROUTES.DISCLAMER.name,
+      beforeEnter: routerDataResolver.routeInterceptor(),
+      component: () => import('../views/policy/Disclamer.vue'),
     },
     {
       path: '/:pathMatch(.*)*',
-      beforeEnter: routerAuthResolver.routeInterceptor(),
+      beforeEnter: routerDataResolver.routeInterceptor(),
       component: () => import('../views/404.vue'),
     },
     {
       path: '/',
+      beforeEnter: routerDataResolver.routeInterceptor(),
       redirect: ROUTES.AUTHENTICATIONS.LOGIN.absolute,
     },
   ],
 });
 
 export default router;
+
+
+router.beforeEach(async (to, from, next) => {
+  if (to.name === ROUTES.WORKS.name) {
+    const response = await API.NotificationService.getMaintenance();
+    if (response.data.isMaintenance) {
+      next();
+    } else {
+      next(ROUTES.APPLICATION.EVENTS.absolute);
+    }
+  } else if (to.name === ROUTES.APPLICATION.VERSIONS.name) {
+    next();
+  } else {
+    next();
+  }
+});

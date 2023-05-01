@@ -37,8 +37,6 @@
               {{ $t('register.load-app') }}
             </span>
           </div>
-          <!--<template v-else>-->
-          <!--</template>-->
         </div>
       </Transition>
       <div
@@ -133,7 +131,7 @@ export default {
 }
 .b-auth {
   position: relative;
-  height: 100vh;
+  @include calc-height;
   display: flex;
   justify-content: center;
   @include tablet {

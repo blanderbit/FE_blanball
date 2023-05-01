@@ -25,6 +25,7 @@ import Hashtags from './hashtags';
 import Colors from './colors';
 import Alts from './alts';
 import NoRecords from './no_records';
+import Policy from './policy';
 
 export const UA_LANGUAGE = {
   events: EventsPage,
@@ -54,4 +55,5 @@ export const UA_LANGUAGE = {
   colors: Colors,
   alts: Alts,
   no_records: NoRecords,
+  policy: Policy
 };

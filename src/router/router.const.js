@@ -25,7 +25,7 @@ export const ROUTES = {
       path: '/application',
       name: 'application',
     },
-    VERSION: {
+    VERSIONS: {
       relative: 'versions',
       absolute: '/application/versions',
       name: 'application-versions',
@@ -133,4 +133,19 @@ export const ROUTES = {
     absolute: '/works',
     name: 'works',
   },
+  PRIVACY_POLICY: {
+    relative: '/privacy/policy',
+    absolute: '/privacy/policy',
+    name: 'privacy-policy',
+  },
+  DISCLAMER: {
+    relative: '/disclamer',
+    absolute: '/disclamer',
+    name: 'disclamer',
+  },
+  COOKIE_POLICY: {
+    relative: '/cookie/policy',
+    absolute: '/cookie/policy',
+    name: 'cookie-policy',
+  }
 };

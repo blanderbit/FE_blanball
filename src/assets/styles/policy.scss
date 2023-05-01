@@ -1,0 +1,37 @@
+html {
+  overflow: hidden;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h2 {
+  @include exo(16px, 700);
+  line-height: 24px;
+  margin: 20px 0px 0px 0px;
+}
+p {
+  @include inter(14px, 400);
+  line-height: 22px;
+  margin: 10px 0px;
+}
+ul {
+  list-style: none;
+  li {
+    margin-left: 20px;
+    @include inter(14px, 500);
+    line-height: 22px;
+    &::before {
+      content: '\2022';
+      color: #c5c5d3;
+      font-weight: bold;
+      display: inline-block;
+      width: 1em;
+    }
+  }
+}
+a {
+  color: $--b-main-green-color;
+}

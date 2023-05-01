@@ -1,26 +1,34 @@
 <template>
   <div>
-    <ModalVersion v-if="isModalActive" @close-modal-click="closeModal" />
     <router-view />
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
-
-import ModalVersion from './components/ModalWindows/ModalVersion.vue';
 
 import { GeneralSocketWorkerInstance } from './workers/web-socket-worker';
 import { createQueryStringFromObject } from './workers/utils-worker';
-import { VersionDetectorWorker } from './workers/version-detector-worker';
 import { API } from './workers/api-worker/api.worker';
 
 import { WebSocketTypes } from './workers/web-socket-worker/web.socket.types';
 import { ROUTES } from './router/router.const';
 
 const router = useRouter();
-const isModalActive = ref(false);
+
+function calculateAppHeight() {
+  const doc = document.documentElement;
+  doc.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
+}
+
+onMounted(() => {
+  window.addEventListener('resize', calculateAppHeight);
+  calculateAppHeight();
+});
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', calculateAppHeight);
+});
 
 const handleMessageGeneral = (instance) => {
   switch (instance.messageType) {
@@ -28,9 +36,6 @@ const handleMessageGeneral = (instance) => {
       const maintenance = instance.data.maintenance.type;
       const ifCurrentRouteMaintenance = location.pathname.includes(
         ROUTES.WORKS.absolute
-      );
-      const ifCurrentRouteApplication = location.pathname.includes(
-        ROUTES.APPLICATION.index.name
       );
 
       if (ifCurrentRouteMaintenance && maintenance) {
@@ -40,13 +45,8 @@ const handleMessageGeneral = (instance) => {
           redirectUrl: window.location.pathname,
         });
 
-        return router.push(
-          `${ROUTES.WORKS.absolute}${query ? '?' + query : query}`
-        );
-      } else if (!maintenance && !ifCurrentRouteApplication) {
-        const ifAuthentication = location.pathname.includes('authentication');
-
-        if (ifAuthentication) return;
+        return router.push(`${ROUTES.WORKS.absolute}${query}`);
+      } else if (!maintenance && ifCurrentRouteMaintenance) {
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
         const redirectUrl = params.redirectUrl;
@@ -65,31 +65,20 @@ const handleMessageGeneral = (instance) => {
     }
   }
 };
-
-const VersionHandling = {
-  handleDifferentVersion: () => {
-    isModalActive.value = true;
-  },
-  closeVersionModal: () => (isModalActive.value = false),
-};
 try {
   API.NotificationService.getMaintenance().then((result) =>
-  handleMessageGeneral({
-    messageType: WebSocketTypes.ChangeMaintenance,
-    data: {
-      maintenance: {
-        type: result.data.isMaintenance,
+    handleMessageGeneral({
+      messageType: WebSocketTypes.ChangeMaintenance,
+      data: {
+        maintenance: {
+          type: result.data.isMaintenance,
+        },
       },
-    },
-  })
-);
-} catch{}
+    })
+  );
+} catch {}
 
-GeneralSocketWorkerInstance.registerCallback(handleMessageGeneral).connect();
-
-VersionDetectorWorker(VersionHandling.handleDifferentVersion);
-
-function closeModal() {
-  VersionHandling.closeVersionModal();
-}
+try {
+  GeneralSocketWorkerInstance.registerCallback(handleMessageGeneral).connect();
+} catch {}
 </script>

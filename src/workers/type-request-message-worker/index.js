@@ -18,6 +18,7 @@ export const DETAILS_TYPE_ENUM = {
   NO_PERMISSIONS: 'no_permissions',
   BAD_VERIFY_CODE: 'bad_verify_code',
   VERIFY_CODE_EXPIRED: 'verify_code_expired',
+  INVALID_REFRESH_TOKEN: 'invalid_refresh_token',
   EMAIL_ALREADY_IN_USE: 'email_already_in_use',
 
   EVENT_DELETED: 'event_deleted',

@@ -1,5 +1,5 @@
 <template>
-  <Loading :is-loading="loading" />
+  <loader :is-loading="loading" />
   <SubmitModal
     v-if="isSubmitModalOpened"
     :config="submitModalConfig"
@@ -11,27 +11,24 @@
     <div class="b-mob-menu__logo-block">
       <div class="b-mob-menu__logo-left">
         <div class="b-mob-menu__logo">{{ $t('menu.blanball') }}</div>
-        <div class="b-mob-menu__version">
-          {{ $t('slide_menu.version') }}
-          <router-link
-            :to="routeObject.APPLICATION.VERSION.absolute"
-            @click="$emit('close')"
-          >
-            <span>{{ clientVersion }}</span>
-          </router-link>
-        </div>
+        <router-link
+          class="b-mob-menu__version"
+          :to="routeObject.APPLICATION.VERSIONS.absolute"
+          @click="closeMobMenu"
+        >
+          <span>{{ $t('slide_menu.version') }} {{ clientVersion }}</span>
+        </router-link>
       </div>
       <div class="b-mob-menu__close" @click="closeMobMenu">&times;</div>
     </div>
     <div class="b-mob-menu__user-data">
       <div class="b-mob-menu__user-info">
         <div class="b-mob-menu__user-img">
-          <Avatar
+          <userAvatar
             :link="userStore.getUserAvatar"
             :full-name="userStore.getUserFullName"
             @clickByAvatar="goToMyProfile"
-          >
-          </Avatar>
+          />
         </div>
         <div class="b-mob-menu__text-block">
           <div class="b-mob-menu__user-name">
@@ -161,7 +158,11 @@
     </div>
     <div v-if="selectedList.length" class="b-mob-menu__control-block">
       <div class="b-control-block__block">
-        <img src="../../assets/img/cross.svg" alt="" @click="clearSelectedList" />
+        <img
+          src="../../assets/img/cross.svg"
+          alt=""
+          @click="clearSelectedList"
+        />
         <div class="b-selected-elements-count">
           <span>{{ selectedList.length }}</span>
         </div>
@@ -200,14 +201,14 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { v4 as uuid } from 'uuid';
 
-import Avatar from '../Avatar.vue';
-import Notifications from '../sitebar-notifications/Notifications.vue';
-import Notification from '../Notification.vue';
-import EmptyList from '../EmptyList.vue';
-import InfiniteLoading from '../../workers/infinit-load-worker/InfiniteLoading.vue';
+import userAvatar from '../shared/userAvatar/UserAvatar.vue';
+import Notifications from '../main/notifications/Notifications.vue';
+import Notification from '../main/notifications/Notification.vue';
+import emptyList from '../shared/emptyList/EmptyList.vue';
+import InfiniteLoading from '../main/infiniteLoading/InfiniteLoading.vue';
 import ScrollToTop from '../ScrollToTop.vue';
-import Loading from '../../workers/loading-worker/Loading.vue';
-import SubmitModal from '../ModalWindows/SubmitModal.vue';
+import loader from '../shared/loader/Loader.vue';
+import SubmitModal from '../shared/modals/SubmitModal.vue';
 
 import { useUserDataStore } from '../../stores/userData';
 import { NewNotifications } from '../../workers/web-socket-worker/not-includes-to-socket/new_notifications';
@@ -250,13 +251,13 @@ export default {
     },
   },
   components: {
-    Avatar,
+    userAvatar,
     Notifications,
     Notification,
-    EmptyList,
+    emptyList,
     InfiniteLoading,
     ScrollToTop,
-    Loading,
+    loader,
     SubmitModal,
   },
   emit: ['closeMenu'],
@@ -693,23 +694,13 @@ $color-1ccd62: #1ccd62;
         color: $--b-main-black-color;
       }
       .b-mob-menu__version {
-        @include inter(12px, 400, $color-8a8aa8);
+        @include inter(12px, 400, $--b-main-gray-color);
         line-height: 16px;
-
         display: flex;
         align-items: center;
         text-align: center;
         margin-top: 10px;
         cursor: pointer;
-
-        span {
-          text-decoration: none;
-          font-style: normal;
-          font-weight: 600;
-          font-size: 12px;
-          line-height: 16px;
-          color: $color-8a8aa8;
-        }
       }
     }
     .b-mob-menu__close {

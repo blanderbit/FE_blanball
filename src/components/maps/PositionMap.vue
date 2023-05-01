@@ -8,8 +8,8 @@ import { onMounted, ref, watch } from 'vue';
 import { API } from '../../workers/api-worker/api.worker';
 import { PositionMapBus } from '../../workers/event-bus-worker';
 
-import { PositionMapBackgroundStyle, PositionMapStyles } from './map.styles';
-import { number } from '@intlify/core-base';
+import { PositionMapBackgroundStyle, PositionMapStyles } from '../../workers/map-worker/map.styles';
+
 
 const Restrictions = {
   Ukraine: {
@@ -145,7 +145,9 @@ export default {
       if (!props.disableChangeCoords) {
         google.maps.event.addListener(map, 'click', function (event) {
           marker.value.setPosition(event.latLng);
-          circle.setCenter(event.latLng);
+          if (props?.radius) {
+            circle.setCenter(event.latLng);
+          }
           setDataAboutPosition(event.latLng.toJSON());
         });
       }

@@ -28,7 +28,7 @@
               </span>
             </div>
             <div class="b-main-search__dropdown-wrapper-tournament">
-              <Dropdown
+              <dropdown
                 :check-value-immediate="true"
                 :placeholder="$t('events.game-type')"
                 :backgroundColor="'#fff'"
@@ -42,10 +42,12 @@
           </div>
           <div class="b-main-search__right-block">
             <div class="b-main-search__search-input-desktop">
-              <InputComponent
+              <MainInput
                 :title-width="0"
                 :placeholder="$t('events.search-events')"
+                inputMode="search"
                 :height="32"
+                :backgroundColor="'#fff'"
                 :icon="icons.search"
                 name="search"
                 v-model="transformedFilters.search"
@@ -60,7 +62,7 @@
         <div class="b-main-search__second-line" v-if="activeFilters">
           <div class="b-main-search__left-side">
             <div class="b-main-search__dropdown-wrapper-cities">
-              <Dropdown
+              <dropdown
                 :check-value-immediate="true"
                 :placeholder="$t('events.gender')"
                 :options="gender"
@@ -98,9 +100,9 @@
             </div>
           </div>
           <div class="b-main-search__right-side">
-            <ModalPositionMap
+            <PositionMapModal
               v-model="transformedFilters.location"
-            ></ModalPositionMap>
+            ></PositionMapModal>
           </div>
         </div>
       </div>
@@ -119,29 +121,35 @@
           </div>
           <div class="b-main-search__right-part d-flex align-items-center">
             <div class="b-main-search__search-input me-2">
-              <InputComponent
+              <MainInput
                 :title-width="0"
                 :placeholder="$t('events.search-events')"
+                inputMode="search"
                 :height="32"
+                :backgroundColor="'#fff'"
                 :icon="icons.search"
                 name="search"
                 v-model="transformedFilters.search"
               />
             </div>
-            <InputComponent
+            <MainInput
               v-if="isMobileSearchOpened"
               :title-width="0"
               :placeholder="$t('events.search-events')"
+              inputMode="search"
               :height="32"
               :icon="icons.cross"
+              :backgroundColor="'#fff'"
               name="search"
               v-model="transformedFilters.search"
               @icon-click="closeMobileSearch"
             />
-            <InputComponent
+            <MainInput
               class="b-main-search__search-input-tablet"
               :title-width="0"
+              :backgroundColor="'#fff'"
               :placeholder="$t('events.search-events')"
+              inputMode="search"
               :height="36"
               :icon="icons.search"
               name="search"
@@ -185,14 +193,12 @@ import { computed, ref, onMounted, onBeforeUnmount, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import dayjs from 'dayjs';
 
-import Slider from '@vueform/slider';
-
-import Dropdown from '../../forms/Dropdown.vue';
+import dropdown from '../../shared/dropdown/Dropdown.vue';
 import FilterBlock from '../FilterBlock.vue';
-import InputComponent from '../../forms/InputComponent.vue';
+import MainInput from '../../shared/input/MainInput.vue';
 import ButtonDetailsFilters from '../components/ButtonDetailsFilters.vue';
 import ClearFilters from '../components/ClearFilters.vue';
-import ModalPositionMap from '../../maps/ModalPositionMap.vue';
+import PositionMapModal from '../../maps/PositionMapModal.vue';
 import ModalFilters from '../ModalEventsFilters.vue';
 
 import { TransformedFiltersWorker } from './transformed.filters.worker';
@@ -212,12 +218,11 @@ import crossIcon from '../../../assets/img/cross.svg';
 export default {
   name: 'EventsFilters',
   components: {
-    Dropdown,
-    InputComponent,
-    Slider,
+    dropdown,
+    MainInput,
     ButtonDetailsFilters,
     ClearFilters,
-    ModalPositionMap,
+    PositionMapModal,
     FilterBlock,
     ModalFilters,
   },
@@ -318,13 +323,8 @@ export default {
           };
         },
         ifSecondLineWasUsed() {
-          return !!(
-            props.modelValue.date_and_time_after.value !== todaysDate ||
-            props.modelValue.date_and_time_before.value !== todaysDate ||
-            props.modelValue.status.value ||
-            props.modelValue.place.value
-          );
-        },
+          return true
+        }
       });
 
     const sportTypeDropdown = CONSTANTS.event_page.sport_type_dropdown;
