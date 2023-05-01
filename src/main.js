@@ -1,6 +1,5 @@
 import { createApp } from 'vue';
 import { createI18n } from 'vue-i18n';
-import { createPinia } from 'pinia';
 
 import { createDeviceDetector } from 'next-vue-device-detector';
 
@@ -18,6 +17,7 @@ import Maska from './workers/phone-maska-worker';
 
 import App from './App.vue';
 import router from './router';
+import pinia from './plugins/pinia';
 import pkg from '../package';
 import './workers/map-worker/map.init';
 import { UA_LANGUAGE } from './i18n/ua';
@@ -46,7 +46,7 @@ const app = createApp(App);
 
 app
   .provide('clientVersion', pkg.version)
-  .use(createPinia())
+  .use(pinia)
   .use(router)
   .use(i18n)
   .use(ContextMenu)

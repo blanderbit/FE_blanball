@@ -135,7 +135,7 @@ $color-f9f9fc: #f9f9fc;
 
   .b-right-sidebar__cards-block {
     margin-top: 20px;
-    height: calc(100vh - 72px - 90px - 20px);
+    @include calc-height(72px, 90px, 20px);
     overflow: scroll;
   }
   .b-right-sidebar__no-events {

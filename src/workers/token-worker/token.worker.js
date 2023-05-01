@@ -1,3 +1,9 @@
+import pinia from '../../plugins/pinia';
+import { useTokensStore } from '../../stores/tokens';
+import CONSTS from '../../consts';
+
+const tokensStore = useTokensStore(pinia);
+
 export class TokenServiceWorker {
   _getKeyName() {
     return this._keyName;
@@ -12,7 +18,10 @@ export class TokenServiceWorker {
   }
 
   getToken() {
-    return localStorage.getItem(this._getKeyName()) || sessionStorage.getItem(this._getKeyName())
+    return (
+      localStorage.getItem(this._getKeyName()) ||
+      sessionStorage.getItem(this._getKeyName())
+    );
   }
 
   clearToken() {
@@ -21,16 +30,26 @@ export class TokenServiceWorker {
   }
 
   setToken(data, storage_type) {
-    switch(storage_type) {
-      case 'local_storage':
+    if (!tokensStore.tokenSettedStoreType) {
+      tokensStore.$patch({
+        tokenSettedStoreType: storage_type
+          ? storage_type
+          : CONSTS.storages.SESSION_STORAGE,
+      });
+    }
+    if (!storage_type) {
+      storage_type = tokensStore.tokenSettedStoreType;
+    }
+    switch (storage_type) {
+      case CONSTS.storages.LOCAL_STORAGE:
         localStorage.setItem(this._getKeyName(), data);
-        break
-      case 'session_storage':
+        break;
+      case CONSTS.storages.SESSION_STORAGE:
         sessionStorage.setItem(this._getKeyName(), data);
-        break
+        break;
       default:
         sessionStorage.setItem(this._getKeyName(), data);
-        break
+        break;
     }
   }
 

@@ -139,13 +139,8 @@
     <template #main-content>
       <ul
         class="b_slide_menu_notification"
-        :style="{
-          height: `calc(100vh - ${
-            selectedList.length > 0 ? 110 : 80
-          }px - 100px - 70px)`,
-        }"
+        :style="`height: ${slideMenuHeight}`"
         v-if="isMenuOpened"
-        ref="test"
       >
         <Notifications
           :notifications="notifications"
@@ -219,7 +214,7 @@
 </template>
 
 <script>
-import { ref, inject, computed, watch } from 'vue';
+import { ref, inject, computed, watch, onMounted, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { v4 as uuid } from 'uuid';
@@ -238,6 +233,8 @@ import { useUserDataStore } from '../../stores/userData';
 import { NewNotifications } from '../../workers/web-socket-worker/not-includes-to-socket/new_notifications';
 import { NotificationsBus } from '../../workers/event-bus-worker';
 import { API } from '../../workers/api-worker/api.worker';
+
+import { calcHeight } from '../../utils/calcHeight';
 
 import { ROUTES } from '../../router/router.const';
 import CONSTANTS from '../../consts';
@@ -340,6 +337,16 @@ export default {
       return {
         menu_text: CONSTANTS.sidebar.menu_text,
       };
+    });
+
+    const { appHeightValue, calculatedHeight, onAppHeightResize } = calcHeight(
+      100,
+      70,
+      selectedList.value.length > 0 ? 110 : 80
+    );
+
+    const slideMenuHeight = computed(() => {
+      return `${calculatedHeight.value}px`;
     });
 
     watch(
@@ -519,6 +526,14 @@ export default {
       }
     };
 
+    onMounted(() => {
+      window.addEventListener('resize', onAppHeightResize);
+    });
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', onAppHeightResize);
+    });
+
     return {
       clientVersion,
       arrowPosition,
@@ -540,6 +555,7 @@ export default {
       blockScrollToTopIfExist,
       tabs,
       selectedTabId,
+      slideMenuHeight,
       isContextMenuActive,
       contextMenuItemClick,
       closeContextMenu,
@@ -613,7 +629,7 @@ $color-efeff6: #efeff6;
     position: absolute;
     top: 0;
     right: 0px;
-    height: 100vh;
+    @include calc-height;
     background: $color-fcfcfc;
     box-shadow: 2px 2px 10px rgb(56 56 251 / 10%);
     border-radius: 6px;

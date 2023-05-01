@@ -71,7 +71,7 @@ $color-f0f0f4: #f0f0f4;
 .b-context-modal__wrapper {
   position: absolute;
   width: 100vw;
-  height: 100vh;
+  @include calc-height;
   z-index: 999;
 
   .b-context-modal {

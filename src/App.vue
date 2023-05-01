@@ -1,28 +1,34 @@
 <template>
   <div>
-    <NewVersionModal
-      v-if="isNewVersionModalActive"
-      @closeModal="closeNewVersionModal" />
     <router-view />
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
-
-import NewVersionModal from './components/modals/newVersionModal/NewVersionModal.vue';
 
 import { GeneralSocketWorkerInstance } from './workers/web-socket-worker';
 import { createQueryStringFromObject } from './workers/utils-worker';
-import { VersionDetectorWorker } from './workers/version-detector-worker';
 import { API } from './workers/api-worker/api.worker';
 
 import { WebSocketTypes } from './workers/web-socket-worker/web.socket.types';
 import { ROUTES } from './router/router.const';
 
 const router = useRouter();
-const isNewVersionModalActive = ref(false);
+
+function calculateAppHeight() {
+  const doc = document.documentElement;
+  doc.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
+}
+
+onMounted(() => {
+  window.addEventListener('resize', calculateAppHeight);
+  calculateAppHeight();
+});
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', calculateAppHeight);
+});
 
 const handleMessageGeneral = (instance) => {
   switch (instance.messageType) {
@@ -59,13 +65,6 @@ const handleMessageGeneral = (instance) => {
     }
   }
 };
-
-const VersionHandling = {
-  handleDifferentVersion: () => {
-    isNewVersionModalActive.value = true;
-  },
-  closeVersionModal: () => (isNewVersionModalActive.value = false),
-};
 try {
   API.NotificationService.getMaintenance().then((result) =>
     handleMessageGeneral({
@@ -82,10 +81,4 @@ try {
 try {
   GeneralSocketWorkerInstance.registerCallback(handleMessageGeneral).connect();
 } catch {}
-
-VersionDetectorWorker(VersionHandling.handleDifferentVersion);
-
-function closeNewVersionModal() {
-  VersionHandling.closeVersionModal();
-}
 </script>

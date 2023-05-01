@@ -1,6 +1,7 @@
 import { fileURLToPath, URL } from 'node:url';
 
 import { defineConfig } from 'vite';
+import autoprefixer from 'autoprefixer';
 import vue from '@vitejs/plugin-vue';
 
 require('dotenv').config({ path: './stack.env' });
@@ -14,20 +15,8 @@ export default defineConfig({
   plugins: [
     babel({
       babelHelpers: 'bundled',
-      // "plugins": [
-      //     ["@babel/plugin-proposal-decorators", {
-      //         "legacy": true,
-      //     }],
-      //     ["@babel/plugin-proposal-class-properties", {"loose" : true}]
-      //     // ["@babel/plugin-proposal-private-property-in-object", {"loose" : true}],
-      // ]
     }),
     vue({
-      // template: {
-      //     compilerOptions: {
-      //         isCustomElement: (tag) => ['InfiniteLoading'].includes(tag),
-      //     }
-      // },
       script: {
         babelParserPlugins: [
           'decorators-legacy',
@@ -46,17 +35,20 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
-      // fs: require.resolve('rollup-plugin-node-builtins'),
     },
   },
   css: {
+    postcss: {
+      plugins: [autoprefixer({})],
+    },
     preprocessorOptions: {
       scss: {
         additionalData: `
         @import "@/assets/styles/variables.scss"; 
         @import "@/assets/styles/mixins/fonts.scss"; 
         @import '@/assets/styles/mixins/device.scss';
-        @import '@/assets/styles/mixins/modal-wrapper.scss';`,
+        @import '@/assets/styles/mixins/modal-wrapper.scss';
+        @import '@/assets/styles/mixins/calc-height.scss';`
       },
     },
   },

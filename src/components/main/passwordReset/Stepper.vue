@@ -29,7 +29,7 @@
           <MainInput
             :outside-title="true"
             :title="$t('reset.post')"
-            :inputmode="'email'"
+            inputMode="email"
             :swipeTitle="false"
             :placeholder="'example@email.com'"
             v-model="userEmail"

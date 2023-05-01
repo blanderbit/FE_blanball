@@ -11,7 +11,7 @@
     </template>
     <template #input>
       <MainInput
-        :inputmode="'tel'"
+        inputMode="tel"
         :type="'tel'"
         :height="40"
         :outsideTitle="true"
@@ -45,7 +45,7 @@
       <MainInput
         :height="40"
         :outsideTitle="true"
-        :inputmode="'email'"
+        inputMode="email"
         :title-width="0"
         :title="getEmailProvider(userData.email)"
         :isReadOnly="true"
@@ -479,7 +479,7 @@ $color-d2f6a2: #d2f6a2;
   left: 50%;
   transform: translate(-50%, -50%);
   overflow: scroll;
-  height: calc(100vh);
+  @include calc-height;
 
   @media (max-width: 1200px) {
     top: 100%;
@@ -770,7 +770,7 @@ $color-d2f6a2: #d2f6a2;
         overflow: hidden;
 
         @include desktop {
-          height: calc(100vh - 90px - 60px);
+          @include calc-height(90px, 60px);
         }
 
         @media (max-width: 1400px) {

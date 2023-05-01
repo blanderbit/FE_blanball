@@ -88,12 +88,12 @@ export default {
       display: flex;
       flex-direction: column;
       overflow-y: scroll;
-      height: calc(100vh - 60px - 20px - 36px);
+      @include calc-height(60px, 20px, 36px);
     }
 
     .b-policy-main-text {
       @include desktop {
-        height: calc(100vh - 60px - 20px - 36px);
+        @include calc-height(60px, 20px, 36px);
         overflow-y: scroll;
       }
     }
@@ -109,7 +109,7 @@ export default {
       .b-table-items {
         @include desktop {
           overflow-y: scroll;
-          height: calc(100vh - 200px);
+          @include calc-height(200px);
         }
       }
       .b-table-item {

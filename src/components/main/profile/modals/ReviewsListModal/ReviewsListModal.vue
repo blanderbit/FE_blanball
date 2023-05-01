@@ -180,7 +180,7 @@ $color-dfdeed: #dfdeed;
       width: 100%;
       padding: 16px;
       border-radius: 0px;
-      height: calc(100vh - 120px);
+      @include calc-height(120px);
       top: 120px;
       box-shadow: none;
     }

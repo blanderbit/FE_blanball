@@ -193,7 +193,7 @@ $color-dfdeed: #dfdeed;
     position: absolute;
     top: 0;
     right: 0px;
-    height: 100vh;
+    @include calc-height;
     background: $color-fcfcfc;
     box-shadow: 2px 2px 10px rgb(56 56 251 / 10%);
     border-radius: 6px;

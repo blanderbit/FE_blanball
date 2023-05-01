@@ -31,7 +31,10 @@
         </span>
       </div>
       <div class="b-manage-event__main-body">
-        <div class="b-manage-event__create-event-block" :style="createEventMainBlockHeight">
+        <div
+          class="b-manage-event__create-event-block"
+          :style="`height: ${createEventMainBlockHeight}`"
+        >
           <ManageEventFirstStep
             v-if="currentStep === 1"
             :initialValues="eventData"
@@ -167,6 +170,7 @@ import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
 import { BlanballEventBus } from '../../../workers/event-bus-worker';
 import useWindowWidth from '../../../utils/widthScreen';
+import { calcHeight } from '../../../utils/calcHeight';
 
 import { runOnSelectEventDuration } from '../../../utils/runOnSelectEventDuration';
 
@@ -251,17 +255,20 @@ export default {
       return eventData.value;
     });
 
+    const { appHeightValue, calculatedHeight, onAppHeightResize } = calcHeight(
+      90,
+      32,
+      20,
+      isTablet.value || isMobile.value
+        ? userStore.user.is_verified
+          ? 0
+          : 40
+        : 0
+    );
+
     const createEventMainBlockHeight = computed(() => {
-      if (isMobile.value || isTablet.value) {
-        return {
-          height: `calc(100vh - 90px - 32px - 20px - ${userStore.user.is_verified ? 0 : 40}px)`
-        }
-      } else {
-        return {
-          height: 'calc(100vh - 90px - 32px - 20px)'
-        }
-      }
-    })
+      return `${calculatedHeight.value}px`;
+    });
 
     const invitedUsers = ref([]);
     const acceptedUsers = ref(eventData.value.current_users);
@@ -467,10 +474,7 @@ export default {
             emitName = 'EventCreated';
             break;
           case manageEventActionTypes.value.EDIT:
-            await API.EventService.editOneEvent(
-              route.params.id,
-              data
-            );
+            await API.EventService.editOneEvent(route.params.id, data);
             eventCreateLoader.value = false;
             emitName = 'EventUpdated';
             break;
@@ -546,7 +550,11 @@ export default {
     }
 
     onBeforeRouteLeave((to, from, next) => {
-      if (!isSubmitModalOpened.value && !isEventCreated.value && !to.meta.noGuards) {
+      if (
+        !isSubmitModalOpened.value &&
+        !isEventCreated.value &&
+        !to.meta.noGuards
+      ) {
         nextRoute.value = to.fullPath;
         openSumbitModal();
       } else {
@@ -556,9 +564,11 @@ export default {
 
     onMounted(() => {
       window.addEventListener('resize', onResize);
+      window.addEventListener('resize', onAppHeightResize);
     });
     onBeforeUnmount(() => {
       window.removeEventListener('resize', onResize);
+      window.removeEventListener('resize', onAppHeightResize);
     });
 
     return {
@@ -707,9 +717,9 @@ $color-8a8aa8: #8a8aa8;
             flex-basis: 33%;
             height: 4px;
             border-radius: 2px;
-            background: #CDDDE0;
+            background: #cddde0;
             &.active {
-              background: #578D95;
+              background: #578d95;
             }
           }
         }

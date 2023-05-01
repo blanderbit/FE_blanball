@@ -1,7 +1,7 @@
-import { TokenWorker } from '../workers/token-worker';
+import { accessToken } from '../workers/token-worker';
 
 export const TokenInterceptor = (request) => {
-  const jwt = TokenWorker.getToken();
+  const jwt = accessToken.getToken();
 
   if (jwt) {
     request.headers.Authorization = `Bearer ${jwt}`;

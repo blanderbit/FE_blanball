@@ -68,7 +68,7 @@
           ref="phoneValue"
           :placeholder="phoneValue?.staticModelValue"
           :title-width="0"
-          :inputmode="'tel'"
+          inputMode="tel"
           :type="'tel'"
           :readonly="!isEditPhone"
           name="contact_number"

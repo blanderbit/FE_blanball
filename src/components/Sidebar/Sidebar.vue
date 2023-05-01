@@ -452,7 +452,7 @@ $color-fff4ec: #fff4ec;
 
   .b_sidebar {
     position: relative;
-    height: 100vh;
+    @include calc-height;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 6px;
     padding-top: 24px;
