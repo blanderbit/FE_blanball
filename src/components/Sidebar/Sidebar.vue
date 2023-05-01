@@ -205,7 +205,7 @@ export default {
       {
         id: 2,
         img: record,
-        url: '/application/events',
+        url: ROUTES.APPLICATION.EVENTS.absolute,
         action: () => (isMenuOpened.value = false),
         disabled: false,
       },
@@ -219,7 +219,7 @@ export default {
       {
         id: 4,
         img: members,
-        url: '/application/users/general',
+        url: ROUTES.APPLICATION.USERS.GENERAL.absolute,
         action: () => (isMenuOpened.value = false),
         disabled: false,
       },
