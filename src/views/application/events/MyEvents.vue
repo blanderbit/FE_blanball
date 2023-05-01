@@ -1072,7 +1072,7 @@ $color-dfdeed: #dfdeed;
 
       .b-events-page__all-events-block {
         position: relative;
-        margin-top: 23px;
+        margin-top: 15px;
         height: 76vh;
         overflow: scroll;
         .b-events-page__cards-event-wrapper {
@@ -1082,13 +1082,6 @@ $color-dfdeed: #dfdeed;
           overflow-y: scroll;
           height: 100%;
         }
-      }
-
-      .b-events-page__my-events-block {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        margin-top: 23px;
       }
     }
   }

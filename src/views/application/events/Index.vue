@@ -627,7 +627,7 @@ $color-f0f0f4: #f0f0f4;
       }
       .b-events-page__all-events-block {
         position: relative;
-        margin-top: 23px;
+        margin-top: 15px;
         height: 76vh;
         overflow: hidden;
         .b-events-page__cards-event-wrapper {

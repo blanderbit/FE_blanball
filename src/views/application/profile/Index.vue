@@ -256,11 +256,10 @@ export default {
       };
     });
 
-    const { appHeightValue, calculatedHeight, onAppHeightResize } = calcHeight(
-      88,
-      46,
-      60,
-      userStore.user.is_verified ? 0 : 55
+    const { calculatedHeight, onAppHeightResize } = calcHeight(
+      [88, 46, 60],
+      [35, userStore.user.is_verified ? 0 : 40],
+      [userStore.user.is_verified ? 0 : 40]
     );
 
     const profileMainSideHeight = computed(() => {

@@ -339,11 +339,12 @@ export default {
       };
     });
 
-    const { appHeightValue, calculatedHeight, onAppHeightResize } = calcHeight(
+    const { calculatedHeight, onAppHeightResize } = calcHeight([
       100,
       70,
-      selectedList.value.length > 0 ? 110 : 80
-    );
+      20,
+      selectedList.value.length > 0 ? 110 : 80,
+    ]);
 
     const slideMenuHeight = computed(() => {
       return `${calculatedHeight.value}px`;

@@ -255,17 +255,12 @@ export default {
       return eventData.value;
     });
 
-    const { appHeightValue, calculatedHeight, onAppHeightResize } = calcHeight(
-      90,
-      32,
-      20,
-      isTablet.value || isMobile.value
-        ? userStore.user.is_verified
-          ? 0
-          : 40
-        : 0
+    const { calculatedHeight, onAppHeightResize } = calcHeight(
+      [90, 32, 20],
+      [userStore.user.is_verified ? 0 : 40],
+      [userStore.user.is_verified ? 0 : 40]
     );
-
+    
     const createEventMainBlockHeight = computed(() => {
       return `${calculatedHeight.value}px`;
     });

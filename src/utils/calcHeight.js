@@ -1,16 +1,33 @@
 import { ref } from 'vue';
 
-export const calcHeight = (...args) => {
+export const calcHeight = (defaultHeights = [], mobile = [], tablet = []) => {
   const appHeightValue = ref(window.innerHeight);
-  const calculatedHeight = ref(
-    appHeightValue.value - args.reduce((total, current) => total + current)
-  );
+  const calculatedHeight = ref();
 
-  const onAppHeightResize = () => {
+  const calculate = () => {
+    let allHeights = [...defaultHeights];
+
+    if (window.innerWidth <= 768 && mobile.length) {
+      allHeights = allHeights.concat(mobile);
+    } else if (
+      window.innerWidth > 768 &&
+      window.innerWidth <= 992 &&
+      tablet.length
+    ) {
+      allHeights = allHeights.concat(tablet);
+    }
+    appHeightValue.value = window.innerHeight;
     appHeightValue.value = window.innerHeight;
     calculatedHeight.value =
-      appHeightValue.value - args.reduce((total, current) => total + current);
+      appHeightValue.value -
+      allHeights.reduce((total, current) => total + current);
   };
+
+  const onAppHeightResize = () => {
+    calculate();
+  };
+
+  calculate();
 
   return {
     appHeightValue,

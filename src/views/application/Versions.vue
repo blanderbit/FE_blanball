@@ -296,7 +296,7 @@ ul {
       flex-direction: column;
       overflow-y: scroll;
       padding-bottom: 20px;
-      @include calc-height(120px, 80px);
+      @include calc-height(120px, 80px, 10px);
     }
 
     .b-versions__main-side {
