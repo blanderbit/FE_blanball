@@ -258,7 +258,7 @@ export default {
 
     const { calculatedHeight, onAppHeightResize } = calcHeight(
       [88, 46, 60],
-      [35, userStore.user.is_verified ? 0 : 40],
+      [40, userStore.user.is_verified ? 0 : 40],
       [userStore.user.is_verified ? 0 : 40]
     );
 

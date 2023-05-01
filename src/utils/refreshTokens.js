@@ -17,12 +17,14 @@ export async function refreshTokens() {
   tokensStore.$patch({
     isTokensRefreshing: true,
   });
-  // AuthWebSocketWorkerInstance?.disconnect();
+  AuthWebSocketWorkerInstance?.disconnect();
 
   try {
     const response = await API.AuthorizationService.refreshTokens({
       refresh: refreshToken.getToken(),
     });
+    accessToken.clearToken();
+    refreshToken.clearToken();
     accessToken.setToken(
       response.data.access,
       tokensStore.tokenSettedStoreType
@@ -31,9 +33,10 @@ export async function refreshTokens() {
       response.data.refresh,
       tokensStore.tokenSettedStoreType
     );
-    // AuthWebSocketWorkerInstance?.connect({
-    //   token: accessToken.getToken(),
-    // });
+
+    AuthWebSocketWorkerInstance.connect({
+      token: accessToken.getToken(),
+    });
   } catch {
     const findCurRouteFromList = window.location.pathname.includes(
       ROUTES.APPLICATION.name

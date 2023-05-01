@@ -8,189 +8,211 @@
     @continue="closeSubmitModal"
   />
   <div class="b-mob-menu" :style="mobMenuStyle">
-    <div class="b-mob-menu__logo-block">
-      <div class="b-mob-menu__logo-left">
-        <div class="b-mob-menu__logo">{{ $t('menu.blanball') }}</div>
+    <div class="b-mob-menu__top-side">
+      <div class="b-mob-menu__logo-block">
+        <div class="b-mob-menu__logo-left">
+          <div class="b-mob-menu__logo">{{ $t('menu.blanball') }}</div>
+          <router-link
+            class="b-mob-menu__version"
+            :to="routeObject.APPLICATION.VERSIONS.absolute"
+            @click="closeMobMenu"
+          >
+            <span>{{ $t('slide_menu.version') }} {{ clientVersion }}</span>
+          </router-link>
+        </div>
+        <div class="b-mob-menu__close" @click="closeMobMenu">&times;</div>
+      </div>
+      <div class="b-mob-menu__user-data">
+        <div class="b-mob-menu__user-info">
+          <div class="b-mob-menu__user-img">
+            <userAvatar
+              :link="userStore.getUserAvatar"
+              :full-name="userStore.getUserFullName"
+              @clickByAvatar="goToMyProfile"
+            />
+          </div>
+          <div class="b-mob-menu__text-block">
+            <div class="b-mob-menu__user-name">
+              {{ userStore.getUserFullName }}
+            </div>
+            <div class="b-mob-menu__account-type">
+              {{ $t(`hashtags.${userStore.user.role}`) }}
+            </div>
+          </div>
+        </div>
+        <div class="b-mob-menu__logout-icon" @click="$emit('logOut')">
+          <img src="../../assets/img/logout-icon.svg" alt="" />
+        </div>
+      </div>
+      <div class="b-mob-menu__menu-block" :style="menuBlockStyle">
+        <div class="b-mob-menu__line">
+          <div
+            class="b-mob-menu__menu-item"
+            v-for="item in topMenu"
+            :key="item.id"
+            :style="{
+              width: item.width,
+              height: item.height,
+              'justify-content': item.alignement,
+              background: item.background,
+            }"
+            @click="lineMenuClick(item.id, item.url, 'top-menu')"
+          >
+            <img
+              :src="item.isIconActive ? item.imgActive : item.imgInactive"
+              alt=""
+            />
+            <span
+              :style="{
+                color: item.textColor,
+              }"
+              v-if="item.value_show"
+            >
+              {{ $t(item.value) }}
+            </span>
+          </div>
+        </div>
+        <div class="b-mob-menu__content-block">
+          <div class="b-mob-menu__message-list">
+            <div class="b-mob-menu__tabs">
+              <div
+                v-for="tab in tabs"
+                :class="[
+                  'b-mob-menu__tab',
+                  { selected: tab.id === selectedTabId },
+                ]"
+                @click="changeTab(tab.id, tab.type)"
+              >
+                {{ $t(tab.text) }}
+              </div>
+            </div>
+            <Notifications
+              :notifications="notifications"
+              :selectable="selectable"
+              ref="notificationList"
+              v-model:selected-list="selectedList"
+              v-model:scrollbar-existing="blockScrollToTopIfExist"
+              @selectNotificationAfterHold="selectNotification"
+              @removePushNotificationAfterSidebarAction="
+                removePushNotificationAfterSidebarAction
+              "
+            >
+              <template #before>
+                <Notification
+                  v-if="newNotifications"
+                  class="b-new-notification"
+                  :notificationInstance="getNewNotificationInstance"
+                  :not-collapsible="true"
+                  @handler-action="$emit('reLoading'), restartInfiniteScroll()"
+                >
+                </Notification>
+              </template>
+              <template #after>
+                <InfiniteLoading
+                  :identifier="triggerForRestart"
+                  ref="scrollbar"
+                  @infinite="$emit('loadingInfinite', $event)"
+                >
+                  <template #complete>
+                    <empty-list
+                      style="margin-top: 16px"
+                      v-if="!notifications.length && !newNotifications"
+                      :title="emptyListMessages.title"
+                      :description="emptyListMessages.description"
+                      :is-notification="true"
+                    >
+                    </empty-list>
+                    <ScrollToTop
+                      :element-length="notifications"
+                      :is-scroll-top-exist="blockScrollToTopIfExist"
+                      @scroll-button-clicked="scrollToFirstElement()"
+                    />
+                  </template>
+                </InfiniteLoading>
+              </template>
+            </Notifications>
+          </div>
+        </div>
+        <div v-if="!selectedList.length" class="b-mob-menu__line">
+          <div
+            class="b-mob-menu__menu-item"
+            v-for="item in bottomMenu"
+            :key="item.id"
+            :style="{
+              width: item.width,
+              height: item.height,
+              'justify-content': item.alignement,
+              background: item.background,
+              color: item.textColor,
+            }"
+            @click="lineMenuClick(item.id, item.url)"
+          >
+            <img
+              :src="item.isIconActive ? item.imgActive : item.imgInactive"
+              alt=""
+            />
+            <span v-if="item.value_show">
+              {{ $t(item.value) }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div v-if="selectedList.length" class="b-mob-menu__control-block">
+        <div class="b-control-block__block">
+          <img
+            src="../../assets/img/cross.svg"
+            alt=""
+            @click="clearSelectedList"
+          />
+          <div class="b-selected-elements-count">
+            <span>{{ selectedList.length }}</span>
+          </div>
+        </div>
+        <div class="b-control-block__block">
+          <img
+            src="../../assets/img/notifications/double-check-with-back.svg"
+            alt=""
+            @click="HandleAction.readSelected()"
+          />
+          <img
+            src="../../assets/img/notifications/trash-with-back.svg"
+            alt=""
+            @click="
+              selectedList.length > 1
+                ? showSubmitModal()
+                : HandleAction.deleteSelected()
+            "
+          />
+        </div>
+      </div>
+    </div>
+
+    <div v-if="isBottomBlockShowing" class="b-mob-menu__bottom-side">
+      <div
+        class="b-mob-menu__found-error"
+        @click="$emit('foundBug')"
+      >
+        <img src="../../assets/img/white-warning-icon.svg" alt="" />
+        <span>{{ $t('slide_menu.found-error') }}</span>
+      </div>
+
+      <div class="b-bottom-block__info">
         <router-link
-          class="b-mob-menu__version"
+          class="b-blanball__version"
           :to="routeObject.APPLICATION.VERSIONS.absolute"
           @click="closeMobMenu"
         >
           <span>{{ $t('slide_menu.version') }} {{ clientVersion }}</span>
         </router-link>
-      </div>
-      <div class="b-mob-menu__close" @click="closeMobMenu">&times;</div>
-    </div>
-    <div class="b-mob-menu__user-data">
-      <div class="b-mob-menu__user-info">
-        <div class="b-mob-menu__user-img">
-          <userAvatar
-            :link="userStore.getUserAvatar"
-            :full-name="userStore.getUserFullName"
-            @clickByAvatar="goToMyProfile"
-          />
-        </div>
-        <div class="b-mob-menu__text-block">
-          <div class="b-mob-menu__user-name">
-            {{ userStore.getUserFullName }}
-          </div>
-          <div class="b-mob-menu__account-type">
-            {{ $t(`hashtags.${userStore.user.role}`) }}
+        <div class="b-bottom-block__footer">
+          <span>{{ $t('slide_menu.blanball-year', {year: currentYear}) }}</span>
+          <span>{{ $t('policy.data-security') }}</span>
+          <div class="b-bottom-block__company">
+            <img src="../../assets/img/logo-flumx.svg" alt="" />
+            <span>{{ $t('slide_menu.flumx') }}</span>
           </div>
         </div>
       </div>
-      <div class="b-mob-menu__logout-icon" @click="$emit('logOut')">
-        <img src="../../assets/img/logout-icon.svg" alt="" />
-      </div>
-    </div>
-    <div class="b-mob-menu__menu-block" :style="menuBlockStyle">
-      <div class="b-mob-menu__line">
-        <div
-          class="b-mob-menu__menu-item"
-          v-for="item in topMenu"
-          :key="item.id"
-          :style="{
-            width: item.width,
-            height: item.height,
-            'justify-content': item.alignement,
-            background: item.background,
-          }"
-          @click="lineMenuClick(item.id, item.url, 'top-menu')"
-        >
-          <img
-            :src="item.isIconActive ? item.imgActive : item.imgInactive"
-            alt=""
-          />
-          <span
-            :style="{
-              color: item.textColor,
-            }"
-            v-if="item.value_show"
-          >
-            {{ $t(item.value) }}
-          </span>
-        </div>
-      </div>
-      <div class="b-mob-menu__content-block">
-        <div class="b-mob-menu__message-list">
-          <div class="b-mob-menu__tabs">
-            <div
-              v-for="tab in tabs"
-              :class="[
-                'b-mob-menu__tab',
-                { selected: tab.id === selectedTabId },
-              ]"
-              @click="changeTab(tab.id, tab.type)"
-            >
-              {{ $t(tab.text) }}
-            </div>
-          </div>
-          <Notifications
-            :notifications="notifications"
-            :selectable="selectable"
-            ref="notificationList"
-            v-model:selected-list="selectedList"
-            v-model:scrollbar-existing="blockScrollToTopIfExist"
-            @selectNotificationAfterHold="selectNotification"
-            @removePushNotificationAfterSidebarAction="
-              removePushNotificationAfterSidebarAction
-            "
-          >
-            <template #before>
-              <Notification
-                v-if="newNotifications"
-                class="b-new-notification"
-                :notificationInstance="getNewNotificationInstance"
-                :not-collapsible="true"
-                @handler-action="$emit('reLoading'), restartInfiniteScroll()"
-              >
-              </Notification>
-            </template>
-            <template #after>
-              <InfiniteLoading
-                :identifier="triggerForRestart"
-                ref="scrollbar"
-                @infinite="$emit('loadingInfinite', $event)"
-              >
-                <template #complete>
-                  <empty-list
-                    style="margin-top: 16px"
-                    v-if="!notifications.length && !newNotifications"
-                    :title="emptyListMessages.title"
-                    :description="emptyListMessages.description"
-                    :is-notification="true"
-                  >
-                  </empty-list>
-                  <ScrollToTop
-                    :element-length="notifications"
-                    :is-scroll-top-exist="blockScrollToTopIfExist"
-                    @scroll-button-clicked="scrollToFirstElement()"
-                  />
-                </template>
-              </InfiniteLoading>
-            </template>
-          </Notifications>
-        </div>
-      </div>
-      <div v-if="!selectedList.length" class="b-mob-menu__line">
-        <div
-          class="b-mob-menu__menu-item"
-          v-for="item in bottomMenu"
-          :key="item.id"
-          :style="{
-            width: item.width,
-            height: item.height,
-            'justify-content': item.alignement,
-            background: item.background,
-            color: item.textColor,
-          }"
-          @click="lineMenuClick(item.id, item.url)"
-        >
-          <img
-            :src="item.isIconActive ? item.imgActive : item.imgInactive"
-            alt=""
-          />
-          <span v-if="item.value_show">
-            {{ $t(item.value) }}
-          </span>
-        </div>
-      </div>
-    </div>
-    <div v-if="selectedList.length" class="b-mob-menu__control-block">
-      <div class="b-control-block__block">
-        <img
-          src="../../assets/img/cross.svg"
-          alt=""
-          @click="clearSelectedList"
-        />
-        <div class="b-selected-elements-count">
-          <span>{{ selectedList.length }}</span>
-        </div>
-      </div>
-      <div class="b-control-block__block">
-        <img
-          src="../../assets/img/notifications/double-check-with-back.svg"
-          alt=""
-          @click="HandleAction.readSelected()"
-        />
-        <img
-          src="../../assets/img/notifications/trash-with-back.svg"
-          alt=""
-          @click="
-            selectedList.length > 1
-              ? showSubmitModal()
-              : HandleAction.deleteSelected()
-          "
-        />
-      </div>
-    </div>
-    <div
-      v-if="isShowingFoundBug"
-      class="b-mob-menu__found-error"
-      @click="$emit('foundBug')"
-    >
-      <img src="../../assets/img/white-warning-icon.svg" alt="" />
-      <span>{{ $t('slide_menu.found-error') }}</span>
     </div>
   </div>
 </template>
@@ -271,7 +293,7 @@ export default {
     const selectedList = ref([]);
     const blockScrollToTopIfExist = ref(false);
     const triggerForRestart = ref('');
-    const isShowingFoundBug = ref(true);
+    const isBottomBlockShowing = ref(true);
     const clientVersion = ref(inject('clientVersion'));
     const { t } = useI18n();
     const selectedTabId = ref(1);
@@ -363,6 +385,10 @@ export default {
       closeMobMenu();
     }
 
+    const currentYear = computed(() => {
+      return new Date().getFullYear()
+    })
+
     const emptyListMessages = computed(() => {
       return {
         title: t('no_records.noNotifications.title'),
@@ -418,7 +444,7 @@ export default {
       normalizeBlock(bottomMenu);
       menuBlockHeight.value = 'auto';
       emit('closeMenu');
-      isShowingFoundBug.value = true;
+      isBottomBlockShowing.value = true;
     }
     function normalizeBlock(menu) {
       menu.value = menu.value.map((item) => {
@@ -445,7 +471,7 @@ export default {
         menuType === 'top-menu' ? topMenu : bottomMenu;
       const spareMenu = menuType === 'top-menu' ? bottomMenu : topMenu;
       const spareId = id ? 0 : 1;
-      isShowingFoundBug.value = false;
+      isBottomBlockShowing.value = false;
 
       normalizeBlock(spareMenu);
 
@@ -615,11 +641,12 @@ export default {
       bottomMenu,
       blockScrollToTopIfExist,
       clientVersion,
-      isShowingFoundBug,
+      isBottomBlockShowing,
       notificationList,
       getNewNotificationInstance,
       menuBlockStyle,
       userStore,
+      currentYear,
       mobMenuStyle,
       routeObject,
       HandleAction,
@@ -665,6 +692,7 @@ $color-1ccd62: #1ccd62;
   height: 100%;
   z-index: 990;
   display: flex;
+  justify-content: space-between;
   flex-direction: column;
   transition: all 0.3s ease-out;
 
@@ -673,6 +701,10 @@ $color-1ccd62: #1ccd62;
   }
   @include mobile {
     width: 100%;
+  }
+
+  .b-mob-menu__top-side {
+    @include calc-height(60px, 32px, 48px, 16px)
   }
 
   .b-mob-menu__logo-block {
@@ -907,7 +939,7 @@ $color-1ccd62: #1ccd62;
   max-width: 193px;
   position: absolute;
   min-width: max-content;
-  bottom: 70px;
+  bottom: 90px;
   cursor: pointer;
   left: 50%;
   transform: translateX(-50%);
@@ -915,6 +947,34 @@ $color-1ccd62: #1ccd62;
   span {
     @include inter(14px, 500, $--b-main-white-color);
     line-height: 24px;
+  }
+}
+.b-bottom-block__info {
+  padding: 12px 16px 0px 0px;
+  border-top: 1px solid #dfdeed;
+  width: calc(100% + 32px);
+  margin-left: -16px;
+  padding-left: 16px;
+
+  .b-blanball__version {
+    @include inter(12px, 500, $--b-main-gray-color);
+    line-height: 20px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .b-bottom-block__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @include inter(12px, 500, $--b-main-gray-color);
+    line-height: 20px;
+    margin-top: 4px;
+
+    .b-bottom-block__company {
+      display: flex;
+      align-items: center;
+    }
   }
 }
 </style>

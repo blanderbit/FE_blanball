@@ -64,8 +64,10 @@ export const DETAILS_TYPE_ENUM = {
 
   AUTHENTICATION_CREDENTIALS_WERE_NOT_PROVIDED:
     'authentication_credentials_were_not_provided.',
-  AUTHENTICATION_TOKEN_NOT_VALID: 'detail_token_not_valid',
-  BAD_AUTHENTICATION_TOKEN: 'code_token_not_valid',
+  AUTHENTICATION_TOKEN_NOT_VALID: 'authentication_token_not_valid',
+  DETAIL_TOKEN_NOT_VALID: 'detail_token_not_valid',
+  BAD_AUTHENTICATION_TOKEN: 'bad_authentitication_token',
+  CODE_TOKEN_NOT_VALID: 'code_token_not_valid',
   AVATAR_MAX_SIZE_1_MB: 'avatar_max_size_1mb',
   PROFILE_AVATAR_UPDATED: 'profile_avatar_updated',
   CODE_IS_VALID: 'code_is_valid',
@@ -94,7 +96,7 @@ const detectMessageByKey = (type) => {
     return type.includes(excludeColumnParameter(DETAILS_TYPE_ENUM[key]).type);
   });
 
-  return foundKey || 'FE:DETAIL_NOT_FOUND';
+  return foundKey;
 };
 
 export const TypeRequestMessageWorker = (result = {}) => {
@@ -130,3 +132,11 @@ export const TypeRequestMessageWorker = (result = {}) => {
   }
   return [];
 };
+
+export const globalSkipMesssageTypes = [
+  DETAILS_TYPE_ENUM_KEYS.INVALID_REFRESH_TOKEN,
+  DETAILS_TYPE_ENUM_KEYS.AUTHENTICATION_TOKEN_NOT_VALID,
+  DETAILS_TYPE_ENUM_KEYS.BAD_AUTHENTICATION_TOKEN,
+  DETAILS_TYPE_ENUM.DETAIL_TOKEN_NOT_VALID,
+  DETAILS_TYPE_ENUM.CODE_TOKEN_NOT_VALID,
+];
