@@ -169,7 +169,7 @@ import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
 import { BlanballEventBus } from '../../../workers/event-bus-worker';
-import useWindowWidth from '../../../utils/widthScreen';
+import { useWindowWidth } from '../../../utils/widthScreen';
 import { calcHeight } from '../../../utils/calcHeight';
 
 import { runOnSelectEventDuration } from '../../../utils/runOnSelectEventDuration';
@@ -258,7 +258,8 @@ export default {
     const { calculatedHeight, onAppHeightResize } = calcHeight(
       [90, 32, 20],
       [userStore.user.is_verified ? 0 : 40],
-      [userStore.user.is_verified ? 0 : 40]
+      [userStore.user.is_verified ? 0 : 40],
+      true
     );
     
     const createEventMainBlockHeight = computed(() => {

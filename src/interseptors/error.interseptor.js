@@ -16,8 +16,6 @@ const toast = useToast();
 const tokenStore = useTokensStore();
 const userStore = useUserDataStore();
 
-let retryRequest = false;
-
 const showToastAfterError = (errorMessageType) => {
   toast.error(
     i18n.global.t(`responseMessageTypes.${errorMessageType.errorType}`, {
@@ -28,11 +26,10 @@ const showToastAfterError = (errorMessageType) => {
   );
 };
 
+let retryRequest = false;
+
 export const ErrorInterceptor = async (error) => {
   const getJsonErrorData = error.toJSON();
-
-  console.log(userStore.user.id)
-
   const requestConfig = getJsonErrorData.config;
 
   const skipErrorMessageType =
@@ -46,8 +43,8 @@ export const ErrorInterceptor = async (error) => {
     userStore.user.id
   ) {
     if (!tokenStore.isTokensRefreshing) {
-      await refreshTokens();
       retryRequest = true;
+      await refreshTokens();
     }
     if (retryRequest) {
       return await new Promise(async (resolve) => {
@@ -60,9 +57,11 @@ export const ErrorInterceptor = async (error) => {
     }
   }
 
-
   const errorMessageType = TypeRequestMessageWorker(error).filter(
-    (item) => ![...globalSkipMesssageTypes, ...skipErrorMessageType]?.includes(item.errorType)
+    (item) =>
+      ![...globalSkipMesssageTypes, ...skipErrorMessageType]?.includes(
+        item.errorType
+      )
   )[0];
 
   if (errorMessageType) {

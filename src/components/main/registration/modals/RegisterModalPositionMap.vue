@@ -102,6 +102,7 @@ $color-efeff6: #efeff6;
   line-height: 24px;
   text-align: center;
   color: $--b-main-gray-color;
+  cursor: pointer;
 }
 
 .b-modal-position__map-wrapper {

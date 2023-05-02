@@ -24,7 +24,6 @@ import { UA_LANGUAGE } from './i18n/ua';
 
 
 import './assets/styles/main.scss';
-import './assets/styles/contextMenu.scss'
 import 'v-calendar/dist/style.css';
 import 'vue3-virtual-scroller/dist/vue3-virtual-scroller.css';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';

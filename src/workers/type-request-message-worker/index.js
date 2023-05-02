@@ -1,6 +1,7 @@
 export const DETAILS_TYPE_ENUM = {
   PASSWORD_CHANGE: 'password_change',
   PHONE_CHANGE: 'phone_change',
+  PHONE_INVALID_PHONE_NUMBER: 'phone_invalid_phone_number',
   EMAIL_CHANGE: 'email_change',
   VERIFIED_CHANGE: 'verified_account',
   ACCOUNT_DELETED: 'account_deleted',
@@ -139,4 +140,5 @@ export const globalSkipMesssageTypes = [
   DETAILS_TYPE_ENUM_KEYS.BAD_AUTHENTICATION_TOKEN,
   DETAILS_TYPE_ENUM.DETAIL_TOKEN_NOT_VALID,
   DETAILS_TYPE_ENUM.CODE_TOKEN_NOT_VALID,
+  DETAILS_TYPE_ENUM.AUTHENTICATION_CREDENTIALS_WERE_NOT_PROVIDED,
 ];

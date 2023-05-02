@@ -43,18 +43,11 @@
           :text="nextButton?.text"
           :width="nextButton.width ? nextButton.width : 155"
           :height="40"
-          v-if="nextButton?.exist && !nextButton?.disabled"
+          v-if="nextButton?.exist"
           :icon-right="nextButton?.icon"
+          :disabled="nextButton?.disabled"
           :is-icon-and-text-apart="true"
           @click-function="$emit('next')"
-        />
-        <WhiteBtn
-          v-if="nextButton?.disabled"
-          :text="nextButton?.text"
-          :disabled="nextButton?.disabled"
-          :width="155"
-          :height="40"
-          :is-icon-and-text-apart="true"
         />
       </div>
     </div>

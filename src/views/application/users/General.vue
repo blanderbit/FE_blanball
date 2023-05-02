@@ -38,6 +38,7 @@
         :model-value="filters"
         :elementsCount="paginationTotalCount"
         @update:value="setFilters"
+        @updatedActiveFilters="recalculateHeightAfterUpdateFiltersActive"
         @clearFilters="clearFilters"
       >
       </users-filters>
@@ -110,7 +111,7 @@ import { v4 as uuid } from 'uuid';
 import { PaginationWorker } from '../../../workers/pagination-worker';
 import { API } from '../../../workers/api-worker/api.worker';
 import { calcHeight } from '../../../utils/calcHeight';
-import useWindowWidth from '../../../utils/widthScreen';
+import { useWindowWidth } from '../../../utils/widthScreen';
 import { useUserDataStore } from '../../../stores/userData';
 
 import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patch';
@@ -146,11 +147,21 @@ export default {
 
     const { isMobile, isTablet, onResize } = useWindowWidth();
 
-    const { calculatedHeight, onAppHeightResize } = calcHeight(
-      [90, 36, 31, 80, 36, 50],
-      [userStore.user.is_verified ? 0 : 40, -50],
-      [userStore.user.is_verified ? 0 : 40, -20]
-    );
+    const { calculatedHeight, onAppHeightResize, plusHeight, minusHeight } =
+      calcHeight(
+        [90, 36, 31, 80, 36, 50],
+        [userStore.user.is_verified ? 0 : 40, -55],
+        [userStore.user.is_verified ? 0 : 40, -25],
+        true
+      );
+
+    const recalculateHeightAfterUpdateFiltersActive = (status) => {
+      if (status) {
+        minusHeight(45);
+      } else {
+        plusHeight(45);
+      }
+    };
 
     onMounted(() => {
       window.addEventListener('resize', onResize);
@@ -268,6 +279,7 @@ export default {
       usersListHeight,
       loadDataPaginationData,
       leaveHoverSidebarItem,
+      recalculateHeightAfterUpdateFiltersActive,
       enterHoverSidebarItem,
       scrollToFirstElement: () => {
         refList.value.scrollToFirstElement();

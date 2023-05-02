@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 
-export default function useWindowWidth() {
+export function useWindowWidth() {
   const windowWidth = ref(window.innerWidth);
   const isMobileSmall = ref(window.innerWidth <= 576);
   const isMobile = ref(window.innerWidth <= 768);

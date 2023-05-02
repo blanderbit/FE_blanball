@@ -78,9 +78,8 @@ import inputCode from '../../../shared/inputCode/InputCode.vue';
 import loader from '../../../shared/loader/Loader.vue';
 
 import { API } from '../../../../workers/api-worker/api.worker';
-import { logOut } from '../../../../utils/logOut';
+import { resetUserDataAndRedirectToLogin } from '../../../../utils/logOut';
 
-import { ROUTES } from '../../../../router/router.const';
 import SCHEMAS from '../../../../validators/schemas';
 
 export default {
@@ -144,7 +143,7 @@ export default {
     async function deleteAcc(data) {
       await API.UserService.sendApproveCode(data.values);
       toast.success(t('notifications.account-deleted'));
-      logOut();
+      resetUserDataAndRedirectToLogin();
       closeModal();
     }
 

@@ -186,7 +186,7 @@ import ReviewsListModal from '../../../components/main/profile/modals/ReviewsLis
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '@/stores/userData';
-import useWindowWidth from '../../../utils/widthScreen';
+import { useWindowWidth } from '../../../utils/widthScreen';
 import { calcHeight } from '../../../utils/calcHeight';
 
 import CONSTANTS from '../../../consts';
@@ -259,7 +259,8 @@ export default {
     const { calculatedHeight, onAppHeightResize } = calcHeight(
       [88, 46, 60],
       [40, userStore.user.is_verified ? 0 : 40],
-      [userStore.user.is_verified ? 0 : 40]
+      [userStore.user.is_verified ? 0 : 40],
+      true
     );
 
     const profileMainSideHeight = computed(() => {

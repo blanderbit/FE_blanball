@@ -8,12 +8,15 @@
         <template #default="{ smartListItem: item }">
           <div class="b-event">
             <div class="b-event__top-side">
-              <img
-                class="b-event__top-side-arrow"
-                src="../../../assets/img/arrow-right-black.svg"
-                alt=""
-                @click="goToTheEvent(item.id)"
-              />
+              <router-link
+                :to="ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(item.id)"
+              >
+                <img
+                  class="b-event__top-side-arrow"
+                  src="../../../assets/img/arrow-right-black.svg"
+                  alt=""
+                />
+              </router-link>
               <div class="b-event__type">
                 {{ $t('events.friendly-match') }}
               </div>
@@ -46,7 +49,11 @@
         <template #emptyList>
           <div class="b-no-events">
             <img src="../../../assets/img/info-black.svg" alt="" />
-            <span>{{ $t('no_records.noPublicProfilePlannedEvents.title', {fullName: userFullName}) }}</span>
+            <span>{{
+              $t('no_records.noPublicProfilePlannedEvents.title', {
+                fullName: userFullName,
+              })
+            }}</span>
           </div>
         </template>
       </SimpleListWrapper>
@@ -55,7 +62,6 @@
 </template>
 
 <script>
-
 import SimpleListWrapper from '../../shared/simpleList/SimpleList.vue';
 
 import { getDate } from '../../../utils/getDate';
@@ -76,7 +82,7 @@ export default {
     },
     userFullName: {
       type: String,
-    }
+    },
   },
   setup(props) {
     const getPlannedEvents = (page) => {
@@ -94,13 +100,9 @@ export default {
       });
     };
 
-    const goToTheEvent = (eventId) => {
-      return router.push(ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(eventId));
-    };
-
     return {
-      goToTheEvent,
       getPlannedEvents,
+      ROUTES,
     };
   },
 };
@@ -112,7 +114,6 @@ $color-feefe7: #feefe7;
 $color-efeff6: #efeff6;
 $color-dfdeed: #dfdeed;
 $color-f0f0f4: #f0f0f4;
-
 
 :deep(.b-scroll-top__return-top) {
   margin: 16px;
@@ -228,13 +229,13 @@ $color-f0f0f4: #f0f0f4;
 }
 .b-no-events {
   @include inter(13px, 400);
-    line-height: 20px;
-    display: flex;
-    gap: 8px;
-    word-break: break-word;
-    border-radius: 6px;
-    background: $color-f9f9fc;
-    padding: 8px;
-    padding-left: 12px;
+  line-height: 20px;
+  display: flex;
+  gap: 8px;
+  word-break: break-word;
+  border-radius: 6px;
+  background: $color-f9f9fc;
+  padding: 8px;
+  padding-left: 12px;
 }
 </style>

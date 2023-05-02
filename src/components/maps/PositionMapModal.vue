@@ -286,5 +286,6 @@ export default {
   line-height: 24px;
   text-align: center;
   color: $--b-main-gray-color;
+  cursor: pointer;
 }
 </style>

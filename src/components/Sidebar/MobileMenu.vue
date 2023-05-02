@@ -8,7 +8,10 @@
     @continue="closeSubmitModal"
   />
   <div class="b-mob-menu" :style="mobMenuStyle">
-    <div class="b-mob-menu__top-side">
+    <div
+      class="b-mob-menu__top-side"
+      :style="`height: ${mobileMenuTopSideHeight}`"
+    >
       <div class="b-mob-menu__logo-block">
         <div class="b-mob-menu__logo-left">
           <div class="b-mob-menu__logo">{{ $t('menu.blanball') }}</div>
@@ -32,7 +35,8 @@
             />
           </div>
           <div class="b-mob-menu__text-block">
-            <div class="b-mob-menu__user-name">
+            <div class="b-mob-menu__user-name"
+            @click="goToMyProfile" >
               {{ userStore.getUserFullName }}
             </div>
             <div class="b-mob-menu__account-type">
@@ -188,10 +192,7 @@
     </div>
 
     <div v-if="isBottomBlockShowing" class="b-mob-menu__bottom-side">
-      <div
-        class="b-mob-menu__found-error"
-        @click="$emit('foundBug')"
-      >
+      <div class="b-mob-menu__found-error" @click="$emit('foundBug')">
         <img src="../../assets/img/white-warning-icon.svg" alt="" />
         <span>{{ $t('slide_menu.found-error') }}</span>
       </div>
@@ -205,7 +206,9 @@
           <span>{{ $t('slide_menu.version') }} {{ clientVersion }}</span>
         </router-link>
         <div class="b-bottom-block__footer">
-          <span>{{ $t('slide_menu.blanball-year', {year: currentYear}) }}</span>
+          <span>{{
+            $t('slide_menu.blanball-year', { year: currentYear })
+          }}</span>
           <span>{{ $t('policy.data-security') }}</span>
           <div class="b-bottom-block__company">
             <img src="../../assets/img/logo-flumx.svg" alt="" />
@@ -218,7 +221,14 @@
 </template>
 
 <script>
-import { ref, computed, inject, watch, watchEffect } from 'vue';
+import {
+  ref,
+  computed,
+  inject,
+  watchEffect,
+  onMounted,
+  onBeforeUnmount,
+} from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { v4 as uuid } from 'uuid';
@@ -236,6 +246,7 @@ import { useUserDataStore } from '../../stores/userData';
 import { NewNotifications } from '../../workers/web-socket-worker/not-includes-to-socket/new_notifications';
 import { API } from '../../workers/api-worker/api.worker';
 import { NotificationsBus } from '../../workers/event-bus-worker';
+import { calcHeight } from '../../utils/calcHeight';
 
 import { ROUTES } from '../../router/router.const';
 
@@ -371,23 +382,14 @@ export default {
       },
     ]);
 
-    watchEffect(
-      () => {
-        if (selectedList.value.length === 0) {
-          selectable.value = false;
-        }
-      },
-      { deep: true }
-    );
-
     function goToMyProfile() {
       router.push(ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute);
       closeMobMenu();
     }
 
     const currentYear = computed(() => {
-      return new Date().getFullYear()
-    })
+      return new Date().getFullYear();
+    });
 
     const emptyListMessages = computed(() => {
       return {
@@ -430,12 +432,6 @@ export default {
     });
     const routeObject = computed(() => {
       return ROUTES;
-    });
-
-    watch(selectedList.length, () => {
-      if (selectedList.value.length === 0) {
-        selectable.value = false;
-      }
     });
 
     function closeMobMenu() {
@@ -508,6 +504,37 @@ export default {
         }
       });
     }
+
+    const mobileMenuTopSideHeightConfig = ref({
+      default: [60, 32, 48, 16],
+      mobile: [selectedList.value.length ? 60 : 0],
+      tablet: [selectedList.value.length ? 60 : 0],
+    });
+
+    const {
+      calculatedHeight,
+      minussedHeight,
+      onAppHeightResize,
+      minusHeight,
+      plusHeight,
+    } = calcHeight(...Object.values(mobileMenuTopSideHeightConfig.value));
+
+    const mobileMenuTopSideHeight = computed(() => {
+      return `${calculatedHeight.value}px`;
+    });
+
+    watchEffect(
+      () => {
+        if (selectedList.value.length >= 0 && minussedHeight.value <= 0) {
+          minusHeight(60);
+        }
+        if (selectedList.value.length === 0) {
+          plusHeight(60);
+          selectable.value = false;
+        }
+      },
+      { deep: true }
+    );
 
     const startLoader = () => {
       loading.value = true;
@@ -633,6 +660,13 @@ export default {
       }
     };
 
+    onMounted(() => {
+      window.addEventListener('resize', onAppHeightResize);
+    });
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', onAppHeightResize);
+    });
+
     return {
       topMenu,
       selectable,
@@ -652,6 +686,7 @@ export default {
       HandleAction,
       tabs,
       loading,
+      mobileMenuTopSideHeight,
       selectedTabId,
       triggerForRestart,
       isSubmitModalOpened,
@@ -701,10 +736,6 @@ $color-1ccd62: #1ccd62;
   }
   @include mobile {
     width: 100%;
-  }
-
-  .b-mob-menu__top-side {
-    @include calc-height(60px, 32px, 48px, 16px)
   }
 
   .b-mob-menu__logo-block {
@@ -939,7 +970,7 @@ $color-1ccd62: #1ccd62;
   max-width: 193px;
   position: absolute;
   min-width: max-content;
-  bottom: 90px;
+  bottom: 100px;
   cursor: pointer;
   left: 50%;
   transform: translateX(-50%);

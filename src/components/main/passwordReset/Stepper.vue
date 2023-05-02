@@ -46,7 +46,7 @@
           />
         </div>
         <div class="b-reset-step__sms-code-block" v-if="currentStep === 2">
-          <code-input
+          <inputCode
             @complete="completed = true"
             :fields="5"
             :fieldWidth="70"

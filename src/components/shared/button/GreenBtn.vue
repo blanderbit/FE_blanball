@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="['b-green-btn', { 'b-green-btn__animated': animation }]"
+    :class="['b-green-btn', { animated: animation }, { disabled: disabled }]"
     :style="btnStyle"
     @click.stop="!disabled && $emit('click-function', $event)"
   >
@@ -12,7 +12,7 @@
       :src="iconRight"
       alt=""
     />
-    <loader :is-loading="loading"/>
+    <loader :is-loading="loading" />
   </div>
 </template>
 
@@ -63,7 +63,7 @@ export default {
     },
     borderColor: {
       type: String,
-      default: ''
+      default: '',
     },
     loading: {
       type: Boolean,
@@ -82,7 +82,9 @@ export default {
         width: props.width ? props.width + 'px' : '100%',
         height: props.height + 'px',
         background: props.backgroundColor,
-        border: `${props.borderColor ? `1px solid ${props.borderColor}` : 'none'}`,
+        border: `${
+          props.borderColor ? `1px solid ${props.borderColor}` : 'none'
+        }`,
         'justify-content': 'center',
       };
     });
@@ -112,22 +114,6 @@ export default {
 // SCSS variables for hex colors
 $color-c6c7c7: #c6c7c7;
 
-.b-green-btn__animated {
-  &:hover {
-    &:before {
-      content: '';
-      display: block;
-      position: absolute;
-      opacity: 30%;
-      left: -100%;
-      width: 32px;
-      height: 100%;
-      background: $color-c6c7c7;
-      filter: blur(6px);
-      animation: blink 5s ease-in-out infinite;
-    }
-  }
-}
 .b-green-btn {
   @include inter(14px, 500, $--b-main-white-color);
 
@@ -146,6 +132,28 @@ $color-c6c7c7: #c6c7c7;
   }
   &__right-icon {
     margin-left: 10px;
+  }
+
+  &.disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  &.animated {
+    &:hover {
+      &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        opacity: 30%;
+        left: -100%;
+        width: 32px;
+        height: 100%;
+        background: $color-c6c7c7;
+        filter: blur(6px);
+        animation: blink 5s ease-in-out infinite;
+      }
+    }
   }
 }
 

@@ -214,7 +214,15 @@
 </template>
 
 <script>
-import { ref, inject, computed, watch, onMounted, onBeforeUnmount } from 'vue';
+import {
+  ref,
+  inject,
+  computed,
+  watch,
+  watchEffect,
+  onMounted,
+  onBeforeUnmount,
+} from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { v4 as uuid } from 'uuid';
@@ -339,12 +347,13 @@ export default {
       };
     });
 
-    const { calculatedHeight, onAppHeightResize } = calcHeight([
-      100,
-      70,
-      20,
-      selectedList.value.length > 0 ? 110 : 80,
-    ]);
+    const {
+      calculatedHeight,
+      minussedHeight,
+      onAppHeightResize,
+      plusHeight,
+      minusHeight,
+    } = calcHeight([100, 70, 20, selectedList.value.length ? 110 : 80]);
 
     const slideMenuHeight = computed(() => {
       return `${calculatedHeight.value}px`;
@@ -357,6 +366,18 @@ export default {
           emit('closed');
         }
       }
+    );
+
+    watchEffect(
+      () => {
+        if (selectedList.value.length >= 0 && minussedHeight.value <= 0) {
+          minusHeight(30);
+        }
+        if (selectedList.value.length === 0) {
+          plusHeight(30);
+        }
+      },
+      { deep: true }
     );
 
     const arrowPosition = computed(() => {

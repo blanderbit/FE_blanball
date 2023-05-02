@@ -145,7 +145,7 @@ $color-d3f8f7: #d3f8f7;
     padding: 16px 0px;
   }
   @include tabletAndMobile {
-    padding: 0px 16px;
+    padding: 0px 10px;
     margin-bottom: 50px;
   }
   .b-security__email-input {

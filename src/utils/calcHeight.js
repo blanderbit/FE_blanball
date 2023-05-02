@@ -1,8 +1,16 @@
 import { ref } from 'vue';
+import { BlanballEventBus } from '../workers/event-bus-worker';
 
-export const calcHeight = (defaultHeights = [], mobile = [], tablet = []) => {
+export const calcHeight = (
+  defaultHeights = [],
+  mobile = [],
+  tablet = [],
+  recalculateAfterVerifyEmail
+) => {
   const appHeightValue = ref(window.innerHeight);
   const calculatedHeight = ref();
+  const minussedHeight = ref(0);
+  const plussedHeight = ref(0);
 
   const calculate = () => {
     let allHeights = [...defaultHeights];
@@ -23,6 +31,24 @@ export const calcHeight = (defaultHeights = [], mobile = [], tablet = []) => {
       allHeights.reduce((total, current) => total + current);
   };
 
+  if (recalculateAfterVerifyEmail) {
+    BlanballEventBus.on('emailVerified', () => {
+      calculatedHeight.value += 40;
+    });
+  }
+
+  const minusHeight = (height) => {
+    calculatedHeight.value -= height;
+    minussedHeight.value += height;
+    plussedHeight.value -= height;
+  };
+
+  const plusHeight = (height) => {
+    calculatedHeight.value += height;
+    minussedHeight.value -= height;
+    plussedHeight.value += height;
+  };
+
   const onAppHeightResize = () => {
     calculate();
   };
@@ -32,6 +58,9 @@ export const calcHeight = (defaultHeights = [], mobile = [], tablet = []) => {
   return {
     appHeightValue,
     calculatedHeight,
+    minussedHeight,
     onAppHeightResize,
+    minusHeight,
+    plusHeight,
   };
 };
