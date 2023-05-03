@@ -5,7 +5,6 @@ import {
 } from '../../workers/web-socket-worker/message.action.types';
 import { DETAILS_TYPE_ENUM_VALUES } from '../type-request-message-worker';
 
-
 export const AxiosQuery = (params) => {
   params = typeof params === 'object' ? params : {};
   const filteredObject = Object.keys(params)
@@ -101,14 +100,14 @@ export const notificationButtonHandlerMessage = async ({
     await button.action({ notificationInstance });
   }
 
-  if (
-    [
-      MessageActionTypes.Action,
-      MessageActionTypes.ActionClose,
-      MessageActionTypes.Close,
-    ].includes(button.type)
-  ) {
+  if ([MessageActionTypes.Close].includes(button.type)) {
     notificationInstance.readAfterActiveActionCallBack(notificationInstance);
+  } else if (
+    [MessageActionTypes.ActionClose, MessageActionTypes.Action].includes(
+      button.type
+    )
+  ) {
+    notificationInstance.deleteAfterActiveActionCallBack(notificationInstance);
   }
   if (activeNotification) {
     activeNotification.value = 0;

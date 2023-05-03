@@ -37,10 +37,16 @@ export async function refreshTokens() {
     AuthWebSocketWorkerInstance.connect({
       token: accessToken.getToken(),
     });
+    tokensStore.$patch({
+      isTokensRefreshing: false,
+    });
   } catch {
     const findCurRouteFromList = window.location.pathname.includes(
       ROUTES.APPLICATION.name
     );
+    tokensStore.$patch({
+      isTokensRefreshing: false,
+    });
 
     resetUserData();
     await router.push(
@@ -49,9 +55,5 @@ export async function refreshTokens() {
         : ROUTES.AUTHENTICATIONS.LOGIN.absolute
     );
     BlanballEventBus.emit('SessionExpired');
-  } finally {
-    tokensStore.$patch({
-      isTokensRefreshing: false,
-    });
   }
 }

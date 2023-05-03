@@ -44,9 +44,10 @@
         </div>
         <div class="b_slide_menu_bottom-block">
           <slot name="bottom-block"></slot>
-          <div class="b-privacy-links__button"
-            @click="showPrivacyContextModal">
-            {{ $t('policy.data-security') }}
+          <div class="b-privacy-links__button">
+            <span @click="showPrivacyContextModal">
+              {{ $t('policy.data-security') }}
+            </span>
           </div>
         </div>
       </div>
@@ -212,9 +213,12 @@ $color-dfdeed: #dfdeed;
 
       .b-privacy-links__button {
         @include inter(12px, 400, $--b-main-gray-color);
-        cursor: pointer;
         line-height: 20px;
         margin-top: 5px;
+
+        span {
+          cursor: pointer;
+        }
       }
     }
   }
