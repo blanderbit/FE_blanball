@@ -9,7 +9,6 @@
     </template>
   </PublicProfileWrapper>
   <div class="b-user-cabinet">
-    <loader :is-loading="isLoading" />
     <ReviewsListModal
       v-if="isReviewsListModalOpened"
       @closeModal="closeReviewsModal"
@@ -178,7 +177,6 @@ import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
 import ChangeEmailModal from '../../../components/main/profile/modals/ChangeEmailModal.vue';
 import ButtonsBlock from '../../../components/main/profile/ButtonsBlock.vue';
 import EditAvatarModal from '../../../components/main/profile/modals/EditAvatarModal.vue';
-import loader from '../../../components/shared/loader/Loader.vue';
 import PublicProfile from '../../../components/main/publicProfile/PublicProfile.vue';
 import HideMyEventsModal from '../../../components/main/events/modals/HideMyEventsModal.vue';
 import PublicProfileWrapper from '../../../components/main/publicProfile/PublicProfileWrapper.vue';
@@ -191,6 +189,10 @@ import { calcHeight } from '../../../utils/calcHeight';
 
 import CONSTANTS from '../../../consts';
 import SCHEMAS from '../../../validators/schemas';
+import {
+  finishSpinner,
+  startSpinner,
+} from '../../../workers/loading-worker/loading.worker';
 
 const EDIT_BUTTON_ACTIONS = {
   SAVE: 'save',
@@ -213,7 +215,6 @@ export default {
     SubmitModal,
     Form,
     ReviewsListModal,
-    loader,
     ChangeEmailModal,
     ButtonsBlock,
     TabLabel,
@@ -235,7 +236,6 @@ export default {
     const isEditModeProfile = ref(false);
     const changeDataModalConfig = ref(null);
     const myForm = ref(null);
-    const isLoading = ref(false);
     const isTabLabel = ref(false);
     const userAvatar = ref('');
     const restData = ref();
@@ -504,7 +504,7 @@ export default {
       });
     }
     function getMyProfile() {
-      isLoading.value = true;
+      startSpinner();
       API.UserService.getMyProfile()
         .then((res) => {
           formValues.value = {
@@ -531,14 +531,14 @@ export default {
             working_leg: getWorkingLeg(res.data.profile?.working_leg),
             role: res.data?.role,
           };
-          isLoading.value = false;
+          finishSpinner();
           userStore.$patch({
             user: res.data,
           });
           toast.success(t('profile.data-updated'));
         })
         .catch((e) => {
-          isLoading.value = false;
+          finishSpinner();
         });
     }
 
@@ -560,10 +560,10 @@ export default {
     }
 
     async function closeModalAndHideEvents(ids) {
-      isLoading.value = true;
+      startSpinner();
       closeHideMyEventsModal();
       await API.EventService.showOrHideMyEvents(ids);
-      isLoading.value = false;
+      finishSpinner();
     }
 
     function toggleModal(val) {
@@ -704,7 +704,6 @@ export default {
       myForm,
       userInfo,
       userRating,
-      isLoading,
       isMobile,
       reviewsTotalCount,
       isTabLabel,

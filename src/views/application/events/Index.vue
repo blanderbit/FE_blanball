@@ -1,5 +1,4 @@
 <template>
-  <loader :is-loading="loading" />
   <ContextModal
     v-if="isEventJoinModalActive"
     :clientX="eventJoinModalX"
@@ -130,7 +129,6 @@ import InfiniteLoading from '../../../components/main/infiniteLoading/InfiniteLo
 import Dropdown from '../../../components/shared/dropdown/Dropdown.vue';
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue';
 import ContextModal from '../../../components/shared/modals/ContextModal.vue';
-import loader from '../../../components/shared/loader/Loader.vue';
 import SelectFormsColorsModal from '../../../components/main/manageEvent/modals/SelectFormsColorsModal.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
@@ -139,6 +137,10 @@ import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patc
 import { addMinutes } from '../../../utils/addMinutes';
 import { getDate } from '../../../utils/getDate';
 import { getTime } from '../../../utils/getTime';
+import {
+  finishSpinner,
+  startSpinner,
+} from '../../../workers/loading-worker/loading.worker';
 
 import { ROUTES } from '../../../router/router.const';
 import CONSTANTS from '../../../consts/index';
@@ -165,7 +167,6 @@ export default {
     InfiniteLoading,
     ScrollToTop,
     EventsFilters,
-    loader,
     SelectFormsColorsModal,
     ContextModal,
   },
@@ -175,7 +176,6 @@ export default {
     const router = useRouter();
     const toast = useToast();
     const eventCards = ref([]);
-    const loading = ref(false);
     const joinEventData = ref(null);
     const eventJoinModalX = ref(null);
     const eventJoinModalY = ref(null);
@@ -204,7 +204,7 @@ export default {
     });
 
     async function joinEvent(eventData, type) {
-      loading.value = true;
+      startSpinner();
       switch (type) {
         case eventJoinTypes.PLAY:
           await API.EventService.eventJoinAsPlayer(eventData.id);
@@ -219,7 +219,7 @@ export default {
         paginationPage,
       });
       paginationElements.value = response.data.results;
-      loading.value = false;
+      finishSpinner();
 
       switch (type) {
         case eventJoinTypes.PLAY:
@@ -429,18 +429,13 @@ export default {
       eventCards,
       isLoaderActive,
       paginationTotalCount,
-      switchToMyEvents,
       isEventJoinModalActive,
       mainEventsBlock,
       eventJoinModalY,
       eventJoinModalX,
-      showEventJoinModal,
-      closeEventJoinModal,
-      loading,
       mockData,
+      eventJoinToolTipItems,
       filters,
-      goToEventPage,
-      goToCreateEvent,
       refList,
       iconPlus,
       blockScrollToTopIfExist,
@@ -453,9 +448,11 @@ export default {
       detectSizesForCards,
       setFilters,
       clearFilters,
-
-      eventJoinToolTipItems,
-
+      showEventJoinModal,
+      goToEventPage,
+      goToCreateEvent,
+      switchToMyEvents,
+      closeEventJoinModal,
       scrollToFirstElement: () => {
         refList.value.scrollToFirstElement();
       },

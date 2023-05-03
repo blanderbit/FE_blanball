@@ -1,6 +1,5 @@
 <template>
   <div class="b-register-step">
-    <loader :is-loading="loading"/>
     <slot name="images"></slot>
     <div class="b-register-step__top-part">
       <div class="b-register-step__title" v-if="title">
@@ -56,13 +55,11 @@
 <script>
 import { computed } from 'vue';
 import GreenBtn from '../../shared/button/GreenBtn.vue';
-import loader from '../../shared/loader/Loader.vue';
 import WhiteBtn from '../../shared/button/WhiteBtn.vue';
 
 export default {
   components: {
     GreenBtn,
-    loader,
     WhiteBtn,
   },
   props: {
@@ -81,10 +78,6 @@ export default {
     title: {
       type: String,
       default: '',
-    },
-    loading: {
-      type: Boolean,
-      default: false,
     },
     subTitle: {
       type: String,

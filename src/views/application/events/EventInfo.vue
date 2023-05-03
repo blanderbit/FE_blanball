@@ -1,5 +1,4 @@
 <template>
-  <loader :is-loading="loading" />
   <InviteManyUsersToEventModal
     v-if="isInviteUsersModalOpened"
     :eventData="eventData"
@@ -189,7 +188,6 @@
               <position-map
                 class="b-event-map"
                 :coords="{ lat: eventData.place.lat, lng: eventData.place.lon }"
-                @map-loaded="loading = false"
                 disable-change-coords
               >
               </position-map>
@@ -290,7 +288,6 @@ import CopyModal from '../../../components/shared/modals/CopyModal.vue';
 import userAvatar from '../../../components/shared/userAvatar/UserAvatar.vue';
 import TabLabel from '../../../components/shared/tabLabel/TabLabel.vue';
 import ListOfEventRequestsToParticipations from '../../../components/ListOfEventRequestsToParticipations.vue';
-import loader from '../../../components/shared/loader/Loader.vue';
 import EventInfoForms from '../../../components/main/events/EventInfoForms.vue';
 import ActionEventModal from '../../../components/main/events/modals/ActionEventModal.vue';
 import EditEventModal from '../../../components/main/manageEvent/modals/EditEventModal.vue';
@@ -307,6 +304,7 @@ import { addMinutes } from '../../../utils/addMinutes';
 import { getDate } from '../../../utils/getDate';
 import { getTime } from '../../../utils/getTime';
 import { copyToClipboard } from '../../../utils/copyToClipBoard';
+import { startSpinner, finishSpinner } from '../../../workers/loading-worker/loading.worker';
 
 import CONSTANTS from '../../../consts/index';
 import { ROUTES } from '../../../router/router.const';
@@ -337,7 +335,6 @@ export default {
     PositionMap,
     CopyModal,
     userAvatar,
-    loader,
     TabLabel,
     SmallUserCard,
     EventInfoForms,
@@ -355,7 +352,6 @@ export default {
     const toast = useToast();
     const userStore = useUserDataStore();
     const isTabLabel = ref(false);
-    const loading = ref(false);
     const { t } = useI18n();
     const joinEventData = ref(null);
     const eventData = ref(route.meta.eventData.data);
@@ -388,14 +384,14 @@ export default {
     watch(
       () => route.path,
       async (value) => {
-        loading.value = true;
+        startSpinner();
         const response = await API.EventService.getOneEvent(
           value.split('/').slice(-1)[0]
         );
         handleIncomeEventData(response.data);
         eventData.value = response.data;
         joinEventData.value = null;
-        loading.value = false;
+        finishSpinner();
       }
     );
 
@@ -543,7 +539,7 @@ export default {
     };
 
     const leaveFromTheEvent = async () => {
-      loading.value = true;
+      startSpinner();
       let participateType = '';
       let leaveFrom = [];
       if (
@@ -563,14 +559,14 @@ export default {
       if (index > -1) {
         leaveFrom.splice(index, 1);
       }
-      loading.value = false;
+      finishSpinner();
       emitAfterEventJoinOrLeave(participateType, 'leave');
       closeSubmitModal();
       toast.info(t('notifications.event-leave'));
     };
 
     const acceptRequestToParticipation = async (id) => {
-      loading.value = true;
+      startSpinner();
 
       await API.EventService.declineOrAcceptParticipations(id, true);
       let newEventData = await API.EventService.getOneEvent(eventData.value.id);
@@ -580,18 +576,18 @@ export default {
       handleIncomeEventData(eventData.value);
       eventRequestsToParticipations.value =
         handlePreloadRequestsParticipationsData(requestsToParticipations.data);
-      loading.value = false;
+      finishSpinner();
     };
 
     const declineRequestToParticipation = async (id) => {
-      loading.value = true;
+      startSpinner();
 
       await API.EventService.declineOrAcceptParticipations(id, false);
       let requestsToParticipations =
         await API.EventService.requestsToParticipations(eventData.value.id);
       eventRequestsToParticipations.value =
         handlePreloadRequestsParticipationsData(requestsToParticipations.data);
-      loading.value = false;
+      finishSpinner();
     };
 
     const openEventShareModal = () => {
@@ -628,10 +624,10 @@ export default {
     }
 
     async function inviteUsersToThisEvent(ids) {
-      loading.value = true;
+      startSpinner();
       closeInviteUsersModal();
       await API.EventService.inviteUsersToEvent(ids, eventData.value.id);
-      loading.value = false;
+      finishSpinner();
       toast.success(t('notifications.sent-invites'));
     }
 
@@ -719,7 +715,7 @@ export default {
     };
 
     async function joinEvent(data, type) {
-      loading.value = true;
+      startSpinner();
       let toastText = '';
       let participateType = '';
       switch (type) {
@@ -744,7 +740,7 @@ export default {
           break;
       }
       emitAfterEventJoinOrLeave(participateType, 'join');
-      loading.value = false;
+      finishSpinner();
       toast.success(toastText);
     }
 
@@ -783,7 +779,6 @@ export default {
       eventData,
       currentFullRoute,
       isTabLabel,
-      loading,
       greenButton,
       activeTab,
       isActionEventModalOpened,

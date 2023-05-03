@@ -1,5 +1,4 @@
 <template>
-  <loader :is-loading="loading" />
   <BugReportModal
     v-if="isBugReportModalOpened"
     @close-modal="closeBugReportModal"
@@ -120,7 +119,6 @@ import userAvatar from '../shared/userAvatar/UserAvatar.vue';
 import BugReportModal from '../shared/modals/BugReportModal.vue';
 import TabLabel from '../shared/tabLabel/TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';
-import loader from '../shared/loader/Loader.vue';
 
 import { useUserDataStore } from '../../stores/userData';
 import { createNotificationFromData } from '../../workers/utils-worker';
@@ -147,6 +145,7 @@ import members from '../../assets/img/members.svg';
 import medal from '../../assets/img/medal.svg';
 import settings from '../../assets/img/settings.svg';
 import bugReport from '../../assets/img/warning-black.svg';
+import { finishSpinner } from '../../workers/loading-worker/loading.worker';
 
 const findDublicates = (list, newList) => {
   return newList.filter((item) =>
@@ -170,14 +169,12 @@ export default {
     userAvatar,
     BugReportModal,
     TabLabel,
-    loader,
     MobileMenu,
   },
-  setup(props, { emit }) {
+  setup() {
     const userStore = useUserDataStore();
     const notReadNotificationCount = ref(0);
     const allNotificationsCount = ref(0);
-    const loading = ref(false);
     const isMobMenuActive = ref(false);
     const skipids = ref([]);
     const router = useRouter();
@@ -295,7 +292,7 @@ export default {
       isLoading
     ) => {
       if (isLoading) {
-        loading.value = true;
+        startSpinner();
       }
       if (forceUpdate) {
         paginationClearData();
@@ -304,7 +301,7 @@ export default {
 
       await paginationLoad({ pageNumber, $state, forceUpdate }).then(() => {
         if (isLoading) {
-          loading.value = false;
+          finishSpinner();
         }
       });
     };
@@ -419,7 +416,6 @@ export default {
       isMenuOpened,
       userStore,
       currentHoverSideBarItemID,
-      loading,
       isBugReportModalOpened,
       loadDataNotifications,
       removeNotifications,

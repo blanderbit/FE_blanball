@@ -1,16 +1,17 @@
 <template>
   <div>
-    <div class="b-place-detector" @click.stop="!disabled ? activeModal = true : null">
+    <div
+      class="b-place-detector"
+      @click.stop="!disabled ? (activeModal = true) : null"
+    >
       <img src="../../assets/img/location-point.svg" alt="" />
       <p>{{ place?.place_name }}</p>
     </div>
     <teleport to="body">
       <ModalWindow v-if="activeModal" :isTitleShown="false">
-        <loader :is-loading="loading" />
         <div style="height: 400px">
           <position-map
             :coords="{ lat: place.lat, lng: place.lon }"
-            @map-loaded="loading = false"
             disable-change-coords
           >
           </position-map>
@@ -34,7 +35,6 @@ import { ref } from 'vue';
 import ModalWindow from '../shared/modals/ModalWindow.vue';
 import PositionMap from './PositionMap.vue';
 import GreenBtn from '../shared/button/GreenBtn.vue';
-import loader from '../shared/loader/Loader.vue';
 
 export default {
   name: 'PlaceDetectorModal',
@@ -42,22 +42,19 @@ export default {
     ModalWindow,
     PositionMap,
     GreenBtn,
-    loader,
   },
   props: {
     place: {},
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   setup() {
     const activeModal = ref(false);
-    const loading = ref(true);
 
     return {
       activeModal,
-      loading,
     };
   },
 };

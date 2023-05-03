@@ -1,5 +1,4 @@
 <template>
-  <loader :is-loading="eventUpdateLoader"/>
   <div class="b-edit-event-modal__wrapper">
     <SubmitModal
       v-if="isSubmitModalOpened"
@@ -99,10 +98,10 @@ import SelectFormsColorsModal from '../../manageEvent/modals/SelectFormsColorsMo
 import WhiteBtn from '../../../shared/button/WhiteBtn.vue';
 import GreenBtn from '../../../shared/button/GreenBtn.vue';
 import SubmitModal from '../../../shared/modals/SubmitModal.vue';
-import loader from '../../../shared/loader/Loader.vue';
 
 import { API } from '../../../../workers/api-worker/api.worker';
 import { BlanballEventBus } from '../../../../workers/event-bus-worker';
+import { startSpinner, finishSpinner } from '../../../../workers/loading-worker/loading.worker';
 
 import { runOnSelectEventDuration } from '../../../../utils/runOnSelectEventDuration';
 
@@ -116,7 +115,6 @@ export default {
     SelectFormsColorsModal,
     WhiteBtn,
     GreenBtn,
-    loader,
     Form,
     SubmitModal,
   },
@@ -129,7 +127,6 @@ export default {
   setup(props, { emit }) {
     const searchUsersLoading = ref(false);
     const relevantUsersList = ref([]);
-    const eventUpdateLoader = ref(false);
     const isSelectFormColarModalOpened = ref(false);
     const isSubmitModalOpened = ref(false);
 
@@ -275,7 +272,7 @@ export default {
         return false;
       }
 
-      eventUpdateLoader.value = true;
+      startSpinner();
       const createEventData = data.values;
 
       createEventData.date_and_time = `${createEventData.date} ${createEventData.time}`;
@@ -283,7 +280,7 @@ export default {
       createEventData.current_users = invitedUsers.value.map((user) => user.id);
 
       await API.EventService.editOneEvent(eventData.value.id, createEventData);
-      eventUpdateLoader.value = false;
+      finishSpinner();
       emit('closeEventUpdateModal');
       BlanballEventBus.emit('EventUpdated');
     }
@@ -293,7 +290,6 @@ export default {
       invitedUsers,
       isSelectFormColarModalOpened,
       eventData,
-      eventUpdateLoader,
       changeDataModalConfig,
       isSubmitModalOpened,
       schema,

@@ -1,5 +1,4 @@
 <template>
-  <loader :is-loading="loading" />
   <SubmitModal
     v-if="isSubmitModalOpened"
     :config="submitModalConfig"
@@ -239,7 +238,6 @@ import Notification from '../main/notifications/Notification.vue';
 import emptyList from '../shared/emptyList/EmptyList.vue';
 import InfiniteLoading from '../main/infiniteLoading/InfiniteLoading.vue';
 import ScrollToTop from '../ScrollToTop.vue';
-import loader from '../shared/loader/Loader.vue';
 import SubmitModal from '../shared/modals/SubmitModal.vue';
 
 import { useUserDataStore } from '../../stores/userData';
@@ -290,7 +288,6 @@ export default {
     emptyList,
     InfiniteLoading,
     ScrollToTop,
-    loader,
     SubmitModal,
   },
   emit: ['closeMenu'],
@@ -299,7 +296,6 @@ export default {
     const userStore = useUserDataStore();
     const notificationList = ref();
     const selectable = ref(false);
-    const loading = ref(false);
     const newNotificationInstance = ref(new NewNotifications());
     const selectedList = ref([]);
     const blockScrollToTopIfExist = ref(false);
@@ -536,13 +532,6 @@ export default {
       { deep: true }
     );
 
-    const startLoader = () => {
-      loading.value = true;
-    };
-
-    const stopLoader = () => {
-      loading.value = false;
-    };
 
     const clearSelectedList = () => {
       selectedList.value = [];
@@ -564,18 +553,18 @@ export default {
     const HandleAction = {
       deleteAll: async () => {
         if (!context.notifications.length && !context.newNotifications) return;
-        startLoader();
+        startSpinner();
         await API.NotificationService.deleteAllMyNotifications();
         removePushNotificationAfterSidebarAction({
           remove_all: true,
         });
         clearSelectedList();
         handleSelectableMode();
-        stopLoader();
+        finishSpinner();
       },
       readAll: async () => {
         if (!context.notifications.length && !context.newNotifications) return;
-        startLoader();
+        startSpinner();
         await API.NotificationService.readAllMyNotifications();
         removePushNotificationAfterSidebarAction({
           remove_all: true,
@@ -587,11 +576,11 @@ export default {
         if (selectedTabId.value === 2) {
           emit('removeNotifications', 'All');
         }
-        stopLoader();
+        finishSpinner();
       },
       deleteSelected: async () => {
         if (!selectedList.value) return;
-        startLoader();
+        startSpinner();
         await API.NotificationService.deleteNotifications(selectedList.value);
         removePushNotificationAfterSidebarAction({
           notification_ids: selectedList.value,
@@ -599,11 +588,11 @@ export default {
         clearSelectedList();
         handleSelectableMode();
         closeSubmitModal();
-        stopLoader();
+        finishSpinner();
       },
       readSelected: async () => {
         if (!selectedList.value) return;
-        startLoader();
+        startSpinner();
         await API.NotificationService.readNotifications(selectedList.value);
         removePushNotificationAfterSidebarAction({
           notification_ids: selectedList.value,
@@ -613,10 +602,10 @@ export default {
         }
         clearSelectedList();
         handleSelectableMode();
-        stopLoader();
+        finishSpinner();
       },
       readOne: async (id) => {
-        startLoader();
+        startSpinner();
         await API.NotificationService.readNotifications([id]);
         removePushNotificationAfterSidebarAction({
           notification_ids: [id],
@@ -624,15 +613,15 @@ export default {
         if (selectedTabId.value === 2) {
           emit('removeNotifications', [id]);
         }
-        stopLoader();
+        finishSpinner();
       },
       deleteOne: async (id) => {
-        startLoader();
+        startSpinner();
         await API.NotificationService.deleteNotifications([id]);
         removePushNotificationAfterSidebarAction({
           notification_id: id,
         });
-        stopLoader();
+        finishSpinner();
       },
     };
 
@@ -685,7 +674,6 @@ export default {
       routeObject,
       HandleAction,
       tabs,
-      loading,
       mobileMenuTopSideHeight,
       selectedTabId,
       triggerForRestart,
