@@ -3,7 +3,6 @@ import { TypeRequestMessageWorker } from '../workers/type-request-message-worker
 
 import { refreshTokens } from '../utils/refreshTokens';
 import { useTokensStore } from '../stores/tokens';
-import { useUserDataStore } from '../stores/userData';
 
 import { AxiosInstance } from '../plugins/axios.plugin';
 
@@ -14,7 +13,6 @@ import { globalSkipMesssageTypes } from '../workers/type-request-message-worker'
 const toast = useToast();
 
 const tokenStore = useTokensStore();
-const userStore = useUserDataStore();
 
 const showToastAfterError = (errorMessageType) => {
   toast.error(
@@ -43,10 +41,14 @@ export const ErrorInterceptor = async (error) => {
   ) {
     if (!tokenStore.isTokensRefreshing) {
       retryRequest = true;
-      await refreshTokens();
+      const refreshTokensStatus = await refreshTokens();
+
+      if (!refreshTokensStatus) {
+        return;
+      }
     }
     if (retryRequest) {
-      return await new Promise(async (resolve) => {
+      return await new Promise(async (resolve, reject) => {
         requestConfig.url = requestConfig.url.replace(
           requestConfig.baseURL,
           ''

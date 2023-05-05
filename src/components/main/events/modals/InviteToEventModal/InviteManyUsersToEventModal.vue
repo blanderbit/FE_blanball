@@ -11,7 +11,8 @@
       v-if="isSubmitModalOpened"
       :config="submitModalConfig"
       @cancelInvites="$emit('closeModal')"
-      @closeModal="closeSubmitModal"/>
+      @closeModal="closeSubmitModal"
+    />
   </Teleport>
   <div class="b-invite-users-to-event-modal__wrapper">
     <div class="b-invite-users-to-event-modal__modal-window">
@@ -36,9 +37,13 @@
           </div>
           <div class="b-invited-users-block__avatars-list-block">
             <div class="b-invited-users-block__avatars-list">
-              <div v-for="user in invitedUsers.slice(0, showUserAvatarCount)">
+              <div
+                v-for="user in invitedUsers.slice(0, showUserAvatarCount)"
+                :style="`margin-left: ${
+                  user.id !== invitedUsers[0]?.id ? -12 : 0
+                }px`"
+              >
                 <userAvatar
-                  class="b-invited-user__avatar"
                   :link="user.profile.avatar_url"
                   :avatarType="'small-circle'"
                   :full-name="`${user.profile.last_name} ${user.profile.name}`"
@@ -155,7 +160,9 @@ export default {
     const submitModalConfig = computed(() => {
       return {
         title: t('modals.cancel_invite_users.title'),
-        description: t('modals.cancel_invite_users.main-text', {count: invitedUsers.value.length}),
+        description: t('modals.cancel_invite_users.main-text', {
+          count: invitedUsers.value.length,
+        }),
         button_1: t('modals.cancel_invite_users.button-1-text'),
         button_2: t('modals.cancel_invite_users.button-2-text'),
         left_btn_action: 'closeModal',
@@ -182,12 +189,12 @@ export default {
     };
 
     const showSubmitModal = () => {
-      isSubmitModalOpened.value = true
-    }
+      isSubmitModalOpened.value = true;
+    };
 
     const closeSubmitModal = () => {
-      isSubmitModalOpened.value = false
-    }
+      isSubmitModalOpened.value = false;
+    };
 
     const getRelevantUsers = async (options) => {
       loading.value = true;
@@ -218,7 +225,7 @@ export default {
       } else {
         showSubmitModal();
       }
-    }
+    };
 
     getRelevantUsers({ skipids: SKIPIDS });
 
@@ -238,9 +245,8 @@ export default {
     watch(
       () => invitedUsers.value,
       () => {
-
         if (!invitedUsers.value.length) {
-          closeInvitedUsersListModal()
+          closeInvitedUsersListModal();
         }
       }
     );
@@ -269,6 +275,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+:deep(.b-avatar) {
+  border: 1.5px solid #EFEFF6;
+}
 .b-invite-users-to-event-modal__wrapper {
   @include modal-wrapper;
 
@@ -314,9 +324,6 @@ export default {
             display: flex;
             align-items: center;
             margin: 8px 0px 16px 0px;
-
-            .b-invited-user__avatar {
-            }
           }
           .b-invited-users-block__plus-users {
             @include inter(12px, 400, $--b-main-gray-color);

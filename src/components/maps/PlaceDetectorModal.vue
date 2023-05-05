@@ -5,7 +5,7 @@
       @click.stop="!disabled ? (activeModal = true) : null"
     >
       <img src="../../assets/img/location-point.svg" alt="" />
-      <p>{{ place?.place_name }}</p>
+      <span class="b-place-name">{{ place?.place_name }}</span>
     </div>
     <teleport to="body">
       <ModalWindow v-if="activeModal" :isTitleShown="false">
@@ -72,7 +72,7 @@ $color-fafafa: #fafafa;
   img {
     margin-right: 5px;
   }
-  p {
+  span {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
@@ -84,6 +84,7 @@ $color-fafafa: #fafafa;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    max-width: 100px;
   }
 }
 </style>

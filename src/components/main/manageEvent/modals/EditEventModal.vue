@@ -318,6 +318,10 @@ export default {
 
 <style lang="scss" scoped>
 $color-8a8aa8: #8a8aa8;
+
+form {
+  overflow: scroll;
+}
 .b-edit-event-modal__block-title {
   @include exo(16px, 700);
   line-height: 24px;
@@ -337,9 +341,9 @@ $color-8a8aa8: #8a8aa8;
     border-radius: 6px;
     background: $--b-main-white-color;
     padding: 20px 20px 28px 24px;
-    overflow: scroll;
 
     .b-edit-event-modal__header {
+      padding-bottom: 5px;
       .b-edit-event-modal__close {
         position: absolute;
         right: 20px;
