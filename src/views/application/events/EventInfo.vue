@@ -80,7 +80,10 @@
         </div>
       </div>
 
-      <div class="b-event-info__main-content-block">
+      <div
+        class="b-event-info__main-content-block"
+        :style="`height: ${eventInfoMainBlockHeight}`"
+      >
         <div class="b-event-info__details-block">
           <div class="b-event-info__left-side">
             <div class="b-event-info__timing">
@@ -229,43 +232,43 @@
 
           <div class="b-event-info__users-tables">
             <EventInfoUsersTable
-            v-if="activeTab === 0"
-            :data="eventData.current_users"
-            :table-title-text="$t('my_events.players-list')"
-            :table-color="'#148783'"
-            :maxPlayersCount="eventData.amount_members"
-            :emptyListData="noUsersData"
-          >
-            <template #user>
-              <SmallUserCard
-                v-for="user of eventData.current_users"
-                :key="user.id"
-                :data-player="user"
-              />
-            </template>
-          </EventInfoUsersTable>
+              v-if="activeTab === 0"
+              :data="eventData.current_users"
+              :table-title-text="$t('my_events.players-list')"
+              :table-color="'#148783'"
+              :maxPlayersCount="eventData.amount_members"
+              :emptyListData="noUsersData"
+            >
+              <template #user>
+                <SmallUserCard
+                  v-for="user of eventData.current_users"
+                  :key="user.id"
+                  :data-player="user"
+                />
+              </template>
+            </EventInfoUsersTable>
 
-          <EventInfoUsersTable
-            v-if="activeTab === 1"
-            :data="eventData.current_fans"
-            :border="false"
-            :emptyListData="noFansData"
-          >
-            <template #user>
-              <SmallUserCard
-                v-for="user of eventData.current_fans"
-                :key="user.id"
-                :data-player="user"
-              />
-            </template>
-          </EventInfoUsersTable>
+            <EventInfoUsersTable
+              v-if="activeTab === 1"
+              :data="eventData.current_fans"
+              :border="false"
+              :emptyListData="noFansData"
+            >
+              <template #user>
+                <SmallUserCard
+                  v-for="user of eventData.current_fans"
+                  :key="user.id"
+                  :data-player="user"
+                />
+              </template>
+            </EventInfoUsersTable>
 
-          <ListOfEventRequestsToParticipations
-            v-if="activeTab === 2"
-            :requestsToParticipationsData="eventRequestsToParticipations"
-            @acceptRequest="acceptRequestToParticipation"
-            @declineRequest="declineRequestToParticipation"
-          />
+            <ListOfEventRequestsToParticipations
+              v-if="activeTab === 2"
+              :requestsToParticipationsData="eventRequestsToParticipations"
+              @acceptRequest="acceptRequestToParticipation"
+              @declineRequest="declineRequestToParticipation"
+            />
           </div>
         </div>
       </div>
@@ -275,7 +278,7 @@
 </template>
 
 <script>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
@@ -304,7 +307,11 @@ import { addMinutes } from '../../../utils/addMinutes';
 import { getDate } from '../../../utils/getDate';
 import { getTime } from '../../../utils/getTime';
 import { copyToClipboard } from '../../../utils/copyToClipBoard';
-import { startSpinner, finishSpinner } from '../../../workers/loading-worker/loading.worker';
+import {
+  startSpinner,
+  finishSpinner,
+} from '../../../workers/loading-worker/loading.worker';
+import { calcHeight } from '../../../utils/calcHeight';
 
 import CONSTANTS from '../../../consts/index';
 import { ROUTES } from '../../../router/router.const';
@@ -772,6 +779,24 @@ export default {
       return ROUTES;
     });
 
+    const { calculatedHeight, onAppHeightResize } = calcHeight(
+      [90, 60],
+      [userStore.user.is_verified ? 0 : 40],
+      [userStore.user.is_verified ? 0 : 40],
+      true
+    );
+
+    const eventInfoMainBlockHeight = computed(() => {
+      return `${calculatedHeight.value}px`;
+    });
+
+    onMounted(() => {
+      window.addEventListener('resize', onAppHeightResize);
+    });
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', onAppHeightResize);
+    });
+
     return {
       mockData,
       ALL_ROUTES,
@@ -790,6 +815,7 @@ export default {
       isEventJoinModalActive,
       eventRequestsToParticipations,
       submitModalConfig,
+      eventInfoMainBlockHeight,
       eventJoinModalX,
       isInviteUsersModalOpened,
       eventJoinModalY,
@@ -917,11 +943,6 @@ $color-8a8aa8: #8a8aa8;
 
     .b-event-info__main-content-block {
       overflow-y: scroll;
-      @include calc-height(90px, 60px);
-
-      @include beforeDesktop {
-        @include calc-height(90px, 60px, 30px);
-      }
     }
 
     .b-event-info__details-block {

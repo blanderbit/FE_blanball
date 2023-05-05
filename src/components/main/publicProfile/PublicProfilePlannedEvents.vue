@@ -137,7 +137,7 @@ $color-f0f0f4: #f0f0f4;
     padding: 16px;
     margin-left: 16px;
     border-radius: 12px;
-    margin-top: 20px;
+    margin-top: 15px;
   }
 
   @include beforeDesktop {

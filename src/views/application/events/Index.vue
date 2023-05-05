@@ -152,6 +152,12 @@ const eventJoinTypes = {
   VIEW: 'view',
 };
 
+const eventParticipationTypes = {
+  REQUEST_PARTICIPATION: 'request_participation',
+  PLAYER: 'player',
+  FAN: 'fan',
+};
+
 export default {
   name: 'EventsPage',
   components: {
@@ -204,21 +210,30 @@ export default {
     });
 
     async function joinEvent(eventData, type) {
+      let participationType;
       startSpinner();
       switch (type) {
         case eventJoinTypes.PLAY:
+          participationType = eventParticipationTypes.PLAYER;
           await API.EventService.eventJoinAsPlayer(eventData.id);
           break;
         case eventJoinTypes.VIEW:
+          participationType = eventParticipationTypes.FAN;
           await API.EventService.eventJoinAsFan(eventData.id);
           break;
       }
 
-      const response = await API.EventService.getAllEvents({
-        ...filters,
-        paginationPage,
-      });
-      paginationElements.value = response.data.results;
+      const joinedEvent = paginationElements.value.find(
+        (event) => event.id === eventData.id
+      );
+
+      if (joinedEvent.privacy) {
+        joinedEvent.request_user_role =
+          eventParticipationTypes.REQUEST_PARTICIPATION;
+      } else {
+        joinedEvent.request_user_role = participationType;
+      }
+
       finishSpinner();
 
       switch (type) {

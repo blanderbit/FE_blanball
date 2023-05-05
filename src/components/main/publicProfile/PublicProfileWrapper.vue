@@ -14,7 +14,9 @@
           <img src="../../../assets/img/cross-white.svg" alt="" />
         </div>
       </div>
-      <slot name="content"></slot>
+      <div class="b-main-side-content">
+        <slot name="content"></slot>
+      </div>
     </div>
   </div>
 </template>
@@ -28,6 +30,7 @@ export default {
 <style lang="scss" scoped>
 $color-e2e2e9: #e2e2e9;
 $color-6f6f77: #6f6f77;
+
 .b-public-profile__wrapper__wrapper {
   position: fixed;
   top: 0;
@@ -38,24 +41,24 @@ $color-6f6f77: #6f6f77;
   z-index: 999;
 
   .b-public-profile__wrapper__main-side {
-    background: $--b-main-white-color;
-    width: max-content;
-    border-radius: 20px 20px 0px 0px;
-    padding: 36px 28px 28px 28px;
-    position: relative;
+    position: absolute;
     top: 60%;
     left: 50%;
+    display: flex;
+    flex-direction: column;
     transform: translate(-50%, -50%);
-    overflow: scroll;
-    @include calc-height;
+
+    @include mobile {
+      width: 100%;
+    }
 
     .b-public-profile__wrapper-edit-buttons {
-      right: 0;
-      top: -50px;
       display: flex;
       align-items: center;
       gap: 12px;
-      right: 50px;
+      align-self: flex-end;
+      @include mobile {
+      }
 
       .b-public-profile__continue {
         @include inter(12px, 400, $color-e2e2e9);
@@ -77,6 +80,27 @@ $color-6f6f77: #6f6f77;
         align-items: center;
         gap: 12px;
         cursor: pointer;
+      }
+    }
+
+    .b-main-side-content {
+      background: $--b-main-white-color;
+      width: max-content;
+      border-radius: 20px 20px 0px 0px;
+      padding: 36px 28px 28px 28px;
+      position: relative;
+      overflow: scroll;
+      @include calc-height;
+      margin-top: 12px;
+
+      @include tabletAndMobile {
+        @include calc-height(100px);
+      }
+
+      @include mobile {
+        width: 100%;
+        padding: 0px 15px 15px 15px;
+        border-radius: 0px;
       }
     }
   }

@@ -65,13 +65,7 @@ import sidebarArrowBack from '../../assets/img/sidebar-arrow-back.svg';
 import sidebarArrow from '../../assets/img/sidebar-arrow.svg';
 
 import { ROUTES } from '../../router/router.const';
-
-const POLICY_ITEMS = {
-  PRIVACY: 'privacy',
-  COOKIE: 'cookie',
-  DISCLAMER: 'disclamer'
-}
-
+import CONSTS from '../../consts';
 
 export default {
   components: {
@@ -94,24 +88,7 @@ export default {
       return context.isMenuOpened ? sidebarArrowBack : sidebarArrow;
     });
 
-    const privacyContextModalItems = ref([
-      {
-        id: 1,
-        text: 'policy.privacy-policy',
-        type: POLICY_ITEMS.PRIVACY,
-      },
-      {
-        id: 2,
-        text: 'policy.cookie-policy',
-        type: POLICY_ITEMS.COOKIE,
-      },
-      {
-        id: 3,
-        text: 'policy.disclamer',
-        type: POLICY_ITEMS.DISCLAMER,
-      },
-    ]);
-
+    const privacyContextModalItems = ref(CONSTS.policy.ALL_POLICY_ITEMS);
 
     function showPrivacyContextModal(e) {
       privacyContextModalX.value = e.clientX;
@@ -128,13 +105,13 @@ export default {
     }
 
     function privacyContextModalItemClick(itemType) {
-      switch(itemType) {
-        case POLICY_ITEMS.PRIVACY:
-          return router.push(ROUTES.PRIVACY_POLICY.absolute)
-        case POLICY_ITEMS.COOKIE:
-          return router.push(ROUTES.COOKIE_POLICY.absolute)
-        case POLICY_ITEMS.DISCLAMER:
-          return router.push(ROUTES.DISCLAMER.absolute)
+      switch (itemType) {
+        case CONSTS.policy.POLICY_ITEMS_TYPES.PRIVACY:
+          return router.push(ROUTES.PRIVACY_POLICY.absolute);
+        case CONSTS.policy.POLICY_ITEMS_TYPES.COOKIE:
+          return router.push(ROUTES.COOKIE_POLICY.absolute);
+        case CONSTS.policy.POLICY_ITEMS_TYPES.DISCLAMER:
+          return router.push(ROUTES.DISCLAMER.absolute);
       }
     }
 

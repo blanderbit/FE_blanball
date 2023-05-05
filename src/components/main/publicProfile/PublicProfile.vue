@@ -181,13 +181,18 @@
             </div>
             <div class="b-second-block__user-features">
               <div
-                v-for="feature in playFeatures"
-                class="b-second-block__user-feature"
+                v-for="featuresColumn in playFeatures"
+                class="b-features-column"
               >
-                <img class="b-feature__image" :src="feature.img" alt="" />
-                <div class="b-feature__info">
-                  <div class="b-feature__name">{{ feature.name }}</div>
-                  <div class="b-feature__value">{{ feature.value }}</div>
+                <div
+                  v-for="feature in featuresColumn"
+                  class="b-second-block__user-feature"
+                >
+                  <img class="b-feature__image" :src="feature.img" alt="" />
+                  <div class="b-feature__info">
+                    <div class="b-feature__name">{{ feature.name }}</div>
+                    <div class="b-feature__value">{{ feature.value }}</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -216,7 +221,7 @@ import { useToast } from 'vue-toastification';
 import StarRating from 'vue-star-rating';
 import { useElementSize } from '@vueuse/core';
 
- import userAvatar from '../../shared/userAvatar/UserAvatar.vue';
+import userAvatar from '../../shared/userAvatar/UserAvatar.vue';
 import WhiteBtn from '../../shared/button/WhiteBtn.vue';
 import PublicProfileReviews from './PublicProfileReviews.vue';
 import PublicProfilePlannedEvents from './PublicProfilePlannedEvents.vue';
@@ -324,7 +329,7 @@ export default {
     });
 
     const userRating = computed(() => {
-      return Math.round(props.userData.raiting) || 0;
+      return props.userData.raiting ? props.userData.raiting.toFixed(1) : 0;
     });
 
     const avatarType = computed(() => {
@@ -346,44 +351,48 @@ export default {
     };
 
     const playFeatures = computed(() => {
-      return [
-        {
-          id: 1,
-          name: t('player_page.position'),
-          img: icons.value.flag,
-          value: props.userData.profile?.position
-            ? t(`hashtags.${props.userData.profile?.position}`)
-            : noFeatureData,
-        },
-        {
-          id: 2,
-          name: t('player_page.weight'),
-          img: icons.value.dumbbell,
-          value: props.userData.profile?.weight
-            ? `${props.userData.profile?.weight} ${t('player_page.kg')}`
-            : noFeatureData,
-        },
-        {
-          id: 3,
-          name: t('profile.main-leg'),
-          img: icons.value.gaming_leg,
-          value: props.userData.profile?.working_leg
-            ? t(
-                !isPersonalPreview.value
-                  ? `hashtags.${props.userData.profile?.working_leg}`
-                  : props.userData.profile?.working_leg
-              )
-            : noFeatureData,
-        },
-        {
-          id: 4,
-          name: t('player_page.height'),
-          img: icons.value.ruler,
-          value: props.userData.profile?.height
-            ? `${props.userData.profile?.height} ${t('player_page.sm')}`
-            : noFeatureData,
-        },
-      ];
+      return {
+        column_1: [
+          {
+            id: 1,
+            name: t('player_page.position'),
+            img: icons.value.flag,
+            value: props.userData.profile?.position
+              ? t(`hashtags.${props.userData.profile?.position}`)
+              : noFeatureData,
+          },
+          {
+            id: 2,
+            name: t('player_page.weight'),
+            img: icons.value.dumbbell,
+            value: props.userData.profile?.weight
+              ? `${props.userData.profile?.weight} ${t('player_page.kg')}`
+              : noFeatureData,
+          },
+        ],
+        column_2: [
+          {
+            id: 3,
+            name: t('profile.main-leg'),
+            img: icons.value.gaming_leg,
+            value: props.userData.profile?.working_leg
+              ? t(
+                  !isPersonalPreview.value
+                    ? `hashtags.${props.userData.profile?.working_leg}`
+                    : props.userData.profile?.working_leg
+                )
+              : noFeatureData,
+          },
+          {
+            id: 4,
+            name: t('player_page.height'),
+            img: icons.value.ruler,
+            value: props.userData.profile?.height
+              ? `${props.userData.profile?.height} ${t('player_page.sm')}`
+              : noFeatureData,
+          },
+        ],
+      };
     });
 
     const showCopyEmailModal = () => {
@@ -453,6 +462,12 @@ $color-6f6f77: #6f6f77;
 $color-dfdeed: #dfdeed;
 $color-395d09: #395d09;
 $color-d2f6a2: #d2f6a2;
+
+.b-features-column {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
 
 .b-public-profile__top-wrapper {
   position: fixed;
@@ -540,16 +555,16 @@ $color-d2f6a2: #d2f6a2;
     position: absolute;
     left: 0;
     top: 0;
-    z-index: -1;
     height: 180px;
     width: 100%;
+    z-index: 1;
 
     @include tabletAndMobile {
-      z-index: 2;
+      z-index: 3;
     }
 
     @include bigTablet {
-      z-index: 2;
+      z-index: 3;
     }
 
     img {
@@ -561,18 +576,17 @@ $color-d2f6a2: #d2f6a2;
     padding: 60px 32px;
     display: flex;
     justify-content: center;
+    position: relative;
+    z-index: 2;
 
     @media (max-width: 1200px) {
       padding: 40px 20px;
     }
 
     @include tabletAndMobile {
-      padding: 40px 0px;
-    }
-
-    @include tabletAndMobile {
       flex-direction: column;
       align-items: center;
+      padding: 40px 5px;
     }
 
     .b-public-profile__first-block {
@@ -642,6 +656,7 @@ $color-d2f6a2: #d2f6a2;
         }
 
         .b-public-profile__avatar {
+          z-index: 22;
           @include desktop {
             :deep(.b-avatar) {
               width: 96px;
@@ -788,7 +803,7 @@ $color-d2f6a2: #d2f6a2;
           background: transparent;
           box-shadow: none;
           border: none;
-          width: 310px;
+          width: 320px;
         }
 
         @include tabletAndMobile {
@@ -801,7 +816,7 @@ $color-d2f6a2: #d2f6a2;
         }
 
         @media (max-width: 430px) {
-          width: 100%;
+          width: calc(100% + 10px);
         }
 
         .b-second-block__user-features-block {
@@ -815,19 +830,24 @@ $color-d2f6a2: #d2f6a2;
             position: absolute;
             width: 300px;
           }
+          @include tabletAndMobile {
+            margin-top: 15px;
+          }
+
           .b-user-features__title {
             @include exo(16px, 700);
             line-height: 24px;
             padding-bottom: 16px;
           }
           .b-second-block__user-features {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            display: flex;
             justify-content: space-between;
             padding-top: 20px;
             border-top: 1px solid $color-dfdeed;
-            align-items: center;
-            padding-right: 30px;
+
+            @media (max-width: 1200px) {
+              padding-right: 30px;
+            }
 
             @include beforeDesktop {
               padding-right: 0px;

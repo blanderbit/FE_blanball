@@ -6,6 +6,15 @@
     @deleteNotifications="HandleAction.deleteSelected()"
     @continue="closeSubmitModal"
   />
+
+  <ContextModal
+    v-if="isPrivacyContextModalOpened"
+    :clientX="privacyContextModalX"
+    :clientY="privacyContextModalY"
+    :modalItems="privacyContextModalItems"
+    @closeModal="closePrivacyContextModal"
+    @itemClick="privacyContextModalItemClick"
+  />
   <div class="b-mob-menu" :style="mobMenuStyle">
     <div
       class="b-mob-menu__top-side"
@@ -14,13 +23,6 @@
       <div class="b-mob-menu__logo-block">
         <div class="b-mob-menu__logo-left">
           <div class="b-mob-menu__logo">{{ $t('menu.blanball') }}</div>
-          <router-link
-            class="b-mob-menu__version"
-            :to="routeObject.APPLICATION.VERSIONS.absolute"
-            @click="closeMobMenu"
-          >
-            <span>{{ $t('slide_menu.version') }} {{ clientVersion }}</span>
-          </router-link>
         </div>
         <div class="b-mob-menu__close" @click="closeMobMenu">&times;</div>
       </div>
@@ -34,8 +36,7 @@
             />
           </div>
           <div class="b-mob-menu__text-block">
-            <div class="b-mob-menu__user-name"
-            @click="goToMyProfile" >
+            <div class="b-mob-menu__user-name" @click="goToMyProfile">
               {{ userStore.getUserFullName }}
             </div>
             <div class="b-mob-menu__account-type">
@@ -208,7 +209,9 @@
           <span>{{
             $t('slide_menu.blanball-year', { year: currentYear })
           }}</span>
-          <span>{{ $t('policy.data-security') }}</span>
+          <span @click="showPrivacyContextModal">{{
+            $t('policy.data-security')
+          }}</span>
           <div class="b-bottom-block__company">
             <img src="../../assets/img/logo-flumx.svg" alt="" />
             <span>{{ $t('slide_menu.flumx') }}</span>
@@ -239,6 +242,7 @@ import emptyList from '../shared/emptyList/EmptyList.vue';
 import InfiniteLoading from '../main/infiniteLoading/InfiniteLoading.vue';
 import ScrollToTop from '../ScrollToTop.vue';
 import SubmitModal from '../shared/modals/SubmitModal.vue';
+import ContextModal from '../shared/modals/ContextModal.vue';
 
 import { useUserDataStore } from '../../stores/userData';
 import { NewNotifications } from '../../workers/web-socket-worker/not-includes-to-socket/new_notifications';
@@ -247,6 +251,7 @@ import { NotificationsBus } from '../../workers/event-bus-worker';
 import { calcHeight } from '../../utils/calcHeight';
 
 import { ROUTES } from '../../router/router.const';
+import CONSTS from '../../consts';
 
 import NotificationIcon from '../../assets/img/notification-mob-default.svg';
 import NotificationWhite from '../../assets/img/notifications-not-read-mobile-icon.svg';
@@ -285,6 +290,7 @@ export default {
     userAvatar,
     Notifications,
     Notification,
+    ContextModal,
     emptyList,
     InfiniteLoading,
     ScrollToTop,
@@ -305,6 +311,10 @@ export default {
     const { t } = useI18n();
     const selectedTabId = ref(1);
     const isSubmitModalOpened = ref(false);
+    const isPrivacyContextModalOpened = ref(false);
+    const privacyContextModalX = ref(null);
+    const privacyContextModalY = ref(null);
+    const privacyContextModalItems = ref(CONSTS.policy.ALL_POLICY_ITEMS);
 
     const submitModalConfig = computed(() => {
       return {
@@ -381,6 +391,27 @@ export default {
     function goToMyProfile() {
       router.push(ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute);
       closeMobMenu();
+    }
+
+    function closePrivacyContextModal() {
+      isPrivacyContextModalOpened.value = false;
+    }
+
+    function privacyContextModalItemClick(itemType) {
+      switch (itemType) {
+        case CONSTS.policy.POLICY_ITEMS_TYPES.PRIVACY:
+          return router.push(ROUTES.PRIVACY_POLICY.absolute);
+        case CONSTS.policy.POLICY_ITEMS_TYPES.COOKIE:
+          return router.push(ROUTES.COOKIE_POLICY.absolute);
+        case CONSTS.policy.POLICY_ITEMS_TYPES.DISCLAMER:
+          return router.push(ROUTES.DISCLAMER.absolute);
+      }
+    }
+
+    function showPrivacyContextModal(e) {
+      privacyContextModalX.value = e.clientX;
+      privacyContextModalY.value = e.clientY;
+      isPrivacyContextModalOpened.value = true;
     }
 
     const currentYear = computed(() => {
@@ -532,7 +563,6 @@ export default {
       { deep: true }
     );
 
-
     const clearSelectedList = () => {
       selectedList.value = [];
     };
@@ -675,16 +705,23 @@ export default {
       HandleAction,
       tabs,
       mobileMenuTopSideHeight,
+      privacyContextModalItems,
       selectedTabId,
       triggerForRestart,
+      privacyContextModalX,
+      privacyContextModalY,
+      isPrivacyContextModalOpened,
       isSubmitModalOpened,
       submitModalConfig,
       showSubmitModal,
       closeSubmitModal,
       changeTab,
+      privacyContextModalItemClick,
       clearSelectedList,
       goToMyProfile,
+      closePrivacyContextModal,
       lineMenuClick,
+      showPrivacyContextModal,
       selectNotification,
       closeMobMenu,
       removePushNotificationAfterSidebarAction,

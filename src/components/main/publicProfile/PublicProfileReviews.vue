@@ -6,15 +6,21 @@
           {{ $t('player_page.rates-feedbacks') }}
         </div>
         <div class="b-user-reviews__subtitle">
-         <span v-if="reviewsTotalCount > 0">{{ reviewsTotalCount }} {{ $t('player_page.rates') }}</span>
-         <span v-else>{{ $t('player_page.no-grades') }}</span>
+          <span v-if="reviewsTotalCount > 0"
+            >{{ reviewsTotalCount }} {{ $t('player_page.rates') }}</span
+          >
+          <span v-else>{{ $t('player_page.no-grades') }}</span>
         </div>
       </div>
       <div class="b-public-profile__raiting-star">
         <div class="b-public-profile__user-raiting">
-          {{ userRating }}
+          {{ userRating }} <span>/ {{ ratingMaxValue }}</span>
         </div>
-        <img v-if="reviewsTotalCount > 0" src="../../../assets/img/star.svg" alt="" />
+        <img
+          v-if="reviewsTotalCount > 0"
+          src="../../../assets/img/star.svg"
+          alt=""
+        />
         <img v-else src="../../../assets/img/dashed-star.svg" alt="" />
       </div>
     </div>
@@ -53,7 +59,11 @@
         <template #emptyList>
           <div class="b-public-profile__reviews-hidden">
             <img src="../../../assets/img/info-black.svg" alt="" />
-            <span>{{ $t('no_records.noPublicProfileReviews.title', {fullName: userFullName}) }}</span>
+            <span>{{
+              $t('no_records.noPublicProfileReviews.title', {
+                fullName: userFullName,
+              })
+            }}</span>
           </div>
         </template>
       </SimpleListWrapper>
@@ -62,7 +72,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import StarRating from 'vue-star-rating';
 
 import smartList from '../../shared/smartList/SmartList.vue';
@@ -73,6 +83,8 @@ import SimpleListWrapper from '../../shared/simpleList/SimpleList.vue';
 import { getDate } from '../../../utils/getDate';
 
 import { API } from '../../../workers/api-worker/api.worker';
+
+import CONSTS from '../../../consts';
 
 export default {
   name: 'RatingCard',
@@ -98,10 +110,14 @@ export default {
     },
     userFullName: {
       type: String,
-    }
+    },
   },
   setup(props) {
     const reviewsTotalCount = ref(0);
+
+    const ratingMaxValue = computed(() => {
+      return CONSTS.profile.ratingMaxValue
+    })
 
     const getReviews = (page) => {
       return API.ReviewService.getUserReviews({
@@ -121,6 +137,7 @@ export default {
 
     return {
       reviewsTotalCount,
+      ratingMaxValue,
       getReviews,
     };
   },
@@ -167,8 +184,13 @@ $color-f57125: #f57125;
     align-items: center;
     gap: 4px;
     .b-public-profile__user-raiting {
-      @include exo(16px, 700);
-      line-height: 24px;
+      @include exo(22px, 700);
+      line-height: 28px;
+
+      span {
+        @include inter(14px, 500, $--b-main-gray-color);
+        line-height: 24px;
+      }
     }
   }
 }

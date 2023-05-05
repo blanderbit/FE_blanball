@@ -296,7 +296,7 @@ ul {
       flex-direction: column;
       overflow-y: scroll;
       padding-bottom: 20px;
-      @include calc-height(120px, 80px, 10px);
+      @include calc-height(90px, 75px);
     }
 
     .b-versions__main-side {
@@ -392,7 +392,7 @@ ul {
       .b-history-side__content {
         @include desktop {
           overflow-y: scroll;
-          @include calc-height(90px, 60px, 20px);
+          @include calc-height(90px, 60px, 30px);
           padding-bottom: 20px;
         }
 

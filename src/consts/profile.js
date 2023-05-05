@@ -1,9 +1,9 @@
 import userIcon from '../assets/img/user-icon.svg';
 import databaseDisabled from '../assets/img/database-disabled.svg';
-import notification from '../assets/img/notification-small.svg';
 import { ROUTES } from '../router/router.const';
 
 export default {
+  ratingMaxValue: '5.0',
   mainLeg: [
     {
       value: 'Права',

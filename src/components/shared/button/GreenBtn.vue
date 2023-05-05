@@ -12,12 +12,11 @@
       :src="iconRight"
       alt=""
     />
-    <loader :is-loading="loading" />
   </div>
 </template>
 
 <script>
-import { computed, ref, watch } from 'vue';
+import { computed } from 'vue';
 import loader from '../loader/Loader.vue';
 
 export default {
@@ -65,17 +64,12 @@ export default {
       type: String,
       default: '',
     },
-    loading: {
-      type: Boolean,
-      default: false,
-    },
     animation: {
       type: Boolean,
       default: false,
     },
   },
   setup(props) {
-    const loading = ref(false);
     const btnStyle = computed(() => {
       return {
         ...props.fontStyles,
@@ -88,20 +82,6 @@ export default {
         'justify-content': 'center',
       };
     });
-
-    watch(
-      () => props.loading,
-      (value) => {
-        value ? start() : finish();
-      }
-    );
-
-    function start() {
-      loading.value = true;
-    }
-    function finish() {
-      loading.value = false;
-    }
 
     return {
       btnStyle,
@@ -156,39 +136,6 @@ $color-c6c7c7: #c6c7c7;
     }
   }
 }
-
-:deep {
-  // TODO using in two place
-  .spiner-text {
-    display: none;
-  }
-  .spiner {
-    transform: translate(-32%, 0%);
-  }
-  .spiner-wrapper {
-    position: absolute;
-    background: rgba(239, 239, 246, 0.38);
-    width: 100%;
-  }
-  .spiner-wrapper .spiner-body {
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    .spiner {
-      .lds-ring,
-      .lds-ring div {
-        width: 25px;
-        height: 25px;
-      }
-      .lds-ring div {
-        border-width: 2px;
-        border-color: white transparent transparent transparent;
-      }
-    }
-  }
-}
-
 @keyframes blink {
   0% {
     left: -100%;

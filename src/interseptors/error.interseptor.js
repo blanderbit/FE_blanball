@@ -39,8 +39,7 @@ export const ErrorInterceptor = async (error) => {
   if (
     (error?.status === 401 || getJsonErrorData?.status === 401) &&
     requestConfig.url.replace(requestConfig.baseURL, '') !==
-      EndpointsEnum.Authorization.RefreshTokens &&
-    userStore.user.id
+      EndpointsEnum.Authorization.RefreshTokens
   ) {
     if (!tokenStore.isTokensRefreshing) {
       retryRequest = true;

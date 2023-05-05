@@ -5,12 +5,11 @@ import { createDeviceDetector } from 'next-vue-device-detector';
 
 import VCalendar from 'v-calendar';
 import Toast from 'vue-toastification';
-import ContextMenu from '@imengyu/vue3-context-menu'
+import ContextMenu from '@imengyu/vue3-context-menu';
 
-import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
-import '@fortawesome/fontawesome-free/css/all.css'
-import '@fortawesome/fontawesome-free/js/all.js'
-
+import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css';
+import '@fortawesome/fontawesome-free/css/all.css';
+import '@fortawesome/fontawesome-free/js/all.js';
 
 import { createLoader } from './workers/loading-worker/loading.worker';
 import Maska from './workers/phone-maska-worker';
@@ -21,7 +20,6 @@ import pinia from './plugins/pinia';
 import pkg from '../package';
 import './workers/map-worker/map.init';
 import { UA_LANGUAGE } from './i18n/ua';
-
 
 import './assets/styles/main.scss';
 import 'v-calendar/dist/style.css';

@@ -135,6 +135,10 @@ import {
 import { FilterPatch } from '../../workers/api-worker/http/filter/filter.patch';
 import { useWindowWidth } from '../../utils/widthScreen';
 import { logOut } from '../../utils/logOut';
+import {
+  finishSpinner,
+  startSpinner,
+} from '../../workers/loading-worker/loading.worker';
 
 import { ROUTES } from '../../router/router.const';
 
@@ -145,8 +149,6 @@ import members from '../../assets/img/members.svg';
 import medal from '../../assets/img/medal.svg';
 import settings from '../../assets/img/settings.svg';
 import bugReport from '../../assets/img/warning-black.svg';
-import { finishSpinner } from '../../workers/loading-worker/loading.worker';
-
 const findDublicates = (list, newList) => {
   return newList.filter((item) =>
     list.length
