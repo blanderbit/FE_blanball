@@ -1,22 +1,20 @@
-import { ref } from 'vue';
-
 export class BasicButtonModel {
-  _title;
-  _icon;
-  _disabled;
-  _activity;
-  _uniqueName;
-  _type;
+  title;
+  icon;
+  disabled;
+  uniqueName;
+  actionType;
+  class;
 
   constructor (options) {
     Object.assign(this, {
-      _title: options.title,
-      _icon: options.icon,
-      _disabled: options.title,
-      _type: options.type,
+      title: options.title,
+      icon: options.icon,
+      disabled: options.title,
+      actionType: options.actionType,
+      class: options.class,
     });
-    this._uniqueName = options.uniqueName || this.__proto__.constructor.name;
-    this._activity = ref(options.activity);
+    this.uniqueName = options.uniqueName || this.__proto__.constructor.name;
   }
 
   onInit() {}

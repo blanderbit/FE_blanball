@@ -1,8 +1,9 @@
 <template>
+  <loader :is-loading="loading" />
   <BugReportModal
     v-if="isBugReportModalOpened"
     @close-modal="closeBugReportModal"
-  />
+  />`
   <div class="b_sidebar_wrapper">
     <NotificationsSlideMenu
       v-model:is-menu-opened="isMenuOpened"
@@ -40,7 +41,7 @@
               :class="[
                 'b_sidebar_menu-item',
                 item.class,
-                { 'b_sidebar_menu-item__disabled': item.disabled },
+                { 'b_sidebar_menu-item__disabled': disabled },
               ]"
               @click="item.action && item.action()"
             >
@@ -53,19 +54,19 @@
                 />
               </Transition>
               <router-link
-                v-if="item.actionType"
-                :to="item.actionType.url"
+                v-if="item.url"
+                :to="item.url"
                 @mouseenter="enterHoverSidebarItem(item.id)"
                 @mouseleave="leaveHoverSidebarItem"
               >
-                <img :src="item.icon" alt="" />
+                <img :src="item.img" alt="" />
               </router-link>
               <a
                 v-else
                 @mouseenter="enterHoverSidebarItem(item.id)"
                 @mouseleave="leaveHoverSidebarItem"
               >
-                <img :src="item.icon" />
+                <img :src="item.img" />
               </a>
             </li>
           </ul>
@@ -119,6 +120,7 @@ import userAvatar from '../shared/userAvatar/UserAvatar.vue';
 import BugReportModal from '../shared/modals/BugReportModal.vue';
 import TabLabel from '../shared/tabLabel/TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';
+import loader from '../shared/loader/Loader.vue';
 
 import { useUserDataStore } from '../../stores/userData';
 import { createNotificationFromData } from '../../workers/utils-worker';
@@ -133,12 +135,8 @@ import {
   BlanballEventBus,
 } from '../../workers/event-bus-worker';
 import { FilterPatch } from '../../workers/api-worker/http/filter/filter.patch';
-import { useWindowWidth } from '../../utils/widthScreen';
+import useWindowWidth from '../../utils/widthScreen';
 import { logOut } from '../../utils/logOut';
-import {
-  finishSpinner,
-  startSpinner,
-} from '../../workers/loading-worker/loading.worker';
 
 import { ROUTES } from '../../router/router.const';
 
@@ -149,7 +147,6 @@ import members from '../../assets/img/members.svg';
 import medal from '../../assets/img/medal.svg';
 import settings from '../../assets/img/settings.svg';
 import bugReport from '../../assets/img/warning-black.svg';
-import { dinamicMenu } from "./menus/menu.config";
 
 const findDublicates = (list, newList) => {
   return newList.filter((item) =>
@@ -173,12 +170,14 @@ export default {
     userAvatar,
     BugReportModal,
     TabLabel,
+    loader,
     MobileMenu,
   },
-  setup() {
+  setup(props, { emit }) {
     const userStore = useUserDataStore();
     const notReadNotificationCount = ref(0);
     const allNotificationsCount = ref(0);
+    const loading = ref(false);
     const isMobMenuActive = ref(false);
     const skipids = ref([]);
     const router = useRouter();
@@ -196,9 +195,50 @@ export default {
       return isMobile.value || isTablet.value;
     });
 
-    const menuItems = dinamicMenu().slideBarMenu;
-
-
+    const menuItems = computed(() => [
+      {
+        id: 1,
+        img: notReadNotificationCount.value ? notificationUnread : notification,
+        action: () => (isMenuOpened.value = !isMenuOpened.value),
+        disabled: false,
+      },
+      {
+        id: 2,
+        img: record,
+        url: ROUTES.APPLICATION.EVENTS.absolute,
+        action: () => (isMenuOpened.value = false),
+        disabled: false,
+      },
+      {
+        id: 3,
+        img: medal,
+        url: '',
+        action: () => (isMenuOpened.value = false),
+        disabled: true,
+      },
+      {
+        id: 4,
+        img: members,
+        url: ROUTES.APPLICATION.USERS.GENERAL.absolute,
+        action: () => (isMenuOpened.value = false),
+        disabled: false,
+      },
+      {
+        id: 5,
+        img: settings,
+        url: '',
+        action: () => (isMenuOpened.value = false),
+        disabled: true,
+      },
+      {
+        id: 6,
+        img: bugReport,
+        url: '',
+        class: 'b-bug-report__icon',
+        action: () => (isBugReportModalOpened.value = true),
+        disabled: false,
+      },
+    ]);
 
     const getNotificationsCount = () =>
       API.NotificationService.getNotificationsCount().then((item) => {
@@ -255,7 +295,7 @@ export default {
       isLoading
     ) => {
       if (isLoading) {
-        startSpinner();
+        loading.value = true;
       }
       if (forceUpdate) {
         paginationClearData();
@@ -264,7 +304,7 @@ export default {
 
       await paginationLoad({ pageNumber, $state, forceUpdate }).then(() => {
         if (isLoading) {
-          finishSpinner();
+          loading.value = false;
         }
       });
     };
@@ -379,6 +419,7 @@ export default {
       isMenuOpened,
       userStore,
       currentHoverSideBarItemID,
+      loading,
       isBugReportModalOpened,
       loadDataNotifications,
       removeNotifications,
