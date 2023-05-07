@@ -1,5 +1,4 @@
 <template>
-  <loader :is-loading="loading" />
   <SubmitModal
     v-if="isSubmitModalOpened"
     :config="submitModalConfig"
@@ -7,18 +6,23 @@
     @deleteNotifications="HandleAction.deleteSelected()"
     @continue="closeSubmitModal"
   />
+
+  <ContextModal
+    v-if="isPrivacyContextModalOpened"
+    :clientX="privacyContextModalX"
+    :clientY="privacyContextModalY"
+    :modalItems="privacyContextModalItems"
+    @closeModal="closePrivacyContextModal"
+    @itemClick="privacyContextModalItemClick"
+  />
   <div class="b-mob-menu" :style="mobMenuStyle">
-    <div class="b-mob-menu__top-side">
+    <div
+      class="b-mob-menu__top-side"
+      :style="`height: ${mobileMenuTopSideHeight}`"
+    >
       <div class="b-mob-menu__logo-block">
         <div class="b-mob-menu__logo-left">
           <div class="b-mob-menu__logo">{{ $t('menu.blanball') }}</div>
-          <router-link
-            class="b-mob-menu__version"
-            :to="routeObject.APPLICATION.VERSIONS.absolute"
-            @click="closeMobMenu"
-          >
-            <span>{{ $t('slide_menu.version') }} {{ clientVersion }}</span>
-          </router-link>
         </div>
         <div class="b-mob-menu__close" @click="closeMobMenu">&times;</div>
       </div>
@@ -32,7 +36,7 @@
             />
           </div>
           <div class="b-mob-menu__text-block">
-            <div class="b-mob-menu__user-name">
+            <div class="b-mob-menu__user-name" @click="goToMyProfile">
               {{ userStore.getUserFullName }}
             </div>
             <div class="b-mob-menu__account-type">
@@ -188,10 +192,7 @@
     </div>
 
     <div v-if="isBottomBlockShowing" class="b-mob-menu__bottom-side">
-      <div
-        class="b-mob-menu__found-error"
-        @click="$emit('foundBug')"
-      >
+      <div class="b-mob-menu__found-error" @click="$emit('foundBug')">
         <img src="../../assets/img/white-warning-icon.svg" alt="" />
         <span>{{ $t('slide_menu.found-error') }}</span>
       </div>
@@ -205,8 +206,12 @@
           <span>{{ $t('slide_menu.version') }} {{ clientVersion }}</span>
         </router-link>
         <div class="b-bottom-block__footer">
-          <span>{{ $t('slide_menu.blanball-year', {year: currentYear}) }}</span>
-          <span>{{ $t('policy.data-security') }}</span>
+          <span>{{
+            $t('slide_menu.blanball-year', { year: currentYear })
+          }}</span>
+          <span @click="showPrivacyContextModal">{{
+            $t('policy.data-security')
+          }}</span>
           <div class="b-bottom-block__company">
             <img src="../../assets/img/logo-flumx.svg" alt="" />
             <span>{{ $t('slide_menu.flumx') }}</span>
@@ -218,7 +223,14 @@
 </template>
 
 <script>
-import { ref, computed, inject, watch, watchEffect } from 'vue';
+import {
+  ref,
+  computed,
+  inject,
+  watchEffect,
+  onMounted,
+  onBeforeUnmount,
+} from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { v4 as uuid } from 'uuid';
@@ -229,15 +241,17 @@ import Notification from '../main/notifications/Notification.vue';
 import emptyList from '../shared/emptyList/EmptyList.vue';
 import InfiniteLoading from '../main/infiniteLoading/InfiniteLoading.vue';
 import ScrollToTop from '../ScrollToTop.vue';
-import loader from '../shared/loader/Loader.vue';
 import SubmitModal from '../shared/modals/SubmitModal.vue';
+import ContextModal from '../shared/modals/ContextModal.vue';
 
 import { useUserDataStore } from '../../stores/userData';
 import { NewNotifications } from '../../workers/web-socket-worker/not-includes-to-socket/new_notifications';
 import { API } from '../../workers/api-worker/api.worker';
 import { NotificationsBus } from '../../workers/event-bus-worker';
+import { calcHeight } from '../../utils/calcHeight';
 
 import { ROUTES } from '../../router/router.const';
+import CONSTS from '../../consts';
 
 import NotificationIcon from '../../assets/img/notification-mob-default.svg';
 import NotificationWhite from '../../assets/img/notifications-not-read-mobile-icon.svg';
@@ -276,10 +290,10 @@ export default {
     userAvatar,
     Notifications,
     Notification,
+    ContextModal,
     emptyList,
     InfiniteLoading,
     ScrollToTop,
-    loader,
     SubmitModal,
   },
   emit: ['closeMenu'],
@@ -288,7 +302,6 @@ export default {
     const userStore = useUserDataStore();
     const notificationList = ref();
     const selectable = ref(false);
-    const loading = ref(false);
     const newNotificationInstance = ref(new NewNotifications());
     const selectedList = ref([]);
     const blockScrollToTopIfExist = ref(false);
@@ -298,6 +311,10 @@ export default {
     const { t } = useI18n();
     const selectedTabId = ref(1);
     const isSubmitModalOpened = ref(false);
+    const isPrivacyContextModalOpened = ref(false);
+    const privacyContextModalX = ref(null);
+    const privacyContextModalY = ref(null);
+    const privacyContextModalItems = ref(CONSTS.policy.ALL_POLICY_ITEMS);
 
     const submitModalConfig = computed(() => {
       return {
@@ -371,23 +388,35 @@ export default {
       },
     ]);
 
-    watchEffect(
-      () => {
-        if (selectedList.value.length === 0) {
-          selectable.value = false;
-        }
-      },
-      { deep: true }
-    );
-
     function goToMyProfile() {
       router.push(ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute);
       closeMobMenu();
     }
 
+    function closePrivacyContextModal() {
+      isPrivacyContextModalOpened.value = false;
+    }
+
+    function privacyContextModalItemClick(itemType) {
+      switch (itemType) {
+        case CONSTS.policy.POLICY_ITEMS_TYPES.PRIVACY:
+          return router.push(ROUTES.PRIVACY_POLICY.absolute);
+        case CONSTS.policy.POLICY_ITEMS_TYPES.COOKIE:
+          return router.push(ROUTES.COOKIE_POLICY.absolute);
+        case CONSTS.policy.POLICY_ITEMS_TYPES.DISCLAMER:
+          return router.push(ROUTES.DISCLAMER.absolute);
+      }
+    }
+
+    function showPrivacyContextModal(e) {
+      privacyContextModalX.value = e.clientX;
+      privacyContextModalY.value = e.clientY;
+      isPrivacyContextModalOpened.value = true;
+    }
+
     const currentYear = computed(() => {
-      return new Date().getFullYear()
-    })
+      return new Date().getFullYear();
+    });
 
     const emptyListMessages = computed(() => {
       return {
@@ -430,12 +459,6 @@ export default {
     });
     const routeObject = computed(() => {
       return ROUTES;
-    });
-
-    watch(selectedList.length, () => {
-      if (selectedList.value.length === 0) {
-        selectable.value = false;
-      }
     });
 
     function closeMobMenu() {
@@ -509,13 +532,36 @@ export default {
       });
     }
 
-    const startLoader = () => {
-      loading.value = true;
-    };
+    const mobileMenuTopSideHeightConfig = ref({
+      default: [60, 32, 48, 16],
+      mobile: [selectedList.value.length ? 60 : 0],
+      tablet: [selectedList.value.length ? 60 : 0],
+    });
 
-    const stopLoader = () => {
-      loading.value = false;
-    };
+    const {
+      calculatedHeight,
+      minussedHeight,
+      onAppHeightResize,
+      minusHeight,
+      plusHeight,
+    } = calcHeight(...Object.values(mobileMenuTopSideHeightConfig.value));
+
+    const mobileMenuTopSideHeight = computed(() => {
+      return `${calculatedHeight.value}px`;
+    });
+
+    watchEffect(
+      () => {
+        if (selectedList.value.length >= 0 && minussedHeight.value <= 0) {
+          minusHeight(60);
+        }
+        if (selectedList.value.length === 0) {
+          plusHeight(60);
+          selectable.value = false;
+        }
+      },
+      { deep: true }
+    );
 
     const clearSelectedList = () => {
       selectedList.value = [];
@@ -537,18 +583,18 @@ export default {
     const HandleAction = {
       deleteAll: async () => {
         if (!context.notifications.length && !context.newNotifications) return;
-        startLoader();
+        startSpinner();
         await API.NotificationService.deleteAllMyNotifications();
         removePushNotificationAfterSidebarAction({
           remove_all: true,
         });
         clearSelectedList();
         handleSelectableMode();
-        stopLoader();
+        finishSpinner();
       },
       readAll: async () => {
         if (!context.notifications.length && !context.newNotifications) return;
-        startLoader();
+        startSpinner();
         await API.NotificationService.readAllMyNotifications();
         removePushNotificationAfterSidebarAction({
           remove_all: true,
@@ -560,11 +606,11 @@ export default {
         if (selectedTabId.value === 2) {
           emit('removeNotifications', 'All');
         }
-        stopLoader();
+        finishSpinner();
       },
       deleteSelected: async () => {
         if (!selectedList.value) return;
-        startLoader();
+        startSpinner();
         await API.NotificationService.deleteNotifications(selectedList.value);
         removePushNotificationAfterSidebarAction({
           notification_ids: selectedList.value,
@@ -572,11 +618,11 @@ export default {
         clearSelectedList();
         handleSelectableMode();
         closeSubmitModal();
-        stopLoader();
+        finishSpinner();
       },
       readSelected: async () => {
         if (!selectedList.value) return;
-        startLoader();
+        startSpinner();
         await API.NotificationService.readNotifications(selectedList.value);
         removePushNotificationAfterSidebarAction({
           notification_ids: selectedList.value,
@@ -586,10 +632,10 @@ export default {
         }
         clearSelectedList();
         handleSelectableMode();
-        stopLoader();
+        finishSpinner();
       },
       readOne: async (id) => {
-        startLoader();
+        startSpinner();
         await API.NotificationService.readNotifications([id]);
         removePushNotificationAfterSidebarAction({
           notification_ids: [id],
@@ -597,15 +643,15 @@ export default {
         if (selectedTabId.value === 2) {
           emit('removeNotifications', [id]);
         }
-        stopLoader();
+        finishSpinner();
       },
       deleteOne: async (id) => {
-        startLoader();
+        startSpinner();
         await API.NotificationService.deleteNotifications([id]);
         removePushNotificationAfterSidebarAction({
           notification_id: id,
         });
-        stopLoader();
+        finishSpinner();
       },
     };
 
@@ -633,6 +679,13 @@ export default {
       }
     };
 
+    onMounted(() => {
+      window.addEventListener('resize', onAppHeightResize);
+    });
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', onAppHeightResize);
+    });
+
     return {
       topMenu,
       selectable,
@@ -651,17 +704,24 @@ export default {
       routeObject,
       HandleAction,
       tabs,
-      loading,
+      mobileMenuTopSideHeight,
+      privacyContextModalItems,
       selectedTabId,
       triggerForRestart,
+      privacyContextModalX,
+      privacyContextModalY,
+      isPrivacyContextModalOpened,
       isSubmitModalOpened,
       submitModalConfig,
       showSubmitModal,
       closeSubmitModal,
       changeTab,
+      privacyContextModalItemClick,
       clearSelectedList,
       goToMyProfile,
+      closePrivacyContextModal,
       lineMenuClick,
+      showPrivacyContextModal,
       selectNotification,
       closeMobMenu,
       removePushNotificationAfterSidebarAction,
@@ -701,10 +761,6 @@ $color-1ccd62: #1ccd62;
   }
   @include mobile {
     width: 100%;
-  }
-
-  .b-mob-menu__top-side {
-    @include calc-height(60px, 32px, 48px, 16px)
   }
 
   .b-mob-menu__logo-block {
@@ -939,7 +995,7 @@ $color-1ccd62: #1ccd62;
   max-width: 193px;
   position: absolute;
   min-width: max-content;
-  bottom: 90px;
+  bottom: 100px;
   cursor: pointer;
   left: 50%;
   transform: translateX(-50%);

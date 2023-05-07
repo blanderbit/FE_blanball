@@ -189,6 +189,7 @@ const emailVerified = () => {
       user: res.data,
     });
   });
+  BlanballEventBus.emit('emailVerified')
 };
 
 const openEventReviewModal = () => {

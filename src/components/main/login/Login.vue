@@ -89,6 +89,7 @@ import checkBox from '../../shared/checkbox/Checkbox.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { accessToken, refreshToken } from '../../../workers/token-worker';
+import { startSpinner , finishSpinner} from '../../../workers/loading-worker/loading.worker';
 
 import { ROUTES } from '../../../router/router.const';
 import CONSTS from '../../../consts';
@@ -127,6 +128,7 @@ export default {
       }
 
       try {
+        startSpinner();
         const apiRequestResult = await API.AuthorizationService.login(
           data.controlledValues
         );
@@ -158,6 +160,8 @@ export default {
         await router.push(ROUTES.APPLICATION.EVENTS.absolute);
       } catch (e) {
         isWrongCreds.value = true;
+      } finally {
+        finishSpinner();
       }
     };
 
@@ -171,6 +175,7 @@ export default {
       showInvalidCredentials,
       warningTopStyle,
       schema,
+      loading,
       handleLogin,
       openResetPasswordModal,
       openRegisterPage,

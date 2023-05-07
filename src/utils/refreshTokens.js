@@ -14,6 +14,8 @@ import { ROUTES } from '../router/router.const';
 const tokensStore = useTokensStore(pinia);
 
 export async function refreshTokens() {
+  let isRefreshSuccess;
+
   tokensStore.$patch({
     isTokensRefreshing: true,
   });
@@ -37,10 +39,18 @@ export async function refreshTokens() {
     AuthWebSocketWorkerInstance.connect({
       token: accessToken.getToken(),
     });
+    tokensStore.$patch({
+      isTokensRefreshing: false,
+    });
+
+    isRefreshSuccess = true;
   } catch {
     const findCurRouteFromList = window.location.pathname.includes(
       ROUTES.APPLICATION.name
     );
+    tokensStore.$patch({
+      isTokensRefreshing: false,
+    });
 
     resetUserData();
     await router.push(
@@ -49,9 +59,9 @@ export async function refreshTokens() {
         : ROUTES.AUTHENTICATIONS.LOGIN.absolute
     );
     BlanballEventBus.emit('SessionExpired');
+
+    isRefreshSuccess = false;
   } finally {
-    tokensStore.$patch({
-      isTokensRefreshing: false,
-    });
+    return isRefreshSuccess;
   }
 }

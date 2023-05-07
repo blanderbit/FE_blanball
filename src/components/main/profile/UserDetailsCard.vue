@@ -334,7 +334,7 @@ import userAvatar from '../../shared/userAvatar/UserAvatar.vue';
 import RatingCard from './RatingCard.vue';
 
 import CONSTANTS from '../../../consts';
-import useWindowWidth from '../../../utils/widthScreen';
+import { useWindowWidth } from '../../../utils/widthScreen';
 
 import sortArrowHorizontally from '../../../assets/img/sort-arrows-horizontal.svg';
 import tick from '../../../assets/img/tick.svg';
@@ -522,7 +522,7 @@ $color-efeff6: #efeff6;
   }
 
   @include tabletAndMobile {
-    padding-bottom: 0px;
+    padding: 0px 10px;
   }
 
   .b-user-card__top-table {

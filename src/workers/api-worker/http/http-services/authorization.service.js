@@ -8,7 +8,7 @@ export class AuthorizationService {
     return AxiosInstance.post(
       EndpointsEnum.Authorization.Login,
       data,
-      AxiosParams(AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_PAGE]))
+      AxiosParams(AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_CREDENTIALS]))
     );
   }
 

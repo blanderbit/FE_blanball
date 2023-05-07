@@ -21,18 +21,25 @@
         />
       </div>
       <div class="b-user-raiting-grade">
-        <span>{{ ratingScale || 0 }}</span> / 5.0
+        <span>{{ ratingScale || 0 }}</span> / {{ ratingMaxValue }}
       </div>
     </div>
-    <div v-if="ratingScale && reviewsCount" class="b-show-reviews-button"
-      @click="$emit('showReviewsModal')">
+    <div
+      v-if="ratingScale && reviewsCount"
+      class="b-show-reviews-button"
+      @click="$emit('showReviewsModal')"
+    >
       Переглянути відгуки ({{ reviewsCount }})
     </div>
   </div>
 </template>
 
 <script>
+import { computed } from 'vue';
+
 import StarRating from 'vue-star-rating';
+
+import CONSTS from '../../../consts';
 
 export default {
   components: {
@@ -45,8 +52,17 @@ export default {
     },
     reviewsCount: {
       type: Number,
-      default: null
-    }
+      default: null,
+    },
+  },
+  setup() {
+    const ratingMaxValue = computed(() => {
+      return CONSTS.profile.ratingMaxValue;
+    });
+
+    return {
+      ratingMaxValue,
+    };
   },
 };
 </script>

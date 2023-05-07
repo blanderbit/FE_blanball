@@ -149,7 +149,6 @@
     >
       <position-map
         :coords="eventLocationOnMap"
-        @map-loaded="loading = false"
         disable-change-coords
       >
       </position-map>

@@ -8,7 +8,7 @@ import { useTokensStore } from '../stores/tokens';
 import { API } from '../workers/api-worker/api.worker';
 
 const userStore = useUserDataStore(pinia);
-const tokensStore = useTokensStore();
+const tokensStore = useTokensStore(pinia);
 
 export const resetUserData = () => {
   userStore.$reset();
@@ -17,14 +17,14 @@ export const resetUserData = () => {
   refreshToken.clearToken();
 };
 
+export const resetUserDataAndRedirectToLogin = async () => {
+  resetUserData();
+  await router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute);
+};
+
 export const logOut = async () => {
-  try {
-    await API.AuthorizationService.Logout({
-      refresh: refreshToken.getToken(),
-    });
-  } catch {
-  } finally {
-    router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute);
-    resetUserData();
-  }
+  await API.AuthorizationService.Logout({
+    refresh: refreshToken.getToken(),
+  });
+  resetUserDataAndRedirectToLogin();
 };

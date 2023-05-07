@@ -29,13 +29,13 @@
       </div>
       <div class="b-my-event-card__col-2">
         <div class="b-my-event-card__title">{{ card.name }}</div>
-        <PlaceDetectorModal
-          class="b-my-event-card__place"
+        <div class="b-my-event-card__place">
+          <PlaceDetectorModal
           v-if="card.place.place_name"
           :place="card.place"
           :disabled="isCardSelected"
-        >
-        </PlaceDetectorModal>
+        />
+        </div>
         <div class="b-my-event-card__labels">
           <div v-if="card.gender" class="b-my-event-card__label">
             {{ $t(`events.${card.gender}`) }}
@@ -316,13 +316,11 @@ $color-4c4a82: #4c4a82;
     }
   }
 }
-
 :deep(.b-place-detector) {
-  background: $color-efeff6;
-  border-radius: 4px;
-  margin-top: 10px;
-  width: 212px;
-  cursor: pointer;
-  background: #FAFAFA;
+  max-width: 70%;
+  overflow: hidden;
+}
+:deep(.b-place-name) {
+  max-width: 70%;
 }
 </style>

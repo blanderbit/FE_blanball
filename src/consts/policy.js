@@ -115,8 +115,35 @@ const COOKIE_POLICY_ITEMS = [
   },
 ];
 
+const POLICY_ITEMS_TYPES = {
+  PRIVACY: 'privacy',
+  COOKIE: 'cookie',
+  DISCLAMER: 'disclamer'
+}
+
+const ALL_POLICY_ITEMS = [
+  {
+    id: 1,
+    text: 'policy.privacy-policy',
+    type: POLICY_ITEMS_TYPES.PRIVACY,
+  },
+  {
+    id: 2,
+    text: 'policy.cookie-policy',
+    type: POLICY_ITEMS_TYPES.COOKIE,
+  },
+  {
+    id: 3,
+    text: 'policy.disclamer',
+    type: POLICY_ITEMS_TYPES.DISCLAMER,
+  },
+]
+
+
 export default {
   PRIVACY_POLICY_ITEMS,
   DISCLAMER_ITEMS,
+  ALL_POLICY_ITEMS,
+  POLICY_ITEMS_TYPES,
   COOKIE_POLICY_ITEMS,
 };

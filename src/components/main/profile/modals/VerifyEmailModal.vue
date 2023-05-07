@@ -1,5 +1,4 @@
 <template>
-  <loader :is-loading="loading" />
   <Transition>
     <ModalWindow>
       <template #title>
@@ -65,9 +64,12 @@ import ModalWindow from '../../../shared/modals/ModalWindow.vue';
 import Counter from '../../../shared/counter/Counter.vue';
 import inputCode from '../../../shared/inputCode/InputCode.vue';
 import MainInput from '../../../shared/input/MainInput.vue';
-import loader from '../../../shared/loader/Loader.vue';
 
 import { API } from '../../../../workers/api-worker/api.worker';
+import {
+  startSpinner,
+  finishSpinner,
+} from '../../../../workers/loading-worker/loading.worker';
 
 import SCHEMAS from '../../../../validators/schemas';
 
@@ -79,7 +81,6 @@ export default {
     Counter,
     inputCode,
     Form,
-    loader,
   },
   props: {
     userEmail: {
@@ -90,7 +91,6 @@ export default {
   emits: ['closeModal', 'emailVerified'],
   setup(_, { emit }) {
     const toast = useToast();
-    const loading = ref(false);
     const { t } = useI18n();
 
     const schema = computed(() => {
@@ -102,9 +102,9 @@ export default {
     }
 
     async function sendCode() {
-      loading.value = true;
+      startSpinner();
       await API.AuthorizationService.VerifyEmail();
-      loading.value = false;
+      finishSpinner();
     }
 
     async function saveClick(data) {
@@ -114,17 +114,17 @@ export default {
         return false;
       }
 
-      loading.value = true;
+      startSpinner();
       try {
         await API.AuthorizationService.VerifyCode({
           verify_code: data.values.verify_code,
         });
-        emit('emailVerified')
+        emit('emailVerified');
         closeModal();
-        loading.value = false;
         toast.success(t('notifications.email-verified'));
       } catch {
-        loading.value = false;
+      } finally {
+        finishSpinner();
       }
     }
 
@@ -132,7 +132,6 @@ export default {
 
     return {
       schema,
-      loading,
       saveClick,
       closeModal,
       sendCode,

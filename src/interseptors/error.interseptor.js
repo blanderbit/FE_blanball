@@ -3,7 +3,6 @@ import { TypeRequestMessageWorker } from '../workers/type-request-message-worker
 
 import { refreshTokens } from '../utils/refreshTokens';
 import { useTokensStore } from '../stores/tokens';
-import { useUserDataStore } from '../stores/userData';
 
 import { AxiosInstance } from '../plugins/axios.plugin';
 
@@ -14,9 +13,6 @@ import { globalSkipMesssageTypes } from '../workers/type-request-message-worker'
 const toast = useToast();
 
 const tokenStore = useTokensStore();
-const userStore = useUserDataStore();
-
-let retryRequest = false;
 
 const showToastAfterError = (errorMessageType) => {
   toast.error(
@@ -28,11 +24,10 @@ const showToastAfterError = (errorMessageType) => {
   );
 };
 
+let retryRequest = false;
+
 export const ErrorInterceptor = async (error) => {
   const getJsonErrorData = error.toJSON();
-
-  console.log(userStore.user.id)
-
   const requestConfig = getJsonErrorData.config;
 
   const skipErrorMessageType =
@@ -42,15 +37,18 @@ export const ErrorInterceptor = async (error) => {
   if (
     (error?.status === 401 || getJsonErrorData?.status === 401) &&
     requestConfig.url.replace(requestConfig.baseURL, '') !==
-      EndpointsEnum.Authorization.RefreshTokens &&
-    userStore.user.id
+      EndpointsEnum.Authorization.RefreshTokens
   ) {
     if (!tokenStore.isTokensRefreshing) {
-      await refreshTokens();
       retryRequest = true;
+      const refreshTokensStatus = await refreshTokens();
+
+      if (!refreshTokensStatus) {
+        return;
+      }
     }
     if (retryRequest) {
-      return await new Promise(async (resolve) => {
+      return await new Promise(async (resolve, reject) => {
         requestConfig.url = requestConfig.url.replace(
           requestConfig.baseURL,
           ''
@@ -60,9 +58,11 @@ export const ErrorInterceptor = async (error) => {
     }
   }
 
-
   const errorMessageType = TypeRequestMessageWorker(error).filter(
-    (item) => ![...globalSkipMesssageTypes, ...skipErrorMessageType]?.includes(item.errorType)
+    (item) =>
+      ![...globalSkipMesssageTypes, ...skipErrorMessageType]?.includes(
+        item.errorType
+      )
   )[0];
 
   if (errorMessageType) {

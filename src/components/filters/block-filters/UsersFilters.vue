@@ -163,7 +163,7 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
+import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 import dropdown from '../../shared/dropdown/Dropdown.vue';
@@ -175,7 +175,7 @@ import ModalFilters from '../ModalUsersFilters.vue';
 import RangeFilter from '../components/RangeFilter.vue';
 
 import { TransformedFiltersWorker } from './transformed.filters.worker';
-import useWindowWidth from '../../../utils/widthScreen';
+import { useWindowWidth } from '../../../utils/widthScreen';
 
 import CONSTANTS from '../../../consts';
 
@@ -215,7 +215,7 @@ export default {
       default: 0,
     },
   },
-  emits: ['update:value', 'clearFilters'],
+  emits: ['update:value', 'clearFilters', 'updatedActiveFilters'],
   setup(props, { emit }) {
     const isModalFiltersActive = ref(false);
     const route = useRoute();
@@ -275,7 +275,7 @@ export default {
           };
         },
         ifSecondLineWasUsed() {
-          return true
+          return true;
         },
       });
 
@@ -317,6 +317,15 @@ export default {
     function closeMobileSearch() {
       isMobileSearchOpened.value = false;
     }
+
+    watch(
+      () => activeFilters.value,
+      (newVal) => {
+        if (!isMobile.value && !isTablet.value) {
+          emit('updatedActiveFilters', newVal);
+        }
+      }
+    );
 
     return {
       sortingButtonClick,

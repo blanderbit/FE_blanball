@@ -1,5 +1,4 @@
 <template>
-  <loader :is-loading="loading" />
   <Transition>
     <ModalWindow>
       <template #title>
@@ -75,9 +74,12 @@ import ModalWindow from '../../../shared/modals/ModalWindow.vue';
 import Counter from '../../../shared/counter/Counter.vue';
 import inputCode from '../../../shared/inputCode/InputCode.vue';
 import MainInput from '../../../shared/input/MainInput.vue';
-import loader from '../../../shared/loader/Loader.vue';
 
 import { API } from '../../../../workers/api-worker/api.worker';
+import {
+  startSpinner,
+  finishSpinner,
+} from '../../../../workers/loading-worker/loading.worker';
 
 import SCHEMAS from '../../../../validators/schemas';
 
@@ -95,11 +97,9 @@ export default {
     inputCode,
     MainInput,
     Counter,
-    loader,
   },
   setup(_, { emit }) {
     const { t } = useI18n();
-    const loading = ref(false);
     const toast = useToast();
     const currentStep = ref(1);
 
@@ -122,7 +122,7 @@ export default {
       if (!valid) {
         return false;
       }
-      loading.value = true;
+      startSpinner();
       try {
         if (currentStep.value === 1) {
           await sendCode(data);
@@ -130,9 +130,9 @@ export default {
           await changePassword(data);
         }
         currentStep.value++;
-        loading.value = false;
       } catch {
-        loading.value = false;
+      } finally {
+        finishSpinner();
       }
     }
 
@@ -149,7 +149,6 @@ export default {
       changePassword,
       sendCode,
       nextStep,
-      loading,
       currentStep,
       schema,
       disableSubmit: (e) => {

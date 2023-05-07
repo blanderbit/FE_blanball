@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="['b-green-btn', { 'b-green-btn__animated': animation }]"
+    :class="['b-green-btn', { animated: animation }, { disabled: disabled }]"
     :style="btnStyle"
     @click.stop="!disabled && $emit('click-function', $event)"
   >
@@ -12,12 +12,11 @@
       :src="iconRight"
       alt=""
     />
-    <loader :is-loading="loading"/>
   </div>
 </template>
 
 <script>
-import { computed, ref, watch } from 'vue';
+import { computed } from 'vue';
 import loader from '../loader/Loader.vue';
 
 export default {
@@ -63,11 +62,7 @@ export default {
     },
     borderColor: {
       type: String,
-      default: ''
-    },
-    loading: {
-      type: Boolean,
-      default: false,
+      default: '',
     },
     animation: {
       type: Boolean,
@@ -75,31 +70,18 @@ export default {
     },
   },
   setup(props) {
-    const loading = ref(false);
     const btnStyle = computed(() => {
       return {
         ...props.fontStyles,
         width: props.width ? props.width + 'px' : '100%',
         height: props.height + 'px',
         background: props.backgroundColor,
-        border: `${props.borderColor ? `1px solid ${props.borderColor}` : 'none'}`,
+        border: `${
+          props.borderColor ? `1px solid ${props.borderColor}` : 'none'
+        }`,
         'justify-content': 'center',
       };
     });
-
-    watch(
-      () => props.loading,
-      (value) => {
-        value ? start() : finish();
-      }
-    );
-
-    function start() {
-      loading.value = true;
-    }
-    function finish() {
-      loading.value = false;
-    }
 
     return {
       btnStyle,
@@ -112,22 +94,6 @@ export default {
 // SCSS variables for hex colors
 $color-c6c7c7: #c6c7c7;
 
-.b-green-btn__animated {
-  &:hover {
-    &:before {
-      content: '';
-      display: block;
-      position: absolute;
-      opacity: 30%;
-      left: -100%;
-      width: 32px;
-      height: 100%;
-      background: $color-c6c7c7;
-      filter: blur(6px);
-      animation: blink 5s ease-in-out infinite;
-    }
-  }
-}
 .b-green-btn {
   @include inter(14px, 500, $--b-main-white-color);
 
@@ -147,40 +113,29 @@ $color-c6c7c7: #c6c7c7;
   &__right-icon {
     margin-left: 10px;
   }
-}
 
-:deep {
-  // TODO using in two place
-  .spiner-text {
-    display: none;
+  &.disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
   }
-  .spiner {
-    transform: translate(-32%, 0%);
-  }
-  .spiner-wrapper {
-    position: absolute;
-    background: rgba(239, 239, 246, 0.38);
-    width: 100%;
-  }
-  .spiner-wrapper .spiner-body {
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    .spiner {
-      .lds-ring,
-      .lds-ring div {
-        width: 25px;
-        height: 25px;
-      }
-      .lds-ring div {
-        border-width: 2px;
-        border-color: white transparent transparent transparent;
+
+  &.animated {
+    &:hover {
+      &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        opacity: 30%;
+        left: -100%;
+        width: 32px;
+        height: 100%;
+        background: $color-c6c7c7;
+        filter: blur(6px);
+        animation: blink 5s ease-in-out infinite;
       }
     }
   }
 }
-
 @keyframes blink {
   0% {
     left: -100%;

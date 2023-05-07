@@ -1,5 +1,4 @@
 <template>
-  <loader :is-loading="loading" />
   <SubmitModal
     v-if="isSubmitModalOpened"
     :config="submitModalConfig"
@@ -214,7 +213,15 @@
 </template>
 
 <script>
-import { ref, inject, computed, watch, onMounted, onBeforeUnmount } from 'vue';
+import {
+  ref,
+  inject,
+  computed,
+  watch,
+  watchEffect,
+  onMounted,
+  onBeforeUnmount,
+} from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { v4 as uuid } from 'uuid';
@@ -224,7 +231,6 @@ import Notification from '../main/notifications/Notification.vue';
 import emptyList from '../shared/emptyList/EmptyList.vue';
 import InfiniteLoading from '../main/infiniteLoading/InfiniteLoading.vue';
 import ScrollToTop from '../ScrollToTop.vue';
-import loader from '../shared/loader/Loader.vue';
 import SubmitModal from '../shared/modals/SubmitModal.vue';
 import ContextMenu from '../shared/modals/ContextMenuModal.vue';
 import SlideMenuWrapper from './SlideMenuWrapper.vue';
@@ -233,6 +239,7 @@ import { useUserDataStore } from '../../stores/userData';
 import { NewNotifications } from '../../workers/web-socket-worker/not-includes-to-socket/new_notifications';
 import { NotificationsBus } from '../../workers/event-bus-worker';
 import { API } from '../../workers/api-worker/api.worker';
+import { startSpinner, finishSpinner } from '../../workers/loading-worker/loading.worker';
 
 import { calcHeight } from '../../utils/calcHeight';
 
@@ -246,7 +253,6 @@ export default {
   components: {
     InfiniteLoading,
     Notification,
-    loader,
     emptyList,
     ContextMenu,
     SlideMenuWrapper,
@@ -287,7 +293,6 @@ export default {
   ],
   setup(context, { emit }) {
     const notificationList = ref();
-    const loading = ref(false);
     const selectable = ref(false);
     const blockScrollToTopIfExist = ref(false);
     const triggerForRestart = ref('');
@@ -339,12 +344,13 @@ export default {
       };
     });
 
-    const { calculatedHeight, onAppHeightResize } = calcHeight([
-      100,
-      70,
-      20,
-      selectedList.value.length > 0 ? 110 : 80,
-    ]);
+    const {
+      calculatedHeight,
+      minussedHeight,
+      onAppHeightResize,
+      plusHeight,
+      minusHeight,
+    } = calcHeight([100, 70, 20, selectedList.value.length ? 110 : 80]);
 
     const slideMenuHeight = computed(() => {
       return `${calculatedHeight.value}px`;
@@ -357,6 +363,18 @@ export default {
           emit('closed');
         }
       }
+    );
+
+    watchEffect(
+      () => {
+        if (selectedList.value.length >= 0 && minussedHeight.value <= 0) {
+          minusHeight(30);
+        }
+        if (selectedList.value.length === 0) {
+          plusHeight(30);
+        }
+      },
+      { deep: true }
     );
 
     const arrowPosition = computed(() => {
@@ -392,14 +410,6 @@ export default {
       selectedList.value = [];
     };
 
-    const startLoader = () => {
-      loading.value = true;
-    };
-
-    const stopLoader = () => {
-      loading.value = false;
-    };
-
     const handleSelectableMode = () => {
       selectable.value = !selectable.value;
       clearSelectedList();
@@ -408,18 +418,18 @@ export default {
     const HandleAction = {
       deleteAll: async () => {
         if (!context.notifications.length && !context.newNotifications) return;
-        startLoader();
+        startSpinner();
         await API.NotificationService.deleteAllMyNotifications();
         removePushNotificationAfterSidebarAction({
           remove_all: true,
         });
         clearSelectedList();
         handleSelectableMode();
-        stopLoader();
+        finishSpinner();
       },
       readAll: async () => {
         if (!context.notifications.length && !context.newNotifications) return;
-        startLoader();
+        startSpinner();
         await API.NotificationService.readAllMyNotifications();
         removePushNotificationAfterSidebarAction({
           remove_all: true,
@@ -431,11 +441,11 @@ export default {
         if (selectedTabId.value === 2) {
           emit('removeNotifications', 'All');
         }
-        stopLoader();
+        finishSpinner();
       },
       deleteSelected: async () => {
         if (!selectedList.value) return;
-        startLoader();
+        startSpinner();
         await API.NotificationService.deleteNotifications(selectedList.value);
         removePushNotificationAfterSidebarAction({
           notification_ids: selectedList.value,
@@ -443,11 +453,11 @@ export default {
         clearSelectedList();
         handleSelectableMode();
         closeSubmitModal();
-        stopLoader();
+        finishSpinner();
       },
       readSelected: async () => {
         if (!selectedList.value) return;
-        startLoader();
+        startSpinner();
         await API.NotificationService.readNotifications(selectedList.value);
         removePushNotificationAfterSidebarAction({
           notification_ids: selectedList.value,
@@ -457,10 +467,10 @@ export default {
         }
         clearSelectedList();
         handleSelectableMode();
-        stopLoader();
+        finishSpinner();
       },
       readOne: async (id) => {
-        startLoader();
+        startSpinner();
         await API.NotificationService.readNotifications([id]);
         removePushNotificationAfterSidebarAction({
           notification_ids: [id],
@@ -468,15 +478,15 @@ export default {
         if (selectedTabId.value === 2) {
           emit('removeNotifications', [id]);
         }
-        stopLoader();
+        finishSpinner();
       },
       deleteOne: async (id) => {
-        startLoader();
+        startSpinner();
         await API.NotificationService.deleteNotifications([id]);
         removePushNotificationAfterSidebarAction({
           notification_id: id,
         });
-        stopLoader();
+        finishSpinner();
       },
     };
 
@@ -551,7 +561,6 @@ export default {
       mockData,
       submitModalConfig,
       notificationList,
-      loading,
       isSubmitModalOpened,
       blockScrollToTopIfExist,
       tabs,

@@ -30,7 +30,7 @@
 
 <script>
 import { computed, onMounted, onBeforeUnmount } from 'vue';
-import useWindowWidth from '../../../utils/widthScreen';
+import { useWindowWidth } from '../../../utils/widthScreen';
 
 export default {
   name: 'modal-window',

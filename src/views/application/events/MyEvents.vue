@@ -15,8 +15,6 @@
     @declineChanges="cancelChangesAndGoToTheNextRoute"
     @deleteEvents="deleteEvents"
   />
-
-  <loader :is-loading="loading" />
   <EditEventModal
     v-if="isEventUpdateModalOpened"
     :eventDataValue="updateEventData"
@@ -151,7 +149,7 @@
               >
                 <template #complete>
                   <emptyList
-                    v-if="!paginationElements.length && !loading"
+                    v-if="!paginationElements.length"
                     :title="emptyListMessages.title"
                     :description="emptyListMessages.description"
                     :buttonText="emptyListMessages.button_text"
@@ -196,7 +194,6 @@ import InfiniteLoading from '../../../components/main/infiniteLoading/InfiniteLo
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue';
 import WhiteBtn from '../../../components/shared/button/WhiteBtn.vue';
 import DeleteEventsModal from '../../../components/main/events/modals/DeleteEventsModal.vue';
-import loader from '../../../components/shared/loader/Loader.vue';
 import EditEventModal from '../../../components/main/manageEvent/modals/EditEventModal.vue';
 import ActionEventModal from '../../../components/main/events/modals/ActionEventModal.vue';
 import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
@@ -209,6 +206,10 @@ import { addMinutes } from '../../../utils/addMinutes';
 import { getDate } from '../../../utils/getDate';
 import { getTime } from '../../../utils/getTime';
 import { prepareEventUpdateData } from '../../../utils/prepareEventUpdateData';
+import {
+  startSpinner,
+  finishSpinner,
+} from '../../../workers/loading-worker/loading.worker';
 
 import CONSTANTS from '../../../consts/index';
 
@@ -258,7 +259,6 @@ export default {
     EventsFilters,
     WhiteBtn,
     ActionEventModal,
-    loader,
     DeleteEventsModal,
     SubmitModal,
   },
@@ -268,7 +268,6 @@ export default {
     const toast = useToast();
     const router = useRouter();
     const eventCards = ref([]);
-    const loading = ref(false);
     const selected = ref([]);
     const { t } = useI18n();
     const isLoaderActive = ref(false);
@@ -455,7 +454,7 @@ export default {
     }
 
     async function unPinEvents() {
-      loading.value = true;
+      startSpinner();
       let eventsIDSToUnPin = oneEventToUnPinId.value
         ? [oneEventToUnPinId.value]
         : selected.value;
@@ -469,7 +468,7 @@ export default {
         oneEventToUnPinId.value = null;
       }
       loadDataPaginationData(1, null, true, false);
-      loading.value = false;
+      finishSpinner();
       toast.success(t('notifications.events-unpinned'));
     }
 
@@ -488,7 +487,7 @@ export default {
           })
         );
       } else {
-        loading.value = true;
+        startSpinner();
         let eventsIDSToPin = oneEventToPinId.value
           ? [oneEventToPinId.value]
           : selected.value;
@@ -502,14 +501,14 @@ export default {
           oneEventToPinId.value = null;
         }
         loadDataPaginationData(1, null, true, false);
-        loading.value = false;
+        finishSpinner();
         toast.success(t('notifications.events-pinned'));
       }
     }
 
     async function deleteEvents() {
       closeSubmitModal();
-      loading.value = true;
+      startSpinner();
       let eventsIDSToDelete = oneEventToDeleteId.value
         ? [oneEventToDeleteId.value]
         : selected.value;
@@ -525,7 +524,7 @@ export default {
       paginationElements.value = paginationElements.value.filter(
         (event) => !eventsIDSToDelete.includes(event.id)
       );
-      loading.value = false;
+      finishSpinner();
       toast.success(t('notifications.events-deleted'));
     }
 
@@ -557,7 +556,7 @@ export default {
     }
     async function changeTab(tabId) {
       if (tabId !== selectedTabId.value) {
-        loading.value = true;
+        startSpinner();
         selectedTabId.value = tabId;
 
         switch (selectedTabId.value) {
@@ -574,7 +573,7 @@ export default {
         paginationElements.value =
           route.meta.eventData.data.results.map(handlingIncomeData);
         restartInfiniteScroll();
-        loading.value = false;
+        finishSpinner();
       }
     }
 
@@ -724,7 +723,7 @@ export default {
       isLoading
     ) {
       if (isLoading) {
-        loading.value = true;
+        startSpinner();
       }
       if (forceUpdate) {
         paginationClearData();
@@ -736,7 +735,7 @@ export default {
         forceUpdate,
       }).then(() => {
         if (isLoading) {
-          loading.value = false;
+          finishSpinner();
         }
       });
     }
@@ -766,7 +765,6 @@ export default {
       PinIcon,
       actionEventModalConfig,
       isEventUpdateModalOpened,
-      loading,
       paginationTotalCount,
       selected,
       updateEventData,

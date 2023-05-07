@@ -1,6 +1,6 @@
 <template>
   <div class="b-dropdown" :style="dropdownStyles">
-    <div :class="['b-dropdown__title', {disabled: disabled}]">
+    <div :class="['b-dropdown__title', { disabled: disabled }]">
       <span>
         {{ dropdownModelValue ? mainTitle : '' }}
       </span>
@@ -18,6 +18,7 @@
       :calculate-position="withPopper"
       @update:modelValue="setNewValue($event)"
       maxHeight="100px"
+      :menu-props="menuProps"
       @open="modelHandlers.blur()"
       v-model="dropdownModelValue"
     >
@@ -30,7 +31,9 @@
       <template #selected-option="options">
         <div class="b-dropdown__custom-option">
           <img v-if="options.iconSrc" :src="options.iconSrc" alt="icon" />
-          <span :class="['b-dropdown__custom-option-text', {disabled: disabled}]">
+          <span
+            :class="['b-dropdown__custom-option-text', { disabled: disabled }]"
+          >
             {{ $t(options[displayName].toString()) }}
           </span>
         </div>
@@ -139,6 +142,15 @@ export default {
       };
     });
 
+    const menuProps = ref({
+      maxHeight: '200px',
+      maxWidth: '300px',
+      minWidth: '200px',
+      backgroundColor: 'black',
+      boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.5)',
+      borderRadius: '4px',
+    });
+
     function selectValue(e) {
       dropdownModelValue.value =
         props.options.find((item) => {
@@ -245,6 +257,7 @@ export default {
       isOpened,
       wrapper,
       dropdownStyles,
+      menuProps,
       dropdownModelValue,
       icon,
       t,
@@ -257,9 +270,9 @@ export default {
 $color-a8a8bd: #a8a8bd;
 // SCSS variables for hex colors
 $color-dfdeed: #dfdeed;
+$color-8a8aa8: #8a8aa8;
 
 @import '../../../assets/styles/forms.scss';
-
 :deep {
   .vs__clear {
     display: none;
@@ -274,6 +287,7 @@ $color-dfdeed: #dfdeed;
   .v-select {
     height: 100%;
   }
+
   .vs__search,
   .vs__dropdown-menu,
   .v-select {
@@ -292,7 +306,7 @@ $color-dfdeed: #dfdeed;
     background: transparent;
   }
   .v-select.vs--open.vs--single.vs--unsearchable .vs__dropdown-toggle {
-    border: 1px solid $--b-main-green-color;
+    border: 1.5px solid $color-8a8aa8;
   }
   .style-chooser .vs__search::placeholder,
   .style-chooser .vs__dropdown-toggle,
@@ -303,12 +317,14 @@ $color-dfdeed: #dfdeed;
     font-size: 13px;
     line-height: 24px;
     color: $--b-main-gray-color;
+    display: none;
   }
 }
 
 :deep {
   #vs3__listbox {
     --vs-dropdown-min-width: auto;
+    display: none;
   }
   .vs__selected-options {
     overflow: hidden;
@@ -365,7 +381,6 @@ $color-dfdeed: #dfdeed;
   position: relative;
   text-align: left;
   &__title {
-
     @include inter(12px, 400, $--b-main-gray-color);
     position: absolute;
     line-height: 16px;
@@ -376,7 +391,7 @@ $color-dfdeed: #dfdeed;
     z-index: 10;
 
     &.disabled {
-      @include inter(12px, 400, #A8A8BD);
+      @include inter(12px, 400, #a8a8bd);
     }
   }
   &__custom-option {
@@ -388,7 +403,7 @@ $color-dfdeed: #dfdeed;
 
     &-text {
       &.disabled {
-        @include inter(14px, 400, #A8A8BD);
+        @include inter(14px, 400, #a8a8bd);
       }
     }
 

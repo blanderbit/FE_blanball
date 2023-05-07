@@ -54,7 +54,7 @@
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import PositionMap from './maps/PositionMap.vue';
 import CONSTANTS from '../consts/index';
-import useWindowWidth from '../utils/widthScreen';
+import { useWindowWidth } from '../utils/widthScreen';
 
 export default {
   name: 'Auth',
