@@ -6,17 +6,23 @@
       </div>
     </div>
     <div
-      v-if="usersNumber > 4"
+      v-if="usersNumber > visibleFriendsCount"
       class="c-friends-number"
       @click="friendsBlockSwitcher"
     >
-      <span>+{{ usersNumber - 4 }} друзів</span>
+      <span>{{
+        $t('scheduler.plus-friends', {
+          friendsCount: usersNumber - visibleFriendsCount,
+        })
+      }}</span>
       <img src="../../../assets/img/scheduler/dbl-arrow.svg" alt="" />
     </div>
   </div>
 </template>
 
 <script>
+import { ref } from 'vue';
+
 export default {
   name: 'TopLineFriends',
   props: {
@@ -35,6 +41,13 @@ export default {
     friendsBlockSwitcher: {
       type: Function,
     },
+  },
+  setup() {
+    const visibleFriendsCount = ref(4);
+
+    return {
+      visibleFriendsCount,
+    };
   },
 };
 </script>

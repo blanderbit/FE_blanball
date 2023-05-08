@@ -67,7 +67,7 @@
                   <div v-for="i in 3" :key="i" class="c-menu-dots"></div>
                 </div>
                 <div class="c-cell-number">
-                  <span>{{ cell.content }}</span>
+                  <span v-if="cell.content">{{ cell.content }}</span>
                 </div>
                 <div class="c-event-dots">
                   <div class="c-myevents-cover">

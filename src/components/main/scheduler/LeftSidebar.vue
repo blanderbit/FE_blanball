@@ -1,38 +1,40 @@
 <template>
-  <div 
+  <div
     class="c-left-block"
     :style="{ 'margin-right': isFriendsVisible ? '0px' : '-260px' }"
   >
     <div class="c-top-part">
       <div class="c-date">
-        Сьогодні: {{ todayDate }}
+        {{ $t('scheduler.today-date', { todayDate: todayDate }) }}
       </div>
-      <div class="c-hide" 
-      @click="$emit('friendsBlockSwitcher')"  >
+      <div class="c-hide" @click="$emit('friendsBlockSwitcher')">
+        <span> {{ $t('buttons.hide') }} </span>
         <span>
-          Приховати
-        </span>
-        <span>
-          <img src="../../../assets/img/scheduler/dbl-arrow.svg" alt="">
+          <img src="../../../assets/img/scheduler/dbl-arrow.svg" alt="" />
         </span>
       </div>
     </div>
     <div class="c-bottom-part">
       <div class="c-input-search">
-        <div class="c-lens-icon">
-          <img src="../../../assets/img/scheduler/lens.svg" alt="">
-        </div>
-        <input type="text" placeholder="Знайти людину">
+        <MainInput
+          :title-width="0"
+          :placeholder="$t('scheduler.found-user')"
+          inputMode="search"
+          :height="36"
+          :icon="icons.search"
+          :backgroundColor="'#fff'"
+          name="search"
+        />
       </div>
       <div class="c-friends-side-block">
-        <div 
+        <div
           v-for="user in users"
           :key="user.id"
           :class="['c-user-card', { active: user.isActive }]"
           @click="$emit('activateUser', user.id)"
         >
           <div class="avatar">
-            <img :src="user.img" alt="">
+            <img :src="user.img" alt="" />
           </div>
           <div class="text-block">
             <div class="name">
@@ -49,33 +51,48 @@
 </template>
 
 <script>
-import { computed } from 'vue'
-import dates from '../../../consts/dates'
+import { computed } from 'vue';
+
+import MainInput from '../../shared/input/MainInput.vue';
+
+import dates from '../../../consts/dates';
+
+import searchIcon from '../../../assets/img/scheduler/lens.svg';
 
 export default {
   name: 'LeftSidebar',
   props: {
     users: {
       type: Array,
-      default: () => ([])
+      default: () => [],
     },
     isFriendsVisible: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
+  },
+  components: {
+    MainInput,
   },
   emits: ['friendsBlockSwitcher', 'activateUser'],
   setup() {
     const todayDate = computed(() => {
-      const date = new Date()
-      return `${date.getDate()} ${dates.monthNames[date.getMonth()]}`
-    })
+      const date = new Date();
+      return `${date.getDate()} ${dates.monthNames[date.getMonth()]}`;
+    });
+
+    const icons = computed(() => {
+      return {
+        search: searchIcon,
+      };
+    });
 
     return {
-      todayDate
-    }
-  }
-}
+      todayDate,
+      icons,
+    };
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -93,11 +110,11 @@ $color-8a8aa8: #8a8aa8;
   z-index: 0;
   display: flex;
   flex-direction: column;
-  transition: all .5s;
+  transition: all 0.5s;
   .c-top-part {
     flex: 1 1;
     .c-date {
-      border-bottom: 1px solid #EFEFF6;
+      border-bottom: 1px solid #efeff6;
       font-weight: 500;
       font-size: 12px;
       color: $--b-main-black-color;
@@ -122,55 +139,35 @@ $color-8a8aa8: #8a8aa8;
     flex: 439px 1;
     display: flex;
     flex-direction: column;
-    .c-input-search {
-      position: relative;
-      width: 100%;
-      margin-bottom: 12px;
-      .c-lens-icon {
-        position: absolute;
-        right: 0;
-        top: 0;
-        height: 100%;
-        width: 37px;
-        display: flex;
-        padding: 8px;
-      }
-      input {
-        outline: none;
-        width: 100%;
-        padding: 8px 35px 8px 12px;
-        border: 1px solid #DFDEED;
-        border-radius: 6px;
-      }
-    }
     .c-friends-side-block {
       height: 100%;
-      .c-user-card { 
+      margin-top: 12px;
+      .c-user-card {
         display: flex;
         padding-top: 10px;
         padding-right: 10px;
         padding-bottom: 10px;
         cursor: pointer;
         &.active {
-          transition: all .3s;
+          transition: all 0.3s;
           padding-left: 10px;
-          background: #F9F9FC;
-          border-left: 2px solid #D62953;
+          background: #f9f9fc;
+          border-left: 2px solid #d62953;
         }
-        .avatar { 
+        .avatar {
           margin-right: 12px;
         }
-        .text-block { 
-          .name { 
+        .text-block {
+          .name {
             font-weight: 600;
             font-size: 14px;
             color: $--b-main-black-color;
           }
-          .position { 
+          .position {
             font-weight: 500;
             font-size: 12px;
             line-height: 20px;
-            color: #8A8AA8;
+            color: #8a8aa8;
           }
         }
       }
