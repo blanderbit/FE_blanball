@@ -39,7 +39,7 @@ import { computed } from 'vue';
 
 import StarRating from 'vue-star-rating';
 
-import CONSTS from '../../../consts';
+import { CONSTS } from '../../../consts';
 
 export default {
   components: {

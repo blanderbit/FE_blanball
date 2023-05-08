@@ -169,7 +169,7 @@ import radioButton from '../../shared/radioButton/RadioButton.vue';
 import PositionMap from '../../maps/PositionMap.vue';
 import EventCreatePositionMap from './modals/EventCreatePositionMapModal.vue';
 
-import CONSTANTS from '../../../consts/index';
+import { CONSTS } from '../../../consts/index';
 
 import CalendarPic from '../../../assets/img/calendar.svg';
 import WatchPic from '../../../assets/img/watch.svg';
@@ -289,7 +289,7 @@ export default {
     });
     const mockData = computed(() => {
       return {
-        typeOfSportDropdown: CONSTANTS.manage_event.type_of_sport_dropdown,
+        typeOfSportDropdown: CONSTS.manage_event.type_of_sport_dropdown,
       };
     });
 

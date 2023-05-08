@@ -79,7 +79,7 @@ import dropdown from '../../shared/dropdown/Dropdown.vue';
 import MainInput from '../../shared/input/MainInput.vue';
 import StepWrapper from './StepWrapper.vue';
 
-import CONSTANTS from '../../../consts';
+import { CONSTS } from '../../../consts';
 
 import arrowRight from '../../../assets/img/arrow-right-white.svg';
 import clipIcon from '../../../assets/img/clip.svg';
@@ -107,8 +107,8 @@ export default {
     });
     const mockData = computed(() => {
       return {
-        main_lag: CONSTANTS.profile.mainLeg,
-        position: CONSTANTS.profile.position,
+        main_lag: CONSTS.profile.mainLeg,
+        position: CONSTS.profile.position,
       };
     });
     const { t } = useI18n();

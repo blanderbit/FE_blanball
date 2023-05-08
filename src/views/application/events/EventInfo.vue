@@ -313,7 +313,7 @@ import {
 } from '../../../workers/loading-worker/loading.worker';
 import { calcHeight } from '../../../utils/calcHeight';
 
-import CONSTANTS from '../../../consts/index';
+import { CONSTS } from '../../../consts/index';
 import { ROUTES } from '../../../router/router.const';
 
 import emoji_1 from '../../../assets/img/emojies/1.svg';
@@ -404,7 +404,7 @@ export default {
 
     const mockData = computed(() => {
       return {
-        tabs: CONSTANTS.event_info
+        tabs: CONSTS.event_info
           .tabs(eventData.value, userStore.user.id)
           .map((item) => ({
             ...item,
@@ -414,7 +414,7 @@ export default {
     });
 
     const eventJoinToolTipItems = computed(() => {
-      return CONSTANTS.eventJoin.items;
+      return CONSTS.eventJoin.items;
     });
 
     const submitModalConfig = computed(() => {

@@ -53,7 +53,7 @@
 <script>
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import PositionMap from './maps/PositionMap.vue';
-import CONSTANTS from '../consts/index';
+import { CONSTS } from '../consts/index';
 import { useWindowWidth } from '../utils/widthScreen';
 
 export default {
@@ -87,7 +87,7 @@ export default {
     const { windowWidth, isMobileSmall, onResize } = useWindowWidth();
     const mockData = computed(() => {
       return {
-        LOGIN: CONSTANTS.register.authBlockTypes.login,
+        LOGIN: CONSTS.register.authBlockTypes.login,
       };
     });
 

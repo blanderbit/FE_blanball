@@ -78,7 +78,7 @@ import { API } from '../../../workers/api-worker/api.worker';
 import { useDevice } from 'next-vue-device-detector';
 import { useWindowWidth } from '../../../utils/widthScreen';
 
-import CONSTANTS from '../../../consts/index';
+import { CONSTS } from '../../../consts/index';
 
 import tickIcon from '../../../assets/img/tick-white.svg';
 import nikeIcon from '../../../assets/img/nike-icon.svg';
@@ -110,10 +110,10 @@ export default {
     const mockData = computed(() => {
       return {
         cities:
-          CONSTANTS.register.jsonCityRegions.find((item) =>
+          CONSTS.register.jsonCityRegions.find((item) =>
             item.name.includes(region.value)
           )?.cities || [],
-        district: CONSTANTS.register.jsonCityRegions,
+        district: CONSTS.register.jsonCityRegions,
       };
     });
     const tick = computed(() => {

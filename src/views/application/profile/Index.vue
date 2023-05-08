@@ -187,7 +187,7 @@ import { useUserDataStore } from '@/stores/userData';
 import { useWindowWidth } from '../../../utils/widthScreen';
 import { calcHeight } from '../../../utils/calcHeight';
 
-import CONSTANTS from '../../../consts';
+import { CONSTS } from '../../../consts';
 import SCHEMAS from '../../../validators/schemas';
 import {
   finishSpinner,
@@ -249,10 +249,10 @@ export default {
 
     const mockData = computed(() => {
       return {
-        user_info: CONSTANTS.users_page.userInfo,
-        tabs: CONSTANTS.profile.tabs,
-        monthFromNumber: CONSTANTS.users_page.months.monthFromNumber,
-        numberFromMonth: CONSTANTS.users_page.months.numberFromMonth,
+        user_info: CONSTS.users_page.userInfo,
+        tabs: CONSTS.profile.tabs,
+        monthFromNumber: CONSTS.users_page.months.monthFromNumber,
+        numberFromMonth: CONSTS.users_page.months.numberFromMonth,
       };
     });
 

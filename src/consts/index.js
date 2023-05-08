@@ -12,8 +12,9 @@ import Sidebar from './sidebar';
 import EventJoin from './event-join'
 import Policy from './policy';
 import Storages from './storages';
+import Scheduler from './scheduler';
 
-export default {
+export const CONSTS = {
   users_page: UsersPage,
   star_style: starStyle,
   register: Register,
@@ -27,5 +28,6 @@ export default {
   sidebar: Sidebar,
   eventJoin: EventJoin,
   policy: Policy,
-  storages: Storages
+  storages: Storages,
+  scheduler: Scheduler,
 };

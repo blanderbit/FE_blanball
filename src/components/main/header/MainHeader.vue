@@ -59,7 +59,7 @@ import MainInput from '../../shared/input/MainInput.vue';
 import SearchModal from '../../shared/modals/SearchModal.vue';
 import SearchBlockAll from '../../SearchBlockAll.vue';
 
-import CONSTANTS from '../../../consts/index';
+import { CONSTS } from '../../../consts/index';
 import { ROUTES } from '../../../router/router.const';
 import { API } from '../../../workers/api-worker/api.worker';
 
@@ -128,7 +128,7 @@ export default {
 
     const mockData = computed(() => {
       return {
-        tags: CONSTANTS.manage_event.tags,
+        tags: CONSTS.manage_event.tags,
       };
     });
 

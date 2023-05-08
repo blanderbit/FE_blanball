@@ -244,7 +244,7 @@ import { startSpinner, finishSpinner } from '../../workers/loading-worker/loadin
 import { calcHeight } from '../../utils/calcHeight';
 
 import { ROUTES } from '../../router/router.const';
-import CONSTANTS from '../../consts';
+import { CONSTS } from '../../consts';
 
 import sidebarArrowBack from '../../assets/img/sidebar-arrow-back.svg';
 import sidebarArrow from '../../assets/img/sidebar-arrow.svg';
@@ -340,7 +340,7 @@ export default {
 
     const mockData = computed(() => {
       return {
-        menu_text: CONSTANTS.sidebar.menu_text,
+        menu_text: CONSTS.sidebar.menu_text,
       };
     });
 

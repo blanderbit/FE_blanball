@@ -1,5 +1,14 @@
 <template>
   <div @click.self="$emit('closeWindow')" class="c-scheduler-wrapper">
+    <ContextModal
+      v-if="isContextMenuActive"
+      :clientX="contextMenuX"
+      :clientY="contextMenuY"
+      :modalItems="mockData.contextMenuItems"
+      @closeModal="closeContextMenu"
+      @itemClick="contextMenuItemClick"
+    />
+
     <div class="c-common-block">
       <!-- Sidebar Slot -->
       <slot
@@ -87,7 +96,10 @@
 <script>
 import { computed, ref } from 'vue';
 import VueCal from 'vue-cal';
-import ContextMenu from '@imengyu/vue3-context-menu';
+
+import ContextModal from '../../shared/modals/ContextModal.vue';
+
+import { CONSTS } from '../../../consts';
 
 import 'vue-cal/dist/vuecal.css';
 
@@ -95,6 +107,7 @@ export default {
   name: 'VueScheduler',
   components: {
     VueCal,
+    ContextModal,
   },
   props: {
     config: {
@@ -113,13 +126,36 @@ export default {
     const otherEventsDotColor = ref(
       props.config.otherEventsDotColor || '#D62953'
     );
-
     const schedulerLocale = ref('uk');
+
+    const isContextMenuActive = ref(false);
+    const contextMenuX = ref(null);
+    const contextMenuY = ref(null);
 
     const allUsers = ref(props.config.users);
     const minUsers = computed(() => {
       return allUsers.value.filter((item, idx) => idx < 4);
     });
+
+    const mockData = computed(() => {
+      return {
+        contextMenuItems: CONSTS.scheduler.contextMenuItems,
+      };
+    });
+
+    function openContextMenu(e) {
+      contextMenuX.value = e.clientX;
+      contextMenuY.value = e.clientY;
+      isContextMenuActive.value = true;
+    }
+
+    function closeContextMenu() {
+      isContextMenuActive.value = false;
+    }
+
+    function contextMenuItemClick(itemType) {
+      console.log(itemType);
+    }
 
     function friendsBlockSwitcher() {
       isFriendsVisible.value = !isFriendsVisible.value;
@@ -146,14 +182,6 @@ export default {
         currentCellMonth.value === +val.split('-')[2]
       );
     }
-    function openContextMenu(e) {
-      e.preventDefault();
-      ContextMenu.showContextMenu({
-        x: e.x,
-        y: e.y,
-        items: props.config?.contextMenu,
-      });
-    }
 
     return {
       allUsers,
@@ -163,13 +191,19 @@ export default {
       currentCellDay,
       currentCellMonth,
       schedulerLocale,
+      mockData,
       currentEvent,
+      isContextMenuActive,
+      contextMenuY,
+      contextMenuX,
       myEventsDotColor,
       otherEventsDotColor,
+      closeContextMenu,
+      contextMenuItemClick,
+      openContextMenu,
       friendsBlockSwitcher,
       mouseOverCell,
       mouseLeaveCell,
-      openContextMenu,
       activateUser,
       removeYearFromDate,
       showCornerThreeDots,

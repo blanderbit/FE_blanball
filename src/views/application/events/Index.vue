@@ -148,7 +148,7 @@ import {
 import { useUserDataStore } from '../../../stores/userData';
 
 import { ROUTES } from '../../../router/router.const';
-import CONSTANTS from '../../../consts/index';
+import { CONSTS } from '../../../consts/index';
 
 import Plus from '../../../assets/img/plus.svg';
 
@@ -196,14 +196,14 @@ export default {
     const userStore = useUserDataStore();
 
     const eventJoinToolTipItems = computed(() => {
-      return CONSTANTS.eventJoin.items;
+      return CONSTS.eventJoin.items;
     });
 
     const mockData = computed(() => {
       return {
-        event_cards: CONSTANTS.event_page.event_cards,
-        sport_type_dropdown: CONSTANTS.event_page.sport_type_dropdown,
-        gender_dropdown: CONSTANTS.event_page.gender_dropdown,
+        event_cards: CONSTS.event_page.event_cards,
+        sport_type_dropdown: CONSTS.event_page.sport_type_dropdown,
+        gender_dropdown: CONSTS.event_page.gender_dropdown,
       };
     });
     const iconPlus = computed(() => Plus);

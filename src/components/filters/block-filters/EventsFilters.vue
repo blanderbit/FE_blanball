@@ -205,7 +205,7 @@ import { TransformedFiltersWorker } from './transformed.filters.worker';
 import { useWindowWidth } from '../../../utils/widthScreen';
 import useTodaysDate from '../../../utils/todaysDate';
 
-import CONSTANTS from '../../../consts';
+import { CONSTS } from '../../../consts';
 
 import MaleIcon from '../../../assets/img/female-icon.svg';
 import FemaleIcon from '../../../assets/img/male-icon.svg';
@@ -273,7 +273,7 @@ export default {
         ? { title: 'Cпочатку нові', icon: arrowsUpIcon }
         : { title: 'Cпочатку старі', icon: arrowsDownIcon };
     });
-    const gender = computed(() => CONSTANTS.users_page.gender);
+    const gender = computed(() => CONSTS.users_page.gender);
 
     const { activeFilters, updateRealData, transformedFilters } =
       TransformedFiltersWorker({
@@ -327,9 +327,9 @@ export default {
         }
       });
 
-    const sportTypeDropdown = CONSTANTS.event_page.sport_type_dropdown;
-    const genderDropdown = CONSTANTS.event_page.gender_dropdown;
-    const statusDropdown = CONSTANTS.event_page.status_ropdown;
+    const sportTypeDropdown = CONSTS.event_page.sport_type_dropdown;
+    const genderDropdown = CONSTS.event_page.gender_dropdown;
+    const statusDropdown = CONSTS.event_page.status_ropdown;
 
     const filterStatus = computed(() => {
       return !!(

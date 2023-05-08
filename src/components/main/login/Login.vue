@@ -92,7 +92,7 @@ import { accessToken, refreshToken } from '../../../workers/token-worker';
 import { startSpinner , finishSpinner} from '../../../workers/loading-worker/loading.worker';
 
 import { ROUTES } from '../../../router/router.const';
-import CONSTS from '../../../consts';
+import { CONSTS } from '../../../consts';
 import SCHEMAS from '../../../validators/schemas';
 
 export default {

@@ -333,7 +333,7 @@ import dropdown from '../../shared/dropdown/Dropdown.vue';
 import userAvatar from '../../shared/userAvatar/UserAvatar.vue';
 import RatingCard from './RatingCard.vue';
 
-import CONSTANTS from '../../../consts';
+import { CONSTS } from '../../../consts';
 import { useWindowWidth } from '../../../utils/widthScreen';
 
 import sortArrowHorizontally from '../../../assets/img/sort-arrows-horizontal.svg';
@@ -411,17 +411,17 @@ export default {
 
     const mockData = computed(() => {
       return {
-        monthFromNumber: CONSTANTS.users_page.months.monthFromNumber,
-        numberFromMonth: CONSTANTS.users_page.months.numberFromMonth,
-        tabTitles: CONSTANTS.profile.tabTitles,
-        labels: CONSTANTS.profile.labels,
-        days: CONSTANTS.dates.days,
-        months: CONSTANTS.dates.months,
-        years: CONSTANTS.dates.years,
-        mainLag: CONSTANTS.profile.mainLeg,
-        cities: CONSTANTS.profile.cities,
-        district: CONSTANTS.profile.district,
-        position: CONSTANTS.profile.position,
+        monthFromNumber: CONSTS.users_page.months.monthFromNumber,
+        numberFromMonth: CONSTS.users_page.months.numberFromMonth,
+        tabTitles: CONSTS.profile.tabTitles,
+        labels: CONSTS.profile.labels,
+        days: CONSTS.dates.days,
+        months: CONSTS.dates.months,
+        years: CONSTS.dates.years,
+        mainLag: CONSTS.profile.mainLeg,
+        cities: CONSTS.profile.cities,
+        district: CONSTS.profile.district,
+        position: CONSTS.profile.position,
       };
     });
 
