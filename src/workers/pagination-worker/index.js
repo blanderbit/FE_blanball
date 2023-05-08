@@ -1,8 +1,12 @@
 import { ref } from 'vue';
 
 export const PaginationWorker = (options) => {
-  const { paginationDataRequest, dataTransformation, beforeConcat } =
-    options || {};
+  const {
+    paginationDataRequest,
+    dataTransformation,
+    beforeConcat,
+    notToConcatElements,
+  } = options || {};
 
   const paginationElements = ref([]);
   const paginationPage = ref(0);
@@ -33,16 +37,23 @@ export const PaginationWorker = (options) => {
     functionsResults.value = [];
     const functionResult = paginationDataRequest(pageNumber)
       .then((result) => {
+        if (!result.data) {
+          result.data = result;
+        }
+
         if (dataTransformation) {
           result.data.results = result.data.results.map(dataTransformation);
         }
 
-        paginationElements.value = beforeConcat
-          ? paginationElements.value.concat(
-            beforeConcat(paginationElements.value, result.data.results)
-          )
-          : paginationElements.value.concat(result.data.results);
-
+        if (!notToConcatElements) {
+          paginationElements.value = beforeConcat
+            ? paginationElements.value.concat(
+                beforeConcat(paginationElements.value, result.data.results)
+              )
+            : paginationElements.value.concat(result.data.results);
+        } else {
+          paginationElements.value = result.results;
+        }
         paginationTotalCount.value = result.data.total_count;
         paginationIsNextPage.value = !!result.data.next;
 

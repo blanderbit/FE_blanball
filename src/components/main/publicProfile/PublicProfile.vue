@@ -579,6 +579,10 @@ $color-d2f6a2: #d2f6a2;
     position: relative;
     z-index: 2;
 
+    @include beforeDesktop {
+      z-index: inherit;
+    }
+
     @media (max-width: 1200px) {
       padding: 40px 20px;
     }

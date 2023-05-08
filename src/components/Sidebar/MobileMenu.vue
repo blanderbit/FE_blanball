@@ -534,8 +534,8 @@ export default {
 
     const mobileMenuTopSideHeightConfig = ref({
       default: [60, 32, 48, 16],
-      mobile: [selectedList.value.length ? 60 : 0],
-      tablet: [selectedList.value.length ? 60 : 0],
+      mobile: [selectedList.value.length ? 10 : 0],
+      tablet: [selectedList.value.length ? 50 : 0],
     });
 
     const {
@@ -553,10 +553,10 @@ export default {
     watchEffect(
       () => {
         if (selectedList.value.length >= 0 && minussedHeight.value <= 0) {
-          minusHeight(60);
+          minusHeight(50);
         }
         if (selectedList.value.length === 0) {
-          plusHeight(60);
+          plusHeight(50);
           selectable.value = false;
         }
       },

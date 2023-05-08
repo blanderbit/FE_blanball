@@ -17,12 +17,8 @@
 
 <script>
 import { computed } from 'vue';
-import loader from '../loader/Loader.vue';
 
 export default {
-  components: {
-    loader,
-  },
   props: {
     text: {
       type: String,

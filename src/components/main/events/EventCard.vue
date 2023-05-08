@@ -27,6 +27,7 @@
     </div>
     <PlaceDetectorModal
       class="event-place"
+      :disabled="disabledMap"
       v-if="card.place.place_name"
       :place="card.place"
     >
@@ -108,6 +109,10 @@ export default {
     card: {
       type: Object,
       default: () => {},
+    },
+    disabledMap: {
+      type: Boolean,
+      default: false,
     },
   },
   components: {

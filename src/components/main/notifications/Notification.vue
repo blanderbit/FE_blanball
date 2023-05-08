@@ -474,42 +474,6 @@ $color-000: #000;
   .notification-content {
     color: $--b-main-gray-color;
   }
-
-  :deep {
-    .spiner-text {
-      display: none;
-    }
-
-    .spiner-wrapper {
-      background: rgba(239, 239, 246, 0.38);
-      width: 100%;
-      position: absolute;
-      left: 0;
-      top: 0;
-    }
-
-    .spiner-wrapper .spiner-body {
-      box-shadow: none;
-      background: transparent;
-      height: 100%;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-
-      .spiner {
-        .lds-ring,
-        .lds-ring div {
-          width: 50px;
-          height: 50px;
-        }
-
-        .lds-ring div {
-          border-color: $--b-main-gray-color transparent transparent transparent;
-        }
-      }
-    }
-  }
 }
 
 .notification-response {

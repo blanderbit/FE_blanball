@@ -57,7 +57,7 @@
             ></button-details-filters>
           </div>
         </div>
-        <div class="b-main-search__second-line" v-if="activeFilters">
+        <div class="b-main-search__second-line" v-show="activeFilters">
           <div class="b-main-search__left-side">
             <div class="b-users-filters__age-filter-wrap">
               <RangeFilter

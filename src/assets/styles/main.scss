@@ -135,3 +135,12 @@ input[type='password']::-ms-reveal {
 .hue-bar {
   position: relative;
 }
+
+.resize-observer {
+  height: 1px !important;
+  width: 1px !important;
+  object {
+    height: 1px !important;
+    width: 1px !important;
+  }
+}
