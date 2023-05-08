@@ -111,7 +111,7 @@ $color-8a8aa8: #8a8aa8;
       span {
         font-weight: 400;
         font-size: 12px;
-        color: $--b-main-green-color;
+        color: $--b-main-gray-color;
         margin-right: 9px;
       }
     }

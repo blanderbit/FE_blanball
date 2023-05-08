@@ -25,14 +25,13 @@
         </div>
         <div class="c-scheduler-block">
           <vue-cal
-            selected-date="2023-03-19"
             xsmall
             :time-from="10 * 60"
             :disable-views="['day', 'year', 'years']"
             events-count-on-year-view
             active-view="month"
             :events="currentEvent"
-            locale="uk"
+            :locale="schedulerLocale"
           >
             <template #title="{ title }">
               <div class="c-title">
@@ -58,8 +57,8 @@
                 >
                   <div v-for="i in 3" :key="i" class="c-menu-dots"></div>
                 </div>
-                <div>
-                  {{ cell.content }}
+                <div class="c-cell-number">
+                  <span>{{ cell.content }}</span>
                 </div>
                 <div class="c-event-dots">
                   <div class="c-myevents-cover">
@@ -115,6 +114,8 @@ export default {
       props.config.otherEventsDotColor || '#D62953'
     );
 
+    const schedulerLocale = ref('uk');
+
     const allUsers = ref(props.config.users);
     const minUsers = computed(() => {
       return allUsers.value.filter((item, idx) => idx < 4);
@@ -161,6 +162,7 @@ export default {
       isThreeDotsShown,
       currentCellDay,
       currentCellMonth,
+      schedulerLocale,
       currentEvent,
       myEventsDotColor,
       otherEventsDotColor,
@@ -223,6 +225,20 @@ $color-e9fcfb: #e9fcfb;
         height: 644px;
         box-shadow: none;
         &::v-deep {
+          .vuecal__cell--today {
+            background: transparent;
+
+            .c-cell-wrapper {
+              .c-cell-number {
+                span {
+                  background: $--b-main-green-color;
+                  border-radius: 4px;
+                  padding: 0px 10px;
+                  color: $--b-main-white-color;
+                }
+              }
+            }
+          }
           .vuecal {
             box-shadow: none;
             .vuecal__header {
@@ -236,7 +252,7 @@ $color-e9fcfb: #e9fcfb;
                 .c-title {
                   font-weight: 500;
                   font-size: 12px;
-                  color: $--b-main-green-color;
+                  color: $--b-main-black-color;
                 }
               }
               .vuecal__menu {
