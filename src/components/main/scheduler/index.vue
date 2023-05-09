@@ -13,10 +13,8 @@
       <!-- Sidebar Slot -->
       <slot
         name="LeftSidebar"
-        :allUsers="allUsers"
         :isFriendsVisible="isFriendsVisible"
         :friendsBlockSwitcher="friendsBlockSwitcher"
-        :activateUser="activateUser"
       ></slot>
       <!-- Sidebar Slot -->
       <div class="c-right-block">
@@ -24,8 +22,6 @@
           <slot
             name="TopFriendsBlock"
             :isFriendsVisible="isFriendsVisible"
-            :minUsers="minUsers"
-            :usersNumber="config.users.length"
             :friendsBlockSwitcher="friendsBlockSwitcher"
           ></slot>
           <div class="c-hide-btn" @click="$emit('closeWindow')">
@@ -33,14 +29,40 @@
           </div>
         </div>
         <div class="c-scheduler-block">
+          <VueInlineCalendar
+            v-if="inlineCalendarConfig.visible"
+            :enableMousewheelScroll="
+              inlineCalendarConfig.enableMousewheelScroll
+            "
+            v-model:selectedDate="inlineCalendarConfig.selectedDate"
+            :specMinDate="inlineCalendarConfig.specMinDate"
+            :specMaxDate="inlineCalendarConfig.specMaxDate"
+            :showYear="inlineCalendarConfig.showYear"
+            :showMonth="inlineCalendarConfig.showMonth"
+            :itemWidth="inlineCalendarConfig.itemWidth"
+            :locale="inlineCalendarConfig.locale"
+            :showButtons="inlineCalendarConfig.showButtons"
+            :disablePastDays="inlineCalendarConfig.disablePastDays"
+          >
+            <template #prev-button>
+              <img src="../../../assets/img/scheduler/arrow-left.svg" alt="" />
+            </template>
+            <template #next-button>
+              <img src="../../../assets/img/scheduler/arrow-right.svg" alt="" />
+            </template>
+          </VueInlineCalendar>
           <vue-cal
-            xsmall
-            :time-from="10 * 60"
-            :disable-views="['day', 'year', 'years']"
-            events-count-on-year-view
-            active-view="month"
-            :events="currentEvent"
-            :locale="schedulerLocale"
+            :small="schedulerConfig.small"
+            :xsmall="schedulerConfig.xsmall"
+            :time="schedulerConfig.time"
+            :hide-view-selector="schedulerConfig.hideViewSelector"
+            :hide-title-bar="schedulerConfig.hideTitleBar"
+            :hide-body="schedulerConfig.hideBody"
+            v-model:active-view="schedulerConfig.activeView"
+            :events-count-on-year-view="schedulerConfig.eventsCountOnYearView"
+            :locale="schedulerConfig.locale"
+            :disable-views="schedulerConfig.disableViews"
+            :selected-date="schedulerConfig.selectedDate"
           >
             <template #title="{ title }">
               <div class="c-title">
@@ -70,19 +92,15 @@
                   <span v-if="cell.content">{{ cell.content }}</span>
                 </div>
                 <div class="c-event-dots">
-                  <div class="c-myevents-cover">
-                    <slot
-                      name="MyEventDots"
-                      :events="events"
-                      :bgColor="myEventsDotColor"
-                    ></slot>
-                  </div>
-                  <div class="c-otherevents-cover">
-                    <slot
-                      name="OtherEventDots"
-                      :bgColor="otherEventsDotColor"
-                    ></slot>
-                  </div>
+                  <slot
+                    name="dots"
+                    :dotsData="
+                      scheduledEventsDotsData &&
+                      scheduledEventsDotsData[cell.formattedDate]
+                    "
+                    :myEventsDotsColor="myEventsDotsColor"
+                    :participationEventsDotsColor="participationEventsDotsColor"
+                  ></slot>
                 </div>
               </div>
             </template>
@@ -94,20 +112,37 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import VueCal from 'vue-cal';
+import VueInlineCalendar from '../inlineCalendar/index.vue';
 
 import ContextModal from '../../shared/modals/ContextModal.vue';
+
+import { API } from '../../../workers/api-worker/api.worker';
+import { useUserDataStore } from '../../../stores/userData';
+import {
+  startSpinner,
+  finishSpinner,
+} from '../../../workers/loading-worker/loading.worker';
 
 import { CONSTS } from '../../../consts';
 
 import 'vue-cal/dist/vuecal.css';
+
+const SCHEDULER_ACTIVE_VIEWS = {
+  DAY: 'day',
+  WEEK: 'week',
+  MONTH: 'month',
+  YEAR: 'year',
+  YEARS: 'years',
+};
 
 export default {
   name: 'VueScheduler',
   components: {
     VueCal,
     ContextModal,
+    VueInlineCalendar,
   },
   props: {
     config: {
@@ -121,26 +156,74 @@ export default {
     const isThreeDotsShown = ref(false);
     const currentCellDay = ref('');
     const currentCellMonth = ref('');
-    const currentEvent = ref(props.config.users[0].events);
-    const myEventsDotColor = ref(props.config.myEventsDotColor || '#148581');
-    const otherEventsDotColor = ref(
+    const scheduledEventsDotsData = ref({});
+    const myEventsDotsColor = ref(props.config.myEventsDotColor || '#148581');
+    const participationEventsDotsColor = ref(
       props.config.otherEventsDotColor || '#D62953'
     );
-    const schedulerLocale = ref('uk');
+    const userStore = useUserDataStore();
 
     const isContextMenuActive = ref(false);
     const contextMenuX = ref(null);
     const contextMenuY = ref(null);
 
-    const allUsers = ref(props.config.users);
-    const minUsers = computed(() => {
-      return allUsers.value.filter((item, idx) => idx < 4);
-    });
-
     const mockData = computed(() => {
       return {
         contextMenuItems: CONSTS.scheduler.contextMenuItems,
       };
+    });
+
+    const inlineCalendarConfig = ref({
+      visible: false,
+      enableMousewheelScroll: true,
+      selectedDate: new Date(),
+      specMinDate: new Date(),
+      specMaxDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
+      showYear: false,
+      showMonth: false,
+      itemWidth: 46,
+      locale: 'uk',
+      showButtons: false,
+      disablePastDays: true,
+    });
+
+    const schedulerConfig = ref({
+      small: false,
+      xsmall: true,
+      time: false,
+      hideViewSelector: true,
+      hideTitleBar: false,
+      hideBody: false,
+      activeView: SCHEDULER_ACTIVE_VIEWS.MONTH,
+      eventsCountOnYearView: false,
+      locale: 'uk',
+      disableViews: [
+        SCHEDULER_ACTIVE_VIEWS.WEEK,
+        SCHEDULER_ACTIVE_VIEWS.YEAR,
+        SCHEDULER_ACTIVE_VIEWS.YEAR,
+      ],
+      selectedDate: '',
+    });
+
+    watchEffect(() => {
+      switch (schedulerConfig.value.activeView) {
+        case SCHEDULER_ACTIVE_VIEWS.MONTH: {
+          schedulerConfig.value.small = false;
+          schedulerConfig.value.xsmall = true;
+          schedulerConfig.value.hideBody = false;
+          schedulerConfig.value.hideTitleBar = false;
+          inlineCalendarConfig.value.visible = false;
+          break;
+        }
+        case SCHEDULER_ACTIVE_VIEWS.DAY: {
+          schedulerConfig.value.small = true;
+          schedulerConfig.value.xsmall = false;
+          schedulerConfig.value.hideBody = true;
+          schedulerConfig.value.hideTitleBar = true;
+          inlineCalendarConfig.value.visible = true;
+          break;
+        }
+      }
     });
 
     function openContextMenu(e) {
@@ -151,6 +234,17 @@ export default {
 
     function closeContextMenu() {
       isContextMenuActive.value = false;
+    }
+
+    async function getScheduledEventsDotsData(userId, startDate, finishDate) {
+      startSpinner();
+      const response = await API.SchedulerService.getScheduledEventsData({
+        user_id: userId,
+        start_date: startDate,
+        finish_date: finishDate,
+      });
+      scheduledEventsDotsData.value = response.data;
+      finishSpinner();
     }
 
     function contextMenuItemClick(itemType) {
@@ -168,11 +262,6 @@ export default {
       currentCellDay.value = '';
       currentCellMonth.value = '';
     }
-    function activateUser(id) {
-      allUsers.value.map((item) => (item.isActive = false));
-      allUsers.value.find((item) => item.id === id).isActive = true;
-      currentEvent.value = props.config.users[id].events;
-    }
     function removeYearFromDate(title) {
       return title.split(' ')[0];
     }
@@ -183,28 +272,28 @@ export default {
       );
     }
 
+    getScheduledEventsDotsData(userStore.user.id, '2023-01-01', '2024-12-12');
+
     return {
-      allUsers,
-      minUsers,
       isFriendsVisible,
       isThreeDotsShown,
       currentCellDay,
       currentCellMonth,
-      schedulerLocale,
+      schedulerConfig,
       mockData,
-      currentEvent,
+      scheduledEventsDotsData,
       isContextMenuActive,
       contextMenuY,
       contextMenuX,
-      myEventsDotColor,
-      otherEventsDotColor,
+      myEventsDotsColor,
+      inlineCalendarConfig,
+      participationEventsDotsColor,
       closeContextMenu,
       contextMenuItemClick,
       openContextMenu,
       friendsBlockSwitcher,
       mouseOverCell,
       mouseLeaveCell,
-      activateUser,
       removeYearFromDate,
       showCornerThreeDots,
     };
@@ -216,12 +305,7 @@ export default {
 $color-efeff6: #efeff6;
 $color-bef0ef: #bef0ef;
 $color-e9fcfb: #e9fcfb;
-* {
-  box-sizing: border-box;
-}
-.mx-context-menu {
-  background: red;
-}
+
 .c-scheduler-wrapper {
   @include modal-wrapper;
   display: flex;
@@ -243,7 +327,6 @@ $color-e9fcfb: #e9fcfb;
       z-index: 1;
       background: $--b-main-white-color;
       .c-friends-line {
-        border-bottom: 1px solid $color-efeff6;
         padding-bottom: 14px;
         height: 51px;
         position: relative;
@@ -341,13 +424,7 @@ $color-e9fcfb: #e9fcfb;
                       display: flex;
                       flex-direction: column;
                       align-items: center;
-                      .c-myevents-cover {
-                        display: flex;
-                      }
-                      .c-otherevents-cover {
-                        margin-top: 10px;
-                        display: flex;
-                      }
+                      display: flex;
                     }
                   }
                 }

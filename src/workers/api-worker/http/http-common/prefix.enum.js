@@ -74,4 +74,7 @@ export const EndpointsEnum = {
   BugReports: {
     CreateBugReport: '/bugs/client/create/bug',
   },
+  Scheduler: {
+    GetScheduledEventsData: '/scheduler/client/user/scheduler/events'
+  }
 };

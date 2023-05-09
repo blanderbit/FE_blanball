@@ -30,7 +30,7 @@
           <main-header
             :isSchedulerOpened="isSchedulerOpened"
             @menu-icon-click="openMobileMenu"
-            @openСloseScheduler="openСloseScheduler"
+            @openCloseScheduler="openCloseScheduler"
           />
           <router-view />
         </div>
@@ -56,22 +56,13 @@
     <Transition name="scheduler">
       <Scheduler
         v-if="isSchedulerOpened"
-        :config="config"
+        :config="schedulerConfig"
         @closeWindow="isSchedulerOpened = false"
       >
-        <template
-          #LeftSidebar="{
-            allUsers,
-            isFriendsVisible,
-            friendsBlockSwitcher,
-            activateUser,
-          }"
-        >
+        <template #LeftSidebar="{ isFriendsVisible, friendsBlockSwitcher }">
           <LeftSidebar
-            :users="allUsers"
             :is-friends-visible="isFriendsVisible"
             @friendsBlockSwitcher="friendsBlockSwitcher"
-            @activateUser="activateUser"
           />
         </template>
         <template
@@ -89,21 +80,25 @@
             :friendsBlockSwitcher="friendsBlockSwitcher"
           />
         </template>
-        <template #MyEventDots="{ events, bgColor }">
-          <div
-            v-for="event in events"
-            :key="event._eid"
-            class="c-myevents-dot"
-            :style="{ background: bgColor }"
-          ></div>
-        </template>
-        <template #OtherEventDots="{ bgColor }">
-          <div
-            v-for="i in 3"
-            :key="i"
-            class="c-otherevents-dot"
-            :style="{ background: bgColor }"
-          ></div>
+        <template
+          #dots="{ dotsData, myEventsDotsColor, participationEventsDotsColor }"
+        >
+          <div class="c-scheduled-events__dots">
+            <div
+              v-for="dot in dotsData?.user_author_events_count"
+              class="c-scheduled-events__dot"
+              :key="dot.id"
+              :style="`background: ${myEventsDotsColor}`"
+            ></div>
+          </div>
+          <div class="c-scheduled-events__dots">
+            <div
+              v-for="dot in dotsData?.user_participation_events_count"
+              class="c-scheduled-events__dot"
+              :key="dot.id"
+              :style="`background: ${participationEventsDotsColor}`"
+            ></div>
+          </div>
         </template>
       </Scheduler>
     </Transition>
@@ -146,12 +141,6 @@ import EventCreatedIcon from '../../assets/img/event-creted-modal-icon.svg';
 
 import notification_audio from '../../assets/audio/notification-audio.mp3';
 
-import User_1 from '../../assets/img/scheduler/user-1.svg';
-import User_2 from '../../assets/img/scheduler/user-2.svg';
-import User_3 from '../../assets/img/scheduler/user-3.svg';
-import User_4 from '../../assets/img/scheduler/user-4.svg';
-import User_5 from '../../assets/img/scheduler/user-5.svg';
-
 const isVerifyModalActive = ref(false);
 const isCreateReviewModalActive = ref(false);
 const endedEventData = ref({});
@@ -189,7 +178,7 @@ const emailVerified = () => {
       user: res.data,
     });
   });
-  BlanballEventBus.emit('emailVerified')
+  BlanballEventBus.emit('emailVerified');
 };
 
 const openEventReviewModal = () => {
@@ -228,7 +217,6 @@ BlanballEventBus.on('EventUpdated', () => {
 const emojiSelection = (emoji) => {
   for (let i = 0; i < selectedEmojies.value.length; i++) {
     if (selectedEmojies.value[i].step === emoji.step) {
-      // Update the existing object
       selectedEmojies.value[i] = emoji;
       return;
     }
@@ -370,7 +358,7 @@ function removePushFormActiveNotifications(notificationId) {
   }
 }
 
-function openСloseScheduler() {
+function openCloseScheduler() {
   isSchedulerOpened.value = !isSchedulerOpened.value;
 }
 
@@ -427,80 +415,10 @@ onBeforeUnmount(() => {
 });
 
 const isSchedulerOpened = ref(false);
-const avatars = [User_1, User_2, User_3, User_4, User_5];
 
-const config = ref({
+const schedulerConfig = ref({
   myEventsDotColor: '#148581',
   otherEventsDotColor: '#D62953',
-  contextMenu: [
-    {
-      label: 'Створити подію',
-      icon: 'fa fa-plus',
-      onClick: () => {
-        alert('You click a menu item');
-      },
-    },
-    {
-      label: 'Зайнятість інших',
-      icon: 'fa fa-running',
-      onClick: () => {
-        alert('You click a menu item');
-      },
-    },
-  ],
-  users: Array.from({ length: 5 }, (_, i) => {
-    return {
-      id: i,
-      name: 'Хамон Бибулишвили',
-      role: 'Стрыбунэць',
-      img: avatars[i],
-      isActive: i === 0 ? true : false,
-      events: [
-        {
-          start: `2023-03-${i + 12} 19:00`,
-          end: `2023-03-${i + 12} 20:00`,
-          title: 'Need to drink pivasik',
-          content: 'Buhlishko is very good',
-          contentFull: 'Жигулевское самое лучшее',
-          class: 'drink party',
-        },
-        {
-          start: `2023-03-${i + 15} 19:00`,
-          end: `2023-03-${i + 15} 20:00`,
-          title: 'Need to drink pivasik',
-          content: 'Buhlishko is very good',
-          contentFull: 'Жигулевское самое лучшее',
-          class: 'drink party',
-        },
-        {
-          start: `2023-03-${i + 19} 14:00`,
-          end: `2023-03-${i + 19} 18:00`,
-          title: 'Need to go shopping',
-          content: 'Click to see my shopping list',
-          contentFull:
-            'My shopping list is rather long:<br><ul><li>Avocados</li><li>Tomatoes</li><li>Potatoes</li><li>Mangoes</li></ul>', // Custom attribute.
-          class: 'leisure',
-        },
-        {
-          start: `2023-03-${i + 24} 10:00`,
-          end: `2023-03-${i + 24} 15:00`,
-          title: 'Golf with John',
-          content: 'Do I need to tell how many holes?',
-          contentFull: 'Okay.<br>It will be a 18 hole golf course.',
-          class: 'sport',
-        },
-        {
-          start: `2023-03-${i + 24} 14:00`,
-          end: `2023-03-${i + 24} 18:00`,
-          title: 'Need to go shopping',
-          content: 'Click to see my shopping list',
-          contentFull:
-            'My shopping list is rather long:<br><ul><li>Avocados</li><li>Tomatoes</li><li>Potatoes</li><li>Mangoes</li></ul>', // Custom attribute.
-          class: 'leisure',
-        },
-      ],
-    };
-  }),
 });
 </script>
 
@@ -588,16 +506,12 @@ html {
   }
 }
 
-.c-myevents-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  margin-right: 4px;
-  &:last-child {
-    margin-right: 0;
-  }
+.c-scheduled-events__dots {
+  display: flex;
+  align-items: center;
 }
-.c-otherevents-dot {
+
+.c-scheduled-events__dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
