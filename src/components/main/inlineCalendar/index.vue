@@ -485,7 +485,8 @@ export default {
         line-height: 20px;
         text-align: center;
         margin: 0px;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
+        margin-top: 5px;
       }
     }
     &.in-range {
@@ -539,7 +540,8 @@ export default {
     line-height: 20px;
     text-align: center;
     margin: 0px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    margin-top: 5px;
   }
   &__year {
     margin: 0 0 8px;

@@ -213,6 +213,10 @@ export default {
           schedulerConfig.value.hideBody = false;
           schedulerConfig.value.hideTitleBar = false;
           inlineCalendarConfig.value.visible = false;
+
+          if (isFriendsVisible.value) {
+            friendsBlockSwitcher();
+          }
           break;
         }
         case SCHEDULER_ACTIVE_VIEWS.DAY: {
@@ -221,6 +225,10 @@ export default {
           schedulerConfig.value.hideBody = true;
           schedulerConfig.value.hideTitleBar = true;
           inlineCalendarConfig.value.visible = true;
+
+          if (!isFriendsVisible.value) {
+            friendsBlockSwitcher();
+          }
           break;
         }
       }

@@ -1,21 +1,22 @@
 <template>
   <div
     class="c-left-block"
-    :style="{ 'margin-right': isFriendsVisible ? '0px' : '-260px' }"
+    :style="{ 'margin-right': isFriendsVisible ? '20px' : '-260px' }"
   >
-    <div class="c-top-part">
-      <div class="c-date">
-        {{ $t('scheduler.today-date', { todayDate: todayDate }) }}
+    <div class="c-main-side">
+      <div class="c-tabs">
+        <div
+          v-for="tab in tabs"
+          :class="['c-tab', { active: tab.id === selectedTabId }]"
+          @click="switchTab(tab.id)"
+        >
+          {{ tab.text }}
+        </div>
       </div>
-      <div class="c-hide" @click="$emit('friendsBlockSwitcher')">
-        <span> {{ $t('buttons.hide') }} </span>
-        <span>
-          <img src="../../../assets/img/scheduler/dbl-arrow.svg" alt="" />
-        </span>
-      </div>
-    </div>
-    <div class="c-bottom-part">
-      <div class="c-input-search">
+      <div
+        v-if="selectedTabId === TABS_ENUM.FRIENDS_PLANNED"
+        class="c-input-search"
+      >
         <MainInput
           :title-width="0"
           :placeholder="$t('scheduler.found-user')"
@@ -28,43 +29,27 @@
         />
       </div>
       <div class="c-friends-side-block">
-        <div class="c-friends-list">
+        <div v-if="selectedTabId === TABS_ENUM.MY_PLANNED" class="c-me-in-list">
+          <LeftSidebarUserCard
+            :userData="userStore.user"
+            :isActive="userStore.user.id === activeUserId"
+            @clickByUser="activateUser"
+          />
+        </div>
+
+        <div class="c-friends-list" v-else>
           <SmartList
             :list="paginationElements"
             ref="refList"
             v-model:scrollbar-existing="blockScrollToTopIfExist"
           >
             <template #smartListItem="slotProps">
-              <div
-                :class="[
-                  'c-freinds-list__friend',
-                  { active: slotProps.smartListItem.id === activeUserId },
-                ]"
+              <LeftSidebarUserCard
                 :key="slotProps.index"
-                @click="activateUser(slotProps.smartListItem.id)"
-              >
-                <div class="c-friend__avatar">
-                  <UserAvatar
-                    :link="slotProps.smartListItem.profile.avatar_url"
-                    :full-name="`${slotProps.smartListItem.profile.last_name} ${slotProps.smartListItem.profile.name}`"
-                    @clickByAvatar="activateUser(slotProps.smartListItem.id)"
-                  />
-                </div>
-                <div class="c-friend__main-info">
-                  <div class="c-friend__full-name">
-                    {{ slotProps.smartListItem.profile.last_name }}
-                    {{ slotProps.smartListItem.profile.name }}
-                  </div>
-                  <div class="c-friend__gaming-position">
-                    <span v-if="slotProps.smartListItem.profile.position">{{
-                      $t(
-                        `hashtags.position_full.${slotProps.smartListItem.profile.position}`
-                      )
-                    }}</span>
-                    <span v-else>----</span>
-                  </div>
-                </div>
-              </div>
+                :userData="slotProps.smartListItem"
+                :isActive="slotProps.smartListItem.id === activeUserId"
+                @clickByUser="activateUser"
+              />
             </template>
             <template #after>
               <InfiniteLoading
@@ -101,13 +86,20 @@ import SmartList from '../../../components/shared/smartList/SmartList.vue';
 import ScrollToTop from '../../ScrollToTop.vue';
 import InfiniteLoading from '../../main/infiniteLoading/InfiniteLoading.vue';
 import UserAvatar from '../../shared/userAvatar/UserAvatar.vue';
+import LeftSidebarUserCard from './LeftSidebarUserCard.vue';
 
 import { PaginationWorker } from '../../../workers/pagination-worker';
 import { API } from '../../../workers/api-worker/api.worker';
+import { useUserDataStore } from '../../../stores/userData';
 
 import dates from '../../../consts/dates';
 
 import searchIcon from '../../../assets/img/scheduler/lens.svg';
+
+const TABS_ENUM = {
+  MY_PLANNED: 1,
+  FRIENDS_PLANNED: 2,
+};
 
 export default {
   name: 'LeftSidebar',
@@ -126,6 +118,7 @@ export default {
     MainInput,
     SmartList,
     ScrollToTop,
+    LeftSidebarUserCard,
     InfiniteLoading,
   },
   emits: ['friendsBlockSwitcher'],
@@ -133,8 +126,23 @@ export default {
     const refList = ref();
     const blockScrollToTopIfExist = ref(false);
     const triggerForRestart = ref(false);
-    const activeUserId = ref(0);
     const searchFriendsValue = ref('');
+    const selectedTabId = ref(TABS_ENUM.MY_PLANNED);
+    const userStore = useUserDataStore();
+    const activeUserId = ref(userStore.user.id);
+
+    const tabs = computed(() => {
+      return [
+        {
+          id: TABS_ENUM.MY_PLANNED,
+          text: 'Мої заплановані',
+        },
+        {
+          id: TABS_ENUM.FRIENDS_PLANNED,
+          text: 'Зайнятість друзів',
+        },
+      ];
+    });
 
     const todayDate = computed(() => {
       const date = new Date();
@@ -146,6 +154,15 @@ export default {
         search: searchIcon,
       };
     });
+
+    const switchTab = (tabId) => {
+      if (selectedTabId.value !== tabId) {
+        selectedTabId.value = tabId;
+        if (tabId === TABS_ENUM.MY_PLANNED) {
+          activeUserId.value = userStore.user.id;
+        }
+      }
+    };
 
     const restartInfiniteScroll = () => {
       triggerForRestart.value = uuid();
@@ -209,9 +226,14 @@ export default {
       paginationPage,
       blockScrollToTopIfExist,
       activeUserId,
+      selectedTabId,
       paginationElements,
+      userStore,
+      tabs,
+      TABS_ENUM,
       searchFriendsValue,
       restartInfiniteScroll,
+      switchTab,
       activateUser,
       loadDataPaginationData,
       scrollToFirstElement: () => {
@@ -242,68 +264,45 @@ $color-8a8aa8: #8a8aa8;
   display: flex;
   flex-direction: column;
   transition: all 0.5s;
-  .c-top-part {
-    flex: 1 1;
-    .c-date {
-      border-bottom: 1px solid #efeff6;
-      font-weight: 500;
-      font-size: 12px;
-      color: $--b-main-black-color;
-      padding-top: 6px;
-      height: 51px;
-    }
-    .c-hide {
-      text-align: right;
-      padding: 20px 0px;
-      cursor: pointer;
-      span {
-        font-weight: 400;
-        font-size: 12px;
-        color: $--b-main-gray-color;
-        margin-right: 9px;
-      }
-    }
-  }
-  .c-bottom-part {
+  .c-main-side {
     padding-right: 16px;
-    height: 566px;
+    height: 100%;
     flex: 439px 1;
     display: flex;
     flex-direction: column;
+
+    .c-tabs {
+      background: #efeff6;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+
+      .c-tab {
+        @include inter(13px, 400, $--b-main-gray-color);
+        line-height: 20px;
+        padding: 12px 4px;
+        text-align: center;
+        cursor: pointer;
+
+        &.active {
+          background: $--b-main-white-color;
+          box-shadow: 1px 2px 5px 1px rgba(56, 56, 251, 0.08);
+          border-radius: 4px;
+          padding: 10px 4px;
+          @include inter(13px, 500);
+        }
+      }
+    }
     .c-friends-side-block {
-      height: 100%;
+      height: 600px;
       margin-top: 12px;
       overflow: hidden;
 
       .c-friends-list {
         overflow-y: scroll;
         height: 100%;
-        .c-freinds-list__friend {
-          display: flex;
-          align-items: center;
-          margin-top: 20px;
-          cursor: pointer;
-
-          &.active {
-            transition: all 0.3s;
-            padding-left: 10px;
-            background: #f9f9fc;
-            border-left: 2px solid #d62953;
-          }
-
-          .c-friend__main-info {
-            margin-left: 12px;
-            .c-friend__full-name {
-              @include inter(14px, 600);
-              line-height: 20px;
-            }
-
-            .c-friend__gaming-position {
-              @include inter(12px, 500, #8a8aa8);
-              line-height: 20px;
-            }
-          }
-        }
       }
     }
   }
