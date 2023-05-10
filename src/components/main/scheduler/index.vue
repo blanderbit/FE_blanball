@@ -42,7 +42,6 @@
             :itemWidth="inlineCalendarConfig.itemWidth"
             :locale="inlineCalendarConfig.locale"
             :showButtons="inlineCalendarConfig.showButtons"
-            :disablePastDays="inlineCalendarConfig.disablePastDays"
           >
             <template #prev-button>
               <img src="../../../assets/img/scheduler/arrow-left.svg" alt="" />
@@ -63,6 +62,8 @@
             :locale="schedulerConfig.locale"
             :disable-views="schedulerConfig.disableViews"
             :selected-date="schedulerConfig.selectedDate"
+            @ready="setSchedulerDatesRangeAndLoadData"
+            @viewChange="setSchedulerDatesRangeAndLoadData"
           >
             <template #title="{ title }">
               <div class="c-title">
@@ -113,6 +114,10 @@
 
 <script>
 import { computed, ref, watchEffect } from 'vue';
+
+import dayjs from 'dayjs';
+import { cloneDeep } from 'lodash';
+
 import VueCal from 'vue-cal';
 import VueInlineCalendar from '../inlineCalendar/index.vue';
 
@@ -162,6 +167,9 @@ export default {
       props.config.otherEventsDotColor || '#D62953'
     );
     const userStore = useUserDataStore();
+
+    const schedulerStartDate = ref(null);
+    const schedulerEndDate = ref(null);
 
     const isContextMenuActive = ref(false);
     const contextMenuX = ref(null);
@@ -234,6 +242,21 @@ export default {
       }
     });
 
+    function setSchedulerDatesRangeAndLoadData(e) {
+      if (e.view === SCHEDULER_ACTIVE_VIEWS.MONTH) {
+        schedulerStartDate.value = cloneDeep(e.firstCellDate);
+        schedulerEndDate.value = cloneDeep(e.lastCellDate);
+        getScheduledEventsDotsData(
+          userStore.user.id,
+          dayjs(schedulerStartDate.value).format('YYYY-MM-DD'),
+          dayjs(schedulerEndDate.value).format('YYYY-MM-DD')
+        );
+
+        inlineCalendarConfig.value.specMinDate = schedulerStartDate.value;
+        inlineCalendarConfig.value.specMaxDate = schedulerEndDate.value;
+      }
+    }
+
     function openContextMenu(e) {
       contextMenuX.value = e.clientX;
       contextMenuY.value = e.clientY;
@@ -280,8 +303,6 @@ export default {
       );
     }
 
-    getScheduledEventsDotsData(userStore.user.id, '2023-01-01', '2024-12-12');
-
     return {
       isFriendsVisible,
       isThreeDotsShown,
@@ -299,6 +320,7 @@ export default {
       closeContextMenu,
       contextMenuItemClick,
       openContextMenu,
+      setSchedulerDatesRangeAndLoadData,
       friendsBlockSwitcher,
       mouseOverCell,
       mouseLeaveCell,
