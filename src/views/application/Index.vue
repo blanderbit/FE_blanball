@@ -81,22 +81,14 @@
           />
         </template>
         <template
-          #dots="{ dotsData, myEventsDotsColor, participationEventsDotsColor }"
+          #dots="{ dotsData, dotsColor }"
         >
           <div class="c-scheduled-events__dots">
             <div
-              v-for="dot in dotsData?.user_author_events_count"
+              v-for="dot in dotsData?.user_scheduled_events_count"
               class="c-scheduled-events__dot"
               :key="dot.id"
-              :style="`background: ${myEventsDotsColor}`"
-            ></div>
-          </div>
-          <div class="c-scheduled-events__dots">
-            <div
-              v-for="dot in dotsData?.user_participation_events_count"
-              class="c-scheduled-events__dot"
-              :key="dot.id"
-              :style="`background: ${participationEventsDotsColor}`"
+              :style="`background: ${dotsColor}`"
             ></div>
           </div>
         </template>

@@ -24,9 +24,12 @@
             :isFriendsVisible="isFriendsVisible"
             :friendsBlockSwitcher="friendsBlockSwitcher"
           ></slot>
-          <div class="c-hide-btn" @click="$emit('closeWindow')">
-            <img src="../../../assets/img/scheduler/close-icton.svg" alt="" />
-          </div>
+          <img
+            class="c-hide-btn"
+            :src="hideBtnConfig.img"
+            alt=""
+            @click="hideBtnConfig.action"
+          />
         </div>
         <div class="c-scheduler-block">
           <VueInlineCalendar
@@ -85,7 +88,7 @@
                 <div
                   v-if="showCornerThreeDots(cell.formattedDate)"
                   class="c-three-dots"
-                  @click="openContextMenu"
+                  @click.stop="openContextMenu"
                 >
                   <div v-for="i in 3" :key="i" class="c-menu-dots"></div>
                 </div>
@@ -99,8 +102,7 @@
                       scheduledEventsDotsData &&
                       scheduledEventsDotsData[cell.formattedDate]
                     "
-                    :myEventsDotsColor="myEventsDotsColor"
-                    :participationEventsDotsColor="participationEventsDotsColor"
+                    :dotsColor="dotsColor"
                   ></slot>
                 </div>
               </div>
@@ -113,7 +115,7 @@
 </template>
 
 <script>
-import { computed, ref, watchEffect } from 'vue';
+import { computed, ref } from 'vue';
 
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
@@ -133,6 +135,9 @@ import {
 import { CONSTS } from '../../../consts';
 
 import 'vue-cal/dist/vuecal.css';
+
+import closeIcon from '../../../assets/img/scheduler/close-icton.svg';
+import goBackIcon from '../../../assets/img/back-arrow.svg';
 
 const SCHEDULER_ACTIVE_VIEWS = {
   DAY: 'day',
@@ -156,16 +161,13 @@ export default {
     },
   },
   emits: ['closeWindow'],
-  setup(props) {
+  setup(props, { emit }) {
     const isFriendsVisible = ref(false);
     const isThreeDotsShown = ref(false);
     const currentCellDay = ref('');
     const currentCellMonth = ref('');
     const scheduledEventsDotsData = ref({});
-    const myEventsDotsColor = ref(props.config.myEventsDotColor || '#148581');
-    const participationEventsDotsColor = ref(
-      props.config.otherEventsDotColor || '#D62953'
-    );
+    const dotsColor = ref(props.config.myEventsDotColor || '#148581');
     const userStore = useUserDataStore();
 
     const schedulerStartDate = ref(null);
@@ -180,6 +182,8 @@ export default {
         contextMenuItems: CONSTS.scheduler.contextMenuItems,
       };
     });
+
+    const hideBtnConfig = ref({});
 
     const inlineCalendarConfig = ref({
       visible: false,
@@ -208,19 +212,27 @@ export default {
       disableViews: [
         SCHEDULER_ACTIVE_VIEWS.WEEK,
         SCHEDULER_ACTIVE_VIEWS.YEAR,
-        SCHEDULER_ACTIVE_VIEWS.YEAR,
+        SCHEDULER_ACTIVE_VIEWS.YEARS,
       ],
       selectedDate: '',
     });
 
-    watchEffect(() => {
-      switch (schedulerConfig.value.activeView) {
+    function backToTheMonthView() {
+      configureScheduler(SCHEDULER_ACTIVE_VIEWS.MONTH);
+      schedulerConfig.value.activeView = SCHEDULER_ACTIVE_VIEWS.MONTH;
+    }
+
+    function configureScheduler(activeView) {
+      switch (activeView) {
         case SCHEDULER_ACTIVE_VIEWS.MONTH: {
           schedulerConfig.value.small = false;
           schedulerConfig.value.xsmall = true;
           schedulerConfig.value.hideBody = false;
           schedulerConfig.value.hideTitleBar = false;
           inlineCalendarConfig.value.visible = false;
+
+          hideBtnConfig.value.img = closeIcon;
+          hideBtnConfig.value.action = () => emit('closeWindow');
 
           if (isFriendsVisible.value) {
             friendsBlockSwitcher();
@@ -234,15 +246,20 @@ export default {
           schedulerConfig.value.hideTitleBar = true;
           inlineCalendarConfig.value.visible = true;
 
+          hideBtnConfig.value.img = goBackIcon;
+          hideBtnConfig.value.action = () => backToTheMonthView();
+
           if (!isFriendsVisible.value) {
             friendsBlockSwitcher();
           }
           break;
         }
       }
-    });
+    }
 
     function setSchedulerDatesRangeAndLoadData(e) {
+      configureScheduler(e.view);
+
       if (e.view === SCHEDULER_ACTIVE_VIEWS.MONTH) {
         schedulerStartDate.value = cloneDeep(e.firstCellDate);
         schedulerEndDate.value = cloneDeep(e.lastCellDate);
@@ -294,7 +311,15 @@ export default {
       currentCellMonth.value = '';
     }
     function removeYearFromDate(title) {
-      return title.split(' ')[0];
+      const currentYear = new Date().getFullYear();
+      const splitedTitle = title.split(' ');
+      const year = parseInt(splitedTitle[splitedTitle.length - 1]);
+
+      if (!isNaN(year) && year === currentYear) {
+        splitedTitle.pop();
+      }
+
+      return splitedTitle.join(' ');
     }
     function showCornerThreeDots(val) {
       return (
@@ -312,11 +337,11 @@ export default {
       mockData,
       scheduledEventsDotsData,
       isContextMenuActive,
+      hideBtnConfig,
       contextMenuY,
       contextMenuX,
-      myEventsDotsColor,
       inlineCalendarConfig,
-      participationEventsDotsColor,
+      dotsColor,
       closeContextMenu,
       contextMenuItemClick,
       openContextMenu,

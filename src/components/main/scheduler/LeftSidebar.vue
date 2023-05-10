@@ -278,11 +278,12 @@ $color-8a8aa8: #8a8aa8;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 8px;
+      border: 2px solid #efeff6;
 
       .c-tab {
         @include inter(13px, 400, $--b-main-gray-color);
         line-height: 20px;
-        padding: 12px 4px;
+        padding: 10px 4px;
         text-align: center;
         cursor: pointer;
 
@@ -290,7 +291,6 @@ $color-8a8aa8: #8a8aa8;
           background: $--b-main-white-color;
           box-shadow: 1px 2px 5px 1px rgba(56, 56, 251, 0.08);
           border-radius: 4px;
-          padding: 10px 4px;
           @include inter(13px, 500);
         }
       }
