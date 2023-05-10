@@ -80,18 +80,6 @@
             :friendsBlockSwitcher="friendsBlockSwitcher"
           />
         </template>
-        <template
-          #dots="{ dotsData, dotsColor }"
-        >
-          <div class="c-scheduled-events__dots">
-            <div
-              v-for="dot in dotsData?.user_scheduled_events_count"
-              class="c-scheduled-events__dot"
-              :key="dot.id"
-              :style="`background: ${dotsColor}`"
-            ></div>
-          </div>
-        </template>
       </Scheduler>
     </Transition>
   </div>
@@ -495,21 +483,6 @@ html {
       grid-template-rows: 90px 1fr;
       @include calc-height;
     }
-  }
-}
-
-.c-scheduled-events__dots {
-  display: flex;
-  align-items: center;
-}
-
-.c-scheduled-events__dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  margin-right: 4px;
-  &:last-child {
-    margin-right: 0;
   }
 }
 

@@ -62,6 +62,22 @@
             <template #next-button>
               <img src="../../../assets/img/scheduler/arrow-right.svg" alt="" />
             </template>
+
+            <template #scheduled-events="{ date }">
+              <ScheduledEventsDots
+                :dotsCount="
+                  scheduledEventsDotsData[formatDate(date.date)]
+                    ?.user_scheduled_events_count
+                "
+                :maxDotsCount="maxDotsCount"
+                :dotsColor="
+                  formatDate(date.date) ===
+                  formatDate(inlineCalendarConfig.selectedDate)
+                    ? inlineCalendarActiveDateDotsColor
+                    : dotsColor
+                "
+              />
+            </template>
           </VueInlineCalendar>
           <vue-cal
             :small="schedulerConfig.small"
@@ -106,14 +122,14 @@
                   <span v-if="cell.content">{{ cell.content }}</span>
                 </div>
                 <div class="c-event-dots">
-                  <slot
-                    name="dots"
-                    :dotsData="
-                      scheduledEventsDotsData &&
+                  <ScheduledEventsDots
+                    :maxDotsCount="maxDotsCount"
+                    :dotsCount="
                       scheduledEventsDotsData[cell.formattedDate]
+                        ?.user_scheduled_events_count
                     "
                     :dotsColor="dotsColor"
-                  ></slot>
+                  />
                 </div>
               </div>
             </template>
@@ -135,6 +151,7 @@ import VueInlineCalendar from '../inlineCalendar/index.vue';
 
 import ContextModal from '../../shared/modals/ContextModal.vue';
 import WhiteBtn from '../../shared/button/WhiteBtn.vue';
+import ScheduledEventsDots from './ScheduledEventsDots.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
@@ -165,6 +182,7 @@ export default {
     VueCal,
     ContextModal,
     VueInlineCalendar,
+    ScheduledEventsDots,
     WhiteBtn,
   },
   props: {
@@ -181,6 +199,8 @@ export default {
     const currentCellMonth = ref('');
     const scheduledEventsDotsData = ref({});
     const dotsColor = ref(props.config.myEventsDotColor || '#148581');
+    const maxDotsCount = ref(3);
+    const inlineCalendarActiveDateDotsColor = ref('#fff');
     const userStore = useUserDataStore();
 
     const schedulerStartDate = ref(null);
@@ -246,6 +266,10 @@ export default {
       selectedDate: '',
     });
 
+    function formatDate(date) {
+      return dayjs(date).format('YYYY-MM-DD');
+    }
+
     function backToTheMonthView() {
       configureScheduler(SCHEDULER_ACTIVE_VIEWS.MONTH);
       schedulerConfig.value.activeView = SCHEDULER_ACTIVE_VIEWS.MONTH;
@@ -294,8 +318,8 @@ export default {
         schedulerEndDate.value = cloneDeep(e.lastCellDate);
         getScheduledEventsDotsData(
           userStore.user.id,
-          dayjs(schedulerStartDate.value).format('YYYY-MM-DD'),
-          dayjs(schedulerEndDate.value).format('YYYY-MM-DD')
+          formatDate(schedulerStartDate.value),
+          formatDate(schedulerEndDate.value)
         );
 
         inlineCalendarConfig.value.specMinDate = schedulerStartDate.value;
@@ -371,9 +395,12 @@ export default {
       contextMenuY,
       contextMenuX,
       todayDate,
+      inlineCalendarActiveDateDotsColor,
       inlineCalendarConfig,
       dotsColor,
+      maxDotsCount,
       icons,
+      formatDate,
       closeContextMenu,
       contextMenuItemClick,
       openContextMenu,
@@ -523,10 +550,6 @@ $color-e9fcfb: #e9fcfb;
                     }
                     .c-event-dots {
                       margin-top: 10px;
-                      display: flex;
-                      flex-direction: column;
-                      align-items: center;
-                      display: flex;
                     }
                   }
                 }

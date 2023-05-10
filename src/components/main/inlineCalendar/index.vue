@@ -28,12 +28,13 @@
           }"
           @click="dateClickHandler(date.date)"
         >
+          <slot name="scheduled-events" :date="date"> </slot>
+
           <p v-if="showYear" class="date-item__year">{{ date.year }}</p>
 
           <p v-if="showMonth" class="date-item__month">{{ date.month }}</p>
 
           <h2 class="date-item__day">{{ date.day }}</h2>
-
           <p v-if="showWeekday" class="date-item__weekday">
             {{ date.weekday }}
           </p>
