@@ -18,12 +18,22 @@
       ></slot>
       <!-- Sidebar Slot -->
       <div class="c-right-block">
-        <div class="c-friends-line">
-          <slot
-            name="TopFriendsBlock"
-            :isFriendsVisible="isFriendsVisible"
-            :friendsBlockSwitcher="friendsBlockSwitcher"
-          ></slot>
+        <div class="c-top-line">
+          <div class="c-top-line__left-block">
+            <div class="c-current-date">
+              {{ $t('scheduler.today-date') }} <span>{{ todayDate }}</span>
+            </div>
+            <WhiteBtn
+              v-if="schedulerConfig.activeView === SCHEDULER_ACTIVE_VIEWS.DAY"
+              :text="$t('scheduler.plan-event')"
+              :width="192"
+              :height="32"
+              :icon="icons.grayClock"
+              :mainColor="'#575775'"
+              :isBorder="true"
+              :borderColor="'#DFDEED'"
+            />
+          </div>
           <img
             class="c-hide-btn"
             :src="hideBtnConfig.img"
@@ -124,6 +134,7 @@ import VueCal from 'vue-cal';
 import VueInlineCalendar from '../inlineCalendar/index.vue';
 
 import ContextModal from '../../shared/modals/ContextModal.vue';
+import WhiteBtn from '../../shared/button/WhiteBtn.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
@@ -138,6 +149,7 @@ import 'vue-cal/dist/vuecal.css';
 
 import closeIcon from '../../../assets/img/scheduler/close-icton.svg';
 import goBackIcon from '../../../assets/img/back-arrow.svg';
+import grayClockIcon from '../../../assets/img/scheduler/gray-clock.svg';
 
 const SCHEDULER_ACTIVE_VIEWS = {
   DAY: 'day',
@@ -153,6 +165,7 @@ export default {
     VueCal,
     ContextModal,
     VueInlineCalendar,
+    WhiteBtn,
   },
   props: {
     config: {
@@ -180,7 +193,23 @@ export default {
     const mockData = computed(() => {
       return {
         contextMenuItems: CONSTS.scheduler.contextMenuItems,
+        dates: CONSTS.dates,
       };
+    });
+
+    const icons = computed(() => {
+      return {
+        close: closeIcon,
+        goBack: goBackIcon,
+        grayClock: grayClockIcon,
+      };
+    });
+
+    const todayDate = computed(() => {
+      const date = new Date();
+      return `${date.getDate()} ${
+        mockData.value.dates.monthNames[date.getMonth()]
+      }`;
     });
 
     const hideBtnConfig = ref({});
@@ -231,7 +260,7 @@ export default {
           schedulerConfig.value.hideTitleBar = false;
           inlineCalendarConfig.value.visible = false;
 
-          hideBtnConfig.value.img = closeIcon;
+          hideBtnConfig.value.img = icons.value.close;
           hideBtnConfig.value.action = () => emit('closeWindow');
 
           if (isFriendsVisible.value) {
@@ -246,7 +275,7 @@ export default {
           schedulerConfig.value.hideTitleBar = true;
           inlineCalendarConfig.value.visible = true;
 
-          hideBtnConfig.value.img = goBackIcon;
+          hideBtnConfig.value.img = icons.value.goBack;
           hideBtnConfig.value.action = () => backToTheMonthView();
 
           if (!isFriendsVisible.value) {
@@ -335,13 +364,16 @@ export default {
       currentCellMonth,
       schedulerConfig,
       mockData,
+      SCHEDULER_ACTIVE_VIEWS,
       scheduledEventsDotsData,
       isContextMenuActive,
       hideBtnConfig,
       contextMenuY,
       contextMenuX,
+      todayDate,
       inlineCalendarConfig,
       dotsColor,
+      icons,
       closeContextMenu,
       contextMenuItemClick,
       openContextMenu,
@@ -381,10 +413,25 @@ $color-e9fcfb: #e9fcfb;
     .c-right-block {
       z-index: 1;
       background: $--b-main-white-color;
-      .c-friends-line {
-        padding-bottom: 14px;
-        height: 51px;
+      .c-top-line {
+        padding-bottom: 12px;
         position: relative;
+
+        .c-top-line__left-block {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+
+          .c-current-date {
+            @include inter(14px, 500, $--b-main-gray-color);
+            line-height: 20px;
+            text-align: center;
+
+            span {
+              @include inter(14px, 500);
+            }
+          }
+        }
         .c-hide-btn {
           position: absolute;
           top: 0;

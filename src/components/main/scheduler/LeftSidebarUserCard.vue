@@ -16,10 +16,7 @@
         {{ userData.profile.name }}
       </div>
       <div class="c-user__gaming-position">
-        <span v-if="userData.profile.position">{{
-          $t(`hashtags.position_full.${userData.profile.position}`)
-        }}</span>
-        <span v-else>----</span>
+        <span>Сьогодні: 4 події</span>
       </div>
     </div>
   </div>
@@ -54,23 +51,23 @@ export default {
 
   &.active {
     transition: all 0.3s;
-    padding-left: 10px;
-    background: #f9f9fc;
+    padding: 8px;
+    background: #F0F0F4;
     border-left: 4px solid $--b-main-green-color;
+    position: relative;
+    border-radius: 6px;
   }
 
-  .c-user {
-    .c-user__main-info {
-      margin-left: 12px;
-      .c-user__full-name {
-        @include inter(14px, 600);
-        line-height: 20px;
-      }
+  .c-user__main-info {
+    margin-left: 12px;
+    .c-user__full-name {
+      @include inter(14px, 600);
+      line-height: 20px;
+    }
 
-      .c-user__gaming-position {
-        @include inter(12px, 500, #8a8aa8);
-        line-height: 20px;
-      }
+    .c-user__gaming-position {
+      @include inter(12px, 500, #8a8aa8);
+      line-height: 20px;
     }
   }
 }

@@ -35,6 +35,13 @@
             :isActive="userStore.user.id === activeUserId"
             @clickByUser="activateUser"
           />
+
+          <GreenBtn
+            class="c-plan-event__button"
+            :text="$t('scheduler.plan-event')"
+            :icon="icons.whiteClock"
+            :height="32"
+          />
         </div>
 
         <div class="c-friends-list" v-else>
@@ -87,14 +94,14 @@ import ScrollToTop from '../../ScrollToTop.vue';
 import InfiniteLoading from '../../main/infiniteLoading/InfiniteLoading.vue';
 import UserAvatar from '../../shared/userAvatar/UserAvatar.vue';
 import LeftSidebarUserCard from './LeftSidebarUserCard.vue';
+import GreenBtn from '../../shared/button/GreenBtn.vue';
 
 import { PaginationWorker } from '../../../workers/pagination-worker';
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
 
-import dates from '../../../consts/dates';
-
 import searchIcon from '../../../assets/img/scheduler/lens.svg';
+import whiteClockIcon from '../../../assets/img/scheduler/white-clock.svg';
 
 const TABS_ENUM = {
   MY_PLANNED: 1,
@@ -118,6 +125,7 @@ export default {
     MainInput,
     SmartList,
     ScrollToTop,
+    GreenBtn,
     LeftSidebarUserCard,
     InfiniteLoading,
   },
@@ -144,14 +152,10 @@ export default {
       ];
     });
 
-    const todayDate = computed(() => {
-      const date = new Date();
-      return `${date.getDate()} ${dates.monthNames[date.getMonth()]}`;
-    });
-
     const icons = computed(() => {
       return {
         search: searchIcon,
+        whiteClock: whiteClockIcon,
       };
     });
 
@@ -219,7 +223,6 @@ export default {
     loadDataPaginationData(1, null);
 
     return {
-      todayDate,
       icons,
       refList,
       triggerForRestart,
@@ -299,6 +302,10 @@ $color-8a8aa8: #8a8aa8;
       height: 600px;
       margin-top: 12px;
       overflow: hidden;
+
+      .c-plan-event__button {
+        margin-top: 20px;
+      }
 
       .c-friends-list {
         overflow-y: scroll;
