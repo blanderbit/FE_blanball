@@ -23,16 +23,18 @@
             <div class="c-current-date">
               {{ $t('scheduler.today-date') }} <span>{{ todayDate }}</span>
             </div>
-            <WhiteBtn
-              v-if="schedulerConfig.activeView === SCHEDULER_ACTIVE_VIEWS.DAY"
-              :text="$t('scheduler.plan-event')"
-              :width="192"
-              :height="32"
-              :icon="icons.grayClock"
-              :mainColor="'#575775'"
-              :isBorder="true"
-              :borderColor="'#DFDEED'"
-            />
+            <div class="c-plan-event-button">
+              <WhiteBtn
+                v-if="schedulerConfig.activeView === SCHEDULER_ACTIVE_VIEWS.DAY"
+                :text="$t('scheduler.plan-event')"
+                :width="192"
+                :height="32"
+                :icon="icons.grayClock"
+                :mainColor="'#575775'"
+                :isBorder="true"
+                :borderColor="'#DFDEED'"
+              />
+            </div>
           </div>
           <img
             class="c-hide-btn"
@@ -63,6 +65,7 @@
               <img src="../../../assets/img/scheduler/arrow-right.svg" alt="" />
             </template>
 
+            <template #title> </template>
             <template #scheduled-events="{ date }">
               <ScheduledEventsDots
                 :dotsCount="
@@ -146,7 +149,7 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
+import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue';
 
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
@@ -168,6 +171,7 @@ import {
 import { BlanballEventBus } from '../../../workers/event-bus-worker';
 
 import { CONSTS } from '../../../consts';
+import { useWindowWidth } from '../../../utils/widthScreen';
 
 import 'vue-cal/dist/vuecal.css';
 
@@ -457,12 +461,27 @@ $color-e9fcfb: #e9fcfb;
     top: 80px;
     right: 160px;
 
+    @include beforeDesktop {
+      right: 0px;
+      padding: 36px;
+      width: 100%;
+    }
+
+    @include tabletAndMobile {
+      padding: 20px;
+    }
+
     .c-right-block {
       z-index: 1;
       background: $--b-main-white-color;
+      width: 100%;
       .c-top-line {
         padding-bottom: 12px;
         position: relative;
+
+        @include mobile {
+          display: none;
+        }
 
         .c-top-line__left-block {
           display: flex;
@@ -478,6 +497,12 @@ $color-e9fcfb: #e9fcfb;
               @include inter(14px, 500);
             }
           }
+
+          .c-plan-event-button {
+            @include beforeDesktop {
+              display: none;
+            }
+          }
         }
         .c-hide-btn {
           position: absolute;
@@ -490,6 +515,10 @@ $color-e9fcfb: #e9fcfb;
         width: 704px;
         height: 644px;
         box-shadow: none;
+        @include beforeDesktop {
+          width: 100%;
+        }
+
         &::v-deep {
           .vuecal__cell--today {
             background: transparent;
@@ -511,6 +540,10 @@ $color-e9fcfb: #e9fcfb;
               .vuecal__title-bar {
                 background: none;
                 justify-content: center;
+
+                @include mobile {
+                  background: #f9f9fc;
+                }
                 .vuecal__title {
                   flex: 0;
                   margin: 0 30px;
@@ -526,6 +559,16 @@ $color-e9fcfb: #e9fcfb;
               }
               .vuecal__weekdays-headings {
                 border: none;
+
+                @include mobile {
+                  background: #f9f9fc;
+                }
+
+                .xsmall {
+                  @include inter(12px, 500, $--b-main-gray-color);
+                  line-height: 20px;
+                  text-align: center;
+                }
                 .vuecal__heading {
                   font-weight: 600;
                 }
@@ -533,9 +576,23 @@ $color-e9fcfb: #e9fcfb;
             }
             .vuecal__body {
               .vuecal__cell {
+                border-left: 1px solid #f0f0f4;
+                border-bottom: 1px solid #f0f0f4;
+
+                &:nth-child(-n + 7):not(:nth-child(8)) {
+                  border-top: 1px solid #f0f0f4;
+                }
+
+                &:nth-child(7n) {
+                  border-right: 1px solid #f0f0f4;
+                }
                 &::before {
                   right: 0;
                   bottom: 0;
+                  border: none;
+                }
+                @include mobile {
+                  border: none !important;
                 }
                 .vuecal__cell-content {
                   .c-cell-wrapper {

@@ -271,7 +271,7 @@ $color-8a8aa8: #8a8aa8;
   line-height: 20px;
 }
 .c-left-block {
-  width: 260px;
+  min-width: 260px;
   height: 100%;
   z-index: 0;
   display: flex;

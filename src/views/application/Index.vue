@@ -61,6 +61,7 @@
       >
         <template #LeftSidebar="{ isFriendsVisible, friendsBlockSwitcher }">
           <LeftSidebar
+            v-if="isSchedulerSidebarVisible"
             :is-friends-visible="isFriendsVisible"
             @friendsBlockSwitcher="friendsBlockSwitcher"
           />
@@ -86,7 +87,7 @@
 </template>
 
 <script setup>
-import { ref, onBeforeMount, onBeforeUnmount, onMounted } from 'vue';
+import { ref, computed, onBeforeMount, onBeforeUnmount, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
@@ -115,6 +116,7 @@ import {
 import { MessageActionTypes } from '../../workers/web-socket-worker/message.action.types';
 import { API } from '../../workers/api-worker/api.worker';
 import { VersionDetectorWorker } from '../../workers/version-detector-worker';
+import { useWindowWidth } from '../../utils/widthScreen';
 
 import EventUpdatedIcon from '../../assets/img/event-updated-modal-icon.svg';
 import EventCreatedIcon from '../../assets/img/event-creted-modal-icon.svg';
@@ -136,6 +138,12 @@ const toast = useToast();
 const userStore = useUserDataStore();
 const audio = new Audio(notification_audio);
 let timeout;
+
+const { isMobile, isTablet, onResize } = useWindowWidth();
+
+const isSchedulerSidebarVisible = computed(() => {
+  return !isMobile.value && !isTablet.value;
+});
 
 const closeEventActiondModal = () => {
   isActionEventModalOpened.value = false;
@@ -386,11 +394,16 @@ function closeNewVersionModal() {
   VersionHandling.closeVersionModal();
 }
 
+onMounted(() => {
+  window.addEventListener('resize', onResize);
+});
+
 onBeforeUnmount(() => {
   NotificationsBus.off('openEventReviewModal');
   NotificationsBus.off('removePushNotificationAfterSidebarAction');
   BlanballEventBus.off('EventCreated');
   BlanballEventBus.off('EventUpdated');
+  window.removeEventListener('resize', onResize);
   AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect();
 });
 

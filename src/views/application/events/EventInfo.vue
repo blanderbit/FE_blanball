@@ -419,10 +419,12 @@ export default {
 
     const submitModalConfig = computed(() => {
       return {
-        title: 'Скасувати участь у події',
-        description: `Ви дійсно хочете скасувати участь у події під назвою «${eventData.value.name}»?`,
-        button_1: 'Ні, не скасовувати ',
-        button_2: 'Так, скасувати',
+        title: t('modals.leave_from_event.title'),
+        description: t('modals.leave_from_event.main-text', {
+          eventName: eventData.value.name,
+        }),
+        button_1: t('modals.leave_from_event.button-1-text'),
+        button_2: t('modals.leave_from_event.button-2-text'),
         left_btn_action: 'closeModal',
         right_btn_action: 'leaveFromTheEvent',
         btn_with_1: 130,

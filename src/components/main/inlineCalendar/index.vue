@@ -1,4 +1,5 @@
 <template>
+  <slot name="title"></slot>
   <div ref="root" class="inline-calendar">
     <ul
       v-dragscroll.x
@@ -434,7 +435,7 @@ export default {
   display: flex;
   margin-bottom: 8px;
   padding: 0 10px;
-  background: #f9f9fc;
+
   &__dates {
     display: flex;
     align-items: center;
