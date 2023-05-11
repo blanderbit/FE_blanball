@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 export default {
   props: {
@@ -32,6 +32,14 @@ export default {
       props.maxDotsCount && props.dotsCount
         ? props.maxDotsCount
         : props.dotsCount
+    );
+
+    watch(
+      () => props.dotsCount,
+      (newVal) => {
+        visibleDotsCount.value =
+          props.maxDotsCount && newVal ? props.maxDotsCount : newVal;
+      }
     );
 
     return {

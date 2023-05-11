@@ -20,7 +20,8 @@ export const EndpointsEnum = {
     Maintenance: '/notifications/admin/get/maintenance',
     DeleteAllMyNotifications: '/notifications/client/delete/all/notifications',
     ReadAllMyNotifications: '/notifications/client/read/all/notifications',
-    GetAllMyNotificationsIds: '/notifications/client/get/all/my/notifications/ids',
+    GetAllMyNotificationsIds:
+      '/notifications/client/get/all/my/notifications/ids',
   },
   Events: {
     GetAllEvents: '/events/client/planned/events/list',
@@ -75,6 +76,8 @@ export const EndpointsEnum = {
     CreateBugReport: '/bugs/client/create/bug',
   },
   Scheduler: {
-    GetScheduledEventsData: '/scheduler/client/user/scheduler/events'
-  }
+    GetScheduledEventsData: '/scheduler/client/user/scheduler/events',
+    getScheduledEventsDataOnSpecificDay:
+      '/scheduler/client/user/scheduler/events/on/specific/day',
+  },
 };

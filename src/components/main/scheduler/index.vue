@@ -79,6 +79,11 @@
               />
             </template>
           </VueInlineCalendar>
+          <ScheduledEventsList
+            v-if="inlineCalendarConfig.visible"
+            :date="formatDate(inlineCalendarConfig.selectedDate)"
+            :userData="activatedUserInSidebarId"
+          />
           <vue-cal
             :small="schedulerConfig.small"
             :xsmall="schedulerConfig.xsmall"
@@ -123,11 +128,11 @@
                 </div>
                 <div class="c-event-dots">
                   <ScheduledEventsDots
-                    :maxDotsCount="maxDotsCount"
                     :dotsCount="
                       scheduledEventsDotsData[cell.formattedDate]
                         ?.user_scheduled_events_count
                     "
+                    :maxDotsCount="maxDotsCount"
                     :dotsColor="dotsColor"
                   />
                 </div>
@@ -141,7 +146,7 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
@@ -152,6 +157,7 @@ import VueInlineCalendar from '../inlineCalendar/index.vue';
 import ContextModal from '../../shared/modals/ContextModal.vue';
 import WhiteBtn from '../../shared/button/WhiteBtn.vue';
 import ScheduledEventsDots from './ScheduledEventsDots.vue';
+import ScheduledEventsList from './ScheduledEventsList.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
@@ -159,6 +165,7 @@ import {
   startSpinner,
   finishSpinner,
 } from '../../../workers/loading-worker/loading.worker';
+import { BlanballEventBus } from '../../../workers/event-bus-worker';
 
 import { CONSTS } from '../../../consts';
 
@@ -183,6 +190,7 @@ export default {
     ContextModal,
     VueInlineCalendar,
     ScheduledEventsDots,
+    ScheduledEventsList,
     WhiteBtn,
   },
   props: {
@@ -202,6 +210,7 @@ export default {
     const maxDotsCount = ref(3);
     const inlineCalendarActiveDateDotsColor = ref('#fff');
     const userStore = useUserDataStore();
+    const activatedUserInSidebarId = ref(userStore.user);
 
     const schedulerStartDate = ref(null);
     const schedulerEndDate = ref(null);
@@ -275,8 +284,8 @@ export default {
       schedulerConfig.value.activeView = SCHEDULER_ACTIVE_VIEWS.MONTH;
     }
 
-    function configureScheduler(activeView) {
-      switch (activeView) {
+    function configureScheduler(data) {
+      switch (data.view) {
         case SCHEDULER_ACTIVE_VIEWS.MONTH: {
           schedulerConfig.value.small = false;
           schedulerConfig.value.xsmall = true;
@@ -298,9 +307,11 @@ export default {
           schedulerConfig.value.hideBody = true;
           schedulerConfig.value.hideTitleBar = true;
           inlineCalendarConfig.value.visible = true;
+          inlineCalendarConfig.value.selectedDate = data.startDate;
 
           hideBtnConfig.value.img = icons.value.goBack;
           hideBtnConfig.value.action = () => backToTheMonthView();
+          mouseLeaveCell();
 
           if (!isFriendsVisible.value) {
             friendsBlockSwitcher();
@@ -311,7 +322,7 @@ export default {
     }
 
     function setSchedulerDatesRangeAndLoadData(e) {
-      configureScheduler(e.view);
+      configureScheduler(e);
 
       if (e.view === SCHEDULER_ACTIVE_VIEWS.MONTH) {
         schedulerStartDate.value = cloneDeep(e.firstCellDate);
@@ -381,6 +392,14 @@ export default {
       );
     }
 
+    BlanballEventBus.on('activateUserInScheduler', (userData) => {
+      activatedUserInSidebarId.value = userData;
+    });
+
+    onBeforeUnmount(() => {
+      BlanballEventBus.off('activateUserInScheduler');
+    });
+
     return {
       isFriendsVisible,
       isThreeDotsShown,
@@ -397,6 +416,7 @@ export default {
       todayDate,
       inlineCalendarActiveDateDotsColor,
       inlineCalendarConfig,
+      activatedUserInSidebarId,
       dotsColor,
       maxDotsCount,
       icons,

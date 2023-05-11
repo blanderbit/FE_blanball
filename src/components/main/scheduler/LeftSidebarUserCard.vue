@@ -1,13 +1,13 @@
 <template>
   <div
-    :class="['c-user-card', { active: isActive }]"
-    @click="$emit('clickByUser', userData.id)"
+    :class="['c-user-card', { active: isActive }, type]"
+    @click="$emit('clickByUser', userData)"
   >
     <div class="c-user">
       <UserAvatar
         :link="userData.profile.avatar_url"
         :full-name="`${userData.profile.last_name} ${userData.profile.name}`"
-        @clickByAvatar="$emit('clickByUser', userData.id)"
+        @clickByAvatar="$emit('clickByUser', userData)"
       />
     </div>
     <div class="c-user__main-info">
@@ -35,6 +35,13 @@ export default {
       type: Number,
       default: 0,
     },
+    type: {
+      type: String,
+      default: 'me',
+      validator: (value) => {
+        return ['me', 'friend'].includes(value);
+      },
+    },
   },
   emits: ['clickByUser'],
   components: {
@@ -48,16 +55,29 @@ export default {
   display: flex;
   align-items: center;
   cursor: pointer;
+  margin-top: 12px;
+  width: 240px;
 
-  &.active {
-    transition: all 0.3s;
-    padding: 8px;
-    background: #F0F0F4;
-    border-left: 4px solid $--b-main-green-color;
-    position: relative;
+  &.friend {
+    box-shadow: 1px 2px 5px 1px rgba(56, 56, 251, 0.08);
     border-radius: 6px;
+    padding: 8px 12px;
+
+    &.active {
+      background: #f0f0f4 !important;
+    }
   }
 
+  &.me {
+    &.active {
+      transition: all 0.3s;
+      padding: 8px;
+      background: #f0f0f4;
+      border-left: 4px solid $--b-main-green-color;
+      position: relative;
+      border-radius: 6px;
+    }
+  }
   .c-user__main-info {
     margin-left: 12px;
     .c-user__full-name {

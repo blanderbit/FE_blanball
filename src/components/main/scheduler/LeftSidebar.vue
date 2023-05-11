@@ -33,6 +33,7 @@
           <LeftSidebarUserCard
             :userData="userStore.user"
             :isActive="userStore.user.id === activeUserId"
+            :type="USER_CARD_TYPE.ME"
             @clickByUser="activateUser"
           />
 
@@ -54,6 +55,7 @@
               <LeftSidebarUserCard
                 :key="slotProps.index"
                 :userData="slotProps.smartListItem"
+                :type="USER_CARD_TYPE.FRIEND"
                 :isActive="slotProps.smartListItem.id === activeUserId"
                 @clickByUser="activateUser"
               />
@@ -99,6 +101,7 @@ import GreenBtn from '../../shared/button/GreenBtn.vue';
 import { PaginationWorker } from '../../../workers/pagination-worker';
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
+import { BlanballEventBus } from '../../../workers/event-bus-worker';
 
 import searchIcon from '../../../assets/img/scheduler/lens.svg';
 import whiteClockIcon from '../../../assets/img/scheduler/white-clock.svg';
@@ -106,6 +109,11 @@ import whiteClockIcon from '../../../assets/img/scheduler/white-clock.svg';
 const TABS_ENUM = {
   MY_PLANNED: 1,
   FRIENDS_PLANNED: 2,
+};
+
+const USER_CARD_TYPE = {
+  ME: 'me',
+  FRIEND: 'friend',
 };
 
 export default {
@@ -172,9 +180,10 @@ export default {
       triggerForRestart.value = uuid();
     };
 
-    const activateUser = (userId) => {
-      if (activeUserId.value !== userId) {
-        activeUserId.value = userId;
+    const activateUser = (userData) => {
+      if (activeUserId.value !== userData.id) {
+        activeUserId.value = userData.id;
+        BlanballEventBus.emit('activateUserInScheduler', userData);
       }
     };
 
@@ -234,6 +243,7 @@ export default {
       userStore,
       tabs,
       TABS_ENUM,
+      USER_CARD_TYPE,
       searchFriendsValue,
       restartInfiniteScroll,
       switchTab,
@@ -300,7 +310,6 @@ $color-8a8aa8: #8a8aa8;
     }
     .c-friends-side-block {
       height: 600px;
-      margin-top: 12px;
       overflow: hidden;
 
       .c-plan-event__button {
