@@ -1,14 +1,5 @@
 <template>
   <div @click.self="$emit('closeWindow')" class="c-scheduler-wrapper">
-    <ContextModal
-      v-if="isContextMenuActive"
-      :clientX="contextMenuX"
-      :clientY="contextMenuY"
-      :modalItems="mockData.contextMenuItems"
-      @closeModal="closeContextMenu"
-      @itemClick="contextMenuItemClick"
-    />
-
     <div class="c-common-block">
       <!-- Sidebar Slot -->
       <slot
@@ -114,18 +105,7 @@
               <img src="../../../assets/img/scheduler/arrow-right.svg" alt="" />
             </template>
             <template #cell-content="{ cell, events }">
-              <div
-                class="c-cell-wrapper"
-                @mouseover="mouseOverCell(cell.formattedDate)"
-                @mouseleave="mouseLeaveCell"
-              >
-                <div
-                  v-if="showCornerThreeDots(cell.formattedDate)"
-                  class="c-three-dots"
-                  @click.stop="openContextMenu"
-                >
-                  <div v-for="i in 3" :key="i" class="c-menu-dots"></div>
-                </div>
+              <div class="c-cell-wrapper">
                 <div class="c-cell-number">
                   <span v-if="cell.content">{{ cell.content }}</span>
                 </div>
@@ -207,8 +187,6 @@ export default {
   setup(props, { emit }) {
     const isFriendsVisible = ref(false);
     const isThreeDotsShown = ref(false);
-    const currentCellDay = ref('');
-    const currentCellMonth = ref('');
     const scheduledEventsDotsData = ref({});
     const dotsColor = ref(props.config.myEventsDotColor || '#148581');
     const maxDotsCount = ref(3);
@@ -218,10 +196,6 @@ export default {
 
     const schedulerStartDate = ref(null);
     const schedulerEndDate = ref(null);
-
-    const isContextMenuActive = ref(false);
-    const contextMenuX = ref(null);
-    const contextMenuY = ref(null);
 
     const mockData = computed(() => {
       return {
@@ -315,7 +289,6 @@ export default {
 
           hideBtnConfig.value.img = icons.value.goBack;
           hideBtnConfig.value.action = () => backToTheMonthView();
-          mouseLeaveCell();
 
           if (!isFriendsVisible.value) {
             friendsBlockSwitcher();
@@ -342,16 +315,6 @@ export default {
       }
     }
 
-    function openContextMenu(e) {
-      contextMenuX.value = e.clientX;
-      contextMenuY.value = e.clientY;
-      isContextMenuActive.value = true;
-    }
-
-    function closeContextMenu() {
-      isContextMenuActive.value = false;
-    }
-
     async function getScheduledEventsDotsData(userId, startDate, finishDate) {
       startSpinner();
       const response = await API.SchedulerService.getScheduledEventsData({
@@ -363,20 +326,8 @@ export default {
       finishSpinner();
     }
 
-    function contextMenuItemClick(itemType) {
-      console.log(itemType);
-    }
-
     function friendsBlockSwitcher() {
       isFriendsVisible.value = !isFriendsVisible.value;
-    }
-    function mouseOverCell(val) {
-      currentCellDay.value = +val.split('-')[1];
-      currentCellMonth.value = +val.split('-')[2];
-    }
-    function mouseLeaveCell() {
-      currentCellDay.value = '';
-      currentCellMonth.value = '';
     }
     function removeYearFromDate(title) {
       const currentYear = new Date().getFullYear();
@@ -388,12 +339,6 @@ export default {
       }
 
       return splitedTitle.join(' ');
-    }
-    function showCornerThreeDots(val) {
-      return (
-        currentCellDay.value === +val.split('-')[1] &&
-        currentCellMonth.value === +val.split('-')[2]
-      );
     }
 
     BlanballEventBus.on('activateUserInScheduler', (userData) => {
@@ -407,16 +352,11 @@ export default {
     return {
       isFriendsVisible,
       isThreeDotsShown,
-      currentCellDay,
-      currentCellMonth,
       schedulerConfig,
       mockData,
       SCHEDULER_ACTIVE_VIEWS,
       scheduledEventsDotsData,
-      isContextMenuActive,
       hideBtnConfig,
-      contextMenuY,
-      contextMenuX,
       todayDate,
       inlineCalendarActiveDateDotsColor,
       inlineCalendarConfig,
@@ -425,15 +365,9 @@ export default {
       maxDotsCount,
       icons,
       formatDate,
-      closeContextMenu,
-      contextMenuItemClick,
-      openContextMenu,
       setSchedulerDatesRangeAndLoadData,
       friendsBlockSwitcher,
-      mouseOverCell,
-      mouseLeaveCell,
       removeYearFromDate,
-      showCornerThreeDots,
     };
   },
 };
@@ -443,6 +377,14 @@ export default {
 $color-efeff6: #efeff6;
 $color-bef0ef: #bef0ef;
 $color-e9fcfb: #e9fcfb;
+
+:deep(.inline-calendar) {
+  @include beforeDesktop {
+    width: calc(100% + 40px);
+    margin-left: -20px;
+    padding-right: 0px;
+  }
+}
 
 .c-scheduler-wrapper {
   @include modal-wrapper;
@@ -463,12 +405,12 @@ $color-e9fcfb: #e9fcfb;
 
     @include beforeDesktop {
       right: 0px;
-      padding: 36px;
+      padding: 20px;
       width: 100%;
     }
 
-    @include tabletAndMobile {
-      padding: 20px;
+    @include mobile {
+      padding-top: 0px;
     }
 
     .c-right-block {
@@ -543,6 +485,8 @@ $color-e9fcfb: #e9fcfb;
 
                 @include mobile {
                   background: #f9f9fc;
+                  width: calc(100% + 40px);
+                  margin-left: -20px;
                 }
                 .vuecal__title {
                   flex: 0;
@@ -562,6 +506,8 @@ $color-e9fcfb: #e9fcfb;
 
                 @include mobile {
                   background: #f9f9fc;
+                  width: calc(100% + 40px);
+                  margin-left: -20px;
                 }
 
                 .xsmall {
@@ -599,35 +545,13 @@ $color-e9fcfb: #e9fcfb;
                     height: 100%;
                     padding-top: 12px;
                     position: relative;
-                    .c-three-dots {
-                      position: absolute;
-                      top: 0;
-                      right: 0;
-                      width: 28px;
-                      height: 28px;
-                      right: 0px;
-                      background: $color-bef0ef;
-                      border-radius: 0px 0px 0px 4px;
-                      display: flex;
-                      flex-direction: column;
-                      justify-content: center;
-                      align-items: center;
-                      cursor: pointer;
-                      .c-menu-dots {
-                        width: 3px;
-                        height: 3px;
-                        background: $--b-main-green-color;
-                        border-radius: 50%;
-                        margin-bottom: 2px;
-                      }
-                    }
-                    &:hover {
-                      background: $color-e9fcfb;
-                      color: $--b-main-green-color;
-                    }
-                    .c-event-dots {
-                      margin-top: 10px;
-                    }
+                  }
+                  &:hover {
+                    background: $color-e9fcfb;
+                    color: $--b-main-green-color;
+                  }
+                  .c-event-dots {
+                    margin-top: 10px;
                   }
                 }
               }

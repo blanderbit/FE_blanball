@@ -435,6 +435,7 @@ export default {
   display: flex;
   margin-bottom: 8px;
   padding: 0 10px;
+  background: #F9F9FC;
 
   &__dates {
     display: flex;
