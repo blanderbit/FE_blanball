@@ -4,20 +4,27 @@
     @close-modal="closeBugReportModal"
   />
   <div class="b_sidebar_wrapper">
-    <NotificationsSlideMenu
-      v-model:is-menu-opened="isMenuOpened"
-      :notifications="paginationElements"
-      :notReadNotificationCount="notReadNotificationCount"
-      :newNotifications="skipids.length"
-      :total-notifications-count="allNotificationsCount"
-      @close="isMenuOpened = false"
-      @loadingInfinite="loadDataNotifications(paginationPage + 1, $event)"
-      @reLoading="loadDataNotifications(1, null, true)"
-      @loading="loadDataNotifications(1, null, true)"
-      @showNewNotifications="loadDataNotifications(1, null, true, true)"
-      @changeTab="onChangeTab"
-      @removeNotifications="removeNotifications"
-    />
+    <!--<NotificationsSlideMenu-->
+      <!--v-model:is-menu-opened="isMenuOpened"-->
+      <!--:notifications="paginationElements"-->
+      <!--:notReadNotificationCount="notReadNotificationCount"-->
+      <!--:newNotifications="skipids.length"-->
+      <!--:total-notifications-count="allNotificationsCount"-->
+      <!--@close="isMenuOpened = false"-->
+      <!--@loadingInfinite="loadDataNotifications(paginationPage + 1, $event)"-->
+      <!--@reLoading="loadDataNotifications(1, null, true)"-->
+      <!--@loading="loadDataNotifications(1, null, true)"-->
+      <!--@showNewNotifications="loadDataNotifications(1, null, true, true)"-->
+      <!--@changeTab="onChangeTab"-->
+      <!--@removeNotifications="removeNotifications"-->
+    <!--/>-->
+    <slide-menu
+        v-if="activeSlideElement"
+        :config="activeSlideElement"
+        @openTab="openTab($event)"
+    >
+
+    </slide-menu>
     <div class="b_sidebar">
       <div class="b_sidebar_top-block">
         <div class="b_sidebar_picture-top">
@@ -42,30 +49,30 @@
                 item.class,
                 { 'b_sidebar_menu-item__disabled': item.disabled },
               ]"
-              @click="item.action && item.action()"
+              @click="clickByMenuItem(item)"
             >
               <Transition>
                 <TabLabel
-                  v-if="item.disabled && currentHoverSideBarItemID === item.id"
+                  v-if="item.disabled && currentHoverSideBarItemID === item.uniqueName"
                   style="position: absolute; top: 8px"
                   :title="$t('profile.coming-soon-title')"
                   :text="$t('profile.coming-soon-text')"
                 />
               </Transition>
               <router-link
-                v-if="item.actionType"
+                v-if="item.actionType && item.actionType.type === 'URL'"
                 :to="item.actionType.url"
-                @mouseenter="enterHoverSidebarItem(item.id)"
+                @mouseenter="enterHoverSidebarItem(item.uniqueName)"
                 @mouseleave="leaveHoverSidebarItem"
               >
                 <img :src="item.icon" alt="" />
               </router-link>
               <a
                 v-else
-                @mouseenter="enterHoverSidebarItem(item.id)"
+                @mouseenter="enterHoverSidebarItem(item.uniqueName)"
                 @mouseleave="leaveHoverSidebarItem"
               >
-                <img :src="item.icon" />
+                <img :src="item.icon.value || item.icon" />
               </a>
             </li>
           </ul>
@@ -88,88 +95,60 @@
       </div>
     </div>
   </div>
-  <mobile-menu
-    v-if="isMobileMenuAvailableToOpen"
-    class="b_mobile-menu"
-    :isMenuActive="isMobMenuActive"
-    :notifications="paginationElements"
-    :notReadNotificationCount="notReadNotificationCount"
-    :newNotifications="skipids.length"
-    :total-notifications-count="allNotificationsCount"
-    @close="isMenuOpened = false"
-    @closed="paginationClearData()"
-    @loadingInfinite="loadDataNotifications(paginationPage + 1, $event)"
-    @reLoading="loadDataNotifications(1, null, true)"
-    @loading="loadDataNotifications(1, null, true)"
-    @close-menu="isMobMenuActive = false"
-    @foundBug="foundBug"
-    @showNewNotifications="loadDataNotifications(1, null, true, true)"
-    @changeTab="onChangeTab"
-    @removeNotifications="removeNotifications"
-    @logOut="logOut"
-  />
+  <!--<mobile-menu-->
+    <!--v-if="isMobileMenuAvailableToOpen"-->
+    <!--class="b_mobile-menu"-->
+    <!--:isMenuActive="isMobMenuActive"-->
+    <!--:notifications="paginationElements"-->
+    <!--:notReadNotificationCount="notReadNotificationCount"-->
+    <!--:newNotifications="skipids.length"-->
+    <!--:total-notifications-count="allNotificationsCount"-->
+    <!--@close="isMenuOpened = false"-->
+    <!--@closed="paginationClearData()"-->
+    <!--@loadingInfinite="loadDataNotifications(paginationPage + 1, $event)"-->
+    <!--@reLoading="loadDataNotifications(1, null, true)"-->
+    <!--@loading="loadDataNotifications(1, null, true)"-->
+    <!--@close-menu="isMobMenuActive = false"-->
+    <!--@foundBug="foundBug"-->
+    <!--@showNewNotifications="loadDataNotifications(1, null, true, true)"-->
+    <!--@changeTab="onChangeTab"-->
+    <!--@removeNotifications="removeNotifications"-->
+    <!--@logOut="logOut"-->
+  <!--/>-->
 </template>
 
 <script>
-import { ref, computed, onBeforeUnmount, onMounted, watch } from 'vue';
+import { ref, computed, onBeforeUnmount, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 import NotificationsSlideMenu from '../SlideMenu/NotificationsSlideMenu.vue';
+import SlideMenu from '../SlideMenu/SlideMenu.vue';
 import userAvatar from '../shared/userAvatar/UserAvatar.vue';
 import BugReportModal from '../shared/modals/BugReportModal.vue';
 import TabLabel from '../shared/tabLabel/TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';
 
 import { useUserDataStore } from '../../stores/userData';
-import { createNotificationFromData } from '../../workers/utils-worker';
 import {
   AuthWebSocketWorkerInstance,
-  GeneralSocketWorkerInstance,
 } from '../../workers/web-socket-worker';
-import { API } from '../../workers/api-worker/api.worker';
-import { PaginationWorker } from '../../workers/pagination-worker';
 import {
   NotificationsBus,
   BlanballEventBus,
 } from '../../workers/event-bus-worker';
-import { FilterPatch } from '../../workers/api-worker/http/filter/filter.patch';
 import { useWindowWidth } from '../../utils/widthScreen';
 import { logOut } from '../../utils/logOut';
-import {
-  finishSpinner,
-  startSpinner,
-} from '../../workers/loading-worker/loading.worker';
 
 import { ROUTES } from '../../router/router.const';
 
-import notification from '../../assets/img/notification.svg';
-import notificationUnread from '../../assets/img/notificationUnread.svg';
-import record from '../../assets/img/record.svg';
-import members from '../../assets/img/members.svg';
-import medal from '../../assets/img/medal.svg';
-import settings from '../../assets/img/settings.svg';
-import bugReport from '../../assets/img/warning-black.svg';
 import { dinamicMenu } from "./menus/menu.config";
 
-const findDublicates = (list, newList) => {
-  return newList.filter((item) =>
-    list.length
-      ? !list.find(
-          (oldItem) => oldItem.notification_id === item.notification_id
-        )
-      : true
-  );
-};
-
-const tabTypes = {
-  notRead: 'NotReadNotifications',
-  allNotifications: 'AllNotifications',
-};
 
 export default {
   name: 'MainSidebar',
   components: {
     NotificationsSlideMenu,
+    SlideMenu,
     userAvatar,
     BugReportModal,
     TabLabel,
@@ -177,12 +156,10 @@ export default {
   },
   setup() {
     const userStore = useUserDataStore();
-    const notReadNotificationCount = ref(0);
-    const allNotificationsCount = ref(0);
     const isMobMenuActive = ref(false);
-    const skipids = ref([]);
     const router = useRouter();
     const isMenuOpened = ref(false);
+    const activeSlideElement = ref();
     const isBugReportModalOpened = ref(false);
     const currentHoverSideBarItemID = ref(0);
     const { onResize, isMobile, isTablet } = useWindowWidth();
@@ -196,16 +173,9 @@ export default {
       return isMobile.value || isTablet.value;
     });
 
-    const menuItems = dinamicMenu().slideBarMenu;
-
-
-
-    const getNotificationsCount = () =>
-      API.NotificationService.getNotificationsCount().then((item) => {
-        notReadNotificationCount.value =
-          item.data.not_read_notifications_count || 0;
-        allNotificationsCount.value = item.data.all_notifications_count || 0;
-      });
+    const menuItems = dinamicMenu({
+      router
+    }).slideBarMenu;
 
     const closeBugReportModal = () => (isBugReportModalOpened.value = false);
 
@@ -214,129 +184,14 @@ export default {
 
     const leaveHoverSidebarItem = () => (currentHoverSideBarItemID.value = 0);
 
-    const {
-      paginationElements,
-      paginationPage,
-      paginationTotalCount,
-      paginationClearData,
-      paginationLoad,
-    } = PaginationWorker({
-      paginationDataRequest: (page) =>
-        API.NotificationService.getNotifications({
-          ...getRawFilters(),
-          page,
-        }),
-      dataTransformation: (item) => createNotificationFromData(item),
-      beforeConcat: (elements, newList) => findDublicates(elements, newList),
-    });
-
-    const { getRawFilters, updateFilter, filters, clearFilters, setFilters } =
-      FilterPatch({
-        router,
-        filters: {
-          type: {
-            type: String,
-            value: '',
-          },
-          skipids: {
-            type: Array,
-            value: [],
-          },
-        },
-        afterUpdateFiltersCallBack: () => {
-          paginationClearData();
-        },
-      });
-
-    const loadDataNotifications = async (
-      pageNumber,
-      $state,
-      forceUpdate,
-      isLoading
-    ) => {
-      if (isLoading) {
-        startSpinner();
-      }
-      if (forceUpdate) {
-        paginationClearData();
-        skipids.value = [];
-      }
-
-      await paginationLoad({ pageNumber, $state, forceUpdate }).then(() => {
-        if (isLoading) {
-          finishSpinner();
-        }
-      });
-    };
-
-    const onChangeTab = (tabType) => {
-      switch (tabType) {
-        case tabTypes.notRead:
-          filters.value.type.value = 'Unread';
-          loadDataNotifications(1, null, false, true);
-          break;
-        case tabTypes.allNotifications:
-          filters.value.type.value = '';
-          loadDataNotifications(1, null, false, true);
-          break;
-      }
-    };
-
     const goToMainPage = () => {
       router.push(ROUTES.APPLICATION.index.path);
-    };
-
-    const handleMessageInSidebar = (instanceType) => {
-      if (instanceType.notification) {
-        skipids.value.push(instanceType.notification_id);
-      }
-
-      if (instanceType.updateWebSocketMessage) {
-        instanceType.handleUpdate(
-          {
-            paginationElements,
-            paginationLoad,
-            paginationPage,
-          },
-          getNotificationsCount
-        );
-      }
-
-      getNotificationsCount();
-    };
-
-    const handleGeneralMessageInSidebar = (instanceType) => {
-      instanceType.handleUpdate({
-        paginationElements,
-        paginationLoad,
-        paginationPage,
-      });
     };
 
     const goToProfile = () => {
       router.push(ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute);
       isMenuOpened.value = false;
     };
-
-    AuthWebSocketWorkerInstance.registerCallback(handleMessageInSidebar);
-    GeneralSocketWorkerInstance.registerCallback(handleGeneralMessageInSidebar);
-
-    NotificationsBus.on('SidebarClearData', () => {
-      skipids.value = [];
-      paginationClearData();
-    });
-
-    NotificationsBus.on(
-      'hanlderToRemoveNewNotificationsInSidebar',
-      (notificationId) => {
-        const index = skipids.value.indexOf(notificationId);
-
-        if (index > -1) {
-          skipids.value.splice(index, 1);
-        }
-        loadDataNotifications(1, null, false, false);
-      }
-    );
 
     BlanballEventBus.on('OpenMobileMenu', () => {
       isMobMenuActive.value = true;
@@ -350,47 +205,49 @@ export default {
       NotificationsBus.off('SidebarClearData');
       NotificationsBus.off('hanlderToRemoveNewNotificationsInSidebar');
       BlanballEventBus.off('OpenMobileMenu');
-      AuthWebSocketWorkerInstance.destroyCallback(handleMessageInSidebar);
+      // AuthWebSocketWorkerInstance.destroyCallback(handleMessageInSidebar); TODO
       window.removeEventListener('resize', onResize);
     });
 
-    getNotificationsCount();
 
-    const removeNotifications = (ids) => {
-      if (ids === 'All') {
-        paginationElements.value = [];
-      } else {
-        paginationElements.value = paginationElements.value.filter(
-          (item) => !ids.includes(item.notification_id)
-        );
-      }
-    };
+    //
+    // const removeNotifications = (ids) => {
+    //   if (ids === 'All') {
+    //     paginationElements.value = [];
+    //   } else {
+    //     paginationElements.value = paginationElements.value.filter(
+    //       (item) => !ids.includes(item.notification_id)
+    //     );
+    //   }
+    // };
 
     return {
-      paginationElements,
-      paginationTotalCount,
-      paginationPage,
-      notReadNotificationCount,
-      skipids,
       menuItems,
       isMobMenuActive,
       isMobileMenuAvailableToOpen,
-      allNotificationsCount,
       isMenuOpened,
       userStore,
       currentHoverSideBarItemID,
       isBugReportModalOpened,
-      loadDataNotifications,
-      removeNotifications,
+      // removeNotifications,
+      activeSlideElement,
       goToMainPage,
-      onChangeTab,
       leaveHoverSidebarItem,
       enterHoverSidebarItem,
-      paginationClearData,
       foundBug,
       goToProfile,
       logOut,
       closeBugReportModal,
+      clickByMenuItem (item) {
+        if(item.slideConfig) {
+          activeSlideElement.value = item;
+        }
+        item.actionType && item.actionType.type === 'BUTTON' && item.actionType.action()
+      },
+      openTab(tabName) {
+        const item = menuItems.value.find(item => item.findTab(tabName))
+        if(item) item.openTab(tabName)
+      }
     };
   },
 };

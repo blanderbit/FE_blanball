@@ -1,5 +1,5 @@
 export class ActionModelTypeUrl {
-  _type = "URL";
+  type = "URL";
   url = '';
 
   constructor(options = {}) {
@@ -8,7 +8,7 @@ export class ActionModelTypeUrl {
 }
 
 export class ActionModelTypeButton {
-  _type = "BUTTON";
+  type = "BUTTON";
   action = () => {
   };
 
