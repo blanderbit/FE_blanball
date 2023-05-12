@@ -75,7 +75,7 @@
           <ScheduledEventsList
             v-if="inlineCalendarConfig.visible"
             :date="formatDate(inlineCalendarConfig.selectedDate)"
-            :userData="activatedUserInSidebarId"
+            :userData="activatedUserInSidebarData"
           />
           <vue-cal
             :small="schedulerConfig.small"
@@ -121,6 +121,18 @@
               </div>
             </template>
           </vue-cal>
+          <div class="c-scheduler-bottom-side">
+            <div class="c-plan-event-button">
+              <WhiteBtn
+                :text="$t('scheduler.plan-event')"
+                :height="32"
+                :icon="icons.grayClock"
+                :mainColor="'#575775'"
+                :isBorder="true"
+                :borderColor="'#DFDEED'"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -191,7 +203,7 @@ export default {
     const maxDotsCount = ref(3);
     const inlineCalendarActiveDateDotsColor = ref('#fff');
     const userStore = useUserDataStore();
-    const activatedUserInSidebarId = ref(userStore.user);
+    const activatedUserInSidebarData = ref(userStore.user);
 
     const schedulerStartDate = ref(null);
     const schedulerEndDate = ref(null);
@@ -352,7 +364,11 @@ export default {
     }
 
     BlanballEventBus.on('activateUserInScheduler', (userData) => {
-      activatedUserInSidebarId.value = userData;
+      activatedUserInSidebarData.value = userData;
+    });
+
+    BlanballEventBus.on('deactivateUser', () => {
+      activatedUserInSidebarData.value = null;
     });
 
     BlanballEventBus.on('switchedSchedulerSidebarTab', (tabId) => {
@@ -362,6 +378,7 @@ export default {
     onBeforeUnmount(() => {
       BlanballEventBus.off('activateUserInScheduler');
       BlanballEventBus.off('switchedSchedulerSidebarTab');
+      BlanballEventBus.off('deactivateUser');
     });
 
     return {
@@ -376,7 +393,7 @@ export default {
       inlineCalendarActiveDateDotsColor,
       inlineCalendarConfig,
       isTopPlanEventButtonVisible,
-      activatedUserInSidebarId,
+      activatedUserInSidebarData,
       dotsColor,
       maxDotsCount,
       icons,
@@ -394,16 +411,24 @@ $color-efeff6: #efeff6;
 $color-bef0ef: #bef0ef;
 $color-e9fcfb: #e9fcfb;
 
-:deep(.inline-calendar) {
-  @include beforeDesktop {
-    width: calc(100% + 40px);
-    margin-left: -20px;
-    padding-right: 0px;
+:deep {
+  .inline-calendar {
+    @include beforeDesktop {
+      width: calc(100% + 40px);
+      margin-left: -20px;
+      padding-right: 0px;
+    }
   }
-}
 
-.vuecal__flex[grow] {
-  flex: none !important;
+  .vuecal__flex[grow] {
+    @include mobile {
+      flex: none !important;
+    }
+  }
+
+  .vuecal__cell--selected {
+    background: transparent;
+  }
 }
 
 .c-scheduler-wrapper {
@@ -461,6 +486,10 @@ $color-e9fcfb: #e9fcfb;
           }
 
           .c-plan-event-button {
+            :deep(.b_white-btn) {
+              font-weight: 400;
+            }
+
             @include beforeDesktop {
               display: none;
             }
@@ -479,6 +508,10 @@ $color-e9fcfb: #e9fcfb;
         box-shadow: none;
         @include beforeDesktop {
           width: 100%;
+        }
+
+        @include mobile {
+          height: fit-content;
         }
 
         &::v-deep {
@@ -561,15 +594,31 @@ $color-e9fcfb: #e9fcfb;
                   right: 0;
                   bottom: 0;
                   border: none;
+                  width: fit-content;
                 }
                 @include mobile {
                   border: none !important;
                 }
+
+                .vuecal__flex[column] {
+                  @include mobile {
+                    flex: none !important;
+                  }
+                }
+
                 .vuecal__cell-content {
+                  @include mobile {
+                    width: fit-content;
+                    height: fit-content;
+                  }
                   .c-cell-wrapper {
                     height: 100%;
                     padding-top: 12px;
                     position: relative;
+                    @include mobile {
+                      width: 46px;
+                      height: 52px;
+                    }
                   }
                   &:hover {
                     background: $color-e9fcfb;
@@ -581,6 +630,13 @@ $color-e9fcfb: #e9fcfb;
                 }
               }
             }
+          }
+        }
+
+        .c-scheduler-bottom-side {
+          display: none;
+          @include beforeDesktop {
+            display: block;
           }
         }
       }

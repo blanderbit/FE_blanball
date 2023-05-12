@@ -24,23 +24,28 @@ export default {
     },
     maxDotsCount: {
       type: Number,
-      default: null,
+      default: 3,
     },
   },
   setup(props) {
-    const visibleDotsCount = ref(
-      props.maxDotsCount && props.dotsCount
-        ? props.maxDotsCount
-        : props.dotsCount
-    );
+    const visibleDotsCount = ref(getVisibleDotsCount());
 
     watch(
       () => props.dotsCount,
-      (newVal) => {
-        visibleDotsCount.value =
-          props.maxDotsCount && newVal ? props.maxDotsCount : newVal;
+      () => {
+        visibleDotsCount.value = getVisibleDotsCount();
       }
     );
+
+    function getVisibleDotsCount() {
+      if (props.maxDotsCount && props.dotsCount) {
+        return props.dotsCount > props.maxDotsCount
+          ? props.maxDotsCount
+          : props.dotsCount;
+      } else {
+        return props.dotsCount;
+      }
+    }
 
     return {
       visibleDotsCount,

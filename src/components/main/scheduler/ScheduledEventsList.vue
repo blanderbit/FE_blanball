@@ -7,49 +7,88 @@
     @leaveFromTheEvent=""
     @continue="closeSubmitModal"
   />
-  <div class="c-total-count-scheduled-events">
-    <div class="c-today">{{ $t('scheduler.today') }}</div>
-    <div class="c-count-scheduled">
-      <span v-if="totalCount > 0">{{
-        $t('scheduler.planned-count', { count: totalCount })
-      }}</span>
-      <span v-else>{{ $t('scheduler.not-planned') }}</span>
+
+  <div v-if="userData" class="c-scheduled-events__block">
+    <div class="c-total-count-scheduled-events">
+      <div class="c-today">{{ $t('scheduler.today') }}</div>
+      <div class="c-count-scheduled">
+        <span v-if="paginationTotalCount > 0">{{
+          $t('scheduler.planned-count', { count: paginationTotalCount })
+        }}</span>
+        <span v-else>{{ $t('scheduler.not-planned') }}</span>
+      </div>
+    </div>
+    <div class="c-scheduled-events__list">
+      <SmartList
+        :list="paginationElements"
+        ref="refList"
+        v-model:scrollbar-existing="blockScrollToTopIfExist"
+      >
+        <template #smartListItem="slotProps">
+          <div
+            :class="[
+              'c-scheduled-event',
+              slotProps.smartListItem.status,
+              { selected: slotProps.smartListItem.id === selectedEventId },
+            ]"
+          >
+            <div class="c-event-main-info">
+              <div class="c-event-type">
+                {{ $t('events.friendly-match') }}
+              </div>
+              <div class="c-event-time">
+                {{ slotProps.smartListItem.time }} –
+                {{ slotProps.smartListItem.end_time }}
+              </div>
+            </div>
+            <div class="c-manage-event-block">
+              <img
+                :src="getEventCrossIcon(slotProps.smartListItem.status)"
+                alt=""
+                @click="declineEvent(slotProps.smartListItem)"
+              />
+            </div>
+          </div>
+        </template>
+        <template #after>
+          <InfiniteLoading
+            :identifier="triggerForRestart"
+            ref="scrollbar"
+            @infinite="loadDataPaginationData(paginationPage + 1, $event)"
+          >
+            <NoScheduledEvents :userData="userData" />
+            <template #complete>
+              <ScrollToTop
+                :element-length="paginationElements"
+                :is-scroll-top-exist="blockScrollToTopIfExist"
+                @scroll-button-clicked="scrollToFirstElement()"
+              />
+            </template>
+          </InfiniteLoading>
+        </template>
+      </SmartList>
     </div>
   </div>
-  <div class="c-scheduled-events__list">
-    <SimpleListWrapper :requestForGetData="getPlannedEvents">
-      <template #default="{ smartListItem: event }">
-        <div :class="['c-scheduled-event', event.status]">
-          <div class="c-event-main-info">
-            <div class="c-event-type">Дружній матч</div>
-            <div class="c-event-time">17:00 – 19:00</div>
-          </div>
-          <div class="c-manage-event-block">
-            <img
-              src="../../../assets/img/gray-cross.svg"
-              alt=""
-              @click="declineEvent(event)"
-            />
-          </div>
-        </div>
-      </template>
-      <template #emptyList>
-        <NoScheduledEvents :userData="userData" />
-      </template>
-    </SimpleListWrapper>
-  </div>
+
+  <NotSelectedFriendCard v-else />
 </template>
 
 <script>
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import SimpleListWrapper from '../../shared/simpleList/SimpleList.vue';
 import NoScheduledEvents from './NoScheduledEvents.vue';
 import SubmitModal from '../../shared/modals/SubmitModal.vue';
+import NotSelectedFriendCard from './NotSelectedFriendCard.vue';
+import SmartList from '../../shared/smartList/SmartList.vue';
+import InfiniteLoading from '../infiniteLoading/InfiniteLoading.vue';
+import ScrollToTop from '../../ScrollToTop.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
+import { PaginationWorker } from '../../../workers/pagination-worker';
 import { getDate } from '../../../utils/getDate';
+import { getTime } from '../../../utils/getTime';
+import { addMinutes } from '../../../utils/addMinutes';
 
 import grayCrossIcon from '../../../assets/img/gray-cross.svg';
 import blackCrossIcon from '../../../assets/img/cross.svg';
@@ -57,9 +96,12 @@ import greenCrossIcon from '../../../assets/img/green-cross.svg';
 
 export default {
   components: {
-    SimpleListWrapper,
     NoScheduledEvents,
     SubmitModal,
+    NotSelectedFriendCard,
+    SmartList,
+    InfiniteLoading,
+    ScrollToTop,
   },
   props: {
     userData: {
@@ -70,28 +112,72 @@ export default {
     },
   },
   setup(props) {
-    const totalCount = ref(0);
+    const refList = ref();
     const isSubmitModalOpened = ref(false);
     const submitModalConfig = ref({});
     const { t } = useI18n();
     const declineEventData = ref({});
+    const selectedEventId = ref(0);
+    const triggerForRestart = ref(false);
 
-    const getPlannedEvents = (page) => {
-      return API.SchedulerService.getScheduledEventsDataOnSpecificDay({
-        user_id: props.userData.id,
-        date: props.date,
-        page: page,
-      }).then((response) => {
-        response.data.results = response.data.results.map((event) => {
-          return {
-            ...event,
-            date_and_time: getDate(event.date_and_time),
-          };
-        });
-        totalCount.value = response.data.total_count;
-        return response;
-      });
+    const blockScrollToTopIfExist = ref(false);
+
+    const icons = computed(() => {
+      return {
+        cross: {
+          greenCross: greenCrossIcon,
+          blackCross: blackCrossIcon,
+          grayCross: grayCrossIcon,
+        },
+      };
+    });
+
+    const getEventCrossIcon = (eventStatus) => {
+      switch (eventStatus) {
+        case 'Planned': {
+          return icons.value.cross.blackCross;
+        }
+        case 'Active': {
+          return icons.value.cross.greenCross;
+        }
+        case 'Finished': {
+          return icons.value.cross.grayCross;
+        }
+      }
     };
+
+    const {
+      paginationElements,
+      paginationPage,
+      paginationTotalCount,
+      paginationLoad,
+      paginationClearData,
+    } = PaginationWorker({
+      paginationDataRequest: (page) =>
+        API.SchedulerService.getScheduledEventsDataOnSpecificDay({
+          user_id: props.userData.id,
+          date: props.date,
+          page: page,
+        }),
+      dataTransformation: handlingIncomeData,
+    });
+
+    function loadDataPaginationData(pageNumber, $state) {
+      paginationLoad({
+        pageNumber,
+        $state,
+        forceUpdate: paginationPage.value === 1,
+      });
+    }
+
+    function handlingIncomeData(event) {
+      return {
+        ...event,
+        date: getDate(event.date_and_time),
+        time: getTime(event.date_and_time),
+        end_time: addMinutes(getTime(event.date_and_time), event.duration),
+      };
+    }
 
     const deleteEvent = async () => {
       await API.EventService.deleteEvents([declineEventData.value.id]);
@@ -139,14 +225,23 @@ export default {
       showSubmitModal();
     };
     return {
-      totalCount,
+      paginationTotalCount,
+      paginationElements,
       isSubmitModalOpened,
+      paginationPage,
+      triggerForRestart,
       submitModalConfig,
-      getPlannedEvents,
+      blockScrollToTopIfExist,
+      selectedEventId,
       closeSubmitModal,
+      loadDataPaginationData,
       deleteEvent,
       showSubmitModal,
       declineEvent,
+      getEventCrossIcon,
+      scrollToFirstElement: () => {
+        refList.value.scrollToFirstElement();
+      },
     };
   },
 };
@@ -177,6 +272,7 @@ export default {
     padding: 12px;
     justify-content: space-between;
     margin-top: 12px;
+    cursor: pointer;
 
     &.Planned {
       background: #fcfcfc;

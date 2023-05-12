@@ -111,11 +111,6 @@ import { CONSTS } from '../../../consts';
 import searchIcon from '../../../assets/img/scheduler/lens.svg';
 import whiteClockIcon from '../../../assets/img/scheduler/white-clock.svg';
 
-const TABS_ENUM = {
-  MY_PLANNED: 1,
-  FRIENDS_PLANNED: 2,
-};
-
 export default {
   name: 'LeftSidebar',
   props: {
@@ -180,6 +175,8 @@ export default {
         BlanballEventBus.emit('switchedSchedulerSidebarTab', tabId);
         if (tabId === mockData.value.tabs.MY_PLANNED) {
           activateUser(userStore.user);
+        } else {
+          deactivateUser();
         }
       }
     };
@@ -193,6 +190,11 @@ export default {
         activeUserId.value = userData.id;
         BlanballEventBus.emit('activateUserInScheduler', userData);
       }
+    }
+
+    function deactivateUser() {
+      activeUserId.value = 0;
+      BlanballEventBus.emit('deactivateUser');
     }
 
     let searchTimeout;
