@@ -14,9 +14,8 @@
             <div class="c-current-date">
               {{ $t('scheduler.today-date') }} <span>{{ todayDate }}</span>
             </div>
-            <div class="c-plan-event-button">
+            <div v-if="isTopPlanEventButtonVisible" class="c-plan-event-button">
               <WhiteBtn
-                v-if="schedulerConfig.activeView === SCHEDULER_ACTIVE_VIEWS.DAY"
                 :text="$t('scheduler.plan-event')"
                 :width="192"
                 :height="32"
@@ -201,8 +200,11 @@ export default {
       return {
         contextMenuItems: CONSTS.scheduler.contextMenuItems,
         dates: CONSTS.dates,
+        sideBarTabs: CONSTS.scheduler.TABS_ENUM,
       };
     });
+
+    const sidebarSelectedTabId = ref(mockData.value.sideBarTabs.MY_PLANNED);
 
     const icons = computed(() => {
       return {
@@ -210,6 +212,14 @@ export default {
         goBack: goBackIcon,
         grayClock: grayClockIcon,
       };
+    });
+
+    const isTopPlanEventButtonVisible = computed(() => {
+      return (
+        schedulerConfig.value.activeView === SCHEDULER_ACTIVE_VIEWS.DAY &&
+        sidebarSelectedTabId.value ===
+          mockData.value.sideBarTabs.FRIENDS_PLANNED
+      );
     });
 
     const todayDate = computed(() => {
@@ -345,8 +355,13 @@ export default {
       activatedUserInSidebarId.value = userData;
     });
 
+    BlanballEventBus.on('switchedSchedulerSidebarTab', (tabId) => {
+      sidebarSelectedTabId.value = tabId;
+    });
+
     onBeforeUnmount(() => {
       BlanballEventBus.off('activateUserInScheduler');
+      BlanballEventBus.off('switchedSchedulerSidebarTab');
     });
 
     return {
@@ -360,6 +375,7 @@ export default {
       todayDate,
       inlineCalendarActiveDateDotsColor,
       inlineCalendarConfig,
+      isTopPlanEventButtonVisible,
       activatedUserInSidebarId,
       dotsColor,
       maxDotsCount,
@@ -384,6 +400,10 @@ $color-e9fcfb: #e9fcfb;
     margin-left: -20px;
     padding-right: 0px;
   }
+}
+
+.vuecal__flex[grow] {
+  flex: none !important;
 }
 
 .c-scheduler-wrapper {
@@ -472,6 +492,9 @@ $color-e9fcfb: #e9fcfb;
                   border-radius: 4px;
                   padding: 0px 10px;
                   color: $--b-main-white-color;
+                  @include mobile {
+                    padding: 4px;
+                  }
                 }
               }
             }
@@ -508,6 +531,8 @@ $color-e9fcfb: #e9fcfb;
                   background: #f9f9fc;
                   width: calc(100% + 40px);
                   margin-left: -20px;
+                  padding: 0px 20px;
+                  margin-bottom: 8px;
                 }
 
                 .xsmall {

@@ -11,4 +11,13 @@ export default {
       type: 'read',
     },
   ],
+  TABS_ENUM: {
+    MY_PLANNED: 1,
+    FRIENDS_PLANNED: 2,
+  },
+
+  USER_CARD_TYPE: {
+    ME: 'me',
+    FRIEND: 'friend',
+  },
 };

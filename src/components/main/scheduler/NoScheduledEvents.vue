@@ -1,7 +1,10 @@
 <template>
   <div class="c-no-schduled-events">
     <img src="../../../assets/img/info-black.svg" alt="" />
-    <span>{{
+    <span v-if="userStore.user.id === userData.id">{{
+      $t('scheduler.no-scheduled-events-me')
+    }}</span>
+    <span v-else>{{
       $t('scheduler.no-scheduled-events-friend', { fullName: userFullName })
     }}</span>
   </div>
@@ -18,6 +21,8 @@ import { computed } from 'vue';
 
 import GreenBtn from '../../shared/button/GreenBtn.vue';
 
+import { useUserDataStore } from '../../../stores/userData';
+
 import inviteToEventIcon from '../../../assets/img/add-user-white.svg';
 
 export default {
@@ -31,6 +36,7 @@ export default {
     },
   },
   setup(props) {
+    const userStore = useUserDataStore();
     const userFullName = computed(() => {
       return `${props.userData.profile.name} ${props.userData.profile.last_name}`;
     });
@@ -43,6 +49,7 @@ export default {
 
     return {
       userFullName,
+      userStore,
       icons,
     };
   },

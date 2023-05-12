@@ -6,5 +6,6 @@ export default {
   'today': 'Сьогодні',
   'not-planned': 'Не заплановано',
   'planned-count': 'Заплановано: {count} подій',
-  'no-scheduled-events-friend': '{ fullName } немає запланованих подій для відображення'
+  'no-scheduled-events-friend': '{ fullName } немає запланованих подій для відображення',
+  'no-scheduled-events-me': 'Ви не маєте запланованих подій для відображення'
 };

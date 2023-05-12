@@ -14,7 +14,7 @@
         </div>
       </div>
       <div
-        v-if="selectedTabId === TABS_ENUM.FRIENDS_PLANNED"
+        v-if="selectedTabId === mockData.tabs.FRIENDS_PLANNED"
         class="c-input-search"
       >
         <MainInput
@@ -29,11 +29,14 @@
         />
       </div>
       <div class="c-friends-side-block">
-        <div v-if="selectedTabId === TABS_ENUM.MY_PLANNED" class="c-me-in-list">
+        <div
+          v-if="selectedTabId === mockData.tabs.MY_PLANNED"
+          class="c-me-in-list"
+        >
           <LeftSidebarUserCard
             :userData="userStore.user"
             :isActive="userStore.user.id === activeUserId"
-            :type="USER_CARD_TYPE.ME"
+            :type="mockData.user_card_type.ME"
             @clickByUser="activateUser"
           />
 
@@ -55,7 +58,7 @@
               <LeftSidebarUserCard
                 :key="slotProps.index"
                 :userData="slotProps.smartListItem"
-                :type="USER_CARD_TYPE.FRIEND"
+                :type="mockData.user_card_type.FRIEND"
                 :isActive="slotProps.smartListItem.id === activeUserId"
                 @clickByUser="activateUser"
               />
@@ -103,17 +106,14 @@ import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
 import { BlanballEventBus } from '../../../workers/event-bus-worker';
 
+import { CONSTS } from '../../../consts';
+
 import searchIcon from '../../../assets/img/scheduler/lens.svg';
 import whiteClockIcon from '../../../assets/img/scheduler/white-clock.svg';
 
 const TABS_ENUM = {
   MY_PLANNED: 1,
   FRIENDS_PLANNED: 2,
-};
-
-const USER_CARD_TYPE = {
-  ME: 'me',
-  FRIEND: 'friend',
 };
 
 export default {
@@ -143,21 +143,28 @@ export default {
     const blockScrollToTopIfExist = ref(false);
     const triggerForRestart = ref(false);
     const searchFriendsValue = ref('');
-    const selectedTabId = ref(TABS_ENUM.MY_PLANNED);
+    const selectedTabId = ref(CONSTS.scheduler.TABS_ENUM.MY_PLANNED);
     const userStore = useUserDataStore();
     const activeUserId = ref(userStore.user.id);
 
     const tabs = computed(() => {
       return [
         {
-          id: TABS_ENUM.MY_PLANNED,
+          id: mockData.value.tabs.MY_PLANNED,
           text: 'Мої заплановані',
         },
         {
-          id: TABS_ENUM.FRIENDS_PLANNED,
+          id: mockData.value.tabs.FRIENDS_PLANNED,
           text: 'Зайнятість друзів',
         },
       ];
+    });
+
+    const mockData = computed(() => {
+      return {
+        tabs: CONSTS.scheduler.TABS_ENUM,
+        user_card_type: CONSTS.scheduler.USER_CARD_TYPE,
+      };
     });
 
     const icons = computed(() => {
@@ -170,8 +177,9 @@ export default {
     const switchTab = (tabId) => {
       if (selectedTabId.value !== tabId) {
         selectedTabId.value = tabId;
-        if (tabId === TABS_ENUM.MY_PLANNED) {
-          activeUserId.value = userStore.user.id;
+        BlanballEventBus.emit('switchedSchedulerSidebarTab', tabId);
+        if (tabId === mockData.value.tabs.MY_PLANNED) {
+          activateUser(userStore.user);
         }
       }
     };
@@ -180,12 +188,12 @@ export default {
       triggerForRestart.value = uuid();
     };
 
-    const activateUser = (userData) => {
+    function activateUser(userData) {
       if (activeUserId.value !== userData.id) {
         activeUserId.value = userData.id;
         BlanballEventBus.emit('activateUserInScheduler', userData);
       }
-    };
+    }
 
     let searchTimeout;
 
@@ -242,8 +250,7 @@ export default {
       paginationElements,
       userStore,
       tabs,
-      TABS_ENUM,
-      USER_CARD_TYPE,
+      mockData,
       searchFriendsValue,
       restartInfiniteScroll,
       switchTab,
