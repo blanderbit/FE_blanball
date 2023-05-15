@@ -73,9 +73,10 @@
         <events-filters
           v-if="!selected.length"
           :modelValue="filters"
+          :elementsCount="paginationTotalCount"
           @update:value="setFilters"
           @clearFilters="clearFilters"
-          :elementsCount="paginationTotalCount"
+          @updatedActiveFilters="recalculateHeightAfterUpdateFiltersActive"
         >
           <template #tabs>
             <div class="b-events-page__tabs">
@@ -122,7 +123,10 @@
             </div>
           </div>
         </FilterBlock>
-        <div class="b-events-page__all-events-block">
+        <div
+          class="b-events-page__all-events-block"
+          :style="`height: ${myEventsBlockHeight}`"
+        >
           <smartGridList
             :list="paginationElements"
             ref="refList"
@@ -206,6 +210,8 @@ import { addMinutes } from '../../../utils/addMinutes';
 import { getDate } from '../../../utils/getDate';
 import { getTime } from '../../../utils/getTime';
 import { prepareEventUpdateData } from '../../../utils/prepareEventUpdateData';
+import { calcHeight } from '../../../utils/calcHeight';
+import { useUserDataStore } from '../../../stores/userData';
 import {
   startSpinner,
   finishSpinner,
@@ -290,6 +296,7 @@ export default {
     const nextRoutePath = ref('');
     const actionEventModalData = ref({});
     const submitModalData = ref({});
+    const userStore = useUserDataStore();
 
     const actionEventModalConfig = computed({
       get() {
@@ -316,6 +323,20 @@ export default {
         return submitModalData.value;
       },
       set() {},
+    });
+
+    const allEventsBlockHeightConfig = ref({
+      default: [90, 65, 115, 60],
+      mobile: [userStore.user.is_verified ? 0 : 40, -20],
+      tablet: [userStore.user.is_verified ? 0 : 40],
+      recalculateOnVerifyEmail: true,
+    });
+    const { calculatedHeight, minusHeight, plusHeight } = calcHeight(
+      ...Object.values(allEventsBlockHeightConfig.value)
+    );
+
+    const myEventsBlockHeight = computed(() => {
+      return `${calculatedHeight.value}px`;
     });
 
     const iconPlus = computed(() => Plus);
@@ -421,6 +442,14 @@ export default {
           break;
       }
     };
+
+    function recalculateHeightAfterUpdateFiltersActive(status) {
+      if (status) {
+        minusHeight(45);
+      } else {
+        plusHeight(45);
+      }
+    }
 
     function switchEvents() {
       router.push(ROUTES.APPLICATION.EVENTS.absolute);
@@ -763,6 +792,7 @@ export default {
       contextMenuX,
       contextMenuY,
       PinIcon,
+      myEventsBlockHeight,
       actionEventModalConfig,
       isEventUpdateModalOpened,
       paginationTotalCount,
@@ -794,6 +824,7 @@ export default {
       closeSubmitModal,
       showSubmitModal,
       closeEventUpdateModal,
+      recalculateHeightAfterUpdateFiltersActive,
       pinEvents,
       contextMenuItemClick,
       closeEventActiondModal,
