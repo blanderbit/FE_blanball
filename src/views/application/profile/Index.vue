@@ -11,6 +11,7 @@
   <div class="b-user-cabinet">
     <ReviewsListModal
       v-if="isReviewsListModalOpened"
+      :userRating="userRating"
       @closeModal="closeReviewsModal"
     />
 
@@ -113,22 +114,25 @@
         />
         <RatingCard
           v-if="!isTabletSize && !isMobile"
-          :rating-scale="userRating"
+          :ratingScale="userRating"
           :reviewsCount="reviewsTotalCount"
+          :disabled="isEditModeProfile"
           @showReviewsModal="showReviewsModal"
         />
         <UserDetailsCard
           :user-data="userData"
           :phone="userStore.user.phone"
           :is-edit-mode="isEditModeProfile"
-          @openEditPictureModal="openEditPictureModal"
           :initValues="formValues"
+          @openEditPictureModal="openEditPictureModal"
+          @showReviewsModal="showReviewsModal"
         />
         <div class="b-user-cabinet__mobile-tablet-block">
           <RatingCard
             v-if="isTabletSize"
             :rating-scale="userRating"
             :reviewsCount="reviewsTotalCount"
+            :disabled="isEditModeProfile"
             @showReviewsModal="showReviewsModal"
           />
           <SecurityBlock

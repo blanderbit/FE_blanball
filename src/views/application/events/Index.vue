@@ -54,9 +54,10 @@
       <div class="b-events-page__main-search-block">
         <events-filters
           :modelValue="filters"
+          :elementsCount="paginationTotalCount"
           @update:value="setFilters"
           @clearFilters="clearFilters"
-          :elementsCount="paginationTotalCount"
+          @updatedActiveFilters="recalculateHeightAfterUpdateFiltersActive"
         ></events-filters>
         <div
           class="b-events-page__all-events-block"
@@ -223,6 +224,8 @@ export default {
     });
     const {
       calculatedHeight,
+      minusHeight,
+      plusHeight
     } = calcHeight(...Object.values(allEventsBlockHeightConfig.value));
 
     const allEventsBlockHeight = computed(() => {
@@ -322,6 +325,15 @@ export default {
     function switchToMyEvents() {
       router.push(ROUTES.APPLICATION.MY_EVENTS.index.absolute);
     }
+    
+
+    function recalculateHeightAfterUpdateFiltersActive(status) {
+      if (status) {
+        minusHeight(45);
+      } else {
+        plusHeight(45);
+      }
+    };
 
     const refList = ref();
     const blockScrollToTopIfExist = ref(false);
@@ -460,6 +472,7 @@ export default {
       });
     };
 
+
     return {
       emptyListMessages,
       scrollComponent,
@@ -480,6 +493,7 @@ export default {
       paginationElements,
       paginationPage,
       allEventsBlockHeight,
+      recalculateHeightAfterUpdateFiltersActive,
       joinEventModalItemClick,
       paginationLoad,
       loadDataPaginationData,
@@ -510,6 +524,8 @@ $color-f0f0f4: #f0f0f4;
   grid-template-columns: 1fr 256px;
   grid-gap: 28px;
   position: relative;
+  height: fit-content;
+
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
   }

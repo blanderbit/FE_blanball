@@ -96,6 +96,12 @@ import grayCrossIcon from '../../../assets/img/gray-cross.svg';
 import blackCrossIcon from '../../../assets/img/cross.svg';
 import greenCrossIcon from '../../../assets/img/green-cross.svg';
 
+const EVENT_STATUSES = {
+  PLANNED: 'Planned',
+  ACTIVE: 'Active',
+  FINISHED: 'Finished'
+}
+
 export default {
   components: {
     NoScheduledEvents,
@@ -144,13 +150,13 @@ export default {
 
     const getEventCrossIcon = (eventStatus) => {
       switch (eventStatus) {
-        case 'Planned': {
+        case EVENT_STATUSES.PLANNED: {
           return icons.value.cross.blackCross;
         }
-        case 'Active': {
+        case EVENT_STATUSES.ACTIVE: {
           return icons.value.cross.greenCross;
         }
-        case 'Finished': {
+        case EVENT_STATUSES.FINISHED: {
           return icons.value.cross.grayCross;
         }
       }

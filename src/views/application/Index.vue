@@ -65,7 +65,7 @@
       <Scheduler
         v-if="isSchedulerOpened"
         :config="schedulerConfig"
-        :marginTop="headerHeight"
+        :marginTop="headerHeightStore.headerHeight"
         @closeWindow="isSchedulerOpened = false"
       >
         <template #LeftSidebar="{ isFriendsVisible, friendsBlockSwitcher }">
@@ -96,7 +96,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onBeforeMount, onBeforeUnmount, onMounted } from 'vue';
+import { ref, computed, watch, onBeforeUnmount, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
@@ -118,6 +118,7 @@ import { AuthWebSocketWorkerInstance } from '../../workers/web-socket-worker';
 import { accessToken } from '../../workers/token-worker';
 import { notificationButtonHandlerMessage } from '../../workers/utils-worker';
 import { useUserDataStore } from '@/stores/userData';
+import { useHeaderHeightStore } from '../../stores/headerHeight';
 import {
   NotificationsBus,
   BlanballEventBus,
@@ -147,6 +148,7 @@ const activePushNotifications = ref([]);
 const router = useRouter();
 const toast = useToast();
 const userStore = useUserDataStore();
+const headerHeightStore = useHeaderHeightStore();
 const audio = new Audio(notification_audio);
 let timeout;
 
@@ -178,6 +180,7 @@ const emailVerified = () => {
       user: res.data,
     });
   });
+  setHeaderHeight();
   BlanballEventBus.emit('emailVerified');
 };
 
@@ -406,6 +409,16 @@ function closeNewVersionModal() {
   VersionHandling.closeVersionModal();
 }
 
+function setHeaderHeight() {
+  headerHeightStore.$patch({
+    headerHeight: headerHeight.value,
+  });
+}
+
+onMounted(() => {
+  setHeaderHeight();
+});
+
 onBeforeUnmount(() => {
   NotificationsBus.off('openEventReviewModal');
   NotificationsBus.off('removePushNotificationAfterSidebarAction');
@@ -414,12 +427,18 @@ onBeforeUnmount(() => {
   AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect();
 });
 
+watch(
+  () => headerHeight.value,
+  () => {
+    setHeaderHeight();
+  }
+);
+
 const isSchedulerOpened = ref(false);
 
 const schedulerConfig = ref({
   myEventsDotColor: '#148581',
   otherEventsDotColor: '#D62953',
-  marginTop: headerHeight.value
 });
 </script>
 
@@ -438,7 +457,6 @@ html {
 }
 
 .header-block {
-
   @include beforeDesktop {
     background: #fff;
     position: relative;

@@ -824,6 +824,7 @@ $color-dfdeed: #dfdeed;
   grid-template-columns: 1fr 256px;
   grid-gap: 28px;
   position: relative;
+  height: fit-content;
 
   @media (max-width: 992px) {
     grid-template-columns: 1fr;

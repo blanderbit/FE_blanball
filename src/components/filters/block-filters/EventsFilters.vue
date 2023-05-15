@@ -189,7 +189,7 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount, watchEffect } from 'vue';
+import { computed, ref, watch, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import dayjs from 'dayjs';
 
@@ -385,6 +385,15 @@ export default {
     function closeMobileSearch() {
       isMobileSearchOpened.value = false;
     }
+
+    watch(
+      () => activeFilters.value,
+      (newVal) => {
+        if (!isMobile.value && !isTablet.value) {
+          emit('updatedActiveFilters', newVal);
+        }
+      }
+    );
 
     return {
       sortingButtonClick,

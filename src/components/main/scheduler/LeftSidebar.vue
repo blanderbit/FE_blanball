@@ -90,6 +90,7 @@
 
 <script>
 import { ref, computed, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { v4 as uuid } from 'uuid';
 
@@ -135,6 +136,7 @@ export default {
   emits: ['friendsBlockSwitcher'],
   setup() {
     const refList = ref();
+    const { t } = useI18n();
     const blockScrollToTopIfExist = ref(false);
     const triggerForRestart = ref(false);
     const searchFriendsValue = ref('');
@@ -146,11 +148,11 @@ export default {
       return [
         {
           id: mockData.value.tabs.MY_PLANNED,
-          text: 'Мої заплановані',
+          text: t('scheduler.my-planned-tab'),
         },
         {
           id: mockData.value.tabs.FRIENDS_PLANNED,
-          text: 'Зайнятість друзів',
+          text: t('scheduler.friends-planned-tab'),
         },
       ];
     });

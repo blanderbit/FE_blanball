@@ -9,5 +9,7 @@ export default {
   'no-scheduled-events-friend': '{ fullName } немає запланованих подій для відображення',
   'no-scheduled-events-me': 'Ви не маєте запланованих подій для відображення',
   'planned': 'Заплановані',
-  'select-friend-from-the-list': 'Оберіть друга зі списку зліва, щоб переглянути його заплановані події'
+  'select-friend-from-the-list': 'Оберіть друга зі списку зліва, щоб переглянути його заплановані події',
+  'my-planned-tab': 'Мої заплановані',
+  'friends-planned-tab': 'Зайнятість друзів'
 };

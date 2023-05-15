@@ -1,7 +1,9 @@
 <template>
-  <div class="b-reviews-list-modal__wrapper"
-    @click.self="$emit('closeModal')">
-    <div class="b-reviews-list-modal__modal-window">
+  <div class="b-reviews-list-modal__wrapper" @click.self="$emit('closeModal')">
+    <div
+      class="b-reviews-list-modal__modal-window"
+      :style="reviewListModalTopMargin"
+    >
       <div class="b-reviews-list-modal__top-side">
         <img
           class="b-close-modal-button"
@@ -12,15 +14,19 @@
         <div class="b-reviews-list-modal__titles">
           <div class="b-title">{{ $t('player_page.feedbacks') }}</div>
           <div class="b-title-mobile">
-            <img src="../../../../../assets/img/arrow-left.svg" alt="" />
-            <span>Відгуки про мене</span>
+            <img
+              src="../../../../../assets/img/arrow-left.svg"
+              alt=""
+              @click="$emit('closeModal')"
+            />
+            <span>{{ $t('profile.reviews-about-me') }}</span>
           </div>
           <div class="b-subtitle">
             {{ paginationTotalCount }} {{ $t('player_page.rates') }}
           </div>
         </div>
         <div class="b-rating-grade">
-          <span>4</span>
+          <span>{{ userRating }}</span>
           <img src="../../../../../assets/img/green-star.svg" alt="" />
         </div>
       </div>
@@ -65,7 +71,6 @@
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-import dayjs from 'dayjs';
 import { v4 as uuid } from 'uuid';
 
 import InfiniteLoading from '../../../infiniteLoading/InfiniteLoading.vue';
@@ -75,6 +80,8 @@ import Review from './Review.vue';
 
 import { API } from '../../../../../workers/api-worker/api.worker';
 import { PaginationWorker } from '../../../../../workers/pagination-worker';
+import { useHeaderHeightStore } from '../../../../../stores/headerHeight';
+import { useWindowWidth } from '../../../../../utils/widthScreen';
 
 export default {
   components: {
@@ -83,19 +90,31 @@ export default {
     ScrollToTop,
     Review,
   },
-  emits: [
-    'closeModal'
-  ],
+  emits: ['closeModal'],
+  props: {
+    userRating: Number
+  },
   setup() {
     const refList = ref();
     const route = useRoute();
     const blockScrollToTopIfExist = ref(false);
     const openedReviewId = ref(0);
 
+    const headerHegihtStore = useHeaderHeightStore();
+    const { isMobileSmall } = useWindowWidth();
+
     const triggerForRestart = ref(false);
     const restartInfiniteScroll = () => {
       triggerForRestart.value = uuid();
     };
+
+    const reviewListModalTopMargin = computed(() => {
+      return {
+        top: `${
+          isMobileSmall.value ? headerHegihtStore.headerHeight + 'px' : '50%'
+        }`,
+      };
+    });
 
     const openCloseReview = (reviewId) => {
       if (openedReviewId.value === reviewId) {
@@ -103,7 +122,7 @@ export default {
       } else {
         openedReviewId.value = reviewId;
       }
-    }
+    };
 
     const {
       paginationElements,
@@ -114,11 +133,6 @@ export default {
     } = PaginationWorker({
       paginationDataRequest: (page) =>
         API.ReviewService.getMyReviews({ page: page }),
-      dataTransformation: (item) => {
-        item.metadata = {
-          expanding: false,
-        };
-      },
     });
 
     paginationPage.value = 1;
@@ -135,7 +149,9 @@ export default {
       triggerForRestart,
       blockScrollToTopIfExist,
       paginationElements,
+      refList,
       paginationPage,
+      reviewListModalTopMargin,
       openedReviewId,
       paginationTotalCount,
       openCloseReview,
@@ -151,6 +167,10 @@ export default {
 
 <style lang="scss" scoped>
 $color-dfdeed: #dfdeed;
+
+:deep(.b-scroll-top__return-top) {
+  margin: 16px 0px;
+}
 .b-reviews-list-modal__wrapper {
   @include modal-wrapper;
 
@@ -171,7 +191,6 @@ $color-dfdeed: #dfdeed;
     background: $--b-main-white-color;
 
     @include afterMobile {
-      top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
     }
@@ -181,11 +200,8 @@ $color-dfdeed: #dfdeed;
       padding: 16px;
       border-radius: 0px;
       @include calc-height(120px);
-      top: 120px;
       box-shadow: none;
     }
-
-    // 80 and 120
 
     .b-reviews-list-modal__top-side {
       display: flex;
