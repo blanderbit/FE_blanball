@@ -874,7 +874,7 @@ $color-dfdeed: #dfdeed;
     height: 44px;
     right: 25px;
     z-index: 10;
-    bottom: 30%;
+    bottom: calc(15% + 20px);
 
     @media (max-width: 992px) {
       display: flex;
