@@ -539,6 +539,7 @@ $color-d2f6a2: #d2f6a2;
 
 .b-public-profile {
   position: relative;
+  @include calc-height;
 
   @media (max-width: 1200px) {
     overflow: scroll;
