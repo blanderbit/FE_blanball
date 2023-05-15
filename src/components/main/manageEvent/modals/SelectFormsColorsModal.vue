@@ -115,7 +115,7 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 import dropdown from '../../../shared/dropdown/Dropdown.vue';
 import GreenBtn from '../../../shared/button/GreenBtn.vue';
 
-import CONSTANTS from '../../../../consts/index';
+import { CONSTS } from '../../../../consts/index';
 import SCHEMAS from '../../../../validators/schemas';
 
 export default {
@@ -139,9 +139,9 @@ export default {
   setup(props, { emit }) {
     const mockData = computed(() => {
       return {
-        tabs: CONSTANTS.forms.tabs,
-        colors: CONSTANTS.forms.colors,
-        teams: CONSTANTS.forms.teams,
+        tabs: CONSTS.forms.tabs,
+        colors: CONSTS.forms.colors,
+        teams: CONSTS.forms.teams,
       };
     });
 

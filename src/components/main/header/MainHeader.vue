@@ -26,13 +26,13 @@
     </div>
 
     <div class="b_header-right-side">
-      <img
+      <!-- <img
         class="b_scheduler_button"
         src="../../../assets/img/calendar.svg"
         alt=""
         :style="`z-index: ${isSchedulerOpened ? 1000 : 0}`"
-        @click="$emit('openСloseScheduler')"
-      />
+        @click="$emit('openCloseScheduler')"
+      /> -->
       <div class="b_header_search-block">
         <div class="b_header_search-input">
           <MainInput
@@ -59,7 +59,7 @@ import MainInput from '../../shared/input/MainInput.vue';
 import SearchModal from '../../shared/modals/SearchModal.vue';
 import SearchBlockAll from '../../SearchBlockAll.vue';
 
-import CONSTANTS from '../../../consts/index';
+import { CONSTS } from '../../../consts/index';
 import { ROUTES } from '../../../router/router.const';
 import { API } from '../../../workers/api-worker/api.worker';
 
@@ -128,7 +128,7 @@ export default {
 
     const mockData = computed(() => {
       return {
-        tags: CONSTANTS.manage_event.tags,
+        tags: CONSTS.manage_event.tags,
       };
     });
 

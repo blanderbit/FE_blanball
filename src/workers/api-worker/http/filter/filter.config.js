@@ -1,11 +1,11 @@
-import CONSTANTS from '../../../../consts';
+import { CONSTS } from '../../../../consts';
 import { Enum } from './filter.utils';
 
 export const filterConfigForUsers = {
   page: Number,
   profile__age: Number,
   profile__position: new Enum(
-    CONSTANTS.profile.position.map(({ value }) => value)
+    CONSTS.profile.position.map(({ value }) => value)
   ),
   profile__gender: new Enum(['Man', 'Woman', '']),
   is_online: Boolean, // TODO add in client
@@ -57,3 +57,11 @@ export const filterConfigForEvents = {
   date_and_time_after: String,
   date_and_time_before: String,
 }; // TODO Add search by members list
+
+
+export const filterConfigForScheduler = {
+  id: Number,
+  page: Number,
+  user_id: Number,
+  date: String
+};

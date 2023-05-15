@@ -7,6 +7,8 @@ import PublicProfile from '../../../components/main/publicProfile/PublicProfile.
 import { useRoute } from 'vue-router';
 import { ref, watch } from 'vue';
 import { API } from '../../../workers/api-worker/api.worker';
+
+import { ROUTES } from '../../../router/router.const';
 export default {
   name: 'PlayerPage',
   components: {
@@ -20,10 +22,12 @@ export default {
     watch(
       () => route.path,
       async (value) => {
-        const response = await API.UserService.getUserPublicProfile(
-          value.split('/').slice(-1)[0]
-        );
-        publicUserData.value = response.data;
+        if (route.name === ROUTES.APPLICATION.USERS.GET_ONE.name) {
+          const response = await API.UserService.getUserPublicProfile(
+            value.split('/').slice(-1)[0]
+          );
+          publicUserData.value = response.data;
+        }
       }
     );
 

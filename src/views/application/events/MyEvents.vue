@@ -15,8 +15,6 @@
     @declineChanges="cancelChangesAndGoToTheNextRoute"
     @deleteEvents="deleteEvents"
   />
-
-  <loader :is-loading="loading" />
   <EditEventModal
     v-if="isEventUpdateModalOpened"
     :eventDataValue="updateEventData"
@@ -75,9 +73,10 @@
         <events-filters
           v-if="!selected.length"
           :modelValue="filters"
+          :elementsCount="paginationTotalCount"
           @update:value="setFilters"
           @clearFilters="clearFilters"
-          :elementsCount="paginationTotalCount"
+          @updatedActiveFilters="recalculateHeightAfterUpdateFiltersActive"
         >
           <template #tabs>
             <div class="b-events-page__tabs">
@@ -124,7 +123,10 @@
             </div>
           </div>
         </FilterBlock>
-        <div class="b-events-page__all-events-block">
+        <div
+          class="b-events-page__all-events-block"
+          :style="`height: ${myEventsBlockHeight}`"
+        >
           <smartGridList
             :list="paginationElements"
             ref="refList"
@@ -151,7 +153,7 @@
               >
                 <template #complete>
                   <emptyList
-                    v-if="!paginationElements.length && !loading"
+                    v-if="!paginationElements.length"
                     :title="emptyListMessages.title"
                     :description="emptyListMessages.description"
                     :buttonText="emptyListMessages.button_text"
@@ -196,7 +198,6 @@ import InfiniteLoading from '../../../components/main/infiniteLoading/InfiniteLo
 import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue';
 import WhiteBtn from '../../../components/shared/button/WhiteBtn.vue';
 import DeleteEventsModal from '../../../components/main/events/modals/DeleteEventsModal.vue';
-import loader from '../../../components/shared/loader/Loader.vue';
 import EditEventModal from '../../../components/main/manageEvent/modals/EditEventModal.vue';
 import ActionEventModal from '../../../components/main/events/modals/ActionEventModal.vue';
 import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
@@ -209,8 +210,14 @@ import { addMinutes } from '../../../utils/addMinutes';
 import { getDate } from '../../../utils/getDate';
 import { getTime } from '../../../utils/getTime';
 import { prepareEventUpdateData } from '../../../utils/prepareEventUpdateData';
+import { calcHeight } from '../../../utils/calcHeight';
+import { useUserDataStore } from '../../../stores/userData';
+import {
+  startSpinner,
+  finishSpinner,
+} from '../../../workers/loading-worker/loading.worker';
 
-import CONSTANTS from '../../../consts/index';
+import { CONSTS } from '../../../consts/index';
 
 import Plus from '../../../assets/img/plus.svg';
 import WhiteBucket from '../../../assets/img/white-bucket.svg';
@@ -258,7 +265,6 @@ export default {
     EventsFilters,
     WhiteBtn,
     ActionEventModal,
-    loader,
     DeleteEventsModal,
     SubmitModal,
   },
@@ -268,7 +274,6 @@ export default {
     const toast = useToast();
     const router = useRouter();
     const eventCards = ref([]);
-    const loading = ref(false);
     const selected = ref([]);
     const { t } = useI18n();
     const isLoaderActive = ref(false);
@@ -291,6 +296,7 @@ export default {
     const nextRoutePath = ref('');
     const actionEventModalData = ref({});
     const submitModalData = ref({});
+    const userStore = useUserDataStore();
 
     const actionEventModalConfig = computed({
       get() {
@@ -319,6 +325,20 @@ export default {
       set() {},
     });
 
+    const allEventsBlockHeightConfig = ref({
+      default: [90, 65, 115, 60],
+      mobile: [userStore.user.is_verified ? 0 : 40, -20],
+      tablet: [userStore.user.is_verified ? 0 : 40],
+      recalculateOnVerifyEmail: true,
+    });
+    const { calculatedHeight, minusHeight, plusHeight } = calcHeight(
+      ...Object.values(allEventsBlockHeightConfig.value)
+    );
+
+    const myEventsBlockHeight = computed(() => {
+      return `${calculatedHeight.value}px`;
+    });
+
     const iconPlus = computed(() => Plus);
 
     const emptyListMessages = computed(() => {
@@ -339,12 +359,12 @@ export default {
 
     const mockData = computed(() => {
       return {
-        event_cards: CONSTANTS.event_page.event_cards,
-        my_events: CONSTANTS.event_page.my_events,
-        sport_type_dropdown: CONSTANTS.event_page.sport_type_dropdown,
-        gender_dropdown: CONSTANTS.event_page.gender_dropdown,
-        calendar: CONSTANTS.event_page.calendar,
-        menu_text: CONSTANTS.event_page.menu_text(
+        event_cards: CONSTS.event_page.event_cards,
+        my_events: CONSTS.event_page.my_events,
+        sport_type_dropdown: CONSTS.event_page.sport_type_dropdown,
+        gender_dropdown: CONSTS.event_page.gender_dropdown,
+        calendar: CONSTS.event_page.calendar,
+        menu_text: CONSTS.event_page.menu_text(
           selectedContextMenuEvent.value.pinned
         ),
       };
@@ -423,6 +443,14 @@ export default {
       }
     };
 
+    function recalculateHeightAfterUpdateFiltersActive(status) {
+      if (status) {
+        minusHeight(45);
+      } else {
+        plusHeight(45);
+      }
+    }
+
     function switchEvents() {
       router.push(ROUTES.APPLICATION.EVENTS.absolute);
     }
@@ -455,7 +483,7 @@ export default {
     }
 
     async function unPinEvents() {
-      loading.value = true;
+      startSpinner();
       let eventsIDSToUnPin = oneEventToUnPinId.value
         ? [oneEventToUnPinId.value]
         : selected.value;
@@ -469,7 +497,7 @@ export default {
         oneEventToUnPinId.value = null;
       }
       loadDataPaginationData(1, null, true, false);
-      loading.value = false;
+      finishSpinner();
       toast.success(t('notifications.events-unpinned'));
     }
 
@@ -488,7 +516,7 @@ export default {
           })
         );
       } else {
-        loading.value = true;
+        startSpinner();
         let eventsIDSToPin = oneEventToPinId.value
           ? [oneEventToPinId.value]
           : selected.value;
@@ -502,14 +530,14 @@ export default {
           oneEventToPinId.value = null;
         }
         loadDataPaginationData(1, null, true, false);
-        loading.value = false;
+        finishSpinner();
         toast.success(t('notifications.events-pinned'));
       }
     }
 
     async function deleteEvents() {
       closeSubmitModal();
-      loading.value = true;
+      startSpinner();
       let eventsIDSToDelete = oneEventToDeleteId.value
         ? [oneEventToDeleteId.value]
         : selected.value;
@@ -525,7 +553,7 @@ export default {
       paginationElements.value = paginationElements.value.filter(
         (event) => !eventsIDSToDelete.includes(event.id)
       );
-      loading.value = false;
+      finishSpinner();
       toast.success(t('notifications.events-deleted'));
     }
 
@@ -557,7 +585,7 @@ export default {
     }
     async function changeTab(tabId) {
       if (tabId !== selectedTabId.value) {
-        loading.value = true;
+        startSpinner();
         selectedTabId.value = tabId;
 
         switch (selectedTabId.value) {
@@ -574,7 +602,7 @@ export default {
         paginationElements.value =
           route.meta.eventData.data.results.map(handlingIncomeData);
         restartInfiniteScroll();
-        loading.value = false;
+        finishSpinner();
       }
     }
 
@@ -724,7 +752,7 @@ export default {
       isLoading
     ) {
       if (isLoading) {
-        loading.value = true;
+        startSpinner();
       }
       if (forceUpdate) {
         paginationClearData();
@@ -736,7 +764,7 @@ export default {
         forceUpdate,
       }).then(() => {
         if (isLoading) {
-          loading.value = false;
+          finishSpinner();
         }
       });
     }
@@ -764,9 +792,9 @@ export default {
       contextMenuX,
       contextMenuY,
       PinIcon,
+      myEventsBlockHeight,
       actionEventModalConfig,
       isEventUpdateModalOpened,
-      loading,
       paginationTotalCount,
       selected,
       updateEventData,
@@ -796,6 +824,7 @@ export default {
       closeSubmitModal,
       showSubmitModal,
       closeEventUpdateModal,
+      recalculateHeightAfterUpdateFiltersActive,
       pinEvents,
       contextMenuItemClick,
       closeEventActiondModal,
@@ -826,6 +855,7 @@ $color-dfdeed: #dfdeed;
   grid-template-columns: 1fr 256px;
   grid-gap: 28px;
   position: relative;
+  height: fit-content;
 
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
@@ -844,7 +874,7 @@ $color-dfdeed: #dfdeed;
     height: 44px;
     right: 25px;
     z-index: 10;
-    bottom: 30%;
+    bottom: calc(15% + 20px);
 
     @media (max-width: 992px) {
       display: flex;
@@ -1072,7 +1102,7 @@ $color-dfdeed: #dfdeed;
 
       .b-events-page__all-events-block {
         position: relative;
-        margin-top: 23px;
+        margin-top: 15px;
         height: 76vh;
         overflow: scroll;
         .b-events-page__cards-event-wrapper {
@@ -1082,13 +1112,6 @@ $color-dfdeed: #dfdeed;
           overflow-y: scroll;
           height: 100%;
         }
-      }
-
-      .b-events-page__my-events-block {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        margin-top: 23px;
       }
     }
   }

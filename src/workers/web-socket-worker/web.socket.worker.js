@@ -43,7 +43,7 @@ export class WebSocketWorker {
   }
 
   disconnect() {
-    this.instance.close();
+    this.instance?.close();
     this.instance = null;
   }
 

@@ -12,7 +12,7 @@
             :allowTouchMove="false"
             :bullets="false"
             :loop="true"
-            :simulateTouch=false
+            :simulateTouch="false"
             :gap="2"
             :draggingDistance="10"
             :arrows-outside="false"
@@ -101,7 +101,10 @@
                     $t('versions.version-number', { number: version.version })
                   }}
                 </div>
-                <div v-if="version.id === newVersionId" class="b-version__new">
+                <div
+                  v-if="version.id === newVersionId && paginationPage === 1"
+                  class="b-version__new"
+                >
                   {{ $t('versions.new') }}
                 </div>
               </div>
@@ -200,16 +203,21 @@ export default {
     } = PaginationWorker({
       paginationDataRequest: (page) =>
         API.VersionsService.getAllVersions({ page: page }),
-      // dataTransformation: (item) => {},
+      dataTransformation: handlingIncomeVersionsData,
+      notToConcatElements: true,
     });
 
-    paginationPage.value = 1;
-    paginationTotalCount.value = route.meta.allVersions.total_count;
-    paginationElements.value = route.meta.allVersions.results.map((version) => {
+    function handlingIncomeVersionsData(version) {
       return {
         ...version,
         created_at: dayjs(version.created_at).format('DD.MM.YYYY'),
       };
+    }
+
+    paginationPage.value = 1;
+    paginationTotalCount.value = route.meta.allVersions.total_count;
+    paginationElements.value = route.meta.allVersions.results.map((version) => {
+      return handlingIncomeVersionsData(version);
     });
 
     const loadDataPaginationData = (pageNumber, $state) => {
@@ -296,7 +304,7 @@ ul {
       flex-direction: column;
       overflow-y: scroll;
       padding-bottom: 20px;
-      @include calc-height(120px, 80px);
+      @include calc-height(90px, 75px);
     }
 
     .b-versions__main-side {
@@ -392,7 +400,7 @@ ul {
       .b-history-side__content {
         @include desktop {
           overflow-y: scroll;
-          @include calc-height(90px, 60px, 20px);
+          @include calc-height(90px, 60px, 30px);
           padding-bottom: 20px;
         }
 

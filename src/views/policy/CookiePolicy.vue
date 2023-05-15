@@ -107,7 +107,7 @@ import { computed } from 'vue';
 import PolicyWrapper from '../../components/main/policy/PolicyWrapper.vue';
 
 import { ROUTES } from '../../router/router.const';
-import CONSTS from '../../consts'
+import { CONSTS } from '../../consts'
 
 export default {
   components: {

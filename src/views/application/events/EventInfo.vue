@@ -1,5 +1,4 @@
 <template>
-  <loader :is-loading="loading" />
   <InviteManyUsersToEventModal
     v-if="isInviteUsersModalOpened"
     :eventData="eventData"
@@ -81,7 +80,10 @@
         </div>
       </div>
 
-      <div class="b-event-info__main-content-block">
+      <div
+        class="b-event-info__main-content-block"
+        :style="`height: ${eventInfoMainBlockHeight}`"
+      >
         <div class="b-event-info__details-block">
           <div class="b-event-info__left-side">
             <div class="b-event-info__timing">
@@ -189,7 +191,6 @@
               <position-map
                 class="b-event-map"
                 :coords="{ lat: eventData.place.lat, lng: eventData.place.lon }"
-                @map-loaded="loading = false"
                 disable-change-coords
               >
               </position-map>
@@ -231,43 +232,43 @@
 
           <div class="b-event-info__users-tables">
             <EventInfoUsersTable
-            v-if="activeTab === 0"
-            :data="eventData.current_users"
-            :table-title-text="$t('my_events.players-list')"
-            :table-color="'#148783'"
-            :maxPlayersCount="eventData.amount_members"
-            :emptyListData="noUsersData"
-          >
-            <template #user>
-              <SmallUserCard
-                v-for="user of eventData.current_users"
-                :key="user.id"
-                :data-player="user"
-              />
-            </template>
-          </EventInfoUsersTable>
+              v-if="activeTab === 0"
+              :data="eventData.current_users"
+              :table-title-text="$t('my_events.players-list')"
+              :table-color="'#148783'"
+              :maxPlayersCount="eventData.amount_members"
+              :emptyListData="noUsersData"
+            >
+              <template #user>
+                <SmallUserCard
+                  v-for="user of eventData.current_users"
+                  :key="user.id"
+                  :data-player="user"
+                />
+              </template>
+            </EventInfoUsersTable>
 
-          <EventInfoUsersTable
-            v-if="activeTab === 1"
-            :data="eventData.current_fans"
-            :border="false"
-            :emptyListData="noFansData"
-          >
-            <template #user>
-              <SmallUserCard
-                v-for="user of eventData.current_fans"
-                :key="user.id"
-                :data-player="user"
-              />
-            </template>
-          </EventInfoUsersTable>
+            <EventInfoUsersTable
+              v-if="activeTab === 1"
+              :data="eventData.current_fans"
+              :border="false"
+              :emptyListData="noFansData"
+            >
+              <template #user>
+                <SmallUserCard
+                  v-for="user of eventData.current_fans"
+                  :key="user.id"
+                  :data-player="user"
+                />
+              </template>
+            </EventInfoUsersTable>
 
-          <ListOfEventRequestsToParticipations
-            v-if="activeTab === 2"
-            :requestsToParticipationsData="eventRequestsToParticipations"
-            @acceptRequest="acceptRequestToParticipation"
-            @declineRequest="declineRequestToParticipation"
-          />
+            <ListOfEventRequestsToParticipations
+              v-if="activeTab === 2"
+              :requestsToParticipationsData="eventRequestsToParticipations"
+              @acceptRequest="acceptRequestToParticipation"
+              @declineRequest="declineRequestToParticipation"
+            />
           </div>
         </div>
       </div>
@@ -277,7 +278,7 @@
 </template>
 
 <script>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
@@ -290,7 +291,6 @@ import CopyModal from '../../../components/shared/modals/CopyModal.vue';
 import userAvatar from '../../../components/shared/userAvatar/UserAvatar.vue';
 import TabLabel from '../../../components/shared/tabLabel/TabLabel.vue';
 import ListOfEventRequestsToParticipations from '../../../components/ListOfEventRequestsToParticipations.vue';
-import loader from '../../../components/shared/loader/Loader.vue';
 import EventInfoForms from '../../../components/main/events/EventInfoForms.vue';
 import ActionEventModal from '../../../components/main/events/modals/ActionEventModal.vue';
 import EditEventModal from '../../../components/main/manageEvent/modals/EditEventModal.vue';
@@ -307,8 +307,13 @@ import { addMinutes } from '../../../utils/addMinutes';
 import { getDate } from '../../../utils/getDate';
 import { getTime } from '../../../utils/getTime';
 import { copyToClipboard } from '../../../utils/copyToClipBoard';
+import {
+  startSpinner,
+  finishSpinner,
+} from '../../../workers/loading-worker/loading.worker';
+import { calcHeight } from '../../../utils/calcHeight';
 
-import CONSTANTS from '../../../consts/index';
+import { CONSTS } from '../../../consts/index';
 import { ROUTES } from '../../../router/router.const';
 
 import emoji_1 from '../../../assets/img/emojies/1.svg';
@@ -337,7 +342,6 @@ export default {
     PositionMap,
     CopyModal,
     userAvatar,
-    loader,
     TabLabel,
     SmallUserCard,
     EventInfoForms,
@@ -355,7 +359,6 @@ export default {
     const toast = useToast();
     const userStore = useUserDataStore();
     const isTabLabel = ref(false);
-    const loading = ref(false);
     const { t } = useI18n();
     const joinEventData = ref(null);
     const eventData = ref(route.meta.eventData.data);
@@ -388,20 +391,20 @@ export default {
     watch(
       () => route.path,
       async (value) => {
-        loading.value = true;
+        startSpinner();
         const response = await API.EventService.getOneEvent(
           value.split('/').slice(-1)[0]
         );
         handleIncomeEventData(response.data);
         eventData.value = response.data;
         joinEventData.value = null;
-        loading.value = false;
+        finishSpinner();
       }
     );
 
     const mockData = computed(() => {
       return {
-        tabs: CONSTANTS.event_info
+        tabs: CONSTS.event_info
           .tabs(eventData.value, userStore.user.id)
           .map((item) => ({
             ...item,
@@ -411,15 +414,17 @@ export default {
     });
 
     const eventJoinToolTipItems = computed(() => {
-      return CONSTANTS.eventJoin.items;
+      return CONSTS.eventJoin.items;
     });
 
     const submitModalConfig = computed(() => {
       return {
-        title: 'Скасувати участь у події',
-        description: `Ви дійсно хочете скасувати участь у події під назвою «${eventData.value.name}»?`,
-        button_1: 'Ні, не скасовувати ',
-        button_2: 'Так, скасувати',
+        title: t('modals.leave_from_event.title'),
+        description: t('modals.leave_from_event.main-text', {
+          eventName: eventData.value.name,
+        }),
+        button_1: t('modals.leave_from_event.button-1-text'),
+        button_2: t('modals.leave_from_event.button-2-text'),
         left_btn_action: 'closeModal',
         right_btn_action: 'leaveFromTheEvent',
         btn_with_1: 130,
@@ -543,7 +548,7 @@ export default {
     };
 
     const leaveFromTheEvent = async () => {
-      loading.value = true;
+      startSpinner();
       let participateType = '';
       let leaveFrom = [];
       if (
@@ -563,14 +568,14 @@ export default {
       if (index > -1) {
         leaveFrom.splice(index, 1);
       }
-      loading.value = false;
+      finishSpinner();
       emitAfterEventJoinOrLeave(participateType, 'leave');
       closeSubmitModal();
       toast.info(t('notifications.event-leave'));
     };
 
     const acceptRequestToParticipation = async (id) => {
-      loading.value = true;
+      startSpinner();
 
       await API.EventService.declineOrAcceptParticipations(id, true);
       let newEventData = await API.EventService.getOneEvent(eventData.value.id);
@@ -580,18 +585,18 @@ export default {
       handleIncomeEventData(eventData.value);
       eventRequestsToParticipations.value =
         handlePreloadRequestsParticipationsData(requestsToParticipations.data);
-      loading.value = false;
+      finishSpinner();
     };
 
     const declineRequestToParticipation = async (id) => {
-      loading.value = true;
+      startSpinner();
 
       await API.EventService.declineOrAcceptParticipations(id, false);
       let requestsToParticipations =
         await API.EventService.requestsToParticipations(eventData.value.id);
       eventRequestsToParticipations.value =
         handlePreloadRequestsParticipationsData(requestsToParticipations.data);
-      loading.value = false;
+      finishSpinner();
     };
 
     const openEventShareModal = () => {
@@ -628,10 +633,10 @@ export default {
     }
 
     async function inviteUsersToThisEvent(ids) {
-      loading.value = true;
+      startSpinner();
       closeInviteUsersModal();
       await API.EventService.inviteUsersToEvent(ids, eventData.value.id);
-      loading.value = false;
+      finishSpinner();
       toast.success(t('notifications.sent-invites'));
     }
 
@@ -719,7 +724,7 @@ export default {
     };
 
     async function joinEvent(data, type) {
-      loading.value = true;
+      startSpinner();
       let toastText = '';
       let participateType = '';
       switch (type) {
@@ -744,7 +749,7 @@ export default {
           break;
       }
       emitAfterEventJoinOrLeave(participateType, 'join');
-      loading.value = false;
+      finishSpinner();
       toast.success(toastText);
     }
 
@@ -776,6 +781,18 @@ export default {
       return ROUTES;
     });
 
+    const { calculatedHeight } = calcHeight(
+      [90, 60],
+      [userStore.user.is_verified ? 0 : 40],
+      [userStore.user.is_verified ? 0 : 40],
+      true
+    );
+
+    const eventInfoMainBlockHeight = computed(() => {
+      return `${calculatedHeight.value}px`;
+    });
+
+
     return {
       mockData,
       ALL_ROUTES,
@@ -783,7 +800,6 @@ export default {
       eventData,
       currentFullRoute,
       isTabLabel,
-      loading,
       greenButton,
       activeTab,
       isActionEventModalOpened,
@@ -795,6 +811,7 @@ export default {
       isEventJoinModalActive,
       eventRequestsToParticipations,
       submitModalConfig,
+      eventInfoMainBlockHeight,
       eventJoinModalX,
       isInviteUsersModalOpened,
       eventJoinModalY,
@@ -922,7 +939,6 @@ $color-8a8aa8: #8a8aa8;
 
     .b-event-info__main-content-block {
       overflow-y: scroll;
-      @include calc-height(90px, 60px);
     }
 
     .b-event-info__details-block {

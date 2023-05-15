@@ -51,6 +51,12 @@ export function ReadAfterActiveAction(callBack) {
   };
 }
 
+export function DeleteAfterActiveAction(callBack) {
+  return (a) => {
+    a.prototype.deleteAfterActiveActionCallBack = callBack;
+  };
+}
+
 export function TimeForCloseIfInactive(e) {
   return (a) => {
     a.timeForClose = e;

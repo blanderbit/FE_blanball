@@ -18,5 +18,7 @@ export default {
     'description': 'Ви впевнені, що хочете видалити {length} повідомлень?',
     'button-1-text': 'Ні, не видаляти',
     'button-2-text': 'Так, видалити',
-  }
+  },
+  'flumx': 'FlumX',
+  'blanball-year': '©BlanBall {year}'
 };

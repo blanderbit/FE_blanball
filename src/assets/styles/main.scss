@@ -20,7 +20,33 @@ html {
   }
 }
 
-input[type="password"]::-ms-reveal {
+.vs__dropdown-menu {
+  background: #ffffff !important;
+  box-shadow: 0px 4px 12px rgba(23, 61, 197, 0.12) !important;
+  border-radius: 0px !important;
+  border: none !important;
+  margin-top: 4px !important;
+  min-width: fit-content !important;
+}
+
+.vs__dropdown-option {
+  padding: 10px 12px !important;
+}
+
+.vs__dropdown-option--selected {
+  background: #ecfcfb;
+  border-left: 4px solid $--b-main-green-color !important;
+
+  &:hover {
+    border-color: #8a8aa8 !important;
+  }
+}
+
+.vs__dropdown-option--highlight {
+  padding: 10px 12px !important;
+}
+
+input[type='password']::-ms-reveal {
   display: none;
 }
 
@@ -101,16 +127,20 @@ input[type="password"]::-ms-reveal {
 :root {
   --vs-search-input-color: #eeeeee !important;
   --rounded-full: 0px !important;
-  --vs-dropdown-option--active-bg: #F0F0F4 !important;
-}
-
-.vs__dropdown-option--selected {
-  background: #f0f0f4;
-  color: var(--vs-dropdown-option--deselect-color);
+  --vs-dropdown-option--active-bg: #f0f0f4 !important;
 }
 
 .opacity-bar,
 .grad-bar,
 .hue-bar {
   position: relative;
+}
+
+.resize-observer {
+  height: 1px !important;
+  width: 1px !important;
+  object {
+    height: 1px !important;
+    width: 1px !important;
+  }
 }

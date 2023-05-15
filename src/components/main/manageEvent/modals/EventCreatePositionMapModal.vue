@@ -12,7 +12,6 @@
     </div>
     <Teleport to="body">
       <ModalWindow v-if="activeModal" :isTitleShown="false">
-        <loader :is-loading="loading" />
         <Form v-slot="data" @submit="disableSubmit" :validation-schema="schema">
           <div class="b-modal-position__block">
             <dropdown
@@ -59,7 +58,6 @@
 
           <div class="b-modal-position__block b-modal-position__map">
             <position-map
-              @map-loaded="loading = false"
               :coords="coords"
               @update:coords="updateCoords"
             ></position-map>
@@ -92,12 +90,12 @@ import dropdown from '../../../shared/dropdown/Dropdown.vue';
 import MainInput from '../../../shared/input/MainInput.vue';
 import ModalWindow from '../../../shared/modals/ModalWindow.vue';
 import GreenBtn from '../../../shared/button/GreenBtn.vue';
-import loader from '../../../shared/loader/Loader.vue';
 
 import { PositionMapBus } from '../../../../workers/event-bus-worker';
 import { API } from '../../../../workers/api-worker/api.worker';
+import { startSpinner, finishSpinner } from '../../../../workers/loading-worker/loading.worker';
 
-import CONSTANTS from '../../../../consts';
+import { CONSTS } from '../../../../consts';
 
 import tickIcon from '../../../../assets/img/location-point.svg';
 import SCHEMAS from '../../../../validators/schemas';
@@ -110,7 +108,6 @@ export default {
     MainInput,
     Form,
     GreenBtn,
-    loader,
   },
   props: {
     modelValue: Object,
@@ -131,7 +128,6 @@ export default {
     const address = ref('');
     const nextButton = ref(false);
     const coords = ref({});
-    const loading = ref(true);
     const activeModal = ref(false);
 
     const schema = computed(() => {
@@ -185,10 +181,10 @@ export default {
     const mockData = computed(() => {
       return {
         cities:
-          CONSTANTS.register.jsonCityRegions.find((item) =>
+          CONSTS.register.jsonCityRegions.find((item) =>
             item.name.includes(region.value)
           )?.cities || [],
-        district: CONSTANTS.register.jsonCityRegions,
+        district: CONSTS.register.jsonCityRegions,
       };
     });
     function updateCoords(e) {
@@ -210,7 +206,6 @@ export default {
       mockData,
       region,
       city,
-      loading,
       nextButton,
       address,
       icons,
@@ -218,7 +213,7 @@ export default {
         region.value = e;
         city.value = '';
         address.value = '';
-        loading.value = true;
+        startSpinner();
         try {
           PositionMapBus.emit(
             'update:map:by:coords',
@@ -228,11 +223,11 @@ export default {
         } catch (e) {
           nextButton.value = true;
         }
-        loading.value = false;
+        finishSpinner();
       },
       async changeCity(e) {
         city.value = e;
-        loading.value = true;
+        startSpinner();
         try {
           PositionMapBus.emit(
             'update:map:by:coords',
@@ -244,13 +239,13 @@ export default {
         } catch (e) {
           nextButton.value = true;
         }
-        loading.value = false;
+        finishSpinner();
       },
       async changeAddress(e) {
         address.value = e.target.value;
         clearTimeout(timeout);
         timeout = setTimeout(async () => {
-          loading.value = true;
+          startSpinner();
           try {
             PositionMapBus.emit(
               'update:map:by:coords',
@@ -262,7 +257,7 @@ export default {
           } catch (e) {
             nextButton.value = true;
           }
-          loading.value = false;
+          finishSpinner();
         }, 500);
       },
       updateCoords,
@@ -322,5 +317,6 @@ export default {
   line-height: 24px;
   text-align: center;
   color: $--b-main-gray-color;
+  cursor: pointer;
 }
 </style>

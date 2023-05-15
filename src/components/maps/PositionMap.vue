@@ -8,8 +8,14 @@ import { onMounted, ref, watch } from 'vue';
 import { API } from '../../workers/api-worker/api.worker';
 import { PositionMapBus } from '../../workers/event-bus-worker';
 
-import { PositionMapBackgroundStyle, PositionMapStyles } from '../../workers/map-worker/map.styles';
-
+import {
+  PositionMapBackgroundStyle,
+  PositionMapStyles,
+} from '../../workers/map-worker/map.styles';
+import {
+  finishSpinner,
+  startSpinner,
+} from '../../workers/loading-worker/loading.worker';
 
 const Restrictions = {
   Ukraine: {
@@ -59,8 +65,7 @@ export default {
     }
 
     const setDataAboutPosition = async (data) => {
-      emit('update:coords:loading');
-      PositionMapBus.emit('update:coords:loading');
+      startSpinner();
       try {
         const dataForEmit = {
           lat: data?.lat,
@@ -78,9 +83,7 @@ export default {
         emit('update:coords-error');
         PositionMapBus.emit('update:coords-error');
       }
-
-      emit('map-loaded');
-      PositionMapBus.emit('map-loaded');
+      finishSpinner();
     };
     PositionMapBus.on('update:map:by:coords', (e) => {
       marker.value.setPosition({
@@ -153,9 +156,7 @@ export default {
       }
 
       if (crd?.currentPosition) return;
-
-      emit('map-loaded');
-      PositionMapBus.emit('map-loaded');
+      finishSpinner();
     };
 
     watch(

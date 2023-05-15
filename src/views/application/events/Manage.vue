@@ -1,5 +1,4 @@
 <template>
-  <loader :is-loading="eventCreateLoader" />
   <SubmitModal
     v-if="isSubmitModalOpened"
     :config="changeDataModalConfig"
@@ -159,7 +158,6 @@ import EventCard from '../../../components/main/events/EventCard.vue';
 import ManageEventSecondStep from '../../../components/main/manageEvent/ManageEventSecondStep.vue';
 import ManageEventThirdStep from '../../../components/main/manageEvent/ManageEventThirdStep.vue';
 import RemoveInvitedUsersModal from '../../../components/main/manageEvent/modals/RemoveInvitedUsersModal.vue';
-import loader from '../../../components/shared/loader/Loader.vue';
 import SelectFormsColorsModal from '../../../components/main/manageEvent/modals/SelectFormsColorsModal.vue';
 import InvitedUsersList from '../../../components/main/manageEvent/InvitedUsersList.vue';
 import PreviewInvitedUsersListModal from '../../../components/main/events/modals/PreviewInvitedUsersListModal.vue';
@@ -169,8 +167,8 @@ import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
 import { BlanballEventBus } from '../../../workers/event-bus-worker';
-import useWindowWidth from '../../../utils/widthScreen';
 import { calcHeight } from '../../../utils/calcHeight';
+import { finishSpinner, startSpinner } from '../../../workers/loading-worker/loading.worker';
 
 import { runOnSelectEventDuration } from '../../../utils/runOnSelectEventDuration';
 
@@ -193,7 +191,6 @@ export default {
     SelectFormsColorsModal,
     PreviewBlock,
     userAvatar,
-    loader,
     InvitedUsersList,
     PreviewInvitedUsersListModal,
     RemoveInvitedUsersModal,
@@ -209,7 +206,6 @@ export default {
     const userStore = useUserDataStore();
     const searchUsersLoading = ref(false);
     const relevantUsersList = ref([]);
-    const eventCreateLoader = ref(false);
     const isSelectFormColarModalOpened = ref(false);
     const removeInvitedUsersModalOpened = ref(false);
     const manageAction = ref(route.meta.action);
@@ -220,7 +216,6 @@ export default {
     const isEventCreated = ref(false);
     const myForm = ref();
     const nextRoute = ref(ROUTES.APPLICATION.EVENTS.absolute);
-    const { onResize, isMobile, isTablet } = useWindowWidth();
 
     const manageEventActionTypes = ref({
       CREATE: 'CREATE',
@@ -255,17 +250,13 @@ export default {
       return eventData.value;
     });
 
-    const { appHeightValue, calculatedHeight, onAppHeightResize } = calcHeight(
-      90,
-      32,
-      20,
-      isTablet.value || isMobile.value
-        ? userStore.user.is_verified
-          ? 0
-          : 40
-        : 0
+    const { calculatedHeight } = calcHeight(
+      [90, 32, 20],
+      [userStore.user.is_verified ? 0 : 40],
+      [userStore.user.is_verified ? 0 : 40],
+      true
     );
-
+    
     const createEventMainBlockHeight = computed(() => {
       return `${calculatedHeight.value}px`;
     });
@@ -459,7 +450,7 @@ export default {
 
     async function saveEvent(data) {
       let emitName;
-      eventCreateLoader.value = true;
+      startSpinner();
       isEventCreated.value = true;
 
       data.date_and_time = `${data.date} ${data.time}`;
@@ -470,12 +461,12 @@ export default {
         switch (manageAction.value) {
           case manageEventActionTypes.value.CREATE:
             await API.EventService.createOneEvent(data);
-            eventCreateLoader.value = false;
+            finishSpinner();
             emitName = 'EventCreated';
             break;
           case manageEventActionTypes.value.EDIT:
             await API.EventService.editOneEvent(route.params.id, data);
-            eventCreateLoader.value = false;
+            finishSpinner();
             emitName = 'EventUpdated';
             break;
         }
@@ -562,14 +553,6 @@ export default {
       }
     });
 
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-      window.addEventListener('resize', onAppHeightResize);
-    });
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
-      window.removeEventListener('resize', onAppHeightResize);
-    });
 
     return {
       currentStep,
@@ -588,7 +571,6 @@ export default {
       eventPreviewData,
       isEventPreivewModalOpened,
       isEventInvitedUsersListModal,
-      eventCreateLoader,
       myForm,
       formsModalSelectedTabId,
       isSubmitModalOpened,
@@ -644,6 +626,7 @@ $color-8a8aa8: #8a8aa8;
 }
 .b-manage-event {
   overflow: hidden;
+  @include calc-height;
   ::-webkit-scrollbar {
     display: none;
   }

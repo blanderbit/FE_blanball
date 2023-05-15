@@ -9,7 +9,6 @@
       </span>
     </div>
     <ModalWindow v-if="activeModal" :isTitleShown="false">
-      <loader :is-loading="loading" />
       <Form v-slot="data" @submit="disableSubmit" :validation-schema="schema">
         <div class="b-modal-position__block">
           <dropdown
@@ -58,7 +57,6 @@
             :coords="coords"
             :radius="dist"
             @update:coords="updateCoords"
-            @map-loaded="loading = false"
           ></position-map>
         </div>
         <div class="d-flex justify-content-between align-items-center">
@@ -88,12 +86,11 @@ import dropdown from '../shared/dropdown/Dropdown.vue';
 import MainInput from '../shared/input/MainInput.vue';
 import ModalWindow from '../shared/modals/ModalWindow.vue';
 import GreenBtn from '../shared/button/GreenBtn.vue';
-import loader from '../shared/loader/Loader.vue';
 
 import { PositionMapBus } from '../../workers/event-bus-worker';
 import { API } from '../../workers/api-worker/api.worker';
 
-import CONSTANTS from '../../consts';
+import { CONSTS } from '../../consts';
 
 import tickIcon from '../../assets/img/location-point.svg';
 import SCHEMAS from '../../validators/schemas';
@@ -106,7 +103,6 @@ export default {
     MainInput,
     Form,
     GreenBtn,
-    loader,
   },
   props: {
     modelValue: Object,
@@ -119,7 +115,6 @@ export default {
     const dist = ref(300);
     const nextButton = ref(false);
     const coords = ref({});
-    const loading = ref(true);
     const activeModal = ref(false);
 
     const schema = computed(() => {
@@ -171,10 +166,10 @@ export default {
     const mockData = computed(() => {
       return {
         cities:
-          CONSTANTS.register.jsonCityRegions.find((item) =>
+          CONSTS.register.jsonCityRegions.find((item) =>
             item.name.includes(region.value)
           )?.cities || [],
-        district: CONSTANTS.register.jsonCityRegions,
+        district: CONSTS.register.jsonCityRegions,
       };
     });
     function updateCoords(e) {
@@ -196,13 +191,12 @@ export default {
       region,
       city,
       dist,
-      loading,
       nextButton,
       icons,
       async changeRegions(e) {
         region.value = e;
         city.value = '';
-        loading.value = true;
+        startSpinner();
         try {
           PositionMapBus.emit(
             'update:map:by:coords',
@@ -212,11 +206,11 @@ export default {
         } catch (e) {
           nextButton.value = true;
         }
-        loading.value = false;
+        finishSpinner();
       },
       async changeCity(e) {
         city.value = e;
-        loading.value = true;
+        startSpinner();
         try {
           PositionMapBus.emit(
             'update:map:by:coords',
@@ -226,7 +220,7 @@ export default {
         } catch (e) {
           nextButton.value = true;
         }
-        loading.value = false;
+        finishSpinner();
       },
       updateCoords,
       activeModal,
@@ -286,5 +280,6 @@ export default {
   line-height: 24px;
   text-align: center;
   color: $--b-main-gray-color;
+  cursor: pointer;
 }
 </style>

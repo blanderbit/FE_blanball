@@ -3,6 +3,7 @@ import { API } from '../../../api-worker/api.worker';
 import {
   PushNotification,
   ReadAfterActiveAction,
+  DeleteAfterActiveAction,
   SetPushNotificationTheme,
   TimeForCloseIfInactive,
   Notification,
@@ -38,6 +39,9 @@ dayjs.updateLocale('uk', {
 @TimeForCloseIfInactive(15000)
 @ReadAfterActiveAction((instance) =>
   API.NotificationService.readNotifications([instance.notification_id])
+)
+@DeleteAfterActiveAction((instance) =>
+  API.NotificationService.deleteNotifications([instance.notification_id])
 )
 @SetPushNotificationTheme('standard')
 export class InitialMessage {

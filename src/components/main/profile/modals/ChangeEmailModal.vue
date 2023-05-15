@@ -1,5 +1,4 @@
 <template>
-  <loader :is-loading="loading" />
   <Transition>
     <ModalWindow>
       <template #title>
@@ -47,7 +46,7 @@
           </div>
           <div v-if="currentStep === 2" class="code-input-field">
             <inputCode
-              :fields="5" 
+              :fields="5"
               :fieldWidth="48"
               :fieldHeight="40"
               :required="true"
@@ -72,7 +71,6 @@
 <script>
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useToast } from 'vue-toastification';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
@@ -80,9 +78,12 @@ import ModalWindow from '../../../shared/modals/ModalWindow.vue';
 import Counter from '../../../shared/counter/Counter.vue';
 import inputCode from '../../../shared/inputCode/InputCode.vue';
 import MainInput from '../../../shared/input/MainInput.vue';
-import loader from '../../../shared/loader/Loader.vue';
 
 import { API } from '../../../../workers/api-worker/api.worker';
+import {
+  startSpinner,
+  finishSpinner,
+} from '../../../../workers/loading-worker/loading.worker';
 
 import SCHEMAS from '../../../../validators/schemas';
 
@@ -92,7 +93,6 @@ export default {
     ModalWindow,
     MainInput,
     Counter,
-    loader,
     inputCode,
     Form,
   },
@@ -105,7 +105,6 @@ export default {
   emits: ['closeModal', 'f'],
   setup(props, { emit }) {
     const { t } = useI18n();
-    const loading = ref(false);
     const currentStep = ref(1);
 
     const cancelBtnTitle = computed(() => {
@@ -145,7 +144,7 @@ export default {
       if (!valid) {
         return false;
       }
-      loading.value = true;
+      startSpinner();
       try {
         if (currentStep.value === 1) {
           await sendCode(data.values.email);
@@ -153,9 +152,9 @@ export default {
           await changeEmail(data);
         }
         currentStep.value++;
-        loading.value = false;
       } catch {
-        loading.value = false;
+      } finally {
+        finishSpinner();
       }
     }
 
@@ -169,7 +168,6 @@ export default {
 
     return {
       schema,
-      loading,
       currentStep,
       saveBtnTitle,
       cancelBtnTitle,

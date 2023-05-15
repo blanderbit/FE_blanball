@@ -56,7 +56,7 @@ import GreenBtn from '../../shared/button/GreenBtn.vue';
 import dropdown from '../../shared/dropdown/Dropdown.vue';
 import StepWrapper from './StepWrapper.vue';
 
-import CONSTANTS from '../../../consts/index';
+import { CONSTS } from '../../../consts/index';
 
 import arrowRight from '../../../assets/img/arrow-right-white.svg';
 
@@ -74,9 +74,9 @@ export default {
 
     const mockData = computed(() => {
       return {
-        days: CONSTANTS.dates.days,
-        months: CONSTANTS.dates.months,
-        years: CONSTANTS.dates.years,
+        days: CONSTS.dates.days,
+        months: CONSTS.dates.months,
+        years: CONSTS.dates.years,
       };
     });
     const { t } = useI18n();

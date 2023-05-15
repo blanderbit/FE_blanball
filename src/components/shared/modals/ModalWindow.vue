@@ -30,7 +30,7 @@
 
 <script>
 import { computed, onMounted, onBeforeUnmount } from 'vue';
-import useWindowWidth from '../../../utils/widthScreen';
+import { useWindowWidth } from '../../../utils/widthScreen';
 
 export default {
   name: 'modal-window',
@@ -57,22 +57,17 @@ export default {
     },
   },
   setup(props) {
-    const { onResize, isMobileSmall } = useWindowWidth();
+    const { isMobileSmall } = useWindowWidth();
 
     const windowStyle = computed(() => {
       return {
         padding: props.isTitleShown ? '80px 20px 20px 20px' : '20px',
-        width: `${isMobileSmall.value ? props.windowWidthMobile : props.windowWidth}px`,
+        width: `${
+          isMobileSmall.value ? props.windowWidthMobile : props.windowWidth
+        }px`,
       };
     });
 
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
-    });
     return {
       windowStyle,
     };

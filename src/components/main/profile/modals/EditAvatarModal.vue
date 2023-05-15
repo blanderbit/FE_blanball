@@ -7,9 +7,6 @@
             <div class="b-edit-avatar__right-side">
               <vue-cropper
                 ref="cropper"
-                :aspectRatio="1 / 1"
-                :minContainerHeight="200"
-                :viewMode="2"
                 :toggleDragModeOnDblclick="false"
                 :src="userImage"
                 alt="Source Image"
@@ -46,7 +43,10 @@
                 </div>
                 <div class="b-edit-avatar__left-mob-part">
                   <div class="b-edit-avatar__rotate" @click="rotateImage">
-                    <img src="../../../../assets/img/rotate-picture.svg" alt="" />
+                    <img
+                      src="../../../../assets/img/rotate-picture.svg"
+                      alt=""
+                    />
                     <span>
                       {{ $t('modals.edit_avatar.rotate') }}
                     </span>
@@ -133,7 +133,6 @@ export default {
       });
     }
 
-    
     async function setAvatar() {
       if (!blobFile.value) {
         return;
@@ -187,6 +186,34 @@ $color-d9d9d9: #d9d9d9;
 $color-dfdeed: #dfdeed;
 $color-efeff6: #efeff6;
 
+:deep {
+  .cropper-modal {
+    background: $color-d9d9d9;
+  }
+  .cropper-line {
+    background: transparent;
+    background-color: transparent;
+  }
+  .cropper-dashed {
+    opacity: 0;
+  }
+  .cropper-center {
+    display: none;
+  }
+
+  .cropper-view-box {
+    border-width: 2px;
+    border-style: solid;
+    border: 3px dashed $--b-main-green-color;
+    background: transparent;
+    outline: none;
+  }
+
+  .cropper-point {
+    background: transparent;
+  }
+}
+
 .b-edit-avatar {
   &__main-part {
     display: flex;
@@ -194,9 +221,6 @@ $color-efeff6: #efeff6;
     padding-bottom: 20px;
     @include mobile {
       display: block;
-    }
-    :deep(.cropper-move) {
-      display: none;
     }
     :deep(.b-edit-avatar__right-side) {
       width: 200px;
@@ -334,28 +358,5 @@ $color-efeff6: #efeff6;
       cursor: pointer;
     }
   }
-}
-:deep(.cropper-modal) {
-  background: $color-d9d9d9;
-}
-:deep(.cropper-line) {
-  background: transparent;
-  background-color: transparent;
-}
-:deep(.cropper-dashed) {
-  opacity: 0;
-}
-:deep(.cropper-center) {
-  display: none;
-}
-:deep(.cropper-view-box) {
-  border-width: 2px;
-  border-style: solid;
-  border: 3px dashed $--b-main-green-color;
-  background: transparent;
-  outline: none;
-}
-:deep(.cropper-point) {
-  background: transparent;
 }
 </style>

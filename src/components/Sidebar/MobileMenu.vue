@@ -1,5 +1,4 @@
 <template>
-  <loader :is-loading="loading" />
   <SubmitModal
     v-if="isSubmitModalOpened"
     :config="submitModalConfig"
@@ -7,196 +6,231 @@
     @deleteNotifications="HandleAction.deleteSelected()"
     @continue="closeSubmitModal"
   />
+
+  <ContextModal
+    v-if="isPrivacyContextModalOpened"
+    :clientX="privacyContextModalX"
+    :clientY="privacyContextModalY"
+    :modalItems="privacyContextModalItems"
+    @closeModal="closePrivacyContextModal"
+    @itemClick="privacyContextModalItemClick"
+  />
   <div class="b-mob-menu" :style="mobMenuStyle">
-    <div class="b-mob-menu__logo-block">
-      <div class="b-mob-menu__logo-left">
-        <div class="b-mob-menu__logo">{{ $t('menu.blanball') }}</div>
+    <div
+      class="b-mob-menu__top-side"
+      :style="`height: ${mobileMenuTopSideHeight}`"
+    >
+      <div class="b-mob-menu__logo-block">
+        <div class="b-mob-menu__logo-left">
+          <div class="b-mob-menu__logo">{{ $t('menu.blanball') }}</div>
+        </div>
+        <div class="b-mob-menu__close" @click="closeMobMenu">&times;</div>
+      </div>
+      <div class="b-mob-menu__user-data">
+        <div class="b-mob-menu__user-info">
+          <div class="b-mob-menu__user-img">
+            <userAvatar
+              :link="userStore.getUserAvatar"
+              :full-name="userStore.getUserFullName"
+              @clickByAvatar="goToMyProfile"
+            />
+          </div>
+          <div class="b-mob-menu__text-block">
+            <div class="b-mob-menu__user-name" @click="goToMyProfile">
+              {{ userStore.getUserFullName }}
+            </div>
+            <div class="b-mob-menu__account-type">
+              {{ $t(`hashtags.${userStore.user.role}`) }}
+            </div>
+          </div>
+        </div>
+        <div class="b-mob-menu__logout-icon" @click="$emit('logOut')">
+          <img src="../../assets/img/logout-icon.svg" alt="" />
+        </div>
+      </div>
+      <div class="b-mob-menu__menu-block" :style="menuBlockStyle">
+        <div class="b-mob-menu__line">
+          <div
+            class="b-mob-menu__menu-item"
+            v-for="item in topMenu"
+            :key="item.id"
+            :style="{
+              width: item.width,
+              height: item.height,
+              'justify-content': item.alignement,
+              background: item.background,
+            }"
+            @click="lineMenuClick(item.id, item.url, 'top-menu')"
+          >
+            <img
+              :src="item.isIconActive ? item.imgActive : item.imgInactive"
+              alt=""
+            />
+            <span
+              :style="{
+                color: item.textColor,
+              }"
+              v-if="item.value_show"
+            >
+              {{ $t(item.value) }}
+            </span>
+          </div>
+        </div>
+        <div class="b-mob-menu__content-block">
+          <div class="b-mob-menu__message-list">
+            <div class="b-mob-menu__tabs">
+              <div
+                v-for="tab in tabs"
+                :class="[
+                  'b-mob-menu__tab',
+                  { selected: tab.id === selectedTabId },
+                ]"
+                @click="changeTab(tab.id, tab.type)"
+              >
+                {{ $t(tab.text) }}
+              </div>
+            </div>
+            <Notifications
+              :notifications="notifications"
+              :selectable="selectable"
+              ref="notificationList"
+              v-model:selected-list="selectedList"
+              v-model:scrollbar-existing="blockScrollToTopIfExist"
+              @selectNotificationAfterHold="selectNotification"
+              @removePushNotificationAfterSidebarAction="
+                removePushNotificationAfterSidebarAction
+              "
+            >
+              <template #before>
+                <Notification
+                  v-if="newNotifications"
+                  class="b-new-notification"
+                  :notificationInstance="getNewNotificationInstance"
+                  :not-collapsible="true"
+                  @handler-action="$emit('reLoading'), restartInfiniteScroll()"
+                >
+                </Notification>
+              </template>
+              <template #after>
+                <InfiniteLoading
+                  :identifier="triggerForRestart"
+                  ref="scrollbar"
+                  @infinite="$emit('loadingInfinite', $event)"
+                >
+                  <template #complete>
+                    <empty-list
+                      style="margin-top: 16px"
+                      v-if="!notifications.length && !newNotifications"
+                      :title="emptyListMessages.title"
+                      :description="emptyListMessages.description"
+                      :is-notification="true"
+                    >
+                    </empty-list>
+                    <ScrollToTop
+                      :element-length="notifications"
+                      :is-scroll-top-exist="blockScrollToTopIfExist"
+                      @scroll-button-clicked="scrollToFirstElement()"
+                    />
+                  </template>
+                </InfiniteLoading>
+              </template>
+            </Notifications>
+          </div>
+        </div>
+        <div v-if="!selectedList.length" class="b-mob-menu__line">
+          <div
+            class="b-mob-menu__menu-item"
+            v-for="item in bottomMenu"
+            :key="item.id"
+            :style="{
+              width: item.width,
+              height: item.height,
+              'justify-content': item.alignement,
+              background: item.background,
+              color: item.textColor,
+            }"
+            @click="lineMenuClick(item.id, item.url)"
+          >
+            <img
+              :src="item.isIconActive ? item.imgActive : item.imgInactive"
+              alt=""
+            />
+            <span v-if="item.value_show">
+              {{ $t(item.value) }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div v-if="selectedList.length" class="b-mob-menu__control-block">
+        <div class="b-control-block__block">
+          <img
+            src="../../assets/img/cross.svg"
+            alt=""
+            @click="clearSelectedList"
+          />
+          <div class="b-selected-elements-count">
+            <span>{{ selectedList.length }}</span>
+          </div>
+        </div>
+        <div class="b-control-block__block">
+          <img
+            src="../../assets/img/notifications/double-check-with-back.svg"
+            alt=""
+            @click="HandleAction.readSelected()"
+          />
+          <img
+            src="../../assets/img/notifications/trash-with-back.svg"
+            alt=""
+            @click="
+              selectedList.length > 1
+                ? showSubmitModal()
+                : HandleAction.deleteSelected()
+            "
+          />
+        </div>
+      </div>
+    </div>
+
+    <div v-if="isBottomBlockShowing" class="b-mob-menu__bottom-side">
+      <div class="b-mob-menu__found-error" @click="$emit('foundBug')">
+        <img src="../../assets/img/white-warning-icon.svg" alt="" />
+        <span>{{ $t('slide_menu.found-error') }}</span>
+      </div>
+
+      <div class="b-bottom-block__info">
         <router-link
-          class="b-mob-menu__version"
+          class="b-blanball__version"
           :to="routeObject.APPLICATION.VERSIONS.absolute"
           @click="closeMobMenu"
         >
           <span>{{ $t('slide_menu.version') }} {{ clientVersion }}</span>
         </router-link>
-      </div>
-      <div class="b-mob-menu__close" @click="closeMobMenu">&times;</div>
-    </div>
-    <div class="b-mob-menu__user-data">
-      <div class="b-mob-menu__user-info">
-        <div class="b-mob-menu__user-img">
-          <userAvatar
-            :link="userStore.getUserAvatar"
-            :full-name="userStore.getUserFullName"
-            @clickByAvatar="goToMyProfile"
-          />
-        </div>
-        <div class="b-mob-menu__text-block">
-          <div class="b-mob-menu__user-name">
-            {{ userStore.getUserFullName }}
-          </div>
-          <div class="b-mob-menu__account-type">
-            {{ $t(`hashtags.${userStore.user.role}`) }}
+        <div class="b-bottom-block__footer">
+          <span>{{
+            $t('slide_menu.blanball-year', { year: currentYear })
+          }}</span>
+          <span @click="showPrivacyContextModal">{{
+            $t('policy.data-security')
+          }}</span>
+          <div class="b-bottom-block__company">
+            <img src="../../assets/img/logo-flumx.svg" alt="" />
+            <span>{{ $t('slide_menu.flumx') }}</span>
           </div>
         </div>
       </div>
-      <div class="b-mob-menu__logout-icon" @click="$emit('logOut')">
-        <img src="../../assets/img/logout-icon.svg" alt="" />
-      </div>
-    </div>
-    <div class="b-mob-menu__menu-block" :style="menuBlockStyle">
-      <div class="b-mob-menu__line">
-        <div
-          class="b-mob-menu__menu-item"
-          v-for="item in topMenu"
-          :key="item.id"
-          :style="{
-            width: item.width,
-            height: item.height,
-            'justify-content': item.alignement,
-            background: item.background,
-          }"
-          @click="lineMenuClick(item.id, item.url, 'top-menu')"
-        >
-          <img
-            :src="item.isIconActive ? item.imgActive : item.imgInactive"
-            alt=""
-          />
-          <span
-            :style="{
-              color: item.textColor,
-            }"
-            v-if="item.value_show"
-          >
-            {{ $t(item.value) }}
-          </span>
-        </div>
-      </div>
-      <div class="b-mob-menu__content-block">
-        <div class="b-mob-menu__message-list">
-          <div class="b-mob-menu__tabs">
-            <div
-              v-for="tab in tabs"
-              :class="[
-                'b-mob-menu__tab',
-                { selected: tab.id === selectedTabId },
-              ]"
-              @click="changeTab(tab.id, tab.type)"
-            >
-              {{ $t(tab.text) }}
-            </div>
-          </div>
-          <Notifications
-            :notifications="notifications"
-            :selectable="selectable"
-            ref="notificationList"
-            v-model:selected-list="selectedList"
-            v-model:scrollbar-existing="blockScrollToTopIfExist"
-            @selectNotificationAfterHold="selectNotification"
-            @removePushNotificationAfterSidebarAction="
-              removePushNotificationAfterSidebarAction
-            "
-          >
-            <template #before>
-              <Notification
-                v-if="newNotifications"
-                class="b-new-notification"
-                :notificationInstance="getNewNotificationInstance"
-                :not-collapsible="true"
-                @handler-action="$emit('reLoading'), restartInfiniteScroll()"
-              >
-              </Notification>
-            </template>
-            <template #after>
-              <InfiniteLoading
-                :identifier="triggerForRestart"
-                ref="scrollbar"
-                @infinite="$emit('loadingInfinite', $event)"
-              >
-                <template #complete>
-                  <empty-list
-                    style="margin-top: 16px"
-                    v-if="!notifications.length && !newNotifications"
-                    :title="emptyListMessages.title"
-                    :description="emptyListMessages.description"
-                    :is-notification="true"
-                  >
-                  </empty-list>
-                  <ScrollToTop
-                    :element-length="notifications"
-                    :is-scroll-top-exist="blockScrollToTopIfExist"
-                    @scroll-button-clicked="scrollToFirstElement()"
-                  />
-                </template>
-              </InfiniteLoading>
-            </template>
-          </Notifications>
-        </div>
-      </div>
-      <div v-if="!selectedList.length" class="b-mob-menu__line">
-        <div
-          class="b-mob-menu__menu-item"
-          v-for="item in bottomMenu"
-          :key="item.id"
-          :style="{
-            width: item.width,
-            height: item.height,
-            'justify-content': item.alignement,
-            background: item.background,
-            color: item.textColor,
-          }"
-          @click="lineMenuClick(item.id, item.url)"
-        >
-          <img
-            :src="item.isIconActive ? item.imgActive : item.imgInactive"
-            alt=""
-          />
-          <span v-if="item.value_show">
-            {{ $t(item.value) }}
-          </span>
-        </div>
-      </div>
-    </div>
-    <div v-if="selectedList.length" class="b-mob-menu__control-block">
-      <div class="b-control-block__block">
-        <img
-          src="../../assets/img/cross.svg"
-          alt=""
-          @click="clearSelectedList"
-        />
-        <div class="b-selected-elements-count">
-          <span>{{ selectedList.length }}</span>
-        </div>
-      </div>
-      <div class="b-control-block__block">
-        <img
-          src="../../assets/img/notifications/double-check-with-back.svg"
-          alt=""
-          @click="HandleAction.readSelected()"
-        />
-        <img
-          src="../../assets/img/notifications/trash-with-back.svg"
-          alt=""
-          @click="
-            selectedList.length > 1
-              ? showSubmitModal()
-              : HandleAction.deleteSelected()
-          "
-        />
-      </div>
-    </div>
-    <div
-      v-if="isShowingFoundBug"
-      class="b-mob-menu__found-error"
-      @click="$emit('foundBug')"
-    >
-      <img src="../../assets/img/white-warning-icon.svg" alt="" />
-      <span>{{ $t('slide_menu.found-error') }}</span>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, computed, inject, watch, watchEffect } from 'vue';
+import {
+  ref,
+  computed,
+  inject,
+  watchEffect,
+  onMounted,
+  onBeforeUnmount,
+} from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { v4 as uuid } from 'uuid';
@@ -207,15 +241,17 @@ import Notification from '../main/notifications/Notification.vue';
 import emptyList from '../shared/emptyList/EmptyList.vue';
 import InfiniteLoading from '../main/infiniteLoading/InfiniteLoading.vue';
 import ScrollToTop from '../ScrollToTop.vue';
-import loader from '../shared/loader/Loader.vue';
 import SubmitModal from '../shared/modals/SubmitModal.vue';
+import ContextModal from '../shared/modals/ContextModal.vue';
 
 import { useUserDataStore } from '../../stores/userData';
 import { NewNotifications } from '../../workers/web-socket-worker/not-includes-to-socket/new_notifications';
 import { API } from '../../workers/api-worker/api.worker';
 import { NotificationsBus } from '../../workers/event-bus-worker';
+import { calcHeight } from '../../utils/calcHeight';
 
 import { ROUTES } from '../../router/router.const';
+import { CONSTS } from '../../consts';
 
 import NotificationIcon from '../../assets/img/notification-mob-default.svg';
 import NotificationWhite from '../../assets/img/notifications-not-read-mobile-icon.svg';
@@ -254,10 +290,10 @@ export default {
     userAvatar,
     Notifications,
     Notification,
+    ContextModal,
     emptyList,
     InfiniteLoading,
     ScrollToTop,
-    loader,
     SubmitModal,
   },
   emit: ['closeMenu'],
@@ -266,16 +302,19 @@ export default {
     const userStore = useUserDataStore();
     const notificationList = ref();
     const selectable = ref(false);
-    const loading = ref(false);
     const newNotificationInstance = ref(new NewNotifications());
     const selectedList = ref([]);
     const blockScrollToTopIfExist = ref(false);
     const triggerForRestart = ref('');
-    const isShowingFoundBug = ref(true);
+    const isBottomBlockShowing = ref(true);
     const clientVersion = ref(inject('clientVersion'));
     const { t } = useI18n();
     const selectedTabId = ref(1);
     const isSubmitModalOpened = ref(false);
+    const isPrivacyContextModalOpened = ref(false);
+    const privacyContextModalX = ref(null);
+    const privacyContextModalY = ref(null);
+    const privacyContextModalItems = ref(CONSTS.policy.ALL_POLICY_ITEMS);
 
     const submitModalConfig = computed(() => {
       return {
@@ -349,19 +388,35 @@ export default {
       },
     ]);
 
-    watchEffect(
-      () => {
-        if (selectedList.value.length === 0) {
-          selectable.value = false;
-        }
-      },
-      { deep: true }
-    );
-
     function goToMyProfile() {
       router.push(ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute);
       closeMobMenu();
     }
+
+    function closePrivacyContextModal() {
+      isPrivacyContextModalOpened.value = false;
+    }
+
+    function privacyContextModalItemClick(itemType) {
+      switch (itemType) {
+        case CONSTS.policy.POLICY_ITEMS_TYPES.PRIVACY:
+          return router.push(ROUTES.PRIVACY_POLICY.absolute);
+        case CONSTS.policy.POLICY_ITEMS_TYPES.COOKIE:
+          return router.push(ROUTES.COOKIE_POLICY.absolute);
+        case CONSTS.policy.POLICY_ITEMS_TYPES.DISCLAMER:
+          return router.push(ROUTES.DISCLAMER.absolute);
+      }
+    }
+
+    function showPrivacyContextModal(e) {
+      privacyContextModalX.value = e.clientX;
+      privacyContextModalY.value = e.clientY;
+      isPrivacyContextModalOpened.value = true;
+    }
+
+    const currentYear = computed(() => {
+      return new Date().getFullYear();
+    });
 
     const emptyListMessages = computed(() => {
       return {
@@ -406,19 +461,13 @@ export default {
       return ROUTES;
     });
 
-    watch(selectedList.length, () => {
-      if (selectedList.value.length === 0) {
-        selectable.value = false;
-      }
-    });
-
     function closeMobMenu() {
       selectedList.value = [];
       normalizeBlock(topMenu);
       normalizeBlock(bottomMenu);
       menuBlockHeight.value = 'auto';
       emit('closeMenu');
-      isShowingFoundBug.value = true;
+      isBottomBlockShowing.value = true;
     }
     function normalizeBlock(menu) {
       menu.value = menu.value.map((item) => {
@@ -445,7 +494,7 @@ export default {
         menuType === 'top-menu' ? topMenu : bottomMenu;
       const spareMenu = menuType === 'top-menu' ? bottomMenu : topMenu;
       const spareId = id ? 0 : 1;
-      isShowingFoundBug.value = false;
+      isBottomBlockShowing.value = false;
 
       normalizeBlock(spareMenu);
 
@@ -483,13 +532,35 @@ export default {
       });
     }
 
-    const startLoader = () => {
-      loading.value = true;
-    };
+    const mobileMenuTopSideHeightConfig = ref({
+      default: [60, 32, 48, 16],
+      mobile: [selectedList.value.length ? 10 : 0],
+      tablet: [selectedList.value.length ? 50 : 0],
+    });
 
-    const stopLoader = () => {
-      loading.value = false;
-    };
+    const {
+      calculatedHeight,
+      minussedHeight,
+      minusHeight,
+      plusHeight,
+    } = calcHeight(...Object.values(mobileMenuTopSideHeightConfig.value));
+
+    const mobileMenuTopSideHeight = computed(() => {
+      return `${calculatedHeight.value}px`;
+    });
+
+    watchEffect(
+      () => {
+        if (selectedList.value.length >= 0 && minussedHeight.value <= 0) {
+          minusHeight(50);
+        }
+        if (selectedList.value.length === 0) {
+          plusHeight(50);
+          selectable.value = false;
+        }
+      },
+      { deep: true }
+    );
 
     const clearSelectedList = () => {
       selectedList.value = [];
@@ -511,18 +582,18 @@ export default {
     const HandleAction = {
       deleteAll: async () => {
         if (!context.notifications.length && !context.newNotifications) return;
-        startLoader();
+        startSpinner();
         await API.NotificationService.deleteAllMyNotifications();
         removePushNotificationAfterSidebarAction({
           remove_all: true,
         });
         clearSelectedList();
         handleSelectableMode();
-        stopLoader();
+        finishSpinner();
       },
       readAll: async () => {
         if (!context.notifications.length && !context.newNotifications) return;
-        startLoader();
+        startSpinner();
         await API.NotificationService.readAllMyNotifications();
         removePushNotificationAfterSidebarAction({
           remove_all: true,
@@ -534,11 +605,11 @@ export default {
         if (selectedTabId.value === 2) {
           emit('removeNotifications', 'All');
         }
-        stopLoader();
+        finishSpinner();
       },
       deleteSelected: async () => {
         if (!selectedList.value) return;
-        startLoader();
+        startSpinner();
         await API.NotificationService.deleteNotifications(selectedList.value);
         removePushNotificationAfterSidebarAction({
           notification_ids: selectedList.value,
@@ -546,11 +617,11 @@ export default {
         clearSelectedList();
         handleSelectableMode();
         closeSubmitModal();
-        stopLoader();
+        finishSpinner();
       },
       readSelected: async () => {
         if (!selectedList.value) return;
-        startLoader();
+        startSpinner();
         await API.NotificationService.readNotifications(selectedList.value);
         removePushNotificationAfterSidebarAction({
           notification_ids: selectedList.value,
@@ -560,10 +631,10 @@ export default {
         }
         clearSelectedList();
         handleSelectableMode();
-        stopLoader();
+        finishSpinner();
       },
       readOne: async (id) => {
-        startLoader();
+        startSpinner();
         await API.NotificationService.readNotifications([id]);
         removePushNotificationAfterSidebarAction({
           notification_ids: [id],
@@ -571,15 +642,15 @@ export default {
         if (selectedTabId.value === 2) {
           emit('removeNotifications', [id]);
         }
-        stopLoader();
+        finishSpinner();
       },
       deleteOne: async (id) => {
-        startLoader();
+        startSpinner();
         await API.NotificationService.deleteNotifications([id]);
         removePushNotificationAfterSidebarAction({
           notification_id: id,
         });
-        stopLoader();
+        finishSpinner();
       },
     };
 
@@ -606,7 +677,7 @@ export default {
         restartInfiniteScroll();
       }
     };
-
+    
     return {
       topMenu,
       selectable,
@@ -615,26 +686,34 @@ export default {
       bottomMenu,
       blockScrollToTopIfExist,
       clientVersion,
-      isShowingFoundBug,
+      isBottomBlockShowing,
       notificationList,
       getNewNotificationInstance,
       menuBlockStyle,
       userStore,
+      currentYear,
       mobMenuStyle,
       routeObject,
       HandleAction,
       tabs,
-      loading,
+      mobileMenuTopSideHeight,
+      privacyContextModalItems,
       selectedTabId,
       triggerForRestart,
+      privacyContextModalX,
+      privacyContextModalY,
+      isPrivacyContextModalOpened,
       isSubmitModalOpened,
       submitModalConfig,
       showSubmitModal,
       closeSubmitModal,
       changeTab,
+      privacyContextModalItemClick,
       clearSelectedList,
       goToMyProfile,
+      closePrivacyContextModal,
       lineMenuClick,
+      showPrivacyContextModal,
       selectNotification,
       closeMobMenu,
       removePushNotificationAfterSidebarAction,
@@ -665,6 +744,7 @@ $color-1ccd62: #1ccd62;
   height: 100%;
   z-index: 990;
   display: flex;
+  justify-content: space-between;
   flex-direction: column;
   transition: all 0.3s ease-out;
 
@@ -907,7 +987,7 @@ $color-1ccd62: #1ccd62;
   max-width: 193px;
   position: absolute;
   min-width: max-content;
-  bottom: 70px;
+  bottom: 100px;
   cursor: pointer;
   left: 50%;
   transform: translateX(-50%);
@@ -915,6 +995,34 @@ $color-1ccd62: #1ccd62;
   span {
     @include inter(14px, 500, $--b-main-white-color);
     line-height: 24px;
+  }
+}
+.b-bottom-block__info {
+  padding: 12px 16px 0px 0px;
+  border-top: 1px solid #dfdeed;
+  width: calc(100% + 32px);
+  margin-left: -16px;
+  padding-left: 16px;
+
+  .b-blanball__version {
+    @include inter(12px, 500, $--b-main-gray-color);
+    line-height: 20px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .b-bottom-block__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @include inter(12px, 500, $--b-main-gray-color);
+    line-height: 20px;
+    margin-top: 4px;
+
+    .b-bottom-block__company {
+      display: flex;
+      align-items: center;
+    }
   }
 }
 </style>

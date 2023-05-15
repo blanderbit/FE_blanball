@@ -6,62 +6,26 @@
 
 <script setup>
 import { onMounted, onBeforeUnmount } from 'vue';
-import { useRouter } from 'vue-router';
 
 import { GeneralSocketWorkerInstance } from './workers/web-socket-worker';
-import { createQueryStringFromObject } from './workers/utils-worker';
 import { API } from './workers/api-worker/api.worker';
+import { setHeightVH } from './utils/calcHeight';
+import { handleChangeMaintenanceMessage } from './utils/handleChangeMaintenanceMessage';
 
 import { WebSocketTypes } from './workers/web-socket-worker/web.socket.types';
-import { ROUTES } from './router/router.const';
-
-const router = useRouter();
-
-function calculateAppHeight() {
-  const doc = document.documentElement;
-  doc.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
-}
 
 onMounted(() => {
-  window.addEventListener('resize', calculateAppHeight);
-  calculateAppHeight();
+  window.addEventListener('resize', setHeightVH);
+  setHeightVH();
 });
 onBeforeUnmount(() => {
-  window.removeEventListener('resize', calculateAppHeight);
+  window.removeEventListener('resize', setHeightVH);
 });
 
 const handleMessageGeneral = (instance) => {
   switch (instance.messageType) {
     case WebSocketTypes.ChangeMaintenance: {
-      const maintenance = instance.data.maintenance.type;
-      const ifCurrentRouteMaintenance = location.pathname.includes(
-        ROUTES.WORKS.absolute
-      );
-
-      if (ifCurrentRouteMaintenance && maintenance) {
-        return;
-      } else if (!ifCurrentRouteMaintenance && maintenance) {
-        const query = createQueryStringFromObject({
-          redirectUrl: window.location.pathname,
-        });
-
-        return router.push(`${ROUTES.WORKS.absolute}${query}`);
-      } else if (!maintenance && ifCurrentRouteMaintenance) {
-        const urlSearchParams = new URLSearchParams(window.location.search);
-        const params = Object.fromEntries(urlSearchParams.entries());
-        const redirectUrl = params.redirectUrl;
-
-        const resolveRouter = redirectUrl && router.resolve(redirectUrl);
-        if (
-          !redirectUrl ||
-          resolveRouter?.matched?.find((match) =>
-            match?.path?.includes('pathMatch')
-          )
-        ) {
-          return router.push(ROUTES.APPLICATION.EVENTS.absolute);
-        }
-        return router.push(redirectUrl);
-      }
+      handleChangeMaintenanceMessage(instance);
     }
   }
 };

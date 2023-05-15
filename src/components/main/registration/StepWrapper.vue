@@ -1,6 +1,5 @@
 <template>
   <div class="b-register-step">
-    <loader :is-loading="loading"/>
     <slot name="images"></slot>
     <div class="b-register-step__top-part">
       <div class="b-register-step__title" v-if="title">
@@ -43,18 +42,11 @@
           :text="nextButton?.text"
           :width="nextButton.width ? nextButton.width : 155"
           :height="40"
-          v-if="nextButton?.exist && !nextButton?.disabled"
+          v-if="nextButton?.exist"
           :icon-right="nextButton?.icon"
+          :disabled="nextButton?.disabled"
           :is-icon-and-text-apart="true"
           @click-function="$emit('next')"
-        />
-        <WhiteBtn
-          v-if="nextButton?.disabled"
-          :text="nextButton?.text"
-          :disabled="nextButton?.disabled"
-          :width="155"
-          :height="40"
-          :is-icon-and-text-apart="true"
         />
       </div>
     </div>
@@ -63,13 +55,11 @@
 <script>
 import { computed } from 'vue';
 import GreenBtn from '../../shared/button/GreenBtn.vue';
-import loader from '../../shared/loader/Loader.vue';
 import WhiteBtn from '../../shared/button/WhiteBtn.vue';
 
 export default {
   components: {
     GreenBtn,
-    loader,
     WhiteBtn,
   },
   props: {
@@ -88,10 +78,6 @@ export default {
     title: {
       type: String,
       default: '',
-    },
-    loading: {
-      type: Boolean,
-      default: false,
     },
     subTitle: {
       type: String,

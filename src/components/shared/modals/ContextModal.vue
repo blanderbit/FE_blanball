@@ -16,7 +16,6 @@
 <script>
 import { computed, ref } from 'vue';
 import { useElementSize } from '@vueuse/core';
-import { he } from 'date-fns/locale';
 
 export default {
   props: {

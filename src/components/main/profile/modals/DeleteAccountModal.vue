@@ -1,5 +1,4 @@
 <template>
-  <loader :is-loading="loading" />
   <Transition>
     <ModalWindow :title-color="'#C10B0B'">
       <template #title>
@@ -75,12 +74,14 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 import ModalWindow from '../../../shared/modals/ModalWindow.vue';
 import Counter from '../../../shared/counter/Counter.vue';
 import inputCode from '../../../shared/inputCode/InputCode.vue';
-import loader from '../../../shared/loader/Loader.vue';
 
 import { API } from '../../../../workers/api-worker/api.worker';
-import { logOut } from '../../../../utils/logOut';
+import { resetUserDataAndRedirectToLogin } from '../../../../utils/logOut';
+import {
+  startSpinner,
+  finishSpinner,
+} from '../../../../workers/loading-worker/loading.worker';
 
-import { ROUTES } from '../../../../router/router.const';
 import SCHEMAS from '../../../../validators/schemas';
 
 export default {
@@ -90,7 +91,6 @@ export default {
     inputCode,
     Form,
     Counter,
-    loader,
   },
   props: {
     userEmail: {
@@ -104,7 +104,6 @@ export default {
     const { t } = useI18n();
     const toast = useToast();
     const currentStep = ref(1);
-    const loading = ref(false);
 
     const schema = computed(() => {
       return SCHEMAS.deleteAccount.schema(currentStep.value);
@@ -127,7 +126,7 @@ export default {
         }
       }
 
-      loading.value = true;
+      startSpinner();
       try {
         if (currentStep.value === 1) {
           await sendCode();
@@ -135,22 +134,21 @@ export default {
           await deleteAcc(data);
         }
         currentStep.value++;
-        loading.value = false;
       } catch {
-        loading.value = false;
+      } finally {
+        finishSpinner();
       }
     }
 
     async function deleteAcc(data) {
       await API.UserService.sendApproveCode(data.values);
       toast.success(t('notifications.account-deleted'));
-      logOut();
+      resetUserDataAndRedirectToLogin();
       closeModal();
     }
 
     return {
       currentStep,
-      loading,
       schema,
       sendCode,
       closeModal,

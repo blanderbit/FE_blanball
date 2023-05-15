@@ -13,10 +13,8 @@
     </span>
 
     <ModalWindow v-show="activeModal" :isTitleShown="false">
-      <loader :is-loading="loading" />
       <div class="b-modal-position__block b-modal-position__map">
         <position-map
-          @map-loaded="loading = false"
           :coords="coords"
           @update:coords="updateCoords"
         ></position-map>
@@ -39,14 +37,12 @@ import { ref } from 'vue';
 import PositionMap from '../../../maps/PositionMap.vue';
 import ModalWindow from '../../../shared/modals/ModalWindow.vue';
 import GreenBtn from '../../../shared/button/GreenBtn.vue';
-import loader from '../../../shared/loader/Loader.vue';
 
 export default {
   components: {
     ModalWindow,
     PositionMap,
     GreenBtn,
-    loader,
   },
   props: {
     modelValue: Object,
@@ -102,6 +98,7 @@ $color-efeff6: #efeff6;
   line-height: 24px;
   text-align: center;
   color: $--b-main-gray-color;
+  cursor: pointer;
 }
 
 .b-modal-position__map-wrapper {

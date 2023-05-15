@@ -14,15 +14,19 @@ import { ROUTES } from '../router/router.const';
 const tokensStore = useTokensStore(pinia);
 
 export async function refreshTokens() {
+  let isRefreshSuccess;
+
   tokensStore.$patch({
     isTokensRefreshing: true,
   });
-  // AuthWebSocketWorkerInstance?.disconnect();
+  AuthWebSocketWorkerInstance?.disconnect();
 
   try {
     const response = await API.AuthorizationService.refreshTokens({
       refresh: refreshToken.getToken(),
     });
+    accessToken.clearToken();
+    refreshToken.clearToken();
     accessToken.setToken(
       response.data.access,
       tokensStore.tokenSettedStoreType
@@ -31,13 +35,22 @@ export async function refreshTokens() {
       response.data.refresh,
       tokensStore.tokenSettedStoreType
     );
-    // AuthWebSocketWorkerInstance?.connect({
-    //   token: accessToken.getToken(),
-    // });
+
+    AuthWebSocketWorkerInstance.connect({
+      token: accessToken.getToken(),
+    });
+    tokensStore.$patch({
+      isTokensRefreshing: false,
+    });
+
+    isRefreshSuccess = true;
   } catch {
     const findCurRouteFromList = window.location.pathname.includes(
       ROUTES.APPLICATION.name
     );
+    tokensStore.$patch({
+      isTokensRefreshing: false,
+    });
 
     resetUserData();
     await router.push(
@@ -46,9 +59,9 @@ export async function refreshTokens() {
         : ROUTES.AUTHENTICATIONS.LOGIN.absolute
     );
     BlanballEventBus.emit('SessionExpired');
+
+    isRefreshSuccess = false;
   } finally {
-    tokensStore.$patch({
-      isTokensRefreshing: false,
-    });
+    return isRefreshSuccess;
   }
 }

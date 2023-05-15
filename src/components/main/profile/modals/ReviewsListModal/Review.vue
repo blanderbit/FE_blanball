@@ -82,12 +82,12 @@ $color-dfdeed: #dfdeed;
 $color-f9f9fc: #f9f9fc;
 .b-review {
   padding: 16px 0px;
-  border-bottom: 1px dashed $color-dfdeed;
+  border-bottom: 1px dashed #f0f0f4;
   height: fit-content;
 
   @include mobile {
     padding: 12px 0px;
-    border-top: 1px dashed $color-dfdeed;
+    border-top: 1px dashed #f0f0f4;
     border-bottom: none;
   }
 

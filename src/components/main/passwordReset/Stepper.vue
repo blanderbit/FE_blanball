@@ -46,7 +46,7 @@
           />
         </div>
         <div class="b-reset-step__sms-code-block" v-if="currentStep === 2">
-          <code-input
+          <inputCode
             @complete="completed = true"
             :fields="5"
             :fieldWidth="70"
@@ -88,7 +88,6 @@
         <GreenBtn
           :text="$t(nextButtonText)"
           :width="155"
-          :loading="loading"
           :height="40"
           @click-function="handleNextClick(data)"
         />
@@ -111,6 +110,10 @@ import inputCode from '../../shared/inputCode/InputCode.vue';
 import Counter from '../../shared/counter/Counter.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
+import {
+  finishSpinner,
+  startSpinner,
+} from '../../../workers/loading-worker/loading.worker';
 
 import { ROUTES } from '../../../router/router.const';
 import SCHEMAS from '../../../validators/schemas';
@@ -129,7 +132,6 @@ export default {
   },
   setup() {
     const currentStep = ref(1);
-    const loading = ref(false);
     const userEmail = ref('');
     const state = ref({});
     const router = useRouter();
@@ -159,11 +161,11 @@ export default {
       if (!valid) {
         return false;
       }
-      loading.value = true;
+      startSpinner();
       await API.AuthorizationService.ResetPasswordRequest(
         formData.values
       ).finally(() => {
-        loading.value = false;
+        finishSpinner();
       });
       currentStep.value = currentStep.value + 1;
     };
@@ -185,7 +187,7 @@ export default {
       if (!valid) {
         return false;
       }
-      loading.value = true;
+      startSpinner();
       await API.AuthorizationService.ResetComplete({
         new_password: formData.values.new_password,
         verify_code: state.value.verify_code,
@@ -193,7 +195,7 @@ export default {
       toast.success(t('notifications.password-reset'));
       router.push(ROUTES.AUTHENTICATIONS.LOGIN);
 
-      loading.value = false;
+      finishSpinner();
     };
 
     const resendResetVerifyCode = async () => {
@@ -228,7 +230,6 @@ export default {
       handleNextClick,
       handleBackClick,
       resendResetVerifyCode,
-      loading,
       schema,
       userEmail,
       nextButtonText,
@@ -285,10 +286,10 @@ form {
         .b-reset-step__section {
           width: 32.5%;
           height: 4px;
-          background: #CDDDE0;
+          background: #cddde0;
           border-radius: 2px;
           &.active {
-            background: #578D95;
+            background: #578d95;
           }
         }
       }

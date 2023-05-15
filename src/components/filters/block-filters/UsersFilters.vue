@@ -57,7 +57,7 @@
             ></button-details-filters>
           </div>
         </div>
-        <div class="b-main-search__second-line" v-if="activeFilters">
+        <div class="b-main-search__second-line" v-show="activeFilters">
           <div class="b-main-search__left-side">
             <div class="b-users-filters__age-filter-wrap">
               <RangeFilter
@@ -163,7 +163,7 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
+import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 import dropdown from '../../shared/dropdown/Dropdown.vue';
@@ -175,9 +175,9 @@ import ModalFilters from '../ModalUsersFilters.vue';
 import RangeFilter from '../components/RangeFilter.vue';
 
 import { TransformedFiltersWorker } from './transformed.filters.worker';
-import useWindowWidth from '../../../utils/widthScreen';
+import { useWindowWidth } from '../../../utils/widthScreen';
 
-import CONSTANTS from '../../../consts';
+import { CONSTS } from '../../../consts';
 
 import SearchIcon from '../../../assets/img/search.svg';
 import arrowsUpIcon from '../../../assets/img/sort-arrows.svg';
@@ -215,12 +215,12 @@ export default {
       default: 0,
     },
   },
-  emits: ['update:value', 'clearFilters'],
+  emits: ['update:value', 'clearFilters', 'updatedActiveFilters'],
   setup(props, { emit }) {
     const isModalFiltersActive = ref(false);
     const route = useRoute();
     const isMobileSearchOpened = ref(false);
-    const { isMobile, isTablet, onResize } = useWindowWidth();
+    const { isMobile, isTablet } = useWindowWidth();
     const icons = computed(() => {
       return {
         search: SearchIcon,
@@ -233,8 +233,8 @@ export default {
         ? { title: 'Cпочатку нові', icon: arrowsUpIcon }
         : { title: 'Cпочатку старі', icon: arrowsDownIcon };
     });
-    const gender = computed(() => CONSTANTS.users_page.gender);
-    const positions = computed(() => CONSTANTS.profile.position);
+    const gender = computed(() => CONSTS.users_page.gender);
+    const positions = computed(() => CONSTS.profile.position);
 
     const { activeFilters, updateRealData, transformedFilters } =
       TransformedFiltersWorker({
@@ -275,7 +275,7 @@ export default {
           };
         },
         ifSecondLineWasUsed() {
-          return true
+          return true;
         },
       });
 
@@ -288,14 +288,6 @@ export default {
         route.query.date_and_time_before ||
         route.query.date_and_time_after
       );
-    });
-
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
     });
 
     function clearFilters() {
@@ -317,6 +309,15 @@ export default {
     function closeMobileSearch() {
       isMobileSearchOpened.value = false;
     }
+
+    watch(
+      () => activeFilters.value,
+      (newVal) => {
+        if (!isMobile.value && !isTablet.value) {
+          emit('updatedActiveFilters', newVal);
+        }
+      }
+    );
 
     return {
       sortingButtonClick,

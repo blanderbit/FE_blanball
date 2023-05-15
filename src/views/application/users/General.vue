@@ -1,7 +1,7 @@
 <template>
   <div class="events-page">
     <div class="main-body">
-      <div class="header-block">
+      <div class="header-side">
         <div class="left-part">
           <div class="title">{{ $t('users.title') }}</div>
         </div>
@@ -38,49 +38,48 @@
         :model-value="filters"
         :elementsCount="paginationTotalCount"
         @update:value="setFilters"
+        @updatedActiveFilters="recalculateHeightAfterUpdateFiltersActive"
         @clearFilters="clearFilters"
       >
       </users-filters>
-      <div class="user-cards-wrapper">
-        <div class="users-cards">
-          <smartList
-            :list="paginationElements"
-            ref="refList"
-            v-model:scrollbar-existing="blockScrollToTopIfExist"
-          >
-            <template #smartListItem="slotProps">
-              <UserCard
-                :key="slotProps.index"
-                :user-data="slotProps.smartListItem"
-                @update:expanding="
-                  slotProps.smartListItem.metadata.expanding = $event
-                "
-                @openUserProfile="openUserProfile(slotProps.smartListItem.id)"
-              />
-            </template>
-            <template #after>
-              <InfiniteLoading
-                :identifier="triggerForRestart"
-                ref="scrollbar"
-                @infinite="loadDataPaginationData(paginationPage + 1, $event)"
-              >
-                <template #complete>
-                  <emptyList
-                    v-if="!paginationElements.length"
-                    :title="emptyListMessages.title"
-                    :description="emptyListMessages.title"
-                  />
+      <div class="users-cards" :style="`height: ${usersListHeight}`">
+        <smartList
+          :list="paginationElements"
+          ref="refList"
+          v-model:scrollbar-existing="blockScrollToTopIfExist"
+        >
+          <template #smartListItem="slotProps">
+            <UserCard
+              :key="slotProps.index"
+              :user-data="slotProps.smartListItem"
+              @update:expanding="
+                slotProps.smartListItem.metadata.expanding = $event
+              "
+              @openUserProfile="openUserProfile(slotProps.smartListItem.id)"
+            />
+          </template>
+          <template #after>
+            <InfiniteLoading
+              :identifier="triggerForRestart"
+              ref="scrollbar"
+              @infinite="loadDataPaginationData(paginationPage + 1, $event)"
+            >
+              <template #complete>
+                <emptyList
+                  v-if="!paginationElements.length"
+                  :title="emptyListMessages.title"
+                  :description="emptyListMessages.title"
+                />
 
-                  <ScrollToTop
-                    :element-length="paginationElements"
-                    :is-scroll-top-exist="blockScrollToTopIfExist"
-                    @scroll-button-clicked="scrollToFirstElement()"
-                  />
-                </template>
-              </InfiniteLoading>
-            </template>
-          </smartList>
-        </div>
+                <ScrollToTop
+                  :element-length="paginationElements"
+                  :is-scroll-top-exist="blockScrollToTopIfExist"
+                  @scroll-button-clicked="scrollToFirstElement()"
+                />
+              </template>
+            </InfiniteLoading>
+          </template>
+        </smartList>
       </div>
     </div>
 
@@ -89,7 +88,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
@@ -100,18 +99,19 @@ import emptyList from '../../../components/shared/emptyList/EmptyList.vue';
 import ScrollToTop from '../../../components/ScrollToTop.vue';
 import rightSidebar from '../../../components/main/rightSidebar/RightSidebar.vue';
 import TabLabel from '../../../components/shared/tabLabel/TabLabel.vue';
+import InfiniteLoading from '../../../components/main/infiniteLoading/InfiniteLoading.vue';
 
 import members from '../../../assets/img/members.svg';
 import runner from '../../../assets/img/runner.svg';
 import ball from '../../../assets/img/ball.svg';
 import timer from '../../../assets/img/timer.svg';
 import tShirt from '../../../assets/img/t-shirt.svg';
-import searchIcon from '../../../assets/img/search.svg';
 
-import InfiniteLoading from '../../../components/main/infiniteLoading/InfiniteLoading.vue';
 import { v4 as uuid } from 'uuid';
 import { PaginationWorker } from '../../../workers/pagination-worker';
 import { API } from '../../../workers/api-worker/api.worker';
+import { calcHeight } from '../../../utils/calcHeight';
+import { useUserDataStore } from '../../../stores/userData';
 
 import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patch';
 import UsersFilters from '../../../components/filters/block-filters/UsersFilters.vue';
@@ -138,10 +138,31 @@ export default {
     const triggerForRestart = ref(false);
     const currentHoverSideBarItemID = ref(0);
     const { t } = useI18n();
+    const userStore = useUserDataStore();
 
     const restartInfiniteScroll = () => {
       triggerForRestart.value = uuid();
     };
+
+    const { calculatedHeight, plusHeight, minusHeight } =
+      calcHeight(
+        [90, 36, 31, 80, 36, 50],
+        [userStore.user.is_verified ? 0 : 40, -55],
+        [userStore.user.is_verified ? 0 : 40, -25],
+        true
+      );
+
+    const recalculateHeightAfterUpdateFiltersActive = (status) => {
+      if (status) {
+        minusHeight(45);
+      } else {
+        plusHeight(45);
+      }
+    };
+
+    const usersListHeight = computed(() => {
+      return `${calculatedHeight.value}px`;
+    });
 
     const {
       paginationElements,
@@ -242,8 +263,10 @@ export default {
       blockScrollToTopIfExist,
       filters,
       triggerForRestart,
+      usersListHeight,
       loadDataPaginationData,
       leaveHoverSidebarItem,
+      recalculateHeightAfterUpdateFiltersActive,
       enterHoverSidebarItem,
       scrollToFirstElement: () => {
         refList.value.scrollToFirstElement();
@@ -298,55 +321,8 @@ export default {
           isActive: false,
         },
       ],
-      calendar: [
-        {
-          id: 0,
-          week: [
-            { id: 0, day: 'Пн', number: 13, isActive: false },
-            { id: 1, day: 'Вт', number: 14, isActive: false },
-            { id: 2, day: 'Ср', number: 15, isActive: false },
-            { id: 3, day: 'Чт', number: 16, isActive: false },
-            { id: 4, day: 'Пт', number: 17, isActive: false },
-            { id: 5, day: 'Сб', number: 18, isActive: false },
-            { id: 6, day: 'Вс', number: 19, isActive: true },
-          ],
-        },
-        {
-          id: 1,
-          week: [
-            { id: 0, day: 'Пн', number: 20, isActive: false },
-            { id: 1, day: 'Вт', number: 21, isActive: false },
-            { id: 2, day: 'Ср', number: 22, isActive: true },
-            { id: 3, day: 'Чт', number: 23, isActive: false },
-            { id: 4, day: 'Пт', number: 24, isActive: false },
-            { id: 5, day: 'Сб', number: 25, isActive: false },
-            { id: 6, day: 'Вс', number: 26, isActive: false },
-          ],
-        },
-        {
-          id: 2,
-          week: [
-            { id: 0, day: 'Пн', number: 27, isActive: true },
-            { id: 1, day: 'Вт', number: 28, isActive: false },
-            { id: 2, day: 'Ср', number: 29, isActive: false },
-            { id: 3, day: 'Чт', number: 30, isActive: false },
-            { id: 4, day: 'Пт', number: 31, isActive: false },
-            { id: 5, day: 'Сб', number: 1, isActive: false },
-            { id: 6, day: 'Вс', number: 2, isActive: false },
-          ],
-        },
-      ],
     };
   },
-  computed: {
-    // users() {
-    //   return CONSTANTS.users_page.users
-    // },
-    searchIcon() {
-      return searchIcon;
-    },
-  },
-  methods: {},
 };
 </script>
 
@@ -379,7 +355,7 @@ $color-71ba12: #71ba12;
     grid-template-columns: 1fr;
   }
   .main-body {
-    .header-block {
+    .header-side {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -1142,17 +1118,9 @@ $color-71ba12: #71ba12;
         }
       }
     }
-    .user-cards-wrapper {
-      @include calc-height(90px, 36px, 31px, 80px, 36px);
-      .users-cards {
-        height: calc(100% - 20px);
-        margin-top: 20px;
-        overflow-y: scroll;
-
-        @include beforeDesktop {
-          height: calc(100% - 100px);
-        }
-      }
+    .users-cards {
+      margin-top: 15px;
+      overflow-y: scroll;
     }
   }
   .right-sidebar {

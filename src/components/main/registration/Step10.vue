@@ -4,7 +4,6 @@
     :nextButton="stepConfig.nextButton"
     :title="stepConfig.title"
     :subTitle="stepConfig.subTitle"
-    :loading="loading"
     :stepperLines="stepConfig.stepperLines"
   >
     <template #content>
@@ -77,12 +76,16 @@ import StepWrapper from './StepWrapper.vue';
 import { PositionMapBus } from '../../../workers/event-bus-worker';
 import { API } from '../../../workers/api-worker/api.worker';
 import { useDevice } from 'next-vue-device-detector';
-import useWindowWidth from '../../../utils/widthScreen';
+import { useWindowWidth } from '../../../utils/widthScreen';
 
-import CONSTANTS from '../../../consts/index';
+import { CONSTS } from '../../../consts/index';
 
 import tickIcon from '../../../assets/img/tick-white.svg';
 import nikeIcon from '../../../assets/img/nike-icon.svg';
+import {
+  finishSpinner,
+  startSpinner,
+} from '../../../workers/loading-worker/loading.worker';
 
 export default {
   name: 'Step10',
@@ -93,25 +96,18 @@ export default {
     RegisterModalPositionMap,
   },
   setup() {
-    const { onResize, isMobile } = useWindowWidth();
+    const { isMobile } = useWindowWidth();
     const region = ref('');
     const city = ref('');
     const address = ref('');
     const nextButton = ref(false);
-    const loading = ref(true);
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
-    });
     const mockData = computed(() => {
       return {
         cities:
-          CONSTANTS.register.jsonCityRegions.find((item) =>
+          CONSTS.register.jsonCityRegions.find((item) =>
             item.name.includes(region.value)
           )?.cities || [],
-        district: CONSTANTS.register.jsonCityRegions,
+        district: CONSTS.register.jsonCityRegions,
       };
     });
     const tick = computed(() => {
@@ -120,12 +116,9 @@ export default {
     async function getCoordsByName(str) {
       return await API.LocationService.GetPlaceByAddress(str);
     }
-    PositionMapBus.on('update:coords:loading', (e) => {
-      loading.value = true;
-    });
     PositionMapBus.on('update:coords', (e) => {
       region.value = e.place.region;
-      city.value = e.place.village || e.place.city
+      city.value = e.place.village || e.place.city;
       loading.value = false;
       nextButton.value = !region.value || !city.value || !address.value;
     });
@@ -157,9 +150,6 @@ export default {
       city.value = '';
       address.value = '';
     });
-    PositionMapBus.on('map-loaded', () => {
-      loading.value = false;
-    });
     return {
       mockData,
       tick,
@@ -168,14 +158,13 @@ export default {
       address,
       stepConfig,
       nextButton,
-      loading,
       device,
       isMobile,
       async changeRegions(e) {
         region.value = e;
         city.value = '';
         address.value = '';
-        loading.value = true;
+        startSpinner();
         try {
           PositionMapBus.emit(
             'update:map:by:coords',
@@ -185,12 +174,12 @@ export default {
         } catch (e) {
           nextButton.value = true;
         }
-        loading.value = false;
+        finishSpinner();
       },
       async changeCity(e) {
         city.value = e;
         address.value = '';
-        loading.value = true;
+        startSpinner();
         try {
           PositionMapBus.emit(
             'update:map:by:coords',
@@ -200,13 +189,13 @@ export default {
         } catch (e) {
           nextButton.value = true;
         }
-        loading.value = false;
+        finishSpinner();
       },
       async changeAddress(e) {
         address.value = e.target.value;
         clearTimeout(timeout);
         timeout = setTimeout(async () => {
-          loading.value = true;
+          startSpinner();
           try {
             PositionMapBus.emit(
               'update:map:by:coords',
@@ -218,7 +207,7 @@ export default {
           } catch (e) {
             nextButton.value = true;
           }
-          loading.value = false;
+          finishSpinner();
         }, 500);
       },
     };

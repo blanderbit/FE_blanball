@@ -93,7 +93,7 @@ import { accessToken, refreshToken } from '../../workers/token-worker';
 import { PositionMapBus } from '../../workers/event-bus-worker';
 
 import { ROUTES } from '../../router/router.const';
-import CONSTS from '../../consts';
+import { CONSTS } from '../../consts';
 import SCHEMAS from '../../validators/schemas';
 
 import imageStep_1 from '../../assets/img/registration-back-1.svg';

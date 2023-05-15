@@ -10,28 +10,36 @@
       @close-modal="isVerifyModalActive = false"
       @email-verified="emailVerified"
     />
-    <div class="b_header_validate-email-block-wrapper">
-      <div
-        v-if="!userStore.user.is_verified"
-        class="b_header_validate-email-block"
-      >
-        <span class="b_header_text">
-          {{ $t('header.approve-your-email') }}: {{ userStore.user.email }}
-        </span>
-        <span class="b_header_verify-btn" @click="isVerifyModalActive = true">
-          {{ $t('register.accept') }}
-        </span>
-      </div>
-    </div>
+
     <sidebar />
     <div class="main-block">
-      <div class="container">
-        <div class="main-body-inner">
+      <div class="header-block" id="header" ref="header">
+        <div class="b_header_validate-email-block-wrapper">
+          <div
+            v-if="!userStore.user.is_verified"
+            class="b_header_validate-email-block"
+          >
+            <span class="b_header_text">
+              {{ $t('header.approve-your-email') }}: {{ userStore.user.email }}
+            </span>
+            <span
+              class="b_header_verify-btn"
+              @click="isVerifyModalActive = true"
+            >
+              {{ $t('register.accept') }}
+            </span>
+          </div>
+        </div>
+        <div class="container">
           <main-header
             :isSchedulerOpened="isSchedulerOpened"
             @menu-icon-click="openMobileMenu"
-            @openСloseScheduler="openСloseScheduler"
+            @openCloseScheduler="openCloseScheduler"
           />
+        </div>
+      </div>
+      <div class="container">
+        <div class="main-body-inner">
           <router-view />
         </div>
       </div>
@@ -56,22 +64,15 @@
     <Transition name="scheduler">
       <Scheduler
         v-if="isSchedulerOpened"
-        :config="config"
+        :config="schedulerConfig"
+        :marginTop="headerHeightStore.headerHeight"
         @closeWindow="isSchedulerOpened = false"
       >
-        <template
-          #LeftSidebar="{
-            allUsers,
-            isFriendsVisible,
-            friendsBlockSwitcher,
-            activateUser,
-          }"
-        >
+        <template #LeftSidebar="{ isFriendsVisible, friendsBlockSwitcher }">
           <LeftSidebar
-            :users="allUsers"
+            v-if="isSchedulerSidebarVisible"
             :is-friends-visible="isFriendsVisible"
             @friendsBlockSwitcher="friendsBlockSwitcher"
-            @activateUser="activateUser"
           />
         </template>
         <template
@@ -89,29 +90,13 @@
             :friendsBlockSwitcher="friendsBlockSwitcher"
           />
         </template>
-        <template #MyEventDots="{ events, bgColor }">
-          <div
-            v-for="event in events"
-            :key="event._eid"
-            class="c-myevents-dot"
-            :style="{ background: bgColor }"
-          ></div>
-        </template>
-        <template #OtherEventDots="{ bgColor }">
-          <div
-            v-for="i in 3"
-            :key="i"
-            class="c-otherevents-dot"
-            :style="{ background: bgColor }"
-          ></div>
-        </template>
       </Scheduler>
     </Transition>
   </div>
 </template>
 
 <script setup>
-import { ref, onBeforeMount, onBeforeUnmount, onMounted } from 'vue';
+import { ref, computed, watch, onBeforeUnmount, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
@@ -133,6 +118,7 @@ import { AuthWebSocketWorkerInstance } from '../../workers/web-socket-worker';
 import { accessToken } from '../../workers/token-worker';
 import { notificationButtonHandlerMessage } from '../../workers/utils-worker';
 import { useUserDataStore } from '@/stores/userData';
+import { useHeaderHeightStore } from '../../stores/headerHeight';
 import {
   NotificationsBus,
   BlanballEventBus,
@@ -140,19 +126,16 @@ import {
 import { MessageActionTypes } from '../../workers/web-socket-worker/message.action.types';
 import { API } from '../../workers/api-worker/api.worker';
 import { VersionDetectorWorker } from '../../workers/version-detector-worker';
+import { useWindowWidth } from '../../utils/widthScreen';
+import { useElementSize } from '@vueuse/core';
 
 import EventUpdatedIcon from '../../assets/img/event-updated-modal-icon.svg';
 import EventCreatedIcon from '../../assets/img/event-creted-modal-icon.svg';
 
 import notification_audio from '../../assets/audio/notification-audio.mp3';
 
-import User_1 from '../../assets/img/scheduler/user-1.svg';
-import User_2 from '../../assets/img/scheduler/user-2.svg';
-import User_3 from '../../assets/img/scheduler/user-3.svg';
-import User_4 from '../../assets/img/scheduler/user-4.svg';
-import User_5 from '../../assets/img/scheduler/user-5.svg';
-
 const isVerifyModalActive = ref(false);
+const header = ref();
 const isCreateReviewModalActive = ref(false);
 const endedEventData = ref({});
 const selectedEmojies = ref([]);
@@ -165,8 +148,16 @@ const activePushNotifications = ref([]);
 const router = useRouter();
 const toast = useToast();
 const userStore = useUserDataStore();
+const headerHeightStore = useHeaderHeightStore();
 const audio = new Audio(notification_audio);
 let timeout;
+
+const { isMobile, isTablet } = useWindowWidth();
+const { width: headerWidth, height: headerHeight } = useElementSize(header);
+
+const isSchedulerSidebarVisible = computed(() => {
+  return !isMobile.value && !isTablet.value;
+});
 
 const closeEventActiondModal = () => {
   isActionEventModalOpened.value = false;
@@ -189,6 +180,8 @@ const emailVerified = () => {
       user: res.data,
     });
   });
+  setHeaderHeight();
+  BlanballEventBus.emit('emailVerified');
 };
 
 const openEventReviewModal = () => {
@@ -227,7 +220,6 @@ BlanballEventBus.on('EventUpdated', () => {
 const emojiSelection = (emoji) => {
   for (let i = 0; i < selectedEmojies.value.length; i++) {
     if (selectedEmojies.value[i].step === emoji.step) {
-      // Update the existing object
       selectedEmojies.value[i] = emoji;
       return;
     }
@@ -369,7 +361,7 @@ function removePushFormActiveNotifications(notificationId) {
   }
 }
 
-function openСloseScheduler() {
+function openCloseScheduler() {
   isSchedulerOpened.value = !isSchedulerOpened.value;
 }
 
@@ -417,6 +409,16 @@ function closeNewVersionModal() {
   VersionHandling.closeVersionModal();
 }
 
+function setHeaderHeight() {
+  headerHeightStore.$patch({
+    headerHeight: headerHeight.value,
+  });
+}
+
+onMounted(() => {
+  setHeaderHeight();
+});
+
 onBeforeUnmount(() => {
   NotificationsBus.off('openEventReviewModal');
   NotificationsBus.off('removePushNotificationAfterSidebarAction');
@@ -425,81 +427,18 @@ onBeforeUnmount(() => {
   AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect();
 });
 
-const isSchedulerOpened = ref(false);
-const avatars = [User_1, User_2, User_3, User_4, User_5];
+watch(
+  () => headerHeight.value,
+  () => {
+    setHeaderHeight();
+  }
+);
 
-const config = ref({
+const isSchedulerOpened = ref(false);
+
+const schedulerConfig = ref({
   myEventsDotColor: '#148581',
   otherEventsDotColor: '#D62953',
-  contextMenu: [
-    {
-      label: 'Створити подію',
-      icon: 'fa fa-plus',
-      onClick: () => {
-        alert('You click a menu item');
-      },
-    },
-    {
-      label: 'Зайнятість інших',
-      icon: 'fa fa-running',
-      onClick: () => {
-        alert('You click a menu item');
-      },
-    },
-  ],
-  users: Array.from({ length: 5 }, (_, i) => {
-    return {
-      id: i,
-      name: 'Хамон Бибулишвили',
-      role: 'Стрыбунэць',
-      img: avatars[i],
-      isActive: i === 0 ? true : false,
-      events: [
-        {
-          start: `2023-03-${i + 12} 19:00`,
-          end: `2023-03-${i + 12} 20:00`,
-          title: 'Need to drink pivasik',
-          content: 'Buhlishko is very good',
-          contentFull: 'Жигулевское самое лучшее',
-          class: 'drink party',
-        },
-        {
-          start: `2023-03-${i + 15} 19:00`,
-          end: `2023-03-${i + 15} 20:00`,
-          title: 'Need to drink pivasik',
-          content: 'Buhlishko is very good',
-          contentFull: 'Жигулевское самое лучшее',
-          class: 'drink party',
-        },
-        {
-          start: `2023-03-${i + 19} 14:00`,
-          end: `2023-03-${i + 19} 18:00`,
-          title: 'Need to go shopping',
-          content: 'Click to see my shopping list',
-          contentFull:
-            'My shopping list is rather long:<br><ul><li>Avocados</li><li>Tomatoes</li><li>Potatoes</li><li>Mangoes</li></ul>', // Custom attribute.
-          class: 'leisure',
-        },
-        {
-          start: `2023-03-${i + 24} 10:00`,
-          end: `2023-03-${i + 24} 15:00`,
-          title: 'Golf with John',
-          content: 'Do I need to tell how many holes?',
-          contentFull: 'Okay.<br>It will be a 18 hole golf course.',
-          class: 'sport',
-        },
-        {
-          start: `2023-03-${i + 24} 14:00`,
-          end: `2023-03-${i + 24} 18:00`,
-          title: 'Need to go shopping',
-          content: 'Click to see my shopping list',
-          contentFull:
-            'My shopping list is rather long:<br><ul><li>Avocados</li><li>Tomatoes</li><li>Potatoes</li><li>Mangoes</li></ul>', // Custom attribute.
-          class: 'leisure',
-        },
-      ],
-    };
-  }),
 });
 </script>
 
@@ -515,6 +454,14 @@ html {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+.header-block {
+  @include beforeDesktop {
+    background: #fff;
+    position: relative;
+    z-index: 501;
+  }
 }
 
 .main-wrapper {
@@ -584,25 +531,6 @@ html {
       grid-template-rows: 90px 1fr;
       @include calc-height;
     }
-  }
-}
-
-.c-myevents-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  margin-right: 4px;
-  &:last-child {
-    margin-right: 0;
-  }
-}
-.c-otherevents-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  margin-right: 4px;
-  &:last-child {
-    margin-right: 0;
   }
 }
 

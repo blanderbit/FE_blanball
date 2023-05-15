@@ -1,5 +1,4 @@
 <template>
-  <loader :is-loading="loading" />
   <BugReportModal
     v-if="isBugReportModalOpened"
     @close-modal="closeBugReportModal"
@@ -120,7 +119,6 @@ import userAvatar from '../shared/userAvatar/UserAvatar.vue';
 import BugReportModal from '../shared/modals/BugReportModal.vue';
 import TabLabel from '../shared/tabLabel/TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';
-import loader from '../shared/loader/Loader.vue';
 
 import { useUserDataStore } from '../../stores/userData';
 import { createNotificationFromData } from '../../workers/utils-worker';
@@ -135,8 +133,12 @@ import {
   BlanballEventBus,
 } from '../../workers/event-bus-worker';
 import { FilterPatch } from '../../workers/api-worker/http/filter/filter.patch';
-import useWindowWidth from '../../utils/widthScreen';
+import { useWindowWidth } from '../../utils/widthScreen';
 import { logOut } from '../../utils/logOut';
+import {
+  finishSpinner,
+  startSpinner,
+} from '../../workers/loading-worker/loading.worker';
 
 import { ROUTES } from '../../router/router.const';
 
@@ -147,7 +149,6 @@ import members from '../../assets/img/members.svg';
 import medal from '../../assets/img/medal.svg';
 import settings from '../../assets/img/settings.svg';
 import bugReport from '../../assets/img/warning-black.svg';
-
 const findDublicates = (list, newList) => {
   return newList.filter((item) =>
     list.length
@@ -170,21 +171,19 @@ export default {
     userAvatar,
     BugReportModal,
     TabLabel,
-    loader,
     MobileMenu,
   },
-  setup(props, { emit }) {
+  setup() {
     const userStore = useUserDataStore();
     const notReadNotificationCount = ref(0);
     const allNotificationsCount = ref(0);
-    const loading = ref(false);
     const isMobMenuActive = ref(false);
     const skipids = ref([]);
     const router = useRouter();
     const isMenuOpened = ref(false);
     const isBugReportModalOpened = ref(false);
     const currentHoverSideBarItemID = ref(0);
-    const { onResize, isMobile, isTablet } = useWindowWidth();
+    const { isMobile, isTablet } = useWindowWidth();
 
     const foundBug = () => {
       isMobMenuActive.value = false;
@@ -295,7 +294,7 @@ export default {
       isLoading
     ) => {
       if (isLoading) {
-        loading.value = true;
+        startSpinner();
       }
       if (forceUpdate) {
         paginationClearData();
@@ -304,7 +303,7 @@ export default {
 
       await paginationLoad({ pageNumber, $state, forceUpdate }).then(() => {
         if (isLoading) {
-          loading.value = false;
+          finishSpinner();
         }
       });
     };
@@ -382,16 +381,11 @@ export default {
       isMobMenuActive.value = true;
     });
 
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-
     onBeforeUnmount(() => {
       NotificationsBus.off('SidebarClearData');
       NotificationsBus.off('hanlderToRemoveNewNotificationsInSidebar');
       BlanballEventBus.off('OpenMobileMenu');
       AuthWebSocketWorkerInstance.destroyCallback(handleMessageInSidebar);
-      window.removeEventListener('resize', onResize);
     });
 
     getNotificationsCount();
@@ -419,7 +413,6 @@ export default {
       isMenuOpened,
       userStore,
       currentHoverSideBarItemID,
-      loading,
       isBugReportModalOpened,
       loadDataNotifications,
       removeNotifications,
