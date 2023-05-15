@@ -10,28 +10,36 @@
       @close-modal="isVerifyModalActive = false"
       @email-verified="emailVerified"
     />
-    <div class="b_header_validate-email-block-wrapper">
-      <div
-        v-if="!userStore.user.is_verified"
-        class="b_header_validate-email-block"
-      >
-        <span class="b_header_text">
-          {{ $t('header.approve-your-email') }}: {{ userStore.user.email }}
-        </span>
-        <span class="b_header_verify-btn" @click="isVerifyModalActive = true">
-          {{ $t('register.accept') }}
-        </span>
-      </div>
-    </div>
+
     <sidebar />
     <div class="main-block">
-      <div class="container">
-        <div class="main-body-inner">
+      <div class="header-block" id="header" ref="header">
+        <div class="b_header_validate-email-block-wrapper">
+          <div
+            v-if="!userStore.user.is_verified"
+            class="b_header_validate-email-block"
+          >
+            <span class="b_header_text">
+              {{ $t('header.approve-your-email') }}: {{ userStore.user.email }}
+            </span>
+            <span
+              class="b_header_verify-btn"
+              @click="isVerifyModalActive = true"
+            >
+              {{ $t('register.accept') }}
+            </span>
+          </div>
+        </div>
+        <div class="container">
           <main-header
             :isSchedulerOpened="isSchedulerOpened"
             @menu-icon-click="openMobileMenu"
             @openCloseScheduler="openCloseScheduler"
           />
+        </div>
+      </div>
+      <div class="container">
+        <div class="main-body-inner">
           <router-view />
         </div>
       </div>
@@ -57,6 +65,7 @@
       <Scheduler
         v-if="isSchedulerOpened"
         :config="schedulerConfig"
+        :marginTop="headerHeight"
         @closeWindow="isSchedulerOpened = false"
       >
         <template #LeftSidebar="{ isFriendsVisible, friendsBlockSwitcher }">
@@ -117,6 +126,7 @@ import { MessageActionTypes } from '../../workers/web-socket-worker/message.acti
 import { API } from '../../workers/api-worker/api.worker';
 import { VersionDetectorWorker } from '../../workers/version-detector-worker';
 import { useWindowWidth } from '../../utils/widthScreen';
+import { useElementSize } from '@vueuse/core';
 
 import EventUpdatedIcon from '../../assets/img/event-updated-modal-icon.svg';
 import EventCreatedIcon from '../../assets/img/event-creted-modal-icon.svg';
@@ -124,6 +134,7 @@ import EventCreatedIcon from '../../assets/img/event-creted-modal-icon.svg';
 import notification_audio from '../../assets/audio/notification-audio.mp3';
 
 const isVerifyModalActive = ref(false);
+const header = ref();
 const isCreateReviewModalActive = ref(false);
 const endedEventData = ref({});
 const selectedEmojies = ref([]);
@@ -139,7 +150,8 @@ const userStore = useUserDataStore();
 const audio = new Audio(notification_audio);
 let timeout;
 
-const { isMobile, isTablet, onResize } = useWindowWidth();
+const { isMobile, isTablet } = useWindowWidth();
+const { width: headerWidth, height: headerHeight } = useElementSize(header);
 
 const isSchedulerSidebarVisible = computed(() => {
   return !isMobile.value && !isTablet.value;
@@ -394,16 +406,11 @@ function closeNewVersionModal() {
   VersionHandling.closeVersionModal();
 }
 
-onMounted(() => {
-  window.addEventListener('resize', onResize);
-});
-
 onBeforeUnmount(() => {
   NotificationsBus.off('openEventReviewModal');
   NotificationsBus.off('removePushNotificationAfterSidebarAction');
   BlanballEventBus.off('EventCreated');
   BlanballEventBus.off('EventUpdated');
-  window.removeEventListener('resize', onResize);
   AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect();
 });
 
@@ -412,6 +419,7 @@ const isSchedulerOpened = ref(false);
 const schedulerConfig = ref({
   myEventsDotColor: '#148581',
   otherEventsDotColor: '#D62953',
+  marginTop: headerHeight.value
 });
 </script>
 
@@ -427,6 +435,15 @@ html {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+.header-block {
+
+  @include beforeDesktop {
+    background: #fff;
+    position: relative;
+    z-index: 501;
+  }
 }
 
 .main-wrapper {

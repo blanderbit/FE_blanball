@@ -96,17 +96,11 @@ export default {
     RegisterModalPositionMap,
   },
   setup() {
-    const { onResize, isMobile } = useWindowWidth();
+    const { isMobile } = useWindowWidth();
     const region = ref('');
     const city = ref('');
     const address = ref('');
     const nextButton = ref(false);
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
-    });
     const mockData = computed(() => {
       return {
         cities:

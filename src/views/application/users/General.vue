@@ -111,7 +111,6 @@ import { v4 as uuid } from 'uuid';
 import { PaginationWorker } from '../../../workers/pagination-worker';
 import { API } from '../../../workers/api-worker/api.worker';
 import { calcHeight } from '../../../utils/calcHeight';
-import { useWindowWidth } from '../../../utils/widthScreen';
 import { useUserDataStore } from '../../../stores/userData';
 
 import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patch';
@@ -145,8 +144,6 @@ export default {
       triggerForRestart.value = uuid();
     };
 
-    const { isMobile, isTablet, onResize } = useWindowWidth();
-
     const { calculatedHeight, onAppHeightResize, plusHeight, minusHeight } =
       calcHeight(
         [90, 36, 31, 80, 36, 50],
@@ -164,12 +161,10 @@ export default {
     };
 
     onMounted(() => {
-      window.addEventListener('resize', onResize);
       window.addEventListener('resize', onAppHeightResize);
     });
 
     onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
       window.removeEventListener('resize', onAppHeightResize);
     });
 

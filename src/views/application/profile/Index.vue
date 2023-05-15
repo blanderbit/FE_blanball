@@ -228,7 +228,7 @@ export default {
     const userStore = useUserDataStore();
 
     const router = useRouter();
-    const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
+    const { isBetweenTabletAndDesktop, isMobile, isTablet } =
       useWindowWidth();
 
     const userInfo = ref(null);
@@ -340,12 +340,10 @@ export default {
     };
 
     onMounted(() => {
-      window.addEventListener('resize', onResize);
       window.addEventListener('resize', onAppHeightResize);
     });
 
     onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
       window.removeEventListener('resize', onAppHeightResize);
     });
 

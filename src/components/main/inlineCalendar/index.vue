@@ -239,7 +239,6 @@ export default {
           });
         });
       }
-      window.addEventListener('resize', onResize);
       // getting initial list of dates
       fillCalendar();
       nextTick(() => {
@@ -254,7 +253,6 @@ export default {
         const datesWrapperEl = datesWrapper.value;
         datesWrapperEl.replaceWith(datesWrapperEl.cloneNode(true));
       }
-      window.removeEventListener('resize', onResize);
     });
     const fillCalendar = () => {
       if (dates.value.length) {

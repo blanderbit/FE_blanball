@@ -255,7 +255,7 @@ export default {
     const isMobileSearchOpened = ref(false);
     const todaysDate = useTodaysDate();
     const dateFilterValue = ref(null);
-    const { isMobile, isTablet, onResize } = useWindowWidth();
+    const { isMobile, isTablet } = useWindowWidth();
     const icons = computed(() => {
       return {
         female: FemaleIcon,
@@ -350,13 +350,6 @@ export default {
       },
     });
 
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
-    });
 
     watchEffect(() => {
       if (dateFilterValue.value?.start) {

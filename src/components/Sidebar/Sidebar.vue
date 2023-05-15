@@ -183,7 +183,7 @@ export default {
     const isMenuOpened = ref(false);
     const isBugReportModalOpened = ref(false);
     const currentHoverSideBarItemID = ref(0);
-    const { onResize, isMobile, isTablet } = useWindowWidth();
+    const { isMobile, isTablet } = useWindowWidth();
 
     const foundBug = () => {
       isMobMenuActive.value = false;
@@ -381,16 +381,11 @@ export default {
       isMobMenuActive.value = true;
     });
 
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-
     onBeforeUnmount(() => {
       NotificationsBus.off('SidebarClearData');
       NotificationsBus.off('hanlderToRemoveNewNotificationsInSidebar');
       BlanballEventBus.off('OpenMobileMenu');
       AuthWebSocketWorkerInstance.destroyCallback(handleMessageInSidebar);
-      window.removeEventListener('resize', onResize);
     });
 
     getNotificationsCount();

@@ -1,6 +1,7 @@
 <template>
   <div @click.self="$emit('closeWindow')" class="c-scheduler-wrapper">
-    <div class="c-common-block">
+    <div class="c-common-block"
+      :style="`top: ${marginTop}px`">
       <!-- Sidebar Slot -->
       <slot
         name="LeftSidebar"
@@ -76,6 +77,7 @@
             v-if="inlineCalendarConfig.visible"
             :date="formatDate(inlineCalendarConfig.selectedDate)"
             :userData="activatedUserInSidebarData"
+            :scheduledEventsDotsData="scheduledEventsDotsData"
           />
           <vue-cal
             :small="schedulerConfig.small"
@@ -121,17 +123,17 @@
               </div>
             </template>
           </vue-cal>
-          <div class="c-scheduler-bottom-side">
-            <div class="c-plan-event-button">
-              <WhiteBtn
-                :text="$t('scheduler.plan-event')"
-                :height="32"
-                :icon="icons.grayClock"
-                :mainColor="'#575775'"
-                :isBorder="true"
-                :borderColor="'#DFDEED'"
-              />
-            </div>
+        </div>
+        <div class="c-scheduler-bottom-side">
+          <div class="c-plan-event-button">
+            <WhiteBtn
+              :text="$t('scheduler.plan-event')"
+              :height="32"
+              :icon="icons.grayClock"
+              :mainColor="'#575775'"
+              :isBorder="true"
+              :borderColor="'#DFDEED'"
+            />
           </div>
         </div>
       </div>
@@ -193,6 +195,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    marginTop: {
+      type: Number,
+      default: 80
+    }
   },
   emits: ['closeWindow'],
   setup(props, { emit }) {
@@ -365,10 +371,20 @@ export default {
 
     BlanballEventBus.on('activateUserInScheduler', (userData) => {
       activatedUserInSidebarData.value = userData;
+      getScheduledEventsDotsData(
+        userData.id,
+        formatDate(schedulerStartDate.value),
+        formatDate(schedulerEndDate.value)
+      );
     });
 
     BlanballEventBus.on('deactivateUser', () => {
       activatedUserInSidebarData.value = null;
+      getScheduledEventsDotsData(
+        userStore.user.id,
+        formatDate(schedulerStartDate.value),
+        formatDate(schedulerEndDate.value)
+      );
     });
 
     BlanballEventBus.on('switchedSchedulerSidebarTab', (tabId) => {
@@ -432,7 +448,7 @@ $color-e9fcfb: #e9fcfb;
 }
 
 .c-scheduler-wrapper {
-  @include modal-wrapper;
+  @include modal-wrapper($z-index: 500);
   display: flex;
   justify-content: flex-end;
   font-family: 'Inter', sans-serif;
@@ -445,13 +461,13 @@ $color-e9fcfb: #e9fcfb;
     display: flex;
     height: fit-content;
     position: absolute;
-    top: 80px;
     right: 160px;
 
     @include beforeDesktop {
       right: 0px;
       padding: 20px;
       width: 100%;
+      border-radius: 0px;
     }
 
     @include mobile {

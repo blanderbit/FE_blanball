@@ -77,6 +77,8 @@
 import { ref, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { v4 as uuid } from 'uuid';
+
 import NoScheduledEvents from './NoScheduledEvents.vue';
 import SubmitModal from '../../shared/modals/SubmitModal.vue';
 import NotSelectedFriendCard from './NotSelectedFriendCard.vue';
@@ -110,6 +112,10 @@ export default {
     date: {
       type: String,
     },
+    scheduledEventsDotsData: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props) {
     const refList = ref();
@@ -121,6 +127,10 @@ export default {
     const triggerForRestart = ref(false);
 
     const blockScrollToTopIfExist = ref(false);
+
+    const restartInfiniteScroll = () => {
+      triggerForRestart.value = uuid();
+    };
 
     const icons = computed(() => {
       return {
@@ -224,6 +234,29 @@ export default {
       }
       showSubmitModal();
     };
+
+    watch(
+      () => props.userData,
+      () => {
+        paginationClearData();
+        if (props.scheduledEventsDotsData[props.date]) {
+          loadDataPaginationData(1, null);
+          restartInfiniteScroll();
+        }
+      }
+    );
+
+    watch(
+      () => props.date,
+      () => {
+        paginationClearData();
+        if (props.scheduledEventsDotsData[props.date]) {
+          loadDataPaginationData(1, null);
+          restartInfiniteScroll();
+        }
+      }
+    );
+
     return {
       paginationTotalCount,
       paginationElements,

@@ -368,7 +368,7 @@ export default {
   },
   emits: ['openEditPictureModal'],
   setup(props, { emit }) {
-    const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
+    const { isBetweenTabletAndDesktop, isMobile, isTablet } =
       useWindowWidth();
     const { t } = useI18n();
 
@@ -440,14 +440,6 @@ export default {
           .locale(dayjsUkrLocale)
           .format('D MMMM YYYY')} p.`;
       }
-    });
-
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
     });
 
 
