@@ -42,4 +42,5 @@ export default {
   'select-all': 'Виділити всі',
   'select-one-mode': 'Вибіркове виділення',
   'load': 'Завантажити',
+  'hide': 'Приховати'
 };

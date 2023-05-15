@@ -83,7 +83,7 @@ import StarRating from 'vue-star-rating';
 import CollapsiblePanel from './main/collapsible/CollapsiblePanel.vue';
 import userAvatar from './shared/userAvatar/UserAvatar.vue';
 
-import CONSTANTS from '../consts/index';
+import { CONSTS } from '../consts/index';
 
 export default {
   name: 'UserCard',
@@ -101,7 +101,7 @@ export default {
   emits: ['openUserProfile'],
   computed: {
     userPosition() {
-      return CONSTANTS.users_page.user_position;
+      return CONSTS.users_page.user_position;
     },
     expanding: {
       set() {

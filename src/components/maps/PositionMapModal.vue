@@ -90,7 +90,7 @@ import GreenBtn from '../shared/button/GreenBtn.vue';
 import { PositionMapBus } from '../../workers/event-bus-worker';
 import { API } from '../../workers/api-worker/api.worker';
 
-import CONSTANTS from '../../consts';
+import { CONSTS } from '../../consts';
 
 import tickIcon from '../../assets/img/location-point.svg';
 import SCHEMAS from '../../validators/schemas';
@@ -166,10 +166,10 @@ export default {
     const mockData = computed(() => {
       return {
         cities:
-          CONSTANTS.register.jsonCityRegions.find((item) =>
+          CONSTS.register.jsonCityRegions.find((item) =>
             item.name.includes(region.value)
           )?.cities || [],
-        district: CONSTANTS.register.jsonCityRegions,
+        district: CONSTS.register.jsonCityRegions,
       };
     });
     function updateCoords(e) {

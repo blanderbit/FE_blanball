@@ -78,7 +78,7 @@ import { API } from '../../../workers/api-worker/api.worker';
 import { useDevice } from 'next-vue-device-detector';
 import { useWindowWidth } from '../../../utils/widthScreen';
 
-import CONSTANTS from '../../../consts/index';
+import { CONSTS } from '../../../consts/index';
 
 import tickIcon from '../../../assets/img/tick-white.svg';
 import nikeIcon from '../../../assets/img/nike-icon.svg';
@@ -96,24 +96,18 @@ export default {
     RegisterModalPositionMap,
   },
   setup() {
-    const { onResize, isMobile } = useWindowWidth();
+    const { isMobile } = useWindowWidth();
     const region = ref('');
     const city = ref('');
     const address = ref('');
     const nextButton = ref(false);
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
-    });
     const mockData = computed(() => {
       return {
         cities:
-          CONSTANTS.register.jsonCityRegions.find((item) =>
+          CONSTS.register.jsonCityRegions.find((item) =>
             item.name.includes(region.value)
           )?.cities || [],
-        district: CONSTANTS.register.jsonCityRegions,
+        district: CONSTS.register.jsonCityRegions,
       };
     });
     const tick = computed(() => {

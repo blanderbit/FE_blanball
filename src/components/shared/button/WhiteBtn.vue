@@ -45,7 +45,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
-    }
+    },
+    borderColor: {
+      type: String,
+    },
   },
   setup(props) {
     const btnWidth = computed(() => {
@@ -57,7 +60,13 @@ export default {
         ...props.fontStyles,
         width: btnWidth.value,
         color: props.mainColor,
-        border: `${props.isBorder ? `1px solid ${props.mainColor}` : 'none'}`,
+        border: `${
+          props.isBorder
+            ? `1px solid ${
+                props.borderColor ? props.borderColor : props.mainColor
+              }`
+            : 'none'
+        }`,
         height: props.height + 'px',
       };
     });

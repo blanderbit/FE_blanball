@@ -251,7 +251,7 @@ import { NotificationsBus } from '../../workers/event-bus-worker';
 import { calcHeight } from '../../utils/calcHeight';
 
 import { ROUTES } from '../../router/router.const';
-import CONSTS from '../../consts';
+import { CONSTS } from '../../consts';
 
 import NotificationIcon from '../../assets/img/notification-mob-default.svg';
 import NotificationWhite from '../../assets/img/notifications-not-read-mobile-icon.svg';
@@ -541,7 +541,6 @@ export default {
     const {
       calculatedHeight,
       minussedHeight,
-      onAppHeightResize,
       minusHeight,
       plusHeight,
     } = calcHeight(...Object.values(mobileMenuTopSideHeightConfig.value));
@@ -678,14 +677,7 @@ export default {
         restartInfiniteScroll();
       }
     };
-
-    onMounted(() => {
-      window.addEventListener('resize', onAppHeightResize);
-    });
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onAppHeightResize);
-    });
-
+    
     return {
       topMenu,
       selectable,

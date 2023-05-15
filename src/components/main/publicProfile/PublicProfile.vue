@@ -294,7 +294,7 @@ export default {
         break;
     }
 
-    const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
+    const { isBetweenTabletAndDesktop, isMobile, isTablet } =
       useWindowWidth();
 
     const backgroundTop = computed(() => {
@@ -320,13 +320,6 @@ export default {
       };
     });
 
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
-    });
 
     const userRating = computed(() => {
       return props.userData.raiting ? props.userData.raiting.toFixed(1) : 0;

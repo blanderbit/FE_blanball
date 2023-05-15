@@ -39,7 +39,7 @@ import ModalBottomCard from './ModalBottomCard.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 
-import CONSTANTS from '../../../consts/index';
+import { CONSTS } from '../../../consts/index';
 
 export default {
   name: 'ModalFeedback',
@@ -71,7 +71,7 @@ export default {
       }
     );
     const steps = computed(() => {
-      return CONSTANTS.modal_feedback.steps(props.eventData);
+      return CONSTS.modal_feedback.steps(props.eventData);
     });
     const currentStep = ref(0);
 

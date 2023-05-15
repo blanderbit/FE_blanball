@@ -74,18 +74,10 @@ export default {
     const maxSelectedNotificationsCount = 100
 
 
-    const { isMobile, isTablet, onResize } = useWindowWidth();
+    const { isMobile, isTablet } = useWindowWidth();
 
 
     const isCollapsible = computed(() => !(isMobile.value || isTablet.value))
-
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
-    });
 
     watch(
       () => context.selectedList,

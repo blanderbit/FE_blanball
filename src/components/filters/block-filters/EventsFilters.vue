@@ -189,7 +189,7 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount, watchEffect } from 'vue';
+import { computed, ref, watch, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import dayjs from 'dayjs';
 
@@ -205,7 +205,7 @@ import { TransformedFiltersWorker } from './transformed.filters.worker';
 import { useWindowWidth } from '../../../utils/widthScreen';
 import useTodaysDate from '../../../utils/todaysDate';
 
-import CONSTANTS from '../../../consts';
+import { CONSTS } from '../../../consts';
 
 import MaleIcon from '../../../assets/img/female-icon.svg';
 import FemaleIcon from '../../../assets/img/male-icon.svg';
@@ -255,7 +255,7 @@ export default {
     const isMobileSearchOpened = ref(false);
     const todaysDate = useTodaysDate();
     const dateFilterValue = ref(null);
-    const { isMobile, isTablet, onResize } = useWindowWidth();
+    const { isMobile, isTablet } = useWindowWidth();
     const icons = computed(() => {
       return {
         female: FemaleIcon,
@@ -273,7 +273,7 @@ export default {
         ? { title: 'Cпочатку нові', icon: arrowsUpIcon }
         : { title: 'Cпочатку старі', icon: arrowsDownIcon };
     });
-    const gender = computed(() => CONSTANTS.users_page.gender);
+    const gender = computed(() => CONSTS.users_page.gender);
 
     const { activeFilters, updateRealData, transformedFilters } =
       TransformedFiltersWorker({
@@ -327,9 +327,9 @@ export default {
         }
       });
 
-    const sportTypeDropdown = CONSTANTS.event_page.sport_type_dropdown;
-    const genderDropdown = CONSTANTS.event_page.gender_dropdown;
-    const statusDropdown = CONSTANTS.event_page.status_ropdown;
+    const sportTypeDropdown = CONSTS.event_page.sport_type_dropdown;
+    const genderDropdown = CONSTS.event_page.gender_dropdown;
+    const statusDropdown = CONSTS.event_page.status_ropdown;
 
     const filterStatus = computed(() => {
       return !!(
@@ -350,13 +350,6 @@ export default {
       },
     });
 
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
-    });
 
     watchEffect(() => {
       if (dateFilterValue.value?.start) {
@@ -392,6 +385,15 @@ export default {
     function closeMobileSearch() {
       isMobileSearchOpened.value = false;
     }
+
+    watch(
+      () => activeFilters.value,
+      (newVal) => {
+        if (!isMobile.value && !isTablet.value) {
+          emit('updatedActiveFilters', newVal);
+        }
+      }
+    );
 
     return {
       sortingButtonClick,

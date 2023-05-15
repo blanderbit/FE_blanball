@@ -313,7 +313,7 @@ import {
 } from '../../../workers/loading-worker/loading.worker';
 import { calcHeight } from '../../../utils/calcHeight';
 
-import CONSTANTS from '../../../consts/index';
+import { CONSTS } from '../../../consts/index';
 import { ROUTES } from '../../../router/router.const';
 
 import emoji_1 from '../../../assets/img/emojies/1.svg';
@@ -404,7 +404,7 @@ export default {
 
     const mockData = computed(() => {
       return {
-        tabs: CONSTANTS.event_info
+        tabs: CONSTS.event_info
           .tabs(eventData.value, userStore.user.id)
           .map((item) => ({
             ...item,
@@ -414,15 +414,17 @@ export default {
     });
 
     const eventJoinToolTipItems = computed(() => {
-      return CONSTANTS.eventJoin.items;
+      return CONSTS.eventJoin.items;
     });
 
     const submitModalConfig = computed(() => {
       return {
-        title: 'Скасувати участь у події',
-        description: `Ви дійсно хочете скасувати участь у події під назвою «${eventData.value.name}»?`,
-        button_1: 'Ні, не скасовувати ',
-        button_2: 'Так, скасувати',
+        title: t('modals.leave_from_event.title'),
+        description: t('modals.leave_from_event.main-text', {
+          eventName: eventData.value.name,
+        }),
+        button_1: t('modals.leave_from_event.button-1-text'),
+        button_2: t('modals.leave_from_event.button-2-text'),
         left_btn_action: 'closeModal',
         right_btn_action: 'leaveFromTheEvent',
         btn_with_1: 130,
@@ -779,7 +781,7 @@ export default {
       return ROUTES;
     });
 
-    const { calculatedHeight, onAppHeightResize } = calcHeight(
+    const { calculatedHeight } = calcHeight(
       [90, 60],
       [userStore.user.is_verified ? 0 : 40],
       [userStore.user.is_verified ? 0 : 40],
@@ -790,12 +792,6 @@ export default {
       return `${calculatedHeight.value}px`;
     });
 
-    onMounted(() => {
-      window.addEventListener('resize', onAppHeightResize);
-    });
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onAppHeightResize);
-    });
 
     return {
       mockData,

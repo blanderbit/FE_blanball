@@ -177,7 +177,7 @@ import RangeFilter from '../components/RangeFilter.vue';
 import { TransformedFiltersWorker } from './transformed.filters.worker';
 import { useWindowWidth } from '../../../utils/widthScreen';
 
-import CONSTANTS from '../../../consts';
+import { CONSTS } from '../../../consts';
 
 import SearchIcon from '../../../assets/img/search.svg';
 import arrowsUpIcon from '../../../assets/img/sort-arrows.svg';
@@ -220,7 +220,7 @@ export default {
     const isModalFiltersActive = ref(false);
     const route = useRoute();
     const isMobileSearchOpened = ref(false);
-    const { isMobile, isTablet, onResize } = useWindowWidth();
+    const { isMobile, isTablet } = useWindowWidth();
     const icons = computed(() => {
       return {
         search: SearchIcon,
@@ -233,8 +233,8 @@ export default {
         ? { title: 'Cпочатку нові', icon: arrowsUpIcon }
         : { title: 'Cпочатку старі', icon: arrowsDownIcon };
     });
-    const gender = computed(() => CONSTANTS.users_page.gender);
-    const positions = computed(() => CONSTANTS.profile.position);
+    const gender = computed(() => CONSTS.users_page.gender);
+    const positions = computed(() => CONSTS.profile.position);
 
     const { activeFilters, updateRealData, transformedFilters } =
       TransformedFiltersWorker({
@@ -288,14 +288,6 @@ export default {
         route.query.date_and_time_before ||
         route.query.date_and_time_after
       );
-    });
-
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
     });
 
     function clearFilters() {

@@ -125,7 +125,7 @@ import { computed } from 'vue';
 
 import PolicyWrapper from '../../components/main/policy/PolicyWrapper.vue';
 
-import CONSTS from '../../consts'
+import { CONSTS } from '../../consts'
 
 export default {
   components: {

@@ -54,9 +54,10 @@
       <div class="b-events-page__main-search-block">
         <events-filters
           :modelValue="filters"
+          :elementsCount="paginationTotalCount"
           @update:value="setFilters"
           @clearFilters="clearFilters"
-          :elementsCount="paginationTotalCount"
+          @updatedActiveFilters="recalculateHeightAfterUpdateFiltersActive"
         ></events-filters>
         <div
           class="b-events-page__all-events-block"
@@ -148,7 +149,7 @@ import {
 import { useUserDataStore } from '../../../stores/userData';
 
 import { ROUTES } from '../../../router/router.const';
-import CONSTANTS from '../../../consts/index';
+import { CONSTS } from '../../../consts/index';
 
 import Plus from '../../../assets/img/plus.svg';
 
@@ -196,14 +197,14 @@ export default {
     const userStore = useUserDataStore();
 
     const eventJoinToolTipItems = computed(() => {
-      return CONSTANTS.eventJoin.items;
+      return CONSTS.eventJoin.items;
     });
 
     const mockData = computed(() => {
       return {
-        event_cards: CONSTANTS.event_page.event_cards,
-        sport_type_dropdown: CONSTANTS.event_page.sport_type_dropdown,
-        gender_dropdown: CONSTANTS.event_page.gender_dropdown,
+        event_cards: CONSTS.event_page.event_cards,
+        sport_type_dropdown: CONSTS.event_page.sport_type_dropdown,
+        gender_dropdown: CONSTS.event_page.gender_dropdown,
       };
     });
     const iconPlus = computed(() => Plus);
@@ -223,23 +224,14 @@ export default {
     });
     const {
       calculatedHeight,
-      minussedHeight,
-      onAppHeightResize,
       minusHeight,
-      plusHeight,
+      plusHeight
     } = calcHeight(...Object.values(allEventsBlockHeightConfig.value));
 
     const allEventsBlockHeight = computed(() => {
       return `${calculatedHeight.value}px`;
     });
 
-    onMounted(() => {
-      window.addEventListener('resize', onAppHeightResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onAppHeightResize);
-    });
 
     async function joinEvent(eventData, type) {
       let participationType;
@@ -333,6 +325,15 @@ export default {
     function switchToMyEvents() {
       router.push(ROUTES.APPLICATION.MY_EVENTS.index.absolute);
     }
+    
+
+    function recalculateHeightAfterUpdateFiltersActive(status) {
+      if (status) {
+        minusHeight(45);
+      } else {
+        plusHeight(45);
+      }
+    };
 
     const refList = ref();
     const blockScrollToTopIfExist = ref(false);
@@ -471,6 +472,7 @@ export default {
       });
     };
 
+
     return {
       emptyListMessages,
       scrollComponent,
@@ -491,6 +493,7 @@ export default {
       paginationElements,
       paginationPage,
       allEventsBlockHeight,
+      recalculateHeightAfterUpdateFiltersActive,
       joinEventModalItemClick,
       paginationLoad,
       loadDataPaginationData,
@@ -521,6 +524,8 @@ $color-f0f0f4: #f0f0f4;
   grid-template-columns: 1fr 256px;
   grid-gap: 28px;
   position: relative;
+  height: fit-content;
+
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
   }

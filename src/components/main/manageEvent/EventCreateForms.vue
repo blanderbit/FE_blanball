@@ -64,7 +64,7 @@
 <script>
 import { computed, ref, watch } from 'vue';
 
-import CONSTANTS from '../../../consts/index';
+import { CONSTS } from '../../../consts/index';
 
 export default {
   props: {
@@ -76,7 +76,7 @@ export default {
   setup(props) {
     const mockData = computed(() => {
       return {
-        colors: CONSTANTS.forms.colorIcons,
+        colors: CONSTS.forms.colorIcons,
       };
     });
 

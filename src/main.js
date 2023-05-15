@@ -5,7 +5,6 @@ import { createDeviceDetector } from 'next-vue-device-detector';
 
 import VCalendar from 'v-calendar';
 import Toast from 'vue-toastification';
-import ContextMenu from '@imengyu/vue3-context-menu';
 
 import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -46,7 +45,6 @@ app
   .use(pinia)
   .use(router)
   .use(i18n)
-  .use(ContextMenu)
   .use(VCalendar, {})
   .use(Toast)
   .use(Maska)

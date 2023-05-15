@@ -211,7 +211,7 @@ import {
   finishSpinner,
 } from '../../../workers/loading-worker/loading.worker';
 
-import CONSTANTS from '../../../consts/index';
+import { CONSTS } from '../../../consts/index';
 
 import Plus from '../../../assets/img/plus.svg';
 import WhiteBucket from '../../../assets/img/white-bucket.svg';
@@ -338,12 +338,12 @@ export default {
 
     const mockData = computed(() => {
       return {
-        event_cards: CONSTANTS.event_page.event_cards,
-        my_events: CONSTANTS.event_page.my_events,
-        sport_type_dropdown: CONSTANTS.event_page.sport_type_dropdown,
-        gender_dropdown: CONSTANTS.event_page.gender_dropdown,
-        calendar: CONSTANTS.event_page.calendar,
-        menu_text: CONSTANTS.event_page.menu_text(
+        event_cards: CONSTS.event_page.event_cards,
+        my_events: CONSTS.event_page.my_events,
+        sport_type_dropdown: CONSTS.event_page.sport_type_dropdown,
+        gender_dropdown: CONSTS.event_page.gender_dropdown,
+        calendar: CONSTS.event_page.calendar,
+        menu_text: CONSTS.event_page.menu_text(
           selectedContextMenuEvent.value.pinned
         ),
       };
@@ -824,6 +824,7 @@ $color-dfdeed: #dfdeed;
   grid-template-columns: 1fr 256px;
   grid-gap: 28px;
   position: relative;
+  height: fit-content;
 
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
