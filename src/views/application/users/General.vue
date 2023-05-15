@@ -1,7 +1,7 @@
 <template>
   <div class="events-page">
     <div class="main-body">
-      <div class="header-block">
+      <div class="header-side">
         <div class="left-part">
           <div class="title">{{ $t('users.title') }}</div>
         </div>
@@ -99,6 +99,7 @@ import emptyList from '../../../components/shared/emptyList/EmptyList.vue';
 import ScrollToTop from '../../../components/ScrollToTop.vue';
 import rightSidebar from '../../../components/main/rightSidebar/RightSidebar.vue';
 import TabLabel from '../../../components/shared/tabLabel/TabLabel.vue';
+import InfiniteLoading from '../../../components/main/infiniteLoading/InfiniteLoading.vue';
 
 import members from '../../../assets/img/members.svg';
 import runner from '../../../assets/img/runner.svg';
@@ -106,12 +107,10 @@ import ball from '../../../assets/img/ball.svg';
 import timer from '../../../assets/img/timer.svg';
 import tShirt from '../../../assets/img/t-shirt.svg';
 
-import InfiniteLoading from '../../../components/main/infiniteLoading/InfiniteLoading.vue';
 import { v4 as uuid } from 'uuid';
 import { PaginationWorker } from '../../../workers/pagination-worker';
 import { API } from '../../../workers/api-worker/api.worker';
 import { calcHeight } from '../../../utils/calcHeight';
-import { useWindowWidth } from '../../../utils/widthScreen';
 import { useUserDataStore } from '../../../stores/userData';
 
 import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patch';
@@ -145,9 +144,7 @@ export default {
       triggerForRestart.value = uuid();
     };
 
-    const { isMobile, isTablet, onResize } = useWindowWidth();
-
-    const { calculatedHeight, onAppHeightResize, plusHeight, minusHeight } =
+    const { calculatedHeight, plusHeight, minusHeight } =
       calcHeight(
         [90, 36, 31, 80, 36, 50],
         [userStore.user.is_verified ? 0 : 40, -55],
@@ -162,16 +159,6 @@ export default {
         plusHeight(45);
       }
     };
-
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-      window.addEventListener('resize', onAppHeightResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
-      window.removeEventListener('resize', onAppHeightResize);
-    });
 
     const usersListHeight = computed(() => {
       return `${calculatedHeight.value}px`;
@@ -368,7 +355,7 @@ $color-71ba12: #71ba12;
     grid-template-columns: 1fr;
   }
   .main-body {
-    .header-block {
+    .header-side {
       display: flex;
       justify-content: space-between;
       align-items: center;

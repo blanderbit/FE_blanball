@@ -84,7 +84,7 @@ export default {
     },
   },
   setup(props) {
-    const { windowWidth, isMobileSmall, onResize } = useWindowWidth();
+    const { windowWidth, isMobileSmall } = useWindowWidth();
     const mockData = computed(() => {
       return {
         LOGIN: CONSTS.register.authBlockTypes.login,
@@ -101,13 +101,6 @@ export default {
       }
     });
 
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
-    });
     return {
       mockData,
       windowWidth,

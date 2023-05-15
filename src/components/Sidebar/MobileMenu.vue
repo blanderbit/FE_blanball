@@ -541,7 +541,6 @@ export default {
     const {
       calculatedHeight,
       minussedHeight,
-      onAppHeightResize,
       minusHeight,
       plusHeight,
     } = calcHeight(...Object.values(mobileMenuTopSideHeightConfig.value));
@@ -678,14 +677,7 @@ export default {
         restartInfiniteScroll();
       }
     };
-
-    onMounted(() => {
-      window.addEventListener('resize', onAppHeightResize);
-    });
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onAppHeightResize);
-    });
-
+    
     return {
       topMenu,
       selectable,

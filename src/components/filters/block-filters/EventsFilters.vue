@@ -189,7 +189,7 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount, watchEffect } from 'vue';
+import { computed, ref, watch, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import dayjs from 'dayjs';
 
@@ -255,7 +255,7 @@ export default {
     const isMobileSearchOpened = ref(false);
     const todaysDate = useTodaysDate();
     const dateFilterValue = ref(null);
-    const { isMobile, isTablet, onResize } = useWindowWidth();
+    const { isMobile, isTablet } = useWindowWidth();
     const icons = computed(() => {
       return {
         female: FemaleIcon,
@@ -350,13 +350,6 @@ export default {
       },
     });
 
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
-    });
 
     watchEffect(() => {
       if (dateFilterValue.value?.start) {
@@ -392,6 +385,15 @@ export default {
     function closeMobileSearch() {
       isMobileSearchOpened.value = false;
     }
+
+    watch(
+      () => activeFilters.value,
+      (newVal) => {
+        if (!isMobile.value && !isTablet.value) {
+          emit('updatedActiveFilters', newVal);
+        }
+      }
+    );
 
     return {
       sortingButtonClick,

@@ -1,46 +1,98 @@
 <template>
   <div @click.self="$emit('closeWindow')" class="c-scheduler-wrapper">
-    <ContextModal
-      v-if="isContextMenuActive"
-      :clientX="contextMenuX"
-      :clientY="contextMenuY"
-      :modalItems="mockData.contextMenuItems"
-      @closeModal="closeContextMenu"
-      @itemClick="contextMenuItemClick"
-    />
-
-    <div class="c-common-block">
+    <div class="c-common-block"
+      :style="`top: ${marginTop}px`">
       <!-- Sidebar Slot -->
       <slot
         name="LeftSidebar"
-        :allUsers="allUsers"
         :isFriendsVisible="isFriendsVisible"
         :friendsBlockSwitcher="friendsBlockSwitcher"
-        :activateUser="activateUser"
       ></slot>
       <!-- Sidebar Slot -->
       <div class="c-right-block">
-        <div class="c-friends-line">
-          <slot
-            name="TopFriendsBlock"
-            :isFriendsVisible="isFriendsVisible"
-            :minUsers="minUsers"
-            :usersNumber="config.users.length"
-            :friendsBlockSwitcher="friendsBlockSwitcher"
-          ></slot>
-          <div class="c-hide-btn" @click="$emit('closeWindow')">
-            <img src="../../../assets/img/scheduler/close-icton.svg" alt="" />
+        <div class="c-top-line">
+          <div class="c-top-line__left-block">
+            <div class="c-current-date">
+              {{ $t('scheduler.today-date') }} <span>{{ todayDate }}</span>
+            </div>
+            <div v-if="isTopPlanEventButtonVisible" class="c-plan-event-button">
+              <WhiteBtn
+                :text="$t('scheduler.plan-event')"
+                :width="192"
+                :height="32"
+                :icon="icons.grayClock"
+                :mainColor="'#575775'"
+                :isBorder="true"
+                :borderColor="'#DFDEED'"
+              />
+            </div>
           </div>
+          <img
+            class="c-hide-btn"
+            :src="hideBtnConfig.img"
+            alt=""
+            @click="hideBtnConfig.action"
+          />
         </div>
         <div class="c-scheduler-block">
+          <VueInlineCalendar
+            v-if="inlineCalendarConfig.visible"
+            :enableMousewheelScroll="
+              inlineCalendarConfig.enableMousewheelScroll
+            "
+            v-model:selectedDate="inlineCalendarConfig.selectedDate"
+            :specMinDate="inlineCalendarConfig.specMinDate"
+            :specMaxDate="inlineCalendarConfig.specMaxDate"
+            :showYear="inlineCalendarConfig.showYear"
+            :showMonth="inlineCalendarConfig.showMonth"
+            :itemWidth="inlineCalendarConfig.itemWidth"
+            :locale="inlineCalendarConfig.locale"
+            :showButtons="inlineCalendarConfig.showButtons"
+          >
+            <template #prev-button>
+              <img src="../../../assets/img/scheduler/arrow-left.svg" alt="" />
+            </template>
+            <template #next-button>
+              <img src="../../../assets/img/scheduler/arrow-right.svg" alt="" />
+            </template>
+
+            <template #title> </template>
+            <template #scheduled-events="{ date }">
+              <ScheduledEventsDots
+                :dotsCount="
+                  scheduledEventsDotsData[formatDate(date.date)]
+                    ?.user_scheduled_events_count
+                "
+                :maxDotsCount="maxDotsCount"
+                :dotsColor="
+                  formatDate(date.date) ===
+                  formatDate(inlineCalendarConfig.selectedDate)
+                    ? inlineCalendarActiveDateDotsColor
+                    : dotsColor
+                "
+              />
+            </template>
+          </VueInlineCalendar>
+          <ScheduledEventsList
+            v-if="inlineCalendarConfig.visible"
+            :date="formatDate(inlineCalendarConfig.selectedDate)"
+            :userData="activatedUserInSidebarData"
+            :scheduledEventsDotsData="scheduledEventsDotsData"
+          />
           <vue-cal
-            xsmall
-            :time-from="10 * 60"
-            :disable-views="['day', 'year', 'years']"
-            events-count-on-year-view
-            active-view="month"
-            :events="currentEvent"
-            :locale="schedulerLocale"
+            :small="schedulerConfig.small"
+            :xsmall="schedulerConfig.xsmall"
+            :time="schedulerConfig.time"
+            :hide-view-selector="schedulerConfig.hideViewSelector"
+            :hide-title-bar="schedulerConfig.hideTitleBar"
+            :hide-body="schedulerConfig.hideBody"
+            v-model:active-view="schedulerConfig.activeView"
+            :events-count-on-year-view="schedulerConfig.eventsCountOnYearView"
+            :locale="schedulerConfig.locale"
+            :disable-views="schedulerConfig.disableViews"
+            :selected-date="schedulerConfig.selectedDate"
+            @ready="setSchedulerDatesRangeAndLoadData"
+            @viewChange="setSchedulerDatesRangeAndLoadData"
           >
             <template #title="{ title }">
               <div class="c-title">
@@ -54,39 +106,35 @@
               <img src="../../../assets/img/scheduler/arrow-right.svg" alt="" />
             </template>
             <template #cell-content="{ cell, events }">
-              <div
-                class="c-cell-wrapper"
-                @mouseover="mouseOverCell(cell.formattedDate)"
-                @mouseleave="mouseLeaveCell"
-              >
-                <div
-                  v-if="showCornerThreeDots(cell.formattedDate)"
-                  class="c-three-dots"
-                  @click="openContextMenu"
-                >
-                  <div v-for="i in 3" :key="i" class="c-menu-dots"></div>
-                </div>
+              <div class="c-cell-wrapper">
                 <div class="c-cell-number">
                   <span v-if="cell.content">{{ cell.content }}</span>
                 </div>
                 <div class="c-event-dots">
-                  <div class="c-myevents-cover">
-                    <slot
-                      name="MyEventDots"
-                      :events="events"
-                      :bgColor="myEventsDotColor"
-                    ></slot>
-                  </div>
-                  <div class="c-otherevents-cover">
-                    <slot
-                      name="OtherEventDots"
-                      :bgColor="otherEventsDotColor"
-                    ></slot>
-                  </div>
+                  <ScheduledEventsDots
+                    :dotsCount="
+                      scheduledEventsDotsData[cell.formattedDate]
+                        ?.user_scheduled_events_count
+                    "
+                    :maxDotsCount="maxDotsCount"
+                    :dotsColor="dotsColor"
+                  />
                 </div>
               </div>
             </template>
           </vue-cal>
+        </div>
+        <div class="c-scheduler-bottom-side">
+          <div class="c-plan-event-button">
+            <WhiteBtn
+              :text="$t('scheduler.plan-event')"
+              :height="32"
+              :icon="icons.grayClock"
+              :mainColor="'#575775'"
+              :isBorder="true"
+              :borderColor="'#DFDEED'"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -94,119 +142,281 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue';
+
+import dayjs from 'dayjs';
+import { cloneDeep } from 'lodash';
+
 import VueCal from 'vue-cal';
+import VueInlineCalendar from '../inlineCalendar/index.vue';
 
 import ContextModal from '../../shared/modals/ContextModal.vue';
+import WhiteBtn from '../../shared/button/WhiteBtn.vue';
+import ScheduledEventsDots from './ScheduledEventsDots.vue';
+import ScheduledEventsList from './ScheduledEventsList.vue';
+
+import { API } from '../../../workers/api-worker/api.worker';
+import { useUserDataStore } from '../../../stores/userData';
+import {
+  startSpinner,
+  finishSpinner,
+} from '../../../workers/loading-worker/loading.worker';
+import { BlanballEventBus } from '../../../workers/event-bus-worker';
 
 import { CONSTS } from '../../../consts';
+import { useWindowWidth } from '../../../utils/widthScreen';
 
 import 'vue-cal/dist/vuecal.css';
+
+import closeIcon from '../../../assets/img/scheduler/close-icton.svg';
+import goBackIcon from '../../../assets/img/back-arrow.svg';
+import grayClockIcon from '../../../assets/img/scheduler/gray-clock.svg';
+
+const SCHEDULER_ACTIVE_VIEWS = {
+  DAY: 'day',
+  WEEK: 'week',
+  MONTH: 'month',
+  YEAR: 'year',
+  YEARS: 'years',
+};
 
 export default {
   name: 'VueScheduler',
   components: {
     VueCal,
     ContextModal,
+    VueInlineCalendar,
+    ScheduledEventsDots,
+    ScheduledEventsList,
+    WhiteBtn,
   },
   props: {
     config: {
       type: Object,
       default: () => ({}),
     },
+    marginTop: {
+      type: Number,
+      default: 80
+    }
   },
   emits: ['closeWindow'],
-  setup(props) {
+  setup(props, { emit }) {
     const isFriendsVisible = ref(false);
     const isThreeDotsShown = ref(false);
-    const currentCellDay = ref('');
-    const currentCellMonth = ref('');
-    const currentEvent = ref(props.config.users[0].events);
-    const myEventsDotColor = ref(props.config.myEventsDotColor || '#148581');
-    const otherEventsDotColor = ref(
-      props.config.otherEventsDotColor || '#D62953'
-    );
-    const schedulerLocale = ref('uk');
+    const scheduledEventsDotsData = ref({});
+    const dotsColor = ref(props.config.myEventsDotColor || '#148581');
+    const maxDotsCount = ref(3);
+    const inlineCalendarActiveDateDotsColor = ref('#fff');
+    const userStore = useUserDataStore();
+    const activatedUserInSidebarData = ref(userStore.user);
 
-    const isContextMenuActive = ref(false);
-    const contextMenuX = ref(null);
-    const contextMenuY = ref(null);
-
-    const allUsers = ref(props.config.users);
-    const minUsers = computed(() => {
-      return allUsers.value.filter((item, idx) => idx < 4);
-    });
+    const schedulerStartDate = ref(null);
+    const schedulerEndDate = ref(null);
 
     const mockData = computed(() => {
       return {
         contextMenuItems: CONSTS.scheduler.contextMenuItems,
+        dates: CONSTS.dates,
+        sideBarTabs: CONSTS.scheduler.TABS_ENUM,
       };
     });
 
-    function openContextMenu(e) {
-      contextMenuX.value = e.clientX;
-      contextMenuY.value = e.clientY;
-      isContextMenuActive.value = true;
+    const sidebarSelectedTabId = ref(mockData.value.sideBarTabs.MY_PLANNED);
+
+    const icons = computed(() => {
+      return {
+        close: closeIcon,
+        goBack: goBackIcon,
+        grayClock: grayClockIcon,
+      };
+    });
+
+    const isTopPlanEventButtonVisible = computed(() => {
+      return (
+        schedulerConfig.value.activeView === SCHEDULER_ACTIVE_VIEWS.DAY &&
+        sidebarSelectedTabId.value ===
+          mockData.value.sideBarTabs.FRIENDS_PLANNED
+      );
+    });
+
+    const todayDate = computed(() => {
+      const date = new Date();
+      return `${date.getDate()} ${
+        mockData.value.dates.monthNames[date.getMonth()]
+      }`;
+    });
+
+    const hideBtnConfig = ref({});
+
+    const inlineCalendarConfig = ref({
+      visible: false,
+      enableMousewheelScroll: true,
+      selectedDate: new Date(),
+      specMinDate: new Date(),
+      specMaxDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
+      showYear: false,
+      showMonth: false,
+      itemWidth: 46,
+      locale: 'uk',
+      showButtons: false,
+      disablePastDays: true,
+    });
+
+    const schedulerConfig = ref({
+      small: false,
+      xsmall: true,
+      time: false,
+      hideViewSelector: true,
+      hideTitleBar: false,
+      hideBody: false,
+      activeView: SCHEDULER_ACTIVE_VIEWS.MONTH,
+      eventsCountOnYearView: false,
+      locale: 'uk',
+      disableViews: [
+        SCHEDULER_ACTIVE_VIEWS.WEEK,
+        SCHEDULER_ACTIVE_VIEWS.YEAR,
+        SCHEDULER_ACTIVE_VIEWS.YEARS,
+      ],
+      selectedDate: '',
+    });
+
+    function formatDate(date) {
+      return dayjs(date).format('YYYY-MM-DD');
     }
 
-    function closeContextMenu() {
-      isContextMenuActive.value = false;
+    function backToTheMonthView() {
+      configureScheduler(SCHEDULER_ACTIVE_VIEWS.MONTH);
+      schedulerConfig.value.activeView = SCHEDULER_ACTIVE_VIEWS.MONTH;
     }
 
-    function contextMenuItemClick(itemType) {
-      console.log(itemType);
+    function configureScheduler(data) {
+      switch (data.view) {
+        case SCHEDULER_ACTIVE_VIEWS.MONTH: {
+          schedulerConfig.value.small = false;
+          schedulerConfig.value.xsmall = true;
+          schedulerConfig.value.hideBody = false;
+          schedulerConfig.value.hideTitleBar = false;
+          inlineCalendarConfig.value.visible = false;
+
+          hideBtnConfig.value.img = icons.value.close;
+          hideBtnConfig.value.action = () => emit('closeWindow');
+
+          if (isFriendsVisible.value) {
+            friendsBlockSwitcher();
+          }
+          break;
+        }
+        case SCHEDULER_ACTIVE_VIEWS.DAY: {
+          schedulerConfig.value.small = true;
+          schedulerConfig.value.xsmall = false;
+          schedulerConfig.value.hideBody = true;
+          schedulerConfig.value.hideTitleBar = true;
+          inlineCalendarConfig.value.visible = true;
+          inlineCalendarConfig.value.selectedDate = data.startDate;
+
+          hideBtnConfig.value.img = icons.value.goBack;
+          hideBtnConfig.value.action = () => backToTheMonthView();
+
+          if (!isFriendsVisible.value) {
+            friendsBlockSwitcher();
+          }
+          break;
+        }
+      }
+    }
+
+    function setSchedulerDatesRangeAndLoadData(e) {
+      configureScheduler(e);
+
+      if (e.view === SCHEDULER_ACTIVE_VIEWS.MONTH) {
+        schedulerStartDate.value = cloneDeep(e.firstCellDate);
+        schedulerEndDate.value = cloneDeep(e.lastCellDate);
+        getScheduledEventsDotsData(
+          userStore.user.id,
+          formatDate(schedulerStartDate.value),
+          formatDate(schedulerEndDate.value)
+        );
+
+        inlineCalendarConfig.value.specMinDate = schedulerStartDate.value;
+        inlineCalendarConfig.value.specMaxDate = schedulerEndDate.value;
+      }
+    }
+
+    async function getScheduledEventsDotsData(userId, startDate, finishDate) {
+      startSpinner();
+      const response = await API.SchedulerService.getScheduledEventsData({
+        user_id: userId,
+        start_date: startDate,
+        finish_date: finishDate,
+      });
+      scheduledEventsDotsData.value = response.data;
+      finishSpinner();
     }
 
     function friendsBlockSwitcher() {
       isFriendsVisible.value = !isFriendsVisible.value;
     }
-    function mouseOverCell(val) {
-      currentCellDay.value = +val.split('-')[1];
-      currentCellMonth.value = +val.split('-')[2];
-    }
-    function mouseLeaveCell() {
-      currentCellDay.value = '';
-      currentCellMonth.value = '';
-    }
-    function activateUser(id) {
-      allUsers.value.map((item) => (item.isActive = false));
-      allUsers.value.find((item) => item.id === id).isActive = true;
-      currentEvent.value = props.config.users[id].events;
-    }
     function removeYearFromDate(title) {
-      return title.split(' ')[0];
-    }
-    function showCornerThreeDots(val) {
-      return (
-        currentCellDay.value === +val.split('-')[1] &&
-        currentCellMonth.value === +val.split('-')[2]
-      );
+      const currentYear = new Date().getFullYear();
+      const splitedTitle = title.split(' ');
+      const year = parseInt(splitedTitle[splitedTitle.length - 1]);
+
+      if (!isNaN(year) && year === currentYear) {
+        splitedTitle.pop();
+      }
+
+      return splitedTitle.join(' ');
     }
 
+    BlanballEventBus.on('activateUserInScheduler', (userData) => {
+      activatedUserInSidebarData.value = userData;
+      getScheduledEventsDotsData(
+        userData.id,
+        formatDate(schedulerStartDate.value),
+        formatDate(schedulerEndDate.value)
+      );
+    });
+
+    BlanballEventBus.on('deactivateUser', () => {
+      activatedUserInSidebarData.value = null;
+      getScheduledEventsDotsData(
+        userStore.user.id,
+        formatDate(schedulerStartDate.value),
+        formatDate(schedulerEndDate.value)
+      );
+    });
+
+    BlanballEventBus.on('switchedSchedulerSidebarTab', (tabId) => {
+      sidebarSelectedTabId.value = tabId;
+    });
+
+    onBeforeUnmount(() => {
+      BlanballEventBus.off('activateUserInScheduler');
+      BlanballEventBus.off('switchedSchedulerSidebarTab');
+      BlanballEventBus.off('deactivateUser');
+    });
+
     return {
-      allUsers,
-      minUsers,
       isFriendsVisible,
       isThreeDotsShown,
-      currentCellDay,
-      currentCellMonth,
-      schedulerLocale,
+      schedulerConfig,
       mockData,
-      currentEvent,
-      isContextMenuActive,
-      contextMenuY,
-      contextMenuX,
-      myEventsDotColor,
-      otherEventsDotColor,
-      closeContextMenu,
-      contextMenuItemClick,
-      openContextMenu,
+      SCHEDULER_ACTIVE_VIEWS,
+      scheduledEventsDotsData,
+      hideBtnConfig,
+      todayDate,
+      inlineCalendarActiveDateDotsColor,
+      inlineCalendarConfig,
+      isTopPlanEventButtonVisible,
+      activatedUserInSidebarData,
+      dotsColor,
+      maxDotsCount,
+      icons,
+      formatDate,
+      setSchedulerDatesRangeAndLoadData,
       friendsBlockSwitcher,
-      mouseOverCell,
-      mouseLeaveCell,
-      activateUser,
       removeYearFromDate,
-      showCornerThreeDots,
     };
   },
 };
@@ -216,14 +426,29 @@ export default {
 $color-efeff6: #efeff6;
 $color-bef0ef: #bef0ef;
 $color-e9fcfb: #e9fcfb;
-* {
-  box-sizing: border-box;
+
+:deep {
+  .inline-calendar {
+    @include beforeDesktop {
+      width: calc(100% + 40px);
+      margin-left: -20px;
+      padding-right: 0px;
+    }
+  }
+
+  .vuecal__flex[grow] {
+    @include mobile {
+      flex: none !important;
+    }
+  }
+
+  .vuecal__cell--selected {
+    background: transparent;
+  }
 }
-.mx-context-menu {
-  background: red;
-}
+
 .c-scheduler-wrapper {
-  @include modal-wrapper;
+  @include modal-wrapper($z-index: 500);
   display: flex;
   justify-content: flex-end;
   font-family: 'Inter', sans-serif;
@@ -236,17 +461,56 @@ $color-e9fcfb: #e9fcfb;
     display: flex;
     height: fit-content;
     position: absolute;
-    top: 80px;
     right: 160px;
+
+    @include beforeDesktop {
+      right: 0px;
+      padding: 20px;
+      width: 100%;
+      border-radius: 0px;
+    }
+
+    @include mobile {
+      padding-top: 0px;
+    }
 
     .c-right-block {
       z-index: 1;
       background: $--b-main-white-color;
-      .c-friends-line {
-        border-bottom: 1px solid $color-efeff6;
-        padding-bottom: 14px;
-        height: 51px;
+      width: 100%;
+      .c-top-line {
+        padding-bottom: 12px;
         position: relative;
+
+        @include mobile {
+          display: none;
+        }
+
+        .c-top-line__left-block {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+
+          .c-current-date {
+            @include inter(14px, 500, $--b-main-gray-color);
+            line-height: 20px;
+            text-align: center;
+
+            span {
+              @include inter(14px, 500);
+            }
+          }
+
+          .c-plan-event-button {
+            :deep(.b_white-btn) {
+              font-weight: 400;
+            }
+
+            @include beforeDesktop {
+              display: none;
+            }
+          }
+        }
         .c-hide-btn {
           position: absolute;
           top: 0;
@@ -258,6 +522,14 @@ $color-e9fcfb: #e9fcfb;
         width: 704px;
         height: 644px;
         box-shadow: none;
+        @include beforeDesktop {
+          width: 100%;
+        }
+
+        @include mobile {
+          height: fit-content;
+        }
+
         &::v-deep {
           .vuecal__cell--today {
             background: transparent;
@@ -269,6 +541,9 @@ $color-e9fcfb: #e9fcfb;
                   border-radius: 4px;
                   padding: 0px 10px;
                   color: $--b-main-white-color;
+                  @include mobile {
+                    padding: 4px;
+                  }
                 }
               }
             }
@@ -279,6 +554,12 @@ $color-e9fcfb: #e9fcfb;
               .vuecal__title-bar {
                 background: none;
                 justify-content: center;
+
+                @include mobile {
+                  background: #f9f9fc;
+                  width: calc(100% + 40px);
+                  margin-left: -20px;
+                }
                 .vuecal__title {
                   flex: 0;
                   margin: 0 30px;
@@ -294,6 +575,20 @@ $color-e9fcfb: #e9fcfb;
               }
               .vuecal__weekdays-headings {
                 border: none;
+
+                @include mobile {
+                  background: #f9f9fc;
+                  width: calc(100% + 40px);
+                  margin-left: -20px;
+                  padding: 0px 20px;
+                  margin-bottom: 8px;
+                }
+
+                .xsmall {
+                  @include inter(12px, 500, $--b-main-gray-color);
+                  line-height: 20px;
+                  text-align: center;
+                }
                 .vuecal__heading {
                   font-weight: 600;
                 }
@@ -301,58 +596,63 @@ $color-e9fcfb: #e9fcfb;
             }
             .vuecal__body {
               .vuecal__cell {
+                border-left: 1px solid #f0f0f4;
+                border-bottom: 1px solid #f0f0f4;
+
+                &:nth-child(-n + 7):not(:nth-child(8)) {
+                  border-top: 1px solid #f0f0f4;
+                }
+
+                &:nth-child(7n) {
+                  border-right: 1px solid #f0f0f4;
+                }
                 &::before {
                   right: 0;
                   bottom: 0;
+                  border: none;
+                  width: fit-content;
                 }
+                @include mobile {
+                  border: none !important;
+                }
+
+                .vuecal__flex[column] {
+                  @include mobile {
+                    flex: none !important;
+                  }
+                }
+
                 .vuecal__cell-content {
+                  @include mobile {
+                    width: fit-content;
+                    height: fit-content;
+                  }
                   .c-cell-wrapper {
                     height: 100%;
                     padding-top: 12px;
                     position: relative;
-                    .c-three-dots {
-                      position: absolute;
-                      top: 0;
-                      right: 0;
-                      width: 28px;
-                      height: 28px;
-                      right: 0px;
-                      background: $color-bef0ef;
-                      border-radius: 0px 0px 0px 4px;
-                      display: flex;
-                      flex-direction: column;
-                      justify-content: center;
-                      align-items: center;
-                      cursor: pointer;
-                      .c-menu-dots {
-                        width: 3px;
-                        height: 3px;
-                        background: $--b-main-green-color;
-                        border-radius: 50%;
-                        margin-bottom: 2px;
-                      }
+                    @include mobile {
+                      width: 46px;
+                      height: 52px;
                     }
-                    &:hover {
-                      background: $color-e9fcfb;
-                      color: $--b-main-green-color;
-                    }
-                    .c-event-dots {
-                      margin-top: 10px;
-                      display: flex;
-                      flex-direction: column;
-                      align-items: center;
-                      .c-myevents-cover {
-                        display: flex;
-                      }
-                      .c-otherevents-cover {
-                        margin-top: 10px;
-                        display: flex;
-                      }
-                    }
+                  }
+                  &:hover {
+                    background: $color-e9fcfb;
+                    color: $--b-main-green-color;
+                  }
+                  .c-event-dots {
+                    margin-top: 10px;
                   }
                 }
               }
             }
+          }
+        }
+
+        .c-scheduler-bottom-side {
+          display: none;
+          @include beforeDesktop {
+            display: block;
           }
         }
       }

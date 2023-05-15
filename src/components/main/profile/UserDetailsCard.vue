@@ -51,6 +51,9 @@
     <RatingCard
       v-if="isMobile"
       :rating-scale="userData.raiting"
+      :reviewsCount="reviewsTotalCount"
+      :disabled="isEditMode"
+      @showReviewsModal="$emit('showReviewsModal')"
     />
 
     <div class="b-user-card__tabs-block">
@@ -173,8 +176,12 @@
             {{ $t('profile.game-features') }}
           </div>
           <div class="b-user-card__body-features">
-            <div class="b-user-card__height"
-            :style="`border-right: ${!isEditMode ? '1px' : '0px'} solid #efeff6;`">
+            <div
+              class="b-user-card__height"
+              :style="`border-right: ${
+                !isEditMode ? '1px' : '0px'
+              } solid #efeff6;`"
+            >
               <div v-if="!isEditMode" class="b-user-card__to-show">
                 <div class="b-user-card__data">
                   {{ userData.height || $t('profile.no-content') }}
@@ -194,8 +201,12 @@
                 v-maska="'###'"
               />
             </div>
-            <div class="b-user-card__weight"
-              :style="`border-right: ${!isEditMode ? '1px' : '0px'} solid #efeff6;`">
+            <div
+              class="b-user-card__weight"
+              :style="`border-right: ${
+                !isEditMode ? '1px' : '0px'
+              } solid #efeff6;`"
+            >
               <div v-if="!isEditMode" class="b-user-card__to-show">
                 <div class="b-user-card__data">
                   {{ userData.weight || $t('profile.no-content') }}
@@ -323,6 +334,7 @@ import {
   onBeforeUnmount,
 } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 
 import dayjs from 'dayjs';
 import dayjsUkrLocale from 'dayjs/locale/uk';
@@ -368,9 +380,9 @@ export default {
   },
   emits: ['openEditPictureModal'],
   setup(props, { emit }) {
-    const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
-      useWindowWidth();
+    const { isBetweenTabletAndDesktop, isMobile, isTablet } = useWindowWidth();
     const { t } = useI18n();
+    const router = useRouter();
 
     const currentTab = ref(0);
     const selectedFile = ref(null);
@@ -385,6 +397,10 @@ export default {
         labels.value = setupLabels();
       }
     );
+
+    const reviewsTotalCount = computed(() => {
+      return router.currentRoute.value.meta.allReviewsData?.data?.total_count;
+    });
 
     function setupLabels() {
       return [
@@ -442,15 +458,6 @@ export default {
       }
     });
 
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
-    });
-
-
     function changeUserTab(id) {
       currentTab.value = id;
     }
@@ -484,6 +491,7 @@ export default {
       openedReviewId,
       currentTab,
       icons,
+      reviewsTotalCount,
       birthDate,
       mockData,
       labels,

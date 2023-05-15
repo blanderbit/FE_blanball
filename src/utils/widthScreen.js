@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 export function useWindowWidth() {
   const windowWidth = ref(window.innerWidth);
@@ -17,6 +17,16 @@ export function useWindowWidth() {
     isBetweenTabletAndDesktop.value =
       window.innerWidth > 992 && window.innerWidth <= 1200;
   }
+
+  const resizeHandler = () => onResize(); // Closure for the event listener
+
+  onMounted(() => {
+    window.addEventListener('resize', resizeHandler);
+  });
+
+  onBeforeUnmount(() => {
+    window.removeEventListener('resize', resizeHandler);
+  });
 
   return {
     onResize,

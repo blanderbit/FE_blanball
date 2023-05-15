@@ -220,7 +220,7 @@ export default {
     const isModalFiltersActive = ref(false);
     const route = useRoute();
     const isMobileSearchOpened = ref(false);
-    const { isMobile, isTablet, onResize } = useWindowWidth();
+    const { isMobile, isTablet } = useWindowWidth();
     const icons = computed(() => {
       return {
         search: SearchIcon,
@@ -288,14 +288,6 @@ export default {
         route.query.date_and_time_before ||
         route.query.date_and_time_after
       );
-    });
-
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
     });
 
     function clearFilters() {

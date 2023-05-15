@@ -31,7 +31,7 @@
         src="../../../assets/img/calendar.svg"
         alt=""
         :style="`z-index: ${isSchedulerOpened ? 1000 : 0}`"
-        @click="$emit('openСloseScheduler')"
+        @click="$emit('openCloseScheduler')"
       />
       <div class="b_header_search-block">
         <div class="b_header_search-input">

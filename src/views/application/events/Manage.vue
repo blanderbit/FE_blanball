@@ -167,7 +167,6 @@ import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
 import { BlanballEventBus } from '../../../workers/event-bus-worker';
-import { useWindowWidth } from '../../../utils/widthScreen';
 import { calcHeight } from '../../../utils/calcHeight';
 import { finishSpinner, startSpinner } from '../../../workers/loading-worker/loading.worker';
 
@@ -217,7 +216,6 @@ export default {
     const isEventCreated = ref(false);
     const myForm = ref();
     const nextRoute = ref(ROUTES.APPLICATION.EVENTS.absolute);
-    const { onResize, isMobile, isTablet } = useWindowWidth();
 
     const manageEventActionTypes = ref({
       CREATE: 'CREATE',
@@ -252,7 +250,7 @@ export default {
       return eventData.value;
     });
 
-    const { calculatedHeight, onAppHeightResize } = calcHeight(
+    const { calculatedHeight } = calcHeight(
       [90, 32, 20],
       [userStore.user.is_verified ? 0 : 40],
       [userStore.user.is_verified ? 0 : 40],
@@ -555,14 +553,6 @@ export default {
       }
     });
 
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-      window.addEventListener('resize', onAppHeightResize);
-    });
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
-      window.removeEventListener('resize', onAppHeightResize);
-    });
 
     return {
       currentStep,
@@ -636,6 +626,7 @@ $color-8a8aa8: #8a8aa8;
 }
 .b-manage-event {
   overflow: hidden;
+  @include calc-height;
   ::-webkit-scrollbar {
     display: none;
   }
