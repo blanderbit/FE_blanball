@@ -256,7 +256,7 @@ export default {
       };
     });
 
-    const { calculatedHeight, onAppHeightResize } = calcHeight(
+    const { calculatedHeight } = calcHeight(
       [88, 46, 60],
       [40, userStore.user.is_verified ? 0 : 40],
       [userStore.user.is_verified ? 0 : 40],
@@ -338,14 +338,6 @@ export default {
       checkboxEmail: userStore.user.configuration.email,
       checkboxReviews: userStore.user.configuration.show_reviews,
     };
-
-    onMounted(() => {
-      window.addEventListener('resize', onAppHeightResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onAppHeightResize);
-    });
 
     function switchTabLabel(isDisabled) {
       if (isDisabled) {

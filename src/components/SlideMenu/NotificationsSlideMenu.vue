@@ -347,7 +347,6 @@ export default {
     const {
       calculatedHeight,
       minussedHeight,
-      onAppHeightResize,
       plusHeight,
       minusHeight,
     } = calcHeight([100, 70, 20, selectedList.value.length ? 110 : 80]);
@@ -536,14 +535,6 @@ export default {
           break;
       }
     };
-
-    onMounted(() => {
-      window.addEventListener('resize', onAppHeightResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onAppHeightResize);
-    });
 
     return {
       clientVersion,

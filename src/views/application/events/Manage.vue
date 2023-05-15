@@ -250,7 +250,7 @@ export default {
       return eventData.value;
     });
 
-    const { calculatedHeight, onAppHeightResize } = calcHeight(
+    const { calculatedHeight } = calcHeight(
       [90, 32, 20],
       [userStore.user.is_verified ? 0 : 40],
       [userStore.user.is_verified ? 0 : 40],
@@ -553,12 +553,6 @@ export default {
       }
     });
 
-    onMounted(() => {
-      window.addEventListener('resize', onAppHeightResize);
-    });
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onAppHeightResize);
-    });
 
     return {
       currentStep,
@@ -632,6 +626,7 @@ $color-8a8aa8: #8a8aa8;
 }
 .b-manage-event {
   overflow: hidden;
+  @include calc-height;
   ::-webkit-scrollbar {
     display: none;
   }

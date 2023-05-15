@@ -781,7 +781,7 @@ export default {
       return ROUTES;
     });
 
-    const { calculatedHeight, onAppHeightResize } = calcHeight(
+    const { calculatedHeight } = calcHeight(
       [90, 60],
       [userStore.user.is_verified ? 0 : 40],
       [userStore.user.is_verified ? 0 : 40],
@@ -792,12 +792,6 @@ export default {
       return `${calculatedHeight.value}px`;
     });
 
-    onMounted(() => {
-      window.addEventListener('resize', onAppHeightResize);
-    });
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onAppHeightResize);
-    });
 
     return {
       mockData,

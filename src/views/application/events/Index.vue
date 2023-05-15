@@ -223,23 +223,12 @@ export default {
     });
     const {
       calculatedHeight,
-      minussedHeight,
-      onAppHeightResize,
-      minusHeight,
-      plusHeight,
     } = calcHeight(...Object.values(allEventsBlockHeightConfig.value));
 
     const allEventsBlockHeight = computed(() => {
       return `${calculatedHeight.value}px`;
     });
 
-    onMounted(() => {
-      window.addEventListener('resize', onAppHeightResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onAppHeightResize);
-    });
 
     async function joinEvent(eventData, type) {
       let participationType;

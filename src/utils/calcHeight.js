@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { BlanballEventBus } from '../workers/event-bus-worker';
 
 export const setHeightVH = () => {
@@ -59,6 +59,14 @@ export const calcHeight = (
   };
 
   calculate();
+
+  onMounted(() => {
+    window.addEventListener('resize', onAppHeightResize);
+  });
+
+  onBeforeUnmount(() => {
+    window.removeEventListener('resize', onAppHeightResize);
+  });
 
   return {
     appHeightValue,

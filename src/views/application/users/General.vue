@@ -1,7 +1,7 @@
 <template>
   <div class="events-page">
     <div class="main-body">
-      <div class="header-block">
+      <div class="header-side">
         <div class="left-part">
           <div class="title">{{ $t('users.title') }}</div>
         </div>
@@ -144,7 +144,7 @@ export default {
       triggerForRestart.value = uuid();
     };
 
-    const { calculatedHeight, onAppHeightResize, plusHeight, minusHeight } =
+    const { calculatedHeight, plusHeight, minusHeight } =
       calcHeight(
         [90, 36, 31, 80, 36, 50],
         [userStore.user.is_verified ? 0 : 40, -55],
@@ -159,14 +159,6 @@ export default {
         plusHeight(45);
       }
     };
-
-    onMounted(() => {
-      window.addEventListener('resize', onAppHeightResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onAppHeightResize);
-    });
 
     const usersListHeight = computed(() => {
       return `${calculatedHeight.value}px`;
@@ -363,7 +355,7 @@ $color-71ba12: #71ba12;
     grid-template-columns: 1fr;
   }
   .main-body {
-    .header-block {
+    .header-side {
       display: flex;
       justify-content: space-between;
       align-items: center;
