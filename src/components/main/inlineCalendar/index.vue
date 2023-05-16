@@ -1,6 +1,6 @@
 <template>
-  <slot name="title"></slot>
   <div ref="root" class="inline-calendar">
+    <slot name="title"></slot>
     <ul
       v-dragscroll.x
       @dragscrollmove="disableDateSelection"
@@ -434,7 +434,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .inline-calendar {
-  display: flex;
   margin-bottom: 8px;
   padding: 0 10px;
   background: #f9f9fc;

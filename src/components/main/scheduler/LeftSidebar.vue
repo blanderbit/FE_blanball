@@ -49,39 +49,10 @@
         </div>
 
         <div class="c-friends-list" v-else>
-          <SmartList
-            :list="paginationElements"
-            ref="refList"
-            v-model:scrollbar-existing="blockScrollToTopIfExist"
-          >
-            <template #smartListItem="slotProps">
-              <LeftSidebarUserCard
-                :key="slotProps.index"
-                :userData="slotProps.smartListItem"
-                :type="mockData.user_card_type.FRIEND"
-                :isActive="slotProps.smartListItem.id === activeUserId"
-                @clickByUser="activateUser"
-              />
-            </template>
-            <template #after>
-              <InfiniteLoading
-                :identifier="triggerForRestart"
-                ref="scrollbar"
-                @infinite="loadDataPaginationData(paginationPage + 1, $event)"
-              >
-                <div class="c-no-results">
-                  {{ $t('errors.no-results') }}
-                </div>
-                <template #complete>
-                  <ScrollToTop
-                    :element-length="paginationElements"
-                    :is-scroll-top-exist="blockScrollToTopIfExist"
-                    @scroll-button-clicked="scrollToFirstElement()"
-                  />
-                </template>
-              </InfiniteLoading>
-            </template>
-          </SmartList>
+          <SchedulerFriendsList
+            :activeUserId="activeUserId"
+            :searchValue="searchFriendsValue"
+            @activateUser="activateUser"/>
         </div>
       </div>
     </div>
@@ -92,8 +63,6 @@
 import { ref, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { v4 as uuid } from 'uuid';
-
 import MainInput from '../../shared/input/MainInput.vue';
 import SmartList from '../../../components/shared/smartList/SmartList.vue';
 import ScrollToTop from '../../ScrollToTop.vue';
@@ -101,9 +70,8 @@ import InfiniteLoading from '../../main/infiniteLoading/InfiniteLoading.vue';
 import UserAvatar from '../../shared/userAvatar/UserAvatar.vue';
 import LeftSidebarUserCard from './LeftSidebarUserCard.vue';
 import GreenBtn from '../../shared/button/GreenBtn.vue';
+import SchedulerFriendsList from './SchedulerFriendsList.vue';
 
-import { PaginationWorker } from '../../../workers/pagination-worker';
-import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
 import { BlanballEventBus } from '../../../workers/event-bus-worker';
 
@@ -132,13 +100,11 @@ export default {
     GreenBtn,
     LeftSidebarUserCard,
     InfiniteLoading,
+    SchedulerFriendsList,
   },
   emits: ['friendsBlockSwitcher'],
   setup() {
-    const refList = ref();
     const { t } = useI18n();
-    const blockScrollToTopIfExist = ref(false);
-    const triggerForRestart = ref(false);
     const searchFriendsValue = ref('');
     const selectedTabId = ref(CONSTS.scheduler.TABS_ENUM.MY_PLANNED);
     const userStore = useUserDataStore();
@@ -183,9 +149,6 @@ export default {
       }
     };
 
-    const restartInfiniteScroll = () => {
-      triggerForRestart.value = uuid();
-    };
 
     function activateUser(userData) {
       if (activeUserId.value !== userData.id) {
@@ -198,71 +161,17 @@ export default {
       activeUserId.value = 0;
       BlanballEventBus.emit('deactivateUser');
     }
-
-    let searchTimeout;
-
-    const searchFriends = () => {
-      clearTimeout(searchTimeout);
-
-      const load = () => {
-        paginationClearData();
-        loadDataPaginationData(1, null);
-        restartInfiniteScroll();
-      };
-      searchTimeout = setTimeout(load, 500);
-    };
-
-    watch(
-      () => searchFriendsValue.value,
-      () => {
-        searchFriends();
-      }
-    );
-
-    const {
-      paginationElements,
-      paginationPage,
-      paginationTotalCount,
-      paginationLoad,
-      paginationClearData,
-    } = PaginationWorker({
-      paginationDataRequest: (page) =>
-        API.UserService.getAllUsers({
-          page,
-          search: searchFriendsValue.value,
-        }),
-    });
-
-    function loadDataPaginationData(pageNumber, $state) {
-      paginationLoad({
-        pageNumber,
-        $state,
-        forceUpdate: paginationPage.value === 1,
-      });
-    }
-
-    loadDataPaginationData(1, null);
-
+    
     return {
       icons,
-      refList,
-      triggerForRestart,
-      paginationPage,
-      blockScrollToTopIfExist,
       activeUserId,
       selectedTabId,
-      paginationElements,
       userStore,
       tabs,
       mockData,
       searchFriendsValue,
-      restartInfiniteScroll,
       switchTab,
       activateUser,
-      loadDataPaginationData,
-      scrollToFirstElement: () => {
-        refList.value.scrollToFirstElement();
-      },
     };
   },
 };
