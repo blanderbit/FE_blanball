@@ -43,8 +43,10 @@
           <div class="b-main-search__right-block">
             <div class="b-main-search__search-input-desktop">
               <MainInput
+                :outside-title="true"
                 :title-width="0"
                 :placeholder="$t('events.search-events')"
+                :title="$t('events.search-events')"
                 inputMode="search"
                 :height="32"
                 :backgroundColor="'#fff'"
@@ -122,8 +124,10 @@
           <div class="b-main-search__right-part d-flex align-items-center">
             <div class="b-main-search__search-input me-2">
               <MainInput
+                :outside-title="true"
                 :title-width="0"
                 :placeholder="$t('events.search-events')"
+                :title="$t('events.search-events')"
                 inputMode="search"
                 :height="32"
                 :backgroundColor="'#fff'"
@@ -134,8 +138,10 @@
             </div>
             <MainInput
               v-if="isMobileSearchOpened"
+              :outside-title="true"
               :title-width="0"
               :placeholder="$t('events.search-events')"
+              :title="$t('events.search-events')"
               inputMode="search"
               :height="32"
               :icon="icons.cross"
@@ -145,10 +151,12 @@
               @icon-click="closeMobileSearch"
             />
             <MainInput
+            :outside-title="true"
               class="b-main-search__search-input-tablet"
               :title-width="0"
               :backgroundColor="'#fff'"
               :placeholder="$t('events.search-events')"
+              :title="$t('events.search-events')"
               inputMode="search"
               :height="36"
               :icon="icons.search"
