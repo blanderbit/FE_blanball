@@ -1,7 +1,6 @@
 <template>
   <div @click.self="$emit('closeWindow')" class="c-scheduler-wrapper">
-    <div class="c-common-block"
-      :style="`top: ${marginTop}px`">
+    <div class="c-common-block" :style="`top: ${marginTop}px`">
       <!-- Sidebar Slot -->
       <slot
         name="LeftSidebar"
@@ -56,7 +55,39 @@
               <img src="../../../assets/img/scheduler/arrow-right.svg" alt="" />
             </template>
 
-            <template #title> </template>
+            <template #title>
+              <div class="c-inline-cal-title">
+                <vue-cal
+                  :small="true"
+                  :xsmall="false"
+                  :time="schedulerConfig.time"
+                  :hide-view-selector="schedulerConfig.hideViewSelector"
+                  :hide-title-bar="false"
+                  :hide-body="true"
+                  :active-view="'month'"
+                  :disable-views="inlineCalendarConfig.title.disableViews"
+                  :locale="inlineCalendarConfig.locale"
+                >
+                  <template #title="{ title }">
+                    <div class="c-title">
+                      {{ removeYearFromDate(title) }}
+                    </div>
+                  </template>
+                  <template #arrow-prev>
+                    <img
+                      src="../../../assets/img/scheduler/arrow-left.svg"
+                      alt=""
+                    />
+                  </template>
+                  <template #arrow-next>
+                    <img
+                      src="../../../assets/img/scheduler/arrow-right.svg"
+                      alt=""
+                    />
+                  </template>
+                </vue-cal>
+              </div>
+            </template>
             <template #scheduled-events="{ date }">
               <ScheduledEventsDots
                 :dotsCount="
@@ -197,8 +228,8 @@ export default {
     },
     marginTop: {
       type: Number,
-      default: 80
-    }
+      default: 80,
+    },
   },
   emits: ['closeWindow'],
   setup(props, { emit }) {
@@ -261,6 +292,14 @@ export default {
       locale: 'uk',
       showButtons: false,
       disablePastDays: true,
+      title: {
+        disableViews: [
+          SCHEDULER_ACTIVE_VIEWS.WEEK,
+          SCHEDULER_ACTIVE_VIEWS.MONTH,
+          SCHEDULER_ACTIVE_VIEWS.YEAR,
+          SCHEDULER_ACTIVE_VIEWS.YEARS,
+        ],
+      },
     });
 
     const schedulerConfig = ref({
@@ -474,6 +513,13 @@ $color-e9fcfb: #e9fcfb;
       padding-top: 0px;
     }
 
+    .c-scheduler-bottom-side {
+      display: none;
+      @include beforeDesktop {
+        display: block;
+      }
+    }
+
     .c-right-block {
       z-index: 1;
       background: $--b-main-white-color;
@@ -528,6 +574,15 @@ $color-e9fcfb: #e9fcfb;
 
         @include mobile {
           height: fit-content;
+        }
+
+        .c-inline-cal-title {
+          :deep {
+            .vuecal__weekdays-headings,
+            .vuecal__body {
+              display: none;
+            }
+          }
         }
 
         &::v-deep {
@@ -646,13 +701,6 @@ $color-e9fcfb: #e9fcfb;
                 }
               }
             }
-          }
-        }
-
-        .c-scheduler-bottom-side {
-          display: none;
-          @include beforeDesktop {
-            display: block;
           }
         }
       }

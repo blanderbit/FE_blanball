@@ -56,8 +56,11 @@
             ref="scrollbar"
             @infinite="loadDataPaginationData(paginationPage + 1, $event)"
           >
-            <NoScheduledEvents :userData="userData" />
             <template #complete>
+              <NoScheduledEvents
+                v-if="!paginationElements.length"
+                :userData="userData"
+              />
               <ScrollToTop
                 :element-length="paginationElements"
                 :is-scroll-top-exist="blockScrollToTopIfExist"
@@ -99,8 +102,8 @@ import greenCrossIcon from '../../../assets/img/green-cross.svg';
 const EVENT_STATUSES = {
   PLANNED: 'Planned',
   ACTIVE: 'Active',
-  FINISHED: 'Finished'
-}
+  FINISHED: 'Finished',
+};
 
 export default {
   components: {
@@ -171,7 +174,7 @@ export default {
     } = PaginationWorker({
       paginationDataRequest: (page) =>
         API.SchedulerService.getScheduledEventsDataOnSpecificDay({
-          user_id: props.userData.id,
+          user_id: props.userData?.id,
           date: props.date,
           page: page,
         }),
