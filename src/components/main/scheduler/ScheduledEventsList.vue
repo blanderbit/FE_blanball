@@ -25,30 +25,12 @@
         v-model:scrollbar-existing="blockScrollToTopIfExist"
       >
         <template #smartListItem="slotProps">
-          <div
-            :class="[
-              'c-scheduled-event',
-              slotProps.smartListItem.status,
-              { selected: slotProps.smartListItem.id === selectedEventId },
-            ]"
-          >
-            <div class="c-event-main-info">
-              <div class="c-event-type">
-                {{ $t('events.friendly-match') }}
-              </div>
-              <div class="c-event-time">
-                {{ slotProps.smartListItem.time }} –
-                {{ slotProps.smartListItem.end_time }}
-              </div>
-            </div>
-            <div class="c-manage-event-block">
-              <img
-                :src="getEventCrossIcon(slotProps.smartListItem.status)"
-                alt=""
-                @click="declineEvent(slotProps.smartListItem)"
-              />
-            </div>
-          </div>
+          <ScheduledEventCard
+            :key="slotProps.index"
+            :eventData="slotProps.smartListItem"
+            :selectedEventId="selectedEventId"
+            @declineEvent="declineEvent"
+          />
         </template>
         <template #after>
           <InfiniteLoading
@@ -88,22 +70,13 @@ import NotSelectedFriendCard from './NotSelectedFriendCard.vue';
 import SmartList from '../../shared/smartList/SmartList.vue';
 import InfiniteLoading from '../infiniteLoading/InfiniteLoading.vue';
 import ScrollToTop from '../../ScrollToTop.vue';
+import ScheduledEventCard from './ScheduledEventCard.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { PaginationWorker } from '../../../workers/pagination-worker';
 import { getDate } from '../../../utils/getDate';
 import { getTime } from '../../../utils/getTime';
 import { addMinutes } from '../../../utils/addMinutes';
-
-import grayCrossIcon from '../../../assets/img/gray-cross.svg';
-import blackCrossIcon from '../../../assets/img/cross.svg';
-import greenCrossIcon from '../../../assets/img/green-cross.svg';
-
-const EVENT_STATUSES = {
-  PLANNED: 'Planned',
-  ACTIVE: 'Active',
-  FINISHED: 'Finished',
-};
 
 export default {
   components: {
@@ -112,6 +85,7 @@ export default {
     NotSelectedFriendCard,
     SmartList,
     InfiniteLoading,
+    ScheduledEventCard,
     ScrollToTop,
   },
   props: {
@@ -141,30 +115,6 @@ export default {
       triggerForRestart.value = uuid();
     };
 
-    const icons = computed(() => {
-      return {
-        cross: {
-          greenCross: greenCrossIcon,
-          blackCross: blackCrossIcon,
-          grayCross: grayCrossIcon,
-        },
-      };
-    });
-
-    const getEventCrossIcon = (eventStatus) => {
-      switch (eventStatus) {
-        case EVENT_STATUSES.PLANNED: {
-          return icons.value.cross.blackCross;
-        }
-        case EVENT_STATUSES.ACTIVE: {
-          return icons.value.cross.greenCross;
-        }
-        case EVENT_STATUSES.FINISHED: {
-          return icons.value.cross.grayCross;
-        }
-      }
-    };
-
     const {
       paginationElements,
       paginationPage,
@@ -173,7 +123,7 @@ export default {
       paginationClearData,
     } = PaginationWorker({
       paginationDataRequest: (page) =>
-        API.SchedulerService.getScheduledEventsDataOnSpecificDay({
+        API.EventService.getAllEvents({
           user_id: props.userData?.id,
           date: props.date,
           page: page,
@@ -268,6 +218,7 @@ export default {
 
     return {
       paginationTotalCount,
+      refList,
       paginationElements,
       isSubmitModalOpened,
       paginationPage,
@@ -280,7 +231,6 @@ export default {
       deleteEvent,
       showSubmitModal,
       declineEvent,
-      getEventCrossIcon,
       scrollToFirstElement: () => {
         refList.value.scrollToFirstElement();
       },
@@ -306,48 +256,7 @@ export default {
   }
 }
 .c-scheduled-events__list {
-  .c-scheduled-event {
-    width: 100%;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    padding: 12px;
-    justify-content: space-between;
-    margin-top: 12px;
-    cursor: pointer;
-
-    &.Planned {
-      background: #fcfcfc;
-      border: 1px solid $--b-main-green-color;
-      .c-event-main-info {
-        @include inter(14px, 400);
-      }
-    }
-
-    &.Active {
-      background: #ecfcfb;
-      border: none;
-
-      .c-event-main-info {
-        @include inter(14px, 400, $--b-main-green-color);
-      }
-    }
-
-    &.Finished {
-      background: #f9f9fc;
-      border: none;
-
-      .c-event-main-info {
-        @include inter(14px, 400, #a8a8bd);
-      }
-    }
-
-    .c-event-main-info {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      line-height: 20px;
-    }
-  }
+  overflow-y: scroll;
+  height: 100%;
 }
 </style>

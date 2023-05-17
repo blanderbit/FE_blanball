@@ -5,7 +5,7 @@
     v-model:scrollbar-existing="blockScrollToTopIfExist"
   >
     <template #smartListItem="slotProps">
-      <LeftSidebarUserCard
+      <SchedulerUserCard
         :key="slotProps.index"
         :userData="slotProps.smartListItem"
         :type="mockData.user_card_type.FRIEND"
@@ -40,14 +40,12 @@ import { ref, computed, watch } from 'vue';
 import SmartList from '../../../components/shared/smartList/SmartList.vue';
 import ScrollToTop from '../../ScrollToTop.vue';
 import InfiniteLoading from '../../main/infiniteLoading/InfiniteLoading.vue';
-import LeftSidebarUserCard from './LeftSidebarUserCard.vue';
+import SchedulerUserCard from './SchedulerUserCard.vue';
 
 import { v4 as uuid } from 'uuid';
 
 import { PaginationWorker } from '../../../workers/pagination-worker';
 import { API } from '../../../workers/api-worker/api.worker';
-import { useUserDataStore } from '../../../stores/userData';
-import { BlanballEventBus } from '../../../workers/event-bus-worker';
 
 import { CONSTS } from '../../../consts';
 
@@ -56,7 +54,7 @@ export default {
     SmartList,
     ScrollToTop,
     InfiniteLoading,
-    LeftSidebarUserCard,
+    SchedulerUserCard,
   },
   props: {
     searchValue: {

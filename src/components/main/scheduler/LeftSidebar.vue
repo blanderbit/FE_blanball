@@ -4,15 +4,9 @@
     :style="{ 'margin-right': isFriendsVisible ? '20px' : '-260px' }"
   >
     <div class="c-main-side">
-      <div class="c-tabs">
-        <div
-          v-for="tab in tabs"
-          :class="['c-tab', { active: tab.id === selectedTabId }]"
-          @click="switchTab(tab.id)"
-        >
-          {{ tab.text }}
-        </div>
-      </div>
+      <SchedulerTabs 
+        :selectedTabId="selectedTabId"
+        @switchTab="switchTab" />
       <div
         v-if="selectedTabId === mockData.tabs.FRIENDS_PLANNED"
         class="c-input-search"
@@ -33,7 +27,7 @@
           v-if="selectedTabId === mockData.tabs.MY_PLANNED"
           class="c-me-in-list"
         >
-          <LeftSidebarUserCard
+          <SchedulerUserCard
             :userData="userStore.user"
             :isActive="userStore.user.id === activeUserId"
             :type="mockData.user_card_type.ME"
@@ -52,7 +46,8 @@
           <SchedulerFriendsList
             :activeUserId="activeUserId"
             :searchValue="searchFriendsValue"
-            @activateUser="activateUser"/>
+            @activateUser="activateUser"
+          />
         </div>
       </div>
     </div>
@@ -68,9 +63,10 @@ import SmartList from '../../../components/shared/smartList/SmartList.vue';
 import ScrollToTop from '../../ScrollToTop.vue';
 import InfiniteLoading from '../../main/infiniteLoading/InfiniteLoading.vue';
 import UserAvatar from '../../shared/userAvatar/UserAvatar.vue';
-import LeftSidebarUserCard from './LeftSidebarUserCard.vue';
+import SchedulerUserCard from './SchedulerUserCard.vue';
 import GreenBtn from '../../shared/button/GreenBtn.vue';
 import SchedulerFriendsList from './SchedulerFriendsList.vue';
+import SchedulerTabs from './SchedulerTabs.vue';
 
 import { useUserDataStore } from '../../../stores/userData';
 import { BlanballEventBus } from '../../../workers/event-bus-worker';
@@ -98,7 +94,8 @@ export default {
     SmartList,
     ScrollToTop,
     GreenBtn,
-    LeftSidebarUserCard,
+    SchedulerTabs,
+    SchedulerUserCard,
     InfiniteLoading,
     SchedulerFriendsList,
   },
@@ -109,19 +106,6 @@ export default {
     const selectedTabId = ref(CONSTS.scheduler.TABS_ENUM.MY_PLANNED);
     const userStore = useUserDataStore();
     const activeUserId = ref(userStore.user.id);
-
-    const tabs = computed(() => {
-      return [
-        {
-          id: mockData.value.tabs.MY_PLANNED,
-          text: t('scheduler.my-planned-tab'),
-        },
-        {
-          id: mockData.value.tabs.FRIENDS_PLANNED,
-          text: t('scheduler.friends-planned-tab'),
-        },
-      ];
-    });
 
     const mockData = computed(() => {
       return {
@@ -149,7 +133,6 @@ export default {
       }
     };
 
-
     function activateUser(userData) {
       if (activeUserId.value !== userData.id) {
         activeUserId.value = userData.id;
@@ -161,13 +144,12 @@ export default {
       activeUserId.value = 0;
       BlanballEventBus.emit('deactivateUser');
     }
-    
+
     return {
       icons,
       activeUserId,
       selectedTabId,
       userStore,
-      tabs,
       mockData,
       searchFriendsValue,
       switchTab,
@@ -203,31 +185,6 @@ $color-8a8aa8: #8a8aa8;
     flex: 439px 1;
     display: flex;
     flex-direction: column;
-
-    .c-tabs {
-      background: #efeff6;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      border: 2px solid #efeff6;
-
-      .c-tab {
-        @include inter(13px, 400, $--b-main-gray-color);
-        line-height: 20px;
-        padding: 10px 4px;
-        text-align: center;
-        cursor: pointer;
-
-        &.active {
-          background: $--b-main-white-color;
-          box-shadow: 1px 2px 5px 1px rgba(56, 56, 251, 0.08);
-          border-radius: 4px;
-          @include inter(13px, 500);
-        }
-      }
-    }
     .c-friends-side-block {
       height: 600px;
       overflow: hidden;

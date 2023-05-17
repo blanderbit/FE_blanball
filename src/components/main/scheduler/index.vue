@@ -1,6 +1,10 @@
 <template>
   <div @click.self="$emit('closeWindow')" class="c-scheduler-wrapper">
-    <div class="c-common-block" :style="`top: ${marginTop}px`">
+    <div
+      class="c-common-block"
+      :style="schedulerCommonBlockStyle"
+      ref="schedulerCommonBlock"
+    >
       <!-- Sidebar Slot -->
       <slot
         name="LeftSidebar"
@@ -14,7 +18,7 @@
             <div class="c-current-date">
               {{ $t('scheduler.today-date') }} <span>{{ todayDate }}</span>
             </div>
-            <div v-if="isTopPlanEventButtonVisible" class="c-plan-event-button">
+            <!-- <div v-if="isTopPlanEventButtonVisible" class="c-plan-event-button">
               <WhiteBtn
                 :text="$t('scheduler.plan-event')"
                 :width="192"
@@ -24,7 +28,7 @@
                 :isBorder="true"
                 :borderColor="'#DFDEED'"
               />
-            </div>
+            </div> -->
           </div>
           <img
             class="c-hide-btn"
@@ -34,82 +38,102 @@
           />
         </div>
         <div class="c-scheduler-block">
-          <VueInlineCalendar
-            v-if="inlineCalendarConfig.visible"
-            :enableMousewheelScroll="
-              inlineCalendarConfig.enableMousewheelScroll
-            "
-            v-model:selectedDate="inlineCalendarConfig.selectedDate"
-            :specMinDate="inlineCalendarConfig.specMinDate"
-            :specMaxDate="inlineCalendarConfig.specMaxDate"
-            :showYear="inlineCalendarConfig.showYear"
-            :showMonth="inlineCalendarConfig.showMonth"
-            :itemWidth="inlineCalendarConfig.itemWidth"
-            :locale="inlineCalendarConfig.locale"
-            :showButtons="inlineCalendarConfig.showButtons"
-          >
-            <template #prev-button>
-              <img src="../../../assets/img/scheduler/arrow-left.svg" alt="" />
-            </template>
-            <template #next-button>
-              <img src="../../../assets/img/scheduler/arrow-right.svg" alt="" />
-            </template>
+          <div class="c-sheduled-content-on-specific-day">
+            <VueInlineCalendar
+              v-if="inlineCalendarConfig.visible"
+              :enableMousewheelScroll="
+                inlineCalendarConfig.enableMousewheelScroll
+              "
+              v-model:selectedDate="inlineCalendarConfig.selectedDate"
+              :specMinDate="inlineCalendarConfig.specMinDate"
+              :specMaxDate="inlineCalendarConfig.specMaxDate"
+              :showYear="inlineCalendarConfig.showYear"
+              :showMonth="inlineCalendarConfig.showMonth"
+              :itemWidth="inlineCalendarConfig.itemWidth"
+              :locale="inlineCalendarConfig.locale"
+              :showButtons="inlineCalendarConfig.showButtons"
+            >
+              <template #prev-button>
+                <img
+                  src="../../../assets/img/scheduler/arrow-left.svg"
+                  alt=""
+                />
+              </template>
+              <template #next-button>
+                <img
+                  src="../../../assets/img/scheduler/arrow-right.svg"
+                  alt=""
+                />
+              </template>
 
-            <template #title>
-              <div class="c-inline-cal-title">
-                <vue-cal
-                  :small="true"
-                  :xsmall="false"
-                  :time="schedulerConfig.time"
-                  :hide-view-selector="schedulerConfig.hideViewSelector"
-                  :hide-title-bar="false"
-                  :hide-body="true"
-                  :active-view="'month'"
-                  :disable-views="inlineCalendarConfig.title.disableViews"
-                  :locale="inlineCalendarConfig.locale"
-                >
-                  <template #title="{ title }">
-                    <div class="c-title">
-                      {{ removeYearFromDate(title) }}
-                    </div>
-                  </template>
-                  <template #arrow-prev>
-                    <img
-                      src="../../../assets/img/scheduler/arrow-left.svg"
-                      alt=""
-                    />
-                  </template>
-                  <template #arrow-next>
-                    <img
-                      src="../../../assets/img/scheduler/arrow-right.svg"
-                      alt=""
-                    />
-                  </template>
-                </vue-cal>
-              </div>
-            </template>
-            <template #scheduled-events="{ date }">
-              <ScheduledEventsDots
-                :dotsCount="
-                  scheduledEventsDotsData[formatDate(date.date)]
-                    ?.user_scheduled_events_count
-                "
-                :maxDotsCount="maxDotsCount"
-                :dotsColor="
-                  formatDate(date.date) ===
-                  formatDate(inlineCalendarConfig.selectedDate)
-                    ? inlineCalendarActiveDateDotsColor
-                    : dotsColor
-                "
+              <template #title>
+                <div class="c-inline-cal-title">
+                  <vue-cal
+                    :small="inlineCalendarConfig.title.small"
+                    :xsmall="inlineCalendarConfig.title.xsmall"
+                    :time="inlineCalendarConfig.title.time"
+                    :hide-view-selector="
+                      inlineCalendarConfig.title.hideViewSelector
+                    "
+                    :hide-title-bar="inlineCalendarConfig.title.hideTitleBar"
+                    :hide-body="inlineCalendarConfig.title.hideBody"
+                    :active-view="inlineCalendarConfig.title.activeView"
+                    :events-count-on-year-view="
+                      inlineCalendarConfig.title.eventsCountOnYearView
+                    "
+                    :locale="inlineCalendarConfig.title.locale"
+                    :disable-views="inlineCalendarConfig.title.disableViews"
+                    :selected-date="inlineCalendarConfig.title.selectedDate"
+                  >
+                    <template #title="{ title }">
+                      <div class="c-title">
+                        {{ removeYearFromDate(title) }}
+                      </div>
+                    </template>
+                    <template #arrow-prev>
+                      <img
+                        src="../../../assets/img/scheduler/arrow-left.svg"
+                        alt=""
+                      />
+                    </template>
+                    <template #arrow-next>
+                      <img
+                        src="../../../assets/img/scheduler/arrow-right.svg"
+                        alt=""
+                      />
+                    </template>
+                  </vue-cal>
+                </div>
+              </template>
+              <template #scheduled-events="{ date }">
+                <ScheduledEventsDots
+                  :dotsCount="
+                    scheduledEventsDotsData[formatDate(date.date)]
+                      ?.user_scheduled_events_count
+                  "
+                  :maxDotsCount="maxDotsCount"
+                  :dotsColor="
+                    formatDate(date.date) ===
+                    formatDate(inlineCalendarConfig.selectedDate)
+                      ? inlineCalendarActiveDateDotsColor
+                      : dotsColor
+                  "
+                />
+              </template>
+            </VueInlineCalendar>
+            <div
+              v-if="inlineCalendarConfig.visible"
+              class="c-schduled-events-list"
+              :id="scheduledEventsHeight"
+              :style="scheduledEventsHeight"
+            >
+              <ScheduledEventsList
+                :date="formatDate(inlineCalendarConfig.selectedDate)"
+                :userData="activatedUserInSidebarData"
+                :scheduledEventsDotsData="scheduledEventsDotsData"
               />
-            </template>
-          </VueInlineCalendar>
-          <ScheduledEventsList
-            v-if="inlineCalendarConfig.visible"
-            :date="formatDate(inlineCalendarConfig.selectedDate)"
-            :userData="activatedUserInSidebarData"
-            :scheduledEventsDotsData="scheduledEventsDotsData"
-          />
+            </div>
+          </div>
           <vue-cal
             :small="schedulerConfig.small"
             :xsmall="schedulerConfig.xsmall"
@@ -155,7 +179,7 @@
             </template>
           </vue-cal>
         </div>
-        <div class="c-scheduler-bottom-side">
+        <div class="c-scheduler-bottom-side" :style="scheduledBottomBlockStyle">
           <div class="c-plan-event-button">
             <WhiteBtn
               :text="$t('scheduler.plan-event')"
@@ -166,6 +190,7 @@
               :borderColor="'#DFDEED'"
             />
           </div>
+          <SchedulerTabs />
         </div>
       </div>
     </div>
@@ -184,6 +209,7 @@ import VueInlineCalendar from '../inlineCalendar/index.vue';
 import ContextModal from '../../shared/modals/ContextModal.vue';
 import WhiteBtn from '../../shared/button/WhiteBtn.vue';
 import ScheduledEventsDots from './ScheduledEventsDots.vue';
+import SchedulerTabs from './SchedulerTabs.vue';
 import ScheduledEventsList from './ScheduledEventsList.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
@@ -196,6 +222,7 @@ import { BlanballEventBus } from '../../../workers/event-bus-worker';
 
 import { CONSTS } from '../../../consts';
 import { useWindowWidth } from '../../../utils/widthScreen';
+import { useElementSize } from '@vueuse/core';
 
 import 'vue-cal/dist/vuecal.css';
 
@@ -219,6 +246,7 @@ export default {
     VueInlineCalendar,
     ScheduledEventsDots,
     ScheduledEventsList,
+    SchedulerTabs,
     WhiteBtn,
   },
   props: {
@@ -241,6 +269,12 @@ export default {
     const inlineCalendarActiveDateDotsColor = ref('#fff');
     const userStore = useUserDataStore();
     const activatedUserInSidebarData = ref(userStore.user);
+    const schedulerCommonBlock = ref();
+    const hideBtnConfig = ref({});
+
+    const { height: schedulerCommonBlockHeight } =
+      useElementSize(schedulerCommonBlock);
+    const { isTablet, isMobile, isMobileSmall } = useWindowWidth();
 
     const schedulerStartDate = ref(null);
     const schedulerEndDate = ref(null);
@@ -271,14 +305,49 @@ export default {
       );
     });
 
+    const scheduledEventsHeight = computed(() => {
+      return {
+        height: `${
+          schedulerCommonBlockHeight.value -
+          32 -
+          130 -
+          (isTablet.value || isMobile.value ? 66 : 0) -
+          (isTablet.value || (isMobile.value && !isMobileSmall.value) ? 32 : 0)
+        }px`,
+      };
+    });
+
+    const schedulerCommonBlockStyle = computed(() => {
+      return {
+        top: `${props.marginTop}px`,
+        height: `${
+          schedulerConfig.value.activeView === SCHEDULER_ACTIVE_VIEWS.MONTH
+            ? isMobileSmall.value
+              ? 'fit-content'
+              : '636px'
+            : '636px'
+        }`,
+      };
+    });
+
+    const scheduledBottomBlockStyle = computed(() => {
+      return {
+        'margin-top': `${
+          schedulerConfig.value.activeView === SCHEDULER_ACTIVE_VIEWS.MONTH
+            ? isMobileSmall.value
+              ? 12
+              : 16
+            : 0
+        }px`,
+      };
+    });
+
     const todayDate = computed(() => {
       const date = new Date();
       return `${date.getDate()} ${
         mockData.value.dates.monthNames[date.getMonth()]
       }`;
     });
-
-    const hideBtnConfig = ref({});
 
     const inlineCalendarConfig = ref({
       visible: false,
@@ -293,12 +362,22 @@ export default {
       showButtons: false,
       disablePastDays: true,
       title: {
+        small: false,
+        xsmall: true,
+        time: false,
+        hideViewSelector: true,
+        hideTitleBar: false,
+        hideBody: false,
+        activeView: SCHEDULER_ACTIVE_VIEWS.MONTH,
+        eventsCountOnYearView: false,
+        locale: 'uk',
         disableViews: [
           SCHEDULER_ACTIVE_VIEWS.WEEK,
-          SCHEDULER_ACTIVE_VIEWS.MONTH,
+          SCHEDULER_ACTIVE_VIEWS.DAY,
           SCHEDULER_ACTIVE_VIEWS.YEAR,
           SCHEDULER_ACTIVE_VIEWS.YEARS,
         ],
+        selectedDate: '',
       },
     });
 
@@ -444,11 +523,15 @@ export default {
       SCHEDULER_ACTIVE_VIEWS,
       scheduledEventsDotsData,
       hideBtnConfig,
+      scheduledBottomBlockStyle,
+      schedulerCommonBlock,
       todayDate,
       inlineCalendarActiveDateDotsColor,
       inlineCalendarConfig,
       isTopPlanEventButtonVisible,
       activatedUserInSidebarData,
+      scheduledEventsHeight,
+      schedulerCommonBlockStyle,
       dotsColor,
       maxDotsCount,
       icons,
@@ -473,6 +556,11 @@ $color-e9fcfb: #e9fcfb;
       margin-left: -20px;
       padding-right: 0px;
     }
+
+    @include mobile {
+      width: calc(100% + 32px);
+      margin-left: -16px;
+    }
   }
 
   .vuecal__flex[grow] {
@@ -484,6 +572,24 @@ $color-e9fcfb: #e9fcfb;
   .vuecal__cell--selected {
     background: transparent;
   }
+
+  .c-tabs {
+    margin-bottom: 0px;
+    margin-top: 8px;
+
+    @include beforeDesktop {
+      width: 464px;
+      margin: 0 auto;
+      margin-top: 8px;
+    }
+    @include mobile {
+      width: inherit;
+    }
+  }
+}
+
+.c-schduled-events-list {
+  overflow: scroll;
 }
 
 .c-scheduler-wrapper {
@@ -507,10 +613,16 @@ $color-e9fcfb: #e9fcfb;
       padding: 20px;
       width: 100%;
       border-radius: 0px;
+      border-radius: 0px 0px 12px 12px;
+      padding-bottom: 32px;
     }
 
     @include mobile {
       padding-top: 0px;
+      box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+      border-radius: 0px 0px 12px 12px;
+      padding: 16px;
+      padding-bottom: 32px;
     }
 
     .c-scheduler-bottom-side {
@@ -518,12 +630,28 @@ $color-e9fcfb: #e9fcfb;
       @include beforeDesktop {
         display: block;
       }
+
+      .c-plan-event-button {
+        :deep(.b_white-btn) {
+          font-weight: 400;
+          margin-bottom: 10px;
+          width: 464px !important;
+          margin: 0 auto;
+
+          @include mobile {
+            width: 100% !important;
+          }
+        }
+      }
     }
 
     .c-right-block {
       z-index: 1;
       background: $--b-main-white-color;
       width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       .c-top-line {
         padding-bottom: 12px;
         position: relative;
@@ -550,6 +678,7 @@ $color-e9fcfb: #e9fcfb;
           .c-plan-event-button {
             :deep(.b_white-btn) {
               font-weight: 400;
+              margin-bottom: 10px;
             }
 
             @include beforeDesktop {
