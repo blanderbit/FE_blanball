@@ -93,7 +93,7 @@ export default {
     },
     loadDatesCount: {
       type: Number,
-      default: 42
+      default: 42,
     },
     itemWidth: {
       type: Number,
@@ -433,6 +433,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@import '../../../assets/styles/inline-calendar/main.css';
 .inline-calendar {
   margin-bottom: 8px;
   padding: 0 10px;

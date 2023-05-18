@@ -210,6 +210,7 @@ import { BlanballEventBus } from '../../../workers/event-bus-worker';
 import { CONSTS } from '../../../consts';
 import { useWindowWidth } from '../../../utils/widthScreen';
 import { useElementSize } from '@vueuse/core';
+import { calcHeight } from '../../../utils/calcHeight';
 
 import 'vue-cal/dist/vuecal.css';
 
@@ -301,24 +302,46 @@ export default {
       };
     });
 
-    const schedulerCommonBlockStyle = computed(() => {
-      const isScheduledEventsShow = schedulerConfig.value.isScheduledEventsShow;
-      const isFriendsListShow = schedulerConfig.value.isFriendsListShow;
-      const isSmallMobile = isMobileSmall.value;
+    const { calculatedHeight: schedulerCommonBlockCalculatedHeight } =
+      calcHeight(240);
 
-      const height = isScheduledEventsShow
-        ? isSmallMobile
-          ? '636px'
-          : '636px'
-        : isFriendsListShow
-        ? '736px'
-        : isSmallMobile
-        ? 'fit-content'
-        : '636px';
+    const schedulerCommonBlockStyle = computed(() => {
+      const desktopMinHeight = 520;
+      const tabletMinHeight = 495;
+      const mobileMinHeight = 540;
+
+      const selectedMinHeight = computed(() => {
+        switch (detectedDevice.value) {
+          case DEVICE_TYPES.MOBILE_SMALL: {
+            return mobileMinHeight;
+          }
+          case DEVICE_TYPES.MOBILE || DEVICE_TYPES.TABLET: {
+            return tabletMinHeight;
+          }
+          case DEVICE_TYPES.DESKTOP: {
+            return desktopMinHeight;
+          }
+        }
+      });
+
+      const height = computed(() => {
+        if (schedulerConfig.value.isScheduledEventsShow) {
+          return isMobileSmall.value
+            ? schedulerCommonBlockCalculatedHeight.value
+            : schedulerCommonBlockCalculatedHeight.value;
+        } else if (schedulerConfig.value.isFriendsListShow) {
+          return schedulerCommonBlockCalculatedHeight.value;
+        } else {
+          return isMobileSmall.value
+            ? mobileMinHeight
+            : schedulerCommonBlockCalculatedHeight.value;
+        }
+      });
 
       return {
         top: `${props.marginTop}px`,
-        height,
+        height: `${height.value}px`,
+        'min-height': `${selectedMinHeight.value}px`,
       };
     });
 
