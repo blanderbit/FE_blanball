@@ -89,7 +89,7 @@ export default {
 
     watch(
       () => props.formsData,
-      (newData, oldData) => {
+      (newData) => {
         let copyForms = JSON.parse(JSON.stringify(newData));
         formsDataValue.value = copyForms;
         formsType.value = copyForms.type;

@@ -255,7 +255,8 @@ export default {
 
     const { height: schedulerCommonBlockHeight } =
       useElementSize(schedulerCommonBlock);
-    const { isTablet, isMobile, isMobileSmall } = useWindowWidth();
+    const { isTablet, isMobile, isMobileSmall, detectedDevice, DEVICE_TYPES } =
+      useWindowWidth();
 
     const schedulerStartDate = ref(null);
     const schedulerEndDate = ref(null);
@@ -528,6 +529,45 @@ export default {
       BlanballEventBus.off('switchedSchedulerSidebarTab');
       BlanballEventBus.off('deactivateUser');
     });
+
+    watch(
+      () => detectedDevice.value,
+      (newVal) => {
+        switch (newVal) {
+          case DEVICE_TYPES.MOBILE_SMALL: {
+            break;
+          }
+          case DEVICE_TYPES.MOBILE: {
+            break;
+          }
+          case DEVICE_TYPES.TABLET: {
+            if (
+              sidebarSelectedTabId.value ===
+                mockData.value.sideBarTabs.FRIENDS_PLANNED &&
+              !schedulerConfig.value.isFriendsListShow
+            ) {
+              schedulerConfig.value.isScheduledEventsShow = false;
+              schedulerConfig.value.isFriendsListShow = true;
+            }
+            break;
+          }
+          case DEVICE_TYPES.BETWEEN_TABLET_AND_DESKTOP: {
+            if (schedulerConfig.value.isFriendsListShow) {
+              schedulerConfig.value.isFriendsListShow = false;
+              schedulerConfig.value.isScheduledEventsShow = true;
+              sidebarSelectedTabId.value =
+                mockData.value.sideBarTabs.FRIENDS_PLANNED;
+              activatedUserInSidebarData.value = null;
+              BlanballEventBus.emit(
+                'schedulerSidebarForceSwitchTab',
+                mockData.value.sideBarTabs.FRIENDS_PLANNED
+              );
+            }
+            break;
+          }
+        }
+      }
+    );
 
     return {
       isFriendsVisible,

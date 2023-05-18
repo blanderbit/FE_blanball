@@ -4,9 +4,7 @@
     :style="{ 'margin-right': isFriendsVisible ? '20px' : '-260px' }"
   >
     <div class="c-main-side">
-      <SchedulerTabs 
-        :selectedTabId="selectedTabId"
-        @switchTab="switchTab" />
+      <SchedulerTabs :selectedTabId="selectedTabId" @switchTab="switchTab" />
       <div
         v-if="selectedTabId === mockData.tabs.FRIENDS_PLANNED"
         class="c-input-search"
@@ -55,7 +53,7 @@
 </template>
 
 <script>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import MainInput from '../../shared/input/MainInput.vue';
@@ -144,6 +142,14 @@ export default {
       activeUserId.value = 0;
       BlanballEventBus.emit('deactivateUser');
     }
+
+    BlanballEventBus.on('schedulerSidebarForceSwitchTab', (tabId, userData) => {
+      switchTab(tabId);
+    });
+
+    onBeforeUnmount(() => {
+      BlanballEventBus.off('schedulerSidebarForceSwitchTab');
+    });
 
     return {
       icons,
