@@ -70,6 +70,7 @@ export default {
     text-align: center;
     cursor: pointer;
     width: 50%;
+    height: 100%;
 
     &.active {
       background: $--b-main-white-color;

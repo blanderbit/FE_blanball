@@ -168,6 +168,11 @@ $color-8a8aa8: #8a8aa8;
 * {
   box-sizing: border-box;
 }
+
+:deep(.c-tabs) {
+  margin-bottom: 8px;
+}
+
 .c-no-results {
   @include inter(13px, 20, $--b-main-gray-color);
   line-height: 20px;

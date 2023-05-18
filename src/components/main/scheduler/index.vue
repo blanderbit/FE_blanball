@@ -68,41 +68,11 @@
 
               <template #title>
                 <div class="c-inline-cal-title">
-                  <vue-cal
-                    :small="inlineCalendarConfig.title.small"
-                    :xsmall="inlineCalendarConfig.title.xsmall"
-                    :time="inlineCalendarConfig.title.time"
-                    :hide-view-selector="
-                      inlineCalendarConfig.title.hideViewSelector
-                    "
-                    :hide-title-bar="inlineCalendarConfig.title.hideTitleBar"
-                    :hide-body="inlineCalendarConfig.title.hideBody"
-                    :active-view="inlineCalendarConfig.title.activeView"
-                    :events-count-on-year-view="
-                      inlineCalendarConfig.title.eventsCountOnYearView
-                    "
-                    :locale="inlineCalendarConfig.title.locale"
-                    :disable-views="inlineCalendarConfig.title.disableViews"
-                    :selected-date="inlineCalendarConfig.title.selectedDate"
-                  >
+                  <SchedulerInlineCalendarTitle>
                     <template #title="{ title }">
-                      <div class="c-title">
-                        {{ removeYearFromDate(title) }}
-                      </div>
+                      {{ removeYearFromDate(title) }}
                     </template>
-                    <template #arrow-prev>
-                      <img
-                        src="../../../assets/img/scheduler/arrow-left.svg"
-                        alt=""
-                      />
-                    </template>
-                    <template #arrow-next>
-                      <img
-                        src="../../../assets/img/scheduler/arrow-right.svg"
-                        alt=""
-                      />
-                    </template>
-                  </vue-cal>
+                  </SchedulerInlineCalendarTitle>
                 </div>
               </template>
               <template #scheduled-events="{ date }">
@@ -122,7 +92,7 @@
               </template>
             </VueInlineCalendar>
             <div
-              v-if="inlineCalendarConfig.visible"
+              v-if="schedulerConfig.isScheduledEventsShow"
               class="c-schduled-events-list"
               :id="scheduledEventsHeight"
               :style="scheduledEventsHeight"
@@ -131,6 +101,18 @@
                 :date="formatDate(inlineCalendarConfig.selectedDate)"
                 :userData="activatedUserInSidebarData"
                 :scheduledEventsDotsData="scheduledEventsDotsData"
+              />
+            </div>
+
+            <div
+              v-if="schedulerConfig.isFriendsListShow"
+              class="c-friends-list"
+              :style="scheduledEventsHeight"
+            >
+              <SchedulerFriendsList
+                :activeUserId="activeUserId"
+                :searchValue="searchFriendsValue"
+                @activateUser="activateUser"
               />
             </div>
           </div>
@@ -190,7 +172,10 @@
               :borderColor="'#DFDEED'"
             />
           </div>
-          <SchedulerTabs />
+          <SchedulerTabs
+            :selectedTabId="sidebarSelectedTabId"
+            @switchTab="switchTab"
+          />
         </div>
       </div>
     </div>
@@ -211,6 +196,8 @@ import WhiteBtn from '../../shared/button/WhiteBtn.vue';
 import ScheduledEventsDots from './ScheduledEventsDots.vue';
 import SchedulerTabs from './SchedulerTabs.vue';
 import ScheduledEventsList from './ScheduledEventsList.vue';
+import SchedulerFriendsList from './SchedulerFriendsList.vue';
+import SchedulerInlineCalendarTitle from './SchedulerInlineCalendarTitle.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
@@ -230,14 +217,6 @@ import closeIcon from '../../../assets/img/scheduler/close-icton.svg';
 import goBackIcon from '../../../assets/img/back-arrow.svg';
 import grayClockIcon from '../../../assets/img/scheduler/gray-clock.svg';
 
-const SCHEDULER_ACTIVE_VIEWS = {
-  DAY: 'day',
-  WEEK: 'week',
-  MONTH: 'month',
-  YEAR: 'year',
-  YEARS: 'years',
-};
-
 export default {
   name: 'VueScheduler',
   components: {
@@ -246,6 +225,8 @@ export default {
     VueInlineCalendar,
     ScheduledEventsDots,
     ScheduledEventsList,
+    SchedulerInlineCalendarTitle,
+    SchedulerFriendsList,
     SchedulerTabs,
     WhiteBtn,
   },
@@ -284,6 +265,7 @@ export default {
         contextMenuItems: CONSTS.scheduler.contextMenuItems,
         dates: CONSTS.dates,
         sideBarTabs: CONSTS.scheduler.TABS_ENUM,
+        schedulerActiveViews: CONSTS.scheduler.SCHEDULER_ACTIVE_VIEWS,
       };
     });
 
@@ -299,7 +281,8 @@ export default {
 
     const isTopPlanEventButtonVisible = computed(() => {
       return (
-        schedulerConfig.value.activeView === SCHEDULER_ACTIVE_VIEWS.DAY &&
+        schedulerConfig.value.activeView ===
+          mockData.value.schedulerActiveViews.DAY &&
         sidebarSelectedTabId.value ===
           mockData.value.sideBarTabs.FRIENDS_PLANNED
       );
@@ -318,22 +301,31 @@ export default {
     });
 
     const schedulerCommonBlockStyle = computed(() => {
+      const isScheduledEventsShow = schedulerConfig.value.isScheduledEventsShow;
+      const isFriendsListShow = schedulerConfig.value.isFriendsListShow;
+      const isSmallMobile = isMobileSmall.value;
+
+      const height = isScheduledEventsShow
+        ? isSmallMobile
+          ? '636px'
+          : '636px'
+        : isFriendsListShow
+        ? '736px'
+        : isSmallMobile
+        ? 'fit-content'
+        : '636px';
+
       return {
         top: `${props.marginTop}px`,
-        height: `${
-          schedulerConfig.value.activeView === SCHEDULER_ACTIVE_VIEWS.MONTH
-            ? isMobileSmall.value
-              ? 'fit-content'
-              : '636px'
-            : '636px'
-        }`,
+        height,
       };
     });
 
     const scheduledBottomBlockStyle = computed(() => {
       return {
         'margin-top': `${
-          schedulerConfig.value.activeView === SCHEDULER_ACTIVE_VIEWS.MONTH
+          schedulerConfig.value.activeView ===
+          mockData.value.schedulerActiveViews.MONTH
             ? isMobileSmall.value
               ? 12
               : 16
@@ -361,24 +353,6 @@ export default {
       locale: 'uk',
       showButtons: false,
       disablePastDays: true,
-      title: {
-        small: false,
-        xsmall: true,
-        time: false,
-        hideViewSelector: true,
-        hideTitleBar: false,
-        hideBody: false,
-        activeView: SCHEDULER_ACTIVE_VIEWS.MONTH,
-        eventsCountOnYearView: false,
-        locale: 'uk',
-        disableViews: [
-          SCHEDULER_ACTIVE_VIEWS.WEEK,
-          SCHEDULER_ACTIVE_VIEWS.DAY,
-          SCHEDULER_ACTIVE_VIEWS.YEAR,
-          SCHEDULER_ACTIVE_VIEWS.YEARS,
-        ],
-        selectedDate: '',
-      },
     });
 
     const schedulerConfig = ref({
@@ -388,13 +362,15 @@ export default {
       hideViewSelector: true,
       hideTitleBar: false,
       hideBody: false,
-      activeView: SCHEDULER_ACTIVE_VIEWS.MONTH,
+      activeView: mockData.value.schedulerActiveViews.MONTH,
       eventsCountOnYearView: false,
+      isScheduledEventsShow: false,
+      isFriendsListShow: false,
       locale: 'uk',
       disableViews: [
-        SCHEDULER_ACTIVE_VIEWS.WEEK,
-        SCHEDULER_ACTIVE_VIEWS.YEAR,
-        SCHEDULER_ACTIVE_VIEWS.YEARS,
+        mockData.value.schedulerActiveViews.WEEK,
+        mockData.value.schedulerActiveViews.YEAR,
+        mockData.value.schedulerActiveViews.YEARS,
       ],
       selectedDate: '',
     });
@@ -404,13 +380,38 @@ export default {
     }
 
     function backToTheMonthView() {
-      configureScheduler(SCHEDULER_ACTIVE_VIEWS.MONTH);
-      schedulerConfig.value.activeView = SCHEDULER_ACTIVE_VIEWS.MONTH;
+      schedulerConfig.value.activeView =
+        mockData.value.schedulerActiveViews.MONTH;
+      configureScheduler(mockData.value.schedulerActiveViews.MONTH);
+    }
+
+    function switchTab(tabId) {
+      if (sidebarSelectedTabId.value !== tabId) {
+        sidebarSelectedTabId.value = tabId;
+
+        switch (sidebarSelectedTabId.value) {
+          case mockData.value.sideBarTabs.FRIENDS_PLANNED: {
+            configureScheduler(mockData.value.schedulerActiveViews.DAY);
+            schedulerConfig.value.isFriendsListShow = true;
+            schedulerConfig.value.isScheduledEventsShow = false;
+            schedulerConfig.value.activeView =
+              mockData.value.schedulerActiveViews.DAY;
+            break;
+          }
+          case mockData.value.sideBarTabs.MY_PLANNED: {
+            configureScheduler(mockData.value.schedulerActiveViews.MONTH);
+            schedulerConfig.value.isFriendsListShow = false;
+            schedulerConfig.value.activeView =
+              mockData.value.schedulerActiveViews.MONTH;
+            break;
+          }
+        }
+      }
     }
 
     function configureScheduler(data) {
       switch (data.view) {
-        case SCHEDULER_ACTIVE_VIEWS.MONTH: {
+        case mockData.value.schedulerActiveViews.MONTH: {
           schedulerConfig.value.small = false;
           schedulerConfig.value.xsmall = true;
           schedulerConfig.value.hideBody = false;
@@ -425,7 +426,7 @@ export default {
           }
           break;
         }
-        case SCHEDULER_ACTIVE_VIEWS.DAY: {
+        case mockData.value.schedulerActiveViews.DAY: {
           schedulerConfig.value.small = true;
           schedulerConfig.value.xsmall = false;
           schedulerConfig.value.hideBody = true;
@@ -447,17 +448,30 @@ export default {
     function setSchedulerDatesRangeAndLoadData(e) {
       configureScheduler(e);
 
-      if (e.view === SCHEDULER_ACTIVE_VIEWS.MONTH) {
-        schedulerStartDate.value = cloneDeep(e.firstCellDate);
-        schedulerEndDate.value = cloneDeep(e.lastCellDate);
-        getScheduledEventsDotsData(
-          userStore.user.id,
-          formatDate(schedulerStartDate.value),
-          formatDate(schedulerEndDate.value)
-        );
+      switch (e.view) {
+        case mockData.value.schedulerActiveViews.MONTH: {
+          schedulerStartDate.value = cloneDeep(e.firstCellDate);
+          schedulerEndDate.value = cloneDeep(e.lastCellDate);
+          getScheduledEventsDotsData(
+            userStore.user.id,
+            formatDate(schedulerStartDate.value),
+            formatDate(schedulerEndDate.value)
+          );
 
-        inlineCalendarConfig.value.specMinDate = schedulerStartDate.value;
-        inlineCalendarConfig.value.specMaxDate = schedulerEndDate.value;
+          schedulerConfig.value.isScheduledEventsShow = false;
+          schedulerConfig.value.isFriendsListShow = false;
+          inlineCalendarConfig.value.specMinDate = schedulerStartDate.value;
+          inlineCalendarConfig.value.specMaxDate = schedulerEndDate.value;
+          break;
+        }
+
+        case mockData.value.schedulerActiveViews.DAY: {
+          if (!schedulerConfig.value.isFriendsListShow) {
+            schedulerConfig.value.isScheduledEventsShow = true;
+
+            console.log(schedulerConfig.value.isScheduledEventsShow);
+          }
+        }
       }
     }
 
@@ -520,7 +534,6 @@ export default {
       isThreeDotsShown,
       schedulerConfig,
       mockData,
-      SCHEDULER_ACTIVE_VIEWS,
       scheduledEventsDotsData,
       hideBtnConfig,
       scheduledBottomBlockStyle,
@@ -529,6 +542,7 @@ export default {
       inlineCalendarActiveDateDotsColor,
       inlineCalendarConfig,
       isTopPlanEventButtonVisible,
+      sidebarSelectedTabId,
       activatedUserInSidebarData,
       scheduledEventsHeight,
       schedulerCommonBlockStyle,
@@ -536,6 +550,7 @@ export default {
       maxDotsCount,
       icons,
       formatDate,
+      switchTab,
       setSchedulerDatesRangeAndLoadData,
       friendsBlockSwitcher,
       removeYearFromDate,
@@ -576,6 +591,7 @@ $color-e9fcfb: #e9fcfb;
   .c-tabs {
     margin-bottom: 0px;
     margin-top: 8px;
+    height: 40px;
 
     @include beforeDesktop {
       width: 464px;
@@ -590,6 +606,19 @@ $color-e9fcfb: #e9fcfb;
 
 .c-schduled-events-list {
   overflow: scroll;
+}
+
+.c-friends-list {
+  overflow: scroll;
+  display: none;
+
+  :deep(.c-user-card) {
+    width: 100%;
+  }
+
+  @include beforeDesktop {
+    display: block;
+  }
 }
 
 .c-scheduler-wrapper {
@@ -703,6 +732,12 @@ $color-e9fcfb: #e9fcfb;
 
         @include mobile {
           height: fit-content;
+        }
+
+        :deep {
+          .vuecal__flex.vuecal.vuecal--day-view.vuecal--uk.vuecal--no-time.vuecal--small.vuecal--has-touch {
+            display: none;
+          }
         }
 
         .c-inline-cal-title {
