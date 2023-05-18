@@ -21,6 +21,7 @@ import './workers/map-worker/map.init';
 import { UA_LANGUAGE } from './i18n/ua';
 
 import './assets/styles/main.scss';
+import './assets/styles/normalize.scss';
 import 'v-calendar/dist/style.css';
 import 'vue3-virtual-scroller/dist/vue3-virtual-scroller.css';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
