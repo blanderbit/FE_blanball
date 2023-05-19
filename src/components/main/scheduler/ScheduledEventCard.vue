@@ -1,32 +1,48 @@
 <template>
   <div
-    :class="[
-      'c-scheduled-event',
-      eventData.status,
-      { selected: eventData.id === selectedEventId },
-    ]"
+    :class="['c-scheduled-event', eventData.status, { opened: isEventOpened }]"
+    @click="$emit('openEvent', eventData.id)"
   >
-    <div class="c-event-main-info">
-      <div class="c-event-type">
-        {{ $t('events.friendly-match') }}
+    <div :class="['c-scheduled-event-top-side', { opened: isEventOpened }]">
+      <div class="c-event-main-info">
+        <div class="c-event-type">
+          {{ $t('events.friendly-match') }}
+        </div>
+        <div class="c-event-time">
+          {{ eventData.time }} –
+          {{ eventData.end_time }}
+        </div>
       </div>
-      <div class="c-event-time">
-        {{ eventData.time }} –
-        {{ eventData.end_time }}
+      <div class="c-manage-event-block">
+        <img
+          :src="getEventCrossIcon(eventData.status)"
+          alt=""
+          @click="$emit('declineEvent', eventData)"
+        />
       </div>
     </div>
-    <div class="c-manage-event-block">
-      <img
-        :src="getEventCrossIcon(eventData.status)"
-        alt=""
-        @click="$emit('declineEvent', eventData)"
-      />
+    <div v-if="isEventOpened" class="c-scheduled-event-main-side">
+      <div class="c-main-side__top-block">
+        <div class="c-event-name">{{ eventData.name }}</div>
+      </div>
+      <div class="c-main-side__center-block">
+        <div class="c-main-side__participants">
+          <span>Учасники</span>
+          <div class="c-participants__list">
+            {{ eventData }}
+            <UserAvatar
+            />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { computed } from 'vue';
+
+import UserAvatar from '../../shared/userAvatar/UserAvatar.vue'
 
 import grayCrossIcon from '../../../assets/img/gray-cross.svg';
 import blackCrossIcon from '../../../assets/img/cross.svg';
@@ -44,12 +60,16 @@ export default {
       type: Object,
       default: () => {},
     },
-    selectedEventId: {
+    openedEventId: {
       type: Number,
       default: 0,
     },
   },
-  setup() {
+  components: {
+    UserAvatar,
+  },
+  emits: ['openEvent'],
+  setup(props) {
     const icons = computed(() => {
       return {
         cross: {
@@ -74,7 +94,12 @@ export default {
       }
     };
 
+    const isEventOpened = computed(() => {
+      return props.openedEventId === props.eventData.id;
+    });
+
     return {
+      isEventOpened,
       getEventCrossIcon,
     };
   },
@@ -85,10 +110,7 @@ export default {
 .c-scheduled-event {
   width: 100%;
   border-radius: 6px;
-  display: flex;
-  align-items: center;
   padding: 12px;
-  justify-content: space-between;
   cursor: pointer;
   margin-top: 12px;
   &.Planned {
@@ -115,6 +137,44 @@ export default {
     .c-event-main-info {
       @include inter(14px, 400, #a8a8bd);
     }
+  }
+
+  .c-scheduled-event-top-side {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &.opened {
+      padding-bottom: 12px;
+    }
+  }
+
+  .c-scheduled-event-main-side {
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f4;
+
+    .c-main-side__top-block {
+      .c-event-name {
+        @include exo(18px, 700);
+        line-height: 24px;
+      }
+    }
+    .c-main-side__center-block {
+      padding: 16px;
+      background: #f9f9fc;
+      border-radius: 6px;
+      margin-top: 12px;
+
+      .c-main-side__participants {
+        span {
+          @include inter(13px, 400, $--b-main-gray-color);
+          line-height: 20px;
+        }
+      }
+    }
+  }
+
+  &.opened {
   }
 
   .c-event-main-info {

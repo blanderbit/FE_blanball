@@ -20,9 +20,7 @@
         @infinite="loadDataPaginationData(paginationPage + 1, $event)"
       >
         <template #complete>
-          <div class="c-no-results">
-            {{ $t('errors.no-results') }}
-          </div>
+          <SchedulerNoUsersCard v-if="!paginationElements.length" />
           <ScrollToTop
             :element-length="paginationElements"
             :is-scroll-top-exist="blockScrollToTopIfExist"
@@ -41,6 +39,7 @@ import SmartList from '../../../components/shared/smartList/SmartList.vue';
 import ScrollToTop from '../../ScrollToTop.vue';
 import InfiniteLoading from '../../main/infiniteLoading/InfiniteLoading.vue';
 import SchedulerUserCard from './SchedulerUserCard.vue';
+import SchedulerNoUsersCard from './SchedulerNoUsersCard.vue';
 
 import { v4 as uuid } from 'uuid';
 
@@ -55,6 +54,7 @@ export default {
     ScrollToTop,
     InfiniteLoading,
     SchedulerUserCard,
+    SchedulerNoUsersCard,
   },
   props: {
     searchValue: {

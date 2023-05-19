@@ -104,6 +104,7 @@ export default {
     const selectedTabId = ref(CONSTS.scheduler.TABS_ENUM.MY_PLANNED);
     const userStore = useUserDataStore();
     const activeUserId = ref(userStore.user.id);
+    const usersList = ref(null);
 
     const mockData = computed(() => {
       return {
@@ -143,8 +144,11 @@ export default {
       BlanballEventBus.emit('deactivateUser');
     }
 
-    BlanballEventBus.on('schedulerSidebarForceSwitchTab', (tabId, userData) => {
-      switchTab(tabId);
+    BlanballEventBus.on('schedulerSidebarForceSwitchTab', (data) => {
+      switchTab(data.tabId);
+      if (data.userData) {
+        activateUser(data.userData);
+      }
     });
 
     onBeforeUnmount(() => {

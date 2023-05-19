@@ -28,8 +28,9 @@
           <ScheduledEventCard
             :key="slotProps.index"
             :eventData="slotProps.smartListItem"
-            :selectedEventId="selectedEventId"
+            :openedEventId="openedEventId"
             @declineEvent="declineEvent"
+            @openEvent="openEvent"
           />
         </template>
         <template #after>
@@ -106,7 +107,7 @@ export default {
     const submitModalConfig = ref({});
     const { t } = useI18n();
     const declineEventData = ref({});
-    const selectedEventId = ref(0);
+    const openedEventId = ref(0);
     const triggerForRestart = ref(false);
 
     const blockScrollToTopIfExist = ref(false);
@@ -151,6 +152,10 @@ export default {
     const deleteEvent = async () => {
       await API.EventService.deleteEvents([declineEventData.value.id]);
       closeSubmitModal();
+    };
+
+    const openEvent = (eventId) => {
+      openedEventId.value = eventId;
     };
 
     const showSubmitModal = () => {
@@ -225,11 +230,12 @@ export default {
       triggerForRestart,
       submitModalConfig,
       blockScrollToTopIfExist,
-      selectedEventId,
+      openedEventId,
       closeSubmitModal,
       loadDataPaginationData,
       deleteEvent,
       showSubmitModal,
+      openEvent,
       declineEvent,
       scrollToFirstElement: () => {
         refList.value.scrollToFirstElement();

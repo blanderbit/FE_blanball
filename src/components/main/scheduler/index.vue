@@ -525,6 +525,12 @@ export default {
       return splitedTitle.join(' ');
     }
 
+    function activateUser(userData) {
+      activatedUserInSidebarData.value = userData;
+      schedulerConfig.value.isFriendsListShow = false;
+      schedulerConfig.value.isScheduledEventsShow = true;
+    }
+
     BlanballEventBus.on('activateUserInScheduler', (userData) => {
       activatedUserInSidebarData.value = userData;
       getScheduledEventsDotsData(
@@ -580,11 +586,10 @@ export default {
               schedulerConfig.value.isScheduledEventsShow = true;
               sidebarSelectedTabId.value =
                 mockData.value.sideBarTabs.FRIENDS_PLANNED;
-              activatedUserInSidebarData.value = null;
-              BlanballEventBus.emit(
-                'schedulerSidebarForceSwitchTab',
-                mockData.value.sideBarTabs.FRIENDS_PLANNED
-              );
+              BlanballEventBus.emit('schedulerSidebarForceSwitchTab', {
+                tabId: mockData.value.sideBarTabs.FRIENDS_PLANNED,
+                userData: activatedUserInSidebarData.value,
+              });
             }
             break;
           }
@@ -613,6 +618,7 @@ export default {
       maxDotsCount,
       icons,
       formatDate,
+      activateUser,
       switchTab,
       setSchedulerDatesRangeAndLoadData,
       friendsBlockSwitcher,
