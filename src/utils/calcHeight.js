@@ -4,7 +4,7 @@ import { BlanballEventBus } from '../workers/event-bus-worker';
 export const setHeightVH = () => {
   const doc = document.documentElement;
   doc.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
-};
+}
 
 export const calcHeight = (
   defaultHeights = [],

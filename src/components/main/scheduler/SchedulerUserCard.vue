@@ -1,6 +1,11 @@
 <template>
   <div
-    :class="['c-user-card', { active: isActive }, type]"
+    :class="[
+      'c-user-card',
+      { active: isActive },
+      type,
+      `c-scheduler-user-${userData.id}`,
+    ]"
     @click="$emit('clickByUser', userData)"
   >
     <div class="c-user">

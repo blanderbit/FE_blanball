@@ -1,6 +1,6 @@
 <template>
-  <slot name="title"></slot>
   <div ref="root" class="inline-calendar">
+    <slot name="title"></slot>
     <ul
       v-dragscroll.x
       @dragscrollmove="disableDateSelection"
@@ -90,6 +90,10 @@ export default {
     daysRange: {
       type: Number,
       default: 7,
+    },
+    loadDatesCount: {
+      type: Number,
+      default: 42,
     },
     itemWidth: {
       type: Number,
@@ -242,10 +246,13 @@ export default {
       // getting initial list of dates
       fillCalendar();
       nextTick(() => {
-        const todayItem = root.value.querySelector('.date-item.today');
-        todayItem.scrollIntoView({
-          inline: 'start',
-        });
+        const activeItem = root.value.querySelector('.date-item.active');
+
+        if (activeItem) {
+          activeItem.scrollIntoView({
+            inline: 'start',
+          });
+        }
       });
     });
     onBeforeUnmount(() => {
@@ -258,11 +265,8 @@ export default {
       if (dates.value.length) {
         dates.value = [];
       }
-      const rangeInitial = Math.ceil(
-        windowWidth.value / ((props.itemWidth - props.itemsGap) * 2)
-      );
-      getNextDatesInRange(new Date(), rangeInitial, false);
-      getPrevDatesInRange(new Date(), rangeInitial, true);
+      getNextDatesInRange(new Date(), props.loadDatesCount, false);
+      getPrevDatesInRange(new Date(), props.loadDatesCount, true);
     };
     const getPrevDatesInRange = (startDate, days, excludeFirstDate = false) => {
       const date = new Date(startDate.getTime());
@@ -429,11 +433,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@import '../../../assets/styles/inline-calendar/main.css';
 .inline-calendar {
-  display: flex;
   margin-bottom: 8px;
   padding: 0 10px;
-  background: #F9F9FC;
+  background: #f9f9fc;
 
   &__dates {
     display: flex;
@@ -449,6 +453,7 @@ export default {
       margin-left: -10px;
       margin-right: -10px;
       padding: 8px 10px;
+      padding-top: 0px;
       list-style-type: none;
       -ms-overflow-style: none;
       scrollbar-width: none;

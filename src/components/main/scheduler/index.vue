@@ -1,7 +1,10 @@
 <template>
   <div @click.self="$emit('closeWindow')" class="c-scheduler-wrapper">
-    <div class="c-common-block"
-      :style="`top: ${marginTop}px`">
+    <div
+      class="c-common-block"
+      :style="schedulerCommonBlockStyle"
+      ref="schedulerCommonBlock"
+    >
       <!-- Sidebar Slot -->
       <slot
         name="LeftSidebar"
@@ -15,7 +18,7 @@
             <div class="c-current-date">
               {{ $t('scheduler.today-date') }} <span>{{ todayDate }}</span>
             </div>
-            <div v-if="isTopPlanEventButtonVisible" class="c-plan-event-button">
+            <!-- <div v-if="isTopPlanEventButtonVisible" class="c-plan-event-button">
               <WhiteBtn
                 :text="$t('scheduler.plan-event')"
                 :width="192"
@@ -25,7 +28,7 @@
                 :isBorder="true"
                 :borderColor="'#DFDEED'"
               />
-            </div>
+            </div> -->
           </div>
           <img
             class="c-hide-btn"
@@ -35,50 +38,84 @@
           />
         </div>
         <div class="c-scheduler-block">
-          <VueInlineCalendar
-            v-if="inlineCalendarConfig.visible"
-            :enableMousewheelScroll="
-              inlineCalendarConfig.enableMousewheelScroll
-            "
-            v-model:selectedDate="inlineCalendarConfig.selectedDate"
-            :specMinDate="inlineCalendarConfig.specMinDate"
-            :specMaxDate="inlineCalendarConfig.specMaxDate"
-            :showYear="inlineCalendarConfig.showYear"
-            :showMonth="inlineCalendarConfig.showMonth"
-            :itemWidth="inlineCalendarConfig.itemWidth"
-            :locale="inlineCalendarConfig.locale"
-            :showButtons="inlineCalendarConfig.showButtons"
-          >
-            <template #prev-button>
-              <img src="../../../assets/img/scheduler/arrow-left.svg" alt="" />
-            </template>
-            <template #next-button>
-              <img src="../../../assets/img/scheduler/arrow-right.svg" alt="" />
-            </template>
+          <div class="c-sheduled-content-on-specific-day">
+            <VueInlineCalendar
+              v-if="inlineCalendarConfig.visible"
+              :enableMousewheelScroll="
+                inlineCalendarConfig.enableMousewheelScroll
+              "
+              v-model:selectedDate="inlineCalendarConfig.selectedDate"
+              :specMinDate="inlineCalendarConfig.specMinDate"
+              :specMaxDate="inlineCalendarConfig.specMaxDate"
+              :showYear="inlineCalendarConfig.showYear"
+              :showMonth="inlineCalendarConfig.showMonth"
+              :itemWidth="inlineCalendarConfig.itemWidth"
+              :locale="inlineCalendarConfig.locale"
+              :showButtons="inlineCalendarConfig.showButtons"
+            >
+              <template #prev-button>
+                <img
+                  src="../../../assets/img/scheduler/arrow-left.svg"
+                  alt=""
+                />
+              </template>
+              <template #next-button>
+                <img
+                  src="../../../assets/img/scheduler/arrow-right.svg"
+                  alt=""
+                />
+              </template>
 
-            <template #title> </template>
-            <template #scheduled-events="{ date }">
-              <ScheduledEventsDots
-                :dotsCount="
-                  scheduledEventsDotsData[formatDate(date.date)]
-                    ?.user_scheduled_events_count
-                "
-                :maxDotsCount="maxDotsCount"
-                :dotsColor="
-                  formatDate(date.date) ===
-                  formatDate(inlineCalendarConfig.selectedDate)
-                    ? inlineCalendarActiveDateDotsColor
-                    : dotsColor
-                "
+              <template #title>
+                <div class="c-inline-cal-title">
+                  <SchedulerInlineCalendarTitle>
+                    <template #title="{ title }">
+                      {{ removeYearFromDate(title) }}
+                    </template>
+                  </SchedulerInlineCalendarTitle>
+                </div>
+              </template>
+              <template #scheduled-events="{ date }">
+                <ScheduledEventsDots
+                  :dotsCount="
+                    scheduledEventsDotsData[formatDate(date.date)]
+                      ?.user_scheduled_events_count
+                  "
+                  :maxDotsCount="maxDotsCount"
+                  :dotsColor="
+                    formatDate(date.date) ===
+                    formatDate(inlineCalendarConfig.selectedDate)
+                      ? inlineCalendarActiveDateDotsColor
+                      : dotsColor
+                  "
+                />
+              </template>
+            </VueInlineCalendar>
+            <div
+              v-if="schedulerConfig.isScheduledEventsShow"
+              class="c-schduled-events-list"
+              :id="scheduledEventsHeight"
+              :style="scheduledEventsHeight"
+            >
+              <ScheduledEventsList
+                :date="formatDate(inlineCalendarConfig.selectedDate)"
+                :userData="activatedUserInSidebarData"
+                :scheduledEventsDotsData="scheduledEventsDotsData"
               />
-            </template>
-          </VueInlineCalendar>
-          <ScheduledEventsList
-            v-if="inlineCalendarConfig.visible"
-            :date="formatDate(inlineCalendarConfig.selectedDate)"
-            :userData="activatedUserInSidebarData"
-            :scheduledEventsDotsData="scheduledEventsDotsData"
-          />
+            </div>
+
+            <div
+              v-if="schedulerConfig.isFriendsListShow"
+              class="c-friends-list"
+              :style="scheduledEventsHeight"
+            >
+              <SchedulerFriendsList
+                :activeUserId="activeUserId"
+                :searchValue="searchFriendsValue"
+                @activateUser="activateUser"
+              />
+            </div>
+          </div>
           <vue-cal
             :small="schedulerConfig.small"
             :xsmall="schedulerConfig.xsmall"
@@ -124,7 +161,7 @@
             </template>
           </vue-cal>
         </div>
-        <div class="c-scheduler-bottom-side">
+        <div class="c-scheduler-bottom-side" :style="scheduledBottomBlockStyle">
           <div class="c-plan-event-button">
             <WhiteBtn
               :text="$t('scheduler.plan-event')"
@@ -135,6 +172,10 @@
               :borderColor="'#DFDEED'"
             />
           </div>
+          <SchedulerTabs
+            :selectedTabId="sidebarSelectedTabId"
+            @switchTab="switchTab"
+          />
         </div>
       </div>
     </div>
@@ -153,7 +194,10 @@ import VueInlineCalendar from '../inlineCalendar/index.vue';
 import ContextModal from '../../shared/modals/ContextModal.vue';
 import WhiteBtn from '../../shared/button/WhiteBtn.vue';
 import ScheduledEventsDots from './ScheduledEventsDots.vue';
+import SchedulerTabs from './SchedulerTabs.vue';
 import ScheduledEventsList from './ScheduledEventsList.vue';
+import SchedulerFriendsList from './SchedulerFriendsList.vue';
+import SchedulerInlineCalendarTitle from './SchedulerInlineCalendarTitle.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
@@ -165,20 +209,14 @@ import { BlanballEventBus } from '../../../workers/event-bus-worker';
 
 import { CONSTS } from '../../../consts';
 import { useWindowWidth } from '../../../utils/widthScreen';
+import { useElementSize } from '@vueuse/core';
+import { calcHeight } from '../../../utils/calcHeight';
 
 import 'vue-cal/dist/vuecal.css';
 
 import closeIcon from '../../../assets/img/scheduler/close-icton.svg';
 import goBackIcon from '../../../assets/img/back-arrow.svg';
 import grayClockIcon from '../../../assets/img/scheduler/gray-clock.svg';
-
-const SCHEDULER_ACTIVE_VIEWS = {
-  DAY: 'day',
-  WEEK: 'week',
-  MONTH: 'month',
-  YEAR: 'year',
-  YEARS: 'years',
-};
 
 export default {
   name: 'VueScheduler',
@@ -188,6 +226,9 @@ export default {
     VueInlineCalendar,
     ScheduledEventsDots,
     ScheduledEventsList,
+    SchedulerInlineCalendarTitle,
+    SchedulerFriendsList,
+    SchedulerTabs,
     WhiteBtn,
   },
   props: {
@@ -197,8 +238,8 @@ export default {
     },
     marginTop: {
       type: Number,
-      default: 80
-    }
+      default: 80,
+    },
   },
   emits: ['closeWindow'],
   setup(props, { emit }) {
@@ -210,6 +251,13 @@ export default {
     const inlineCalendarActiveDateDotsColor = ref('#fff');
     const userStore = useUserDataStore();
     const activatedUserInSidebarData = ref(userStore.user);
+    const schedulerCommonBlock = ref();
+    const hideBtnConfig = ref({});
+
+    const { height: schedulerCommonBlockHeight } =
+      useElementSize(schedulerCommonBlock);
+    const { isTablet, isMobile, isMobileSmall, detectedDevice, DEVICE_TYPES } =
+      useWindowWidth();
 
     const schedulerStartDate = ref(null);
     const schedulerEndDate = ref(null);
@@ -219,6 +267,7 @@ export default {
         contextMenuItems: CONSTS.scheduler.contextMenuItems,
         dates: CONSTS.dates,
         sideBarTabs: CONSTS.scheduler.TABS_ENUM,
+        schedulerActiveViews: CONSTS.scheduler.SCHEDULER_ACTIVE_VIEWS,
       };
     });
 
@@ -234,10 +283,79 @@ export default {
 
     const isTopPlanEventButtonVisible = computed(() => {
       return (
-        schedulerConfig.value.activeView === SCHEDULER_ACTIVE_VIEWS.DAY &&
+        schedulerConfig.value.activeView ===
+          mockData.value.schedulerActiveViews.DAY &&
         sidebarSelectedTabId.value ===
           mockData.value.sideBarTabs.FRIENDS_PLANNED
       );
+    });
+
+    const scheduledEventsHeight = computed(() => {
+      return {
+        height: `${
+          schedulerCommonBlockHeight.value -
+          32 -
+          130 -
+          (isTablet.value || isMobile.value ? 66 : 0) -
+          (isTablet.value || (isMobile.value && !isMobileSmall.value) ? 32 : 0)
+        }px`,
+      };
+    });
+
+    const { calculatedHeight: schedulerCommonBlockCalculatedHeight } =
+      calcHeight(240);
+
+    const schedulerCommonBlockStyle = computed(() => {
+      const desktopMinHeight = 520;
+      const tabletMinHeight = 495;
+      const mobileMinHeight = 540;
+
+      const selectedMinHeight = computed(() => {
+        switch (detectedDevice.value) {
+          case DEVICE_TYPES.MOBILE_SMALL: {
+            return mobileMinHeight;
+          }
+          case DEVICE_TYPES.MOBILE || DEVICE_TYPES.TABLET: {
+            return tabletMinHeight;
+          }
+          case DEVICE_TYPES.DESKTOP: {
+            return desktopMinHeight;
+          }
+        }
+      });
+
+      const height = computed(() => {
+        if (schedulerConfig.value.isScheduledEventsShow) {
+          return isMobileSmall.value
+            ? schedulerCommonBlockCalculatedHeight.value
+            : schedulerCommonBlockCalculatedHeight.value;
+        } else if (schedulerConfig.value.isFriendsListShow) {
+          return schedulerCommonBlockCalculatedHeight.value;
+        } else {
+          return isMobileSmall.value
+            ? mobileMinHeight
+            : schedulerCommonBlockCalculatedHeight.value;
+        }
+      });
+
+      return {
+        top: `${props.marginTop}px`,
+        height: `${height.value}px`,
+        'min-height': `${selectedMinHeight.value}px`,
+      };
+    });
+
+    const scheduledBottomBlockStyle = computed(() => {
+      return {
+        'margin-top': `${
+          schedulerConfig.value.activeView ===
+          mockData.value.schedulerActiveViews.MONTH
+            ? isMobileSmall.value
+              ? 12
+              : 16
+            : 0
+        }px`,
+      };
     });
 
     const todayDate = computed(() => {
@@ -246,8 +364,6 @@ export default {
         mockData.value.dates.monthNames[date.getMonth()]
       }`;
     });
-
-    const hideBtnConfig = ref({});
 
     const inlineCalendarConfig = ref({
       visible: false,
@@ -270,13 +386,15 @@ export default {
       hideViewSelector: true,
       hideTitleBar: false,
       hideBody: false,
-      activeView: SCHEDULER_ACTIVE_VIEWS.MONTH,
+      activeView: mockData.value.schedulerActiveViews.MONTH,
       eventsCountOnYearView: false,
+      isScheduledEventsShow: false,
+      isFriendsListShow: false,
       locale: 'uk',
       disableViews: [
-        SCHEDULER_ACTIVE_VIEWS.WEEK,
-        SCHEDULER_ACTIVE_VIEWS.YEAR,
-        SCHEDULER_ACTIVE_VIEWS.YEARS,
+        mockData.value.schedulerActiveViews.WEEK,
+        mockData.value.schedulerActiveViews.YEAR,
+        mockData.value.schedulerActiveViews.YEARS,
       ],
       selectedDate: '',
     });
@@ -286,13 +404,38 @@ export default {
     }
 
     function backToTheMonthView() {
-      configureScheduler(SCHEDULER_ACTIVE_VIEWS.MONTH);
-      schedulerConfig.value.activeView = SCHEDULER_ACTIVE_VIEWS.MONTH;
+      schedulerConfig.value.activeView =
+        mockData.value.schedulerActiveViews.MONTH;
+      configureScheduler(mockData.value.schedulerActiveViews.MONTH);
+    }
+
+    function switchTab(tabId) {
+      if (sidebarSelectedTabId.value !== tabId) {
+        sidebarSelectedTabId.value = tabId;
+
+        switch (sidebarSelectedTabId.value) {
+          case mockData.value.sideBarTabs.FRIENDS_PLANNED: {
+            configureScheduler(mockData.value.schedulerActiveViews.DAY);
+            schedulerConfig.value.isFriendsListShow = true;
+            schedulerConfig.value.isScheduledEventsShow = false;
+            schedulerConfig.value.activeView =
+              mockData.value.schedulerActiveViews.DAY;
+            break;
+          }
+          case mockData.value.sideBarTabs.MY_PLANNED: {
+            configureScheduler(mockData.value.schedulerActiveViews.MONTH);
+            schedulerConfig.value.isFriendsListShow = false;
+            schedulerConfig.value.activeView =
+              mockData.value.schedulerActiveViews.MONTH;
+            break;
+          }
+        }
+      }
     }
 
     function configureScheduler(data) {
       switch (data.view) {
-        case SCHEDULER_ACTIVE_VIEWS.MONTH: {
+        case mockData.value.schedulerActiveViews.MONTH: {
           schedulerConfig.value.small = false;
           schedulerConfig.value.xsmall = true;
           schedulerConfig.value.hideBody = false;
@@ -307,7 +450,7 @@ export default {
           }
           break;
         }
-        case SCHEDULER_ACTIVE_VIEWS.DAY: {
+        case mockData.value.schedulerActiveViews.DAY: {
           schedulerConfig.value.small = true;
           schedulerConfig.value.xsmall = false;
           schedulerConfig.value.hideBody = true;
@@ -329,17 +472,30 @@ export default {
     function setSchedulerDatesRangeAndLoadData(e) {
       configureScheduler(e);
 
-      if (e.view === SCHEDULER_ACTIVE_VIEWS.MONTH) {
-        schedulerStartDate.value = cloneDeep(e.firstCellDate);
-        schedulerEndDate.value = cloneDeep(e.lastCellDate);
-        getScheduledEventsDotsData(
-          userStore.user.id,
-          formatDate(schedulerStartDate.value),
-          formatDate(schedulerEndDate.value)
-        );
+      switch (e.view) {
+        case mockData.value.schedulerActiveViews.MONTH: {
+          schedulerStartDate.value = cloneDeep(e.firstCellDate);
+          schedulerEndDate.value = cloneDeep(e.lastCellDate);
+          getScheduledEventsDotsData(
+            userStore.user.id,
+            formatDate(schedulerStartDate.value),
+            formatDate(schedulerEndDate.value)
+          );
 
-        inlineCalendarConfig.value.specMinDate = schedulerStartDate.value;
-        inlineCalendarConfig.value.specMaxDate = schedulerEndDate.value;
+          schedulerConfig.value.isScheduledEventsShow = false;
+          schedulerConfig.value.isFriendsListShow = false;
+          inlineCalendarConfig.value.specMinDate = schedulerStartDate.value;
+          inlineCalendarConfig.value.specMaxDate = schedulerEndDate.value;
+          break;
+        }
+
+        case mockData.value.schedulerActiveViews.DAY: {
+          if (!schedulerConfig.value.isFriendsListShow) {
+            schedulerConfig.value.isScheduledEventsShow = true;
+
+            console.log(schedulerConfig.value.isScheduledEventsShow);
+          }
+        }
       }
     }
 
@@ -367,6 +523,12 @@ export default {
       }
 
       return splitedTitle.join(' ');
+    }
+
+    function activateUser(userData) {
+      activatedUserInSidebarData.value = userData;
+      schedulerConfig.value.isFriendsListShow = false;
+      schedulerConfig.value.isScheduledEventsShow = true;
     }
 
     BlanballEventBus.on('activateUserInScheduler', (userData) => {
@@ -397,23 +559,67 @@ export default {
       BlanballEventBus.off('deactivateUser');
     });
 
+    watch(
+      () => detectedDevice.value,
+      (newVal) => {
+        switch (newVal) {
+          case DEVICE_TYPES.MOBILE_SMALL: {
+            break;
+          }
+          case DEVICE_TYPES.MOBILE: {
+            break;
+          }
+          case DEVICE_TYPES.TABLET: {
+            if (
+              sidebarSelectedTabId.value ===
+                mockData.value.sideBarTabs.FRIENDS_PLANNED &&
+              !schedulerConfig.value.isFriendsListShow
+            ) {
+              schedulerConfig.value.isScheduledEventsShow = false;
+              schedulerConfig.value.isFriendsListShow = true;
+            }
+            break;
+          }
+          case DEVICE_TYPES.BETWEEN_TABLET_AND_DESKTOP: {
+            if (schedulerConfig.value.isFriendsListShow) {
+              schedulerConfig.value.isFriendsListShow = false;
+              schedulerConfig.value.isScheduledEventsShow = true;
+              sidebarSelectedTabId.value =
+                mockData.value.sideBarTabs.FRIENDS_PLANNED;
+              BlanballEventBus.emit('schedulerSidebarForceSwitchTab', {
+                tabId: mockData.value.sideBarTabs.FRIENDS_PLANNED,
+                userData: activatedUserInSidebarData.value,
+              });
+            }
+            break;
+          }
+        }
+      }
+    );
+
     return {
       isFriendsVisible,
       isThreeDotsShown,
       schedulerConfig,
       mockData,
-      SCHEDULER_ACTIVE_VIEWS,
       scheduledEventsDotsData,
       hideBtnConfig,
+      scheduledBottomBlockStyle,
+      schedulerCommonBlock,
       todayDate,
       inlineCalendarActiveDateDotsColor,
       inlineCalendarConfig,
       isTopPlanEventButtonVisible,
+      sidebarSelectedTabId,
       activatedUserInSidebarData,
+      scheduledEventsHeight,
+      schedulerCommonBlockStyle,
       dotsColor,
       maxDotsCount,
       icons,
       formatDate,
+      activateUser,
+      switchTab,
       setSchedulerDatesRangeAndLoadData,
       friendsBlockSwitcher,
       removeYearFromDate,
@@ -434,6 +640,11 @@ $color-e9fcfb: #e9fcfb;
       margin-left: -20px;
       padding-right: 0px;
     }
+
+    @include mobile {
+      width: calc(100% + 32px);
+      margin-left: -16px;
+    }
   }
 
   .vuecal__flex[grow] {
@@ -444,6 +655,38 @@ $color-e9fcfb: #e9fcfb;
 
   .vuecal__cell--selected {
     background: transparent;
+  }
+
+  .c-tabs {
+    margin-bottom: 0px;
+    margin-top: 8px;
+    height: 40px;
+
+    @include beforeDesktop {
+      width: 464px;
+      margin: 0 auto;
+      margin-top: 8px;
+    }
+    @include mobile {
+      width: inherit;
+    }
+  }
+}
+
+.c-schduled-events-list {
+  overflow: scroll;
+}
+
+.c-friends-list {
+  overflow: scroll;
+  display: none;
+
+  :deep(.c-user-card) {
+    width: 100%;
+  }
+
+  @include beforeDesktop {
+    display: block;
   }
 }
 
@@ -468,16 +711,45 @@ $color-e9fcfb: #e9fcfb;
       padding: 20px;
       width: 100%;
       border-radius: 0px;
+      border-radius: 0px 0px 12px 12px;
+      padding-bottom: 32px;
     }
 
     @include mobile {
       padding-top: 0px;
+      box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+      border-radius: 0px 0px 12px 12px;
+      padding: 16px;
+      padding-bottom: 32px;
+    }
+
+    .c-scheduler-bottom-side {
+      display: none;
+      @include beforeDesktop {
+        display: block;
+      }
+
+      .c-plan-event-button {
+        :deep(.b_white-btn) {
+          font-weight: 400;
+          margin-bottom: 10px;
+          width: 464px !important;
+          margin: 0 auto;
+
+          @include mobile {
+            width: 100% !important;
+          }
+        }
+      }
     }
 
     .c-right-block {
       z-index: 1;
       background: $--b-main-white-color;
       width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       .c-top-line {
         padding-bottom: 12px;
         position: relative;
@@ -504,6 +776,7 @@ $color-e9fcfb: #e9fcfb;
           .c-plan-event-button {
             :deep(.b_white-btn) {
               font-weight: 400;
+              margin-bottom: 10px;
             }
 
             @include beforeDesktop {
@@ -528,6 +801,21 @@ $color-e9fcfb: #e9fcfb;
 
         @include mobile {
           height: fit-content;
+        }
+
+        :deep {
+          .vuecal__flex.vuecal.vuecal--day-view.vuecal--uk.vuecal--no-time.vuecal--small.vuecal--has-touch {
+            display: none;
+          }
+        }
+
+        .c-inline-cal-title {
+          :deep {
+            .vuecal__weekdays-headings,
+            .vuecal__body {
+              display: none;
+            }
+          }
         }
 
         &::v-deep {
@@ -646,13 +934,6 @@ $color-e9fcfb: #e9fcfb;
                 }
               }
             }
-          }
-        }
-
-        .c-scheduler-bottom-side {
-          display: none;
-          @include beforeDesktop {
-            display: block;
           }
         }
       }

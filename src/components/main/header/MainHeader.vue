@@ -26,13 +26,13 @@
     </div>
 
     <div class="b_header-right-side">
-      <!-- <img
+      <img
         class="b_scheduler_button"
         src="../../../assets/img/calendar.svg"
         alt=""
         :style="`z-index: ${isSchedulerOpened ? 1000 : 0}`"
         @click="$emit('openCloseScheduler')"
-      /> -->
+      />
       <div class="b_header_search-block">
         <div class="b_header_search-input">
           <MainInput

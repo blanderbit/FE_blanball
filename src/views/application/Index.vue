@@ -65,7 +65,7 @@
       <Scheduler
         v-if="isSchedulerOpened"
         :config="schedulerConfig"
-        :marginTop="headerHeightStore.headerHeight"
+        :marginTop="schedulerTopSideMargin"
         @closeWindow="isSchedulerOpened = false"
       >
         <template #LeftSidebar="{ isFriendsVisible, friendsBlockSwitcher }">
@@ -157,6 +157,10 @@ const { width: headerWidth, height: headerHeight } = useElementSize(header);
 
 const isSchedulerSidebarVisible = computed(() => {
   return !isMobile.value && !isTablet.value;
+});
+
+const schedulerTopSideMargin = computed(() => {
+  return isMobile.value || isTablet.value ? headerHeightStore.headerHeight : 80;
 });
 
 const closeEventActiondModal = () => {
@@ -409,6 +413,11 @@ function closeNewVersionModal() {
   VersionHandling.closeVersionModal();
 }
 
+function setHeaderHeightCssVar() {
+  const doc = document.documentElement;
+  doc.style.setProperty('--header-height', headerHeight.value + 'px');
+}
+
 function setHeaderHeight() {
   headerHeightStore.$patch({
     headerHeight: headerHeight.value,
@@ -417,6 +426,7 @@ function setHeaderHeight() {
 
 onMounted(() => {
   setHeaderHeight();
+  setHeaderHeightCssVar();
 });
 
 onBeforeUnmount(() => {
@@ -431,6 +441,7 @@ watch(
   () => headerHeight.value,
   () => {
     setHeaderHeight();
+    setHeaderHeightCssVar();
   }
 );
 

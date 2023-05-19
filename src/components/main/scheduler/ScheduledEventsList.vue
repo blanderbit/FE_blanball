@@ -25,30 +25,13 @@
         v-model:scrollbar-existing="blockScrollToTopIfExist"
       >
         <template #smartListItem="slotProps">
-          <div
-            :class="[
-              'c-scheduled-event',
-              slotProps.smartListItem.status,
-              { selected: slotProps.smartListItem.id === selectedEventId },
-            ]"
-          >
-            <div class="c-event-main-info">
-              <div class="c-event-type">
-                {{ $t('events.friendly-match') }}
-              </div>
-              <div class="c-event-time">
-                {{ slotProps.smartListItem.time }} –
-                {{ slotProps.smartListItem.end_time }}
-              </div>
-            </div>
-            <div class="c-manage-event-block">
-              <img
-                :src="getEventCrossIcon(slotProps.smartListItem.status)"
-                alt=""
-                @click="declineEvent(slotProps.smartListItem)"
-              />
-            </div>
-          </div>
+          <ScheduledEventCard
+            :key="slotProps.index"
+            :eventData="slotProps.smartListItem"
+            :openedEventId="openedEventId"
+            @declineEvent="declineEvent"
+            @openEvent="openEvent"
+          />
         </template>
         <template #after>
           <InfiniteLoading
@@ -56,8 +39,11 @@
             ref="scrollbar"
             @infinite="loadDataPaginationData(paginationPage + 1, $event)"
           >
-            <NoScheduledEvents :userData="userData" />
             <template #complete>
+              <NoScheduledEvents
+                v-if="!paginationElements.length"
+                :userData="userData"
+              />
               <ScrollToTop
                 :element-length="paginationElements"
                 :is-scroll-top-exist="blockScrollToTopIfExist"
@@ -85,22 +71,13 @@ import NotSelectedFriendCard from './NotSelectedFriendCard.vue';
 import SmartList from '../../shared/smartList/SmartList.vue';
 import InfiniteLoading from '../infiniteLoading/InfiniteLoading.vue';
 import ScrollToTop from '../../ScrollToTop.vue';
+import ScheduledEventCard from './ScheduledEventCard.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { PaginationWorker } from '../../../workers/pagination-worker';
 import { getDate } from '../../../utils/getDate';
 import { getTime } from '../../../utils/getTime';
 import { addMinutes } from '../../../utils/addMinutes';
-
-import grayCrossIcon from '../../../assets/img/gray-cross.svg';
-import blackCrossIcon from '../../../assets/img/cross.svg';
-import greenCrossIcon from '../../../assets/img/green-cross.svg';
-
-const EVENT_STATUSES = {
-  PLANNED: 'Planned',
-  ACTIVE: 'Active',
-  FINISHED: 'Finished'
-}
 
 export default {
   components: {
@@ -109,6 +86,7 @@ export default {
     NotSelectedFriendCard,
     SmartList,
     InfiniteLoading,
+    ScheduledEventCard,
     ScrollToTop,
   },
   props: {
@@ -129,37 +107,13 @@ export default {
     const submitModalConfig = ref({});
     const { t } = useI18n();
     const declineEventData = ref({});
-    const selectedEventId = ref(0);
+    const openedEventId = ref(0);
     const triggerForRestart = ref(false);
 
     const blockScrollToTopIfExist = ref(false);
 
     const restartInfiniteScroll = () => {
       triggerForRestart.value = uuid();
-    };
-
-    const icons = computed(() => {
-      return {
-        cross: {
-          greenCross: greenCrossIcon,
-          blackCross: blackCrossIcon,
-          grayCross: grayCrossIcon,
-        },
-      };
-    });
-
-    const getEventCrossIcon = (eventStatus) => {
-      switch (eventStatus) {
-        case EVENT_STATUSES.PLANNED: {
-          return icons.value.cross.blackCross;
-        }
-        case EVENT_STATUSES.ACTIVE: {
-          return icons.value.cross.greenCross;
-        }
-        case EVENT_STATUSES.FINISHED: {
-          return icons.value.cross.grayCross;
-        }
-      }
     };
 
     const {
@@ -170,8 +124,8 @@ export default {
       paginationClearData,
     } = PaginationWorker({
       paginationDataRequest: (page) =>
-        API.SchedulerService.getScheduledEventsDataOnSpecificDay({
-          user_id: props.userData.id,
+        API.EventService.getAllEvents({
+          user_id: props.userData?.id,
           date: props.date,
           page: page,
         }),
@@ -198,6 +152,10 @@ export default {
     const deleteEvent = async () => {
       await API.EventService.deleteEvents([declineEventData.value.id]);
       closeSubmitModal();
+    };
+
+    const openEvent = (eventId) => {
+      openedEventId.value = eventId;
     };
 
     const showSubmitModal = () => {
@@ -265,19 +223,20 @@ export default {
 
     return {
       paginationTotalCount,
+      refList,
       paginationElements,
       isSubmitModalOpened,
       paginationPage,
       triggerForRestart,
       submitModalConfig,
       blockScrollToTopIfExist,
-      selectedEventId,
+      openedEventId,
       closeSubmitModal,
       loadDataPaginationData,
       deleteEvent,
       showSubmitModal,
+      openEvent,
       declineEvent,
-      getEventCrossIcon,
       scrollToFirstElement: () => {
         refList.value.scrollToFirstElement();
       },
@@ -303,48 +262,7 @@ export default {
   }
 }
 .c-scheduled-events__list {
-  .c-scheduled-event {
-    width: 100%;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    padding: 12px;
-    justify-content: space-between;
-    margin-top: 12px;
-    cursor: pointer;
-
-    &.Planned {
-      background: #fcfcfc;
-      border: 1px solid $--b-main-green-color;
-      .c-event-main-info {
-        @include inter(14px, 400);
-      }
-    }
-
-    &.Active {
-      background: #ecfcfb;
-      border: none;
-
-      .c-event-main-info {
-        @include inter(14px, 400, $--b-main-green-color);
-      }
-    }
-
-    &.Finished {
-      background: #f9f9fc;
-      border: none;
-
-      .c-event-main-info {
-        @include inter(14px, 400, #a8a8bd);
-      }
-    }
-
-    .c-event-main-info {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      line-height: 20px;
-    }
-  }
+  overflow-y: scroll;
+  height: 100%;
 }
 </style>
