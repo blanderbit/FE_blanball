@@ -7,6 +7,7 @@ import { LocationService } from './http/http-services/location.service';
 import { VersionsService } from './http/http-services/versions.service';
 import { BugReportsService } from './http/http-services/bug-reports.service';
 import { SchedulerService } from './http/http-services/scheduler.service';
+import { HintsService } from './http/http-services/hints.service';
 
 export class API {
   static AuthorizationService = AuthorizationService;
@@ -18,4 +19,5 @@ export class API {
   static VersionsService = VersionsService;
   static BugReportsService = BugReportsService;
   static SchedulerService = SchedulerService;
+  static HintsService = HintsService;
 }
