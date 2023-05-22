@@ -40,6 +40,7 @@
         <div class="c-scheduler-block">
           <div class="c-sheduled-content-on-specific-day">
             <VueInlineCalendar
+              ref="inlineCalendar"
               v-if="inlineCalendarConfig.visible"
               :enableMousewheelScroll="
                 inlineCalendarConfig.enableMousewheelScroll
@@ -68,7 +69,9 @@
 
               <template #title>
                 <div class="c-inline-cal-title">
-                  <SchedulerInlineCalendarTitle>
+                  <SchedulerInlineCalendarTitle
+                    @changeMonth="inlineCalendarChangeMonth"
+                  >
                     <template #title="{ title }">
                       {{ removeYearFromDate(title) }}
                     </template>
@@ -161,7 +164,13 @@
             </template>
           </vue-cal>
         </div>
-        <div class="c-scheduler-bottom-side" :style="scheduledBottomBlockStyle">
+        <div
+          class="c-scheduler-bottom-side"
+          :style="scheduledBottomBlockStyle"
+          @touchstart="startDragScheduler"
+          @touchend="finishDragScheduler"
+          @touchmove="dragScheduler"
+        >
           <div class="c-plan-event-button">
             <WhiteBtn
               :text="$t('scheduler.plan-event')"
@@ -218,6 +227,10 @@ import closeIcon from '../../../assets/img/scheduler/close-icton.svg';
 import goBackIcon from '../../../assets/img/back-arrow.svg';
 import grayClockIcon from '../../../assets/img/scheduler/gray-clock.svg';
 
+const desktopMinHeight = 520;
+const tabletMinHeight = 495;
+const mobileMinHeight = 540;
+
 export default {
   name: 'VueScheduler',
   components: {
@@ -243,6 +256,7 @@ export default {
   },
   emits: ['closeWindow'],
   setup(props, { emit }) {
+    const inlineCalendar = ref();
     const isFriendsVisible = ref(false);
     const isThreeDotsShown = ref(false);
     const scheduledEventsDotsData = ref({});
@@ -261,6 +275,10 @@ export default {
 
     const schedulerStartDate = ref(null);
     const schedulerEndDate = ref(null);
+
+    const dragging = ref(false);
+    const dragStartPosition = ref(0);
+    const draggedDistance = ref(0);
 
     const mockData = computed(() => {
       return {
@@ -305,17 +323,30 @@ export default {
     const { calculatedHeight: schedulerCommonBlockCalculatedHeight } =
       calcHeight(240);
 
-    const schedulerCommonBlockStyle = computed(() => {
-      const desktopMinHeight = 520;
-      const tabletMinHeight = 495;
-      const mobileMinHeight = 540;
+    const schdulerCommonBlockHeight = computed(() => {
+      if (schedulerConfig.value.isScheduledEventsShow) {
+        return isMobileSmall.value
+          ? schedulerCommonBlockCalculatedHeight.value
+          : schedulerCommonBlockCalculatedHeight.value;
+      } else if (schedulerConfig.value.isFriendsListShow) {
+        return schedulerCommonBlockCalculatedHeight.value;
+      } else {
+        return isMobileSmall.value
+          ? mobileMinHeight
+          : schedulerCommonBlockCalculatedHeight.value;
+      }
+    });
 
+    const schedulerCommonBlockStyle = computed(() => {
       const selectedMinHeight = computed(() => {
         switch (detectedDevice.value) {
           case DEVICE_TYPES.MOBILE_SMALL: {
             return mobileMinHeight;
           }
-          case DEVICE_TYPES.MOBILE || DEVICE_TYPES.TABLET: {
+          case DEVICE_TYPES.MOBILE: {
+            return tabletMinHeight;
+          }
+          case DEVICE_TYPES.TABLET: {
             return tabletMinHeight;
           }
           case DEVICE_TYPES.DESKTOP: {
@@ -324,23 +355,11 @@ export default {
         }
       });
 
-      const height = computed(() => {
-        if (schedulerConfig.value.isScheduledEventsShow) {
-          return isMobileSmall.value
-            ? schedulerCommonBlockCalculatedHeight.value
-            : schedulerCommonBlockCalculatedHeight.value;
-        } else if (schedulerConfig.value.isFriendsListShow) {
-          return schedulerCommonBlockCalculatedHeight.value;
-        } else {
-          return isMobileSmall.value
-            ? mobileMinHeight
-            : schedulerCommonBlockCalculatedHeight.value;
-        }
-      });
+      console.log(selectedMinHeight.value);
 
       return {
         top: `${props.marginTop}px`,
-        height: `${height.value}px`,
+        height: `${schdulerCommonBlockHeight.value + draggedDistance.value}px`,
         'min-height': `${selectedMinHeight.value}px`,
       };
     });
@@ -398,6 +417,42 @@ export default {
       ],
       selectedDate: '',
     });
+
+    function startDragScheduler(e) {
+      dragging.value = true;
+      dragStartPosition.value = e.touches[0].pageY;
+    }
+
+    function finishDragScheduler() {
+      dragging.value = false;
+      dragStartPosition.value = 0;
+    }
+
+    function dragScheduler(e) {
+      const draggedDist = e.touches[0].pageY - dragStartPosition.value;
+
+      if (dragging.value) {
+        switch (detectedDevice.value) {
+          case DEVICE_TYPES.MOBILE_SMALL: {
+            if (
+              schdulerCommonBlockHeight.value <= mobileMinHeight &&
+              draggedDist < 0
+            ) {
+              return;
+            }
+          }
+          case DEVICE_TYPES.MOBILE || DEVICE_TYPES.TABLET: {
+            if (
+              schdulerCommonBlockHeight.value <= tabletMinHeight &&
+              draggedDist < 0
+            ) {
+              return;
+            }
+          }
+        }
+        draggedDistance.value = draggedDist;
+      }
+    }
 
     function formatDate(date) {
       return dayjs(date).format('YYYY-MM-DD');
@@ -492,8 +547,6 @@ export default {
         case mockData.value.schedulerActiveViews.DAY: {
           if (!schedulerConfig.value.isFriendsListShow) {
             schedulerConfig.value.isScheduledEventsShow = true;
-
-            console.log(schedulerConfig.value.isScheduledEventsShow);
           }
         }
       }
@@ -523,6 +576,12 @@ export default {
       }
 
       return splitedTitle.join(' ');
+    }
+
+    function inlineCalendarChangeMonth(data) {
+      inlineCalendarConfig.value.specMinDate = data.firstCellDate;
+      inlineCalendarConfig.value.specMaxDate = data.lastCellDate;
+      inlineCalendar.value.fillByProvidedDate(data.firstCellDate);
     }
 
     function activateUser(userData) {
@@ -614,14 +673,19 @@ export default {
       activatedUserInSidebarData,
       scheduledEventsHeight,
       schedulerCommonBlockStyle,
+      inlineCalendar,
       dotsColor,
       maxDotsCount,
       icons,
       formatDate,
+      finishDragScheduler,
       activateUser,
+      startDragScheduler,
+      dragScheduler,
       switchTab,
       setSchedulerDatesRangeAndLoadData,
       friendsBlockSwitcher,
+      inlineCalendarChangeMonth,
       removeYearFromDate,
     };
   },
@@ -805,6 +869,9 @@ $color-e9fcfb: #e9fcfb;
 
         :deep {
           .vuecal__flex.vuecal.vuecal--day-view.vuecal--uk.vuecal--no-time.vuecal--small.vuecal--has-touch {
+            display: none;
+          }
+          .vuecal__flex.vuecal.vuecal--day-view.vuecal--uk.vuecal--no-time.vuecal--small {
             display: none;
           }
         }

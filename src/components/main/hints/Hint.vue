@@ -32,25 +32,6 @@ export default {
   },
   emits: ['closeHint'],
   setup({ hintData }) {
-    const element = ref(null);
-
-    const lowestLeftPosition = computed(() => {
-      if (element.value) {
-        const x = offsetTop(element.value);
-        const y = offsetLeft(element.value);
-        return { x, y };
-      }
-      return { x: 0, y: 0 };
-    });
-
-    function offsetTop(el, i) {
-      return el.getBoundingClientRect().top;
-    }
-
-    function offsetLeft(el, i) {
-      return el.getBoundingClientRect().left;
-    }
-
     const hintConfig = computed(() => {
       return {
         title: hintData.title,
@@ -58,9 +39,11 @@ export default {
         headerImg: hintData.headerImg,
         style: {
           background: hintData.backgroundColor,
-          width: hintData.width,
-          top: `${lowestLeftPosition.value.y}px`,
-          left: `${lowestLeftPosition.value.x}px`,
+          width: `${hintData?.width}px`,
+          top: `${hintData?.top}px`,
+          left: `${hintData?.left}px`,
+          bottom: `${hintData?.bottom}px`,
+          right: `${hintData?.right}px`,
         },
         titleStyle: {
           color: hintData.titleColor,
@@ -71,12 +54,7 @@ export default {
       };
     });
 
-    onMounted(() => {
-      element.value = document.querySelector(hintData.querySelector);
-    });
-
     return {
-      element,
       hintConfig,
     };
   },

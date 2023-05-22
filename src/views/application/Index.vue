@@ -43,8 +43,8 @@
           <router-view />
           <!-- <Transition name="hint-fade">
             <Hint
-              v-if="activeHintData"
-              :hintData="activeHintData"
+              v-if="currentVisibleHint.name"
+              :hintData="currentVisibleHint"
               @closeHint="closeCurrentHint"
             />
           </Transition> -->
@@ -127,7 +127,6 @@ import { accessToken } from '../../workers/token-worker';
 import { notificationButtonHandlerMessage } from '../../workers/utils-worker';
 import { useUserDataStore } from '@/stores/userData';
 import { useHeaderHeightStore } from '../../stores/headerHeight';
-import { useHintsStore } from '../../stores/hints';
 import {
   NotificationsBus,
   BlanballEventBus,
@@ -137,9 +136,6 @@ import { API } from '../../workers/api-worker/api.worker';
 import { VersionDetectorWorker } from '../../workers/version-detector-worker';
 import { useWindowWidth } from '../../utils/widthScreen';
 import { useElementSize } from '@vueuse/core';
-import { getHintDataByName } from '../../workers/hints-worker/get.hint.data.by.name';
-
-import { ROUTES } from '../../router/router.const';
 
 import EventUpdatedIcon from '../../assets/img/event-updated-modal-icon.svg';
 import EventCreatedIcon from '../../assets/img/event-creted-modal-icon.svg';
@@ -158,14 +154,13 @@ const actionEventModalConfig = ref({});
 const { t } = useI18n();
 const activePushNotifications = ref([]);
 const router = useRouter();
-const route = useRoute();
 const toast = useToast();
 const userStore = useUserDataStore();
 const headerHeightStore = useHeaderHeightStore();
-const hintsStore = useHintsStore();
 const audio = new Audio(notification_audio);
-const activeHintData = ref({});
 let timeout;
+const avaliableHints = ref([]);
+const currentVisibleHint = ref({});
 
 const { isMobile, isTablet } = useWindowWidth();
 const { width: headerWidth, height: headerHeight } = useElementSize(header);
@@ -438,27 +433,9 @@ function setHeaderHeight() {
     headerHeight: headerHeight.value,
   });
 }
-
-function activateHint() {
-  const hintsList = hintsStore.hintsData?.results;
-
-  let modificatedHints = hintsList.map((hint) => getHintDataByName(hint.name));
-
-  modificatedHints = modificatedHints.filter((hint) => {
-    const { pageName } = hint;
-    const { name: applicationIndexName } = ROUTES.APPLICATION.index;
-
-    return pageName === route.name || pageName === applicationIndexName;
-  });
-
-  activeHintData.value = getHintDataByName(modificatedHints[0]?.name);
-}
-
-function closeCurrentHint() {
-  activeHintData.value = null;
-}
-
-activateHint();
+BlanballEventBus.on('createHints', (data) => {
+  avaliableHints.value = data.hints;
+});
 
 onMounted(() => {
   setHeaderHeight();
@@ -470,6 +447,7 @@ onBeforeUnmount(() => {
   NotificationsBus.off('removePushNotificationAfterSidebarAction');
   BlanballEventBus.off('EventCreated');
   BlanballEventBus.off('EventUpdated');
+  BlanballEventBus.off('createHints');
   AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect();
 });
 
@@ -481,10 +459,14 @@ watch(
   }
 );
 
-onBeforeRouteUpdate((to, from, next) => {
-  next();
-  activateHint();
-});
+watch(
+  () => avaliableHints.value,
+  () => {
+    if (avaliableHints.value.length) {
+      currentVisibleHint.value = avaliableHints.value.at(0);
+    }
+  }
+);
 
 const isSchedulerOpened = ref(false);
 

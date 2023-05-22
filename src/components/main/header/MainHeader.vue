@@ -27,6 +27,7 @@
 
     <div class="b_header-right-side">
       <img
+        v-hints="[HINTS_DATA.scheduler_onboarding]"
         class="b_scheduler_button"
         src="../../../assets/img/calendar.svg"
         alt=""
@@ -63,6 +64,8 @@ import { CONSTS } from '../../../consts/index';
 import { ROUTES } from '../../../router/router.const';
 import { API } from '../../../workers/api-worker/api.worker';
 
+import { HINTS_DATA } from '../../../workers/hints-worker/hints.data';
+
 import searchIcon from '../../../assets/img/search.svg';
 import arrowIcon from '../../../assets/img/arrow-right-gray.svg';
 
@@ -76,8 +79,8 @@ export default {
   props: {
     isSchedulerOpened: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   setup() {
     const isSearchBlock = ref(false);
@@ -177,6 +180,7 @@ export default {
       loading,
       clientX,
       clientY,
+      HINTS_DATA,
       mockData,
       modalSearchWidth,
     };

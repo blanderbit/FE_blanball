@@ -163,7 +163,7 @@ export default {
   directives: {
     dragscroll,
   },
-  setup(props, { emit }) {
+  setup(props, { emit, expose }) {
     const root = ref(null);
     const datesWrapper = ref(null);
     const activeDate = ref(props.selectedDate);
@@ -267,6 +267,13 @@ export default {
       }
       getNextDatesInRange(new Date(), props.loadDatesCount, false);
       getPrevDatesInRange(new Date(), props.loadDatesCount, true);
+    };
+    const fillByProvidedDate = (date) => {
+      if (dates.value.length) {
+        dates.value = [];
+      }
+      getNextDatesInRange(date, props.loadDatesCount, false);
+      getPrevDatesInRange(date, props.loadDatesCount, true);
     };
     const getPrevDatesInRange = (startDate, days, excludeFirstDate = false) => {
       const date = new Date(startDate.getTime());
@@ -408,6 +415,11 @@ export default {
       }
       fillCalendar();
     });
+
+    expose({
+      fillByProvidedDate,
+    });
+
     return {
       root,
       datesWrapper,

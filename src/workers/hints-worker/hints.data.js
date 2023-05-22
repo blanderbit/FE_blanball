@@ -1,8 +1,7 @@
-import { ROUTES } from '../../router/router.const';
 import WhiteInfoIcon from '../../assets/img/white-info.svg';
 
 export const HINTS_DATA = {
-  SchedulerOnboarding: {
+  scheduler_onboarding: {
     name: 'scheduler_onboarding',
     title: 'hints.scheduler_onboarding.title',
     texts: [
@@ -10,13 +9,10 @@ export const HINTS_DATA = {
       'hints.scheduler_onboarding.text2',
     ],
     backgroundColor: '#262541',
-    width: '368px',
+    width: 368,
     titleColor: '#FFFFFF',
     textsColor: '#DFDEED',
     headerImg: WhiteInfoIcon,
-    pageName: ROUTES.APPLICATION.index.name,
-    querySelector: '.b_scheduler_button',
-    right: 0,
-    top: 8,
+    marginTop: 16
   },
 };

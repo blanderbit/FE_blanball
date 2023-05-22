@@ -11,6 +11,7 @@
     :locale="config.locale"
     :disable-views="config.disableViews"
     :selected-date="config.selectedDate"
+    @viewChange="onViewChange"
   >
     <template #title="{ title }">
       <div class="c-title">
@@ -38,7 +39,8 @@ export default {
   components: {
     VueCal,
   },
-  setup() {
+  emits: ['changeMonth'],
+  setup(_, { emit }) {
     const mockData = computed(() => {
       return {
         schedulerActiveViews: CONSTS.scheduler.SCHEDULER_ACTIVE_VIEWS,
@@ -64,8 +66,13 @@ export default {
       selectedDate: '',
     });
 
+    const onViewChange = (data) => {
+      emit('changeMonth', data)
+    };
+
     return {
       config,
+      onViewChange,
     };
   },
 };
