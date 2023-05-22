@@ -41,6 +41,13 @@
       <div class="container">
         <div class="main-body-inner">
           <router-view />
+          <!-- <Transition name="hint-fade">
+            <Hint
+              v-if="activeHintData"
+              :hintData="activeHintData"
+              @closeHint="closeCurrentHint"
+            />
+          </Transition> -->
         </div>
       </div>
     </div>
@@ -97,7 +104,7 @@
 
 <script setup>
 import { ref, computed, watch, onBeforeUnmount, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
 
@@ -113,12 +120,14 @@ import Scheduler from '../../components/main/scheduler/index.vue';
 import LeftSidebar from '../../components/main/scheduler/LeftSidebar.vue';
 import TopLineFriends from '../../components/main/scheduler/TopLineFriends.vue';
 import NewVersionModal from '../../components/main/versions/modals/NewVersionModal.vue';
+import Hint from '../../components/main/hints/Hint.vue';
 
 import { AuthWebSocketWorkerInstance } from '../../workers/web-socket-worker';
 import { accessToken } from '../../workers/token-worker';
 import { notificationButtonHandlerMessage } from '../../workers/utils-worker';
 import { useUserDataStore } from '@/stores/userData';
 import { useHeaderHeightStore } from '../../stores/headerHeight';
+import { useHintsStore } from '../../stores/hints';
 import {
   NotificationsBus,
   BlanballEventBus,
@@ -128,6 +137,9 @@ import { API } from '../../workers/api-worker/api.worker';
 import { VersionDetectorWorker } from '../../workers/version-detector-worker';
 import { useWindowWidth } from '../../utils/widthScreen';
 import { useElementSize } from '@vueuse/core';
+import { getHintDataByName } from '../../workers/hints-worker/get.hint.data.by.name';
+
+import { ROUTES } from '../../router/router.const';
 
 import EventUpdatedIcon from '../../assets/img/event-updated-modal-icon.svg';
 import EventCreatedIcon from '../../assets/img/event-creted-modal-icon.svg';
@@ -146,10 +158,13 @@ const actionEventModalConfig = ref({});
 const { t } = useI18n();
 const activePushNotifications = ref([]);
 const router = useRouter();
+const route = useRoute();
 const toast = useToast();
 const userStore = useUserDataStore();
 const headerHeightStore = useHeaderHeightStore();
+const hintsStore = useHintsStore();
 const audio = new Audio(notification_audio);
+const activeHintData = ref({});
 let timeout;
 
 const { isMobile, isTablet } = useWindowWidth();
@@ -424,6 +439,27 @@ function setHeaderHeight() {
   });
 }
 
+function activateHint() {
+  const hintsList = hintsStore.hintsData?.results;
+
+  let modificatedHints = hintsList.map((hint) => getHintDataByName(hint.name));
+
+  modificatedHints = modificatedHints.filter((hint) => {
+    const { pageName } = hint;
+    const { name: applicationIndexName } = ROUTES.APPLICATION.index;
+
+    return pageName === route.name || pageName === applicationIndexName;
+  });
+
+  activeHintData.value = getHintDataByName(modificatedHints[0]?.name);
+}
+
+function closeCurrentHint() {
+  activeHintData.value = null;
+}
+
+activateHint();
+
 onMounted(() => {
   setHeaderHeight();
   setHeaderHeightCssVar();
@@ -444,6 +480,11 @@ watch(
     setHeaderHeightCssVar();
   }
 );
+
+onBeforeRouteUpdate((to, from, next) => {
+  next();
+  activateHint();
+});
 
 const isSchedulerOpened = ref(false);
 
@@ -552,6 +593,16 @@ html {
 
 .scheduler-enter-from,
 .scheduler-leave-to {
+  opacity: 0;
+}
+
+.hint-fade-enter-active,
+.hint-fade-leave-active {
+  transition: opacity 0.4s ease;
+}
+
+.hint-fade-enter-from,
+.hint-fade-leave-to {
   opacity: 0;
 }
 </style>

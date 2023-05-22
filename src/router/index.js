@@ -18,14 +18,17 @@ import { prepareEventUpdateData } from '../utils/prepareEventUpdateData';
 const userStore = useUserDataStore();
 const hintsStore = useHintsStore();
 
+//TODO перенести в интерцпептор эти 2 функции 
 const usersData = () => {
   if (!Object.keys(userStore.user).length) {
     return API.UserService.getMyProfile().then((res) => {
       userStore.$patch({
         user: res.data,
       });
-      return res;
+      return new Proxy(res.data, {});
     });
+  } else {
+    return userStore.user
   }
 };
 
@@ -35,8 +38,10 @@ const hintsData = () => {
       hintsStore.$patch({
         hintsData: res.data,
       });
-      return res;
+      return new Proxy(res.data, {});
     });
+  } else {
+    return hintsStore.hintsData
   }
 };
 
