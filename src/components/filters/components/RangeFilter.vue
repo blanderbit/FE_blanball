@@ -67,11 +67,8 @@ export default {
 $color-148783: #148783;
 $color-1ab2ad: #1ab2ad;
 $color-e9fcfb: #e9fcfb;
-$color-262541: #262541;
 $color-f9f9fc: #f9f9fc;
-$color-ffffff: #ffffff;
 $color-dfdeed: #dfdeed;
-$color-575775: #575775;
 .filter-style {
   --slider-connect-bg: $color-148783;
   --slider-height: 2px;
@@ -90,14 +87,14 @@ $color-575775: #575775;
     font-weight: 400;
     font-size: 12px;
     line-height: 16px;
-    color: $color-262541;
+    color: $--b-main-black-color;
     padding: 0px 4px;
     background: $color-f9f9fc;
     border-radius: 4px;
     z-index: 1;
   }
   .b-range-filter__left-side {
-    background: $color-ffffff;
+    background: $--b-main-white-color;
     padding: 0 12px;
     width: 100%;
     display: flex;
@@ -112,7 +109,7 @@ $color-575775: #575775;
     border-top: 1px solid $color-dfdeed;
     border-right: 1px solid $color-dfdeed;
     border-bottom: 1px solid $color-dfdeed;
-    background: $color-ffffff;
+    background: $--b-main-white-color;
     padding: 6px 12px;
     border-radius: 0 6px 6px 0;
     font-family: 'Inter';
@@ -120,7 +117,7 @@ $color-575775: #575775;
     font-weight: 400;
     font-size: 13px;
     line-height: 16px;
-    color: $color-575775;
+    color: $--b-main-gray-color;
     min-width: 76px;
   }
 }

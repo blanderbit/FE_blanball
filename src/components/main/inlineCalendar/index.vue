@@ -446,10 +446,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 $color-f9f9fc: #f9f9fc;
-$color-fff: #fff;
 $color-0094ff: #0094ff;
 $color-1d817e: #1d817e;
-$color-ffffff: #ffffff;
 $color-f0f0f4: #f0f0f4;
 @import '../../../assets/styles/inline-calendar/main.css';
 .inline-calendar {
@@ -483,7 +481,7 @@ $color-f0f0f4: #f0f0f4;
   &__date {
     padding: 14px;
     text-align: center;
-    background-color: $color-fff;
+    background-color: $--b-main-white-color;
     border: 1px solid $color-0094ff;
     border-radius: 8px;
     cursor: pointer;
@@ -514,13 +512,13 @@ $color-f0f0f4: #f0f0f4;
       }
     }
     &.in-range {
-      color: $color-fff;
+      color: $--b-main-white-color;
       border-color: rgba($color-0094ff, 0.6) !important;
       background-color: rgba($color-0094ff, 0.6) !important;
     }
     &.active {
       background: $color-1d817e !important;
-      border: 1px solid $color-ffffff !important;
+      border: 1px solid $--b-main-white-color !important;
       box-shadow: 1px 2px 5px 1px rgba(56, 56, 251, 0.08) !important;
       border-radius: 16px !important;
 

@@ -214,7 +214,6 @@ export default {
 $color-fcfcfc: #fcfcfc;
 $color-a8a8bd: #a8a8bd;
 $color-ecfcfb: #ecfcfb;
-$color-fff: #fff;
 $color-f9f9fc: #f9f9fc;
 $color-f0f0f4: #f0f0f4;
 $color-dfdeed: #dfdeed;
@@ -280,7 +279,7 @@ $color-dfdeed: #dfdeed;
     border: none;
 
     .c-main-side__center-block {
-      background: $color-fff !important;
+      background: $--b-main-white-color !important;
     }
 
     .c-scheduled-event-main-side {
