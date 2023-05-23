@@ -169,13 +169,7 @@
             </template>
           </vue-cal>
         </div>
-        <div
-          class="c-scheduler-bottom-side"
-          :style="scheduledBottomBlockStyle"
-          @touchstart="startDragScheduler"
-          @touchend="finishDragScheduler"
-          @touchmove="dragScheduler"
-        >
+        <div class="c-scheduler-bottom-side" :style="scheduledBottomBlockStyle">
           <div
             v-if="isMainBottomSideContentVisible"
             class="c-bottom-side-main-content"
@@ -299,10 +293,6 @@ export default {
     const schedulerStartDate = ref(null);
     const schedulerEndDate = ref(null);
 
-    const dragging = ref(false);
-    const dragStartPosition = ref(0);
-    const draggedDistance = ref(0);
-
     const mockData = computed(() => {
       return {
         contextMenuItems: CONSTS.scheduler.contextMenuItems,
@@ -389,7 +379,7 @@ export default {
 
       return {
         top: `${props.marginTop}px`,
-        height: `${schdulerCommonBlockHeight.value + draggedDistance.value}px`,
+        height: `${schdulerCommonBlockHeight.value}px`,
         'min-height': `${selectedMinHeight.value}px`,
       };
     });
@@ -447,41 +437,6 @@ export default {
       ],
       selectedDate: '',
     });
-
-    function startDragScheduler(e) {
-      dragging.value = true;
-      dragStartPosition.value = e.touches[0].pageY;
-    }
-
-    function finishDragScheduler() {
-      dragging.value = false;
-    }
-
-    function dragScheduler(e) {
-      const draggedDist = e.touches[0].pageY - dragStartPosition.value;
-
-      if (dragging.value) {
-        switch (detectedDevice.value) {
-          case DEVICE_TYPES.MOBILE_SMALL: {
-            if (
-              schdulerCommonBlockHeight.value <= mobileMinHeight &&
-              draggedDist < 0
-            ) {
-              return;
-            }
-          }
-          case DEVICE_TYPES.MOBILE || DEVICE_TYPES.TABLET: {
-            if (
-              schdulerCommonBlockHeight.value <= tabletMinHeight &&
-              draggedDist < 0
-            ) {
-              return;
-            }
-          }
-        }
-        draggedDistance.value = draggedDist;
-      }
-    }
 
     function formatDate(date) {
       return dayjs(date).format('YYYY-MM-DD');
@@ -733,10 +688,7 @@ export default {
       maxDotsCount,
       icons,
       formatDate,
-      finishDragScheduler,
       activateUser,
-      startDragScheduler,
-      dragScheduler,
       deactivateUserEventsListTabletAndMobile,
       switchTab,
       setSchedulerDatesRangeAndLoadData,
