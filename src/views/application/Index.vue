@@ -484,6 +484,7 @@ const schedulerConfig = ref({
 </script>
 
 <style lang="scss">
+$color-fff: #fff;
 // SCSS variables for hex colors
 $color-272643: #272643;
 $color-454461: #454461;
@@ -499,7 +500,7 @@ html {
 
 .header-block {
   @include beforeDesktop {
-    background: #fff;
+    background: $color-fff;
     position: relative;
     z-index: 501;
   }

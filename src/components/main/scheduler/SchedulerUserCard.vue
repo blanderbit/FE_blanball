@@ -56,6 +56,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-f0f0f4: #f0f0f4;
+$color-8a8aa8: #8a8aa8;
 .c-user-card {
   display: flex;
   align-items: center;
@@ -69,7 +71,7 @@ export default {
     padding: 8px 12px;
 
     &.active {
-      background: #f0f0f4 !important;
+      background: $color-f0f0f4 !important;
     }
   }
 
@@ -77,7 +79,7 @@ export default {
     &.active {
       transition: all 0.3s;
       padding: 8px;
-      background: #f0f0f4;
+      background: $color-f0f0f4;
       border-left: 4px solid $--b-main-green-color;
       position: relative;
       border-radius: 6px;
@@ -91,7 +93,7 @@ export default {
     }
 
     .c-user__gaming-position {
-      @include inter(12px, 500, #8a8aa8);
+      @include inter(12px, 500, $color-8a8aa8);
       line-height: 20px;
     }
   }

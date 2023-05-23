@@ -306,6 +306,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-f0f0f4: #f0f0f4;
 .c-selected-view-user {
   align-items: center;
   justify-content: space-between;
@@ -329,14 +330,14 @@ export default {
   display: flex;
   align-items: center;
   gap: 8px;
-  border-bottom: 1px solid #f0f0f4;
+  border-bottom: 1px solid $color-f0f0f4;
   padding-bottom: 8px;
 
   .c-selected-date {
     @include inter(13px, 500, $--b-main-green-color);
     line-height: 20px;
     padding: 0px 8px 0px 0px;
-    border-right: 1px solid #f0f0f4;
+    border-right: 1px solid $color-f0f0f4;
     text-transform: capitalize;
   }
   .c-count-scheduled {

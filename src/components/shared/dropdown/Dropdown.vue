@@ -391,7 +391,7 @@ $color-8a8aa8: #8a8aa8;
     z-index: 10;
 
     &.disabled {
-      @include inter(12px, 400, #a8a8bd);
+      @include inter(12px, 400, $color-a8a8bd);
     }
   }
   &__custom-option {
@@ -403,7 +403,7 @@ $color-8a8aa8: #8a8aa8;
 
     &-text {
       &.disabled {
-        @include inter(14px, 400, #a8a8bd);
+        @include inter(14px, 400, $color-a8a8bd);
       }
     }
 

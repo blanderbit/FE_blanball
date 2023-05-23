@@ -275,6 +275,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-efeff6: #efeff6;
 
 :deep(.b-avatar) {
   border: 1.5px solid #EFEFF6;

@@ -57,9 +57,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-f9f9fc: #f9f9fc;
 .c-no-schduled-events {
   padding: 8px;
-  background: #f9f9fc;
+  background: $color-f9f9fc;
   border-radius: 6px;
   display: flex;
   align-items: center;

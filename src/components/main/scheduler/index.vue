@@ -701,6 +701,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+$color-f9f9fc: #f9f9fc;
+$color-f0f0f4: #f0f0f4;
 $color-efeff6: #efeff6;
 $color-bef0ef: #bef0ef;
 $color-e9fcfb: #e9fcfb;
@@ -966,7 +968,7 @@ $color-e9fcfb: #e9fcfb;
                 justify-content: center;
 
                 @include mobile {
-                  background: #f9f9fc;
+                  background: $color-f9f9fc;
                   width: calc(100% + 40px);
                   margin-left: -20px;
                 }
@@ -987,7 +989,7 @@ $color-e9fcfb: #e9fcfb;
                 border: none;
 
                 @include mobile {
-                  background: #f9f9fc;
+                  background: $color-f9f9fc;
                   width: calc(100% + 40px);
                   margin-left: -20px;
                   padding: 0px 20px;
@@ -1006,15 +1008,15 @@ $color-e9fcfb: #e9fcfb;
             }
             .vuecal__body {
               .vuecal__cell {
-                border-left: 1px solid #f0f0f4;
-                border-bottom: 1px solid #f0f0f4;
+                border-left: 1px solid $color-f0f0f4;
+                border-bottom: 1px solid $color-f0f0f4;
 
                 &:nth-child(-n + 7):not(:nth-child(8)) {
-                  border-top: 1px solid #f0f0f4;
+                  border-top: 1px solid $color-f0f0f4;
                 }
 
                 &:nth-child(7n) {
-                  border-right: 1px solid #f0f0f4;
+                  border-right: 1px solid $color-f0f0f4;
                 }
                 &::before {
                   right: 0;

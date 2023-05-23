@@ -286,10 +286,10 @@ form {
         .b-reset-step__section {
           width: 32.5%;
           height: 4px;
-          background: #cddde0;
+          background: $color-cddde0;
           border-radius: 2px;
           &.active {
-            background: #578d95;
+            background: $color-578d95;
           }
         }
       }

@@ -211,6 +211,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-fcfcfc: #fcfcfc;
+$color-a8a8bd: #a8a8bd;
+$color-ecfcfb: #ecfcfb;
+$color-fff: #fff;
+$color-f9f9fc: #f9f9fc;
+$color-f0f0f4: #f0f0f4;
+$color-dfdeed: #dfdeed;
 .c-scheduled-event {
   width: 100%;
   border-radius: 6px;
@@ -219,7 +226,7 @@ export default {
   margin-top: 12px;
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   &.Planned {
-    background: #fcfcfc;
+    background: $color-fcfcfc;
     border: 1px solid $--b-main-green-color;
   }
 
@@ -237,7 +244,7 @@ export default {
         }
 
         &.Finished {
-          @include inter(14px, 600, #a8a8bd);
+          @include inter(14px, 600, $color-a8a8bd);
         }
       }
     }
@@ -269,11 +276,11 @@ export default {
   }
 
   &.Active {
-    background: #ecfcfb;
+    background: $color-ecfcfb;
     border: none;
 
     .c-main-side__center-block {
-      background: #fff !important;
+      background: $color-fff !important;
     }
 
     .c-scheduled-event-main-side {
@@ -282,7 +289,7 @@ export default {
   }
 
   &.Finished {
-    background: #f9f9fc;
+    background: $color-f9f9fc;
     border: none;
   }
 
@@ -298,7 +305,7 @@ export default {
 
   .c-scheduled-event-main-side {
     padding-top: 12px;
-    border-top: 1px solid #f0f0f4;
+    border-top: 1px solid $color-f0f0f4;
 
     .c-main-side__top-block {
       .c-event-name {
@@ -308,7 +315,7 @@ export default {
     }
     .c-main-side__center-block {
       padding: 16px;
-      background: #f9f9fc;
+      background: $color-f9f9fc;
       border-radius: 6px;
       margin-top: 12px;
       display: flex;
@@ -316,8 +323,8 @@ export default {
       justify-content: space-between;
 
       .c-main-side-place {
-        border-left: 1px solid #dfdeed;
-        border-right: 1px solid #dfdeed;
+        border-left: 1px solid $color-dfdeed;
+        border-right: 1px solid $color-dfdeed;
         padding: 0px 16px;
         .c-place {
           word-break: break-word;
@@ -374,12 +381,12 @@ export default {
       }
 
       &.Finished {
-        @include inter(14px, 400, #a8a8bd);
+        @include inter(14px, 400, $color-a8a8bd);
       }
     }
     .c-event-type {
       &.Planned {
-        border-right: 1px solid #dfdeed;
+        border-right: 1px solid $color-dfdeed;
         @include inter(14px, 400);
       }
 
@@ -389,8 +396,8 @@ export default {
       }
 
       &.Finished {
-        border-right: 1px solid #dfdeed;
-        @include inter(14px, 400, #a8a8bd);
+        border-right: 1px solid $color-dfdeed;
+        @include inter(14px, 400, $color-a8a8bd);
       }
     }
   }
