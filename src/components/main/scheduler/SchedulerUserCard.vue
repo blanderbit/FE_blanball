@@ -60,7 +60,7 @@ export default {
   display: flex;
   align-items: center;
   cursor: pointer;
-  margin-top: 12px;
+  margin: 6px 0px;
   width: 240px;
 
   &.friend {

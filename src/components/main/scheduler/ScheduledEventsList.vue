@@ -9,6 +9,16 @@
   />
 
   <div v-if="userData" class="c-scheduled-events__block">
+    <div v-if="userStore.user.id !== userData.id" class="c-selected-view-user">
+      <span class="c-user-full-name"
+        >{{ userData.profile.last_name }} {{ userData.profile.name }}</span
+      >
+      <img
+        src="../../../assets/img/cross.svg"
+        alt=""
+        @click="$emit('deactivateSelectedUser')"
+      />
+    </div>
     <div class="c-total-count-scheduled-events">
       <div class="c-selected-date">
         {{ formatedDate }}
@@ -69,6 +79,7 @@ import { v4 as uuid } from 'uuid';
 
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
+import uk from 'dayjs/locale/uk';
 
 import NoScheduledEvents from './NoScheduledEvents.vue';
 import SubmitModal from '../../shared/modals/SubmitModal.vue';
@@ -83,6 +94,7 @@ import { PaginationWorker } from '../../../workers/pagination-worker';
 import { getDate } from '../../../utils/getDate';
 import { getTime } from '../../../utils/getTime';
 import { addMinutes } from '../../../utils/addMinutes';
+import { useUserDataStore } from '../../../stores/userData';
 
 const REQUEST_USER_ROLES = {
   AUTHOR: 'author',
@@ -90,7 +102,7 @@ const REQUEST_USER_ROLES = {
   FAN: 'fan',
 };
 
-dayjs.extend(localizedFormat);
+dayjs.extend(localizedFormat).locale(uk);
 
 export default {
   components: {
@@ -114,6 +126,7 @@ export default {
       default: () => {},
     },
   },
+  emits: ['deactivateSelectedUser'],
   setup(props) {
     const refList = ref();
     const isSubmitModalOpened = ref(false);
@@ -122,6 +135,7 @@ export default {
     const declineEventData = ref({});
     const openedEventId = ref(0);
     const triggerForRestart = ref(false);
+    const userStore = useUserDataStore();
 
     const blockScrollToTopIfExist = ref(false);
 
@@ -131,7 +145,14 @@ export default {
 
     const formatedDate = computed(() => {
       if (props.date) {
-        return dayjs(props.date).format('dd D MMMM');
+        const currentDate = dayjs().format('YYYY-MM-DD');
+        const isToday = dayjs(props.date).isSame(currentDate, 'day');
+
+        if (isToday) {
+          return t('scheduler.today');
+        } else {
+          return dayjs(props.date).format('dd D MMMM');
+        }
       } else {
         return t('scheduler.today');
       }
@@ -264,6 +285,7 @@ export default {
       paginationElements,
       isSubmitModalOpened,
       paginationPage,
+      userStore,
       triggerForRestart,
       submitModalConfig,
       formatedDate,
@@ -284,15 +306,38 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.c-selected-view-user {
+  align-items: center;
+  justify-content: space-between;
+  display: none;
+  @include beforeDesktop {
+    display: flex;
+  }
+  .c-user-full-name {
+    @include exo(16px, 600);
+    line-height: 24px;
+    margin-bottom: 4px;
+  }
+
+  img {
+    width: 12px;
+    height: 12px;
+    cursor: pointer;
+  }
+}
 .c-total-count-scheduled-events {
   display: flex;
   align-items: center;
   gap: 8px;
+  border-bottom: 1px solid #f0f0f4;
+  padding-bottom: 8px;
+
   .c-selected-date {
     @include inter(13px, 500, $--b-main-green-color);
     line-height: 20px;
     padding: 0px 8px 0px 0px;
     border-right: 1px solid #f0f0f4;
+    text-transform: capitalize;
   }
   .c-count-scheduled {
     @include inter(13px, 500, $--b-main-gray-color);

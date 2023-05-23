@@ -18,7 +18,7 @@
             <div class="c-current-date">
               {{ $t('scheduler.today-date') }} <span>{{ todayDate }}</span>
             </div>
-            <!-- <div v-if="isTopPlanEventButtonVisible" class="c-plan-event-button">
+            <div v-if="isTopPlanEventButtonVisible" class="c-plan-event-button">
               <WhiteBtn
                 :text="$t('scheduler.plan-event')"
                 :width="192"
@@ -28,7 +28,7 @@
                 :isBorder="true"
                 :borderColor="'#DFDEED'"
               />
-            </div> -->
+            </div>
           </div>
           <img
             class="c-hide-btn"
@@ -105,6 +105,9 @@
                   :date="formatDate(inlineCalendarConfig.selectedDate)"
                   :userData="activatedUserInSidebarData"
                   :scheduledEventsDotsData="scheduledEventsDotsData"
+                  @deactivateSelectedUser="
+                    deactivateUserEventsListTabletAndMobile
+                  "
                 />
               </div>
 
@@ -173,20 +176,33 @@
           @touchend="finishDragScheduler"
           @touchmove="dragScheduler"
         >
-          <div class="c-plan-event-button">
-            <WhiteBtn
-              :text="$t('scheduler.plan-event')"
-              :height="32"
-              :icon="icons.grayClock"
-              :mainColor="'#575775'"
-              :isBorder="true"
-              :borderColor="'#DFDEED'"
+          <div
+            v-if="isMainBottomSideContentVisible"
+            class="c-bottom-side-main-content"
+          >
+            <div class="c-plan-event-button">
+              <WhiteBtn
+                :text="$t('scheduler.plan-event')"
+                :height="32"
+                :icon="icons.grayClock"
+                :mainColor="'#575775'"
+                :isBorder="true"
+                :borderColor="'#DFDEED'"
+              />
+            </div>
+            <SchedulerTabs
+              :selectedTabId="sidebarSelectedTabId"
+              @switchTab="switchTab"
             />
           </div>
-          <SchedulerTabs
-            :selectedTabId="sidebarSelectedTabId"
-            @switchTab="switchTab"
-          />
+          <div v-else class="c-invite-selected-user-to-event">
+            <GreenBtn
+              :height="40"
+              :icon="icons.inviteUserIcon"
+              :text="$t('player_page.invite')"
+              @click-function="clickAcceptButton(request.id)"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -194,7 +210,7 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import { computed, ref, onBeforeUnmount, watch } from 'vue';
 
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
@@ -209,6 +225,7 @@ import SchedulerTabs from './SchedulerTabs.vue';
 import ScheduledEventsList from './ScheduledEventsList.vue';
 import SchedulerFriendsList from './SchedulerFriendsList.vue';
 import SchedulerInlineCalendarTitle from './SchedulerInlineCalendarTitle.vue';
+import GreenBtn from '../../shared/button/GreenBtn.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
@@ -228,7 +245,9 @@ import 'vue-cal/dist/vuecal.css';
 import closeIcon from '../../../assets/img/scheduler/close-icton.svg';
 import goBackIcon from '../../../assets/img/back-arrow.svg';
 import grayClockIcon from '../../../assets/img/scheduler/gray-clock.svg';
-import scheduler from '../../../consts/scheduler';
+import inviteUserIcon from '../../../assets/img/add-user-white.svg';
+
+const mobileVersionSchedulerBottomMargin = 240;
 
 const desktopMinHeight = 520;
 const tabletMinHeight = 495;
@@ -244,6 +263,7 @@ export default {
     ScheduledEventsList,
     SchedulerInlineCalendarTitle,
     SchedulerFriendsList,
+    GreenBtn,
     SchedulerTabs,
     WhiteBtn,
   },
@@ -299,7 +319,12 @@ export default {
         close: closeIcon,
         goBack: goBackIcon,
         grayClock: grayClockIcon,
+        inviteUserIcon: inviteUserIcon,
       };
+    });
+
+    const isMainBottomSideContentVisible = computed(() => {
+      return activatedUserInSidebarData.value?.id === userStore.user.id;
     });
 
     const isTopPlanEventButtonVisible = computed(() => {
@@ -315,8 +340,12 @@ export default {
       return {
         height: `${
           schedulerCommonBlockHeight.value -
-          32 -
-          130 -
+          44 -
+          (isMainBottomSideContentVisible.value ||
+          detectedDevice.value === DEVICE_TYPES.DESKTOP ||
+          detectedDevice.value === DEVICE_TYPES.BETWEEN_TABLET_AND_DESKTOP
+            ? 130
+            : 90) -
           (isTablet.value || isMobile.value ? 66 : 0) -
           (isTablet.value || (isMobile.value && !isMobileSmall.value) ? 32 : 0)
         }px`,
@@ -324,7 +353,7 @@ export default {
     });
 
     const { calculatedHeight: schedulerCommonBlockCalculatedHeight } =
-      calcHeight(240);
+      calcHeight(mobileVersionSchedulerBottomMargin);
 
     const schdulerCommonBlockHeight = computed(() => {
       if (schedulerConfig.value.isScheduledEventsShow) {
@@ -601,6 +630,12 @@ export default {
       schedulerConfig.value.isScheduledEventsShow = true;
     }
 
+    function deactivateUserEventsListTabletAndMobile() {
+      deactivateUserAndLoadData(userStore.user);
+      schedulerConfig.value.isFriendsListShow = true;
+      schedulerConfig.value.isScheduledEventsShow = false;
+    }
+
     function activateUserAndLoadData(userData) {
       activatedUserInSidebarData.value = userData;
       getScheduledEventsDotsData(
@@ -689,6 +724,7 @@ export default {
       inlineCalendarConfig,
       isTopPlanEventButtonVisible,
       sidebarSelectedTabId,
+      isMainBottomSideContentVisible,
       activatedUserInSidebarData,
       scheduledEventsHeight,
       schedulerCommonBlockStyle,
@@ -701,6 +737,7 @@ export default {
       activateUser,
       startDragScheduler,
       dragScheduler,
+      deactivateUserEventsListTabletAndMobile,
       switchTab,
       setSchedulerDatesRangeAndLoadData,
       friendsBlockSwitcher,
@@ -825,6 +862,16 @@ $color-e9fcfb: #e9fcfb;
           }
         }
       }
+
+      .c-invite-selected-user-to-event {
+        :deep(.b-green-btn) {
+          width: 464px !important;
+          margin: 0 auto;
+          @include mobile {
+            width: 100% !important;
+          }
+        }
+      }
     }
 
     .c-right-block {
@@ -846,6 +893,7 @@ $color-e9fcfb: #e9fcfb;
           display: flex;
           align-items: center;
           gap: 16px;
+          height: 32px;
 
           .c-current-date {
             @include inter(14px, 500, $--b-main-gray-color);
@@ -860,7 +908,6 @@ $color-e9fcfb: #e9fcfb;
           .c-plan-event-button {
             :deep(.b_white-btn) {
               font-weight: 400;
-              margin-bottom: 10px;
             }
 
             @include beforeDesktop {
@@ -887,10 +934,26 @@ $color-e9fcfb: #e9fcfb;
           height: fit-content;
         }
 
+        :deep {
+          .vuecal__title {
+            @include mobile {
+              width: calc(100% - 105px);
+              margin: 0px !important;
+            }
+          }
+        }
+
         .c-sheduled-content-on-specific-day {
           :deep {
             .inline-calendar {
               padding: 0px;
+
+              .vuecal__title {
+                @include mobile {
+                  width: fit-content !important;
+                  margin: 0px 30px !important;
+                }
+              }
             }
           }
 
