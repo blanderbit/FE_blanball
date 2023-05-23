@@ -94,29 +94,31 @@
                 />
               </template>
             </VueInlineCalendar>
-            <div
-              v-if="schedulerConfig.isScheduledEventsShow"
-              class="c-schduled-events-list"
-              :id="scheduledEventsHeight"
-              :style="scheduledEventsHeight"
-            >
-              <ScheduledEventsList
-                :date="formatDate(inlineCalendarConfig.selectedDate)"
-                :userData="activatedUserInSidebarData"
-                :scheduledEventsDotsData="scheduledEventsDotsData"
-              />
-            </div>
+            <div class="c-specific-day__main-content">
+              <div
+                v-if="schedulerConfig.isScheduledEventsShow"
+                class="c-schduled-events-list"
+                :id="scheduledEventsHeight"
+                :style="scheduledEventsHeight"
+              >
+                <ScheduledEventsList
+                  :date="formatDate(inlineCalendarConfig.selectedDate)"
+                  :userData="activatedUserInSidebarData"
+                  :scheduledEventsDotsData="scheduledEventsDotsData"
+                />
+              </div>
 
-            <div
-              v-if="schedulerConfig.isFriendsListShow"
-              class="c-friends-list"
-              :style="scheduledEventsHeight"
-            >
-              <SchedulerFriendsList
-                :activeUserId="activeUserId"
-                :searchValue="searchFriendsValue"
-                @activateUser="activateUser"
-              />
+              <div
+                v-if="schedulerConfig.isFriendsListShow"
+                class="c-friends-list"
+                :style="scheduledEventsHeight"
+              >
+                <SchedulerFriendsList
+                  :activeUserId="activeUserId"
+                  :searchValue="searchFriendsValue"
+                  @activateUser="activateUser"
+                />
+              </div>
             </div>
           </div>
           <vue-cal
@@ -777,14 +779,15 @@ $color-e9fcfb: #e9fcfb;
       border-radius: 0px;
       border-radius: 0px 0px 12px 12px;
       padding-bottom: 32px;
+      padding-top: 0px;
     }
 
     @include mobile {
-      padding-top: 0px;
       box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
       border-radius: 0px 0px 12px 12px;
       padding: 16px;
       padding-bottom: 32px;
+      padding-top: 0px;
     }
 
     .c-scheduler-bottom-side {
@@ -870,6 +873,18 @@ $color-e9fcfb: #e9fcfb;
         .c-sheduled-content-on-specific-day {
           :deep {
             .inline-calendar {
+              padding: 0px;
+            }
+          }
+
+          .c-specific-day__main-content {
+            @include beforeDesktop {
+              padding: 0px 56px;
+            }
+            @include tabletAndMobile {
+              padding: 0px 32px;
+            }
+            @include mobile {
               padding: 0px;
             }
           }

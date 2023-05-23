@@ -30,7 +30,7 @@
             :eventData="slotProps.smartListItem"
             :openedEventId="openedEventId"
             @declineEvent="declineEvent"
-            @openEvent="openEvent"
+            @openCloseEvent="openCloseEvent"
           />
         </template>
         <template #after>
@@ -154,8 +154,12 @@ export default {
       closeSubmitModal();
     };
 
-    const openEvent = (eventId) => {
-      openedEventId.value = eventId;
+    const openCloseEvent = (eventId) => {
+      if (openedEventId.value !== eventId) {
+        openedEventId.value = eventId;
+      } else {
+        openedEventId.value = 0;
+      }
     };
 
     const showSubmitModal = () => {
@@ -235,7 +239,7 @@ export default {
       loadDataPaginationData,
       deleteEvent,
       showSubmitModal,
-      openEvent,
+      openCloseEvent,
       declineEvent,
       scrollToFirstElement: () => {
         refList.value.scrollToFirstElement();

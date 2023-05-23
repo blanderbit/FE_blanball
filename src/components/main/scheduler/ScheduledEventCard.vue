@@ -1,7 +1,7 @@
 <template>
   <div
     :class="['c-scheduled-event', eventData.status, { opened: isEventOpened }]"
-    @click="$emit('openEvent', eventData.id)"
+    @click="$emit('openCloseEvent', eventData.id)"
   >
     <div :class="['c-scheduled-event-top-side', { opened: isEventOpened }]">
       <div class="c-event-main-info">
@@ -15,9 +15,14 @@
       </div>
       <div class="c-manage-event-block">
         <img
-          :src="getEventCrossIcon(eventData.status)"
+          :src="eventCrossIcon"
           alt=""
           @click.stop="$emit('declineEvent', eventData)"
+        />
+        <img
+          :class="['c-triangle-image', { animated: isEventOpened }]"
+          :src="eventTriangleIcon"
+          alt=""
         />
       </div>
     </div>
@@ -32,14 +37,13 @@
             v-if="eventData.current_users.length"
             class="c-participants__list"
           >
-            {{ eventData }}
             <UserAvatar />
           </div>
           <div v-else class="">На даний момент немаэ учасникив</div>
         </div>
         <div class="c-main-side-content-block c-main-side-place">
           <span>Місце проведення</span>
-          <div class="c-place">Запоріжжя, Центральна, стадіон «Торпеда»</div>
+          <div class="c-place">{{ eventData.place.place_name }}</div>
         </div>
         <div class="c-main-side-content-block c-main-side-price">
           <span>Вартість</span>
@@ -65,7 +69,7 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import UserAvatar from '../../shared/userAvatar/UserAvatar.vue';
@@ -77,6 +81,10 @@ import { ROUTES } from '../../../router/router.const';
 import grayCrossIcon from '../../../assets/img/gray-cross.svg';
 import blackCrossIcon from '../../../assets/img/cross.svg';
 import greenCrossIcon from '../../../assets/img/green-cross.svg';
+
+import grayTriangleIcon from '../../../assets/img/dropdown-arrow-disabled.svg';
+import blackTriangleIcon from '../../../assets/img/arrow-down2.svg';
+import greenTriangleIcon from '../../../assets/img/green-arrow-down.svg';
 
 const EVENT_STATUSES = {
   PLANNED: 'Planned',
@@ -98,30 +106,51 @@ export default {
   components: {
     UserAvatar,
   },
-  emits: ['openEvent'],
+  emits: ['openCloseEvent'],
   setup(props) {
     const router = useRouter();
+    const eventCrossIcon = ref();
+    const eventTriangleIcon = ref();
 
     const icons = computed(() => {
       return {
         cross: {
-          greenCross: greenCrossIcon,
           blackCross: blackCrossIcon,
           grayCross: grayCrossIcon,
+          greenCross: greenCrossIcon,
+        },
+        triangle: {
+          blackTriangle: blackTriangleIcon,
+          grayTriangle: grayTriangleIcon,
+          greenTriangle: greenTriangleIcon,
         },
       };
     });
 
-    const getEventCrossIcon = (eventStatus) => {
-      switch (eventStatus) {
+    const getEventCrossIcon = () => {
+      switch (props.eventData.status) {
         case EVENT_STATUSES.PLANNED: {
           return icons.value.cross.blackCross;
+        }
+        case EVENT_STATUSES.FINISHED: {
+          return icons.value.cross.grayCross;
         }
         case EVENT_STATUSES.ACTIVE: {
           return icons.value.cross.greenCross;
         }
+      }
+    };
+
+    const getEventTriangleIcon = () => {
+      switch (props.eventData.status) {
+        case EVENT_STATUSES.PLANNED: {
+          return icons.value.triangle.blackTriangle;
+        }
         case EVENT_STATUSES.FINISHED: {
-          return icons.value.cross.grayCross;
+          return icons.value.triangle.grayTriangle;
+        }
+        case EVENT_STATUSES.ACTIVE: {
+          return icons.value.triangle.greenCross;
         }
       }
     };
@@ -137,9 +166,15 @@ export default {
       BlanballEventBus.emit('closeScheduler');
     };
 
+    onMounted(() => {
+      eventCrossIcon.value = getEventCrossIcon();
+      eventTriangleIcon.value = getEventTriangleIcon();
+    });
+
     return {
       isEventOpened,
-      getEventCrossIcon,
+      eventCrossIcon,
+      eventTriangleIcon,
       goToTheEventPage,
     };
   },
@@ -158,6 +193,21 @@ export default {
     border: 1px solid $--b-main-green-color;
     .c-event-main-info {
       @include inter(14px, 400);
+    }
+  }
+
+  .c-manage-event-block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .c-triangle-image {
+      transition: transform 0.3s ease-out;
+      transform: rotate(0deg);
+      &.animated {
+        transition: transform 0.3s ease-out;
+        transform: rotate(-180deg);
+      }
     }
   }
 
