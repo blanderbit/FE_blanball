@@ -11,5 +11,7 @@ export default {
   'planned': 'Заплановані',
   'select-friend-from-the-list': 'Оберіть друга зі списку зліва, щоб переглянути його заплановані події',
   'my-planned-tab': 'Мої заплановані',
-  'friends-planned-tab': 'Зайнятість друзів'
+  'friends-planned-tab': 'Зайнятість друзів',
+  'on-event-page': 'На сторінку події',
+  'members': 'Учасники'
 };

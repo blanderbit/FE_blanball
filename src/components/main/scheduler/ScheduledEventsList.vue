@@ -10,7 +10,9 @@
 
   <div v-if="userData" class="c-scheduled-events__block">
     <div class="c-total-count-scheduled-events">
-      <div class="c-today">{{ $t('scheduler.today') }}</div>
+      <div class="c-selected-date">
+        {{ formatedDate }}
+      </div>
       <div class="c-count-scheduled">
         <span v-if="paginationTotalCount > 0">{{
           $t('scheduler.planned-count', { count: paginationTotalCount })
@@ -65,6 +67,9 @@ import { useI18n } from 'vue-i18n';
 
 import { v4 as uuid } from 'uuid';
 
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+
 import NoScheduledEvents from './NoScheduledEvents.vue';
 import SubmitModal from '../../shared/modals/SubmitModal.vue';
 import NotSelectedFriendCard from './NotSelectedFriendCard.vue';
@@ -78,6 +83,14 @@ import { PaginationWorker } from '../../../workers/pagination-worker';
 import { getDate } from '../../../utils/getDate';
 import { getTime } from '../../../utils/getTime';
 import { addMinutes } from '../../../utils/addMinutes';
+
+const REQUEST_USER_ROLES = {
+  AUTHOR: 'author',
+  PLAYER: 'player',
+  FAN: 'fan',
+};
+
+dayjs.extend(localizedFormat);
 
 export default {
   components: {
@@ -116,6 +129,14 @@ export default {
       triggerForRestart.value = uuid();
     };
 
+    const formatedDate = computed(() => {
+      if (props.date) {
+        return dayjs(props.date).format('dd D MMMM');
+      } else {
+        return t('scheduler.today');
+      }
+    });
+
     const {
       paginationElements,
       paginationPage,
@@ -124,7 +145,7 @@ export default {
       paginationClearData,
     } = PaginationWorker({
       paginationDataRequest: (page) =>
-        API.EventService.getAllEvents({
+        API.SchedulerService.getScheduledEventsDataOnSpecificDay({
           user_id: props.userData?.id,
           date: props.date,
           page: page,
@@ -150,7 +171,16 @@ export default {
     }
 
     const deleteEvent = async () => {
-      await API.EventService.deleteEvents([declineEventData.value.id]);
+      const response = await API.EventService.deleteEvents([
+        declineEventData.value.id,
+      ]);
+
+      if (response.data.length) {
+        paginationElements.value = paginationElements.value.filter(
+          (el) => el.id !== declineEventData.value.id
+        );
+        paginationTotalCount.value -= 1;
+      }
       closeSubmitModal();
     };
 
@@ -173,7 +203,7 @@ export default {
 
     const declineEvent = (eventData) => {
       declineEventData.value = eventData;
-      if (eventData.request_user_role === 'author') {
+      if (eventData.request_user_role === REQUEST_USER_ROLES.AUTHOR) {
         submitModalConfig.value = {
           title: t('modals.delete_event.title'),
           description: t('modals.delete_event.main-text', {
@@ -186,7 +216,10 @@ export default {
           btn_with_1: 132,
           btn_with_2: 132,
         };
-      } else {
+      } else if (
+        eventData.value.request_user_role === REQUEST_USER_ROLES.FAN ||
+        eventData.value.request_user_role === REQUEST_USER_ROLES.PLAYER
+      ) {
         submitModalConfig.value = {
           title: t('modals.leave_from_event.title'),
           description: t('modals.leave_from_event.main-text', {
@@ -233,6 +266,7 @@ export default {
       paginationPage,
       triggerForRestart,
       submitModalConfig,
+      formatedDate,
       blockScrollToTopIfExist,
       openedEventId,
       closeSubmitModal,
@@ -254,7 +288,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 8px;
-  .c-today {
+  .c-selected-date {
     @include inter(13px, 500, $--b-main-green-color);
     line-height: 20px;
     padding: 0px 8px 0px 0px;

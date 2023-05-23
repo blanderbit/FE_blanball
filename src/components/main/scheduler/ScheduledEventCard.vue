@@ -8,13 +8,14 @@
         <div :class="['c-event-type', eventData.status]">
           {{ $t('events.friendly-match') }}
         </div>
-        <div class="c-event-time">
+        <div :class="['c-event-time', eventData.status]">
           {{ eventData.time }} –
           {{ eventData.end_time }}
         </div>
       </div>
       <div class="c-manage-event-block">
         <img
+          v-if="isUserCanDeclineEvent"
           :src="eventCrossIcon"
           alt=""
           @click.stop="$emit('declineEvent', eventData)"
@@ -32,7 +33,7 @@
       </div>
       <div class="c-main-side__center-block">
         <div class="c-main-side-content-block c-main-side__participants">
-          <span>Учасники</span>
+          <span>{{ $t('scheduler.members') }}</span>
           <div
             v-if="eventData.current_users.length"
             class="c-participants__list"
@@ -42,11 +43,11 @@
           <div v-else class="">На даний момент немаэ учасникив</div>
         </div>
         <div class="c-main-side-content-block c-main-side-place">
-          <span>Місце проведення</span>
+          <span>{{ $t('events.place') }}</span>
           <div class="c-place">{{ eventData.place.place_name }}</div>
         </div>
         <div class="c-main-side-content-block c-main-side-price">
-          <span>Вартість</span>
+          <span>{{ $t('events.event-price') }}</span>
           <div class="c-price">
             {{
               eventData.price ? `${eventData.price} грн` : $t('events.for-free')
@@ -61,7 +62,7 @@
       @click.stop="goToTheEventPage"
     >
       <div class="c-go-to-the-event-page">
-        <span>На сторінку події</span>
+        <span>{{ $t('scheduler.on-event-page') }}</span>
         <img src="../../../assets/img/green-right-arrow.svg" alt="" />
       </div>
     </div>
@@ -90,6 +91,12 @@ const EVENT_STATUSES = {
   PLANNED: 'Planned',
   ACTIVE: 'Active',
   FINISHED: 'Finished',
+};
+
+const REQUEST_USER_ROLES = {
+  AUTHOR: 'author',
+  PLAYER: 'player',
+  FAN: 'fan',
 };
 
 export default {
@@ -155,6 +162,26 @@ export default {
       }
     };
 
+    const isUserEventAuthor = computed(() => {
+      return (props.eventData.request_user_role = REQUEST_USER_ROLES.AUTHOR);
+    });
+
+    const isUserEventPlayer = computed(() => {
+      return (props.eventData.request_user_role = REQUEST_USER_ROLES.PLAYER);
+    });
+
+    const isUserEventFan = computed(() => {
+      return (props.eventData.request_user_role = REQUEST_USER_ROLES.FAN);
+    });
+
+    const isUserCanDeclineEvent = computed(() => {
+      return (
+        isUserEventAuthor.value ||
+        isUserEventPlayer.value ||
+        isUserEventFan.value
+      );
+    });
+
     const isEventOpened = computed(() => {
       return props.openedEventId === props.eventData.id;
     });
@@ -173,6 +200,8 @@ export default {
 
     return {
       isEventOpened,
+      isUserCanDeclineEvent,
+      REQUEST_USER_ROLES,
       eventCrossIcon,
       eventTriangleIcon,
       goToTheEventPage,
@@ -188,11 +217,29 @@ export default {
   padding: 12px;
   cursor: pointer;
   margin-top: 12px;
+  box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   &.Planned {
     background: #fcfcfc;
     border: 1px solid $--b-main-green-color;
+  }
+
+  &.opened {
+    padding-bottom: 22px;
     .c-event-main-info {
-      @include inter(14px, 400);
+      .c-event-time,
+      .c-event-type {
+        &.Planned {
+          @include inter(14px, 600);
+        }
+
+        &.Active {
+          @include inter(14px, 600, $--b-main-green-color);
+        }
+
+        &.Finished {
+          @include inter(14px, 600, #a8a8bd);
+        }
+      }
     }
   }
 
@@ -200,6 +247,16 @@ export default {
     display: flex;
     align-items: center;
     gap: 12px;
+
+    img {
+      width: 10px;
+      height: 10px;
+    }
+
+    .c-triangle-image {
+      width: 12px;
+      height: 12px;
+    }
 
     .c-triangle-image {
       transition: transform 0.3s ease-out;
@@ -215,18 +272,18 @@ export default {
     background: #ecfcfb;
     border: none;
 
-    .c-event-main-info {
-      @include inter(14px, 400, $--b-main-green-color);
+    .c-main-side__center-block {
+      background: #fff !important;
+    }
+
+    .c-scheduled-event-main-side {
+      border-top: 1px solid $--b-main-green-color !important;
     }
   }
 
   &.Finished {
     background: #f9f9fc;
     border: none;
-
-    .c-event-main-info {
-      @include inter(14px, 400, #a8a8bd);
-    }
   }
 
   .c-scheduled-event-top-side {
@@ -297,9 +354,6 @@ export default {
     }
   }
 
-  &.opened {
-  }
-
   .c-event-main-info {
     display: flex;
     align-items: center;
@@ -308,7 +362,22 @@ export default {
 
     .c-event-type {
       padding-right: 8px;
+    }
 
+    .c-event-time {
+      &.Planned {
+        @include inter(14px, 400);
+      }
+
+      &.Active {
+        @include inter(14px, 400, $--b-main-green-color);
+      }
+
+      &.Finished {
+        @include inter(14px, 400, #a8a8bd);
+      }
+    }
+    .c-event-type {
       &.Planned {
         border-right: 1px solid #dfdeed;
         @include inter(14px, 400);

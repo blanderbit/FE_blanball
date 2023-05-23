@@ -484,6 +484,9 @@ export default {
             schedulerConfig.value.isFriendsListShow = false;
             schedulerConfig.value.isScheduledEventsShow = true;
             schedulerConfig.value.isFriendsListShow = false;
+            if (activatedUserInSidebarData.value) {
+              deactivateUser();
+            }
             break;
           }
         }
@@ -587,27 +590,41 @@ export default {
     }
 
     function activateUser(userData) {
-      activatedUserInSidebarData.value = userData;
+      activateUserAndLoadData(userData);
       schedulerConfig.value.isFriendsListShow = false;
       schedulerConfig.value.isScheduledEventsShow = true;
     }
 
-    BlanballEventBus.on('activateUserInScheduler', (userData) => {
+    function deactivateUser() {
+      deactivateUserAndLoadData(userStore.user);
+      schedulerConfig.value.isFriendsListShow = false;
+      schedulerConfig.value.isScheduledEventsShow = true;
+    }
+
+    function activateUserAndLoadData(userData) {
       activatedUserInSidebarData.value = userData;
       getScheduledEventsDotsData(
         userData.id,
         formatDate(schedulerStartDate.value),
         formatDate(schedulerEndDate.value)
       );
-    });
+    }
 
-    BlanballEventBus.on('deactivateUser', () => {
-      activatedUserInSidebarData.value = null;
+    function deactivateUserAndLoadData(userData) {
+      activatedUserInSidebarData.value = userData ? userData : null;
       getScheduledEventsDotsData(
         userStore.user.id,
         formatDate(schedulerStartDate.value),
         formatDate(schedulerEndDate.value)
       );
+    }
+
+    BlanballEventBus.on('activateUserInScheduler', (userData) => {
+      activateUserAndLoadData(userData);
+    });
+
+    BlanballEventBus.on('deactivateUser', () => {
+      deactivateUserAndLoadData();
     });
 
     BlanballEventBus.on('switchedSchedulerSidebarTab', (tabId) => {

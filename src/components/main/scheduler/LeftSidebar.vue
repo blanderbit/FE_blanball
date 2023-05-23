@@ -15,6 +15,7 @@
           inputMode="search"
           v-model="searchFriendsValue"
           :height="36"
+          :width="240"
           :icon="icons.search"
           :backgroundColor="'#fff'"
           name="search"
@@ -181,6 +182,9 @@ $color-8a8aa8: #8a8aa8;
 
 :deep(.c-tabs) {
   margin-bottom: 8px;
+}
+:deep(input) {
+  width: 240px !important;
 }
 
 .c-no-results {
