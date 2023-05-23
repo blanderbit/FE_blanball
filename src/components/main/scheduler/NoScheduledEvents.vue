@@ -8,12 +8,12 @@
       $t('scheduler.no-scheduled-events-friend', { fullName: userFullName })
     }}</span>
   </div>
-  <GreenBtn
+  <!-- <GreenBtn
     :text="$t('player_page.invite')"
     :icon="icons.inviteToEvent"
     :height="32"
     :width="206"
-  />
+  /> -->
 </template>
 
 <script>

@@ -464,7 +464,7 @@ export default {
       grid-auto-flow: column;
       margin-left: -10px;
       margin-right: -10px;
-      padding: 8px 10px;
+      padding: 8px;
       padding-top: 0px;
       list-style-type: none;
       -ms-overflow-style: none;

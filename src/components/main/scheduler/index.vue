@@ -226,6 +226,7 @@ import 'vue-cal/dist/vuecal.css';
 import closeIcon from '../../../assets/img/scheduler/close-icton.svg';
 import goBackIcon from '../../../assets/img/back-arrow.svg';
 import grayClockIcon from '../../../assets/img/scheduler/gray-clock.svg';
+import scheduler from '../../../consts/scheduler';
 
 const desktopMinHeight = 520;
 const tabletMinHeight = 495;
@@ -355,8 +356,6 @@ export default {
         }
       });
 
-      console.log(selectedMinHeight.value);
-
       return {
         top: `${props.marginTop}px`,
         height: `${schdulerCommonBlockHeight.value + draggedDistance.value}px`,
@@ -425,7 +424,6 @@ export default {
 
     function finishDragScheduler() {
       dragging.value = false;
-      dragStartPosition.value = 0;
     }
 
     function dragScheduler(e) {
@@ -470,18 +468,20 @@ export default {
 
         switch (sidebarSelectedTabId.value) {
           case mockData.value.sideBarTabs.FRIENDS_PLANNED: {
+            schedulerConfig.value.activeView =
+              mockData.value.schedulerActiveViews.DAY;
             configureScheduler(mockData.value.schedulerActiveViews.DAY);
             schedulerConfig.value.isFriendsListShow = true;
             schedulerConfig.value.isScheduledEventsShow = false;
-            schedulerConfig.value.activeView =
-              mockData.value.schedulerActiveViews.DAY;
             break;
           }
           case mockData.value.sideBarTabs.MY_PLANNED: {
-            configureScheduler(mockData.value.schedulerActiveViews.MONTH);
-            schedulerConfig.value.isFriendsListShow = false;
             schedulerConfig.value.activeView =
-              mockData.value.schedulerActiveViews.MONTH;
+              mockData.value.schedulerActiveViews.DAY;
+            configureScheduler(mockData.value.schedulerActiveViews.DAY);
+            schedulerConfig.value.isFriendsListShow = false;
+            schedulerConfig.value.isScheduledEventsShow = true;
+            schedulerConfig.value.isFriendsListShow = false;
             break;
           }
         }
@@ -865,6 +865,14 @@ $color-e9fcfb: #e9fcfb;
 
         @include mobile {
           height: fit-content;
+        }
+
+        .c-sheduled-content-on-specific-day {
+          :deep {
+            .inline-calendar {
+              padding: 0px;
+            }
+          }
         }
 
         :deep {

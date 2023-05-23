@@ -69,35 +69,37 @@
     />
 
     <Transition name="scheduler">
-      <Scheduler
-        v-if="isSchedulerOpened"
-        :config="schedulerConfig"
-        :marginTop="schedulerTopSideMargin"
-        @closeWindow="isSchedulerOpened = false"
-      >
-        <template #LeftSidebar="{ isFriendsVisible, friendsBlockSwitcher }">
-          <LeftSidebar
-            v-if="isSchedulerSidebarVisible"
-            :is-friends-visible="isFriendsVisible"
-            @friendsBlockSwitcher="friendsBlockSwitcher"
-          />
-        </template>
-        <template
-          #TopFriendsBlock="{
-            isFriendsVisible,
-            minUsers,
-            usersNumber,
-            friendsBlockSwitcher,
-          }"
+      <KeepAlive>
+        <Scheduler
+          v-if="isSchedulerOpened"
+          :config="schedulerConfig"
+          :marginTop="schedulerTopSideMargin"
+          @closeWindow="isSchedulerOpened = false"
         >
-          <TopLineFriends
-            :isFriendsVisible="isFriendsVisible"
-            :minUsers="minUsers"
-            :usersNumber="usersNumber"
-            :friendsBlockSwitcher="friendsBlockSwitcher"
-          />
-        </template>
-      </Scheduler>
+          <template #LeftSidebar="{ isFriendsVisible, friendsBlockSwitcher }">
+            <LeftSidebar
+              v-if="isSchedulerSidebarVisible"
+              :is-friends-visible="isFriendsVisible"
+              @friendsBlockSwitcher="friendsBlockSwitcher"
+            />
+          </template>
+          <template
+            #TopFriendsBlock="{
+              isFriendsVisible,
+              minUsers,
+              usersNumber,
+              friendsBlockSwitcher,
+            }"
+          >
+            <TopLineFriends
+              :isFriendsVisible="isFriendsVisible"
+              :minUsers="minUsers"
+              :usersNumber="usersNumber"
+              :friendsBlockSwitcher="friendsBlockSwitcher"
+            />
+          </template>
+        </Scheduler>
+      </KeepAlive>
     </Transition>
   </div>
 </template>
@@ -437,6 +439,10 @@ BlanballEventBus.on('createHints', (data) => {
   avaliableHints.value = data.hints;
 });
 
+BlanballEventBus.on('closeScheduler', () => {
+  isSchedulerOpened.value = false;
+});
+
 onMounted(() => {
   setHeaderHeight();
   setHeaderHeightCssVar();
@@ -447,6 +453,7 @@ onBeforeUnmount(() => {
   NotificationsBus.off('removePushNotificationAfterSidebarAction');
   BlanballEventBus.off('EventCreated');
   BlanballEventBus.off('EventUpdated');
+  BlanballEventBus.off('closeScheduler');
   BlanballEventBus.off('createHints');
   AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect();
 });
