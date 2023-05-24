@@ -40,7 +40,14 @@
           >
             <UserAvatar />
           </div>
-          <div v-else class="">На даний момент немаэ учасникив</div>
+          <div v-else class="c-no-participants">
+            <img
+              src="../../../assets/img/scheduler/gray-plus.svg"
+              alt=""
+              @click.stop=""
+            />
+            <span>{{ $t('scheduler.no-participants') }}</span>
+          </div>
         </div>
         <div class="c-main-side-content-block c-main-side-place">
           <span>{{ $t('events.place') }}</span>
@@ -342,6 +349,17 @@ $color-dfdeed: #dfdeed;
         span {
           @include inter(13px, 400, $--b-main-gray-color);
           line-height: 20px;
+        }
+
+        .c-no-participants {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          span {
+            @include inter(14px, 500, $--b-main-gray-color);
+            line-height: 16px;
+          }
         }
       }
     }

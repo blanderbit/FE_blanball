@@ -13,5 +13,6 @@ export default {
   'my-planned-tab': 'Мої заплановані',
   'friends-planned-tab': 'Зайнятість друзів',
   'on-event-page': 'На сторінку події',
-  'members': 'Учасники'
+  'members': 'Учасники',
+  'no-participants': 'Немає учасників'
 };

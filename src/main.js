@@ -72,7 +72,6 @@ app
     hintsToShow.map(calculatePosition);
 
     if (hintsToShow.length) {
-      console.log(hintsToShow)
       BlanballEventBus.emit('createHints', { hints: hintsToShow, element: el });
     }
   })

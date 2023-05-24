@@ -1,5 +1,5 @@
 <template>
-  <div @click.self="$emit('closeWindow')" class="c-scheduler-wrapper">
+  <div @click.self="closeScheduler" class="c-scheduler-wrapper">
     <div
       class="c-common-block"
       :style="schedulerCommonBlockStyle"
@@ -13,8 +13,16 @@
       ></slot>
       <!-- Sidebar Slot -->
       <div class="c-right-block">
-        <div class="c-top-line">
-          <div class="c-top-line__left-block">
+        <div
+          class="c-top-line"
+          :style="`padding-bottom: ${isTopSideTabsVisible ? 0 : 12}px`"
+        >
+          <SchedulerTabs
+            v-if="isTopSideTabsVisible"
+            :selectedTabId="sidebarSelectedTabId"
+            @switchTab="switchTab"
+          />
+          <div v-else class="c-top-line__left-block">
             <div class="c-current-date">
               {{ $t('scheduler.today-date') }} <span>{{ todayDate }}</span>
             </div>
@@ -27,6 +35,7 @@
                 :mainColor="'#575775'"
                 :isBorder="true"
                 :borderColor="'#DFDEED'"
+                @click-function="goToTheCreateEvent"
               />
             </div>
           </div>
@@ -177,11 +186,12 @@
             <div class="c-plan-event-button">
               <WhiteBtn
                 :text="$t('scheduler.plan-event')"
-                :height="32"
-                :icon="icons.grayClock"
+                :height="bottomSidePlanEventButtonConfig.height"
+                :icon="bottomSidePlanEventButtonConfig.icon"
                 :mainColor="'#575775'"
                 :isBorder="true"
                 :borderColor="'#DFDEED'"
+                @click-function="goToTheCreateEvent"
               />
             </div>
             <SchedulerTabs
@@ -194,7 +204,7 @@
               :height="40"
               :icon="icons.inviteUserIcon"
               :text="$t('player_page.invite')"
-              @click-function="clickAcceptButton(request.id)"
+              @click-function="goToTheCreateEvent"
             />
           </div>
         </div>
@@ -205,6 +215,8 @@
 
 <script>
 import { computed, ref, onBeforeUnmount, watch } from 'vue';
+import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
@@ -228,11 +240,12 @@ import {
   finishSpinner,
 } from '../../../workers/loading-worker/loading.worker';
 import { BlanballEventBus } from '../../../workers/event-bus-worker';
-
-import { CONSTS } from '../../../consts';
 import { useWindowWidth } from '../../../utils/widthScreen';
 import { useElementSize } from '@vueuse/core';
 import { calcHeight } from '../../../utils/calcHeight';
+
+import { CONSTS } from '../../../consts';
+import { ROUTES } from '../../../router/router.const';
 
 import 'vue-cal/dist/vuecal.css';
 
@@ -246,6 +259,11 @@ const mobileVersionSchedulerBottomMargin = 240;
 const desktopMinHeight = 520;
 const tabletMinHeight = 495;
 const mobileMinHeight = 540;
+
+const bottomSidePlanEventButtonTypes = {
+  GREEN_BTN: 'greenBtn',
+  WHITE_BTN: 'whiteBtn',
+};
 
 export default {
   name: 'VueScheduler',
@@ -273,11 +291,12 @@ export default {
   },
   emits: ['closeWindow'],
   setup(props, { emit }) {
+    const route = useRoute();
+    const router = useRouter();
     const inlineCalendar = ref();
     const isFriendsVisible = ref(false);
-    const isThreeDotsShown = ref(false);
     const scheduledEventsDotsData = ref({});
-    const dotsColor = ref(props.config.myEventsDotColor || '#148581');
+    const dotsColor = ref('#148581');
     const maxDotsCount = ref(3);
     const inlineCalendarActiveDateDotsColor = ref('#fff');
     const userStore = useUserDataStore();
@@ -289,6 +308,8 @@ export default {
       useElementSize(schedulerCommonBlock);
     const { isTablet, isMobile, isMobileSmall, detectedDevice, DEVICE_TYPES } =
       useWindowWidth();
+    const { calculatedHeight: schedulerCommonBlockCalculatedHeight } =
+      calcHeight(mobileVersionSchedulerBottomMargin);
 
     const schedulerStartDate = ref(null);
     const schedulerEndDate = ref(null);
@@ -311,6 +332,23 @@ export default {
         grayClock: grayClockIcon,
         inviteUserIcon: inviteUserIcon,
       };
+    });
+
+    const bottomSidePlanEventButtonConfig = computed(() => {
+      return {
+        type: bottomSidePlanEventButtonTypes.WHITE_BTN,
+        height: isMobile.value || isMobileSmall.value ? 32 : 40,
+        icon: icons.value.grayClock,
+      };
+    });
+
+    const isTopSideTabsVisible = computed(() => {
+      return (
+        (detectedDevice.value === DEVICE_TYPES.BETWEEN_TABLET_AND_DESKTOP ||
+          detectedDevice.value === DEVICE_TYPES.DESKTOP) &&
+        schedulerConfig.value.activeView ===
+          mockData.value.schedulerActiveViews.MONTH
+      );
     });
 
     const isMainBottomSideContentVisible = computed(() => {
@@ -341,9 +379,6 @@ export default {
         }px`,
       };
     });
-
-    const { calculatedHeight: schedulerCommonBlockCalculatedHeight } =
-      calcHeight(mobileVersionSchedulerBottomMargin);
 
     const schdulerCommonBlockHeight = computed(() => {
       if (schedulerConfig.value.isScheduledEventsShow) {
@@ -445,7 +480,7 @@ export default {
     function backToTheMonthView() {
       schedulerConfig.value.activeView =
         mockData.value.schedulerActiveViews.MONTH;
-      configureScheduler(mockData.value.schedulerActiveViews.MONTH);
+      switchTab(mockData.value.sideBarTabs.MY_PLANNED);
     }
 
     function switchTab(tabId) {
@@ -457,8 +492,21 @@ export default {
             schedulerConfig.value.activeView =
               mockData.value.schedulerActiveViews.DAY;
             configureScheduler(mockData.value.schedulerActiveViews.DAY);
-            schedulerConfig.value.isFriendsListShow = true;
-            schedulerConfig.value.isScheduledEventsShow = false;
+            if (
+              detectedDevice.value === DEVICE_TYPES.DESKTOP ||
+              detectedDevice.value === DEVICE_TYPES.BETWEEN_TABLET_AND_DESKTOP
+            ) {
+              schedulerConfig.value.isFriendsListShow = false;
+              schedulerConfig.value.isScheduledEventsShow = true;
+              deactivateUser();
+              BlanballEventBus.emit('schedulerSidebarForceSwitchTab', {
+                tabId: mockData.value.sideBarTabs.FRIENDS_PLANNED,
+                userData: null,
+              });
+            } else {
+              schedulerConfig.value.isFriendsListShow = true;
+              schedulerConfig.value.isScheduledEventsShow = false;
+            }
             break;
           }
           case mockData.value.sideBarTabs.MY_PLANNED: {
@@ -487,7 +535,7 @@ export default {
           inlineCalendarConfig.value.visible = false;
 
           hideBtnConfig.value.img = icons.value.close;
-          hideBtnConfig.value.action = () => emit('closeWindow');
+          hideBtnConfig.value.action = () => closeScheduler();
 
           if (isFriendsVisible.value) {
             friendsBlockSwitcher();
@@ -567,6 +615,25 @@ export default {
       return splitedTitle.join(' ');
     }
 
+    function closeScheduler() {
+      emit('closeWindow');
+    }
+
+    function goToTheCreateEvent() {
+      if (route.name === ROUTES.APPLICATION.EVENTS.CREATE.name) {
+        closeScheduler();
+      } else {
+        router.push(ROUTES.APPLICATION.EVENTS.CREATE.absolute);
+      }
+    }
+
+    function goToTheSchedulerUsersList() {
+      deactivateUserAndLoadData(userStore.user);
+      schedulerConfig.value.isFriendsListShow = true;
+      schedulerConfig.value.isScheduledEventsShow = false;
+      hideBtnConfig.value.action = () => backToTheMonthView();
+    }
+
     function inlineCalendarChangeMonth(data) {
       inlineCalendarConfig.value.specMinDate = data.firstCellDate;
       inlineCalendarConfig.value.specMaxDate = data.lastCellDate;
@@ -577,6 +644,7 @@ export default {
       activateUserAndLoadData(userData);
       schedulerConfig.value.isFriendsListShow = false;
       schedulerConfig.value.isScheduledEventsShow = true;
+      hideBtnConfig.value.action = () => goToTheSchedulerUsersList();
     }
 
     function deactivateUser() {
@@ -619,6 +687,18 @@ export default {
 
     BlanballEventBus.on('switchedSchedulerSidebarTab', (tabId) => {
       sidebarSelectedTabId.value = tabId;
+      if (
+        sidebarSelectedTabId.value ===
+        mockData.value.sideBarTabs.FRIENDS_PLANNED
+      ) {
+        hideBtnConfig.value.action = () => {
+          BlanballEventBus.emit('schedulerSidebarForceSwitchTab', {
+            tabId: mockData.value.sideBarTabs.MY_PLANNED,
+            userData: userStore.user,
+          });
+          hideBtnConfig.value.action = () => backToTheMonthView();
+        };
+      }
     });
 
     onBeforeUnmount(() => {
@@ -665,9 +745,15 @@ export default {
       }
     );
 
+    watch(
+      () => route.name,
+      () => {
+        closeScheduler();
+      }
+    );
+
     return {
       isFriendsVisible,
-      isThreeDotsShown,
       schedulerConfig,
       mockData,
       scheduledEventsDotsData,
@@ -677,6 +763,7 @@ export default {
       todayDate,
       inlineCalendarActiveDateDotsColor,
       inlineCalendarConfig,
+      isTopSideTabsVisible,
       isTopPlanEventButtonVisible,
       sidebarSelectedTabId,
       isMainBottomSideContentVisible,
@@ -684,11 +771,14 @@ export default {
       scheduledEventsHeight,
       schedulerCommonBlockStyle,
       inlineCalendar,
+      bottomSidePlanEventButtonConfig,
       dotsColor,
       maxDotsCount,
       icons,
       formatDate,
+      closeScheduler,
       activateUser,
+      goToTheCreateEvent,
       deactivateUserEventsListTabletAndMobile,
       switchTab,
       setSchedulerDatesRangeAndLoadData,
@@ -822,7 +912,7 @@ $color-e9fcfb: #e9fcfb;
           width: 464px !important;
           margin: 0 auto;
           @include mobile {
-            width: 100% !important;
+            width: 215px !important;
           }
         }
       }
@@ -838,6 +928,17 @@ $color-e9fcfb: #e9fcfb;
       .c-top-line {
         padding-bottom: 12px;
         position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        :deep {
+          .c-tabs {
+            margin-top: 0px !important;
+            width: 100% !important;
+            margin-right: 12px;
+          }
+        }
 
         @include mobile {
           display: none;
@@ -870,9 +971,6 @@ $color-e9fcfb: #e9fcfb;
           }
         }
         .c-hide-btn {
-          position: absolute;
-          top: 0;
-          right: 0;
           cursor: pointer;
         }
       }
