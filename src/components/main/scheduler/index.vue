@@ -303,6 +303,7 @@ export default {
     const activatedUserInSidebarData = ref(userStore.user);
     const schedulerCommonBlock = ref();
     const hideBtnConfig = ref({});
+    const prevDevice = ref();
 
     const { height: schedulerCommonBlockHeight } =
       useElementSize(schedulerCommonBlock);
@@ -707,38 +708,69 @@ export default {
       BlanballEventBus.off('deactivateUser');
     });
 
+    function configureSchedulerAfterDesktopMode() {
+      if (
+        prevDevice.value === DEVICE_TYPES.BETWEEN_TABLET_AND_DESKTOP ||
+        prevDevice.value === DEVICE_TYPES.DESKTOP
+      ) {
+        if (
+          sidebarSelectedTabId.value ===
+            mockData.value.sideBarTabs.FRIENDS_PLANNED &&
+          !schedulerConfig.value.isFriendsListShow
+        ) {
+          if (!activatedUserInSidebarData.value) {
+            schedulerConfig.value.isScheduledEventsShow = false;
+            schedulerConfig.value.isFriendsListShow = true;
+          }
+        }
+      }
+    }
+
+    function configureSchedulerAfterMobileMode() {
+      if (
+        prevDevice.value !== DEVICE_TYPES.BETWEEN_TABLET_AND_DESKTOP &&
+        prevDevice.value !== DEVICE_TYPES.DESKTOP
+      ) {
+        if (schedulerConfig.value.isFriendsListShow) {
+          schedulerConfig.value.isFriendsListShow = false;
+          schedulerConfig.value.isScheduledEventsShow = true;
+          sidebarSelectedTabId.value =
+            mockData.value.sideBarTabs.FRIENDS_PLANNED;
+          BlanballEventBus.emit('schedulerSidebarForceSwitchTab', {
+            tabId: mockData.value.sideBarTabs.FRIENDS_PLANNED,
+            userData: activatedUserInSidebarData.value,
+          });
+        }
+      }
+    }
+
     watch(
       () => detectedDevice.value,
-      (newVal) => {
-        switch (newVal) {
+      (newDevice) => {
+        switch (newDevice) {
           case DEVICE_TYPES.MOBILE_SMALL: {
+            configureSchedulerAfterDesktopMode();
+            prevDevice.value = DEVICE_TYPES.MOBILE_SMALL;
             break;
           }
           case DEVICE_TYPES.MOBILE: {
+            configureSchedulerAfterDesktopMode();
+            prevDevice.value = DEVICE_TYPES.MOBILE;
             break;
           }
           case DEVICE_TYPES.TABLET: {
-            if (
-              sidebarSelectedTabId.value ===
-                mockData.value.sideBarTabs.FRIENDS_PLANNED &&
-              !schedulerConfig.value.isFriendsListShow
-            ) {
-              schedulerConfig.value.isScheduledEventsShow = false;
-              schedulerConfig.value.isFriendsListShow = true;
-            }
+            configureSchedulerAfterDesktopMode();
+            prevDevice.value = DEVICE_TYPES.TABLET;
             break;
           }
           case DEVICE_TYPES.BETWEEN_TABLET_AND_DESKTOP: {
-            if (schedulerConfig.value.isFriendsListShow) {
-              schedulerConfig.value.isFriendsListShow = false;
-              schedulerConfig.value.isScheduledEventsShow = true;
-              sidebarSelectedTabId.value =
-                mockData.value.sideBarTabs.FRIENDS_PLANNED;
-              BlanballEventBus.emit('schedulerSidebarForceSwitchTab', {
-                tabId: mockData.value.sideBarTabs.FRIENDS_PLANNED,
-                userData: activatedUserInSidebarData.value,
-              });
-            }
+            configureSchedulerAfterMobileMode();
+            prevDevice.value = DEVICE_TYPES.BETWEEN_TABLET_AND_DESKTOP;
+            break;
+          }
+          case DEVICE_TYPES.DESKTOP: {
+            configureSchedulerAfterMobileMode();
+            prevDevice.value = DEVICE_TYPES.DESKTOP;
             break;
           }
         }
