@@ -1,5 +1,11 @@
 <template>
   <div @click.self="closeScheduler" class="c-scheduler-wrapper">
+    <Teleport to="body">
+      <JoinScheduledEventModal
+        v-if="isJoinScheduledEventModalOpened"
+        @closeModal="closeJoinScheduledEventModal"
+      />
+    </Teleport>
     <div
       class="c-common-block"
       :style="schedulerCommonBlockStyle"
@@ -232,6 +238,7 @@ import ScheduledEventsList from './ScheduledEventsList.vue';
 import SchedulerFriendsList from './SchedulerFriendsList.vue';
 import SchedulerInlineCalendarTitle from './SchedulerInlineCalendarTitle.vue';
 import GreenBtn from '../../shared/button/GreenBtn.vue';
+import JoinScheduledEventModal from './modals/JoinScheduledEventModal.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
@@ -276,6 +283,7 @@ export default {
     SchedulerInlineCalendarTitle,
     SchedulerFriendsList,
     GreenBtn,
+    JoinScheduledEventModal,
     SchedulerTabs,
     WhiteBtn,
   },
@@ -304,6 +312,8 @@ export default {
     const schedulerCommonBlock = ref();
     const hideBtnConfig = ref({});
     const prevDevice = ref();
+
+    const isJoinScheduledEventModalOpened = ref(false);
 
     const { height: schedulerCommonBlockHeight } =
       useElementSize(schedulerCommonBlock);
@@ -473,6 +483,14 @@ export default {
       ],
       selectedDate: '',
     });
+
+    function showJoinScheduledEventModal() {
+      isJoinScheduledEventModalOpened.value = true;
+    }
+
+    function closeJoinScheduledEventModal() {
+      isJoinScheduledEventModalOpened.value = false;
+    }
 
     function formatDate(date) {
       return dayjs(date).format('YYYY-MM-DD');
@@ -702,10 +720,15 @@ export default {
       }
     });
 
+    BlanballEventBus.on('joinScheduledEvent', () => {
+      showJoinScheduledEventModal();
+    });
+
     onBeforeUnmount(() => {
       BlanballEventBus.off('activateUserInScheduler');
       BlanballEventBus.off('switchedSchedulerSidebarTab');
       BlanballEventBus.off('deactivateUser');
+      BlanballEventBus.off('joinScheduledEvent');
     });
 
     function configureSchedulerAfterDesktopMode() {
@@ -792,6 +815,7 @@ export default {
       hideBtnConfig,
       scheduledBottomBlockStyle,
       schedulerCommonBlock,
+      isJoinScheduledEventModalOpened,
       todayDate,
       inlineCalendarActiveDateDotsColor,
       inlineCalendarConfig,
@@ -816,6 +840,8 @@ export default {
       setSchedulerDatesRangeAndLoadData,
       friendsBlockSwitcher,
       inlineCalendarChangeMonth,
+      showJoinScheduledEventModal,
+      closeJoinScheduledEventModal,
       removeYearFromDate,
     };
   },

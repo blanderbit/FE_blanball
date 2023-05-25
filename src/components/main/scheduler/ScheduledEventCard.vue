@@ -44,7 +44,7 @@
             <img
               src="../../../assets/img/scheduler/gray-plus.svg"
               alt=""
-              @click.stop=""
+              @click.stop="joinScheduledEvent"
             />
             <span>{{ $t('scheduler.no-participants') }}</span>
           </div>
@@ -200,6 +200,10 @@ export default {
       BlanballEventBus.emit('closeScheduler');
     };
 
+    const joinScheduledEvent = () => {
+      BlanballEventBus.emit('joinScheduledEvent');
+    };
+
     onMounted(() => {
       eventCrossIcon.value = getEventCrossIcon();
       eventTriangleIcon.value = getEventTriangleIcon();
@@ -212,6 +216,7 @@ export default {
       eventCrossIcon,
       eventTriangleIcon,
       goToTheEventPage,
+      joinScheduledEvent,
     };
   },
 };

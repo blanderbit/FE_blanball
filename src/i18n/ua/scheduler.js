@@ -14,5 +14,10 @@ export default {
   'friends-planned-tab': 'Зайнятість друзів',
   'on-event-page': 'На сторінку події',
   'members': 'Учасники',
-  'no-participants': 'Немає учасників'
+  'no-participants': 'Немає учасників',
+  'event-join-modal': {
+    'title': 'Долучитися до події',
+    'main-text': 'Бажаєте прийняти участь у Дружньому матчі «Колобки VS Помідорки»?',
+    'take-part': 'Прийняти участь'
+  }
 };
