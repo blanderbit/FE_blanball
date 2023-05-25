@@ -210,6 +210,7 @@ const openEventReviewModal = () => {
   isCreateReviewModalActive.value = true;
 };
 
+
 NotificationsBus.on('openEventReviewModal', async (data) => {
   const respone = await API.EventService.getOneEvent(data.data.event.id);
   endedEventData.value = respone.data;

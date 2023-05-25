@@ -484,6 +484,22 @@ export default {
       selectedDate: '',
     });
 
+    function configureHideBtn(image, action) {
+      if (image) {
+        hideBtnConfig.value.img = image;
+      }
+      if (action) {
+        hideBtnConfig.value.action = () => action();
+      }
+
+      if (detectedDevice.value === DEVICE_TYPES.MOBILE_SMALL) {
+        BlanballEventBus.emit(
+          'configureSchedulerGoBackButtonOnMobile',
+          hideBtnConfig.value
+        );
+      }
+    }
+
     function showJoinScheduledEventModal() {
       isJoinScheduledEventModalOpened.value = true;
     }
@@ -553,8 +569,7 @@ export default {
           schedulerConfig.value.hideTitleBar = false;
           inlineCalendarConfig.value.visible = false;
 
-          hideBtnConfig.value.img = icons.value.close;
-          hideBtnConfig.value.action = () => closeScheduler();
+          configureHideBtn(icons.value.close, closeScheduler);
 
           if (isFriendsVisible.value) {
             friendsBlockSwitcher();
@@ -569,8 +584,7 @@ export default {
           inlineCalendarConfig.value.visible = true;
           inlineCalendarConfig.value.selectedDate = data.startDate;
 
-          hideBtnConfig.value.img = icons.value.goBack;
-          hideBtnConfig.value.action = () => backToTheMonthView();
+          configureHideBtn(icons.value.goBack, backToTheMonthView);
 
           if (!isFriendsVisible.value) {
             friendsBlockSwitcher();
@@ -650,7 +664,8 @@ export default {
       deactivateUserAndLoadData(userStore.user);
       schedulerConfig.value.isFriendsListShow = true;
       schedulerConfig.value.isScheduledEventsShow = false;
-      hideBtnConfig.value.action = () => backToTheMonthView();
+
+      configureHideBtn((action = backToTheMonthView));
     }
 
     function inlineCalendarChangeMonth(data) {
@@ -663,7 +678,8 @@ export default {
       activateUserAndLoadData(userData);
       schedulerConfig.value.isFriendsListShow = false;
       schedulerConfig.value.isScheduledEventsShow = true;
-      hideBtnConfig.value.action = () => goToTheSchedulerUsersList();
+
+      configureHideBtn((action = goToTheSchedulerUsersList));
     }
 
     function deactivateUser() {
@@ -710,13 +726,15 @@ export default {
         sidebarSelectedTabId.value ===
         mockData.value.sideBarTabs.FRIENDS_PLANNED
       ) {
-        hideBtnConfig.value.action = () => {
-          BlanballEventBus.emit('schedulerSidebarForceSwitchTab', {
-            tabId: mockData.value.sideBarTabs.MY_PLANNED,
-            userData: userStore.user,
-          });
-          hideBtnConfig.value.action = () => backToTheMonthView();
-        };
+        configureHideBtn(
+          (action = () => {
+            BlanballEventBus.emit('schedulerSidebarForceSwitchTab', {
+              tabId: mockData.value.sideBarTabs.MY_PLANNED,
+              userData: userStore.user,
+            });
+            hideBtnConfig.value.action = () => backToTheMonthView();
+          })
+        );
       }
     });
 
