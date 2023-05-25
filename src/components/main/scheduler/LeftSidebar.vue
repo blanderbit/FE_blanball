@@ -157,6 +157,8 @@ export default {
       switchTab(data.tabId);
       if (data.userData) {
         activateUser(data.userData);
+      } else {
+        deactivateUser();
       }
     });
 

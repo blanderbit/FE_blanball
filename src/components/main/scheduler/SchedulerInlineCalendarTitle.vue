@@ -67,7 +67,8 @@ export default {
     });
 
     const onViewChange = (data) => {
-      emit('changeMonth', data)
+      console.log(data)
+      emit('changeMonth', data);
     };
 
     return {

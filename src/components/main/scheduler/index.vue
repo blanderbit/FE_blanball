@@ -3,6 +3,7 @@
     <Teleport to="body">
       <JoinScheduledEventModal
         v-if="isJoinScheduledEventModalOpened"
+        :eventData="joinEventData"
         @closeModal="closeJoinScheduledEventModal"
       />
     </Teleport>
@@ -63,8 +64,8 @@
               v-model:selectedDate="inlineCalendarConfig.selectedDate"
               :specMinDate="inlineCalendarConfig.specMinDate"
               :specMaxDate="inlineCalendarConfig.specMaxDate"
-              :showYear="inlineCalendarConfig.showYear"
               :showMonth="inlineCalendarConfig.showMonth"
+              :showYear="inlineCalendarConfig.showYear"
               :itemWidth="inlineCalendarConfig.itemWidth"
               :locale="inlineCalendarConfig.locale"
               :showButtons="inlineCalendarConfig.showButtons"
@@ -113,7 +114,6 @@
               <div
                 v-if="schedulerConfig.isScheduledEventsShow"
                 class="c-schduled-events-list"
-                :id="scheduledEventsHeight"
                 :style="scheduledEventsHeight"
               >
                 <ScheduledEventsList
@@ -288,10 +288,6 @@ export default {
     WhiteBtn,
   },
   props: {
-    config: {
-      type: Object,
-      default: () => ({}),
-    },
     marginTop: {
       type: Number,
       default: 80,
@@ -312,6 +308,7 @@ export default {
     const schedulerCommonBlock = ref();
     const hideBtnConfig = ref({});
     const prevDevice = ref();
+    const joinEventData = ref(null);
 
     const isJoinScheduledEventModalOpened = ref(false);
 
@@ -363,7 +360,10 @@ export default {
     });
 
     const isMainBottomSideContentVisible = computed(() => {
-      return activatedUserInSidebarData.value?.id === userStore.user.id;
+      return (
+        !activatedUserInSidebarData.value ||
+        activatedUserInSidebarData.value?.id === userStore.user.id
+      );
     });
 
     const isTopPlanEventButtonVisible = computed(() => {
@@ -500,11 +500,13 @@ export default {
       }
     }
 
-    function showJoinScheduledEventModal() {
+    function showJoinScheduledEventModal(eventData) {
+      joinEventData.value = eventData;
       isJoinScheduledEventModalOpened.value = true;
     }
 
     function closeJoinScheduledEventModal() {
+      joinEventData.value = null;
       isJoinScheduledEventModalOpened.value = false;
     }
 
@@ -548,12 +550,10 @@ export default {
             schedulerConfig.value.activeView =
               mockData.value.schedulerActiveViews.DAY;
             configureScheduler(mockData.value.schedulerActiveViews.DAY);
+
             schedulerConfig.value.isFriendsListShow = false;
             schedulerConfig.value.isScheduledEventsShow = true;
-            schedulerConfig.value.isFriendsListShow = false;
-            if (activatedUserInSidebarData.value) {
-              deactivateUser();
-            }
+            deactivateUser(userStore.user);
             break;
           }
         }
@@ -665,13 +665,13 @@ export default {
       schedulerConfig.value.isFriendsListShow = true;
       schedulerConfig.value.isScheduledEventsShow = false;
 
-      configureHideBtn((action = backToTheMonthView));
+      configureHideBtn(icons.value.goBack, backToTheMonthView);
     }
 
     function inlineCalendarChangeMonth(data) {
       inlineCalendarConfig.value.specMinDate = data.firstCellDate;
       inlineCalendarConfig.value.specMaxDate = data.lastCellDate;
-      inlineCalendar.value.fillByProvidedDate(data.firstCellDate);
+      inlineCalendar.value.fillByProvidedDate(data.lastCellDate);
     }
 
     function activateUser(userData) {
@@ -679,11 +679,11 @@ export default {
       schedulerConfig.value.isFriendsListShow = false;
       schedulerConfig.value.isScheduledEventsShow = true;
 
-      configureHideBtn((action = goToTheSchedulerUsersList));
+      configureHideBtn(icons.value.goBack, goToTheSchedulerUsersList);
     }
 
-    function deactivateUser() {
-      deactivateUserAndLoadData(userStore.user);
+    function deactivateUser(userData) {
+      deactivateUserAndLoadData(userData);
       schedulerConfig.value.isFriendsListShow = false;
       schedulerConfig.value.isScheduledEventsShow = true;
     }
@@ -726,20 +726,22 @@ export default {
         sidebarSelectedTabId.value ===
         mockData.value.sideBarTabs.FRIENDS_PLANNED
       ) {
-        configureHideBtn(
-          (action = () => {
-            BlanballEventBus.emit('schedulerSidebarForceSwitchTab', {
-              tabId: mockData.value.sideBarTabs.MY_PLANNED,
-              userData: userStore.user,
-            });
-            hideBtnConfig.value.action = () => backToTheMonthView();
-          })
-        );
+        configureHideBtn(icons.value.goBack, () => {
+          BlanballEventBus.emit('schedulerSidebarForceSwitchTab', {
+            tabId: mockData.value.sideBarTabs.MY_PLANNED,
+            userData: userStore.user,
+          });
+          hideBtnConfig.value.action = () => backToTheMonthView();
+        });
       }
     });
 
-    BlanballEventBus.on('joinScheduledEvent', () => {
-      showJoinScheduledEventModal();
+    BlanballEventBus.on('joinScheduledEvent', (eventData) => {
+      if (eventData.author.id === userStore.user.id) {
+        router.push(ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(eventData.id));
+      } else {
+        showJoinScheduledEventModal(eventData);
+      }
     });
 
     onBeforeUnmount(() => {
@@ -760,8 +762,8 @@ export default {
           !schedulerConfig.value.isFriendsListShow
         ) {
           if (!activatedUserInSidebarData.value) {
-            schedulerConfig.value.isScheduledEventsShow = false;
             schedulerConfig.value.isFriendsListShow = true;
+            schedulerConfig.value.isScheduledEventsShow = false;
           }
         }
       }
@@ -773,10 +775,13 @@ export default {
         prevDevice.value !== DEVICE_TYPES.DESKTOP
       ) {
         if (schedulerConfig.value.isFriendsListShow) {
-          schedulerConfig.value.isFriendsListShow = false;
           schedulerConfig.value.isScheduledEventsShow = true;
-          sidebarSelectedTabId.value =
-            mockData.value.sideBarTabs.FRIENDS_PLANNED;
+          schedulerConfig.value.isFriendsListShow = false;
+          BlanballEventBus.emit('schedulerSidebarForceSwitchTab', {
+            tabId: mockData.value.sideBarTabs.FRIENDS_PLANNED,
+            userData: null,
+          });
+        } else if (schedulerConfig.value.isScheduledEventsShow) {
           BlanballEventBus.emit('schedulerSidebarForceSwitchTab', {
             tabId: mockData.value.sideBarTabs.FRIENDS_PLANNED,
             userData: activatedUserInSidebarData.value,
@@ -819,6 +824,15 @@ export default {
     );
 
     watch(
+      () => detectedDevice.value,
+      (newDevice) => {
+        if (newDevice === DEVICE_TYPES.MOBILE_SMALL) {
+          configureHideBtn(...Object.values(hideBtnConfig.value));
+        }
+      }
+    );
+
+    watch(
       () => route.name,
       () => {
         closeScheduler();
@@ -830,6 +844,7 @@ export default {
       schedulerConfig,
       mockData,
       scheduledEventsDotsData,
+      joinEventData,
       hideBtnConfig,
       scheduledBottomBlockStyle,
       schedulerCommonBlock,

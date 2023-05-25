@@ -7,6 +7,12 @@
       <div class="c-join-scheduled-event-modal__content">
         <div class="c-join-scheduled-event-modal__top-side">
           <img
+            class="c-close-join-scheduled-event-modal"
+            src="../../../../assets/img/cross.svg"
+            alt=""
+            @click="$emit('closeModal')"
+          />
+          <img
             src="../../../../assets/img/join-scheduled-event-icon.svg"
             alt=""
           />
@@ -16,7 +22,11 @@
             {{ $t('scheduler.event-join-modal.title') }}
           </div>
           <div class="c-join-scheduled-event-modal__main-text">
-            {{ $t('scheduler.event-join-modal.main-text') }}
+            {{
+              $t('scheduler.event-join-modal.main-text', {
+                eventName: eventData.name,
+              })
+            }}
           </div>
         </div>
         <div class="c-join-scheduled-event-modal__bottom-side">
@@ -40,6 +50,12 @@ export default {
     GreenBtn,
   },
   emits: ['closeModal'],
+  props: {
+    eventData: {
+      type: Object,
+      required: true,
+    },
+  },
   setup() {
     return {};
   },
@@ -70,6 +86,15 @@ export default {
 
       .c-join-scheduled-event-modal__top-side {
         width: fit-content;
+        position: relative;
+
+        .c-close-join-scheduled-event-modal {
+          position: absolute;
+          right: -60px;
+          width: 10px;
+          height: 10px;
+          cursor: pointer;
+        }
       }
 
       .c-join-scheduled-event-modal__main-side {

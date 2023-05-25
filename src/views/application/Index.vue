@@ -72,7 +72,6 @@
       <KeepAlive>
         <Scheduler
           v-if="isSchedulerOpened"
-          :config="schedulerConfig"
           :marginTop="schedulerTopSideMargin"
           @closeWindow="isSchedulerOpened = false"
         >
@@ -106,7 +105,7 @@
 
 <script setup>
 import { ref, computed, watch, onBeforeUnmount, onMounted } from 'vue';
-import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
 
@@ -477,11 +476,6 @@ watch(
 );
 
 const isSchedulerOpened = ref(false);
-
-const schedulerConfig = ref({
-  myEventsDotColor: '#148581',
-  otherEventsDotColor: '#D62953',
-});
 </script>
 
 <style lang="scss">

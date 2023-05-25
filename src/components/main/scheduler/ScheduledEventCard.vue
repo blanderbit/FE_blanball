@@ -38,7 +38,12 @@
             v-if="eventData.current_users.length"
             class="c-participants__list"
           >
-            <UserAvatar />
+            <!-- <UserAvatar
+              v-for="user in eventData.current_users"
+              :link="user.profile.avatar_url"
+              :avatarType="'small-square'"
+              :full-name="`${user.profile.last_name} ${user.profile.name}`"
+            /> -->
           </div>
           <div v-else class="c-no-participants">
             <img
@@ -164,21 +169,21 @@ export default {
           return icons.value.triangle.grayTriangle;
         }
         case EVENT_STATUSES.ACTIVE: {
-          return icons.value.triangle.greenCross;
+          return icons.value.triangle.greenTriangle;
         }
       }
     };
 
     const isUserEventAuthor = computed(() => {
-      return (props.eventData.request_user_role = REQUEST_USER_ROLES.AUTHOR);
+      return props.eventData.request_user_role === REQUEST_USER_ROLES.AUTHOR;
     });
 
     const isUserEventPlayer = computed(() => {
-      return (props.eventData.request_user_role = REQUEST_USER_ROLES.PLAYER);
+      return props.eventData.request_user_role === REQUEST_USER_ROLES.PLAYER;
     });
 
     const isUserEventFan = computed(() => {
-      return (props.eventData.request_user_role = REQUEST_USER_ROLES.FAN);
+      return props.eventData.request_user_role === REQUEST_USER_ROLES.FAN;
     });
 
     const isUserCanDeclineEvent = computed(() => {
@@ -201,7 +206,7 @@ export default {
     };
 
     const joinScheduledEvent = () => {
-      BlanballEventBus.emit('joinScheduledEvent');
+      BlanballEventBus.emit('joinScheduledEvent', props.eventData);
     };
 
     onMounted(() => {

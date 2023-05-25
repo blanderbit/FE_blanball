@@ -272,8 +272,8 @@ export default {
       if (dates.value.length) {
         dates.value = [];
       }
-      getNextDatesInRange(date, props.loadDatesCount, false);
-      getPrevDatesInRange(date, props.loadDatesCount, true);
+      getNextDatesInRange(date, props.loadDatesCount, true);
+      getPrevDatesInRange(date, props.loadDatesCount, false);
     };
     const getPrevDatesInRange = (startDate, days, excludeFirstDate = false) => {
       const date = new Date(startDate.getTime());
@@ -414,6 +414,10 @@ export default {
         return;
       }
       fillCalendar();
+    });
+
+    watch(datesReadable, () => {
+      console.log(datesReadable.value);
     });
 
     expose({

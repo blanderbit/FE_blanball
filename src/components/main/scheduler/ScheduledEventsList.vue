@@ -238,8 +238,8 @@ export default {
           btn_with_2: 132,
         };
       } else if (
-        eventData.value.request_user_role === REQUEST_USER_ROLES.FAN ||
-        eventData.value.request_user_role === REQUEST_USER_ROLES.PLAYER
+        eventData.request_user_role === REQUEST_USER_ROLES.FAN ||
+        eventData.request_user_role === REQUEST_USER_ROLES.PLAYER
       ) {
         submitModalConfig.value = {
           title: t('modals.leave_from_event.title'),
