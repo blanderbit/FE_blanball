@@ -376,6 +376,7 @@ export default {
     });
 
     const scheduledEventsHeight = computed(() => {
+      console.log((isTablet.value || (isMobile.value && !isMobileSmall.value) ? 32 : 0))
       return {
         height: `${
           schedulerCommonBlockHeight.value -
@@ -385,8 +386,8 @@ export default {
           detectedDevice.value === DEVICE_TYPES.BETWEEN_TABLET_AND_DESKTOP
             ? 130
             : 90) -
-          (isTablet.value || isMobile.value ? 66 : 0) -
-          (isTablet.value || (isMobile.value && !isMobileSmall.value) ? 32 : 0)
+          (isTablet.value || isMobile.value ? 55 : 0) -
+          (isTablet.value || (isMobile.value && !isMobileSmall.value) ? 44 : 0)
         }px`,
       };
     });
@@ -918,13 +919,11 @@ $color-e9fcfb: #e9fcfb;
 
   .c-tabs {
     margin-bottom: 0px;
-    margin-top: 8px;
     height: 40px;
 
     @include beforeDesktop {
       width: 464px;
       margin: 0 auto;
-      margin-top: 8px;
     }
     @include mobile {
       width: inherit;
@@ -987,6 +986,10 @@ $color-e9fcfb: #e9fcfb;
       display: none;
       @include beforeDesktop {
         display: block;
+      }
+
+      :deep(.c-tabs) {
+        margin-top: 8px;
       }
 
       .c-plan-event-button {

@@ -103,13 +103,11 @@ export default {
   },
   emits: ['friendsBlockSwitcher'],
   setup() {
-    const { t } = useI18n();
     const router = useRouter();
     const searchFriendsValue = ref('');
     const selectedTabId = ref(CONSTS.scheduler.TABS_ENUM.MY_PLANNED);
     const userStore = useUserDataStore();
     const activeUserId = ref(userStore.user.id);
-    const usersList = ref(null);
 
     const mockData = computed(() => {
       return {
@@ -138,7 +136,13 @@ export default {
     };
 
     function goToTheCreateEventPage() {
-      router.push(ROUTES.APPLICATION.EVENTS.CREATE.absolute);
+      if (
+        router.currentRoute.value.name === ROUTES.APPLICATION.EVENTS.CREATE.name
+      ) {
+        BlanballEventBus.emit('closeScheduler');
+      } else {
+        router.push(ROUTES.APPLICATION.EVENTS.CREATE.absolute);
+      }
     }
 
     function activateUser(userData) {
