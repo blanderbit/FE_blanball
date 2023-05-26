@@ -9,7 +9,11 @@
           {{ $t('events.friendly-match') }}
         </div>
         <div :class="['c-event-time', eventData.status]">
-          {{ eventData.time }} –
+          {{ eventData.time }}
+          <span v-if="!isEventOpened">-</span>
+          <span :class="['c-event-duration', eventData.status]" v-else>{{
+            formatedEventDuration
+          }}</span>
           {{ eventData.end_time }}
         </div>
       </div>
@@ -186,6 +190,15 @@ export default {
       return props.eventData.request_user_role === REQUEST_USER_ROLES.FAN;
     });
 
+    const formatedEventDuration = computed(() => {
+      const hours = Math.floor(props.eventData.duration / 60);
+      const minutes = props.eventData.duration % 60;
+
+      return `${hours ? hours + ' год.' : ''} ${
+        minutes ? minutes + ' хв.' : ''
+      }`;
+    });
+
     const isUserCanDeclineEvent = computed(() => {
       return (
         isUserEventAuthor.value ||
@@ -218,6 +231,7 @@ export default {
       isEventOpened,
       isUserCanDeclineEvent,
       REQUEST_USER_ROLES,
+      formatedEventDuration,
       eventCrossIcon,
       eventTriangleIcon,
       goToTheEventPage,
@@ -393,6 +407,27 @@ $color-dfdeed: #dfdeed;
     align-items: center;
     gap: 8px;
     line-height: 20px;
+
+    .c-event-duration {
+      line-height: 20px;
+      padding: 4px 5px;
+      border-radius: 6px;
+      margin: 0px 16px;
+      &.Planned {
+        @include inter(14px, 400, $--b-main-gray-color);
+        border: 1px solid #dfdeed;
+      }
+
+      &.Active {
+        @include inter(14px, 400, $--b-main-green-color);
+        border: 1px solid #8A8AA8;
+      }
+
+      &.Finished {
+        @include inter(14px, 400, #8A8AA8);
+        border: 1px solid #8A8AA8;
+      }
+    }
 
     .c-event-type {
       padding-right: 8px;
