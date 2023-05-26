@@ -144,6 +144,7 @@ import EventCreatedIcon from '../../assets/img/event-creted-modal-icon.svg';
 import notification_audio from '../../assets/audio/notification-audio.mp3';
 
 const isVerifyModalActive = ref(false);
+const schedulerKey = ref();
 const header = ref();
 const isCreateReviewModalActive = ref(false);
 const endedEventData = ref({});
@@ -208,7 +209,6 @@ const openEventReviewModal = () => {
   }
   isCreateReviewModalActive.value = true;
 };
-
 
 NotificationsBus.on('openEventReviewModal', async (data) => {
   const respone = await API.EventService.getOneEvent(data.data.event.id);

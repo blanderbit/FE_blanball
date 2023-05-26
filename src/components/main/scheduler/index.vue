@@ -739,6 +739,10 @@ export default {
     BlanballEventBus.on('joinScheduledEvent', (eventData) => {
       if (eventData.author.id === userStore.user.id) {
         router.push(ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(eventData.id));
+
+        if (route.name === ROUTES.APPLICATION.EVENTS.GET_ONE.name) {
+          closeScheduler();
+        }
       } else {
         showJoinScheduledEventModal(eventData);
       }
