@@ -9,6 +9,7 @@ import { AxiosInstance } from '../plugins/axios.plugin';
 import { i18n } from '../main';
 import { EndpointsEnum } from '../workers/api-worker/http/http-common/prefix.enum';
 import { globalSkipMesssageTypes } from '../workers/type-request-message-worker';
+import { finishSpinner } from '../workers/loading-worker/loading.worker';
 
 const toast = useToast();
 
@@ -72,5 +73,8 @@ export const ErrorInterceptor = async (error) => {
   if (errorMessageType) {
     error.errorMessageType = errorMessageType;
   }
-  return Promise.reject(error);
+
+  const rejectedError = Promise.reject(error);
+  finishSpinner();
+  return rejectedError;
 };

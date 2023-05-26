@@ -19,6 +19,8 @@ import pinia from './plugins/pinia';
 import pkg from '../package';
 import './workers/map-worker/map.init';
 import { UA_LANGUAGE } from './i18n/ua';
+import { BlanballEventBus } from './workers/event-bus-worker';
+import { useHintsStore } from './stores/hints';
 
 import './assets/styles/main.scss';
 import './assets/styles/normalize.scss';
@@ -50,4 +52,28 @@ app
   .use(Toast)
   .use(Maska)
   .use(createDeviceDetector())
+  .directive('hints', (el, hintsData) => {
+    const hintsStore = useHintsStore();
+
+    const hintsToShow = hintsData.value.filter((result) => {
+      return hintsStore.hintsData.results.some(
+        (value) => value.name === result.name
+      );
+    });
+
+    const calculatePosition = (hint) => {
+      return {
+        ...hint,
+        top: el.getBoundingClientRect().top + el.offsetHeight + hint.marginTop,
+        left: el.getBoundingClientRect().left - (hint.width / 2)
+      }
+    }
+
+    hintsToShow.map(calculatePosition);
+
+    if (hintsToShow.length) {
+      BlanballEventBus.emit('createHints', { hints: hintsToShow, element: el });
+    }
+  })
+
   .mount('#app');

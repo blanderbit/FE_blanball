@@ -54,14 +54,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-efeff6: #efeff6;
 .c-tabs {
-  background: #efeff6;
+  background: $color-efeff6;
   border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 8px;
-  border: 2px solid #efeff6;
+  border: 2px solid $color-efeff6;
 
   .c-tab {
     @include inter(13px, 400, $--b-main-gray-color);

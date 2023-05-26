@@ -156,14 +156,14 @@ export default {
       default: false,
     },
   },
-  emits: ['update:selectedDate', 'update:selectedRange'],
+  emits: ['update:selectedDate', 'update:selectedRange', 'ready'],
   components: {
     TheObserver,
   },
   directives: {
     dragscroll,
   },
-  setup(props, { emit }) {
+  setup(props, { emit, expose }) {
     const root = ref(null);
     const datesWrapper = ref(null);
     const activeDate = ref(props.selectedDate);
@@ -254,6 +254,8 @@ export default {
           });
         }
       });
+
+      emit('ready');
     });
     onBeforeUnmount(() => {
       if (props.enableMousewheelScroll) {
@@ -267,6 +269,13 @@ export default {
       }
       getNextDatesInRange(new Date(), props.loadDatesCount, false);
       getPrevDatesInRange(new Date(), props.loadDatesCount, true);
+    };
+    const fillByProvidedDate = (date) => {
+      if (dates.value.length) {
+        dates.value = [];
+      }
+      getNextDatesInRange(date, props.loadDatesCount, true);
+      getPrevDatesInRange(date, props.loadDatesCount, false);
     };
     const getPrevDatesInRange = (startDate, days, excludeFirstDate = false) => {
       const date = new Date(startDate.getTime());
@@ -408,6 +417,15 @@ export default {
       }
       fillCalendar();
     });
+
+    watch(datesReadable, () => {
+      console.log(datesReadable.value);
+    });
+
+    expose({
+      fillByProvidedDate,
+    });
+
     return {
       root,
       datesWrapper,
@@ -433,11 +451,15 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+$color-f9f9fc: #f9f9fc;
+$color-0094ff: #0094ff;
+$color-1d817e: #1d817e;
+$color-f0f0f4: #f0f0f4;
 @import '../../../assets/styles/inline-calendar/main.css';
 .inline-calendar {
   margin-bottom: 8px;
   padding: 0 10px;
-  background: #f9f9fc;
+  background: $color-f9f9fc;
 
   &__dates {
     display: flex;
@@ -452,7 +474,7 @@ export default {
       grid-auto-flow: column;
       margin-left: -10px;
       margin-right: -10px;
-      padding: 8px 10px;
+      padding: 8px;
       padding-top: 0px;
       list-style-type: none;
       -ms-overflow-style: none;
@@ -465,8 +487,8 @@ export default {
   &__date {
     padding: 14px;
     text-align: center;
-    background-color: #fff;
-    border: 1px solid #0094ff;
+    background-color: $--b-main-white-color;
+    border: 1px solid $color-0094ff;
     border-radius: 8px;
     cursor: pointer;
     -webkit-user-select: none;
@@ -496,18 +518,18 @@ export default {
       }
     }
     &.in-range {
-      color: #fff;
-      border-color: rgba(#0094ff, 0.6) !important;
-      background-color: rgba(#0094ff, 0.6) !important;
+      color: $--b-main-white-color;
+      border-color: rgba($color-0094ff, 0.6) !important;
+      background-color: rgba($color-0094ff, 0.6) !important;
     }
     &.active {
-      background: #1d817e !important;
-      border: 1px solid #ffffff !important;
+      background: $color-1d817e !important;
+      border: 1px solid $--b-main-white-color !important;
       box-shadow: 1px 2px 5px 1px rgba(56, 56, 251, 0.08) !important;
       border-radius: 16px !important;
 
       .date-item__weekday {
-        @include inter(12px, 500, #f0f0f4);
+        @include inter(12px, 500, $color-f0f0f4);
         line-height: 20px;
         text-align: center;
       }

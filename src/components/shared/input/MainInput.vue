@@ -312,7 +312,7 @@ $color-dfdeed: #dfdeed;
       border: 1.5px solid $color-8a8aa8;
     }
     &.disabled {
-      border: 1px solid #d9d9d9;
+      border: 1px solid $color-d9d9d9;
     }
     .b-input__icon {
       display: flex;
@@ -394,7 +394,7 @@ $color-dfdeed: #dfdeed;
       }
 
       &.disabled {
-        color: #a8a8bd;
+        color: $color-a8a8bd;
       }
     }
   }

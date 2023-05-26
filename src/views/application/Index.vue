@@ -41,6 +41,13 @@
       <div class="container">
         <div class="main-body-inner">
           <router-view />
+          <!-- <Transition name="hint-fade">
+            <Hint
+              v-if="currentVisibleHint.name"
+              :hintData="currentVisibleHint"
+              @closeHint="closeCurrentHint"
+            />
+          </Transition> -->
         </div>
       </div>
     </div>
@@ -62,35 +69,36 @@
     />
 
     <Transition name="scheduler">
-      <Scheduler
-        v-if="isSchedulerOpened"
-        :config="schedulerConfig"
-        :marginTop="schedulerTopSideMargin"
-        @closeWindow="isSchedulerOpened = false"
-      >
-        <template #LeftSidebar="{ isFriendsVisible, friendsBlockSwitcher }">
-          <LeftSidebar
-            v-if="isSchedulerSidebarVisible"
-            :is-friends-visible="isFriendsVisible"
-            @friendsBlockSwitcher="friendsBlockSwitcher"
-          />
-        </template>
-        <template
-          #TopFriendsBlock="{
-            isFriendsVisible,
-            minUsers,
-            usersNumber,
-            friendsBlockSwitcher,
-          }"
+      <KeepAlive>
+        <Scheduler
+          v-if="isSchedulerOpened"
+          :marginTop="schedulerTopSideMargin"
+          @closeWindow="isSchedulerOpened = false"
         >
-          <TopLineFriends
-            :isFriendsVisible="isFriendsVisible"
-            :minUsers="minUsers"
-            :usersNumber="usersNumber"
-            :friendsBlockSwitcher="friendsBlockSwitcher"
-          />
-        </template>
-      </Scheduler>
+          <template #LeftSidebar="{ isFriendsVisible, friendsBlockSwitcher }">
+            <LeftSidebar
+              v-if="isSchedulerSidebarVisible"
+              :is-friends-visible="isFriendsVisible"
+              @friendsBlockSwitcher="friendsBlockSwitcher"
+            />
+          </template>
+          <template
+            #TopFriendsBlock="{
+              isFriendsVisible,
+              minUsers,
+              usersNumber,
+              friendsBlockSwitcher,
+            }"
+          >
+            <TopLineFriends
+              :isFriendsVisible="isFriendsVisible"
+              :minUsers="minUsers"
+              :usersNumber="usersNumber"
+              :friendsBlockSwitcher="friendsBlockSwitcher"
+            />
+          </template>
+        </Scheduler>
+      </KeepAlive>
     </Transition>
   </div>
 </template>
@@ -113,6 +121,7 @@ import Scheduler from '../../components/main/scheduler/index.vue';
 import LeftSidebar from '../../components/main/scheduler/LeftSidebar.vue';
 import TopLineFriends from '../../components/main/scheduler/TopLineFriends.vue';
 import NewVersionModal from '../../components/main/versions/modals/NewVersionModal.vue';
+import Hint from '../../components/main/hints/Hint.vue';
 
 import { AuthWebSocketWorkerInstance } from '../../workers/web-socket-worker';
 import { accessToken } from '../../workers/token-worker';
@@ -135,6 +144,7 @@ import EventCreatedIcon from '../../assets/img/event-creted-modal-icon.svg';
 import notification_audio from '../../assets/audio/notification-audio.mp3';
 
 const isVerifyModalActive = ref(false);
+const schedulerKey = ref();
 const header = ref();
 const isCreateReviewModalActive = ref(false);
 const endedEventData = ref({});
@@ -151,6 +161,8 @@ const userStore = useUserDataStore();
 const headerHeightStore = useHeaderHeightStore();
 const audio = new Audio(notification_audio);
 let timeout;
+const avaliableHints = ref([]);
+const currentVisibleHint = ref({});
 
 const { isMobile, isTablet } = useWindowWidth();
 const { width: headerWidth, height: headerHeight } = useElementSize(header);
@@ -423,6 +435,13 @@ function setHeaderHeight() {
     headerHeight: headerHeight.value,
   });
 }
+BlanballEventBus.on('createHints', (data) => {
+  avaliableHints.value = data.hints;
+});
+
+BlanballEventBus.on('closeScheduler', () => {
+  isSchedulerOpened.value = false;
+});
 
 onMounted(() => {
   setHeaderHeight();
@@ -434,6 +453,8 @@ onBeforeUnmount(() => {
   NotificationsBus.off('removePushNotificationAfterSidebarAction');
   BlanballEventBus.off('EventCreated');
   BlanballEventBus.off('EventUpdated');
+  BlanballEventBus.off('closeScheduler');
+  BlanballEventBus.off('createHints');
   AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect();
 });
 
@@ -445,16 +466,19 @@ watch(
   }
 );
 
-const isSchedulerOpened = ref(false);
+watch(
+  () => avaliableHints.value,
+  () => {
+    if (avaliableHints.value.length) {
+      currentVisibleHint.value = avaliableHints.value.at(0);
+    }
+  }
+);
 
-const schedulerConfig = ref({
-  myEventsDotColor: '#148581',
-  otherEventsDotColor: '#D62953',
-});
+const isSchedulerOpened = ref(false);
 </script>
 
 <style lang="scss">
-// SCSS variables for hex colors
 $color-272643: #272643;
 $color-454461: #454461;
 
@@ -469,7 +493,7 @@ html {
 
 .header-block {
   @include beforeDesktop {
-    background: #fff;
+    background: $--b-main-white-color;
     position: relative;
     z-index: 501;
   }
@@ -552,6 +576,16 @@ html {
 
 .scheduler-enter-from,
 .scheduler-leave-to {
+  opacity: 0;
+}
+
+.hint-fade-enter-active,
+.hint-fade-leave-active {
+  transition: opacity 0.4s ease;
+}
+
+.hint-fade-enter-from,
+.hint-fade-leave-to {
   opacity: 0;
 }
 </style>

@@ -80,4 +80,7 @@ export const EndpointsEnum = {
     getScheduledEventsDataOnSpecificDay:
       '/scheduler/client/user/scheduler/events/on/specific/day',
   },
+  Hints: {
+    GetAllHints: '/hints/client/hints/list',
+  },
 };

@@ -26,13 +26,28 @@
     </div>
 
     <div class="b_header-right-side">
-      <img
-        class="b_scheduler_button"
-        src="../../../assets/img/calendar.svg"
-        alt=""
+      <div
+        :class="[
+          'b-scheduler-buttons',
+          { active: isGoBackSchedulerIconVisible },
+        ]"
         :style="`z-index: ${isSchedulerOpened ? 1000 : 0}`"
-        @click="$emit('openCloseScheduler')"
-      />
+      >
+        <img
+          v-hints="[HINTS_DATA.scheduler_onboarding]"
+          class="b_scheduler_open-close-button"
+          :src="icons.scheduler"
+          alt=""
+          @click="$emit('openCloseScheduler')"
+        />
+        <img
+          v-if="isGoBackSchedulerIconVisible"
+          class="b_shceduler-go-back-button"
+          src="../../../assets/img/arrow-left.svg"
+          alt=""
+          @click="goBackSchedulerButtonConfig?.action()"
+        />
+      </div>
       <div class="b_header_search-block">
         <div class="b_header_search-input">
           <MainInput
@@ -62,9 +77,15 @@ import SearchBlockAll from '../../SearchBlockAll.vue';
 import { CONSTS } from '../../../consts/index';
 import { ROUTES } from '../../../router/router.const';
 import { API } from '../../../workers/api-worker/api.worker';
+import { BlanballEventBus } from '../../../workers/event-bus-worker';
+import { useWindowWidth } from '../../../utils/widthScreen';
+
+import { HINTS_DATA } from '../../../workers/hints-worker/hints.data';
 
 import searchIcon from '../../../assets/img/search.svg';
 import arrowIcon from '../../../assets/img/arrow-right-gray.svg';
+import schedulerDefaultIcon from '../../../assets/img/calendar.svg';
+import schedulerActiveIcon from '../../../assets/img/scheduler/scheduler-active-icon.svg';
 
 export default {
   components: {
@@ -76,10 +97,10 @@ export default {
   props: {
     isSchedulerOpened: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  setup() {
+  setup(props) {
     const isSearchBlock = ref(false);
     const clientX = ref(0);
     const router = useRouter();
@@ -90,7 +111,18 @@ export default {
     const relevantUsersList = ref([]);
     const searchValue = ref('');
     const loading = ref(false);
+    const goBackSchedulerButtonConfig = ref(null);
     let searchTimeout;
+
+    const { isMobileSmall } = useWindowWidth();
+
+    const isGoBackSchedulerIconVisible = computed(() => {
+      return (
+        props.isSchedulerOpened &&
+        goBackSchedulerButtonConfig.value &&
+        isMobileSmall.value
+      );
+    });
 
     const openUserProfile = (userId) => {
       router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId));
@@ -123,6 +155,9 @@ export default {
       return {
         search: searchIcon,
         arrow: arrowIcon,
+        scheduler: props.isSchedulerOpened
+          ? schedulerActiveIcon
+          : schedulerDefaultIcon,
       };
     });
 
@@ -157,11 +192,19 @@ export default {
       }
     }
 
+    BlanballEventBus.on(
+      'configureSchedulerGoBackButtonOnMobile',
+      (buttonConfig) => {
+        goBackSchedulerButtonConfig.value = buttonConfig;
+      }
+    );
+
     onMounted(() => {
       window.addEventListener('resize', setScreenWidth);
     });
 
     onBeforeUnmount(() => {
+      BlanballEventBus.off('configureSchedulerGoBackButtonOnMobile');
       window.removeEventListener('resize', setScreenWidth);
     });
 
@@ -173,10 +216,13 @@ export default {
       icons,
       searchValue,
       relevantUsersList,
+      goBackSchedulerButtonConfig,
       isSearchBlock,
       loading,
       clientX,
+      isGoBackSchedulerIconVisible,
       clientY,
+      HINTS_DATA,
       mockData,
       modalSearchWidth,
     };
@@ -218,13 +264,39 @@ $color-fafafa: #fafafa;
     display: flex;
     align-items: center;
     gap: 12px;
-  }
-  .b_scheduler_button {
-    padding: 10px 16px;
-    border: 1px solid $color-dfdeed;
-    border-radius: 6px;
-    cursor: pointer;
-    background: $--b-main-white-color;
+
+    .b-scheduler-buttons {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      &.active {
+        padding: 2px;
+        background: #ecfcfb;
+        border-radius: 6px;
+      }
+      .b_scheduler_open-close-button {
+        padding: 10px 16px;
+        border: 1px solid $color-dfdeed;
+        border-radius: 6px;
+        cursor: pointer;
+        background: $--b-main-white-color;
+
+        @include tabletAndMobile {
+          border: none;
+          background: none;
+          padding: 6px;
+        }
+      }
+
+      .b_shceduler-go-back-button {
+        background: $--b-main-white-color;
+        box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+        border-radius: 4px;
+        padding: 8px 10px;
+        cursor: pointer;
+      }
+    }
   }
   .b_header_search-block {
     .b_header_search-input {

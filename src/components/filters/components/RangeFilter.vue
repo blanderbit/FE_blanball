@@ -64,11 +64,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
+$color-148783: #148783;
+$color-1ab2ad: #1ab2ad;
+$color-e9fcfb: #e9fcfb;
+$color-f9f9fc: #f9f9fc;
+$color-dfdeed: #dfdeed;
 .filter-style {
-  --slider-connect-bg: #148783;
+  --slider-connect-bg: $color-148783;
   --slider-height: 2px;
-  --slider-handle-border: 4px solid #1ab2ad;
-  --slider-handle-shadow: 0.5px 0.5px 2px 1px #e9fcfb;
+  --slider-handle-border: 4px solid $color-1ab2ad;
+  --slider-handle-shadow: 0.5px 0.5px 2px 1px $color-e9fcfb;
 }
 .b-range-filter__slider-wrapper {
   display: flex;
@@ -82,29 +87,29 @@ export default {
     font-weight: 400;
     font-size: 12px;
     line-height: 16px;
-    color: #262541;
+    color: $--b-main-black-color;
     padding: 0px 4px;
-    background: #f9f9fc;
+    background: $color-f9f9fc;
     border-radius: 4px;
     z-index: 1;
   }
   .b-range-filter__left-side {
-    background: #ffffff;
+    background: $--b-main-white-color;
     padding: 0 12px;
     width: 100%;
     display: flex;
     align-items: center;
-    border: 1px solid #dfdeed;
+    border: 1px solid $color-dfdeed;
     border-radius: 6px 0 0 6px;
     .b-range-filter__slider {
       width: 100%;
     }
   }
   .b-range-filter__right-side {
-    border-top: 1px solid #dfdeed;
-    border-right: 1px solid #dfdeed;
-    border-bottom: 1px solid #dfdeed;
-    background: #ffffff;
+    border-top: 1px solid $color-dfdeed;
+    border-right: 1px solid $color-dfdeed;
+    border-bottom: 1px solid $color-dfdeed;
+    background: $--b-main-white-color;
     padding: 6px 12px;
     border-radius: 0 6px 6px 0;
     font-family: 'Inter';
@@ -112,7 +117,7 @@ export default {
     font-weight: 400;
     font-size: 13px;
     line-height: 16px;
-    color: #575775;
+    color: $--b-main-gray-color;
     min-width: 76px;
   }
 }

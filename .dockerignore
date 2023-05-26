@@ -5,7 +5,7 @@ scripts
 CNAME
 CODE_OF_CONDUCT
 LICENSE
-README
+README.md
 
 # Ignore Node.js modules
 node_modules

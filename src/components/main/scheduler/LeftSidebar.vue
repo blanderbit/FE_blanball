@@ -15,6 +15,7 @@
           inputMode="search"
           v-model="searchFriendsValue"
           :height="36"
+          :width="240"
           :icon="icons.search"
           :backgroundColor="'#fff'"
           name="search"
@@ -37,6 +38,7 @@
             :text="$t('scheduler.plan-event')"
             :icon="icons.whiteClock"
             :height="32"
+            @click-function="goToTheCreateEventPage"
           />
         </div>
 
@@ -55,6 +57,7 @@
 <script>
 import { ref, computed, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 
 import MainInput from '../../shared/input/MainInput.vue';
 import SmartList from '../../../components/shared/smartList/SmartList.vue';
@@ -70,6 +73,7 @@ import { useUserDataStore } from '../../../stores/userData';
 import { BlanballEventBus } from '../../../workers/event-bus-worker';
 
 import { CONSTS } from '../../../consts';
+import { ROUTES } from '../../../router/router.const';
 
 import searchIcon from '../../../assets/img/scheduler/lens.svg';
 import whiteClockIcon from '../../../assets/img/scheduler/white-clock.svg';
@@ -99,12 +103,11 @@ export default {
   },
   emits: ['friendsBlockSwitcher'],
   setup() {
-    const { t } = useI18n();
+    const router = useRouter();
     const searchFriendsValue = ref('');
     const selectedTabId = ref(CONSTS.scheduler.TABS_ENUM.MY_PLANNED);
     const userStore = useUserDataStore();
     const activeUserId = ref(userStore.user.id);
-    const usersList = ref(null);
 
     const mockData = computed(() => {
       return {
@@ -132,6 +135,16 @@ export default {
       }
     };
 
+    function goToTheCreateEventPage() {
+      if (
+        router.currentRoute.value.name === ROUTES.APPLICATION.EVENTS.CREATE.name
+      ) {
+        BlanballEventBus.emit('closeScheduler');
+      } else {
+        router.push(ROUTES.APPLICATION.EVENTS.CREATE.absolute);
+      }
+    }
+
     function activateUser(userData) {
       if (activeUserId.value !== userData.id) {
         activeUserId.value = userData.id;
@@ -148,6 +161,8 @@ export default {
       switchTab(data.tabId);
       if (data.userData) {
         activateUser(data.userData);
+      } else {
+        deactivateUser();
       }
     });
 
@@ -163,6 +178,7 @@ export default {
       mockData,
       searchFriendsValue,
       switchTab,
+      goToTheCreateEventPage,
       activateUser,
     };
   },
@@ -181,6 +197,9 @@ $color-8a8aa8: #8a8aa8;
 
 :deep(.c-tabs) {
   margin-bottom: 8px;
+}
+:deep(input) {
+  width: 240px !important;
 }
 
 .c-no-results {

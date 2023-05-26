@@ -999,7 +999,7 @@ $color-1ccd62: #1ccd62;
 }
 .b-bottom-block__info {
   padding: 12px 16px 0px 0px;
-  border-top: 1px solid #dfdeed;
+  border-top: 1px solid $color-dfdeed;
   width: calc(100% + 32px);
   margin-left: -16px;
   padding-left: 16px;

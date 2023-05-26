@@ -10,7 +10,8 @@
     :events-count-on-year-view="config.eventsCountOnYearView"
     :locale="config.locale"
     :disable-views="config.disableViews"
-    :selected-date="config.selectedDate"
+    :selected-date="minDate"
+    @viewChange="onViewChange"
   >
     <template #title="{ title }">
       <div class="c-title">
@@ -38,7 +39,14 @@ export default {
   components: {
     VueCal,
   },
-  setup() {
+  emits: ['changeMonth'],
+  props: {
+    minDate: {
+      type: Date,
+      default: null,
+    },
+  },
+  setup(_, { emit }) {
     const mockData = computed(() => {
       return {
         schedulerActiveViews: CONSTS.scheduler.SCHEDULER_ACTIVE_VIEWS,
@@ -61,11 +69,16 @@ export default {
         mockData.value.schedulerActiveViews.YEAR,
         mockData.value.schedulerActiveViews.YEARS,
       ],
-      selectedDate: '',
     });
+
+    const onViewChange = (data) => {
+      console.log(data);
+      emit('changeMonth', data);
+    };
 
     return {
       config,
+      onViewChange,
     };
   },
 };

@@ -63,7 +63,7 @@ $color-dfdeed: #dfdeed;
     align-items: center;
     .c-user-pic {
       border-radius: 50%;
-      border: 2px solid #dfdeed;
+      border: 2px solid $color-dfdeed;
       &:not(:first-child) {
         margin-left: -10px;
       }

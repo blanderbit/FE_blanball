@@ -700,9 +700,9 @@ $color-8a8aa8: #8a8aa8;
             flex-basis: 33%;
             height: 4px;
             border-radius: 2px;
-            background: #cddde0;
+            background: $color-cddde0;
             &.active {
-              background: #578d95;
+              background: $color-578d95;
             }
           }
         }

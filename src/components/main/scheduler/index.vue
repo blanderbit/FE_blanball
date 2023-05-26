@@ -1,5 +1,21 @@
 <template>
-  <div @click.self="$emit('closeWindow')" class="c-scheduler-wrapper">
+  <div @click.self="closeScheduler" class="c-scheduler-wrapper">
+    <Teleport to="body">
+      <JoinScheduledEventModal
+        v-if="isJoinScheduledEventModalOpened"
+        :eventData="joinEventData"
+        @closeModal="closeJoinScheduledEventModal"
+        @takePartEvent="showContextModal"
+      />
+      <ContextModal
+        v-if="isContextModalActive"
+        :clientX="contextModalX"
+        :clientY="contextModalY"
+        :modalItems="mockData.contextModalItems"
+        @closeModal="closeContextModal"
+        @itemClick="contextModalItemClick"
+      />
+    </Teleport>
     <div
       class="c-common-block"
       :style="schedulerCommonBlockStyle"
@@ -13,12 +29,20 @@
       ></slot>
       <!-- Sidebar Slot -->
       <div class="c-right-block">
-        <div class="c-top-line">
-          <div class="c-top-line__left-block">
+        <div
+          class="c-top-line"
+          :style="`padding-bottom: ${isTopSideTabsVisible ? 0 : 12}px`"
+        >
+          <SchedulerTabs
+            v-if="isTopSideTabsVisible"
+            :selectedTabId="sidebarSelectedTabId"
+            @switchTab="switchTab"
+          />
+          <div v-else class="c-top-line__left-block">
             <div class="c-current-date">
               {{ $t('scheduler.today-date') }} <span>{{ todayDate }}</span>
             </div>
-            <!-- <div v-if="isTopPlanEventButtonVisible" class="c-plan-event-button">
+            <div v-if="isTopPlanEventButtonVisible" class="c-plan-event-button">
               <WhiteBtn
                 :text="$t('scheduler.plan-event')"
                 :width="192"
@@ -27,8 +51,9 @@
                 :mainColor="'#575775'"
                 :isBorder="true"
                 :borderColor="'#DFDEED'"
+                @click-function="goToTheCreateEvent"
               />
-            </div> -->
+            </div>
           </div>
           <img
             class="c-hide-btn"
@@ -40,6 +65,7 @@
         <div class="c-scheduler-block">
           <div class="c-sheduled-content-on-specific-day">
             <VueInlineCalendar
+              ref="inlineCalendar"
               v-if="inlineCalendarConfig.visible"
               :enableMousewheelScroll="
                 inlineCalendarConfig.enableMousewheelScroll
@@ -47,11 +73,12 @@
               v-model:selectedDate="inlineCalendarConfig.selectedDate"
               :specMinDate="inlineCalendarConfig.specMinDate"
               :specMaxDate="inlineCalendarConfig.specMaxDate"
-              :showYear="inlineCalendarConfig.showYear"
               :showMonth="inlineCalendarConfig.showMonth"
+              :showYear="inlineCalendarConfig.showYear"
               :itemWidth="inlineCalendarConfig.itemWidth"
               :locale="inlineCalendarConfig.locale"
               :showButtons="inlineCalendarConfig.showButtons"
+              @ready="fillInlineCalendar"
             >
               <template #prev-button>
                 <img
@@ -68,7 +95,10 @@
 
               <template #title>
                 <div class="c-inline-cal-title">
-                  <SchedulerInlineCalendarTitle>
+                  <SchedulerInlineCalendarTitle
+                    :minDate="inlineCalendarConfig.title.minDate"
+                    @changeMonth="inlineCalendarChangeMonth"
+                  >
                     <template #title="{ title }">
                       {{ removeYearFromDate(title) }}
                     </template>
@@ -91,29 +121,33 @@
                 />
               </template>
             </VueInlineCalendar>
-            <div
-              v-if="schedulerConfig.isScheduledEventsShow"
-              class="c-schduled-events-list"
-              :id="scheduledEventsHeight"
-              :style="scheduledEventsHeight"
-            >
-              <ScheduledEventsList
-                :date="formatDate(inlineCalendarConfig.selectedDate)"
-                :userData="activatedUserInSidebarData"
-                :scheduledEventsDotsData="scheduledEventsDotsData"
-              />
-            </div>
+            <div class="c-specific-day__main-content">
+              <div
+                v-if="schedulerConfig.isScheduledEventsShow"
+                class="c-schduled-events-list"
+                :style="scheduledEventsHeight"
+              >
+                <ScheduledEventsList
+                  :date="formatDate(inlineCalendarConfig.selectedDate)"
+                  :userData="activatedUserInSidebarData"
+                  :scheduledEventsDotsData="scheduledEventsDotsData"
+                  @deactivateSelectedUser="
+                    deactivateUserEventsListTabletAndMobile
+                  "
+                />
+              </div>
 
-            <div
-              v-if="schedulerConfig.isFriendsListShow"
-              class="c-friends-list"
-              :style="scheduledEventsHeight"
-            >
-              <SchedulerFriendsList
-                :activeUserId="activeUserId"
-                :searchValue="searchFriendsValue"
-                @activateUser="activateUser"
-              />
+              <div
+                v-if="schedulerConfig.isFriendsListShow"
+                class="c-friends-list"
+                :style="scheduledEventsHeight"
+              >
+                <SchedulerFriendsList
+                  :activeUserId="activeUserId"
+                  :searchValue="searchFriendsValue"
+                  @activateUser="activateUser"
+                />
+              </div>
             </div>
           </div>
           <vue-cal
@@ -162,20 +196,45 @@
           </vue-cal>
         </div>
         <div class="c-scheduler-bottom-side" :style="scheduledBottomBlockStyle">
-          <div class="c-plan-event-button">
-            <WhiteBtn
-              :text="$t('scheduler.plan-event')"
-              :height="32"
-              :icon="icons.grayClock"
-              :mainColor="'#575775'"
-              :isBorder="true"
-              :borderColor="'#DFDEED'"
+          <div
+            v-if="isMainBottomSideContentVisible"
+            class="c-bottom-side-main-content"
+          >
+            <div class="c-plan-event-button">
+              <WhiteBtn
+                v-if="
+                  bottomSidePlanEventButtonConfig.type ===
+                  bottomSidePlanEventButtonTypes.WHITE_BTN
+                "
+                :text="$t('scheduler.plan-event')"
+                :height="bottomSidePlanEventButtonConfig.height"
+                :icon="bottomSidePlanEventButtonConfig.icon"
+                :mainColor="'#575775'"
+                :isBorder="true"
+                :borderColor="'#DFDEED'"
+                @click-function="goToTheCreateEvent"
+              />
+              <GreenBtn
+                v-else
+                :text="$t('scheduler.plan-event')"
+                :height="bottomSidePlanEventButtonConfig.height"
+                :icon="bottomSidePlanEventButtonConfig.icon"
+                @click-function="goToTheCreateEvent"
+              />
+            </div>
+            <SchedulerTabs
+              :selectedTabId="sidebarSelectedTabId"
+              @switchTab="switchTab"
             />
           </div>
-          <SchedulerTabs
-            :selectedTabId="sidebarSelectedTabId"
-            @switchTab="switchTab"
-          />
+          <div v-else class="c-invite-selected-user-to-event">
+            <GreenBtn
+              :height="40"
+              :icon="icons.inviteUserIcon"
+              :text="$t('player_page.invite')"
+              @click-function="goToTheCreateEvent"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -183,7 +242,11 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import { computed, ref, onBeforeUnmount, watch } from 'vue';
+import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toastification';
 
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
@@ -198,6 +261,8 @@ import SchedulerTabs from './SchedulerTabs.vue';
 import ScheduledEventsList from './ScheduledEventsList.vue';
 import SchedulerFriendsList from './SchedulerFriendsList.vue';
 import SchedulerInlineCalendarTitle from './SchedulerInlineCalendarTitle.vue';
+import GreenBtn from '../../shared/button/GreenBtn.vue';
+import JoinScheduledEventModal from './modals/JoinScheduledEventModal.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
@@ -206,17 +271,36 @@ import {
   finishSpinner,
 } from '../../../workers/loading-worker/loading.worker';
 import { BlanballEventBus } from '../../../workers/event-bus-worker';
-
-import { CONSTS } from '../../../consts';
 import { useWindowWidth } from '../../../utils/widthScreen';
 import { useElementSize } from '@vueuse/core';
 import { calcHeight } from '../../../utils/calcHeight';
+
+import { CONSTS } from '../../../consts';
+import { ROUTES } from '../../../router/router.const';
 
 import 'vue-cal/dist/vuecal.css';
 
 import closeIcon from '../../../assets/img/scheduler/close-icton.svg';
 import goBackIcon from '../../../assets/img/back-arrow.svg';
 import grayClockIcon from '../../../assets/img/scheduler/gray-clock.svg';
+import whiteClockIcon from '../../../assets/img/scheduler/white-clock.svg';
+import inviteUserIcon from '../../../assets/img/add-user-white.svg';
+
+const mobileVersionSchedulerBottomMargin = 240;
+
+const desktopMinHeight = 520;
+const tabletMinHeight = 495;
+const mobileMinHeight = 540;
+
+const bottomSidePlanEventButtonTypes = {
+  GREEN_BTN: 'greenBtn',
+  WHITE_BTN: 'whiteBtn',
+};
+
+const eventJoinTypes = {
+  PLAY: 'play',
+  VIEW: 'view',
+};
 
 export default {
   name: 'VueScheduler',
@@ -228,14 +312,12 @@ export default {
     ScheduledEventsList,
     SchedulerInlineCalendarTitle,
     SchedulerFriendsList,
+    GreenBtn,
+    JoinScheduledEventModal,
     SchedulerTabs,
     WhiteBtn,
   },
   props: {
-    config: {
-      type: Object,
-      default: () => ({}),
-    },
     marginTop: {
       type: Number,
       default: 80,
@@ -243,24 +325,38 @@ export default {
   },
   emits: ['closeWindow'],
   setup(props, { emit }) {
+    const { t } = useI18n();
+    const toast = useToast();
+    const route = useRoute();
+    const router = useRouter();
+    const inlineCalendar = ref();
     const isFriendsVisible = ref(false);
-    const isThreeDotsShown = ref(false);
     const scheduledEventsDotsData = ref({});
-    const dotsColor = ref(props.config.myEventsDotColor || '#148581');
+    const dotsColor = ref('#148581');
     const maxDotsCount = ref(3);
     const inlineCalendarActiveDateDotsColor = ref('#fff');
     const userStore = useUserDataStore();
     const activatedUserInSidebarData = ref(userStore.user);
     const schedulerCommonBlock = ref();
     const hideBtnConfig = ref({});
+    const prevDevice = ref();
+    const joinEventData = ref(null);
+
+    const isJoinScheduledEventModalOpened = ref(false);
 
     const { height: schedulerCommonBlockHeight } =
       useElementSize(schedulerCommonBlock);
     const { isTablet, isMobile, isMobileSmall, detectedDevice, DEVICE_TYPES } =
       useWindowWidth();
+    const { calculatedHeight: schedulerCommonBlockCalculatedHeight } =
+      calcHeight(mobileVersionSchedulerBottomMargin);
 
     const schedulerStartDate = ref(null);
     const schedulerEndDate = ref(null);
+
+    const isContextModalActive = ref(false);
+    const contextModalY = ref(null);
+    const contextModalX = ref(null);
 
     const mockData = computed(() => {
       return {
@@ -268,6 +364,7 @@ export default {
         dates: CONSTS.dates,
         sideBarTabs: CONSTS.scheduler.TABS_ENUM,
         schedulerActiveViews: CONSTS.scheduler.SCHEDULER_ACTIVE_VIEWS,
+        contextModalItems: CONSTS.eventJoin.items,
       };
     });
 
@@ -278,7 +375,37 @@ export default {
         close: closeIcon,
         goBack: goBackIcon,
         grayClock: grayClockIcon,
+        whiteClock: whiteClockIcon,
+        inviteUserIcon: inviteUserIcon,
       };
+    });
+
+    const bottomSidePlanEventButtonConfig = computed(() => {
+      const isMobileOrSmall = isMobile.value || isMobileSmall.value;
+
+      return {
+        type: isMobileOrSmall
+          ? bottomSidePlanEventButtonTypes.WHITE_BTN
+          : bottomSidePlanEventButtonTypes.GREEN_BTN,
+        height: isMobileOrSmall ? 32 : 40,
+        icon: isMobileOrSmall ? icons.value.grayClock : icons.value.whiteClock,
+      };
+    });
+
+    const isTopSideTabsVisible = computed(() => {
+      return (
+        (detectedDevice.value === DEVICE_TYPES.BETWEEN_TABLET_AND_DESKTOP ||
+          detectedDevice.value === DEVICE_TYPES.DESKTOP) &&
+        schedulerConfig.value.activeView ===
+          mockData.value.schedulerActiveViews.MONTH
+      );
+    });
+
+    const isMainBottomSideContentVisible = computed(() => {
+      return (
+        !activatedUserInSidebarData.value ||
+        activatedUserInSidebarData.value?.id === userStore.user.id
+      );
     });
 
     const isTopPlanEventButtonVisible = computed(() => {
@@ -294,28 +421,42 @@ export default {
       return {
         height: `${
           schedulerCommonBlockHeight.value -
-          32 -
-          130 -
-          (isTablet.value || isMobile.value ? 66 : 0) -
-          (isTablet.value || (isMobile.value && !isMobileSmall.value) ? 32 : 0)
+          44 -
+          (isMainBottomSideContentVisible.value ||
+          detectedDevice.value === DEVICE_TYPES.DESKTOP ||
+          detectedDevice.value === DEVICE_TYPES.BETWEEN_TABLET_AND_DESKTOP
+            ? 130
+            : 90) -
+          (isTablet.value || isMobile.value ? 55 : 0) -
+          (isTablet.value || (isMobile.value && !isMobileSmall.value) ? 44 : 0)
         }px`,
       };
     });
 
-    const { calculatedHeight: schedulerCommonBlockCalculatedHeight } =
-      calcHeight(240);
+    const schdulerCommonBlockHeight = computed(() => {
+      if (schedulerConfig.value.isScheduledEventsShow) {
+        return isMobileSmall.value
+          ? schedulerCommonBlockCalculatedHeight.value
+          : schedulerCommonBlockCalculatedHeight.value;
+      } else if (schedulerConfig.value.isFriendsListShow) {
+        return schedulerCommonBlockCalculatedHeight.value;
+      } else {
+        return isMobileSmall.value
+          ? mobileMinHeight
+          : schedulerCommonBlockCalculatedHeight.value;
+      }
+    });
 
     const schedulerCommonBlockStyle = computed(() => {
-      const desktopMinHeight = 520;
-      const tabletMinHeight = 495;
-      const mobileMinHeight = 540;
-
       const selectedMinHeight = computed(() => {
         switch (detectedDevice.value) {
           case DEVICE_TYPES.MOBILE_SMALL: {
             return mobileMinHeight;
           }
-          case DEVICE_TYPES.MOBILE || DEVICE_TYPES.TABLET: {
+          case DEVICE_TYPES.MOBILE: {
+            return tabletMinHeight;
+          }
+          case DEVICE_TYPES.TABLET: {
             return tabletMinHeight;
           }
           case DEVICE_TYPES.DESKTOP: {
@@ -324,23 +465,9 @@ export default {
         }
       });
 
-      const height = computed(() => {
-        if (schedulerConfig.value.isScheduledEventsShow) {
-          return isMobileSmall.value
-            ? schedulerCommonBlockCalculatedHeight.value
-            : schedulerCommonBlockCalculatedHeight.value;
-        } else if (schedulerConfig.value.isFriendsListShow) {
-          return schedulerCommonBlockCalculatedHeight.value;
-        } else {
-          return isMobileSmall.value
-            ? mobileMinHeight
-            : schedulerCommonBlockCalculatedHeight.value;
-        }
-      });
-
       return {
         top: `${props.marginTop}px`,
-        height: `${height.value}px`,
+        height: `${schdulerCommonBlockHeight.value}px`,
         'min-height': `${selectedMinHeight.value}px`,
       };
     });
@@ -377,6 +504,9 @@ export default {
       locale: 'uk',
       showButtons: false,
       disablePastDays: true,
+      title: {
+        minDate: new Date(),
+      },
     });
 
     const schedulerConfig = ref({
@@ -399,6 +529,83 @@ export default {
       selectedDate: '',
     });
 
+    function showContextModal(e, eventData) {
+      contextModalX.value = e.clientX;
+      contextModalY.value = e.clientY;
+      joinEventData.value = eventData;
+      isContextModalActive.value = true;
+    }
+
+    function closeContextModal() {
+      isContextModalActive.value = false;
+      contextModalX.value = null;
+      joinEventData.value = null;
+      contextModalY.value = null;
+    }
+
+    async function joinEvent(eventData, type) {
+      let toastText;
+      startSpinner();
+      switch (type) {
+        case eventJoinTypes.PLAY:
+          await API.EventService.eventJoinAsPlayer(eventData.id);
+          if (eventData.privacy) {
+            toastText = t('notifications.event-request-sent');
+          } else {
+            toastText = t('notifications.event-join-as-player');
+          }
+          break;
+        case eventJoinTypes.VIEW:
+          await API.EventService.eventJoinAsFan(eventData.id);
+          toastText = t('notifications.event-join-as-fan');
+          break;
+      }
+      finishSpinner();
+      toast.success(toastText);
+    }
+
+    function contextModalItemClick(data) {
+      switch (data) {
+        case eventJoinTypes.PLAY:
+          joinEvent(joinEventData.value, eventJoinTypes.PLAY);
+          closeJoinScheduledEventModal();
+          break;
+        case eventJoinTypes.VIEW:
+          joinEvent(joinEventData.value, eventJoinTypes.VIEW);
+          closeJoinScheduledEventModal();
+          break;
+      }
+    }
+
+    function configureHideBtn(image, action) {
+      if (image) {
+        hideBtnConfig.value.img = image;
+      }
+      if (action) {
+        hideBtnConfig.value.action = () => action();
+      }
+
+      if (detectedDevice.value === DEVICE_TYPES.MOBILE_SMALL) {
+        BlanballEventBus.emit(
+          'configureSchedulerGoBackButtonOnMobile',
+          hideBtnConfig.value
+        );
+      }
+    }
+
+    function showJoinScheduledEventModal(eventData) {
+      joinEventData.value = eventData;
+      isJoinScheduledEventModalOpened.value = true;
+    }
+
+    function closeJoinScheduledEventModal() {
+      if (isContextModalActive.value) {
+        closeContextModal();
+      }
+      joinEventData.value = null;
+      isJoinScheduledEventModalOpened.value = false;
+    }
+
     function formatDate(date) {
       return dayjs(date).format('YYYY-MM-DD');
     }
@@ -406,7 +613,7 @@ export default {
     function backToTheMonthView() {
       schedulerConfig.value.activeView =
         mockData.value.schedulerActiveViews.MONTH;
-      configureScheduler(mockData.value.schedulerActiveViews.MONTH);
+      switchTab(mockData.value.sideBarTabs.MY_PLANNED);
     }
 
     function switchTab(tabId) {
@@ -415,18 +622,34 @@ export default {
 
         switch (sidebarSelectedTabId.value) {
           case mockData.value.sideBarTabs.FRIENDS_PLANNED: {
-            configureScheduler(mockData.value.schedulerActiveViews.DAY);
-            schedulerConfig.value.isFriendsListShow = true;
-            schedulerConfig.value.isScheduledEventsShow = false;
             schedulerConfig.value.activeView =
               mockData.value.schedulerActiveViews.DAY;
+            configureScheduler(mockData.value.schedulerActiveViews.DAY);
+            if (
+              detectedDevice.value === DEVICE_TYPES.DESKTOP ||
+              detectedDevice.value === DEVICE_TYPES.BETWEEN_TABLET_AND_DESKTOP
+            ) {
+              schedulerConfig.value.isFriendsListShow = false;
+              schedulerConfig.value.isScheduledEventsShow = true;
+              deactivateUser();
+              BlanballEventBus.emit('schedulerSidebarForceSwitchTab', {
+                tabId: mockData.value.sideBarTabs.FRIENDS_PLANNED,
+                userData: null,
+              });
+            } else {
+              schedulerConfig.value.isFriendsListShow = true;
+              schedulerConfig.value.isScheduledEventsShow = false;
+            }
             break;
           }
           case mockData.value.sideBarTabs.MY_PLANNED: {
-            configureScheduler(mockData.value.schedulerActiveViews.MONTH);
-            schedulerConfig.value.isFriendsListShow = false;
             schedulerConfig.value.activeView =
-              mockData.value.schedulerActiveViews.MONTH;
+              mockData.value.schedulerActiveViews.DAY;
+            configureScheduler(mockData.value.schedulerActiveViews.DAY);
+
+            schedulerConfig.value.isFriendsListShow = false;
+            schedulerConfig.value.isScheduledEventsShow = true;
+            deactivateUser(userStore.user);
             break;
           }
         }
@@ -442,8 +665,7 @@ export default {
           schedulerConfig.value.hideTitleBar = false;
           inlineCalendarConfig.value.visible = false;
 
-          hideBtnConfig.value.img = icons.value.close;
-          hideBtnConfig.value.action = () => emit('closeWindow');
+          configureHideBtn(icons.value.close, closeScheduler);
 
           if (isFriendsVisible.value) {
             friendsBlockSwitcher();
@@ -458,8 +680,7 @@ export default {
           inlineCalendarConfig.value.visible = true;
           inlineCalendarConfig.value.selectedDate = data.startDate;
 
-          hideBtnConfig.value.img = icons.value.goBack;
-          hideBtnConfig.value.action = () => backToTheMonthView();
+          configureHideBtn(icons.value.goBack, backToTheMonthView);
 
           if (!isFriendsVisible.value) {
             friendsBlockSwitcher();
@@ -486,14 +707,14 @@ export default {
           schedulerConfig.value.isFriendsListShow = false;
           inlineCalendarConfig.value.specMinDate = schedulerStartDate.value;
           inlineCalendarConfig.value.specMaxDate = schedulerEndDate.value;
+
+          inlineCalendarConfig.value.title.minDate = e.startDate;
           break;
         }
 
         case mockData.value.schedulerActiveViews.DAY: {
           if (!schedulerConfig.value.isFriendsListShow) {
             schedulerConfig.value.isScheduledEventsShow = true;
-
-            console.log(schedulerConfig.value.isScheduledEventsShow);
           }
         }
       }
@@ -525,110 +746,258 @@ export default {
       return splitedTitle.join(' ');
     }
 
+    function closeScheduler() {
+      emit('closeWindow');
+    }
+
+    function goToTheCreateEvent() {
+      if (route.name === ROUTES.APPLICATION.EVENTS.CREATE.name) {
+        closeScheduler();
+      } else {
+        router.push(ROUTES.APPLICATION.EVENTS.CREATE.absolute);
+      }
+    }
+
+    function goToTheSchedulerUsersList() {
+      deactivateUserAndLoadData(userStore.user);
+      schedulerConfig.value.isFriendsListShow = true;
+      schedulerConfig.value.isScheduledEventsShow = false;
+
+      configureHideBtn(icons.value.goBack, backToTheMonthView);
+    }
+
+    function inlineCalendarChangeMonth(data) {
+      inlineCalendarConfig.value.specMinDate = data.firstCellDate;
+      inlineCalendarConfig.value.specMaxDate = data.lastCellDate;
+      inlineCalendar.value.fillByProvidedDate(data.lastCellDate);
+    }
+
     function activateUser(userData) {
-      activatedUserInSidebarData.value = userData;
+      activateUserAndLoadData(userData);
+      schedulerConfig.value.isFriendsListShow = false;
+      schedulerConfig.value.isScheduledEventsShow = true;
+
+      configureHideBtn(icons.value.goBack, goToTheSchedulerUsersList);
+    }
+
+    function deactivateUser(userData) {
+      deactivateUserAndLoadData(userData);
       schedulerConfig.value.isFriendsListShow = false;
       schedulerConfig.value.isScheduledEventsShow = true;
     }
 
-    BlanballEventBus.on('activateUserInScheduler', (userData) => {
+    function deactivateUserEventsListTabletAndMobile() {
+      deactivateUserAndLoadData(userStore.user);
+      schedulerConfig.value.isFriendsListShow = true;
+      schedulerConfig.value.isScheduledEventsShow = false;
+    }
+
+    function activateUserAndLoadData(userData) {
       activatedUserInSidebarData.value = userData;
       getScheduledEventsDotsData(
         userData.id,
         formatDate(schedulerStartDate.value),
         formatDate(schedulerEndDate.value)
       );
-    });
+    }
 
-    BlanballEventBus.on('deactivateUser', () => {
-      activatedUserInSidebarData.value = null;
+    function deactivateUserAndLoadData(userData) {
+      activatedUserInSidebarData.value = userData ? userData : null;
       getScheduledEventsDotsData(
         userStore.user.id,
         formatDate(schedulerStartDate.value),
         formatDate(schedulerEndDate.value)
       );
+    }
+
+    BlanballEventBus.on('activateUserInScheduler', (userData) => {
+      activateUserAndLoadData(userData);
+    });
+
+    BlanballEventBus.on('deactivateUser', () => {
+      deactivateUserAndLoadData();
     });
 
     BlanballEventBus.on('switchedSchedulerSidebarTab', (tabId) => {
       sidebarSelectedTabId.value = tabId;
+      if (
+        sidebarSelectedTabId.value ===
+        mockData.value.sideBarTabs.FRIENDS_PLANNED
+      ) {
+        configureHideBtn(icons.value.goBack, () => {
+          BlanballEventBus.emit('schedulerSidebarForceSwitchTab', {
+            tabId: mockData.value.sideBarTabs.MY_PLANNED,
+            userData: userStore.user,
+          });
+          hideBtnConfig.value.action = () => backToTheMonthView();
+        });
+      }
+    });
+
+    BlanballEventBus.on('joinScheduledEvent', (eventData) => {
+      if (eventData.author.id === userStore.user.id) {
+        router.push(ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(eventData.id));
+
+        if (route.name === ROUTES.APPLICATION.EVENTS.GET_ONE.name) {
+          closeScheduler();
+        }
+      } else {
+        showJoinScheduledEventModal(eventData);
+      }
     });
 
     onBeforeUnmount(() => {
       BlanballEventBus.off('activateUserInScheduler');
       BlanballEventBus.off('switchedSchedulerSidebarTab');
       BlanballEventBus.off('deactivateUser');
+      BlanballEventBus.off('joinScheduledEvent');
     });
+
+    function configureSchedulerAfterDesktopMode() {
+      if (
+        prevDevice.value === DEVICE_TYPES.BETWEEN_TABLET_AND_DESKTOP ||
+        prevDevice.value === DEVICE_TYPES.DESKTOP
+      ) {
+        if (
+          sidebarSelectedTabId.value ===
+            mockData.value.sideBarTabs.FRIENDS_PLANNED &&
+          !schedulerConfig.value.isFriendsListShow
+        ) {
+          if (!activatedUserInSidebarData.value) {
+            schedulerConfig.value.isFriendsListShow = true;
+            schedulerConfig.value.isScheduledEventsShow = false;
+          }
+        }
+      }
+    }
+
+    function configureSchedulerAfterMobileMode() {
+      if (
+        prevDevice.value !== DEVICE_TYPES.BETWEEN_TABLET_AND_DESKTOP &&
+        prevDevice.value !== DEVICE_TYPES.DESKTOP
+      ) {
+        if (schedulerConfig.value.isFriendsListShow) {
+          schedulerConfig.value.isScheduledEventsShow = true;
+          schedulerConfig.value.isFriendsListShow = false;
+          BlanballEventBus.emit('schedulerSidebarForceSwitchTab', {
+            tabId: mockData.value.sideBarTabs.FRIENDS_PLANNED,
+            userData: null,
+          });
+        } else if (schedulerConfig.value.isScheduledEventsShow) {
+          BlanballEventBus.emit('schedulerSidebarForceSwitchTab', {
+            tabId: mockData.value.sideBarTabs.FRIENDS_PLANNED,
+            userData: activatedUserInSidebarData.value,
+          });
+        }
+      }
+    }
+
+    function fillInlineCalendar() {
+      inlineCalendar.value.fillByProvidedDate(schedulerEndDate.value);
+    }
 
     watch(
       () => detectedDevice.value,
-      (newVal) => {
-        switch (newVal) {
+      (newDevice) => {
+        switch (newDevice) {
           case DEVICE_TYPES.MOBILE_SMALL: {
+            configureSchedulerAfterDesktopMode();
+            prevDevice.value = DEVICE_TYPES.MOBILE_SMALL;
             break;
           }
           case DEVICE_TYPES.MOBILE: {
+            configureSchedulerAfterDesktopMode();
+            prevDevice.value = DEVICE_TYPES.MOBILE;
             break;
           }
           case DEVICE_TYPES.TABLET: {
-            if (
-              sidebarSelectedTabId.value ===
-                mockData.value.sideBarTabs.FRIENDS_PLANNED &&
-              !schedulerConfig.value.isFriendsListShow
-            ) {
-              schedulerConfig.value.isScheduledEventsShow = false;
-              schedulerConfig.value.isFriendsListShow = true;
-            }
+            configureSchedulerAfterDesktopMode();
+            prevDevice.value = DEVICE_TYPES.TABLET;
             break;
           }
           case DEVICE_TYPES.BETWEEN_TABLET_AND_DESKTOP: {
-            if (schedulerConfig.value.isFriendsListShow) {
-              schedulerConfig.value.isFriendsListShow = false;
-              schedulerConfig.value.isScheduledEventsShow = true;
-              sidebarSelectedTabId.value =
-                mockData.value.sideBarTabs.FRIENDS_PLANNED;
-              BlanballEventBus.emit('schedulerSidebarForceSwitchTab', {
-                tabId: mockData.value.sideBarTabs.FRIENDS_PLANNED,
-                userData: activatedUserInSidebarData.value,
-              });
-            }
+            configureSchedulerAfterMobileMode();
+            prevDevice.value = DEVICE_TYPES.BETWEEN_TABLET_AND_DESKTOP;
+            break;
+          }
+          case DEVICE_TYPES.DESKTOP: {
+            configureSchedulerAfterMobileMode();
+            prevDevice.value = DEVICE_TYPES.DESKTOP;
             break;
           }
         }
       }
     );
 
+    watch(
+      () => detectedDevice.value,
+      (newDevice) => {
+        if (newDevice === DEVICE_TYPES.MOBILE_SMALL) {
+          configureHideBtn(...Object.values(hideBtnConfig.value));
+        }
+      }
+    );
+
+    watch(
+      () => route.name,
+      () => {
+        closeScheduler();
+      }
+    );
+
     return {
       isFriendsVisible,
-      isThreeDotsShown,
       schedulerConfig,
       mockData,
       scheduledEventsDotsData,
+      joinEventData,
       hideBtnConfig,
       scheduledBottomBlockStyle,
       schedulerCommonBlock,
+      isJoinScheduledEventModalOpened,
       todayDate,
       inlineCalendarActiveDateDotsColor,
       inlineCalendarConfig,
+      isTopSideTabsVisible,
+      isContextModalActive,
       isTopPlanEventButtonVisible,
       sidebarSelectedTabId,
+      isMainBottomSideContentVisible,
       activatedUserInSidebarData,
       scheduledEventsHeight,
+      contextModalX,
+      contextModalY,
       schedulerCommonBlockStyle,
+      bottomSidePlanEventButtonTypes,
+      inlineCalendar,
+      bottomSidePlanEventButtonConfig,
       dotsColor,
       maxDotsCount,
       icons,
       formatDate,
+      closeScheduler,
       activateUser,
+      goToTheCreateEvent,
+      fillInlineCalendar,
+      deactivateUserEventsListTabletAndMobile,
       switchTab,
       setSchedulerDatesRangeAndLoadData,
       friendsBlockSwitcher,
+      inlineCalendarChangeMonth,
+      showJoinScheduledEventModal,
+      closeJoinScheduledEventModal,
       removeYearFromDate,
+      closeContextModal,
+      showContextModal,
+      contextModalItemClick,
     };
   },
 };
 </script>
 
 <style scoped lang="scss">
+$color-f9f9fc: #f9f9fc;
+$color-f0f0f4: #f0f0f4;
 $color-efeff6: #efeff6;
 $color-bef0ef: #bef0ef;
 $color-e9fcfb: #e9fcfb;
@@ -659,17 +1028,19 @@ $color-e9fcfb: #e9fcfb;
 
   .c-tabs {
     margin-bottom: 0px;
-    margin-top: 8px;
     height: 40px;
 
     @include beforeDesktop {
       width: 464px;
       margin: 0 auto;
-      margin-top: 8px;
     }
     @include mobile {
       width: inherit;
     }
+  }
+
+  .context-modal__tooltip-wrapper {
+    z-index: 1200 !important;
   }
 }
 
@@ -706,6 +1077,10 @@ $color-e9fcfb: #e9fcfb;
     position: absolute;
     right: 160px;
 
+    @media (max-width: 1200px) {
+      right: 0px;
+    }
+
     @include beforeDesktop {
       right: 0px;
       padding: 20px;
@@ -713,14 +1088,15 @@ $color-e9fcfb: #e9fcfb;
       border-radius: 0px;
       border-radius: 0px 0px 12px 12px;
       padding-bottom: 32px;
+      padding-top: 0px;
     }
 
     @include mobile {
-      padding-top: 0px;
       box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
       border-radius: 0px 0px 12px 12px;
       padding: 16px;
       padding-bottom: 32px;
+      padding-top: 0px;
     }
 
     .c-scheduler-bottom-side {
@@ -729,15 +1105,32 @@ $color-e9fcfb: #e9fcfb;
         display: block;
       }
 
+      :deep(.c-tabs) {
+        margin-top: 8px;
+      }
+
       .c-plan-event-button {
-        :deep(.b_white-btn) {
-          font-weight: 400;
-          margin-bottom: 10px;
+        :deep {
+          .b-green-btn,
+          .b_white-btn {
+            font-weight: 400;
+            margin-bottom: 10px;
+            width: 464px !important;
+            margin: 0 auto;
+
+            @include mobile {
+              width: 100% !important;
+            }
+          }
+        }
+      }
+
+      .c-invite-selected-user-to-event {
+        :deep(.b-green-btn) {
           width: 464px !important;
           margin: 0 auto;
-
           @include mobile {
-            width: 100% !important;
+            width: 215px !important;
           }
         }
       }
@@ -753,6 +1146,17 @@ $color-e9fcfb: #e9fcfb;
       .c-top-line {
         padding-bottom: 12px;
         position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        :deep {
+          .c-tabs {
+            margin-top: 0px !important;
+            width: 100% !important;
+            margin-right: 12px;
+          }
+        }
 
         @include mobile {
           display: none;
@@ -762,6 +1166,7 @@ $color-e9fcfb: #e9fcfb;
           display: flex;
           align-items: center;
           gap: 16px;
+          height: 32px;
 
           .c-current-date {
             @include inter(14px, 500, $--b-main-gray-color);
@@ -776,7 +1181,6 @@ $color-e9fcfb: #e9fcfb;
           .c-plan-event-button {
             :deep(.b_white-btn) {
               font-weight: 400;
-              margin-bottom: 10px;
             }
 
             @include beforeDesktop {
@@ -785,9 +1189,6 @@ $color-e9fcfb: #e9fcfb;
           }
         }
         .c-hide-btn {
-          position: absolute;
-          top: 0;
-          right: 0;
           cursor: pointer;
         }
       }
@@ -804,7 +1205,46 @@ $color-e9fcfb: #e9fcfb;
         }
 
         :deep {
+          .vuecal__title {
+            @include mobile {
+              width: calc(100% - 105px);
+              margin: 0px !important;
+            }
+          }
+        }
+
+        .c-sheduled-content-on-specific-day {
+          :deep {
+            .inline-calendar {
+              padding: 0px;
+
+              .vuecal__title {
+                @include mobile {
+                  width: fit-content !important;
+                  margin: 0px 30px !important;
+                }
+              }
+            }
+          }
+
+          .c-specific-day__main-content {
+            @include beforeDesktop {
+              padding: 0px 56px;
+            }
+            @include tabletAndMobile {
+              padding: 0px 32px;
+            }
+            @include mobile {
+              padding: 0px;
+            }
+          }
+        }
+
+        :deep {
           .vuecal__flex.vuecal.vuecal--day-view.vuecal--uk.vuecal--no-time.vuecal--small.vuecal--has-touch {
+            display: none;
+          }
+          .vuecal__flex.vuecal.vuecal--day-view.vuecal--uk.vuecal--no-time.vuecal--small {
             display: none;
           }
         }
@@ -844,7 +1284,7 @@ $color-e9fcfb: #e9fcfb;
                 justify-content: center;
 
                 @include mobile {
-                  background: #f9f9fc;
+                  background: $color-f9f9fc;
                   width: calc(100% + 40px);
                   margin-left: -20px;
                 }
@@ -865,7 +1305,7 @@ $color-e9fcfb: #e9fcfb;
                 border: none;
 
                 @include mobile {
-                  background: #f9f9fc;
+                  background: $color-f9f9fc;
                   width: calc(100% + 40px);
                   margin-left: -20px;
                   padding: 0px 20px;
@@ -884,15 +1324,15 @@ $color-e9fcfb: #e9fcfb;
             }
             .vuecal__body {
               .vuecal__cell {
-                border-left: 1px solid #f0f0f4;
-                border-bottom: 1px solid #f0f0f4;
+                border-left: 1px solid $color-f0f0f4;
+                border-bottom: 1px solid $color-f0f0f4;
 
                 &:nth-child(-n + 7):not(:nth-child(8)) {
-                  border-top: 1px solid #f0f0f4;
+                  border-top: 1px solid $color-f0f0f4;
                 }
 
                 &:nth-child(7n) {
-                  border-right: 1px solid #f0f0f4;
+                  border-right: 1px solid $color-f0f0f4;
                 }
                 &::before {
                   right: 0;

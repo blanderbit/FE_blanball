@@ -61,6 +61,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+$color-f0f0f4: #f0f0f4;
 .b-policy-wrapper {
   padding-top: 36px;
   overflow: hidden;
