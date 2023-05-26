@@ -34,7 +34,7 @@
             :height="40"
             :text="$t('scheduler.event-join-modal.take-part')"
             :backgroundColor="'#575775'"
-            @click-function="clickAcceptButton(request.id)"
+            @click-function="$emit('takePartEvent', $event, eventData)"
           />
         </div>
       </div>

@@ -5,6 +5,15 @@
         v-if="isJoinScheduledEventModalOpened"
         :eventData="joinEventData"
         @closeModal="closeJoinScheduledEventModal"
+        @takePartEvent="showContextModal"
+      />
+      <ContextModal
+        v-if="isContextModalActive"
+        :clientX="contextModalX"
+        :clientY="contextModalY"
+        :modalItems="mockData.contextModalItems"
+        @closeModal="closeContextModal"
+        @itemClick="contextModalItemClick"
       />
     </Teleport>
     <div
@@ -236,6 +245,8 @@
 import { computed, ref, onBeforeUnmount, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toastification';
 
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
@@ -286,6 +297,11 @@ const bottomSidePlanEventButtonTypes = {
   WHITE_BTN: 'whiteBtn',
 };
 
+const eventJoinTypes = {
+  PLAY: 'play',
+  VIEW: 'view',
+};
+
 export default {
   name: 'VueScheduler',
   components: {
@@ -309,6 +325,8 @@ export default {
   },
   emits: ['closeWindow'],
   setup(props, { emit }) {
+    const { t } = useI18n();
+    const toast = useToast();
     const route = useRoute();
     const router = useRouter();
     const inlineCalendar = ref();
@@ -336,12 +354,17 @@ export default {
     const schedulerStartDate = ref(null);
     const schedulerEndDate = ref(null);
 
+    const isContextModalActive = ref(false);
+    const contextModalY = ref(null);
+    const contextModalX = ref(null);
+
     const mockData = computed(() => {
       return {
         contextMenuItems: CONSTS.scheduler.contextMenuItems,
         dates: CONSTS.dates,
         sideBarTabs: CONSTS.scheduler.TABS_ENUM,
         schedulerActiveViews: CONSTS.scheduler.SCHEDULER_ACTIVE_VIEWS,
+        contextModalItems: CONSTS.eventJoin.items,
       };
     });
 
@@ -506,6 +529,58 @@ export default {
       selectedDate: '',
     });
 
+    function showContextModal(e, eventData) {
+      contextModalX.value = e.clientX;
+      contextModalY.value = e.clientY;
+      joinEventData.value = eventData;
+      isContextModalActive.value = true;
+    }
+
+    function closeContextModal() {
+      isContextModalActive.value = false;
+      contextModalX.value = null;
+      joinEventData.value = null;
+      contextModalY.value = null;
+    }
+
+    async function joinEvent(eventData, type) {
+      let toastText;
+      startSpinner();
+      try {
+        switch (type) {
+          case eventJoinTypes.PLAY:
+            await API.EventService.eventJoinAsPlayer(eventData.id);
+            if (eventData.privacy) {
+              toastText = t('notifications.event-request-sent');
+            } else {
+              toastText = t('notifications.event-join-as-player');
+            }
+            break;
+          case eventJoinTypes.VIEW:
+            await API.EventService.eventJoinAsFan(eventData.id);
+            toastText = t('notifications.event-join-as-fan');
+            break;
+        }
+        toast.success(toastText);
+      } catch {
+      } finally {
+        finishSpinner();
+      }
+    }
+
+    function contextModalItemClick(data) {
+      switch (data) {
+        case eventJoinTypes.PLAY:
+          joinEvent(joinEventData.value, eventJoinTypes.PLAY);
+          closeJoinScheduledEventModal();
+          break;
+        case eventJoinTypes.VIEW:
+          joinEvent(joinEventData.value, eventJoinTypes.VIEW);
+          closeJoinScheduledEventModal();
+          break;
+      }
+    }
+
     function configureHideBtn(image, action) {
       if (image) {
         hideBtnConfig.value.img = image;
@@ -528,6 +603,9 @@ export default {
     }
 
     function closeJoinScheduledEventModal() {
+      if (isContextModalActive.value) {
+        closeContextModal();
+      }
       joinEventData.value = null;
       isJoinScheduledEventModalOpened.value = false;
     }
@@ -885,11 +963,14 @@ export default {
       inlineCalendarActiveDateDotsColor,
       inlineCalendarConfig,
       isTopSideTabsVisible,
+      isContextModalActive,
       isTopPlanEventButtonVisible,
       sidebarSelectedTabId,
       isMainBottomSideContentVisible,
       activatedUserInSidebarData,
       scheduledEventsHeight,
+      contextModalX,
+      contextModalY,
       schedulerCommonBlockStyle,
       bottomSidePlanEventButtonTypes,
       inlineCalendar,
@@ -910,6 +991,9 @@ export default {
       showJoinScheduledEventModal,
       closeJoinScheduledEventModal,
       removeYearFromDate,
+      closeContextModal,
+      showContextModal,
+      contextModalItemClick,
     };
   },
 };
@@ -957,6 +1041,10 @@ $color-e9fcfb: #e9fcfb;
     @include mobile {
       width: inherit;
     }
+  }
+
+  .context-modal__tooltip-wrapper {
+    z-index: 1200 !important;
   }
 }
 
