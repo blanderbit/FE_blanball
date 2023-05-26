@@ -191,12 +191,23 @@
           >
             <div class="c-plan-event-button">
               <WhiteBtn
+                v-if="
+                  bottomSidePlanEventButtonConfig.type ===
+                  bottomSidePlanEventButtonTypes.WHITE_BTN
+                "
                 :text="$t('scheduler.plan-event')"
                 :height="bottomSidePlanEventButtonConfig.height"
                 :icon="bottomSidePlanEventButtonConfig.icon"
                 :mainColor="'#575775'"
                 :isBorder="true"
                 :borderColor="'#DFDEED'"
+                @click-function="goToTheCreateEvent"
+              />
+              <GreenBtn
+                v-else
+                :text="$t('scheduler.plan-event')"
+                :height="bottomSidePlanEventButtonConfig.height"
+                :icon="bottomSidePlanEventButtonConfig.icon"
                 @click-function="goToTheCreateEvent"
               />
             </div>
@@ -259,6 +270,7 @@ import 'vue-cal/dist/vuecal.css';
 import closeIcon from '../../../assets/img/scheduler/close-icton.svg';
 import goBackIcon from '../../../assets/img/back-arrow.svg';
 import grayClockIcon from '../../../assets/img/scheduler/gray-clock.svg';
+import whiteClockIcon from '../../../assets/img/scheduler/white-clock.svg';
 import inviteUserIcon from '../../../assets/img/add-user-white.svg';
 
 const mobileVersionSchedulerBottomMargin = 240;
@@ -338,15 +350,20 @@ export default {
         close: closeIcon,
         goBack: goBackIcon,
         grayClock: grayClockIcon,
+        whiteClock: whiteClockIcon,
         inviteUserIcon: inviteUserIcon,
       };
     });
 
     const bottomSidePlanEventButtonConfig = computed(() => {
+      const isMobileOrSmall = isMobile.value || isMobileSmall.value;
+
       return {
-        type: bottomSidePlanEventButtonTypes.WHITE_BTN,
-        height: isMobile.value || isMobileSmall.value ? 32 : 40,
-        icon: icons.value.grayClock,
+        type: isMobileOrSmall
+          ? bottomSidePlanEventButtonTypes.WHITE_BTN
+          : bottomSidePlanEventButtonTypes.GREEN_BTN,
+        height: isMobileOrSmall ? 32 : 40,
+        icon: isMobileOrSmall ? icons.value.grayClock : icons.value.whiteClock,
       };
     });
 
@@ -376,7 +393,9 @@ export default {
     });
 
     const scheduledEventsHeight = computed(() => {
-      console.log((isTablet.value || (isMobile.value && !isMobileSmall.value) ? 32 : 0))
+      console.log(
+        isTablet.value || (isMobile.value && !isMobileSmall.value) ? 32 : 0
+      );
       return {
         height: `${
           schedulerCommonBlockHeight.value -
@@ -864,6 +883,7 @@ export default {
       activatedUserInSidebarData,
       scheduledEventsHeight,
       schedulerCommonBlockStyle,
+      bottomSidePlanEventButtonTypes,
       inlineCalendar,
       bottomSidePlanEventButtonConfig,
       dotsColor,
@@ -993,14 +1013,17 @@ $color-e9fcfb: #e9fcfb;
       }
 
       .c-plan-event-button {
-        :deep(.b_white-btn) {
-          font-weight: 400;
-          margin-bottom: 10px;
-          width: 464px !important;
-          margin: 0 auto;
+        :deep {
+          .b-green-btn,
+          .b_white-btn {
+            font-weight: 400;
+            margin-bottom: 10px;
+            width: 464px !important;
+            margin: 0 auto;
 
-          @include mobile {
-            width: 100% !important;
+            @include mobile {
+              width: 100% !important;
+            }
           }
         }
       }
