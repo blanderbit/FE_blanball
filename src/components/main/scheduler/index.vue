@@ -69,6 +69,7 @@
               :itemWidth="inlineCalendarConfig.itemWidth"
               :locale="inlineCalendarConfig.locale"
               :showButtons="inlineCalendarConfig.showButtons"
+              @ready="fillInlineCalendar"
             >
               <template #prev-button>
                 <img
@@ -86,6 +87,7 @@
               <template #title>
                 <div class="c-inline-cal-title">
                   <SchedulerInlineCalendarTitle
+                    :minDate="inlineCalendarConfig.title.minDate"
                     @changeMonth="inlineCalendarChangeMonth"
                   >
                     <template #title="{ title }">
@@ -393,9 +395,6 @@ export default {
     });
 
     const scheduledEventsHeight = computed(() => {
-      console.log(
-        isTablet.value || (isMobile.value && !isMobileSmall.value) ? 32 : 0
-      );
       return {
         height: `${
           schedulerCommonBlockHeight.value -
@@ -482,6 +481,9 @@ export default {
       locale: 'uk',
       showButtons: false,
       disablePastDays: true,
+      title: {
+        minDate: new Date(),
+      },
     });
 
     const schedulerConfig = ref({
@@ -631,6 +633,8 @@ export default {
           schedulerConfig.value.isFriendsListShow = false;
           inlineCalendarConfig.value.specMinDate = schedulerStartDate.value;
           inlineCalendarConfig.value.specMaxDate = schedulerEndDate.value;
+
+          inlineCalendarConfig.value.title.minDate = e.startDate;
           break;
         }
 
@@ -863,6 +867,10 @@ export default {
       }
     );
 
+    function fillInlineCalendar() {
+      inlineCalendar.value.fillByProvidedDate(schedulerEndDate.value);
+    }
+
     return {
       isFriendsVisible,
       schedulerConfig,
@@ -893,6 +901,7 @@ export default {
       closeScheduler,
       activateUser,
       goToTheCreateEvent,
+      fillInlineCalendar,
       deactivateUserEventsListTabletAndMobile,
       switchTab,
       setSchedulerDatesRangeAndLoadData,

@@ -156,7 +156,7 @@ export default {
       default: false,
     },
   },
-  emits: ['update:selectedDate', 'update:selectedRange'],
+  emits: ['update:selectedDate', 'update:selectedRange', 'ready'],
   components: {
     TheObserver,
   },
@@ -254,6 +254,8 @@ export default {
           });
         }
       });
+
+      emit('ready');
     });
     onBeforeUnmount(() => {
       if (props.enableMousewheelScroll) {
