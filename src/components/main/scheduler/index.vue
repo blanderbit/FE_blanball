@@ -546,26 +546,22 @@ export default {
     async function joinEvent(eventData, type) {
       let toastText;
       startSpinner();
-      try {
-        switch (type) {
-          case eventJoinTypes.PLAY:
-            await API.EventService.eventJoinAsPlayer(eventData.id);
-            if (eventData.privacy) {
-              toastText = t('notifications.event-request-sent');
-            } else {
-              toastText = t('notifications.event-join-as-player');
-            }
-            break;
-          case eventJoinTypes.VIEW:
-            await API.EventService.eventJoinAsFan(eventData.id);
-            toastText = t('notifications.event-join-as-fan');
-            break;
-        }
-        toast.success(toastText);
-      } catch {
-      } finally {
-        finishSpinner();
+      switch (type) {
+        case eventJoinTypes.PLAY:
+          await API.EventService.eventJoinAsPlayer(eventData.id);
+          if (eventData.privacy) {
+            toastText = t('notifications.event-request-sent');
+          } else {
+            toastText = t('notifications.event-join-as-player');
+          }
+          break;
+        case eventJoinTypes.VIEW:
+          await API.EventService.eventJoinAsFan(eventData.id);
+          toastText = t('notifications.event-join-as-fan');
+          break;
       }
+      finishSpinner();
+      toast.success(toastText);
     }
 
     function contextModalItemClick(data) {
@@ -896,6 +892,10 @@ export default {
       }
     }
 
+    function fillInlineCalendar() {
+      inlineCalendar.value.fillByProvidedDate(schedulerEndDate.value);
+    }
+
     watch(
       () => detectedDevice.value,
       (newDevice) => {
@@ -944,10 +944,6 @@ export default {
         closeScheduler();
       }
     );
-
-    function fillInlineCalendar() {
-      inlineCalendar.value.fillByProvidedDate(schedulerEndDate.value);
-    }
 
     return {
       isFriendsVisible,
@@ -1080,6 +1076,10 @@ $color-e9fcfb: #e9fcfb;
     height: fit-content;
     position: absolute;
     right: 160px;
+
+    @media (max-width: 1200px) {
+      right: 0px;
+    }
 
     @include beforeDesktop {
       right: 0px;
