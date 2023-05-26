@@ -42,12 +42,28 @@
             v-if="eventData.current_users.length"
             class="c-participants__list"
           >
-            <!-- <UserAvatar
-              v-for="user in eventData.current_users"
-              :link="user.profile.avatar_url"
-              :avatarType="'small-square'"
-              :full-name="`${user.profile.last_name} ${user.profile.name}`"
-            /> -->
+            <div
+              v-for="user in eventData.current_users.slice(
+                0,
+                showUserAvatarCount
+              )"
+              :style="`margin-left: ${
+                user.id !== eventData.current_users[0]?.id ? -12 : 0
+              }px`"
+            >
+              <userAvatar
+                :link="user.profile.avatar_url"
+                :avatarType="'small-circle'"
+                :full-name="`${user.profile.last_name} ${user.profile.name}`"
+              />
+            </div>
+            <div
+              v-if="eventData.current_users.length > showUserAvatarCount"
+              class="c-participants__list-plus"
+              @click.stop="showInvitedUsersListModal"
+            >
+              + {{ plusUsersCount }}
+            </div>
           </div>
           <div v-else class="c-no-participants">
             <img
@@ -134,6 +150,7 @@ export default {
     const router = useRouter();
     const eventCrossIcon = ref();
     const eventTriangleIcon = ref();
+    const showUserAvatarCount = ref(5);
 
     const icons = computed(() => {
       return {
@@ -148,6 +165,10 @@ export default {
           greenTriangle: greenTriangleIcon,
         },
       };
+    });
+
+    const plusUsersCount = computed(() => {
+      return props.eventData.current_users.length - showUserAvatarCount.value;
     });
 
     const getEventCrossIcon = () => {
@@ -231,9 +252,11 @@ export default {
       isEventOpened,
       isUserCanDeclineEvent,
       REQUEST_USER_ROLES,
+      plusUsersCount,
       formatedEventDuration,
       eventCrossIcon,
       eventTriangleIcon,
+      showUserAvatarCount,
       goToTheEventPage,
       joinScheduledEvent,
     };
@@ -248,6 +271,10 @@ $color-ecfcfb: #ecfcfb;
 $color-f9f9fc: #f9f9fc;
 $color-f0f0f4: #f0f0f4;
 $color-dfdeed: #dfdeed;
+
+:deep(.b-avatar) {
+  border: 1.5px solid #efeff6;
+}
 .c-scheduled-event {
   width: 100%;
   border-radius: 6px;
@@ -375,6 +402,16 @@ $color-dfdeed: #dfdeed;
           line-height: 20px;
         }
 
+        .c-participants__list {
+          display: flex;
+          align-items: center;
+
+          .c-participants__list-plus {
+            cursor: pointer;
+            margin-left: 12px;
+          }
+        }
+
         .c-no-participants {
           display: flex;
           align-items: center;
@@ -420,12 +457,12 @@ $color-dfdeed: #dfdeed;
 
       &.Active {
         @include inter(14px, 400, $--b-main-green-color);
-        border: 1px solid #8A8AA8;
+        border: 1px solid #8a8aa8;
       }
 
       &.Finished {
-        @include inter(14px, 400, #8A8AA8);
-        border: 1px solid #8A8AA8;
+        @include inter(14px, 400, #8a8aa8);
+        border: 1px solid #8a8aa8;
       }
     }
 
