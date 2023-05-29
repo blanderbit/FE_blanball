@@ -173,16 +173,18 @@ export default {
   width: 80px;
   top: -30px;
   left: -30px;
-  @include tablet {
-    display: none;
+  display: none;
+  @include mobile {
+    display: block;
   }
 }
 .b-register-step__ball-small {
   position: absolute;
   top: 0;
   right: 0;
-  @include tablet {
-    display: none;
+  display: none;
+  @include mobile {
+    display: block;
   }
 }
 .b-register-step__remember-me {

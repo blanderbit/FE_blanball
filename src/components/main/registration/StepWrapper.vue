@@ -134,6 +134,10 @@ $color-1ab2ad: #1ab2ad;
       font-size: 22px;
       line-height: 32px;
       color: $--b-main-black-color;
+
+      @include mobile {
+        text-align: center;
+      }
     }
     .b-register-step__progress-line {
       margin-top: 16px;
