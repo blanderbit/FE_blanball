@@ -10,7 +10,11 @@
       {{ $t('modals.share_event.title') }}
     </template>
     <template #header-image>
-      <img src="../../../assets/img/share-arrow.svg" alt="" />
+      <img
+        src="../../../assets/img/share-arrow.svg"
+        alt=""
+        @click="closeShareEventModal"
+      />
     </template>
     <template #input>
       <MainInput
@@ -791,7 +795,6 @@ export default {
     const eventInfoMainBlockHeight = computed(() => {
       return `${calculatedHeight.value}px`;
     });
-
 
     return {
       mockData,

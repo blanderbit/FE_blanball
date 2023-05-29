@@ -7,7 +7,11 @@
       {{ $t('profile.phone-number') }}
     </template>
     <template #header-image>
-      <img src="../../../assets/img/white-phone-icon.svg" alt="" />
+      <img
+        src="../../../assets/img/white-phone-icon.svg"
+        alt=""
+        @click="closeCopyPhoneModal"
+      />
     </template>
     <template #input>
       <MainInput
@@ -39,7 +43,11 @@
       {{ $t('profile.e-mail') }}
     </template>
     <template #header-image>
-      <img src="../../../assets/img/white-letter-icon.svg" alt="" />
+      <img
+        src="../../../assets/img/white-letter-icon.svg"
+        alt=""
+        @click="closeCopyEmailModal"
+      />
     </template>
     <template #input>
       <MainInput
@@ -294,8 +302,7 @@ export default {
         break;
     }
 
-    const { isBetweenTabletAndDesktop, isMobile, isTablet } =
-      useWindowWidth();
+    const { isBetweenTabletAndDesktop, isMobile, isTablet } = useWindowWidth();
 
     const backgroundTop = computed(() => {
       return BackgroundTop;
@@ -319,7 +326,6 @@ export default {
         left: `${props.pageMode === profilePageMode.LOOK ? 35 : 20}px`,
       };
     });
-
 
     const userRating = computed(() => {
       return props.userData.raiting ? props.userData.raiting.toFixed(1) : 0;

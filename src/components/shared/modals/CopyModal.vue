@@ -5,7 +5,7 @@
         <div class="b-share-event-modal__title">
           <slot name="title"></slot>
         </div>
-        <slot name="header-image"></slot>
+        <slot name="header-image" @click="$emit('closeModal')"></slot>
       </div>
       <div class="b-share-event-modal__main-side">
         <slot name="input"></slot>

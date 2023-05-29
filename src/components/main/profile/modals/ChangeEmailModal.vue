@@ -114,7 +114,7 @@ export default {
     });
     const saveBtnTitle = computed(() => {
       return currentStep.value === 1
-        ? t('buttons.save-changes')
+        ? t('buttons.get-code')
         : t('buttons.approve');
     });
 
