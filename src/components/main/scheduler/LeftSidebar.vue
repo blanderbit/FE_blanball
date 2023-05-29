@@ -30,7 +30,8 @@
             :userData="userStore.user"
             :isActive="userStore.user.id === activeUserId"
             :type="mockData.user_card_type.ME"
-            @clickByUser="activateUser"
+            @clickByUserToActivate="activateUser"
+            @clickByUserToDiactivate="deactivateUser"
           />
 
           <GreenBtn
@@ -47,6 +48,7 @@
             :activeUserId="activeUserId"
             :searchValue="searchFriendsValue"
             @activateUser="activateUser"
+            @deactivateUser="deactivateUser"
           />
         </div>
       </div>

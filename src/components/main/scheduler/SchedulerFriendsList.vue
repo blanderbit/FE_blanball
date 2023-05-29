@@ -10,7 +10,8 @@
         :userData="slotProps.smartListItem"
         :type="mockData.user_card_type.FRIEND"
         :isActive="slotProps.smartListItem.id === activeUserId"
-        @clickByUser="$emit('activateUser', $event)"
+        @clickByUserToActivate="$emit('activateUser', $event)"
+        @clickByUserToDiactivate="$emit('deactivateUser')"
       />
     </template>
     <template #after>
@@ -66,7 +67,7 @@ export default {
       default: 0,
     },
   },
-  emits: ['activateUser'],
+  emits: ['activateUser', 'deactivateUser'],
   setup(props) {
     const refList = ref();
     const blockScrollToTopIfExist = ref(false);

@@ -4,7 +4,7 @@
     @click="$emit('openCloseEvent', eventData.id)"
   >
     <div :class="['c-scheduled-event-top-side', { opened: isEventOpened }]">
-      <div class="c-event-main-info">
+      <div :class="['c-event-main-info', { 'crossed-out': isEventCrossedOut }]">
         <div :class="['c-event-type', eventData.status]">
           {{ $t('events.friendly-match') }}
         </div>
@@ -118,6 +118,7 @@ import greenCrossIcon from '../../../assets/img/green-cross.svg';
 import grayTriangleIcon from '../../../assets/img/dropdown-arrow-disabled.svg';
 import blackTriangleIcon from '../../../assets/img/arrow-down2.svg';
 import greenTriangleIcon from '../../../assets/img/green-arrow-down.svg';
+import greenCheckMarkIcon from '../../../assets/img/green-nike-icon.svg';
 
 const EVENT_STATUSES = {
   PLANNED: 'Planned',
@@ -164,6 +165,9 @@ export default {
           grayTriangle: grayTriangleIcon,
           greenTriangle: greenTriangleIcon,
         },
+        checkMark: {
+          greenCheckMark: greenCheckMarkIcon,
+        },
       };
     });
 
@@ -177,6 +181,12 @@ export default {
           return icons.value.cross.blackCross;
         }
         case EVENT_STATUSES.FINISHED: {
+          if (
+            props.eventData.request_user_role === REQUEST_USER_ROLES.PLAYER ||
+            props.eventData.request_user_role === REQUEST_USER_ROLES.FAN
+          ) {
+            return icons.value.checkMark.greenCheckMark;
+          }
           return icons.value.cross.grayCross;
         }
         case EVENT_STATUSES.ACTIVE: {
@@ -209,6 +219,14 @@ export default {
 
     const isUserEventFan = computed(() => {
       return props.eventData.request_user_role === REQUEST_USER_ROLES.FAN;
+    });
+
+    const isEventCrossedOut = computed(() => {
+      return (
+        !isEventOpened.value &&
+        (props.eventData.request_user_role === REQUEST_USER_ROLES.PLAYER ||
+          props.eventData.request_user_role === REQUEST_USER_ROLES.FAN)
+      );
     });
 
     const formatedEventDuration = computed(() => {
@@ -256,6 +274,7 @@ export default {
       formatedEventDuration,
       eventCrossIcon,
       eventTriangleIcon,
+      isEventCrossedOut,
       showUserAvatarCount,
       goToTheEventPage,
       joinScheduledEvent,
@@ -311,11 +330,6 @@ $color-dfdeed: #dfdeed;
     display: flex;
     align-items: center;
     gap: 12px;
-
-    img {
-      width: 10px;
-      height: 10px;
-    }
 
     .c-triangle-image {
       width: 12px;
@@ -444,6 +458,19 @@ $color-dfdeed: #dfdeed;
     align-items: center;
     gap: 8px;
     line-height: 20px;
+    position: relative;
+
+    &.crossed-out {
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 10px;
+        width: calc(100% + 48px);
+        height: 2px;
+        background-color: #148783;
+      }
+    }
 
     .c-event-duration {
       line-height: 20px;

@@ -381,9 +381,6 @@ export default {
       }
       canSelectDate.value = false;
     };
-    const onResize = () => {
-      windowWidth.value = window.innerWidth;
-    };
     const validateMinMaxDates = () => {
       if (minDate.value > maxDate.value) {
         console.error('Invalid props');
@@ -416,10 +413,6 @@ export default {
         return;
       }
       fillCalendar();
-    });
-
-    watch(datesReadable, () => {
-      console.log(datesReadable.value);
     });
 
     expose({

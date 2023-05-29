@@ -265,7 +265,7 @@ export default {
           ...getRawFilters(),
           page,
         }),
-      dataTransformation: (item) => createNotificationFromData(item),
+      dataTransformation: createNotificationFromData,
       beforeConcat: (elements, newList) => findDublicates(elements, newList),
     });
 

@@ -770,6 +770,13 @@ export default {
       inlineCalendarConfig.value.specMinDate = data.firstCellDate;
       inlineCalendarConfig.value.specMaxDate = data.lastCellDate;
       inlineCalendar.value.fillByProvidedDate(data.lastCellDate);
+      getScheduledEventsDotsData(
+        activatedUserInSidebarData.value
+          ? activatedUserInSidebarData.value.id
+          : userStore.user.id,
+        formatDate(data.firstCellDate),
+        formatDate(data.lastCellDate)
+      );
     }
 
     function activateUser(userData) {
