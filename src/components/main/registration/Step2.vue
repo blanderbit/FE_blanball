@@ -160,6 +160,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+:deep(.b-register-step__title) {
+  @include mobile {
+    text-align: center;
+  }
+}
+
 .b-register-step__input {
   width: 384px;
   margin-top: 12px;

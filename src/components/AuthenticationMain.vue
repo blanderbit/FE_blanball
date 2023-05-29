@@ -42,7 +42,6 @@
       <div
         class="b-auth__right-part"
         v-if="currentStep === 10 && windowWidth > 768"
-        style="height: 600px"
       >
         <position-map></position-map>
       </div>
@@ -221,6 +220,7 @@ export default {
       background-position: 0 0;
       width: 560px;
       position: relative;
+      height: 100%;
       @media (max-width: 992px) {
         display: none;
       }

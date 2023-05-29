@@ -127,6 +127,12 @@ export default {
 $color-f4f4f4: #f4f4f4;
 $color-efeff6: #efeff6;
 
+:deep(.b-register-step__title) {
+  @include mobile {
+    text-align: center;
+  }
+}
+
 .b-register-step__input {
   width: 384px;
   margin-top: 12px;
