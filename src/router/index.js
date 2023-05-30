@@ -25,7 +25,7 @@ const usersData = () => {
       userStore.$patch({
         user: res.data,
       });
-      return new Proxy(res.data, {});
+      return res.data;
     });
   } else {
     return userStore.user
@@ -38,7 +38,7 @@ const hintsData = () => {
       hintsStore.$patch({
         hintsData: res.data,
       });
-      return new Proxy(res.data, {});
+      return res.data;
     });
   } else {
     return hintsStore.hintsData
@@ -305,18 +305,3 @@ const router = createRouter({
 });
 
 export default router;
-
-router.beforeEach(async (to, from, next) => {
-  if (to.name === ROUTES.WORKS.name) {
-    const response = await API.NotificationService.getMaintenance();
-    if (response.data.isMaintenance) {
-      next();
-    } else {
-      next(ROUTES.APPLICATION.EVENTS.absolute);
-    }
-  } else if (to.name === ROUTES.APPLICATION.VERSIONS.name) {
-    next();
-  } else {
-    next();
-  }
-});
