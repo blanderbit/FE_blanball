@@ -406,7 +406,7 @@ ul {
 
         .b-versions-list__version {
           background: $--b-main-white-color;
-          border: 1px solid #f0f0f4;
+          border: 1px solid $color-f0f0f4;
           border-radius: 6px;
           padding: 16px;
           display: flex;

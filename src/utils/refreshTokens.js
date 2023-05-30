@@ -25,16 +25,14 @@ export async function refreshTokens() {
     const response = await API.AuthorizationService.refreshTokens({
       refresh: refreshToken.getToken(),
     });
+
+    const refreshTokenStorageType = refreshToken.getTokenStorageType();
+    const accessTokenStorageType = accessToken.getTokenStorageType();
+
     accessToken.clearToken();
     refreshToken.clearToken();
-    accessToken.setToken(
-      response.data.access,
-      tokensStore.tokenSettedStoreType
-    );
-    refreshToken.setToken(
-      response.data.refresh,
-      tokensStore.tokenSettedStoreType
-    );
+    accessToken.setToken(response.data.access, accessTokenStorageType);
+    refreshToken.setToken(response.data.refresh, refreshTokenStorageType);
 
     AuthWebSocketWorkerInstance.connect({
       token: accessToken.getToken(),

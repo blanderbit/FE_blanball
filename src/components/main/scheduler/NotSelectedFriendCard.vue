@@ -20,6 +20,7 @@
   justify-content: center;
   flex-direction: column;
   margin: 0 auto;
+  margin-top: 48px;
 
   .c-title {
     @include exo(18px, 700);

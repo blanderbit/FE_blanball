@@ -12,17 +12,36 @@ import {
 import { transpileInterseptorQueryToConfig } from '../workers/api-worker/http/filter/filter.utils';
 import { ROUTES } from './router.const';
 import { useUserDataStore } from '../stores/userData';
+import { useHintsStore } from '../stores/hints';
 import { prepareEventUpdateData } from '../utils/prepareEventUpdateData';
 
+const userStore = useUserDataStore();
+const hintsStore = useHintsStore();
+
+//TODO перенести в интерцпептор эти 2 функции 
 const usersData = () => {
-  const userStore = useUserDataStore();
   if (!Object.keys(userStore.user).length) {
     return API.UserService.getMyProfile().then((res) => {
       userStore.$patch({
         user: res.data,
       });
-      return res;
+      return res.data;
     });
+  } else {
+    return userStore.user
+  }
+};
+
+const hintsData = () => {
+  if (!Object.keys(hintsStore.hintsData).length) {
+    return API.HintsService.getAllHints().then((res) => {
+      hintsStore.$patch({
+        hintsData: res.data,
+      });
+      return res.data;
+    });
+  } else {
+    return hintsStore.hintsData
   }
 };
 
@@ -42,8 +61,8 @@ const router = createRouter({
           beforeEnter: routerResolverByLoginPage,
           component: () => import('../views/authentication/Login.vue'),
           meta: {
-            noGuards: true
-          }
+            noGuards: true,
+          },
         },
         {
           path: ROUTES.AUTHENTICATIONS.REGISTER.relative,
@@ -72,6 +91,7 @@ const router = createRouter({
           beforeEnter: routerAuthResolver.routeInterceptor(() => ({
             allVersions: () => API.VersionsService.getAllVersions(),
             usersData,
+            hintsData,
           })),
           component: () => import('../views/application/Versions.vue'),
           meta: {
@@ -85,6 +105,7 @@ const router = createRouter({
           name: ROUTES.APPLICATION.PROFILE.MY_PROFILE.name,
           beforeEnter: routerAuthResolver.routeInterceptor(() => ({
             usersData,
+            hintsData,
             allReviewsData: () => API.ReviewService.getMyReviews(),
           })),
           component: () => import('../views/application/profile/Index.vue'),
@@ -109,13 +130,15 @@ const router = createRouter({
                     transpileInterseptorQueryToConfig(filterConfigForEvents, to)
                   ),
                 usersData,
+                hintsData,
               })),
-              component: () => import('../views/application/events/MyEvents.vue'),
+              component: () =>
+                import('../views/application/events/MyEvents.vue'),
               meta: {
                 breadcrumbs: {
                   i18n: 'breadcrumbs.myEvents',
                 },
-                tabId: 1
+                tabId: 1,
               },
             },
             {
@@ -127,16 +150,18 @@ const router = createRouter({
                     transpileInterseptorQueryToConfig(filterConfigForEvents, to)
                   ),
                 usersData,
+                hintsData,
               })),
-              component: () => import('../views/application/events/MyEvents.vue'),
+              component: () =>
+                import('../views/application/events/MyEvents.vue'),
               meta: {
                 breadcrumbs: {
                   i18n: 'breadcrumbs.myEvents',
                 },
-                tabId: 2
+                tabId: 2,
               },
             },
-          ]
+          ],
         },
         {
           path: ROUTES.APPLICATION.EVENTS.relative,
@@ -147,6 +172,7 @@ const router = createRouter({
                 transpileInterseptorQueryToConfig(filterConfigForEvents, to)
               ),
             usersData,
+            hintsData,
           })),
           component: () => import('../views/application/events/Index.vue'),
           meta: {
@@ -161,6 +187,7 @@ const router = createRouter({
           beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
             action: () => 'CREATE',
             usersData,
+            hintsData,
           })),
           component: () => import('../views/application/events/Manage.vue'),
           meta: {
@@ -175,6 +202,7 @@ const router = createRouter({
           beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
             action: () => 'EDIT',
             usersData,
+            hintsData,
             eventData: async () => {
               return prepareEventUpdateData(to.params.id);
             },
@@ -191,6 +219,7 @@ const router = createRouter({
           name: ROUTES.APPLICATION.EVENTS.GET_ONE.name,
           beforeEnter: routerAuthResolver.routeInterceptor((to) => ({
             usersData,
+            hintsData,
             eventData: () => API.EventService.getOneEvent(to.params.id),
             eventRequestsToParticipationData: () =>
               API.EventService.requestsToParticipations(to.params.id),
@@ -210,6 +239,7 @@ const router = createRouter({
               API.UserService.getAllUsers(
                 transpileInterseptorQueryToConfig(filterConfigForUsers, to)
               ),
+            hintsData,
             usersData,
           })),
           component: () => import('../views/application/users/General.vue'),
@@ -226,6 +256,7 @@ const router = createRouter({
             publicUserData: () =>
               API.UserService.getUserPublicProfile(to.params.userId),
             usersData,
+            hintsData,
           })),
           component: () => import('../views/application/users/Profile.vue'),
           meta: {
@@ -274,19 +305,3 @@ const router = createRouter({
 });
 
 export default router;
-
-
-router.beforeEach(async (to, from, next) => {
-  if (to.name === ROUTES.WORKS.name) {
-    const response = await API.NotificationService.getMaintenance();
-    if (response.data.isMaintenance) {
-      next();
-    } else {
-      next(ROUTES.APPLICATION.EVENTS.absolute);
-    }
-  } else if (to.name === ROUTES.APPLICATION.VERSIONS.name) {
-    next();
-  } else {
-    next();
-  }
-});

@@ -72,7 +72,7 @@
     </Form>
     <div class="b-login-step__has-no-account">
       {{ $t('login.no-account') }}
-      <span @click="openRegisterPage()">{{ $t('login.register') }}</span>
+      <span @click="openRegisterPage">{{ $t('login.register') }}</span>
     </div>
   </div>
 </template>
@@ -153,9 +153,9 @@ export default {
               match?.path?.includes('pathMatch')
             )
           ) {
-            return router.push(ROUTES.APPLICATION.EVENTS.absolute);
+            return await router.push(ROUTES.APPLICATION.EVENTS.absolute);
           }
-          return router.push(redirectUrl);
+          return await router.push(redirectUrl);
         }
         await router.push(ROUTES.APPLICATION.EVENTS.absolute);
       } catch (e) {

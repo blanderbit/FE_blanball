@@ -9,8 +9,20 @@
   />
 
   <div v-if="userData" class="c-scheduled-events__block">
+    <div v-if="userStore.user.id !== userData.id" class="c-selected-view-user">
+      <span class="c-user-full-name"
+        >{{ userData.profile.last_name }} {{ userData.profile.name }}</span
+      >
+      <img
+        src="../../../assets/img/cross.svg"
+        alt=""
+        @click="$emit('deactivateSelectedUser')"
+      />
+    </div>
     <div class="c-total-count-scheduled-events">
-      <div class="c-today">{{ $t('scheduler.today') }}</div>
+      <div class="c-selected-date">
+        {{ formatedDate }}
+      </div>
       <div class="c-count-scheduled">
         <span v-if="paginationTotalCount > 0">{{
           $t('scheduler.planned-count', { count: paginationTotalCount })
@@ -25,30 +37,13 @@
         v-model:scrollbar-existing="blockScrollToTopIfExist"
       >
         <template #smartListItem="slotProps">
-          <div
-            :class="[
-              'c-scheduled-event',
-              slotProps.smartListItem.status,
-              { selected: slotProps.smartListItem.id === selectedEventId },
-            ]"
-          >
-            <div class="c-event-main-info">
-              <div class="c-event-type">
-                {{ $t('events.friendly-match') }}
-              </div>
-              <div class="c-event-time">
-                {{ slotProps.smartListItem.time }} –
-                {{ slotProps.smartListItem.end_time }}
-              </div>
-            </div>
-            <div class="c-manage-event-block">
-              <img
-                :src="getEventCrossIcon(slotProps.smartListItem.status)"
-                alt=""
-                @click="declineEvent(slotProps.smartListItem)"
-              />
-            </div>
-          </div>
+          <ScheduledEventCard
+            :key="slotProps.index"
+            :eventData="slotProps.smartListItem"
+            :openedEventId="openedEventId"
+            @declineEvent="declineEvent"
+            @openCloseEvent="openCloseEvent"
+          />
         </template>
         <template #after>
           <InfiniteLoading
@@ -56,8 +51,11 @@
             ref="scrollbar"
             @infinite="loadDataPaginationData(paginationPage + 1, $event)"
           >
-            <NoScheduledEvents :userData="userData" />
             <template #complete>
+              <NoScheduledEvents
+                v-if="!paginationElements.length"
+                :userData="userData"
+              />
               <ScrollToTop
                 :element-length="paginationElements"
                 :is-scroll-top-exist="blockScrollToTopIfExist"
@@ -79,28 +77,32 @@ import { useI18n } from 'vue-i18n';
 
 import { v4 as uuid } from 'uuid';
 
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+import uk from 'dayjs/locale/uk';
+
 import NoScheduledEvents from './NoScheduledEvents.vue';
 import SubmitModal from '../../shared/modals/SubmitModal.vue';
 import NotSelectedFriendCard from './NotSelectedFriendCard.vue';
 import SmartList from '../../shared/smartList/SmartList.vue';
 import InfiniteLoading from '../infiniteLoading/InfiniteLoading.vue';
 import ScrollToTop from '../../ScrollToTop.vue';
+import ScheduledEventCard from './ScheduledEventCard.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { PaginationWorker } from '../../../workers/pagination-worker';
 import { getDate } from '../../../utils/getDate';
 import { getTime } from '../../../utils/getTime';
 import { addMinutes } from '../../../utils/addMinutes';
+import { useUserDataStore } from '../../../stores/userData';
 
-import grayCrossIcon from '../../../assets/img/gray-cross.svg';
-import blackCrossIcon from '../../../assets/img/cross.svg';
-import greenCrossIcon from '../../../assets/img/green-cross.svg';
+const REQUEST_USER_ROLES = {
+  AUTHOR: 'author',
+  PLAYER: 'player',
+  FAN: 'fan',
+};
 
-const EVENT_STATUSES = {
-  PLANNED: 'Planned',
-  ACTIVE: 'Active',
-  FINISHED: 'Finished'
-}
+dayjs.extend(localizedFormat).locale(uk);
 
 export default {
   components: {
@@ -109,6 +111,7 @@ export default {
     NotSelectedFriendCard,
     SmartList,
     InfiniteLoading,
+    ScheduledEventCard,
     ScrollToTop,
   },
   props: {
@@ -123,14 +126,16 @@ export default {
       default: () => {},
     },
   },
+  emits: ['deactivateSelectedUser'],
   setup(props) {
     const refList = ref();
     const isSubmitModalOpened = ref(false);
     const submitModalConfig = ref({});
     const { t } = useI18n();
     const declineEventData = ref({});
-    const selectedEventId = ref(0);
+    const openedEventId = ref(0);
     const triggerForRestart = ref(false);
+    const userStore = useUserDataStore();
 
     const blockScrollToTopIfExist = ref(false);
 
@@ -138,29 +143,20 @@ export default {
       triggerForRestart.value = uuid();
     };
 
-    const icons = computed(() => {
-      return {
-        cross: {
-          greenCross: greenCrossIcon,
-          blackCross: blackCrossIcon,
-          grayCross: grayCrossIcon,
-        },
-      };
-    });
+    const formatedDate = computed(() => {
+      if (props.date) {
+        const currentDate = dayjs().format('YYYY-MM-DD');
+        const isToday = dayjs(props.date).isSame(currentDate, 'day');
 
-    const getEventCrossIcon = (eventStatus) => {
-      switch (eventStatus) {
-        case EVENT_STATUSES.PLANNED: {
-          return icons.value.cross.blackCross;
+        if (isToday) {
+          return t('scheduler.today');
+        } else {
+          return dayjs(props.date).format('dd D MMMM');
         }
-        case EVENT_STATUSES.ACTIVE: {
-          return icons.value.cross.greenCross;
-        }
-        case EVENT_STATUSES.FINISHED: {
-          return icons.value.cross.grayCross;
-        }
+      } else {
+        return t('scheduler.today');
       }
-    };
+    });
 
     const {
       paginationElements,
@@ -171,7 +167,7 @@ export default {
     } = PaginationWorker({
       paginationDataRequest: (page) =>
         API.SchedulerService.getScheduledEventsDataOnSpecificDay({
-          user_id: props.userData.id,
+          user_id: props.userData?.id,
           date: props.date,
           page: page,
         }),
@@ -196,8 +192,25 @@ export default {
     }
 
     const deleteEvent = async () => {
-      await API.EventService.deleteEvents([declineEventData.value.id]);
+      const response = await API.EventService.deleteEvents([
+        declineEventData.value.id,
+      ]);
+
+      if (response.data.length) {
+        paginationElements.value = paginationElements.value.filter(
+          (el) => el.id !== declineEventData.value.id
+        );
+        paginationTotalCount.value -= 1;
+      }
       closeSubmitModal();
+    };
+
+    const openCloseEvent = (eventId) => {
+      if (openedEventId.value !== eventId) {
+        openedEventId.value = eventId;
+      } else {
+        openedEventId.value = 0;
+      }
     };
 
     const showSubmitModal = () => {
@@ -211,7 +224,7 @@ export default {
 
     const declineEvent = (eventData) => {
       declineEventData.value = eventData;
-      if (eventData.request_user_role === 'author') {
+      if (eventData.request_user_role === REQUEST_USER_ROLES.AUTHOR) {
         submitModalConfig.value = {
           title: t('modals.delete_event.title'),
           description: t('modals.delete_event.main-text', {
@@ -224,7 +237,10 @@ export default {
           btn_with_1: 132,
           btn_with_2: 132,
         };
-      } else {
+      } else if (
+        eventData.request_user_role === REQUEST_USER_ROLES.FAN ||
+        eventData.request_user_role === REQUEST_USER_ROLES.PLAYER
+      ) {
         submitModalConfig.value = {
           title: t('modals.leave_from_event.title'),
           description: t('modals.leave_from_event.main-text', {
@@ -265,19 +281,22 @@ export default {
 
     return {
       paginationTotalCount,
+      refList,
       paginationElements,
       isSubmitModalOpened,
       paginationPage,
+      userStore,
       triggerForRestart,
       submitModalConfig,
+      formatedDate,
       blockScrollToTopIfExist,
-      selectedEventId,
+      openedEventId,
       closeSubmitModal,
       loadDataPaginationData,
       deleteEvent,
       showSubmitModal,
+      openCloseEvent,
       declineEvent,
-      getEventCrossIcon,
       scrollToFirstElement: () => {
         refList.value.scrollToFirstElement();
       },
@@ -287,15 +306,39 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-f0f0f4: #f0f0f4;
+.c-selected-view-user {
+  align-items: center;
+  justify-content: space-between;
+  display: none;
+  @include beforeDesktop {
+    display: flex;
+  }
+  .c-user-full-name {
+    @include exo(16px, 600);
+    line-height: 24px;
+    margin-bottom: 4px;
+  }
+
+  img {
+    width: 12px;
+    height: 12px;
+    cursor: pointer;
+  }
+}
 .c-total-count-scheduled-events {
   display: flex;
   align-items: center;
   gap: 8px;
-  .c-today {
+  border-bottom: 1px solid $color-f0f0f4;
+  padding-bottom: 8px;
+
+  .c-selected-date {
     @include inter(13px, 500, $--b-main-green-color);
     line-height: 20px;
     padding: 0px 8px 0px 0px;
-    border-right: 1px solid #f0f0f4;
+    border-right: 1px solid $color-f0f0f4;
+    text-transform: capitalize;
   }
   .c-count-scheduled {
     @include inter(13px, 500, $--b-main-gray-color);
@@ -303,48 +346,7 @@ export default {
   }
 }
 .c-scheduled-events__list {
-  .c-scheduled-event {
-    width: 100%;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    padding: 12px;
-    justify-content: space-between;
-    margin-top: 12px;
-    cursor: pointer;
-
-    &.Planned {
-      background: #fcfcfc;
-      border: 1px solid $--b-main-green-color;
-      .c-event-main-info {
-        @include inter(14px, 400);
-      }
-    }
-
-    &.Active {
-      background: #ecfcfb;
-      border: none;
-
-      .c-event-main-info {
-        @include inter(14px, 400, $--b-main-green-color);
-      }
-    }
-
-    &.Finished {
-      background: #f9f9fc;
-      border: none;
-
-      .c-event-main-info {
-        @include inter(14px, 400, #a8a8bd);
-      }
-    }
-
-    .c-event-main-info {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      line-height: 20px;
-    }
-  }
+  overflow-y: scroll;
+  height: 100%;
 }
 </style>

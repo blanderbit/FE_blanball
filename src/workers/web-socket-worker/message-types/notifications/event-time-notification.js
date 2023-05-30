@@ -1,5 +1,8 @@
 import { InitialMessage } from './initial.message';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration'
+
+dayjs.extend(duration);
 
 import {
   SetActions,
@@ -26,13 +29,12 @@ import { NotificationImage } from '../../../../assets/img/notifications/notifica
 ])
 export class EventTimeNotificationMessage extends InitialMessage {
   createTexts(data) {
-
     const time_to_start = dayjs
       .duration({
-        minutes: data.start.time_to_start,
+        minutes: data.event.time_to_start,
       })
       .asHours();
-    
+
     return [
       `${data.recipient.name}, початок запланованої події «${data.event.name}» за ${time_to_start} годин`,
     ];

@@ -20,4 +20,12 @@ export default {
     ME: 'me',
     FRIEND: 'friend',
   },
+
+  SCHEDULER_ACTIVE_VIEWS: {
+    DAY: 'day',
+    WEEK: 'week',
+    MONTH: 'month',
+    YEAR: 'year',
+    YEARS: 'years',
+  },
 };

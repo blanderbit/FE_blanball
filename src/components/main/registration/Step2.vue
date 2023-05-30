@@ -160,6 +160,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+:deep(.b-register-step__title) {
+  @include mobile {
+    text-align: center;
+  }
+}
+
 .b-register-step__input {
   width: 384px;
   margin-top: 12px;
@@ -173,16 +179,18 @@ export default {
   width: 80px;
   top: -30px;
   left: -30px;
-  @include tablet {
-    display: none;
+  display: none;
+  @include mobile {
+    display: block;
   }
 }
 .b-register-step__ball-small {
   position: absolute;
   top: 0;
   right: 0;
-  @include tablet {
-    display: none;
+  display: none;
+  @include mobile {
+    display: block;
   }
 }
 .b-register-step__remember-me {
