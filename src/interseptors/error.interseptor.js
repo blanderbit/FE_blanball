@@ -6,7 +6,7 @@ import { useTokensStore } from '../stores/tokens';
 
 import { AxiosInstance } from '../plugins/axios.plugin';
 
-import { i18n } from '../main';
+import { i18n } from '../plugins/i18n.plugin';
 import { EndpointsEnum } from '../workers/api-worker/http/http-common/prefix.enum';
 import { globalSkipMesssageTypes } from '../workers/type-request-message-worker';
 import { finishSpinner } from '../workers/loading-worker/loading.worker';

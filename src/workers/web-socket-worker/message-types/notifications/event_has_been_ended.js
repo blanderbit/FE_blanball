@@ -6,6 +6,7 @@ import {
   AuthWebSocketMessage,
   NotificationSetImage,
 } from '../../type.decorator';
+import { i18n } from '../../../../plugins/i18n.plugin';
 
 import {
   MessageActionTypes,
@@ -41,11 +42,13 @@ import { NotificationsBus } from '../../../event-bus-worker';
 export class EventHasBeenEndedMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `Подія "${data.event.name}" була закінчена, ви можете залишити відгук про подію та її учасників"`,
+      i18n.global.t('push_notifications.event_has_been_ended.text', {
+        eventName: data.event.name,
+      }),
     ];
   }
 
   createTitle() {
-    return 'Подія закінчилася';
+    return i18n.global.t('push_notifications.event_has_been_ended.title');
   }
 }

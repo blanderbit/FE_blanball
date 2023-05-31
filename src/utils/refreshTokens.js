@@ -4,7 +4,7 @@ import { useTokensStore } from '../stores/tokens';
 import { AuthWebSocketWorkerInstance } from '../workers/web-socket-worker';
 import { sessionExpired } from './sessionExpired';
 
-import pinia from '../plugins/pinia';
+import { pinia } from '../plugins/pinia.plugin';
 
 const tokensStore = useTokensStore(pinia);
 
