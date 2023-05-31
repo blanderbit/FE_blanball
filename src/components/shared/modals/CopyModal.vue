@@ -5,7 +5,9 @@
         <div class="b-share-event-modal__title">
           <slot name="title"></slot>
         </div>
-        <slot name="header-image" @click="$emit('closeModal')"></slot>
+        <div class="b-close-share-event-modal">
+          <slot name="header-image"></slot>
+        </div>
       </div>
       <div class="b-share-event-modal__main-side">
         <slot name="input"></slot>
@@ -84,6 +86,9 @@ export default {
         font-size: 14px;
         line-height: 20px;
         color: $--b-main-white-color;
+      }
+      .b-close-share-event-modal {
+        cursor: pointer;
       }
     }
     .b-share-event-modal__main-side {

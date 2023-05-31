@@ -163,6 +163,7 @@ export default {
 :deep(.b-register-step__title) {
   @include mobile {
     text-align: center;
+    margin-top: 15px;
   }
 }
 

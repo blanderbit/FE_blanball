@@ -89,7 +89,7 @@ $color-f0f0f4: #f0f0f4;
       display: flex;
       flex-direction: column;
       overflow-y: scroll;
-      @include calc-height(60px, 20px, 36px);
+      @include calc-height(36px, 20px, 70px);
     }
 
     .b-policy-main-text {

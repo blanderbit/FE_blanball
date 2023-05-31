@@ -68,9 +68,6 @@ export const ErrorInterceptor = async (error) => {
 
   if (errorMessageType) {
     showToastAfterError(errorMessageType);
-  }
-
-  if (errorMessageType) {
     error.errorMessageType = errorMessageType;
   }
 

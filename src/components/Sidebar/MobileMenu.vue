@@ -533,7 +533,7 @@ export default {
     }
 
     const mobileMenuTopSideHeightConfig = ref({
-      default: [60, 32, 48, 16],
+      default: [60, 32, 48, 20],
       mobile: [selectedList.value.length ? 10 : 0],
       tablet: [selectedList.value.length ? 50 : 0],
     });
