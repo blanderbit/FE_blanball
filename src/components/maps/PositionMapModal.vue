@@ -89,6 +89,10 @@ import GreenBtn from '../shared/button/GreenBtn.vue';
 
 import { PositionMapBus } from '../../workers/event-bus-worker';
 import { API } from '../../workers/api-worker/api.worker';
+import {
+  startSpinner,
+  finishSpinner,
+} from '../../workers/loading-worker/loading.worker';
 
 import { CONSTS } from '../../consts';
 

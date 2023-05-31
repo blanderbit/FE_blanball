@@ -69,10 +69,7 @@ export default {
 $color-f0f0f4: #f0f0f4;
 
 .b-context-modal__wrapper {
-  position: absolute;
-  width: 100vw;
-  @include calc-height;
-  z-index: 999;
+  @include modal-wrapper(transperent);
 
   .b-context-modal {
     width: 228px;

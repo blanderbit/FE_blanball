@@ -49,7 +49,6 @@ export class AuthorizationService {
   static ResetComplete(data) {
     return AxiosInstance.post(EndpointsEnum.Authorization.ResetComplete, data);
   }
-
   static Register(data) {
     return AxiosInstance.post(EndpointsEnum.Authorization.Register, data);
   }
@@ -60,5 +59,9 @@ export class AuthorizationService {
 
   static VerifyEmail() {
     return AxiosInstance.get(EndpointsEnum.Authorization.VerifyEmail);
+  }
+
+  static ValidateRefreshToken(data) {
+    return AxiosInstance.post(EndpointsEnum.Authorization.ValidateRefreshToken, data); 
   }
 }

@@ -137,6 +137,7 @@ import { API } from '../../workers/api-worker/api.worker';
 import { VersionDetectorWorker } from '../../workers/version-detector-worker';
 import { useWindowWidth } from '../../utils/widthScreen';
 import { useElementSize } from '@vueuse/core';
+import { validateRefreshToken } from '../../utils/validateRefreshToken';
 
 import EventUpdatedIcon from '../../assets/img/event-updated-modal-icon.svg';
 import EventCreatedIcon from '../../assets/img/event-creted-modal-icon.svg';
@@ -144,7 +145,6 @@ import EventCreatedIcon from '../../assets/img/event-creted-modal-icon.svg';
 import notification_audio from '../../assets/audio/notification-audio.mp3';
 
 const isVerifyModalActive = ref(false);
-const schedulerKey = ref();
 const header = ref();
 const isCreateReviewModalActive = ref(false);
 const endedEventData = ref({});
@@ -444,6 +444,7 @@ BlanballEventBus.on('closeScheduler', () => {
 });
 
 onMounted(() => {
+  validateRefreshToken();
   setHeaderHeight();
   setHeaderHeightCssVar();
 });
