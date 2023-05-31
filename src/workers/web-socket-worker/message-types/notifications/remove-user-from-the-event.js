@@ -7,11 +7,10 @@ import {
   NotificationSetImage,
 } from '../../type.decorator';
 
-import {
-  MessageActionTypes,
-} from '../../message.action.types';
+import { MessageActionTypes } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
 import { NotificationImage } from '../../../../assets/img/notifications/notification.images';
+import { i18n } from '../../../../plugins/i18n.plugin';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.UserRemoveFromEvent)
@@ -20,7 +19,9 @@ import { NotificationImage } from '../../../../assets/img/notifications/notifica
   {
     type: MessageActionTypes.ActionClose,
     buttonType: 'default',
-    buttonText: 'Зрозуміло',
+    buttonText: i18n.global.t(
+      'push_notifications.remove_user_from_the_event.first_button'
+    ),
     buttonWidth: 86,
     buttonHeight: 28,
   },
@@ -28,11 +29,13 @@ import { NotificationImage } from '../../../../assets/img/notifications/notifica
 export class RemoveUserFromTheEventMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `Шкода, але організатори «${data?.event.name}» відкликали вашу участь у події`,
+      i18n.global.t('push_notifications.remove_user_from_the_event.text', {
+        eventName: data.event.name,
+      }),
     ];
   }
 
   createTitle() {
-    return 'Вас було виключено з переліку учасників';
+    return i18n.global.t('push_notifications.remove_user_from_the_event.title');
   }
 }

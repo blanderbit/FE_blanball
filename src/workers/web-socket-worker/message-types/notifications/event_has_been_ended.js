@@ -22,14 +22,18 @@ import { NotificationsBus } from '../../../event-bus-worker';
 @SetActions([
   {
     type: MessageActionTypes.ActionClose,
-    buttonText: 'Зрозуміло',
+    buttonText: i18n.global.t(
+      'push_notifications.event_has_been_ended.first_button'
+    ),
     buttonType: 'success',
     buttonWidth: 91,
     buttonHeight: 28,
   },
   {
     type: MessageActionTypes.Action,
-    buttonText: 'Залишити відгук',
+    buttonText: i18n.global.t(
+      'push_notifications.event_has_been_ended.second_button'
+    ),
     action: ({ notificationInstance }) => {
       NotificationsBus.emit('openEventReviewModal', notificationInstance);
     },

@@ -1,6 +1,6 @@
 import { InitialMessage } from './initial.message';
 import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration'
+import duration from 'dayjs/plugin/duration';
 
 dayjs.extend(duration);
 
@@ -14,6 +14,7 @@ import {
 import { MessageActionTypes } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
 import { NotificationImage } from '../../../../assets/img/notifications/notification.images';
+import { i18n } from '../../../../plugins/i18n.plugin';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.EventTimeNotification)
@@ -22,7 +23,9 @@ import { NotificationImage } from '../../../../assets/img/notifications/notifica
   {
     type: MessageActionTypes.ActionClose,
     buttonType: 'success',
-    buttonText: 'Зрозуміло',
+    buttonText: i18n.global.t(
+      'push_notifications.event_time_notification.first_button'
+    ),
     buttonWidth: 88,
     buttonHeight: 28,
   },
@@ -36,11 +39,15 @@ export class EventTimeNotificationMessage extends InitialMessage {
       .asHours();
 
     return [
-      `${data.recipient.name}, початок запланованої події «${data.event.name}» за ${time_to_start} годин`,
+      i18n.global.t('push_notifications.event_time_notification.text', {
+        recipientName: data.recipient.name,
+        eventName: data.event.name,
+        timeToStart: time_to_start,
+      }),
     ];
   }
 
   createTitle() {
-    return 'Нагадування про майбутню подію';
+    return i18n.global.t('push_notifications.event_time_notification.title');
   }
 }

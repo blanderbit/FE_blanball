@@ -16,6 +16,7 @@ import {
 } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
 import { ROUTES } from '../../../../router/router.const';
+import { i18n } from '../../../../plugins/i18n.plugin';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.EventDeleted)
@@ -24,7 +25,7 @@ import { ROUTES } from '../../../../router/router.const';
   {
     type: MessageActionTypes.ActionClose,
     buttonType: 'success',
-    buttonText: 'Зрозуміло',
+    buttonText: i18n.global.t('push_notifications.event_deleted.first_button'),
     buttonWidth: 88,
     buttonHeight: 28,
   },
@@ -33,7 +34,7 @@ import { ROUTES } from '../../../../router/router.const';
     action: ROUTES.APPLICATION.EVENTS.absolute,
     actionType: MessageActionDataTypes.Url,
     buttonType: 'default',
-    buttonText: 'Знайти інші події',
+    buttonText: i18n.global.t('push_notifications.event_deleted.second_button'),
     buttonWidth: 150,
     buttonHeight: 28,
   },
@@ -41,12 +42,18 @@ import { ROUTES } from '../../../../router/router.const';
 export class EventDeletedMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `${data.sender.last_name} ${data.sender.name} скасував проведення події «${data.event.name}, 
-      ${dayjs(new Date()).locale(dayjsUkrLocale).format('DD.MM.YYYY')}»"`,
+      i18n.global.t('push_notifications.event_deleted.text', {
+        senderLastName: data.sender.last_name,
+        senderName: data.sender.name,
+        eventName: data.event.name,
+        currentTime: dayjs(new Date())
+          .locale(dayjsUkrLocale)
+          .format('DD.MM.YYYY'),
+      }),
     ];
   }
 
   createTitle() {
-    return 'Подію, на яку ви зареєструвались, було скасовано';
+    return i18n.global.t('push_notifications.event_deleted.title');
   }
 }

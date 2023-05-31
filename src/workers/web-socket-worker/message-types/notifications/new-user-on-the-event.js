@@ -16,6 +16,7 @@ import {
 } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
 import { ROUTES } from '../../../../router/router.const';
+import { i18n } from '../../../../plugins/i18n.plugin';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.NewUserOnTheEvent)
@@ -24,7 +25,9 @@ import { ROUTES } from '../../../../router/router.const';
   {
     type: MessageActionTypes.ActionClose,
     buttonType: 'success',
-    buttonText: 'Зрозуміло',
+    buttonText: i18n.global.t(
+      'push_notifications.new_user_on_the_event.first_button'
+    ),
     buttonWidth: 88,
     buttonHeight: 28,
   },
@@ -36,7 +39,9 @@ import { ROUTES } from '../../../../router/router.const';
       ),
     actionType: MessageActionDataTypes.UrlCallback,
     buttonType: 'default',
-    buttonText: 'Переглянути профіль',
+    buttonText: i18n.global.t(
+      'push_notifications.new_user_on_the_event.second_button'
+    ),
     buttonWidth: 160,
     buttonHeight: 28,
   },
@@ -44,14 +49,18 @@ import { ROUTES } from '../../../../router/router.const';
 export class NewUserOnTheEventMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `${data.sender.last_name} ${data.sender.name} 
-       долучився до «${data.event.name}, ${dayjs(
-        new Date()
-      ).locale(dayjsUkrLocale).format('DD.MM.YYYY')}» як гравець`,
+      i18n.global.t('push_notifications.new_user_on_the_event.text', {
+        senderLastName: data.sender.last_name,
+        senderName: data.sender.name,
+        eventName: data.event.name,
+        currentTime: dayjs(new Date())
+          .locale(dayjsUkrLocale)
+          .format('DD.MM.YYYY'),
+      }),
     ];
   }
 
   createTitle() {
-    return 'Новий учасник події';
+    return i18n.global.t('push_notifications.new_user_on_the_event.title');
   }
 }
