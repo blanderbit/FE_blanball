@@ -17,6 +17,7 @@ import {
 } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
 import { ROUTES } from '../../../../router/router.const';
+import { i18n } from '../../../../plugins/i18n.plugin';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.ResponseToRequestForParticipation)
@@ -25,24 +26,40 @@ import { ROUTES } from '../../../../router/router.const';
 export class ResponseToRequestForParticipationMessage extends InitialMessage {
   createTexts(data) {
     return [
-      data.request.response
-        ? `${data.sender.last_name} ${data.sender.name} 
-          підтвердив вашу участь у події «${data.event.name}, ${dayjs(
-            new Date()
+      data.invite.response
+        ? i18n.global.t(
+            'push_notifications.response_to_request_for_participation.success_text',
+            {
+              senderLastName: data.sender.last_name,
+              senderName: data.sender.name,
+              eventName: data?.event.name,
+              currentTime: dayjs(new Date())
+                .locale(dayjsUkrLocale)
+                .format('DD.MM.YYYY'),
+            }
           )
-            .locale(dayjsUkrLocale)
-            .format('DD.MM.YYYY')}»`
-        : `${data.sender.last_name} ${data.sender.name} 
-        відхилив вашу участь у події «${data.event.name}, ${dayjs(new Date())
-            .locale(dayjsUkrLocale)
-            .format('DD.MM.YYYY')}»`,
+        : i18n.global.t(
+            'push_notifications.response_to_request_for_participation.error_text',
+            {
+              senderLastName: data.sender.last_name,
+              senderName: data.sender.name,
+              eventName: data?.event.name,
+              currentTime: dayjs(new Date())
+                .locale(dayjsUkrLocale)
+                .format('DD.MM.YYYY'),
+            }
+          ),
     ];
   }
 
   createTitle(data) {
     return data.request.response
-      ? 'Ваша заявка на участь у події прийнята'
-      : 'Ваша заявка на участь у події відхилена';
+      ? i18n.global.t(
+          'push_notifications.response_to_request_for_participation.success_title'
+        )
+      : i18n.global.t(
+          'push_notifications.response_to_request_for_participation.error_title'
+        );
   }
 
   onInit() {
@@ -50,7 +67,9 @@ export class ResponseToRequestForParticipationMessage extends InitialMessage {
       {
         type: MessageActionTypes.ActionClose,
         buttonType: 'success',
-        buttonText: 'Зрозуміло',
+        buttonText: i18n.global.t(
+          'push_notifications.response_to_request_for_participation.first_button'
+        ),
         buttonWidth: 88,
         buttonHeight: 28,
       },
@@ -67,7 +86,9 @@ export class ResponseToRequestForParticipationMessage extends InitialMessage {
           ),
         actionType: MessageActionDataTypes.UrlCallback,
         buttonType: 'default',
-        buttonText: 'На сторінку події',
+        buttonText: i18n.global.t(
+          'push_notifications.response_to_request_for_participation.second_button'
+        ),
         buttonWidth: 133,
         buttonHeight: 28,
       });

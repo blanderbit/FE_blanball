@@ -6,6 +6,7 @@ import {
   AuthWebSocketMessage,
   NotificationSetImage,
 } from '../../type.decorator';
+import { i18n } from '../../../../plugins/i18n.plugin';
 
 import {
   MessageActionTypes,
@@ -21,14 +22,18 @@ import { NotificationsBus } from '../../../event-bus-worker';
 @SetActions([
   {
     type: MessageActionTypes.ActionClose,
-    buttonText: 'Зрозуміло',
+    buttonText: i18n.global.t(
+      'push_notifications.event_has_been_ended.first_button'
+    ),
     buttonType: 'success',
     buttonWidth: 91,
     buttonHeight: 28,
   },
   {
     type: MessageActionTypes.Action,
-    buttonText: 'Залишити відгук',
+    buttonText: i18n.global.t(
+      'push_notifications.event_has_been_ended.second_button'
+    ),
     action: ({ notificationInstance }) => {
       NotificationsBus.emit('openEventReviewModal', notificationInstance);
     },
@@ -41,11 +46,13 @@ import { NotificationsBus } from '../../../event-bus-worker';
 export class EventHasBeenEndedMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `Подія "${data.event.name}" була закінчена, ви можете залишити відгук про подію та її учасників"`,
+      i18n.global.t('push_notifications.event_has_been_ended.text', {
+        eventName: data.event.name,
+      }),
     ];
   }
 
   createTitle() {
-    return 'Подія закінчилася';
+    return i18n.global.t('push_notifications.event_has_been_ended.title');
   }
 }

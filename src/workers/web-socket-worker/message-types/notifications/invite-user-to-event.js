@@ -13,6 +13,7 @@ import {
 } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
 import { API } from '../../../api-worker/api.worker';
+import { i18n } from '../../../../plugins/i18n.plugin';
 import dayjs from 'dayjs';
 
 @AuthWebSocketMessage()
@@ -31,7 +32,9 @@ import dayjs from 'dayjs';
       }),
     actionType: MessageActionDataTypes.Callback,
     buttonType: 'success',
-    buttonText: 'Прийняти',
+    buttonText: i18n.global.t(
+      'push_notifications.invite_user_to_event.first_button'
+    ),
     buttonWidth: 88,
     buttonHeight: 28,
   },
@@ -47,7 +50,9 @@ import dayjs from 'dayjs';
       }),
     actionType: MessageActionDataTypes.Callback,
     buttonType: 'default',
-    buttonText: 'Відхилити',
+    buttonText: i18n.global.t(
+      'push_notifications.invite_user_to_event.second_button'
+    ),
     buttonWidth: 88,
     buttonHeight: 28,
   },
@@ -55,15 +60,16 @@ import dayjs from 'dayjs';
 export class InviteUserToEventMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `${data.sender.last_name} ${
-        data.sender.name
-      } запросив вас на дружній матч «${data.event.name}» ${dayjs(
-        data.event?.date_and_time
-      ).format('DD.MM o HH:mm')}`,
+      i18n.global.t('push_notifications.invite_user_to_event.text', {
+        senderLastName: data.sender.last_name,
+        senderName: data.sender.name,
+        eventName: data.event.name,
+        eventDateTime: dayjs(data.event?.date_and_time).format('DD.MM o HH:mm'),
+      }),
     ];
   }
 
   createTitle() {
-    return 'Запрошення на подію';
+    return i18n.global.t('push_notifications.invite_user_to_event.title');
   }
 }
