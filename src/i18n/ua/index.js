@@ -28,6 +28,7 @@ import NoRecords from './no_records';
 import Policy from './policy';
 import Scheduler from './scheduler';
 import Hints from './hints';
+import PushNotifications from './push-notifications';
 
 export const UA_LANGUAGE = {
   events: EventsPage,
@@ -59,5 +60,6 @@ export const UA_LANGUAGE = {
   no_records: NoRecords,
   policy: Policy,
   scheduler: Scheduler,
-  hints: Hints
+  hints: Hints,
+  push_notifications: PushNotifications,
 };

@@ -20,10 +20,10 @@
               @cross-click="closeModal"
               @arrow-click="toggleCard"
             />
-            <ModalBottomCard
+            <!-- <ModalBottomCard
               :is-opened="!isCardTopOpened"
               @arrow-click="toggleCard"
-            />
+            /> -->
           </div>
         </template>
       </div>

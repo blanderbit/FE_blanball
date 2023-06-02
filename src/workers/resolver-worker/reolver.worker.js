@@ -28,7 +28,8 @@ export const routerResolverByLoginPage = routerAuthResolver.routeInterceptor(
       }
       finishSpinner();
     },
-    resolveFirstWorkerError: ({ next }) => {
+    resolveFirstWorkerError: ({ next }) =>
+     {
       next(true);
       finishSpinner();
     },

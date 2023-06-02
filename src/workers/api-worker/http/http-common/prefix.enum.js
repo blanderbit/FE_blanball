@@ -11,6 +11,7 @@ export const EndpointsEnum = {
     ResetComplete: '/authentication/client/password/reset-complete',
     AddAvatar: '/authentication/client/update/my/profile/avatar',
     VerifyEmail: '/authentication/client/request-verify/email',
+    ValidateRefreshToken: '/authentication/client/validate/refresh/token',
   },
   Notification: {
     Index: '/notifications/client/my/notifications/list',

@@ -1,15 +1,10 @@
 import { API } from '../workers/api-worker/api.worker';
 import { refreshToken, accessToken } from '../workers/token-worker';
-import { resolverFunctions } from '../workers/resolver-worker/resolver.functions';
 import { useTokensStore } from '../stores/tokens';
-import { BlanballEventBus } from '../workers/event-bus-worker';
-import { resetUserData } from './logOut';
 import { AuthWebSocketWorkerInstance } from '../workers/web-socket-worker';
+import { sessionExpired } from './sessionExpired';
 
-import pinia from '../plugins/pinia';
-import router from '../router';
-
-import { ROUTES } from '../router/router.const';
+import { pinia } from '../plugins/pinia.plugin';
 
 const tokensStore = useTokensStore(pinia);
 
@@ -43,20 +38,10 @@ export async function refreshTokens() {
 
     isRefreshSuccess = true;
   } catch {
-    const findCurRouteFromList = window.location.pathname.includes(
-      ROUTES.APPLICATION.name
-    );
     tokensStore.$patch({
       isTokensRefreshing: false,
     });
-
-    resetUserData();
-    await router.push(
-      findCurRouteFromList
-        ? resolverFunctions._createLoginPath(window.location.pathname)
-        : ROUTES.AUTHENTICATIONS.LOGIN.absolute
-    );
-    BlanballEventBus.emit('SessionExpired');
+    sessionExpired();
 
     isRefreshSuccess = false;
   } finally {

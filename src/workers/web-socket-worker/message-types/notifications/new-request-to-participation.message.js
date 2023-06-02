@@ -16,6 +16,7 @@ import {
 } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
 import { API } from '../../../api-worker/api.worker';
+import { i18n } from '../../../../plugins/i18n.plugin';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.NewRequestToParticipation)
@@ -33,7 +34,9 @@ import { API } from '../../../api-worker/api.worker';
       }),
     actionType: MessageActionDataTypes.Callback,
     buttonType: 'success',
-    buttonText: 'Прийняти',
+    buttonText: i18n.global.t(
+      'push_notifications.new_request_to_participation.first_button'
+    ),
     buttonWidth: 88,
     buttonHeight: 28,
   },
@@ -49,7 +52,9 @@ import { API } from '../../../api-worker/api.worker';
       }),
     actionType: MessageActionDataTypes.Callback,
     buttonType: 'default',
-    buttonText: 'Відхилити',
+    buttonText: i18n.global.t(
+      'push_notifications.new_request_to_participation.second_button'
+    ),
     buttonWidth: 88,
     buttonHeight: 28,
   },
@@ -57,14 +62,20 @@ import { API } from '../../../api-worker/api.worker';
 export class NewRequestToParticipationMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `${data.sender.last_name} ${data.sender.name} хоче долучитися до події «${
-        data.event.name
-      }», 
-      ${dayjs(new Date()).locale(dayjsUkrLocale).format('DD.MM.YYYY')}`,
+      i18n.global.t('push_notifications.new_request_to_participation.text', {
+        senderLastName: data.sender.last_name,
+        senderName: data.sender.name,
+        eventName: data.event.name,
+        currentTime: dayjs(new Date())
+          .locale(dayjsUkrLocale)
+          .format('DD.MM.YYYY'),
+      }),
     ];
   }
 
   createTitle() {
-    return 'Новий запит на участь у події';
+    return i18n.global.t(
+      'push_notifications.new_request_to_participation.title'
+    );
   }
 }

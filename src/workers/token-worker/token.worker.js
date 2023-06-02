@@ -1,4 +1,4 @@
-import pinia from '../../plugins/pinia';
+import { pinia } from '../../plugins/pinia.plugin';
 import { useTokensStore } from '../../stores/tokens';
 import { CONSTS } from '../../consts';
 

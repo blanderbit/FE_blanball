@@ -224,6 +224,7 @@ export default {
     const isEventCrossedOut = computed(() => {
       return (
         !isEventOpened.value &&
+        props.eventData.status === EVENT_STATUSES.FINISHED &&
         (props.eventData.request_user_role === REQUEST_USER_ROLES.PLAYER ||
           props.eventData.request_user_role === REQUEST_USER_ROLES.FAN)
       );
@@ -392,6 +393,10 @@ $color-dfdeed: #dfdeed;
       display: flex;
       align-items: center;
       justify-content: space-between;
+
+      @include tabletAndMobile {
+        padding: 16px 8px;
+      }
 
       .c-main-side-place {
         border-left: 1px solid $color-dfdeed;

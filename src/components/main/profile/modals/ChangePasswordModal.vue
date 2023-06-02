@@ -76,6 +76,7 @@ import inputCode from '../../../shared/inputCode/InputCode.vue';
 import MainInput from '../../../shared/input/MainInput.vue';
 
 import { API } from '../../../../workers/api-worker/api.worker';
+import { refreshTokens } from '../../../../utils/refreshTokens';
 import {
   startSpinner,
   finishSpinner,
@@ -140,6 +141,7 @@ export default {
       await API.UserService.sendApproveCode({
         verify_code: data.values.verify_code,
       });
+      await refreshTokens();
       closeModal();
       toast.success(t('notifications.password-reset'));
     }

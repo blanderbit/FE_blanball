@@ -3,7 +3,7 @@
     <div class="b-versions__title">
       Тут буде написано що саме мидодали до наявного функціоналу
     </div>
-    <div class="b-versions-content">
+    <div class="b-versions-content" :style="`height: ${versionsContentHeight}`">
       <div v-if="selectedVersionData" class="b-versions__main-side">
         <div v-if="selectedVersionData.images.length" class="b-images-block">
           <vueper-slides
@@ -147,6 +147,8 @@ import { cloneDeep } from 'lodash';
 
 import { API } from '../../workers/api-worker/api.worker';
 import { PaginationWorker } from '../../workers/pagination-worker';
+import { calcHeight } from '../../utils/calcHeight';
+import { useUserDataStore } from '../../stores/userData';
 
 import { VueperSlides, VueperSlide } from 'vueperslides';
 import 'vueperslides/dist/vueperslides.css';
@@ -162,9 +164,21 @@ export default {
     const selectedVersionData = ref(
       handleVersionData(route.meta.allVersions.results[0])
     );
+    const userStore = useUserDataStore();
 
     const newVersionId = computed(() => {
       return paginationElements.value[0]?.id;
+    });
+
+    const { calculatedHeight } = calcHeight(
+      [90, 75],
+      [userStore.user.is_verified ? 0 : 40],
+      [userStore.user.is_verified ? 0 : 40],
+      true
+    );
+
+    const versionsContentHeight = computed(() => {
+      return `${calculatedHeight.value}px`;
     });
 
     function handleVersionData(data) {
@@ -251,6 +265,7 @@ export default {
       paginationElements,
       totalPagesCount,
       paginationPage,
+      versionsContentHeight,
       newVersionId,
       loadVersions,
       switchVersion,
@@ -304,7 +319,6 @@ ul {
       flex-direction: column;
       overflow-y: scroll;
       padding-bottom: 20px;
-      @include calc-height(90px, 75px);
     }
 
     .b-versions__main-side {
