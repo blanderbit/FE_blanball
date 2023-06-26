@@ -10,8 +10,5 @@ export default {
       default: ''
     }
   },
-  setup(props) {
-    console.log(props.mode)
-  }
 }
 </script>

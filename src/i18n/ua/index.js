@@ -29,6 +29,7 @@ import Policy from './policy';
 import Scheduler from './scheduler';
 import Hints from './hints';
 import PushNotifications from './push-notifications';
+import Chat from './chat';
 
 export const UA_LANGUAGE = {
   events: EventsPage,
@@ -62,4 +63,5 @@ export const UA_LANGUAGE = {
   scheduler: Scheduler,
   hints: Hints,
   push_notifications: PushNotifications,
+  chat: Chat,
 };

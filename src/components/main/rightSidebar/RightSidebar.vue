@@ -68,7 +68,6 @@ BlanballEventBus.on('userJoinedEvent', (data) => {
   const event = popularEvents.value.find((event) => event.id === data.eventId);
 
   if (event) {
-    console.log(data.participateType)
     event.request_user_role = data.participateType;
   }
 });

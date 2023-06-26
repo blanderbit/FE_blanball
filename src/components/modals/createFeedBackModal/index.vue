@@ -125,6 +125,11 @@ export default {
   display: flex;
   flex-direction: column;
   margin-right: 32px;
+
+  @include mobile {
+    width: 100%;
+    margin-right: 0px;
+  }
 }
 @keyframes shake {
   10%,
