@@ -13,7 +13,12 @@
 
     <sidebar />
     <div class="main-block">
-      <div class="header-block" id="header" ref="header">
+      <div
+        v-if="isHeaderOnThisPageVisible"
+        class="header-block"
+        id="header"
+        ref="header"
+      >
         <div class="b_header_validate-email-block-wrapper">
           <div
             v-if="!userStore.user.is_verified"
@@ -166,6 +171,10 @@ const currentVisibleHint = ref({});
 
 const { isMobile, isTablet } = useWindowWidth();
 const { width: headerWidth, height: headerHeight } = useElementSize(header);
+
+const isHeaderOnThisPageVisible = computed(() => {
+  return !router.currentRoute.value.meta.noPageHeader;
+});
 
 const isSchedulerSidebarVisible = computed(() => {
   return !isMobile.value && !isTablet.value;

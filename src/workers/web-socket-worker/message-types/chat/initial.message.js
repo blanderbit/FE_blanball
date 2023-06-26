@@ -1,6 +1,6 @@
-import { UpdateWebSocketMessage } from '../../type.decorator';
+import { ChatWebSocketMessage } from '../../type.decorator';
 
-@UpdateWebSocketMessage()
+@ChatWebSocketMessage()
 export class InitialChatMessage {
   constructor(data) {
     this.data = data;

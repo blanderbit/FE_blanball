@@ -43,6 +43,13 @@ export function UpdateWebSocketMessage() {
   };
 }
 
+export function ChatWebSocketMessage() {
+  return (a) => {
+    a.chatWebSocketMessage = true;
+    a.prototype.chatWebSocketMessage = true;
+  };
+}
+
 export function ReadAfterActiveAction(callBack) {
   return (a) => {
     a.readAfterActiveAction = true;

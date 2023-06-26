@@ -11,7 +11,7 @@ export class ChatWebSocketTypes {
   static EditMessage = 'edit_message';
   static GetChatMessagesList = 'get_chat_messages_list';
   static GetChatUsersList = 'get_chat_users_list';
-  static GetChatLists = 'get_chats_list';
+  static GetChatsList = 'get_chats_list';
   static ReadOrUnreadMessages = 'read_or_unread_messages';
   static RemoveUserFromChat = 'remove_user_from_chat';
   static SetOrUnsetChatAdmin = 'set_or_unset_chat_admin_admin';
