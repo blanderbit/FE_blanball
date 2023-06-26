@@ -226,7 +226,7 @@ export default {
       currentStep.value = 7;
     }
 
-    function goToEvents() {
+    async function goToEvents() {
       router.push(ROUTES.APPLICATION.EVENTS.absolute);
     }
 
@@ -274,6 +274,7 @@ export default {
         currentStep.value--;
       },
       async handleUpdate(data) {
+        console.log(data)
         const { valid } = await data.validate();
         if (!valid) return;
         if (
@@ -309,7 +310,7 @@ export default {
             };
             await API.UserService.updateProfileData(profileValues);
             if (currentStep.value === 10) {
-              return goToEvents();
+              return await goToEvents();
             }
           } catch (e) {
             return;
@@ -317,7 +318,7 @@ export default {
         }
         currentStep.value++;
       },
-      backToRoute() {
+      backToRoute() {s
         router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute);
       },
       disableSubmit: (e) => {

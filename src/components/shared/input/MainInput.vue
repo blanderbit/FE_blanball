@@ -19,13 +19,6 @@
       >
         <span>{{ title }}</span>
       </div>
-      <div
-        v-if="rightIcon?.length"
-        class="b-input__icon"
-        @click="iconClickAction"
-      >
-        <img :src="rightIcon" alt="" />
-      </div>
       <div v-if="iconLeft.length" class="b-input__icon-left">
         <img :src="iconLeft" alt="" />
       </div>
@@ -54,6 +47,9 @@
           @blur="onUnFocus"
         />
       </slot>
+      <div v-if="rightIcon.length" class="b-input__icon">
+        <img :src="rightIcon" alt="" />
+      </div>
     </div>
     <p class="b-input__error-message">
       {{ modelErrorMessage ? t(modelErrorMessage) : '' }}
@@ -183,8 +179,8 @@ export default {
 
     const inputStyle = computed(() => {
       return {
-        'padding-left': 10 + props.titleWidth + 'px',
-        'padding-right': rightIcon.value?.length ? '50px' : '10px',
+        'padding-left': '10px',
+        'padding-right': '10px',
       };
     });
     const inputWrapper = computed(() => {
@@ -253,7 +249,7 @@ export default {
     });
 
     const onFocus = () => {
-      if (!props.isReadOnly) {
+      if (!props.isReadOnly && !props.isDisabled) {
         isFocused.value = true;
       }
     };
@@ -308,6 +304,7 @@ $color-dfdeed: #dfdeed;
     font-size: 13px;
     line-height: 24px;
     color: $--b-main-black-color;
+    display: flex;
     &.focused {
       border: 1.5px solid $color-8a8aa8;
     }
@@ -317,11 +314,10 @@ $color-dfdeed: #dfdeed;
     .b-input__icon {
       display: flex;
       height: 100%;
-      width: 48px;
-      position: absolute;
-      top: 0;
-      right: 0;
+      width: 40px;
+      background: $--b-main-white-color;
       border-radius: 6px;
+      margin-right: 8px;
       cursor: pointer;
       img {
         margin: auto;
@@ -331,11 +327,9 @@ $color-dfdeed: #dfdeed;
       display: flex;
       height: 100%;
       width: 40px;
-      position: absolute;
-      top: 0;
-      left: 0;
       background: $--b-main-white-color;
       border-radius: 6px;
+      margin-left: 8px;
       cursor: pointer;
       img {
         margin: auto;

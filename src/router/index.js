@@ -18,7 +18,7 @@ import { prepareEventUpdateData } from '../utils/prepareEventUpdateData';
 const userStore = useUserDataStore();
 const hintsStore = useHintsStore();
 
-//TODO перенести в интерцпептор эти 2 функции 
+//TODO перенести в интерцпептор эти 2 функции
 const usersData = () => {
   if (!Object.keys(userStore.user).length) {
     return API.UserService.getMyProfile().then((res) => {
@@ -28,7 +28,7 @@ const usersData = () => {
       return res.data;
     });
   } else {
-    return userStore.user
+    return userStore.user;
   }
 };
 
@@ -41,7 +41,7 @@ const hintsData = () => {
       return res.data;
     });
   } else {
-    return hintsStore.hintsData
+    return hintsStore.hintsData;
   }
 };
 
@@ -265,6 +265,16 @@ const router = createRouter({
             },
           },
         },
+        // {
+        //   path: ROUTES.APPLICATION.CHAT.relative,
+        //   name: ROUTES.APPLICATION.CHAT.name,
+        //   component: () => import('../views/application/chat/Index.vue'),
+        //   meta: {
+        //     breadcrumbs: {
+        //       i18n: 'breadcrumbs.userProfile',
+        //     },
+        //   },
+        // },
       ],
     },
     {

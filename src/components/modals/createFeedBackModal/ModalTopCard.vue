@@ -202,6 +202,12 @@ export default {
   overflow: hidden;
   width: 400px;
   z-index: 10;
+
+  @include mobile {
+    width: calc(100% - 30px);
+    margin: 0 auto;
+  }
+
   .b-modal-top-card__arrow-cross-block {
     position: absolute;
     top: 20px;

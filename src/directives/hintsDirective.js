@@ -5,9 +5,9 @@ export function hintsDirective(el, hintsData) {
   const hintsStore = useHintsStore();
 
   const hintsToShow = hintsData.value.filter((result) => {
-    return hintsStore.hintsData.results.some(
-      (value) => value.name === result.name
-    );
+    // return hintsStore.hintsData.results.some(
+    //   (value) => value.name === result.name
+    // );
   });
 
   const calculatePosition = (hint) => {
