@@ -1,5 +1,5 @@
 <template>
-  <div :class="['b-message', messageType]">
+  <div :class="['b-message', { my: isMine }, { another: !isMine }]">
     <div class="b-message-text">
       {{ messageData.text }}
     </div>
@@ -15,23 +15,15 @@
 import dayjs from 'dayjs';
 import { computed } from 'vue';
 
-const MESSAGE_TYPES = {
-  MY: 'my',
-  ANOTHER: 'another',
-};
-
 export default {
   props: {
     messageData: {
       type: Object,
       default: () => {},
     },
-    messageType: {
-      type: String,
-      default: MESSAGE_TYPES.MY,
-      validator: (value) => {
-        return [MESSAGE_TYPES.MY, MESSAGE_TYPES.ANOTHER].includes(value);
-      },
+    isMine: {
+      type: Boolean,
+      default: true
     },
   },
   setup(props) {
@@ -92,7 +84,6 @@ export default {
     }
 
     .b-like-message-button {
-
     }
   }
   &.another {

@@ -263,7 +263,6 @@ export default {
               await API.UserService.getMyProfile();
             profileValues = apiRequestResultMyProfile.data;
           } catch (e) {
-            console.log(e)
             return;
           }
         }
@@ -274,7 +273,6 @@ export default {
         currentStep.value--;
       },
       async handleUpdate(data) {
-        console.log(data)
         const { valid } = await data.validate();
         if (!valid) return;
         if (
