@@ -5,7 +5,7 @@
         <div class="b-user-card__picture-block">
           <div class="b-user-card__profile-picture">
             <userAvatar
-              class="b-user-card__profile-avatar"
+              avatarType="rounded-square"
               :link="userData.avatar_url"
               :full-name="fullUserName"
             />
@@ -325,14 +325,7 @@
 </template>
 
 <script>
-import {
-  ref,
-  computed,
-  watch,
-  watchEffect,
-  onMounted,
-  onBeforeUnmount,
-} from 'vue';
+import { ref, computed, watch, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
@@ -554,14 +547,6 @@ $color-efeff6: #efeff6;
         height: 52px;
         overflow: hidden;
         border-radius: 8px;
-        .b-user-card__profile-avatar {
-          :deep(.b-avatar) {
-            width: 52px;
-            height: 52px;
-            border-radius: 8px;
-            font-size: 23px;
-          }
-        }
         .b-user-card__add-pic-icon {
           position: absolute;
           top: 0;

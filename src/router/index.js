@@ -265,16 +265,15 @@ const router = createRouter({
             },
           },
         },
-        // {
-        //   path: ROUTES.APPLICATION.CHAT.relative,
-        //   name: ROUTES.APPLICATION.CHAT.name,
-        //   component: () => import('../views/application/chat/Index.vue'),
-        //   meta: {
-        //     breadcrumbs: {
-        //       i18n: 'breadcrumbs.userProfile',
-        //     },
-        //   },
-        // },
+        {
+          path: ROUTES.APPLICATION.CHAT.relative,
+          name: ROUTES.APPLICATION.CHAT.name,
+          component: () => import('../views/application/chat/Index.vue'),
+          meta: {
+            noPageContainer: true,
+            noPageHeader: true,
+          },
+        },
       ],
     },
     {

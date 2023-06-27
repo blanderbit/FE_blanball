@@ -1,8 +1,5 @@
 <template>
-  <Message :messageData="messageData" />
-  <SendMessageBlock />
-  <RequestForChat />
-  <KickedFromChatMessage />
+  <ChatTopBlock :chatData="chatData" />
 </template>
 
 <script>
@@ -12,22 +9,21 @@ import Message from '../../../components/main/chat/Message.vue';
 import SendMessageBlock from '../../../components/main/chat/SendMessageBlock.vue';
 import RequestForChat from '../../../components/main/chat/RequestForChat.vue';
 import KickedFromChatMessage from '../../../components/main/chat/KickedFromChatMessage.vue';
+import ChatTopBlock from '../../../components/main/chat/ChatTopBlock.vue';
+
+import { PaginationWorker } from '../../../workers/pagination-worker';
+import { API } from '../../../workers/api-worker/api.worker';
 
 export default {
   components: {
-    Message,
-    SendMessageBlock,
-    RequestForChat,
-    KickedFromChatMessage,
+    ChatTopBlock,
   },
   setup() {
-    const messageData = ref({
-      text: 'Привіт! Як давно ти граєш у футбол, чи вже приймав участь у якихось змаганнях?',
-      time_created: new Date(),
+    const chatData = ref({
+      name: 'dffddfdfdf fdfddffd',
     });
-
     return {
-      messageData,
+      chatData,
     };
   },
 };

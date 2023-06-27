@@ -1,6 +1,11 @@
 import { CONSTS } from '../../../../consts';
 import { Enum } from './filter.utils';
 
+export const filterConfigForChatMessages = {
+  page: Number,
+  search: String,
+};
+
 export const filterConfigForUsers = {
   page: Number,
   profile__age: Number,

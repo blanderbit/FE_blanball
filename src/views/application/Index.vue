@@ -13,7 +13,12 @@
 
     <sidebar />
     <div class="main-block">
-      <div class="header-block" id="header" ref="header">
+      <div
+        v-if="isHeaderOnThisPageVisible"
+        class="header-block"
+        id="header"
+        ref="header"
+      >
         <div class="b_header_validate-email-block-wrapper">
           <div
             v-if="!userStore.user.is_verified"
@@ -38,7 +43,7 @@
           />
         </div>
       </div>
-      <div class="container">
+      <div :class="{ container: isContainerOnThisPage }">
         <div class="main-body-inner">
           <router-view />
           <!-- <Transition name="hint-fade">
@@ -166,6 +171,14 @@ const currentVisibleHint = ref({});
 
 const { isMobile, isTablet } = useWindowWidth();
 const { width: headerWidth, height: headerHeight } = useElementSize(header);
+
+const isHeaderOnThisPageVisible = computed(() => {
+  return !router.currentRoute.value.meta.noPageHeader;
+});
+
+const isContainerOnThisPage = computed(() => {
+  return !router.currentRoute.value.meta.noPageContainer;
+});
 
 const isSchedulerSidebarVisible = computed(() => {
   return !isMobile.value && !isTablet.value;
