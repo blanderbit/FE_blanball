@@ -84,4 +84,7 @@ export const EndpointsEnum = {
   Hints: {
     GetAllHints: '/hints/client/hints/list',
   },
+  Chats: {
+    GetChatMessages: (chatId) => `/chat/client/chat/messages/list/${chatId}`,
+  },
 };

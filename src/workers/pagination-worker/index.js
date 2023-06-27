@@ -75,3 +75,26 @@ export const PaginationWorker = (options) => {
     paginationLoad,
   };
 };
+
+export const WebSocketPaginationWorker = () => {
+  const paginationElements = ref([]);
+  const paginationPage = ref(0);
+  const paginationTotalCount = ref(0);
+
+  const paginationLoad = async ({ pageNumber, $state, forceUpdate }) => {
+    pageNumber = pageNumber < 1 ? 1 : pageNumber;
+
+    if (pageNumber === paginationPage.value && !forceUpdate) return;
+
+    if ($state?.loading) $state.loading();
+
+    paginationPage.value = pageNumber;
+    paginationDataRequest(pageNumber)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch(() => {
+        $state?.complete && $state.complete();
+      });
+  };
+};
