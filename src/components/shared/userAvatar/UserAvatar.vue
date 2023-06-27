@@ -1,5 +1,5 @@
 <template>
-  <div class="b-avatar-wrapper" :style="avatarBorder" >
+  <div class="b-avatar-wrapper" :style="avatarBorder">
     <object
       class="b-avatar"
       :class="[`b-avatar-${avatarType}`]"
@@ -29,6 +29,15 @@
 </template>
 
 <script>
+const avatarTypes = {
+  circle: 'circle',
+  small_circle: 'small-circle',
+  big_circle: 'big-circle',
+  square: 'square',
+  small_square: 'small-square',
+  rounded_square: 'rounded-square',
+};
+
 export default {
   name: 'userAvatar',
   props: {
@@ -40,7 +49,10 @@ export default {
     },
     avatarType: {
       type: String,
-      default: 'circle', // square
+      default: 'circle',
+      validator: (value) => {
+        return Object.values(avatarTypes).includes(value);
+      },
     },
     border: {
       type: Boolean,
@@ -141,6 +153,17 @@ $color-c8ebe7: #c8ebe7;
 
     &.b-avatar-words {
       font-size: 15px;
+    }
+  }
+
+  &-rounded-square {
+    width: 52px;
+    height: 52px;
+    border-radius: 8px;
+    font-size: 23px;
+
+    &.b-avatar-words {
+      font-size: 23px;
     }
   }
 

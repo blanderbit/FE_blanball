@@ -270,6 +270,7 @@ const router = createRouter({
           name: ROUTES.APPLICATION.CHAT.name,
           component: () => import('../views/application/chat/Index.vue'),
           meta: {
+            noPageContainer: true,
             noPageHeader: true,
           },
         },

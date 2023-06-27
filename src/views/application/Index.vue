@@ -43,7 +43,7 @@
           />
         </div>
       </div>
-      <div class="container">
+      <div :class="{ container: isContainerOnThisPage }">
         <div class="main-body-inner">
           <router-view />
           <!-- <Transition name="hint-fade">
@@ -174,6 +174,10 @@ const { width: headerWidth, height: headerHeight } = useElementSize(header);
 
 const isHeaderOnThisPageVisible = computed(() => {
   return !router.currentRoute.value.meta.noPageHeader;
+});
+
+const isContainerOnThisPage = computed(() => {
+  return !router.currentRoute.value.meta.noPageContainer;
 });
 
 const isSchedulerSidebarVisible = computed(() => {
