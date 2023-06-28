@@ -115,6 +115,7 @@ export default {
   justify-content: space-between;
   padding: 16px 24px;
   gap: 16px;
+  height: fit-content;
 
   @include mobile {
     padding: 12px 16px;

@@ -32,6 +32,7 @@ import 'vue-select/dist/vue-select.css';
 import 'cropperjs/dist/cropper.css';
 import '@vueform/slider/themes/default.css';
 import '@mcistudio/vue-colorpicker/dist/style.css';
+import 'vue3-emoji-picker/css';
 
 createLoader();
 

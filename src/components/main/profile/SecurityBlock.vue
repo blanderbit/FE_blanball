@@ -62,7 +62,7 @@
           :swipeTitle="false"
           :outside-title="true"
           :icon="sortArrowHorizontal"
-          @icon-click="toggleModalWindow('email')"
+          @rightIconClick="toggleModalWindow('email')"
           name="change_email"
         />
       </div>
