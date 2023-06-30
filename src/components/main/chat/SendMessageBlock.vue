@@ -1,4 +1,11 @@
 <template>
+  <Transition name="chat-warning">
+    <ReplyToChatMessage
+      v-if="replyToMessageData"
+      :replyToMessageData="replyToMessageData"
+      @cancelReply="cancelReplyToChatMessage"
+    />
+  </Transition>
   <div :class="['b-send-message-block', { disabled: disabled }]">
     <MainInput
       :title-width="0"
@@ -31,13 +38,15 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import MainInput from '../../shared/input/MainInput.vue';
 import EmojiPicker from './EmojiPicker.vue';
+import ReplyToChatMessage from './ReplyToChatMessage.vue';
 
 import { useWindowWidth } from '../../../utils/widthScreen';
+import { ChatEventBus } from '../../../workers/event-bus-worker';
 
 import SendSmileIcon from '../../../assets/img/chat/send-smile-button.svg';
 import AddFileIcon from '../../../assets/img/chat/add-file.svg';
@@ -47,6 +56,7 @@ export default {
   components: {
     MainInput,
     EmojiPicker,
+    ReplyToChatMessage,
   },
   props: {
     disabled: {
@@ -61,6 +71,7 @@ export default {
     const { t } = useI18n();
     const emojiPickerX = ref();
     const emojiPickerY = ref();
+    const replyToMessageData = ref(null);
 
     const icons = computed(() => {
       return {
@@ -101,16 +112,30 @@ export default {
       }
     }
 
+    function cancelReplyToChatMessage() {
+      replyToMessageData.value = null;
+    }
+
+    ChatEventBus.on('replyToChatMessage', (messageData) => {
+      replyToMessageData.value = messageData;
+    });
+
+    onBeforeUnmount(() => {
+      ChatEventBus.off('replyToChatMessage');
+    });
+
     return {
       messageValue,
       inputPlaceholder,
       isEmojiPickerVisible,
       emojiPickerX,
       emojiPickerY,
+      replyToMessageData,
       icons,
       onEmojiSelect,
       showEmojiPicker,
       closeEmojiPicker,
+      cancelReplyToChatMessage,
       showOrCloseEmojiPicker,
     };
   },
@@ -140,6 +165,7 @@ export default {
   height: fit-content;
   gap: 8px;
   transition: all 0.5s;
+  margin-top: 4px;
 
   &.disabled {
     opacity: 0.6;
@@ -181,5 +207,15 @@ export default {
 .emoji-picker-enter-from,
 .emoji-picker-leave-to {
   transform: translateY(100%);
+}
+
+.chat-warning-enter-active,
+.chat-warning-leave-active {
+  transition: opacity 0.4s ease;
+}
+
+.chat-warning-enter-from,
+.chat-warning-leave-to {
+  opacity: 0;
 }
 </style>

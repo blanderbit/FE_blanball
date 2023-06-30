@@ -1,15 +1,25 @@
 <template>
-  <div class="b-chat-message-wrapper">
+  <div
+    class="b-chat-message-wrapper"
+    @click="$emit('messageWrapperClick', messageData.id)"
+  >
     <UserAvatar
-      v-if="messageData.showAvatar"
+      v-if="isMessageAvatarVisible"
       :link="messageData.sender.profile.avatar_url"
       :full-name="`${messageData.sender.profile.last_name} ${messageData.sender.profile.name}`"
+    />
+    <img
+      v-if="selected"
+      :class="['b-chat-message-selected-icon', { reversed: isMessageMine }]"
+      src="../../../assets/img/green-nike-icon.svg"
+      alt=""
     />
     <div
       :class="[
         'b-chat-message',
         { my: isMessageMine },
         { another: !isMessageMine },
+        { selected: selected },
       ]"
       @click.right="chatMessageRightClick"
       @touchstart="startMessageHold"
@@ -39,11 +49,15 @@ export default {
       type: Object,
       required: true,
     },
+    selected: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     UserAvatar,
   },
-  emits: ['chatMessageRightClick'],
+  emits: ['chatMessageRightClick', 'messageWrapperClick'],
   setup(props, { emit }) {
     const messageTime = computed(() => {
       return dayjs(props.time_created).format('HH:mm');
@@ -54,6 +68,10 @@ export default {
         return false;
       }
       return props.messageData.isMine;
+    });
+
+    const isMessageAvatarVisible = computed(() => {
+      return props.messageData.showAvatar && !props.selected;
     });
 
     let touchTimeOut;
@@ -71,12 +89,15 @@ export default {
     }
 
     function chatMessageRightClick(e) {
-      emit('chatMessageRightClick', e, props.messageData);
+      if (!props.selected) {
+        emit('chatMessageRightClick', e, props.messageData);
+      }
     }
 
     return {
       messageTime,
       isMessageMine,
+      isMessageAvatarVisible,
       startMessageHold,
       endMessageHold,
       chatMessageRightClick,
@@ -90,6 +111,15 @@ export default {
   display: flex;
   gap: 6px;
   align-items: flex-end;
+
+  .b-chat-message-selected-icon {
+    margin-right: 6px;
+    &.reversed {
+      order: 2;
+      margin-right: 0px;
+      margin-left: 6px;
+    }
+  }
 }
 .b-chat-message {
   box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
@@ -171,6 +201,12 @@ export default {
     .b-chat-message-time {
       @include inter(12px, 400, $--b-main-white-color);
       line-height: 20px;
+    }
+
+    &.selected {
+      border: 1px solid $--b-main-green-color;
+      background: #a0d0ce;
+      box-shadow: 2px 2px 10px 0px rgba(56, 56, 251, 0.1);
     }
   }
 }

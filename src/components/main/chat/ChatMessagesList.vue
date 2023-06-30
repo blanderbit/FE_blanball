@@ -1,4 +1,13 @@
 <template>
+  <ContextMenu
+    v-if="isContextMenuOpened"
+    :clientX="contextMenuX"
+    :clientY="contextMenuY"
+    :menu-text="chatMessageContextMenuItems"
+    @close-modal="closeContextMenu"
+    @itemClick="contextMenuItemClick"
+  />
+
   <div class="b-chat-messages__list">
     <SmartList
       :list="paginationElements"
@@ -9,7 +18,9 @@
         <ChatMessage
           :key="slotProps.index"
           :messageData="slotProps.smartListItem"
-          @chatMessageRightClick="chatMessageRightClick"
+          :selected="selectedMessages.includes(slotProps.smartListItem.id)"
+          @chatMessageRightClick="showContextMenu"
+          @messageWrapperClick="messageWrapperClick"
         />
       </template>
       <template #after>
@@ -31,19 +42,24 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 import { v4 as uuid } from 'uuid';
 
 import InfiniteLoading from '../infiniteLoading/InfiniteLoading.vue';
 import SmartList from '../../shared/smartList/SmartList.vue';
+import ContextMenu from '../../shared/modals/ContextMenuModal.vue';
 import ChatMessage from './ChatMessage.vue';
+
+import { CONSTS } from '../../../consts';
+import { ChatEventBus } from '../../../workers/event-bus-worker';
 
 export default {
   components: {
     InfiniteLoading,
     ChatMessage,
     SmartList,
+    ContextMenu,
   },
   setup(_, { emit }) {
     const refList = ref();
@@ -51,9 +67,29 @@ export default {
 
     const blockScrollToTopIfExist = ref(false);
 
+    const isContextMenuOpened = ref(false);
+    const contextMenuX = ref(null);
+    const contextMenuY = ref(null);
+    const messageOnWhatOpenedContextMenuData = ref({});
+
+    const selectedMessages = ref([]);
+
     const restartInfiniteScroll = () => {
       triggerForRestart.value = uuid();
     };
+
+    const mockData = computed(() => {
+      return {
+        chatMessageContextMenuItems:
+          CONSTS.chat.chatMessageContextMenuItems(true),
+        CHAT_MESSAGE_CONTEXT_MENU_ACTIONS:
+          CONSTS.chat.CHAT_MESSAGE_CONTEXT_MENU_ACTIONS,
+      };
+    });
+
+    const chatMessageContextMenuItems = computed(() => {
+      return mockData.value.chatMessageContextMenuItems;
+    });
 
     const paginationElements = ref([
       {
@@ -111,8 +147,68 @@ export default {
       return paginationElements.value;
     }
 
-    function chatMessageRightClick(e, messageData) {
-      emit('chatMessageRightClick', e, messageData);
+    function showContextMenu(e, messageData) {
+      contextMenuX.value = e.clientX;
+      contextMenuY.value = e.clientY;
+      messageOnWhatOpenedContextMenuData.value = messageData;
+      isContextMenuOpened.value = true;
+    }
+
+    function closeContextMenu() {
+      contextMenuX.value = null;
+      contextMenuY.value = null;
+      messageOnWhatOpenedContextMenuData.value = {};
+      isContextMenuOpened.value = false;
+    }
+
+    function contextMenuItemClick(action) {
+      const { DELETE, SELECT, FORWARD, REPLY } =
+        mockData.value.CHAT_MESSAGE_CONTEXT_MENU_ACTIONS;
+
+      switch (action) {
+        case DELETE:
+          break;
+        case SELECT:
+          selectMessage(messageOnWhatOpenedContextMenuData.value.id);
+          break;
+        case FORWARD:
+          break;
+        case REPLY:
+          replyToMessage(messageOnWhatOpenedContextMenuData.value);
+          break;
+      }
+    }
+
+    function replyToMessage(messageData) {
+      ChatEventBus.emit('replyToChatMessage', messageData);
+    }
+
+    function selectMessage(messageId) {
+      selectedMessages.value.push(messageId);
+    }
+
+    function unSelectMessasge(messageId) {
+      selectedMessages.value = selectedMessages.value.reduce((acc, message) => {
+        if (message !== messageId) {
+          acc.push(message);
+        }
+        return acc;
+      }, []);
+    }
+
+    function isMessageSelected(messageId) {
+      return selectedMessages.value.includes(messageId);
+    }
+
+    function messageWrapperClick(messageId) {
+      if (isMessageSelected(messageId)) {
+        unSelectMessasge(messageId);
+      } else if (
+        !isMessageSelected(messageId) &&
+        selectedMessages.value.length > 0
+      ) {
+        selectMessage(messageId);
+      }
     }
 
     return {
@@ -120,9 +216,19 @@ export default {
       paginationElements,
       triggerForRestart,
       blockScrollToTopIfExist,
+      messageOnWhatOpenedContextMenuData,
+      selectedMessages,
+      contextMenuX,
+      contextMenuY,
+      isContextMenuOpened,
+      chatMessageContextMenuItems,
+      selectedMessages,
       restartInfiniteScroll,
       loadDataPaginationData,
-      chatMessageRightClick,
+      showContextMenu,
+      messageWrapperClick,
+      closeContextMenu,
+      contextMenuItemClick,
     };
   },
 };

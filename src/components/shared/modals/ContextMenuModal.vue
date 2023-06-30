@@ -102,6 +102,7 @@ $color-f0f0f4: #f0f0f4;
 
         &:hover {
           background: $color-f0f0f4;
+          border-radius: 6px;
         }
       }
     }

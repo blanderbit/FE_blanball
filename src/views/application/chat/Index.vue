@@ -19,13 +19,14 @@
     </div>
     <div class="b-chat-page-main-side">
       <div class="b-main-side-messages-block" :style="messagesListBlockStyle">
-        <ChatMessagesList @chatMessageRightClick="showChatMessageContextMenu" />
+        <ChatMessagesList />
       </div>
       <div ref="CHAT_BOTTOM_SIDE_BLOCK" class="b-main-side-bottom-block">
         <Transition name="chat-warning">
           <ChatWarning v-if="isChatWarningVisible" @close="closeChatWarning" />
         </Transition>
-        <SendMessageBlock />
+        <RequestForChat v-if="isChatRequestVisible" />
+        <SendMessageBlock v-else />
       </div>
     </div>
   </div>
@@ -63,17 +64,20 @@ export default {
     EditChatModal,
     ChatMessagesList,
     ContextMenu,
+    RequestForChat,
   },
   setup() {
     const chatData = ref({
       name: 'dffddfdfdf fdfddffd',
       disabled: true,
+      isChatRequest: false,
+      isChatGroup: false,
     });
     const isEditChatModalOpened = ref(false);
     const isChatWarningClosed = ref(false);
-    const isContextMenuOpened = ref(false);
     const messageOnWhatOpenedContextMenuData = ref({});
 
+    const isContextMenuOpened = ref(false);
     const contextMenuX = ref(null);
     const contextMenuY = ref(null);
 
@@ -107,9 +111,13 @@ export default {
     });
 
     const isChatWarningVisible = computed(() => {
-      if (chatData.value.disabled) {
+      if (chatData.value.disabled && chatData.value.isChatGroup) {
         return !isChatWarningClosed.value;
       }
+    });
+
+    const isChatRequestVisible = computed(() => {
+      return !chatData.value.isChatGroup && chatData.value.isChatRequest;
     });
 
     function showEditChatModal() {
@@ -127,19 +135,13 @@ export default {
     function showContextMenu(e, messageData) {
       contextMenuX.value = e.clientX;
       contextMenuY.value = e.clientY;
-      messageOnWhatOpenedContextMenuData.value = messageData;
       isContextMenuOpened.value = true;
     }
 
     function closeContextMenu() {
       contextMenuX.value = null;
       contextMenuY.value = null;
-      messageOnWhatOpenedContextMenuData.value = {};
       isContextMenuOpened.value = false;
-    }
-
-    function showChatMessageContextMenu(e) {
-      showContextMenu(e);
     }
 
     onBeforeMount(() => {
@@ -155,12 +157,12 @@ export default {
       isContextMenuOpened,
       isEditChatModalOpened,
       mockData,
+      isChatRequestVisible,
       contextMenuX,
       contextMenuY,
       showEditChatModal,
       closeEditChatModal,
       closeChatWarning,
-      showChatMessageContextMenu,
       closeContextMenu,
       showContextMenu,
     };
