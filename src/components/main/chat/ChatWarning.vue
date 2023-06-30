@@ -1,13 +1,18 @@
 <template>
-  <div class="b-kicked-from-chat-message">
+  <div class="b-chat-warning">
     <img class="b-warning-icon" src="../../../assets/img/warning.svg" alt="" />
-    <span class="b-kicked-from-chat-text">{{
+    <span class="b-warning-text">{{
       $t('chat.you_were_kicked_from_the_chat')
     }}</span>
-    <span class="b-kicked-from-chat-text-mobile">{{
+    <span class="b-warning-text-mobile">{{
       $t('chat.you_were_kicked_from_the_chat_small')
     }}</span>
-    <img class="b-close-button" src="../../../assets/img/cross.svg" alt="" />
+    <img
+      class="b-close-button"
+      src="../../../assets/img/cross.svg"
+      alt=""
+      @click="$emit('close')"
+    />
   </div>
 </template>
 
@@ -20,7 +25,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.b-kicked-from-chat-message {
+.b-chat-warning {
   background: #fff4ec;
   border: 1px solid #f6803c;
   border-radius: 6px;
@@ -36,7 +41,7 @@ export default {
     cursor: pointer;
   }
 
-  .b-kicked-from-chat-text {
+  .b-warning-text {
     @include mobile {
       display: none;
     }

@@ -10,7 +10,7 @@
       :icon="!disabled ? icons.addFile : icons.messagesDisabled"
       backgroundColor="#fff"
       v-model="messageValue"
-      @leftIconClick="showEmojiPicker"
+      @leftIconClick="showOrCloseEmojiPicker"
     />
     <div class="b-send-voice-message b-send-button">
       <img src="../../../assets/img/chat/microphone.svg" alt="" />
@@ -93,6 +93,14 @@ export default {
       messageValue.value += emojiData.i;
     }
 
+    function showOrCloseEmojiPicker(e) {
+      if (isEmojiPickerVisible.value) {
+        closeEmojiPicker();
+      } else {
+        showEmojiPicker(e);
+      }
+    }
+
     return {
       messageValue,
       inputPlaceholder,
@@ -103,6 +111,7 @@ export default {
       onEmojiSelect,
       showEmojiPicker,
       closeEmojiPicker,
+      showOrCloseEmojiPicker,
     };
   },
 };
@@ -130,6 +139,7 @@ export default {
   align-items: center;
   height: fit-content;
   gap: 8px;
+  transition: all 0.5s;
 
   &.disabled {
     opacity: 0.6;
@@ -141,11 +151,15 @@ export default {
     }
   }
 
+  &.animated {
+    transform: translateY(0);
+  }
+
   .b-send-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 8px;
+    padding: 10px 8px 6px 8px;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 100px;
     cursor: pointer;

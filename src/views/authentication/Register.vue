@@ -316,7 +316,7 @@ export default {
         }
         currentStep.value++;
       },
-      backToRoute() {s
+      backToRoute() {
         router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute);
       },
       disableSubmit: (e) => {

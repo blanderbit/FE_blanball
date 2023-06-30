@@ -9,10 +9,11 @@ import Dates from './dates';
 import Profile from './profile';
 import Forms from './forms';
 import Sidebar from './sidebar';
-import EventJoin from './event-join'
+import EventJoin from './event-join';
 import Policy from './policy';
 import Storages from './storages';
 import Scheduler from './scheduler';
+import Chat from './chat';
 
 export const CONSTS = {
   users_page: UsersPage,
@@ -30,4 +31,5 @@ export const CONSTS = {
   policy: Policy,
   storages: Storages,
   scheduler: Scheduler,
+  chat: Chat,
 };

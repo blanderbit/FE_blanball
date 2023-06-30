@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @contextmenu.prevent>
     <router-view />
     <ActionEventModal
       v-if="isUserSessionExpiredModalOpened"
