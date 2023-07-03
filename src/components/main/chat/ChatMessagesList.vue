@@ -16,12 +16,20 @@
     >
       <template #smartListItem="slotProps">
         <ChatMessage
+          v-if="isMessageTypeUserMessage(slotProps.smartListItem.type)"
           :key="slotProps.index"
           :messageData="slotProps.smartListItem"
           :selected="selectedMessages.includes(slotProps.smartListItem.id)"
           :isChatDisabed="chatData.disabled"
           @chatMessageRightClick="showContextMenu"
           @messageWrapperClick="messageWrapperClick"
+        />
+
+        <UserJoinedToTheChatMessage
+          v-else-if="
+            isMessageTypeUserJoinedToTheChat(slotProps.smartListItem.type)
+          "
+          :userData="slotProps.smartListItem.sender"
         />
       </template>
       <template #after>
@@ -51,6 +59,7 @@ import InfiniteLoading from '../infiniteLoading/InfiniteLoading.vue';
 import SmartList from '../../shared/smartList/SmartList.vue';
 import ContextMenu from '../../shared/modals/ContextMenuModal.vue';
 import ChatMessage from './ChatMessage.vue';
+import UserJoinedToTheChatMessage from './UserJoinedToTheChatMessage.vue';
 
 import { CONSTS } from '../../../consts';
 import { ChatEventBus } from '../../../workers/event-bus-worker';
@@ -62,6 +71,7 @@ export default {
     ChatMessage,
     SmartList,
     ContextMenu,
+    UserJoinedToTheChatMessage,
   },
   props: {
     chatData: {
@@ -95,6 +105,7 @@ export default {
         CHAT_MESSAGE_CONTEXT_MENU_ACTIONS:
           CONSTS.chat.CHAT_MESSAGE_CONTEXT_MENU_ACTIONS,
         chatMessagesList: CONSTS.chat.chatMessagesList,
+        CHAT_MESSAGE_TYPES: CONSTS.chat.CHAT_MESSAGE_TYPES,
       };
     });
 
@@ -107,20 +118,31 @@ export default {
     );
 
     function handlingIncomeMessagesData(message, index, messages) {
-      const isMessageMine = message?.sender.id === userStore.user.id;
-      const nextMessage = messages[index + 1];
+      if (isMessageTypeUserMessage(message.type)) {
+        const isMessageMine = message?.sender.id === userStore.user.id;
+        const nextMessage = messages[index + 1];
 
-      const isNextMessageFromTheSameSender =
-        nextMessage?.sender.id == message.sender.id;
+        let isNextMessageFromTheSameSender = false;
 
-      const showAvatar =
-        !isMessageMine && (!nextMessage || !isNextMessageFromTheSameSender);
+        if (isMessageTypeUserJoinedToTheChat(nextMessage?.type)) {
+          isNextMessageFromTheSameSender = true;
+        } else if (isMessageTypeUserMessage(nextMessage?.type)) {
+          isNextMessageFromTheSameSender =
+            nextMessage?.sender?.id == message.sender.id;
+        }
 
+        const showAvatar =
+          !isMessageMine && (!nextMessage || !isNextMessageFromTheSameSender);
+
+        return {
+          ...message,
+          isMine: isMessageMine,
+          showAvatar,
+          isNextMessageFromTheSameSender,
+        };
+      }
       return {
         ...message,
-        isMine: isMessageMine,
-        showAvatar,
-        isNextMessageFromTheSameSender,
       };
     }
 
@@ -182,6 +204,16 @@ export default {
       return selectedMessages.value.includes(messageId);
     }
 
+    function isMessageTypeUserMessage(messageType) {
+      return messageType == mockData.value.CHAT_MESSAGE_TYPES.USER_MESSAGE;
+    }
+
+    function isMessageTypeUserJoinedToTheChat(messageType) {
+      return (
+        messageType == mockData.value.CHAT_MESSAGE_TYPES.USER_JOINED_TO_CHAT
+      );
+    }
+
     function messageWrapperClick(messageId) {
       if (isMessageSelected(messageId)) {
         unSelectMessasge(messageId);
@@ -211,6 +243,8 @@ export default {
       messageWrapperClick,
       closeContextMenu,
       contextMenuItemClick,
+      isMessageTypeUserJoinedToTheChat,
+      isMessageTypeUserMessage,
     };
   },
 };

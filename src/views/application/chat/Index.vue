@@ -13,7 +13,7 @@
       <ChatTopBlock
         :chatData="chatData"
         @searchChatMessages=""
-        @manageChat=""
+        @manageChat="showManageChatContextMenu"
         @editChat="showEditChatModal"
       />
     </div>
@@ -144,6 +144,10 @@ export default {
       isContextMenuOpened.value = false;
     }
 
+    function showManageChatContextMenu(e) {
+      showContextMenu(e)
+    }
+
     onBeforeMount(() => {
       BlanballEventBus.emit('OpenSideBar');
     });
@@ -165,6 +169,7 @@ export default {
       closeChatWarning,
       closeContextMenu,
       showContextMenu,
+      showManageChatContextMenu,
     };
   },
 };

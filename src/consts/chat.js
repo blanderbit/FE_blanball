@@ -9,8 +9,14 @@ const CHAT_MESSAGE_CONTEXT_MENU_ACTIONS = {
   DELETE: 'delete',
 };
 
+const CHAT_MESSAGE_TYPES = {
+  USER_MESSAGE: 'user_message',
+  USER_JOINED_TO_CHAT: 'user_joined_to_chat',
+};
+
 export default {
   CHAT_MESSAGE_CONTEXT_MENU_ACTIONS,
+  CHAT_MESSAGE_TYPES,
   chatMessageContextMenuItems: (isMessageMine) => [
     {
       id: 0,
@@ -49,6 +55,7 @@ export default {
         },
       },
       text: 'dffffffffffffffffffffffffffffffffffffffff',
+      type: CHAT_MESSAGE_TYPES.USER_MESSAGE,
       time_created: new Date(),
       edited: false,
       readed_by: [],
@@ -65,6 +72,7 @@ export default {
       },
       text: 'fdddddddddddddddddddddddfddddddddddddddddddfdddddddddddddddddddddddfddddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfddddddddddddddddddddddd',
       time_created: new Date(),
+      type: CHAT_MESSAGE_TYPES.USER_MESSAGE,
       edited: false,
       readed_by: [],
       reply_to: null,
@@ -80,6 +88,34 @@ export default {
       },
       text: 'fdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfddddddddddddddddddddddd',
       time_created: new Date(),
+      type: CHAT_MESSAGE_TYPES.USER_MESSAGE,
+      edited: false,
+      readed_by: [],
+      reply_to: null,
+    },
+    {
+      id: 5,
+      sender: {
+        id: 42,
+        profile: {
+          name: 'Андрей',
+          last_name: 'Артуров',
+        },
+      },
+      type: CHAT_MESSAGE_TYPES.USER_JOINED_TO_CHAT,
+    },
+    {
+      id: 4,
+      sender: {
+        id: 42,
+        profile: {
+          name: 'Андрей',
+          last_name: 'Артуров',
+        },
+      },
+      text: 'fdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfddddddddddddddddddddddd',
+      time_created: new Date(),
+      type: CHAT_MESSAGE_TYPES.USER_MESSAGE,
       edited: false,
       readed_by: [],
       reply_to: null,

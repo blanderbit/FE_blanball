@@ -48,7 +48,6 @@ export default {
   padding-right: 12px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
 
   &::before {
@@ -61,6 +60,8 @@ export default {
 
   .b-cancel-reply-button {
     cursor: pointer;
+    margin-right: 0px;
+    margin-left: auto;
   }
 
   .b-chat-message-main-data {

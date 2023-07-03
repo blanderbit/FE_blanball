@@ -32,7 +32,7 @@
       class="b-chat-message-tail"
     >
       <path
-        v-if="isMessageMine"
+        v-if="isMessageMine && !isNextMessageFromTheSameSender"
         fill-rule="evenodd"
         clip-rule="evenodd"
         d="M0.931348 4.00013C0.931348 -6.99975 0.85744 8.00012 0.85744 13.7018V24.0004C0.856492 24.9298 0.429763 25.0001 1.93071 25.0001H13.4305C14.0098 25 14.5096 24 13.0096 23C13.0096 23 0.931348 15 0.931348 4.00013Z"
@@ -40,7 +40,7 @@
       />
 
       <path
-        v-else
+        v-else-if="!isMessageMine && !isNextMessageFromTheSameSender"
         id="Vector 17 (Stroke)"
         fill-rule="evenodd"
         clip-rule="evenodd"
