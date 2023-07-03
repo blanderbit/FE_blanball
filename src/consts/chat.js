@@ -37,4 +37,52 @@ export default {
       type: CHAT_MESSAGE_CONTEXT_MENU_ACTIONS.DELETE,
     },
   ],
+
+  chatMessagesList: [
+    {
+      id: 1,
+      sender: {
+        id: 1,
+        profile: {
+          name: 'Андрей',
+          last_name: 'Артуров',
+        },
+      },
+      text: 'dffffffffffffffffffffffffffffffffffffffff',
+      time_created: new Date(),
+      edited: false,
+      readed_by: [],
+      reply_to: null,
+    },
+    {
+      id: 2,
+      sender: {
+        id: 42,
+        profile: {
+          name: 'Андрей',
+          last_name: 'Артуров',
+        },
+      },
+      text: 'fdddddddddddddddddddddddfddddddddddddddddddfdddddddddddddddddddddddfddddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfddddddddddddddddddddddd',
+      time_created: new Date(),
+      edited: false,
+      readed_by: [],
+      reply_to: null,
+    },
+    {
+      id: 3,
+      sender: {
+        id: 1,
+        profile: {
+          name: 'Андрей',
+          last_name: 'Артуров',
+        },
+      },
+      text: 'fdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfddddddddddddddddddddddd',
+      time_created: new Date(),
+      edited: false,
+      readed_by: [],
+      reply_to: null,
+    },
+  ],
 };

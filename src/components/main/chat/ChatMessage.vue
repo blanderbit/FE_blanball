@@ -20,6 +20,7 @@
         { my: isMessageMine },
         { another: !isMessageMine },
         { selected: selected },
+        { showedAvatar: messageData.showAvatar },
       ]"
       @click.right="chatMessageRightClick"
       @touchstart="startMessageHold"
@@ -130,18 +131,29 @@ export default {
   margin-top: 8px;
   max-width: 60%;
 
-  &:hover {
-    .b-like-message-button {
-      display: flex;
-    }
-  }
-
   @include tablet {
     max-width: 70%;
   }
 
   @include mobile {
     max-width: 80%;
+  }
+  &:hover {
+    .b-like-message-button {
+      display: flex;
+    }
+  }
+
+  &.showedAvatar {
+    max-width: 60%;
+
+    @include tablet {
+      max-width: 70%;
+    }
+
+    @include mobile {
+      max-width: 80%;
+    }
   }
 
   .b-like-message-button {

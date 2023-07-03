@@ -19,7 +19,7 @@
     </div>
     <div class="b-chat-page-main-side">
       <div class="b-main-side-messages-block" :style="messagesListBlockStyle">
-        <ChatMessagesList />
+        <ChatMessagesList :chatData="chatData" />
       </div>
       <div ref="CHAT_BOTTOM_SIDE_BLOCK" class="b-main-side-bottom-block">
         <Transition name="chat-warning">
@@ -54,7 +54,7 @@ import { useSideBarStore } from '../../../stores/sideBar';
 
 import { CONSTS } from '../../../consts';
 
-const CHAT_PAGE_TOP_AND_BOTTOM_PADDINGS_PX = 40;
+const CHAT_PAGE_TOP_AND_BOTTOM_PADDINGS_PX = 20 + 0;
 
 export default {
   components: {
@@ -75,7 +75,6 @@ export default {
     });
     const isEditChatModalOpened = ref(false);
     const isChatWarningClosed = ref(false);
-    const messageOnWhatOpenedContextMenuData = ref({});
 
     const isContextMenuOpened = ref(false);
     const contextMenuX = ref(null);
@@ -132,7 +131,7 @@ export default {
       isChatWarningClosed.value = true;
     }
 
-    function showContextMenu(e, messageData) {
+    function showContextMenu(e) {
       contextMenuX.value = e.clientX;
       contextMenuY.value = e.clientY;
       isContextMenuOpened.value = true;
@@ -189,7 +188,7 @@ export default {
   }
 
   .b-chat-page-main-side {
-    padding: 20px;
+    padding: 0px 20px 20px 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -197,7 +196,7 @@ export default {
     margin: 0 auto;
 
     @include mobile {
-      padding: 20px 8px;
+      padding: 0px 8px 20px 8px;
     }
 
     .b-main-side-messages-block {

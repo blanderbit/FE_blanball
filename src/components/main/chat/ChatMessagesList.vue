@@ -53,6 +53,7 @@ import ChatMessage from './ChatMessage.vue';
 
 import { CONSTS } from '../../../consts';
 import { ChatEventBus } from '../../../workers/event-bus-worker';
+import { useUserDataStore } from '../../../stores/userData';
 
 export default {
   components: {
@@ -61,7 +62,13 @@ export default {
     SmartList,
     ContextMenu,
   },
-  setup(_, { emit }) {
+  props: {
+    chatData: {
+      type: Object,
+      required: true,
+    },
+  },
+  setup(props) {
     const refList = ref();
     const triggerForRestart = ref(false);
 
@@ -71,6 +78,8 @@ export default {
     const contextMenuX = ref(null);
     const contextMenuY = ref(null);
     const messageOnWhatOpenedContextMenuData = ref({});
+
+    const userStore = useUserDataStore();
 
     const selectedMessages = ref([]);
 
@@ -84,6 +93,7 @@ export default {
           CONSTS.chat.chatMessageContextMenuItems(true),
         CHAT_MESSAGE_CONTEXT_MENU_ACTIONS:
           CONSTS.chat.CHAT_MESSAGE_CONTEXT_MENU_ACTIONS,
+        chatMessagesList: CONSTS.chat.chatMessagesList,
       };
     });
 
@@ -91,56 +101,18 @@ export default {
       return mockData.value.chatMessageContextMenuItems;
     });
 
-    const paginationElements = ref([
-      {
-        id: 1,
-        sender: {
-          id: 1,
-          profile: {
-            name: 'Андрей',
-            last_name: 'Артуров',
-          },
-        },
-        text: 'dffffffffffffffffffffffffffffffffffffffff',
-        time_created: new Date(),
-        edited: false,
-        isMine: false,
-        readed_by: [],
-        reply_to: null,
-      },
-      {
-        id: 2,
-        sender: {
-          id: 1,
-          profile: {
-            name: 'Андрей',
-            last_name: 'Артуров',
-          },
-        },
-        text: 'fdddddddddddddddddddddddfddddddddddddddddddfdddddddddddddddddddddddfddddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfddddddddddddddddddddddd',
-        time_created: new Date(),
-        edited: false,
-        isMine: true,
-        readed_by: [],
-        reply_to: null,
-      },
-      {
-        id: 3,
-        sender: {
-          id: 1,
-          profile: {
-            name: 'Андрей',
-            last_name: 'Артуров',
-          },
-        },
-        text: 'fdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfddddddddddddddddddddddd',
-        time_created: new Date(),
-        edited: false,
-        isMine: false,
-        readed_by: [],
-        reply_to: null,
-      },
-    ]);
+    const paginationElements = ref(
+      mockData.value.chatMessagesList.map(handlingIncomeMessagesData)
+    );
+
+    function handlingIncomeMessagesData(message) {
+      const isMessageMine = message?.sender.id === userStore.user.id;
+      return {
+        ...message,
+        isMine: isMessageMine,
+        showAvatar: !isMessageMine && props.chatData.isChatGroup,
+      };
+    }
 
     function loadDataPaginationData($state) {
       $state.loaded();
