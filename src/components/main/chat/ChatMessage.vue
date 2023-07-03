@@ -1,16 +1,56 @@
 <template>
-  <div class="b-chat-message-wrapper">
+  <div
+    :class="[
+      'b-chat-message-wrapper',
+      { my: isMessageMine },
+      { another: !isMessageMine },
+      { selected: selected },
+      {
+        isNextMessageFromTheSameSender: isNextMessageFromTheSameSender,
+      },
+    ]"
+    @click="$emit('messageWrapperClick', messageData.id)"
+  >
     <UserAvatar
-      v-if="messageData.showAvatar"
-      :link="messageData.sender.profile.avatar_url"
-      :full-name="`${messageData.sender.profile.last_name} ${messageData.sender.profile.name}`"
+      v-if="isMessageAvatarVisible"
+      :link="senderMessageData.avatar"
+      :full-name="senderMessageData.fullName"
     />
+    <img
+      v-if="selected"
+      class="b-chat-message-selected-icon"
+      src="../../../assets/img/green-nike-icon.svg"
+      alt=""
+    />
+
+    <svg
+      width="14"
+      height="25"
+      viewBox="0 0 14 25"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      class="b-chat-message-tail"
+    >
+      <path
+        v-if="isMessageMine"
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M0.931348 4.00013C0.931348 -6.99975 0.85744 8.00012 0.85744 13.7018V24.0004C0.856492 24.9298 0.429763 25.0001 1.93071 25.0001H13.4305C14.0098 25 14.5096 24 13.0096 23C13.0096 23 0.931348 15 0.931348 4.00013Z"
+        fill="white"
+      />
+
+      <path
+        v-else
+        id="Vector 17 (Stroke)"
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M13.8694 4.00013C13.8694 -6.99975 13.9433 8.00012 13.9433 13.7018V24.0004C13.9443 24.9298 14.371 25.0001 12.8701 25.0001H1.37032C0.791016 25 0.291163 24 1.7912 23C1.7912 23 13.8694 15 13.8694 4.00013Z"
+        fill="#148783"
+      />
+    </svg>
+
     <div
-      :class="[
-        'b-chat-message',
-        { my: isMessageMine },
-        { another: !isMessageMine },
-      ]"
+      class="b-chat-message"
       @click.right="chatMessageRightClick"
       @touchstart="startMessageHold"
       @touchend="endMessageHold"
@@ -33,27 +73,58 @@ import dayjs from 'dayjs';
 
 import UserAvatar from '../../shared/userAvatar/UserAvatar.vue';
 
+import GreenMessageTail from '../../../assets/img/chat/message-green-tail.svg';
+import WhiteMessageTail from '../../../assets/img/chat/message-white-tail.svg';
+
+const SHOW_MESSAGE_CONTEXT_MEHU_ON_MOBILE_DEVICE_TIMEOUT_MS = 1000;
+
 export default {
   props: {
     messageData: {
       type: Object,
       required: true,
     },
+    selected: {
+      type: Boolean,
+      default: false,
+    },
+    isChatDisabed: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     UserAvatar,
   },
-  emits: ['chatMessageRightClick'],
+  emits: ['chatMessageRightClick', 'messageWrapperClick'],
   setup(props, { emit }) {
     const messageTime = computed(() => {
       return dayjs(props.time_created).format('HH:mm');
     });
 
     const isMessageMine = computed(() => {
-      if (props.messageData.isMine == null) {
-        return false;
-      }
       return props.messageData.isMine;
+    });
+
+    const isNextMessageFromTheSameSender = computed(() => {
+      return props.messageData.isNextMessageFromTheSameSender;
+    });
+
+    const isMessageAvatarVisible = computed(() => {
+      return props.messageData.showAvatar && !props.selected;
+    });
+
+    const messageTail = computed(() => {
+      return isMessageMine.value ? WhiteMessageTail : GreenMessageTail;
+    });
+
+    const senderMessageData = computed(() => {
+      const { messageData } = props;
+
+      return {
+        avatar: messageData.sender.profile.avatar_url,
+        fullName: `${messageData.sender.profile.last_name} ${messageData.sender.profile.name}`,
+      };
     });
 
     let touchTimeOut;
@@ -63,7 +134,7 @@ export default {
       const touchPosition = { clientX: touch.pageX, clientY: touch.pageY };
       touchTimeOut = setTimeout(() => {
         chatMessageRightClick(touchPosition, props.messageData);
-      }, 500);
+      }, SHOW_MESSAGE_CONTEXT_MEHU_ON_MOBILE_DEVICE_TIMEOUT_MS);
     }
 
     function endMessageHold() {
@@ -71,12 +142,18 @@ export default {
     }
 
     function chatMessageRightClick(e) {
-      emit('chatMessageRightClick', e, props.messageData);
+      if (!props.selected && !props.isChatDisabed) {
+        emit('chatMessageRightClick', e, props.messageData);
+      }
     }
 
     return {
       messageTime,
       isMessageMine,
+      isMessageAvatarVisible,
+      senderMessageData,
+      messageTail,
+      isNextMessageFromTheSameSender,
       startMessageHold,
       endMessageHold,
       chatMessageRightClick,
@@ -88,89 +165,134 @@ export default {
 <style lang="scss" scoped>
 .b-chat-message-wrapper {
   display: flex;
-  gap: 6px;
   align-items: flex-end;
-}
-.b-chat-message {
-  box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
-  padding: 12px;
-  width: fit-content;
-  height: fit-content;
-  position: relative;
-  margin-top: 8px;
-  max-width: 60%;
 
-  &:hover {
-    .b-like-message-button {
-      display: flex;
+  .b-chat-message-tail {
+    @include mobile {
+      width: 10px;
+      height: fit-content;
     }
-  }
-
-  @include tablet {
-    max-width: 70%;
-  }
-
-  @include mobile {
-    max-width: 80%;
-  }
-
-  .b-like-message-button {
-    background: #fcfcfc;
-    padding: 3px 8px 5px;
-    border: 1px solid #dfdeed;
-    border-radius: 100px;
-    cursor: pointer;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    width: fit-content;
-    position: absolute;
-    left: 0;
-    bottom: -5px;
-  }
-
-  .b-chat-message-time {
-    text-align: right;
-  }
-
-  .b-chat-message-text {
-    margin-bottom: 8px;
-    text-align: left;
-    overflow-wrap: break-word;
   }
 
   &.my {
-    border-radius: 12px 12px 0px 12px;
-    background: $--b-main-white-color;
-    text-align: right;
-    margin-right: 0px;
-    margin-left: auto;
-
-    .b-chat-message-text {
-      @include inter(16px, 400, $--b-main-black-color);
-      line-height: 24px;
+    .b-chat-message-tail {
+      order: 2;
+    }
+    .b-chat-message-selected-icon {
+      margin-left: 6px;
+      order: 3;
     }
 
-    .b-chat-message-time {
-      @include inter(12px, 400, $--b-main-gray-color);
-      line-height: 20px;
-    }
+    .b-chat-message {
+      border-radius: 12px 12px 0px 12px;
+      background: $--b-main-white-color;
+      text-align: right;
+      margin-right: 0px;
+      margin-left: auto;
 
-    .b-like-message-button {
+      .b-chat-message-text {
+        @include inter(16px, 400, $--b-main-black-color);
+        line-height: 24px;
+      }
+
+      .b-chat-message-time {
+        @include inter(12px, 400, $--b-main-gray-color);
+        line-height: 20px;
+      }
+      .b-like-message-button {
+      }
     }
   }
   &.another {
-    border-radius: 12px 12px 12px 0px;
-    background: $--b-main-green-color;
+    .b-chat-message {
+      border-radius: 12px 12px 12px 0px;
+      background: $--b-main-green-color;
 
-    .b-chat-message-text {
-      @include inter(16px, 400, $--b-main-white-color);
-      line-height: 24px;
+      .b-chat-message-text {
+        @include inter(16px, 400, $--b-main-white-color);
+        line-height: 24px;
+      }
+
+      .b-chat-message-time {
+        @include inter(12px, 400, $--b-main-white-color);
+        line-height: 20px;
+      }
+    }
+
+    &.isNextMessageFromTheSameSender {
+      .b-chat-message {
+        margin-left: 40px;
+        border-radius: 12px;
+      }
+    }
+
+    &.selected {
+      .b-chat-message-tail {
+        path {
+          fill: #a0d0ce;
+        }
+      }
+      .b-chat-message {
+        background: #a0d0ce;
+        box-shadow: 2px 2px 10px 0px rgba(56, 56, 251, 0.1);
+      }
+    }
+
+    .b-chat-message-selected-icon {
+      margin-left: 6px;
+    }
+  }
+
+  .b-chat-message {
+    box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
+    padding: 12px;
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+    margin-top: 8px;
+    max-width: 60%;
+
+    @include tablet {
+      max-width: 70%;
+    }
+
+    @include mobile {
+      max-width: 80%;
+    }
+
+    @media (min-width: 992px) and (max-width: 1200px) {
+      max-width: 80% !important;
+    }
+
+    &:hover {
+      .b-like-message-button {
+        display: flex;
+      }
+    }
+
+    .b-like-message-button {
+      background: #fcfcfc;
+      padding: 3px 8px 5px;
+      border: 1px solid #dfdeed;
+      border-radius: 100px;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      position: absolute;
+      left: 0;
+      bottom: -5px;
     }
 
     .b-chat-message-time {
-      @include inter(12px, 400, $--b-main-white-color);
-      line-height: 20px;
+      text-align: right;
+    }
+
+    .b-chat-message-text {
+      margin-bottom: 8px;
+      text-align: left;
+      overflow-wrap: break-word;
     }
   }
 }

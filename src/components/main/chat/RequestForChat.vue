@@ -47,19 +47,21 @@ export default {
   align-items: center;
   width: max-content;
   height: fit-content;
-  position: fixed;
   bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
   gap: 12px;
+  margin: 0 auto;
+  flex-wrap: wrap;
 
   @include tabletAndMobile {
-    width: 100%;
+    width: max-content;
     justify-content: space-between;
+    flex-direction: column;
   }
+
   .b-text {
     @include inter(14px, 400, $--b-main-white-color);
     line-height: 20px;
+    text-align: center;
   }
   .b-buttons-block {
     display: flex;
