@@ -42,7 +42,7 @@ export default {
     {
       id: 1,
       sender: {
-        id: 1,
+        id: 42,
         profile: {
           name: 'Андрей',
           last_name: 'Артуров',
@@ -57,7 +57,7 @@ export default {
     {
       id: 2,
       sender: {
-        id: 42,
+        id: 43,
         profile: {
           name: 'Андрей',
           last_name: 'Артуров',
@@ -72,13 +72,13 @@ export default {
     {
       id: 3,
       sender: {
-        id: 1,
+        id: 42,
         profile: {
           name: 'Андрей',
           last_name: 'Артуров',
         },
       },
-      text: 'fdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfddddddddddddddddddddddd',
+      text: 'fdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfddddddddddddddddddddddd',
       time_created: new Date(),
       edited: false,
       readed_by: [],

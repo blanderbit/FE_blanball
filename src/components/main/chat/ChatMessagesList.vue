@@ -19,6 +19,7 @@
           :key="slotProps.index"
           :messageData="slotProps.smartListItem"
           :selected="selectedMessages.includes(slotProps.smartListItem.id)"
+          :isChatDisabed="chatData.disabled"
           @chatMessageRightClick="showContextMenu"
           @messageWrapperClick="messageWrapperClick"
         />
@@ -105,12 +106,21 @@ export default {
       mockData.value.chatMessagesList.map(handlingIncomeMessagesData)
     );
 
-    function handlingIncomeMessagesData(message) {
+    function handlingIncomeMessagesData(message, index, messages) {
       const isMessageMine = message?.sender.id === userStore.user.id;
+      const nextMessage = messages[index + 1];
+
+      const isNextMessageFromTheSameSender =
+        nextMessage?.sender.id == message.sender.id;
+
+      const showAvatar =
+        !isMessageMine && (!nextMessage || !isNextMessageFromTheSameSender);
+
       return {
         ...message,
         isMine: isMessageMine,
-        showAvatar: !isMessageMine && props.chatData.isChatGroup,
+        showAvatar,
+        isNextMessageFromTheSameSender,
       };
     }
 

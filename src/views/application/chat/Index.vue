@@ -71,7 +71,7 @@ export default {
       name: 'dffddfdfdf fdfddffd',
       disabled: true,
       isChatRequest: false,
-      isChatGroup: false,
+      isChatGroup: true,
       disabled: false,
     });
     const isEditChatModalOpened = ref(false);
