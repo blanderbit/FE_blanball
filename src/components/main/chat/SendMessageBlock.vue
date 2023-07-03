@@ -8,7 +8,9 @@
       :height="48"
       :iconLeft="icons.sendSmile"
       :icon="!disabled ? icons.addFile : icons.messagesDisabled"
+      backgroundColor="#fff"
       v-model="messageValue"
+      @leftIconClick="showOrCloseEmojiPicker"
     />
     <div class="b-send-voice-message b-send-button">
       <img src="../../../assets/img/chat/microphone.svg" alt="" />
@@ -17,6 +19,15 @@
       <img src="../../../assets/img/chat/send-message-button.svg" alt="" />
     </div>
   </div>
+  <Transition name="emoji-picker">
+    <EmojiPicker
+      v-if="isEmojiPickerVisible"
+      :positionY="emojiPickerY"
+      :positionX="emojiPickerX"
+      @closeEmojiPicker="closeEmojiPicker"
+      @selectEmoji="onEmojiSelect"
+    />
+  </Transition>
 </template>
 
 <script>
@@ -24,6 +35,7 @@ import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import MainInput from '../../shared/input/MainInput.vue';
+import EmojiPicker from './EmojiPicker.vue';
 
 import { useWindowWidth } from '../../../utils/widthScreen';
 
@@ -34,6 +46,7 @@ import MessagesDisabledIcon from '../../../assets/img/chat/messages-disabled.svg
 export default {
   components: {
     MainInput,
+    EmojiPicker,
   },
   props: {
     disabled: {
@@ -42,9 +55,12 @@ export default {
     },
   },
   setup(props) {
+    const isEmojiPickerVisible = ref(false);
     const messageValue = ref('');
     const { isMobileSmall } = useWindowWidth();
     const { t } = useI18n();
+    const emojiPickerX = ref();
+    const emojiPickerY = ref();
 
     const icons = computed(() => {
       return {
@@ -63,10 +79,39 @@ export default {
         : t('chat.write_message');
     });
 
+    function closeEmojiPicker() {
+      isEmojiPickerVisible.value = false;
+    }
+
+    function showEmojiPicker(e) {
+      emojiPickerY.value = e.clientY;
+      emojiPickerX.value = e.clientX;
+      isEmojiPickerVisible.value = true;
+    }
+
+    function onEmojiSelect(emojiData) {
+      messageValue.value += emojiData.i;
+    }
+
+    function showOrCloseEmojiPicker(e) {
+      if (isEmojiPickerVisible.value) {
+        closeEmojiPicker();
+      } else {
+        showEmojiPicker(e);
+      }
+    }
+
     return {
       messageValue,
       inputPlaceholder,
+      isEmojiPickerVisible,
+      emojiPickerX,
+      emojiPickerY,
       icons,
+      onEmojiSelect,
+      showEmojiPicker,
+      closeEmojiPicker,
+      showOrCloseEmojiPicker,
     };
   },
 };
@@ -94,6 +139,7 @@ export default {
   align-items: center;
   height: fit-content;
   gap: 8px;
+  transition: all 0.5s;
 
   &.disabled {
     opacity: 0.6;
@@ -105,11 +151,15 @@ export default {
     }
   }
 
+  &.animated {
+    transform: translateY(0);
+  }
+
   .b-send-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 8px;
+    padding: 10px 8px 6px 8px;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 100px;
     cursor: pointer;
@@ -121,5 +171,15 @@ export default {
   .b-send-message {
     background: $--b-main-green-color;
   }
+}
+
+.emoji-picker-enter-active,
+.emoji-picker-leave-active {
+  transition: all 0.5s;
+}
+
+.emoji-picker-enter-from,
+.emoji-picker-leave-to {
+  transform: translateY(100%);
 }
 </style>

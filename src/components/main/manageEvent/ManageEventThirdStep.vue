@@ -74,7 +74,7 @@
           name="contact_number"
           v-maska="'+38 (0##) ### ## ##'"
           :icon="icons.editPhone"
-          @icon-click="changeEditPhoneMode"
+          @rightIconClick="changeEditPhoneMode"
         >
         </MainInput>
       </div>

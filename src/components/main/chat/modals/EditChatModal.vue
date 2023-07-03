@@ -1,0 +1,111 @@
+<template>
+  <div class="b-edit-chat-modal__wrapper">
+    <div class="b-edit-chat-modal__modal-window">
+      <div class="b-modal-window__top-side">
+        <div class="b-modal-window__title">Керування групою</div>
+      </div>
+      <div class="b-modal-window__main-side">
+        <div class="b-select-photo__button">
+          <img src="../../../../assets/img/chat/green-camera.svg" alt="" />
+          <span>Обрати фото</span>
+        </div>
+        <MainInput
+          :outside-title="true"
+          :title-width="0"
+          :swipeTitle="false"
+          :title="'Назва бесіди'"
+          inputMode="text"
+          :height="48"
+          :backgroundColor="'#fff'"
+          name="search"
+        />
+        <MainInput
+          :outside-title="true"
+          :title-width="0"
+          :swipeTitle="false"
+          :isReadOnly="true"
+          :icon="icons.copyChatLink"
+          :title="'Посилання-запрошення'"
+          inputMode="text"
+          :height="48"
+          :backgroundColor="'#fff'"
+          name="search"
+        />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { computed } from 'vue';
+
+import MainInput from '../../../../components/shared/input/MainInput.vue';
+
+import CopyChatLinkIcon from '../../../../assets/img/chat/infinite.svg';
+
+export default {
+  components: {
+    MainInput,
+  },
+  setup() {
+    const icons = computed(() => {
+      return {
+        copyChatLink: CopyChatLinkIcon,
+      };
+    });
+
+    return {
+      icons,
+    };
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.b-edit-chat-modal__wrapper {
+  @include modal-wrapper;
+  .b-edit-chat-modal__modal-window {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px 16px;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border-radius: 6px;
+    background: $--b-main-white-color;
+    width: 400px;
+    height: 600px;
+    box-shadow: 2px 2px 10px 0px rgba(56, 56, 251, 0.1);
+
+    .b-modal-window__top-side {
+      .b-modal-window__title {
+        @include exo(22px, 700, $--b-main-black-color);
+        line-height: 32px;
+      }
+    }
+    .b-modal-window__main-side {
+      display: flex;
+      flex-direction: column;
+      gap: 16px 16px;
+      .b-select-photo__button {
+        border-radius: 6px;
+        border: 1px dashed $--b-main-green-color;
+        background: #ecfcfb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px;
+        cursor: pointer;
+        gap: 8px;
+
+        span {
+          @include inter(14px, 500, $--b-main-green-color);
+          line-height: 20px;
+        }
+      }
+    }
+  }
+}
+</style>

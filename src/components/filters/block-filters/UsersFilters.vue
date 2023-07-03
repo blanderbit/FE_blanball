@@ -122,7 +122,7 @@
               :icon="icons.cross"
               name="search"
               v-model="transformedFilters.search"
-              @icon-click="closeMobileSearch"
+              @rightIconClick="closeMobileSearch"
             />
             <MainInput
               :outside-title="true"

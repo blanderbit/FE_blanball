@@ -121,6 +121,7 @@ import TabLabel from '../shared/tabLabel/TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';
 
 import { useUserDataStore } from '../../stores/userData';
+import { useSideBarStore } from '../../stores/sideBar';
 import { createNotificationFromData } from '../../workers/utils-worker';
 import {
   AuthWebSocketWorkerInstance,
@@ -175,6 +176,7 @@ export default {
   },
   setup() {
     const userStore = useUserDataStore();
+    const sideBarStore = useSideBarStore();
     const notReadNotificationCount = ref(0);
     const allNotificationsCount = ref(0);
     const isMobMenuActive = ref(false);
@@ -381,10 +383,15 @@ export default {
       isMobMenuActive.value = true;
     });
 
+    BlanballEventBus.on('OpenSideBar', () => {
+      isMenuOpened.value = true;
+    });
+
     onBeforeUnmount(() => {
       NotificationsBus.off('SidebarClearData');
       NotificationsBus.off('hanlderToRemoveNewNotificationsInSidebar');
       BlanballEventBus.off('OpenMobileMenu');
+      BlanballEventBus.off('OpenSideBar');
       AuthWebSocketWorkerInstance.destroyCallback(handleMessageInSidebar);
     });
 
@@ -399,6 +406,24 @@ export default {
         );
       }
     };
+
+    watch(
+      () => isMenuOpened.value,
+      (newVal) => {
+        sideBarStore.$patch({
+          isSideBarOpened: newVal,
+        });
+      }
+    );
+
+    watch(
+      () => isMobMenuActive.value,
+      (newVal) => {
+        sideBarStore.$patch({
+          isMobMenuActive: newVal,
+        });
+      }
+    );
 
     return {
       paginationElements,

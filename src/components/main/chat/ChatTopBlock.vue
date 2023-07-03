@@ -50,7 +50,7 @@ export default {
       required: true,
     },
   },
-  emits: ['searchChatMessages', 'showManageChatModal', 'editChat'],
+  emits: ['searchChatMessages', 'manageChat', 'editChat'],
   setup(_, { emit }) {
     const { detectedDevice, DEVICE_TYPES } = useWindowWidth();
 
@@ -76,7 +76,7 @@ export default {
       },
       {
         img: icons.value.manageButton,
-        action: () => emit('showManageChatModal'),
+        action: () => emit('manageChat'),
         disabled: false,
       },
     ]);
@@ -84,7 +84,7 @@ export default {
     const chatRightSideButtonsMobile = ref([
       {
         img: icons.value.manageButtonMobile,
-        action: () => emit('showManageChatModal'),
+        action: () => emit('manageChat'),
         disabled: false,
       },
     ]);
@@ -115,6 +115,7 @@ export default {
   justify-content: space-between;
   padding: 16px 24px;
   gap: 16px;
+  height: fit-content;
 
   @include mobile {
     padding: 12px 16px;

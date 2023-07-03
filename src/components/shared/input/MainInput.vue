@@ -19,7 +19,11 @@
       >
         <span>{{ title }}</span>
       </div>
-      <div v-if="iconLeft.length" class="b-input__icon-left">
+      <div
+        v-if="iconLeft.length"
+        class="b-input__icon-left"
+        @click="leftIconClick"
+      >
         <img :src="iconLeft" alt="" />
       </div>
       <slot
@@ -47,7 +51,11 @@
           @blur="onUnFocus"
         />
       </slot>
-      <div v-if="rightIcon.length" class="b-input__icon">
+      <div
+        v-if="rightIcon.length"
+        class="b-input__icon"
+        @click="rightIconClick"
+      >
         <img :src="rightIcon" alt="" />
       </div>
     </div>
@@ -145,7 +153,8 @@ export default {
     },
   },
   emits: [
-    'iconClick',
+    'rightIconClick',
+    'leftIconClick',
     'onClickAction',
     'sendInputCoordinates',
     'update:modelValue',
@@ -190,7 +199,7 @@ export default {
       };
     });
 
-    function iconClickAction() {
+    function rightIconClick(e) {
       if (props.type === PASSWORD_TYPES.PASSWORD) {
         if (inputType.value === PASSWORD_TYPES.PASSWORD) {
           rightIcon.value = eyeOpen;
@@ -200,8 +209,12 @@ export default {
           inputType.value = PASSWORD_TYPES.PASSWORD;
         }
       } else {
-        emit('icon-click');
+        emit('rightIconClick', e);
       }
+    }
+
+    function leftIconClick(e) {
+      emit('leftIconClick', e);
     }
 
     function resizeFunction() {
@@ -262,9 +275,10 @@ export default {
 
     const { t } = useI18n();
     return {
-      iconClickAction,
+      rightIconClick,
       onFocus,
       onUnFocus,
+      leftIconClick,
       titleValue,
       isFocused,
       staticModelValue,

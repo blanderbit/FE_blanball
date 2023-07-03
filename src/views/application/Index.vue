@@ -1,5 +1,5 @@
 <template>
-  <div class="main-wrapper">
+  <div @contextmenu.prevent class="main-wrapper">
     <NewVersionModal
       v-if="isNewVersionModalActive"
       @closeModal="closeNewVersionModal"

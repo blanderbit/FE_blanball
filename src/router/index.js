@@ -269,6 +269,9 @@ const router = createRouter({
           path: ROUTES.APPLICATION.CHAT.relative,
           name: ROUTES.APPLICATION.CHAT.name,
           component: () => import('../views/application/chat/Index.vue'),
+          beforeEnter: routerAuthResolver.routeInterceptor(() => ({
+            usersData,
+          })),
           meta: {
             noPageContainer: true,
             noPageHeader: true,
