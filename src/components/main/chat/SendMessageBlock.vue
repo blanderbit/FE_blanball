@@ -6,26 +6,40 @@
       @cancelReply="cancelReplyToChatMessage"
     />
   </Transition>
-  <div :class="['b-send-message-block', { disabled: disabled }]">
-    <MainInput
-      :title-width="0"
-      :placeholder="inputPlaceholder"
-      inputMode="text"
-      :isDisabled="disabled"
-      :height="48"
-      :iconLeft="icons.sendSmile"
-      :icon="!disabled ? icons.addFile : icons.messagesDisabled"
-      backgroundColor="#fff"
-      v-model="messageValue"
-      @leftIconClick="showOrCloseEmojiPicker"
-    />
-    <div class="b-send-voice-message b-send-button">
-      <img src="../../../assets/img/chat/microphone.svg" alt="" />
+
+  <Form v-slot="data" :validation-schema="schema" @submit="disableSubmit">
+    <div :class="['b-send-message-block', { disabled: disabled }]">
+      <MainInput
+        :title-width="0"
+        :placeholder="inputPlaceholder"
+        name="message"
+        inputMode="text"
+        :isDisabled="disabled"
+        :height="48"
+        :iconLeft="icons.sendSmile"
+        :icon="icons.addFile"
+        backgroundColor="#fff"
+        v-model="messageValue"
+        @leftIconClick="showOrCloseEmojiPicker"
+      />
+      <div class="b-send-voice-message b-send-button">
+        <img src="../../../assets/img/chat/microphone.svg" alt="" />
+      </div>
+      <div class="b-send-message b-send-button">
+        <img
+          v-if="!disabled"
+          src="../../../assets/img/chat/send-message-button.svg"
+          alt=""
+          @click="sendMessage(data)"
+        />
+        <img
+          v-else
+          src="../../../assets/img/chat/messages-disabled.svg"
+          alt=""
+        />
+      </div>
     </div>
-    <div class="b-send-message b-send-button">
-      <img src="../../../assets/img/chat/send-message-button.svg" alt="" />
-    </div>
-  </div>
+  </Form>
   <Transition name="emoji-picker">
     <EmojiPicker
       v-if="isEmojiPickerVisible"
@@ -41,6 +55,8 @@
 import { ref, computed, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { Form } from '@system.it.flumx.com/vee-validate';
+
 import MainInput from '../../shared/input/MainInput.vue';
 import EmojiPicker from './EmojiPicker.vue';
 import ReplyToChatMessage from './ReplyToChatMessage.vue';
@@ -50,13 +66,15 @@ import { ChatEventBus } from '../../../workers/event-bus-worker';
 
 import SendSmileIcon from '../../../assets/img/chat/send-smile-button.svg';
 import AddFileIcon from '../../../assets/img/chat/add-file.svg';
-import MessagesDisabledIcon from '../../../assets/img/chat/messages-disabled.svg';
+
+import SCHEMAS from '../../../validators/schemas';
 
 export default {
   components: {
     MainInput,
     EmojiPicker,
     ReplyToChatMessage,
+    Form,
   },
   props: {
     disabled: {
@@ -77,8 +95,11 @@ export default {
       return {
         sendSmile: SendSmileIcon,
         addFile: AddFileIcon,
-        messagesDisabled: MessagesDisabledIcon,
       };
+    });
+
+    const schema = computed(() => {
+      return SCHEMAS.chatMessage.schema;
     });
 
     const inputPlaceholder = computed(() => {
@@ -104,7 +125,18 @@ export default {
       messageValue.value += emojiData.i;
     }
 
+    async function sendMessage(data) {
+      const { valid } = await data.validate();
+      if (!valid) {
+        return false;
+      }
+    }
+
     function showOrCloseEmojiPicker(e) {
+      if (props.disabled) {
+        return;
+      }
+
       if (isEmojiPickerVisible.value) {
         closeEmojiPicker();
       } else {
@@ -132,11 +164,17 @@ export default {
       emojiPickerY,
       replyToMessageData,
       icons,
+      schema,
       onEmojiSelect,
       showEmojiPicker,
       closeEmojiPicker,
       cancelReplyToChatMessage,
+      sendMessage,
       showOrCloseEmojiPicker,
+      disableSubmit: (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+      },
     };
   },
 };

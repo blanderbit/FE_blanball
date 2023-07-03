@@ -26,7 +26,7 @@
           <ChatWarning v-if="isChatWarningVisible" @close="closeChatWarning" />
         </Transition>
         <RequestForChat v-if="isChatRequestVisible" />
-        <SendMessageBlock v-else />
+        <SendMessageBlock v-else :disabled="chatData.disabled" />
       </div>
     </div>
   </div>
@@ -72,6 +72,7 @@ export default {
       disabled: true,
       isChatRequest: false,
       isChatGroup: false,
+      disabled: false,
     });
     const isEditChatModalOpened = ref(false);
     const isChatWarningClosed = ref(false);
