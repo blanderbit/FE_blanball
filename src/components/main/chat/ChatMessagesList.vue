@@ -15,6 +15,7 @@
       v-model:scrollbar-existing="blockScrollToTopIfExist"
     >
       <template #smartListItem="slotProps">
+        {{ slotProps.smartListItem.sender }}
         <ChatMessage
           v-if="isMessageTypeUserMessage(slotProps.smartListItem.type)"
           :key="slotProps.index"
@@ -36,7 +37,7 @@
         <InfiniteLoading
           :identifier="triggerForRestart"
           ref="scrollbar"
-          @infinite="loadDataPaginationData($event)"
+          @infinite="loadDataPaginationData(paginationPage + 1, $event)"
         >
           <template #complete>
             <NoScheduledEvents
@@ -61,9 +62,13 @@ import ContextMenu from '../../shared/modals/ContextMenuModal.vue';
 import ChatMessage from './ChatMessage.vue';
 import UserJoinedToTheChatMessage from './UserJoinedToTheChatMessage.vue';
 
-import { CONSTS } from '../../../consts';
 import { ChatEventBus } from '../../../workers/event-bus-worker';
+import { WebSocketPaginationWorker } from '../../../workers/pagination-worker';
+import { API } from '../../../workers/api-worker/api.worker';
+
 import { useUserDataStore } from '../../../stores/userData';
+
+import { CONSTS } from '../../../consts';
 
 export default {
   components: {
@@ -113,9 +118,26 @@ export default {
       return mockData.value.chatMessageContextMenuItems;
     });
 
-    const paginationElements = ref(
-      mockData.value.chatMessagesList.map(handlingIncomeMessagesData)
-    );
+    const {
+      paginationElements,
+      paginationPage,
+      paginationTotalCount,
+      paginationClearData,
+      paginationLoad,
+      paginationProcessResponse,
+    } = WebSocketPaginationWorker({
+      paginationDataRequest: (page) =>
+        API.ChatService.getChatMessages({ id: 725, page: page }),
+      dataTransformation: handlingIncomeMessagesData,
+    });
+
+    const loadDataPaginationData = (pageNumber, $state) => {
+      paginationLoad({
+        pageNumber,
+        $state,
+        forceUpdate: paginationPage.value === 1,
+      });
+    };
 
     function handlingIncomeMessagesData(message, index, messages) {
       if (isMessageTypeUserMessage(message.type)) {
@@ -145,11 +167,6 @@ export default {
       return {
         ...message,
       };
-    }
-
-    function loadDataPaginationData($state) {
-      $state.loaded();
-      return paginationElements.value;
     }
 
     function showContextMenu(e, messageData) {
@@ -237,6 +254,7 @@ export default {
       contextMenuY,
       isContextMenuOpened,
       chatMessageContextMenuItems,
+      paginationPage,
       selectedMessages,
       restartInfiniteScroll,
       loadDataPaginationData,

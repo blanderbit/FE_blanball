@@ -4,6 +4,7 @@ import { Enum } from './filter.utils';
 export const filterConfigForChatMessages = {
   page: Number,
   search: String,
+  id: Number
 };
 
 export const filterConfigForUsers = {
