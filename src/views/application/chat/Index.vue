@@ -13,7 +13,7 @@
       <ChatTopBlock
         :chatData="chatData"
         @searchChatMessages=""
-        @manageChat=""
+        @manageChat="showManageChatContextMenu"
         @editChat="showEditChatModal"
       />
     </div>
@@ -71,7 +71,7 @@ export default {
       name: 'dffddfdfdf fdfddffd',
       disabled: true,
       isChatRequest: false,
-      isChatGroup: true,
+      isGroup: false,
       disabled: false,
     });
     const isEditChatModalOpened = ref(false);
@@ -111,13 +111,13 @@ export default {
     });
 
     const isChatWarningVisible = computed(() => {
-      if (chatData.value.disabled && chatData.value.isChatGroup) {
+      if (chatData.value.disabled && chatData.value.isGroup) {
         return !isChatWarningClosed.value;
       }
     });
 
     const isChatRequestVisible = computed(() => {
-      return !chatData.value.isChatGroup && chatData.value.isChatRequest;
+      return !chatData.value.isGroup && chatData.value.isChatRequest;
     });
 
     function showEditChatModal() {
@@ -144,6 +144,10 @@ export default {
       isContextMenuOpened.value = false;
     }
 
+    function showManageChatContextMenu(e) {
+      showContextMenu(e);
+    }
+
     onBeforeMount(() => {
       BlanballEventBus.emit('OpenSideBar');
     });
@@ -165,6 +169,7 @@ export default {
       closeChatWarning,
       closeContextMenu,
       showContextMenu,
+      showManageChatContextMenu,
     };
   },
 };
