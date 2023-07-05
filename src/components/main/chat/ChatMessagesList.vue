@@ -131,8 +131,9 @@ export default {
             nextMessage?.sender?.id == message.sender.id;
         }
 
-        const showAvatar =
-          !isMessageMine && (!nextMessage || !isNextMessageFromTheSameSender);
+        const showAvatar = props.chatData.isGroup
+          ? !isMessageMine && (!nextMessage || !isNextMessageFromTheSameSender)
+          : false;
 
         return {
           ...message,
