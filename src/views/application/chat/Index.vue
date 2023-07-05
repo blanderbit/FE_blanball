@@ -33,7 +33,8 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeMount } from 'vue';
+import { ref, computed, onBeforeMount, onBeforeUnmount } from 'vue';
+import { useRoute } from 'vue-router';
 
 import { useElementSize } from '@vueuse/core';
 
@@ -45,12 +46,13 @@ import EditChatModal from '../../../components/main/chat/modals/EditChatModal.vu
 import ChatMessagesList from '../../../components/main/chat/ChatMessagesList.vue';
 import ContextMenu from '../../../components/shared/modals/ContextMenuModal.vue';
 
-import { PaginationWorker } from '../../../workers/pagination-worker';
-import { API } from '../../../workers/api-worker/api.worker';
+import { accessToken } from '../../../workers/token-worker';
+import { BlanballEventBus } from '../../../workers/event-bus-worker';
+import { ChatSocketWorkerInstance } from '../../../workers/web-socket-worker';
+
+import { useSideBarStore } from '../../../stores/sideBar';
 import { calcHeight } from '../../../utils/calcHeight';
 import { useWindowWidth } from '../../../utils/widthScreen';
-import { BlanballEventBus } from '../../../workers/event-bus-worker';
-import { useSideBarStore } from '../../../stores/sideBar';
 
 import { CONSTS } from '../../../consts';
 
@@ -148,8 +150,16 @@ export default {
       showContextMenu(e);
     }
 
+    ChatSocketWorkerInstance.connect({
+      token: accessToken.getToken(),
+    });
+
     onBeforeMount(() => {
       BlanballEventBus.emit('OpenSideBar');
+    });
+
+    onBeforeUnmount(() => {
+      ChatSocketWorkerInstance.disconnect();
     });
 
     return {

@@ -1,20 +1,15 @@
 import { AxiosInstance } from '../../../../plugins/axios.plugin';
 import { EndpointsEnum } from '../http-common/prefix.enum';
-import {
-  AxiosParams,
-  AxiosQuery,
-} from '../../../utils-worker';
+import { AxiosParams, AxiosQuery } from '../../../utils-worker';
 import { FilterParamsDecorator } from '../filter/filter.utils';
 import { filterConfigForChatMessages } from '../filter/filter.config';
 
-export class UserService {
+export class ChatService {
   @FilterParamsDecorator(filterConfigForChatMessages)
-  getChatMessages(options) {
+  static getChatMessages(options) {
     return AxiosInstance.get(
       EndpointsEnum.Chats.GetChatMessages(options.id),
-      AxiosParams(
-        AxiosQuery(options),
-      )
+      AxiosParams(AxiosQuery(options))
     );
   }
 }
