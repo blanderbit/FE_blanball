@@ -12,6 +12,7 @@
     <div ref="CHAT_TOP_SIDE_BLOCK" class="b-chat-top-side">
       <ChatTopBlock
         :chatData="chatData"
+        :selectedMessages="chatSelectedMessagesList"
         @searchChatMessages=""
         @manageChat="showManageChatContextMenu"
         @editChat="showEditChatModal"
@@ -19,7 +20,7 @@
     </div>
     <div class="b-chat-page-main-side">
       <div class="b-main-side-messages-block" :style="messagesListBlockStyle">
-        <ChatMessagesList :chatData="chatData" />
+        <ChatMessagesList ref="CHAT_MESSAGES_LIST_BLOCK" :chatData="chatData" />
       </div>
       <div ref="CHAT_BOTTOM_SIDE_BLOCK" class="b-main-side-bottom-block">
         <Transition name="chat-warning">
@@ -90,6 +91,7 @@ export default {
 
     const CHAT_TOP_SIDE_BLOCK = ref();
     const CHAT_BOTTOM_SIDE_BLOCK = ref();
+    const CHAT_MESSAGES_LIST_BLOCK = ref();
 
     const { height: CHAT_TOP_SIDE_BLOCK_HEIGHT } =
       useElementSize(CHAT_TOP_SIDE_BLOCK);
@@ -105,6 +107,10 @@ export default {
       return {
         chatMessageContextMenu: CONSTS.chat.chatMessageContextMenuItems(true),
       };
+    });
+
+    const chatSelectedMessagesList = computed(() => {
+      return CHAT_MESSAGES_LIST_BLOCK.value?.selectedMessages;
     });
 
     const messagesListBlockStyle = computed(() => {
@@ -172,9 +178,11 @@ export default {
       CHAT_TOP_SIDE_BLOCK,
       isChatWarningVisible,
       CHAT_BOTTOM_SIDE_BLOCK,
+      CHAT_MESSAGES_LIST_BLOCK,
       messagesListBlockStyle,
       isContextMenuOpened,
       isEditChatModalOpened,
+      chatSelectedMessagesList,
       mockData,
       isChatRequestVisible,
       contextMenuX,

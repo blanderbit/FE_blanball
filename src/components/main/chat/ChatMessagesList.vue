@@ -36,6 +36,7 @@
       <template #after>
         <InfiniteLoading
           :identifier="triggerForRestart"
+          :showCompleteSlot="false"
           ref="scrollbar"
           @infinite="loadDataPaginationData(paginationPage + 1, $event)"
         >
@@ -80,7 +81,7 @@ export default {
       required: true,
     },
   },
-  setup(props) {
+  setup(props, { expose }) {
     const refList = ref();
     const triggerForRestart = ref(false);
 
@@ -195,6 +196,10 @@ export default {
       selectedMessages.value.push(messageId);
     }
 
+    function deselectChatMessages() {
+      selectedMessages.value = [];
+    }
+
     function unSelectMessasge(messageId) {
       selectedMessages.value = selectedMessages.value.reduce((acc, message) => {
         if (message !== messageId) {
@@ -238,6 +243,8 @@ export default {
       }
     }
 
+    ChatEventBus.on('deselectChatMessages', () => deselectChatMessages());
+
     AuthWebSocketWorkerInstance.registerCallback(
       processCreateChatMessage,
       ChatWebSocketTypes.CreateMessage
@@ -245,6 +252,11 @@ export default {
 
     onBeforeUnmount(() => {
       AuthWebSocketWorkerInstance.destroyCallback(processCreateChatMessage);
+      ChatEventBus.off('deselectChatMessages');
+    });
+
+    expose({
+      selectedMessages,
     });
 
     return {

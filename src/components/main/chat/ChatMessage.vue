@@ -78,20 +78,22 @@ export default {
   },
   emits: ['chatMessageRightClick', 'messageWrapperClick'],
   setup(props, { emit }) {
+    const { messageData, isChatDisabed } = props;
+
     const messageTime = computed(() => {
       return dayjs(props.time_created).format('HH:mm');
     });
 
     const isMessageMine = computed(() => {
-      return props.messageData.isMine;
+      return messageData.isMine;
     });
 
     const isNextMessageFromTheSameSender = computed(() => {
-      return props.messageData.isNextMessageFromTheSameSender;
+      return messageData.isNextMessageFromTheSameSender;
     });
 
     const isMessageAvatarVisible = computed(() => {
-      return props.messageData.showAvatar && !props.selected;
+      return messageData.showAvatar && !props.selected;
     });
 
     const messageTail = computed(() => {
@@ -99,12 +101,10 @@ export default {
     });
 
     const messageReadedIcon = computed(() => {
-      return props.messageData.isRead ? MessageReadIcon : MessageNotReadIcon;
+      return messageData.isRead ? MessageReadIcon : MessageNotReadIcon;
     });
 
     const senderMessageData = computed(() => {
-      const { messageData } = props;
-
       return {
         avatar: messageData.sender.profile.avatar_url,
         fullName: `${messageData.sender.profile.last_name} ${messageData.sender.profile.name}`,
@@ -126,7 +126,7 @@ export default {
     }
 
     function chatMessageRightClick(e) {
-      if (!props.selected && !props.isChatDisabed) {
+      if (!props.selected && !isChatDisabed) {
         emit('chatMessageRightClick', e, props.messageData);
       }
     }
