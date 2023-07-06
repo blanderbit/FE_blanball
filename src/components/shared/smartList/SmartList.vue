@@ -1,4 +1,5 @@
 <template>
+  {{ keyField }}
   <DynamicScroller
     :items="list"
     :min-item-size="50"

@@ -34,22 +34,33 @@
           :backgroundColor="'#fff'"
           name="search"
           v-model="chatData.link"
+          @rightIconClick="copyChatLink"
         />
       </div>
+
+      <ChatUsersList :chatData="chatData"/>
     </div>
   </div>
 </template>
 
 <script>
 import { computed } from 'vue';
+import { useToast } from 'vue-toastification';
+import { useI18n } from 'vue-i18n';
 
-import MainInput from '../../../../components/shared/input/MainInput.vue';
+import MainInput from '../../../shared/input/MainInput.vue';
+import SearchBlockAll from '../../../SearchBlockAll.vue'
+import ChatUsersList from '../ChatUsersList.vue';
+
+import { copyToClipboard } from '../../../../utils/copyToClipBoard';
 
 import CopyChatLinkIcon from '../../../../assets/img/chat/infinite.svg';
 
 export default {
   components: {
     MainInput,
+    SearchBlockAll,
+    ChatUsersList,
   },
   props: {
     chatData: {
@@ -58,7 +69,9 @@ export default {
     },
   },
   emits: ['closeModal'],
-  setup(_, { emit }) {
+  setup(props, { emit }) {
+    const toast = useToast();
+    const { t } = useI18n();
     const icons = computed(() => {
       return {
         copyChatLink: CopyChatLinkIcon,
@@ -69,9 +82,15 @@ export default {
       emit('closeModal');
     }
 
+    function copyChatLink() {
+      copyToClipboard(props.chatData.link);
+      toast.success(t('chat.toasts.chat_link_copieded_success'));
+    }
+
     return {
       icons,
       closeModal,
+      copyChatLink,
     };
   },
 };
