@@ -24,7 +24,7 @@
           v-for="button in currentVisibleChatRightSideButtons"
           class="b-right-side-button"
           :src="button.img"
-          @click="button.action"
+          @click="$emit(button.actionEmitName)"
         />
       </div>
     </div>
@@ -103,7 +103,7 @@ export default {
     });
 
     function deselectChatMessages() {
-      ChatEventBus.emit('deselectChatMessages')
+      ChatEventBus.emit('deselectChatMessages');
     }
 
     return {

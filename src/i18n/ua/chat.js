@@ -18,4 +18,16 @@ export default {
     symbols: 'Символи',
     flags: 'Прапори',
   },
+  edit_chat_modal: {
+    select_photo: 'Обрати фото',
+    manage_group: 'Керування групою',
+    name_of_group_chat: 'Назва бесіди',
+    invitation_link: 'Посилання-запрошення',
+  },
+  submit_close_edit_chat_modal: {
+    title: 'Скасувати редагування групового чату',
+    description: 'Ви дійсно хочете скасувати всі внесені зміни?',
+    button_1: 'Ні, не скасосувати',
+    button_2: 'Так, скасувати',
+  },
 };

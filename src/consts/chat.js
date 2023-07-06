@@ -53,17 +53,17 @@ export default {
   chatToptSideRightBlockButtons: [
     {
       img: EditChatButtonIcon,
-      action: () => 'editChat',
+      actionEmitName: 'editChat',
       disabled: false,
     },
     {
       img: SearchMessagesButtonIcon,
-      action: () => 'searchChatMessages',
+      actionEmitName: 'searchChatMessages',
       disabled: false,
     },
     {
       img: ManageChatButtonIcon,
-      action: () => 'manageChat',
+      actionEmitName: 'manageChat',
       disabled: false,
     },
   ],

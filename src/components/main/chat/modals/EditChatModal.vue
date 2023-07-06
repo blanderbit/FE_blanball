@@ -1,23 +1,26 @@
 <template>
-  <div class="b-edit-chat-modal__wrapper">
+  <div class="b-edit-chat-modal__wrapper" @click.self="closeModal">
     <div class="b-edit-chat-modal__modal-window">
       <div class="b-modal-window__top-side">
-        <div class="b-modal-window__title">Керування групою</div>
+        <div class="b-modal-window__title">
+          {{ $t('chat.edit_chat_modal.manage_group') }}
+        </div>
       </div>
       <div class="b-modal-window__main-side">
         <div class="b-select-photo__button">
           <img src="../../../../assets/img/chat/green-camera.svg" alt="" />
-          <span>Обрати фото</span>
+          <span>{{ $t('chat.edit_chat_modal.select_photo') }}</span>
         </div>
         <MainInput
           :outside-title="true"
           :title-width="0"
           :swipeTitle="false"
-          :title="'Назва бесіди'"
+          :title="$t('chat.edit_chat_modal.name_of_group_chat')"
           inputMode="text"
           :height="48"
           :backgroundColor="'#fff'"
           name="search"
+          v-model="chatData.name"
         />
         <MainInput
           :outside-title="true"
@@ -25,11 +28,12 @@
           :swipeTitle="false"
           :isReadOnly="true"
           :icon="icons.copyChatLink"
-          :title="'Посилання-запрошення'"
+          :title="$t('chat.edit_chat_modal.invitation_link')"
           inputMode="text"
           :height="48"
           :backgroundColor="'#fff'"
           name="search"
+          v-model="chatData.link"
         />
       </div>
     </div>
@@ -47,15 +51,27 @@ export default {
   components: {
     MainInput,
   },
-  setup() {
+  props: {
+    chatData: {
+      type: Object,
+      required: true,
+    },
+  },
+  emits: ['closeModal'],
+  setup(_, { emit }) {
     const icons = computed(() => {
       return {
         copyChatLink: CopyChatLinkIcon,
       };
     });
 
+    function closeModal() {
+      emit('closeModal');
+    }
+
     return {
       icons,
+      closeModal,
     };
   },
 };
