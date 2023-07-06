@@ -6,8 +6,4 @@ import { ChatWebSocketTypes } from './web.socket.types';
 
 @AuthWebSocketMessage()
 @SetMessageType(ChatWebSocketTypes.GetChatMessagesList)
-export class GetChatMessagesListChatMessage extends InitialChatMessage {
-  handleUpdate() {
-    console.log(this.data);
-  }
-}
+export class GetChatMessagesListChatMessage extends InitialChatMessage {}

@@ -12,4 +12,11 @@ export class ChatService {
       AxiosParams(AxiosQuery(options))
     );
   }
+
+  static createChatMessage(messageData) {
+    return AxiosInstance.post(
+      EndpointsEnum.Chats.CreateChatMessage,
+      messageData
+    );
+  }
 }

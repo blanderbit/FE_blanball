@@ -63,6 +63,7 @@ import ReplyToChatMessage from './ReplyToChatMessage.vue';
 
 import { useWindowWidth } from '../../../utils/widthScreen';
 import { ChatEventBus } from '../../../workers/event-bus-worker';
+import { API } from '../../../workers/api-worker/api.worker';
 
 import SendSmileIcon from '../../../assets/img/chat/send-smile-button.svg';
 import AddFileIcon from '../../../assets/img/chat/add-file.svg';
@@ -80,6 +81,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
+    },
+    chatData: {
+      type: Object,
+      required: true,
     },
   },
   setup(props) {
@@ -125,10 +130,24 @@ export default {
       messageValue.value += emojiData.i;
     }
 
+    function resetCreateMessageData() {
+      messageValue.value = '';
+      closeEmojiPicker();
+    }
+
     async function sendMessage(data) {
-      const { valid } = await data.validate();
-      if (!valid) {
-        return false;
+      if (messageValue.value) {
+        const { valid } = await data.validate();
+        if (!valid) {
+          return false;
+        }
+
+        await API.ChatService.createChatMessage({
+          chat_id: props.chatData.id,
+          text: messageValue.value,
+          reply_to_message_id: replyToMessageData.value?.id,
+        });
+        resetCreateMessageData();
       }
     }
 

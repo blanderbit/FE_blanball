@@ -15,23 +15,23 @@
       v-model:scrollbar-existing="blockScrollToTopIfExist"
     >
       <template #smartListItem="slotProps">
-        {{ slotProps.smartListItem.sender }}
-        <ChatMessage
-          v-if="isMessageTypeUserMessage(slotProps.smartListItem.type)"
-          :key="slotProps.index"
-          :messageData="slotProps.smartListItem"
-          :selected="selectedMessages.includes(slotProps.smartListItem.id)"
-          :isChatDisabed="chatData.disabled"
-          @chatMessageRightClick="showContextMenu"
-          @messageWrapperClick="messageWrapperClick"
-        />
+        <div :key="slotProps.index">
+          <ChatMessage
+            v-if="isMessageTypeUserMessage(slotProps.smartListItem.type)"
+            :messageData="slotProps.smartListItem"
+            :selected="selectedMessages.includes(slotProps.smartListItem.id)"
+            :isChatDisabed="chatData.disabled"
+            @chatMessageRightClick="showContextMenu"
+            @messageWrapperClick="messageWrapperClick"
+          />
 
-        <UserJoinedToTheChatMessage
-          v-else-if="
-            isMessageTypeUserJoinedToTheChat(slotProps.smartListItem.type)
-          "
-          :userData="slotProps.smartListItem.sender"
-        />
+          <UserJoinedToTheChatMessage
+            v-else-if="
+              isMessageTypeUserJoinedToTheChat(slotProps.smartListItem.type)
+            "
+            :userData="slotProps.smartListItem.sender"
+          />
+        </div>
       </template>
       <template #after>
         <InfiniteLoading
@@ -39,12 +39,6 @@
           ref="scrollbar"
           @infinite="loadDataPaginationData(paginationPage + 1, $event)"
         >
-          <template #complete>
-            <NoScheduledEvents
-              v-if="!paginationElements.length"
-              :userData="userData"
-            />
-          </template>
         </InfiniteLoading>
       </template>
     </SmartList>
@@ -52,7 +46,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, onBeforeUnmount } from 'vue';
 
 import { v4 as uuid } from 'uuid';
 
@@ -64,7 +58,9 @@ import UserJoinedToTheChatMessage from './UserJoinedToTheChatMessage.vue';
 
 import { ChatEventBus } from '../../../workers/event-bus-worker';
 import { WebSocketPaginationWorker } from '../../../workers/pagination-worker';
+import { AuthWebSocketWorkerInstance } from '../../../workers/web-socket-worker';
 import { API } from '../../../workers/api-worker/api.worker';
+import { ChatWebSocketTypes } from '../../../workers/web-socket-worker/message-types/chat/web.socket.types';
 
 import { useUserDataStore } from '../../../stores/userData';
 
@@ -124,10 +120,9 @@ export default {
       paginationTotalCount,
       paginationClearData,
       paginationLoad,
-      paginationProcessResponse,
     } = WebSocketPaginationWorker({
       paginationDataRequest: (page) =>
-        API.ChatService.getChatMessages({ id: 725, page: page }),
+        API.ChatService.getChatMessages({ id: props.chatData.id, page: page }),
       dataTransformation: handlingIncomeMessagesData,
     });
 
@@ -139,19 +134,10 @@ export default {
       });
     };
 
-    function handlingIncomeMessagesData(message, index, messages) {
+    function handlingIncomeMessagesData(message) {
       if (isMessageTypeUserMessage(message.type)) {
         const isMessageMine = message?.sender.id === userStore.user.id;
-        const nextMessage = messages[index + 1];
-
         let isNextMessageFromTheSameSender = false;
-
-        if (isMessageTypeUserJoinedToTheChat(nextMessage?.type)) {
-          isNextMessageFromTheSameSender = true;
-        } else if (isMessageTypeUserMessage(nextMessage?.type)) {
-          isNextMessageFromTheSameSender =
-            nextMessage?.sender?.id == message.sender.id;
-        }
 
         const showAvatar = props.chatData.isGroup
           ? !isMessageMine && (!nextMessage || !isNextMessageFromTheSameSender)
@@ -242,6 +228,24 @@ export default {
         selectMessage(messageId);
       }
     }
+
+    function processCreateChatMessage(instanceType) {
+      if (instanceType.data.data.data.chat_id === props.chatData.id) {
+        instanceType.createNewMessageInChat(
+          { paginationElements },
+          handlingIncomeMessagesData
+        );
+      }
+    }
+
+    AuthWebSocketWorkerInstance.registerCallback(
+      processCreateChatMessage,
+      ChatWebSocketTypes.CreateMessage
+    );
+
+    onBeforeUnmount(() => {
+      AuthWebSocketWorkerInstance.destroyCallback(processCreateChatMessage);
+    });
 
     return {
       refList,

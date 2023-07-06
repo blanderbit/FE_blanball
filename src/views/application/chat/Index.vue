@@ -26,7 +26,11 @@
           <ChatWarning v-if="isChatWarningVisible" @close="closeChatWarning" />
         </Transition>
         <RequestForChat v-if="isChatRequestVisible" />
-        <SendMessageBlock v-else :disabled="chatData.disabled" />
+        <SendMessageBlock
+          v-else
+          :disabled="chatData.disabled"
+          :chatData="chatData"
+        />
       </div>
     </div>
   </div>
@@ -70,6 +74,7 @@ export default {
   },
   setup() {
     const chatData = ref({
+      id: 725,
       name: 'dffddfdfdf fdfddffd',
       disabled: true,
       isChatRequest: false,
