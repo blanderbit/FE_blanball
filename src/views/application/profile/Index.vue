@@ -11,6 +11,7 @@
   <div class="b-user-cabinet">
     <ReviewsListModal
       v-if="isReviewsListModalOpened"
+      :userRating="userRating"
       @closeModal="closeReviewsModal"
     />
 
@@ -113,22 +114,25 @@
         />
         <RatingCard
           v-if="!isTabletSize && !isMobile"
-          :rating-scale="userRating"
+          :ratingScale="userRating"
           :reviewsCount="reviewsTotalCount"
+          :disabled="isEditModeProfile"
           @showReviewsModal="showReviewsModal"
         />
         <UserDetailsCard
           :user-data="userData"
           :phone="userStore.user.phone"
           :is-edit-mode="isEditModeProfile"
-          @openEditPictureModal="openEditPictureModal"
           :initValues="formValues"
+          @openEditPictureModal="openEditPictureModal"
+          @showReviewsModal="showReviewsModal"
         />
         <div class="b-user-cabinet__mobile-tablet-block">
           <RatingCard
             v-if="isTabletSize"
             :rating-scale="userRating"
             :reviewsCount="reviewsTotalCount"
+            :disabled="isEditModeProfile"
             @showReviewsModal="showReviewsModal"
           />
           <SecurityBlock
@@ -187,7 +191,7 @@ import { useUserDataStore } from '@/stores/userData';
 import { useWindowWidth } from '../../../utils/widthScreen';
 import { calcHeight } from '../../../utils/calcHeight';
 
-import CONSTANTS from '../../../consts';
+import { CONSTS } from '../../../consts';
 import SCHEMAS from '../../../validators/schemas';
 import {
   finishSpinner,
@@ -228,7 +232,7 @@ export default {
     const userStore = useUserDataStore();
 
     const router = useRouter();
-    const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
+    const { isBetweenTabletAndDesktop, isMobile, isTablet } =
       useWindowWidth();
 
     const userInfo = ref(null);
@@ -249,14 +253,14 @@ export default {
 
     const mockData = computed(() => {
       return {
-        user_info: CONSTANTS.users_page.userInfo,
-        tabs: CONSTANTS.profile.tabs,
-        monthFromNumber: CONSTANTS.users_page.months.monthFromNumber,
-        numberFromMonth: CONSTANTS.users_page.months.numberFromMonth,
+        user_info: CONSTS.users_page.userInfo,
+        tabs: CONSTS.profile.tabs,
+        monthFromNumber: CONSTS.users_page.months.monthFromNumber,
+        numberFromMonth: CONSTS.users_page.months.numberFromMonth,
       };
     });
 
-    const { calculatedHeight, onAppHeightResize } = calcHeight(
+    const { calculatedHeight } = calcHeight(
       [88, 46, 60],
       [40, userStore.user.is_verified ? 0 : 40],
       [userStore.user.is_verified ? 0 : 40],
@@ -338,16 +342,6 @@ export default {
       checkboxEmail: userStore.user.configuration.email,
       checkboxReviews: userStore.user.configuration.show_reviews,
     };
-
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-      window.addEventListener('resize', onAppHeightResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
-      window.removeEventListener('resize', onAppHeightResize);
-    });
 
     function switchTabLabel(isDisabled) {
       if (isDisabled) {

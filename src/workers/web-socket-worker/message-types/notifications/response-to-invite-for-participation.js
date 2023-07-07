@@ -14,6 +14,7 @@ import {
 } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
 import { ROUTES } from '../../../../router/router.const';
+import { i18n } from '../../../../plugins/i18n.plugin';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.ResponseToInviteForEvent)
@@ -23,15 +24,41 @@ export class ResponseToInviteForParticipationMessage extends InitialMessage {
   createTexts(data) {
     return [
       data.invite.response
-        ? `${data.sender.last_name} ${data.sender.name} прийняв ваше запрошення на участь у «${data?.event.name}»`
-        : `${data.sender.last_name} ${data.sender.name} відхилив ваше запрошення на участь у «${data?.event.name}»`,
+        ? i18n.global.t(
+            'push_notifications.response_to_invite_for_participation.success_text',
+            {
+              senderLastName: data.sender.last_name,
+              senderName: data.sender.name,
+              eventName: data?.event.name,
+            }
+          )
+        : i18n.global.t(
+            'push_notifications.response_to_invite_for_participation.error_text',
+            {
+              senderLastName: data.sender.last_name,
+              senderName: data.sender.name,
+              eventName: data?.event.name,
+            }
+          ),
     ];
   }
 
   createTitle(data) {
     return data.invite.response
-      ? `${data.sender.last_name} ${data.sender.name} прийняв ваше запрошення на участь у події`
-      : `${data.sender.last_name} ${data.sender.name} відхилив ваше запрошення на участь у події`;
+      ? i18n.global.t(
+          'push_notifications.response_to_invite_for_participation.success_title',
+          {
+            senderLastName: data.sender.last_name,
+            senderName: data.sender.name,
+          }
+        )
+      : i18n.global.t(
+          'push_notifications.response_to_invite_for_participation.error_title',
+          {
+            senderLastName: data.sender.last_name,
+            senderName: data.sender.name,
+          }
+        );
   }
 
   onInit() {
@@ -39,20 +66,24 @@ export class ResponseToInviteForParticipationMessage extends InitialMessage {
       {
         type: MessageActionTypes.ActionClose,
         buttonType: 'success',
-        buttonText: 'Зрозуміло',
+        buttonText: i18n.global.t(
+          'push_notifications.response_to_invite_for_participation.first_button'
+        ),
         buttonWidth: 88,
         buttonHeight: 28,
       },
       {
         type: MessageActionTypes.Action,
         action: ({ notificationInstance }) =>
-          ROUTES.APPLICATION.USERS.GET_ONE.absolute(
-            notificationInstance.data.sender.id
+          ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(
+            notificationInstance.data.event.id
           ),
         actionType: MessageActionDataTypes.UrlCallback,
         buttonType: 'default',
-        buttonText: 'Переглянути профіль',
-        buttonWidth: 160,
+        buttonText: i18n.global.t(
+          'push_notifications.response_to_invite_for_participation.second_button'
+        ),
+        buttonWidth: 133,
         buttonHeight: 28,
       },
     ];

@@ -20,13 +20,10 @@
         <span>{{ title }}</span>
       </div>
       <div
-        v-if="rightIcon?.length"
-        class="b-input__icon"
-        @click="iconClickAction"
+        v-if="iconLeft.length"
+        class="b-input__icon-left"
+        @click="leftIconClick"
       >
-        <img :src="rightIcon" alt="" />
-      </div>
-      <div v-if="iconLeft.length" class="b-input__icon-left">
         <img :src="iconLeft" alt="" />
       </div>
       <slot
@@ -54,6 +51,13 @@
           @blur="onUnFocus"
         />
       </slot>
+      <div
+        v-if="rightIcon.length"
+        class="b-input__icon"
+        @click="rightIconClick"
+      >
+        <img :src="rightIcon" alt="" />
+      </div>
     </div>
     <p class="b-input__error-message">
       {{ modelErrorMessage ? t(modelErrorMessage) : '' }}
@@ -149,7 +153,8 @@ export default {
     },
   },
   emits: [
-    'iconClick',
+    'rightIconClick',
+    'leftIconClick',
     'onClickAction',
     'sendInputCoordinates',
     'update:modelValue',
@@ -183,8 +188,8 @@ export default {
 
     const inputStyle = computed(() => {
       return {
-        'padding-left': 10 + props.titleWidth + 'px',
-        'padding-right': rightIcon.value?.length ? '50px' : '10px',
+        'padding-left': '10px',
+        'padding-right': '10px',
       };
     });
     const inputWrapper = computed(() => {
@@ -194,7 +199,7 @@ export default {
       };
     });
 
-    function iconClickAction() {
+    function rightIconClick(e) {
       if (props.type === PASSWORD_TYPES.PASSWORD) {
         if (inputType.value === PASSWORD_TYPES.PASSWORD) {
           rightIcon.value = eyeOpen;
@@ -204,8 +209,12 @@ export default {
           inputType.value = PASSWORD_TYPES.PASSWORD;
         }
       } else {
-        emit('icon-click');
+        emit('rightIconClick', e);
       }
+    }
+
+    function leftIconClick(e) {
+      emit('leftIconClick', e);
     }
 
     function resizeFunction() {
@@ -253,7 +262,7 @@ export default {
     });
 
     const onFocus = () => {
-      if (!props.isReadOnly) {
+      if (!props.isReadOnly && !props.isDisabled) {
         isFocused.value = true;
       }
     };
@@ -266,9 +275,10 @@ export default {
 
     const { t } = useI18n();
     return {
-      iconClickAction,
+      rightIconClick,
       onFocus,
       onUnFocus,
+      leftIconClick,
       titleValue,
       isFocused,
       staticModelValue,
@@ -308,20 +318,20 @@ $color-dfdeed: #dfdeed;
     font-size: 13px;
     line-height: 24px;
     color: $--b-main-black-color;
+    display: flex;
     &.focused {
       border: 1.5px solid $color-8a8aa8;
     }
     &.disabled {
-      border: 1px solid #d9d9d9;
+      border: 1px solid $color-d9d9d9;
     }
     .b-input__icon {
       display: flex;
       height: 100%;
-      width: 48px;
-      position: absolute;
-      top: 0;
-      right: 0;
+      width: 40px;
+      background: $--b-main-white-color;
       border-radius: 6px;
+      margin-right: 8px;
       cursor: pointer;
       img {
         margin: auto;
@@ -331,11 +341,9 @@ $color-dfdeed: #dfdeed;
       display: flex;
       height: 100%;
       width: 40px;
-      position: absolute;
-      top: 0;
-      left: 0;
       background: $--b-main-white-color;
       border-radius: 6px;
+      margin-left: 8px;
       cursor: pointer;
       img {
         margin: auto;
@@ -394,7 +402,7 @@ $color-dfdeed: #dfdeed;
       }
 
       &.disabled {
-        color: #a8a8bd;
+        color: $color-a8a8bd;
       }
     }
   }

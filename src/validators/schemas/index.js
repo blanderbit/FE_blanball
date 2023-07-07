@@ -10,6 +10,7 @@ import VerifyEmail from './verifyEmail';
 import DeleteAccount from './deleteAccount';
 import ChangeEmail from './changeEmail';
 import PositionMap from './positionMap';
+import ChatMessage from './chatMessage';
 
 export default {
   login: Login,
@@ -24,4 +25,5 @@ export default {
   deleteAccount: DeleteAccount,
   changeEmail: ChangeEmail,
   positionMap: PositionMap,
+  chatMessage: ChatMessage,
 };

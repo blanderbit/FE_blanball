@@ -7,7 +7,11 @@
       {{ $t('profile.phone-number') }}
     </template>
     <template #header-image>
-      <img src="../../../assets/img/white-phone-icon.svg" alt="" />
+      <img
+        src="../../../assets/img/white-phone-icon.svg"
+        alt=""
+        @click="closeCopyPhoneModal"
+      />
     </template>
     <template #input>
       <MainInput
@@ -39,7 +43,11 @@
       {{ $t('profile.e-mail') }}
     </template>
     <template #header-image>
-      <img src="../../../assets/img/white-letter-icon.svg" alt="" />
+      <img
+        src="../../../assets/img/white-letter-icon.svg"
+        alt=""
+        @click="closeCopyEmailModal"
+      />
     </template>
     <template #input>
       <MainInput
@@ -294,8 +302,7 @@ export default {
         break;
     }
 
-    const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
-      useWindowWidth();
+    const { isBetweenTabletAndDesktop, isMobile, isTablet } = useWindowWidth();
 
     const backgroundTop = computed(() => {
       return BackgroundTop;
@@ -318,14 +325,6 @@ export default {
         top: `${height.value + 98}px`,
         left: `${props.pageMode === profilePageMode.LOOK ? 35 : 20}px`,
       };
-    });
-
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
     });
 
     const userRating = computed(() => {
@@ -546,6 +545,7 @@ $color-d2f6a2: #d2f6a2;
 
 .b-public-profile {
   position: relative;
+  @include calc-height;
 
   @media (max-width: 1200px) {
     overflow: scroll;
@@ -578,6 +578,10 @@ $color-d2f6a2: #d2f6a2;
     justify-content: center;
     position: relative;
     z-index: 2;
+
+    @include beforeDesktop {
+      z-index: inherit;
+    }
 
     @media (max-width: 1200px) {
       padding: 40px 20px;

@@ -26,6 +26,10 @@ import Colors from './colors';
 import Alts from './alts';
 import NoRecords from './no_records';
 import Policy from './policy';
+import Scheduler from './scheduler';
+import Hints from './hints';
+import PushNotifications from './push-notifications';
+import Chat from './chat';
 
 export const UA_LANGUAGE = {
   events: EventsPage,
@@ -55,5 +59,9 @@ export const UA_LANGUAGE = {
   colors: Colors,
   alts: Alts,
   no_records: NoRecords,
-  policy: Policy
+  policy: Policy,
+  scheduler: Scheduler,
+  hints: Hints,
+  push_notifications: PushNotifications,
+  chat: Chat,
 };

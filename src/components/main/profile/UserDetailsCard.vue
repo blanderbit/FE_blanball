@@ -5,7 +5,7 @@
         <div class="b-user-card__picture-block">
           <div class="b-user-card__profile-picture">
             <userAvatar
-              class="b-user-card__profile-avatar"
+              avatarType="rounded-square"
               :link="userData.avatar_url"
               :full-name="fullUserName"
             />
@@ -51,6 +51,9 @@
     <RatingCard
       v-if="isMobile"
       :rating-scale="userData.raiting"
+      :reviewsCount="reviewsTotalCount"
+      :disabled="isEditMode"
+      @showReviewsModal="$emit('showReviewsModal')"
     />
 
     <div class="b-user-card__tabs-block">
@@ -173,8 +176,12 @@
             {{ $t('profile.game-features') }}
           </div>
           <div class="b-user-card__body-features">
-            <div class="b-user-card__height"
-            :style="`border-right: ${!isEditMode ? '1px' : '0px'} solid #efeff6;`">
+            <div
+              class="b-user-card__height"
+              :style="`border-right: ${
+                !isEditMode ? '1px' : '0px'
+              } solid #efeff6;`"
+            >
               <div v-if="!isEditMode" class="b-user-card__to-show">
                 <div class="b-user-card__data">
                   {{ userData.height || $t('profile.no-content') }}
@@ -194,8 +201,12 @@
                 v-maska="'###'"
               />
             </div>
-            <div class="b-user-card__weight"
-              :style="`border-right: ${!isEditMode ? '1px' : '0px'} solid #efeff6;`">
+            <div
+              class="b-user-card__weight"
+              :style="`border-right: ${
+                !isEditMode ? '1px' : '0px'
+              } solid #efeff6;`"
+            >
               <div v-if="!isEditMode" class="b-user-card__to-show">
                 <div class="b-user-card__data">
                   {{ userData.weight || $t('profile.no-content') }}
@@ -314,15 +325,9 @@
 </template>
 
 <script>
-import {
-  ref,
-  computed,
-  watch,
-  watchEffect,
-  onMounted,
-  onBeforeUnmount,
-} from 'vue';
+import { ref, computed, watch, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 
 import dayjs from 'dayjs';
 import dayjsUkrLocale from 'dayjs/locale/uk';
@@ -333,7 +338,7 @@ import dropdown from '../../shared/dropdown/Dropdown.vue';
 import userAvatar from '../../shared/userAvatar/UserAvatar.vue';
 import RatingCard from './RatingCard.vue';
 
-import CONSTANTS from '../../../consts';
+import { CONSTS } from '../../../consts';
 import { useWindowWidth } from '../../../utils/widthScreen';
 
 import sortArrowHorizontally from '../../../assets/img/sort-arrows-horizontal.svg';
@@ -368,9 +373,9 @@ export default {
   },
   emits: ['openEditPictureModal'],
   setup(props, { emit }) {
-    const { onResize, isBetweenTabletAndDesktop, isMobile, isTablet } =
-      useWindowWidth();
+    const { isBetweenTabletAndDesktop, isMobile, isTablet } = useWindowWidth();
     const { t } = useI18n();
+    const router = useRouter();
 
     const currentTab = ref(0);
     const selectedFile = ref(null);
@@ -385,6 +390,10 @@ export default {
         labels.value = setupLabels();
       }
     );
+
+    const reviewsTotalCount = computed(() => {
+      return router.currentRoute.value.meta.allReviewsData?.data?.total_count;
+    });
 
     function setupLabels() {
       return [
@@ -411,17 +420,17 @@ export default {
 
     const mockData = computed(() => {
       return {
-        monthFromNumber: CONSTANTS.users_page.months.monthFromNumber,
-        numberFromMonth: CONSTANTS.users_page.months.numberFromMonth,
-        tabTitles: CONSTANTS.profile.tabTitles,
-        labels: CONSTANTS.profile.labels,
-        days: CONSTANTS.dates.days,
-        months: CONSTANTS.dates.months,
-        years: CONSTANTS.dates.years,
-        mainLag: CONSTANTS.profile.mainLeg,
-        cities: CONSTANTS.profile.cities,
-        district: CONSTANTS.profile.district,
-        position: CONSTANTS.profile.position,
+        monthFromNumber: CONSTS.users_page.months.monthFromNumber,
+        numberFromMonth: CONSTS.users_page.months.numberFromMonth,
+        tabTitles: CONSTS.profile.tabTitles,
+        labels: CONSTS.profile.labels,
+        days: CONSTS.dates.days,
+        months: CONSTS.dates.months,
+        years: CONSTS.dates.years,
+        mainLag: CONSTS.profile.mainLeg,
+        cities: CONSTS.profile.cities,
+        district: CONSTS.profile.district,
+        position: CONSTS.profile.position,
       };
     });
 
@@ -441,15 +450,6 @@ export default {
           .format('D MMMM YYYY')} p.`;
       }
     });
-
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
-    });
-
 
     function changeUserTab(id) {
       currentTab.value = id;
@@ -484,6 +484,7 @@ export default {
       openedReviewId,
       currentTab,
       icons,
+      reviewsTotalCount,
       birthDate,
       mockData,
       labels,
@@ -546,14 +547,6 @@ $color-efeff6: #efeff6;
         height: 52px;
         overflow: hidden;
         border-radius: 8px;
-        .b-user-card__profile-avatar {
-          :deep(.b-avatar) {
-            width: 52px;
-            height: 52px;
-            border-radius: 8px;
-            font-size: 23px;
-          }
-        }
         .b-user-card__add-pic-icon {
           position: absolute;
           top: 0;

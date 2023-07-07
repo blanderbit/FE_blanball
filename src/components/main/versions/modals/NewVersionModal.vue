@@ -26,7 +26,7 @@
             :height="24"
             :isBorder="false"
             :main-color="'#575775'"
-            @click-function="clickDeclineButton(request.id)"
+            @click-function="$emit('closeModal')"
           />
         </div>
       </div>

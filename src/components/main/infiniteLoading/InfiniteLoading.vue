@@ -17,6 +17,10 @@ const props = defineProps({
   identifier: { required: false },
   firstload: { type: Boolean, required: false, default: true },
   slots: { type: Object, required: false },
+  showCompleteSlot: {
+    type: Boolean,
+    default: true,
+  },
 });
 const infiniteLoading = ref(null);
 const state = ref('ready');
@@ -65,7 +69,7 @@ onUnmounted(() => {
     <slot v-if="state == 'loading'" name="spinner">
       <smallLoader />
     </slot>
-    <slot v-if="state == 'complete'" name="complete">
+    <slot v-if="state == 'complete' && showCompleteSlot" name="complete">
       <span> {{ slots?.complete || 'No more results!' }} </span>
     </slot>
     <slot v-if="state == 'error'" name="error" :retry="params.emit">

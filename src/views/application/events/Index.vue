@@ -54,12 +54,16 @@
       <div class="b-events-page__main-search-block">
         <events-filters
           :modelValue="filters"
+          :elementsCount="paginationTotalCount"
           @update:value="setFilters"
           @clearFilters="clearFilters"
-          :elementsCount="paginationTotalCount"
+          @updatedActiveFilters="recalculateHeightAfterUpdateFiltersActive"
         ></events-filters>
-
-        <div class="b-events-page__all-events-block">
+        <div
+          class="b-events-page__all-events-block"
+          :id="allEventsBlockHeight"
+          :style="`height: ${allEventsBlockHeight}`"
+        >
           <smartGridList
             :list="paginationElements"
             ref="refList"
@@ -109,7 +113,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
@@ -137,13 +141,15 @@ import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patc
 import { addMinutes } from '../../../utils/addMinutes';
 import { getDate } from '../../../utils/getDate';
 import { getTime } from '../../../utils/getTime';
+import { calcHeight } from '../../../utils/calcHeight';
 import {
   finishSpinner,
   startSpinner,
 } from '../../../workers/loading-worker/loading.worker';
+import { useUserDataStore } from '../../../stores/userData';
 
 import { ROUTES } from '../../../router/router.const';
-import CONSTANTS from '../../../consts/index';
+import { CONSTS } from '../../../consts/index';
 
 import Plus from '../../../assets/img/plus.svg';
 
@@ -188,16 +194,17 @@ export default {
     const { t } = useI18n();
     const isLoaderActive = ref(false);
     const mainEventsBlock = ref();
+    const userStore = useUserDataStore();
 
     const eventJoinToolTipItems = computed(() => {
-      return CONSTANTS.eventJoin.items;
+      return CONSTS.eventJoin.items;
     });
 
     const mockData = computed(() => {
       return {
-        event_cards: CONSTANTS.event_page.event_cards,
-        sport_type_dropdown: CONSTANTS.event_page.sport_type_dropdown,
-        gender_dropdown: CONSTANTS.event_page.gender_dropdown,
+        event_cards: CONSTS.event_page.event_cards,
+        sport_type_dropdown: CONSTS.event_page.sport_type_dropdown,
+        gender_dropdown: CONSTS.event_page.gender_dropdown,
       };
     });
     const iconPlus = computed(() => Plus);
@@ -208,6 +215,23 @@ export default {
         button_text: t('no_records.noEvents.button_text'),
       };
     });
+
+    const allEventsBlockHeightConfig = ref({
+      default: [90, 65, 80, 40],
+      mobile: [userStore.user.is_verified ? 0 : 40],
+      tablet: [userStore.user.is_verified ? 0 : 40],
+      recalculateOnVerifyEmail: true,
+    });
+    const {
+      calculatedHeight,
+      minusHeight,
+      plusHeight
+    } = calcHeight(...Object.values(allEventsBlockHeightConfig.value));
+
+    const allEventsBlockHeight = computed(() => {
+      return `${calculatedHeight.value}px`;
+    });
+
 
     async function joinEvent(eventData, type) {
       let participationType;
@@ -301,6 +325,15 @@ export default {
     function switchToMyEvents() {
       router.push(ROUTES.APPLICATION.MY_EVENTS.index.absolute);
     }
+    
+
+    function recalculateHeightAfterUpdateFiltersActive(status) {
+      if (status) {
+        minusHeight(45);
+      } else {
+        plusHeight(45);
+      }
+    };
 
     const refList = ref();
     const blockScrollToTopIfExist = ref(false);
@@ -438,6 +471,8 @@ export default {
         forceUpdate: paginationPage.value === 1,
       });
     };
+
+
     return {
       emptyListMessages,
       scrollComponent,
@@ -457,6 +492,8 @@ export default {
       triggerForRestart,
       paginationElements,
       paginationPage,
+      allEventsBlockHeight,
+      recalculateHeightAfterUpdateFiltersActive,
       joinEventModalItemClick,
       paginationLoad,
       loadDataPaginationData,
@@ -487,6 +524,8 @@ $color-f0f0f4: #f0f0f4;
   grid-template-columns: 1fr 256px;
   grid-gap: 28px;
   position: relative;
+  height: fit-content;
+
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
   }
@@ -511,7 +550,6 @@ $color-f0f0f4: #f0f0f4;
     }
   }
   .b-events-page__main-body {
-    height: 90vh;
     position: relative;
     .b-events-page__header-block {
       display: flex;
@@ -640,7 +678,6 @@ $color-f0f0f4: #f0f0f4;
       .b-events-page__all-events-block {
         position: relative;
         margin-top: 15px;
-        height: 76vh;
         overflow: hidden;
         .b-events-page__cards-event-wrapper {
           display: flex;

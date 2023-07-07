@@ -93,7 +93,7 @@ import { accessToken, refreshToken } from '../../workers/token-worker';
 import { PositionMapBus } from '../../workers/event-bus-worker';
 
 import { ROUTES } from '../../router/router.const';
-import CONSTS from '../../consts';
+import { CONSTS } from '../../consts';
 import SCHEMAS from '../../validators/schemas';
 
 import imageStep_1 from '../../assets/img/registration-back-1.svg';
@@ -226,7 +226,7 @@ export default {
       currentStep.value = 7;
     }
 
-    function goToEvents() {
+    async function goToEvents() {
       router.push(ROUTES.APPLICATION.EVENTS.absolute);
     }
 
@@ -263,7 +263,6 @@ export default {
               await API.UserService.getMyProfile();
             profileValues = apiRequestResultMyProfile.data;
           } catch (e) {
-            console.log(e)
             return;
           }
         }
@@ -309,7 +308,7 @@ export default {
             };
             await API.UserService.updateProfileData(profileValues);
             if (currentStep.value === 10) {
-              return goToEvents();
+              return await goToEvents();
             }
           } catch (e) {
             return;

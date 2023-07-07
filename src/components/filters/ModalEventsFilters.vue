@@ -88,7 +88,7 @@ import PositionMapModal from '../maps/PositionMapModal.vue';
 import ClearFilters from './components/ClearFilters.vue';
 import MainInput from '../shared/input/MainInput.vue';
 
-import CONSTANTS from '../../consts/index';
+import { CONSTS } from '../../consts/index';
 
 import tickIcon from '../../assets/img/tick-white.svg';
 
@@ -152,8 +152,8 @@ export default {
     const locationData = ref(props.location);
     const dateAndTimeData = ref(props.dateAndTime);
 
-    const sportTypeDropdown = CONSTANTS.event_page.sport_type_dropdown;
-    const statusDropdown = CONSTANTS.event_page.status_ropdown;
+    const sportTypeDropdown = CONSTS.event_page.sport_type_dropdown;
+    const statusDropdown = CONSTS.event_page.status_ropdown;
 
     const icon = computed(() => tickIcon);
 

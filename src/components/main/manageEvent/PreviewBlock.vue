@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class="b-event-preview__form-block">
-        <EventCard :card="eventData" />
+        <EventCard :card="eventData" :disabledMap="true" />
       </div>
     </div>
   </div>

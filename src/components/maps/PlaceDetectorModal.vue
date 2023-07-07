@@ -84,7 +84,6 @@ $color-fafafa: #fafafa;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    max-width: 100px;
   }
 }
 </style>

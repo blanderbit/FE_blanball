@@ -56,7 +56,7 @@ import { computed } from 'vue';
 import RatePlayerCard from './RatePlayerCard.vue';
 import ModalTopCard from './ModalTopCard.vue';
 
-import CONSTANTS from '../../../consts/index';
+import { CONSTS } from '../../../consts/index';
 
 export default {
   name: 'ModalBottomCard',
@@ -83,7 +83,7 @@ export default {
       };
     });
     const players = computed(() => {
-      return CONSTANTS.modal_feedback.players;
+      return CONSTS.modal_feedback.players;
     });
     return {
       bottomCardStyle,

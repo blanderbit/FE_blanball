@@ -12,7 +12,7 @@
         />
       </div>
       <div class="b-preview-event-modal__main-side">
-        <EventCard :card="eventData" />
+        <EventCard :card="eventData" :disabledMap="true" />
       </div>
     </div>
   </div>

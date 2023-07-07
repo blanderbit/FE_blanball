@@ -13,11 +13,7 @@
 
 html {
   overflow: hidden !important;
-  -ms-overflow-style: none; /* for Internet Explorer, Edge */
-  scrollbar-width: none; /* for Firefox */
-  ::-webkit-scrollbar {
-    display: none; /* for Chrome, Safari, and Opera */
-  }
+  @include remove-scrollbar;
 }
 
 .vs__dropdown-menu {
@@ -134,4 +130,13 @@ input[type='password']::-ms-reveal {
 .grad-bar,
 .hue-bar {
   position: relative;
+}
+
+.resize-observer {
+  height: 1px !important;
+  width: 1px !important;
+  object {
+    height: 1px !important;
+    width: 1px !important;
+  }
 }

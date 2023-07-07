@@ -73,9 +73,10 @@
         <events-filters
           v-if="!selected.length"
           :modelValue="filters"
+          :elementsCount="paginationTotalCount"
           @update:value="setFilters"
           @clearFilters="clearFilters"
-          :elementsCount="paginationTotalCount"
+          @updatedActiveFilters="recalculateHeightAfterUpdateFiltersActive"
         >
           <template #tabs>
             <div class="b-events-page__tabs">
@@ -122,7 +123,10 @@
             </div>
           </div>
         </FilterBlock>
-        <div class="b-events-page__all-events-block">
+        <div
+          class="b-events-page__all-events-block"
+          :style="`height: ${myEventsBlockHeight}`"
+        >
           <smartGridList
             :list="paginationElements"
             ref="refList"
@@ -206,12 +210,14 @@ import { addMinutes } from '../../../utils/addMinutes';
 import { getDate } from '../../../utils/getDate';
 import { getTime } from '../../../utils/getTime';
 import { prepareEventUpdateData } from '../../../utils/prepareEventUpdateData';
+import { calcHeight } from '../../../utils/calcHeight';
+import { useUserDataStore } from '../../../stores/userData';
 import {
   startSpinner,
   finishSpinner,
 } from '../../../workers/loading-worker/loading.worker';
 
-import CONSTANTS from '../../../consts/index';
+import { CONSTS } from '../../../consts/index';
 
 import Plus from '../../../assets/img/plus.svg';
 import WhiteBucket from '../../../assets/img/white-bucket.svg';
@@ -290,6 +296,7 @@ export default {
     const nextRoutePath = ref('');
     const actionEventModalData = ref({});
     const submitModalData = ref({});
+    const userStore = useUserDataStore();
 
     const actionEventModalConfig = computed({
       get() {
@@ -318,6 +325,20 @@ export default {
       set() {},
     });
 
+    const allEventsBlockHeightConfig = ref({
+      default: [90, 65, 115, 60],
+      mobile: [userStore.user.is_verified ? 0 : 40, -20],
+      tablet: [userStore.user.is_verified ? 0 : 40],
+      recalculateOnVerifyEmail: true,
+    });
+    const { calculatedHeight, minusHeight, plusHeight } = calcHeight(
+      ...Object.values(allEventsBlockHeightConfig.value)
+    );
+
+    const myEventsBlockHeight = computed(() => {
+      return `${calculatedHeight.value}px`;
+    });
+
     const iconPlus = computed(() => Plus);
 
     const emptyListMessages = computed(() => {
@@ -338,12 +359,12 @@ export default {
 
     const mockData = computed(() => {
       return {
-        event_cards: CONSTANTS.event_page.event_cards,
-        my_events: CONSTANTS.event_page.my_events,
-        sport_type_dropdown: CONSTANTS.event_page.sport_type_dropdown,
-        gender_dropdown: CONSTANTS.event_page.gender_dropdown,
-        calendar: CONSTANTS.event_page.calendar,
-        menu_text: CONSTANTS.event_page.menu_text(
+        event_cards: CONSTS.event_page.event_cards,
+        my_events: CONSTS.event_page.my_events,
+        sport_type_dropdown: CONSTS.event_page.sport_type_dropdown,
+        gender_dropdown: CONSTS.event_page.gender_dropdown,
+        calendar: CONSTS.event_page.calendar,
+        menu_text: CONSTS.event_page.menu_text(
           selectedContextMenuEvent.value.pinned
         ),
       };
@@ -421,6 +442,14 @@ export default {
           break;
       }
     };
+
+    function recalculateHeightAfterUpdateFiltersActive(status) {
+      if (status) {
+        minusHeight(45);
+      } else {
+        plusHeight(45);
+      }
+    }
 
     function switchEvents() {
       router.push(ROUTES.APPLICATION.EVENTS.absolute);
@@ -763,6 +792,7 @@ export default {
       contextMenuX,
       contextMenuY,
       PinIcon,
+      myEventsBlockHeight,
       actionEventModalConfig,
       isEventUpdateModalOpened,
       paginationTotalCount,
@@ -794,6 +824,7 @@ export default {
       closeSubmitModal,
       showSubmitModal,
       closeEventUpdateModal,
+      recalculateHeightAfterUpdateFiltersActive,
       pinEvents,
       contextMenuItemClick,
       closeEventActiondModal,
@@ -824,6 +855,7 @@ $color-dfdeed: #dfdeed;
   grid-template-columns: 1fr 256px;
   grid-gap: 28px;
   position: relative;
+  height: fit-content;
 
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
@@ -842,7 +874,7 @@ $color-dfdeed: #dfdeed;
     height: 44px;
     right: 25px;
     z-index: 10;
-    bottom: 30%;
+    bottom: calc(15% + 20px);
 
     @media (max-width: 992px) {
       display: flex;

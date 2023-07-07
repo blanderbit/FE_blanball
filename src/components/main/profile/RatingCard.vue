@@ -24,12 +24,10 @@
         <span>{{ ratingScale || 0 }}</span> / {{ ratingMaxValue }}
       </div>
     </div>
-    <div
-      v-if="ratingScale && reviewsCount"
-      class="b-show-reviews-button"
-      @click="$emit('showReviewsModal')"
-    >
-      Переглянути відгуки ({{ reviewsCount }})
+    <div v-if="ratingScale && reviewsCount" class="b-show-reviews-button">
+      <span @click="!disabled ? $emit('showReviewsModal') : null">
+        Переглянути відгуки ({{ reviewsCount }})</span
+      >
     </div>
   </div>
 </template>
@@ -39,7 +37,7 @@ import { computed } from 'vue';
 
 import StarRating from 'vue-star-rating';
 
-import CONSTS from '../../../consts';
+import { CONSTS } from '../../../consts';
 
 export default {
   components: {
@@ -53,6 +51,10 @@ export default {
     reviewsCount: {
       type: Number,
       default: null,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
   setup() {
@@ -146,7 +148,10 @@ $color-fcfcfc: #fcfcfc;
     line-height: 20px;
     text-align: center;
     margin-top: 16px;
-    cursor: pointer;
+
+    span {
+      cursor: pointer;
+    }
 
     @include tabletAndMobile {
       text-align: left;

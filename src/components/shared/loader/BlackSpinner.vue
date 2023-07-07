@@ -105,4 +105,33 @@ export default {
     }
   }
 }
+
+.spiner-text {
+  display: none;
+}
+.spiner-wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: rgba(239, 239, 246, 0.38);
+  width: 100%;
+}
+.spiner-wrapper .spiner-body {
+  background: transparent;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  .spiner {
+    .lds-ring,
+    .lds-ring div {
+      width: 50px;
+      height: 50px;
+    }
+    .lds-ring div {
+      border-color: white transparent transparent transparent;
+    }
+  }
+}
 </style>

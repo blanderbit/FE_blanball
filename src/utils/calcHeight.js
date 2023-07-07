@@ -1,5 +1,10 @@
-import { ref } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { BlanballEventBus } from '../workers/event-bus-worker';
+
+export const setHeightVH = () => {
+  const doc = document.documentElement;
+  doc.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
+};
 
 export const calcHeight = (
   defaultHeights = [],
@@ -54,6 +59,23 @@ export const calcHeight = (
   };
 
   calculate();
+
+  onMounted(() => {
+    window.addEventListener('resize', onAppHeightResize);
+  });
+
+  onBeforeUnmount(() => {
+    window.removeEventListener('resize', onAppHeightResize);
+  });
+
+  watch(
+    defaultHeights,
+    () => {
+      console.log('dffddf');
+      calculate();
+    },
+    { deep: true }
+  );
 
   return {
     appHeightValue,

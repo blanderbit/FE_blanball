@@ -80,6 +80,7 @@ import inputCode from '../../../shared/inputCode/InputCode.vue';
 import MainInput from '../../../shared/input/MainInput.vue';
 
 import { API } from '../../../../workers/api-worker/api.worker';
+import { refreshTokens } from '../../../../utils/refreshTokens';
 import {
   startSpinner,
   finishSpinner,
@@ -114,7 +115,7 @@ export default {
     });
     const saveBtnTitle = computed(() => {
       return currentStep.value === 1
-        ? t('buttons.save-changes')
+        ? t('buttons.get-code')
         : t('buttons.approve');
     });
 
@@ -162,6 +163,7 @@ export default {
       await API.UserService.sendApproveCode({
         verify_code: data.values.verify_code,
       });
+      await refreshTokens();
       emit('email');
       closeModal();
     }

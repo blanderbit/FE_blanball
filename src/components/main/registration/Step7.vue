@@ -32,7 +32,7 @@ export default {
         subTitle: t('register.tell-about-yourself'),
         nextButton: {
           exist: true,
-          text: t('register.adjust'),
+          text: t('register.configure'),
           width: 180,
           icon: arrowRight,
         },

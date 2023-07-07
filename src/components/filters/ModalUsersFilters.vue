@@ -59,7 +59,7 @@ import RadioGenderBox from './components/RadioGenderBox.vue';
 
 import tickIcon from '../../assets/img/tick-white.svg';
 
-import CONSTANTS from '../../consts/index';
+import { CONSTS } from '../../consts/index';
 
 export default {
   name: 'ModalUsersFilters',
@@ -101,7 +101,7 @@ export default {
     const ageRangeData = ref(props.rangeSlider);
     const genderData = ref(props.gender);
 
-    const positions = computed(() => CONSTANTS.profile.position);
+    const positions = computed(() => CONSTS.profile.position);
     const icon = computed(() => tickIcon);
 
     watch(

@@ -8,7 +8,7 @@
           :key="item.id"
         >
           <img :src="item?.img" alt="" />
-          <span class="b-context-modal__text">{{ item.text }}</span>
+          <span class="b-context-modal__text">{{ $t(item.text) }}</span>
         </li>
       </ul>
     </div>
@@ -69,10 +69,7 @@ export default {
 $color-f0f0f4: #f0f0f4;
 
 .b-context-modal__wrapper {
-  position: absolute;
-  width: 100vw;
-  @include calc-height;
-  z-index: 999;
+  @include modal-wrapper(transperent);
 
   .b-context-modal {
     width: 228px;
@@ -105,6 +102,7 @@ $color-f0f0f4: #f0f0f4;
 
         &:hover {
           background: $color-f0f0f4;
+          border-radius: 6px;
         }
       }
     }

@@ -36,7 +36,7 @@ export default {
     },
   },
   setup(props) {
-    const { onResize, isMobile } = useWindowWidth();
+    const { isMobile } = useWindowWidth();
 
     const labelPosition = computed(() => {
       if (props.position) {
@@ -45,13 +45,6 @@ export default {
       return isMobile.value ? 'bottom' : 'right';
     });
 
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
-    });
 
     return {
       isMobile,

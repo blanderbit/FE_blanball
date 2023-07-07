@@ -9,11 +9,13 @@ import Dates from './dates';
 import Profile from './profile';
 import Forms from './forms';
 import Sidebar from './sidebar';
-import EventJoin from './event-join'
+import EventJoin from './event-join';
 import Policy from './policy';
 import Storages from './storages';
+import Scheduler from './scheduler';
+import Chat from './chat';
 
-export default {
+export const CONSTS = {
   users_page: UsersPage,
   star_style: starStyle,
   register: Register,
@@ -27,5 +29,7 @@ export default {
   sidebar: Sidebar,
   eventJoin: EventJoin,
   policy: Policy,
-  storages: Storages
+  storages: Storages,
+  scheduler: Scheduler,
+  chat: Chat,
 };

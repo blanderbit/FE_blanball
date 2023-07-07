@@ -72,7 +72,7 @@
     </Form>
     <div class="b-login-step__has-no-account">
       {{ $t('login.no-account') }}
-      <span @click="openRegisterPage()">{{ $t('login.register') }}</span>
+      <span @click="openRegisterPage">{{ $t('login.register') }}</span>
     </div>
   </div>
 </template>
@@ -89,10 +89,13 @@ import checkBox from '../../shared/checkbox/Checkbox.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { accessToken, refreshToken } from '../../../workers/token-worker';
-import { startSpinner , finishSpinner} from '../../../workers/loading-worker/loading.worker';
+import {
+  startSpinner,
+  finishSpinner,
+} from '../../../workers/loading-worker/loading.worker';
 
 import { ROUTES } from '../../../router/router.const';
-import CONSTS from '../../../consts';
+import { CONSTS } from '../../../consts';
 import SCHEMAS from '../../../validators/schemas';
 
 export default {
@@ -153,14 +156,14 @@ export default {
               match?.path?.includes('pathMatch')
             )
           ) {
-            return router.push(ROUTES.APPLICATION.EVENTS.absolute);
+            return await router.push(ROUTES.APPLICATION.EVENTS.absolute);
           }
-          return router.push(redirectUrl);
+          return await router.push(redirectUrl);
         }
         await router.push(ROUTES.APPLICATION.EVENTS.absolute);
+        finishSpinner();
       } catch (e) {
         isWrongCreds.value = true;
-      } finally {
         finishSpinner();
       }
     };
@@ -279,7 +282,6 @@ $color-8a8aa8: #8a8aa8;
   }
   .b-login-step__forgot-password {
     text-align: right;
-    cursor: pointer;
     margin-top: 8px;
     span {
       font-family: 'Inter';
@@ -289,6 +291,7 @@ $color-8a8aa8: #8a8aa8;
       line-height: 20px;
       color: $color-8a8aa8;
       border-bottom: 1px dashed $color-8a8aa8;
+      cursor: pointer;
     }
     @include mobile {
       display: none;

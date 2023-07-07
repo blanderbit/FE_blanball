@@ -11,6 +11,7 @@ export const EndpointsEnum = {
     ResetComplete: '/authentication/client/password/reset-complete',
     AddAvatar: '/authentication/client/update/my/profile/avatar',
     VerifyEmail: '/authentication/client/request-verify/email',
+    ValidateRefreshToken: '/authentication/client/validate/refresh/token',
   },
   Notification: {
     Index: '/notifications/client/my/notifications/list',
@@ -20,7 +21,8 @@ export const EndpointsEnum = {
     Maintenance: '/notifications/admin/get/maintenance',
     DeleteAllMyNotifications: '/notifications/client/delete/all/notifications',
     ReadAllMyNotifications: '/notifications/client/read/all/notifications',
-    GetAllMyNotificationsIds: '/notifications/client/get/all/my/notifications/ids',
+    GetAllMyNotificationsIds:
+      '/notifications/client/get/all/my/notifications/ids',
   },
   Events: {
     GetAllEvents: '/events/client/planned/events/list',
@@ -73,5 +75,18 @@ export const EndpointsEnum = {
   },
   BugReports: {
     CreateBugReport: '/bugs/client/create/bug',
+  },
+  Scheduler: {
+    GetScheduledEventsData: '/scheduler/client/user/scheduler/events',
+    getScheduledEventsDataOnSpecificDay:
+      '/scheduler/client/user/scheduler/events/on/specific/day',
+  },
+  Hints: {
+    GetAllHints: '/hints/client/hints/list',
+  },
+  Chats: {
+    GetChatMessages: (chatId) => `/chat/client/chat/messages/list/${chatId}`,
+    CreateChatMessage: '/chat/client/create/message',
+    GetChatUsers: (chatId) => `/chat/client/chat/users/list/${chatId}`,
   },
 };

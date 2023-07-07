@@ -30,6 +30,11 @@ export const ROUTES = {
       absolute: '/application/versions',
       name: 'application-versions',
     },
+    CHAT: {
+      relative: 'chat/:id',
+      absolute: (chatId) => `/application/chat/${chatId}`,
+      name: 'application-chat',
+    },
     COMPANY: {
       relative: 'company',
       absolute: '/application/company',
@@ -147,5 +152,5 @@ export const ROUTES = {
     relative: '/cookie/policy',
     absolute: '/cookie/policy',
     name: 'cookie-policy',
-  }
+  },
 };

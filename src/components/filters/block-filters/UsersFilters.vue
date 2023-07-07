@@ -41,8 +41,10 @@
           <div class="b-main-search__right-block">
             <div class="b-main-search__search-input-desktop">
               <MainInput
+                :outside-title="true"
                 :title-width="0"
                 :placeholder="$t('users.users-search')"
+                :title="$t('users.users-search')"
                 inputMode="search"
                 :height="32"
                 :icon="icons.search"
@@ -57,7 +59,7 @@
             ></button-details-filters>
           </div>
         </div>
-        <div class="b-main-search__second-line" v-if="activeFilters">
+        <div class="b-main-search__second-line" v-show="activeFilters">
           <div class="b-main-search__left-side">
             <div class="b-users-filters__age-filter-wrap">
               <RangeFilter
@@ -96,8 +98,10 @@
           <div class="b-main-search__right-part d-flex align-items-center">
             <div class="b-main-search__search-input me-2">
               <MainInput
+                :outside-title="true"
                 :title-width="0"
                 :placeholder="$t('users.users-search')"
+                :title="$t('users.users-search')"
                 inputMode="search"
                 :height="32"
                 :backgroundColor="'#fff'"
@@ -108,20 +112,24 @@
             </div>
             <MainInput
               v-if="isMobileSearchOpened"
+              :outside-title="true"
               :title-width="0"
               :placeholder="$t('users.users-search')"
+              :title="$t('users.users-search')"
               inputMode="search"
               :height="32"
               :backgroundColor="'#fff'"
               :icon="icons.cross"
               name="search"
               v-model="transformedFilters.search"
-              @icon-click="closeMobileSearch"
+              @rightIconClick="closeMobileSearch"
             />
             <MainInput
+              :outside-title="true"
               class="b-main-search__search-input-tablet"
               :title-width="0"
               :placeholder="$t('users.users-search')"
+              :title="$t('users.users-search')"
               inputMode="search"
               :height="36"
               :backgroundColor="'#fff'"
@@ -177,7 +185,7 @@ import RangeFilter from '../components/RangeFilter.vue';
 import { TransformedFiltersWorker } from './transformed.filters.worker';
 import { useWindowWidth } from '../../../utils/widthScreen';
 
-import CONSTANTS from '../../../consts';
+import { CONSTS } from '../../../consts';
 
 import SearchIcon from '../../../assets/img/search.svg';
 import arrowsUpIcon from '../../../assets/img/sort-arrows.svg';
@@ -220,7 +228,7 @@ export default {
     const isModalFiltersActive = ref(false);
     const route = useRoute();
     const isMobileSearchOpened = ref(false);
-    const { isMobile, isTablet, onResize } = useWindowWidth();
+    const { isMobile, isTablet } = useWindowWidth();
     const icons = computed(() => {
       return {
         search: SearchIcon,
@@ -233,8 +241,8 @@ export default {
         ? { title: 'Cпочатку нові', icon: arrowsUpIcon }
         : { title: 'Cпочатку старі', icon: arrowsDownIcon };
     });
-    const gender = computed(() => CONSTANTS.users_page.gender);
-    const positions = computed(() => CONSTANTS.profile.position);
+    const gender = computed(() => CONSTS.users_page.gender);
+    const positions = computed(() => CONSTS.profile.position);
 
     const { activeFilters, updateRealData, transformedFilters } =
       TransformedFiltersWorker({
@@ -288,14 +296,6 @@ export default {
         route.query.date_and_time_before ||
         route.query.date_and_time_after
       );
-    });
-
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
     });
 
     function clearFilters() {

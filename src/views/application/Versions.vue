@@ -3,7 +3,7 @@
     <div class="b-versions__title">
       Тут буде написано що саме мидодали до наявного функціоналу
     </div>
-    <div class="b-versions-content">
+    <div class="b-versions-content" :style="`height: ${versionsContentHeight}`">
       <div v-if="selectedVersionData" class="b-versions__main-side">
         <div v-if="selectedVersionData.images.length" class="b-images-block">
           <vueper-slides
@@ -12,7 +12,7 @@
             :allowTouchMove="false"
             :bullets="false"
             :loop="true"
-            :simulateTouch=false
+            :simulateTouch="false"
             :gap="2"
             :draggingDistance="10"
             :arrows-outside="false"
@@ -101,7 +101,10 @@
                     $t('versions.version-number', { number: version.version })
                   }}
                 </div>
-                <div v-if="version.id === newVersionId" class="b-version__new">
+                <div
+                  v-if="version.id === newVersionId && paginationPage === 1"
+                  class="b-version__new"
+                >
                   {{ $t('versions.new') }}
                 </div>
               </div>
@@ -144,6 +147,8 @@ import { cloneDeep } from 'lodash';
 
 import { API } from '../../workers/api-worker/api.worker';
 import { PaginationWorker } from '../../workers/pagination-worker';
+import { calcHeight } from '../../utils/calcHeight';
+import { useUserDataStore } from '../../stores/userData';
 
 import { VueperSlides, VueperSlide } from 'vueperslides';
 import 'vueperslides/dist/vueperslides.css';
@@ -159,9 +164,21 @@ export default {
     const selectedVersionData = ref(
       handleVersionData(route.meta.allVersions.results[0])
     );
+    const userStore = useUserDataStore();
 
     const newVersionId = computed(() => {
       return paginationElements.value[0]?.id;
+    });
+
+    const { calculatedHeight } = calcHeight(
+      [90, 75],
+      [userStore.user.is_verified ? 0 : 40],
+      [userStore.user.is_verified ? 0 : 40],
+      true
+    );
+
+    const versionsContentHeight = computed(() => {
+      return `${calculatedHeight.value}px`;
     });
 
     function handleVersionData(data) {
@@ -200,16 +217,21 @@ export default {
     } = PaginationWorker({
       paginationDataRequest: (page) =>
         API.VersionsService.getAllVersions({ page: page }),
-      // dataTransformation: (item) => {},
+      dataTransformation: handlingIncomeVersionsData,
+      notToConcatElements: true,
     });
 
-    paginationPage.value = 1;
-    paginationTotalCount.value = route.meta.allVersions.total_count;
-    paginationElements.value = route.meta.allVersions.results.map((version) => {
+    function handlingIncomeVersionsData(version) {
       return {
         ...version,
         created_at: dayjs(version.created_at).format('DD.MM.YYYY'),
       };
+    }
+
+    paginationPage.value = 1;
+    paginationTotalCount.value = route.meta.allVersions.total_count;
+    paginationElements.value = route.meta.allVersions.results.map((version) => {
+      return handlingIncomeVersionsData(version);
     });
 
     const loadDataPaginationData = (pageNumber, $state) => {
@@ -243,6 +265,7 @@ export default {
       paginationElements,
       totalPagesCount,
       paginationPage,
+      versionsContentHeight,
       newVersionId,
       loadVersions,
       switchVersion,
@@ -296,7 +319,6 @@ ul {
       flex-direction: column;
       overflow-y: scroll;
       padding-bottom: 20px;
-      @include calc-height(90px, 75px);
     }
 
     .b-versions__main-side {
@@ -398,7 +420,7 @@ ul {
 
         .b-versions-list__version {
           background: $--b-main-white-color;
-          border: 1px solid #f0f0f4;
+          border: 1px solid $color-f0f0f4;
           border-radius: 6px;
           padding: 16px;
           display: flex;

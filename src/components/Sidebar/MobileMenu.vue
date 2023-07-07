@@ -251,7 +251,7 @@ import { NotificationsBus } from '../../workers/event-bus-worker';
 import { calcHeight } from '../../utils/calcHeight';
 
 import { ROUTES } from '../../router/router.const';
-import CONSTS from '../../consts';
+import { CONSTS } from '../../consts';
 
 import NotificationIcon from '../../assets/img/notification-mob-default.svg';
 import NotificationWhite from '../../assets/img/notifications-not-read-mobile-icon.svg';
@@ -533,15 +533,14 @@ export default {
     }
 
     const mobileMenuTopSideHeightConfig = ref({
-      default: [60, 32, 48, 16],
-      mobile: [selectedList.value.length ? 60 : 0],
-      tablet: [selectedList.value.length ? 60 : 0],
+      default: [60, 32, 48, 20],
+      mobile: [selectedList.value.length ? 10 : 0],
+      tablet: [selectedList.value.length ? 50 : 0],
     });
 
     const {
       calculatedHeight,
       minussedHeight,
-      onAppHeightResize,
       minusHeight,
       plusHeight,
     } = calcHeight(...Object.values(mobileMenuTopSideHeightConfig.value));
@@ -553,10 +552,10 @@ export default {
     watchEffect(
       () => {
         if (selectedList.value.length >= 0 && minussedHeight.value <= 0) {
-          minusHeight(60);
+          minusHeight(50);
         }
         if (selectedList.value.length === 0) {
-          plusHeight(60);
+          plusHeight(50);
           selectable.value = false;
         }
       },
@@ -678,14 +677,7 @@ export default {
         restartInfiniteScroll();
       }
     };
-
-    onMounted(() => {
-      window.addEventListener('resize', onAppHeightResize);
-    });
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onAppHeightResize);
-    });
-
+    
     return {
       topMenu,
       selectable,
@@ -1007,7 +999,7 @@ $color-1ccd62: #1ccd62;
 }
 .b-bottom-block__info {
   padding: 12px 16px 0px 0px;
-  border-top: 1px solid #dfdeed;
+  border-top: 1px solid $color-dfdeed;
   width: calc(100% + 32px);
   margin-left: -16px;
   padding-left: 16px;

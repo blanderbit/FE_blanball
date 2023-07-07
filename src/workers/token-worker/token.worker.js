@@ -1,6 +1,6 @@
-import pinia from '../../plugins/pinia';
+import { pinia } from '../../plugins/pinia.plugin';
 import { useTokensStore } from '../../stores/tokens';
-import CONSTS from '../../consts';
+import { CONSTS } from '../../consts';
 
 const tokensStore = useTokensStore(pinia);
 
@@ -24,6 +24,16 @@ export class TokenServiceWorker {
     );
   }
 
+  getTokenStorageType() {
+    if (localStorage.getItem(this._getKeyName())) {
+      return CONSTS.storages.LOCAL_STORAGE;
+    } else if (sessionStorage.getItem(this._getKeyName())) {
+      return CONSTS.storages.SESSION_STORAGE;
+    } else {
+      return;
+    }
+  }
+
   clearToken() {
     localStorage.removeItem(this._getKeyName());
     sessionStorage.removeItem(this._getKeyName());
@@ -37,9 +47,7 @@ export class TokenServiceWorker {
           : CONSTS.storages.SESSION_STORAGE,
       });
     }
-    if (!storage_type) {
-      storage_type = tokensStore.tokenSettedStoreType;
-    }
+    storage_type = tokensStore.tokenSettedStoreType;
     switch (storage_type) {
       case CONSTS.storages.LOCAL_STORAGE:
         localStorage.setItem(this._getKeyName(), data);

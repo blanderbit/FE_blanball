@@ -14,6 +14,7 @@ import {
 import { WebSocketTypes } from '../../web.socket.types';
 import { NotificationImage } from '../../../../assets/img/notifications/notification.images';
 import { ROUTES } from '../../../../router/router.const';
+import { i18n } from '../../../../plugins/i18n.plugin';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.EventUpdated)
@@ -27,7 +28,7 @@ import { ROUTES } from '../../../../router/router.const';
       ),
     actionType: MessageActionDataTypes.UrlCallback,
     buttonType: 'success',
-    buttonText: 'На сторінку події',
+    buttonText: i18n.global.t('push_notifications.event_updated.first_button'),
     buttonWidth: 134,
     buttonHeight: 28,
   },
@@ -35,12 +36,13 @@ import { ROUTES } from '../../../../router/router.const';
 export class EventUpdatedMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `Організатор події «${data.event.name}» вніс зміни до умов участі в заході. 
-      За детальною інформацією зверніться до сторінки події`,
+      i18n.global.t('push_notifications.event_updated.text', {
+        eventName: data.event.name,
+      }),
     ];
   }
 
   createTitle() {
-    return 'Змінення умов участі у події';
+    return i18n.global.t('push_notifications.event_updated.title');
   }
 }

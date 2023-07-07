@@ -42,7 +42,6 @@
       <div
         class="b-auth__right-part"
         v-if="currentStep === 10 && windowWidth > 768"
-        style="height: 600px"
       >
         <position-map></position-map>
       </div>
@@ -53,7 +52,7 @@
 <script>
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import PositionMap from './maps/PositionMap.vue';
-import CONSTANTS from '../consts/index';
+import { CONSTS } from '../consts/index';
 import { useWindowWidth } from '../utils/widthScreen';
 
 export default {
@@ -84,10 +83,10 @@ export default {
     },
   },
   setup(props) {
-    const { windowWidth, isMobileSmall, onResize } = useWindowWidth();
+    const { windowWidth, isMobileSmall } = useWindowWidth();
     const mockData = computed(() => {
       return {
-        LOGIN: CONSTANTS.register.authBlockTypes.login,
+        LOGIN: CONSTS.register.authBlockTypes.login,
       };
     });
 
@@ -101,13 +100,6 @@ export default {
       }
     });
 
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('resize', onResize);
-    });
     return {
       mockData,
       windowWidth,
@@ -228,6 +220,7 @@ export default {
       background-position: 0 0;
       width: 560px;
       position: relative;
+      height: 100%;
       @media (max-width: 992px) {
         display: none;
       }

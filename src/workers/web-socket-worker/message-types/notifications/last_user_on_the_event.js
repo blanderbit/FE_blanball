@@ -14,6 +14,7 @@ import {
 import { WebSocketTypes } from '../../web.socket.types';
 import { NotificationImage } from '../../../../assets/img/notifications/notification.images';
 import { ROUTES } from '../../../../router/router.const';
+import { i18n } from '../../../../plugins/i18n.plugin';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.LastUserOnTheEvent)
@@ -22,7 +23,9 @@ import { ROUTES } from '../../../../router/router.const';
   {
     type: MessageActionTypes.ActionClose,
     buttonType: 'success',
-    buttonText: 'Чудово',
+    buttonText: i18n.global.t(
+      'push_notifications.last_user_on_the_event.first_button'
+    ),
     buttonWidth: 76,
     buttonHeight: 28,
   },
@@ -34,7 +37,9 @@ import { ROUTES } from '../../../../router/router.const';
       ),
     actionType: MessageActionDataTypes.UrlCallback,
     buttonType: 'default',
-    buttonText: 'На сторінку події',
+    buttonText: i18n.global.t(
+      'push_notifications.last_user_on_the_event.second_button'
+    ),
     buttonWidth: 133,
     buttonHeight: 28,
   },
@@ -42,11 +47,13 @@ import { ROUTES } from '../../../../router/router.const';
 export class LastUserOnTheEventMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `Подія «${data.event.name}» вже набрала необхідну кількість учасників"`,
+      i18n.global.t('push_notifications.last_user_on_the_event.text', {
+        eventName: data.event.name,
+      }),
     ];
   }
 
   createTitle() {
-    return 'Реєстрацію завершено';
+    return i18n.global.t('push_notifications.last_user_on_the_event.title');
   }
 }

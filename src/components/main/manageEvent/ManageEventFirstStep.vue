@@ -147,10 +147,7 @@
       v-if="eventLocation.lat && eventLocation.lng"
       class="b-event-m-1st__event-map"
     >
-      <position-map
-        :coords="eventLocationOnMap"
-        disable-change-coords
-      >
+      <position-map :coords="eventLocationOnMap" disable-change-coords>
       </position-map>
     </div>
   </div>
@@ -169,7 +166,7 @@ import radioButton from '../../shared/radioButton/RadioButton.vue';
 import PositionMap from '../../maps/PositionMap.vue';
 import EventCreatePositionMap from './modals/EventCreatePositionMapModal.vue';
 
-import CONSTANTS from '../../../consts/index';
+import { CONSTS } from '../../../consts/index';
 
 import CalendarPic from '../../../assets/img/calendar.svg';
 import WatchPic from '../../../assets/img/watch.svg';
@@ -289,7 +286,7 @@ export default {
     });
     const mockData = computed(() => {
       return {
-        typeOfSportDropdown: CONSTANTS.manage_event.type_of_sport_dropdown,
+        typeOfSportDropdown: CONSTS.manage_event.type_of_sport_dropdown,
       };
     });
 
@@ -347,6 +344,10 @@ $color-f0f0f4: #f0f0f4;
       justify-content: space-between;
       padding: 0 12px;
       position: relative;
+
+      .b-main-search__calendar {
+        width: 100%;
+      }
       .b-event-m-1st__label {
         position: absolute;
         left: 2px;
@@ -367,6 +368,7 @@ $color-f0f0f4: #f0f0f4;
           height: 40px;
           border: transparent;
           width: 100%;
+          outline: none;
         }
       }
     }
