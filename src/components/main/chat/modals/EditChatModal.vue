@@ -38,7 +38,7 @@
         />
       </div>
 
-      <ChatUsersList :chatData="chatData"/>
+      <!-- <ChatUsersList :chatData="chatData"/> -->
     </div>
   </div>
 </template>

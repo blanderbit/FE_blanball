@@ -3,7 +3,7 @@
     v-if="isContextMenuActive"
     :clientX="contextMenuX"
     :clientY="contextMenuY"
-    :menu-text="mockData.menu_text"
+    :contextMenuItems="mockData.menu_text"
     @close-modal="isContextMenuActive = false"
     @itemClick="contextMenuItemClick"
   />

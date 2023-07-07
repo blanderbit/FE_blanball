@@ -3,7 +3,7 @@
     v-if="isContextMenuOpened"
     :clientX="contextMenuX"
     :clientY="contextMenuY"
-    :menu-text="chatMessageContextMenuItems"
+    :contextMenuItems="chatMessageContextMenuItems"
     @close-modal="closeContextMenu"
     @itemClick="contextMenuItemClick"
   />
@@ -123,7 +123,10 @@ export default {
       paginationLoad,
     } = WebSocketPaginationWorker({
       paginationDataRequest: (page) =>
-        API.ChatService.getChatMessages({ chat_id: props.chatData.id, page: page }),
+        API.ChatService.getChatMessages({
+          chat_id: props.chatData.id,
+          page: page,
+        }),
       dataTransformation: handlingIncomeMessagesData,
     });
 
@@ -141,7 +144,7 @@ export default {
         let isNextMessageFromTheSameSender = false;
 
         const showAvatar = props.chatData.isGroup
-          ? !isMessageMine && (!nextMessage || !isNextMessageFromTheSameSender)
+          ? !isMessageMine && !isNextMessageFromTheSameSender
           : false;
 
         return {

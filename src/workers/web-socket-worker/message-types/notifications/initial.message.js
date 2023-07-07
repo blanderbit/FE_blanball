@@ -56,7 +56,7 @@ export class InitialMessage {
     return this.data?.sender?.avatar;
   }
 
-  get sender() {s
+  get sender() {
     return this.fullName || 'Blanball';
   }
 

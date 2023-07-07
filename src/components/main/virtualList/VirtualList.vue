@@ -10,14 +10,14 @@
       <slot name="before"></slot>
     </template>
     <template v-slot="{ item, index, active, itemWithSize }">
-
       <DynamicScrollerItem
         :item="item"
         :active="active"
         :sizeDependencies="[elements.length, item.metadata.expanding]"
         :data-index="index"
       >
-        <Notification
+        <component
+          :is="recordComponent"
           :notificationInstance="item"
           :selectable="selectable"
           :active="activeNotification === item.notification_id"
@@ -27,9 +27,11 @@
           @handler-action="handlerAction($event, item)"
           @selected="handleSelected($event)"
           @openContextMenu="$emit('openContextMenu', $event)"
-          @selectNotificationAfterHold="$emit('selectNotificationAfterHold', $event)"
+          @selectNotificationAfterHold="
+            $emit('selectNotificationAfterHold', $event)
+          "
         >
-        </Notification>
+        </component>
       </DynamicScrollerItem>
     </template>
     <template #after>
@@ -41,7 +43,14 @@
 <script>
 import Notification from './Notification.vue';
 import { useRouter } from 'vue-router';
-import { ref, watch, nextTick, onMounted, onBeforeUnmount, computed } from 'vue';
+import {
+  ref,
+  watch,
+  nextTick,
+  onMounted,
+  onBeforeUnmount,
+  computed,
+} from 'vue';
 import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller';
 import { notificationButtonHandlerMessage } from '../../../workers/utils-worker';
 import { useWindowWidth } from '../../../utils/widthScreen';
@@ -55,7 +64,7 @@ export default {
   props: {
     elements: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     selectedList: {
       type: Array,
@@ -65,6 +74,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    recordComponent: {
+      type: String,
+      required: true,
+    },
   },
   emits: ['update:selected-list', 'update:scrollbar-existing', 'delete'],
   setup(context, { emit, expose }) {
@@ -72,13 +85,11 @@ export default {
     let list = ref(context.selectedList);
     let scroller = ref();
     const router = useRouter();
-    const maxSelectedNotificationsCount = 100
-
+    const maxSelectedNotificationsCount = 100;
 
     const { isMobile, isTablet, onResize } = useWindowWidth();
 
-
-    const isCollapsible = computed(() => !(isMobile.value || isTablet.value))
+    const isCollapsible = computed(() => !(isMobile.value || isTablet.value));
 
     onMounted(() => {
       window.addEventListener('resize', onResize);
@@ -113,7 +124,7 @@ export default {
     );
 
     const handlerAction = async (button, notificationInstance) => {
-      emit('removePushNotificationAfterSidebarAction', notificationInstance)
+      emit('removePushNotificationAfterSidebarAction', notificationInstance);
       await notificationButtonHandlerMessage({
         button,
         notificationInstance,

@@ -52,7 +52,7 @@ export default {
   margin: 0 auto;
   flex-wrap: wrap;
 
-  @include tabletAndMobile {
+  @media (max-width: 1300px) {
     width: max-content;
     justify-content: space-between;
     flex-direction: column;

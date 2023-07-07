@@ -1,28 +1,26 @@
-import { BasicButtonSlideActivatorModel } from "../models/basic.button.slide.activator.model";
-import notificationUnread from "../../../../assets/img/notificationUnread.svg";
-import notification from "../../../../assets/img/notification.svg";
-import { ActionModelTypeButton } from "../models/model.types";
-import { API } from "../../../../workers/api-worker/api.worker";
-import { TabModel } from "../models/tabs.model";
-import { createNotificationFromData } from "../../../../workers/utils-worker";
-import { ContextMenuModel } from "../models/context.menu.model";
-import { ref, computed, watch } from "vue";
+import { BasicButtonSlideActivatorModel } from '../models/basic.button.slide.activator.model';
+import notificationUnread from '../../../../assets/img/notificationUnread.svg';
+import notification from '../../../../assets/img/notification.svg';
+import { ActionModelTypeButton } from '../models/model.types';
+import { API } from '../../../../workers/api-worker/api.worker';
+import { TabModel } from '../models/tabs.model';
+import { createNotificationFromData } from '../../../../workers/utils-worker';
+import { ref, computed, watch } from 'vue';
+import { CONSTS } from '../../../../consts';
 
 import {
   AuthWebSocketWorkerInstance,
   GeneralSocketWorkerInstance,
 } from '../../../../workers/web-socket-worker';
 
-import {
-  NotificationsBus
-} from '../../../../workers/event-bus-worker';
+import { NotificationsBus } from '../../../../workers/event-bus-worker';
 
 const findDublicates = (list, newList) => {
   return newList.filter((item) =>
     list.length
       ? !list.find(
-      (oldItem) => oldItem.notification_id === item.notification_id
-      )
+          (oldItem) => oldItem.notification_id === item.notification_id
+        )
       : true
   );
 };
@@ -40,7 +38,8 @@ export const createNotificationConfigItem = (instance) => {
   };
 
   const handleMessageInSidebar = (instanceType) => {
-    const {paginationElements, paginationLoad, paginationPage} = notificationItem.activeTab.value;
+    const { paginationElements, paginationLoad, paginationPage } =
+      notificationItem.activeTab.value;
     if (instanceType.notification) {
       // skipids.value.push(instanceType.notification_id);
     }
@@ -60,7 +59,8 @@ export const createNotificationConfigItem = (instance) => {
   };
 
   const handleGeneralMessageInSidebar = (instanceType) => {
-    const {paginationElements, paginationLoad, paginationPage} = notificationItem.activeTab.value;
+    const { paginationElements, paginationLoad, paginationPage } =
+      notificationItem.activeTab.value;
     instanceType.handleUpdate({
       paginationElements,
       paginationLoad,
@@ -68,27 +68,26 @@ export const createNotificationConfigItem = (instance) => {
     });
   };
 
-
   const notificationItem = new BasicButtonSlideActivatorModel({
-    uniqueName:  'notification.point',
+    uniqueName: 'notification.point',
     title: 'notification.title',
     disabled: false,
     icon: computed(() => {
-      return notificationItem
-        .findTab('notification.slideConfig.not_read_notifications')
-        .badge.count.value
-          ? notificationUnread
-          : notification
+      return notificationItem.findTab(
+        'notification.slideConfig.not_read_notifications'
+      ).badge.count.value
+        ? notificationUnread
+        : notification;
     }),
     actionType: new ActionModelTypeButton({
       action: () => {
-        notificationItem.activity.value = !notificationItem.activity.value
-      }
+        notificationItem.activity.value = !notificationItem.activity.value;
+      },
     }),
-    onInit () {
+    onInit() {
       NotificationsBus.on('SidebarClearData', () => {
         // skipids.value = [];
-        const {paginationClearData} = notificationItem.active.tab.value;
+        const { paginationClearData } = notificationItem.active.tab.value;
         paginationClearData();
       });
 
@@ -104,17 +103,25 @@ export const createNotificationConfigItem = (instance) => {
         }
       );
       AuthWebSocketWorkerInstance.registerCallback(handleMessageInSidebar);
-      GeneralSocketWorkerInstance.registerCallback(handleGeneralMessageInSidebar);
-      getNotificationsCount()
+      GeneralSocketWorkerInstance.registerCallback(
+        handleGeneralMessageInSidebar
+      );
+      getNotificationsCount();
     },
     onDestroy() {
       AuthWebSocketWorkerInstance.destroyCallback(handleMessageInSidebar);
-      GeneralSocketWorkerInstance.destroyCallback(handleGeneralMessageInSidebar);
+      GeneralSocketWorkerInstance.destroyCallback(
+        handleGeneralMessageInSidebar
+      );
     },
     slideConfig: {
-      uniqueName:  'notification.slide',
-      title: "notification.slide",
+      uniqueName: 'notification.slide',
+      title: 'notification.slide',
       defaultTab: 'notification.slideConfig.all_notifications',
+      logo: {
+        img: '',
+        text: 'Мои Друзья',
+      },
       filters: [
         // Filter({
         //   request: () => true,
@@ -126,98 +133,84 @@ export const createNotificationConfigItem = (instance) => {
         // })
       ],
       tabs: [
-        new TabModel({
-          records: {
-            request: {
-              api: (data) => API.NotificationService.getNotifications(data),
-              filtersModel: {
-                type: {
-                  type: String,
-                  value: '',
-                },
-                skipids: {
-                  type: Array,
-                  value: [],
-                },
+        new TabModel(
+          {
+            records: {
+              record: {
+                componentName: 'Notification',
               },
-              dataTransformation: createNotificationFromData,
-              beforeConcat: findDublicates
-            },
-            signalProp: [
-              'selectable'
-            ],
-            selectable: true,
-            scrollStrategy: 'infinite',
-            watchChanges: ['contextMenu', 'openTab'],
-            contextMenu: [
-              new ContextMenuModel({
-                uniqueName:  'notification.slideConfig.all_notifications.read_one',
-                title: "notification.slideConfig.all_notifications.read_one",
-                request: (id) => API.NotificationService.readNotifications([id]),
-              }),
-              new ContextMenuModel({
-                uniqueName:  'notification.slideConfig.all_notifications.delete_one',
-                title: "notification.slideConfig.all_notifications.delete_one",
-                request: (id) => API.NotificationService.deleteNotifications([id]),
-              }),
-            ]
-          },
-          badge: {
-            count: 0
-          },
-          uniqueName:  'notification.slideConfig.all_notifications',
-          title: "notification.slideConfig.all_notifications",
-        }, instance),
-        new TabModel({
-          records: {
-            request: {
-              api: (data) => API.NotificationService.getNotifications({
-                ...data,
-                type: 'Unread'
-              }),
-              filtersModel: {
-                type: {
-                  type: String,
-                  value: '',
+              request: {
+                api: (data) => API.NotificationService.getNotifications(data),
+                filtersModel: {
+                  type: {
+                    type: String,
+                    value: '',
+                  },
+                  skipids: {
+                    type: Array,
+                    value: [],
+                  },
                 },
-                skipids: {
-                  type: Array,
-                  value: [],
-                },
+                dataTransformation: createNotificationFromData,
+                beforeConcat: findDublicates,
               },
-              dataTransformation: createNotificationFromData,
-              beforeConcat: findDublicates
+              selectable: false,
+              scrollStrategy: 'infinite',
+              watchChanges: ['contextMenu', 'openTab'],
+              contextMenu: CONSTS.sidebar.notificationsContextMenuItems,
             },
-            selectable: true,
-            scrollStrategy: 'infinite',
-            watchChanges: ['contextMenu', 'openTab'],
-            contextMenu: [
-              new ContextMenuModel({
-                uniqueName:  'notification.slideConfig.not_read_notifications.read_one',
-                title: "notification.slideConfig.not_read_notifications.read_one",
-                request: (id) => API.NotificationService.readNotifications([id]),
-              }),
-              new ContextMenuModel({
-                uniqueName:  'notification.slideConfig.not_read_notifications.delete_one',
-                title: "notification.slideConfig.not_read_notifications.delete_one",
-                request: (id) => API.NotificationService.deleteNotifications([id]),
-              }),
-            ]
+            badge: {
+              count: 0,
+            },
+            uniqueName: 'notification.slideConfig.all_notifications',
+            title: 'slide_menu.all-notifications',
           },
-          badge: {
-            count: 0
+          instance
+        ),
+        new TabModel(
+          {
+            records: {
+              record: {
+                componentName: 'Notification',
+              },
+              request: {
+                api: (data) =>
+                  API.NotificationService.getNotifications({
+                    ...data,
+                    type: 'Unread',
+                  }),
+                filtersModel: {
+                  type: {
+                    type: String,
+                    value: '',
+                  },
+                  skipids: {
+                    type: Array,
+                    value: [],
+                  },
+                },
+                dataTransformation: createNotificationFromData,
+                beforeConcat: findDublicates,
+              },
+              selectable: true,
+              scrollStrategy: 'infinite',
+              watchChanges: ['contextMenu', 'openTab'],
+              contextMenu: CONSTS.sidebar.notificationsContextMenuItems,
+            },
+            badge: {
+              count: 0,
+            },
+            uniqueName: 'notification.slideConfig.not_read_notifications',
+            title: 'slide_menu.not-read',
           },
-          uniqueName: 'notification.slideConfig.not_read_notifications',
-          title: "notification.slideConfig.not_read_notifications",
-        }, instance),
-      ]
-    }
+          instance
+        ),
+      ],
+    },
   });
 
-
-
   // TODO NEED OFF event
-  getNotificationsCount()
+  getNotificationsCount();
 
   return notificationItem;
 };

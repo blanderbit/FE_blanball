@@ -17,7 +17,7 @@
     <div
       class="b_slide_menu_wrapper"
       :style="{
-        right: isMenuOpened ? '-464px' : '0px',
+        right: isMenuOpened ? `-${mainSideWidth}px` : '0px',
       }"
     >
       <div
@@ -27,7 +27,7 @@
       >
         <img :src="arrowPosition" alt="" />
       </div>
-      <div class="b_slide_menu_main">
+      <div class="b_slide_menu_main" :style="slideMenuMainSideWidthStyle">
         <div class="b_slide_menu_top-block">
           <div class="b_slide_menu_logo">
             <slot name="logo"></slot>
@@ -76,6 +76,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    mainSideWidth: {
+      type: Number,
+      required: true,
+    },
   },
   emits: ['close'],
   setup(context, { emit }) {
@@ -115,12 +119,19 @@ export default {
       }
     }
 
+    const slideMenuMainSideWidthStyle = computed(() => {
+      return {
+        width: `${context.mainSideWidth}px`,
+      };
+    });
+
     return {
       arrowPosition,
       isPrivacyContextModalOpened,
       privacyContextModalY,
       privacyContextModalX,
       privacyContextModalItems,
+      slideMenuMainSideWidthStyle,
       showPrivacyContextModal,
       closePrivacyContextModal,
       privacyContextModalItemClick,

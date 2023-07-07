@@ -3,7 +3,7 @@
     v-if="isContextMenuOpened"
     :clientX="contextMenuX"
     :clientY="contextMenuY"
-    :menu-text="chatMessageContextMenuItems"
+    :contextMenuItems="chatMessageContextMenuItems"
     @close-modal="closeContextMenu"
     @itemClick="contextMenuItemClick"
   />

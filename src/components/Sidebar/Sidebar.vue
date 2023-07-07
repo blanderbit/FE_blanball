@@ -107,7 +107,6 @@
 import { ref, computed, onBeforeUnmount, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
-import NotificationsSlideMenu from '../SlideMenu/NotificationsSlideMenu.vue';
 import SlideMenu from '../SlideMenu/SlideMenu.vue';
 import userAvatar from '../shared/userAvatar/UserAvatar.vue';
 import BugReportModal from '../shared/modals/BugReportModal.vue';
@@ -115,11 +114,6 @@ import TabLabel from '../shared/tabLabel/TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';
 
 import { useUserDataStore } from '../../stores/userData';
-import { useSideBarStore } from '../../stores/sideBar';
-import { createNotificationFromData } from '../../workers/utils-worker';
-import {
-  AuthWebSocketWorkerInstance,
-} from '../../workers/web-socket-worker';
 import {
   NotificationsBus,
   BlanballEventBus,
@@ -135,7 +129,6 @@ import { dinamicMenu } from "./menus/menu.config";
 export default {
   name: 'MainSidebar',
   components: {
-    NotificationsSlideMenu,
     SlideMenu,
     userAvatar,
     BugReportModal,
@@ -144,16 +137,13 @@ export default {
   },
   setup() {
     const userStore = useUserDataStore();
-    const sideBarStore = useSideBarStore();
-    const notReadNotificationCount = ref(0);
-    const allNotificationsCount = ref(0);
     const isMobMenuActive = ref(false);
     const router = useRouter();
     const isMenuOpened = ref(false);
     const activeSlideElement = ref();
     const isBugReportModalOpened = ref(false);
     const currentHoverSideBarItemID = ref(0);
-    const { isMobile, isTablet } = useWindowWidth();
+    const { onResize, isMobile, isTablet } = useWindowWidth();
 
     const foundBug = () => {
       isMobMenuActive.value = false;
@@ -174,73 +164,6 @@ export default {
       (currentHoverSideBarItemID.value = itemId);
 
     const leaveHoverSidebarItem = () => (currentHoverSideBarItemID.value = 0);
-    const {
-      paginationElements,
-      paginationPage,
-      paginationTotalCount,
-      paginationClearData,
-      paginationLoad,
-    } = PaginationWorker({
-      paginationDataRequest: (page) =>
-        API.NotificationService.getNotifications({
-          ...getRawFilters(),
-          page,
-        }),
-      dataTransformation: createNotificationFromData,
-      beforeConcat: (elements, newList) => findDublicates(elements, newList),
-    });
-
-    const { getRawFilters, updateFilter, filters, clearFilters, setFilters } =
-      FilterPatch({
-        router,
-        filters: {
-          type: {
-            type: String,
-            value: '',
-          },
-          skipids: {
-            type: Array,
-            value: [],
-          },
-        },
-        afterUpdateFiltersCallBack: () => {
-          paginationClearData();
-        },
-      });
-
-    const loadDataNotifications = async (
-      pageNumber,
-      $state,
-      forceUpdate,
-      isLoading
-    ) => {
-      if (isLoading) {
-        startSpinner();
-      }
-      if (forceUpdate) {
-        paginationClearData();
-        skipids.value = [];
-      }
-
-      await paginationLoad({ pageNumber, $state, forceUpdate }).then(() => {
-        if (isLoading) {
-          finishSpinner();
-        }
-      });
-    };
-
-    const onChangeTab = (tabType) => {
-      switch (tabType) {
-        case tabTypes.notRead:
-          filters.value.type.value = 'Unread';
-          loadDataNotifications(1, null, false, true);
-          break;
-        case tabTypes.allNotifications:
-          filters.value.type.value = '';
-          loadDataNotifications(1, null, false, true);
-          break;
-      }
-    };
 
     const goToMainPage = () => {
       router.push(ROUTES.APPLICATION.index.path);
@@ -255,36 +178,29 @@ export default {
       isMobMenuActive.value = true;
     });
 
-    BlanballEventBus.on('OpenSideBar', () => {
-      isMenuOpened.value = true;
+    onMounted(() => {
+      window.addEventListener('resize', onResize);
     });
 
     onBeforeUnmount(() => {
       NotificationsBus.off('SidebarClearData');
       NotificationsBus.off('hanlderToRemoveNewNotificationsInSidebar');
       BlanballEventBus.off('OpenMobileMenu');
+      // AuthWebSocketWorkerInstance.destroyCallback(handleMessageInSidebar); TODO
       window.removeEventListener('resize', onResize);
-      BlanballEventBus.off('OpenSideBar');
-      AuthWebSocketWorkerInstance.destroyCallback(handleMessageInSidebar);
     });
 
-    watch(
-      () => isMenuOpened.value,
-      (newVal) => {
-        sideBarStore.$patch({
-          isSideBarOpened: newVal,
-        });
-      }
-    );
 
-    watch(
-      () => isMobMenuActive.value,
-      (newVal) => {
-        sideBarStore.$patch({
-          isMobMenuActive: newVal,
-        });
-      }
-    );
+    //
+    // const removeNotifications = (ids) => {
+    //   if (ids === 'All') {
+    //     paginationElements.value = [];
+    //   } else {
+    //     paginationElements.value = paginationElements.value.filter(
+    //       (item) => !ids.includes(item.notification_id)
+    //     );
+    //   }
+    // };
 
     return {
       menuItems,

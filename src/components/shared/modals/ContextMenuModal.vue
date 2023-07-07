@@ -1,10 +1,10 @@
 <template>
-  <div class="b-context-modal__wrapper" @click="wrapperClick">
+  <div class="b-context-modal__wrapper" @click="closeModal">
     <div class="b-context-modal" :style="contextWindowStyle">
       <ul>
         <li
-          @click.stop="itemClick(item.type)"
-          v-for="item in menuText"
+          @click.stop="item.action ? item.action() : itemClick(item.type)"
+          v-for="item in contextMenuItems"
           :key="item.id"
         >
           <img :src="item?.img" alt="" />
@@ -23,22 +23,19 @@ export default {
   props: {
     clientX: {
       type: Number,
-      default: null,
-      require: true,
+      required: true,
     },
     clientY: {
       type: Number,
-      default: null,
-      require: true,
+      required: true,
     },
-    menuText: {
+    contextMenuItems: {
       type: Array,
-      dafault: () => [],
       require: true,
     },
   },
   emits: ['close-modal'],
-  setup(props, context) {
+  setup(props, { emit }) {
     const contextWindowStyle = computed(() => {
       return {
         top: props.clientY + 'px',
@@ -47,17 +44,17 @@ export default {
     });
 
     function itemClick(itemType) {
-      context.emit('itemClick', itemType);
-      context.emit('close-modal');
+      emit('itemClick', itemType);
+      closeModal();
     }
 
-    function wrapperClick() {
-      context.emit('close-modal');
+    function closeModal() {
+      emit('close-modal');
     }
 
     return {
       contextWindowStyle,
-      wrapperClick,
+      closeModal,
       itemClick,
     };
   },

@@ -1,17 +1,23 @@
 import { ref } from 'vue';
-import { PaginationWorker } from "../../../../workers/pagination-worker";
-import { FilterPatch } from "../../../../workers/api-worker/http/filter/filter.patch";
-import { finishSpinner, startSpinner } from "../../../../workers/loading-worker/loading.worker";
-import router from "../../../../router";
-import { MenuTabsConfigEventBus, SupportTabsBusEvents } from "../menu.event.bus";
+import { PaginationWorker } from '../../../../workers/pagination-worker';
+import { FilterPatch } from '../../../../workers/api-worker/http/filter/filter.patch';
+import {
+  finishSpinner,
+  startSpinner,
+} from '../../../../workers/loading-worker/loading.worker';
+import router from '../../../../router';
+import {
+  MenuTabsConfigEventBus,
+  SupportTabsBusEvents,
+} from '../menu.event.bus';
 
 export class TabModel {
   records = {
     request: {
       api() {},
       filtersModel: {},
-      dataTransformation (){},
-      beforeConcat(){},
+      dataTransformation() {},
+      beforeConcat() {},
     },
     selectable: true,
     scrollStrategy: '',
@@ -19,11 +25,11 @@ export class TabModel {
       forceUpdate() {},
     },
     watchChanges: [],
-    contextMenu: []
+    contextMenu: [],
   };
 
   badge = {
-    count: ref(0)
+    count: ref(0),
   };
 
   uniqueName = '';
@@ -31,17 +37,22 @@ export class TabModel {
   title = '';
 
   constructor(options, instance) {
+    const { records } = options;
+
     this.records = {
-      request: {
-        api: options.records.request.api,
-        filtersModel: options.records.request.filtersModel,
-        dataTransformation: options.records.request.dataTransformation,
-        beforeConcat: options.records.request.beforeConcat,
+      record: {
+        componentName: records.record.componentName,
       },
-      selectable: options.selectable,
-      scrollStrategy: options.scrollStrategy,
-      watchChanges: options.watchChanges,
-      contextMenu: options.contextMenu,
+      request: {
+        api: records.request.api,
+        filtersModel: records.request.filtersModel,
+        dataTransformation: records.request.dataTransformation,
+        beforeConcat: records.request.beforeConcat,
+      },
+      selectable: records.selectable,
+      scrollStrategy: records.scrollStrategy,
+      watchChanges: records.watchChanges,
+      contextMenu: records.contextMenu,
       selectedList: ref([]),
       blockScrollToTopIfExist: ref(false),
     };
@@ -52,16 +63,19 @@ export class TabModel {
 
     this.title = options.title;
 
-    Object.assign(this, this.usePagination(instance|| {}));
+    Object.assign(this, this.usePagination(instance || {}));
 
-    this.$registerOn(SupportTabsBusEvents.LoaTabData.event, SupportTabsBusEvents.LoaTabData.handler);
+    this.$registerOn(
+      SupportTabsBusEvents.LoaTabData.event,
+      SupportTabsBusEvents.LoaTabData.handler
+    );
   }
 
   setBadgeCount(value) {
     this.badge.count.value = value;
   }
 
-  usePagination ({router: passedRouter}) {
+  usePagination({ router: passedRouter }) {
     const {
       paginationElements,
       paginationPage,
@@ -87,12 +101,7 @@ export class TabModel {
         },
       });
 
-    const loadNewData = async (
-      pageNumber,
-      $state,
-      forceUpdate,
-      isLoading
-    ) => {
+    const loadNewData = async (pageNumber, $state, forceUpdate, isLoading) => {
       if (isLoading) {
         startSpinner();
       }
@@ -118,21 +127,23 @@ export class TabModel {
       paginationTotalCount,
       paginationClearData,
       paginationLoad,
-    }
+    };
   }
 
-  $emit(){
-    MenuTabsConfigEventBus.emit(...arguments)
+  $emit() {
+    MenuTabsConfigEventBus.emit(...arguments);
   }
 
   $registerOn(eventName, eventHandlerName) {
-    if(eventHandlerName in this) {
+    if (eventHandlerName in this) {
       MenuTabsConfigEventBus.on(
         SupportTabsBusEvents.LoaTabData.event,
         this[SupportTabsBusEvents.LoaTabData.handler].bind(this)
-      )
+      );
     } else {
-      console.error('[BLANBALL.[tabs.model.js].$on], does not exist eventHandlerName')
+      console.error(
+        '[BLANBALL.[tabs.model.js].$on], does not exist eventHandlerName'
+      );
     }
   }
 }

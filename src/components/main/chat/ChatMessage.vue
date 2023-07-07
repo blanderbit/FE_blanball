@@ -151,6 +151,7 @@ export default {
 .b-chat-message-wrapper {
   display: flex;
   align-items: flex-end;
+  gap: 12px;
 
   .b-chat-message-tail {
     @include mobile {

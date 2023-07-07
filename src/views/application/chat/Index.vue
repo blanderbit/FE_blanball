@@ -15,7 +15,7 @@
       v-if="isContextMenuOpened"
       :clientX="contextMenuX"
       :clientY="contextMenuY"
-      :menu-text="mockData.chatMessageContextMenu"
+      :contextMenuItems="mockData.chatMessageContextMenu"
       @close-modal="closeContextMenu"
       @itemClick="contextMenuItemClick"
     />
@@ -64,10 +64,8 @@ import ContextMenu from '../../../components/shared/modals/ContextMenuModal.vue'
 import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
 
 import { accessToken } from '../../../workers/token-worker';
-import { BlanballEventBus } from '../../../workers/event-bus-worker';
 import { ChatSocketWorkerInstance } from '../../../workers/web-socket-worker';
 
-import { useSideBarStore } from '../../../stores/sideBar';
 import { calcHeight } from '../../../utils/calcHeight';
 import { useWindowWidth } from '../../../utils/widthScreen';
 
@@ -90,7 +88,6 @@ export default {
     const chatData = ref({
       id: 725,
       name: 'dffddfdfdf fdfddffd',
-      disabled: true,
       isChatRequest: false,
       isGroup: false,
       disabled: false,
@@ -205,10 +202,6 @@ export default {
 
     ChatSocketWorkerInstance.connect({
       token: accessToken.getToken(),
-    });
-
-    onBeforeMount(() => {
-      BlanballEventBus.emit('OpenSideBar');
     });
 
     onBeforeUnmount(() => {
