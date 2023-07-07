@@ -23,32 +23,6 @@
       alt=""
     />
 
-    <svg
-      width="14"
-      height="25"
-      viewBox="0 0 14 25"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      class="b-chat-message-tail"
-    >
-      <path
-        v-if="isMessageMine && !isNextMessageFromTheSameSender"
-        fill-rule="evenodd"
-        clip-rule="evenodd"
-        d="M0.931348 4.00013C0.931348 -6.99975 0.85744 8.00012 0.85744 13.7018V24.0004C0.856492 24.9298 0.429763 25.0001 1.93071 25.0001H13.4305C14.0098 25 14.5096 24 13.0096 23C13.0096 23 0.931348 15 0.931348 4.00013Z"
-        fill="white"
-      />
-
-      <path
-        v-else-if="!isMessageMine && !isNextMessageFromTheSameSender"
-        id="Vector 17 (Stroke)"
-        fill-rule="evenodd"
-        clip-rule="evenodd"
-        d="M13.8694 4.00013C13.8694 -6.99975 13.9433 8.00012 13.9433 13.7018V24.0004C13.9443 24.9298 14.371 25.0001 12.8701 25.0001H1.37032C0.791016 25 0.291163 24 1.7912 23C1.7912 23 13.8694 15 13.8694 4.00013Z"
-        fill="#148783"
-      />
-    </svg>
-
     <div
       class="b-chat-message"
       @click.right="chatMessageRightClick"
@@ -62,7 +36,10 @@
       <div class="b-like-message-button">
         <img src="../../../assets/img/chat/like-button.svg" alt="" />
       </div>
-      <div class="b-chat-message-time">{{ messageTime }}</div>
+      <div class="b-chat-message-bottom-side">
+        <div class="b-chat-message-time">{{ messageTime }}</div>
+        <img v-if="isMessageMine" :src="messageReadedIcon" alt="" />
+      </div>
     </div>
   </div>
 </template>
@@ -75,6 +52,9 @@ import UserAvatar from '../../shared/userAvatar/UserAvatar.vue';
 
 import GreenMessageTail from '../../../assets/img/chat/message-green-tail.svg';
 import WhiteMessageTail from '../../../assets/img/chat/message-white-tail.svg';
+
+import MessageReadIcon from '../../../assets/img/chat/message-read.svg';
+import MessageNotReadIcon from '../../../assets/img/chat/message-not-read.svg';
 
 const SHOW_MESSAGE_CONTEXT_MEHU_ON_MOBILE_DEVICE_TIMEOUT_MS = 1000;
 
@@ -98,29 +78,33 @@ export default {
   },
   emits: ['chatMessageRightClick', 'messageWrapperClick'],
   setup(props, { emit }) {
+    const { messageData, isChatDisabed } = props;
+
     const messageTime = computed(() => {
       return dayjs(props.time_created).format('HH:mm');
     });
 
     const isMessageMine = computed(() => {
-      return props.messageData.isMine;
+      return messageData.isMine;
     });
 
     const isNextMessageFromTheSameSender = computed(() => {
-      return props.messageData.isNextMessageFromTheSameSender;
+      return messageData.isNextMessageFromTheSameSender;
     });
 
     const isMessageAvatarVisible = computed(() => {
-      return props.messageData.showAvatar && !props.selected;
+      return messageData.showAvatar && !props.selected;
     });
 
     const messageTail = computed(() => {
       return isMessageMine.value ? WhiteMessageTail : GreenMessageTail;
     });
 
-    const senderMessageData = computed(() => {
-      const { messageData } = props;
+    const messageReadedIcon = computed(() => {
+      return messageData.isRead ? MessageReadIcon : MessageNotReadIcon;
+    });
 
+    const senderMessageData = computed(() => {
       return {
         avatar: messageData.sender.profile.avatar_url,
         fullName: `${messageData.sender.profile.last_name} ${messageData.sender.profile.name}`,
@@ -142,7 +126,7 @@ export default {
     }
 
     function chatMessageRightClick(e) {
-      if (!props.selected && !props.isChatDisabed) {
+      if (!props.selected && !isChatDisabed) {
         emit('chatMessageRightClick', e, props.messageData);
       }
     }
@@ -154,6 +138,7 @@ export default {
       senderMessageData,
       messageTail,
       isNextMessageFromTheSameSender,
+      messageReadedIcon,
       startMessageHold,
       endMessageHold,
       chatMessageRightClick,
@@ -201,6 +186,18 @@ export default {
       }
       .b-like-message-button {
       }
+
+      .b-chat-message-bottom-side {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+        justify-content: right;
+        gap: 6px;
+
+        img {
+          margin-top: -3px;
+        }
+      }
     }
   }
   &.another {
@@ -216,6 +213,10 @@ export default {
       .b-chat-message-time {
         @include inter(12px, 400, $--b-main-white-color);
         line-height: 20px;
+      }
+
+      .b-chat-message-time {
+        text-align: right;
       }
     }
 
@@ -283,10 +284,6 @@ export default {
       position: absolute;
       left: 0;
       bottom: -5px;
-    }
-
-    .b-chat-message-time {
-      text-align: right;
     }
 
     .b-chat-message-text {

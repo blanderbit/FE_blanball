@@ -1,23 +1,26 @@
 <template>
-  <div class="b-edit-chat-modal__wrapper">
+  <div class="b-edit-chat-modal__wrapper" @click.self="closeModal">
     <div class="b-edit-chat-modal__modal-window">
       <div class="b-modal-window__top-side">
-        <div class="b-modal-window__title">Керування групою</div>
+        <div class="b-modal-window__title">
+          {{ $t('chat.edit_chat_modal.manage_group') }}
+        </div>
       </div>
       <div class="b-modal-window__main-side">
         <div class="b-select-photo__button">
           <img src="../../../../assets/img/chat/green-camera.svg" alt="" />
-          <span>Обрати фото</span>
+          <span>{{ $t('chat.edit_chat_modal.select_photo') }}</span>
         </div>
         <MainInput
           :outside-title="true"
           :title-width="0"
           :swipeTitle="false"
-          :title="'Назва бесіди'"
+          :title="$t('chat.edit_chat_modal.name_of_group_chat')"
           inputMode="text"
           :height="48"
           :backgroundColor="'#fff'"
           name="search"
+          v-model="chatData.name"
         />
         <MainInput
           :outside-title="true"
@@ -25,37 +28,69 @@
           :swipeTitle="false"
           :isReadOnly="true"
           :icon="icons.copyChatLink"
-          :title="'Посилання-запрошення'"
+          :title="$t('chat.edit_chat_modal.invitation_link')"
           inputMode="text"
           :height="48"
           :backgroundColor="'#fff'"
           name="search"
+          v-model="chatData.link"
+          @rightIconClick="copyChatLink"
         />
       </div>
+
+      <ChatUsersList :chatData="chatData"/>
     </div>
   </div>
 </template>
 
 <script>
 import { computed } from 'vue';
+import { useToast } from 'vue-toastification';
+import { useI18n } from 'vue-i18n';
 
-import MainInput from '../../../../components/shared/input/MainInput.vue';
+import MainInput from '../../../shared/input/MainInput.vue';
+import SearchBlockAll from '../../../SearchBlockAll.vue'
+import ChatUsersList from '../ChatUsersList.vue';
+
+import { copyToClipboard } from '../../../../utils/copyToClipBoard';
 
 import CopyChatLinkIcon from '../../../../assets/img/chat/infinite.svg';
 
 export default {
   components: {
     MainInput,
+    SearchBlockAll,
+    ChatUsersList,
   },
-  setup() {
+  props: {
+    chatData: {
+      type: Object,
+      required: true,
+    },
+  },
+  emits: ['closeModal'],
+  setup(props, { emit }) {
+    const toast = useToast();
+    const { t } = useI18n();
     const icons = computed(() => {
       return {
         copyChatLink: CopyChatLinkIcon,
       };
     });
 
+    function closeModal() {
+      emit('closeModal');
+    }
+
+    function copyChatLink() {
+      copyToClipboard(props.chatData.link);
+      toast.success(t('chat.toasts.chat_link_copieded_success'));
+    }
+
     return {
       icons,
+      closeModal,
+      copyChatLink,
     };
   },
 };

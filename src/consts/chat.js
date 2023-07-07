@@ -1,6 +1,12 @@
-import DeleteIcon from '../assets/img/trash-red.svg';
-import ReplyIcon from '../assets/img/back-arrow.svg';
-import SelectIcon from '../assets/img/check-mark.svg';
+import DeleteMessageIcon from '../assets/img/trash-red.svg';
+import DeleteMessagesBulkIcon from '../assets/img/notifications/trash.svg';
+import ReplyToMessageIcon from '../assets/img/back-arrow.svg';
+import ForwardMessagesIcon from '../assets/img/forward-arrow.svg';
+import SelectMessageIcon from '../assets/img/check-mark.svg';
+import SearchMessagesButtonIcon from '../assets/img/chat/search-button.svg';
+import ManageChatButtonIcon from '../assets/img/chat/manage-button.svg';
+import ManageChatButtonMobileIcon from '../assets/img/chat/manage-button-mobile.svg';
+import EditChatButtonIcon from '../assets/img/chat/edit-button.svg';
 
 const CHAT_MESSAGE_CONTEXT_MENU_ACTIONS = {
   REPLY: 'reply',
@@ -21,104 +27,65 @@ export default {
     {
       id: 0,
       text: 'Відповісти',
-      img: ReplyIcon,
+      img: ReplyToMessageIcon,
       type: CHAT_MESSAGE_CONTEXT_MENU_ACTIONS.REPLY,
     },
     {
       id: 1,
-      text: 'Виділити',
-      img: SelectIcon,
+      text: 'buttons.select',
+      img: SelectMessageIcon,
       type: CHAT_MESSAGE_CONTEXT_MENU_ACTIONS.SELECT,
     },
     {
       id: 2,
-      text: 'Переслати',
-      img: ReplyIcon,
+      text: 'buttons.forward',
+      img: ForwardMessagesIcon,
       type: CHAT_MESSAGE_CONTEXT_MENU_ACTIONS.FORWARD,
     },
     {
       id: 3,
-      text: 'Видалити',
-      img: DeleteIcon,
+      text: 'buttons.delete',
+      img: DeleteMessageIcon,
       type: CHAT_MESSAGE_CONTEXT_MENU_ACTIONS.DELETE,
     },
   ],
 
-  chatMessagesList: [
+  chatToptSideRightBlockButtons: [
     {
-      id: 1,
-      sender: {
-        id: 42,
-        profile: {
-          name: 'Андрей',
-          last_name: 'Артуров',
-        },
-      },
-      text: 'dffffffffffffffffffffffffffffffffffffffff',
-      type: CHAT_MESSAGE_TYPES.USER_MESSAGE,
-      time_created: new Date(),
-      edited: false,
-      readed_by: [],
-      reply_to: null,
+      img: EditChatButtonIcon,
+      actionEmitName: 'editChat',
+      disabled: false,
     },
     {
-      id: 2,
-      sender: {
-        id: 43,
-        profile: {
-          name: 'Андрей',
-          last_name: 'Артуров',
-        },
-      },
-      text: 'fdddddddddddddddddddddddfddddddddddddddddddfdddddddddddddddddddddddfddddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfddddddddddddddddddddddd',
-      time_created: new Date(),
-      type: CHAT_MESSAGE_TYPES.USER_MESSAGE,
-      edited: false,
-      readed_by: [],
-      reply_to: null,
+      img: SearchMessagesButtonIcon,
+      actionEmitName: 'searchChatMessages',
+      disabled: false,
     },
     {
-      id: 3,
-      sender: {
-        id: 42,
-        profile: {
-          name: 'Андрей',
-          last_name: 'Артуров',
-        },
-      },
-      text: 'fdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfddddddddddddddddddddddd',
-      time_created: new Date(),
-      type: CHAT_MESSAGE_TYPES.USER_MESSAGE,
-      edited: false,
-      readed_by: [],
-      reply_to: null,
+      img: ManageChatButtonIcon,
+      actionEmitName: 'manageChat',
+      disabled: false,
+    },
+  ],
+
+  chatToptSideRightBlockButtonsButtonsMobile: [
+    {
+      img: ManageChatButtonMobileIcon,
+      action: () => 'manageChat',
+      disabled: false,
+    },
+  ],
+
+  chatRightSideSelectedMessagesActions: [
+    {
+      img: ForwardMessagesIcon,
+      action: () => 'editChat',
+      text: 'buttons.forward',
     },
     {
-      id: 5,
-      sender: {
-        id: 42,
-        profile: {
-          name: 'Андрей',
-          last_name: 'Артуров',
-        },
-      },
-      type: CHAT_MESSAGE_TYPES.USER_JOINED_TO_CHAT,
-    },
-    {
-      id: 4,
-      sender: {
-        id: 42,
-        profile: {
-          name: 'Андрей',
-          last_name: 'Артуров',
-        },
-      },
-      text: 'fdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfdddddddddddddddddddddddfddddddddddddddddddddddd',
-      time_created: new Date(),
-      type: CHAT_MESSAGE_TYPES.USER_MESSAGE,
-      edited: false,
-      readed_by: [],
-      reply_to: null,
+      img: DeleteMessagesBulkIcon,
+      action: () => 'manageChat',
+      text: 'buttons.delete',
     },
   ],
 };

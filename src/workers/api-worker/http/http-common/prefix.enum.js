@@ -86,5 +86,7 @@ export const EndpointsEnum = {
   },
   Chats: {
     GetChatMessages: (chatId) => `/chat/client/chat/messages/list/${chatId}`,
+    CreateChatMessage: '/chat/client/create/message',
+    GetChatUsers: (chatId) => `/chat/client/chat/users/list/${chatId}`,
   },
 };

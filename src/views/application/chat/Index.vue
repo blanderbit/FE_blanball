@@ -1,6 +1,16 @@
 <template>
   <div class="b-chat-page">
-    <EditChatModal v-if="isEditChatModalOpened" />
+    <EditChatModal
+      v-if="isEditChatModalOpened"
+      :chatData="chatData"
+      @closeModal="closeEditChatModal"
+    />
+    <SubmitModal
+      v-if="isSubmitModalOpened"
+      :config="submitModalConfig"
+      @closeModal="closeSubmitModal"
+      @closeEditChatModal="closeEditChatModal"
+    />
     <ContextMenu
       v-if="isContextMenuOpened"
       :clientX="contextMenuX"
@@ -12,6 +22,7 @@
     <div ref="CHAT_TOP_SIDE_BLOCK" class="b-chat-top-side">
       <ChatTopBlock
         :chatData="chatData"
+        :selectedMessages="chatSelectedMessagesList"
         @searchChatMessages=""
         @manageChat="showManageChatContextMenu"
         @editChat="showEditChatModal"
@@ -19,14 +30,18 @@
     </div>
     <div class="b-chat-page-main-side">
       <div class="b-main-side-messages-block" :style="messagesListBlockStyle">
-        <ChatMessagesList :chatData="chatData" />
+        <ChatMessagesList ref="CHAT_MESSAGES_LIST_BLOCK" :chatData="chatData" />
       </div>
       <div ref="CHAT_BOTTOM_SIDE_BLOCK" class="b-main-side-bottom-block">
         <Transition name="chat-warning">
           <ChatWarning v-if="isChatWarningVisible" @close="closeChatWarning" />
         </Transition>
         <RequestForChat v-if="isChatRequestVisible" />
-        <SendMessageBlock v-else :disabled="chatData.disabled" />
+        <SendMessageBlock
+          v-else
+          :disabled="chatData.disabled"
+          :chatData="chatData"
+        />
       </div>
     </div>
   </div>
@@ -35,6 +50,7 @@
 <script>
 import { ref, computed, onBeforeMount, onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 
 import { useElementSize } from '@vueuse/core';
 
@@ -45,6 +61,7 @@ import ChatTopBlock from '../../../components/main/chat/ChatTopBlock.vue';
 import EditChatModal from '../../../components/main/chat/modals/EditChatModal.vue';
 import ChatMessagesList from '../../../components/main/chat/ChatMessagesList.vue';
 import ContextMenu from '../../../components/shared/modals/ContextMenuModal.vue';
+import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
 
 import { accessToken } from '../../../workers/token-worker';
 import { BlanballEventBus } from '../../../workers/event-bus-worker';
@@ -67,17 +84,25 @@ export default {
     ChatMessagesList,
     ContextMenu,
     RequestForChat,
+    SubmitModal,
   },
   setup() {
     const chatData = ref({
+      id: 725,
       name: 'dffddfdfdf fdfddffd',
       disabled: true,
       isChatRequest: false,
       isGroup: false,
       disabled: false,
+      link: 'helloflamingo.linkactive',
     });
+    const { t } = useI18n();
+
     const isEditChatModalOpened = ref(false);
     const isChatWarningClosed = ref(false);
+    const isSubmitModalOpened = ref(false);
+
+    const submitModalConfig = ref({});
 
     const isContextMenuOpened = ref(false);
     const contextMenuX = ref(null);
@@ -85,6 +110,7 @@ export default {
 
     const CHAT_TOP_SIDE_BLOCK = ref();
     const CHAT_BOTTOM_SIDE_BLOCK = ref();
+    const CHAT_MESSAGES_LIST_BLOCK = ref();
 
     const { height: CHAT_TOP_SIDE_BLOCK_HEIGHT } =
       useElementSize(CHAT_TOP_SIDE_BLOCK);
@@ -100,6 +126,10 @@ export default {
       return {
         chatMessageContextMenu: CONSTS.chat.chatMessageContextMenuItems(true),
       };
+    });
+
+    const chatSelectedMessagesList = computed(() => {
+      return CHAT_MESSAGES_LIST_BLOCK.value?.selectedMessages;
     });
 
     const messagesListBlockStyle = computed(() => {
@@ -127,7 +157,22 @@ export default {
     }
 
     function closeEditChatModal() {
-      isEditChatModalOpened.value = false;
+      if (isSubmitModalOpened.value === false) {
+        submitModalConfig.value = {
+          title: t('chat.submit_close_edit_chat_modal.title'),
+          description: t('chat.submit_close_edit_chat_modal.description'),
+          button_1: t('chat.submit_close_edit_chat_modal.button_1'),
+          button_2: t('chat.submit_close_edit_chat_modal.button_2'),
+          right_btn_action: 'closeEditChatModal',
+          left_btn_action: 'closeModal',
+          btn_with_1: 140,
+          btn_with_2: 124,
+        };
+        showSubmitModal();
+      } else {
+        isEditChatModalOpened.value = false;
+        closeSubmitModal();
+      }
     }
 
     function closeChatWarning() {
@@ -150,6 +195,14 @@ export default {
       showContextMenu(e);
     }
 
+    function showSubmitModal() {
+      isSubmitModalOpened.value = true;
+    }
+
+    function closeSubmitModal() {
+      isSubmitModalOpened.value = false;
+    }
+
     ChatSocketWorkerInstance.connect({
       token: accessToken.getToken(),
     });
@@ -167,19 +220,25 @@ export default {
       CHAT_TOP_SIDE_BLOCK,
       isChatWarningVisible,
       CHAT_BOTTOM_SIDE_BLOCK,
+      CHAT_MESSAGES_LIST_BLOCK,
       messagesListBlockStyle,
       isContextMenuOpened,
       isEditChatModalOpened,
+      chatSelectedMessagesList,
       mockData,
       isChatRequestVisible,
       contextMenuX,
       contextMenuY,
+      isSubmitModalOpened,
+      submitModalConfig,
       showEditChatModal,
       closeEditChatModal,
       closeChatWarning,
       closeContextMenu,
       showContextMenu,
       showManageChatContextMenu,
+      showSubmitModal,
+      closeSubmitModal,
     };
   },
 };

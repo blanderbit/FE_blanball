@@ -8,7 +8,7 @@
           :key="item.id"
         >
           <img :src="item?.img" alt="" />
-          <span class="b-context-modal__text">{{ item.text }}</span>
+          <span class="b-context-modal__text">{{ $t(item.text) }}</span>
         </li>
       </ul>
     </div>
