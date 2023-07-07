@@ -120,9 +120,8 @@ export const createNotificationConfigItem = (instance) => {
         //   request: () => true,
         //   activity: true,
         //   signalsEmit: {
-        //     onChange: 'selectable'
-        //   },
-        //   type: Checkbox
+        //     click: 'selectable'
+        //   }
         // })
       ],
       tabs: [

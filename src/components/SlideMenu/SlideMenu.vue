@@ -6,24 +6,33 @@
     <!--@deleteNotifications="HandleAction.deleteSelected()"-->
     <!--@continue="closeSubmitModal"-->
   <!--/>-->
-  <!--<ContextMenu-->
-    <!--v-if="isContextMenuActive"-->
-    <!--:clientX="contextMenuX"-->
-    <!--:clientY="contextMenuY"-->
-    <!--:menu-text="mockData.menu_text"-->
-    <!--@close-modal="closeContextMenu"-->
-    <!--@itemClick="contextMenuItemClick"-->
-  <!--/>-->
+  <ContextMenu
+    v-if="isContextMenuActive"
+    :clientX="contextMenuX"
+    :clientY="contextMenuY"
+    :menu-text="mockData.menu_text"
+    @close-modal="closeContextMenu"
+    @itemClick="contextMenuItemClick"
+  />
 
   <SlideMenuWrapper
     :isMenuOpened="config.activity"
     @close="$emit('update:isMenuOpened', $event)"
   >
-    <template #logo>
-      <img src="../../assets/img/logo-sidebar.svg" alt="" />
-    </template>
+    <!--<template #logo>-->
+      <!--<img src="../../assets/img/logo-sidebar.svg" alt="" />-->
+    <!--</template>-->
 
-    <!--<template #top-side>-->
+    <!--<template #filters>-->
+      <!--<components  v-for="item in config.activeTab.filters" :is="item" :props="{contextMenu, Selectable}"></components>-->
+    <!--</template>-->
+    <!--<template #tabs>-->
+      <!--<components  v-for="item in config.activeTab.filters" :is="item" :props="{contextMenu, Selectable}"></components>-->
+    <!--</template>-->
+    <!--<template #content>-->
+      <!--<components :is="instance.record" :props="{contextMenu, Selectable}"></components>-->
+    <!--</template>-->
+    <!--&lt;!&ndash;<template #top-side>&ndash;&gt;-->
       <!--<div-->
         <!--class="b_slide_menu_items d-flex justify-content-between align-items-center mb-2"-->
         <!--v-if="notifications.length"-->
@@ -138,21 +147,21 @@
     <template #main-content>
       <ul
         class="b_slide_menu_notification"
+        v-if="config.activity && config.activeTab"
         :style="`height: ${slideMenuHeight}`"
-        v-if="isMenuOpened"
       >
-        <Notifications
-          :notifications="notifications"
-          :selectable="selectable"
-          ref="notificationList"
-          v-model:selected-list="selectedList"
-          v-model:scrollbar-existing="blockScrollToTopIfExist"
+        <virtual-list
+          :elements="config.activeTab.paginationElements"
+          :selectable="config.activeTab.records.selectable"
+          v-model:selected-list="config.activeTab.records.selectedList"
+          v-model:scrollbar-existing="config.activeTab.records.blockScrollToTopIfExist"
           @openContextMenu="openContextMenu"
           @removePushNotificationAfterSidebarAction="
             removePushNotificationAfterSidebarAction
           "
         >
-          <!--<template #before>-->
+          <template #before>
+            <components :is="instance" :props="{contextMenu, Selectable}"></components>
             <!--<Notification-->
               <!--v-if="newNotifications"-->
               <!--class="b-new-notification"-->
@@ -161,12 +170,12 @@
               <!--@handler-action="$emit('reLoading'), restartInfiniteScroll()"-->
             <!--&gt;-->
             <!--</Notification>-->
-          <!--</template>-->
+          </template>
           <template #after>
             <InfiniteLoading
               :identifier="triggerForRestart"
               ref="scrollbar"
-              @infinite="$emit('loadingInfinite', $event)"
+              @infinite="test"
             >
               <template #complete>
                 <empty-list
@@ -184,7 +193,7 @@
               </template>
             </InfiniteLoading>
           </template>
-        </Notifications>
+        </virtual-list>
       </ul>
     </template>
 
@@ -226,7 +235,7 @@ import { useI18n } from 'vue-i18n';
 
 import { v4 as uuid } from 'uuid';
 
-import Notifications from '../main/notifications/Notifications.vue';
+import VirtualList from '../main/virtualList/VirtualList.vue';
 import Notification from '../main/notifications/Notification.vue';
 import emptyList from '../shared/emptyList/EmptyList.vue';
 import InfiniteLoading from '../main/infiniteLoading/InfiniteLoading.vue';
@@ -257,7 +266,7 @@ export default {
     ContextMenu,
     SlideMenuWrapper,
     SubmitModal,
-    Notifications,
+    VirtualList,
     ScrollToTop,
   },
   props: {
@@ -279,10 +288,40 @@ export default {
     const routeObject = computed(() => {
       return ROUTES;
     });
+    const triggerForRestart = ref('');
+    const selectedByContextModalNotificationId = ref(null);
+    const contextMenuX = ref(null);
+    const contextMenuY = ref(null);
+    const isContextMenuActive = ref(false);
+    const openContextMenu = (data) => {
+      selectedByContextModalNotificationId.value = data.notification_id;
+      contextMenuY.value = data.yPosition;
+      contextMenuX.value = data.xPosition;
+      isContextMenuActive.value = true;
+    };
+    const {
+      calculatedHeight,
+      minussedHeight,
+      onAppHeightResize,
+      plusHeight,
+      minusHeight,
+    } = calcHeight([100, 70, 20, context.config.activeTab.records.selectedList.length ? 110 : 80]);
+
+    const slideMenuHeight = computed(() => {
+      return `${calculatedHeight.value}px`;
+    });
+
     return {
       userStore,
       clientVersion,
-      routeObject
+      routeObject,
+      openContextMenu,
+      isContextMenuActive,
+      triggerForRestart,
+      slideMenuHeight,
+      test($event) {
+        context.config.activeTab.$emit('loadNewData', context.config.activeTab.paginationPage + 1, $event)
+      }
     }
   },
 };

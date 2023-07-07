@@ -3,6 +3,7 @@ import { PaginationWorker } from "../../../../workers/pagination-worker";
 import { FilterPatch } from "../../../../workers/api-worker/http/filter/filter.patch";
 import { finishSpinner, startSpinner } from "../../../../workers/loading-worker/loading.worker";
 import router from "../../../../router";
+import { MenuTabsConfigEventBus, SupportTabsBusEvents } from "../menu.event.bus";
 
 export class TabModel {
   records = {
@@ -40,7 +41,9 @@ export class TabModel {
       selectable: options.selectable,
       scrollStrategy: options.scrollStrategy,
       watchChanges: options.watchChanges,
-      contextMenu: options.contextMenu
+      contextMenu: options.contextMenu,
+      selectedList: ref([]),
+      blockScrollToTopIfExist: ref(false),
     };
 
     this.badge.count.value = options.badge.count || 0;
@@ -49,7 +52,9 @@ export class TabModel {
 
     this.title = options.title;
 
-    Object.assign(this, this.usePagination(instance|| {}))
+    Object.assign(this, this.usePagination(instance|| {}));
+
+    this.$registerOn(SupportTabsBusEvents.LoaTabData.event, SupportTabsBusEvents.LoaTabData.handler);
   }
 
   setBadgeCount(value) {
@@ -82,7 +87,7 @@ export class TabModel {
         },
       });
 
-    const loadDataNotifications = async (
+    const loadNewData = async (
       pageNumber,
       $state,
       forceUpdate,
@@ -96,14 +101,13 @@ export class TabModel {
       }
 
       await paginationLoad({ pageNumber, $state, forceUpdate });
-
       if (isLoading) {
         finishSpinner();
       }
     };
 
     return {
-      loadDataNotifications,
+      loadNewData,
       getRawFilters,
       updateFilter,
       filters,
@@ -114,6 +118,21 @@ export class TabModel {
       paginationTotalCount,
       paginationClearData,
       paginationLoad,
+    }
+  }
+
+  $emit(){
+    MenuTabsConfigEventBus.emit(...arguments)
+  }
+
+  $registerOn(eventName, eventHandlerName) {
+    if(eventHandlerName in this) {
+      MenuTabsConfigEventBus.on(
+        SupportTabsBusEvents.LoaTabData.event,
+        this[SupportTabsBusEvents.LoaTabData.handler].bind(this)
+      )
+    } else {
+      console.error('[BLANBALL.[tabs.model.js].$on], does not exist eventHandlerName')
     }
   }
 }

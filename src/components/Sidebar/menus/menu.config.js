@@ -12,6 +12,7 @@ import { createNotificationConfigItem } from "./configs/notifications.config";
 
 export const dinamicMenu = (instance) => {
   const notificationItem = createNotificationConfigItem();
+
   const slideBarMenu = computed(() => [
     notificationItem,
     new BasicButtonModel({
@@ -53,8 +54,8 @@ export const dinamicMenu = (instance) => {
       disabled: false,
     }),
   ]);
-debugger
+
   return {
     slideBarMenu
   }
-}
+};

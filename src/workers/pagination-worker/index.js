@@ -18,6 +18,7 @@ export const PaginationWorker = (options) => {
   };
 
   const paginationLoad = async ({ pageNumber, $state, forceUpdate }) => {
+    debugger
     pageNumber = pageNumber < 1 ? 1 : pageNumber;
 
     if (pageNumber === paginationPage.value && !forceUpdate) return;
@@ -49,7 +50,8 @@ export const PaginationWorker = (options) => {
         if ($state?.loaded) $state.loaded();
         if (!paginationIsNextPage.value && $state?.complete) $state.complete();
       })
-      .catch(() => {
+      .catch((e) => {
+        console.error('paginationLoad: e', e)
         $state?.complete && $state.complete();
       });
     functionsResults.value.push(functionResult);

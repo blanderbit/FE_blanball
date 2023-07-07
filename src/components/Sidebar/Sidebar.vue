@@ -4,20 +4,6 @@
     @close-modal="closeBugReportModal"
   />
   <div class="b_sidebar_wrapper">
-    <!--<NotificationsSlideMenu-->
-      <!--v-model:is-menu-opened="isMenuOpened"-->
-      <!--:notifications="paginationElements"-->
-      <!--:notReadNotificationCount="notReadNotificationCount"-->
-      <!--:newNotifications="skipids.length"-->
-      <!--:total-notifications-count="allNotificationsCount"-->
-      <!--@close="isMenuOpened = false"-->
-      <!--@loadingInfinite="loadDataNotifications(paginationPage + 1, $event)"-->
-      <!--@reLoading="loadDataNotifications(1, null, true)"-->
-      <!--@loading="loadDataNotifications(1, null, true)"-->
-      <!--@showNewNotifications="loadDataNotifications(1, null, true, true)"-->
-      <!--@changeTab="onChangeTab"-->
-      <!--@removeNotifications="removeNotifications"-->
-    <!--/>-->
     <slide-menu
         v-if="activeSlideElement"
         :config="activeSlideElement"
@@ -246,7 +232,7 @@ export default {
       },
       openTab(tabName) {
         const item = menuItems.value.find(item => item.findTab(tabName))
-        if(item) item.openTab(tabName)
+         if(item) item.openTab(tabName)
       }
     };
   },

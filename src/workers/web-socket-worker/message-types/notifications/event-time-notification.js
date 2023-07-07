@@ -11,7 +11,8 @@ import {
 import { MessageActionTypes } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
 import { NotificationImage } from '../../../../assets/img/notifications/notification.images';
-
+import Duration from 'dayjs/plugin/duration';
+dayjs.extend(Duration)
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.EventTimeNotification)
 @NotificationSetImage(NotificationImage.NotificationInfo)
@@ -29,7 +30,7 @@ export class EventTimeNotificationMessage extends InitialMessage {
 
     const time_to_start = dayjs
       .duration({
-        minutes: data.start.time_to_start,
+        minutes: data.event.time_to_start,
       })
       .asHours();
     
