@@ -3,7 +3,8 @@
     v-if="isContextMenuOpened"
     :clientX="contextMenuX"
     :clientY="contextMenuY"
-    :contextMenuItems="chatMessageContextMenuItems"
+    :modalItems="chatMessageContextMenuItems"
+    backgroundColor="transperent"
     @close-modal="closeContextMenu"
     @itemClick="contextMenuItemClick"
   />
@@ -15,7 +16,7 @@
       v-model:scrollbar-existing="blockScrollToTopIfExist"
     >
       <template #smartListItem="slotProps">
-        {{ slotProps.smartListItem }}
+        <ChatUser :key="slotProps.index" :userData="slotProps.smartListItem" />
       </template>
       <template #after>
         <InfiniteLoading
@@ -37,18 +38,19 @@ import { v4 as uuid } from 'uuid';
 
 import InfiniteLoading from '../infiniteLoading/InfiniteLoading.vue';
 import SmartList from '../../shared/smartList/SmartList.vue';
-import ContextMenu from '../../shared/modals/ContextMenuModal.vue';
-import ChatMessage from './ChatMessage.vue';
+import ContextMenu from '../../shared/modals/ContextModal.vue';
+import ChatUser from './ChatUser.vue';
 
 import { WebSocketPaginationWorker } from '../../../workers/pagination-worker';
 import { API } from '../../../workers/api-worker/api.worker';
+import { ChatWebSocketTypes } from '../../../workers/web-socket-worker/message-types/chat/web.socket.types';
 
 import { CONSTS } from '../../../consts';
 
 export default {
   components: {
     InfiniteLoading,
-    ChatMessage,
+    ChatUser,
     SmartList,
     ContextMenu,
   },
@@ -99,7 +101,7 @@ export default {
           chat_id: props.chatData.id,
           page: page,
         }),
-      dataTransformation: handlingIncomeMessagesData,
+      messageType: ChatWebSocketTypes.GetChatUsersList,
     });
 
     const loadDataPaginationData = (pageNumber, $state) => {
@@ -112,7 +114,6 @@ export default {
 
     function handlingIncomeMessagesData(user) {
       return {
-        id: user.user_data.id,
         ...user,
       };
     }

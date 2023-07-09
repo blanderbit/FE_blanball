@@ -34,4 +34,8 @@ export default {
     chat_link_copieded_success:
       'Посилання-запрошення на чат було успішно скопійовано в буфер обміну',
   },
+  roles: {
+    admin: 'Адмін',
+    author: 'Організатор',
+  }
 };

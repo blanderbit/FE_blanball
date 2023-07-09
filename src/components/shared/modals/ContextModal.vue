@@ -1,10 +1,14 @@
 <template>
-  <div class="context-modal__tooltip-wrapper" @click.self="$emit('closeModal')">
+  <div
+    class="context-modal__tooltip-wrapper"
+    :style="modalWrapperStyle"
+    @click.self="closeModal"
+  >
     <div ref="modal" :style="modalStyle" class="context-modal__tooltip">
       <div
         v-for="item in modalItems"
         class="context-modal__tooltip-item"
-        @click="$emit('itemClick', item.type)"
+        @click="itemClick(item)"
       >
         <img :src="item.img" alt="" />
         <span class="b-item-text">{{ $t(item.text) }}</span>
@@ -34,8 +38,13 @@ export default {
       dafault: () => [],
       require: true,
     },
+    backgroundColor: {
+      type: String,
+      default: null,
+    },
   },
-  setup(props) {
+  emits: ['closeModal', 'itemClick'],
+  setup(props, { emit }) {
     const modal = ref();
     const { width, height } = useElementSize(modal);
     const modalStyle = computed(() => {
@@ -63,9 +72,29 @@ export default {
       };
     });
 
+    const modalWrapperStyle = computed(() => {
+      if (props.backgroundColor) {
+        return {
+          background: props.backgroundColor,
+        };
+      }
+    });
+
+    function closeModal() {
+      emit('closeModal');
+    }
+
+    function itemClick(item) {
+      emit('itemClick', item.type);
+      closeModal();
+    }
+
     return {
       modalStyle,
       modal,
+      modalWrapperStyle,
+      closeModal,
+      itemClick,
     };
   },
 };

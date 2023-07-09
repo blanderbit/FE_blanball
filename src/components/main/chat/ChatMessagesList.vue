@@ -3,7 +3,8 @@
     v-if="isContextMenuOpened"
     :clientX="contextMenuX"
     :clientY="contextMenuY"
-    :contextMenuItems="chatMessageContextMenuItems"
+    :modalItems="chatMessageContextMenuItems"
+    backgroundColor="transperent"
     @close-modal="closeContextMenu"
     @itemClick="contextMenuItemClick"
   />
@@ -53,7 +54,7 @@ import { v4 as uuid } from 'uuid';
 
 import InfiniteLoading from '../infiniteLoading/InfiniteLoading.vue';
 import SmartList from '../../shared/smartList/SmartList.vue';
-import ContextMenu from '../../shared/modals/ContextMenuModal.vue';
+import ContextMenu from '../../shared/modals/ContextModal.vue';
 import ChatMessage from './ChatMessage.vue';
 import UserJoinedToTheChatMessage from './UserJoinedToTheChatMessage.vue';
 
@@ -128,6 +129,7 @@ export default {
           page: page,
         }),
       dataTransformation: handlingIncomeMessagesData,
+      messageType: ChatWebSocketTypes.GetChatMessagesList
     });
 
     const loadDataPaginationData = (pageNumber, $state) => {

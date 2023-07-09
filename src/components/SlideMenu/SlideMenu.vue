@@ -6,11 +6,13 @@
   <!--@deleteNotifications="HandleAction.deleteSelected()"-->
   <!--@continue="closeSubmitModal"-->
   <!--/>-->
+
   <ContextMenu
     v-if="isContextMenuActive"
     :clientX="contextMenuX"
     :clientY="contextMenuY"
-    :contextMenuItems="config.activeTab.records.contextMenu"
+    :modalItems="config.activeTab.records.contextMenu"
+    backgroundColor="transperent"
     @close-modal="closeContextMenu"
     @itemClick="contextMenuItemClick"
   />
@@ -23,7 +25,7 @@
     <template #logo>
       <img
         v-if="config.slideConfig.logo.img"
-        src="../../assets/img/logo-sidebar.svg"
+        :src="config.slideConfig.logo.img"
         alt=""
       />
       <span
@@ -245,7 +247,7 @@ import emptyList from '../shared/emptyList/EmptyList.vue';
 import InfiniteLoading from '../main/infiniteLoading/InfiniteLoading.vue';
 import ScrollToTop from '../ScrollToTop.vue';
 import SubmitModal from '../shared/modals/SubmitModal.vue';
-import ContextMenu from '../shared/modals/ContextMenuModal.vue';
+import ContextMenu from '../shared/modals/ContextModal.vue';
 import SlideMenuWrapper from './SlideMenuWrapper.vue';
 
 import { useUserDataStore } from '../../stores/userData';
@@ -285,7 +287,10 @@ export default {
     const contextMenuX = ref(null);
     const contextMenuY = ref(null);
     const isContextMenuActive = ref(false);
+    const itemOnWhatWasOpenedContextMenu = ref(null);
+
     const openContextMenu = (data) => {
+      itemOnWhatWasOpenedContextMenu.value = data.itemData;
       contextMenuY.value = data.yPosition;
       contextMenuX.value = data.xPosition;
       isContextMenuActive.value = true;
@@ -324,6 +329,10 @@ export default {
       context.config.activity = false;
     }
 
+    function contextMenuItemClick(itemActionType) {
+      
+    }
+
     return {
       userStore,
       clientVersion,
@@ -336,6 +345,7 @@ export default {
       openContextMenu,
       closeContextMenu,
       closeSlideMenu,
+      contextMenuItemClick,
       openTab,
       test($event) {
         context.config.activeTab.$emit(

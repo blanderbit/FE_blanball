@@ -5,6 +5,12 @@
         <div class="b-modal-window__title">
           {{ $t('chat.edit_chat_modal.manage_group') }}
         </div>
+        <img
+          class="b-close-modal-button"
+          src="../../../../assets/img/cross.svg"
+          alt=""
+          @click="closeModal"
+        />
       </div>
       <div class="b-modal-window__main-side">
         <div class="b-select-photo__button">
@@ -38,7 +44,7 @@
         />
       </div>
 
-      <!-- <ChatUsersList :chatData="chatData"/> -->
+      <ChatUsersList :chatData="chatData"/>
     </div>
   </div>
 </template>
@@ -49,7 +55,7 @@ import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
 
 import MainInput from '../../../shared/input/MainInput.vue';
-import SearchBlockAll from '../../../SearchBlockAll.vue'
+import SearchBlockAll from '../../../SearchBlockAll.vue';
 import ChatUsersList from '../ChatUsersList.vue';
 
 import { copyToClipboard } from '../../../../utils/copyToClipBoard';
@@ -118,6 +124,15 @@ export default {
       .b-modal-window__title {
         @include exo(22px, 700, $--b-main-black-color);
         line-height: 32px;
+      }
+
+      .b-close-modal-button {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        right: 20px;
+        top: 20px;
+        cursor: pointer;
       }
     }
     .b-modal-window__main-side {

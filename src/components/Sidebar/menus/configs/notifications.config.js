@@ -4,6 +4,7 @@ import notification from '../../../../assets/img/notification.svg';
 import { ActionModelTypeButton } from '../models/model.types';
 import { API } from '../../../../workers/api-worker/api.worker';
 import { TabModel } from '../models/tabs.model';
+import { ContextMenuModel } from '../models/context.menu.model';
 import { createNotificationFromData } from '../../../../workers/utils-worker';
 import { ref, computed, watch } from 'vue';
 import { CONSTS } from '../../../../consts';
@@ -14,6 +15,8 @@ import {
 } from '../../../../workers/web-socket-worker';
 
 import { NotificationsBus } from '../../../../workers/event-bus-worker';
+
+import SideBarLogoIcon from '../../../../assets/img/logo-sidebar.svg';
 
 const findDublicates = (list, newList) => {
   return newList.filter((item) =>
@@ -119,8 +122,7 @@ export const createNotificationConfigItem = (instance) => {
       title: 'notification.slide',
       defaultTab: 'notification.slideConfig.all_notifications',
       logo: {
-        img: '',
-        text: 'Мои Друзья',
+        img: SideBarLogoIcon,
       },
       filters: [
         // Filter({

@@ -7,6 +7,7 @@ export const WebSocketPaginationWorker = (options) => {
     dataTransformation,
     beforeConcat,
     notToConcatElements,
+    messageType,
   } = options || {};
 
   const paginationElements = ref([]);
@@ -37,6 +38,7 @@ export const WebSocketPaginationWorker = (options) => {
     const resultData = result.data;
     const paginationData = resultData?.data;
 
+    
     if (resultData.status === 'success') {
       if (dataTransformation) {
         paginationData.results = paginationData.results.map(dataTransformation);
@@ -60,7 +62,10 @@ export const WebSocketPaginationWorker = (options) => {
   };
 
   const registerSocketPaginationCallBack = () => {
-    ChatSocketWorkerInstance.registerCallback(paginationProcessResponse);
+    ChatSocketWorkerInstance.registerCallback(
+      paginationProcessResponse,
+      messageType
+    );
   };
 
   const destroySocketPaginationCallBack = () => {

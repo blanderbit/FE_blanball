@@ -15,7 +15,8 @@
       v-if="isContextMenuOpened"
       :clientX="contextMenuX"
       :clientY="contextMenuY"
-      :contextMenuItems="mockData.chatMessageContextMenu"
+      :modalItems="mockData.chatMessageContextMenu"
+      backgroundColor="transperent"
       @close-modal="closeContextMenu"
       @itemClick="contextMenuItemClick"
     />
@@ -60,7 +61,7 @@ import ChatWarning from '../../../components/main/chat/ChatWarning.vue';
 import ChatTopBlock from '../../../components/main/chat/ChatTopBlock.vue';
 import EditChatModal from '../../../components/main/chat/modals/EditChatModal.vue';
 import ChatMessagesList from '../../../components/main/chat/ChatMessagesList.vue';
-import ContextMenu from '../../../components/shared/modals/ContextMenuModal.vue';
+import ContextMenu from '../../../components/shared/modals/ContextModal.vue';
 import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
 
 import { accessToken } from '../../../workers/token-worker';
