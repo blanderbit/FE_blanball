@@ -109,6 +109,8 @@ export default {
           CONSTS.chat.CHAT_MESSAGE_CONTEXT_MENU_ACTIONS,
         chatMessagesList: CONSTS.chat.chatMessagesList,
         CHAT_MESSAGE_TYPES: CONSTS.chat.CHAT_MESSAGE_TYPES,
+        CHAT_MAX_SELECTED_MESSAGES_COUNT:
+          CONSTS.chat.CHAT_MAX_SELECTED_MESSAGES_COUNT,
       };
     });
 
@@ -129,7 +131,7 @@ export default {
           page: page,
         }),
       dataTransformation: handlingIncomeMessagesData,
-      messageType: ChatWebSocketTypes.GetChatMessagesList
+      messageType: ChatWebSocketTypes.GetChatMessagesList,
     });
 
     const loadDataPaginationData = (pageNumber, $state) => {
@@ -198,7 +200,12 @@ export default {
     }
 
     function selectMessage(messageId) {
-      selectedMessages.value.push(messageId);
+      if (
+        selectedMessages.value.length <
+        mockData.value.CHAT_MAX_SELECTED_MESSAGES_COUNT
+      ) {
+        selectedMessages.value.push(messageId);
+      }
     }
 
     function deselectChatMessages() {

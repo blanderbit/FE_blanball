@@ -25,6 +25,7 @@
           inputMode="text"
           :height="48"
           :backgroundColor="'#fff'"
+          :icon="icons.chatName"
           name="search"
           v-model="chatData.name"
         />
@@ -42,9 +43,25 @@
           v-model="chatData.link"
           @rightIconClick="copyChatLink"
         />
+        <div class="b-edit-chat-modal-users-list">
+          <ChatUsersList :chatData="chatData" />
+        </div>
       </div>
-
-      <ChatUsersList :chatData="chatData"/>
+      <div class="b-modal-window__bottom-side">
+        <WhiteBtn
+          :text="$t('buttons.cancel')"
+          :width="80"
+          :main-color="'#575775'"
+          :isBorder="false"
+          @click-function="closeModal"
+        />
+        <GreenBtn
+          :text="$t('buttons.save-changes')"
+          :width="150"
+          :height="38"
+          @click-function="updateChat"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -57,16 +74,21 @@ import { useI18n } from 'vue-i18n';
 import MainInput from '../../../shared/input/MainInput.vue';
 import SearchBlockAll from '../../../SearchBlockAll.vue';
 import ChatUsersList from '../ChatUsersList.vue';
+import GreenBtn from '../../../shared/button/GreenBtn.vue';
+import WhiteBtn from '../../../shared/button/WhiteBtn.vue';
 
 import { copyToClipboard } from '../../../../utils/copyToClipBoard';
 
 import CopyChatLinkIcon from '../../../../assets/img/chat/infinite.svg';
+import ChatNameIcon from '../../../../assets/img/address-icon.svg';
 
 export default {
   components: {
     MainInput,
     SearchBlockAll,
     ChatUsersList,
+    GreenBtn,
+    WhiteBtn,
   },
   props: {
     chatData: {
@@ -74,18 +96,19 @@ export default {
       required: true,
     },
   },
-  emits: ['closeModal'],
+  emits: ['closeModal', 'updateChat'],
   setup(props, { emit }) {
     const toast = useToast();
     const { t } = useI18n();
     const icons = computed(() => {
       return {
         copyChatLink: CopyChatLinkIcon,
+        chatName: ChatNameIcon,
       };
     });
 
-    function closeModal() {
-      emit('closeModal');
+    function closeModal({ force }) {
+      emit('closeModal', { force: force });
     }
 
     function copyChatLink() {
@@ -93,10 +116,16 @@ export default {
       toast.success(t('chat.toasts.chat_link_copieded_success'));
     }
 
+    function updateChat() {
+      emit('updateChat');
+      closeModal({ force: true });
+    }
+
     return {
       icons,
       closeModal,
       copyChatLink,
+      updateChat,
     };
   },
 };
@@ -155,6 +184,16 @@ export default {
           line-height: 20px;
         }
       }
+
+      // .b-edit-chat-modal-users-list {
+      //   overflow: scroll;
+      //   height: 200px;
+      // }
+    }
+    .b-modal-window__bottom-side {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
   }
 }

@@ -33,9 +33,10 @@ export default {
   toasts: {
     chat_link_copieded_success:
       'Посилання-запрошення на чат було успішно скопійовано в буфер обміну',
+    chat_updated_success: 'Дані цього групового чату було успішно змінено',
   },
   roles: {
     admin: 'Адмін',
     author: 'Організатор',
-  }
+  },
 };

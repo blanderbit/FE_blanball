@@ -11,11 +11,16 @@
         <div
           :class="['b-user-online-status', { online: userMainData.is_online }]"
         >
-          У мережі
+          Був онлайн – 11:20
         </div>
       </div>
     </div>
     <div class="b-user-chat-role">{{ userChatRole }}</div>
+    <img
+      class="b-manage-user-button"
+      src="../../../assets/img/chat/manage-chat-user-button.svg"
+      alt=""
+    />
   </div>
 </template>
 
@@ -85,6 +90,21 @@ export default {
   display: flex;
   justify-content: space-between;
   cursor: pointer;
+  border-radius: 6px;
+  padding: 2px 4px;
+  transition: all 0.2s linear;
+
+  &:hover {
+    background: #e6e6eb;
+
+    .b-user-chat-role {
+      display: none;
+    }
+
+    .b-manage-user-button {
+      display: block;
+    }
+  }
 
   .b-user-data {
     display: flex;
@@ -111,6 +131,10 @@ export default {
   .b-user-chat-role {
     @include inter(12px, 400, $--b-main-green-color);
     line-height: 20px;
+  }
+
+  .b-manage-user-button {
+    display: none;
   }
 }
 </style>

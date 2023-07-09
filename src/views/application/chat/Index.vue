@@ -4,6 +4,7 @@
       v-if="isEditChatModalOpened"
       :chatData="chatData"
       @closeModal="closeEditChatModal"
+      @updateChat="updateChatData"
     />
     <SubmitModal
       v-if="isSubmitModalOpened"
@@ -52,6 +53,7 @@
 import { ref, computed, onBeforeMount, onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toastification';
 
 import { useElementSize } from '@vueuse/core';
 
@@ -95,6 +97,7 @@ export default {
       link: 'helloflamingo.linkactive',
     });
     const { t } = useI18n();
+    const toast = useToast();
 
     const isEditChatModalOpened = ref(false);
     const isChatWarningClosed = ref(false);
@@ -150,12 +153,16 @@ export default {
       return !chatData.value.isGroup && chatData.value.isChatRequest;
     });
 
+    function updateChatData() {
+      toast.success(t('chat.toasts.chat_updated_success'));
+    }
+
     function showEditChatModal() {
       isEditChatModalOpened.value = true;
     }
 
-    function closeEditChatModal() {
-      if (isSubmitModalOpened.value === false) {
+    function closeEditChatModal(options) {
+      if (isSubmitModalOpened.value === false && !options.force) {
         submitModalConfig.value = {
           title: t('chat.submit_close_edit_chat_modal.title'),
           description: t('chat.submit_close_edit_chat_modal.description'),
@@ -233,6 +240,7 @@ export default {
       showManageChatContextMenu,
       showSubmitModal,
       closeSubmitModal,
+      updateChatData,
     };
   },
 };
