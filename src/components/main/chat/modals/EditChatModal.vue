@@ -5,8 +5,14 @@
         <div class="b-modal-window__title">
           {{ $t('chat.edit_chat_modal.manage_group') }}
         </div>
+        <img
+          class="b-close-modal-button"
+          src="../../../../assets/img/cross.svg"
+          alt=""
+          @click="closeModal"
+        />
       </div>
-      <div class="b-modal-window__main-side">
+      <div class="b-modal-window__main-side" ref="MODAL_MAIN_SIDE_BLOCK">
         <div class="b-select-photo__button">
           <img src="../../../../assets/img/chat/green-camera.svg" alt="" />
           <span>{{ $t('chat.edit_chat_modal.select_photo') }}</span>
@@ -19,6 +25,7 @@
           inputMode="text"
           :height="48"
           :backgroundColor="'#fff'"
+          :icon="icons.chatName"
           name="search"
           v-model="chatData.name"
         />
@@ -37,30 +44,52 @@
           @rightIconClick="copyChatLink"
         />
       </div>
-
-      <ChatUsersList :chatData="chatData"/>
+      <div class="b-edit-chat-modal-users-list" :style="usersListBlockStyle">
+        <ChatUsersList :chatData="chatData" />
+      </div>
+      <div class="b-modal-window__bottom-side" ref="MODAL_BOTTOM_SIDE_BLOCK">
+        <WhiteBtn
+          :text="$t('buttons.cancel')"
+          :width="80"
+          :main-color="'#575775'"
+          :isBorder="false"
+          @click-function="closeModal"
+        />
+        <GreenBtn
+          :text="$t('buttons.save-changes')"
+          :width="150"
+          :height="38"
+          @click-function="updateChat"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
+import { useElementSize } from '@vueuse/core';
 
 import MainInput from '../../../shared/input/MainInput.vue';
-import SearchBlockAll from '../../../SearchBlockAll.vue'
+import SearchBlockAll from '../../../SearchBlockAll.vue';
 import ChatUsersList from '../ChatUsersList.vue';
+import GreenBtn from '../../../shared/button/GreenBtn.vue';
+import WhiteBtn from '../../../shared/button/WhiteBtn.vue';
 
 import { copyToClipboard } from '../../../../utils/copyToClipBoard';
 
 import CopyChatLinkIcon from '../../../../assets/img/chat/infinite.svg';
+import ChatNameIcon from '../../../../assets/img/address-icon.svg';
 
 export default {
   components: {
     MainInput,
     SearchBlockAll,
     ChatUsersList,
+    GreenBtn,
+    WhiteBtn,
   },
   props: {
     chatData: {
@@ -68,18 +97,40 @@ export default {
       required: true,
     },
   },
-  emits: ['closeModal'],
+  emits: ['closeModal', 'updateChat'],
   setup(props, { emit }) {
+    const MODAL_BOTTOM_SIDE_BLOCK = ref();
+    const MODAL_MAIN_SIDE_BLOCK = ref();
+    const MODAL_HEIGHT_VALUE = 600;
+
+    const { height: MODAL_MAIN_SIDE_BLOCK_HEIGHT } = useElementSize(
+      MODAL_MAIN_SIDE_BLOCK
+    );
+    const { height: MODAL_BOTTOM_SIDE_BLOCK_HEIGHT } = useElementSize(
+      MODAL_BOTTOM_SIDE_BLOCK
+    );
+
     const toast = useToast();
     const { t } = useI18n();
+
     const icons = computed(() => {
       return {
         copyChatLink: CopyChatLinkIcon,
+        chatName: ChatNameIcon,
       };
     });
 
-    function closeModal() {
-      emit('closeModal');
+    const usersListBlockStyle = computed(() => {
+      return {
+        height: `${
+          MODAL_HEIGHT_VALUE -
+          MODAL_MAIN_SIDE_BLOCK_HEIGHT.value -
+          MODAL_BOTTOM_SIDE_BLOCK_HEIGHT.value
+        }px`,
+      };
+    });
+    function closeModal({ force }) {
+      emit('closeModal', { force: force });
     }
 
     function copyChatLink() {
@@ -87,10 +138,19 @@ export default {
       toast.success(t('chat.toasts.chat_link_copieded_success'));
     }
 
+    function updateChat() {
+      emit('updateChat');
+      closeModal({ force: true });
+    }
+
     return {
+      MODAL_MAIN_SIDE_BLOCK,
+      MODAL_BOTTOM_SIDE_BLOCK,
+      usersListBlockStyle,
       icons,
       closeModal,
       copyChatLink,
+      updateChat,
     };
   },
 };
@@ -119,6 +179,15 @@ export default {
         @include exo(22px, 700, $--b-main-black-color);
         line-height: 32px;
       }
+
+      .b-close-modal-button {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        right: 20px;
+        top: 20px;
+        cursor: pointer;
+      }
     }
     .b-modal-window__main-side {
       display: flex;
@@ -140,6 +209,16 @@ export default {
           line-height: 20px;
         }
       }
+
+      // .b-edit-chat-modal-users-list {
+      //   overflow: scroll;
+      //   height: 200px;
+      // }
+    }
+    .b-modal-window__bottom-side {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
   }
 }

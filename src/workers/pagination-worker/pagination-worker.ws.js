@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, onBeforeUnmount, onMounted } from 'vue';
 import { ChatSocketWorkerInstance } from '../web-socket-worker';
 
 export const WebSocketPaginationWorker = (options) => {
@@ -7,14 +7,35 @@ export const WebSocketPaginationWorker = (options) => {
     dataTransformation,
     beforeConcat,
     notToConcatElements,
+    messageType,
   } = options || {};
 
   const paginationElements = ref([]);
   const paginationPage = ref(0);
   const paginationTotalCount = ref(0);
   const paginationIsNextPage = ref(true);
+  const paginationHeplFullData = ref(null);
   const requestId = ref(null);
   const state = ref(null);
+
+  const registerSocketPaginationCallBack = () => {
+    ChatSocketWorkerInstance.registerCallback(
+      paginationProcessResponse,
+      messageType
+    );
+  };
+
+  const destroySocketPaginationCallBack = () => {
+    ChatSocketWorkerInstance.destroyCallback(paginationProcessResponse);
+  };
+
+  onMounted(() => {
+    registerSocketPaginationCallBack();
+  });
+
+  onBeforeUnmount(() => {
+    destroySocketPaginationCallBack();
+  });
 
   const paginationLoad = ({ pageNumber, $state, forceUpdate }) => {
     pageNumber = pageNumber < 1 ? 1 : pageNumber;
@@ -27,13 +48,11 @@ export const WebSocketPaginationWorker = (options) => {
     paginationDataRequest(pageNumber).then((result) => {
       if (result.data.request_id) {
         requestId.value = result.data.request_id;
-
-        registerSocketPaginationCallBack();
       }
     });
   };
 
-  const paginationProcessResponse = (result) => {
+  function paginationProcessResponse(result) {
     const resultData = result.data;
     const paginationData = resultData?.data;
 
@@ -48,6 +67,7 @@ export const WebSocketPaginationWorker = (options) => {
         : paginationElements.value.concat(paginationData.results);
       paginationTotalCount.value = paginationData.total_count;
       paginationIsNextPage.value = paginationData.is_next_page;
+      paginationHeplFullData.value = paginationData?.helpfull_data;
 
       if (state.value?.loaded) state.value.loaded();
       if (!paginationIsNextPage.value && state.value?.complete)
@@ -55,22 +75,13 @@ export const WebSocketPaginationWorker = (options) => {
     } else if (resultData.status === 'error') {
       state.value?.complete && state.value.complete();
     }
-
-    destroySocketPaginationCallBack();
-  };
-
-  const registerSocketPaginationCallBack = () => {
-    ChatSocketWorkerInstance.registerCallback(paginationProcessResponse);
-  };
-
-  const destroySocketPaginationCallBack = () => {
-    ChatSocketWorkerInstance.destroyCallback(paginationProcessResponse);
-  };
+  }
 
   return {
     paginationElements,
     paginationTotalCount,
     paginationIsNextPage,
+    paginationHeplFullData,
     paginationPage,
     requestId,
     paginationLoad,

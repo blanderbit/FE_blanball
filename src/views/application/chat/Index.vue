@@ -4,6 +4,7 @@
       v-if="isEditChatModalOpened"
       :chatData="chatData"
       @closeModal="closeEditChatModal"
+      @updateChat="updateChatData"
     />
     <SubmitModal
       v-if="isSubmitModalOpened"
@@ -15,7 +16,8 @@
       v-if="isContextMenuOpened"
       :clientX="contextMenuX"
       :clientY="contextMenuY"
-      :menu-text="mockData.chatMessageContextMenu"
+      :modalItems="mockData.chatMessageContextMenu"
+      backgroundColor="transperent"
       @close-modal="closeContextMenu"
       @itemClick="contextMenuItemClick"
     />
@@ -51,6 +53,7 @@
 import { ref, computed, onBeforeMount, onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toastification';
 
 import { useElementSize } from '@vueuse/core';
 
@@ -60,14 +63,12 @@ import ChatWarning from '../../../components/main/chat/ChatWarning.vue';
 import ChatTopBlock from '../../../components/main/chat/ChatTopBlock.vue';
 import EditChatModal from '../../../components/main/chat/modals/EditChatModal.vue';
 import ChatMessagesList from '../../../components/main/chat/ChatMessagesList.vue';
-import ContextMenu from '../../../components/shared/modals/ContextMenuModal.vue';
+import ContextMenu from '../../../components/shared/modals/ContextModal.vue';
 import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
 
 import { accessToken } from '../../../workers/token-worker';
-import { BlanballEventBus } from '../../../workers/event-bus-worker';
 import { ChatSocketWorkerInstance } from '../../../workers/web-socket-worker';
 
-import { useSideBarStore } from '../../../stores/sideBar';
 import { calcHeight } from '../../../utils/calcHeight';
 import { useWindowWidth } from '../../../utils/widthScreen';
 
@@ -88,15 +89,15 @@ export default {
   },
   setup() {
     const chatData = ref({
-      id: 725,
+      id: 726,
       name: 'dffddfdfdf fdfddffd',
-      disabled: true,
       isChatRequest: false,
       isGroup: false,
       disabled: false,
       link: 'helloflamingo.linkactive',
     });
     const { t } = useI18n();
+    const toast = useToast();
 
     const isEditChatModalOpened = ref(false);
     const isChatWarningClosed = ref(false);
@@ -152,12 +153,16 @@ export default {
       return !chatData.value.isGroup && chatData.value.isChatRequest;
     });
 
+    function updateChatData() {
+      toast.success(t('chat.toasts.chat_updated_success'));
+    }
+
     function showEditChatModal() {
       isEditChatModalOpened.value = true;
     }
 
-    function closeEditChatModal() {
-      if (isSubmitModalOpened.value === false) {
+    function closeEditChatModal(options) {
+      if (isSubmitModalOpened.value === false && !options.force) {
         submitModalConfig.value = {
           title: t('chat.submit_close_edit_chat_modal.title'),
           description: t('chat.submit_close_edit_chat_modal.description'),
@@ -207,10 +212,6 @@ export default {
       token: accessToken.getToken(),
     });
 
-    onBeforeMount(() => {
-      BlanballEventBus.emit('OpenSideBar');
-    });
-
     onBeforeUnmount(() => {
       ChatSocketWorkerInstance.disconnect();
     });
@@ -239,6 +240,7 @@ export default {
       showManageChatContextMenu,
       showSubmitModal,
       closeSubmitModal,
+      updateChatData,
     };
   },
 };

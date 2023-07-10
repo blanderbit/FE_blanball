@@ -79,15 +79,20 @@ export class WebSocketWorker {
 
     const index = this.callbacks.findIndex((callback) => {
       if (typeof callback === 'function') {
-        callback.name === destroyCallback.name;
-      } else if (typeof callback === 'object') {
-        callback.callbackFunction.name === destroyCallback.name;
+        return callback.name === destroyCallback.name;
+      } else if (
+        typeof callback === 'object' &&
+        typeof callback.callbackFunction === 'function'
+      ) {
+        return callback.callbackFunction.name === destroyCallback.name;
       }
     });
+
     if (index > -1) {
       this.callbacks.splice(index, 1);
       console.log('destroyCallback destroyed successfully');
     }
+
     return this;
   }
 

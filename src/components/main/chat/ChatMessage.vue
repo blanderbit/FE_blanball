@@ -96,6 +96,10 @@ export default {
       return messageData.showAvatar && !props.selected;
     });
 
+    const isMessageEdited = computed(() => {
+      return messageData.edited;
+    });
+
     const messageTail = computed(() => {
       return isMessageMine.value ? WhiteMessageTail : GreenMessageTail;
     });
@@ -134,6 +138,7 @@ export default {
     return {
       messageTime,
       isMessageMine,
+      isMessageEdited,
       isMessageAvatarVisible,
       senderMessageData,
       messageTail,
@@ -151,6 +156,7 @@ export default {
 .b-chat-message-wrapper {
   display: flex;
   align-items: flex-end;
+  gap: 12px;
 
   .b-chat-message-tail {
     @include mobile {

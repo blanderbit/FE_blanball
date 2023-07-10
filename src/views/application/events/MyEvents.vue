@@ -3,7 +3,8 @@
     v-if="isContextMenuActive"
     :clientX="contextMenuX"
     :clientY="contextMenuY"
-    :menu-text="mockData.menu_text"
+    :modalItems="mockData.menu_text"
+    backgroundColor="transperent"
     @close-modal="isContextMenuActive = false"
     @itemClick="contextMenuItemClick"
   />
@@ -186,7 +187,7 @@ import { v4 as uuid } from 'uuid';
 
 import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
 import MainInput from '../../../components/shared/input/MainInput.vue';
-import ContextMenu from '../../../components/shared/modals/ContextMenuModal.vue';
+import ContextMenu from '../../../components/shared/modals/ContextModal.vue';
 import EventCard from '../../../components/main/events/EventCard.vue';
 import MyEventCard from '../../../components/main/events/MyEventCard.vue';
 import rightSidebar from '../../../components/main/rightSidebar/RightSidebar.vue';

@@ -3,7 +3,8 @@
     v-if="isContextMenuOpened"
     :clientX="contextMenuX"
     :clientY="contextMenuY"
-    :menu-text="chatMessageContextMenuItems"
+    :modalItems="chatMessageContextMenuItems"
+    backgroundColor="transperent"
     @close-modal="closeContextMenu"
     @itemClick="contextMenuItemClick"
   />
@@ -53,13 +54,16 @@ import { v4 as uuid } from 'uuid';
 
 import InfiniteLoading from '../infiniteLoading/InfiniteLoading.vue';
 import SmartList from '../../shared/smartList/SmartList.vue';
-import ContextMenu from '../../shared/modals/ContextMenuModal.vue';
+import ContextMenu from '../../shared/modals/ContextModal.vue';
 import ChatMessage from './ChatMessage.vue';
 import UserJoinedToTheChatMessage from './UserJoinedToTheChatMessage.vue';
 
 import { ChatEventBus } from '../../../workers/event-bus-worker';
 import { WebSocketPaginationWorker } from '../../../workers/pagination-worker';
-import { AuthWebSocketWorkerInstance } from '../../../workers/web-socket-worker';
+import {
+  AuthWebSocketWorkerInstance,
+  ChatSocketWorkerInstance,
+} from '../../../workers/web-socket-worker';
 import { API } from '../../../workers/api-worker/api.worker';
 import { ChatWebSocketTypes } from '../../../workers/web-socket-worker/message-types/chat/web.socket.types';
 
@@ -108,6 +112,8 @@ export default {
           CONSTS.chat.CHAT_MESSAGE_CONTEXT_MENU_ACTIONS,
         chatMessagesList: CONSTS.chat.chatMessagesList,
         CHAT_MESSAGE_TYPES: CONSTS.chat.CHAT_MESSAGE_TYPES,
+        CHAT_MAX_SELECTED_MESSAGES_COUNT:
+          CONSTS.chat.CHAT_MAX_SELECTED_MESSAGES_COUNT,
       };
     });
 
@@ -123,8 +129,12 @@ export default {
       paginationLoad,
     } = WebSocketPaginationWorker({
       paginationDataRequest: (page) =>
-        API.ChatService.getChatMessages({ chat_id: props.chatData.id, page: page }),
+        API.ChatService.getChatMessages({
+          chat_id: props.chatData.id,
+          page: page,
+        }),
       dataTransformation: handlingIncomeMessagesData,
+      messageType: ChatWebSocketTypes.GetChatMessagesList,
     });
 
     const loadDataPaginationData = (pageNumber, $state) => {
@@ -141,7 +151,7 @@ export default {
         let isNextMessageFromTheSameSender = false;
 
         const showAvatar = props.chatData.isGroup
-          ? !isMessageMine && (!nextMessage || !isNextMessageFromTheSameSender)
+          ? !isMessageMine && !isNextMessageFromTheSameSender
           : false;
 
         return {
@@ -193,7 +203,12 @@ export default {
     }
 
     function selectMessage(messageId) {
-      selectedMessages.value.push(messageId);
+      if (
+        selectedMessages.value.length <
+        mockData.value.CHAT_MAX_SELECTED_MESSAGES_COUNT
+      ) {
+        selectedMessages.value.push(messageId);
+      }
     }
 
     function deselectChatMessages() {
@@ -243,6 +258,14 @@ export default {
       }
     }
 
+    function editChatMessage(instanceType) {
+      console.log(instanceType);
+    }
+
+    function deleteChatMessages() {
+      console.log(instanceType);
+    }
+
     ChatEventBus.on('deselectChatMessages', () => deselectChatMessages());
 
     AuthWebSocketWorkerInstance.registerCallback(
@@ -250,8 +273,24 @@ export default {
       ChatWebSocketTypes.CreateMessage
     );
 
+    ChatSocketWorkerInstance.registerCallback(
+      editChatMessage,
+      ChatWebSocketTypes.EditMessage
+    );
+
+    ChatSocketWorkerInstance.registerCallback(
+      deleteChatMessages,
+      ChatWebSocketTypes.DeleteMesssages
+    );
+
+    // onBeforeUnmount(() => {
+    //   ChatSocketWorkerInstance.destroyCallback(editChatMessage);
+    // });
+
     onBeforeUnmount(() => {
       AuthWebSocketWorkerInstance.destroyCallback(processCreateChatMessage);
+      ChatSocketWorkerInstance.destroyCallback(editChatMessage);
+      ChatSocketWorkerInstance.destroyCallback(deleteChatMessages);
       ChatEventBus.off('deselectChatMessages');
     });
 
