@@ -1,5 +1,9 @@
 <template>
-  <div class="b-chat-user">
+  <div
+    :class="['b-chat-user', { manageButton: showManageButtonOnHover }]"
+    @mouseenter="startHoverUser"
+    @mouseleave="endHoverUser"
+  >
     <div class="b-user-data">
       <userAvatar
         :link="userMainDataProfile.avatar_url"
@@ -25,10 +29,12 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import userAvatar from '../../shared/userAvatar/UserAvatar.vue';
+
+import { useUserDataStore } from '../../../stores/userData';
 
 export default {
   props: {
@@ -36,14 +42,20 @@ export default {
       type: Object,
       required: true,
     },
+    currentUserChatPermissions: {
+      type: Object,
+      default: null,
+    },
   },
   components: {
     userAvatar,
   },
   setup(props) {
     const { t } = useI18n();
+    const userStore = useUserDataStore();
+    const showManageButtonOnHover = ref(false);
 
-    const { userData } = props;
+    const { userData, currentUserChatPermissions } = props;
 
     const isUserChatAuthor = computed(() => {
       return userData.author;
@@ -73,6 +85,22 @@ export default {
       }
     });
 
+    function startHoverUser() {
+      const isHoveredSelfUser = userData.id === userStore.user.id;
+      const isHoveredChatAuthor = userData.author;
+
+      if (currentUserChatPermissions?.author) {
+        return (showManageButtonOnHover.value = !isHoveredSelfUser);
+      } else if (currentUserChatPermissions?.admin) {
+        return (showManageButtonOnHover.value =
+          !isHoveredChatAuthor.value && !isHoveredSelfUser);
+      }
+    }
+
+    function endHoverUser() {
+      showManageButtonOnHover.value = false;
+    }
+
     return {
       isUserChatAuthor,
       isUserChatAdmin,
@@ -80,6 +108,9 @@ export default {
       userMainDataProfile,
       userFullName,
       userChatRole,
+      showManageButtonOnHover,
+      startHoverUser,
+      endHoverUser,
     };
   },
 };
@@ -96,13 +127,14 @@ export default {
 
   &:hover {
     background: #e6e6eb;
+    &.manageButton {
+      .b-user-chat-role {
+        display: none;
+      }
 
-    .b-user-chat-role {
-      display: none;
-    }
-
-    .b-manage-user-button {
-      display: block;
+      .b-manage-user-button {
+        display: block;
+      }
     }
   }
 

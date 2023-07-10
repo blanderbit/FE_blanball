@@ -12,7 +12,7 @@
           @click="closeModal"
         />
       </div>
-      <div class="b-modal-window__main-side">
+      <div class="b-modal-window__main-side" ref="MODAL_MAIN_SIDE_BLOCK">
         <div class="b-select-photo__button">
           <img src="../../../../assets/img/chat/green-camera.svg" alt="" />
           <span>{{ $t('chat.edit_chat_modal.select_photo') }}</span>
@@ -43,11 +43,11 @@
           v-model="chatData.link"
           @rightIconClick="copyChatLink"
         />
-        <div class="b-edit-chat-modal-users-list">
-          <ChatUsersList :chatData="chatData" />
-        </div>
       </div>
-      <div class="b-modal-window__bottom-side">
+      <div class="b-edit-chat-modal-users-list" :style="usersListBlockStyle">
+        <ChatUsersList :chatData="chatData" />
+      </div>
+      <div class="b-modal-window__bottom-side" ref="MODAL_BOTTOM_SIDE_BLOCK">
         <WhiteBtn
           :text="$t('buttons.cancel')"
           :width="80"
@@ -67,9 +67,10 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
+import { useElementSize } from '@vueuse/core';
 
 import MainInput from '../../../shared/input/MainInput.vue';
 import SearchBlockAll from '../../../SearchBlockAll.vue';
@@ -98,8 +99,20 @@ export default {
   },
   emits: ['closeModal', 'updateChat'],
   setup(props, { emit }) {
+    const MODAL_BOTTOM_SIDE_BLOCK = ref();
+    const MODAL_MAIN_SIDE_BLOCK = ref();
+    const MODAL_HEIGHT_VALUE = 600;
+
+    const { height: MODAL_MAIN_SIDE_BLOCK_HEIGHT } = useElementSize(
+      MODAL_MAIN_SIDE_BLOCK
+    );
+    const { height: MODAL_BOTTOM_SIDE_BLOCK_HEIGHT } = useElementSize(
+      MODAL_BOTTOM_SIDE_BLOCK
+    );
+
     const toast = useToast();
     const { t } = useI18n();
+
     const icons = computed(() => {
       return {
         copyChatLink: CopyChatLinkIcon,
@@ -107,6 +120,15 @@ export default {
       };
     });
 
+    const usersListBlockStyle = computed(() => {
+      return {
+        height: `${
+          MODAL_HEIGHT_VALUE -
+          MODAL_MAIN_SIDE_BLOCK_HEIGHT.value -
+          MODAL_BOTTOM_SIDE_BLOCK_HEIGHT.value
+        }px`,
+      };
+    });
     function closeModal({ force }) {
       emit('closeModal', { force: force });
     }
@@ -122,6 +144,9 @@ export default {
     }
 
     return {
+      MODAL_MAIN_SIDE_BLOCK,
+      MODAL_BOTTOM_SIDE_BLOCK,
+      usersListBlockStyle,
       icons,
       closeModal,
       copyChatLink,

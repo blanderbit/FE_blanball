@@ -16,7 +16,11 @@
       v-model:scrollbar-existing="blockScrollToTopIfExist"
     >
       <template #smartListItem="slotProps">
-        <ChatUser :key="slotProps.index" :userData="slotProps.smartListItem" />
+        <ChatUser
+          :key="slotProps.index"
+          :userData="slotProps.smartListItem"
+          :currentUserChatPermissions="currentUserChatPermissions"
+        />
       </template>
       <template #after>
         <InfiniteLoading
@@ -89,11 +93,16 @@ export default {
       return mockData.value.chatMessageContextMenuItems;
     });
 
+    const currentUserChatPermissions = computed(() => {
+      return paginationHeplFullData?.request_user_permissions;
+    });
+
     const {
       paginationElements,
       paginationPage,
       paginationTotalCount,
       paginationClearData,
+      paginationHeplFullData,
       paginationLoad,
     } = WebSocketPaginationWorker({
       paginationDataRequest: (page) =>
@@ -101,6 +110,7 @@ export default {
           chat_id: props.chatData.id,
           page: page,
         }),
+      dataTransformation: handlingIncomeMessagesData,
       messageType: ChatWebSocketTypes.GetChatUsersList,
     });
 
@@ -159,6 +169,7 @@ export default {
       contextMenuY,
       isContextMenuOpened,
       chatMessageContextMenuItems,
+      currentUserChatPermissions,
       paginationPage,
       restartInfiniteScroll,
       loadDataPaginationData,

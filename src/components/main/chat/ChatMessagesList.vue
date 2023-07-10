@@ -60,7 +60,10 @@ import UserJoinedToTheChatMessage from './UserJoinedToTheChatMessage.vue';
 
 import { ChatEventBus } from '../../../workers/event-bus-worker';
 import { WebSocketPaginationWorker } from '../../../workers/pagination-worker';
-import { AuthWebSocketWorkerInstance } from '../../../workers/web-socket-worker';
+import {
+  AuthWebSocketWorkerInstance,
+  ChatSocketWorkerInstance,
+} from '../../../workers/web-socket-worker';
 import { API } from '../../../workers/api-worker/api.worker';
 import { ChatWebSocketTypes } from '../../../workers/web-socket-worker/message-types/chat/web.socket.types';
 
@@ -255,6 +258,14 @@ export default {
       }
     }
 
+    function editChatMessage(instanceType) {
+      console.log(instanceType);
+    }
+
+    function deleteChatMessages() {
+      console.log(instanceType);
+    }
+
     ChatEventBus.on('deselectChatMessages', () => deselectChatMessages());
 
     AuthWebSocketWorkerInstance.registerCallback(
@@ -262,8 +273,24 @@ export default {
       ChatWebSocketTypes.CreateMessage
     );
 
+    ChatSocketWorkerInstance.registerCallback(
+      editChatMessage,
+      ChatWebSocketTypes.EditMessage
+    );
+
+    ChatSocketWorkerInstance.registerCallback(
+      deleteChatMessages,
+      ChatWebSocketTypes.DeleteMesssages
+    );
+
+    // onBeforeUnmount(() => {
+    //   ChatSocketWorkerInstance.destroyCallback(editChatMessage);
+    // });
+
     onBeforeUnmount(() => {
       AuthWebSocketWorkerInstance.destroyCallback(processCreateChatMessage);
+      ChatSocketWorkerInstance.destroyCallback(editChatMessage);
+      ChatSocketWorkerInstance.destroyCallback(deleteChatMessages);
       ChatEventBus.off('deselectChatMessages');
     });
 
