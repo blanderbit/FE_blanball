@@ -234,6 +234,26 @@ const router = createRouter({
             },
           },
         },
+        {
+          path: ROUTES.APPLICATION.DONATIONS.relative,
+          name: ROUTES.APPLICATION.DONATIONS.name,
+          component: () => import('../views/application/donations/DonationList.vue'),
+          meta: {
+            breadcrumbs: {
+              i18n: 'breadcrumbs.donations',
+            },
+          },
+        },
+        {
+          path: ROUTES.APPLICATION.DONATIONS.ITEM.relative,
+          name: ROUTES.APPLICATION.DONATIONS.ITEM.name,
+          component: () => import('../views/application/donations/DonationItem.vue'),
+          meta: {
+            breadcrumbs: {
+              i18n: 'breadcrumbs.donation',
+            },
+          },
+        },
       ],
     },
     {

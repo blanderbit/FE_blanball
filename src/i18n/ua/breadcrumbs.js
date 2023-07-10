@@ -33,4 +33,6 @@ export default {
     { name: 'Користувачі', path: '/application/users/general' },
     { name: 'Профіль користувача' },
   ],
+  donations: [{ name: 'Головна', path: '/' }, { name: 'Донати' }],
+  donation: [{ name: 'Головна', path: '/' }, { name: 'Донати', path: '/application/donations' }, { name: 'Донат' },],
 };

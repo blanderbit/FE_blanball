@@ -127,6 +127,16 @@ export const ROUTES = {
         name: 'application-users-one',
       },
     },
+    DONATIONS: {
+      relative: 'donations',
+      absolute: '/application/donations',
+      name: 'application-donations',
+      ITEM: {
+        relative: 'donations/:id',
+        absolute: (donationId) => `/application/donations/${donationId}`,
+        name: 'application-donations-item',
+      },
+    },
   },
   WORKS: {
     relative: '/works',

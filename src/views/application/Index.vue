@@ -44,7 +44,7 @@
         </div>
       </div>
     </div>
-
+    
     <ActionEventModal
       v-if="isActionEventModalOpened"
       :modalData="actionEventModalConfig"
