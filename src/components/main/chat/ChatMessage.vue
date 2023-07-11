@@ -30,7 +30,7 @@
       @touchend="endMessageHold"
     >
       <div class="b-chat-message-text">
-        {{ messageData.text }}
+        {{ messageData.text }} {{ messageData.id }}
       </div>
       <div class="b-like-message-button">
         <img src="../../../assets/img/chat/like-button.svg" alt="" />

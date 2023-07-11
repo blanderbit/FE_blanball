@@ -12,7 +12,14 @@ import { ChatWebSocketTypes } from './web.socket.types';
 @UpdateWebSocketMessage()
 @SetMessageType(ChatWebSocketTypes.DeleteMesssages)
 export class DeleteChatMessagesMessage extends InitialUpdation {
-  deleteMessage() {
-    console.log(this.data);
+  deleteMessage(paginationElements) {
+    if (!this.isError) {
+      const messagesIDS = this.data.data.data.messages_ids;
+      if (messagesIDS) {
+        paginationElements.value = paginationElements.value.filter(
+          (element) => !messagesIDS.includes(element.id)
+        );
+      }
+    }
   }
 }
