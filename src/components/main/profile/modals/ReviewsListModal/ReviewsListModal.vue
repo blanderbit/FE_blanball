@@ -81,7 +81,7 @@ import Review from './Review.vue';
 import { API } from '../../../../../workers/api-worker/api.worker';
 import { PaginationWorker } from '../../../../../workers/pagination-worker';
 import { useHeaderHeightStore } from '../../../../../stores/headerHeight';
-import { useWindowWidth } from '../../../../../utils/widthScreen';
+import { useWindowWidth } from '../../../../../workers/window-size-worker/widthScreen';
 
 export default {
   components: {

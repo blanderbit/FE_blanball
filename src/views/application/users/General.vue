@@ -110,7 +110,7 @@ import tShirt from '../../../assets/img/t-shirt.svg';
 import { v4 as uuid } from 'uuid';
 import { PaginationWorker } from '../../../workers/pagination-worker';
 import { API } from '../../../workers/api-worker/api.worker';
-import { calcHeight } from '../../../utils/calcHeight';
+import { calcHeight } from '../../../workers/window-size-worker/calcHeight';
 import { useUserDataStore } from '../../../stores/userData';
 
 import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patch';

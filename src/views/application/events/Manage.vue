@@ -167,7 +167,7 @@ import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '../../../stores/userData';
 import { BlanballEventBus } from '../../../workers/event-bus-worker';
-import { calcHeight } from '../../../utils/calcHeight';
+import { calcHeight } from '../../../workers/window-size-worker/calcHeight';
 import { finishSpinner, startSpinner } from '../../../workers/loading-worker/loading.worker';
 
 import { runOnSelectEventDuration } from '../../../utils/runOnSelectEventDuration';

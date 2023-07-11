@@ -78,7 +78,7 @@ import { CONSTS } from '../../../consts/index';
 import { ROUTES } from '../../../router/router.const';
 import { API } from '../../../workers/api-worker/api.worker';
 import { BlanballEventBus } from '../../../workers/event-bus-worker';
-import { useWindowWidth } from '../../../utils/widthScreen';
+import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
 
 import { HINTS_DATA } from '../../../workers/hints-worker/hints.data';
 

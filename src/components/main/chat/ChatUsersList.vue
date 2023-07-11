@@ -182,6 +182,7 @@ export default {
 
       switch (action) {
         case DELETE:
+          removeUserFromChat();
           break;
         case SET_ADMIN:
           setOrUnsetAmdin(action);
@@ -204,6 +205,13 @@ export default {
       });
     }
 
+    function removeUserFromChat() {
+      API.ChatService.removeUserFromChat({
+        chat_id: props.chatData.id,
+        user_id: userOnWhatOpenedContextMenuData.value.id,
+      });
+    }
+
     function setOrUnsetChatAdminHandleMessage(instanceType) {
       instanceType.setOrUnsetAdmin(paginationElements);
       instanceType.onError(
@@ -212,15 +220,25 @@ export default {
       );
     }
 
+    function removeUserFromChatHandleMessage(instanceType) {
+      instanceType.removeUserFromChat(paginationElements);
+    }
+
     ChatSocketWorkerInstance.registerCallback(
       setOrUnsetChatAdminHandleMessage,
       ChatWebSocketTypes.SetOrUnsetChatAdmin
+    );
+
+    ChatSocketWorkerInstance.registerCallback(
+      removeUserFromChatHandleMessage,
+      ChatWebSocketTypes.RemoveUserFromChat
     );
 
     onBeforeUnmount(() => {
       ChatSocketWorkerInstance.destroyCallback(
         setOrUnsetChatAdminHandleMessage
       );
+      ChatSocketWorkerInstance.destroyCallback(removeUserFromChatHandleMessage);
     });
 
     return {

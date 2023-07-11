@@ -61,7 +61,7 @@ import MainInput from '../../shared/input/MainInput.vue';
 import EmojiPicker from './EmojiPicker.vue';
 import ReplyToChatMessage from './ReplyToChatMessage.vue';
 
-import { useWindowWidth } from '../../../utils/widthScreen';
+import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
 import { ChatEventBus } from '../../../workers/event-bus-worker';
 import { API } from '../../../workers/api-worker/api.worker';
 

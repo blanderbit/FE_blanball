@@ -54,7 +54,7 @@
 import { ref, computed } from 'vue';
 import UserAvatar from '../../shared/userAvatar/UserAvatar.vue';
 
-import { useWindowWidth } from '../../../utils/widthScreen';
+import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
 import { ChatEventBus } from '../../../workers/event-bus-worker';
 
 import { CONSTS } from '../../../consts';

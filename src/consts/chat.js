@@ -38,7 +38,6 @@ export default {
   CHAT_MAX_USERS_COUNT,
   chatUserContextMenuItems: (isUserAdmin) => [
     {
-      id: 0,
       text: `chat.buttons.${!isUserAdmin ? 'set_admin' : 'unset_admin'}`,
       img: SetOrUnsetAdminIcon,
       type: !isUserAdmin
@@ -46,7 +45,6 @@ export default {
         : CHAT_USER_CONTEXT_MENU_ACTIONS.UNSET_ADMIN,
     },
     {
-      id: 1,
       text: 'buttons.delete',
       img: DeleteMessageIcon,
       type: CHAT_USER_CONTEXT_MENU_ACTIONS.DELETE,
@@ -55,25 +53,21 @@ export default {
 
   chatMessageContextMenuItems: (isMessageMine) => [
     {
-      id: 0,
       text: 'Відповісти',
       img: ReplyToMessageIcon,
       type: CHAT_MESSAGE_CONTEXT_MENU_ACTIONS.REPLY,
     },
     {
-      id: 1,
       text: 'buttons.select',
       img: SelectMessageIcon,
       type: CHAT_MESSAGE_CONTEXT_MENU_ACTIONS.SELECT,
     },
     {
-      id: 2,
       text: 'buttons.forward',
       img: ForwardMessagesIcon,
       type: CHAT_MESSAGE_CONTEXT_MENU_ACTIONS.FORWARD,
     },
     {
-      id: 3,
       text: 'buttons.delete',
       img: DeleteMessageIcon,
       type: CHAT_MESSAGE_CONTEXT_MENU_ACTIONS.DELETE,

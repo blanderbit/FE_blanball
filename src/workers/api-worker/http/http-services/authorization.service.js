@@ -60,8 +60,4 @@ export class AuthorizationService {
   static VerifyEmail() {
     return AxiosInstance.get(EndpointsEnum.Authorization.VerifyEmail);
   }
-
-  static ValidateRefreshToken(data) {
-    return AxiosInstance.post(EndpointsEnum.Authorization.ValidateRefreshToken, data); 
-  }
 }

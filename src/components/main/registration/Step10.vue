@@ -76,7 +76,7 @@ import StepWrapper from './StepWrapper.vue';
 import { PositionMapBus } from '../../../workers/event-bus-worker';
 import { API } from '../../../workers/api-worker/api.worker';
 import { useDevice } from 'next-vue-device-detector';
-import { useWindowWidth } from '../../../utils/widthScreen';
+import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
 
 import { CONSTS } from '../../../consts/index';
 

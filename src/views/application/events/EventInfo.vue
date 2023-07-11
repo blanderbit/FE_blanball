@@ -315,7 +315,7 @@ import {
   startSpinner,
   finishSpinner,
 } from '../../../workers/loading-worker/loading.worker';
-import { calcHeight } from '../../../utils/calcHeight';
+import { calcHeight } from '../../../workers/window-size-worker/calcHeight';
 
 import { CONSTS } from '../../../consts/index';
 import { ROUTES } from '../../../router/router.const';

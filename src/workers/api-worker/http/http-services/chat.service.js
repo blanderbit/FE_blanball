@@ -34,4 +34,8 @@ export class ChatService {
   static setOrUnsetAdmin(data) {
     return AxiosInstance.post(EndpointsEnum.Chats.SetOrUnsetChatAdmin, data);
   }
+
+  static removeUserFromChat(data) {
+    return AxiosInstance.post(EndpointsEnum.Chats.RemoveUserFromChat, data);
+  }
 }

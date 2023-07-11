@@ -271,9 +271,9 @@ import {
   finishSpinner,
 } from '../../../workers/loading-worker/loading.worker';
 import { BlanballEventBus } from '../../../workers/event-bus-worker';
-import { useWindowWidth } from '../../../utils/widthScreen';
+import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
 import { useElementSize } from '@vueuse/core';
-import { calcHeight } from '../../../utils/calcHeight';
+import { calcHeight } from '../../../workers/window-size-worker/calcHeight';
 
 import { CONSTS } from '../../../consts';
 import { ROUTES } from '../../../router/router.const';

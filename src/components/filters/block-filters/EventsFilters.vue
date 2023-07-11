@@ -210,7 +210,7 @@ import PositionMapModal from '../../maps/PositionMapModal.vue';
 import ModalFilters from '../ModalEventsFilters.vue';
 
 import { TransformedFiltersWorker } from './transformed.filters.worker';
-import { useWindowWidth } from '../../../utils/widthScreen';
+import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
 import useTodaysDate from '../../../utils/todaysDate';
 
 import { CONSTS } from '../../../consts';

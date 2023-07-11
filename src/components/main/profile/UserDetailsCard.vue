@@ -339,7 +339,7 @@ import userAvatar from '../../shared/userAvatar/UserAvatar.vue';
 import RatingCard from './RatingCard.vue';
 
 import { CONSTS } from '../../../consts';
-import { useWindowWidth } from '../../../utils/widthScreen';
+import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
 
 import sortArrowHorizontally from '../../../assets/img/sort-arrows-horizontal.svg';
 import tick from '../../../assets/img/tick.svg';

@@ -1,7 +1,7 @@
 import { useToast } from 'vue-toastification';
 import { TypeRequestMessageWorker } from '../workers/type-request-message-worker';
 
-import { refreshTokens } from '../utils/refreshTokens';
+import { refreshTokens } from '../workers/token-worker/refreshTokens';
 import { useTokensStore } from '../stores/tokens';
 
 import { AxiosInstance } from '../plugins/axios.plugin';

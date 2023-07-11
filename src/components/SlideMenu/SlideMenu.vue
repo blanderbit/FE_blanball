@@ -252,7 +252,7 @@ import SlideMenuWrapper from './SlideMenuWrapper.vue';
 
 import { useUserDataStore } from '../../stores/userData';
 
-import { calcHeight } from '../../utils/calcHeight';
+import { calcHeight } from '../../workers/window-size-worker/calcHeight';
 
 import { ROUTES } from '../../router/router.const';
 

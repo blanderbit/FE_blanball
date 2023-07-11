@@ -69,8 +69,8 @@ import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
 import { accessToken } from '../../../workers/token-worker';
 import { ChatSocketWorkerInstance } from '../../../workers/web-socket-worker';
 
-import { calcHeight } from '../../../utils/calcHeight';
-import { useWindowWidth } from '../../../utils/widthScreen';
+import { calcHeight } from '../../../workers/window-size-worker/calcHeight';
+import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
 
 import { CONSTS } from '../../../consts';
 
@@ -89,7 +89,7 @@ export default {
   },
   setup() {
     const chatData = ref({
-      id: 730,
+      id: 732,
       name: 'dffddfdfdf fdfddffd',
       isChatRequest: false,
       isGroup: false,
