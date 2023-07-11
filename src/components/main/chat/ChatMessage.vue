@@ -32,7 +32,6 @@
       <div class="b-chat-message-text">
         {{ messageData.text }}
       </div>
-
       <div class="b-like-message-button">
         <img src="../../../assets/img/chat/like-button.svg" alt="" />
       </div>

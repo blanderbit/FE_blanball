@@ -24,6 +24,7 @@
       class="b-manage-user-button"
       src="../../../assets/img/chat/manage-chat-user-button.svg"
       alt=""
+      @click="showContextMenu"
     />
   </div>
 </template>
@@ -50,7 +51,8 @@ export default {
   components: {
     userAvatar,
   },
-  setup(props) {
+  emits: ['showContextMenu'],
+  setup(props, { emit }) {
     const { t } = useI18n();
     const userStore = useUserDataStore();
     const showManageButtonOnHover = ref(false);
@@ -101,6 +103,10 @@ export default {
       showManageButtonOnHover.value = false;
     }
 
+    function showContextMenu(e) {
+      emit('showContextMenu', e, userData);
+    }
+
     return {
       isUserChatAuthor,
       isUserChatAdmin,
@@ -111,6 +117,7 @@ export default {
       showManageButtonOnHover,
       startHoverUser,
       endHoverUser,
+      showContextMenu,
     };
   },
 };
@@ -127,7 +134,10 @@ export default {
 
   &:hover {
     background: #e6e6eb;
-    &.manageButton {
+  }
+
+  &.manageButton {
+    &:hover {
       .b-user-chat-role {
         display: none;
       }

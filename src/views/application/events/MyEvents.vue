@@ -21,9 +21,9 @@
     :eventDataValue="updateEventData"
     @closeEventUpdateModal="closeEventUpdateModal"
   />
-  <ActionEventModal
-    v-if="isActionEventModalOpened"
-    :modalData="actionEventModalConfig"
+  <ActionModal
+    v-if="isActionModalOpened"
+    :modalData="ActionModalConfig"
     @closeModal="closeEventActiondModal"
   />
   <div class="b-events-page">
@@ -200,7 +200,7 @@ import EventsFilters from '../../../components/filters/block-filters/EventsFilte
 import WhiteBtn from '../../../components/shared/button/WhiteBtn.vue';
 import DeleteEventsModal from '../../../components/main/events/modals/DeleteEventsModal.vue';
 import EditEventModal from '../../../components/main/manageEvent/modals/EditEventModal.vue';
-import ActionEventModal from '../../../components/main/events/modals/ActionEventModal.vue';
+import ActionModal from '../../../components/main/events/modals/ActionModal.vue';
 import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
@@ -265,7 +265,7 @@ export default {
     FilterBlock,
     EventsFilters,
     WhiteBtn,
-    ActionEventModal,
+    ActionModal,
     DeleteEventsModal,
     SubmitModal,
   },
@@ -292,16 +292,16 @@ export default {
     const blockScrollToTopIfExist = ref(false);
     const triggerForRestart = ref('');
     const selectedTabId = ref(route.meta.tabId);
-    const isActionEventModalOpened = ref(false);
+    const isActionModalOpened = ref(false);
     const isSubmitModalOpened = ref(false);
     const nextRoutePath = ref('');
-    const actionEventModalData = ref({});
+    const ActionModalData = ref({});
     const submitModalData = ref({});
     const userStore = useUserDataStore();
 
-    const actionEventModalConfig = computed({
+    const ActionModalConfig = computed({
       get() {
-        return actionEventModalData.value;
+        return ActionModalData.value;
       },
       set() {},
     });
@@ -375,11 +375,11 @@ export default {
       isEventUpdateModalOpened.value = false;
     };
     const showEventActiondModal = (modalData) => {
-      actionEventModalConfig.value = modalData;
-      isActionEventModalOpened.value = true;
+      ActionModalConfig.value = modalData;
+      isActionModalOpened.value = true;
     };
     const closeEventActiondModal = () => {
-      isActionEventModalOpened.value = false;
+      isActionModalOpened.value = false;
     };
     const closeSubmitModal = () => {
       isSubmitModalOpened.value = false;
@@ -474,7 +474,7 @@ export default {
         isEventUpdateModalOpened.value = true;
       } else {
         showEventActiondModal(
-          (actionEventModalData.value = {
+          (ActionModalData.value = {
             title: t('modals.no_perm_to_edit.title'),
             description: t('modals.no_perm_to_edit.main-text'),
             image: NoEditPermIcon,
@@ -510,7 +510,7 @@ export default {
     async function pinEvents() {
       if ((await getCountPinnedEvents()) === MAX_PINNED_EVENTS_COUNT) {
         showEventActiondModal(
-          (actionEventModalData.value = {
+          (ActionModalData.value = {
             title: t('modals.no_perm_to_pin.title'),
             description: t('modals.no_perm_to_pin.main-text'),
             image: NoEditPermIcon,
@@ -794,12 +794,12 @@ export default {
       contextMenuY,
       PinIcon,
       myEventsBlockHeight,
-      actionEventModalConfig,
+      ActionModalConfig,
       isEventUpdateModalOpened,
       paginationTotalCount,
       selected,
       updateEventData,
-      isActionEventModalOpened,
+      isActionModalOpened,
       selectedContextMenuEvent,
       emptyListMessages,
       isContextMenuActive,

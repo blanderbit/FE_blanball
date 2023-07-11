@@ -7,7 +7,20 @@ export class InitialChatMessage {
   constructor(data) {
     this.data = data.data;
     this.isError = this.data.status == 'error';
+    if (this.isError) {
+      this.onError();
+    }
   }
 
-  handleUpdate(notifications) {}
+  onError(errorType, callback) {
+    if (typeof callback !== 'function') {
+      return console.error(
+        'InitialChatMessage onError callback is not a function'
+      );
+    }
+
+    if (errorType === this.data.data) {
+      callback();
+    }
+  }
 }

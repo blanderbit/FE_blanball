@@ -89,7 +89,7 @@ export default {
   },
   setup() {
     const chatData = ref({
-      id: 726,
+      id: 730,
       name: 'dffddfdfdf fdfddffd',
       isChatRequest: false,
       isGroup: false,
