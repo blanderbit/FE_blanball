@@ -118,7 +118,7 @@ import {
   NotificationsBus,
   BlanballEventBus,
 } from '../../workers/event-bus-worker';
-import { useWindowWidth } from '../../utils/widthScreen';
+import { useWindowWidth } from '../../workers/window-size-worker/widthScreen';
 import { logOut } from '../../utils/logOut';
 
 import { ROUTES } from '../../router/router.const';

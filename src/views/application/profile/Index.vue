@@ -188,8 +188,8 @@ import ReviewsListModal from '../../../components/main/profile/modals/ReviewsLis
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '@/stores/userData';
-import { useWindowWidth } from '../../../utils/widthScreen';
-import { calcHeight } from '../../../utils/calcHeight';
+import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
+import { calcHeight } from '../../../workers/window-size-worker/calcHeight';
 
 import { CONSTS } from '../../../consts';
 import SCHEMAS from '../../../validators/schemas';

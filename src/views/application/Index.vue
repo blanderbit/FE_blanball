@@ -140,7 +140,7 @@ import {
 import { MessageActionTypes } from '../../workers/web-socket-worker/message.action.types';
 import { API } from '../../workers/api-worker/api.worker';
 import { VersionDetectorWorker } from '../../workers/version-detector-worker';
-import { useWindowWidth } from '../../utils/widthScreen';
+import { useWindowWidth } from '../../workers/window-size-worker/widthScreen';
 import { useElementSize } from '@vueuse/core';
 import { validateRefreshToken } from '../../utils/validateRefreshToken';
 

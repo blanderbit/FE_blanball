@@ -1,5 +1,5 @@
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
-import { BlanballEventBus } from '../workers/event-bus-worker';
+import { BlanballEventBus } from '../event-bus-worker';
 
 export const setHeightVH = () => {
   const doc = document.documentElement;

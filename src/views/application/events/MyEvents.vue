@@ -211,7 +211,7 @@ import { addMinutes } from '../../../utils/addMinutes';
 import { getDate } from '../../../utils/getDate';
 import { getTime } from '../../../utils/getTime';
 import { prepareEventUpdateData } from '../../../utils/prepareEventUpdateData';
-import { calcHeight } from '../../../utils/calcHeight';
+import { calcHeight } from '../../../workers/window-size-worker/calcHeight';
 import { useUserDataStore } from '../../../stores/userData';
 import {
   startSpinner,

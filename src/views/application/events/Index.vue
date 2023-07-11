@@ -142,7 +142,7 @@ import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patc
 import { addMinutes } from '../../../utils/addMinutes';
 import { getDate } from '../../../utils/getDate';
 import { getTime } from '../../../utils/getTime';
-import { calcHeight } from '../../../utils/calcHeight';
+import { calcHeight } from '../../../workers/window-size-worker/calcHeight';
 import {
   finishSpinner,
   startSpinner,

@@ -238,7 +238,7 @@ import CopyModal from '../../shared/modals/CopyModal.vue';
 import MainInput from '../../shared/input/MainInput.vue';
 import GreenBtn from '../../shared/button/GreenBtn.vue';
 
-import { useWindowWidth } from '../../../utils/widthScreen';
+import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
 import { copyToClipboard } from '../../../utils/copyToClipBoard';
 import { getEmailProvider } from '../../../utils/getEmailProvider';
 import { getUkrainianOperator } from '../../../utils/getPhoneOperator';

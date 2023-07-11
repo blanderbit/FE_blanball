@@ -248,7 +248,7 @@ import { useUserDataStore } from '../../stores/userData';
 import { NewNotifications } from '../../workers/web-socket-worker/not-includes-to-socket/new_notifications';
 import { API } from '../../workers/api-worker/api.worker';
 import { NotificationsBus } from '../../workers/event-bus-worker';
-import { calcHeight } from '../../utils/calcHeight';
+import { calcHeight } from '../../workers/window-size-worker/calcHeight';
 
 import { ROUTES } from '../../router/router.const';
 import { CONSTS } from '../../consts';

@@ -183,7 +183,7 @@ import ModalFilters from '../ModalUsersFilters.vue';
 import RangeFilter from '../components/RangeFilter.vue';
 
 import { TransformedFiltersWorker } from './transformed.filters.worker';
-import { useWindowWidth } from '../../../utils/widthScreen';
+import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
 
 import { CONSTS } from '../../../consts';
 

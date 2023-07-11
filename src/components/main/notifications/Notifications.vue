@@ -43,7 +43,7 @@ import { useRouter } from 'vue-router';
 import { ref, watch, nextTick, onMounted, onBeforeUnmount, computed } from 'vue';
 import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller';
 import { notificationButtonHandlerMessage } from '../../../workers/utils-worker';
-import { useWindowWidth } from '../../../utils/widthScreen';
+import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
 
 export default {
   components: {
