@@ -39,4 +39,8 @@ export default {
     admin: 'Адмін',
     author: 'Організатор',
   },
+  buttons: {
+    set_admin: 'Зробити адміном',
+    unset_admin: 'Забрати адміна'
+  },
 };

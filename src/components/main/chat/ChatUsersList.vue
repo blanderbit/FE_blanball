@@ -1,13 +1,15 @@
 <template>
-  <ContextMenu
-    v-if="isContextMenuOpened"
-    :clientX="contextMenuX"
-    :clientY="contextMenuY"
-    :modalItems="chatMessageContextMenuItems"
-    backgroundColor="transperent"
-    @close-modal="closeContextMenu"
-    @itemClick="contextMenuItemClick"
-  />
+  <Teleport to="body">
+    <ContextMenu
+      v-if="isContextMenuOpened"
+      :clientX="contextMenuX"
+      :clientY="contextMenuY"
+      :modalItems="chatUserContextMenuItems"
+      backgroundColor="transperent"
+      @close-modal="closeContextMenu"
+      @itemClick="contextMenuItemClick"
+    />
+  </Teleport>
 
   <div class="b-chat-users__list">
     <SmartList
@@ -20,6 +22,7 @@
           :key="slotProps.index"
           :userData="slotProps.smartListItem"
           :currentUserChatPermissions="currentUserChatPermissions"
+          @showContextMenu="showContextMenu"
         />
       </template>
       <template #after>
@@ -74,6 +77,7 @@ export default {
     const isContextMenuOpened = ref(false);
     const contextMenuX = ref(null);
     const contextMenuY = ref(null);
+    const userOnWhatOpenedContextMenuData = ref(null);
 
     const restartInfiniteScroll = () => {
       triggerForRestart.value = uuid();
@@ -81,17 +85,16 @@ export default {
 
     const mockData = computed(() => {
       return {
-        chatMessageContextMenuItems:
-          CONSTS.chat.chatMessageContextMenuItems(true),
+        chatUserContextMenuItems: CONSTS.chat.chatUserContextMenuItems(
+          userOnWhatOpenedContextMenuData.value.admin
+        ),
         CHAT_MESSAGE_CONTEXT_MENU_ACTIONS:
           CONSTS.chat.CHAT_MESSAGE_CONTEXT_MENU_ACTIONS,
-        chatMessagesList: CONSTS.chat.chatMessagesList,
-        CHAT_MESSAGE_TYPES: CONSTS.chat.CHAT_MESSAGE_TYPES,
       };
     });
 
-    const chatMessageContextMenuItems = computed(() => {
-      return mockData.value.chatMessageContextMenuItems;
+    const chatUserContextMenuItems = computed(() => {
+      return mockData.value.chatUserContextMenuItems;
     });
 
     const currentUserChatPermissions = computed(() => {
@@ -129,17 +132,17 @@ export default {
       };
     }
 
-    function showContextMenu(e, messageData) {
+    function showContextMenu(e, userData) {
       contextMenuX.value = e.clientX;
       contextMenuY.value = e.clientY;
-      messageOnWhatOpenedContextMenuData.value = messageData;
+      userOnWhatOpenedContextMenuData.value = userData;
       isContextMenuOpened.value = true;
     }
 
     function closeContextMenu() {
       contextMenuX.value = null;
       contextMenuY.value = null;
-      messageOnWhatOpenedContextMenuData.value = {};
+      userOnWhatOpenedContextMenuData.value = {};
       isContextMenuOpened.value = false;
     }
 
@@ -151,12 +154,12 @@ export default {
         case DELETE:
           break;
         case SELECT:
-          selectMessage(messageOnWhatOpenedContextMenuData.value.id);
+          selectMessage(userOnWhatOpenedContextMenuData.value.id);
           break;
         case FORWARD:
           break;
         case REPLY:
-          replyToMessage(messageOnWhatOpenedContextMenuData.value);
+          replyToMessage(userOnWhatOpenedContextMenuData.value);
           break;
       }
     }
@@ -182,7 +185,7 @@ export default {
       contextMenuX,
       contextMenuY,
       isContextMenuOpened,
-      chatMessageContextMenuItems,
+      chatUserContextMenuItems,
       currentUserChatPermissions,
       paginationPage,
       restartInfiniteScroll,
