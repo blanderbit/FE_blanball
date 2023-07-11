@@ -189,6 +189,11 @@ export default {
         cursor: pointer;
       }
     }
+
+    .b-edit-chat-modal-users-list {
+      overflow: scroll;
+    }
+
     .b-modal-window__main-side {
       display: flex;
       flex-direction: column;
@@ -209,11 +214,6 @@ export default {
           line-height: 20px;
         }
       }
-
-      // .b-edit-chat-modal-users-list {
-      //   overflow: scroll;
-      //   height: 200px;
-      // }
     }
     .b-modal-window__bottom-side {
       display: flex;

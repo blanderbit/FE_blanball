@@ -8,6 +8,4 @@ export class InitialChatMessage {
     this.data = data.data;
     this.isError = this.data.status == 'error';
   }
-
-  handleUpdate(notifications) {}
 }

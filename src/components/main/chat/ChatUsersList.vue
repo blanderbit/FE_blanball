@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, onBeforeUnmount } from 'vue';
 
 import { v4 as uuid } from 'uuid';
 
@@ -48,6 +48,7 @@ import ChatUser from './ChatUser.vue';
 import { WebSocketPaginationWorker } from '../../../workers/pagination-worker';
 import { API } from '../../../workers/api-worker/api.worker';
 import { ChatWebSocketTypes } from '../../../workers/web-socket-worker/message-types/chat/web.socket.types';
+import { ChatSocketWorkerInstance } from '../../../workers/web-socket-worker';
 
 import { CONSTS } from '../../../consts';
 
@@ -94,7 +95,7 @@ export default {
     });
 
     const currentUserChatPermissions = computed(() => {
-      return paginationHeplFullData?.request_user_permissions;
+      return paginationHeplFullData.value?.request_user_permissions;
     });
 
     const {
@@ -159,6 +160,19 @@ export default {
           break;
       }
     }
+
+    function setOrUnsetChatAdmin(instanceType) {
+      instanceType.setOrUnsetAdmin(paginationElements);
+    }
+
+    ChatSocketWorkerInstance.registerCallback(
+      setOrUnsetChatAdmin,
+      ChatWebSocketTypes.SetOrUnsetChatAdmin
+    );
+
+    onBeforeUnmount(() => {
+      ChatSocketWorkerInstance.destroyCallback(setOrUnsetChatAdmin);
+    });
 
     return {
       refList,
