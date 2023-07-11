@@ -25,12 +25,11 @@
       <div class="b-send-voice-message b-send-button">
         <img src="../../../assets/img/chat/microphone.svg" alt="" />
       </div>
-      <div class="b-send-message b-send-button">
+      <div class="b-send-message b-send-button" @click="sendMessage(data)">
         <img
           v-if="!disabled"
           src="../../../assets/img/chat/send-message-button.svg"
           alt=""
-          @click="sendMessage(data)"
         />
         <img
           v-else

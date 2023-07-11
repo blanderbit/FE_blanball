@@ -262,8 +262,8 @@ export default {
       console.log(instanceType);
     }
 
-    function deleteChatMessages() {
-      console.log(instanceType);
+    function deleteChatMessages(instanceType) {
+      instanceType.deleteMessage(paginationElements);
     }
 
     ChatEventBus.on('deselectChatMessages', () => deselectChatMessages());
