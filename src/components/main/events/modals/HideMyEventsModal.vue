@@ -105,7 +105,7 @@ import ScrollToTop from '../../../ScrollToTop.vue';
 import HideEventCard from '../HideEventCard.vue';
 import WhiteBtn from '../../../shared/button/WhiteBtn.vue';
 import GreenBtn from '../../../shared/button/GreenBtn.vue';
-import ActionEventModal from './ActionEventModal.vue';
+import ActionModal from './ActionModal.vue';
 
 import { API } from '../../../../workers/api-worker/api.worker';
 import { PaginationWorker } from '../../../../workers/pagination-worker';
@@ -128,7 +128,7 @@ export default {
     ScrollToTop,
     WhiteBtn,
     GreenBtn,
-    ActionEventModal,
+    ActionModal,
     HideEventCard,
   },
   emits: ['closeModal', 'closeAndSave'],
@@ -142,7 +142,7 @@ export default {
     const requestIDs = ref([]);
     const isAllHidden = ref(false);
 
-    const actionEventModalConfig = computed(() => {
+    const ActionModalConfig = computed(() => {
       return {
         title: t('modals.no_perm_to_hide_events.title'),
         description: t('modals.no_perm_to_hide_events.main-text'),
@@ -280,7 +280,7 @@ export default {
       paginationPage,
       paginationTotalCount,
       isAllHidden,
-      actionEventModalConfig,
+      ActionModalConfig,
       mainEventsBlock,
       SaveIcon,
       requestIDs,

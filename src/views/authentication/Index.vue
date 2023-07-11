@@ -1,7 +1,7 @@
 <template>
   <div @contextmenu.prevent>
     <router-view />
-    <ActionEventModal
+    <ActionModal
       v-if="isUserSessionExpiredModalOpened"
       :modalData="sessionExpiredModalConfig"
       @closeModal="closeExpiredSessionModal"
@@ -13,7 +13,7 @@
 import { ref, computed, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import ActionEventModal from '../../components/main/events/modals/ActionEventModal.vue';
+import ActionModal from '../../components/main/events/modals/ActionModal.vue';
 
 import { BlanballEventBus } from '../../workers/event-bus-worker';
 
@@ -22,7 +22,7 @@ import NoEditPermIcon from '../../assets/img/no-edit-perm-modal-icon.svg';
 export default {
   name: 'index',
   components: {
-    ActionEventModal,
+    ActionModal,
   },
   setup() {
     const isUserSessionExpiredModalOpened = ref(false);

@@ -11,7 +11,7 @@
         :full-name="userFullName"
       />
       <div class="b-user-info">
-        <div class="b-user-full-name">{{ userFullName }} {{ userData.id }}</div>
+        <div class="b-user-full-name">{{ userFullName }}</div>
         <div
           :class="['b-user-online-status', { online: userMainData.is_online }]"
         >

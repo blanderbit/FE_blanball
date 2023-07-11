@@ -1,11 +1,11 @@
 <template>
-  <div @click.self="$emit('closeModal')" class="b-action-event-modal__wrapper">
-    <div class="b-action-event-modal__modal-window">
+  <div @click.self="$emit('closeModal')" class="b-action-modal__wrapper">
+    <div class="b-action-modal__modal-window">
       <img :src="modalData.image" alt="" />
-      <div class="b-action-event-modal__title">
+      <div class="b-action-modal__title">
         {{ modalData.title }}
       </div>
-      <div class="b-action-event-modal__subtitle">
+      <div class="b-action-modal__subtitle">
         {{ modalData.description }}
       </div>
     </div>
@@ -25,10 +25,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.b-action-event-modal__wrapper {
+.b-action-modal__wrapper {
   @include modal-wrapper;
 
-  .b-action-event-modal__modal-window {
+  .b-action-modal__modal-window {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -43,7 +43,7 @@ export default {
     background: $--b-main-white-color;
     padding: 0px 16px 16px;
 
-    .b-action-event-modal__title {
+    .b-action-modal__title {
       @include exo(18px, 700);
       line-height: 28px;
       display: flex;
@@ -51,7 +51,7 @@ export default {
       text-align: center;
       margin-bottom: 4px;
     }
-    .b-action-event-modal__subtitle {
+    .b-action-modal__subtitle {
       @include inter(14px, 400, $--b-main-gray-color);
       line-height: 20px;
       display: flex;

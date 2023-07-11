@@ -18,7 +18,7 @@ const CHAT_MESSAGE_CONTEXT_MENU_ACTIONS = {
 
 const CHAT_USER_CONTEXT_MENU_ACTIONS = {
   SET_ADMIN: 'set_admin',
-  UNSET_ADMIN: 'unset_moderator',
+  UNSET_ADMIN: 'unset_admin',
   DELETE: 'delete',
 };
 
@@ -31,11 +31,11 @@ const CHAT_MAX_SELECTED_MESSAGES_COUNT = 20;
 const CHAT_MAX_USERS_COUNT = 100;
 
 export default {
+  CHAT_USER_CONTEXT_MENU_ACTIONS,
   CHAT_MESSAGE_CONTEXT_MENU_ACTIONS,
   CHAT_MESSAGE_TYPES,
   CHAT_MAX_SELECTED_MESSAGES_COUNT,
   CHAT_MAX_USERS_COUNT,
-  CHAT_USER_CONTEXT_MENU_ACTIONS,
   chatUserContextMenuItems: (isUserAdmin) => [
     {
       id: 0,

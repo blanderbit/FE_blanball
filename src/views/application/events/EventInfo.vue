@@ -35,9 +35,9 @@
       />
     </template>
   </CopyModal>
-  <ActionEventModal
-    v-if="isActionEventModalOpened"
-    :modalData="actionEventModalConfig"
+  <ActionModal
+    v-if="isActionModalOpened"
+    :modalData="ActionModalConfig"
     @closeModal="closeEventActiondModal"
   />
   <SubmitModal
@@ -296,7 +296,7 @@ import userAvatar from '../../../components/shared/userAvatar/UserAvatar.vue';
 import TabLabel from '../../../components/shared/tabLabel/TabLabel.vue';
 import ListOfEventRequestsToParticipations from '../../../components/ListOfEventRequestsToParticipations.vue';
 import EventInfoForms from '../../../components/main/events/EventInfoForms.vue';
-import ActionEventModal from '../../../components/main/events/modals/ActionEventModal.vue';
+import ActionModal from '../../../components/main/events/modals/ActionModal.vue';
 import EditEventModal from '../../../components/main/manageEvent/modals/EditEventModal.vue';
 import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
 import ContextModal from '../../../components/shared/modals/ContextModal.vue';
@@ -352,7 +352,7 @@ export default {
     EditEventModal,
     ListOfEventRequestsToParticipations,
     InviteManyUsersToEventModal,
-    ActionEventModal,
+    ActionModal,
     SubmitModal,
     MainInput,
     ContextModal,
@@ -381,8 +381,8 @@ export default {
     const eventJoinModalX = ref(null);
     const eventJoinModalY = ref(null);
 
-    const isActionEventModalOpened = ref(false);
-    const actionEventModalConfig = computed(() => {
+    const isActionModalOpened = ref(false);
+    const ActionModalConfig = computed(() => {
       return {
         title: t('modals.no_perm_to_edit.title'),
         description: t('modals.no_perm_to_edit.main-text'),
@@ -654,10 +654,10 @@ export default {
     }
 
     const closeEventActiondModal = () => {
-      isActionEventModalOpened.value = false;
+      isActionModalOpened.value = false;
     };
     const openEventActionModal = () => {
-      isActionEventModalOpened.value = true;
+      isActionModalOpened.value = true;
     };
 
     function handleIncomeEventData(data) {
@@ -805,9 +805,9 @@ export default {
       isTabLabel,
       greenButton,
       activeTab,
-      isActionEventModalOpened,
+      isActionModalOpened,
       noUsersData,
-      actionEventModalConfig,
+      ActionModalConfig,
       noFansData,
       eventPriceHover,
       isSubmitModalOpened,

@@ -30,6 +30,10 @@ export default {
     button_1: 'Ні, не скасосувати',
     button_2: 'Так, скасувати',
   },
+  admins_limit_reached_modal: {
+    title: 'Перевищення ліміту',
+    main_text: 'Ви можете призначити не більше 3 модераторів.',
+  },
   toasts: {
     chat_link_copieded_success:
       'Посилання-запрошення на чат було успішно скопійовано в буфер обміну',
@@ -41,6 +45,6 @@ export default {
   },
   buttons: {
     set_admin: 'Зробити адміном',
-    unset_admin: 'Забрати адміна'
+    unset_admin: 'Забрати адміна',
   },
 };

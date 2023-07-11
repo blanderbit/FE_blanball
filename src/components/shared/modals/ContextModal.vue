@@ -85,7 +85,7 @@ export default {
     }
 
     function itemClick(item) {
-      emit('itemClick', item.type);
+      emit('itemClick', item.type, item);
       closeModal();
     }
 

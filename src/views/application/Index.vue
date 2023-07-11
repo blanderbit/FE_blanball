@@ -57,9 +57,9 @@
       </div>
     </div>
 
-    <ActionEventModal
-      v-if="isActionEventModalOpened"
-      :modalData="actionEventModalConfig"
+    <ActionModal
+      v-if="isActionModalOpened"
+      :modalData="ActionModalConfig"
       @closeModal="closeEventActiondModal"
     />
 
@@ -121,7 +121,7 @@ import mainHeader from '../../components/main/header/MainHeader.vue';
 import Notification from '../../components/main/notifications/Notification.vue';
 import VerifyEmailModal from '../../components/main/profile/modals/VerifyEmailModal.vue';
 import ModalFeedback from '../../components/modals/createFeedBackModal/index.vue';
-import ActionEventModal from '../../components/main/events/modals/ActionEventModal.vue';
+import ActionModal from '../../components/main/events/modals/ActionModal.vue';
 import Scheduler from '../../components/main/scheduler/index.vue';
 import LeftSidebar from '../../components/main/scheduler/LeftSidebar.vue';
 import TopLineFriends from '../../components/main/scheduler/TopLineFriends.vue';
@@ -156,8 +156,8 @@ const endedEventData = ref({});
 const selectedEmojies = ref([]);
 const modalFeedBackAnimation = ref(false);
 const isNewVersionModalActive = ref(false);
-const isActionEventModalOpened = ref(false);
-const actionEventModalConfig = ref({});
+const isActionModalOpened = ref(false);
+const ActionModalConfig = ref({});
 const { t } = useI18n();
 const activePushNotifications = ref([]);
 const router = useRouter();
@@ -189,10 +189,10 @@ const schedulerTopSideMargin = computed(() => {
 });
 
 const closeEventActiondModal = () => {
-  isActionEventModalOpened.value = false;
+  isActionModalOpened.value = false;
 };
 const openEventActionModal = () => {
-  isActionEventModalOpened.value = true;
+  isActionModalOpened.value = true;
 };
 
 const closeEventReviewModal = () => {
@@ -230,7 +230,7 @@ NotificationsBus.on('openEventReviewModal', async (data) => {
 });
 
 BlanballEventBus.on('EventCreated', () => {
-  actionEventModalConfig.value = {
+  ActionModalConfig.value = {
     title: t('modals.event_created.title'),
     description: t('modals.event_created.main-text'),
     image: EventCreatedIcon,
@@ -238,7 +238,7 @@ BlanballEventBus.on('EventCreated', () => {
   openEventActionModal();
 });
 BlanballEventBus.on('EventUpdated', () => {
-  actionEventModalConfig.value = {
+  ActionModalConfig.value = {
     title: t('modals.event_updated.title'),
     description: t('modals.event_updated.main-text'),
     image: EventUpdatedIcon,

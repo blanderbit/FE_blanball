@@ -22,4 +22,8 @@ export class SetOrUnsetChatAdminMessage extends InitialChatMessage {
       foundUser.admin = action == 'set';
     }
   }
+
+  onError(errorType, callback) {
+    super.onError(errorType, callback);
+  }
 }

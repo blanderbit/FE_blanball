@@ -9,6 +9,11 @@
       @close-modal="closeContextMenu"
       @itemClick="contextMenuItemClick"
     />
+    <ActionModal
+      v-if="isActionModalOpened"
+      :modalData="actionModalConfig"
+      @closeModal="closeActionModal"
+    />
   </Teleport>
 
   <div class="b-chat-users__list">
@@ -40,20 +45,25 @@
 
 <script>
 import { ref, computed, onBeforeUnmount } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { v4 as uuid } from 'uuid';
 
 import InfiniteLoading from '../infiniteLoading/InfiniteLoading.vue';
 import SmartList from '../../shared/smartList/SmartList.vue';
 import ContextMenu from '../../shared/modals/ContextModal.vue';
+import ActionModal from '../events/modals/ActionModal.vue';
 import ChatUser from './ChatUser.vue';
 
 import { WebSocketPaginationWorker } from '../../../workers/pagination-worker';
 import { API } from '../../../workers/api-worker/api.worker';
 import { ChatWebSocketTypes } from '../../../workers/web-socket-worker/message-types/chat/web.socket.types';
 import { ChatSocketWorkerInstance } from '../../../workers/web-socket-worker';
+import { CHAT_DETAILS_TYPE_ENUM_ERRORS } from '../../../workers/web-socket-worker/message-types/chat/web.socket.errors';
 
 import { CONSTS } from '../../../consts';
+
+import LimitOfAdminsIcon from '../../../assets/img/chat/limit-of-admins-reached.svg';
 
 export default {
   components: {
@@ -61,6 +71,7 @@ export default {
     ChatUser,
     SmartList,
     ContextMenu,
+    ActionModal,
   },
   props: {
     chatData: {
@@ -69,10 +80,13 @@ export default {
     },
   },
   setup(props) {
+    const { t } = useI18n();
     const refList = ref();
     const triggerForRestart = ref(false);
 
     const blockScrollToTopIfExist = ref(false);
+
+    const isActionModalOpened = ref(false);
 
     const isContextMenuOpened = ref(false);
     const contextMenuX = ref(null);
@@ -83,13 +97,21 @@ export default {
       triggerForRestart.value = uuid();
     };
 
+    const actionModalConfig = computed(() => {
+      return {
+        title: t('chat.admins_limit_reached_modal.title'),
+        description: t('chat.admins_limit_reached_modal.main_text'),
+        image: LimitOfAdminsIcon,
+      };
+    });
+
     const mockData = computed(() => {
       return {
         chatUserContextMenuItems: CONSTS.chat.chatUserContextMenuItems(
           userOnWhatOpenedContextMenuData.value.admin
         ),
-        CHAT_MESSAGE_CONTEXT_MENU_ACTIONS:
-          CONSTS.chat.CHAT_MESSAGE_CONTEXT_MENU_ACTIONS,
+        CHAT_USER_CONTEXT_MENU_ACTIONS:
+          CONSTS.chat.CHAT_USER_CONTEXT_MENU_ACTIONS,
       };
     });
 
@@ -132,6 +154,14 @@ export default {
       };
     }
 
+    function showActionModal() {
+      isActionModalOpened.value = true;
+    }
+
+    function closeActionModal() {
+      isActionModalOpened.value = false;
+    }
+
     function showContextMenu(e, userData) {
       contextMenuX.value = e.clientX;
       contextMenuY.value = e.clientY;
@@ -147,34 +177,50 @@ export default {
     }
 
     function contextMenuItemClick(action) {
-      const { DELETE, SELECT, FORWARD, REPLY } =
-        mockData.value.CHAT_MESSAGE_CONTEXT_MENU_ACTIONS;
+      const { SET_ADMIN, UNSET_ADMIN, DELETE } =
+        mockData.value.CHAT_USER_CONTEXT_MENU_ACTIONS;
 
       switch (action) {
         case DELETE:
           break;
-        case SELECT:
-          selectMessage(userOnWhatOpenedContextMenuData.value.id);
+        case SET_ADMIN:
+          setOrUnsetAmdin(action);
           break;
-        case FORWARD:
-          break;
-        case REPLY:
-          replyToMessage(userOnWhatOpenedContextMenuData.value);
+        case UNSET_ADMIN:
+          setOrUnsetAmdin(action);
           break;
       }
     }
 
-    function setOrUnsetChatAdmin(instanceType) {
+    function setOrUnsetAmdin(action) {
+      const actions = {
+        set_admin: 'set',
+        unset_admin: 'unset',
+      };
+      API.ChatService.setOrUnsetAdmin({
+        action: actions[action],
+        chat_id: props.chatData.id,
+        user_id: userOnWhatOpenedContextMenuData.value.id,
+      });
+    }
+
+    function setOrUnsetChatAdminHandleMessage(instanceType) {
       instanceType.setOrUnsetAdmin(paginationElements);
+      instanceType.onError(
+        CHAT_DETAILS_TYPE_ENUM_ERRORS.LIMIT_OF_ADMINS_3_REACHED,
+        showActionModal
+      );
     }
 
     ChatSocketWorkerInstance.registerCallback(
-      setOrUnsetChatAdmin,
+      setOrUnsetChatAdminHandleMessage,
       ChatWebSocketTypes.SetOrUnsetChatAdmin
     );
 
     onBeforeUnmount(() => {
-      ChatSocketWorkerInstance.destroyCallback(setOrUnsetChatAdmin);
+      ChatSocketWorkerInstance.destroyCallback(
+        setOrUnsetChatAdminHandleMessage
+      );
     });
 
     return {
@@ -188,7 +234,10 @@ export default {
       chatUserContextMenuItems,
       currentUserChatPermissions,
       paginationPage,
+      actionModalConfig,
+      isActionModalOpened,
       restartInfiniteScroll,
+      closeActionModal,
       loadDataPaginationData,
       showContextMenu,
       closeContextMenu,
