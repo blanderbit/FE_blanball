@@ -76,7 +76,7 @@ import inputCode from '../../../shared/inputCode/InputCode.vue';
 import MainInput from '../../../shared/input/MainInput.vue';
 
 import { API } from '../../../../workers/api-worker/api.worker';
-import { refreshTokens } from '../../../../utils/refreshTokens';
+import { refreshTokens } from '../../../../workers/token-worker/refreshTokens';
 import {
   startSpinner,
   finishSpinner,

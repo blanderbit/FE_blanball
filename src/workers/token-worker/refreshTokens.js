@@ -1,10 +1,10 @@
-import { API } from '../workers/api-worker/api.worker';
-import { refreshToken, accessToken } from '../workers/token-worker';
-import { useTokensStore } from '../stores/tokens';
-import { AuthWebSocketWorkerInstance } from '../workers/web-socket-worker';
-import { sessionExpired } from './sessionExpired';
+import { API } from '../api-worker/api.worker';
+import { refreshToken, accessToken } from '.';
+import { useTokensStore } from '../../stores/tokens';
+import { AuthWebSocketWorkerInstance } from '../web-socket-worker';
+import { sessionExpired } from '../../utils/sessionExpired';
 
-import { pinia } from '../plugins/pinia.plugin';
+import { pinia } from '../../plugins/pinia.plugin';
 
 const tokensStore = useTokensStore(pinia);
 
