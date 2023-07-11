@@ -27,6 +27,11 @@ const CHAT_MESSAGE_TYPES = {
   USER_JOINED_TO_CHAT: 'user_joined_to_chat',
 };
 
+const CHAT_RIGHT_SIDE_SELECTED_MESSAGES_ACTIONS_NAMES = {
+  REPLY: 'reply',
+  DELETE: 'delete',
+};
+
 const CHAT_MAX_SELECTED_MESSAGES_COUNT = 20;
 const CHAT_MAX_USERS_COUNT = 100;
 
@@ -35,6 +40,7 @@ export default {
   CHAT_MESSAGE_CONTEXT_MENU_ACTIONS,
   CHAT_MESSAGE_TYPES,
   CHAT_MAX_SELECTED_MESSAGES_COUNT,
+  CHAT_RIGHT_SIDE_SELECTED_MESSAGES_ACTIONS_NAMES,
   CHAT_MAX_USERS_COUNT,
   chatUserContextMenuItems: (isUserAdmin) => [
     {
@@ -103,12 +109,12 @@ export default {
   chatRightSideSelectedMessagesActions: [
     {
       img: ForwardMessagesIcon,
-      action: () => 'editChat',
+      actionName: CHAT_RIGHT_SIDE_SELECTED_MESSAGES_ACTIONS_NAMES.FORWARD,
       text: 'buttons.forward',
     },
     {
       img: DeleteMessagesBulkIcon,
-      action: () => 'manageChat',
+      actionName: CHAT_RIGHT_SIDE_SELECTED_MESSAGES_ACTIONS_NAMES.DELETE,
       text: 'buttons.delete',
     },
   ],

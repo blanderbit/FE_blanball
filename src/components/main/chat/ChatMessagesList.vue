@@ -275,6 +275,9 @@ export default {
     }
 
     ChatEventBus.on('deselectChatMessages', () => deselectChatMessages());
+    ChatEventBus.on('bulkDeleteChatMessages', (messagesIds) =>
+      deleteChatMessages(messagesIds)
+    );
 
     AuthWebSocketWorkerInstance.registerCallback(
       createChatMessageMessageHandler,
@@ -300,6 +303,7 @@ export default {
         deleteChatMessagesMessageHandler
       );
       ChatEventBus.off('deselectChatMessages');
+      ChatEventBus.off('bulkDeleteChatMessages');
     });
 
     expose({

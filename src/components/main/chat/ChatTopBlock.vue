@@ -41,6 +41,7 @@
         <div
           v-for="action in mockData.chatRightSideSelectedMessagesActions"
           class="b-selected-message-action"
+          @click="chatRightSideSelectedMessagesActionClick(action.actionName)"
         >
           <img :src="action.img" alt="" />
           <span>{{ $t(action.text) }}</span>
@@ -85,6 +86,8 @@ export default {
           CONSTS.chat.chatToptSideRightBlockButtonsButtonsMobile,
         chatRightSideSelectedMessagesActions:
           CONSTS.chat.chatRightSideSelectedMessagesActions,
+        CHAT_RIGHT_SIDE_SELECTED_MESSAGES_ACTIONS_NAMES:
+          CONSTS.chat.CHAT_RIGHT_SIDE_SELECTED_MESSAGES_ACTIONS_NAMES,
       };
     });
 
@@ -106,11 +109,30 @@ export default {
       ChatEventBus.emit('deselectChatMessages');
     }
 
+    function bulkDeleteChatMessages() {
+      ChatEventBus.emit('bulkDeleteChatMessages', props.selectedMessages);
+    }
+
+    function chatRightSideSelectedMessagesActionClick(actionName) {
+      const { DELETE, FORWARD } =
+        mockData.value.CHAT_RIGHT_SIDE_SELECTED_MESSAGES_ACTIONS_NAMES;
+
+      switch (actionName) {
+        case DELETE:
+          bulkDeleteChatMessages();
+          break;
+        case FORWARD:
+          break;
+      }
+    }
+
     return {
       currentVisibleChatRightSideButtons,
       selectedMessagesCount,
       mockData,
       deselectChatMessages,
+      bulkDeleteChatMessages,
+      chatRightSideSelectedMessagesActionClick,
     };
   },
 };
