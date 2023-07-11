@@ -186,6 +186,7 @@ export default {
 
       switch (action) {
         case DELETE:
+          deleteChatMessages([messageOnWhatOpenedContextMenuData.value.id]);
           break;
         case SELECT:
           selectMessage(messageOnWhatOpenedContextMenuData.value.id);
@@ -249,7 +250,7 @@ export default {
       }
     }
 
-    function processCreateChatMessage(instanceType) {
+    function createChatMessageMessageHandler(instanceType) {
       if (instanceType.data.data.data.chat_id === props.chatData.id) {
         instanceType.createNewMessageInChat(
           { paginationElements },
@@ -258,39 +259,46 @@ export default {
       }
     }
 
-    function editChatMessage(instanceType) {
+    function deleteChatMessages(messagesIds) {
+      API.ChatService.deleteChatMessages({
+        chat_id: props.chatData.id,
+        message_ids: messagesIds,
+      });
+    }
+
+    function editChatMessageMessageHandler(instanceType) {
       console.log(instanceType);
     }
 
-    function deleteChatMessages(instanceType) {
+    function deleteChatMessagesMessageHandler(instanceType) {
       instanceType.deleteMessage(paginationElements);
     }
 
     ChatEventBus.on('deselectChatMessages', () => deselectChatMessages());
 
     AuthWebSocketWorkerInstance.registerCallback(
-      processCreateChatMessage,
+      createChatMessageMessageHandler,
       ChatWebSocketTypes.CreateMessage
     );
 
     ChatSocketWorkerInstance.registerCallback(
-      editChatMessage,
+      editChatMessageMessageHandler,
       ChatWebSocketTypes.EditMessage
     );
 
     ChatSocketWorkerInstance.registerCallback(
-      deleteChatMessages,
+      deleteChatMessagesMessageHandler,
       ChatWebSocketTypes.DeleteMesssages
     );
 
-    // onBeforeUnmount(() => {
-    //   ChatSocketWorkerInstance.destroyCallback(editChatMessage);
-    // });
-
     onBeforeUnmount(() => {
-      AuthWebSocketWorkerInstance.destroyCallback(processCreateChatMessage);
-      ChatSocketWorkerInstance.destroyCallback(editChatMessage);
-      ChatSocketWorkerInstance.destroyCallback(deleteChatMessages);
+      AuthWebSocketWorkerInstance.destroyCallback(
+        createChatMessageMessageHandler
+      );
+      ChatSocketWorkerInstance.destroyCallback(editChatMessageMessageHandler);
+      ChatSocketWorkerInstance.destroyCallback(
+        deleteChatMessagesMessageHandler
+      );
       ChatEventBus.off('deselectChatMessages');
     });
 

@@ -212,7 +212,7 @@ export default {
       });
     }
 
-    function setOrUnsetChatAdminHandleMessage(instanceType) {
+    function setOrUnsetChatAdminMessageHandler(instanceType) {
       instanceType.setOrUnsetAdmin(paginationElements);
       instanceType.onError(
         CHAT_DETAILS_TYPE_ENUM_ERRORS.LIMIT_OF_ADMINS_3_REACHED,
@@ -220,25 +220,27 @@ export default {
       );
     }
 
-    function removeUserFromChatHandleMessage(instanceType) {
+    function removeUserFromChatMessageHandler(instanceType) {
       instanceType.removeUserFromChat(paginationElements);
     }
 
     ChatSocketWorkerInstance.registerCallback(
-      setOrUnsetChatAdminHandleMessage,
+      setOrUnsetChatAdminMessageHandler,
       ChatWebSocketTypes.SetOrUnsetChatAdmin
     );
 
     ChatSocketWorkerInstance.registerCallback(
-      removeUserFromChatHandleMessage,
+      removeUserFromChatMessageHandler,
       ChatWebSocketTypes.RemoveUserFromChat
     );
 
     onBeforeUnmount(() => {
       ChatSocketWorkerInstance.destroyCallback(
-        setOrUnsetChatAdminHandleMessage
+        setOrUnsetChatAdminMessageHandler
       );
-      ChatSocketWorkerInstance.destroyCallback(removeUserFromChatHandleMessage);
+      ChatSocketWorkerInstance.destroyCallback(
+        removeUserFromChatMessageHandler
+      );
     });
 
     return {

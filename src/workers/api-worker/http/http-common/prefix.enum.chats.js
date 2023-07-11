@@ -4,4 +4,5 @@ export const ChatsEnpointsEnum = {
   GetChatUsers: (chatId) => `/chat/client/chat/users/list/${chatId}`,
   SetOrUnsetChatAdmin: '/chat/client/chat/set/or/unset/admin',
   RemoveUserFromChat: '/chat/client/remove/user/from/chat',
+  DeleteChatMessages: '/chat/client/delete/chat/messages',
 };
