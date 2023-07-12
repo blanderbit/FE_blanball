@@ -35,7 +35,10 @@
           src="../../../assets/img/cross.svg"
           alt=""
         />
-        <span>{{ selectedMessagesCount }}</span>
+        <span
+          >{{ selectedMessagesCount }} /
+          {{ mockData.CHAT_MAX_SELECTED_MESSAGES_COUNT }}</span
+        >
       </div>
       <div class="b-selected-messages-actions">
         <div
@@ -88,6 +91,8 @@ export default {
           CONSTS.chat.chatRightSideSelectedMessagesActions,
         CHAT_RIGHT_SIDE_SELECTED_MESSAGES_ACTIONS_NAMES:
           CONSTS.chat.CHAT_RIGHT_SIDE_SELECTED_MESSAGES_ACTIONS_NAMES,
+        CHAT_MAX_SELECTED_MESSAGES_COUNT:
+          CONSTS.chat.CHAT_MAX_SELECTED_MESSAGES_COUNT,
       };
     });
 
@@ -110,7 +115,7 @@ export default {
     }
 
     function bulkDeleteChatMessages() {
-      ChatEventBus.emit('bulkDeleteChatMessages', props.selectedMessages);
+      ChatEventBus.emit('bulkDeleteChatMessages');
     }
 
     function chatRightSideSelectedMessagesActionClick(actionName) {

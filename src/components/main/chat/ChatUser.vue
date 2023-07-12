@@ -12,10 +12,11 @@
       />
       <div class="b-user-info">
         <div class="b-user-full-name">{{ userFullName }}</div>
-        <div
-          :class="['b-user-online-status', { online: userMainData.is_online }]"
-        >
-          Був онлайн – 11:20
+        <div class="b-user-online-status">
+          <span v-if="userMainData.is_online" class="online">{{
+            $t('chat.online')
+          }}</span>
+          <span v-else class="offline">Був онлайн – 11:20</span>
         </div>
       </div>
     </div>
@@ -36,16 +37,13 @@ import { useI18n } from 'vue-i18n';
 import userAvatar from '../../shared/userAvatar/UserAvatar.vue';
 
 import { useUserDataStore } from '../../../stores/userData';
+import { useChatDataStore } from '../../../stores/chatData';
 
 export default {
   props: {
     userData: {
       type: Object,
       required: true,
-    },
-    currentUserChatPermissions: {
-      type: Object,
-      default: null,
     },
   },
   components: {
@@ -55,9 +53,10 @@ export default {
   setup(props, { emit }) {
     const { t } = useI18n();
     const userStore = useUserDataStore();
+    const chatDataStore = useChatDataStore();
     const showManageButtonOnHover = ref(false);
 
-    const { userData, currentUserChatPermissions } = props;
+    const { userData } = props;
 
     const isUserChatAuthor = computed(() => {
       return userData.author;
@@ -91,9 +90,9 @@ export default {
       const isHoveredSelfUser = userData.id === userStore.user.id;
       const isHoveredChatAuthor = userData.author;
 
-      if (currentUserChatPermissions?.author) {
+      if (chatDataStore.infoAboutMe?.author) {
         return (showManageButtonOnHover.value = !isHoveredSelfUser);
-      } else if (currentUserChatPermissions?.admin) {
+      } else if (chatDataStore.infoAboutMe?.admin) {
         return (showManageButtonOnHover.value =
           !isHoveredChatAuthor.value && !isHoveredSelfUser);
       }
@@ -160,11 +159,12 @@ export default {
       }
 
       .b-user-online-status {
-        @include inter(12px, 400, $--b-main-gray-color);
-        line-height: 20px;
-
-        &.online {
+        .online {
           @include inter(12px, 400, $--b-main-green-color);
+          line-height: 20px;
+        }
+        .offline {
+          @include inter(12px, 400, $--b-main-gray-color);
           line-height: 20px;
         }
       }

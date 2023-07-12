@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeMount, onBeforeUnmount } from 'vue';
+import { ref, computed, onBeforeMount, onBeforeUnmount, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
@@ -68,9 +68,13 @@ import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
 
 import { accessToken } from '../../../workers/token-worker';
 import { ChatSocketWorkerInstance } from '../../../workers/web-socket-worker';
-
 import { calcHeight } from '../../../workers/window-size-worker/calcHeight';
 import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
+import { ChatWebSocketTypes } from '../../../workers/web-socket-worker/message-types/chat/web.socket.types';
+import { API } from '../../../workers/api-worker/api.worker';
+import { ChatEventBus } from '../../../workers/event-bus-worker';
+
+import { useChatDataStore } from '../../../stores/chatData';
 
 import { CONSTS } from '../../../consts';
 
@@ -89,13 +93,15 @@ export default {
   },
   setup() {
     const chatData = ref({
-      id: 732,
+      id: 733,
       name: 'dffddfdfdf fdfddffd',
       isChatRequest: false,
       isGroup: false,
       disabled: false,
       link: 'helloflamingo.linkactive',
     });
+    const chatDataStore = useChatDataStore();
+
     const { t } = useI18n();
     const toast = useToast();
 
@@ -208,13 +214,33 @@ export default {
       isSubmitModalOpened.value = false;
     }
 
+    function getInfoAboutMeInChat() {
+      API.ChatService.getInfoAboutMeInChat(chatData.value.id);
+    }
+
+    function getInfoAboutMeInChatMessageHandler(instanceType) {
+      chatDataStore.$patch({
+        infoAboutMe: instanceType.getUserInfoData(),
+      });
+    }
+
     ChatSocketWorkerInstance.connect({
       token: accessToken.getToken(),
     });
 
+    ChatSocketWorkerInstance.registerCallback(
+      getInfoAboutMeInChatMessageHandler,
+      ChatWebSocketTypes.GetInfoAboutMeInChat
+    );
+
     onBeforeUnmount(() => {
       ChatSocketWorkerInstance.disconnect();
+      ChatSocketWorkerInstance.destroyCallback(
+        getInfoAboutMeInChatMessageHandler
+      );
     });
+
+    getInfoAboutMeInChat();
 
     return {
       chatData,
