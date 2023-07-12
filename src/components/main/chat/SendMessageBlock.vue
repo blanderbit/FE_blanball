@@ -8,7 +8,10 @@
   </Transition>
 
   <Form v-slot="data" :validation-schema="schema" @submit="disableSubmit">
-    <div :class="['b-send-message-block', { disabled: disabled }]">
+    <div
+      :class="['b-send-message-block', { disabled: disabled }]"
+      @keyup.enter="sendMessage(data)"
+    >
       <MainInput
         :title-width="0"
         :placeholder="inputPlaceholder"

@@ -26,8 +26,8 @@
     <div
       class="b-chat-message"
       @click.right="chatMessageRightClick"
-      @touchstart="startMessageHold"
-      @touchend="endMessageHold"
+      @touchstart.passive="startMessageHold"
+      @touchend.passive="endMessageHold"
     >
       <div class="b-chat-message-text">
         {{ messageData.text }} {{ messageData.id }}

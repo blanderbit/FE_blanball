@@ -124,8 +124,8 @@
           v-else
           v-model:expanding="expanding"
           class="notification-mobile"
-          @touchstart="startHoldSelectNotification"
-          @touchend="endHoldSelectNotification"
+          @touchstart.passive="startHoldSelectNotification"
+          @touchend.passive="endHoldSelectNotification"
         >
           <template #title>
             <div class="notification-title">

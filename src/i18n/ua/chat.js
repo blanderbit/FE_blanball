@@ -48,5 +48,9 @@ export default {
   buttons: {
     set_admin: 'Зробити адміном',
     unset_admin: 'Забрати адміна',
+    enable_push_notifications: 'Увімкнути сповіщення',
+    disable_push_notifications: 'Вимкнути сповіщення',
+    leave_group: 'Покинути групу',
+    delete_chat: 'Видалити чат',
   },
 };

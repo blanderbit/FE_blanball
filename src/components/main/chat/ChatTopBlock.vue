@@ -24,7 +24,7 @@
           v-for="button in currentVisibleChatRightSideButtons"
           class="b-right-side-button"
           :src="button.img"
-          @click="$emit(button.actionEmitName)"
+          @click="$emit(`${button.actionEmitName}`, $event)"
         />
       </div>
     </div>
@@ -60,12 +60,15 @@ import UserAvatar from '../../shared/userAvatar/UserAvatar.vue';
 
 import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
 import { ChatEventBus } from '../../../workers/event-bus-worker';
+import { useChatDataStore } from '../../../stores/chatData';
+import ContextMenu from '../../shared/modals/ContextModal.vue';
 
 import { CONSTS } from '../../../consts';
 
 export default {
   components: {
     UserAvatar,
+    ContextMenu,
   },
   props: {
     chatData: {
@@ -80,7 +83,6 @@ export default {
   emits: ['searchChatMessages', 'manageChat', 'editChat'],
   setup(props) {
     const { detectedDevice, DEVICE_TYPES } = useWindowWidth();
-
     const mockData = computed(() => {
       return {
         chatToptSideRightBlockButtons:

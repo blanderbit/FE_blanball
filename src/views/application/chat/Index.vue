@@ -16,7 +16,7 @@
       v-if="isContextMenuOpened"
       :clientX="contextMenuX"
       :clientY="contextMenuY"
-      :modalItems="mockData.chatMessageContextMenu"
+      :modalItems="currentContextMenuItems"
       backgroundColor="transperent"
       @close-modal="closeContextMenu"
       @itemClick="contextMenuItemClick"
@@ -31,7 +31,7 @@
       />
     </div>
     <div class="b-chat-page-main-side">
-      <div class="b-main-side-messages-block" :style="messagesListBlockStyle">
+      <div class="b-main-side-messages-block" :style="messagesListBlockStyle" >
         <ChatMessagesList ref="CHAT_MESSAGES_LIST_BLOCK" :chatData="chatData" />
       </div>
       <div ref="CHAT_BOTTOM_SIDE_BLOCK" class="b-main-side-bottom-block">
@@ -114,6 +114,7 @@ export default {
     const isContextMenuOpened = ref(false);
     const contextMenuX = ref(null);
     const contextMenuY = ref(null);
+    const currentContextMenuItems = ref(null);
 
     const CHAT_TOP_SIDE_BLOCK = ref();
     const CHAT_BOTTOM_SIDE_BLOCK = ref();
@@ -131,7 +132,12 @@ export default {
 
     const mockData = computed(() => {
       return {
-        chatMessageContextMenu: CONSTS.chat.chatMessageContextMenuItems(true),
+        chatMainContextMenuItems: CONSTS.chat.chatMainContextMenuItems(
+          chatDataStore.infoAboutMe?.push_notifications,
+          chatData.value.isGroup
+        ),
+        CHAT_MAIN_CONTEXT_MENU_ACTIONS:
+          CONSTS.chat.CHAT_MAIN_CONTEXT_MENU_ACTIONS,
       };
     });
 
@@ -190,7 +196,8 @@ export default {
       isChatWarningClosed.value = true;
     }
 
-    function showContextMenu(e) {
+    function showContextMenu(e, contextMenuItems) {
+      currentContextMenuItems.value = contextMenuItems;
       contextMenuX.value = e.clientX;
       contextMenuY.value = e.clientY;
       isContextMenuOpened.value = true;
@@ -200,10 +207,11 @@ export default {
       contextMenuX.value = null;
       contextMenuY.value = null;
       isContextMenuOpened.value = false;
+      currentContextMenuItems.value = null;
     }
 
     function showManageChatContextMenu(e) {
-      showContextMenu(e);
+      showContextMenu(e, mockData.value.chatMainContextMenuItems);
     }
 
     function showSubmitModal() {
@@ -250,6 +258,7 @@ export default {
       CHAT_MESSAGES_LIST_BLOCK,
       messagesListBlockStyle,
       isContextMenuOpened,
+      currentContextMenuItems,
       isEditChatModalOpened,
       chatSelectedMessagesList,
       mockData,
@@ -282,6 +291,7 @@ export default {
   width: calc(100% - 464px);
   margin-right: 0px;
   margin-left: auto;
+  overflow: hidden;
 
   @include mobile {
     background: #efeff6;
@@ -304,6 +314,7 @@ export default {
 
     .b-main-side-messages-block {
       overflow: scroll;
+      outline: none;
     }
 
     .b-main-side-bottom-block {

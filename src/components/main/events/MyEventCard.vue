@@ -9,8 +9,8 @@
     ]"
     @click.right.prevent="$emit('cardRightClick', $event)"
     @click.prevent="$emit('cardLeftClick', card.id)"
-    @touchstart="startHoldOpenMenu"
-    @touchend="endHoldOpenMenu"
+    @touchstart.passive="startHoldOpenMenu"
+    @touchend.passive="endHoldOpenMenu"
   >
     <div v-if="isCardSelected" class="b-my-event-card-selected-icon">
       <img src="../../../assets/img/green-nike-icon.svg" alt="" />
