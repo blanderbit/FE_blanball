@@ -25,7 +25,7 @@
       <Form
         v-slot="data"
         :initial-values="eventData"
-        @submit="disableSubmit"
+        @submit="disableFormSubmit"
         :validation-schema="schema"
       >
         <div class="b-edit-event-modal__main-side">

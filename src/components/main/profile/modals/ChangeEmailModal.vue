@@ -18,7 +18,7 @@
             :is-disabled="true"
           />
         </div>
-        <Form v-slot="data" :validation-schema="schema" @submit="disableSubmit">
+        <Form v-slot="data" :validation-schema="schema" @submit="disableFormSubmit">
           <div class="input__wrapper">
             <MainInput
               :title="
@@ -85,6 +85,7 @@ import {
   startSpinner,
   finishSpinner,
 } from '../../../../workers/loading-worker/loading.worker';
+import { disableFormSubmit } from '../../../../utils/disableFormSubmit';
 
 import SCHEMAS from '../../../../validators/schemas';
 
@@ -176,10 +177,7 @@ export default {
       sendCode,
       nextStep,
       cancelClick,
-      disableSubmit: (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      },
+      disableFormSubmit
     };
   },
 };

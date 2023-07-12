@@ -8,7 +8,7 @@
         <img src="../../../../assets/img/key.svg" alt="" />
       </template>
       <template #change-password>
-        <Form v-slot="data" @submit="disableSubmit" :validation-schema="schema">
+        <Form v-slot="data" @submit="disableFormSubmit" :validation-schema="schema">
           <div class="input__wrapper">
             <MainInput
               :title="$t('modals.change_password.current-pass')"
@@ -81,6 +81,7 @@ import {
   startSpinner,
   finishSpinner,
 } from '../../../../workers/loading-worker/loading.worker';
+import { disableFormSubmit } from '../../../../utils/disableFormSubmit';
 
 import SCHEMAS from '../../../../validators/schemas';
 
@@ -151,12 +152,9 @@ export default {
       changePassword,
       sendCode,
       nextStep,
+      disableFormSubmit,
       currentStep,
       schema,
-      disableSubmit: (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      },
     };
   },
 };

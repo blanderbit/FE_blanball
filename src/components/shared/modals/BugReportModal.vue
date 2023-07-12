@@ -7,7 +7,7 @@
         </span>
         <img src="../../../assets/img/white-warning-icon.svg" alt="warning" />
       </div>
-      <Form v-slot="data" :validation-schema="schema" @submit="disableSubmit">
+      <Form v-slot="data" :validation-schema="schema" @submit="disableFormSubmit">
         <div class="b-bug-report-modal__main-side">
           <MainInput
             :placeholder="$t('modals.bug_report.input-placeholder')"
@@ -80,6 +80,7 @@ import MainInput from '../input/MainInput.vue';
 import mainTextArea from '../textArea/MainTextArea.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
+import { disableFormSubmit } from '../../../utils/disableFormSubmit';
 
 import SCHEMAS from '../../../validators/schemas';
 
@@ -138,14 +139,10 @@ export default {
       addFileIcon,
       schema,
       uploadedImages,
-
       createBugReport,
       afterLoadImage,
       removeUploadedImage,
-      disableSubmit: (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      },
+      disableFormSubmit,
     };
   },
 };

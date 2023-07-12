@@ -1,6 +1,6 @@
 <template>
   <div class="b-login-step">
-    <Form v-slot="data" :validation-schema="schema" @submit="disableSubmit">
+    <Form v-slot="data" :validation-schema="schema" @submit="disableFormSubmit">
       <div class="b-login-step__top-part">
         <div class="b-login-step__main-title">{{ $t('login.app-name') }}</div>
         <div class="b-login-step__title">{{ $t('login.authorization') }}</div>
@@ -93,6 +93,7 @@ import {
   startSpinner,
   finishSpinner,
 } from '../../../workers/loading-worker/loading.worker';
+import { disableFormSubmit } from '../../../utils/disableFormSubmit';
 
 import { ROUTES } from '../../../router/router.const';
 import { CONSTS } from '../../../consts';
@@ -182,10 +183,7 @@ export default {
       handleLogin,
       openResetPasswordModal,
       openRegisterPage,
-      disableSubmit: (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      },
+      disableFormSubmit
     };
   },
 };

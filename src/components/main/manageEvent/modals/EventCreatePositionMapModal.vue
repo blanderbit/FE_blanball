@@ -12,7 +12,7 @@
     </div>
     <Teleport to="body">
       <ModalWindow v-if="activeModal" :isTitleShown="false">
-        <Form v-slot="data" @submit="disableSubmit" :validation-schema="schema">
+        <Form v-slot="data" @submit="disableFormSubmit" :validation-schema="schema">
           <div class="b-modal-position__block">
             <dropdown
               :outside-title="true"
@@ -94,6 +94,7 @@ import GreenBtn from '../../../shared/button/GreenBtn.vue';
 import { PositionMapBus } from '../../../../workers/event-bus-worker';
 import { API } from '../../../../workers/api-worker/api.worker';
 import { startSpinner, finishSpinner } from '../../../../workers/loading-worker/loading.worker';
+import { disableFormSubmit } from '../../../../utils/disableFormSubmit';
 
 import { CONSTS } from '../../../../consts';
 
@@ -272,10 +273,7 @@ export default {
         });
         activeModal.value = false;
       },
-      disableSubmit: (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      },
+      disableFormSubmit
     };
   },
 };

@@ -36,7 +36,7 @@
           <Form
             v-slot="data"
             :validation-schema="schema"
-            @submit="disableSubmit"
+            @submit="disableFormSubmit"
           >
             <div class="code-input-field">
               <inputCode
@@ -81,6 +81,7 @@ import {
   startSpinner,
   finishSpinner,
 } from '../../../../workers/loading-worker/loading.worker';
+import { disableFormSubmit } from '../../../../utils/disableFormSubmit';
 
 import SCHEMAS from '../../../../validators/schemas';
 
@@ -154,10 +155,7 @@ export default {
       closeModal,
       deleteAcc,
       nextStep,
-      disableSubmit: (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      },
+      disableFormSubmit,
     };
   },
 };

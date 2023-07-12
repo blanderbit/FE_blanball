@@ -7,7 +7,7 @@
     />
   </Transition>
 
-  <Form v-slot="data" :validation-schema="schema" @submit="disableSubmit">
+  <Form v-slot="data" :validation-schema="schema" @submit="disableFormSubmit">
     <div
       :class="['b-send-message-block', { disabled: disabled }]"
       @keyup.enter="sendMessage(data)"
@@ -66,6 +66,7 @@ import ReplyToChatMessage from './ReplyToChatMessage.vue';
 import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
 import { ChatEventBus } from '../../../workers/event-bus-worker';
 import { API } from '../../../workers/api-worker/api.worker';
+import { disableFormSubmit } from '../../../utils/disableFormSubmit';
 
 import SendSmileIcon from '../../../assets/img/chat/send-smile-button.svg';
 import AddFileIcon from '../../../assets/img/chat/add-file.svg';
@@ -192,10 +193,7 @@ export default {
       cancelReplyToChatMessage,
       sendMessage,
       showOrCloseEmojiPicker,
-      disableSubmit: (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      },
+      disableFormSubmit,
     };
   },
 };
