@@ -20,6 +20,10 @@ export default {
     symbols: 'Символи',
     flags: 'Прапори',
   },
+  no_chat_messages: {
+    title: 'У цьому чаті ще не було повідомлень',
+    main_text: 'Надішліть повідомлення першим, щоб розпочати бесіду вже зараз!',
+  },
   edit_chat_modal: {
     select_photo: 'Обрати фото',
     manage_group: 'Керування групою',

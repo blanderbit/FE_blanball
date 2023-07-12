@@ -41,10 +41,13 @@
       <template #after>
         <InfiniteLoading
           :identifier="triggerForRestart"
-          :showCompleteSlot="false"
+          :showCompleteSlot="!paginationElements.length"
           ref="scrollbar"
           @infinite="loadDataPaginationData(paginationPage + 1, $event)"
         >
+          <template #complete>
+            <NoChatMessages v-if="!paginationElements.length" />
+          </template>
         </InfiniteLoading>
       </template>
     </SmartList>
@@ -61,6 +64,7 @@ import SmartList from '../../shared/smartList/SmartList.vue';
 import ContextMenu from '../../shared/modals/ContextModal.vue';
 import ChatMessage from './ChatMessage.vue';
 import UserJoinedToTheChatMessage from './UserJoinedToTheChatMessage.vue';
+import NoChatMessages from './NoChatMessages.vue';
 
 import { ChatEventBus } from '../../../workers/event-bus-worker';
 import { WebSocketPaginationWorker } from '../../../workers/pagination-worker';
@@ -85,6 +89,7 @@ export default {
     SmartList,
     ContextMenu,
     UserJoinedToTheChatMessage,
+    NoChatMessages,
   },
   props: {
     chatData: {
@@ -313,6 +318,7 @@ export default {
         chat_id: props.chatData.id,
         message_ids: messagesIds,
       });
+      deselectChatMessages();
     }
 
     function editChatMessageMessageHandler(instanceType) {
@@ -324,8 +330,8 @@ export default {
     }
 
     ChatEventBus.on('deselectChatMessages', () => deselectChatMessages());
-    ChatEventBus.on('bulkDeleteChatMessages', (messagesIds) =>
-      deleteChatMessages(messagesIds)
+    ChatEventBus.on('bulkDeleteChatMessages', () =>
+      deleteChatMessages(selectedMessages.value)
     );
 
     AuthWebSocketWorkerInstance.registerCallback(
@@ -387,4 +393,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.b-chat-messages__list {
+  height: 100%;
+}
+</style>
