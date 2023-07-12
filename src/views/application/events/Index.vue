@@ -4,7 +4,7 @@
     :clientX="eventJoinModalX"
     :clientY="eventJoinModalY"
     :modalItems="eventJoinToolTipItems"
-    backgroundColor="transperent"
+    :background=false
     @closeModal="closeEventJoinModal"
     @itemClick="joinEventModalItemClick"
   />

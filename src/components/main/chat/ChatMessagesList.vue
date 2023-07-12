@@ -4,7 +4,7 @@
     :clientX="contextMenuX"
     :clientY="contextMenuY"
     :modalItems="chatMessageContextMenuItems"
-    backgroundColor="transperent"
+    :background=false
     @close-modal="closeContextMenu"
     @itemClick="contextMenuItemClick"
   />

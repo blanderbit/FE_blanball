@@ -1,6 +1,6 @@
 <template>
   <div
-    class="context-modal__tooltip-wrapper"
+    :class="['context-modal__tooltip-wrapper', { transperent: !background }]"
     :style="modalWrapperStyle"
     @click.self="closeModal"
   >
@@ -40,9 +40,9 @@ export default {
       dafault: () => [],
       require: true,
     },
-    backgroundColor: {
-      type: String,
-      default: null,
+    background: {
+      type: Boolean,
+      default: true,
     },
   },
   emits: ['closeModal', 'itemClick'],
@@ -75,9 +75,9 @@ export default {
     });
 
     const modalWrapperStyle = computed(() => {
-      if (props.backgroundColor) {
+      if (props.background) {
         return {
-          background: props.backgroundColor,
+          background: props.background,
         };
       }
     });
@@ -108,6 +108,14 @@ $color-f0f0f4: #f0f0f4;
 
 .context-modal__tooltip-wrapper {
   @include modal-wrapper;
+
+  &.transperent {
+    @include modal-wrapper(transparent);
+
+    .context-modal__tooltip {
+      box-shadow: 2px 2px 10px 0px rgba(56, 56, 251, 0.1);
+    }
+  }
 
   .context-modal__tooltip {
     background: $--b-main-white-color;

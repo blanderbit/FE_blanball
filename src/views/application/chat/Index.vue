@@ -17,7 +17,7 @@
       :clientX="contextMenuX"
       :clientY="contextMenuY"
       :modalItems="currentContextMenuItems"
-      backgroundColor="transperent"
+      :background=false
       @close-modal="closeContextMenu"
       @itemClick="contextMenuItemClick"
     />
@@ -93,7 +93,7 @@ export default {
   },
   setup() {
     const chatData = ref({
-      id: 733,
+      id: 734,
       name: 'dffddfdfdf fdfddffd',
       isChatRequest: false,
       isGroup: false,

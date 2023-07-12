@@ -12,7 +12,7 @@
     :clientX="contextMenuX"
     :clientY="contextMenuY"
     :modalItems="config.activeTab.records.contextMenu"
-    backgroundColor="transperent"
+    :background=false
     @close-modal="closeContextMenu"
     @itemClick="contextMenuItemClick"
   />
