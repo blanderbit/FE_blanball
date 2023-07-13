@@ -160,13 +160,30 @@ export default {
           return false;
         }
 
-        await API.ChatService.createChatMessage({
-          chat_id: props.chatData.id,
-          text: messageValue.value,
-          reply_to_message_id: replyToMessageData.value?.id,
-        });
+        if (editChatMessageData.value) {
+          await editMessage();
+        } else {
+          await createMessage();
+        }
         resetCreateMessageData();
       }
+    }
+
+    async function createMessage() {
+      API.ChatService.createChatMessage({
+        chat_id: props.chatData.id,
+        text: messageValue.value,
+        reply_to_message_id: replyToMessageData.value?.id,
+      });
+    }
+
+    async function editMessage() {
+      API.ChatService.editChatMessage({
+        message_id: editChatMessageData.value.id,
+        new_data: {
+          text: messageValue.value,
+        },
+      });
     }
 
     function showManageMessageWrapper() {

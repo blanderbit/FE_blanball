@@ -43,6 +43,9 @@
         <img src="../../../assets/img/chat/like-button.svg" alt="" />
       </div>
       <div class="b-chat-message-bottom-side">
+        <div v-if="isMessageEdited" class="b-chat-message-time">
+          {{ $t('chat.message_edited') }}
+        </div>
         <div class="b-chat-message-time">{{ messageTime }}</div>
         <img v-if="isMessageMine" :src="messageReadedIcon" alt="" />
       </div>

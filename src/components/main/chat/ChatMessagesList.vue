@@ -214,7 +214,7 @@ export default {
           replyToMessage(messageOnWhatOpenedContextMenuData.value);
           break;
         case EDIT:
-          editChatMessage(messageOnWhatOpenedContextMenuData.value);
+          showEditMessageBoard(messageOnWhatOpenedContextMenuData.value);
           break;
       }
     }
@@ -265,7 +265,7 @@ export default {
       ChatEventBus.emit('replyToChatMessage', messageData);
     }
 
-    function editChatMessage(messageData) {
+    function showEditMessageBoard(messageData) {
       ChatEventBus.emit('editChatMessage', messageData);
     }
 
@@ -329,16 +329,19 @@ export default {
       API.ChatService.deleteChatMessages({
         chat_id: props.chatData.id,
         message_ids: messagesIds,
-      });
-      deselectChatMessages();
+      }).then(() => deselectChatMessages());
     }
 
     function editChatMessageMessageHandler(instanceType) {
-      console.log(instanceType);
+      if (instanceType.data.data.chat_id === props.chatData.id) {
+        instanceType.editMessage(paginationElements);
+      }
     }
 
     function deleteChatMessagesMessageHandler(instanceType) {
-      instanceType.deleteMessage(paginationElements);
+      if (instanceType.data.data.chat_id === props.chatData.id) {
+        instanceType.deleteMessage(paginationElements);
+      }
     }
 
     ChatEventBus.on('deselectChatMessages', () => deselectChatMessages());
