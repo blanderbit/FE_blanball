@@ -5,13 +5,15 @@
     @click.self="closeModal"
   >
     <div ref="modal" :style="modalStyle" class="context-modal__tooltip">
-      <div
-        v-for="item in modalItems"
-        class="context-modal__tooltip-item"
-        @click="itemClick(item)"
-      >
-        <img :src="item.img" alt="" />
-        <span class="b-item-text">{{ $t(item.text) }}</span>
+      <div v-for="item in modalItems">
+        <div
+          v-if="!item.hide"
+          class="context-modal__tooltip-item"
+          @click="itemClick(item)"
+        >
+          <img :src="item.img" alt="" />
+          <span class="b-item-text">{{ $t(item.text) }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -113,6 +115,7 @@ $color-f0f0f4: #f0f0f4;
     min-width: 180px;
     position: absolute;
     border-radius: 6px;
+    width: max-content;
 
     .context-modal__tooltip-item {
       display: flex;

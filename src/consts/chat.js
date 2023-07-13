@@ -7,13 +7,17 @@ import SearchMessagesButtonIcon from '../assets/img/chat/search-button.svg';
 import ManageChatButtonIcon from '../assets/img/chat/manage-button.svg';
 import ManageChatButtonMobileIcon from '../assets/img/chat/manage-button-mobile.svg';
 import EditChatButtonIcon from '../assets/img/chat/edit-button.svg';
+import EditMessageButtonIcon from '../assets/img/chat/edit-message-button.svg';
 import SetOrUnsetAdminIcon from '../assets/img/settings.svg';
+import EnableChatNotificationsIcon from '../assets/img/chat/enable-chat-push-notifications-button.svg';
+import DisableChatNotificationsIcon from '../assets/img/chat/disable-chat-push-notifications-button.svg';
 
 const CHAT_MESSAGE_CONTEXT_MENU_ACTIONS = {
   REPLY: 'reply',
   SELECT: 'select',
   FORWARD: 'forward',
   DELETE: 'delete',
+  EDIT: 'edit',
 };
 
 const CHAT_USER_CONTEXT_MENU_ACTIONS = {
@@ -25,6 +29,12 @@ const CHAT_USER_CONTEXT_MENU_ACTIONS = {
 const CHAT_MESSAGE_TYPES = {
   USER_MESSAGE: 'user_message',
   USER_JOINED_TO_CHAT: 'user_joined_to_chat',
+};
+
+const CHAT_MAIN_CONTEXT_MENU_ACTIONS = {
+  ENABLE_PUSH_NOTIFICATIONS: 'enable_push_notifications',
+  DISABLE_PUSH_NOTIFICATIONS: 'disable_push_notifications',
+  DELETE_CHAT: 'delete_chat',
 };
 
 const CHAT_RIGHT_SIDE_SELECTED_MESSAGES_ACTIONS_NAMES = {
@@ -42,6 +52,7 @@ export default {
   CHAT_MAX_SELECTED_MESSAGES_COUNT,
   CHAT_RIGHT_SIDE_SELECTED_MESSAGES_ACTIONS_NAMES,
   CHAT_MAX_USERS_COUNT,
+  CHAT_MAIN_CONTEXT_MENU_ACTIONS,
   chatUserContextMenuItems: (isUserAdmin) => [
     {
       text: `chat.buttons.${!isUserAdmin ? 'set_admin' : 'unset_admin'}`,
@@ -57,16 +68,38 @@ export default {
     },
   ],
 
+  chatMainContextMenuItems: (isUserSendPushNotifications, isChatGroup) => [
+    {
+      text: `chat.buttons.${
+        !isUserSendPushNotifications
+          ? 'enable_push_notifications'
+          : 'disable_push_notifications'
+      }`,
+      img: !isUserSendPushNotifications
+        ? EnableChatNotificationsIcon
+        : DisableChatNotificationsIcon,
+      type: !isUserSendPushNotifications
+        ? CHAT_MAIN_CONTEXT_MENU_ACTIONS.ENABLE_PUSH_NOTIFICATIONS
+        : CHAT_MAIN_CONTEXT_MENU_ACTIONS.DISABLE_PUSH_NOTIFICATIONS,
+    },
+    {
+      text: `chat.buttons.${!isChatGroup ? 'delete_chat' : 'leave_group'}`,
+      img: DeleteMessageIcon,
+      type: CHAT_MAIN_CONTEXT_MENU_ACTIONS.DELETE_CHAT,
+    },
+  ],
+
   chatMessageContextMenuItems: (isMessageMine) => [
     {
-      text: 'Відповісти',
+      text: 'buttons.reply',
       img: ReplyToMessageIcon,
       type: CHAT_MESSAGE_CONTEXT_MENU_ACTIONS.REPLY,
     },
     {
-      text: 'buttons.select',
-      img: SelectMessageIcon,
-      type: CHAT_MESSAGE_CONTEXT_MENU_ACTIONS.SELECT,
+      text: 'buttons.edit',
+      img: EditMessageButtonIcon,
+      hide: !isMessageMine,
+      type: CHAT_MESSAGE_CONTEXT_MENU_ACTIONS.EDIT,
     },
     {
       text: 'buttons.forward',
@@ -74,8 +107,14 @@ export default {
       type: CHAT_MESSAGE_CONTEXT_MENU_ACTIONS.FORWARD,
     },
     {
+      text: 'buttons.select',
+      img: SelectMessageIcon,
+      type: CHAT_MESSAGE_CONTEXT_MENU_ACTIONS.SELECT,
+    },
+    {
       text: 'buttons.delete',
       img: DeleteMessageIcon,
+      hide: !isMessageMine,
       type: CHAT_MESSAGE_CONTEXT_MENU_ACTIONS.DELETE,
     },
   ],
@@ -101,7 +140,7 @@ export default {
   chatToptSideRightBlockButtonsButtonsMobile: [
     {
       img: ManageChatButtonMobileIcon,
-      action: () => 'manageChat',
+      actionEmitName: 'manageChat',
       disabled: false,
     },
   ],

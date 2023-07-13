@@ -8,6 +8,8 @@ export default {
     'Шкода, але вас було виключено із групи. Відправка повідомлень у цьому чаті більше недоступна. Ви можете звернутися до адміністрації каналу за додатковою інформацією',
   select_chat_from_the_list: 'Оберіть чат, щоб розпочати спілкування',
   user_joined_to_chat: '{userFullName} щойно долучився до бесіди',
+  members: 'Учасники',
+  online: 'У мережі',
   emoji_groups: {
     smileys_people: 'Посмішки та люди',
     animals_nature: 'Тварини та природа',
@@ -46,5 +48,9 @@ export default {
   buttons: {
     set_admin: 'Зробити адміном',
     unset_admin: 'Забрати адміна',
+    enable_push_notifications: 'Увімкнути сповіщення',
+    disable_push_notifications: 'Вимкнути сповіщення',
+    leave_group: 'Покинути групу',
+    delete_chat: 'Видалити чат',
   },
 };

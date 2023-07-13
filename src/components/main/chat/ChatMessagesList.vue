@@ -9,7 +9,11 @@
     @itemClick="contextMenuItemClick"
   />
 
-  <div class="b-chat-messages__list">
+  <div
+    class="b-chat-messages__list"
+    @keydown.up="smoothScrollUp"
+    @keydown.down="smoothScrollDown"
+  >
     <SmartList
       :list="paginationElements"
       ref="refList"
@@ -70,6 +74,9 @@ import { ChatWebSocketTypes } from '../../../workers/web-socket-worker/message-t
 import { useUserDataStore } from '../../../stores/userData';
 
 import { CONSTS } from '../../../consts';
+
+const MESSAGES_SCROLL_SPEED = 10;
+const MESSAGES_SCROLL_ANIMATION_DURATION = 50;
 
 export default {
   components: {
@@ -197,6 +204,48 @@ export default {
           replyToMessage(messageOnWhatOpenedContextMenuData.value);
           break;
       }
+    }
+
+    function smoothScrollUp() {
+      const currentPosition = window.pageYOffset;
+      const targetPosition = currentPosition - MESSAGES_SCROLL_SPEED;
+
+      smoothScrollTo(targetPosition);
+    }
+
+    function smoothScrollDown() {
+      const currentPosition = window.pageYOffset;
+      const targetPosition = currentPosition + MESSAGES_SCROLL_SPEED;
+
+      smoothScrollTo(targetPosition);
+    }
+
+    function smoothScrollTo(targetPosition) {
+      const startPosition = window.pageYOffset;
+      const distance = targetPosition - startPosition;
+      let startTime = null;
+
+      function animation(currentTime) {
+        if (!startTime) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const scrollY = easeInOutCubic(
+          timeElapsed,
+          startPosition,
+          distance,
+          MESSAGES_SCROLL_ANIMATION_DURATION
+        );
+        window.scrollTo(0, scrollY);
+        if (timeElapsed < MESSAGES_SCROLL_ANIMATION_DURATION) {
+          window.requestAnimationFrame(animation);
+        }
+      }
+
+      window.requestAnimationFrame(animation);
+    }
+
+    function easeInOutCubic(t, b, c, d) {
+      t /= d;
+      return c * t * t * t + b;
     }
 
     function replyToMessage(messageData) {
@@ -331,6 +380,8 @@ export default {
       contextMenuItemClick,
       isMessageTypeUserJoinedToTheChat,
       isMessageTypeUserMessage,
+      smoothScrollDown,
+      smoothScrollUp,
     };
   },
 };

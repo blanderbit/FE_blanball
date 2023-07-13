@@ -42,4 +42,8 @@ export class ChatService {
   static deleteChatMessages(data) {
     return AxiosInstance.post(EndpointsEnum.Chats.DeleteChatMessages, data);
   }
+
+  static getInfoAboutMeInChat(chatId) {
+    return AxiosInstance.get(EndpointsEnum.Chats.GetInfoAboutMeInChat(chatId));
+  }
 }

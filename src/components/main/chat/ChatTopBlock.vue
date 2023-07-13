@@ -24,7 +24,7 @@
           v-for="button in currentVisibleChatRightSideButtons"
           class="b-right-side-button"
           :src="button.img"
-          @click="$emit(button.actionEmitName)"
+          @click="$emit(`${button.actionEmitName}`, $event)"
         />
       </div>
     </div>
@@ -35,7 +35,10 @@
           src="../../../assets/img/cross.svg"
           alt=""
         />
-        <span>{{ selectedMessagesCount }}</span>
+        <span
+          >{{ selectedMessagesCount }} /
+          {{ mockData.CHAT_MAX_SELECTED_MESSAGES_COUNT }}</span
+        >
       </div>
       <div class="b-selected-messages-actions">
         <div
@@ -57,12 +60,15 @@ import UserAvatar from '../../shared/userAvatar/UserAvatar.vue';
 
 import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
 import { ChatEventBus } from '../../../workers/event-bus-worker';
+import { useChatDataStore } from '../../../stores/chatData';
+import ContextMenu from '../../shared/modals/ContextModal.vue';
 
 import { CONSTS } from '../../../consts';
 
 export default {
   components: {
     UserAvatar,
+    ContextMenu,
   },
   props: {
     chatData: {
@@ -77,7 +83,6 @@ export default {
   emits: ['searchChatMessages', 'manageChat', 'editChat'],
   setup(props) {
     const { detectedDevice, DEVICE_TYPES } = useWindowWidth();
-
     const mockData = computed(() => {
       return {
         chatToptSideRightBlockButtons:
@@ -88,6 +93,8 @@ export default {
           CONSTS.chat.chatRightSideSelectedMessagesActions,
         CHAT_RIGHT_SIDE_SELECTED_MESSAGES_ACTIONS_NAMES:
           CONSTS.chat.CHAT_RIGHT_SIDE_SELECTED_MESSAGES_ACTIONS_NAMES,
+        CHAT_MAX_SELECTED_MESSAGES_COUNT:
+          CONSTS.chat.CHAT_MAX_SELECTED_MESSAGES_COUNT,
       };
     });
 
@@ -110,7 +117,7 @@ export default {
     }
 
     function bulkDeleteChatMessages() {
-      ChatEventBus.emit('bulkDeleteChatMessages', props.selectedMessages);
+      ChatEventBus.emit('bulkDeleteChatMessages');
     }
 
     function chatRightSideSelectedMessagesActionClick(actionName) {

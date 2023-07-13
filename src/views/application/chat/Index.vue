@@ -16,7 +16,7 @@
       v-if="isContextMenuOpened"
       :clientX="contextMenuX"
       :clientY="contextMenuY"
-      :modalItems="mockData.chatMessageContextMenu"
+      :modalItems="currentContextMenuItems"
       backgroundColor="transperent"
       @close-modal="closeContextMenu"
       @itemClick="contextMenuItemClick"
@@ -31,7 +31,7 @@
       />
     </div>
     <div class="b-chat-page-main-side">
-      <div class="b-main-side-messages-block" :style="messagesListBlockStyle">
+      <div class="b-main-side-messages-block" :style="messagesListBlockStyle" >
         <ChatMessagesList ref="CHAT_MESSAGES_LIST_BLOCK" :chatData="chatData" />
       </div>
       <div ref="CHAT_BOTTOM_SIDE_BLOCK" class="b-main-side-bottom-block">
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeMount, onBeforeUnmount } from 'vue';
+import { ref, computed, onBeforeMount, onBeforeUnmount, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
@@ -68,9 +68,13 @@ import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
 
 import { accessToken } from '../../../workers/token-worker';
 import { ChatSocketWorkerInstance } from '../../../workers/web-socket-worker';
-
 import { calcHeight } from '../../../workers/window-size-worker/calcHeight';
 import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
+import { ChatWebSocketTypes } from '../../../workers/web-socket-worker/message-types/chat/web.socket.types';
+import { API } from '../../../workers/api-worker/api.worker';
+import { ChatEventBus } from '../../../workers/event-bus-worker';
+
+import { useChatDataStore } from '../../../stores/chatData';
 
 import { CONSTS } from '../../../consts';
 
@@ -89,13 +93,15 @@ export default {
   },
   setup() {
     const chatData = ref({
-      id: 732,
+      id: 733,
       name: 'dffddfdfdf fdfddffd',
       isChatRequest: false,
       isGroup: false,
       disabled: false,
       link: 'helloflamingo.linkactive',
     });
+    const chatDataStore = useChatDataStore();
+
     const { t } = useI18n();
     const toast = useToast();
 
@@ -108,6 +114,7 @@ export default {
     const isContextMenuOpened = ref(false);
     const contextMenuX = ref(null);
     const contextMenuY = ref(null);
+    const currentContextMenuItems = ref(null);
 
     const CHAT_TOP_SIDE_BLOCK = ref();
     const CHAT_BOTTOM_SIDE_BLOCK = ref();
@@ -125,7 +132,12 @@ export default {
 
     const mockData = computed(() => {
       return {
-        chatMessageContextMenu: CONSTS.chat.chatMessageContextMenuItems(true),
+        chatMainContextMenuItems: CONSTS.chat.chatMainContextMenuItems(
+          chatDataStore.infoAboutMe?.push_notifications,
+          chatData.value.isGroup
+        ),
+        CHAT_MAIN_CONTEXT_MENU_ACTIONS:
+          CONSTS.chat.CHAT_MAIN_CONTEXT_MENU_ACTIONS,
       };
     });
 
@@ -184,7 +196,8 @@ export default {
       isChatWarningClosed.value = true;
     }
 
-    function showContextMenu(e) {
+    function showContextMenu(e, contextMenuItems) {
+      currentContextMenuItems.value = contextMenuItems;
       contextMenuX.value = e.clientX;
       contextMenuY.value = e.clientY;
       isContextMenuOpened.value = true;
@@ -194,10 +207,11 @@ export default {
       contextMenuX.value = null;
       contextMenuY.value = null;
       isContextMenuOpened.value = false;
+      currentContextMenuItems.value = null;
     }
 
     function showManageChatContextMenu(e) {
-      showContextMenu(e);
+      showContextMenu(e, mockData.value.chatMainContextMenuItems);
     }
 
     function showSubmitModal() {
@@ -208,13 +222,33 @@ export default {
       isSubmitModalOpened.value = false;
     }
 
+    function getInfoAboutMeInChat() {
+      API.ChatService.getInfoAboutMeInChat(chatData.value.id);
+    }
+
+    function getInfoAboutMeInChatMessageHandler(instanceType) {
+      chatDataStore.$patch({
+        infoAboutMe: instanceType.getUserInfoData(),
+      });
+    }
+
     ChatSocketWorkerInstance.connect({
       token: accessToken.getToken(),
     });
 
+    ChatSocketWorkerInstance.registerCallback(
+      getInfoAboutMeInChatMessageHandler,
+      ChatWebSocketTypes.GetInfoAboutMeInChat
+    );
+
     onBeforeUnmount(() => {
       ChatSocketWorkerInstance.disconnect();
+      ChatSocketWorkerInstance.destroyCallback(
+        getInfoAboutMeInChatMessageHandler
+      );
     });
+
+    getInfoAboutMeInChat();
 
     return {
       chatData,
@@ -224,6 +258,7 @@ export default {
       CHAT_MESSAGES_LIST_BLOCK,
       messagesListBlockStyle,
       isContextMenuOpened,
+      currentContextMenuItems,
       isEditChatModalOpened,
       chatSelectedMessagesList,
       mockData,
@@ -256,6 +291,7 @@ export default {
   width: calc(100% - 464px);
   margin-right: 0px;
   margin-left: auto;
+  overflow: hidden;
 
   @include mobile {
     background: #efeff6;
@@ -278,6 +314,7 @@ export default {
 
     .b-main-side-messages-block {
       overflow: scroll;
+      outline: none;
     }
 
     .b-main-side-bottom-block {

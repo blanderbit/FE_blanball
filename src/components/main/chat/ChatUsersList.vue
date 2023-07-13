@@ -16,6 +16,10 @@
     />
   </Teleport>
 
+  <div class="b-chat-users__count">
+    <span>{{ $t('chat.members') }}</span>
+    <span>{{ currentUsersCountAndLimitOfUsers }}</span>
+  </div>
   <div class="b-chat-users__list">
     <SmartList
       :list="paginationElements"
@@ -26,7 +30,6 @@
         <ChatUser
           :key="slotProps.index"
           :userData="slotProps.smartListItem"
-          :currentUserChatPermissions="currentUserChatPermissions"
           @showContextMenu="showContextMenu"
         />
       </template>
@@ -60,6 +63,7 @@ import { API } from '../../../workers/api-worker/api.worker';
 import { ChatWebSocketTypes } from '../../../workers/web-socket-worker/message-types/chat/web.socket.types';
 import { ChatSocketWorkerInstance } from '../../../workers/web-socket-worker';
 import { CHAT_DETAILS_TYPE_ENUM_ERRORS } from '../../../workers/web-socket-worker/message-types/chat/web.socket.errors';
+import { useChatDataStore } from '../../../stores/chatData';
 
 import { CONSTS } from '../../../consts';
 
@@ -81,6 +85,7 @@ export default {
   },
   setup(props) {
     const { t } = useI18n();
+    const chatDataStore = useChatDataStore();
     const refList = ref();
     const triggerForRestart = ref(false);
 
@@ -119,8 +124,14 @@ export default {
       return mockData.value.chatUserContextMenuItems;
     });
 
-    const currentUserChatPermissions = computed(() => {
-      return paginationHeplFullData.value?.request_user_permissions;
+    const chatUsersCountLimit = computed(() => {
+      return paginationHeplFullData.value?.chat_users_count_limit;
+    });
+
+    const currentUsersCountAndLimitOfUsers = computed(() => {
+      if (paginationTotalCount.value && chatUsersCountLimit.value) {
+        return `${paginationTotalCount.value} / ${chatUsersCountLimit.value}`;
+      }
     });
 
     const {
@@ -252,10 +263,11 @@ export default {
       contextMenuY,
       isContextMenuOpened,
       chatUserContextMenuItems,
-      currentUserChatPermissions,
       paginationPage,
       actionModalConfig,
       isActionModalOpened,
+      chatUsersCountLimit,
+      currentUsersCountAndLimitOfUsers,
       restartInfiniteScroll,
       closeActionModal,
       loadDataPaginationData,
@@ -267,4 +279,13 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.b-chat-users__count {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  @include inter(12px, 400, $--b-main-gray-color);
+  line-height: 20px;
+  margin-bottom: 10px;
+}
+</style>
