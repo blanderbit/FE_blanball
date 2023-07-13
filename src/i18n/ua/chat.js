@@ -10,6 +10,7 @@ export default {
   user_joined_to_chat: '{userFullName} щойно долучився до бесіди',
   members: 'Учасники',
   online: 'У мережі',
+  message_editing: 'Редагування повідомлення',
   emoji_groups: {
     smileys_people: 'Посмішки та люди',
     animals_nature: 'Тварини та природа',
@@ -56,5 +57,7 @@ export default {
     disable_push_notifications: 'Вимкнути сповіщення',
     leave_group: 'Покинути групу',
     delete_chat: 'Видалити чат',
+    search_messages: 'Пошук повідомлень',
+    manage_group: 'Керування групою'
   },
 };

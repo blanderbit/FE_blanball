@@ -24,6 +24,7 @@
     </template>
   </DynamicScroller>
 </template>
+
 <script>
 import { ref, watch, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
@@ -65,8 +66,7 @@ export default {
       () => props.selectedList,
       () => {
         const array = [...props.selectedList];
-        list.value = Array.isArray(array) ? (!array.length ? [] : array) : [];
-        scroller.value.forceUpdate();
+        props.list = Array.isArray(array) ? (!array.length ? [] : array) : [];
       }
     );
 
@@ -74,6 +74,7 @@ export default {
       () => props.list,
       () => {
         nextTick(() => {
+          scroller.value.vScrollUpdate();
           emit(
             'update:scrollbar-existing',
             scroller.value.$el.scrollHeight > scroller.value.$el.clientHeight
@@ -81,6 +82,7 @@ export default {
         });
       },
       {
+        deep: true,
         immediate: true,
       }
     );

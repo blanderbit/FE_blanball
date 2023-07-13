@@ -35,6 +35,8 @@ const CHAT_MAIN_CONTEXT_MENU_ACTIONS = {
   ENABLE_PUSH_NOTIFICATIONS: 'enable_push_notifications',
   DISABLE_PUSH_NOTIFICATIONS: 'disable_push_notifications',
   DELETE_CHAT: 'delete_chat',
+  MANAGE_GROUP: 'edit_chat',
+  SEARCH_MESSAGES: 'search_messages',
 };
 
 const CHAT_RIGHT_SIDE_SELECTED_MESSAGES_ACTIONS_NAMES = {
@@ -68,7 +70,11 @@ export default {
     },
   ],
 
-  chatMainContextMenuItems: (isUserSendPushNotifications, isChatGroup) => [
+  chatMainContextMenuItems: (
+    isUserSendPushNotifications,
+    isChatGroup,
+    isMobileApp
+  ) => [
     {
       text: `chat.buttons.${
         !isUserSendPushNotifications
@@ -82,6 +88,19 @@ export default {
         ? CHAT_MAIN_CONTEXT_MENU_ACTIONS.ENABLE_PUSH_NOTIFICATIONS
         : CHAT_MAIN_CONTEXT_MENU_ACTIONS.DISABLE_PUSH_NOTIFICATIONS,
     },
+    {
+      img: EditMessageButtonIcon,
+      text: 'chat.buttons.manage_group',
+      type: CHAT_MAIN_CONTEXT_MENU_ACTIONS.EDIT_CHAT,
+      hide: !isMobileApp,
+    },
+    {
+      img: SearchMessagesButtonIcon,
+      text: 'chat.buttons.search_messages',
+      type: CHAT_MAIN_CONTEXT_MENU_ACTIONS.SEARCH_MESSAGES,
+      hide: !isMobileApp,
+    },
+
     {
       text: `chat.buttons.${!isChatGroup ? 'delete_chat' : 'leave_group'}`,
       img: DeleteMessageIcon,

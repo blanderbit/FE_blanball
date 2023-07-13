@@ -5,6 +5,7 @@
       { my: isMessageMine },
       { another: !isMessageMine },
       { selected: selected },
+      { selectableMode: selectableMode },
       {
         isNextMessageFromTheSameSender: isNextMessageFromTheSameSender,
       },
@@ -17,9 +18,15 @@
       :full-name="senderMessageData.fullName"
     />
     <img
-      v-if="selected"
+      v-if="selectableMode && selected"
       class="b-chat-message-selected-icon"
-      src="../../../assets/img/green-nike-icon.svg"
+      src="../../../assets/img/chat/selected-message-icon.svg"
+      alt=""
+    />
+    <img
+      v-else-if="selectableMode && !selected"
+      class="b-chat-message-selected-icon"
+      src="../../../assets/img/chat/select-message-button.svg"
       alt=""
     />
 
@@ -68,6 +75,10 @@ export default {
       default: false,
     },
     isChatDisabed: {
+      type: Boolean,
+      default: false,
+    },
+    selectableMode: {
       type: Boolean,
       default: false,
     },
@@ -155,7 +166,9 @@ export default {
 .b-chat-message-wrapper {
   display: flex;
   align-items: flex-end;
+  align-items: center;
   gap: 12px;
+  margin-top: 8px;
 
   .b-chat-message-tail {
     @include mobile {
@@ -164,12 +177,23 @@ export default {
     }
   }
 
+  &.selectableMode {
+    cursor: pointer;
+    padding: 0px 8px;
+  }
+
+  &.selected {
+    border-radius: var(--radius-s, 6px);
+    background: var(--surface-surface-selected-blur, rgba(34, 134, 143, 0.15));
+    backdrop-filter: blur(1px);
+    padding: 8px;
+  }
+
   &.my {
     .b-chat-message-tail {
       order: 2;
     }
     .b-chat-message-selected-icon {
-      margin-left: 6px;
       order: 3;
     }
 
@@ -255,7 +279,6 @@ export default {
     width: fit-content;
     height: fit-content;
     position: relative;
-    margin-top: 8px;
     max-width: 60%;
 
     @include tablet {

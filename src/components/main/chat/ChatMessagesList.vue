@@ -4,7 +4,7 @@
     :clientX="contextMenuX"
     :clientY="contextMenuY"
     :modalItems="chatMessageContextMenuItems"
-    :background=false
+    :background="false"
     @close-modal="closeContextMenu"
     @itemClick="contextMenuItemClick"
   />
@@ -25,6 +25,7 @@
             v-if="isMessageTypeUserMessage(slotProps.smartListItem.type)"
             :messageData="slotProps.smartListItem"
             :selected="selectedMessages.includes(slotProps.smartListItem.id)"
+            :selectableMode="isMessagesSelectableMode"
             :isChatDisabed="chatData.disabled"
             @chatMessageRightClick="showContextMenu"
             @messageWrapperClick="messageWrapperClick"
@@ -129,6 +130,10 @@ export default {
       };
     });
 
+    const isMessagesSelectableMode = computed(() => {
+      return selectedMessages.value.length;
+    });
+
     const chatMessageContextMenuItems = computed(() => {
       return mockData.value.chatMessageContextMenuItems;
     });
@@ -193,7 +198,7 @@ export default {
     }
 
     function contextMenuItemClick(action) {
-      const { DELETE, SELECT, FORWARD, REPLY } =
+      const { DELETE, SELECT, FORWARD, REPLY, EDIT } =
         mockData.value.CHAT_MESSAGE_CONTEXT_MENU_ACTIONS;
 
       switch (action) {
@@ -207,6 +212,9 @@ export default {
           break;
         case REPLY:
           replyToMessage(messageOnWhatOpenedContextMenuData.value);
+          break;
+        case EDIT:
+          editChatMessage(messageOnWhatOpenedContextMenuData.value);
           break;
       }
     }
@@ -255,6 +263,10 @@ export default {
 
     function replyToMessage(messageData) {
       ChatEventBus.emit('replyToChatMessage', messageData);
+    }
+
+    function editChatMessage(messageData) {
+      ChatEventBus.emit('editChatMessage', messageData);
     }
 
     function selectMessage(messageId) {
@@ -376,6 +388,7 @@ export default {
       contextMenuY,
       isContextMenuOpened,
       chatMessageContextMenuItems,
+      isMessagesSelectableMode,
       paginationPage,
       selectedMessages,
       restartInfiniteScroll,
@@ -393,8 +406,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.b-chat-messages__list {
-  height: 100%;
-}
-</style>
+<style lang="scss" scoped></style>

@@ -17,7 +17,7 @@
       :clientX="contextMenuX"
       :clientY="contextMenuY"
       :modalItems="currentContextMenuItems"
-      :background=false
+      :background="false"
       @close-modal="closeContextMenu"
       @itemClick="contextMenuItemClick"
     />
@@ -31,7 +31,7 @@
       />
     </div>
     <div class="b-chat-page-main-side">
-      <div class="b-main-side-messages-block" :style="messagesListBlockStyle" >
+      <div class="b-main-side-messages-block" :style="messagesListBlockStyle">
         <ChatMessagesList ref="CHAT_MESSAGES_LIST_BLOCK" :chatData="chatData" />
       </div>
       <div ref="CHAT_BOTTOM_SIDE_BLOCK" class="b-main-side-bottom-block">
@@ -128,13 +128,14 @@ export default {
     const { calculatedHeight: chatPageHeight } = calcHeight([
       CHAT_PAGE_TOP_AND_BOTTOM_PADDINGS_PX,
     ]);
-    const { windowWidth, detectedDevice, DEVICE_TYPES } = useWindowWidth();
+    const { isMobileSmall } = useWindowWidth();
 
     const mockData = computed(() => {
       return {
         chatMainContextMenuItems: CONSTS.chat.chatMainContextMenuItems(
           chatDataStore.infoAboutMe?.push_notifications,
-          chatData.value.isGroup
+          chatData.value.isGroup,
+          isMobileSmall.value
         ),
         CHAT_MAIN_CONTEXT_MENU_ACTIONS:
           CONSTS.chat.CHAT_MAIN_CONTEXT_MENU_ACTIONS,
@@ -299,7 +300,6 @@ export default {
   @include beforeDesktop {
     width: 100%;
   }
-
   .b-chat-page-main-side {
     padding: 0px 20px 20px 20px;
     display: flex;

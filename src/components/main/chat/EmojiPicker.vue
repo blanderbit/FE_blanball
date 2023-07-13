@@ -154,6 +154,7 @@ export default {
     @include inter(14px, 500, $--b-main-black-color);
     text-align: center;
     line-height: 20px;
+    top: -2px !important;
   }
 
   .v3-emojis {

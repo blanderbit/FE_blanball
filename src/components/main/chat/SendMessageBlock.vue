@@ -1,9 +1,9 @@
 <template>
   <Transition name="chat-warning">
-    <ReplyToChatMessage
-      v-if="replyToMessageData"
-      :replyToMessageData="replyToMessageData"
-      @cancelReply="cancelReplyToChatMessage"
+    <ManageMessageWrapper
+      v-if="isManageMessageWrapperVisible"
+      :manageMessageData="manageMessageWrapperData"
+      @closeManageMessage="closeManageMessageWrapper"
     />
   </Transition>
 
@@ -42,7 +42,7 @@
       </div>
     </div>
   </Form>
-  <Transition name="emoji-picker">
+  <Transition :name="emojiPickerTransitionName">
     <EmojiPicker
       v-if="isEmojiPickerVisible"
       :positionY="emojiPickerY"
@@ -61,7 +61,7 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 
 import MainInput from '../../shared/input/MainInput.vue';
 import EmojiPicker from './EmojiPicker.vue';
-import ReplyToChatMessage from './ReplyToChatMessage.vue';
+import ManageMessageWrapper from './ManageMessageWrapper.vue';
 
 import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
 import { ChatEventBus } from '../../../workers/event-bus-worker';
@@ -73,12 +73,14 @@ import AddFileIcon from '../../../assets/img/chat/add-file.svg';
 
 import SCHEMAS from '../../../validators/schemas';
 
+import EditMessageButtonIcon from '../../../assets/img/chat/message-wrapper-edit-icon.svg';
+
 export default {
   components: {
     MainInput,
     EmojiPicker,
-    ReplyToChatMessage,
     Form,
+    ManageMessageWrapper,
   },
   props: {
     disabled: {
@@ -98,6 +100,14 @@ export default {
     const emojiPickerX = ref();
     const emojiPickerY = ref();
     const replyToMessageData = ref(null);
+    const editChatMessageData = ref(null);
+
+    const isManageMessageWrapperVisible = ref(false);
+    const manageMessageWrapperData = ref({
+      title: '',
+      text: '',
+      img: null,
+    });
 
     const icons = computed(() => {
       return {
@@ -119,6 +129,10 @@ export default {
         : t('chat.write_message');
     });
 
+    const emojiPickerTransitionName = computed(() => {
+      return !isMobileSmall.value ? 'emoji-picker' : null;
+    });
+
     function closeEmojiPicker() {
       isEmojiPickerVisible.value = false;
     }
@@ -136,6 +150,7 @@ export default {
     function resetCreateMessageData() {
       messageValue.value = '';
       closeEmojiPicker();
+      closeManageMessageWrapper();
     }
 
     async function sendMessage(data) {
@@ -154,6 +169,14 @@ export default {
       }
     }
 
+    function showManageMessageWrapper() {
+      isManageMessageWrapperVisible.value = true;
+    }
+
+    function closeManageMessageWrapper() {
+      isManageMessageWrapperVisible.value = false;
+    }
+
     function showOrCloseEmojiPicker(e) {
       if (props.disabled) {
         return;
@@ -166,16 +189,54 @@ export default {
       }
     }
 
+    function resetManageMessageWrapperData() {
+      manageMessageWrapperData.value = {
+        title: '',
+        text: '',
+      };
+    }
+
     function cancelReplyToChatMessage() {
       replyToMessageData.value = null;
+      resetManageMessageWrapperData();
+    }
+
+    function cancelEditingMessage() {
+      editChatMessageData.value = null;
+      resetManageMessageWrapperData();
     }
 
     ChatEventBus.on('replyToChatMessage', (messageData) => {
+      if (editChatMessageData.value) {
+        cancelEditingMessage();
+      }
+
       replyToMessageData.value = messageData;
+      manageMessageWrapperData.value = {
+        title: `${messageData.sender.profile.last_name} ${messageData.sender.profile.name}`,
+        text: messageData.text,
+      };
+
+      showManageMessageWrapper();
+    });
+
+    ChatEventBus.on('editChatMessage', (messageData) => {
+      if (replyToMessageData.value) {
+        cancelReplyToChatMessage();
+      }
+      editChatMessageData.value = messageData;
+      manageMessageWrapperData.value = {
+        title: t('chat.message_editing'),
+        text: messageData.text,
+        img: EditMessageButtonIcon,
+      };
+
+      showManageMessageWrapper();
     });
 
     onBeforeUnmount(() => {
       ChatEventBus.off('replyToChatMessage');
+      ChatEventBus.off('editChatMessage');
     });
 
     return {
@@ -184,7 +245,9 @@ export default {
       isEmojiPickerVisible,
       emojiPickerX,
       emojiPickerY,
-      replyToMessageData,
+      emojiPickerTransitionName,
+      manageMessageWrapperData,
+      isManageMessageWrapperVisible,
       icons,
       schema,
       onEmojiSelect,
@@ -194,6 +257,7 @@ export default {
       sendMessage,
       showOrCloseEmojiPicker,
       disableFormSubmit,
+      closeManageMessageWrapper,
     };
   },
 };
