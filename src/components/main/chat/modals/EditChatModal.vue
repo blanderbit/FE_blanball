@@ -1,7 +1,13 @@
 <template>
   <div class="b-edit-chat-modal__wrapper" @click.self="closeModal">
-    <div class="b-edit-chat-modal__modal-window">
+    <div class="b-edit-chat-modal__modal-window" ref="ALL_MODAL_CONTENT_BLOCK">
       <div class="b-modal-window__top-side">
+        <img
+          class="b-go-back-button"
+          src="../../../../assets/img/chat/edit-chat-modal-back-arrow.svg"
+          alt=""
+          @click="closeModal"
+        />
         <div class="b-modal-window__title">
           {{ $t('chat.edit_chat_modal.manage_group') }}
         </div>
@@ -49,8 +55,8 @@
       </div>
       <div class="b-modal-window__bottom-side" ref="MODAL_BOTTOM_SIDE_BLOCK">
         <WhiteBtn
-          :text="$t('buttons.cancel')"
-          :width="80"
+          :text="cancelButtonConfig.text"
+          :width="cancelButtonConfig.width"
           :main-color="'#575775'"
           :isBorder="false"
           @click-function="closeModal"
@@ -79,6 +85,7 @@ import GreenBtn from '../../../shared/button/GreenBtn.vue';
 import WhiteBtn from '../../../shared/button/WhiteBtn.vue';
 
 import { copyToClipboard } from '../../../../utils/copyToClipBoard';
+import { useWindowWidth } from '../../../../workers/window-size-worker/widthScreen';
 
 import CopyChatLinkIcon from '../../../../assets/img/chat/infinite.svg';
 import ChatNameIcon from '../../../../assets/img/address-icon.svg';
@@ -101,7 +108,7 @@ export default {
   setup(props, { emit }) {
     const MODAL_BOTTOM_SIDE_BLOCK = ref();
     const MODAL_MAIN_SIDE_BLOCK = ref();
-    const MODAL_HEIGHT_VALUE = 600;
+    const ALL_MODAL_CONTENT_BLOCK = ref();
 
     const { height: MODAL_MAIN_SIDE_BLOCK_HEIGHT } = useElementSize(
       MODAL_MAIN_SIDE_BLOCK
@@ -109,6 +116,10 @@ export default {
     const { height: MODAL_BOTTOM_SIDE_BLOCK_HEIGHT } = useElementSize(
       MODAL_BOTTOM_SIDE_BLOCK
     );
+    const { height: MODAL_HEIGHT_VALUE } = useElementSize(
+      ALL_MODAL_CONTENT_BLOCK
+    );
+    const { isMobileSmall } = useWindowWidth();
 
     const toast = useToast();
     const { t } = useI18n();
@@ -120,10 +131,19 @@ export default {
       };
     });
 
+    const cancelButtonConfig = computed(() => {
+      return {
+        text: isMobileSmall.value
+          ? 'Скасувати редагування'
+          : t('buttons.cancel'),
+        width: isMobileSmall.value ? 200 : 80,
+      };
+    });
+
     const usersListBlockStyle = computed(() => {
       return {
         height: `${
-          MODAL_HEIGHT_VALUE -
+          MODAL_HEIGHT_VALUE.value -
           MODAL_MAIN_SIDE_BLOCK_HEIGHT.value -
           MODAL_BOTTOM_SIDE_BLOCK_HEIGHT.value
         }px`,
@@ -146,7 +166,9 @@ export default {
     return {
       MODAL_MAIN_SIDE_BLOCK,
       MODAL_BOTTOM_SIDE_BLOCK,
+      ALL_MODAL_CONTENT_BLOCK,
       usersListBlockStyle,
+      cancelButtonConfig,
       icons,
       closeModal,
       copyChatLink,
@@ -174,10 +196,39 @@ export default {
     height: 600px;
     box-shadow: 2px 2px 10px 0px rgba(56, 56, 251, 0.1);
 
+    @include mobile {
+      width: 100%;
+      height: 100%;
+      border-radius: 0px;
+      box-shadow: none;
+    }
+
     .b-modal-window__top-side {
+      .b-go-back-button {
+        display: none;
+        @include mobile {
+          display: block;
+          cursor: pointer;
+        }
+      }
+      @include mobile {
+        display: flex;
+        gap: 16px;
+        background: var(--bg-primary, #fff);
+        box-shadow: 2px 2px 10px 0px rgba(56, 56, 251, 0.1);
+        margin-top: -20px;
+        margin-left: -16px;
+        width: calc(100% + 32px);
+        padding: 20px 16px;
+      }
       .b-modal-window__title {
-        @include exo(22px, 700, $--b-main-black-color);
+        @include exo(22px, 700);
         line-height: 32px;
+
+        @include mobile {
+          @include exo(18px, 700);
+          line-height: 24px;
+        }
       }
 
       .b-close-modal-button {
@@ -187,6 +238,10 @@ export default {
         right: 20px;
         top: 20px;
         cursor: pointer;
+
+        @include mobile {
+          display: none;
+        }
       }
     }
 
@@ -219,6 +274,20 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      @include mobile {
+        flex-direction: column-reverse;
+        border-radius: 12px 12px 0px 0px;
+        border-top: 1.5px solid #f0f0f4;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 16px;
+        margin-left: -16px;
+        width: calc(100% + 32px);
+
+        :deep(.b-green-btn) {
+          width: 100% !important;
+          margin-bottom: 8px;
+        }
+      }
     }
   }
 }

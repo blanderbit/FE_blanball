@@ -91,7 +91,7 @@ export default {
     {
       img: EditMessageButtonIcon,
       text: 'chat.buttons.manage_group',
-      type: CHAT_MAIN_CONTEXT_MENU_ACTIONS.EDIT_CHAT,
+      type: CHAT_MAIN_CONTEXT_MENU_ACTIONS.MANAGE_GROUP,
       hide: !isMobileApp,
     },
     {

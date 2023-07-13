@@ -1,11 +1,13 @@
 <template>
   <div class="b-chat-page">
-    <EditChatModal
-      v-if="isEditChatModalOpened"
-      :chatData="chatData"
-      @closeModal="closeEditChatModal"
-      @updateChat="updateChatData"
-    />
+    <Transition name="edit-chat-modal-slide">
+      <EditChatModal
+        v-if="isEditChatModalOpened"
+        :chatData="chatData"
+        @closeModal="closeEditChatModal"
+        @updateChat="updateChatData"
+      />
+    </Transition>
     <SubmitModal
       v-if="isSubmitModalOpened"
       :config="submitModalConfig"
@@ -215,6 +217,32 @@ export default {
       showContextMenu(e, mockData.value.chatMainContextMenuItems);
     }
 
+    function contextMenuItemClick(action) {
+      const {
+        ENABLE_PUSH_NOTIFICATIONS,
+        DISABLE_PUSH_NOTIFICATIONS,
+        DELETE_CHAT,
+        MANAGE_GROUP,
+        SEARCH_MESSAGES,
+      } = mockData.value.CHAT_MAIN_CONTEXT_MENU_ACTIONS;
+
+      console.log(action);
+
+      switch (action) {
+        case ENABLE_PUSH_NOTIFICATIONS:
+          break;
+        case DISABLE_PUSH_NOTIFICATIONS:
+          break;
+        case DELETE_CHAT:
+          break;
+        case MANAGE_GROUP:
+          showEditChatModal();
+          break;
+        case SEARCH_MESSAGES:
+          break;
+      }
+    }
+
     function showSubmitModal() {
       isSubmitModalOpened.value = true;
     }
@@ -277,6 +305,7 @@ export default {
       showSubmitModal,
       closeSubmitModal,
       updateChatData,
+      contextMenuItemClick,
     };
   },
 };
@@ -332,5 +361,15 @@ export default {
 .chat-warning-enter-from,
 .chat-warning-leave-to {
   opacity: 0;
+}
+
+.edit-chat-modal-slide-enter-active,
+.edit-chat-modal-slide-leave-active {
+  transition: all 0.5s;
+}
+
+.edit-chat-modal-slide-enter-from,
+.edit-chat-modal-slide-leave-to {
+  transform: translateX(100%);
 }
 </style>

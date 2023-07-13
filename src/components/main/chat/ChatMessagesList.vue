@@ -317,31 +317,25 @@ export default {
     }
 
     function createChatMessageMessageHandler(instanceType) {
-      if (instanceType.data.data.data.chat_id === props.chatData.id) {
-        instanceType.createNewMessageInChat(
-          { paginationElements },
-          handlingIncomeMessagesData
-        );
-      }
+      instanceType.createNewMessageInChat(
+        { paginationElements },
+        handlingIncomeMessagesData
+      );
     }
 
     function deleteChatMessages(messagesIds) {
       API.ChatService.deleteChatMessages({
         chat_id: props.chatData.id,
         message_ids: messagesIds,
-      }).then(() => deselectChatMessages());
+      }).then(deselectChatMessages());
     }
 
     function editChatMessageMessageHandler(instanceType) {
-      if (instanceType.data.data.chat_id === props.chatData.id) {
-        instanceType.editMessage(paginationElements);
-      }
+      instanceType.editMessage(paginationElements);
     }
 
     function deleteChatMessagesMessageHandler(instanceType) {
-      if (instanceType.data.data.chat_id === props.chatData.id) {
-        instanceType.deleteMessage(paginationElements);
-      }
+      instanceType.deleteMessage(paginationElements);
     }
 
     ChatEventBus.on('deselectChatMessages', () => deselectChatMessages());

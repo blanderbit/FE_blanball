@@ -1,4 +1,4 @@
-import { InitialUpdation } from '../updation/initial.message';
+import { InitialChatMessage } from './initial.message';
 
 import {
   SetMessageType,
@@ -11,30 +11,22 @@ import { ChatWebSocketTypes } from './web.socket.types';
 @AuthWebSocketMessage()
 @UpdateWebSocketMessage()
 @SetMessageType(ChatWebSocketTypes.EditMessage)
-export class EditChatMessageMessage extends InitialUpdation {
-  setOrUnsetAdmin(paginationElements) {
+export class EditChatMessageMessage extends InitialChatMessage {
+  editMessage(paginationElements) {
     if (!this.isError) {
-      const userId = this.data.data.user_id;
-      const action = this.data.data.action;
-      const foundUser = paginationElements.value.find(
-        (element) => element.id == userId
-      );
-      foundUser.admin = action == 'set';
+      const editedMessageId = this.data.data.message_data.id;
+      if (editedMessageId) {
+        const editedMessage = paginationElements.value.find(
+          (element) => element.id === editedMessageId
+        );
+        if (editedMessage) {
+          Object.assign(editedMessage, this.data.data.message_data);
+        }
+      }
     }
   }
 
   onError(errorType, callback) {
     super.onError(errorType, callback);
-  }
-
-  editMessage(paginationElements) {
-    if (!this.isError) {
-      const messagesIDS = this.data.data.data.messages_ids;
-      if (messagesIDS) {
-        paginationElements.value = paginationElements.value.filter(
-          (element) => !messagesIDS.includes(element.id)
-        );
-      }
-    }
   }
 }
