@@ -27,6 +27,7 @@ import Alts from './alts';
 import NoRecords from './no_records';
 import Policy from './policy';
 import Scheduler from './scheduler';
+import Donations from './donations'
 
 export const UA_LANGUAGE = {
   events: EventsPage,
@@ -57,5 +58,6 @@ export const UA_LANGUAGE = {
   alts: Alts,
   no_records: NoRecords,
   policy: Policy,
-  scheduler: Scheduler
+  scheduler: Scheduler,
+  donations: Donations,
 };

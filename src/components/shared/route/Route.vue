@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="derivedTo">
+  <router-link :to="derivedTo" class="b-route">
     <slot />
   </router-link>
 </template>
@@ -37,3 +37,15 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.b-route {
+  &,
+  &:visited,
+  &:focus,
+  &:hover {
+    text-decoration: none;
+    text-transform: none;
+    color: inherit;
+  }
+}
+</style>
