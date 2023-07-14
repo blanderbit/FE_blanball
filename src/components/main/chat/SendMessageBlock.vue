@@ -174,7 +174,7 @@ export default {
         chat_id: props.chatData.id,
         text: messageValue.value,
         reply_to_message_id: replyToMessageData.value?.id,
-      });
+      }).then((replyToMessageData.value = null));
     }
 
     async function editMessage() {
@@ -183,7 +183,7 @@ export default {
         new_data: {
           text: messageValue.value,
         },
-      });
+      }).then((editChatMessageData.value = null));
     }
 
     function showManageMessageWrapper() {

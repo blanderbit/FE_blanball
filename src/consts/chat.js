@@ -29,6 +29,7 @@ const CHAT_USER_CONTEXT_MENU_ACTIONS = {
 const CHAT_MESSAGE_TYPES = {
   USER_MESSAGE: 'user_message',
   USER_JOINED_TO_CHAT: 'user_joined_to_chat',
+  GROUP_CHAT_CREATED: 'group_chat_created'
 };
 
 const CHAT_MAIN_CONTEXT_MENU_ACTIONS = {

@@ -1,5 +1,5 @@
 <template>
-  <div class="b-user-joined-to-the-chat-message">
+  <div class="b-chat-service-message">
     <span>{{
       $t('chat.user_joined_to_chat', { userFullName: userFullName })
     }}</span>
@@ -30,7 +30,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.b-user-joined-to-the-chat-message {
+.b-chat-service-message {
   border-radius: 8px;
   background: var(--bg-dark-blur, rgba(9, 9, 16, 0.8));
   padding: 4px 12px;

@@ -1,6 +1,6 @@
 <template>
   <div class="b-chat-page">
-    <Transition name="edit-chat-modal-slide">
+    <Transition :name="editChatModalTransitionName">
       <EditChatModal
         v-if="isEditChatModalOpened"
         :chatData="chatData"
@@ -95,7 +95,7 @@ export default {
   },
   setup() {
     const chatData = ref({
-      id: 735,
+      id: 772,
       name: 'dffddfdfdf fdfddffd',
       isChatRequest: false,
       isGroup: false,
@@ -131,6 +131,10 @@ export default {
       CHAT_PAGE_TOP_AND_BOTTOM_PADDINGS_PX,
     ]);
     const { isMobileSmall } = useWindowWidth();
+
+    const editChatModalTransitionName = computed(() => {
+      return isMobileSmall.value ? 'edit-chat-modal-slide' : null;
+    });
 
     const mockData = computed(() => {
       return {
@@ -296,6 +300,7 @@ export default {
       contextMenuY,
       isSubmitModalOpened,
       submitModalConfig,
+      editChatModalTransitionName,
       showEditChatModal,
       closeEditChatModal,
       closeChatWarning,
