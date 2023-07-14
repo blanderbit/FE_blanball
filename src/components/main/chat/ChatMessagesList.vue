@@ -14,11 +14,13 @@
       'b-chat-messages__list',
       { 'no-messages': !paginationElements.length },
     ]"
+    :style="heightStyle"
     @keydown.up="smoothScrollUp"
     @keydown.down="smoothScrollDown"
   >
     <SmartList
       :list="paginationElements"
+      :itemsGap="8"
       ref="refList"
       v-model:scrollbar-existing="blockScrollToTopIfExist"
     >
@@ -98,12 +100,21 @@ export default {
       type: Object,
       required: true,
     },
+    heightStyle: {
+      type: Object,
+      default: null,
+    },
   },
   setup(props, { expose }) {
     const refList = ref();
     const triggerForRestart = ref(false);
 
     const blockScrollToTopIfExist = ref(false);
+
+    // console.log({
+    //         test: document.querySelector('.vue-recycle-scroller__item-wrapper')
+    //           .__vnode.ctx.data.pool,
+    //       });
 
     const isContextMenuOpened = ref(false);
     const contextMenuX = ref(null);
@@ -394,6 +405,7 @@ export default {
 
 <style lang="scss" scoped>
 .b-chat-messages__list {
+  overflow: scroll;
   &.no-messages {
     height: 100%;
   }

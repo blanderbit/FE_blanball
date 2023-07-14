@@ -37,7 +37,7 @@
       @touchend.passive="endMessageHold"
     >
       <div class="b-chat-message-text">
-        {{ messageData.text }}
+        {{ messageData.text }} {{ messageData.id }}
       </div>
       <div class="b-like-message-button">
         <img src="../../../assets/img/chat/like-button.svg" alt="" />
@@ -171,8 +171,6 @@ export default {
   align-items: flex-end;
   align-items: center;
   gap: 12px;
-  margin-top: 8px;
-
   .b-chat-message-tail {
     @include mobile {
       width: 10px;

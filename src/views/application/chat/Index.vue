@@ -33,9 +33,11 @@
       />
     </div>
     <div class="b-chat-page-main-side">
-      <div class="b-main-side-messages-block" :style="messagesListBlockStyle">
-        <ChatMessagesList ref="CHAT_MESSAGES_LIST_BLOCK" :chatData="chatData" />
-      </div>
+      <ChatMessagesList
+        ref="CHAT_MESSAGES_LIST_BLOCK"
+        :chatData="chatData"
+        :heightStyle="messagesListBlockStyle"
+      />
       <div ref="CHAT_BOTTOM_SIDE_BLOCK" class="b-main-side-bottom-block">
         <Transition name="chat-warning">
           <ChatWarning v-if="isChatWarningVisible" @close="closeChatWarning" />
@@ -344,11 +346,6 @@ export default {
 
     @include mobile {
       padding: 0px 8px 20px 8px;
-    }
-
-    .b-main-side-messages-block {
-      overflow: scroll;
-      outline: none;
     }
 
     .b-main-side-bottom-block {
