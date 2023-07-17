@@ -87,7 +87,7 @@ import {
 } from '../../../../workers/loading-worker/loading.worker';
 import { disableFormSubmit } from '../../../../utils/disableFormSubmit';
 
-import SCHEMAS from '../../../../validators/schemas';
+import { SCHEMAS } from '../../../../validators/schemas';
 
 export default {
   name: 'ChangeEmailModal',

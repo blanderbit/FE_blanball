@@ -174,7 +174,7 @@ import { disableFormSubmit } from '../../../utils/disableFormSubmit';
 import { runOnSelectEventDuration } from '../../../utils/runOnSelectEventDuration';
 
 import { ROUTES } from '../../../router/router.const';
-import SCHEMAS from '../../../validators/schemas';
+import { SCHEMAS } from '../../../validators/schemas';
 
 import Arrow from '../../../assets/img/arrow-right-white.svg';
 

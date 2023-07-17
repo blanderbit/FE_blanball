@@ -97,7 +97,7 @@ import { disableFormSubmit } from '../../../utils/disableFormSubmit';
 
 import { ROUTES } from '../../../router/router.const';
 import { CONSTS } from '../../../consts';
-import SCHEMAS from '../../../validators/schemas';
+import { SCHEMAS } from '../../../validators/schemas';
 
 export default {
   components: {

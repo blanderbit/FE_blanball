@@ -193,7 +193,7 @@ import { calcHeight } from '../../../workers/window-size-worker/calcHeight';
 import { disableFormSubmit } from '../../../utils/disableFormSubmit';
 
 import { CONSTS } from '../../../consts';
-import SCHEMAS from '../../../validators/schemas';
+import { SCHEMAS } from '../../../validators/schemas';
 import {
   finishSpinner,
   startSpinner,

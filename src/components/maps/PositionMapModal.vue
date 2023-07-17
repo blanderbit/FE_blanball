@@ -98,7 +98,7 @@ import { disableFormSubmit } from '../../utils/disableFormSubmit';
 import { CONSTS } from '../../consts';
 
 import tickIcon from '../../assets/img/location-point.svg';
-import SCHEMAS from '../../validators/schemas';
+import { SCHEMAS } from '../../validators/schemas';
 
 export default {
   components: {

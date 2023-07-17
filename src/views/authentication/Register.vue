@@ -95,7 +95,7 @@ import { disableFormSubmit } from '../../utils/disableFormSubmit';
 
 import { ROUTES } from '../../router/router.const';
 import { CONSTS } from '../../consts';
-import SCHEMAS from '../../validators/schemas';
+import { SCHEMAS } from '../../validators/schemas';
 
 import imageStep_1 from '../../assets/img/registration-back-1.svg';
 import imageStep_2 from '../../assets/img/registration-back-2.svg';

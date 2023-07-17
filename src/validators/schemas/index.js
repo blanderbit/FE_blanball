@@ -13,7 +13,7 @@ import PositionMap from './positionMap';
 import ChatMessage from './chatMessage';
 import EditChat from './editChat';
 
-export default {
+export const SCHEMAS = {
   login: Login,
   register: Register,
   profile: Profile,

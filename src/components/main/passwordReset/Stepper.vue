@@ -117,7 +117,7 @@ import {
 import { disableFormSubmit } from '../../../utils/disableFormSubmit';
 
 import { ROUTES } from '../../../router/router.const';
-import SCHEMAS from '../../../validators/schemas';
+import { SCHEMAS } from '../../../validators/schemas';
 
 import eyeCross from '../../../assets/img/eye-crossed.svg';
 import eyeOpen from '../../../assets/img/eye-opened.svg';

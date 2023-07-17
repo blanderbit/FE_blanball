@@ -118,7 +118,7 @@ import GreenBtn from '../../../shared/button/GreenBtn.vue';
 import { disableFormSubmit } from '../../../../utils/disableFormSubmit';
 
 import { CONSTS } from '../../../../consts/index';
-import SCHEMAS from '../../../../validators/schemas';
+import { SCHEMAS } from '../../../../validators/schemas';
 
 export default {
   components: {

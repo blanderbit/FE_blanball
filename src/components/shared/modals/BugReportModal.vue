@@ -82,7 +82,7 @@ import mainTextArea from '../textArea/MainTextArea.vue';
 import { API } from '../../../workers/api-worker/api.worker';
 import { disableFormSubmit } from '../../../utils/disableFormSubmit';
 
-import SCHEMAS from '../../../validators/schemas';
+import { SCHEMAS } from '../../../validators/schemas';
 
 import addFileIcon from '../../../assets/img/add-file-icon.svg';
 
