@@ -54,4 +54,11 @@ export class ChatService {
   static editChat(data) {
     return AxiosInstance.post(EndpointsEnum.Chats.EditChat, data);
   }
+
+  static offOrOnnChatPushNotifications(data) {
+    return AxiosInstance.post(
+      EndpointsEnum.Chats.OffOrOnnChatPushNotifications,
+      data
+    );
+  }
 }

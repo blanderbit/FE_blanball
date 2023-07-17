@@ -7,3 +7,4 @@ export { SetOrUnsetChatAdminMessage } from './set_or_unset_chat_admin';
 export { RemoveUserFromChat } from './remove_user_from_chat';
 export { GetInfoAboutMeInChatMessage } from './get_user_info_in_chat';
 export { EditGroupChatMessage } from './edit_chat';
+export { OffOrOnChatPushNotificationsMessage } from './off_or_on_push_notifications';

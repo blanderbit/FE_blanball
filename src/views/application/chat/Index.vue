@@ -45,7 +45,7 @@
         <RequestForChat v-if="isChatRequestVisible" />
         <SendMessageBlock
           v-else
-          :disabled="chatData.disabled"
+          :disabled="isSendMessagesDisabled"
           :chatData="chatData"
         />
       </div>
@@ -150,6 +150,10 @@ export default {
       };
     });
 
+    const isSendMessagesDisabled = computed(() => {
+      return chatData.value.disabled || chatDataStore.infoAboutMe.removed;
+    });
+
     const chatSelectedMessagesList = computed(() => {
       return CHAT_MESSAGES_LIST_BLOCK.value?.selectedMessages;
     });
@@ -165,7 +169,10 @@ export default {
     });
 
     const isChatWarningVisible = computed(() => {
-      if (chatData.value.disabled && chatData.value.isGroup) {
+      if (
+        chatDataStore.infoAboutMe.removed ||
+        (chatData.value.disabled && chatData.value.isGroup)
+      ) {
         return !isChatWarningClosed.value;
       }
     });
@@ -229,7 +236,7 @@ export default {
       showContextMenu(e, mockData.value.chatMainContextMenuItems);
     }
 
-    function contextMenuItemClick(action) {
+    async function contextMenuItemClick(action) {
       const {
         ENABLE_PUSH_NOTIFICATIONS,
         DISABLE_PUSH_NOTIFICATIONS,
@@ -238,12 +245,12 @@ export default {
         SEARCH_MESSAGES,
       } = mockData.value.CHAT_MAIN_CONTEXT_MENU_ACTIONS;
 
-      console.log(action);
-
       switch (action) {
         case ENABLE_PUSH_NOTIFICATIONS:
+          offOrOnnChatPushNotifications(ENABLE_PUSH_NOTIFICATIONS);
           break;
         case DISABLE_PUSH_NOTIFICATIONS:
+          offOrOnnChatPushNotifications(DISABLE_PUSH_NOTIFICATIONS);
           break;
         case DELETE_CHAT:
           break;
@@ -253,6 +260,18 @@ export default {
         case SEARCH_MESSAGES:
           break;
       }
+    }
+
+    function offOrOnnChatPushNotifications(action) {
+      const actions = {
+        enable_push_notifications: 'on',
+        disable_push_notifications: 'off',
+      };
+
+      API.ChatService.offOrOnnChatPushNotifications({
+        chat_id: chatData.value.id,
+        action: actions[action],
+      });
     }
 
     function showSubmitModal() {
@@ -273,6 +292,10 @@ export default {
       });
     }
 
+    function offOrOnPushNotificationsHandler(instanceType) {
+      instanceType.offOrOnChatPushNotifications(chatDataStore);
+    }
+
     function editChatMessageHandler(instanceType) {
       instanceType.editChat(chatData);
     }
@@ -291,12 +314,18 @@ export default {
       ChatWebSocketTypes.EditChat
     );
 
+    ChatSocketWorkerInstance.registerCallback(
+      offOrOnPushNotificationsHandler,
+      ChatWebSocketTypes.OffOrOnPushNotifications
+    );
+
     onBeforeUnmount(() => {
       ChatSocketWorkerInstance.disconnect();
       ChatSocketWorkerInstance.destroyCallback(
         getInfoAboutMeInChatMessageHandler
       );
       ChatSocketWorkerInstance.destroyCallback(editChatMessageHandler);
+      ChatSocketWorkerInstance.destroyCallback(offOrOnPushNotificationsHandler);
     });
 
     getInfoAboutMeInChat();
@@ -317,8 +346,10 @@ export default {
       contextMenuX,
       contextMenuY,
       isSubmitModalOpened,
+      chatDataStore,
       submitModalConfig,
       editChatModalTransitionName,
+      isSendMessagesDisabled,
       showEditChatModal,
       closeEditChatModal,
       closeChatWarning,
