@@ -36,7 +36,7 @@
             :height="48"
             :backgroundColor="'#fff'"
             :icon="icons.chatName"
-            name="search"
+            name="name"
             v-model="newChatData.name"
           />
           <MainInput
@@ -49,7 +49,7 @@
             inputMode="text"
             :height="48"
             :backgroundColor="'#fff'"
-            name="search"
+            name="link"
             v-model="newChatData.link"
             @rightIconClick="copyChatLink"
           />
@@ -83,6 +83,8 @@ import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
 import { useElementSize } from '@vueuse/core';
 
+import { Form } from '@system.it.flumx.com/vee-validate';
+
 import MainInput from '../../../shared/input/MainInput.vue';
 import SearchBlockAll from '../../../SearchBlockAll.vue';
 import ChatUsersList from '../ChatUsersList.vue';
@@ -105,6 +107,7 @@ export default {
     ChatUsersList,
     GreenBtn,
     WhiteBtn,
+    Form,
   },
   props: {
     chatData: {
@@ -176,6 +179,7 @@ export default {
     }
 
     async function updateChat(data) {
+      console.log(data);
       const { valid } = await data.validate();
 
       if (!valid) {

@@ -14,8 +14,7 @@ import { ChatWebSocketTypes } from './web.socket.types';
 export class EditGroupChatMessage extends InitialChatMessage {
   editChat(chatData) {
     if (!this.isError) {
-      console.log(this.data.data);
-      Object.assign(chatData.value, this.data.data.message_data);
+      Object.assign(chatData.value, this.data.data.new_data);
     }
   }
 

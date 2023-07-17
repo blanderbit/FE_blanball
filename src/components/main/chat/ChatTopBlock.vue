@@ -179,6 +179,7 @@ export default {
         display: flex;
         align-items: center;
         gap: 12px;
+        width: fit-content;
 
         @include mobile {
           width: 100%;
@@ -201,7 +202,15 @@ export default {
 
         .b-chat-name {
           @include exo(18px, 700, $--b-main-black-color);
+          max-width: 80%;
           line-height: 24px;
+          max-width: 75%;
+          width: 100%;
+          word-break: break-word;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
       }
 

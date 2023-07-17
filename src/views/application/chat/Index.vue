@@ -178,7 +178,7 @@ export default {
       await API.ChatService.editChat({
         chat_id: chatData.value.id,
         new_data: {
-          name: '',
+          name: newData.name,
         },
       });
       toast.success(t('chat.toasts.chat_updated_success'));
