@@ -66,6 +66,7 @@ onUnmounted(() => {
 
 <template>
   <div class="infiniteLoading" ref="infiniteLoading">
+    {{ state }}
     <slot v-if="state == 'loading'" name="spinner">
       <smallLoader />
     </slot>

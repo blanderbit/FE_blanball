@@ -97,7 +97,7 @@ export default {
   },
   setup() {
     const chatData = ref({
-      id: 772,
+      id: 1,
       name: 'dffddfdfdf fdfddffd',
       isChatRequest: false,
       isGroup: false,
@@ -174,7 +174,13 @@ export default {
       return !chatData.value.isGroup && chatData.value.isChatRequest;
     });
 
-    function updateChatData() {
+    async function updateChatData(newData) {
+      await API.ChatService.editChat({
+        chat_id: chatData.value.id,
+        new_data: {
+          name: '',
+        },
+      });
       toast.success(t('chat.toasts.chat_updated_success'));
     }
 
@@ -267,6 +273,10 @@ export default {
       });
     }
 
+    function editChatMessageHandler(instanceType) {
+      instanceType.editChat(chatData);
+    }
+
     ChatSocketWorkerInstance.connect({
       token: accessToken.getToken(),
     });
@@ -276,11 +286,17 @@ export default {
       ChatWebSocketTypes.GetInfoAboutMeInChat
     );
 
+    ChatSocketWorkerInstance.registerCallback(
+      editChatMessageHandler,
+      ChatWebSocketTypes.EditChat
+    );
+
     onBeforeUnmount(() => {
       ChatSocketWorkerInstance.disconnect();
       ChatSocketWorkerInstance.destroyCallback(
         getInfoAboutMeInChatMessageHandler
       );
+      ChatSocketWorkerInstance.destroyCallback(editChatMessageHandler);
     });
 
     getInfoAboutMeInChat();

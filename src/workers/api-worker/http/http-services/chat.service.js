@@ -50,4 +50,8 @@ export class ChatService {
   static getInfoAboutMeInChat(chatId) {
     return AxiosInstance.get(EndpointsEnum.Chats.GetInfoAboutMeInChat(chatId));
   }
+
+  static editChat() {
+    return AxiosInstance.post(EndpointsEnum.Chats.EditChat, data);
+  }
 }

@@ -1,74 +1,79 @@
 <template>
   <div class="b-edit-chat-modal__wrapper" @click.self="closeModal">
-    <div class="b-edit-chat-modal__modal-window" ref="ALL_MODAL_CONTENT_BLOCK">
-      <div class="b-modal-window__top-side">
-        <img
-          class="b-go-back-button"
-          src="../../../../assets/img/chat/edit-chat-modal-back-arrow.svg"
-          alt=""
-          @click="closeModal"
-        />
-        <div class="b-modal-window__title">
-          {{ $t('chat.edit_chat_modal.manage_group') }}
+    <Form v-slot="data" :validation-schema="schema" @submit="disableFormSubmit">
+      <div
+        class="b-edit-chat-modal__modal-window"
+        ref="ALL_MODAL_CONTENT_BLOCK"
+      >
+        <div class="b-modal-window__top-side">
+          <img
+            class="b-go-back-button"
+            src="../../../../assets/img/chat/edit-chat-modal-back-arrow.svg"
+            alt=""
+            @click="closeModal"
+          />
+          <div class="b-modal-window__title">
+            {{ $t('chat.edit_chat_modal.manage_group') }}
+          </div>
+          <img
+            class="b-close-modal-button"
+            src="../../../../assets/img/cross.svg"
+            alt=""
+            @click="closeModal"
+          />
         </div>
-        <img
-          class="b-close-modal-button"
-          src="../../../../assets/img/cross.svg"
-          alt=""
-          @click="closeModal"
-        />
-      </div>
-      <div class="b-modal-window__main-side" ref="MODAL_MAIN_SIDE_BLOCK">
-        <div class="b-select-photo__button">
-          <img src="../../../../assets/img/chat/green-camera.svg" alt="" />
-          <span>{{ $t('chat.edit_chat_modal.select_photo') }}</span>
+        <div class="b-modal-window__main-side" ref="MODAL_MAIN_SIDE_BLOCK">
+          <div class="b-select-photo__button">
+            <img src="../../../../assets/img/chat/green-camera.svg" alt="" />
+            <span>{{ $t('chat.edit_chat_modal.select_photo') }}</span>
+          </div>
+          <MainInput
+            :outside-title="true"
+            :title-width="0"
+            :swipeTitle="false"
+            :title="$t('chat.edit_chat_modal.name_of_group_chat')"
+            inputMode="text"
+            :height="48"
+            :backgroundColor="'#fff'"
+            :icon="icons.chatName"
+            name="search"
+            v-model="newChatData.name"
+          />
+          <MainInput
+            :outside-title="true"
+            :title-width="0"
+            :swipeTitle="false"
+            :isReadOnly="true"
+            :icon="icons.copyChatLink"
+            :title="$t('chat.edit_chat_modal.invitation_link')"
+            inputMode="text"
+            :height="48"
+            :backgroundColor="'#fff'"
+            name="search"
+            v-model="newChatData.link"
+            @rightIconClick="copyChatLink"
+          />
         </div>
-        <MainInput
-          :outside-title="true"
-          :title-width="0"
-          :swipeTitle="false"
-          :title="$t('chat.edit_chat_modal.name_of_group_chat')"
-          inputMode="text"
-          :height="48"
-          :backgroundColor="'#fff'"
-          :icon="icons.chatName"
-          name="search"
-          v-model="chatData.name"
-        />
-        <MainInput
-          :outside-title="true"
-          :title-width="0"
-          :swipeTitle="false"
-          :isReadOnly="true"
-          :icon="icons.copyChatLink"
-          :title="$t('chat.edit_chat_modal.invitation_link')"
-          inputMode="text"
-          :height="48"
-          :backgroundColor="'#fff'"
-          name="search"
-          v-model="chatData.link"
-          @rightIconClick="copyChatLink"
-        />
+        <div class="b-edit-chat-modal-users-list" :style="usersListBlockStyle">
+          <ChatUsersList :chatData="chatData" />
+        </div>
+        <div class="b-modal-window__bottom-side" ref="MODAL_BOTTOM_SIDE_BLOCK">
+          <WhiteBtn
+            :text="cancelButtonConfig.text"
+            :width="cancelButtonConfig.width"
+            :main-color="'#575775'"
+            :isBorder="false"
+            @click-function="closeModal"
+          />
+          <GreenBtn
+            :text="$t('buttons.save-changes')"
+            :width="150"
+            :height="38"
+            @click-function="updateChat(data)"
+          />
+        </div>
       </div>
-      <div class="b-edit-chat-modal-users-list" :style="usersListBlockStyle">
-        <ChatUsersList :chatData="chatData" />
-      </div>
-      <div class="b-modal-window__bottom-side" ref="MODAL_BOTTOM_SIDE_BLOCK">
-        <WhiteBtn
-          :text="cancelButtonConfig.text"
-          :width="cancelButtonConfig.width"
-          :main-color="'#575775'"
-          :isBorder="false"
-          @click-function="closeModal"
-        />
-        <GreenBtn
-          :text="$t('buttons.save-changes')"
-          :width="150"
-          :height="38"
-          @click-function="updateChat"
-        />
-      </div>
-    </div>
+    </Form>
   </div>
 </template>
 
@@ -86,9 +91,12 @@ import WhiteBtn from '../../../shared/button/WhiteBtn.vue';
 
 import { copyToClipboard } from '../../../../utils/copyToClipBoard';
 import { useWindowWidth } from '../../../../workers/window-size-worker/widthScreen';
+import { disableFormSubmit } from '../../../../utils/disableFormSubmit';
 
 import CopyChatLinkIcon from '../../../../assets/img/chat/infinite.svg';
 import ChatNameIcon from '../../../../assets/img/address-icon.svg';
+
+import SCHEMAS from '../../../../validators/schemas';
 
 export default {
   components: {
@@ -110,6 +118,11 @@ export default {
     const MODAL_MAIN_SIDE_BLOCK = ref();
     const ALL_MODAL_CONTENT_BLOCK = ref();
 
+    const newChatData = ref({
+      name: props.chatData.name,
+      link: props.chatData.link,
+    });
+
     const { height: MODAL_MAIN_SIDE_BLOCK_HEIGHT } = useElementSize(
       MODAL_MAIN_SIDE_BLOCK
     );
@@ -123,6 +136,10 @@ export default {
 
     const toast = useToast();
     const { t } = useI18n();
+
+    const schema = computed(() => {
+      return SCHEMAS.editChat.schema;
+    });
 
     const icons = computed(() => {
       return {
@@ -158,8 +175,14 @@ export default {
       toast.success(t('chat.toasts.chat_link_copieded_success'));
     }
 
-    function updateChat() {
-      emit('updateChat');
+    async function updateChat(data) {
+      const { valid } = await data.validate();
+
+      if (!valid) {
+        return false;
+      }
+
+      emit('updateChat', data.values);
       closeModal({ force: true });
     }
 
@@ -169,10 +192,13 @@ export default {
       ALL_MODAL_CONTENT_BLOCK,
       usersListBlockStyle,
       cancelButtonConfig,
+      newChatData,
       icons,
+      schema,
       closeModal,
       copyChatLink,
       updateChat,
+      disableFormSubmit,
     };
   },
 };

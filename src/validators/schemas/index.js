@@ -11,6 +11,7 @@ import DeleteAccount from './deleteAccount';
 import ChangeEmail from './changeEmail';
 import PositionMap from './positionMap';
 import ChatMessage from './chatMessage';
+import EditChat from './editChat';
 
 export default {
   login: Login,
@@ -26,4 +27,5 @@ export default {
   changeEmail: ChangeEmail,
   positionMap: PositionMap,
   chatMessage: ChatMessage,
+  editChat: EditChat,
 };
