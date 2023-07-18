@@ -33,8 +33,8 @@
 <script>
 import { ref } from 'vue';
 
-import WhiteBtn from '../../shared/button/WhiteBtn.vue';
-import GreenBtn from '../../shared/button/GreenBtn.vue';
+import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 
 export default {
   props: {

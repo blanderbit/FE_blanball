@@ -67,7 +67,7 @@
           </div>
           <div v-else class="c-no-participants">
             <img
-              src="../../../assets/img/scheduler/gray-plus.svg"
+              src="@images/scheduler/gray-plus.svg"
               alt=""
               @click.stop="joinScheduledEvent"
             />
@@ -95,7 +95,7 @@
     >
       <div class="c-go-to-the-event-page">
         <span>{{ $t('scheduler.on-event-page') }}</span>
-        <img src="../../../assets/img/green-right-arrow.svg" alt="" />
+        <img src="@images/green-right-arrow.svg" alt="" />
       </div>
     </div>
   </div>
@@ -105,20 +105,20 @@
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import UserAvatar from '../../shared/userAvatar/UserAvatar.vue';
+import UserAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 
-import { BlanballEventBus } from '../../../workers/event-bus-worker';
+import { BlanballEventBus } from '@/workers/event-bus-worker';
 
-import { ROUTES } from '../../../router/router.const';
+import { ROUTES } from '@/router/router.const';
 
-import grayCrossIcon from '../../../assets/img/gray-cross.svg';
-import blackCrossIcon from '../../../assets/img/cross.svg';
-import greenCrossIcon from '../../../assets/img/green-cross.svg';
+import grayCrossIcon from '@images/gray-cross.svg';
+import blackCrossIcon from '@images/cross.svg';
+import greenCrossIcon from '@images/green-cross.svg';
 
-import grayTriangleIcon from '../../../assets/img/dropdown-arrow-disabled.svg';
-import blackTriangleIcon from '../../../assets/img/arrow-down2.svg';
-import greenTriangleIcon from '../../../assets/img/green-arrow-down.svg';
-import greenCheckMarkIcon from '../../../assets/img/green-nike-icon.svg';
+import grayTriangleIcon from '@images/dropdown-arrow-disabled.svg';
+import blackTriangleIcon from '@images/arrow-down2.svg';
+import greenTriangleIcon from '@images/green-arrow-down.svg';
+import greenCheckMarkIcon from '@images/green-nike-icon.svg';
 
 const EVENT_STATUSES = {
   PLANNED: 'Planned',

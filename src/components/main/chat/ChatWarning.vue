@@ -1,6 +1,6 @@
 <template>
   <div class="b-chat-warning">
-    <img class="b-warning-icon" src="../../../assets/img/warning.svg" alt="" />
+    <img class="b-warning-icon" src="@images/warning.svg" alt="" />
     <span class="b-warning-text">{{
       $t('chat.you_were_kicked_from_the_chat')
     }}</span>
@@ -9,7 +9,7 @@
     }}</span>
     <img
       class="b-close-button"
-      src="../../../assets/img/cross.svg"
+      src="@images/cross.svg"
       alt=""
       @click="$emit('close')"
     />

@@ -19,10 +19,10 @@
       </div>
     </template>
     <template #arrow-prev>
-      <img src="../../../assets/img/scheduler/arrow-left.svg" alt="" />
+      <img src="@images/scheduler/arrow-left.svg" alt="" />
     </template>
     <template #arrow-next>
-      <img src="../../../assets/img/scheduler/arrow-right.svg" alt="" />
+      <img src="@images/scheduler/arrow-right.svg" alt="" />
     </template>
   </vue-cal>
 </template>
@@ -33,7 +33,7 @@ import { ref, computed } from 'vue';
 import VueCal from 'vue-cal';
 import 'vue-cal/dist/vuecal.css';
 
-import { CONSTS } from '../../../consts';
+import { CONSTS } from '@/consts';
 
 export default {
   components: {

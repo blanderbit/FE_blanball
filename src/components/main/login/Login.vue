@@ -59,7 +59,7 @@
         v-if="showInvalidCredentials"
         class="b-login-step__wrong-credentials-message d-flex align-baseline"
       >
-        <img src="../../../assets/img/warning-red.svg" class="m-2" alt="" />
+        <img src="@images/warning-red.svg" class="m-2" alt="" />
         {{ $t('login.wrong-credentials') }}
       </div>
       <div class="b-login-step__buttons">
@@ -83,21 +83,21 @@ import { useRouter } from 'vue-router';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import GreenBtn from '../../shared/button/GreenBtn.vue';
-import MainInput from '../../shared/input/MainInput.vue';
-import checkBox from '../../shared/checkbox/Checkbox.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import checkBox from '@sharedComponents/checkbox/Checkbox.vue';
 
-import { API } from '../../../workers/api-worker/api.worker';
-import { accessToken, refreshToken } from '../../../workers/token-worker';
+import { API } from '@/workers/api-worker/api.worker';
+import { accessToken, refreshToken } from '@/workers/token-worker';
 import {
   startSpinner,
   finishSpinner,
-} from '../../../workers/loading-worker/loading.worker';
-import { disableFormSubmit } from '../../../utils/disableFormSubmit';
+} from '@/workers/loading-worker/loading.worker';
+import { disableFormSubmit } from '@/utils/disableFormSubmit';
 
-import { ROUTES } from '../../../router/router.const';
-import { CONSTS } from '../../../consts';
-import { SCHEMAS } from '../../../validators/schemas';
+import { ROUTES } from '@/router/router.const';
+import { CONSTS } from '@/consts';
+import { SCHEMAS } from '@/validators/schemas';
 
 export default {
   components: {

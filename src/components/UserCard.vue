@@ -52,7 +52,7 @@
             </div>
           </div>
           <div class="b-user-card__user-status">
-            <img src="../assets/img/runner.svg" alt="runner icon" />
+            <img src="@images/runner.svg" alt="runner icon" />
             <div class="b-user-card__status">
               {{ $t(`hashtags.${userData.role}`) }}
             </div>
@@ -83,7 +83,7 @@ import StarRating from 'vue-star-rating';
 import CollapsiblePanel from './main/collapsible/CollapsiblePanel.vue';
 import userAvatar from './shared/userAvatar/UserAvatar.vue';
 
-import { CONSTS } from '../consts/index';
+import { CONSTS } from '@/consts/index';
 
 export default {
   name: 'UserCard',
@@ -120,7 +120,7 @@ export default {
 $color-efeff6: #efeff6;
 $color-f7f7fc: #f7f7fc;
 
-@import '../assets/styles/mixins/device.scss';
+@import '@sytles/mixins/device.scss';
 .b-user-card {
   width: 100%;
   &__top-line {

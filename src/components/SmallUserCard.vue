@@ -36,7 +36,7 @@ import { useRouter } from 'vue-router';
 
  import userAvatar from './shared/userAvatar/UserAvatar.vue';
 
-import { ROUTES } from '../router/router.const';
+import { ROUTES } from '@/router/router.const';
 
 export default {
   components: {

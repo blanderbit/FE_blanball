@@ -44,8 +44,8 @@
 import GreenBtn from './shared/button/GreenBtn.vue';
 import WhiteBtn from './shared/button/WhiteBtn.vue';
 
-import GrayCrossIcon from '../assets/img/gray-cross.svg';
-import NikeIcon from '../assets/img/nike-icon.svg';
+import GrayCrossIcon from '@images/gray-cross.svg';
+import NikeIcon from '@images/nike-icon.svg';
 
 export default {
   components: {

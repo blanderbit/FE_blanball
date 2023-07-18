@@ -71,7 +71,7 @@
         @click="toggleModalWindow('change_password')"
       >
         <span>{{ $t('profile.change-password') }}</span>
-        <img src="../../../assets/img/lock.svg" alt="" />
+        <img src="@images/lock.svg" alt="" />
       </div>
     </div>
     <div class="b-security__delete-account">
@@ -85,9 +85,9 @@
 <script>
 import { ref, computed } from 'vue';
 
-import switcher from '../../shared/switcher/Switcher.vue';
-import sortArrowHorizontally from '../../../assets/img/sort-arrows-horizontal.svg';
-import MainInput from '../../shared/input/MainInput.vue';
+import switcher from '@sharedComponents/switcher/Switcher.vue';
+import sortArrowHorizontally from '@images/sort-arrows-horizontal.svg';
+import MainInput from '@sharedComponents/input/MainInput.vue';
 
 export default {
   name: 'SecurityBlock',

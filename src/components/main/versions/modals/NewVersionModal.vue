@@ -2,7 +2,7 @@
   <div @click.self="$emit('closeModal')" class="b-version-modal">
     <div class="b-version-modal__window">
       <div class="b-version-modal__left-side">
-        <img src="../../../../assets/img/logo-modal-versions.svg" alt="" />
+        <img src="@images/logo-modal-versions.svg" alt="" />
       </div>
       <div class="b-version-modal__right-side">
         <div class="b-version-modal__name">
@@ -37,10 +37,10 @@
 <script>
 import { useRouter } from 'vue-router';
 
-import GreenBtn from '../../../shared/button/GreenBtn.vue';
-import WhiteBtn from '../../../shared/button/WhiteBtn.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
+import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 
-import { ROUTES } from '../../../../router/router.const';
+import { ROUTES } from '@/router/router.const';
 
 export default {
   name: 'ModalVersion',

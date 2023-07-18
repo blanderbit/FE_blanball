@@ -8,7 +8,7 @@
         <div class="b-modal-window__top-side">
           <img
             class="b-go-back-button"
-            src="../../../../assets/img/chat/edit-chat-modal-back-arrow.svg"
+            src="@images/chat/edit-chat-modal-back-arrow.svg"
             alt=""
             @click="closeModal"
           />
@@ -17,14 +17,14 @@
           </div>
           <img
             class="b-close-modal-button"
-            src="../../../../assets/img/cross.svg"
+            src="@images/cross.svg"
             alt=""
             @click="closeModal"
           />
         </div>
         <div class="b-modal-window__main-side" ref="MODAL_MAIN_SIDE_BLOCK">
           <div class="b-select-photo__button">
-            <img src="../../../../assets/img/chat/green-camera.svg" alt="" />
+            <img src="@images/chat/green-camera.svg" alt="" />
             <span>{{ $t('chat.edit_chat_modal.select_photo') }}</span>
           </div>
           <MainInput
@@ -85,20 +85,20 @@ import { useElementSize } from '@vueuse/core';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import MainInput from '../../../shared/input/MainInput.vue';
-import SearchBlockAll from '../../../SearchBlockAll.vue';
-import ChatUsersList from '../ChatUsersList.vue';
-import GreenBtn from '../../../shared/button/GreenBtn.vue';
-import WhiteBtn from '../../../shared/button/WhiteBtn.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import SearchBlockAll from '@components/SearchBlockAll.vue';
+import ChatUsersList from '@mainComponents/chat/ChatUsersList.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
+import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 
-import { copyToClipboard } from '../../../../utils/copyToClipBoard';
-import { useWindowWidth } from '../../../../workers/window-size-worker/widthScreen';
-import { disableFormSubmit } from '../../../../utils/disableFormSubmit';
+import { copyToClipboard } from '@/utils/copyToClipBoard';
+import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
+import { disableFormSubmit } from '@/utils/disableFormSubmit';
 
-import CopyChatLinkIcon from '../../../../assets/img/chat/infinite.svg';
-import ChatNameIcon from '../../../../assets/img/address-icon.svg';
+import CopyChatLinkIcon from '@images/chat/infinite.svg';
+import ChatNameIcon from '@images/address-icon.svg';
 
-import { SCHEMAS } from '../../../../validators/schemas';
+import { SCHEMAS } from '@/validators/schemas';
 
 export default {
   components: {

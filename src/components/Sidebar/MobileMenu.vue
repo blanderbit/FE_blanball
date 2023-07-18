@@ -45,7 +45,7 @@
           </div>
         </div>
         <div class="b-mob-menu__logout-icon" @click="$emit('logOut')">
-          <img src="../../assets/img/logout-icon.svg" alt="" />
+          <img src="@images/logout-icon.svg" alt="" />
         </div>
       </div>
       <div class="b-mob-menu__menu-block" :style="menuBlockStyle">
@@ -164,7 +164,7 @@
       <div v-if="selectedList.length" class="b-mob-menu__control-block">
         <div class="b-control-block__block">
           <img
-            src="../../assets/img/cross.svg"
+            src="@images/cross.svg"
             alt=""
             @click="clearSelectedList"
           />
@@ -174,12 +174,12 @@
         </div>
         <div class="b-control-block__block">
           <img
-            src="../../assets/img/notifications/double-check-with-back.svg"
+            src="@images/notifications/double-check-with-back.svg"
             alt=""
             @click="HandleAction.readSelected()"
           />
           <img
-            src="../../assets/img/notifications/trash-with-back.svg"
+            src="@images/notifications/trash-with-back.svg"
             alt=""
             @click="
               selectedList.length > 1
@@ -193,7 +193,7 @@
 
     <div v-if="isBottomBlockShowing" class="b-mob-menu__bottom-side">
       <div class="b-mob-menu__found-error" @click="$emit('foundBug')">
-        <img src="../../assets/img/white-warning-icon.svg" alt="" />
+        <img src="@images/white-warning-icon.svg" alt="" />
         <span>{{ $t('slide_menu.found-error') }}</span>
       </div>
 
@@ -213,7 +213,7 @@
             $t('policy.data-security')
           }}</span>
           <div class="b-bottom-block__company">
-            <img src="../../assets/img/logo-flumx.svg" alt="" />
+            <img src="@images/logo-flumx.svg" alt="" />
             <span>{{ $t('slide_menu.flumx') }}</span>
           </div>
         </div>
@@ -235,32 +235,32 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { v4 as uuid } from 'uuid';
 
-import userAvatar from '../shared/userAvatar/UserAvatar.vue';
-import Notifications from '../main/notifications/Notifications.vue';
-import Notification from '../main/notifications/Notification.vue';
-import emptyList from '../shared/emptyList/EmptyList.vue';
-import InfiniteLoading from '../main/infiniteLoading/InfiniteLoading.vue';
-import ScrollToTop from '../ScrollToTop.vue';
-import SubmitModal from '../shared/modals/SubmitModal.vue';
-import ContextModal from '../shared/modals/ContextModal.vue';
+import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
+import Notifications from '@mainComponents/notifications/Notifications.vue';
+import Notification from '@mainComponents/notifications/Notification.vue';
+import emptyList from '@sharedComponents/emptyList/EmptyList.vue';
+import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
+import ScrollToTop from '@components/ScrollToTop.vue';
+import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
+import ContextModal from '@sharedComponents/modals/ContextModal.vue';
 
-import { useUserDataStore } from '../../stores/userData';
-import { NewNotifications } from '../../workers/web-socket-worker/not-includes-to-socket/new_notifications';
-import { API } from '../../workers/api-worker/api.worker';
-import { NotificationsBus } from '../../workers/event-bus-worker';
-import { calcHeight } from '../../workers/window-size-worker/calcHeight';
+import { useUserDataStore } from '@/stores/userData';
+import { NewNotifications } from '@/workers/web-socket-worker/not-includes-to-socket/new_notifications';
+import { API } from '@/workers/api-worker/api.worker';
+import { NotificationsBus } from '@/workers/event-bus-worker';
+import { calcHeight } from '@/workers/window-size-worker/calcHeight';
 
-import { ROUTES } from '../../router/router.const';
-import { CONSTS } from '../../consts';
+import { ROUTES } from '@/router/router.const';
+import { CONSTS } from '@/consts';
 
-import NotificationIcon from '../../assets/img/notification-mob-default.svg';
-import NotificationWhite from '../../assets/img/notifications-not-read-mobile-icon.svg';
-import Record from '../../assets/img/record.svg';
-import RecordWhite from '../../assets/img/record-white.svg';
-import Members from '../../assets/img/members.svg';
-import MembersWhite from '../../assets/img/members-white.svg';
-import Settings from '../../assets/img/settings.svg';
-import SettingsWhite from '../../assets/img/settings-white.svg';
+import NotificationIcon from '@images/notification-mob-default.svg';
+import NotificationWhite from '@images/notifications-not-read-mobile-icon.svg';
+import Record from '@images/record.svg';
+import RecordWhite from '@images/record-white.svg';
+import Members from '@images/members.svg';
+import MembersWhite from '@images/members-white.svg';
+import Settings from '@images/settings.svg';
+import SettingsWhite from '@images/settings-white.svg';
 
 export default {
   name: 'MobileMenu',

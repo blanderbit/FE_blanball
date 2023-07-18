@@ -89,7 +89,7 @@
             </div>
           </template>
         </v-date-picker>
-        <img src="../../../assets/img/calendar.svg" alt="" />
+        <img src="@images/calendar.svg" alt="" />
       </div>
       <span class="b-event-m-1st__subtitle"
         >Оберіть із запропонованих або встановіть час власноруч</span
@@ -160,20 +160,20 @@ import { ErrorMessage } from '@system.it.flumx.com/vee-validate';
 
 import dayjs from 'dayjs';
 
-import dropdown from '../../shared/dropdown/Dropdown.vue';
-import MainInput from '../../shared/input/MainInput.vue';
-import radioButton from '../../shared/radioButton/RadioButton.vue';
-import PositionMap from '../../maps/PositionMap.vue';
+import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import radioButton from '@sharedComponents/radioButton/RadioButton.vue';
+import PositionMap from '@components/maps/PositionMap.vue';
 import EventCreatePositionMap from './modals/EventCreatePositionMapModal.vue';
 
-import { CONSTS } from '../../../consts/index';
+import { CONSTS } from '@/consts/index';
 
-import CalendarPic from '../../../assets/img/calendar.svg';
-import WatchPic from '../../../assets/img/watch.svg';
-import LocationPic from '../../../assets/img/location-point.svg';
-import UniPic from '../../../assets/img/unisex.svg';
-import MalePic from '../../../assets/img/male-icon.svg';
-import FemalePic from '../../../assets/img/female-icon.svg';
+import CalendarPic from '@images/calendar.svg';
+import WatchPic from '@images/watch.svg';
+import LocationPic from '@images/location-point.svg';
+import UniPic from '@images/unisex.svg';
+import MalePic from '@images/male-icon.svg';
+import FemalePic from '@images/female-icon.svg';
 
 const eventDurationOptions = ref([
   {
@@ -315,7 +315,7 @@ $color-f4f4f4: #f4f4f4;
 $color-6f6f77: #6f6f77;
 $color-f0f0f4: #f0f0f4;
 
-@import '../../../assets/styles/calendar.scss';
+@import '@sytles/calendar.scss';
 .b-event-m-1st {
   overflow: hidden;
 

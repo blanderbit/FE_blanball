@@ -4,7 +4,7 @@
       class="b-place-detector"
       @click.stop="!disabled ? (activeModal = true) : null"
     >
-      <img src="../../assets/img/location-point.svg" alt="" />
+      <img src="@images/location-point.svg" alt="" />
       <span class="b-place-name">{{ place?.place_name }}</span>
     </div>
     <teleport to="body">
@@ -32,9 +32,9 @@
 <script>
 import { ref } from 'vue';
 
-import ModalWindow from '../shared/modals/ModalWindow.vue';
+import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
 import PositionMap from './PositionMap.vue';
-import GreenBtn from '../shared/button/GreenBtn.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 
 export default {
   name: 'PlaceDetectorModal',

@@ -26,17 +26,17 @@
         @leftIconClick="showOrCloseEmojiPicker"
       />
       <div class="b-send-voice-message b-send-button">
-        <img src="../../../assets/img/chat/microphone.svg" alt="" />
+        <img src="@images/chat/microphone.svg" alt="" />
       </div>
       <div class="b-send-message b-send-button" @click="sendMessage(data)">
         <img
           v-if="!disabled"
-          src="../../../assets/img/chat/send-message-button.svg"
+          src="@images/chat/send-message-button.svg"
           alt=""
         />
         <img
           v-else
-          src="../../../assets/img/chat/messages-disabled.svg"
+          src="@images/chat/messages-disabled.svg"
           alt=""
         />
       </div>
@@ -59,21 +59,21 @@ import { useI18n } from 'vue-i18n';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import MainInput from '../../shared/input/MainInput.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
 import EmojiPicker from './EmojiPicker.vue';
 import ManageMessageWrapper from './ManageMessageWrapper.vue';
 
-import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
-import { ChatEventBus } from '../../../workers/event-bus-worker';
-import { API } from '../../../workers/api-worker/api.worker';
-import { disableFormSubmit } from '../../../utils/disableFormSubmit';
+import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
+import { ChatEventBus } from '@/workers/event-bus-worker';
+import { API } from '@/workers/api-worker/api.worker';
+import { disableFormSubmit } from '@/utils/disableFormSubmit';
 
-import SendSmileIcon from '../../../assets/img/chat/send-smile-button.svg';
-import AddFileIcon from '../../../assets/img/chat/add-file.svg';
+import SendSmileIcon from '@images/chat/send-smile-button.svg';
+import AddFileIcon from '@images/chat/add-file.svg';
 
-import { SCHEMAS } from '../../../validators/schemas';
+import { SCHEMAS } from '@/validators/schemas';
 
-import EditMessageButtonIcon from '../../../assets/img/chat/message-wrapper-edit-icon.svg';
+import EditMessageButtonIcon from '@images/chat/message-wrapper-edit-icon.svg';
 
 export default {
   components: {

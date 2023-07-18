@@ -56,7 +56,7 @@
     <!--@click="HandleAction.readAll()"-->
     <!--&gt;-->
     <!--<img-->
-    <!--src="../../assets/img/notifications/double-check.svg"-->
+    <!--src="@images/notifications/double-check.svg"-->
     <!--height="16"-->
     <!--alt=""-->
     <!--/>-->
@@ -75,7 +75,7 @@
     <!--<span v-else class="b-button-text">-->
     <!--{{ $t('slide_menu.cancel-manage') }}-->
     <!--</span>-->
-    <!--<img v-if="!selectable" src="../../assets/img/dots.svg" alt="" />-->
+    <!--<img v-if="!selectable" src="@images/dots.svg" alt="" />-->
     <!--</button>-->
     <!--</div>-->
     <!--<div-->
@@ -84,7 +84,7 @@
     <!--&gt;-->
     <!--<div class="b-selected-elements__count">-->
     <!--<img-->
-    <!--src="../../assets/img/cross.svg"-->
+    <!--src="@images/cross.svg"-->
     <!--alt=""-->
     <!--@click="clearSelectedList"-->
     <!--/>-->
@@ -103,7 +103,7 @@
     <!--class="d-flex align-items-center"-->
     <!--&gt;-->
     <!--<img-->
-    <!--src="../../assets/img/notifications/double-check.svg"-->
+    <!--src="@images/notifications/double-check.svg"-->
     <!--height="16"-->
     <!--alt=""-->
     <!--/>-->
@@ -119,7 +119,7 @@
     <!--class="d-flex align-items-center"-->
     <!--&gt;-->
     <!--<img-->
-    <!--src="../../assets/img/notifications/trash.svg"-->
+    <!--src="@images/notifications/trash.svg"-->
     <!--height="16"-->
     <!--alt=""-->
     <!--/>-->
@@ -242,19 +242,19 @@
 <script>
 import { ref, inject, computed } from 'vue';
 
-import VirtualList from '../main/virtualList/VirtualList.vue';
-import emptyList from '../shared/emptyList/EmptyList.vue';
-import InfiniteLoading from '../main/infiniteLoading/InfiniteLoading.vue';
-import ScrollToTop from '../ScrollToTop.vue';
-import SubmitModal from '../shared/modals/SubmitModal.vue';
-import ContextMenu from '../shared/modals/ContextModal.vue';
+import VirtualList from '@mainComponents/virtualList/VirtualList.vue';
+import emptyList from '@sharedComponents/emptyList/EmptyList.vue';
+import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
+import ScrollToTop from '@components/ScrollToTop.vue';
+import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
+import ContextMenu from '@sharedComponents/modals/ContextModal.vue';
 import SlideMenuWrapper from './SlideMenuWrapper.vue';
 
-import { useUserDataStore } from '../../stores/userData';
+import { useUserDataStore } from '@/stores/userData';
 
-import { calcHeight } from '../../workers/window-size-worker/calcHeight';
+import { calcHeight } from '@/workers/window-size-worker/calcHeight';
 
-import { ROUTES } from '../../router/router.const';
+import { ROUTES } from '@/router/router.const';
 
 export default {
   components: {

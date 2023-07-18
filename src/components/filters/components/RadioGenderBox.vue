@@ -3,21 +3,21 @@
     <div class="b-radio-button">
       <input type="radio" id="men" :value="'Man'" v-model="genderRadio" />
       <label for="men">
-        <img src="../../../assets/img/male-icon.svg" alt="" />
+        <img src="@images/male-icon.svg" alt="" />
         {{ $t('users.men') }}
       </label>
     </div>
     <div class="b-radio-button">
       <input type="radio" id="women" :value="'Woman'" v-model="genderRadio" />
       <label for="women">
-        <img src="../../../assets/img/female-icon.svg" alt="" />
+        <img src="@images/female-icon.svg" alt="" />
         {{ $t('users.women') }}
       </label>
     </div>
     <div class="b-radio-button">
       <input type="radio" id="all" :value="'All'" v-model="genderRadio" />
       <label for="all">
-        <img src="../../../assets/img/unisex.svg" alt="" />
+        <img src="@images/unisex.svg" alt="" />
         {{ $t('users.all') }}</label
       >
     </div>

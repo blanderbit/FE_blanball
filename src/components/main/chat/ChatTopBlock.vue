@@ -4,7 +4,7 @@
       <div class="b-left-side">
         <img
           class="b-go-back-button-mobile"
-          src="../../../assets/img/chat/go-back-button.svg"
+          src="@images/chat/go-back-button.svg"
           alt=""
         />
         <div class="b-chat-info-block">
@@ -32,7 +32,7 @@
       <div class="b-selected-messages-count">
         <img
           @click="deselectChatMessages"
-          src="../../../assets/img/cross.svg"
+          src="@images/cross.svg"
           alt=""
         />
         <span
@@ -56,14 +56,14 @@
 
 <script>
 import { ref, computed } from 'vue';
-import UserAvatar from '../../shared/userAvatar/UserAvatar.vue';
+import UserAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 
-import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
-import { ChatEventBus } from '../../../workers/event-bus-worker';
-import { useChatDataStore } from '../../../stores/chatData';
-import ContextMenu from '../../shared/modals/ContextModal.vue';
+import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
+import { ChatEventBus } from '@/workers/event-bus-worker';
+import { useChatDataStore } from '@/stores/chatData';
+import ContextMenu from '@sharedComponents/modals/ContextModal.vue';
 
-import { CONSTS } from '../../../consts';
+import { CONSTS } from '@/consts';
 
 export default {
   components: {

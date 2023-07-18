@@ -12,7 +12,7 @@
         @click="$emit('scrollButtonClicked')"
       >
         {{ $t('scroll_top_component.up') }}
-        <img src="../assets/img/arrow-up.svg" />
+        <img src="@images/arrow-up.svg" />
       </button>
     </div>
     <div v-if="!isScrollTopExist"></div>

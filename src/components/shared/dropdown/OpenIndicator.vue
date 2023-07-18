@@ -1,5 +1,5 @@
 <template>
-  <img src="../../../assets/img/dropdown-arrow-disabled.svg" alt="dropdown-arrow" />
+  <img src="@images/dropdown-arrow-disabled.svg" alt="dropdown-arrow" />
 </template>
 
 <script>

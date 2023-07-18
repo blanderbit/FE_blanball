@@ -51,15 +51,15 @@
 <script>
 import { computed, ref, watch } from 'vue';
 
-import ModalWindow from '../shared/modals/ModalWindow.vue';
-import dropdown from '../shared/dropdown/Dropdown.vue';
-import GreenBtn from '../shared/button/GreenBtn.vue';
-import RangeFilter from './components/RangeFilter.vue';
-import RadioGenderBox from './components/RadioGenderBox.vue';
+import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
+import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
+import RangeFilter from '@components/filters/components/RangeFilter.vue';
+import RadioGenderBox from '@components/filters/components/RadioGenderBox.vue';
 
-import tickIcon from '../../assets/img/tick-white.svg';
+import tickIcon from '@images/tick-white.svg';
 
-import { CONSTS } from '../../consts/index';
+import { CONSTS } from '@/consts/index';
 
 export default {
   name: 'ModalUsersFilters',

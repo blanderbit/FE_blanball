@@ -5,9 +5,13 @@
         <span class="b-bug-report-modal__title">
           {{ $t('modals.bug_report.title') }}
         </span>
-        <img src="../../../assets/img/white-warning-icon.svg" alt="warning" />
+        <img src="@images/white-warning-icon.svg" alt="warning" />
       </div>
-      <Form v-slot="data" :validation-schema="schema" @submit="disableFormSubmit">
+      <Form
+        v-slot="data"
+        :validation-schema="schema"
+        @submit="disableFormSubmit"
+      >
         <div class="b-bug-report-modal__main-side">
           <MainInput
             :placeholder="$t('modals.bug_report.input-placeholder')"
@@ -33,10 +37,7 @@
             class="b-bug-report-modal__uploaded-images"
           >
             <div class="b-bug-report-modal__uploaded-image">
-              <img
-                src="../../../assets/img/uploaded-image.svg"
-                alt="uploaded-imag"
-              />
+              <img src="@images/uploaded-image.svg" alt="uploaded-imag" />
               <span class="b-bug-report-modal__uploaded-images-title">{{
                 i.name
               }}</span>
@@ -44,7 +45,7 @@
             <img
               @click="removeUploadedImage(i.name)"
               class="b-bug-report-modal-remove__image"
-              src="../../../assets/img/cross.svg"
+              src="@images/cross.svg"
               alt="cross"
             />
           </div>
@@ -76,15 +77,15 @@ import { useToast } from 'vue-toastification';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import MainInput from '../input/MainInput.vue';
-import mainTextArea from '../textArea/MainTextArea.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import mainTextArea from '@sharedComponents/textArea/MainTextArea.vue';
 
-import { API } from '../../../workers/api-worker/api.worker';
-import { disableFormSubmit } from '../../../utils/disableFormSubmit';
+import { API } from '@/workers/api-worker/api.worker';
+import { disableFormSubmit } from '@/utils/disableFormSubmit';
 
-import { SCHEMAS } from '../../../validators/schemas';
+import { SCHEMAS } from '@/validators/schemas';
 
-import addFileIcon from '../../../assets/img/add-file-icon.svg';
+import addFileIcon from '@images/add-file-icon.svg';
 
 export default {
   components: {

@@ -24,11 +24,11 @@
         <div class="b_sidebar_picture-top">
           <img
             class="b_sidebar_arrow"
-            src="../../assets/img/open-sidebar-arrow.svg"
+            src="@images/open-sidebar-arrow.svg"
             alt=""
           />
           <img
-            src="../../assets/img/my-profile-logo.svg"
+            src="@images/my-profile-logo.svg"
             alt=""
             @click="goToMainPage"
           />
@@ -83,7 +83,7 @@
             @click="logOut"
             class="b_sidebar_logout d-flex justify-content-center align-items-center"
           >
-            <img src="../../assets/img/exit-icon.svg" alt="" />
+            <img src="@images/exit-icon.svg" alt="" />
           </div>
         </div>
       </div>
@@ -115,38 +115,38 @@
 import { ref, computed, onBeforeUnmount, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
-import NotificationsSlideMenu from '../SlideMenu/NotificationsSlideMenu.vue';
-import userAvatar from '../shared/userAvatar/UserAvatar.vue';
-import BugReportModal from '../shared/modals/BugReportModal.vue';
-import TabLabel from '../shared/tabLabel/TabLabel.vue';
+import NotificationsSlideMenu from '@components/SlideMenu/NotificationsSlideMenu.vue';
+import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
+import BugReportModal from '@sharedComponents/modals/BugReportModal.vue';
+import TabLabel from '@sharedComponents/tabLabel/TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';
-import loader from '../shared/loader/Loader.vue';
+import loader from '@sharedComponents/loader/Loader.vue';
 
-import { useUserDataStore } from '../../stores/userData';
-import { createNotificationFromData } from '../../workers/utils-worker';
+import { useUserDataStore } from '@/stores/userData';
+import { createNotificationFromData } from '@/workers/utils-worker';
 import {
   AuthWebSocketWorkerInstance,
   GeneralSocketWorkerInstance,
-} from '../../workers/web-socket-worker';
-import { API } from '../../workers/api-worker/api.worker';
-import { PaginationWorker } from '../../workers/pagination-worker';
+} from '@/workers/web-socket-worker';
+import { API } from '@/workers/api-worker/api.worker';
+import { PaginationWorker } from '@/workers/pagination-worker';
 import {
   NotificationsBus,
   BlanballEventBus,
-} from '../../workers/event-bus-worker';
-import { FilterPatch } from '../../workers/api-worker/http/filter/filter.patch';
-import useWindowWidth from '../../workers/window-size-worker/widthScreen';
-import { logOut } from '../../utils/logOut';
+} from '@/workers/event-bus-worker';
+import { FilterPatch } from '@/workers/api-worker/http/filter/filter.patch';
+import useWindowWidth from '@/workers/window-size-worker/widthScreen';
+import { logOut } from '@/utils/logOut';
 
-import { ROUTES } from '../../router/router.const';
+import { ROUTES } from '@/router/router.const';
 
-import notification from '../../assets/img/notification.svg';
-import notificationUnread from '../../assets/img/notificationUnread.svg';
-import record from '../../assets/img/record.svg';
-import members from '../../assets/img/members.svg';
-import medal from '../../assets/img/medal.svg';
-import settings from '../../assets/img/settings.svg';
-import bugReport from '../../assets/img/warning-black.svg';
+import notification from '@images/notification.svg';
+import notificationUnread from '@images/notificationUnread.svg';
+import record from '@images/record.svg';
+import members from '@images/members.svg';
+import medal from '@images/medal.svg';
+import settings from '@images/settings.svg';
+import bugReport from '@images/warning-black.svg';
 
 const findDublicates = (list, newList) => {
   return newList.filter((item) =>

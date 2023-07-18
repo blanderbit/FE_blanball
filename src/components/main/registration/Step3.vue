@@ -15,7 +15,7 @@ import { useI18n } from 'vue-i18n';
 
 import StepWrapper from './StepWrapper.vue';
 
-import arrowRight from '../../../assets/img/arrow-right-white.svg';
+import arrowRight from '@images/arrow-right-white.svg';
 
 export default {
   name: 'Step3',

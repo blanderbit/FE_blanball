@@ -23,10 +23,10 @@
 <script>
 import { computed } from 'vue';
 
-import GreenBtn from '../button/GreenBtn.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 
-import EmptyNotificationsSvg from '../../../assets/img/no-records/empty-notifications.svg';
-import NoData from '../../../assets/img/no-records/no-data.svg';
+import EmptyNotificationsSvg from '@images/no-records/empty-notifications.svg';
+import NoData from '@images/no-records/no-data.svg';
 
 export default {
   name: 'emptyList',

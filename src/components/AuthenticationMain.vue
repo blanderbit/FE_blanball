@@ -11,13 +11,13 @@
     <div class="b-auth__central-block">
       <img
         v-if="blockType === mockData.LOGIN"
-        src="../assets/img/ball-colored.svg"
+        src="@images/ball-colored.svg"
         alt="ball-big"
         class="b-auth__ball-big"
       />
       <img
         v-if="blockType === mockData.LOGIN"
-        src="../assets/img/ball-colored.svg"
+        src="@images/ball-colored.svg"
         alt="ball-small"
         class="b-auth__ball-small"
       />
@@ -32,7 +32,7 @@
           v-show="currentStep !== 10"
         >
           <div class="b-auth__google-play-block">
-            <img src="../assets/img/google-play.svg" alt="" />
+            <img src="@images/google-play.svg" alt="" />
             <span>
               {{ $t('register.load-app') }}
             </span>
@@ -52,8 +52,8 @@
 <script>
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import PositionMap from './maps/PositionMap.vue';
-import { CONSTS } from '../consts/index';
-import { useWindowWidth } from '../workers/window-size-worker/widthScreen';
+import { CONSTS } from '@/consts/index';
+import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
 
 export default {
   name: 'Auth',
@@ -110,7 +110,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/styles/mixins/device.scss';
+@import '@sytles/mixins/device.scss';
 
 .v-enter-active,
 .v-leave-active {

@@ -161,7 +161,7 @@
           <template #icon>
             <img
               class="notification-collapsiple"
-              src="../../../assets/img/mob-notification-collapsible-icon.svg"
+              src="@images/mob-notification-collapsible-icon.svg"
               alt=""
             />
           </template>
@@ -184,7 +184,7 @@
                 </div>
               </template>
               <template #icon>
-                <img src="../../../assets/img/collapsible-icon.svg" alt="" />
+                <img src="@images/collapsible-icon.svg" alt="" />
               </template>
             </collapsible-panel>
           </div>
@@ -233,11 +233,11 @@
 <script>
 import dayJs from 'dayjs';
 
-import BlackSpinner from '../../shared/loader/BlackSpinner.vue';
+import BlackSpinner from '@sharedComponents/loader/BlackSpinner.vue';
 import NotificationButton from './NotificationButton.vue';
-import checkBox from '../../shared/checkbox/Checkbox.vue';
-import CollapsiblePanel from '../collapsible/CollapsiblePanel.vue';
-import userAvatar from '../../shared/userAvatar/UserAvatar.vue';
+import checkBox from '@sharedComponents/checkbox/Checkbox.vue';
+import CollapsiblePanel from '@mainComponents/collapsible/CollapsiblePanel.vue';
+import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 
 export default {
   components: {

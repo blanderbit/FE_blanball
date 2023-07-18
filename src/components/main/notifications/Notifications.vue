@@ -42,8 +42,8 @@ import Notification from './Notification.vue';
 import { useRouter } from 'vue-router';
 import { ref, watch, nextTick, onMounted, onBeforeUnmount, computed } from 'vue';
 import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller';
-import { notificationButtonHandlerMessage } from '../../../workers/utils-worker';
-import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
+import { notificationButtonHandlerMessage } from '@/workers/utils-worker';
+import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
 
 export default {
   components: {

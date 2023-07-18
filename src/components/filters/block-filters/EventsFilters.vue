@@ -76,7 +76,7 @@
               />
             </div>
             <div class="b-main-search__calendar">
-              <img src="../../../assets/img/calendar.svg" alt="" />
+              <img src="@images/calendar.svg" alt="" />
               <v-date-picker
                 locale="ukr"
                 :model-config="calendar.modelConfig"
@@ -151,7 +151,7 @@
               @rightIconClick="closeMobileSearch"
             />
             <MainInput
-            :outside-title="true"
+              :outside-title="true"
               class="b-main-search__search-input-tablet"
               :title-width="0"
               :backgroundColor="'#fff'"
@@ -177,7 +177,7 @@
               <div
                 class="b-main-search__icon d-flex align-items-center justify-content-center"
               >
-                <img src="../../../assets/img/set-filter.svg" alt="" />
+                <img src="@images/set-filter.svg" alt="" />
               </div>
               <div v-if="filterStatus" class="b-main-search-icon-status"></div>
               <div class="b-main-search__text-block">
@@ -201,27 +201,27 @@ import { computed, ref, watch, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import dayjs from 'dayjs';
 
-import dropdown from '../../shared/dropdown/Dropdown.vue';
-import FilterBlock from '../FilterBlock.vue';
-import MainInput from '../../shared/input/MainInput.vue';
-import ButtonDetailsFilters from '../components/ButtonDetailsFilters.vue';
-import ClearFilters from '../components/ClearFilters.vue';
-import PositionMapModal from '../../maps/PositionMapModal.vue';
-import ModalFilters from '../ModalEventsFilters.vue';
+import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
+import FilterBlock from '@components/filters/FilterBlock.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import ButtonDetailsFilters from '@components/filters/components/ButtonDetailsFilters.vue';
+import ClearFilters from '@components/filters/components/ClearFilters.vue';
+import PositionMapModal from '@components/maps/PositionMapModal.vue';
+import ModalFilters from '@components/filters/ModalEventsFilters.vue';
 
 import { TransformedFiltersWorker } from './transformed.filters.worker';
-import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
-import useTodaysDate from '../../../utils/todaysDate';
+import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
+import useTodaysDate from '@/utils/todaysDate';
 
-import { CONSTS } from '../../../consts';
+import { CONSTS } from '@/consts';
 
-import MaleIcon from '../../../assets/img/female-icon.svg';
-import FemaleIcon from '../../../assets/img/male-icon.svg';
-import UnisexIcon from '../../../assets/img/unisex.svg';
-import SearchIcon from '../../../assets/img/search.svg';
-import arrowsUpIcon from '../../../assets/img/sort-arrows.svg';
-import arrowsDownIcon from '../../../assets/img/sort-arrows-down.svg';
-import crossIcon from '../../../assets/img/cross.svg';
+import MaleIcon from '@images/female-icon.svg';
+import FemaleIcon from '@images/male-icon.svg';
+import UnisexIcon from '@images/unisex.svg';
+import SearchIcon from '@images/search.svg';
+import arrowsUpIcon from '@images/sort-arrows.svg';
+import arrowsDownIcon from '@images/sort-arrows-down.svg';
+import crossIcon from '@images/cross.svg';
 
 export default {
   name: 'EventsFilters',
@@ -331,8 +331,8 @@ export default {
           };
         },
         ifSecondLineWasUsed() {
-          return true
-        }
+          return true;
+        },
       });
 
     const sportTypeDropdown = CONSTS.event_page.sport_type_dropdown;
@@ -357,7 +357,6 @@ export default {
         mask: 'YYYY-MM-DD', // Uses 'iso' if missing
       },
     });
-
 
     watchEffect(() => {
       if (dateFilterValue.value?.start) {
@@ -429,5 +428,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../../../assets/styles/search-event.block.scss';
+@import '@sytles/search-event.block.scss';
 </style>

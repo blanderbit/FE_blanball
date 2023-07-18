@@ -116,37 +116,37 @@ import { useI18n } from 'vue-i18n';
 
 import { v4 as uuid } from 'uuid';
 
-import Sidebar from '../../components/Sidebar/Sidebar.vue';
-import mainHeader from '../../components/main/header/MainHeader.vue';
-import Notification from '../../components/main/notifications/Notification.vue';
-import VerifyEmailModal from '../../components/main/profile/modals/VerifyEmailModal.vue';
-import ModalFeedback from '../../components/modals/createFeedBackModal/index.vue';
-import ActionModal from '../../components/main/events/modals/ActionModal.vue';
-import Scheduler from '../../components/main/scheduler/index.vue';
-import LeftSidebar from '../../components/main/scheduler/LeftSidebar.vue';
-import TopLineFriends from '../../components/main/scheduler/TopLineFriends.vue';
-import NewVersionModal from '../../components/main/versions/modals/NewVersionModal.vue';
-import Hint from '../../components/main/hints/Hint.vue';
+import Sidebar from '@components/Sidebar/Sidebar.vue';
+import mainHeader from '@mainComponents/header/MainHeader.vue';
+import Notification from '@mainComponents/notifications/Notification.vue';
+import VerifyEmailModal from '@mainComponents/profile/modals/VerifyEmailModal.vue';
+import ModalFeedback from '@components/modals/createFeedBackModal/index.vue';
+import ActionModal from '@mainComponents/events/modals/ActionModal.vue';
+import Scheduler from '@mainComponents/scheduler/index.vue';
+import LeftSidebar from '@mainComponents/scheduler/LeftSidebar.vue';
+import TopLineFriends from '@mainComponents/scheduler/TopLineFriends.vue';
+import NewVersionModal from '@mainComponents/versions/modals/NewVersionModal.vue';
+import Hint from '@mainComponents/hints/Hint.vue';
 
-import { AuthWebSocketWorkerInstance } from '../../workers/web-socket-worker';
-import { accessToken } from '../../workers/token-worker';
-import { notificationButtonHandlerMessage } from '../../workers/utils-worker';
+import { AuthWebSocketWorkerInstance } from '@/workers/web-socket-worker';
+import { accessToken } from '@/workers/token-worker';
+import { notificationButtonHandlerMessage } from '@/workers/utils-worker';
 import { useUserDataStore } from '@/stores/userData';
-import { useHeaderHeightStore } from '../../stores/headerHeight';
+import { useHeaderHeightStore } from '@/stores/headerHeight';
 import {
   NotificationsBus,
   BlanballEventBus,
-} from '../../workers/event-bus-worker';
-import { MessageActionTypes } from '../../workers/web-socket-worker/message.action.types';
-import { API } from '../../workers/api-worker/api.worker';
-import { VersionDetectorWorker } from '../../workers/version-detector-worker';
-import { useWindowWidth } from '../../workers/window-size-worker/widthScreen';
+} from '@/workers/event-bus-worker';
+import { MessageActionTypes } from '@/workers/web-socket-worker/message.action.types';
+import { API } from '@/workers/api-worker/api.worker';
+import { VersionDetectorWorker } from '@/workers/version-detector-worker';
+import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
 import { useElementSize } from '@vueuse/core';
 
-import EventUpdatedIcon from '../../assets/img/event-updated-modal-icon.svg';
-import EventCreatedIcon from '../../assets/img/event-creted-modal-icon.svg';
+import EventUpdatedIcon from '@images/event-updated-modal-icon.svg';
+import EventCreatedIcon from '@images/event-creted-modal-icon.svg';
 
-import notification_audio from '../../assets/audio/notification-audio.mp3';
+import notification_audio from '@/assets/audio/notification-audio.mp3';
 
 const isVerifyModalActive = ref(false);
 const header = ref();

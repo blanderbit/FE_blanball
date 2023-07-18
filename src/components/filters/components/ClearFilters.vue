@@ -1,6 +1,6 @@
 <template>
   <div class="b-clear-filters" @click="$emit('clear')">
-    <img src="../../../assets/img/clear-filter.svg" alt="" />
+    <img src="@images/clear-filter.svg" alt="" />
   </div>
 </template>
 

@@ -13,8 +13,8 @@
 <script>
 import { computed } from 'vue';
 
-import CrossIcon from '../../../assets/img/cross.svg';
-import SettingsIcon from '../../../assets/img/set-filter.svg';
+import CrossIcon from '@images/cross.svg';
+import SettingsIcon from '@images/set-filter.svg';
 
 export default {
   name: 'ButtonDetailsFilters',

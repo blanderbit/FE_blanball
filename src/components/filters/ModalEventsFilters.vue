@@ -36,7 +36,7 @@
             <PositionMapModal v-model="locationData"></PositionMapModal>
           </div>
           <div class="b-modal-filters__calendar">
-            <img src="../../assets/img/calendar.svg" alt="" />
+            <img src="@images/calendar.svg" alt="" />
             <v-date-picker
               locale="ukr"
               :model-config="calendar.modelConfig"
@@ -80,17 +80,17 @@
 <script>
 import { computed, ref, watch } from 'vue';
 
-import ModalWindow from '../shared/modals/ModalWindow.vue';
-import dropdown from '../shared/dropdown/Dropdown.vue';
-import GreenBtn from '../shared/button/GreenBtn.vue';
+import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
+import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import RadioGenderBox from './components/RadioGenderBox.vue';
-import PositionMapModal from '../maps/PositionMapModal.vue';
+import PositionMapModal from '@components/maps/PositionMapModal.vue';
 import ClearFilters from './components/ClearFilters.vue';
-import MainInput from '../shared/input/MainInput.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
 
-import { CONSTS } from '../../consts/index';
+import { CONSTS } from '@/consts/index';
 
-import tickIcon from '../../assets/img/tick-white.svg';
+import tickIcon from '@images/tick-white.svg';
 
 export default {
   name: 'ModalUsersFilters',

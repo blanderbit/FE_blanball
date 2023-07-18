@@ -61,26 +61,26 @@ import { useToast } from 'vue-toastification';
 
 import { useElementSize } from '@vueuse/core';
 
-import SendMessageBlock from '../../../components/main/chat/SendMessageBlock.vue';
-import RequestForChat from '../../../components/main/chat/RequestForChat.vue';
-import ChatWarning from '../../../components/main/chat/ChatWarning.vue';
-import ChatTopBlock from '../../../components/main/chat/ChatTopBlock.vue';
-import EditChatModal from '../../../components/main/chat/modals/EditChatModal.vue';
-import ChatMessagesList from '../../../components/main/chat/ChatMessagesList.vue';
-import ContextMenu from '../../../components/shared/modals/ContextModal.vue';
-import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
+import SendMessageBlock from '@mainComponents/chat/SendMessageBlock.vue';
+import RequestForChat from '@mainComponents/chat/RequestForChat.vue';
+import ChatWarning from '@mainComponents/chat/ChatWarning.vue';
+import ChatTopBlock from '@mainComponents/chat/ChatTopBlock.vue';
+import EditChatModal from '@mainComponents/chat/modals/EditChatModal.vue';
+import ChatMessagesList from '@mainComponents/chat/ChatMessagesList.vue';
+import ContextMenu from '@sharedComponents/modals/ContextModal.vue';
+import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 
-import { accessToken } from '../../../workers/token-worker';
-import { ChatSocketWorkerInstance } from '../../../workers/web-socket-worker';
-import { calcHeight } from '../../../workers/window-size-worker/calcHeight';
-import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
-import { ChatWebSocketTypes } from '../../../workers/web-socket-worker/message-types/chat/web.socket.types';
-import { API } from '../../../workers/api-worker/api.worker';
-import { ChatEventBus } from '../../../workers/event-bus-worker';
+import { accessToken } from '@/workers/token-worker';
+import { ChatSocketWorkerInstance } from '@/workers/web-socket-worker';
+import { calcHeight } from '@/workers/window-size-worker/calcHeight';
+import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
+import { ChatWebSocketTypes } from '@/workers/web-socket-worker/message-types/chat/web.socket.types';
+import { API } from '@/workers/api-worker/api.worker';
+import { ChatEventBus } from '@/workers/event-bus-worker';
 
-import { useChatDataStore } from '../../../stores/chatData';
+import { useChatDataStore } from '@/stores/chatData';
 
-import { CONSTS } from '../../../consts';
+import { CONSTS } from '@/consts';
 
 const CHAT_PAGE_TOP_AND_BOTTOM_PADDINGS_PX = 20 + 0;
 
@@ -368,7 +368,7 @@ export default {
 <style lang="scss" scoped>
 .b-chat-page {
   height: fit-content;
-  background-image: url('../../../assets/img/chat/chat-background.svg');
+  background-image: url('@images/chat/chat-background.svg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;

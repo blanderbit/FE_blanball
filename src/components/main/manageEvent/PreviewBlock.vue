@@ -4,7 +4,7 @@
       <div class="b-event-preview__preview-header">
         <div class="b-event-preview__title-block">
           <div class="b-event-preview__title">
-            <img src="../../../assets/img/img-icon.svg" alt="" />
+            <img src="@images/img-icon.svg" alt="" />
             {{ $t('events.poster-preview') }}
           </div>
         </div>
@@ -19,8 +19,8 @@
   </div>
 </template>
 <script>
-import GreenBtn from '../../shared/button/GreenBtn.vue';
-import EventCard from '../events/EventCard.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
+import EventCard from '@mainComponents/events/EventCard.vue';
 
 export default {
   name: 'PreviewBlock',

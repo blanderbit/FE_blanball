@@ -25,7 +25,7 @@ import { useI18n } from 'vue-i18n';
 import EmojiPicker from 'vue3-emoji-picker';
 
 import { useElementSize } from '@vueuse/core';
-import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
+import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
 
 export default {
   components: {

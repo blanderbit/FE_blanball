@@ -59,13 +59,13 @@
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
-import ContextModal from '../shared/modals/ContextModal.vue';
+import ContextModal from '@sharedComponents/modals/ContextModal.vue';
 
-import sidebarArrowBack from '../../assets/img/sidebar-arrow-back.svg';
-import sidebarArrow from '../../assets/img/sidebar-arrow.svg';
+import sidebarArrowBack from '@images/sidebar-arrow-back.svg';
+import sidebarArrow from '@images/sidebar-arrow.svg';
 
-import { ROUTES } from '../../router/router.const';
-import { CONSTS } from '../../consts';
+import { ROUTES } from '@/router/router.const';
+import { CONSTS } from '@/consts';
 
 export default {
   components: {

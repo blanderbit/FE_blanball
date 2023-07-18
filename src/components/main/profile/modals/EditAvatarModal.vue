@@ -32,7 +32,7 @@
                       style="display: none"
                       @change="onFileSelected"
                     />
-                    <img src="../../../../assets/img/add-picture.svg" alt="" />
+                    <img src="@images/add-picture.svg" alt="" />
                     <span class="b-edit-avatar__desk-text">
                       {{ $t('modals.edit_avatar.another-pic') }}
                     </span>
@@ -44,7 +44,7 @@
                 <div class="b-edit-avatar__left-mob-part">
                   <div class="b-edit-avatar__rotate" @click="rotateImage">
                     <img
-                      src="../../../../assets/img/rotate-picture.svg"
+                      src="@images/rotate-picture.svg"
                       alt=""
                     />
                     <span>
@@ -79,15 +79,15 @@ import { computed, ref, watchEffect } from 'vue';
 import { Form } from '@system.it.flumx.com/vee-validate';
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
-import ModalWindow from '../../../shared/modals/ModalWindow.vue';
-import MainInput from '../../../shared/input/MainInput.vue';
-import GreenBtn from '../../../shared/button/GreenBtn.vue';
+import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 
-import SaveIcon from '../../../../assets/img/save-icon.svg';
+import SaveIcon from '@images/save-icon.svg';
 
-import { useUserDataStore } from '../../../../stores/userData';
+import { useUserDataStore } from '@/stores/userData';
 
-import { API } from '../../../../workers/api-worker/api.worker';
+import { API } from '@/workers/api-worker/api.worker';
 
 export default {
   name: 'EditAvatarModal',

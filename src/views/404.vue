@@ -3,12 +3,12 @@
     <div class="b-error-page__main-block">
       <img
         class="b-error-page__img-desk"
-        src="../assets/img/404.svg"
+        src="@images/404.svg"
         alt="404 desktop image"
       />
       <img
         class="b-error-page__img-mob"
-        src="../assets/img/404-mob.svg"
+        src="@images/404-mob.svg"
         alt="404 mobile image"
       />
       <div class="b-error-page__text-block">
@@ -28,8 +28,8 @@
 
 <script>
 import { useRouter } from 'vue-router';
-import GreenBtn from '../components/shared/button/GreenBtn.vue';
-import { ROUTES } from '../router/router.const';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
+import { ROUTES } from '@/router/router.const';
 
 export default {
   name: '404',

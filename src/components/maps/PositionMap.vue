@@ -5,17 +5,17 @@
 <script>
 import { onMounted, ref, watch } from 'vue';
 
-import { API } from '../../workers/api-worker/api.worker';
-import { PositionMapBus } from '../../workers/event-bus-worker';
+import { API } from '@/workers/api-worker/api.worker';
+import { PositionMapBus } from '@/workers/event-bus-worker';
 
 import {
   PositionMapBackgroundStyle,
   PositionMapStyles,
-} from '../../workers/map-worker/map.styles';
+} from '@/workers/map-worker/map.styles';
 import {
   finishSpinner,
   startSpinner,
-} from '../../workers/loading-worker/loading.worker';
+} from '@/workers/loading-worker/loading.worker';
 
 const Restrictions = {
   Ukraine: {

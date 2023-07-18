@@ -72,29 +72,29 @@ import { useI18n } from 'vue-i18n';
 import { v4 as uuid } from 'uuid';
 import { debounce } from 'lodash';
 
-import InfiniteLoading from '../infiniteLoading/InfiniteLoading.vue';
-import SmartList from '../../shared/smartList/SmartList.vue';
-import ContextMenu from '../../shared/modals/ContextModal.vue';
+import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
+import SmartList from '@sharedComponents/smartList/SmartList.vue';
+import ContextMenu from '@sharedComponents/modals/ContextModal.vue';
 import ChatMessage from './ChatMessage.vue';
 import ChatServiceMessage from './ChatServiceMessage.vue';
 import NoChatMessages from './NoChatMessages.vue';
-import ActionModal from '../events/modals/ActionModal.vue';
+import ActionModal from '@mainComponents/events/modals/ActionModal.vue';
 
-import { ChatEventBus } from '../../../workers/event-bus-worker';
-import { WebSocketPaginationWorker } from '../../../workers/pagination-worker';
+import { ChatEventBus } from '@/workers/event-bus-worker';
+import { WebSocketPaginationWorker } from '@/workers/pagination-worker';
 import {
   AuthWebSocketWorkerInstance,
   ChatSocketWorkerInstance,
-} from '../../../workers/web-socket-worker';
-import { API } from '../../../workers/api-worker/api.worker';
-import { ChatWebSocketTypes } from '../../../workers/web-socket-worker/message-types/chat/web.socket.types';
+} from '@/workers/web-socket-worker';
+import { API } from '@/workers/api-worker/api.worker';
+import { ChatWebSocketTypes } from '@/workers/web-socket-worker/message-types/chat/web.socket.types';
 
-import { useUserDataStore } from '../../../stores/userData';
+import { useUserDataStore } from '@/stores/userData';
 
-import { CONSTS } from '../../../consts';
+import { CONSTS } from '@/consts';
 
 // FIXME нужно заменить иконку на другую
-import LimitOfAdminsIcon from '../../../assets/img/chat/limit-of-admins-reached.svg';
+import LimitOfAdminsIcon from '@images/chat/limit-of-admins-reached.svg';
 
 const MESSAGES_SCROLL_SPEED = 10;
 const MESSAGES_SCROLL_ANIMATION_DURATION = 50;

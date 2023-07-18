@@ -10,7 +10,7 @@
         </div>
         <img
           class="b-invited-users-list-modal__close-button"
-          src="../../../../../assets/img/back-arrow.svg"
+          src="@images/back-arrow.svg"
           alt=""
           @click="$emit('closeModal')"
         />
@@ -40,7 +40,7 @@
             </div>
             <img
               class="b-remove-invited-user__button"
-              src="../../../../../assets/img/cross.svg"
+              src="@images/cross.svg"
               alt=""
               @click="$emit('removeUser', user.id)"
             />
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import userAvatar from '../../../../shared/userAvatar/UserAvatar.vue';
+import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 export default {
   emits: ['closeModal', 'removeUser'],
   components: {

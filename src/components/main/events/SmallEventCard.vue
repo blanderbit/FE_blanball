@@ -6,7 +6,7 @@
     <div class="b-small-event-card__top-side">
       <div class="b-small-event-card__header">
         <div class="b-small-event-card__name">
-          <img src="../../../assets/img/hands-shake-small.svg" alt="" />
+          <img src="@images/hands-shake-small.svg" alt="" />
           <span>{{ item.name }}</span>
         </div>
         <div
@@ -22,7 +22,7 @@
     </div>
     <div class="b-small-event-card__bottom-side">
       <div class="b-small-event-card__place">
-        <img src="../../../assets/img/location-point.svg" alt="" />
+        <img src="@images/location-point.svg" alt="" />
         <span>{{ item.place.place_name }}</span>
       </div>
       <div class="b-small-event-card__labels">
@@ -38,7 +38,7 @@
   </div>
 </template>
 <script>
-import PlaceDetectorModal from '../../maps/PlaceDetectorModal.vue';
+import PlaceDetectorModal from '@components/maps/PlaceDetectorModal.vue';
 
 export default {
   name: 'SmallEventCard',

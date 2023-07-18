@@ -16,11 +16,11 @@
         <div class="b_sidebar_picture-top">
           <img
             class="b_sidebar_arrow"
-            src="../../assets/img/open-sidebar-arrow.svg"
+            src="@images/open-sidebar-arrow.svg"
             alt=""
           />
           <img
-            src="../../assets/img/my-profile-logo.svg"
+            src="@images/my-profile-logo.svg"
             alt=""
             @click="goToMainPage"
           />
@@ -75,7 +75,7 @@
             @click="logOut"
             class="b_sidebar_logout d-flex justify-content-center align-items-center"
           >
-            <img src="../../assets/img/exit-icon.svg" alt="" />
+            <img src="@images/exit-icon.svg" alt="" />
           </div>
         </div>
       </div>
@@ -107,21 +107,21 @@
 import { ref, computed, onBeforeUnmount, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
-import SlideMenu from '../SlideMenu/SlideMenu.vue';
-import userAvatar from '../shared/userAvatar/UserAvatar.vue';
-import BugReportModal from '../shared/modals/BugReportModal.vue';
-import TabLabel from '../shared/tabLabel/TabLabel.vue';
+import SlideMenu from '@components/SlideMenu/SlideMenu.vue';
+import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
+import BugReportModal from '@sharedComponents/modals/BugReportModal.vue';
+import TabLabel from '@sharedComponents/tabLabel/TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';
 
-import { useUserDataStore } from '../../stores/userData';
+import { useUserDataStore } from '@/stores/userData';
 import {
   NotificationsBus,
   BlanballEventBus,
-} from '../../workers/event-bus-worker';
-import { useWindowWidth } from '../../workers/window-size-worker/widthScreen';
-import { logOut } from '../../utils/logOut';
+} from '@/workers/event-bus-worker';
+import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
+import { logOut } from '@/utils/logOut';
 
-import { ROUTES } from '../../router/router.const';
+import { ROUTES } from '@/router/router.const';
 
 import { dinamicMenu } from "./menus/menu.config";
 

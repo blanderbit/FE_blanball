@@ -148,35 +148,35 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 
 import { merge } from 'lodash';
 
-import MainInput from '../../../components/shared/input/MainInput.vue';
-import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
-import WhiteBtn from '../../../components/shared/button/WhiteBtn.vue';
-import ManageEventFirstStep from '../../../components/main/manageEvent/ManageEventFirstStep.vue';
-import userAvatar from '../../../components/shared/userAvatar/UserAvatar.vue';
-import PreviewBlock from '../../../components/main/manageEvent/PreviewBlock.vue';
-import EventCard from '../../../components/main/events/EventCard.vue';
-import ManageEventSecondStep from '../../../components/main/manageEvent/ManageEventSecondStep.vue';
-import ManageEventThirdStep from '../../../components/main/manageEvent/ManageEventThirdStep.vue';
-import RemoveInvitedUsersModal from '../../../components/main/manageEvent/modals/RemoveInvitedUsersModal.vue';
-import SelectFormsColorsModal from '../../../components/main/manageEvent/modals/SelectFormsColorsModal.vue';
-import InvitedUsersList from '../../../components/main/manageEvent/InvitedUsersList.vue';
-import PreviewInvitedUsersListModal from '../../../components/main/events/modals/PreviewInvitedUsersListModal.vue';
-import PreviewEventModal from '../../../components/main/events/modals/PreviewEventModal.vue';
-import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
+import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
+import ManageEventFirstStep from '@mainComponents/manageEvent/ManageEventFirstStep.vue';
+import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
+import PreviewBlock from '@mainComponents/manageEvent/PreviewBlock.vue';
+import EventCard from '@mainComponents/events/EventCard.vue';
+import ManageEventSecondStep from '@mainComponents/manageEvent/ManageEventSecondStep.vue';
+import ManageEventThirdStep from '@mainComponents/manageEvent/ManageEventThirdStep.vue';
+import RemoveInvitedUsersModal from '@mainComponents/manageEvent/modals/RemoveInvitedUsersModal.vue';
+import SelectFormsColorsModal from '@mainComponents/manageEvent/modals/SelectFormsColorsModal.vue';
+import InvitedUsersList from '@mainComponents/manageEvent/InvitedUsersList.vue';
+import PreviewInvitedUsersListModal from '@mainComponents/events/modals/PreviewInvitedUsersListModal.vue';
+import PreviewEventModal from '@mainComponents/events/modals/PreviewEventModal.vue';
+import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 
-import { API } from '../../../workers/api-worker/api.worker';
-import { useUserDataStore } from '../../../stores/userData';
-import { BlanballEventBus } from '../../../workers/event-bus-worker';
-import { calcHeight } from '../../../workers/window-size-worker/calcHeight';
-import { finishSpinner, startSpinner } from '../../../workers/loading-worker/loading.worker';
-import { disableFormSubmit } from '../../../utils/disableFormSubmit';
+import { API } from '@/workers/api-worker/api.worker';
+import { useUserDataStore } from '@/stores/userData';
+import { BlanballEventBus } from '@/workers/event-bus-worker';
+import { calcHeight } from '@/workers/window-size-worker/calcHeight';
+import { finishSpinner, startSpinner } from '@/workers/loading-worker/loading.worker';
+import { disableFormSubmit } from '@/utils/disableFormSubmit';
 
-import { runOnSelectEventDuration } from '../../../utils/runOnSelectEventDuration';
+import { runOnSelectEventDuration } from '@/utils/runOnSelectEventDuration';
 
-import { ROUTES } from '../../../router/router.const';
-import { SCHEMAS } from '../../../validators/schemas';
+import { ROUTES } from '@/router/router.const';
+import { SCHEMAS } from '@/validators/schemas';
 
-import Arrow from '../../../assets/img/arrow-right-white.svg';
+import Arrow from '@images/arrow-right-white.svg';
 
 export default {
   name: 'CreateEventPage',

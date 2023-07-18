@@ -3,7 +3,7 @@
     <div class="top-title">
       <div class="left-side">
         <div class="card-icon">
-          <img src="../../../assets/img/hands-shake.svg" alt="" />
+          <img src="@images/hands-shake.svg" alt="" />
         </div>
         <span :class="['status', `status-${card.status.toLowerCase()}`]">{{
           $t(`events.${card.status}`)
@@ -100,9 +100,9 @@ import { computed } from 'vue';
 
 import { useDevice } from 'next-vue-device-detector';
 
-import GreenBtn from '../../shared/button/GreenBtn.vue';
-import PlaceDetectorModal from '../../maps/PlaceDetectorModal.vue';
-import WhiteBtn from '../../shared/button/WhiteBtn.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
+import PlaceDetectorModal from '@components/maps/PlaceDetectorModal.vue';
+import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 
 export default {
   props: {

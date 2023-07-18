@@ -1,6 +1,6 @@
 <template>
   <div class="c-no-schduled-events">
-    <img src="../../../assets/img/info-black.svg" alt="" />
+    <img src="@images/info-black.svg" alt="" />
     <span v-if="userStore.user.id === userData.id">{{
       $t('scheduler.no-scheduled-events-me')
     }}</span>
@@ -19,11 +19,11 @@
 <script>
 import { computed } from 'vue';
 
-import GreenBtn from '../../shared/button/GreenBtn.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 
-import { useUserDataStore } from '../../../stores/userData';
+import { useUserDataStore } from '@/stores/userData';
 
-import inviteToEventIcon from '../../../assets/img/add-user-white.svg';
+import inviteToEventIcon from '@images/add-user-white.svg';
 
 export default {
   components: {

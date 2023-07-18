@@ -13,12 +13,12 @@
 <script>
 import { computed } from 'vue';
 
-import Stepper from '../../components/main/passwordReset/Stepper.vue';
-import AuthenticationMain from '../../components/AuthenticationMain.vue';
+import Stepper from '@mainComponents/passwordReset/Stepper.vue';
+import AuthenticationMain from '@components/AuthenticationMain.vue';
 
-import backTab from '../../assets/img/registration-back-tab4.svg';
-import backMob from '../../assets/img/registration-back-mob4.svg';
-import rightSidePicture from '../../assets/img/registration-back-4.svg';
+import backTab from '@images/registration-back-tab4.svg';
+import backMob from '@images/registration-back-mob4.svg';
+import rightSidePicture from '@images/registration-back-4.svg';
 
 export default {
   name: 'reset',

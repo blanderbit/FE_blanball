@@ -3,12 +3,12 @@
 </template>
 
 <script>
-import PublicProfile from '../../../components/main/publicProfile/PublicProfile.vue';
+import PublicProfile from '@mainComponents/publicProfile/PublicProfile.vue';
 import { useRoute } from 'vue-router';
 import { ref, watch } from 'vue';
-import { API } from '../../../workers/api-worker/api.worker';
+import { API } from '@/workers/api-worker/api.worker';
 
-import { ROUTES } from '../../../router/router.const';
+import { ROUTES } from '@/router/router.const';
 export default {
   name: 'PlayerPage',
   components: {

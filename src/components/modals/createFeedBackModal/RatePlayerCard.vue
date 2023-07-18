@@ -21,7 +21,7 @@
         </star-rating>
       </div>
       <div class="b-player-card__message">
-        <img src="../../../assets/img/message-icon.svg" alt="" />
+        <img src="@images/message-icon.svg" alt="" />
       </div>
     </div>
   </div>

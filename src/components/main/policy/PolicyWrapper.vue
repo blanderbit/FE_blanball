@@ -2,7 +2,7 @@
   <div class="b-policy-wrapper">
     <div class="container">
       <div class="b-go-back" @click="goBack">
-        <img src="../../../assets/img/arrow-left-gray.svg" alt="" />
+        <img src="@images/arrow-left-gray.svg" alt="" />
         {{ $t('buttons.return') }}
       </div>
       <div class="b-policy-title">
@@ -29,7 +29,7 @@
 <script>
 import { useRouter } from 'vue-router';
 
-import { ROUTES } from '../../../router/router.const';
+import { ROUTES } from '@/router/router.const';
 
 export default {
   props: {

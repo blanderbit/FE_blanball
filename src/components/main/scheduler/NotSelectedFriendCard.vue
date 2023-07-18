@@ -1,6 +1,6 @@
 <template>
   <div class="c-not-selected-friend-card">
-    <img src="../../../assets/img/no-records/no-scheduled-events.svg" alt="" />
+    <img src="@images/no-records/no-scheduled-events.svg" alt="" />
     <div class="c-title">{{ $t('scheduler.planned') }}</div>
     <div class="c-subtitle">
       {{ $t('scheduler.select-friend-from-the-list') }}
