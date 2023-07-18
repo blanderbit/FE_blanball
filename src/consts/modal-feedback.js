@@ -1,8 +1,8 @@
-import Emoji_1 from '../assets/img/emojies/1.svg';
-import Emoji_2 from '../assets/img/emojies/2.svg';
-import Emoji_3 from '../assets/img/emojies/3.svg';
-import Emoji_4 from '../assets/img/emojies/4.svg';
-import Emoji_5 from '../assets/img/emojies/5.svg';
+import Emoji_1 from '@images/emojies/1.svg';
+import Emoji_2 from '@images/emojies/2.svg';
+import Emoji_3 from '@images/emojies/3.svg';
+import Emoji_4 from '@images/emojies/4.svg';
+import Emoji_5 from '@images/emojies/5.svg';
 
 import dayjs from 'dayjs';
 

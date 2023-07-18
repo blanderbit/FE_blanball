@@ -3,7 +3,7 @@ import { InitialMessage } from '../message-types/notifications/initial.message';
 import { SetActions, NotificationSetImage } from '../type.decorator';
 
 import { MessageActionTypes } from '../message.action.types';
-import { NotificationImage } from '../../../assets/img/notifications/notification.images';
+import { NotificationImage } from '@images/notifications/notification.images';
 
 @NotificationSetImage(NotificationImage.NotificationInfo)
 @SetActions([

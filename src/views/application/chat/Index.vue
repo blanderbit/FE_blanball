@@ -33,9 +33,11 @@
       />
     </div>
     <div class="b-chat-page-main-side">
-      <div class="b-main-side-messages-block" :style="messagesListBlockStyle">
-        <ChatMessagesList ref="CHAT_MESSAGES_LIST_BLOCK" :chatData="chatData" />
-      </div>
+      <ChatMessagesList
+        ref="CHAT_MESSAGES_LIST_BLOCK"
+        :chatData="chatData"
+        :heightStyle="messagesListBlockStyle"
+      />
       <div ref="CHAT_BOTTOM_SIDE_BLOCK" class="b-main-side-bottom-block">
         <Transition name="chat-warning">
           <ChatWarning v-if="isChatWarningVisible" @close="closeChatWarning" />
@@ -43,7 +45,7 @@
         <RequestForChat v-if="isChatRequestVisible" />
         <SendMessageBlock
           v-else
-          :disabled="chatData.disabled"
+          :disabled="isSendMessagesDisabled"
           :chatData="chatData"
         />
       </div>
@@ -59,26 +61,26 @@ import { useToast } from 'vue-toastification';
 
 import { useElementSize } from '@vueuse/core';
 
-import SendMessageBlock from '../../../components/main/chat/SendMessageBlock.vue';
-import RequestForChat from '../../../components/main/chat/RequestForChat.vue';
-import ChatWarning from '../../../components/main/chat/ChatWarning.vue';
-import ChatTopBlock from '../../../components/main/chat/ChatTopBlock.vue';
-import EditChatModal from '../../../components/main/chat/modals/EditChatModal.vue';
-import ChatMessagesList from '../../../components/main/chat/ChatMessagesList.vue';
-import ContextMenu from '../../../components/shared/modals/ContextModal.vue';
-import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
+import SendMessageBlock from '@mainComponents/chat/SendMessageBlock.vue';
+import RequestForChat from '@mainComponents/chat/RequestForChat.vue';
+import ChatWarning from '@mainComponents/chat/ChatWarning.vue';
+import ChatTopBlock from '@mainComponents/chat/ChatTopBlock.vue';
+import EditChatModal from '@mainComponents/chat/modals/EditChatModal.vue';
+import ChatMessagesList from '@mainComponents/chat/ChatMessagesList.vue';
+import ContextMenu from '@sharedComponents/modals/ContextModal.vue';
+import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 
-import { accessToken } from '../../../workers/token-worker';
-import { ChatSocketWorkerInstance } from '../../../workers/web-socket-worker';
-import { calcHeight } from '../../../workers/window-size-worker/calcHeight';
-import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
-import { ChatWebSocketTypes } from '../../../workers/web-socket-worker/message-types/chat/web.socket.types';
-import { API } from '../../../workers/api-worker/api.worker';
-import { ChatEventBus } from '../../../workers/event-bus-worker';
+import { accessToken } from '@workers/token-worker';
+import { ChatSocketWorkerInstance } from '@workers/web-socket-worker';
+import { calcHeight } from '@workers/window-size-worker/calcHeight';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
+import { ChatWebSocketTypes } from '@workers/web-socket-worker/message-types/chat/web.socket.types';
+import { API } from '@workers/api-worker/api.worker';
+import { ChatEventBus } from '@workers/event-bus-worker';
 
-import { useChatDataStore } from '../../../stores/chatData';
+import { useChatDataStore } from '@/stores/chatData';
 
-import { CONSTS } from '../../../consts';
+import { CONSTS } from '@consts';
 
 const CHAT_PAGE_TOP_AND_BOTTOM_PADDINGS_PX = 20 + 0;
 
@@ -95,7 +97,7 @@ export default {
   },
   setup() {
     const chatData = ref({
-      id: 772,
+      id: 1,
       name: 'dffddfdfdf fdfddffd',
       isChatRequest: false,
       isGroup: false,
@@ -148,6 +150,10 @@ export default {
       };
     });
 
+    const isSendMessagesDisabled = computed(() => {
+      return chatData.value.disabled || chatDataStore.infoAboutMe.removed;
+    });
+
     const chatSelectedMessagesList = computed(() => {
       return CHAT_MESSAGES_LIST_BLOCK.value?.selectedMessages;
     });
@@ -163,7 +169,10 @@ export default {
     });
 
     const isChatWarningVisible = computed(() => {
-      if (chatData.value.disabled && chatData.value.isGroup) {
+      if (
+        chatDataStore.infoAboutMe.removed ||
+        (chatData.value.disabled && chatData.value.isGroup)
+      ) {
         return !isChatWarningClosed.value;
       }
     });
@@ -172,7 +181,13 @@ export default {
       return !chatData.value.isGroup && chatData.value.isChatRequest;
     });
 
-    function updateChatData() {
+    async function updateChatData(newData) {
+      await API.ChatService.editChat({
+        chat_id: chatData.value.id,
+        new_data: {
+          name: newData.name,
+        },
+      });
       toast.success(t('chat.toasts.chat_updated_success'));
     }
 
@@ -221,7 +236,7 @@ export default {
       showContextMenu(e, mockData.value.chatMainContextMenuItems);
     }
 
-    function contextMenuItemClick(action) {
+    async function contextMenuItemClick(action) {
       const {
         ENABLE_PUSH_NOTIFICATIONS,
         DISABLE_PUSH_NOTIFICATIONS,
@@ -230,12 +245,12 @@ export default {
         SEARCH_MESSAGES,
       } = mockData.value.CHAT_MAIN_CONTEXT_MENU_ACTIONS;
 
-      console.log(action);
-
       switch (action) {
         case ENABLE_PUSH_NOTIFICATIONS:
+          offOrOnnChatPushNotifications(ENABLE_PUSH_NOTIFICATIONS);
           break;
         case DISABLE_PUSH_NOTIFICATIONS:
+          offOrOnnChatPushNotifications(DISABLE_PUSH_NOTIFICATIONS);
           break;
         case DELETE_CHAT:
           break;
@@ -245,6 +260,18 @@ export default {
         case SEARCH_MESSAGES:
           break;
       }
+    }
+
+    function offOrOnnChatPushNotifications(action) {
+      const actions = {
+        enable_push_notifications: 'on',
+        disable_push_notifications: 'off',
+      };
+
+      API.ChatService.offOrOnnChatPushNotifications({
+        chat_id: chatData.value.id,
+        action: actions[action],
+      });
     }
 
     function showSubmitModal() {
@@ -265,6 +292,14 @@ export default {
       });
     }
 
+    function offOrOnPushNotificationsHandler(instanceType) {
+      instanceType.offOrOnChatPushNotifications(chatDataStore);
+    }
+
+    function editChatMessageHandler(instanceType) {
+      instanceType.editChat(chatData);
+    }
+
     ChatSocketWorkerInstance.connect({
       token: accessToken.getToken(),
     });
@@ -274,11 +309,23 @@ export default {
       ChatWebSocketTypes.GetInfoAboutMeInChat
     );
 
+    ChatSocketWorkerInstance.registerCallback(
+      editChatMessageHandler,
+      ChatWebSocketTypes.EditChat
+    );
+
+    ChatSocketWorkerInstance.registerCallback(
+      offOrOnPushNotificationsHandler,
+      ChatWebSocketTypes.OffOrOnPushNotifications
+    );
+
     onBeforeUnmount(() => {
       ChatSocketWorkerInstance.disconnect();
       ChatSocketWorkerInstance.destroyCallback(
         getInfoAboutMeInChatMessageHandler
       );
+      ChatSocketWorkerInstance.destroyCallback(editChatMessageHandler);
+      ChatSocketWorkerInstance.destroyCallback(offOrOnPushNotificationsHandler);
     });
 
     getInfoAboutMeInChat();
@@ -299,8 +346,10 @@ export default {
       contextMenuX,
       contextMenuY,
       isSubmitModalOpened,
+      chatDataStore,
       submitModalConfig,
       editChatModalTransitionName,
+      isSendMessagesDisabled,
       showEditChatModal,
       closeEditChatModal,
       closeChatWarning,
@@ -319,7 +368,7 @@ export default {
 <style lang="scss" scoped>
 .b-chat-page {
   height: fit-content;
-  background-image: url('../../../assets/img/chat/chat-background.svg');
+  background-image: url('@images/chat/chat-background.svg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -344,11 +393,6 @@ export default {
 
     @include mobile {
       padding: 0px 8px 20px 8px;
-    }
-
-    .b-main-side-messages-block {
-      overflow: scroll;
-      outline: none;
     }
 
     .b-main-side-bottom-block {

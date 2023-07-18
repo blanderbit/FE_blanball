@@ -1,7 +1,7 @@
 <template>
   <div class="b-no-chat-messages">
     <div class="b-no-chat-messages-content">
-      <img src="../../../assets/img/chat/no-chat-messages.svg" alt="" />
+      <img src="@images/chat/no-chat-messages.svg" alt="" />
       <div class="b-no-chat-messages__title">
         {{ $t('chat.no_chat_messages.title') }}
       </div>

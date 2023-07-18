@@ -8,12 +8,12 @@
         <div class="c-join-scheduled-event-modal__top-side">
           <img
             class="c-close-join-scheduled-event-modal"
-            src="../../../../assets/img/cross.svg"
+            src="@images/cross.svg"
             alt=""
             @click="$emit('closeModal')"
           />
           <img
-            src="../../../../assets/img/join-scheduled-event-icon.svg"
+            src="@images/join-scheduled-event-icon.svg"
             alt=""
           />
         </div>
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import GreenBtn from '../../../shared/button/GreenBtn.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 
 export default {
   components: {

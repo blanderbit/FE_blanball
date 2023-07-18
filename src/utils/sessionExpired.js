@@ -1,10 +1,10 @@
-import { resolverFunctions } from '../workers/resolver-worker/resolver.functions';
-import { BlanballEventBus } from '../workers/event-bus-worker';
+import { resolverFunctions } from '@workers/resolver-worker/resolver.functions';
+import { BlanballEventBus } from '@workers/event-bus-worker';
 import { resetUserData } from './logOut';
 
 import router from '../router';
 
-import { ROUTES } from '../router/router.const';
+import { ROUTES } from '../routes/router.const';
 
 export async function sessionExpired() {
   const findCurRouteFromList = window.location.pathname.includes(

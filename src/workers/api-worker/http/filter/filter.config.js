@@ -1,4 +1,4 @@
-import { CONSTS } from '../../../../consts';
+import { CONSTS } from '@consts';
 import { Enum } from './filter.utils';
 
 export const filterConfigForChatMessages = {

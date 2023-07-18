@@ -21,7 +21,7 @@
     </div>
     <img
       class="b-close-manage-message-button"
-      src="../../../assets/img/green-cross.svg"
+      src="@images/green-cross.svg"
       alt=""
       @click="$emit('closeManageMessage')"
     />

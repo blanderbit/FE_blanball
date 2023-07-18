@@ -21,7 +21,7 @@
                   ref="fileInput"
                 />
                 <img
-                  src="../../../assets/img/add-user-pic2.svg"
+                  src="@images/add-user-pic2.svg"
                   alt="add user picture"
                 />
               </label>
@@ -332,19 +332,19 @@ import { useRouter } from 'vue-router';
 import dayjs from 'dayjs';
 import dayjsUkrLocale from 'dayjs/locale/uk';
 
-import MainInput from '../../shared/input/MainInput.vue';
-import mainTextArea from '../../shared/textArea/MainTextArea.vue';
-import dropdown from '../../shared/dropdown/Dropdown.vue';
-import userAvatar from '../../shared/userAvatar/UserAvatar.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import mainTextArea from '@sharedComponents/textArea/MainTextArea.vue';
+import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
+import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 import RatingCard from './RatingCard.vue';
 
-import { CONSTS } from '../../../consts';
-import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
+import { CONSTS } from '@consts';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
-import sortArrowHorizontally from '../../../assets/img/sort-arrows-horizontal.svg';
-import tick from '../../../assets/img/tick.svg';
-import edit from '../../../assets/img/edit.svg';
-import arrows from '../../../assets/img/sort-arrows-horizontal.svg';
+import sortArrowHorizontally from '@images/sort-arrows-horizontal.svg';
+import tick from '@images/tick.svg';
+import edit from '@images/edit.svg';
+import arrows from '@images/sort-arrows-horizontal.svg';
 
 const IMAGE_TYPES = ['image/jpeg', 'image/png'];
 

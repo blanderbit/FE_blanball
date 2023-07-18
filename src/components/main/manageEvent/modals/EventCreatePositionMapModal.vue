@@ -85,21 +85,21 @@ import { ref, computed, watch } from 'vue';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import PositionMap from '../../../maps/PositionMap.vue';
-import dropdown from '../../../shared/dropdown/Dropdown.vue';
-import MainInput from '../../../shared/input/MainInput.vue';
-import ModalWindow from '../../../shared/modals/ModalWindow.vue';
-import GreenBtn from '../../../shared/button/GreenBtn.vue';
+import PositionMap from '@mainComponents/maps/PositionMap.vue';
+import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 
-import { PositionMapBus } from '../../../../workers/event-bus-worker';
-import { API } from '../../../../workers/api-worker/api.worker';
-import { startSpinner, finishSpinner } from '../../../../workers/loading-worker/loading.worker';
-import { disableFormSubmit } from '../../../../utils/disableFormSubmit';
+import { PositionMapBus } from '@workers/event-bus-worker';
+import { API } from '@workers/api-worker/api.worker';
+import { startSpinner, finishSpinner } from '@workers/loading-worker/loading.worker';
+import { disableFormSubmit } from '@utils/disableFormSubmit';
 
-import { CONSTS } from '../../../../consts';
+import { CONSTS } from '@consts';
 
-import tickIcon from '../../../../assets/img/location-point.svg';
-import SCHEMAS from '../../../../validators/schemas';
+import tickIcon from '@images/location-point.svg';
+import { SCHEMAS } from '@/validators/schemas';
 
 export default {
   components: {

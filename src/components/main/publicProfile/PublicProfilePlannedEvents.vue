@@ -13,7 +13,7 @@
               >
                 <img
                   class="b-event__top-side-arrow"
-                  src="../../../assets/img/arrow-right-black.svg"
+                  src="@images/arrow-right-black.svg"
                   alt=""
                 />
               </router-link>
@@ -48,7 +48,7 @@
         </template>
         <template #emptyList>
           <div class="b-no-events">
-            <img src="../../../assets/img/info-black.svg" alt="" />
+            <img src="@images/info-black.svg" alt="" />
             <span>{{
               $t('no_records.noPublicProfilePlannedEvents.title', {
                 fullName: userFullName,
@@ -62,13 +62,13 @@
 </template>
 
 <script>
-import SimpleListWrapper from '../../shared/simpleList/SimpleList.vue';
+import SimpleListWrapper from '@sharedComponents/simpleList/SimpleList.vue';
 
-import { getDate } from '../../../utils/getDate';
+import { getDate } from '@utils/getDate';
 
-import { API } from '../../../workers/api-worker/api.worker';
+import { API } from '@workers/api-worker/api.worker';
 
-import { ROUTES } from '../../../router/router.const';
+import { ROUTES } from '@routes/router.const';
 
 export default {
   name: 'RatingCard',

@@ -9,18 +9,27 @@
     @itemClick="contextMenuItemClick"
   />
 
+  <ActionModal
+    v-if="isActionModalOpened"
+    :modalData="actionModalConfig"
+    @closeModal="closeActionModal"
+  />
+
   <div
     :class="[
       'b-chat-messages__list',
       { 'no-messages': !paginationElements.length },
     ]"
+    :style="heightStyle"
     @keydown.up="smoothScrollUp"
     @keydown.down="smoothScrollDown"
   >
     <SmartList
       :list="paginationElements"
+      :itemsGap="MESSAGES_LIST_VERTICAL_GAP_PX"
       ref="refList"
       v-model:scrollbar-existing="blockScrollToTopIfExist"
+      @scroll="grabMessagesToReadOnScroll"
     >
       <template #smartListItem="slotProps">
         <div :key="slotProps.index">
@@ -57,32 +66,39 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeUnmount } from 'vue';
+import { ref, computed, onBeforeUnmount, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { v4 as uuid } from 'uuid';
+import { debounce } from 'lodash';
 
-import InfiniteLoading from '../infiniteLoading/InfiniteLoading.vue';
-import SmartList from '../../shared/smartList/SmartList.vue';
-import ContextMenu from '../../shared/modals/ContextModal.vue';
+import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
+import SmartList from '@sharedComponents/smartList/SmartList.vue';
+import ContextMenu from '@sharedComponents/modals/ContextModal.vue';
 import ChatMessage from './ChatMessage.vue';
 import ChatServiceMessage from './ChatServiceMessage.vue';
 import NoChatMessages from './NoChatMessages.vue';
+import ActionModal from '@mainComponents/events/modals/ActionModal.vue';
 
-import { ChatEventBus } from '../../../workers/event-bus-worker';
-import { WebSocketPaginationWorker } from '../../../workers/pagination-worker';
+import { ChatEventBus } from '@workers/event-bus-worker';
+import { WebSocketPaginationWorker } from '@workers/pagination-worker';
 import {
   AuthWebSocketWorkerInstance,
   ChatSocketWorkerInstance,
-} from '../../../workers/web-socket-worker';
-import { API } from '../../../workers/api-worker/api.worker';
-import { ChatWebSocketTypes } from '../../../workers/web-socket-worker/message-types/chat/web.socket.types';
+} from '@workers/web-socket-worker';
+import { API } from '@workers/api-worker/api.worker';
+import { ChatWebSocketTypes } from '@workers/web-socket-worker/message-types/chat/web.socket.types';
 
-import { useUserDataStore } from '../../../stores/userData';
+import { useUserDataStore } from '@/stores/userData';
 
-import { CONSTS } from '../../../consts';
+import { CONSTS } from '@consts';
+
+// FIXME нужно заменить иконку на другую
+import LimitOfAdminsIcon from '@images/chat/limit-of-admins-reached.svg';
 
 const MESSAGES_SCROLL_SPEED = 10;
 const MESSAGES_SCROLL_ANIMATION_DURATION = 50;
+const MESSAGES_LIST_VERTICAL_GAP_PX = 8;
 
 export default {
   components: {
@@ -92,19 +108,27 @@ export default {
     ContextMenu,
     ChatServiceMessage,
     NoChatMessages,
+    ActionModal,
   },
   props: {
     chatData: {
       type: Object,
       required: true,
     },
+    heightStyle: {
+      type: Object,
+      default: null,
+    },
   },
   setup(props, { expose }) {
+    const { t } = useI18n();
     const refList = ref();
     const triggerForRestart = ref(false);
+    const isActionModalOpened = ref(false);
 
     const blockScrollToTopIfExist = ref(false);
 
+    const MESSAGES_LIST_RECYCLE_SCROLLER_WRAPPER_ELEMENT = ref(null);
     const isContextMenuOpened = ref(false);
     const contextMenuX = ref(null);
     const contextMenuY = ref(null);
@@ -117,6 +141,16 @@ export default {
     const restartInfiniteScroll = () => {
       triggerForRestart.value = uuid();
     };
+
+    const actionModalConfig = computed(() => {
+      return {
+        title: t('chat.cant_edit_message_after_10_minutes_modal.title'),
+        description: t(
+          'chat.cant_edit_message_after_10_minutes_modal.main_text'
+        ),
+        image: LimitOfAdminsIcon,
+      };
+    });
 
     const mockData = computed(() => {
       return {
@@ -182,6 +216,14 @@ export default {
       return {
         ...message,
       };
+    }
+
+    function showActionModal() {
+      isActionModalOpened.value = true;
+    }
+
+    function closeActionModal() {
+      isActionModalOpened.value = false;
     }
 
     function showContextMenu(e, messageData) {
@@ -266,8 +308,20 @@ export default {
       ChatEventBus.emit('replyToChatMessage', messageData);
     }
 
+    function checkIfTenMinutesPassed(dateString) {
+      const givenDate = new Date(dateString);
+      const currentDate = new Date();
+      const tenMinutesLater = new Date(givenDate.getTime() + 10 * 60000);
+
+      return currentDate >= tenMinutesLater;
+    }
+
     function showEditMessageBoard(messageData) {
-      ChatEventBus.emit('editChatMessage', messageData);
+      if (checkIfTenMinutesPassed(messageData.time_created)) {
+        showActionModal();
+      } else {
+        ChatEventBus.emit('editChatMessage', messageData);
+      }
     }
 
     function selectMessage(messageId) {
@@ -349,6 +403,19 @@ export default {
       ChatWebSocketTypes.DeleteMesssages
     );
 
+    const grabMessagesToReadOnScroll = debounce(() => {
+      console.log(
+        MESSAGES_LIST_RECYCLE_SCROLLER_WRAPPER_ELEMENT.value.element.__vnode.ctx
+          .data.pool
+      );
+    }, 50);
+
+    onMounted(() => {
+      MESSAGES_LIST_RECYCLE_SCROLLER_WRAPPER_ELEMENT.value = {
+        element: document.querySelector('.vue-recycle-scroller__item-wrapper'),
+      };
+    });
+
     onBeforeUnmount(() => {
       AuthWebSocketWorkerInstance.destroyCallback(
         createChatMessageMessageHandler
@@ -379,6 +446,10 @@ export default {
       isMessagesSelectableMode,
       paginationPage,
       selectedMessages,
+      isActionModalOpened,
+      grabMessagesToReadOnScroll,
+      actionModalConfig,
+      MESSAGES_LIST_VERTICAL_GAP_PX,
       restartInfiniteScroll,
       loadDataPaginationData,
       showContextMenu,
@@ -387,13 +458,21 @@ export default {
       contextMenuItemClick,
       smoothScrollDown,
       smoothScrollUp,
+      showActionModal,
+      closeActionModal,
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
+:deep {
+  .loader::after {
+    background: #efeff6;
+  }
+}
 .b-chat-messages__list {
+  overflow: scroll;
   &.no-messages {
     height: 100%;
   }

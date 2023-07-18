@@ -123,9 +123,9 @@
 <script>
 import { computed } from 'vue';
 
-import PolicyWrapper from '../../components/main/policy/PolicyWrapper.vue';
+import PolicyWrapper from '@mainComponents/policy/PolicyWrapper.vue';
 
-import { CONSTS } from '../../consts'
+import { CONSTS } from '@consts'
 
 export default {
   components: {
@@ -144,5 +144,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/styles/policy.scss';
+@import '@sytles/policy.scss';
 </style>

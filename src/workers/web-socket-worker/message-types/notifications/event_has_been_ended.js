@@ -13,7 +13,7 @@ import {
   MessageActionDataTypes,
 } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
-import { NotificationImage } from '../../../../assets/img/notifications/notification.images';
+import { NotificationImage } from '@images/notifications/notification.images';
 import { NotificationsBus } from '../../../event-bus-worker';
 
 @AuthWebSocketMessage()

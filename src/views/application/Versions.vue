@@ -20,7 +20,7 @@
             <template #arrow-left>
               <img
                 class="b-swipe-images__button"
-                src="../../assets/img/slider-left-white-arrow.svg"
+                src="@images/slider-left-white-arrow.svg"
                 alt=""
               />
             </template>
@@ -28,7 +28,7 @@
             <template #arrow-right>
               <img
                 class="b-swipe-images__button"
-                src="../../assets/img/slider-right-white-arrow.svg"
+                src="@images/slider-right-white-arrow.svg"
                 alt=""
               />
             </template>
@@ -55,7 +55,7 @@
                 v-for="whatNewItem in selectedVersionData.what_new"
                 class="b-list-item"
               >
-                <img src="../../assets/img/list-item-dot.svg" alt="" />
+                <img src="@images/list-item-dot.svg" alt="" />
                 <li>
                   {{ whatNewItem }}
                 </li>
@@ -73,7 +73,7 @@
               </div>
               <ul v-if="data?.items" style="border-top: 1px solid #e2e2e9">
                 <div v-for="item in data.items" class="b-list-item">
-                  <img src="../../assets/img/list-item-dot.svg" alt="" />
+                  <img src="@images/list-item-dot.svg" alt="" />
                   <li>
                     {{ item }}
                   </li>
@@ -112,13 +112,13 @@
                 <div class="b-version-date">{{ version.created_at }}</div>
                 <img
                   v-if="version.id === selectedVersionData.id"
-                  src="../../assets/img/cross.svg"
+                  src="@images/cross.svg"
                   alt=""
                 />
                 <img
                   v-else
                   width="8"
-                  src="../../assets/img/arrow-right.svg"
+                  src="@images/arrow-right.svg"
                   alt=""
                 />
               </div>
@@ -141,14 +141,14 @@ import { useRoute } from 'vue-router';
 
 import dayjs from 'dayjs';
 
-import PaginationScale from '../../components/shared/pagination/PaginationScale.vue';
+import PaginationScale from '@sharedComponents/pagination/PaginationScale.vue';
 
 import { cloneDeep } from 'lodash';
 
-import { API } from '../../workers/api-worker/api.worker';
-import { PaginationWorker } from '../../workers/pagination-worker';
-import { calcHeight } from '../../workers/window-size-worker/calcHeight';
-import { useUserDataStore } from '../../stores/userData';
+import { API } from '@workers/api-worker/api.worker';
+import { PaginationWorker } from '@workers/pagination-worker';
+import { calcHeight } from '@workers/window-size-worker/calcHeight';
+import { useUserDataStore } from '@/stores/userData';
 
 import { VueperSlides, VueperSlide } from 'vueperslides';
 import 'vueperslides/dist/vueperslides.css';

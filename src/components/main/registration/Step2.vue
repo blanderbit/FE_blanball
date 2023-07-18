@@ -7,12 +7,12 @@
   >
     <template #images>
       <img
-        src="../../../assets/img/ball-colored.svg"
+        src="@images/ball-colored.svg"
         alt="ball-big"
         class="b-register-step__ball-big"
       />
       <img
-        src="../../../assets/img/ball-colored.svg"
+        src="@images/ball-colored.svg"
         alt="ball-small"
         class="b-register-step__ball-small"
       />
@@ -104,13 +104,13 @@
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import MainInput from '../../shared/input/MainInput.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
 import StepWrapper from './StepWrapper.vue';
-import checkBox from '../../shared/checkbox/Checkbox.vue';
-import Switcher from '../../shared/switcher/Switcher.vue';
+import checkBox from '@sharedComponents/checkbox/Checkbox.vue';
+import Switcher from '@sharedComponents/switcher/Switcher.vue';
 
-import tickWhite from '../../../assets/img/tick-white.svg';
-import nikeIcon from '../../../assets/img/nike-icon.svg';
+import tickWhite from '@images/tick-white.svg';
+import nikeIcon from '@images/nike-icon.svg';
 
 export default {
   name: 'Step2',

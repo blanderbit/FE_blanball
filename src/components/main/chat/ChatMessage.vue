@@ -20,13 +20,13 @@
     <img
       v-if="selectableMode && selected"
       class="b-chat-message-selected-icon"
-      src="../../../assets/img/chat/selected-message-icon.svg"
+      src="@images/chat/selected-message-icon.svg"
       alt=""
     />
     <img
       v-else-if="selectableMode && !selected"
       class="b-chat-message-selected-icon"
-      src="../../../assets/img/chat/select-message-button.svg"
+      src="@images/chat/select-message-button.svg"
       alt=""
     />
 
@@ -37,10 +37,10 @@
       @touchend.passive="endMessageHold"
     >
       <div class="b-chat-message-text">
-        {{ messageData.text }}
+        {{ messageData.text }} {{ messageData.id }}
       </div>
       <div class="b-like-message-button">
-        <img src="../../../assets/img/chat/like-button.svg" alt="" />
+        <img src="@images/chat/like-button.svg" alt="" />
       </div>
       <div class="b-chat-message-bottom-side">
         <div v-if="isMessageEdited" class="b-chat-message-time">
@@ -57,13 +57,13 @@
 import { computed } from 'vue';
 import dayjs from 'dayjs';
 
-import UserAvatar from '../../shared/userAvatar/UserAvatar.vue';
+import UserAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 
-import GreenMessageTail from '../../../assets/img/chat/message-green-tail.svg';
-import WhiteMessageTail from '../../../assets/img/chat/message-white-tail.svg';
+import GreenMessageTail from '@images/chat/message-green-tail.svg';
+import WhiteMessageTail from '@images/chat/message-white-tail.svg';
 
-import MessageReadIcon from '../../../assets/img/chat/message-read.svg';
-import MessageNotReadIcon from '../../../assets/img/chat/message-not-read.svg';
+import MessageReadIcon from '@images/chat/message-read.svg';
+import MessageNotReadIcon from '@images/chat/message-not-read.svg';
 
 const SHOW_MESSAGE_CONTEXT_MEHU_ON_MOBILE_DEVICE_TIMEOUT_MS = 1000;
 
@@ -171,8 +171,6 @@ export default {
   align-items: flex-end;
   align-items: center;
   gap: 12px;
-  margin-top: 8px;
-
   .b-chat-message-tail {
     @include mobile {
       width: 10px;

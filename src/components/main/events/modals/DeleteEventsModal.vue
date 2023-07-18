@@ -5,7 +5,7 @@
         {{ $t('modals.delete_events.title') }}
       </template>
       <template #title-icon>
-        <img src="../../../../assets/img/warning.svg" alt="" />
+        <img src="@images/warning.svg" alt="" />
       </template>
       <template #delete-account>
         <div class="first-screen">
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import ModalWindow from '../../../shared/modals/ModalWindow.vue';
+import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
 
 export default {
   name: 'DeleteAccountModal',

@@ -5,7 +5,7 @@
         {{ $t('register.select-on-map') }}
       </span>
       <div>
-        <img src="../../../../assets/img/location-point.svg" />
+        <img src="@images/location-point.svg" />
       </div>
     </div>
     <span class="b-modal-position__map-optional">
@@ -34,9 +34,9 @@
 <script>
 import { ref } from 'vue';
 
-import PositionMap from '../../../maps/PositionMap.vue';
-import ModalWindow from '../../../shared/modals/ModalWindow.vue';
-import GreenBtn from '../../../shared/button/GreenBtn.vue';
+import PositionMap from '@mainComponents/maps/PositionMap.vue';
+import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 
 export default {
   components: {

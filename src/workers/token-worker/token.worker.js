@@ -1,6 +1,6 @@
 import { pinia } from '../../plugins/pinia.plugin';
-import { useTokensStore } from '../../stores/tokens';
-import { CONSTS } from '../../consts';
+import { useTokensStore } from '@stores/tokens';
+import { CONSTS } from '@consts';
 
 const tokensStore = useTokensStore(pinia);
 

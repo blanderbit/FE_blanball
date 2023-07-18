@@ -1,5 +1,5 @@
 <script setup>
-import smallLoader from '../../shared/loader/SmallLoader.vue';
+import smallLoader from '@sharedComponents/loader/SmallLoader.vue';
 import { onMounted, ref, toRefs, onUnmounted, watch, nextTick } from 'vue';
 import {
   startObserver,
@@ -7,7 +7,7 @@ import {
   stateHandler,
   initEmitter,
   isVisible,
-} from '../../../workers/infinit-load-worker/index.js';
+} from '@workers/infinit-load-worker/index.js';
 
 const emit = defineEmits(['infinite']);
 const props = defineProps({
@@ -66,6 +66,7 @@ onUnmounted(() => {
 
 <template>
   <div class="infiniteLoading" ref="infiniteLoading">
+    {{ state }}
     <slot v-if="state == 'loading'" name="spinner">
       <smallLoader />
     </slot>

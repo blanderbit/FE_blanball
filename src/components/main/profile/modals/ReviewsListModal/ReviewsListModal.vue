@@ -7,7 +7,7 @@
       <div class="b-reviews-list-modal__top-side">
         <img
           class="b-close-modal-button"
-          src="../../../../../assets/img/cross.svg"
+          src="@images/cross.svg"
           alt=""
           @click="$emit('closeModal')"
         />
@@ -15,7 +15,7 @@
           <div class="b-title">{{ $t('player_page.feedbacks') }}</div>
           <div class="b-title-mobile">
             <img
-              src="../../../../../assets/img/arrow-left.svg"
+              src="@images/arrow-left.svg"
               alt=""
               @click="$emit('closeModal')"
             />
@@ -27,7 +27,7 @@
         </div>
         <div class="b-rating-grade">
           <span>{{ userRating }}</span>
-          <img src="../../../../../assets/img/green-star.svg" alt="" />
+          <img src="@images/green-star.svg" alt="" />
         </div>
       </div>
       <div class="b-reviews-list-modal__main-side">
@@ -73,15 +73,15 @@ import { useRoute, useRouter } from 'vue-router';
 
 import { v4 as uuid } from 'uuid';
 
-import InfiniteLoading from '../../../infiniteLoading/InfiniteLoading.vue';
-import SmartList from '../../../../shared/smartList/SmartList.vue';
-import ScrollToTop from '../../../../ScrollToTop.vue';
+import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
+import SmartList from '@sharedComponents/smartList/SmartList.vue';
+import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
 import Review from './Review.vue';
 
-import { API } from '../../../../../workers/api-worker/api.worker';
-import { PaginationWorker } from '../../../../../workers/pagination-worker';
-import { useHeaderHeightStore } from '../../../../../stores/headerHeight';
-import { useWindowWidth } from '../../../../../workers/window-size-worker/widthScreen';
+import { API } from '@workers/api-worker/api.worker';
+import { PaginationWorker } from '@workers/pagination-worker';
+import { useHeaderHeightStore } from '@/stores/headerHeight';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
 export default {
   components: {

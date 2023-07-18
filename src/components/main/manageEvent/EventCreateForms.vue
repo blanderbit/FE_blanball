@@ -7,7 +7,7 @@
       <span class="b-event-info__form-title">
         {{ $t('events.team_num', { num: index + 1 }) }}
         <img
-          src="../../../assets/img/change-forms-arrow.svg"
+          src="@images/change-forms-arrow.svg"
           alt=""
           @click="$emit('changeForms')"
         />
@@ -64,7 +64,7 @@
 <script>
 import { computed, ref, watch } from 'vue';
 
-import { CONSTS } from '../../../consts/index';
+import { CONSTS } from '@consts/index';
 
 export default {
   props: {

@@ -1,7 +1,7 @@
 import { finishSpinner } from '../loading-worker/loading.worker';
 import { accessToken } from '../token-worker';
 import { createQueryStringFromObject } from '../utils-worker';
-import { ROUTES } from '../../router/router.const';
+import { ROUTES } from '../../routes/router.const';
 
 const _createLoginPath = (redirectUrl) => {
   const query = createQueryStringFromObject({
@@ -21,6 +21,7 @@ const isAuthorizedError = ({ to, next }) => {
 
 const isResolveDataError = async (error) => {
   // TODO remove router import on every function call
+  console.log(error)
   if (error.errorDetails.code === 404) {
     import('../../router').then((router) => {
       return router.default.push('/404')

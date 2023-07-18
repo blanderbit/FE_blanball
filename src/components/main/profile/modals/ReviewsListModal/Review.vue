@@ -44,7 +44,7 @@
 import { computed, ref } from 'vue';
 import StarRating from 'vue-star-rating';
 
-import { getDate } from '../../../../../utils/getDate';
+import { getDate } from '@utils/getDate';
 
 export default {
   props: {

@@ -1,5 +1,5 @@
-import BallIcon from '../assets/img/ball.svg';
-import FanIcon from '../assets/img/fan.svg';
+import BallIcon from '@images/ball.svg';
+import FanIcon from '@images/fan.svg';
 
 export default {
   items: [

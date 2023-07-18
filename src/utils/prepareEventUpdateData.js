@@ -1,4 +1,4 @@
-import { API } from '../workers/api-worker/api.worker';
+import { API } from '@workers/api-worker/api.worker';
 
 import { addMinutes } from '../utils/addMinutes';
 import { getDate } from '../utils/getDate';

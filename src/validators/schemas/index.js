@@ -11,8 +11,9 @@ import DeleteAccount from './deleteAccount';
 import ChangeEmail from './changeEmail';
 import PositionMap from './positionMap';
 import ChatMessage from './chatMessage';
+import EditChat from './editChat';
 
-export default {
+export const SCHEMAS = {
   login: Login,
   register: Register,
   profile: Profile,
@@ -26,4 +27,5 @@ export default {
   changeEmail: ChangeEmail,
   positionMap: PositionMap,
   chatMessage: ChatMessage,
+  editChat: EditChat,
 };

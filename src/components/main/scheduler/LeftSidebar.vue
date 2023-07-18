@@ -61,24 +61,24 @@ import { ref, computed, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
-import MainInput from '../../shared/input/MainInput.vue';
-import SmartList from '../../../components/shared/smartList/SmartList.vue';
-import ScrollToTop from '../../ScrollToTop.vue';
-import InfiniteLoading from '../../main/infiniteLoading/InfiniteLoading.vue';
-import UserAvatar from '../../shared/userAvatar/UserAvatar.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import SmartList from '@sharedComponents/smartList/SmartList.vue';
+import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
+import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
+import UserAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 import SchedulerUserCard from './SchedulerUserCard.vue';
-import GreenBtn from '../../shared/button/GreenBtn.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import SchedulerFriendsList from './SchedulerFriendsList.vue';
 import SchedulerTabs from './SchedulerTabs.vue';
 
-import { useUserDataStore } from '../../../stores/userData';
-import { BlanballEventBus } from '../../../workers/event-bus-worker';
+import { useUserDataStore } from '@/stores/userData';
+import { BlanballEventBus } from '@workers/event-bus-worker';
 
-import { CONSTS } from '../../../consts';
-import { ROUTES } from '../../../router/router.const';
+import { CONSTS } from '@consts';
+import { ROUTES } from '@routes/router.const';
 
-import searchIcon from '../../../assets/img/scheduler/lens.svg';
-import whiteClockIcon from '../../../assets/img/scheduler/white-clock.svg';
+import searchIcon from '@images/scheduler/lens.svg';
+import whiteClockIcon from '@images/scheduler/white-clock.svg';
 
 export default {
   name: 'LeftSidebar',

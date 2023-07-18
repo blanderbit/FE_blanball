@@ -1,7 +1,7 @@
-import ball_icon from '../assets/img/ball-icon.svg';
-import members from '../assets/img/members.svg';
-import couch from '../assets/img/couch.svg';
-import user_with_plus from '../assets/img/add-user.svg';
+import ball_icon from '@images/ball-icon.svg';
+import members from '@images/members.svg';
+import couch from '@images/couch.svg';
+import user_with_plus from '@images/add-user.svg';
 
 export default {
   tabs: (eventData, userId) => {

@@ -8,7 +8,7 @@
   >
     <template #content>
       <div class="b-register-step__info-block">
-        <img src="../../../assets/img/info-icon.svg" alt="" />
+        <img src="@images/info-icon.svg" alt="" />
         {{ $t('register.honest-game') }}
       </div>
     </template>
@@ -21,7 +21,7 @@ import { useI18n } from 'vue-i18n';
 
 import StepWrapper from './StepWrapper.vue';
 
-import arrowRight from '../../../assets/img/arrow-right-white.svg';
+import arrowRight from '@images/arrow-right-white.svg';
 
 export default {
   name: 'Step5',

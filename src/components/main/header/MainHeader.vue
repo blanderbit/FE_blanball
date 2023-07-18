@@ -18,11 +18,11 @@
       </template>
     </SearchModal>
     <div class="b_header_mob-menu-icon" @click="$emit('menuIconClick')">
-      <img src="../../../assets/img/mob-menu-icon.svg" alt="" />
+      <img src="@images/mob-menu-icon.svg" alt="" />
     </div>
     <BreadCrumbs />
     <div class="b_header_logo">
-      <img src="../../../assets/img/logo-header.svg" alt="" />
+      <img src="@images/logo-header.svg" alt="" />
     </div>
 
     <div class="b_header-right-side">
@@ -43,7 +43,7 @@
         <img
           v-if="isGoBackSchedulerIconVisible"
           class="b_shceduler-go-back-button"
-          src="../../../assets/img/arrow-left.svg"
+          src="@images/arrow-left.svg"
           alt=""
           @click="goBackSchedulerButtonConfig?.action()"
         />
@@ -69,23 +69,23 @@
 import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
-import BreadCrumbs from '../../shared/breadcrumbs/Breadcrumbs.vue';
-import MainInput from '../../shared/input/MainInput.vue';
-import SearchModal from '../../shared/modals/SearchModal.vue';
-import SearchBlockAll from '../../SearchBlockAll.vue';
+import BreadCrumbs from '@sharedComponents/breadcrumbs/Breadcrumbs.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import SearchModal from '@sharedComponents/modals/SearchModal.vue';
+import SearchBlockAll from '@mainComponents/header/SearchBlockAll.vue';
 
-import { CONSTS } from '../../../consts/index';
-import { ROUTES } from '../../../router/router.const';
-import { API } from '../../../workers/api-worker/api.worker';
-import { BlanballEventBus } from '../../../workers/event-bus-worker';
-import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
+import { CONSTS } from '@consts/index';
+import { ROUTES } from '@routes/router.const';
+import { API } from '@workers/api-worker/api.worker';
+import { BlanballEventBus } from '@workers/event-bus-worker';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
-import { HINTS_DATA } from '../../../workers/hints-worker/hints.data';
+import { HINTS_DATA } from '@workers/hints-worker/hints.data';
 
-import searchIcon from '../../../assets/img/search.svg';
-import arrowIcon from '../../../assets/img/arrow-right-gray.svg';
-import schedulerDefaultIcon from '../../../assets/img/calendar.svg';
-import schedulerActiveIcon from '../../../assets/img/scheduler/scheduler-active-icon.svg';
+import searchIcon from '@images/search.svg';
+import arrowIcon from '@images/arrow-right-gray.svg';
+import schedulerDefaultIcon from '@images/calendar.svg';
+import schedulerActiveIcon from '@images/scheduler/scheduler-active-icon.svg';
 
 export default {
   components: {
@@ -234,7 +234,6 @@ export default {
 $color-dfdeed: #dfdeed;
 $color-fafafa: #fafafa;
 
-@import '../../../assets/styles/mixins/device.scss';
 
 .b_header {
   display: flex;

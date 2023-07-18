@@ -3,14 +3,14 @@
     <img
       v-if="currentPage !== 1"
       class="b-pagination__button"
-      src="../../../assets/img/pagination-arrow-left.svg"
+      src="@images/pagination-arrow-left.svg"
       alt=""
       @click="goToPage(currentPage - 1)"
     />
     <img
       v-else
       class="b-pagination__button-disabled"
-      src="../../../assets/img/pagination-arrow-left.svg"
+      src="@images/pagination-arrow-left.svg"
       alt=""
     />
     <div class="b-pagination__body">
@@ -37,14 +37,14 @@
     <img
       v-if="currentPage !== pagesTotalCount"
       class="b-pagination__button"
-      src="../../../assets/img/pagination-arrow-right.svg"
+      src="@images/pagination-arrow-right.svg"
       alt=""
       @click="goToPage(currentPage + 1)"
     />
     <img
       v-else
       class="b-pagination__button-disabled"
-      src="../../../assets/img/pagination-arrow-right.svg"
+      src="@images/pagination-arrow-right.svg"
       alt=""
     />
   </div>

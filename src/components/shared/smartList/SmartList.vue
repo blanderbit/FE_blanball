@@ -2,9 +2,11 @@
   <DynamicScroller
     :items="list"
     :min-item-size="50"
+    :emitUpdate="true"
     :key-field="keyField"
     class="scroller"
     ref="scroller"
+    @scroll-start="scrollStart"
   >
     <template #before>
       <slot name="before"></slot>
@@ -16,7 +18,10 @@
         :size-dependencies="[list.length, item?.metadata?.expanding]"
         :data-index="index"
       >
-        <slot name="smartListItem" :index="index" :smartListItem="item"> </slot>
+        <div :style="itemsGapStyle">
+          <slot name="smartListItem" :index="index" :smartListItem="item">
+          </slot>
+        </div>
       </DynamicScrollerItem>
     </template>
     <template #after>
@@ -26,11 +31,11 @@
 </template>
 
 <script>
-import { ref, watch, nextTick } from 'vue';
+import { ref, watch, nextTick, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller';
 
-import notification from '../../main/notifications/Notification.vue';
+import notification from '@mainComponents/notifications/Notification.vue';
 
 export default {
   components: {
@@ -55,12 +60,24 @@ export default {
       type: String,
       default: 'id',
     },
+    itemsGap: {
+      type: Number,
+      default: 0,
+    },
   },
   emits: ['update:selected-list', 'update:scrollbar-existing'],
   setup(props, { emit, expose }) {
     let activeNotification = ref(0);
     let scroller = ref();
     const router = useRouter();
+
+    const itemsGapStyle = computed(() => {
+      if (props.itemsGap) {
+        return {
+          'padding-top': `${props.itemsGap}px`,
+        };
+      }
+    });
 
     watch(
       () => props.selectedList,
@@ -95,6 +112,7 @@ export default {
     return {
       activeNotification,
       scroller,
+      itemsGapStyle,
     };
   },
 };

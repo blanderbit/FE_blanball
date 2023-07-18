@@ -23,7 +23,7 @@
     <div class="b-user-chat-role">{{ userChatRole }}</div>
     <img
       class="b-manage-user-button"
-      src="../../../assets/img/chat/manage-chat-user-button.svg"
+      src="@images/chat/manage-chat-user-button.svg"
       alt=""
       @click="showContextMenu"
     />
@@ -34,10 +34,10 @@
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import userAvatar from '../../shared/userAvatar/UserAvatar.vue';
+import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 
-import { useUserDataStore } from '../../../stores/userData';
-import { useChatDataStore } from '../../../stores/chatData';
+import { useUserDataStore } from '@/stores/userData';
+import { useChatDataStore } from '@/stores/chatData';
 
 export default {
   props: {

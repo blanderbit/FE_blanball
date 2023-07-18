@@ -64,9 +64,9 @@ import {
   watch,
 } from 'vue';
 import { dragscroll } from 'vue-dragscroll';
-import checkSameDay from '../../../utils/checkSameDay';
-import checkIsWeekend from '../../../utils/checkDateInRange';
-import checkIsInRange from '../../../utils/checkDateInRange';
+import checkSameDay from '@utils/checkSameDay';
+import checkIsWeekend from '@utils/checkDateInRange';
+import checkIsInRange from '@utils/checkDateInRange';
 import TheObserver from './TheObserver.vue';
 export default {
   name: 'VueInlineCalendar',
@@ -448,7 +448,7 @@ $color-f9f9fc: #f9f9fc;
 $color-0094ff: #0094ff;
 $color-1d817e: #1d817e;
 $color-f0f0f4: #f0f0f4;
-@import '../../../assets/styles/inline-calendar/main.css';
+@import '@sytles/inline-calendar/main.css';
 .inline-calendar {
   margin-bottom: 8px;
   padding: 0 10px;

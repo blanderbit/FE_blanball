@@ -11,7 +11,7 @@
       <div class="b-edit-event-modal__header">
         <img
           class="b-edit-event-modal__close"
-          src="../../../../assets/img/cross.svg"
+          src="@images/cross.svg"
           alt=""
           @click="openSubmitModal"
         />
@@ -91,24 +91,24 @@ import { ref, computed } from 'vue';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import ManageEventFirstStep from '../ManageEventFirstStep.vue';
-import ManageEventSecondStep from '../ManageEventSecondStep.vue';
-import ManageEventThirdStep from '../ManageEventThirdStep.vue';
+import ManageEventFirstStep from '@mainComponents/manageEvent/ManageEventFirstStep.vue';
+import ManageEventSecondStep from '@mainComponents/manageEvent/ManageEventSecondStep.vue';
+import ManageEventThirdStep from '@mainComponents/manageEvent/ManageEventThirdStep.vue';
 import SelectFormsColorsModal from './SelectFormsColorsModal.vue';
-import WhiteBtn from '../../../shared/button/WhiteBtn.vue';
-import GreenBtn from '../../../shared/button/GreenBtn.vue';
-import SubmitModal from '../../../shared/modals/SubmitModal.vue';
+import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
+import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 
-import { API } from '../../../../workers/api-worker/api.worker';
-import { BlanballEventBus } from '../../../../workers/event-bus-worker';
+import { API } from '@workers/api-worker/api.worker';
+import { BlanballEventBus } from '@workers/event-bus-worker';
 import {
   startSpinner,
   finishSpinner,
-} from '../../../../workers/loading-worker/loading.worker';
+} from '@workers/loading-worker/loading.worker';
 
-import { runOnSelectEventDuration } from '../../../../utils/runOnSelectEventDuration';
+import { runOnSelectEventDuration } from '@utils/runOnSelectEventDuration';
 
-import SCHEMAS from '../../../../validators/schemas';
+import { SCHEMAS } from '@/validators/schemas';
 
 export default {
   components: {

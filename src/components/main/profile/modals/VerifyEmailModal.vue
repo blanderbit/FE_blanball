@@ -5,7 +5,7 @@
         {{ $t('modals.verify_email.title') }}
       </template>
       <template #title-icon>
-        <img src="../../../../assets/img/envelop.svg" alt="" />
+        <img src="@images/envelop.svg" alt="" />
       </template>
       <template #verify-email>
         <Form v-slot="data" :validation-schema="schema">
@@ -60,18 +60,18 @@ import { useI18n } from 'vue-i18n';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import ModalWindow from '../../../shared/modals/ModalWindow.vue';
-import Counter from '../../../shared/counter/Counter.vue';
-import inputCode from '../../../shared/inputCode/InputCode.vue';
-import MainInput from '../../../shared/input/MainInput.vue';
+import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
+import Counter from '@sharedComponents/counter/Counter.vue';
+import inputCode from '@sharedComponents/inputCode/InputCode.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
 
-import { API } from '../../../../workers/api-worker/api.worker';
+import { API } from '@workers/api-worker/api.worker';
 import {
   startSpinner,
   finishSpinner,
-} from '../../../../workers/loading-worker/loading.worker';
+} from '@workers/loading-worker/loading.worker';
 
-import SCHEMAS from '../../../../validators/schemas';
+import { SCHEMAS } from '@/validators/schemas';
 
 export default {
   name: 'VerifyEmailModal',

@@ -52,8 +52,8 @@ import {
   computed,
 } from 'vue';
 import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller';
-import { notificationButtonHandlerMessage } from '../../../workers/utils-worker';
-import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
+import { notificationButtonHandlerMessage } from '@workers/utils-worker';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
 export default {
   components: {

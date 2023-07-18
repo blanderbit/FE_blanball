@@ -5,7 +5,7 @@
         {{ $t('modals.delete_acc.title') }}
       </template>
       <template #title-icon>
-        <img src="../../../../assets/img/warning.svg" alt="" />
+        <img src="@images/warning.svg" alt="" />
       </template>
       <template #delete-account>
         <div v-if="currentStep === 1" class="first-screen">
@@ -71,19 +71,19 @@ import { useI18n } from 'vue-i18n';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import ModalWindow from '../../../shared/modals/ModalWindow.vue';
-import Counter from '../../../shared/counter/Counter.vue';
-import inputCode from '../../../shared/inputCode/InputCode.vue';
+import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
+import Counter from '@sharedComponents/counter/Counter.vue';
+import inputCode from '@sharedComponents/inputCode/InputCode.vue';
 
-import { API } from '../../../../workers/api-worker/api.worker';
-import { resetUserDataAndRedirectToLogin } from '../../../../utils/logOut';
+import { API } from '@workers/api-worker/api.worker';
+import { resetUserDataAndRedirectToLogin } from '@utils/logOut';
 import {
   startSpinner,
   finishSpinner,
-} from '../../../../workers/loading-worker/loading.worker';
-import { disableFormSubmit } from '../../../../utils/disableFormSubmit';
+} from '@workers/loading-worker/loading.worker';
+import { disableFormSubmit } from '@utils/disableFormSubmit';
 
-import SCHEMAS from '../../../../validators/schemas';
+import { SCHEMAS } from '@/validators/schemas';
 
 export default {
   name: 'DeleteAccountModal',

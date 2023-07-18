@@ -7,11 +7,11 @@
           @click="$emit('closeModal', 'public_profile')"
         >
           <span>{{ $t('buttons.keep-editing') }}</span>
-          <img src="../../../assets/img/arrow-left-small.svg" alt="" />
+          <img src="@images/arrow-left-small.svg" alt="" />
         </div>
         <div @click="$emit('saveChanges')" class="b-public-profile__exit">
           <span>{{ $t('buttons.save-and-out') }}</span>
-          <img src="../../../assets/img/cross-white.svg" alt="" />
+          <img src="@images/cross-white.svg" alt="" />
         </div>
       </div>
       <div class="b-main-side-content">

@@ -7,12 +7,12 @@
   >
     <template #images>
       <img
-        src="../../../assets/img/ball-colored.svg"
+        src="@images/ball-colored.svg"
         alt="ball-big"
         class="b-register-step__ball-big"
       />
       <img
-        src="../../../assets/img/ball-colored.svg"
+        src="@images/ball-colored.svg"
         alt="ball-small"
         class="b-register-step__ball-small"
       />
@@ -70,14 +70,14 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import GreenBtn from '../../shared/button/GreenBtn.vue';
-import MainInput from '../../shared/input/MainInput.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
 import StepWrapper from './StepWrapper.vue';
-import radioButton from '../../shared/radioButton/RadioButton.vue';
+import radioButton from '@sharedComponents/radioButton/RadioButton.vue';
 
-import MaleIcon from '../../../assets/img/male-icon.svg';
-import FemaleIcon from '../../../assets/img/female-icon.svg';
-import arrowRight from '../../../assets/img/arrow-right-white.svg';
+import MaleIcon from '@images/male-icon.svg';
+import FemaleIcon from '@images/female-icon.svg';
+import arrowRight from '@images/arrow-right-white.svg';
 
 export default {
   name: 'Step1',

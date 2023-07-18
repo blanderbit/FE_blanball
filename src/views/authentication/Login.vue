@@ -13,13 +13,13 @@
 <script>
 import { computed } from 'vue';
 
-import login from '../../components/main/login/Login.vue';
-import AuthenticationMain from '../../components/AuthenticationMain.vue';
+import login from '@mainComponents/login/Login.vue';
+import AuthenticationMain from '@components/AuthenticationMain.vue';
 
-import { CONSTS } from '../../consts/index';
+import { CONSTS } from '@consts/index';
 
-import bgTabPicture from '../../assets/img/registration-back-tab1.svg';
-import rightSidePicture from '../../assets/img/registration-back-1.svg';
+import bgTabPicture from '@images/registration-back-tab1.svg';
+import rightSidePicture from '@images/registration-back-1.svg';
 
 export default {
   components: {

@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="b-tech-works__right-side">
-        <img src="../../assets/img/tech-works-back.svg" alt="" />
+        <img src="@images/tech-works-back.svg" alt="" />
         <div class="st">
           <div class="st1"></div>
           <div class="st2"></div>
@@ -163,7 +163,7 @@ $color-8a8aa8: #8a8aa8;
         position: absolute;
         top: 10%;
         left: 4%;
-        background: url('../../assets/img/wheel1.svg') no-repeat center / cover;
+        background: url('@images/wheel1.svg') no-repeat center / cover;
         width: 145px;
         height: 145px;
         animation: stid 2.5s linear infinite;
@@ -177,7 +177,7 @@ $color-8a8aa8: #8a8aa8;
         left: 45%;
         width: 180px;
         height: 180px;
-        background: url('../../assets/img/wheel2.svg') no-repeat center / cover;
+        background: url('@images/wheel2.svg') no-repeat center / cover;
         animation: stidd 2.5s linear infinite;
         @include mobile {
           left: 40%;
@@ -187,7 +187,7 @@ $color-8a8aa8: #8a8aa8;
         position: absolute;
         top: 64%;
         left: 34%;
-        background: url('../../assets/img/wheel1.svg') no-repeat center / cover;
+        background: url('@images/wheel1.svg') no-repeat center / cover;
         width: 110px;
         height: 110px;
         animation: stid 2.5s linear infinite;

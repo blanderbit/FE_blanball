@@ -1,6 +1,6 @@
-import trashRed from '../assets/img/trash-red.svg';
-import doubleCheck from '../assets/img/notifications/double-check.svg';
-import selected from '../assets/img/selected.svg';
+import trashRed from '@images/trash-red.svg';
+import doubleCheck from '@images/notifications/double-check.svg';
+import selected from '@images/selected.svg';
 
 export default {
   notificationsContextMenuItems: [

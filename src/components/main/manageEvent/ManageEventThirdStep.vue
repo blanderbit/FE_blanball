@@ -31,7 +31,7 @@
     >
       <div class="forms-select-form" @click="$emit('setForms')">
         <span>{{ $t('events.set-forms-colors') }}</span>
-        <img src="../../../assets/img/set-filter.svg" alt="" />
+        <img src="@images/set-filter.svg" alt="" />
       </div>
     </div>
     <ErrorMessage class="b-forms-block-error-message" name="forms" />
@@ -99,15 +99,15 @@ import { computed, ref } from 'vue';
 
 import { ErrorMessage } from '@system.it.flumx.com/vee-validate';
 
-import switcher from '../../shared/switcher/Switcher.vue';
-import radioButton from '../../shared/radioButton/RadioButton.vue';
-import MainInput from '../../shared/input/MainInput.vue';
-import mainTextArea from '../../shared/textArea/MainTextArea.vue';
+import switcher from '@sharedComponents/switcher/Switcher.vue';
+import radioButton from '@sharedComponents/radioButton/RadioButton.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import mainTextArea from '@sharedComponents/textArea/MainTextArea.vue';
 import EventCreateForms from './EventCreateForms.vue';
 
-import AimIcon from '../../../assets/img/aim.svg';
-import editPhoneIcon from '../../../assets/img/sort-arrows-horizontal.svg';
-import checkMarkIcon from '../../../assets/img/check-mark.svg';
+import AimIcon from '@images/aim.svg';
+import editPhoneIcon from '@images/sort-arrows-horizontal.svg';
+import checkMarkIcon from '@images/check-mark.svg';
 
 export default {
   name: 'ManageEventThirdStep',
