@@ -116,7 +116,7 @@ import {
 } from '@workers/loading-worker/loading.worker';
 import { disableFormSubmit } from '@utils/disableFormSubmit';
 
-import { ROUTES } from '@/router/router.const';
+import { ROUTES } from '@routes/router.const';
 import { SCHEMAS } from '@/validators/schemas';
 
 import eyeCross from '@images/eye-crossed.svg';

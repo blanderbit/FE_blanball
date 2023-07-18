@@ -109,10 +109,10 @@ import { useRouter } from 'vue-router';
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import mainTextArea from '@sharedComponents/textArea/MainTextArea.vue';
 import switcher from '@sharedComponents/switcher/Switcher.vue';
-import SearchBlockAll from '@components/SearchBlockAll.vue';
+import SearchBlockAll from '@mainComponents/header/SearchBlockAll.vue';
 import radioButton from '@sharedComponents/radioButton/RadioButton.vue';
 
-import { ROUTES } from '@/router/router.const';
+import { ROUTES } from '@routes/router.const';
 
 import HorArrow from '@images/sort-arrows-down.svg';
 import AddUser from '@images/add-user.svg';

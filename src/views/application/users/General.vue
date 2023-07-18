@@ -93,10 +93,10 @@ import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
 import MainInput from '@sharedComponents/input/MainInput.vue';
-import UserCard from '@components/UserCard.vue';
+import UserCard from '@mainComponents/users/UserCard.vue';
 import smartList from '@sharedComponents/smartList/SmartList.vue';
 import emptyList from '@sharedComponents/emptyList/EmptyList.vue';
-import ScrollToTop from '@components/ScrollToTop.vue';
+import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
 import rightSidebar from '@mainComponents/rightSidebar/RightSidebar.vue';
 import TabLabel from '@sharedComponents/tabLabel/TabLabel.vue';
 import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
@@ -114,8 +114,8 @@ import { calcHeight } from '@workers/window-size-worker/calcHeight';
 import { useUserDataStore } from '@/stores/userData';
 
 import { FilterPatch } from '@workers/api-worker/http/filter/filter.patch';
-import UsersFilters from '@components/filters/block-filters/UsersFilters.vue';
-import { ROUTES } from '@/router/router.const';
+import UsersFilters from '@mainComponents/filters/block-filters/UsersFilters.vue';
+import { ROUTES } from '@routes/router.const';
 
 export default {
   name: 'RatingPage',

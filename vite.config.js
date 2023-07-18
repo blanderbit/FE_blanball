@@ -49,6 +49,11 @@ export default defineConfig({
       '@workers': fileURLToPath(new URL('./src/workers', import.meta.url)),
       '@utils': fileURLToPath(new URL('./src/utils', import.meta.url)),
       '@consts': fileURLToPath(new URL('./src/consts', import.meta.url)),
+      '@consts': fileURLToPath(new URL('./src/consts', import.meta.url)),
+      '@views': fileURLToPath(new URL('./src/views', import.meta.url)),
+      '@stores': fileURLToPath(new URL('./src/stores', import.meta.url)),
+      '@routes': fileURLToPath(new URL('./src/routes', import.meta.url)),
+      '@router': fileURLToPath(new URL('./src/router', import.meta.url)),
     },
   },
   css: {

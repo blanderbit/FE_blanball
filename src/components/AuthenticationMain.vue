@@ -51,7 +51,7 @@
 
 <script>
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
-import PositionMap from './maps/PositionMap.vue';
+import PositionMap from '@mainComponents/maps/PositionMap.vue';
 import { CONSTS } from '@consts/index';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
@@ -110,7 +110,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@sytles/mixins/device.scss';
 
 .v-enter-active,
 .v-leave-active {

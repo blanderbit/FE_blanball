@@ -276,7 +276,7 @@ import { useElementSize } from '@vueuse/core';
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
 
 import { CONSTS } from '@consts';
-import { ROUTES } from '@/router/router.const';
+import { ROUTES } from '@routes/router.const';
 
 import 'vue-cal/dist/vuecal.css';
 

@@ -129,10 +129,10 @@ import MyEventCard from '@mainComponents/events/MyEventCard.vue';
 import rightSidebar from '@mainComponents/rightSidebar/RightSidebar.vue';
 import emptyList from '@sharedComponents/emptyList/EmptyList.vue';
 import smartGridList from '@sharedComponents/smartList/SmartGridList.vue';
-import ScrollToTop from '@components/ScrollToTop.vue';
+import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
 import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
 import Dropdown from '@sharedComponents/dropdown/Dropdown.vue';
-import EventsFilters from '@components/filters/block-filters/EventsFilters.vue';
+import EventsFilters from '@mainComponents/filters/block-filters/EventsFilters.vue';
 import ContextModal from '@sharedComponents/modals/ContextModal.vue';
 import SelectFormsColorsModal from '@mainComponents/manageEvent/modals/SelectFormsColorsModal.vue';
 
@@ -149,7 +149,7 @@ import {
 } from '@workers/loading-worker/loading.worker';
 import { useUserDataStore } from '@/stores/userData';
 
-import { ROUTES } from '@/router/router.const';
+import { ROUTES } from '@routes/router.const';
 import { CONSTS } from '@consts/index';
 
 import Plus from '@images/plus.svg';

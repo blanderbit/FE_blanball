@@ -290,11 +290,11 @@ import { useI18n } from 'vue-i18n';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import rightSidebar from '@mainComponents/rightSidebar/RightSidebar.vue';
 import EventInfoUsersTable from '@mainComponents/events/EventInfoUsersTable.vue';
-import PositionMap from '@components/maps/PositionMap.vue';
+import PositionMap from '@mainComponents/maps/PositionMap.vue';
 import CopyModal from '@sharedComponents/modals/CopyModal.vue';
 import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 import TabLabel from '@sharedComponents/tabLabel/TabLabel.vue';
-import ListOfEventRequestsToParticipations from '@components/ListOfEventRequestsToParticipations.vue';
+import ListOfEventRequestsToParticipations from '@mainComponents/events/ListOfEventRequestsToParticipations.vue';
 import EventInfoForms from '@mainComponents/events/EventInfoForms.vue';
 import ActionModal from '@mainComponents/events/modals/ActionModal.vue';
 import EditEventModal from '@mainComponents/manageEvent/modals/EditEventModal.vue';
@@ -302,7 +302,7 @@ import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 import ContextModal from '@sharedComponents/modals/ContextModal.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import InviteManyUsersToEventModal from '@mainComponents/events/modals/InviteToEventModal/InviteManyUsersToEventModal.vue';
-import SmallUserCard from '@components/SmallUserCard.vue';
+import SmallUserCard from '@mainComponents/users/SmallUserCard.vue';
 
 import { API } from '@workers/api-worker/api.worker';
 import { BlanballEventBus } from '@workers/event-bus-worker';
@@ -318,7 +318,7 @@ import {
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
 
 import { CONSTS } from '@consts/index';
-import { ROUTES } from '@/router/router.const';
+import { ROUTES } from '@routes/router.const';
 
 import emoji_1 from '@images/emojies/1.svg';
 import emoji_2 from '@images/emojies/2.svg';

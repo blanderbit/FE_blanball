@@ -109,7 +109,7 @@ import UserAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 
 import { BlanballEventBus } from '@workers/event-bus-worker';
 
-import { ROUTES } from '@/router/router.const';
+import { ROUTES } from '@routes/router.const';
 
 import grayCrossIcon from '@images/gray-cross.svg';
 import blackCrossIcon from '@images/cross.svg';

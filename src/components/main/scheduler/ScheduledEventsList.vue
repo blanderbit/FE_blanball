@@ -86,7 +86,7 @@ import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 import NotSelectedFriendCard from './NotSelectedFriendCard.vue';
 import SmartList from '@sharedComponents/smartList/SmartList.vue';
 import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
-import ScrollToTop from '@components/ScrollToTop.vue';
+import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
 import ScheduledEventCard from './ScheduledEventCard.vue';
 
 import { API } from '@workers/api-worker/api.worker';

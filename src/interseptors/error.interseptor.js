@@ -1,15 +1,15 @@
 import { useToast } from 'vue-toastification';
-import { TypeRequestMessageWorker } from '../workers/type-request-message-worker';
+import { TypeRequestMessageWorker } from '@workers/type-request-message-worker';
 
-import { refreshTokens } from '../workers/token-worker/refreshTokens';
-import { useTokensStore } from '../stores/tokens';
+import { refreshTokens } from '@workers/token-worker/refreshTokens';
+import { useTokensStore } from '@stores/tokens';
 
 import { AxiosInstance } from '../plugins/axios.plugin';
 
 import { i18n } from '../plugins/i18n.plugin';
-import { EndpointsEnum } from '../workers/api-worker/http/http-common/prefix.enum';
-import { globalSkipMesssageTypes } from '../workers/type-request-message-worker';
-import { finishSpinner } from '../workers/loading-worker/loading.worker';
+import { EndpointsEnum } from '@workers/api-worker/http/http-common/prefix.enum';
+import { globalSkipMesssageTypes } from '@workers/type-request-message-worker';
+import { finishSpinner } from '@workers/loading-worker/loading.worker';
 
 const toast = useToast();
 

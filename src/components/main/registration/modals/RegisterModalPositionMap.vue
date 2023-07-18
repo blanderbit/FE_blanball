@@ -34,7 +34,7 @@
 <script>
 import { ref } from 'vue';
 
-import PositionMap from '@components/maps/PositionMap.vue';
+import PositionMap from '@mainComponents/maps/PositionMap.vue';
 import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 

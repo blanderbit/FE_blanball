@@ -72,10 +72,10 @@ import { useRouter } from 'vue-router';
 import BreadCrumbs from '@sharedComponents/breadcrumbs/Breadcrumbs.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import SearchModal from '@sharedComponents/modals/SearchModal.vue';
-import SearchBlockAll from '@components/SearchBlockAll.vue';
+import SearchBlockAll from '@mainComponents/header/SearchBlockAll.vue';
 
 import { CONSTS } from '@consts/index';
-import { ROUTES } from '@/router/router.const';
+import { ROUTES } from '@routes/router.const';
 import { API } from '@workers/api-worker/api.worker';
 import { BlanballEventBus } from '@workers/event-bus-worker';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
@@ -234,7 +234,6 @@ export default {
 $color-dfdeed: #dfdeed;
 $color-fafafa: #fafafa;
 
-@import '@sytles/mixins/device.scss';
 
 .b_header {
   display: flex;

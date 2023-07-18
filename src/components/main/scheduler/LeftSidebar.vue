@@ -63,7 +63,7 @@ import { useRouter } from 'vue-router';
 
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import SmartList from '@sharedComponents/smartList/SmartList.vue';
-import ScrollToTop from '@components/ScrollToTop.vue';
+import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
 import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
 import UserAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 import SchedulerUserCard from './SchedulerUserCard.vue';
@@ -75,7 +75,7 @@ import { useUserDataStore } from '@/stores/userData';
 import { BlanballEventBus } from '@workers/event-bus-worker';
 
 import { CONSTS } from '@consts';
-import { ROUTES } from '@/router/router.const';
+import { ROUTES } from '@routes/router.const';
 
 import searchIcon from '@images/scheduler/lens.svg';
 import whiteClockIcon from '@images/scheduler/white-clock.svg';

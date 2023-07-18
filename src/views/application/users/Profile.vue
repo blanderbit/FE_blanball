@@ -8,7 +8,7 @@ import { useRoute } from 'vue-router';
 import { ref, watch } from 'vue';
 import { API } from '@workers/api-worker/api.worker';
 
-import { ROUTES } from '@/router/router.const';
+import { ROUTES } from '@routes/router.const';
 export default {
   name: 'PlayerPage',
   components: {

@@ -33,7 +33,7 @@ import { useI18n } from 'vue-i18n';
 import { PaginationWorker } from '@workers/pagination-worker';
 import smartList from '@sharedComponents/smartList/SmartList.vue';
 import emptyList from '@sharedComponents/emptyList/EmptyList.vue';
-import ScrollToTop from '@components/ScrollToTop.vue';
+import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
 import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
 
 export default {

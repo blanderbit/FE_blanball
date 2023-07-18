@@ -93,7 +93,7 @@ import { accessToken, refreshToken } from '@workers/token-worker';
 import { PositionMapBus } from '@workers/event-bus-worker';
 import { disableFormSubmit } from '@utils/disableFormSubmit';
 
-import { ROUTES } from '@/router/router.const';
+import { ROUTES } from '@routes/router.const';
 import { CONSTS } from '@consts';
 import { SCHEMAS } from '@/validators/schemas';
 

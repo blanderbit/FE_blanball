@@ -101,7 +101,7 @@ import { useI18n } from 'vue-i18n';
 
 import smartGridList from '@sharedComponents/smartList/SmartGridList.vue';
 import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
-import ScrollToTop from '@components/ScrollToTop.vue';
+import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
 import HideEventCard from '@mainComponents/events/HideEventCard.vue';
 import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';

@@ -77,7 +77,7 @@ import StarRating from 'vue-star-rating';
 
 import smartList from '@sharedComponents/smartList/SmartList.vue';
 import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
-import ScrollToTop from '@components/ScrollToTop.vue';
+import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
 import SimpleListWrapper from '@sharedComponents/simpleList/SimpleList.vue';
 
 import { getDate } from '@utils/getDate';

@@ -75,7 +75,7 @@ import { v4 as uuid } from 'uuid';
 
 import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
 import SmartList from '@sharedComponents/smartList/SmartList.vue';
-import ScrollToTop from '@components/ScrollToTop.vue';
+import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
 import Review from './Review.vue';
 
 import { API } from '@workers/api-worker/api.worker';

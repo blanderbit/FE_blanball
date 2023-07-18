@@ -38,7 +38,7 @@ import { getDate } from '@utils/getDate';
 import { getTime } from '@utils/getTime';
 import { BlanballEventBus } from '@workers/event-bus-worker';
 
-import { ROUTES } from '@/router/router.const';
+import { ROUTES } from '@routes/router.const';
 
 const popularEvents = ref([]);
 const router = useRouter();

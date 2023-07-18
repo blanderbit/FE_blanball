@@ -10,7 +10,11 @@
       "@sharedComponents/*": ["src/components/shared/*"],
       "@workers/*": ["src/workers/*"],
       "@utils/*": ["src/utils/*"],
-      "@consts/*": ["src/consts/*"]
+      "@consts/*": ["src/consts/*"],
+      "@views/*": ["src/views/*"],
+      "@stores/*": ["src/stores/*"],
+      "@routes/*": ["src/routes/*"],
+      "@router/*": ["src/router/*"]
     }
   },
   "exclude": ["node_modules", "dist"]

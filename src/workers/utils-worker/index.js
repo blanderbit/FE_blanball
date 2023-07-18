@@ -2,7 +2,7 @@ import { AuthWebSocketWorkerInstance } from '../web-socket-worker';
 import {
   MessageActionDataTypes,
   MessageActionTypes,
-} from '../../workers/web-socket-worker/message.action.types';
+} from '@workers/web-socket-worker/message.action.types';
 import { DETAILS_TYPE_ENUM_VALUES } from '../type-request-message-worker';
 
 export const AxiosQuery = (params) => {

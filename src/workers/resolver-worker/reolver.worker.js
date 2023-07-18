@@ -5,7 +5,7 @@ import {
   startSpinner,
 } from '../loading-worker/loading.worker.js';
 import { VueResolver } from './vue.resolver.js';
-import { ROUTES } from '../../router/router.const';
+import { ROUTES } from '../../routes/router.const';
 
 export const routerAuthResolver = new VueResolver()
   .registerResolverFirstWorker(resolverFunctions.isUserAuthorized)

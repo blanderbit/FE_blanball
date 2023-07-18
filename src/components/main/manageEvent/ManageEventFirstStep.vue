@@ -163,7 +163,7 @@ import dayjs from 'dayjs';
 import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import radioButton from '@sharedComponents/radioButton/RadioButton.vue';
-import PositionMap from '@components/maps/PositionMap.vue';
+import PositionMap from '@mainComponents/maps/PositionMap.vue';
 import EventCreatePositionMap from './modals/EventCreatePositionMapModal.vue';
 
 import { CONSTS } from '@consts/index';

@@ -1,4 +1,4 @@
-import WhiteInfoIcon from '../../assets/img/white-info.svg';
+import WhiteInfoIcon from '@images/white-info.svg';
 
 export const HINTS_DATA = {
   scheduler_onboarding: {

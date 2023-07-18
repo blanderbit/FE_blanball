@@ -116,11 +116,11 @@ import { useI18n } from 'vue-i18n';
 
 import { v4 as uuid } from 'uuid';
 
-import Sidebar from '@components/Sidebar/Sidebar.vue';
+import Sidebar from '@mainComponents/sidebar/Sidebar.vue';
 import mainHeader from '@mainComponents/header/MainHeader.vue';
 import Notification from '@mainComponents/notifications/Notification.vue';
 import VerifyEmailModal from '@mainComponents/profile/modals/VerifyEmailModal.vue';
-import ModalFeedback from '@components/modals/createFeedBackModal/index.vue';
+import ModalFeedback from '@mainComponents/manageEvent/modals/createFeedBackModal/index.vue';
 import ActionModal from '@mainComponents/events/modals/ActionModal.vue';
 import Scheduler from '@mainComponents/scheduler/index.vue';
 import LeftSidebar from '@mainComponents/scheduler/LeftSidebar.vue';

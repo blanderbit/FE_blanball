@@ -1,11 +1,11 @@
-import BlueColor from '../assets/img/colors/blue.svg';
-import RedColor from '../assets/img/colors/red.svg';
-import WhiteColor from '../assets/img/colors/white.svg';
-import YellowColor from '../assets/img/colors/yellow.svg';
-import BlackColor from '../assets/img/colors/black.svg';
-import GreenColor from '../assets/img/colors/green.svg';
-import OrangeColor from '../assets/img/colors/orange.svg';
-import PurpleColor from '../assets/img/colors/purple.svg';
+import BlueColor from '@images/colors/blue.svg';
+import RedColor from '@images/colors/red.svg';
+import WhiteColor from '@images/colors/white.svg';
+import YellowColor from '@images/colors/yellow.svg';
+import BlackColor from '@images/colors/black.svg';
+import GreenColor from '@images/colors/green.svg';
+import OrangeColor from '@images/colors/orange.svg';
+import PurpleColor from '@images/colors/purple.svg';
 
 const colorIcons = {
   Blue: BlueColor,

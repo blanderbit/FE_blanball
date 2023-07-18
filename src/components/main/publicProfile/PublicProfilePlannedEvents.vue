@@ -68,7 +68,7 @@ import { getDate } from '@utils/getDate';
 
 import { API } from '@workers/api-worker/api.worker';
 
-import { ROUTES } from '@/router/router.const';
+import { ROUTES } from '@routes/router.const';
 
 export default {
   name: 'RatingCard',

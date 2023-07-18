@@ -37,7 +37,7 @@
 import { ref, computed, watch } from 'vue';
 
 import SmartList from '@sharedComponents/smartList/SmartList.vue';
-import ScrollToTop from '@components/ScrollToTop.vue';
+import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
 import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
 import SchedulerUserCard from './SchedulerUserCard.vue';
 import SchedulerNoUsersCard from './SchedulerNoUsersCard.vue';

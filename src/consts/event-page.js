@@ -1,8 +1,8 @@
-import circleTick from '../assets/img/tick-in-circle.svg';
-import bucket from '../assets/img/bucket.svg';
-import pin from '../assets/img/pin.svg';
-import unpin from '../assets/img/unpin.svg';
-import edit from '../assets/img/edit-gray.svg';
+import circleTick from '@images/tick-in-circle.svg';
+import bucket from '@images/bucket.svg';
+import pin from '@images/pin.svg';
+import unpin from '@images/unpin.svg';
+import edit from '@images/edit-gray.svg';
 
 export default {
   sport_type_dropdown: [

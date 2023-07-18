@@ -7,7 +7,7 @@ import {
 } from '../../type.decorator';
 
 import { ChatWebSocketTypes } from './web.socket.types';
-import { useChatDataStore } from '../../../../stores/chatData';
+import { useChatDataStore } from '@stores/chatData';
 import { pinia } from '../../../../plugins/pinia.plugin';
 
 @AuthWebSocketMessage()

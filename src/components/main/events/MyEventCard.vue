@@ -78,7 +78,7 @@
 <script>
 import { computed } from 'vue';
 
-import PlaceDetectorModal from '@components/maps/PlaceDetectorModal.vue';
+import PlaceDetectorModal from '@mainComponents/maps/PlaceDetectorModal.vue';
 
 export default {
   components: {

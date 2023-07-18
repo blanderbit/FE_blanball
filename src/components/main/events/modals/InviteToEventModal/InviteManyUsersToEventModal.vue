@@ -107,7 +107,7 @@
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import SearchBlockAll from '@components/SearchBlockAll.vue';
+import SearchBlockAll from '@mainComponents/header/SearchBlockAll.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';

@@ -86,7 +86,7 @@ import { useElementSize } from '@vueuse/core';
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import MainInput from '@sharedComponents/input/MainInput.vue';
-import SearchBlockAll from '@components/SearchBlockAll.vue';
+import SearchBlockAll from '@mainComponents/header/SearchBlockAll.vue';
 import ChatUsersList from '@mainComponents/chat/ChatUsersList.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';

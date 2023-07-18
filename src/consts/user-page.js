@@ -1,6 +1,6 @@
-import MaleIcon from '../assets/img/female-icon.svg';
-import FemaleIcon from '../assets/img/male-icon.svg';
-import UnisexIcon from '../assets/img/unisex.svg';
+import MaleIcon from '@images/female-icon.svg';
+import FemaleIcon from '@images/male-icon.svg';
+import UnisexIcon from '@images/unisex.svg';
 
 export default {
   months: {
