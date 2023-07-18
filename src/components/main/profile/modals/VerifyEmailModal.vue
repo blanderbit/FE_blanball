@@ -65,11 +65,11 @@ import Counter from '@sharedComponents/counter/Counter.vue';
 import inputCode from '@sharedComponents/inputCode/InputCode.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
 
-import { API } from '@/workers/api-worker/api.worker';
+import { API } from '@workers/api-worker/api.worker';
 import {
   startSpinner,
   finishSpinner,
-} from '@/workers/loading-worker/loading.worker';
+} from '@workers/loading-worker/loading.worker';
 
 import { SCHEMAS } from '@/validators/schemas';
 

@@ -107,7 +107,7 @@ import { useRouter } from 'vue-router';
 
 import UserAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 
-import { BlanballEventBus } from '@/workers/event-bus-worker';
+import { BlanballEventBus } from '@workers/event-bus-worker';
 
 import { ROUTES } from '@/router/router.const';
 

@@ -99,14 +99,14 @@ import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 
-import { API } from '@/workers/api-worker/api.worker';
-import { BlanballEventBus } from '@/workers/event-bus-worker';
+import { API } from '@workers/api-worker/api.worker';
+import { BlanballEventBus } from '@workers/event-bus-worker';
 import {
   startSpinner,
   finishSpinner,
-} from '@/workers/loading-worker/loading.worker';
+} from '@workers/loading-worker/loading.worker';
 
-import { runOnSelectEventDuration } from '@/utils/runOnSelectEventDuration';
+import { runOnSelectEventDuration } from '@utils/runOnSelectEventDuration';
 
 import { SCHEMAS } from '@/validators/schemas';
 

@@ -14,7 +14,7 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { CONSTS } from '@/consts';
+import { CONSTS } from '@consts';
 
 export default {
   props: {

@@ -40,9 +40,9 @@
 </template>
 
 <script>
- import userAvatar from './shared/userAvatar/UserAvatar.vue';
-import GreenBtn from './shared/button/GreenBtn.vue';
-import WhiteBtn from './shared/button/WhiteBtn.vue';
+ import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
+import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 
 import GrayCrossIcon from '@images/gray-cross.svg';
 import NikeIcon from '@images/nike-icon.svg';

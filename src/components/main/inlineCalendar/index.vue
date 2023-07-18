@@ -64,9 +64,9 @@ import {
   watch,
 } from 'vue';
 import { dragscroll } from 'vue-dragscroll';
-import checkSameDay from '@/utils/checkSameDay';
-import checkIsWeekend from '@/utils/checkDateInRange';
-import checkIsInRange from '@/utils/checkDateInRange';
+import checkSameDay from '@utils/checkSameDay';
+import checkIsWeekend from '@utils/checkDateInRange';
+import checkIsInRange from '@utils/checkDateInRange';
 import TheObserver from './TheObserver.vue';
 export default {
   name: 'VueInlineCalendar',

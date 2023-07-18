@@ -35,7 +35,7 @@ import { ref, computed, watch } from 'vue';
 
 import { v4 as uuid } from 'uuid';
 
-import { CustomModelWorker } from '@/workers/custom-model-worker';
+import { CustomModelWorker } from '@workers/custom-model-worker';
 
 export default {
   props: {

@@ -238,10 +238,10 @@ import CopyModal from '@sharedComponents/modals/CopyModal.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 
-import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
-import { copyToClipboard } from '@/utils/copyToClipBoard';
-import { getEmailProvider } from '@/utils/getEmailProvider';
-import { getUkrainianOperator } from '@/utils/getPhoneOperator';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
+import { copyToClipboard } from '@utils/copyToClipBoard';
+import { getEmailProvider } from '@utils/getEmailProvider';
+import { getUkrainianOperator } from '@utils/getPhoneOperator';
 
 import PhoneIcon from '@images/phone-arrow.svg';
 import LetterIcon from '@images/letter.svg';

@@ -210,10 +210,10 @@ import PositionMapModal from '@components/maps/PositionMapModal.vue';
 import ModalFilters from '@components/filters/ModalEventsFilters.vue';
 
 import { TransformedFiltersWorker } from './transformed.filters.worker';
-import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
-import useTodaysDate from '@/utils/todaysDate';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
+import useTodaysDate from '@utils/todaysDate';
 
-import { CONSTS } from '@/consts';
+import { CONSTS } from '@consts';
 
 import MaleIcon from '@images/female-icon.svg';
 import FemaleIcon from '@images/male-icon.svg';

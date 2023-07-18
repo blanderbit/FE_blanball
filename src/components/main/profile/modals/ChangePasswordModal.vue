@@ -75,13 +75,13 @@ import Counter from '@sharedComponents/counter/Counter.vue';
 import inputCode from '@sharedComponents/inputCode/InputCode.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
 
-import { API } from '@/workers/api-worker/api.worker';
-import { refreshTokens } from '@/workers/token-worker/refreshTokens';
+import { API } from '@workers/api-worker/api.worker';
+import { refreshTokens } from '@workers/token-worker/refreshTokens';
 import {
   startSpinner,
   finishSpinner,
-} from '@/workers/loading-worker/loading.worker';
-import { disableFormSubmit } from '@/utils/disableFormSubmit';
+} from '@workers/loading-worker/loading.worker';
+import { disableFormSubmit } from '@utils/disableFormSubmit';
 
 import { SCHEMAS } from '@/validators/schemas';
 

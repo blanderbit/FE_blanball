@@ -123,20 +123,20 @@ import MobileMenu from './MobileMenu.vue';
 import loader from '@sharedComponents/loader/Loader.vue';
 
 import { useUserDataStore } from '@/stores/userData';
-import { createNotificationFromData } from '@/workers/utils-worker';
+import { createNotificationFromData } from '@workers/utils-worker';
 import {
   AuthWebSocketWorkerInstance,
   GeneralSocketWorkerInstance,
-} from '@/workers/web-socket-worker';
-import { API } from '@/workers/api-worker/api.worker';
-import { PaginationWorker } from '@/workers/pagination-worker';
+} from '@workers/web-socket-worker';
+import { API } from '@workers/api-worker/api.worker';
+import { PaginationWorker } from '@workers/pagination-worker';
 import {
   NotificationsBus,
   BlanballEventBus,
-} from '@/workers/event-bus-worker';
-import { FilterPatch } from '@/workers/api-worker/http/filter/filter.patch';
-import useWindowWidth from '@/workers/window-size-worker/widthScreen';
-import { logOut } from '@/utils/logOut';
+} from '@workers/event-bus-worker';
+import { FilterPatch } from '@workers/api-worker/http/filter/filter.patch';
+import useWindowWidth from '@workers/window-size-worker/widthScreen';
+import { logOut } from '@utils/logOut';
 
 import { ROUTES } from '@/router/router.const';
 

@@ -128,19 +128,19 @@ import TopLineFriends from '@mainComponents/scheduler/TopLineFriends.vue';
 import NewVersionModal from '@mainComponents/versions/modals/NewVersionModal.vue';
 import Hint from '@mainComponents/hints/Hint.vue';
 
-import { AuthWebSocketWorkerInstance } from '@/workers/web-socket-worker';
-import { accessToken } from '@/workers/token-worker';
-import { notificationButtonHandlerMessage } from '@/workers/utils-worker';
+import { AuthWebSocketWorkerInstance } from '@workers/web-socket-worker';
+import { accessToken } from '@workers/token-worker';
+import { notificationButtonHandlerMessage } from '@workers/utils-worker';
 import { useUserDataStore } from '@/stores/userData';
 import { useHeaderHeightStore } from '@/stores/headerHeight';
 import {
   NotificationsBus,
   BlanballEventBus,
-} from '@/workers/event-bus-worker';
-import { MessageActionTypes } from '@/workers/web-socket-worker/message.action.types';
-import { API } from '@/workers/api-worker/api.worker';
-import { VersionDetectorWorker } from '@/workers/version-detector-worker';
-import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
+} from '@workers/event-bus-worker';
+import { MessageActionTypes } from '@workers/web-socket-worker/message.action.types';
+import { API } from '@workers/api-worker/api.worker';
+import { VersionDetectorWorker } from '@workers/version-detector-worker';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 import { useElementSize } from '@vueuse/core';
 
 import EventUpdatedIcon from '@images/event-updated-modal-icon.svg';

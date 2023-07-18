@@ -7,7 +7,7 @@ import {
   stateHandler,
   initEmitter,
   isVisible,
-} from '@/workers/infinit-load-worker/index.js';
+} from '@workers/infinit-load-worker/index.js';
 
 const emit = defineEmits(['infinite']);
 const props = defineProps({

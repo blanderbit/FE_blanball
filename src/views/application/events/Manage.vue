@@ -164,14 +164,14 @@ import PreviewInvitedUsersListModal from '@mainComponents/events/modals/PreviewI
 import PreviewEventModal from '@mainComponents/events/modals/PreviewEventModal.vue';
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 
-import { API } from '@/workers/api-worker/api.worker';
+import { API } from '@workers/api-worker/api.worker';
 import { useUserDataStore } from '@/stores/userData';
-import { BlanballEventBus } from '@/workers/event-bus-worker';
-import { calcHeight } from '@/workers/window-size-worker/calcHeight';
-import { finishSpinner, startSpinner } from '@/workers/loading-worker/loading.worker';
-import { disableFormSubmit } from '@/utils/disableFormSubmit';
+import { BlanballEventBus } from '@workers/event-bus-worker';
+import { calcHeight } from '@workers/window-size-worker/calcHeight';
+import { finishSpinner, startSpinner } from '@workers/loading-worker/loading.worker';
+import { disableFormSubmit } from '@utils/disableFormSubmit';
 
-import { runOnSelectEventDuration } from '@/utils/runOnSelectEventDuration';
+import { runOnSelectEventDuration } from '@utils/runOnSelectEventDuration';
 
 import { ROUTES } from '@/router/router.const';
 import { SCHEMAS } from '@/validators/schemas';

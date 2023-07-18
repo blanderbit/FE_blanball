@@ -15,7 +15,7 @@ import { useI18n } from 'vue-i18n';
 
 import ActionModal from '@mainComponents/events/modals/ActionModal.vue';
 
-import { BlanballEventBus } from '@/workers/event-bus-worker';
+import { BlanballEventBus } from '@workers/event-bus-worker';
 
 import NoEditPermIcon from '@images/no-edit-perm-modal-icon.svg';
 

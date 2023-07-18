@@ -87,7 +87,7 @@ import SaveIcon from '@images/save-icon.svg';
 
 import { useUserDataStore } from '@/stores/userData';
 
-import { API } from '@/workers/api-worker/api.worker';
+import { API } from '@workers/api-worker/api.worker';
 
 export default {
   name: 'EditAvatarModal',

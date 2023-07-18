@@ -115,9 +115,9 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 
-import { disableFormSubmit } from '@/utils/disableFormSubmit';
+import { disableFormSubmit } from '@utils/disableFormSubmit';
 
-import { CONSTS } from '@/consts/index';
+import { CONSTS } from '@consts/index';
 import { SCHEMAS } from '@/validators/schemas';
 
 export default {

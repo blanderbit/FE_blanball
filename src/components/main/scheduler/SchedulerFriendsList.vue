@@ -44,10 +44,10 @@ import SchedulerNoUsersCard from './SchedulerNoUsersCard.vue';
 
 import { v4 as uuid } from 'uuid';
 
-import { PaginationWorker } from '@/workers/pagination-worker';
-import { API } from '@/workers/api-worker/api.worker';
+import { PaginationWorker } from '@workers/pagination-worker';
+import { API } from '@workers/api-worker/api.worker';
 
-import { CONSTS } from '@/consts';
+import { CONSTS } from '@consts';
 
 export default {
   components: {

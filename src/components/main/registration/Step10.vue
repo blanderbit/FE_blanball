@@ -73,19 +73,19 @@ import MainInput from '@sharedComponents/input/MainInput.vue';
 import RegisterModalPositionMap from './modals/RegisterModalPositionMap.vue';
 import StepWrapper from './StepWrapper.vue';
 
-import { PositionMapBus } from '@/workers/event-bus-worker';
-import { API } from '@/workers/api-worker/api.worker';
+import { PositionMapBus } from '@workers/event-bus-worker';
+import { API } from '@workers/api-worker/api.worker';
 import { useDevice } from 'next-vue-device-detector';
-import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
-import { CONSTS } from '@/consts/index';
+import { CONSTS } from '@consts/index';
 
 import tickIcon from '@images/tick-white.svg';
 import nikeIcon from '@images/nike-icon.svg';
 import {
   finishSpinner,
   startSpinner,
-} from '@/workers/loading-worker/loading.worker';
+} from '@workers/loading-worker/loading.worker';
 
 export default {
   name: 'Step10',

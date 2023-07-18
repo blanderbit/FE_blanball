@@ -79,7 +79,7 @@ import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import StepWrapper from './StepWrapper.vue';
 
-import { CONSTS } from '@/consts';
+import { CONSTS } from '@consts';
 
 import arrowRight from '@images/arrow-right-white.svg';
 import clipIcon from '@images/clip.svg';

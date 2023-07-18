@@ -186,18 +186,18 @@ import HideMyEventsModal from '@mainComponents/events/modals/HideMyEventsModal.v
 import PublicProfileWrapper from '@mainComponents/publicProfile/PublicProfileWrapper.vue';
 import ReviewsListModal from '@mainComponents/profile/modals/ReviewsListModal/ReviewsListModal.vue';
 
-import { API } from '@/workers/api-worker/api.worker';
+import { API } from '@workers/api-worker/api.worker';
 import { useUserDataStore } from '@/stores/userData';
-import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
-import { calcHeight } from '@/workers/window-size-worker/calcHeight';
-import { disableFormSubmit } from '@/utils/disableFormSubmit';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
+import { calcHeight } from '@workers/window-size-worker/calcHeight';
+import { disableFormSubmit } from '@utils/disableFormSubmit';
 
-import { CONSTS } from '@/consts';
+import { CONSTS } from '@consts';
 import { SCHEMAS } from '@/validators/schemas';
 import {
   finishSpinner,
   startSpinner,
-} from '@/workers/loading-worker/loading.worker';
+} from '@workers/loading-worker/loading.worker';
 
 const EDIT_BUTTON_ACTIONS = {
   SAVE: 'save',

@@ -80,11 +80,11 @@ import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue
 import ScrollToTop from '@components/ScrollToTop.vue';
 import SimpleListWrapper from '@sharedComponents/simpleList/SimpleList.vue';
 
-import { getDate } from '@/utils/getDate';
+import { getDate } from '@utils/getDate';
 
-import { API } from '@/workers/api-worker/api.worker';
+import { API } from '@workers/api-worker/api.worker';
 
-import { CONSTS } from '@/consts';
+import { CONSTS } from '@consts';
 
 export default {
   name: 'RatingCard',

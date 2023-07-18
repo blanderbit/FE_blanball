@@ -74,13 +74,13 @@ import MainInput from '@sharedComponents/input/MainInput.vue';
 import SearchModal from '@sharedComponents/modals/SearchModal.vue';
 import SearchBlockAll from '@components/SearchBlockAll.vue';
 
-import { CONSTS } from '@/consts/index';
+import { CONSTS } from '@consts/index';
 import { ROUTES } from '@/router/router.const';
-import { API } from '@/workers/api-worker/api.worker';
-import { BlanballEventBus } from '@/workers/event-bus-worker';
-import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
+import { API } from '@workers/api-worker/api.worker';
+import { BlanballEventBus } from '@workers/event-bus-worker';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
-import { HINTS_DATA } from '@/workers/hints-worker/hints.data';
+import { HINTS_DATA } from '@workers/hints-worker/hints.data';
 
 import searchIcon from '@images/search.svg';
 import arrowIcon from '@images/arrow-right-gray.svg';

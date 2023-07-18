@@ -264,18 +264,18 @@ import SchedulerInlineCalendarTitle from './SchedulerInlineCalendarTitle.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import JoinScheduledEventModal from './modals/JoinScheduledEventModal.vue';
 
-import { API } from '@/workers/api-worker/api.worker';
+import { API } from '@workers/api-worker/api.worker';
 import { useUserDataStore } from '@/stores/userData';
 import {
   startSpinner,
   finishSpinner,
-} from '@/workers/loading-worker/loading.worker';
-import { BlanballEventBus } from '@/workers/event-bus-worker';
-import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
+} from '@workers/loading-worker/loading.worker';
+import { BlanballEventBus } from '@workers/event-bus-worker';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 import { useElementSize } from '@vueuse/core';
-import { calcHeight } from '@/workers/window-size-worker/calcHeight';
+import { calcHeight } from '@workers/window-size-worker/calcHeight';
 
-import { CONSTS } from '@/consts';
+import { CONSTS } from '@consts';
 import { ROUTES } from '@/router/router.const';
 
 import 'vue-cal/dist/vuecal.css';

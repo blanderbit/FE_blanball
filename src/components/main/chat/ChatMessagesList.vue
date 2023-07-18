@@ -80,18 +80,18 @@ import ChatServiceMessage from './ChatServiceMessage.vue';
 import NoChatMessages from './NoChatMessages.vue';
 import ActionModal from '@mainComponents/events/modals/ActionModal.vue';
 
-import { ChatEventBus } from '@/workers/event-bus-worker';
-import { WebSocketPaginationWorker } from '@/workers/pagination-worker';
+import { ChatEventBus } from '@workers/event-bus-worker';
+import { WebSocketPaginationWorker } from '@workers/pagination-worker';
 import {
   AuthWebSocketWorkerInstance,
   ChatSocketWorkerInstance,
-} from '@/workers/web-socket-worker';
-import { API } from '@/workers/api-worker/api.worker';
-import { ChatWebSocketTypes } from '@/workers/web-socket-worker/message-types/chat/web.socket.types';
+} from '@workers/web-socket-worker';
+import { API } from '@workers/api-worker/api.worker';
+import { ChatWebSocketTypes } from '@workers/web-socket-worker/message-types/chat/web.socket.types';
 
 import { useUserDataStore } from '@/stores/userData';
 
-import { CONSTS } from '@/consts';
+import { CONSTS } from '@consts';
 
 // FIXME нужно заменить иконку на другую
 import LimitOfAdminsIcon from '@images/chat/limit-of-admins-reached.svg';

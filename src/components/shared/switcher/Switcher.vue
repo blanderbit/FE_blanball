@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { CustomModelWorker } from '@/workers/custom-model-worker';
+import { CustomModelWorker } from '@workers/custom-model-worker';
 
 export default {
   components: {},

@@ -88,13 +88,13 @@ import step9 from '@mainComponents/registration/Step9.vue';
 import step10 from '@mainComponents/registration/Step10.vue';
 import AuthenticationMain from '@components/AuthenticationMain.vue';
 
-import { API } from '@/workers/api-worker/api.worker';
-import { accessToken, refreshToken } from '@/workers/token-worker';
-import { PositionMapBus } from '@/workers/event-bus-worker';
-import { disableFormSubmit } from '@/utils/disableFormSubmit';
+import { API } from '@workers/api-worker/api.worker';
+import { accessToken, refreshToken } from '@workers/token-worker';
+import { PositionMapBus } from '@workers/event-bus-worker';
+import { disableFormSubmit } from '@utils/disableFormSubmit';
 
 import { ROUTES } from '@/router/router.const';
-import { CONSTS } from '@/consts';
+import { CONSTS } from '@consts';
 import { SCHEMAS } from '@/validators/schemas';
 
 import imageStep_1 from '@images/registration-back-1.svg';

@@ -108,12 +108,12 @@ import timer from '@images/timer.svg';
 import tShirt from '@images/t-shirt.svg';
 
 import { v4 as uuid } from 'uuid';
-import { PaginationWorker } from '@/workers/pagination-worker';
-import { API } from '@/workers/api-worker/api.worker';
-import { calcHeight } from '@/workers/window-size-worker/calcHeight';
+import { PaginationWorker } from '@workers/pagination-worker';
+import { API } from '@workers/api-worker/api.worker';
+import { calcHeight } from '@workers/window-size-worker/calcHeight';
 import { useUserDataStore } from '@/stores/userData';
 
-import { FilterPatch } from '@/workers/api-worker/http/filter/filter.patch';
+import { FilterPatch } from '@workers/api-worker/http/filter/filter.patch';
 import UsersFilters from '@components/filters/block-filters/UsersFilters.vue';
 import { ROUTES } from '@/router/router.const';
 

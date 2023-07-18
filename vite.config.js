@@ -37,9 +37,18 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '@sytles': fileURLToPath(new URL('./src/assets/styles', import.meta.url)),
       '@images': fileURLToPath(new URL('./src/assets/img', import.meta.url)),
-      '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
-      '@mainComponents': fileURLToPath(new URL('./src/components/main', import.meta.url)),
-      '@sharedComponents': fileURLToPath(new URL('./src/components/shared', import.meta.url)),
+      '@components': fileURLToPath(
+        new URL('./src/components', import.meta.url)
+      ),
+      '@mainComponents': fileURLToPath(
+        new URL('./src/components/main', import.meta.url)
+      ),
+      '@sharedComponents': fileURLToPath(
+        new URL('./src/components/shared', import.meta.url)
+      ),
+      '@workers': fileURLToPath(new URL('./src/workers', import.meta.url)),
+      '@utils': fileURLToPath(new URL('./src/utils', import.meta.url)),
+      '@consts': fileURLToPath(new URL('./src/consts', import.meta.url)),
     },
   },
   css: {

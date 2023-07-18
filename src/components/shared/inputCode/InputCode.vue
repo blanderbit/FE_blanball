@@ -51,7 +51,7 @@ import {
 } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { CustomModelWorker } from '@/workers/custom-model-worker/index';
+import { CustomModelWorker } from '@workers/custom-model-worker/index';
 
 const { t } = useI18n();
 

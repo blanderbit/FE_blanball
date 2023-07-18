@@ -136,21 +136,21 @@ import EventsFilters from '@components/filters/block-filters/EventsFilters.vue';
 import ContextModal from '@sharedComponents/modals/ContextModal.vue';
 import SelectFormsColorsModal from '@mainComponents/manageEvent/modals/SelectFormsColorsModal.vue';
 
-import { API } from '@/workers/api-worker/api.worker';
-import { PaginationWorker } from '@/workers/pagination-worker';
-import { FilterPatch } from '@/workers/api-worker/http/filter/filter.patch';
-import { addMinutes } from '@/utils/addMinutes';
-import { getDate } from '@/utils/getDate';
-import { getTime } from '@/utils/getTime';
-import { calcHeight } from '@/workers/window-size-worker/calcHeight';
+import { API } from '@workers/api-worker/api.worker';
+import { PaginationWorker } from '@workers/pagination-worker';
+import { FilterPatch } from '@workers/api-worker/http/filter/filter.patch';
+import { addMinutes } from '@utils/addMinutes';
+import { getDate } from '@utils/getDate';
+import { getTime } from '@utils/getTime';
+import { calcHeight } from '@workers/window-size-worker/calcHeight';
 import {
   finishSpinner,
   startSpinner,
-} from '@/workers/loading-worker/loading.worker';
+} from '@workers/loading-worker/loading.worker';
 import { useUserDataStore } from '@/stores/userData';
 
 import { ROUTES } from '@/router/router.const';
-import { CONSTS } from '@/consts/index';
+import { CONSTS } from '@consts/index';
 
 import Plus from '@images/plus.svg';
 

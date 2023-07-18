@@ -109,12 +109,12 @@ import MainInput from '@sharedComponents/input/MainInput.vue';
 import inputCode from '@sharedComponents/inputCode/InputCode.vue';
 import Counter from '@sharedComponents/counter/Counter.vue';
 
-import { API } from '@/workers/api-worker/api.worker';
+import { API } from '@workers/api-worker/api.worker';
 import {
   finishSpinner,
   startSpinner,
-} from '@/workers/loading-worker/loading.worker';
-import { disableFormSubmit } from '@/utils/disableFormSubmit';
+} from '@workers/loading-worker/loading.worker';
+import { disableFormSubmit } from '@utils/disableFormSubmit';
 
 import { ROUTES } from '@/router/router.const';
 import { SCHEMAS } from '@/validators/schemas';

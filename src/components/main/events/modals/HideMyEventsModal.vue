@@ -107,11 +107,11 @@ import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import ActionModal from './ActionModal.vue';
 
-import { API } from '@/workers/api-worker/api.worker';
-import { PaginationWorker } from '@/workers/pagination-worker';
-import { addMinutes } from '@/utils/addMinutes';
-import { getDate } from '@/utils/getDate';
-import { getTime } from '@/utils/getTime';
+import { API } from '@workers/api-worker/api.worker';
+import { PaginationWorker } from '@workers/pagination-worker';
+import { addMinutes } from '@utils/addMinutes';
+import { getDate } from '@utils/getDate';
+import { getTime } from '@utils/getTime';
 
 import SaveIcon from '@images/save-icon.svg';
 import NoEditPermIcon from '@images/no-edit-perm-modal-icon.svg';

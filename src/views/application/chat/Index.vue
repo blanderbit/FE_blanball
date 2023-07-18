@@ -70,17 +70,17 @@ import ChatMessagesList from '@mainComponents/chat/ChatMessagesList.vue';
 import ContextMenu from '@sharedComponents/modals/ContextModal.vue';
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 
-import { accessToken } from '@/workers/token-worker';
-import { ChatSocketWorkerInstance } from '@/workers/web-socket-worker';
-import { calcHeight } from '@/workers/window-size-worker/calcHeight';
-import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
-import { ChatWebSocketTypes } from '@/workers/web-socket-worker/message-types/chat/web.socket.types';
-import { API } from '@/workers/api-worker/api.worker';
-import { ChatEventBus } from '@/workers/event-bus-worker';
+import { accessToken } from '@workers/token-worker';
+import { ChatSocketWorkerInstance } from '@workers/web-socket-worker';
+import { calcHeight } from '@workers/window-size-worker/calcHeight';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
+import { ChatWebSocketTypes } from '@workers/web-socket-worker/message-types/chat/web.socket.types';
+import { API } from '@workers/api-worker/api.worker';
+import { ChatEventBus } from '@workers/event-bus-worker';
 
 import { useChatDataStore } from '@/stores/chatData';
 
-import { CONSTS } from '@/consts';
+import { CONSTS } from '@consts';
 
 const CHAT_PAGE_TOP_AND_BOTTOM_PADDINGS_PX = 20 + 0;
 

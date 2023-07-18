@@ -33,7 +33,7 @@ import { ref, computed } from 'vue';
 import VueCal from 'vue-cal';
 import 'vue-cal/dist/vuecal.css';
 
-import { CONSTS } from '@/consts';
+import { CONSTS } from '@consts';
 
 export default {
   components: {

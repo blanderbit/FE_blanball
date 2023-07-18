@@ -145,9 +145,9 @@ import PaginationScale from '@sharedComponents/pagination/PaginationScale.vue';
 
 import { cloneDeep } from 'lodash';
 
-import { API } from '@/workers/api-worker/api.worker';
-import { PaginationWorker } from '@/workers/pagination-worker';
-import { calcHeight } from '@/workers/window-size-worker/calcHeight';
+import { API } from '@workers/api-worker/api.worker';
+import { PaginationWorker } from '@workers/pagination-worker';
+import { calcHeight } from '@workers/window-size-worker/calcHeight';
 import { useUserDataStore } from '@/stores/userData';
 
 import { VueperSlides, VueperSlide } from 'vueperslides';

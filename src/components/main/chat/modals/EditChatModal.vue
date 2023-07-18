@@ -91,9 +91,9 @@ import ChatUsersList from '@mainComponents/chat/ChatUsersList.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 
-import { copyToClipboard } from '@/utils/copyToClipBoard';
-import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
-import { disableFormSubmit } from '@/utils/disableFormSubmit';
+import { copyToClipboard } from '@utils/copyToClipBoard';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
+import { disableFormSubmit } from '@utils/disableFormSubmit';
 
 import CopyChatLinkIcon from '@images/chat/infinite.svg';
 import ChatNameIcon from '@images/address-icon.svg';

@@ -89,11 +89,11 @@ import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue
 import ScrollToTop from '@components/ScrollToTop.vue';
 import ScheduledEventCard from './ScheduledEventCard.vue';
 
-import { API } from '@/workers/api-worker/api.worker';
-import { PaginationWorker } from '@/workers/pagination-worker';
-import { getDate } from '@/utils/getDate';
-import { getTime } from '@/utils/getTime';
-import { addMinutes } from '@/utils/addMinutes';
+import { API } from '@workers/api-worker/api.worker';
+import { PaginationWorker } from '@workers/pagination-worker';
+import { getDate } from '@utils/getDate';
+import { getTime } from '@utils/getTime';
+import { addMinutes } from '@utils/addMinutes';
 import { useUserDataStore } from '@/stores/userData';
 
 const REQUEST_USER_ROLES = {

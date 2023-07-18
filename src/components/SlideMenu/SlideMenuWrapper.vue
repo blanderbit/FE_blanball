@@ -65,7 +65,7 @@ import sidebarArrowBack from '@images/sidebar-arrow-back.svg';
 import sidebarArrow from '@images/sidebar-arrow.svg';
 
 import { ROUTES } from '@/router/router.const';
-import { CONSTS } from '@/consts';
+import { CONSTS } from '@consts';
 
 export default {
   components: {

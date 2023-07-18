@@ -55,7 +55,7 @@ import vSelect from 'vue-select';
 
 import OpenIndicator from './OpenIndicator.vue';
 
-import { CustomModelWorker } from '@/workers/custom-model-worker/index';
+import { CustomModelWorker } from '@workers/custom-model-worker/index';
 
 import SearchIcon from '@images/search.svg';
 

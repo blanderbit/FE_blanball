@@ -30,7 +30,7 @@
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { PaginationWorker } from '@/workers/pagination-worker';
+import { PaginationWorker } from '@workers/pagination-worker';
 import smartList from '@sharedComponents/smartList/SmartList.vue';
 import emptyList from '@sharedComponents/emptyList/EmptyList.vue';
 import ScrollToTop from '@components/ScrollToTop.vue';

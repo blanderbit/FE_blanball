@@ -115,7 +115,7 @@ import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 import InvitedUsersListModal from './InvitedUsersListModal.vue';
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 
-import { API } from '@/workers/api-worker/api.worker';
+import { API } from '@workers/api-worker/api.worker';
 import { useUserDataStore } from '@/stores/userData';
 
 import SearchIcon from '@images/search.svg';

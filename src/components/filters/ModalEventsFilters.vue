@@ -88,7 +88,7 @@ import PositionMapModal from '@components/maps/PositionMapModal.vue';
 import ClearFilters from './components/ClearFilters.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
 
-import { CONSTS } from '@/consts/index';
+import { CONSTS } from '@consts/index';
 
 import tickIcon from '@images/tick-white.svg';
 

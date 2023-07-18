@@ -82,7 +82,7 @@ import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import mainTextArea from '@sharedComponents/textArea/MainTextArea.vue';
 import Emotions from './Emotions.vue';
 
-import { disableFormSubmit } from '@/utils/disableFormSubmit';
+import { disableFormSubmit } from '@utils/disableFormSubmit';
 
 export default {
   name: 'ModalTopCard',

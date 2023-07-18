@@ -59,7 +59,7 @@ import RadioGenderBox from '@components/filters/components/RadioGenderBox.vue';
 
 import tickIcon from '@images/tick-white.svg';
 
-import { CONSTS } from '@/consts/index';
+import { CONSTS } from '@consts/index';
 
 export default {
   name: 'ModalUsersFilters',

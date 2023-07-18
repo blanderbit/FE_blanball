@@ -183,9 +183,9 @@ import ModalFilters from '@components/filters/ModalUsersFilters.vue';
 import RangeFilter from '@components/filters/components/RangeFilter.vue';
 
 import { TransformedFiltersWorker } from './transformed.filters.worker';
-import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
-import { CONSTS } from '@/consts';
+import { CONSTS } from '@consts';
 
 import SearchIcon from '@images/search.svg';
 import arrowsUpIcon from '@images/sort-arrows.svg';

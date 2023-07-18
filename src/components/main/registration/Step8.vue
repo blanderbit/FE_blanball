@@ -56,7 +56,7 @@ import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
 import StepWrapper from './StepWrapper.vue';
 
-import { CONSTS } from '@/consts/index';
+import { CONSTS } from '@consts/index';
 
 import arrowRight from '@images/arrow-right-white.svg';
 

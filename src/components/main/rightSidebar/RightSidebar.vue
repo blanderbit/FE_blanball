@@ -32,11 +32,11 @@ import { useRouter } from 'vue-router';
 import SmallEventCard from '@mainComponents/events/SmallEventCard.vue';
 import smallLoader from '@sharedComponents/loader/SmallLoader.vue';
 
-import { API } from '@/workers/api-worker/api.worker';
-import { addMinutes } from '@/utils/addMinutes';
-import { getDate } from '@/utils/getDate';
-import { getTime } from '@/utils/getTime';
-import { BlanballEventBus } from '@/workers/event-bus-worker';
+import { API } from '@workers/api-worker/api.worker';
+import { addMinutes } from '@utils/addMinutes';
+import { getDate } from '@utils/getDate';
+import { getTime } from '@utils/getTime';
+import { BlanballEventBus } from '@workers/event-bus-worker';
 
 import { ROUTES } from '@/router/router.const';
 

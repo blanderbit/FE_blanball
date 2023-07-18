@@ -72,9 +72,9 @@ import SchedulerFriendsList from './SchedulerFriendsList.vue';
 import SchedulerTabs from './SchedulerTabs.vue';
 
 import { useUserDataStore } from '@/stores/userData';
-import { BlanballEventBus } from '@/workers/event-bus-worker';
+import { BlanballEventBus } from '@workers/event-bus-worker';
 
-import { CONSTS } from '@/consts';
+import { CONSTS } from '@consts';
 import { ROUTES } from '@/router/router.const';
 
 import searchIcon from '@images/scheduler/lens.svg';

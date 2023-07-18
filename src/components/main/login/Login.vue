@@ -87,16 +87,16 @@ import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import checkBox from '@sharedComponents/checkbox/Checkbox.vue';
 
-import { API } from '@/workers/api-worker/api.worker';
-import { accessToken, refreshToken } from '@/workers/token-worker';
+import { API } from '@workers/api-worker/api.worker';
+import { accessToken, refreshToken } from '@workers/token-worker';
 import {
   startSpinner,
   finishSpinner,
-} from '@/workers/loading-worker/loading.worker';
-import { disableFormSubmit } from '@/utils/disableFormSubmit';
+} from '@workers/loading-worker/loading.worker';
+import { disableFormSubmit } from '@utils/disableFormSubmit';
 
 import { ROUTES } from '@/router/router.const';
-import { CONSTS } from '@/consts';
+import { CONSTS } from '@consts';
 import { SCHEMAS } from '@/validators/schemas';
 
 export default {

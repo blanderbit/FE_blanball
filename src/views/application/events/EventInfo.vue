@@ -304,20 +304,20 @@ import MainInput from '@sharedComponents/input/MainInput.vue';
 import InviteManyUsersToEventModal from '@mainComponents/events/modals/InviteToEventModal/InviteManyUsersToEventModal.vue';
 import SmallUserCard from '@components/SmallUserCard.vue';
 
-import { API } from '@/workers/api-worker/api.worker';
-import { BlanballEventBus } from '@/workers/event-bus-worker';
+import { API } from '@workers/api-worker/api.worker';
+import { BlanballEventBus } from '@workers/event-bus-worker';
 import { useUserDataStore } from '@/stores/userData';
-import { addMinutes } from '@/utils/addMinutes';
-import { getDate } from '@/utils/getDate';
-import { getTime } from '@/utils/getTime';
-import { copyToClipboard } from '@/utils/copyToClipBoard';
+import { addMinutes } from '@utils/addMinutes';
+import { getDate } from '@utils/getDate';
+import { getTime } from '@utils/getTime';
+import { copyToClipboard } from '@utils/copyToClipBoard';
 import {
   startSpinner,
   finishSpinner,
-} from '@/workers/loading-worker/loading.worker';
-import { calcHeight } from '@/workers/window-size-worker/calcHeight';
+} from '@workers/loading-worker/loading.worker';
+import { calcHeight } from '@workers/window-size-worker/calcHeight';
 
-import { CONSTS } from '@/consts/index';
+import { CONSTS } from '@consts/index';
 import { ROUTES } from '@/router/router.const';
 
 import emoji_1 from '@images/emojies/1.svg';

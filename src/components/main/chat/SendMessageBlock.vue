@@ -63,10 +63,10 @@ import MainInput from '@sharedComponents/input/MainInput.vue';
 import EmojiPicker from './EmojiPicker.vue';
 import ManageMessageWrapper from './ManageMessageWrapper.vue';
 
-import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
-import { ChatEventBus } from '@/workers/event-bus-worker';
-import { API } from '@/workers/api-worker/api.worker';
-import { disableFormSubmit } from '@/utils/disableFormSubmit';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
+import { ChatEventBus } from '@workers/event-bus-worker';
+import { API } from '@workers/api-worker/api.worker';
+import { disableFormSubmit } from '@utils/disableFormSubmit';
 
 import SendSmileIcon from '@images/chat/send-smile-button.svg';
 import AddFileIcon from '@images/chat/add-file.svg';
