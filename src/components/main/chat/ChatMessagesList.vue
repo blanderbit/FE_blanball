@@ -4,13 +4,16 @@
     :clientX="contextMenuX"
     :clientY="contextMenuY"
     :modalItems="chatMessageContextMenuItems"
-    backgroundColor="transperent"
+    :background="false"
     @close-modal="closeContextMenu"
     @itemClick="contextMenuItemClick"
   />
 
   <div
-    class="b-chat-messages__list"
+    :class="[
+      'b-chat-messages__list',
+      { 'no-messages': !paginationElements.length },
+    ]"
     @keydown.up="smoothScrollUp"
     @keydown.down="smoothScrollDown"
   >
@@ -22,18 +25,17 @@
       <template #smartListItem="slotProps">
         <div :key="slotProps.index">
           <ChatMessage
-            v-if="isMessageTypeUserMessage(slotProps.smartListItem.type)"
+            v-if="!slotProps.smartListItem.service"
             :messageData="slotProps.smartListItem"
             :selected="selectedMessages.includes(slotProps.smartListItem.id)"
+            :selectableMode="isMessagesSelectableMode"
             :isChatDisabed="chatData.disabled"
             @chatMessageRightClick="showContextMenu"
             @messageWrapperClick="messageWrapperClick"
           />
 
-          <UserJoinedToTheChatMessage
-            v-else-if="
-              isMessageTypeUserJoinedToTheChat(slotProps.smartListItem.type)
-            "
+          <ChatServiceMessage
+            v-else
             :userData="slotProps.smartListItem.sender"
           />
         </div>
@@ -41,10 +43,13 @@
       <template #after>
         <InfiniteLoading
           :identifier="triggerForRestart"
-          :showCompleteSlot="false"
+          :showCompleteSlot="!paginationElements.length"
           ref="scrollbar"
           @infinite="loadDataPaginationData(paginationPage + 1, $event)"
         >
+          <template #complete>
+            <NoChatMessages v-if="!paginationElements.length" />
+          </template>
         </InfiniteLoading>
       </template>
     </SmartList>
@@ -60,7 +65,8 @@ import InfiniteLoading from '../infiniteLoading/InfiniteLoading.vue';
 import SmartList from '../../shared/smartList/SmartList.vue';
 import ContextMenu from '../../shared/modals/ContextModal.vue';
 import ChatMessage from './ChatMessage.vue';
-import UserJoinedToTheChatMessage from './UserJoinedToTheChatMessage.vue';
+import ChatServiceMessage from './ChatServiceMessage.vue';
+import NoChatMessages from './NoChatMessages.vue';
 
 import { ChatEventBus } from '../../../workers/event-bus-worker';
 import { WebSocketPaginationWorker } from '../../../workers/pagination-worker';
@@ -84,7 +90,8 @@ export default {
     ChatMessage,
     SmartList,
     ContextMenu,
-    UserJoinedToTheChatMessage,
+    ChatServiceMessage,
+    NoChatMessages,
   },
   props: {
     chatData: {
@@ -124,6 +131,10 @@ export default {
       };
     });
 
+    const isMessagesSelectableMode = computed(() => {
+      return selectedMessages.value.length;
+    });
+
     const chatMessageContextMenuItems = computed(() => {
       return mockData.value.chatMessageContextMenuItems;
     });
@@ -153,7 +164,7 @@ export default {
     };
 
     function handlingIncomeMessagesData(message) {
-      if (isMessageTypeUserMessage(message.type)) {
+      if (!message.service) {
         const isMessageMine = message?.sender.id === userStore.user.id;
         let isNextMessageFromTheSameSender = false;
 
@@ -188,7 +199,7 @@ export default {
     }
 
     function contextMenuItemClick(action) {
-      const { DELETE, SELECT, FORWARD, REPLY } =
+      const { DELETE, SELECT, FORWARD, REPLY, EDIT } =
         mockData.value.CHAT_MESSAGE_CONTEXT_MENU_ACTIONS;
 
       switch (action) {
@@ -202,6 +213,9 @@ export default {
           break;
         case REPLY:
           replyToMessage(messageOnWhatOpenedContextMenuData.value);
+          break;
+        case EDIT:
+          showEditMessageBoard(messageOnWhatOpenedContextMenuData.value);
           break;
       }
     }
@@ -252,6 +266,10 @@ export default {
       ChatEventBus.emit('replyToChatMessage', messageData);
     }
 
+    function showEditMessageBoard(messageData) {
+      ChatEventBus.emit('editChatMessage', messageData);
+    }
+
     function selectMessage(messageId) {
       if (
         selectedMessages.value.length <
@@ -278,16 +296,6 @@ export default {
       return selectedMessages.value.includes(messageId);
     }
 
-    function isMessageTypeUserMessage(messageType) {
-      return messageType == mockData.value.CHAT_MESSAGE_TYPES.USER_MESSAGE;
-    }
-
-    function isMessageTypeUserJoinedToTheChat(messageType) {
-      return (
-        messageType == mockData.value.CHAT_MESSAGE_TYPES.USER_JOINED_TO_CHAT
-      );
-    }
-
     function messageWrapperClick(messageId) {
       if (isMessageSelected(messageId)) {
         unSelectMessasge(messageId);
@@ -300,23 +308,21 @@ export default {
     }
 
     function createChatMessageMessageHandler(instanceType) {
-      if (instanceType.data.data.data.chat_id === props.chatData.id) {
-        instanceType.createNewMessageInChat(
-          { paginationElements },
-          handlingIncomeMessagesData
-        );
-      }
+      instanceType.createNewMessageInChat(
+        { paginationElements },
+        handlingIncomeMessagesData
+      );
     }
 
     function deleteChatMessages(messagesIds) {
       API.ChatService.deleteChatMessages({
         chat_id: props.chatData.id,
         message_ids: messagesIds,
-      });
+      }).then(deselectChatMessages());
     }
 
     function editChatMessageMessageHandler(instanceType) {
-      console.log(instanceType);
+      instanceType.editMessage(paginationElements);
     }
 
     function deleteChatMessagesMessageHandler(instanceType) {
@@ -324,8 +330,8 @@ export default {
     }
 
     ChatEventBus.on('deselectChatMessages', () => deselectChatMessages());
-    ChatEventBus.on('bulkDeleteChatMessages', (messagesIds) =>
-      deleteChatMessages(messagesIds)
+    ChatEventBus.on('bulkDeleteChatMessages', () =>
+      deleteChatMessages(selectedMessages.value)
     );
 
     AuthWebSocketWorkerInstance.registerCallback(
@@ -370,6 +376,7 @@ export default {
       contextMenuY,
       isContextMenuOpened,
       chatMessageContextMenuItems,
+      isMessagesSelectableMode,
       paginationPage,
       selectedMessages,
       restartInfiniteScroll,
@@ -378,8 +385,6 @@ export default {
       messageWrapperClick,
       closeContextMenu,
       contextMenuItemClick,
-      isMessageTypeUserJoinedToTheChat,
-      isMessageTypeUserMessage,
       smoothScrollDown,
       smoothScrollUp,
     };
@@ -387,4 +392,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.b-chat-messages__list {
+  &.no-messages {
+    height: 100%;
+  }
+}
+</style>

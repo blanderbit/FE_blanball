@@ -1,11 +1,13 @@
 <template>
   <div class="b-chat-page">
-    <EditChatModal
-      v-if="isEditChatModalOpened"
-      :chatData="chatData"
-      @closeModal="closeEditChatModal"
-      @updateChat="updateChatData"
-    />
+    <Transition :name="editChatModalTransitionName">
+      <EditChatModal
+        v-if="isEditChatModalOpened"
+        :chatData="chatData"
+        @closeModal="closeEditChatModal"
+        @updateChat="updateChatData"
+      />
+    </Transition>
     <SubmitModal
       v-if="isSubmitModalOpened"
       :config="submitModalConfig"
@@ -17,7 +19,7 @@
       :clientX="contextMenuX"
       :clientY="contextMenuY"
       :modalItems="currentContextMenuItems"
-      backgroundColor="transperent"
+      :background="false"
       @close-modal="closeContextMenu"
       @itemClick="contextMenuItemClick"
     />
@@ -31,7 +33,7 @@
       />
     </div>
     <div class="b-chat-page-main-side">
-      <div class="b-main-side-messages-block" :style="messagesListBlockStyle" >
+      <div class="b-main-side-messages-block" :style="messagesListBlockStyle">
         <ChatMessagesList ref="CHAT_MESSAGES_LIST_BLOCK" :chatData="chatData" />
       </div>
       <div ref="CHAT_BOTTOM_SIDE_BLOCK" class="b-main-side-bottom-block">
@@ -93,7 +95,7 @@ export default {
   },
   setup() {
     const chatData = ref({
-      id: 733,
+      id: 772,
       name: 'dffddfdfdf fdfddffd',
       isChatRequest: false,
       isGroup: false,
@@ -128,13 +130,18 @@ export default {
     const { calculatedHeight: chatPageHeight } = calcHeight([
       CHAT_PAGE_TOP_AND_BOTTOM_PADDINGS_PX,
     ]);
-    const { windowWidth, detectedDevice, DEVICE_TYPES } = useWindowWidth();
+    const { isMobileSmall } = useWindowWidth();
+
+    const editChatModalTransitionName = computed(() => {
+      return isMobileSmall.value ? 'edit-chat-modal-slide' : null;
+    });
 
     const mockData = computed(() => {
       return {
         chatMainContextMenuItems: CONSTS.chat.chatMainContextMenuItems(
           chatDataStore.infoAboutMe?.push_notifications,
-          chatData.value.isGroup
+          chatData.value.isGroup,
+          isMobileSmall.value
         ),
         CHAT_MAIN_CONTEXT_MENU_ACTIONS:
           CONSTS.chat.CHAT_MAIN_CONTEXT_MENU_ACTIONS,
@@ -214,6 +221,32 @@ export default {
       showContextMenu(e, mockData.value.chatMainContextMenuItems);
     }
 
+    function contextMenuItemClick(action) {
+      const {
+        ENABLE_PUSH_NOTIFICATIONS,
+        DISABLE_PUSH_NOTIFICATIONS,
+        DELETE_CHAT,
+        MANAGE_GROUP,
+        SEARCH_MESSAGES,
+      } = mockData.value.CHAT_MAIN_CONTEXT_MENU_ACTIONS;
+
+      console.log(action);
+
+      switch (action) {
+        case ENABLE_PUSH_NOTIFICATIONS:
+          break;
+        case DISABLE_PUSH_NOTIFICATIONS:
+          break;
+        case DELETE_CHAT:
+          break;
+        case MANAGE_GROUP:
+          showEditChatModal();
+          break;
+        case SEARCH_MESSAGES:
+          break;
+      }
+    }
+
     function showSubmitModal() {
       isSubmitModalOpened.value = true;
     }
@@ -267,6 +300,7 @@ export default {
       contextMenuY,
       isSubmitModalOpened,
       submitModalConfig,
+      editChatModalTransitionName,
       showEditChatModal,
       closeEditChatModal,
       closeChatWarning,
@@ -276,6 +310,7 @@ export default {
       showSubmitModal,
       closeSubmitModal,
       updateChatData,
+      contextMenuItemClick,
     };
   },
 };
@@ -299,7 +334,6 @@ export default {
   @include beforeDesktop {
     width: 100%;
   }
-
   .b-chat-page-main-side {
     padding: 0px 20px 20px 20px;
     display: flex;
@@ -332,5 +366,15 @@ export default {
 .chat-warning-enter-from,
 .chat-warning-leave-to {
   opacity: 0;
+}
+
+.edit-chat-modal-slide-enter-active,
+.edit-chat-modal-slide-leave-active {
+  transition: all 0.5s;
+}
+
+.edit-chat-modal-slide-enter-from,
+.edit-chat-modal-slide-leave-to {
+  transform: translateX(100%);
 }
 </style>

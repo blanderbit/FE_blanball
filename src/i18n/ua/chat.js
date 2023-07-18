@@ -10,6 +10,8 @@ export default {
   user_joined_to_chat: '{userFullName} щойно долучився до бесіди',
   members: 'Учасники',
   online: 'У мережі',
+  message_edited: 'ред.',
+  message_editing: 'Редагування повідомлення',
   emoji_groups: {
     smileys_people: 'Посмішки та люди',
     animals_nature: 'Тварини та природа',
@@ -19,6 +21,10 @@ export default {
     objects: 'Об`єкти',
     symbols: 'Символи',
     flags: 'Прапори',
+  },
+  no_chat_messages: {
+    title: 'У цьому чаті ще не було повідомлень',
+    main_text: 'Надішліть повідомлення першим, щоб розпочати бесіду вже зараз!',
   },
   edit_chat_modal: {
     select_photo: 'Обрати фото',
@@ -52,5 +58,7 @@ export default {
     disable_push_notifications: 'Вимкнути сповіщення',
     leave_group: 'Покинути групу',
     delete_chat: 'Видалити чат',
+    search_messages: 'Пошук повідомлень',
+    manage_group: 'Керування групою'
   },
 };

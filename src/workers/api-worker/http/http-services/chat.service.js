@@ -43,6 +43,10 @@ export class ChatService {
     return AxiosInstance.post(EndpointsEnum.Chats.DeleteChatMessages, data);
   }
 
+  static editChatMessage(data) {
+    return AxiosInstance.post(EndpointsEnum.Chats.EditChatMessage, data);
+  }
+
   static getInfoAboutMeInChat(chatId) {
     return AxiosInstance.get(EndpointsEnum.Chats.GetInfoAboutMeInChat(chatId));
   }

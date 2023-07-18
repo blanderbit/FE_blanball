@@ -26,7 +26,7 @@
         {{ step.title || title }}
       </div>
     </div>
-    <Form v-slot="data" @submit="disableSubmit" :validation-schema="schema">
+    <Form v-slot="data" @submit="disableFormSubmit" :validation-schema="schema">
       <div class="b-modal-top-card__main-block" :style="mainBlockCardStyle">
         <div class="b-modal-top-card__subtitle">
           {{ step.subtitle }}
@@ -81,6 +81,8 @@ import { Form, ErrorMessage } from '@system.it.flumx.com/vee-validate';
 import GreenBtn from '../../shared/button/GreenBtn.vue';
 import mainTextArea from '../../shared/textArea/MainTextArea.vue';
 import Emotions from './Emotions.vue';
+
+import { disableFormSubmit } from '../../../utils/disableFormSubmit';
 
 export default {
   name: 'ModalTopCard',
@@ -183,10 +185,7 @@ export default {
       eventComment,
       emojiSelect,
       goToTheNextStep,
-      disableSubmit: (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      },
+      disableFormSubmit
     };
   },
 };

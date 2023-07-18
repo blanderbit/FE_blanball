@@ -12,7 +12,7 @@
       v-slot="data"
       :initial-values="eventData"
       :validation-schema="schema"
-      @submit="disableSubmit"
+      @submit="disableFormSubmit"
     >
       <SelectFormsColorsModal
         v-if="isSelectFormColarModalOpened"
@@ -169,6 +169,7 @@ import { useUserDataStore } from '../../../stores/userData';
 import { BlanballEventBus } from '../../../workers/event-bus-worker';
 import { calcHeight } from '../../../workers/window-size-worker/calcHeight';
 import { finishSpinner, startSpinner } from '../../../workers/loading-worker/loading.worker';
+import { disableFormSubmit } from '../../../utils/disableFormSubmit';
 
 import { runOnSelectEventDuration } from '../../../utils/runOnSelectEventDuration';
 
@@ -601,10 +602,7 @@ export default {
       openRemoveUsersModal,
       closeRemoveUsersModal,
       setEventDate,
-      disableSubmit: (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      },
+      disableFormSubmit,
     };
   },
 };

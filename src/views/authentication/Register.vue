@@ -9,7 +9,7 @@
     <template #main-content>
       <Form
         v-slot="data"
-        @submit="disableSubmit"
+        @submit="disableFormSubmit"
         :validation-schema="schema"
         :initial-values="initialValues"
       >
@@ -91,6 +91,7 @@ import AuthenticationMain from '../../components/AuthenticationMain.vue';
 import { API } from '../../workers/api-worker/api.worker';
 import { accessToken, refreshToken } from '../../workers/token-worker';
 import { PositionMapBus } from '../../workers/event-bus-worker';
+import { disableFormSubmit } from '../../utils/disableFormSubmit';
 
 import { ROUTES } from '../../router/router.const';
 import { CONSTS } from '../../consts';
@@ -319,10 +320,7 @@ export default {
       backToRoute() {
         router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute);
       },
-      disableSubmit: (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      },
+      disableFormSubmit,
     };
   },
 };

@@ -1,4 +1,4 @@
-import { InitialUpdation } from '../updation/initial.message';
+import { InitialChatMessage } from './initial.message';
 
 import {
   SetMessageType,
@@ -11,10 +11,10 @@ import { ChatWebSocketTypes } from './web.socket.types';
 @AuthWebSocketMessage()
 @UpdateWebSocketMessage()
 @SetMessageType(ChatWebSocketTypes.DeleteMesssages)
-export class DeleteChatMessagesMessage extends InitialUpdation {
+export class DeleteChatMessagesMessage extends InitialChatMessage {
   deleteMessage(paginationElements) {
     if (!this.isError) {
-      const messagesIDS = this.data.data.data.messages_ids;
+      const messagesIDS = this.data.data.messages_ids;
       if (messagesIDS) {
         paginationElements.value = paginationElements.value.filter(
           (element) => !messagesIDS.includes(element.id)

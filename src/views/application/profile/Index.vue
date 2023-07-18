@@ -88,7 +88,7 @@
         v-slot="data"
         :validation-schema="schema"
         :initial-values="formValues"
-        @submit="disableSubmit"
+        @submit="disableFormSubmit"
         ref="myForm"
       >
         <ButtonsBlock
@@ -190,6 +190,7 @@ import { API } from '../../../workers/api-worker/api.worker';
 import { useUserDataStore } from '@/stores/userData';
 import { useWindowWidth } from '../../../workers/window-size-worker/widthScreen';
 import { calcHeight } from '../../../workers/window-size-worker/calcHeight';
+import { disableFormSubmit } from '../../../utils/disableFormSubmit';
 
 import { CONSTS } from '../../../consts';
 import SCHEMAS from '../../../validators/schemas';
@@ -663,26 +664,6 @@ export default {
     });
 
     return {
-      toggleEditMode,
-      saveDataFromPreviewWindow,
-      saveUserDataChanges,
-      handleSaveDataChanges,
-      declineUserDataChanges,
-      changeTab,
-      closeSubmitModal,
-      toggleModal,
-      switchTabLabel,
-      saveDataEdit,
-      cancelDataEdit,
-      openEditPictureModal,
-      getMyProfile,
-      closeModalAndHideEvents,
-      closeReviewsModal,
-      showReviewsModal,
-      cancelChangesAndGoToTheNextRoute,
-      showPreview,
-      showHideMyEventsModal,
-      closeHideMyEventsModal,
       isEditModeProfile,
       changeDataModalConfig,
       mockData,
@@ -704,10 +685,27 @@ export default {
       isTabletSize,
       restData,
       userAvatar,
-      disableSubmit: (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      },
+      toggleEditMode,
+      saveDataFromPreviewWindow,
+      saveUserDataChanges,
+      handleSaveDataChanges,
+      declineUserDataChanges,
+      changeTab,
+      closeSubmitModal,
+      toggleModal,
+      switchTabLabel,
+      saveDataEdit,
+      cancelDataEdit,
+      openEditPictureModal,
+      getMyProfile,
+      closeModalAndHideEvents,
+      closeReviewsModal,
+      showReviewsModal,
+      cancelChangesAndGoToTheNextRoute,
+      showPreview,
+      showHideMyEventsModal,
+      closeHideMyEventsModal,
+      disableFormSubmit,
     };
   },
 };
