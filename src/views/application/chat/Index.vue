@@ -48,7 +48,7 @@
         <Transition name="chat-warning">
           <ChatWarning v-if="isChatWarningVisible" @close="closeChatWarning" />
         </Transition>
-        <RequestForChat v-if="isChatRequestVisible" />
+        <RequestForChat v-if="isChatRequestVisible" :chatData="chatData" />
         <SendMessageBlock
           v-else
           :disabled="isSendMessagesDisabled"
@@ -106,9 +106,9 @@ export default {
   },
   setup() {
     const chatData = ref({
-      id: 9,
+      id: 1,
       name: 'dffddfdfdf fdfddffd',
-      isChatRequest: false,
+      isChatRequest: true,
       isGroup: false,
       disabled: false,
       link: 'helloflamingo.linkactive',

@@ -120,7 +120,11 @@ export default {
     });
 
     const messageReadIcon = computed(() => {
-      return messageData.isRead ? MessageReadIcon : MessageNotReadIcon;
+      return isMessageRead.value ? MessageReadIcon : MessageNotReadIcon;
+    });
+
+    const isMessageRead = computed(() => {
+      return messageData.read_by.length > 0;
     });
 
     const senderMessageData = computed(() => {
