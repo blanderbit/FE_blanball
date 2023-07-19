@@ -23,5 +23,5 @@ export class WebSocketTypes {
   static UpdateMessageUserOnline = 'user_online';
   static BulkNotificationDelete = 'bulk_notifications_delete';
   static AllDeletedNotifications = 'all_user_notifications_deleted';
-  static AllReadedNotifications = 'all_user_notifications_readed';
+  static AllReadNotifications = 'all_user_notifications_read';
 }

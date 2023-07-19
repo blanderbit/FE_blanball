@@ -12,7 +12,9 @@
           @click="itemClick(item)"
         >
           <img :src="item.img" alt="" />
-          <span class="b-item-text">{{ $t(item.text) }}</span>
+          <span class="b-item-text" :style="`color: ${item.textColor}`">{{
+            $t(item.text)
+          }}</span>
         </div>
       </div>
     </div>

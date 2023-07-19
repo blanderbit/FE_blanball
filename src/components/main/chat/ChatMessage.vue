@@ -37,15 +37,15 @@
       @touchend.passive="endMessageHold"
     >
       <div v-html="highlightedMessageText" class="b-chat-message-text"></div>
-      <div class="b-like-message-button">
+      <!-- <div class="b-like-message-button">
         <img src="@images/chat/like-button.svg" alt="" />
-      </div>
+      </div> -->
       <div class="b-chat-message-bottom-side">
         <div v-if="isMessageEdited" class="b-chat-message-time">
           {{ $t('chat.message_edited') }}
         </div>
         <div class="b-chat-message-time">{{ messageTime }}</div>
-        <img v-if="isMessageMine" :src="messageReadedIcon" alt="" />
+        <img v-if="isMessageMine" :src="messageReadIcon" alt="" />
       </div>
     </div>
   </div>
@@ -119,7 +119,7 @@ export default {
       return isMessageMine.value ? WhiteMessageTail : GreenMessageTail;
     });
 
-    const messageReadedIcon = computed(() => {
+    const messageReadIcon = computed(() => {
       return messageData.isRead ? MessageReadIcon : MessageNotReadIcon;
     });
 
@@ -159,7 +159,10 @@ export default {
     };
 
     const highlightedMessageText = computed(() => {
-      return highlightWords(messageData.text, searchMessagesValue);
+      if (searchMessagesValue) {
+        return highlightWords(messageData.text, searchMessagesValue);
+      }
+      return messageData.text;
     });
 
     return {
@@ -170,7 +173,7 @@ export default {
       senderMessageData,
       messageTail,
       isNextMessageFromTheSameSender,
-      messageReadedIcon,
+      messageReadIcon,
       highlightedMessageText,
       startMessageHold,
       endMessageHold,

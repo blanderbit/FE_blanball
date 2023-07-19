@@ -32,6 +32,7 @@
       <ChatTopBlock
         :chatData="chatData"
         :selectedMessages="chatSelectedMessagesList"
+        :isChatEditing="isEditChatModalOpened"
         @searchChatMessages=""
         @manageChat="showManageChatContextMenu"
         @editChat="showEditChatModal"
@@ -105,7 +106,7 @@ export default {
   },
   setup() {
     const chatData = ref({
-      id: 8,
+      id: 9,
       name: 'dffddfdfdf fdfddffd',
       isChatRequest: false,
       isGroup: false,

@@ -5,8 +5,8 @@ import { SetMessageType, AuthWebSocketMessage } from '../../type.decorator';
 import { WebSocketTypes } from '../../web.socket.types';
 
 @AuthWebSocketMessage()
-@SetMessageType(WebSocketTypes.AllReadedNotifications)
-export class NotificationAllReadedNotificationsUpdation extends InitialUpdation {
+@SetMessageType(WebSocketTypes.AllReadNotifications)
+export class NotificationAllReadNotificationsUpdation extends InitialUpdation {
   handleUpdate({ paginationElements }, callbackAfterRead) {
     paginationElements.value = paginationElements.value.map(
       (notificationForRead) => {

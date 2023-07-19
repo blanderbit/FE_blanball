@@ -7,10 +7,10 @@ import { WebSocketTypes } from '../../web.socket.types';
 export class NotificationBulkReadUpdation extends InitialUpdation {
   handleUpdate({ paginationElements }, callbackAfterRead) {
     paginationElements.value = paginationElements.value.map((item) => {
-      const findReadedElement = this.data.objects.includes(
+      const findReadElement = this.data.objects.includes(
         item.notification_id
       );
-      if (findReadedElement) {
+      if (findReadElement) {
         item.isRead = true;
       }
       return item;

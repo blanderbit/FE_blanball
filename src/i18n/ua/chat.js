@@ -10,6 +10,7 @@ export default {
   members: 'Учасники',
   online: 'У мережі',
   message_edited: 'ред.',
+  users_count: '{allUsersCount} учасників, {onlineUsersCount} у мережі',
   message_editing: 'Редагування повідомлення',
   emoji_groups: {
     smileys_people: 'Посмішки та люди',

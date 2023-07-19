@@ -175,6 +175,7 @@ export default {
       paginationPage,
       paginationTotalCount,
       paginationClearData,
+      paginationIsNextPage,
       paginationLoad,
     } = WebSocketPaginationWorker({
       paginationDataRequest: (page) =>
@@ -447,6 +448,7 @@ export default {
       grabMessagesToReadOnScroll,
       actionModalConfig,
       MESSAGES_LIST_VERTICAL_GAP_PX,
+      paginationIsNextPage,
       restartInfiniteScroll,
       loadDataPaginationData,
       showContextMenu,

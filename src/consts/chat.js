@@ -11,6 +11,7 @@ import EditMessageButtonIcon from '@images/chat/edit-message-button.svg';
 import SetOrUnsetAdminIcon from '@images/settings.svg';
 import EnableChatNotificationsIcon from '@images/chat/enable-chat-push-notifications-button.svg';
 import DisableChatNotificationsIcon from '@images/chat/disable-chat-push-notifications-button.svg';
+import LeaveChatGroupIcon from '@images/chat/leave-chat-group-button.svg';
 
 const CHAT_MESSAGE_CONTEXT_MENU_ACTIONS = {
   REPLY: 'reply',
@@ -68,6 +69,7 @@ export default {
     {
       text: 'buttons.delete',
       img: DeleteMessageIcon,
+      textColor: '#F32929',
       type: CHAT_USER_CONTEXT_MENU_ACTIONS.DELETE,
     },
   ],
@@ -105,7 +107,8 @@ export default {
 
     {
       text: `chat.buttons.${!isChatGroup ? 'delete_chat' : 'leave_group'}`,
-      img: DeleteMessageIcon,
+      img: !isChatGroup ? DeleteMessageIcon : LeaveChatGroupIcon,
+      textColor: '#F32929',
       type: !isChatGroup
         ? CHAT_MAIN_CONTEXT_MENU_ACTIONS.DELETE_CHAT
         : CHAT_MAIN_CONTEXT_MENU_ACTIONS.LEAVE_GROUP,
@@ -137,6 +140,7 @@ export default {
     {
       text: 'buttons.delete',
       img: DeleteMessageIcon,
+      textColor: '#F32929',
       hide: !isMessageMine,
       type: CHAT_MESSAGE_CONTEXT_MENU_ACTIONS.DELETE,
     },
