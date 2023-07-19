@@ -29,13 +29,14 @@ const CHAT_USER_CONTEXT_MENU_ACTIONS = {
 const CHAT_MESSAGE_TYPES = {
   USER_MESSAGE: 'user_message',
   USER_JOINED_TO_CHAT: 'user_joined_to_chat',
-  GROUP_CHAT_CREATED: 'group_chat_created'
+  GROUP_CHAT_CREATED: 'group_chat_created',
 };
 
 const CHAT_MAIN_CONTEXT_MENU_ACTIONS = {
   ENABLE_PUSH_NOTIFICATIONS: 'enable_push_notifications',
   DISABLE_PUSH_NOTIFICATIONS: 'disable_push_notifications',
   DELETE_CHAT: 'delete_chat',
+  LEAVE_GROUP: 'leave_group',
   MANAGE_GROUP: 'edit_chat',
   SEARCH_MESSAGES: 'search_messages',
 };
@@ -105,7 +106,9 @@ export default {
     {
       text: `chat.buttons.${!isChatGroup ? 'delete_chat' : 'leave_group'}`,
       img: DeleteMessageIcon,
-      type: CHAT_MAIN_CONTEXT_MENU_ACTIONS.DELETE_CHAT,
+      type: !isChatGroup
+        ? CHAT_MAIN_CONTEXT_MENU_ACTIONS.DELETE_CHAT
+        : CHAT_MAIN_CONTEXT_MENU_ACTIONS.LEAVE_GROUP,
     },
   ],
 

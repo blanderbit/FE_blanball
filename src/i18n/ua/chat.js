@@ -21,6 +21,12 @@ export default {
     symbols: 'Символи',
     flags: 'Прапори',
   },
+  start_personal_chat_modal: {
+    button_text: 'Зрозуміло',
+    title: 'Вам потрібно отримати дозвіл користувача, щоб розпочати чат із ним',
+    main_text:
+      'Зараз ви можете відправити лише одне повідомлення, а після підтвердження згоди на спілкування, ви зможете продовжити розмову.',
+  },
   no_chat_messages: {
     title: 'У цьому чаті ще не було повідомлень',
     main_text: 'Надішліть повідомлення першим, щоб розпочати бесіду вже зараз!',
@@ -36,6 +42,12 @@ export default {
     description: 'Ви дійсно хочете скасувати всі внесені зміни?',
     button_1: 'Ні, не скасосувати',
     button_2: 'Так, скасувати',
+  },
+  submit_leave_chat_group: {
+    title: 'Покинути групу',
+    description: 'Ви впевнені, що хочете вийти з групи «{groupName}»?',
+    button_1: 'Ні, скасувати',
+    button_2: 'Так, покинути групу',
   },
   admins_limit_reached_modal: {
     title: 'Перевищення ліміту',
@@ -62,6 +74,6 @@ export default {
   },
   service_messages: {
     user_joined_to_chat: '{userFullName} щойно долучився до бесіди',
-    group_chat_created: 'Групу створено'
+    group_chat_created: 'Групу створено',
   },
 };

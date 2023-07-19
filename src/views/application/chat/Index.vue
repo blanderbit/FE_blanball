@@ -13,6 +13,11 @@
       :config="submitModalConfig"
       @closeModal="closeSubmitModal"
       @closeEditChatModal="closeEditChatModal"
+      @leaveGroup="closeSubmitModal"
+    />
+    <StartPesonalChatModal
+      v-if="isStartPesonalChatModalVisible"
+      @closeModal="closeStartPersonalChatModal"
     />
     <ContextMenu
       v-if="isContextMenuOpened"
@@ -69,6 +74,7 @@ import EditChatModal from '@mainComponents/chat/modals/EditChatModal.vue';
 import ChatMessagesList from '@mainComponents/chat/ChatMessagesList.vue';
 import ContextMenu from '@sharedComponents/modals/ContextModal.vue';
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
+import StartPesonalChatModal from '@mainComponents/chat/modals/StartPersonalChatModal.vue';
 
 import { accessToken } from '@workers/token-worker';
 import { ChatSocketWorkerInstance } from '@workers/web-socket-worker';
@@ -81,7 +87,7 @@ import { ChatEventBus } from '@workers/event-bus-worker';
 import { useChatDataStore } from '@/stores/chatData';
 import { useUserDataStore } from '@/stores/userData';
 
-import { CONSTS } from '@consts';
+import { CONSTS } from '@consts/index';
 
 const CHAT_PAGE_TOP_AND_BOTTOM_PADDINGS_PX = 20 + 0;
 
@@ -95,6 +101,7 @@ export default {
     ContextMenu,
     RequestForChat,
     SubmitModal,
+    StartPesonalChatModal,
   },
   setup() {
     const chatData = ref({
@@ -114,6 +121,7 @@ export default {
     const isEditChatModalOpened = ref(false);
     const isChatWarningClosed = ref(false);
     const isSubmitModalOpened = ref(false);
+    const isStartPesonalChatModalVisible = ref(true);
 
     const submitModalConfig = ref({});
 
@@ -216,6 +224,22 @@ export default {
       }
     }
 
+    function showLeaveGroupSubmitModal() {
+      submitModalConfig.value = {
+        title: t('chat.submit_leave_chat_group.title'),
+        description: t('chat.submit_leave_chat_group.description', {
+          groupName: chatData.value.name,
+        }),
+        button_1: t('chat.submit_leave_chat_group.button_1'),
+        button_2: t('chat.submit_leave_chat_group.button_2'),
+        right_btn_action: 'leaveGroup',
+        left_btn_action: 'closeModal',
+        btn_with_1: 116,
+        btn_with_2: 150,
+      };
+      showSubmitModal();
+    }
+
     function closeChatWarning() {
       isChatWarningClosed.value = true;
     }
@@ -243,6 +267,7 @@ export default {
         ENABLE_PUSH_NOTIFICATIONS,
         DISABLE_PUSH_NOTIFICATIONS,
         DELETE_CHAT,
+        LEAVE_GROUP,
         MANAGE_GROUP,
         SEARCH_MESSAGES,
       } = mockData.value.CHAT_MAIN_CONTEXT_MENU_ACTIONS;
@@ -255,11 +280,15 @@ export default {
           offOrOnnChatPushNotifications(DISABLE_PUSH_NOTIFICATIONS);
           break;
         case DELETE_CHAT:
+          showLeaveGroupSubmitModal();
           break;
         case MANAGE_GROUP:
           showEditChatModal();
           break;
         case SEARCH_MESSAGES:
+          break;
+        case LEAVE_GROUP:
+          showLeaveGroupSubmitModal();
           break;
       }
     }
@@ -282,6 +311,14 @@ export default {
 
     function closeSubmitModal() {
       isSubmitModalOpened.value = false;
+    }
+
+    function showStartPersonalChatModal() {
+      isStartPesonalChatModalVisible.value = true;
+    }
+
+    function closeStartPersonalChatModal() {
+      isStartPesonalChatModalVisible.value = false;
     }
 
     function getInfoAboutMeInChat() {
@@ -351,6 +388,7 @@ export default {
       CHAT_BOTTOM_SIDE_BLOCK,
       CHAT_MESSAGES_LIST_BLOCK,
       messagesListBlockStyle,
+      isStartPesonalChatModalVisible,
       isContextMenuOpened,
       currentContextMenuItems,
       isEditChatModalOpened,
@@ -374,6 +412,8 @@ export default {
       closeSubmitModal,
       updateChatData,
       contextMenuItemClick,
+      closeStartPersonalChatModal,
+      showStartPersonalChatModal,
     };
   },
 };
