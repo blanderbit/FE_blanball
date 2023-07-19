@@ -1,29 +1,43 @@
 <template>
   <div class="b-chat-service-message">
-    <span>{{
-      $t('chat.user_joined_to_chat', { userFullName: userFullName })
-    }}</span>
+    <span>{{ serviceMessageText }}</span>
   </div>
 </template>
 
 <script>
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import { CONSTS } from '@consts/index';
 
 export default {
   props: {
-    userData: {
+    messageData: {
       type: Object,
       required: true,
     },
   },
   setup(props) {
-    const userFullName = computed(() => {
-      const { userData } = props;
-      return `${userData.profile.last_name} ${userData.profile.name}`;
+    const { t } = useI18n();
+    const { messageData } = props;
+
+    const serviceMessageText = computed(() => {
+      const CHAT_MESSAGE_TYPES = CONSTS.chat.CHAT_MESSAGE_TYPES;
+
+      switch (messageData.type) {
+        case CHAT_MESSAGE_TYPES.USER_JOINED_TO_CHAT: {
+          return t('chat.service_messages.user_joined_to_chat', {
+            userFullName: `${messageData.sender.profile.last_name} ${messageData.sender.profile.name}`,
+          });
+        }
+        case CHAT_MESSAGE_TYPES.GROUP_CHAT_CREATED: {
+          return t('chat.service_messages.group_chat_created');
+        }
+      }
     });
 
     return {
-      userFullName,
+      serviceMessageText,
     };
   },
 };

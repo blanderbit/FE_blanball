@@ -79,6 +79,7 @@ import { API } from '@workers/api-worker/api.worker';
 import { ChatEventBus } from '@workers/event-bus-worker';
 
 import { useChatDataStore } from '@/stores/chatData';
+import { useUserDataStore } from '@/stores/userData';
 
 import { CONSTS } from '@consts';
 
@@ -97,7 +98,7 @@ export default {
   },
   setup() {
     const chatData = ref({
-      id: 1,
+      id: 8,
       name: 'dffddfdfdf fdfddffd',
       isChatRequest: false,
       isGroup: false,
@@ -105,6 +106,7 @@ export default {
       link: 'helloflamingo.linkactive',
     });
     const chatDataStore = useChatDataStore();
+    const userStore = useUserDataStore();
 
     const { t } = useI18n();
     const toast = useToast();
@@ -300,6 +302,10 @@ export default {
       instanceType.editChat(chatData);
     }
 
+    function setCurrentUserAsRemovedMessageHandler(instanceType) {
+      instanceType.setCurrentUserAsRemoved(userStore.user.id, chatDataStore);
+    }
+
     ChatSocketWorkerInstance.connect({
       token: accessToken.getToken(),
     });
@@ -307,6 +313,11 @@ export default {
     ChatSocketWorkerInstance.registerCallback(
       getInfoAboutMeInChatMessageHandler,
       ChatWebSocketTypes.GetInfoAboutMeInChat
+    );
+
+    ChatSocketWorkerInstance.registerCallback(
+      setCurrentUserAsRemovedMessageHandler,
+      ChatWebSocketTypes.RemoveUserFromChat
     );
 
     ChatSocketWorkerInstance.registerCallback(
@@ -323,6 +334,9 @@ export default {
       ChatSocketWorkerInstance.disconnect();
       ChatSocketWorkerInstance.destroyCallback(
         getInfoAboutMeInChatMessageHandler
+      );
+      ChatSocketWorkerInstance.destroyCallback(
+        setCurrentUserAsRemovedMessageHandler
       );
       ChatSocketWorkerInstance.destroyCallback(editChatMessageHandler);
       ChatSocketWorkerInstance.destroyCallback(offOrOnPushNotificationsHandler);

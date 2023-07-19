@@ -20,4 +20,15 @@ export class RemoveUserFromChat extends InitialChatMessage {
       );
     }
   }
+
+  setCurrentUserAsRemoved(userId, chatDataStore) {
+    if (userId === this.data.data.removed_user_id) {
+      chatDataStore.$patch({
+        infoAboutMe: {
+          ...chatDataStore.infoAboutMe,
+          removed: true,
+        },
+      });
+    }
+  }
 }

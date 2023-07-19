@@ -30,11 +30,7 @@
     </div>
     <div v-else class="b-chat-top-block-manage-selected-messages">
       <div class="b-selected-messages-count">
-        <img
-          @click="deselectChatMessages"
-          src="@images/cross.svg"
-          alt=""
-        />
+        <img @click="deselectChatMessages" src="@images/cross.svg" alt="" />
         <span
           >{{ selectedMessagesCount }} /
           {{ mockData.CHAT_MAX_SELECTED_MESSAGES_COUNT }}</span
@@ -82,6 +78,8 @@ export default {
   },
   emits: ['searchChatMessages', 'manageChat', 'editChat'],
   setup(props) {
+    const chatDataStore = useChatDataStore();
+
     const { detectedDevice, DEVICE_TYPES } = useWindowWidth();
     const mockData = computed(() => {
       return {
@@ -98,13 +96,22 @@ export default {
       };
     });
 
+    const isChatRightSideButtonsVisible = computed(() => {
+      if (chatDataStore.infoAboutMe.removed === undefined) {
+        return false;
+      }
+      return !chatDataStore.infoAboutMe.removed;
+    });
+
     const currentVisibleChatRightSideButtons = computed(() => {
-      switch (detectedDevice.value) {
-        case DEVICE_TYPES.MOBILE_SMALL: {
-          return mockData.value.chatToptSideRightBlockButtonsButtonsMobile;
+      if (isChatRightSideButtonsVisible.value) {
+        switch (detectedDevice.value) {
+          case DEVICE_TYPES.MOBILE_SMALL: {
+            return mockData.value.chatToptSideRightBlockButtonsButtonsMobile;
+          }
+          default:
+            return mockData.value.chatToptSideRightBlockButtons;
         }
-        default:
-          return mockData.value.chatToptSideRightBlockButtons;
       }
     });
 
@@ -136,6 +143,7 @@ export default {
     return {
       currentVisibleChatRightSideButtons,
       selectedMessagesCount,
+      isChatRightSideButtonsVisible,
       mockData,
       deselectChatMessages,
       bulkDeleteChatMessages,

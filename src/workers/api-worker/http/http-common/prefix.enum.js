@@ -8,6 +8,7 @@ import { BugReportsEnpointsEnum } from './prefix.enum.bug.reports';
 import { SchedulerEnpointsEnum } from './prefix.enum.scheduler';
 import { HintsEnpointsEnum } from './prefix.enum.hints';
 import { ChatsEnpointsEnum } from './prefix.enum.chats';
+import { LocationEnpointsEnum } from './prefix.enum.location';
 
 export const EndpointsEnum = {
   Authorization: AuthorizationEnpointsEnum,
@@ -20,4 +21,5 @@ export const EndpointsEnum = {
   Scheduler: SchedulerEnpointsEnum,
   Hints: HintsEnpointsEnum,
   Chats: ChatsEnpointsEnum,
+  Location: LocationEnpointsEnum
 };

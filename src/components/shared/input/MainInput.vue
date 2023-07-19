@@ -51,6 +51,9 @@
           @blur="onUnFocus"
         />
       </slot>
+      <div v-if="inputRightText" class="b-input__right-text">
+        {{ inputRightText }}
+      </div>
       <div
         v-if="rightIcon.length"
         class="b-input__icon"
@@ -148,6 +151,10 @@ export default {
       default: true,
     },
     backgroundColor: {
+      type: String,
+      default: '',
+    },
+    inputRightText: {
       type: String,
       default: '',
     },
@@ -335,6 +342,21 @@ $color-dfdeed: #dfdeed;
       cursor: pointer;
       img {
         margin: auto;
+      }
+    }
+
+    .b-input__right-text {
+      @include inter(14px, 400, #6e6d80);
+      line-height: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 12px;
+
+      @include mobile {
+        @include inter(12px, 400, #6e6d80);
+        line-height: 12px;
+        margin-right: 8px;
       }
     }
     .b-input__icon-left {

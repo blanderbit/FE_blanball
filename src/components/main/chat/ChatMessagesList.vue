@@ -43,10 +43,7 @@
             @messageWrapperClick="messageWrapperClick"
           />
 
-          <ChatServiceMessage
-            v-else
-            :userData="slotProps.smartListItem.sender"
-          />
+          <ChatServiceMessage v-else :messageData="slotProps.smartListItem" />
         </div>
       </template>
       <template #after>

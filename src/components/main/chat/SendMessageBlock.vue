@@ -17,6 +17,7 @@
         :placeholder="inputPlaceholder"
         name="message"
         inputMode="text"
+        :inputRightText="'(500)'"
         :isDisabled="disabled"
         :height="48"
         :iconLeft="icons.sendSmile"

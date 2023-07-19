@@ -57,6 +57,7 @@ export default defineConfig({
     },
   },
   css: {
+    minify: true,
     postcss: {
       plugins: [autoprefixer({})],
     },

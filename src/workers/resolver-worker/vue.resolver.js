@@ -341,7 +341,7 @@ export class VueResolver {
       isFunction(
         beforeIntercept,
         this[METHOD_HOOK_ENUM.BEFORE_INTERCEPT]
-      )(standardDataParams);
+      )(standardDataParamsWithNext);
 
       const resultAsyncCheck = await isFunction(
         resolverFirstWorker,
@@ -383,7 +383,7 @@ export class VueResolver {
           Object.keys(result).forEach((item) => (to.meta[item] = result[item]));
         } catch (error) {
           const paramsWithError = {
-            ...standardDataParams,
+            ...standardDataParamsWithNext,
             error: 'SECOND_WORKER_ERROR',
             errorDetails: error,
           };

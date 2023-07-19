@@ -71,7 +71,7 @@ export default {
           lat: data?.lat,
           lng: data?.lng,
           place: (
-            await API.LocationService.GetPlaceByCoords(
+            await API.LocationService.getPlaceByCoords(
               data || state.value.centerOfCountry
             )
           )?.data,

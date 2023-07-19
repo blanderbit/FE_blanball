@@ -114,7 +114,7 @@ export default {
       return tickIcon;
     });
     async function getCoordsByName(str) {
-      return await API.LocationService.GetPlaceByAddress(str);
+      return await API.LocationService.getPlaceByAddress(str);
     }
     PositionMapBus.on('update:coords', (e) => {
       region.value = e.place.region;

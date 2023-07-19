@@ -92,6 +92,7 @@ import { API } from '@workers/api-worker/api.worker';
 import { accessToken, refreshToken } from '@workers/token-worker';
 import { PositionMapBus } from '@workers/event-bus-worker';
 import { disableFormSubmit } from '@utils/disableFormSubmit';
+import { useUkraineCitiesDataStore } from '@/stores/ukraineCities';
 
 import { ROUTES } from '@routes/router.const';
 import { CONSTS } from '@consts';
@@ -139,6 +140,7 @@ export default {
     let profileValues = {
       profile: {},
     };
+    const ukraineCitiesStore = useUkraineCitiesDataStore();
 
     const onboadringSteps = computed(() => {
       return currentStep.value > 2 && currentStep.value < 8;
@@ -321,6 +323,7 @@ export default {
         router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute);
       },
       disableFormSubmit,
+      ukraineCitiesStore,
     };
   },
 };

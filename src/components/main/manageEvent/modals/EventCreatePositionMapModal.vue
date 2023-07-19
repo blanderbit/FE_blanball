@@ -199,7 +199,7 @@ export default {
       nextButton.value = !region.value || !city.value;
     }
     async function getCoordsByName(str) {
-      return await API.LocationService.GetPlaceByAddress(str);
+      return await API.LocationService.getPlaceByAddress(str);
     }
     let timeout;
     return {
