@@ -8,3 +8,4 @@ export { RemoveUserFromChat } from './remove_user_from_chat';
 export { GetInfoAboutMeInChatMessage } from './get_user_info_in_chat';
 export { EditGroupChatMessage } from './edit_chat';
 export { OffOrOnChatPushNotificationsMessage } from './off_or_on_push_notifications';
+export { AddUserToChatMessage } from './add_user_to_chat';

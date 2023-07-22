@@ -8,12 +8,10 @@ import { WebSocketTypes } from '../../web.socket.types';
 @SetMessageType(WebSocketTypes.AllReadNotifications)
 export class NotificationAllReadNotificationsUpdation extends InitialUpdation {
   handleUpdate({ paginationElements }, callbackAfterRead) {
-    paginationElements.value = paginationElements.value.map(
-      (notificationForRead) => {
-        notificationForRead.isRead = true;
-        return notificationForRead;
-      }
-    );
+    paginationElements = paginationElements.map((notificationForRead) => {
+      notificationForRead.isRead = true;
+      return notificationForRead;
+    });
 
     if (typeof callbackAfterRead === 'function') {
       callbackAfterRead();

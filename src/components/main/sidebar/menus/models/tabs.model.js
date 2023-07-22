@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { PaginationWorker } from '@workers/pagination-worker';
 import { FilterPatch } from '@workers/api-worker/http/filter/filter.patch';
 import {
@@ -11,6 +11,15 @@ import {
   SupportTabsBusEvents,
 } from '../menu.event.bus';
 
+import { sideBarSignals } from '@/workers/signals-worker';
+
+sideBarSignals.watchSignals([
+  {
+    signalName: 'notificationsSelectable',
+    callback: (newSelectableValue) => newSelectableValue,
+  },
+]);
+
 export class TabModel {
   records = {
     request: {
@@ -18,8 +27,9 @@ export class TabModel {
       filtersModel: {},
       dataTransformation() {},
       beforeConcat() {},
+      paginationFunction() {},
+      messageType: null,
     },
-    selectable: true,
     scrollStrategy: '',
     paginationMetadata: {
       forceUpdate() {},
@@ -36,7 +46,7 @@ export class TabModel {
 
   title = '';
 
-  constructor(options, instance) {
+  constructor(options, routerInstance) {
     const { records } = options;
 
     this.records = {
@@ -48,13 +58,15 @@ export class TabModel {
         filtersModel: records.request.filtersModel,
         dataTransformation: records.request.dataTransformation,
         beforeConcat: records.request.beforeConcat,
+        paginationFunction: records.request.paginationFunction,
+        messageType: records.request?.messageType,
       },
-      selectable: records.selectable,
       scrollStrategy: records.scrollStrategy,
       watchChanges: records.watchChanges,
       contextMenu: records.contextMenu,
       selectedList: ref([]),
-      blockScrollToTopIfExist: ref(false),
+      blockScrollToTopIfExist: records.blockScrollToTopIfExist,
+      emptyListConfig: records.emptyListConfig,
     };
 
     this.badge.count.value = options.badge.count || 0;
@@ -63,7 +75,7 @@ export class TabModel {
 
     this.title = options.title;
 
-    Object.assign(this, this.usePagination(instance || {}));
+    Object.assign(this, this.usePagination(routerInstance || {}));
 
     this.$registerOn(
       SupportTabsBusEvents.LoaTabData.event,
@@ -82,7 +94,7 @@ export class TabModel {
       paginationTotalCount,
       paginationClearData,
       paginationLoad,
-    } = PaginationWorker({
+    } = this.records.request.paginationFunction({
       paginationDataRequest: (page) =>
         this.records.request.api({
           ...getRawFilters(),
@@ -90,6 +102,7 @@ export class TabModel {
         }),
       dataTransformation: this.records.request.dataTransformation,
       beforeConcat: this.records.request.beforeConcat,
+      messageType: this.records.request.messageType,
     });
 
     const { getRawFilters, updateFilter, filters, clearFilters, setFilters } =
@@ -101,7 +114,15 @@ export class TabModel {
         },
       });
 
-    const loadNewData = async (pageNumber, $state, forceUpdate, isLoading) => {
+    const loadNewData = async ({
+      pageNumber,
+      $state,
+      forceUpdate,
+      isLoading,
+    }) => {
+      if (!pageNumber) {
+        pageNumber = 1;
+      }
       if (isLoading) {
         startSpinner();
       }
@@ -130,8 +151,8 @@ export class TabModel {
     };
   }
 
-  $emit() {
-    MenuTabsConfigEventBus.emit(...arguments);
+  $emit(emitName, options) {
+    MenuTabsConfigEventBus.emit(emitName, options);
   }
 
   $registerOn(eventName, eventHandlerName) {

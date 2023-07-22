@@ -106,9 +106,9 @@ export default {
   },
   setup() {
     const chatData = ref({
-      id: 1,
+      id: 50,
       name: 'dffddfdfdf fdfddffd',
-      isChatRequest: true,
+      isChatRequest: false,
       isGroup: false,
       disabled: false,
       link: 'helloflamingo.linkactive',

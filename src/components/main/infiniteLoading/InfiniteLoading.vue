@@ -62,6 +62,8 @@ onMounted(() => {
 onUnmounted(() => {
   stopObserver();
 });
+
+defineExpose({ state });
 </script>
 
 <template>
