@@ -161,6 +161,7 @@ export const createNotificationConfigItem = (routerInstance) => {
       logo: {
         img: SideBarLogoIcon,
       },
+      tabsGapPx: 20,
       closable: true,
       selectable: false,
       bottomSideVisible: true,

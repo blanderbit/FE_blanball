@@ -9,3 +9,5 @@ export { GetInfoAboutMeInChatMessage } from './get_user_info_in_chat';
 export { EditGroupChatMessage } from './edit_chat';
 export { OffOrOnChatPushNotificationsMessage } from './off_or_on_push_notifications';
 export { AddUserToChatMessage } from './add_user_to_chat';
+export { GetAllMyChatsCountChatMessage } from './get_chats_count';
+export { GetChatsListChatMessage } from './get_chats_list';

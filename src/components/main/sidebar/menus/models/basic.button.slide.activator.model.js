@@ -13,6 +13,7 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
       img: null,
       text: null,
     },
+    tabsGapPx: 20,
     topSide: {},
     bottomSideVisible: true,
     closable: false,
@@ -31,6 +32,7 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
       closable: options.slideConfig.closable,
       logo: options.slideConfig.logo,
       title: options.slideConfig.title,
+      tabsGapPx: options.slideConfig.tabsGapPx,
       topSide: options.slideConfig.topSide,
       bottomSideVisible: options.slideConfig.bottomSideVisible,
       tabs: Array.isArray(options.slideConfig.tabs)

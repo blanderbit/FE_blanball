@@ -23,6 +23,16 @@ export default {
     symbols: 'Символи',
     flags: 'Прапори',
   },
+  chat_lists: {
+    all_chats_tab: 'Усі чати',
+    dialogs_tab: 'Діалоги',
+    group_chats_tab: 'Групові чати',
+    chat_requests_tab: 'Запити',
+  },
+  no_chats_list: {
+    title: 'У вас ще немає активних діалогів або чатів',
+    description: 'Оберіть того, з ким бажаєте розпочати спілкування',
+  },
   start_personal_chat_modal: {
     button_text: 'Зрозуміло',
     title: 'Вам потрібно отримати дозвіл користувача, щоб розпочати чат із ним',

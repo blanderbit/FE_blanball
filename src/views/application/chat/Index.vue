@@ -344,10 +344,6 @@ export default {
       instanceType.setCurrentUserAsRemoved(userStore.user.id, chatDataStore);
     }
 
-    ChatSocketWorkerInstance.connect({
-      token: accessToken.getToken(),
-    });
-
     ChatSocketWorkerInstance.registerCallback(
       getInfoAboutMeInChatMessageHandler,
       ChatWebSocketTypes.GetInfoAboutMeInChat
@@ -369,7 +365,6 @@ export default {
     );
 
     onBeforeUnmount(() => {
-      ChatSocketWorkerInstance.disconnect();
       ChatSocketWorkerInstance.destroyCallback(
         getInfoAboutMeInChatMessageHandler
       );

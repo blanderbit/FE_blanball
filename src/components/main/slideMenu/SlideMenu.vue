@@ -89,6 +89,7 @@
         v-if="config.activity && config.activeTab"
         :style="`height: ${slideMenuHeight}`"
       >
+        {{ config.activeTab.paginationElements }}
         <virtual-list
           :elements="config.activeTab.paginationElements"
           :selectable="config.selectable"
@@ -180,6 +181,7 @@ import WhiteBtn from '@/components/shared/button/WhiteBtn.vue';
 import { useUserDataStore } from '@/stores/userData';
 
 import { ROUTES } from '@routes/router.const';
+import { config } from 'dotenv';
 
 export default {
   components: {
@@ -235,6 +237,12 @@ export default {
       return `${SLIDE_MENU_WRAPPER.value?.slideMenuWrapperMainContentHeight}px`;
     });
 
+    const slideMenuTabStyle = computed(() => {
+      return {
+        width: `${100 / context.config.slideConfig.tabs.length}%`,
+      };
+    });
+
     const activeTabRecords = computed(() => {
       return context.config.activeTab.records;
     });
@@ -251,6 +259,7 @@ export default {
         'margin-bottom': `${
           context.config.activeTab.paginationElements.length ? 0 : 16
         }px`,
+        gap: `${context.config.slideConfig.tabsGapPx}px`
       };
     });
 
@@ -289,6 +298,7 @@ export default {
       slideMenuHeight,
       SLIDE_MENU_WRAPPER,
       isEmptyListVisible,
+      slideMenuTabStyle,
       activeTabRecords,
       slideMenuTabsStyle,
       scrollbar,
@@ -379,8 +389,8 @@ $color-efeff6: #efeff6;
   display: flex;
   align-items: center;
   border-bottom: 1px solid $color-dfdeed;
-  gap: 32px;
   margin-top: 16px;
+  width: 100%;
 
   @include beforeDesktop {
     display: flex;

@@ -11,12 +11,15 @@ import {
 } from './models/model.types';
 import { BasicButtonModel } from './models/basic.button.model';
 import { createNotificationConfigItem } from './configs/notifications.config';
+import { createChatConfigItem } from './configs/chats.config';
 
 export const dinamicMenu = (instance) => {
   const notificationItem = createNotificationConfigItem();
+  const chatItem = createChatConfigItem();
 
   const slideBarMenu = computed(() => [
     notificationItem,
+    chatItem,
     new BasicButtonModel({
       uniqueName: 'events.icon',
       title: 'events.icon',

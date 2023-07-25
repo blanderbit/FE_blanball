@@ -4,12 +4,17 @@ import { Enum } from './filter.utils';
 export const filterConfigForChatMessages = {
   page: Number,
   search: String,
-  chat_id: Number
+  chat_id: Number,
 };
 
 export const filterConfigForChatUsers = {
   page: Number,
-  chat_id: Number
+  chat_id: Number,
+};
+
+export const filterConfigForChats = {
+  page: Number,
+  search: String,
 };
 
 export const filterConfigForUsers = {
@@ -69,10 +74,9 @@ export const filterConfigForEvents = {
   date_and_time_before: String,
 }; // TODO Add search by members list
 
-
 export const filterConfigForScheduler = {
   id: Number,
   page: Number,
   user_id: Number,
-  date: String
+  date: String,
 };
