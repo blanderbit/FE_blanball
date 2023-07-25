@@ -218,6 +218,7 @@ export default {
     const itemOnWhatWasOpenedContextMenu = ref(null);
 
     const openContextMenu = (data) => {
+      console.log(data);
       itemOnWhatWasOpenedContextMenu.value = data.itemData;
       contextMenuY.value = data.yPosition;
       contextMenuX.value = data.xPosition;

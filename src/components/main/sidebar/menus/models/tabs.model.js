@@ -11,15 +11,6 @@ import {
   SupportTabsBusEvents,
 } from '../menu.event.bus';
 
-import { sideBarSignals } from '@/workers/signals-worker';
-
-sideBarSignals.watchSignals([
-  {
-    signalName: 'notificationsSelectable',
-    callback: (newSelectableValue) => newSelectableValue,
-  },
-]);
-
 export class TabModel {
   records = {
     request: {

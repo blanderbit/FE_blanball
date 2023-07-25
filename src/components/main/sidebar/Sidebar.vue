@@ -4,13 +4,7 @@
     @close-modal="closeBugReportModal"
   />
   <div class="b_sidebar_wrapper">
-    <Transition name="slide-menu">
-      <slide-menu
-        v-if="activeSlideElement"
-        :config="activeSlideElement"
-        @openTab="openTab($event)"
-      />
-    </Transition>
+    <slide-menu :config="activeSlideElement" @openTab="openTab($event)" />
     <div class="b_sidebar">
       <div class="b_sidebar_top-block">
         <div class="b_sidebar_picture-top">
@@ -83,7 +77,7 @@
 </template>
 
 <script>
-import { ref, onBeforeUnmount } from 'vue';
+import { ref, onBeforeUnmount, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 import SlideMenu from '@mainComponents/slideMenu/SlideMenu.vue';
@@ -112,7 +106,6 @@ export default {
   setup() {
     const userStore = useUserDataStore();
     const router = useRouter();
-    const activeSlideElement = ref();
     const isBugReportModalOpened = ref(false);
     const currentHoverSideBarItemID = ref(0);
 
@@ -123,6 +116,10 @@ export default {
     const menuItems = dinamicMenu({
       router,
     }).slideBarMenu;
+
+    const activeSlideElement = ref(
+      menuItems.value.find((item) => item.uniqueName === 'notification.point')
+    );
 
     const closeBugReportModal = () => (isBugReportModalOpened.value = false);
 
@@ -153,7 +150,6 @@ export default {
 
     function clickByMenuItem(item) {
       if (item.slideConfig) {
-        console.log(item);
         activeSlideElement.value = item;
       }
       item.actionType &&
@@ -337,6 +333,16 @@ $color-fff4ec: #fff4ec;
 
 .v-enter-from,
 .v-leave-to {
+  opacity: 0;
+}
+
+.slide-menu-enter-active,
+.slide-menu-leave-active {
+  transition: opacity 0.4s ease;
+}
+
+.slide-menu-enter-from,
+.slide-menu-leave-to {
   opacity: 0;
 }
 

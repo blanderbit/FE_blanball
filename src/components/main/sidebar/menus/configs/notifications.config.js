@@ -96,7 +96,7 @@ export const createNotificationConfigItem = (routerInstance) => {
     if (instanceType.notification) {
       notificationItem
         .getFilters()
-        ?.skipids.value.push(instanceType.notification_id);
+        .skipids.value.push(instanceType.notification_id);
     }
 
     if (instanceType.updateWebSocketMessage) {
@@ -131,7 +131,7 @@ export const createNotificationConfigItem = (routerInstance) => {
     }),
     onInit() {
       NotificationsBus.on('SidebarClearData', () => {
-        const skipids = notificationItem.getFilters()?.skipids;
+        const skipids = notificationItem.getFilters().skipids;
         skipids.value = [];
         notificationItem.activeTab.value.paginationClearData();
       });
@@ -139,7 +139,7 @@ export const createNotificationConfigItem = (routerInstance) => {
       NotificationsBus.on(
         'hanlderToRemoveNewNotificationsInSidebar',
         (notificationId) => {
-          const skipids = notificationItem.getFilters()?.skipids;
+          const skipids = notificationItem.getFilters().skipids;
           const index = skipids.value.indexOf(notificationId);
 
           if (index > -1) {
