@@ -57,7 +57,7 @@ export default {
     'По вашому запиту з координатами нічого не було знайдено',
 
   all_notifications_deleted: 'Всі ваші нотифікації були успішно видалені',
-  all_notifications_readed: 'Всі ваші нотифікації були успішно прочитані',
+  all_notifications_read: 'Всі ваші нотифікації були успішно прочитані',
   cant_leave_review_about_yourself:
     'Ви не можете залишити відгук про самого себе',
 

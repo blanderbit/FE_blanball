@@ -32,6 +32,7 @@
       <ChatTopBlock
         :chatData="chatData"
         :selectedMessages="chatSelectedMessagesList"
+        :isChatEditing="isEditChatModalOpened"
         @searchChatMessages=""
         @manageChat="showManageChatContextMenu"
         @editChat="showEditChatModal"
@@ -47,7 +48,7 @@
         <Transition name="chat-warning">
           <ChatWarning v-if="isChatWarningVisible" @close="closeChatWarning" />
         </Transition>
-        <RequestForChat v-if="isChatRequestVisible" />
+        <RequestForChat v-if="isChatRequestVisible" :chatData="chatData" />
         <SendMessageBlock
           v-else
           :disabled="isSendMessagesDisabled"
@@ -105,7 +106,7 @@ export default {
   },
   setup() {
     const chatData = ref({
-      id: 8,
+      id: 50,
       name: 'dffddfdfdf fdfddffd',
       isChatRequest: false,
       isGroup: false,

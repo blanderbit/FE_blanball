@@ -27,8 +27,12 @@
       >
         <img :src="arrowPosition" alt="" />
       </div>
-      <div class="b_slide_menu_main" :style="slideMenuMainSideWidthStyle">
-        <div class="b_slide_menu_top-block">
+      <div
+        class="b_slide_menu_main"
+        :style="slideMenuMainSideWidthStyle"
+        ref="SLIDE_MENU_WRAPPER_ALL_BLOCK"
+      >
+        <div class="b_slide_menu_top-block" ref="SLIDE_MENU_WRAPPER_TOP_BLOCK">
           <div class="b_slide_menu_logo">
             <slot name="logo"></slot>
           </div>
@@ -37,12 +41,14 @@
           </div>
 
           <slot name="tabs" class="b_slide_menu_tabs"> </slot>
-
-          <ul>
-            <slot name="main-content"></slot>
-          </ul>
         </div>
-        <div class="b_slide_menu_bottom-block">
+        <ul>
+          <slot name="main-content"></slot>
+        </ul>
+        <div
+          class="b_slide_menu_bottom-block"
+          ref="SLIDE_MENU_WRAPPER_BOTTOM_BLOCK"
+        >
           <slot name="bottom-block"></slot>
           <div class="b-privacy-links__button">
             <span @click="showPrivacyContextModal">
@@ -58,6 +64,7 @@
 <script>
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { useElementSize } from '@vueuse/core';
 
 import ContextModal from '@sharedComponents/modals/ContextModal.vue';
 
@@ -82,7 +89,26 @@ export default {
     },
   },
   emits: ['close'],
-  setup(context, { emit }) {
+  setup(context, { emit, expose }) {
+    const SLIDE_MENU_WRAPPER_BOTTOM_BLOCK = ref();
+    const SLIDE_MENU_WRAPPER_TOP_BLOCK = ref();
+    const SLIDE_MENU_WRAPPER_ALL_BLOCK = ref();
+
+    const {
+      width: SLIDE_MENU_WRAPPER_BOTTOM_BLOCK_WIDTH,
+      height: SLIDE_MENU_WRAPPER_BOTTOM_BLOCK_HEIGHT,
+    } = useElementSize(SLIDE_MENU_WRAPPER_BOTTOM_BLOCK);
+
+    const {
+      width: SLIDE_MENU_WRAPPER_TOP_BLOCK_WIDTH,
+      height: SLIDE_MENU_WRAPPER_TOP_BLOCK_HEIGHT,
+    } = useElementSize(SLIDE_MENU_WRAPPER_TOP_BLOCK);
+
+    const {
+      width: SLIDE_MENU_WRAPPER_ALL_BLOCK_WIDTH,
+      height: SLIDE_MENU_WRAPPER_ALL_BLOCK_HEIGHT,
+    } = useElementSize(SLIDE_MENU_WRAPPER_ALL_BLOCK);
+
     const router = useRouter();
     const isPrivacyContextModalOpened = ref(false);
     const privacyContextModalX = ref(null);
@@ -125,7 +151,22 @@ export default {
       };
     });
 
+    const slideMenuWrapperMainContentHeight = computed(() => {
+      return (
+        SLIDE_MENU_WRAPPER_ALL_BLOCK_HEIGHT.value -
+        SLIDE_MENU_WRAPPER_TOP_BLOCK_HEIGHT.value -
+        SLIDE_MENU_WRAPPER_BOTTOM_BLOCK_HEIGHT.value
+      );
+    });
+
+    expose({
+      slideMenuWrapperMainContentHeight
+    });
+
     return {
+      SLIDE_MENU_WRAPPER_ALL_BLOCK,
+      SLIDE_MENU_WRAPPER_BOTTOM_BLOCK,
+      SLIDE_MENU_WRAPPER_TOP_BLOCK,
       arrowPosition,
       isPrivacyContextModalOpened,
       privacyContextModalY,

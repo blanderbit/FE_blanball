@@ -5,7 +5,7 @@
       :clientX="contextMenuX"
       :clientY="contextMenuY"
       :modalItems="chatUserContextMenuItems"
-      :background=false
+      :background="false"
       @close-modal="closeContextMenu"
       @itemClick="contextMenuItemClick"
     />
@@ -235,6 +235,10 @@ export default {
       instanceType.removeUserFromChat(paginationElements);
     }
 
+    function addUserToChatMessageHandler(instanceType) {
+      instanceType.addUserToChat(paginationElements);
+    }
+
     ChatSocketWorkerInstance.registerCallback(
       setOrUnsetChatAdminMessageHandler,
       ChatWebSocketTypes.SetOrUnsetChatAdmin
@@ -245,6 +249,11 @@ export default {
       ChatWebSocketTypes.RemoveUserFromChat
     );
 
+    ChatSocketWorkerInstance.registerCallback(
+      addUserToChatMessageHandler,
+      ChatWebSocketTypes.AddUserToChat
+    );
+
     onBeforeUnmount(() => {
       ChatSocketWorkerInstance.destroyCallback(
         setOrUnsetChatAdminMessageHandler
@@ -252,6 +261,7 @@ export default {
       ChatSocketWorkerInstance.destroyCallback(
         removeUserFromChatMessageHandler
       );
+      ChatSocketWorkerInstance.destroyCallback(addUserToChatMessageHandler);
     });
 
     return {

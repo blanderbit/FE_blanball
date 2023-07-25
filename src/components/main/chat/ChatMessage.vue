@@ -36,18 +36,16 @@
       @touchstart.passive="startMessageHold"
       @touchend.passive="endMessageHold"
     >
-      <div class="b-chat-message-text">
-        {{ messageData.text }} {{ messageData.id }}
-      </div>
-      <div class="b-like-message-button">
+      <div v-html="highlightedMessageText" class="b-chat-message-text"></div>
+      <!-- <div class="b-like-message-button">
         <img src="@images/chat/like-button.svg" alt="" />
-      </div>
+      </div> -->
       <div class="b-chat-message-bottom-side">
         <div v-if="isMessageEdited" class="b-chat-message-time">
           {{ $t('chat.message_edited') }}
         </div>
         <div class="b-chat-message-time">{{ messageTime }}</div>
-        <img v-if="isMessageMine" :src="messageReadedIcon" alt="" />
+        <img v-if="isMessageMine" :src="messageReadIcon" alt="" />
       </div>
     </div>
   </div>
@@ -85,13 +83,17 @@ export default {
       type: Boolean,
       default: false,
     },
+    searchMessagesValue: {
+      type: String,
+      default: '',
+    },
   },
   components: {
     UserAvatar,
   },
   emits: ['chatMessageRightClick', 'messageWrapperClick'],
   setup(props, { emit }) {
-    const { messageData, isChatDisabed } = props;
+    const { messageData, isChatDisabed, searchMessagesValue } = props;
 
     const messageTime = computed(() => {
       return dayjs(props.time_created).format('HH:mm');
@@ -117,8 +119,12 @@ export default {
       return isMessageMine.value ? WhiteMessageTail : GreenMessageTail;
     });
 
-    const messageReadedIcon = computed(() => {
-      return messageData.isRead ? MessageReadIcon : MessageNotReadIcon;
+    const messageReadIcon = computed(() => {
+      return isMessageRead.value ? MessageReadIcon : MessageNotReadIcon;
+    });
+
+    const isMessageRead = computed(() => {
+      return messageData.read_by.length > 0;
     });
 
     const senderMessageData = computed(() => {
@@ -148,6 +154,21 @@ export default {
       }
     }
 
+    const highlightWords = (text, textToHighlight) => {
+      const regex = new RegExp(textToHighlight, 'gi');
+      return text.replace(
+        regex,
+        (match) => `<span class="search-highlight">${match}</span>`
+      );
+    };
+
+    const highlightedMessageText = computed(() => {
+      if (searchMessagesValue) {
+        return highlightWords(messageData.text, searchMessagesValue);
+      }
+      return messageData.text;
+    });
+
     return {
       messageTime,
       isMessageMine,
@@ -156,7 +177,8 @@ export default {
       senderMessageData,
       messageTail,
       isNextMessageFromTheSameSender,
-      messageReadedIcon,
+      messageReadIcon,
+      highlightedMessageText,
       startMessageHold,
       endMessageHold,
       chatMessageRightClick,
@@ -208,6 +230,15 @@ export default {
       .b-chat-message-text {
         @include inter(16px, 400, $--b-main-black-color);
         line-height: 24px;
+
+        :deep {
+          .search-highlight {
+            @include inter(16px, 400, $--b-main-green-color);
+            padding: 2px;
+            border-radius: 6px;
+            background: rgba(34, 134, 143, 0.15);
+          }
+        }
       }
 
       .b-chat-message-time {

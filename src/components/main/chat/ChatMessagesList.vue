@@ -96,6 +96,8 @@ import LimitOfAdminsIcon from '@images/chat/limit-of-admins-reached.svg';
 const MESSAGES_SCROLL_SPEED = 10;
 const MESSAGES_SCROLL_ANIMATION_DURATION = 50;
 const MESSAGES_LIST_VERTICAL_GAP_PX = 8;
+const RECYCLE_SCROLLER_WRAPPER_ELEMENT_SELECTOR =
+  '.vue-recycle-scroller__item-wrapper';
 
 export default {
   components: {
@@ -175,6 +177,7 @@ export default {
       paginationPage,
       paginationTotalCount,
       paginationClearData,
+      paginationIsNextPage,
       paginationLoad,
     } = WebSocketPaginationWorker({
       paginationDataRequest: (page) =>
@@ -380,9 +383,13 @@ export default {
       instanceType.deleteMessage(paginationElements);
     }
 
-    ChatEventBus.on('deselectChatMessages', () => deselectChatMessages());
-    ChatEventBus.on('bulkDeleteChatMessages', () =>
-      deleteChatMessages(selectedMessages.value)
+    function createNewUserJoinedChatServiceMessageHandler(instanceType) {
+      instanceType.createNewUserJoinedChatServiceMessage(paginationElements);
+    }
+
+    ChatSocketWorkerInstance.registerCallback(
+      createNewUserJoinedChatServiceMessageHandler,
+      ChatWebSocketTypes.AddUserToChat
     );
 
     AuthWebSocketWorkerInstance.registerCallback(
@@ -409,9 +416,16 @@ export default {
 
     onMounted(() => {
       MESSAGES_LIST_RECYCLE_SCROLLER_WRAPPER_ELEMENT.value = {
-        element: document.querySelector('.vue-recycle-scroller__item-wrapper'),
+        element: document.querySelector(
+          RECYCLE_SCROLLER_WRAPPER_ELEMENT_SELECTOR
+        ),
       };
     });
+
+    ChatEventBus.on('deselectChatMessages', () => deselectChatMessages());
+    ChatEventBus.on('bulkDeleteChatMessages', () =>
+      deleteChatMessages(selectedMessages.value)
+    );
 
     onBeforeUnmount(() => {
       AuthWebSocketWorkerInstance.destroyCallback(
@@ -420,6 +434,9 @@ export default {
       ChatSocketWorkerInstance.destroyCallback(editChatMessageMessageHandler);
       ChatSocketWorkerInstance.destroyCallback(
         deleteChatMessagesMessageHandler
+      );
+      ChatSocketWorkerInstance.destroyCallback(
+        createNewUserJoinedChatServiceMessageHandler
       );
       ChatEventBus.off('deselectChatMessages');
       ChatEventBus.off('bulkDeleteChatMessages');
@@ -447,6 +464,7 @@ export default {
       grabMessagesToReadOnScroll,
       actionModalConfig,
       MESSAGES_LIST_VERTICAL_GAP_PX,
+      paginationIsNextPage,
       restartInfiniteScroll,
       loadDataPaginationData,
       showContextMenu,

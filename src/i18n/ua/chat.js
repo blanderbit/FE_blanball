@@ -10,6 +10,8 @@ export default {
   members: 'Учасники',
   online: 'У мережі',
   message_edited: 'ред.',
+  accept_send_messages: 'Дозволити {chatName} надсилати вам повідомлення?',
+  users_count: '{allUsersCount} учасників, {onlineUsersCount} у мережі',
   message_editing: 'Редагування повідомлення',
   emoji_groups: {
     smileys_people: 'Посмішки та люди',

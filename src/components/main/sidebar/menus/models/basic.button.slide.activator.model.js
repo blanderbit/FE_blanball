@@ -13,8 +13,13 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
       img: null,
       text: null,
     },
+    topSide: {},
+    bottomSideVisible: true,
+    closable: false,
+    selectable: false,
   };
   activity = ref(false);
+  selectable = ref(false);
   activeTab = ref();
   _context;
 
@@ -23,8 +28,11 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
     this.slideConfig = {
       uniqueName: options.uniqueName,
       width: options.slideConfig?.width || DEFAULT_SLIDE_MENU_WIDTH_PX,
+      closable: options.slideConfig.closable,
       logo: options.slideConfig.logo,
       title: options.slideConfig.title,
+      topSide: options.slideConfig.topSide,
+      bottomSideVisible: options.slideConfig.bottomSideVisible,
       tabs: Array.isArray(options.slideConfig.tabs)
         ? options.slideConfig.tabs
         : [],
@@ -32,11 +40,14 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
     this.activity.value = options.activity;
     this.onInit = options.onInit;
     this.onDestroy = options.onDestroy;
+    this.selectable.value = options.slideConfig.selectable;
 
     watch(this.activity, (value) => {
       if (value) {
         this.onInit();
         this.activeTab.value = this.findTab(options.slideConfig.defaultTab);
+      } else if (!value && !this.slideConfig.closable) {
+        this.activity.value = true;
       } else {
         this.onDestroy();
         this.activeTab.value.paginationClearData();
@@ -54,6 +65,10 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
 
   findTab(uniqueName) {
     return this.slideConfig.tabs.find((tab) => tab.uniqueName === uniqueName);
+  }
+
+  getFilters() {
+    return this.activeTab.value.filters;
   }
 
   openTab(uniqueName) {

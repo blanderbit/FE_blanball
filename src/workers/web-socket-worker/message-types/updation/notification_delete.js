@@ -15,7 +15,7 @@ export class NotificationBulkDeleteUpdation extends InitialUpdation {
   ) {
     const deletedItems = this.data.objects;
 
-    paginationElements.value = paginationElements.value.filter((item) => {
+    paginationElements = paginationElements.filter((item) => {
       return !deletedItems.includes(item.notification_id);
     });
 

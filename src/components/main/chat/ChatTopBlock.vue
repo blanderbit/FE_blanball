@@ -1,5 +1,5 @@
 <template>
-  <div class="b-chat-top-block">
+  <div :class="['b-chat-top-block', { 'chat-editing': isChatEditing }]">
     <div v-if="!selectedMessagesCount" class="b-chat-top-block-main-info">
       <div class="b-left-side">
         <img
@@ -14,8 +14,11 @@
             :link="chatData.avatar"
             :full-name="chatData.name"
           />
-          <div class="b-chat-name">
-            {{ chatData.name }}
+          <div class="b-chat-main-info">
+            <span class="b-chat-name">{{ chatData.name }}</span>
+            <span v-if="isChatEditing" class="b-chat-users-count">{{
+              $t('chat.users_count', { allUsersCount: 17, onlineUsersCount: 7 })
+            }}</span>
           </div>
         </div>
       </div>
@@ -74,6 +77,10 @@ export default {
     selectedMessages: {
       type: Array,
       default: [],
+    },
+    isChatEditing: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: ['searchChatMessages', 'manageChat', 'editChat'],
@@ -154,6 +161,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+:deep(.context-modal__tooltip-wrapper.transperent) {
+  z-index: 2000 !important;
+}
 .b-chat-top-block {
   background: #f9f9fc;
   box-shadow: 2px 2px 10px 0px rgba(56, 56, 251, 0.1);
@@ -162,6 +172,13 @@ export default {
   @include mobile {
     padding: 12px 16px;
     background: $--b-main-white-color;
+  }
+
+  &.chat-editing {
+    @include afterMobile {
+      z-index: 1000;
+      position: relative;
+    }
   }
 
   .b-chat-top-block-main-info {
@@ -208,17 +225,24 @@ export default {
           }
         }
 
-        .b-chat-name {
-          @include exo(18px, 700, $--b-main-black-color);
-          max-width: 80%;
-          line-height: 24px;
-          max-width: 75%;
-          width: 100%;
-          word-break: break-word;
-          display: -webkit-box;
-          -webkit-line-clamp: 1;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
+        .b-chat-main-info {
+          width: fit-content;
+          .b-chat-name {
+            @include exo(18px, 700, $--b-main-black-color);
+            max-width: 80%;
+            line-height: 24px;
+            min-width: 100%;
+            word-break: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+
+          .b-chat-users-count {
+            @include inter(14px, 400, $--b-main-gray-color);
+            line-height: 20px;
+          }
         }
       }
 

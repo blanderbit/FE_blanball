@@ -4,17 +4,28 @@
     :style="styles"
     @click.stop="!disabled && $emit('click-function', $event)"
   >
-    <img v-if="icon" :src="icon" alt="" />
-    {{ text }}
+    <img v-if="icon" class="b_wbite-btn-left-icon" :src="icon" alt="" />
+    {{ btnText }}
+    <img
+      v-if="rightIcon"
+      class="b_wbite-btn-right-icon"
+      :src="rightIcon"
+      alt=""
+    />
   </div>
 </template>
 
 <script>
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 export default {
   props: {
     icon: {
+      type: String,
+      default: null,
+    },
+    rightIcon: {
       type: String,
       default: null,
     },
@@ -55,6 +66,16 @@ export default {
       return props.width ? props.width + 'px' : '100%';
     });
 
+    const { t } = useI18n();
+
+    const btnText = computed(() => {
+      try {
+        return t(props.text);
+      } catch {
+        return props.text;
+      }
+    });
+
     const styles = computed(() => {
       return {
         ...props.fontStyles,
@@ -73,6 +94,7 @@ export default {
 
     return {
       btnWidth,
+      btnText,
       styles,
     };
   },
@@ -87,12 +109,16 @@ export default {
   border-radius: 6px;
   font-family: 'Inter';
   font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
+  font-weight: 400;
+  font-size: 12px;
   cursor: pointer;
   user-select: none;
-  img {
+  .b_wbite-btn-left-icon {
     margin-right: 8px;
+  }
+
+  .b_wbite-btn-right-icon {
+    margin-left: 8px;
   }
 }
 </style>

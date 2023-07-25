@@ -12,7 +12,7 @@
     :clientX="contextMenuX"
     :clientY="contextMenuY"
     :modalItems="config.activeTab.records.contextMenu"
-    :background=false
+    :background="false"
     @close-modal="closeContextMenu"
     @itemClick="contextMenuItemClick"
   />
@@ -20,6 +20,7 @@
   <SlideMenuWrapper
     :isMenuOpened="config.activity"
     :mainSideWidth="config.slideConfig.width"
+    ref="SLIDE_MENU_WRAPPER"
     @close="closeSlideMenu"
   >
     <template #logo>
@@ -34,6 +35,27 @@
       >
         {{ config.slideConfig.logo.text }}
       </span>
+    </template>
+
+    <template #top-side>
+      <div
+        v-for="elementsBlock in config.slideConfig.topSide.elements"
+        class="b_slide_menu-top-side"
+        :style="config.slideConfig.topSide.style"
+      >
+        <div
+          v-for="element in elementsBlock"
+          class="b_slide_menu_top-side-element"
+        >
+          <component
+            v-if="!element.componentProps.hideElement && element.componentName"
+            :is="element.componentName"
+            v-bind="element.componentProps"
+            v-on="element.componentEmitsHandlers"
+          >
+          </component>
+        </div>
+      </div>
     </template>
 
     <!--<template #filters>-->
@@ -133,12 +155,7 @@
       <div
         v-if="config.activeTab"
         class="b-slide-menu__tabs"
-        :style="`margin-top: ${
-          config.activeTab.paginationElements.length ? 16 : 28
-        }px;
-                     margin-bottom: ${
-                       config.activeTab.paginationElements.length ? 0 : 16
-                     }px;`"
+        :style="slideMenuTabsStyle"
       >
         <div
           v-for="tab in config.slideConfig.tabs"
@@ -168,12 +185,10 @@
       >
         <virtual-list
           :elements="config.activeTab.paginationElements"
-          :selectable="config.activeTab.records.selectable"
-          :recordComponent="config.activeTab.records.record.componentName"
-          v-model:selected-list="config.activeTab.records.selectedList"
-          v-model:scrollbar-existing="
-            config.activeTab.records.blockScrollToTopIfExist
-          "
+          :selectable="config.selectable"
+          :recordComponent="activeTabRecords.record.componentName"
+          v-model:selected-list="activeTabRecords.selectedList"
+          v-model:scrollbar-existing="activeTabRecords.blockScrollToTopIfExist"
           @openContextMenu="openContextMenu"
           @removePushNotificationAfterSidebarAction="
             removePushNotificationAfterSidebarAction
@@ -197,15 +212,15 @@
             >
               <template #complete>
                 <empty-list
-                  v-if="!notifications.length && !newNotifications"
-                  :title="emptyListMessages.title"
-                  :description="emptyListMessages.description"
-                  :is-notification="true"
-                >
-                </empty-list>
+                  v-if="isEmptyListVisible"
+                  :title="activeTabRecords.emptyListConfig.title"
+                  :description="activeTabRecords.emptyListConfig.description"
+                  :image="activeTabRecords.emptyListConfig.image"
+                />
                 <ScrollToTop
-                  :element-length="notifications"
-                  :is-scroll-top-exist="blockScrollToTopIfExist"
+                  :is-scroll-top-exist="
+                    activeTabRecords.blockScrollToTopIfExist
+                  "
                   @scroll-button-clicked="scrollToFirstElement()"
                 />
               </template>
@@ -215,7 +230,7 @@
       </ul>
     </template>
 
-    <template #bottom-block>
+    <template v-if="config.slideConfig.bottomSideVisible" #bottom-block>
       <div class="b_slide_menu_top-line d-flex justify-content-between">
         <div class="b_slide_menu_name">
           {{ userStore.getUserFullName }}
@@ -240,7 +255,7 @@
 </template>
 
 <script>
-import { ref, inject, computed } from 'vue';
+import { ref, inject, computed, nextTick, onMounted } from 'vue';
 
 import VirtualList from '@mainComponents/virtualList/VirtualList.vue';
 import emptyList from '@sharedComponents/emptyList/EmptyList.vue';
@@ -249,10 +264,9 @@ import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 import ContextMenu from '@sharedComponents/modals/ContextModal.vue';
 import SlideMenuWrapper from './SlideMenuWrapper.vue';
+import WhiteBtn from '@/components/shared/button/WhiteBtn.vue';
 
 import { useUserDataStore } from '@/stores/userData';
-
-import { calcHeight } from '@workers/window-size-worker/calcHeight';
 
 import { ROUTES } from '@routes/router.const';
 
@@ -265,6 +279,7 @@ export default {
     SubmitModal,
     VirtualList,
     ScrollToTop,
+    WhiteBtn,
   },
   props: {
     config: {
@@ -278,6 +293,8 @@ export default {
   },
   emits: ['openTab'],
   setup(context, { emit }) {
+    const scrollbar = ref();
+    const SLIDE_MENU_WRAPPER = ref();
     const userStore = useUserDataStore();
     const clientVersion = ref(inject('clientVersion'));
     const routeObject = computed(() => {
@@ -302,21 +319,35 @@ export default {
       isContextMenuActive.value = false;
     };
 
-    const {
-      calculatedHeight,
-      minussedHeight,
-      onAppHeightResize,
-      plusHeight,
-      minusHeight,
-    } = calcHeight([
-      100,
-      70,
-      20,
-      context.config.activeTab.records.selectedList.length ? 110 : 80,
-    ]);
-
     const slideMenuHeight = computed(() => {
-      return `${calculatedHeight.value}px`;
+      return `${SLIDE_MENU_WRAPPER.value?.slideMenuWrapperMainContentHeight}px`;
+    });
+
+    const activeTabRecords = computed(() => {
+      return context.config.activeTab.records;
+    });
+
+    const isLoadingState = computed(() => {
+      if (scrollbar.value.state === undefined) {
+        return false;
+      }
+      return scrollbar.value.state === 'loading';
+    });
+
+    const slideMenuTabsStyle = computed(() => {
+      return {
+        'margin-bottom': `${
+          context.config.activeTab.paginationElements.length ? 0 : 16
+        }px`,
+      };
+    });
+
+    const isEmptyListVisible = computed(() => {
+      return (
+        activeTabRecords.value.emptyListConfig &&
+        !context.config.activeTab.paginationElements.length &&
+        !isLoadingState.value
+      );
     });
 
     function openTab(tab) {
@@ -329,9 +360,7 @@ export default {
       context.config.activity = false;
     }
 
-    function contextMenuItemClick(itemActionType) {
-      
-    }
+    function contextMenuItemClick(itemActionType) {}
 
     return {
       userStore,
@@ -342,17 +371,22 @@ export default {
       contextMenuX,
       contextMenuY,
       slideMenuHeight,
+      SLIDE_MENU_WRAPPER,
+      isEmptyListVisible,
+      activeTabRecords,
+      slideMenuTabsStyle,
+      scrollbar,
+      isLoadingState,
       openContextMenu,
       closeContextMenu,
       closeSlideMenu,
       contextMenuItemClick,
       openTab,
       test($event) {
-        context.config.activeTab.$emit(
-          'loadNewData',
-          context.config.activeTab.paginationPage + 1,
-          $event
-        );
+        context.config.activeTab.$emit('loadNewData', {
+          pageNumber: context.config.activeTab.paginationPage + 1,
+          $state: $event,
+        });
       },
     };
   },
@@ -425,28 +459,12 @@ $color-efeff6: #efeff6;
   }
 }
 
-button {
-  font-family: 'Inter';
-  padding: 4px 8px;
-  border: 1px solid $color-dfdeed;
-  border-radius: 6px;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 20px;
-  color: $--b-main-black-color;
-  background: white;
-  margin-right: 5px;
-  cursor: pointer;
-  img {
-    margin-right: 3px;
-  }
-}
 .b-slide-menu__tabs {
   display: flex;
   align-items: center;
   border-bottom: 1px solid $color-dfdeed;
   gap: 32px;
+  margin-top: 16px;
 
   .b-slide-menu__tab {
     display: flex;
