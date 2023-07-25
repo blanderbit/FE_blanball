@@ -14,7 +14,6 @@ import { ChatWebSocketTypes } from './web.socket.types';
 export class AddUserToChatMessage extends InitialChatMessage {
   addUserToChat(paginationElements) {
     if (!this.isError) {
-      console.log(this.data.data);
       const newUserData = this.data.data.new_user_data;
       paginationElements.value.unshift(newUserData);
     }

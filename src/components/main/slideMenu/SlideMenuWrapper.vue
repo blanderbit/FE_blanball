@@ -14,12 +14,7 @@
       @click="toggleMenu"
     ></div>
 
-    <div
-      class="b_slide_menu_wrapper"
-      :style="{
-        right: isMenuOpened ? `-${mainSideWidth}px` : '0px',
-      }"
-    >
+    <div class="b_slide_menu_wrapper" :style="slideMenuWrapperStyle">
       <div
         v-if="isMenuOpened"
         class="b_slide_menu_sidebar-arrow"
@@ -29,32 +24,79 @@
       </div>
       <div
         class="b_slide_menu_main"
-        :style="slideMenuMainSideWidthStyle"
+        :style="slideMenuMainSideStyle"
         ref="SLIDE_MENU_WRAPPER_ALL_BLOCK"
       >
         <div class="b_slide_menu_top-block" ref="SLIDE_MENU_WRAPPER_TOP_BLOCK">
           <div class="b_slide_menu_logo">
-            <slot name="logo"></slot>
+            <slot v-if="isSlideMenuWrapperDesktop" name="logo"></slot>
+            <div v-else class="b-slide_menu_mobile-logo">
+              {{ $t('menu.blanball') }}
+              <img src="@images/cross.svg" alt="" @click="toggleMenu" />
+            </div>
           </div>
           <div class="b_slide_menu-top-side">
-            <slot name="top-side"></slot>
+            <slot v-if="isSlideMenuWrapperDesktop" name="top-side"></slot>
+            <div v-else class="b-slide_menu_mobile__user-data">
+              <div class="b-slide_menu_mobile__user-info">
+                <div class="b-slide_menu_mobile__user-img">
+                  <userAvatar
+                    :link="userStore.getUserAvatar"
+                    :full-name="userStore.getUserFullName"
+                    @clickByAvatar="goToMyProfile"
+                  />
+                </div>
+                <div class="b-slide_menu_mobile__text-block">
+                  <div
+                    class="b-slide_menu_mobile__user-name"
+                    @click="goToMyProfile"
+                  >
+                    {{ userStore.getUserFullName }}
+                  </div>
+                  <div class="b-slide_menu_mobile__account-type">
+                    {{ $t(`hashtags.${userStore.user.role}`) }}
+                  </div>
+                </div>
+              </div>
+              <div class="b-slide_menu_mobile__logout-icon" @click="logOut">
+                <img src="@images/logout-icon.svg" alt="" />
+              </div>
+            </div>
           </div>
 
-          <slot name="tabs" class="b_slide_menu_tabs"> </slot>
+          <slot
+            v-if="isSlideMenuWrapperDesktop"
+            name="tabs"
+            class="b_slide_menu_tabs"
+          >
+          </slot>
         </div>
         <ul>
-          <slot name="main-content"></slot>
+          <slot v-if="isSlideMenuWrapperDesktop" name="main-content"></slot>
+
+          <MobileMenuSlideMenuMainContent
+            v-else
+            ref="SLIDE_MENU_MAIN_CONTENT_MOBILE_BLOCK"
+            :mainContentHeight="slideMenuWrapperMainContentHeight"
+            @closeMenu="toggleMenu"
+          >
+            <template #tabs>
+              <slot name="tabs" class="b_slide_menu_tabs"> </slot>
+            </template>
+
+            <template #main-content>
+              <slot name="main-content"></slot>
+            </template>
+          </MobileMenuSlideMenuMainContent>
         </ul>
         <div
           class="b_slide_menu_bottom-block"
           ref="SLIDE_MENU_WRAPPER_BOTTOM_BLOCK"
         >
-          <slot name="bottom-block"></slot>
-          <div class="b-privacy-links__button">
-            <span @click="showPrivacyContextModal">
-              {{ $t('policy.data-security') }}
-            </span>
-          </div>
+          <slot v-if="isSlideMenuWrapperDesktop" name="bottom-block"> </slot>
+          <MobileMenuSlideMenuBottomBlock
+            v-if="isSlideMenuMobileBottomBlockVisible"
+          />
         </div>
       </div>
     </div>
@@ -62,21 +104,32 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import { useElementSize } from '@vueuse/core';
 
 import ContextModal from '@sharedComponents/modals/ContextModal.vue';
+import UserAvatar from '@/components/shared/userAvatar/UserAvatar.vue';
+import MobileMenuSlideMenuMainContent from './MobileMenuSlideMenuMainContent.vue';
+import MobileMenuSlideMenuBottomBlock from './MobileMenuSlideMenuBottomBlock.vue';
 
 import sidebarArrowBack from '@images/sidebar-arrow-back.svg';
 import sidebarArrow from '@images/sidebar-arrow.svg';
 
+import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
+import { logOut } from '@/utils/logOut';
+import { useUserDataStore } from '@/stores/userData';
 import { ROUTES } from '@routes/router.const';
 import { CONSTS } from '@consts';
+
+const SLIDE_MENU_MAIN_SIDE_PADDING = 32;
 
 export default {
   components: {
     ContextModal,
+    UserAvatar,
+    MobileMenuSlideMenuMainContent,
+    MobileMenuSlideMenuBottomBlock,
   },
   props: {
     isMenuOpened: {
@@ -93,6 +146,25 @@ export default {
     const SLIDE_MENU_WRAPPER_BOTTOM_BLOCK = ref();
     const SLIDE_MENU_WRAPPER_TOP_BLOCK = ref();
     const SLIDE_MENU_WRAPPER_ALL_BLOCK = ref();
+    const SLIDE_MENU_MAIN_CONTENT_MOBILE_BLOCK = ref();
+
+    const userStore = useUserDataStore();
+
+    const { detectedDevice, DEVICE_TYPES } = useWindowWidth();
+
+    const isSlideMenuWrapperDesktop = computed(() => {
+      return [
+        DEVICE_TYPES.BETWEEN_TABLET_AND_DESKTOP,
+        DEVICE_TYPES.DESKTOP,
+      ].includes(detectedDevice.value);
+    });
+
+    const isSlideMenuMobileBottomBlockVisible = computed(() => {
+      return (
+        !isSlideMenuWrapperDesktop.value &&
+        SLIDE_MENU_MAIN_CONTENT_MOBILE_BLOCK.value?.isBottomBlockShowing
+      );
+    });
 
     const {
       width: SLIDE_MENU_WRAPPER_BOTTOM_BLOCK_WIDTH,
@@ -108,6 +180,15 @@ export default {
       width: SLIDE_MENU_WRAPPER_ALL_BLOCK_WIDTH,
       height: SLIDE_MENU_WRAPPER_ALL_BLOCK_HEIGHT,
     } = useElementSize(SLIDE_MENU_WRAPPER_ALL_BLOCK);
+
+    const slideMenuMainSideWidth = computed(() => {
+      if (isSlideMenuWrapperDesktop.value) {
+        return context.mainSideWidth;
+      }
+      return (
+        SLIDE_MENU_WRAPPER_ALL_BLOCK_WIDTH.value + SLIDE_MENU_MAIN_SIDE_PADDING
+      );
+    });
 
     const router = useRouter();
     const isPrivacyContextModalOpened = ref(false);
@@ -131,7 +212,7 @@ export default {
     }
 
     function toggleMenu() {
-      emit('close', !context.isMenuOpened);
+      emit('close');
     }
 
     function privacyContextModalItemClick(itemType) {
@@ -145,38 +226,87 @@ export default {
       }
     }
 
-    const slideMenuMainSideWidthStyle = computed(() => {
+    function goToMyProfile() {
+      router.push(ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute);
+      toggleMenu();
+    }
+
+    const slideMenuWrapperStyle = computed(() => {
+      if (isSlideMenuWrapperDesktop.value) {
+        return {
+          right: context.isMenuOpened
+            ? `-${slideMenuMainSideWidth.value}px`
+            : '0px',
+        };
+      }
+    });
+
+    const slideMenuMainSideStyle = computed(() => {
+      if (!isSlideMenuWrapperDesktop.value) {
+        return {
+          left: !context.isMenuOpened
+            ? `-${slideMenuMainSideWidth.value}px`
+            : '0px',
+        };
+      }
       return {
-        width: `${context.mainSideWidth}px`,
+        width: `${slideMenuMainSideWidth.value}px`,
       };
+    });
+
+    const slideMenuMainSideMobileBlock = computed(() => {
+      if (
+        SLIDE_MENU_MAIN_CONTENT_MOBILE_BLOCK?.value &&
+        SLIDE_MENU_MAIN_CONTENT_MOBILE_BLOCK?.value
+      ) {
+        return (
+          SLIDE_MENU_MAIN_CONTENT_MOBILE_BLOCK.value
+            .MOBILE_MENU_TOP_LINE_BLOCK_HEIGHT +
+          SLIDE_MENU_MAIN_CONTENT_MOBILE_BLOCK.value
+            .MOBILE_MENU_BOTTOM_LINE_BLOCK_HEIGHT +
+          SLIDE_MENU_MAIN_SIDE_PADDING
+        );
+      }
+      return 0;
     });
 
     const slideMenuWrapperMainContentHeight = computed(() => {
       return (
         SLIDE_MENU_WRAPPER_ALL_BLOCK_HEIGHT.value -
         SLIDE_MENU_WRAPPER_TOP_BLOCK_HEIGHT.value -
-        SLIDE_MENU_WRAPPER_BOTTOM_BLOCK_HEIGHT.value
+        SLIDE_MENU_WRAPPER_BOTTOM_BLOCK_HEIGHT.value -
+        slideMenuMainSideMobileBlock.value
       );
     });
 
     expose({
-      slideMenuWrapperMainContentHeight
+      slideMenuWrapperMainContentHeight,
     });
 
     return {
       SLIDE_MENU_WRAPPER_ALL_BLOCK,
       SLIDE_MENU_WRAPPER_BOTTOM_BLOCK,
       SLIDE_MENU_WRAPPER_TOP_BLOCK,
+      SLIDE_MENU_WRAPPER_TOP_BLOCK_HEIGHT,
+      SLIDE_MENU_MAIN_CONTENT_MOBILE_BLOCK,
+      isSlideMenuMobileBottomBlockVisible,
+      slideMenuMainSideWidth,
       arrowPosition,
+      userStore,
       isPrivacyContextModalOpened,
       privacyContextModalY,
       privacyContextModalX,
       privacyContextModalItems,
-      slideMenuMainSideWidthStyle,
+      slideMenuWrapperMainContentHeight,
+      slideMenuWrapperStyle,
+      slideMenuMainSideStyle,
+      isSlideMenuWrapperDesktop,
       showPrivacyContextModal,
       closePrivacyContextModal,
       privacyContextModalItemClick,
+      goToMyProfile,
       toggleMenu,
+      logOut,
     };
   },
 };
@@ -201,6 +331,7 @@ $color-dfdeed: #dfdeed;
   top: 0;
   right: -260px;
   height: 100%;
+
   .b_slide_menu_sidebar-arrow {
     position: absolute;
     width: 32px;
@@ -216,9 +347,12 @@ $color-dfdeed: #dfdeed;
     img {
       margin: auto;
     }
+
+    @include beforeDesktop {
+      display: none;
+    }
   }
   .b_slide_menu_main {
-    width: 464px;
     padding: 35px 20px 0 20px;
     position: absolute;
     top: 0;
@@ -230,11 +364,80 @@ $color-dfdeed: #dfdeed;
     z-index: 11;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    // justify-content: space-between;
+
+    @include beforeDesktop {
+      position: fixed;
+      width: 70%;
+      background: #efeff6;
+      padding: 16px;
+      @include calc-height;
+      z-index: 990;
+      transition: all 0.3s ease-out;
+      left: 0;
+      top: 0;
+    }
+
+    @include mobile {
+      width: 100%;
+    }
+
     .b_slide_menu_top-block {
       height: calc(100% - 102px);
+
+      @include beforeDesktop {
+        height: 110px;
+      }
       .b_slide_menu_logo {
-        padding-left: 8px;
+        @include desktop {
+          padding-left: 8px;
+        }
+
+        .b-slide_menu_mobile-logo {
+          @include exo(20px, 800);
+          line-height: 32px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+      }
+
+      .b-slide_menu_mobile__user-data {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 12px;
+        background: $--b-main-white-color;
+        border-radius: 8px;
+        margin-top: 16px;
+        .b-slide_menu_mobile__user-info {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+        }
+
+        .b-slide_menu_mobile__user-img {
+          img {
+            display: block;
+          }
+        }
+
+        .b-slide_menu_mobile__text-block {
+          .b-slide_menu_mobile__user-name {
+            @include exo(18px, 800);
+            line-height: 24px;
+          }
+          .b-slide_menu_mobile__account-type {
+            @include inter(12px, 500, $--b-main-green-color);
+            line-height: 20px;
+          }
+        }
+
+        .b-slide_menu_mobile__logout-icon {
+          img {
+            display: block;
+          }
+        }
       }
     }
     .b_slide_menu_bottom-block {

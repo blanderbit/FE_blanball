@@ -57,100 +57,6 @@
         </div>
       </div>
     </template>
-
-    <!--<template #filters>-->
-    <!--<components  v-for="item in config.activeTab.filters" :is="item" :props="{contextMenu, Selectable}"></components>-->
-    <!--</template>-->
-    <!--<template #tabs>-->
-    <!--<components  v-for="item in config.activeTab.filters" :is="item" :props="{contextMenu, Selectable}"></components>-->
-    <!--</template>-->
-    <!--<template #content>-->
-    <!--<components :is="instance.record" :props="{contextMenu, Selectable}"></components>-->
-    <!--</template>-->
-    <!--&lt;!&ndash;<template #top-side>&ndash;&gt;-->
-    <!--<div-->
-    <!--class="b_slide_menu_items d-flex justify-content-between align-items-center mb-2"-->
-    <!--v-if="notifications.length"-->
-    <!--&gt;-->
-    <!--<div-->
-    <!--class="b-read-all-notifications__button d-flex align-items-center"-->
-    <!--v-if="notifications.length && notReadNotificationCount"-->
-    <!--@click="HandleAction.readAll()"-->
-    <!--&gt;-->
-    <!--<img-->
-    <!--src="@images/notifications/double-check.svg"-->
-    <!--height="16"-->
-    <!--alt=""-->
-    <!--/>-->
-    <!--<span class="b-button-text">-->
-    <!--{{ $t('slide_menu.read-all') }}-->
-    <!--</span>-->
-    <!--</div>-->
-
-    <!--<button-->
-    <!--class="b-notifictions-actions__button"-->
-    <!--@click="handleSelectableMode"-->
-    <!--&gt;-->
-    <!--<span v-if="!selectable" class="b-button-text">-->
-    <!--{{ $t('slide_menu.notifications-manage') }}-->
-    <!--</span>-->
-    <!--<span v-else class="b-button-text">-->
-    <!--{{ $t('slide_menu.cancel-manage') }}-->
-    <!--</span>-->
-    <!--<img v-if="!selectable" src="@images/dots.svg" alt="" />-->
-    <!--</button>-->
-    <!--</div>-->
-    <!--<div-->
-    <!--v-if="selectable && notifications.length && selectedList.length"-->
-    <!--class="d-flex mb-2 justify-content-between"-->
-    <!--&gt;-->
-    <!--<div class="b-selected-elements__count">-->
-    <!--<img-->
-    <!--src="@images/cross.svg"-->
-    <!--alt=""-->
-    <!--@click="clearSelectedList"-->
-    <!--/>-->
-    <!--<span>{{ selectedList.length }}</span>-->
-    <!--<div-->
-    <!--v-if="selectedList.length >= 100"-->
-    <!--class="b-selected-elements__max"-->
-    <!--&gt;-->
-    <!--(макс.)-->
-    <!--</div>-->
-    <!--</div>-->
-
-    <!--<div class="d-flex">-->
-    <!--<button-->
-    <!--@click="HandleAction.readSelected()"-->
-    <!--class="d-flex align-items-center"-->
-    <!--&gt;-->
-    <!--<img-->
-    <!--src="@images/notifications/double-check.svg"-->
-    <!--height="16"-->
-    <!--alt=""-->
-    <!--/>-->
-    <!--{{ $t('slide_menu.mark-as-viewed') }}-->
-    <!--</button>-->
-
-    <!--<button-->
-    <!--@click="-->
-    <!--selectedList.length > 1-->
-    <!--? showSubmitModal()-->
-    <!--: HandleAction.deleteSelected()-->
-    <!--"-->
-    <!--class="d-flex align-items-center"-->
-    <!--&gt;-->
-    <!--<img-->
-    <!--src="@images/notifications/trash.svg"-->
-    <!--height="16"-->
-    <!--alt=""-->
-    <!--/>-->
-    <!--{{ $t('buttons.delete') }}-->
-    <!--</button>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</template>-->
-
     <template #tabs>
       <div
         v-if="config.activeTab"
@@ -249,6 +155,11 @@
           <span>{{ clientVersion }}</span>
         </router-link>
         <div class="b-blanball-made-by-flumx">Розроблено: FlumX</div>
+      </div>
+      <div class="b-privacy-links__button">
+        <span>
+          {{ $t('policy.data-security') }}
+        </span>
       </div>
     </template>
   </SlideMenuWrapper>
@@ -360,7 +271,11 @@ export default {
       context.config.activity = false;
     }
 
-    function contextMenuItemClick(itemActionType) {}
+    function contextMenuItemClick(itemActionType, item) {
+      if (item.action && typeof item.action === 'function') {
+        item.action(itemOnWhatWasOpenedContextMenu.value);
+      }
+    }
 
     return {
       userStore,
@@ -465,6 +380,13 @@ $color-efeff6: #efeff6;
   border-bottom: 1px solid $color-dfdeed;
   gap: 32px;
   margin-top: 16px;
+
+  @include beforeDesktop {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
 
   .b-slide-menu__tab {
     display: flex;

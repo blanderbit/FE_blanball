@@ -4,13 +4,13 @@
     @close-modal="closeBugReportModal"
   />
   <div class="b_sidebar_wrapper">
-    <slide-menu
+    <Transition name="slide-menu">
+      <slide-menu
         v-if="activeSlideElement"
         :config="activeSlideElement"
         @openTab="openTab($event)"
-    >
-
-    </slide-menu>
+      />
+    </Transition>
     <div class="b_sidebar">
       <div class="b_sidebar_top-block">
         <div class="b_sidebar_picture-top">
@@ -19,11 +19,7 @@
             src="@images/open-sidebar-arrow.svg"
             alt=""
           />
-          <img
-            src="@images/my-profile-logo.svg"
-            alt=""
-            @click="goToMainPage"
-          />
+          <img src="@images/my-profile-logo.svg" alt="" @click="goToMainPage" />
         </div>
         <div class="b_sidebar_menu-block">
           <ul>
@@ -39,7 +35,10 @@
             >
               <Transition>
                 <TabLabel
-                  v-if="item.disabled && currentHoverSideBarItemID === item.uniqueName"
+                  v-if="
+                    item.disabled &&
+                    currentHoverSideBarItemID === item.uniqueName
+                  "
                   style="position: absolute; top: 8px"
                   :title="$t('profile.coming-soon-title')"
                   :text="$t('profile.coming-soon-text')"
@@ -81,30 +80,10 @@
       </div>
     </div>
   </div>
-  <!--<mobile-menu-->
-    <!--v-if="isMobileMenuAvailableToOpen"-->
-    <!--class="b_mobile-menu"-->
-    <!--:isMenuActive="isMobMenuActive"-->
-    <!--:notifications="paginationElements"-->
-    <!--:notReadNotificationCount="notReadNotificationCount"-->
-    <!--:newNotifications="skipids.length"-->
-    <!--:total-notifications-count="allNotificationsCount"-->
-    <!--@close="isMenuOpened = false"-->
-    <!--@closed="paginationClearData()"-->
-    <!--@loadingInfinite="loadDataNotifications(paginationPage + 1, $event)"-->
-    <!--@reLoading="loadDataNotifications(1, null, true)"-->
-    <!--@loading="loadDataNotifications(1, null, true)"-->
-    <!--@close-menu="isMobMenuActive = false"-->
-    <!--@foundBug="foundBug"-->
-    <!--@showNewNotifications="loadDataNotifications(1, null, true, true)"-->
-    <!--@changeTab="onChangeTab"-->
-    <!--@removeNotifications="removeNotifications"-->
-    <!--@logOut="logOut"-->
-  <!--/>-->
 </template>
 
 <script>
-import { ref, computed, onBeforeUnmount, onMounted } from 'vue';
+import { ref, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 
 import SlideMenu from '@mainComponents/slideMenu/SlideMenu.vue';
@@ -114,17 +93,12 @@ import TabLabel from '@sharedComponents/tabLabel/TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';
 
 import { useUserDataStore } from '@/stores/userData';
-import {
-  NotificationsBus,
-  BlanballEventBus,
-} from '@workers/event-bus-worker';
-import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
+import { NotificationsBus, BlanballEventBus } from '@workers/event-bus-worker';
 import { logOut } from '@utils/logOut';
 
 import { ROUTES } from '@routes/router.const';
 
-import { dinamicMenu } from "./menus/menu.config";
-
+import { dinamicMenu } from './menus/menu.config';
 
 export default {
   name: 'MainSidebar',
@@ -137,25 +111,17 @@ export default {
   },
   setup() {
     const userStore = useUserDataStore();
-    const isMobMenuActive = ref(false);
     const router = useRouter();
-    const isMenuOpened = ref(false);
     const activeSlideElement = ref();
     const isBugReportModalOpened = ref(false);
     const currentHoverSideBarItemID = ref(0);
-    const { onResize, isMobile, isTablet } = useWindowWidth();
 
     const foundBug = () => {
-      isMobMenuActive.value = false;
       isBugReportModalOpened.value = true;
     };
 
-    const isMobileMenuAvailableToOpen = computed(() => {
-      return isMobile.value || isTablet.value;
-    });
-
     const menuItems = dinamicMenu({
-      router
+      router,
     }).slideBarMenu;
 
     const closeBugReportModal = () => (isBugReportModalOpened.value = false);
@@ -171,25 +137,29 @@ export default {
 
     const goToProfile = () => {
       router.push(ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute);
-      isMenuOpened.value = false;
     };
 
     BlanballEventBus.on('OpenMobileMenu', () => {
-      isMobMenuActive.value = true;
-    });
-
-    onMounted(() => {
-      window.addEventListener('resize', onResize);
+      clickByMenuItem(
+        menuItems.value.find((item) => item.uniqueName === 'notification.point')
+      );
     });
 
     onBeforeUnmount(() => {
       NotificationsBus.off('SidebarClearData');
       NotificationsBus.off('hanlderToRemoveNewNotificationsInSidebar');
       BlanballEventBus.off('OpenMobileMenu');
-      // AuthWebSocketWorkerInstance.destroyCallback(handleMessageInSidebar); TODO
-      window.removeEventListener('resize', onResize);
     });
 
+    function clickByMenuItem(item) {
+      if (item.slideConfig) {
+        console.log(item);
+        activeSlideElement.value = item;
+      }
+      item.actionType &&
+        item.actionType.type === 'BUTTON' &&
+        item.actionType.action();
+    }
 
     //
     // const removeNotifications = (ids) => {
@@ -204,9 +174,6 @@ export default {
 
     return {
       menuItems,
-      isMobMenuActive,
-      isMobileMenuAvailableToOpen,
-      isMenuOpened,
       userStore,
       currentHoverSideBarItemID,
       isBugReportModalOpened,
@@ -219,16 +186,11 @@ export default {
       goToProfile,
       logOut,
       closeBugReportModal,
-      clickByMenuItem (item) {
-        if(item.slideConfig) {
-          activeSlideElement.value = item;
-        }
-        item.actionType && item.actionType.type === 'BUTTON' && item.actionType.action()
-      },
+      clickByMenuItem,
       openTab(tabName) {
-        const item = menuItems.value.find(item => item.findTab(tabName))
-         if(item) item.openTab(tabName)
-      }
+        const item = menuItems.value.find((item) => item.findTab(tabName));
+        if (item) item.openTab(tabName);
+      },
     };
   },
 };
@@ -243,10 +205,6 @@ $color-fff4ec: #fff4ec;
 .b_sidebar_wrapper {
   position: relative;
 
-  @media (max-width: 992px) {
-    display: none;
-  }
-
   .b_sidebar {
     position: relative;
     @include calc-height;
@@ -260,6 +218,10 @@ $color-fff4ec: #fff4ec;
     align-items: center;
     z-index: 12;
     background: $--b-main-white-color;
+
+    @include beforeDesktop {
+      display: none;
+    }
 
     .b_sidebar_picture-bottom {
       background: $color-efeff6;
