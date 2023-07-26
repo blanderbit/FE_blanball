@@ -143,8 +143,6 @@ export default {
     });
 
     onBeforeUnmount(() => {
-      NotificationsBus.off('SidebarClearData');
-      NotificationsBus.off('hanlderToRemoveNewNotificationsInSidebar');
       BlanballEventBus.off('OpenMobileMenu');
     });
 
@@ -152,9 +150,9 @@ export default {
       if (item.slideConfig) {
         activeSlideElement.value = item;
       }
-      item.actionType &&
-        item.actionType.type === 'BUTTON' &&
+      if (typeof item.actionType?.action === 'function') {
         item.actionType.action();
+      }
     }
 
     //

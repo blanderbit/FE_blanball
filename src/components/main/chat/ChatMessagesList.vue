@@ -16,6 +16,7 @@
   />
 
   <div
+    v-if="chatData"
     :class="[
       'b-chat-messages__list',
       { 'no-messages': !paginationElements.length },
@@ -60,6 +61,8 @@
       </template>
     </SmartList>
   </div>
+
+  <NotSelectedChatCard v-else />
 </template>
 
 <script>
@@ -76,6 +79,7 @@ import ChatMessage from './ChatMessage.vue';
 import ChatServiceMessage from './ChatServiceMessage.vue';
 import NoChatMessages from './NoChatMessages.vue';
 import ActionModal from '@mainComponents/events/modals/ActionModal.vue';
+import NotSelectedChatCard from './NotSelectedChatCard.vue';
 
 import { ChatEventBus } from '@workers/event-bus-worker';
 import { WebSocketPaginationWorker } from '@workers/pagination-worker';
@@ -107,6 +111,7 @@ export default {
     ContextMenu,
     ChatServiceMessage,
     NoChatMessages,
+    NotSelectedChatCard,
     ActionModal,
   },
   props: {

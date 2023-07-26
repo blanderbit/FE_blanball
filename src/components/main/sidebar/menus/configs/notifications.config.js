@@ -35,6 +35,13 @@ const findDublicates = (list, newList) => {
   );
 };
 
+const NOTIFICATIONS_CONFIG_TOP_SIDE_STYLES = {
+  display: 'flex',
+  'justify-content': 'space-between',
+  'align-items': 'center',
+  'margin-top': '10px',
+};
+
 const generalConfigForAllTabs = {
   scrollStrategy: 'infinite',
   watchChanges: ['contextMenu', 'openTab'],
@@ -153,6 +160,8 @@ export const createNotificationConfigItem = (routerInstance) => {
     },
     onDestroy() {
       AuthWebSocketWorkerInstance.destroyCallback(handleMessageInSidebar);
+      NotificationsBus.off('SidebarClearData');
+      NotificationsBus.off('hanlderToRemoveNewNotificationsInSidebar');
     },
     slideConfig: {
       uniqueName: 'notification.slide',
@@ -166,11 +175,7 @@ export const createNotificationConfigItem = (routerInstance) => {
       selectable: false,
       bottomSideVisible: true,
       topSide: {
-        style: {
-          display: 'flex',
-          'justify-content': 'space-between',
-          'align-items: center': 'center',
-        },
+        style: NOTIFICATIONS_CONFIG_TOP_SIDE_STYLES,
         elements: [
           [
             new ComponentButtonModel({
@@ -231,6 +236,7 @@ export const createNotificationConfigItem = (routerInstance) => {
             records: {
               record: {
                 componentName: 'Notification',
+                idKeyField: 'notification_id',
               },
               request: {
                 api: (data) => API.NotificationService.getNotifications(data),

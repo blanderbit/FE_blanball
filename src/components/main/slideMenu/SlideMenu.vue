@@ -19,6 +19,7 @@
 
   <SlideMenuWrapper
     :isMenuOpened="config.activity"
+    :menuClosable="config.slideConfig.closable"
     :mainSideWidth="config.slideConfig.width"
     ref="SLIDE_MENU_WRAPPER"
     @close="closeSlideMenu"
@@ -33,7 +34,7 @@
         v-else-if="config.slideConfig.logo.text"
         class="b-slide-menu-logo-text"
       >
-        {{ config.slideConfig.logo.text }}
+        {{ $t(config.slideConfig.logo.text) }}
       </span>
     </template>
 
@@ -89,11 +90,10 @@
         v-if="config.activity && config.activeTab"
         :style="`height: ${slideMenuHeight}`"
       >
-        {{ config.activeTab.paginationElements }}
         <virtual-list
           :elements="config.activeTab.paginationElements"
           :selectable="config.selectable"
-          :recordComponent="activeTabRecords.record.componentName"
+          :virtualListRecord="activeTabRecords.record"
           v-model:selected-list="activeTabRecords.selectedList"
           v-model:scrollbar-existing="activeTabRecords.blockScrollToTopIfExist"
           @openContextMenu="openContextMenu"
@@ -259,7 +259,7 @@ export default {
         'margin-bottom': `${
           context.config.activeTab.paginationElements.length ? 0 : 16
         }px`,
-        gap: `${context.config.slideConfig.tabsGapPx}px`
+        gap: `${context.config.slideConfig.tabsGapPx}px`,
       };
     });
 
@@ -389,7 +389,7 @@ $color-efeff6: #efeff6;
   display: flex;
   align-items: center;
   border-bottom: 1px solid $color-dfdeed;
-  margin-top: 16px;
+  margin-top: 12px;
   width: 100%;
 
   @include beforeDesktop {

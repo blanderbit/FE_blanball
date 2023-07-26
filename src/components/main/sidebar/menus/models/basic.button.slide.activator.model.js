@@ -48,11 +48,8 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
       if (value) {
         this.onInit();
         this.activeTab.value = this.findTab(options.slideConfig.defaultTab);
-      } else if (!value && !this.slideConfig.closable) {
-        this.activity.value = true;
       } else {
         this.onDestroy();
-        this.activeTab.value.paginationClearData();
         this.activeTab.value = null;
       }
     });
@@ -63,7 +60,9 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
   }
 
   onInit() {}
-  onDestroy() {}
+  onDestroy() {
+    this.activeTab.value.paginationClearData();
+  }
 
   findTab(uniqueName) {
     return this.slideConfig.tabs.find((tab) => tab.uniqueName === uniqueName);

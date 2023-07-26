@@ -4,10 +4,10 @@
     :class="[
       notificationType,
       notCollapsible && 'not-collapsible',
-      { 'notification-read': notificationInstance.isRead },
+      { 'notification-read': instanceData.isRead },
       {
         'notification-sidebar-not-read':
-          !notificationInstance.isRead &&
+          !instanceData.isRead &&
           notificationType === 'notification-sidebar',
       },
       { 'notification-selected': checked },
@@ -21,15 +21,15 @@
         v-if="notificationType === 'notification-sidebar'"
       >
         <img
-          v-if="notificationInstance.notificationImage"
-          :src="notificationInstance.notificationImage"
+          v-if="instanceData.notificationImage"
+          :src="instanceData.notificationImage"
         />
         <userAvatar
-          v-if="notificationInstance.notificationUserImage"
+          v-if="instanceData.notificationUserImage"
           :class="{ checked: checked }"
-          :online="notificationInstance.data.sender.is_online"
-          :link="notificationInstance.profileImage"
-          :full-name="notificationInstance.fullName"
+          :online="instanceData.data.sender.is_online"
+          :link="instanceData.profileImage"
+          :full-name="instanceData.fullName"
         />
       </div>
       <div
@@ -43,7 +43,7 @@
             v-if="notificationType === 'notification-sidebar'"
             :class="['notification-sender', { checked: checked }]"
           >
-            {{ notificationInstance.sender }}
+            {{ instanceData.sender }}
           </div>
           <div
             v-if="notificationType === 'notification-sidebar'"
@@ -59,10 +59,10 @@
               <checkBox
                 :checked="checked"
                 :color="'blue'"
-                :field-id="notificationInstance?.notification_id"
+                :field-id="instanceData?.notification_id"
                 @update:checked="
                   $emit('selected', {
-                    notification: notificationInstance,
+                    notification: instanceData,
                     selected: $event,
                   })
                 "
@@ -78,14 +78,14 @@
         >
           <div :class="['top-side', { checked: checked }]">
             <div class="notification-title">
-              {{ notificationInstance.title }}
+              {{ instanceData.title }}
             </div>
             <div class="top-side-content">
               <div
                 class="notification-header-content"
                 v-if="
                   notificationType === 'notification-sidebar' &&
-                  notificationInstance?.actions?.length
+                  instanceData?.actions?.length
                 "
               >
                 <div
@@ -94,7 +94,7 @@
                     { 'not-full-content': !isTextShow },
                   ]"
                   style="margin-top: 10px"
-                  v-for="item in notificationInstance.texts"
+                  v-for="item in instanceData.texts"
                 >
                   {{ item }}
                 </div>
@@ -105,7 +105,7 @@
                   {{ isTextShow ? 'Згорнути' : 'Показати більше' }}
                 </div>
                 <div class="notification-actions">
-                  <template v-for="item in notificationInstance.actions">
+                  <template v-for="item in instanceData.actions">
                     <NotificationButton
                       @click-function="$emit('handler-action', item)"
                       :buttonData="item"
@@ -129,7 +129,7 @@
         >
           <template #title>
             <div class="notification-title">
-              {{ notificationInstance.title }}
+              {{ instanceData.title }}
             </div>
           </template>
 
@@ -140,15 +140,15 @@
           >
             <div
               class="notification-content"
-              v-for="item in notificationInstance.texts"
+              v-for="item in instanceData.texts"
             >
               {{ item }}
             </div>
             <div
               class="notification-actions"
-              v-if="notificationInstance?.actions?.length"
+              v-if="instanceData?.actions?.length"
             >
-              <template v-for="item in notificationInstance.actions">
+              <template v-for="item in instanceData.actions">
                 <NotificationButton
                   @click-function="$emit('handler-action', item)"
                   :buttonData="item"
@@ -178,7 +178,7 @@
               <template #content>
                 <div
                   class="notification-content"
-                  v-for="item in notificationInstance.texts"
+                  v-for="item in instanceData.texts"
                 >
                   {{ item }}
                 </div>
@@ -191,11 +191,11 @@
           <div
             class="notification-actions"
             v-if="
-              notificationInstance?.actions?.length &&
+              instanceData?.actions?.length &&
               notificationType === 'notification-push'
             "
           >
-            <template v-for="item in notificationInstance.actions">
+            <template v-for="item in instanceData.actions">
               <NotificationButton
                 @click-function="$emit('handler-action', item)"
                 :buttonData="item"
@@ -249,7 +249,7 @@ export default {
   },
   emits: ['handler-action', 'selected', 'force', 'delete'],
   props: {
-    notificationInstance: {
+    instanceData: {
       type: Object,
       default: () => ({}),
     },
@@ -308,14 +308,14 @@ export default {
       this.timeout = setTimeout(() => {
         this.$emit(
           'selectNotificationAfterHold',
-          this.notificationInstance.notification_id
+          this.instanceData.notification_id
         );
       }, 500);
     },
     openContextMenu(e) {
       if (!this.checked) {
         this.$emit('openContextMenu', {
-          itemData: this.notificationInstance,
+          itemData: this.instanceData,
           xPosition: e.clientX,
           yPosition: e.clientY,
         });
@@ -329,8 +329,8 @@ export default {
   computed: {
     formatDate() {
       return (
-        this.notificationInstance?.parseDate ||
-        dayJs(String(this.notificationInstance.date)).format('DD.MM.YYYY')
+        this.instanceData?.parseDate ||
+        dayJs(String(this.instanceData.date)).format('DD.MM.YYYY')
       );
     },
     getCurrentTime() {
@@ -351,7 +351,7 @@ export default {
     },
     expanding: {
       set(e) {
-        this.notificationInstance.metadata.expanding =
+        this.instanceData.metadata.expanding =
           this.notificationType === 'notification-sidebar' ? e : true;
       },
       get() {
@@ -359,7 +359,7 @@ export default {
           return true;
         }
         return this.notificationType === 'notification-sidebar'
-          ? !!this.notificationInstance.metadata.expanding
+          ? !!this.instanceData.metadata.expanding
           : true;
       },
     },

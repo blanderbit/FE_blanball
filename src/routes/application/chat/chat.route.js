@@ -3,8 +3,8 @@ import { ROUTES } from '../../router.const';
 import { usersData } from '@/routes/helpers/usersData';
 
 export const CHAT_ROUTE = {
-  path: ROUTES.APPLICATION.CHAT.relative,
-  name: ROUTES.APPLICATION.CHAT.name,
+  path: ROUTES.APPLICATION.CHATS.relative,
+  name: ROUTES.APPLICATION.CHATS.name,
   component: () => import('@views/application/chat/Index.vue'),
   beforeEnter: routerAuthResolver.routeInterceptor(() => ({
     usersData,

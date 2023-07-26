@@ -9,14 +9,14 @@
   />
   <div>
     <div
-      v-if="isMenuOpened"
+      v-if="isMenuOpened && menuClosable"
       class="b_slide_menu_back"
       @click="toggleMenu"
     ></div>
 
     <div class="b_slide_menu_wrapper" :style="slideMenuWrapperStyle">
       <div
-        v-if="isMenuOpened"
+        v-if="isMenuOpened && menuClosable"
         class="b_slide_menu_sidebar-arrow"
         @click="toggleMenu"
       >
@@ -139,6 +139,10 @@ export default {
     mainSideWidth: {
       type: Number,
       required: true,
+    },
+    menuClosable: {
+      type: Boolean,
+      default: true,
     },
   },
   emits: ['close'],

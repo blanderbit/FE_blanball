@@ -30,10 +30,10 @@ export const ROUTES = {
       absolute: '/application/versions',
       name: 'application-versions',
     },
-    CHAT: {
-      relative: 'chat/:id',
-      absolute: (chatId) => `/application/chat/${chatId}`,
-      name: 'application-chat',
+    CHATS: {
+      relative: 'chats',
+      absolute: '/application/chats',
+      name: 'application-chats',
     },
     COMPANY: {
       relative: 'company',

@@ -2,7 +2,7 @@
   <DynamicScroller
     :items="elements"
     :min-item-size="84"
-    key-field="notification_id"
+    :key-field="virtualListRecord.idKeyField"
     class="scroller"
     ref="scroller"
   >
@@ -13,12 +13,12 @@
       <DynamicScrollerItem
         :item="item"
         :active="active"
-        :sizeDependencies="[elements.length, item.metadata.expanding]"
+        :sizeDependencies="[elements.length, item.metadata?.expanding]"
         :data-index="index"
       >
         <component
-          :is="recordComponent"
-          :notificationInstance="item"
+          :is="virtualListRecord.componentName"
+          :instanceData="item"
           :selectable="selectable"
           :active="activeNotification === item.notification_id"
           :selectedCount="list.length"
@@ -39,6 +39,7 @@
 
 <script>
 import Notification from './Notification.vue';
+import ChatCard from '../chat/ChatCard.vue';
 import { useRouter } from 'vue-router';
 import {
   ref,
@@ -57,6 +58,7 @@ export default {
     Notification,
     DynamicScroller,
     DynamicScrollerItem,
+    ChatCard,
   },
   props: {
     elements: {
@@ -71,8 +73,8 @@ export default {
       type: Boolean,
       default: false,
     },
-    recordComponent: {
-      type: String,
+    virtualListRecord: {
+      type: Object,
       required: true,
     },
   },

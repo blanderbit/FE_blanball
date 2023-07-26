@@ -23,11 +23,17 @@ export default {
     symbols: 'Символи',
     flags: 'Прапори',
   },
+  chats: 'Чати',
   chat_lists: {
     all_chats_tab: 'Усі чати',
     dialogs_tab: 'Діалоги',
     group_chats_tab: 'Групові чати',
     chat_requests_tab: 'Запити',
+    there_werent_messages_yet: 'Тут ще не було повідомлень',
+  },
+  not_selected_chat_card: {
+    title: 'Чати',
+    description: 'Оберіть чат, щоб розпочати спілкування',
   },
   no_chats_list: {
     title: 'У вас ще немає активних діалогів або чатів',

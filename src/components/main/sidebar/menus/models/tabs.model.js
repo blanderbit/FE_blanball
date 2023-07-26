@@ -43,6 +43,9 @@ export class TabModel {
     this.records = {
       record: {
         componentName: records.record.componentName,
+        idKeyField: records.record.idKeyField
+          ? records.record.idKeyField
+          : 'id',
       },
       request: {
         api: records.request.api,

@@ -577,8 +577,6 @@ html {
   .main-block {
     height: 100%;
     .main-body-inner {
-      display: grid;
-      grid-template-rows: 90px 1fr;
       @include calc-height;
     }
   }

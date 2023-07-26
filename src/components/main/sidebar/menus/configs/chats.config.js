@@ -1,6 +1,5 @@
 import { BasicButtonSlideActivatorModel } from '../models/basic.button.slide.activator.model';
 import notificationUnread from '@images/notificationUnread.svg';
-import notification from '@images/notification.svg';
 import { ActionModelTypeButton } from '../models/model.types';
 import { API } from '@workers/api-worker/api.worker';
 import { TabModel } from '../models/tabs.model';
@@ -17,9 +16,18 @@ import ManageNotificationsIcon from '@images/dots.svg';
 import EmptyNotificationsIcon from '@images/no-records/empty-notifications.svg';
 import { FilterParamsDecorator } from '@/workers/api-worker/http/filter/filter.utils';
 
+import { ROUTES } from '@/routes/router.const';
+
 import trashRedIcon from '@images/trash-red.svg';
 import doubleCheckIcon from '@images/notifications/double-check.svg';
 import selectedIcon from '@images/selected.svg';
+import chatsSidebarIcon from '@images/chat/sidebar-chats-icon.svg';
+
+const CHATS_CONFIG_TOP_SIDE_STYLES = {
+  display: 'flex',
+  'justify-content': 'space-between',
+  'align-items': 'center',
+};
 
 const generalConfigForAllTabs = {
   scrollStrategy: 'infinite',
@@ -35,7 +43,7 @@ const generalConfigForAllTabs = {
   },
   records: {
     record: {
-      componentName: 'Notification',
+      componentName: 'ChatCard',
     },
     request: {
       api: (data) => API.ChatService.getMyChatsList(data),
@@ -114,10 +122,14 @@ export const createChatConfigItem = (routerInstance) => {
     uniqueName: 'notification.point',
     title: 'notification.title',
     disabled: false,
-    icon: notification,
+    icon: chatsSidebarIcon,
     actionType: new ActionModelTypeButton({
       action: () => {
-        chatItem.activity.value = !chatItem.activity.value;
+        import('@router/index').then((router) => {
+          router.default
+            .push(ROUTES.APPLICATION.CHATS)
+            .then((chatItem.activity.value = true));
+        });
       },
     }),
     onInit() {
@@ -135,69 +147,15 @@ export const createChatConfigItem = (routerInstance) => {
       title: 'notification.slide',
       defaultTab: 'chat.slideConfig.all_chats',
       logo: {
-        text: 'Чати',
+        text: 'chat.chats',
       },
       tabsGapPx: 10,
       closable: false,
       selectable: false,
       bottomSideVisible: false,
       topSide: {
-        style: {
-          display: 'flex',
-          'justify-content': 'space-between',
-          'align-items: center': 'center',
-        },
-        elements: [
-          [
-            new ComponentButtonModel({
-              componentName: 'WhiteBtn',
-              uniqueName: 'notification.componentButton.realAllNotifications',
-              componentProps: computed(() => {
-                return {
-                  text: 'slide_menu.read-all',
-                  isBorder: false,
-                  hideElement: Boolean(
-                    !chatItem.activeTab.value?.paginationElements.length
-                  ),
-                  mainColor: '#575775',
-                  icon: ReadAllNotificationsIcon,
-                  height: 32,
-                };
-              }),
-              componentEmitsHandlers: {
-                clickFunction: () =>
-                  API.NotificationService.readAllMyNotifications(),
-              },
-            }),
-            new ComponentButtonModel({
-              componentName: 'WhiteBtn',
-              uniqueName: 'notification.componentButton.manageNotifications',
-              componentProps: computed(() => {
-                const isSelectable = chatItem.selectable.value;
-                return {
-                  text: !isSelectable
-                    ? 'slide_menu.notifications-manage'
-                    : 'slide_menu.cancel-manage',
-                  isBorder: true,
-                  borderColor: '#DFDEED',
-                  mainColor: '#575775',
-                  hideElement: Boolean(
-                    !chatItem.activeTab.value?.paginationElements.length
-                  ),
-                  rightIcon: !isSelectable ? ManageNotificationsIcon : null,
-                  height: 32,
-                  width: !isSelectable ? 205 : 180,
-                };
-              }),
-              componentEmitsHandlers: {
-                clickFunction: () => {
-                  chatItem.activeTab.value.records.selectedList = [];
-                  chatItem.selectable.value = !chatItem.selectable.value;
-                },
-              },
-            }),
-          ],
-        ],
+        style: CHATS_CONFIG_TOP_SIDE_STYLES,
+        elements: [[]],
       },
       tabs: [
         new TabModel(

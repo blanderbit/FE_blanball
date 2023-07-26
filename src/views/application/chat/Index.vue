@@ -28,7 +28,7 @@
       @close-modal="closeContextMenu"
       @itemClick="contextMenuItemClick"
     />
-    <div ref="CHAT_TOP_SIDE_BLOCK" class="b-chat-top-side">
+    <div v-if="chatData" ref="CHAT_TOP_SIDE_BLOCK" class="b-chat-top-side">
       <ChatTopBlock
         :chatData="chatData"
         :selectedMessages="chatSelectedMessagesList"
@@ -44,7 +44,11 @@
         :chatData="chatData"
         :heightStyle="messagesListBlockStyle"
       />
-      <div ref="CHAT_BOTTOM_SIDE_BLOCK" class="b-main-side-bottom-block">
+      <div
+        v-if="chatData"
+        ref="CHAT_BOTTOM_SIDE_BLOCK"
+        class="b-main-side-bottom-block"
+      >
         <Transition name="chat-warning">
           <ChatWarning v-if="isChatWarningVisible" @close="closeChatWarning" />
         </Transition>
@@ -89,6 +93,7 @@ import { useChatDataStore } from '@/stores/chatData';
 import { useUserDataStore } from '@/stores/userData';
 
 import { CONSTS } from '@consts/index';
+import { ROUTES } from '@/routes/router.const';
 
 const CHAT_PAGE_TOP_AND_BOTTOM_PADDINGS_PX = 20 + 0;
 
@@ -105,19 +110,22 @@ export default {
     StartPesonalChatModal,
   },
   setup() {
-    const chatData = ref({
-      id: 50,
-      name: 'dffddfdfdf fdfddffd',
-      isChatRequest: false,
-      isGroup: false,
-      disabled: false,
-      link: 'helloflamingo.linkactive',
-    });
+    const chatData = ref(null);
+
+    // {
+    //   id: 50,
+    //   name: 'dffddfdfdf fdfddffd',
+    //   isChatRequest: false,
+    //   isGroup: false,
+    //   disabled: false,
+    //   link: 'helloflamingo.linkactive',
+    // }
     const chatDataStore = useChatDataStore();
     const userStore = useUserDataStore();
 
     const { t } = useI18n();
     const toast = useToast();
+    const route = useRoute();
 
     const isEditChatModalOpened = ref(false);
     const isChatWarningClosed = ref(false);
@@ -344,6 +352,15 @@ export default {
       instanceType.setCurrentUserAsRemoved(userStore.user.id, chatDataStore);
     }
 
+    watch(
+      () => route.path,
+      async (value) => {
+        if (route.name === ROUTES.APPLICATION.CHATS.name) {
+          console.log(value.split('/').slice(-1)[0]);
+        }
+      }
+    );
+
     ChatSocketWorkerInstance.registerCallback(
       getInfoAboutMeInChatMessageHandler,
       ChatWebSocketTypes.GetInfoAboutMeInChat
@@ -375,7 +392,7 @@ export default {
       ChatSocketWorkerInstance.destroyCallback(offOrOnPushNotificationsHandler);
     });
 
-    getInfoAboutMeInChat();
+    // getInfoAboutMeInChat();
 
     return {
       chatData,
@@ -438,8 +455,9 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%;
+    height: 100vh;
     margin: 0 auto;
+    position: relative;
 
     @include mobile {
       padding: 0px 8px 20px 8px;
