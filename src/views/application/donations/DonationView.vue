@@ -1,104 +1,165 @@
 <template>
   <div class="b-donation">
-    <div class="b-donation-img" :style="imageStyle"></div>
-    <div class="b-donation-right-container">
+    <div class="b-donation-left-container">
       <div class="b-donation-title">
         {{ nameMock }}
       </div>
-      <div class="b-donation-right-container-block-2">
-        <div class="b-donation-right-container-block-2-left-block">
-          <div class="b-donation-progress-bar-label-container">
-            <span class="b-donation-progress-bar-label">{{
-              t('donations.raised')
-            }}</span>
-            <span class="b-donation-progress-bar-label">{{
-              t('donations.aim')
-            }}</span>
-          </div>
-          <div class="b-donation-progress-bar-container">
-            <LinearProgress :value="percentageMock" />
-          </div>
-          <div class="b-donation-progress-money-container">
-            <span class="b-donation-raised">{{
-              getMoneyValue(raisedMock)
-            }}</span>
-            <span class="b-donation-aim">{{ getMoneyValue(aimMock) }}</span>
+      <div class="b-donation-description">
+        {{ descriptionMock }}
+      </div>
+      <form @submit="submitForm">
+        <div class="b-donation-select-amount-container">
+          <span class="b-donation-select-amount">Оберіть сумму</span>
+          <div class="b-donation-currency-toggle-container">
+            <div class="b-donation-currency-toggle-item">
+              <RadioButton
+                class="b-donation-currency-toggle-item-input"
+                type="radio"
+                id="uah"
+                name="currency"
+                :value="currencyDict.UAH"
+                title="UAH"
+                v-model="currencyValue"
+              />
+            </div>
+            <div class="b-donation-currency-toggle-item">
+              <RadioButton
+                class="b-donation-currency-toggle-item-input"
+                type="radio"
+                id="usd"
+                name="currency"
+                :value="currencyDict.USD"
+                title="USD"
+                v-model="currencyValue"
+              />
+            </div>
           </div>
         </div>
-        <div class="b-donation-lower-block-right-block">
-          <span class="b-donation-percentage-number">{{ percentageMock }}</span>
-          <span class="b-donation-percentage-sign">%</span>
+        <div class="b-donation-amount-option-button-group">
+          <WhiteBtn
+            class="b-donation-amount-option-button"
+            v-for="value in amountOptions"
+            :key="value"
+            :text="getAmountOptionValue(value)"
+            :height="46"
+            :width="90"
+            @click="onAmountOptionClick(value)"
+          />
         </div>
-      </div>
-      <div class="b-donation-default-btn-container">
-        <button
-          class="b-donation-default-btn"
-          v-for="value in defaultButtonList"
-          :key="value"
-          @click="onExampletMoneyClick(value)"
-        >
-          <span class="b-donation-default-btn-label">{{ value }} грн</span>
-        </button>
-      </div>
-      <div class="b-donation-input-container">
-        <input
-          class="b-donation-input"
-          type="number"
-          placeholder="Вкажіть суму, грн"
-          :value="inputValue"
-          @input="onInput"
-        />
-      </div>
-      <div class="b-donation-support-btn-conatiner">
-        <button class="b-donation-support-btn" @click="onSubmit">
-          <span class="b-donation-support-btn-label">{{
-            t('donations.support_fundraise')
-          }}</span>
-        </button>
-      </div>
+        <div class="b-donation-enter-your-amount-container">
+          <div></div>
+          <span>або введіть власну суму</span>
+          <div></div>
+        </div>
+        <div class="b-donation-input-container">
+          <MainInput
+            placeholder="Сума переказу"
+            name="amount"
+            type="number"
+            :titleWidth="0"
+            :height="48"
+            :modelValue="amountValue"
+          />
+          <GreenBtn
+            class="b-donation-support-button"
+            text="Підтримати збір"
+            type="submit"
+            :height="48"
+            :width="177"
+          />
+        </div>
+        <!-- <div class="b-donation-anonymous-container">
+          <span class="b-donation-anonymous-title"
+            >Відправити кошти анонімно</span
+          >
+          <Switcher
+            class="b-donation-anonymous-switcher"
+            :modelValue="isAnonymous"
+            @update:modelValue="isAnonymous = !isAnonymous"
+            name="switcher"
+          />
+        </div> -->
+      </form>
     </div>
+
+    <div class="b-donation-img" :style="imageStyle"></div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import LinearProgress from '../../../components/shared/progress/LinearProgress.vue';
+import RadioButton from '../../../components/shared/radioButton/RadioButton.vue';
+import WhiteBtn from '../../../components/shared/button/WhiteBtn.vue';
+import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
+import MainInput from '../../../components/shared/input/MainInput.vue';
+// import Switcher from '../../../components/shared/switcher/Switcher.vue';
 
 import img from '../../../assets/img/donation.svg';
 
+//NOTE: mock until EP for donation is ready
+const nameMock = 'Розширення можливостей BlanBall';
+const descriptionMock = `Підтримайте розробку нової функції спортивного додатку BlanBall! Перед вами відкривається можливість зробити внесок у розмірі 5000 грн, щоб підтримати розробку цікавої та корисної функціональності. Ваша підтримка допоможе нам забезпечити ще більше можливостей для наших користувачів. Приєднуйтесь до нас у цьому захоплюючому шляху розвитку BlanBall! Дякуємо за вашу підтримку!`;
+const raisedMock = 378;
+const aimMock = 3000;
+const percentageMock = 30;
+
+const amountOptions = [25, 50, 75, 100, 250];
+const currencyDict = {
+  UAH: 'uah',
+  USD: 'usd',
+};
+const currencySignDict = {
+  [currencyDict.UAH]: '₴',
+  [currencyDict.USD]: '$',
+};
+
 export default {
   name: 'DonationView',
-  components: { LinearProgress },
+  components: {
+    LinearProgress,
+    RadioButton,
+    WhiteBtn,
+    GreenBtn,
+    MainInput,
+    // Switcher,
+  },
   setup() {
     const { t } = useI18n();
     const imageStyle = { backgroundImage: `url(${img})` };
-    const nameMock = 'Назва збору у декількох словах'; //NOTE: mock until EP for donation is ready
-    const raisedMock = 378; //NOTE: mock until EP for donation is ready
-    const aimMock = 3000; //NOTE: mock until EP for donation is ready
-    const percentageMock = 30; //NOTE: mock until EP for donation is ready
-    const defaultButtonList = [25, 50, 75, 100, 250];
     const inputValue = ref('');
+    const currencyValue = ref(currencyDict.UAH);
+    const amountValue = ref('');
+    const isAnonymous = ref(true);
 
-    const getMoneyValue = (value) => `${value} ₴`;
-    const onExampletMoneyClick = (value) => (inputValue.value = value);
-    const onInput = (event) => (inputValue.value = event.target.value);
-    const onSubmit = () => console.log({ donation: inputValue.value });
+    const currencySign = computed(() => currencySignDict[currencyValue.value]);
+
+    const getAmountOptionValue = (value) => `${value} ${currencySign.value}`;
+    const onAmountOptionClick = (value) => amountValue.value = Number(value);
+    const submitForm = (value) => {
+      console.log(value);
+    };
 
     return {
       t,
       imageStyle,
       nameMock,
+      descriptionMock,
       raisedMock,
       aimMock,
       percentageMock,
-      defaultButtonList,
       inputValue,
-      getMoneyValue,
-      onExampletMoneyClick,
-      onInput,
-      onSubmit,
+      amountOptions,
+      currencyValue,
+      currencyDict,
+      currencySign,
+      amountValue,
+      isAnonymous,
+      getAmountOptionValue,
+      onAmountOptionClick,
+      submitForm,
     };
   },
 };
@@ -109,191 +170,174 @@ export default {
   width: 100%;
   display: flex;
 }
-.b-donation-img {
-  width: 560px;
-  height: 322px;
-  flex-shrink: 0;
-  border-radius: 12px;
-}
-.b-donation-right-container {
+.b-donation-left-container {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  margin-left: 28px;
-  height: 548px;
+  min-width: 480px;
+  margin-right: 88px;
 }
 .b-donation-title {
   color: $--b-main-black-color;
   font-family: 'Exo 2';
-  font-size: 36px;
+  font-size: 32px;
   font-style: normal;
   font-weight: 800;
-  line-height: 48px; /* 133.333% */
+  line-height: 48px; /* 150% */
   text-transform: uppercase;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  word-break: break-word;
+  margin-bottom: 20px;
 }
-.b-donation-right-container-block-2 {
-  padding-top: 24px;
-  width: 100%;
-  display: flex;
-}
-.b-donation-right-container-block-2-left-block {
-  width: 404px;
-}
-.b-donation-progress-bar-label-container {
-  display: flex;
-  justify-content: space-between;
-}
-.b-donation-progress-bar-label {
-  color: $--b-main-gray-color;
-  text-align: center;
+.b-donation-description {
+  margin-bottom: 20px;
+  color: $--b-main-black-color;
   font-family: 'Inter';
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: 24px;
+  margin-bottom: 20px;
 }
-.b-donation-raised {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
-  color: $--b-main-green-color;
-  text-overflow: ellipsis;
-  font-family: 'Lato';
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 24px;
-}
-.b-donation-aim {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
-  color: $--b-main-black-color;
-  text-overflow: ellipsis;
-  font-family: 'Lato';
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 24px; /* 120% */
-}
-.b-donation-progress-money-container {
+.b-donation-select-amount-container {
   display: flex;
   justify-content: space-between;
 }
-.b-donation-lower-block-right-block {
-  padding-left: 24px;
+.b-donation-select-amount {
+  color: $--b-main-black-color;
+  font-family: 'Inter';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+}
+.b-donation-currency-toggle-container {
+  display: flex;
+}
+.b-donation-currency-toggle-item {
+  margin-left: 16px;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
-.b-donation-percentage-number {
-  color: $--b-main-green-color;
-  text-align: center;
-  font-family: 'Lato';
-  font-size: 28px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 32px;
+
+.b-donation-currency-toggle-item-input {
+  width: 56px;
+  height: 20px;
+  border: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+
+  & input {
+    width: 20px;
+    height: 20px;
+  }
+
+  & label > span {
+    color: $--b-main-black-color;
+    font-family: 'Inter';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+  }
+
+  & label::before {
+    width: 16px !important;
+    height: 16px !important;
+  }
 }
-.b-donation-percentage-sign {
-  color: $--b-main-green-color;
-  text-align: center;
-  font-family: 'Lato';
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 20px;
-}
-.b-donation-default-btn-container {
+
+.b-donation-amount-option-button-group {
   display: flex;
-  padding-top: 24px;
-  margin-left: -8px;
+  margin-top: 6px;
+  justify-content: space-between;
 }
-.b-donation-default-btn {
+
+.b-donation-amount-option-button {
   display: flex;
-  height: 28px;
-  padding: 6px 8px;
+  padding: 6px 12px;
   justify-content: center;
   align-items: center;
-  border-radius: 6px;
-  border: 1px solid #dcdce2;
-  min-width: 53px;
-  margin-left: 8px;
-  cursor: pointer;
-  background: transparent;
-  transition: all 0.25s;
+  flex: 1 0 0;
+  height: 46px;
+  width: 90px;
+  max-width: 90px;
+  border: 1px solid #dcdce2 !important;
+  color: $--b-main-black-color !important;
+  transition: all 0.25s !important;
 
   &:hover,
   &:active {
-    border: 1px solid #8a8aa8;
+    border: 1px solid #8a8aa8 !important;
   }
 }
-.b-donation-default-btn-label {
-  color: $--b-main-black-color;
-  font-family: 'Inter';
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 20px;
+
+.b-donation-enter-your-amount-container {
+  display: flex;
+  margin-top: 12px;
+
+  & div {
+    height: 10px;
+    flex-grow: 1;
+    border-bottom: 1px solid #f0f0f4;
+  }
+
+  & span {
+    color: #575775;
+    text-align: center;
+    font-family: 'Inter';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    margin: 0 8px;
+  }
 }
+
 .b-donation-input-container {
-  padding-top: 24px;
-  width: 240px;
-}
-.b-donation-input {
-  width: 100%;
-  min-width: 260px;
-  height: 40px;
-  padding: 8px 8px 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #dcdce2;
+  margin-top: 12px;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  background: #fff;
-  outline: none;
 
-  &:hover,
-  &:active {
-    border: 1px solid #8a8aa8;
-    outline: none;
+  & .b-input__wrapper {
+    transition: all 0.25s !important;
   }
 }
-.b-donation-support-btn-conatiner {
-  padding-top: 24px;
+
+.b-donation-support-button {
+  margin-left: 8px;
+  min-width: 177px;
 }
-.b-donation-support-btn {
-  width: 177px;
+
+.b-donation-anonymous-container {
+  margin-top: 12px;
   display: flex;
-  padding: 12px 16px;
-  justify-content: center;
   align-items: center;
-  border-radius: 6px;
-  background: $--b-main-green-color;
-  outline: none;
-  border: 0;
-  cursor: pointer;
-  transition: all 0.25s;
-
-  &:hover,
-  &:active {
-    filter: brightness(1.05);
-    outline: none;
-  }
 }
-.b-donation-support-btn-label {
-  color: #fff;
-  text-align: center;
+
+.b-donation-anonymous-title {
+  color: #575775;
   font-family: 'Inter';
-  font-size: 16px;
+  font-size: 14px;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 24px;
+}
+
+.b-donation-anonymous-switcher {
+  margin-left: 8px;
+}
+
+.b-donation-img {
+  width: 568px;
+  height: 568px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background-position-x: -8px;
+  background-position-y: -8px;
 }
 </style>
