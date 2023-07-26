@@ -52,6 +52,13 @@ export const WebSocketPaginationWorker = (options) => {
     });
   };
 
+  const paginationClearData = () => {
+    paginationElements.value = [];
+    paginationPage.value = 0;
+    paginationTotalCount.value = 0;
+    paginationIsNextPage.value = true;
+  };
+
   function paginationProcessResponse(result) {
     const resultData = result.data;
     const paginationData = resultData?.data;
@@ -86,5 +93,6 @@ export const WebSocketPaginationWorker = (options) => {
     requestId,
     paginationLoad,
     paginationProcessResponse,
+    paginationClearData,
   };
 };

@@ -16,7 +16,7 @@
   />
 
   <div
-    v-if="chatData"
+    v-if="checkIsChatSelected(chatData)"
     :class="[
       'b-chat-messages__list',
       { 'no-messages': !paginationElements.length },
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeUnmount, onMounted } from 'vue';
+import { ref, computed, onBeforeUnmount, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { v4 as uuid } from 'uuid';
@@ -89,6 +89,7 @@ import {
 } from '@workers/web-socket-worker';
 import { API } from '@workers/api-worker/api.worker';
 import { ChatWebSocketTypes } from '@workers/web-socket-worker/message-types/chat/web.socket.types';
+import { checkIsChatSelected } from './utils/checkIsChatSelected';
 
 import { useUserDataStore } from '@/stores/userData';
 
@@ -129,6 +130,7 @@ export default {
     const refList = ref();
     const triggerForRestart = ref(false);
     const isActionModalOpened = ref(false);
+    const newChatMessagesLoading = ref(false);
 
     const blockScrollToTopIfExist = ref(false);
 
@@ -392,6 +394,14 @@ export default {
       instanceType.createNewUserJoinedChatServiceMessage(paginationElements);
     }
 
+    function startNewMessagesLoading() {
+      newChatMessagesLoading.value = true;
+    }
+
+    function finishNewMessagesLoading() {
+      newChatMessagesLoading.value = false;
+    }
+
     ChatSocketWorkerInstance.registerCallback(
       createNewUserJoinedChatServiceMessageHandler,
       ChatWebSocketTypes.AddUserToChat
@@ -447,6 +457,17 @@ export default {
       ChatEventBus.off('bulkDeleteChatMessages');
     });
 
+    watch(
+      () => props.chatData.id,
+      () => {
+        startNewMessagesLoading();
+        paginationClearData();
+        loadDataPaginationData(1, null);
+        finishNewMessagesLoading();
+      },
+      { immediate: true }
+    );
+
     expose({
       selectedMessages,
     });
@@ -470,6 +491,7 @@ export default {
       actionModalConfig,
       MESSAGES_LIST_VERTICAL_GAP_PX,
       paginationIsNextPage,
+      checkIsChatSelected,
       restartInfiniteScroll,
       loadDataPaginationData,
       showContextMenu,

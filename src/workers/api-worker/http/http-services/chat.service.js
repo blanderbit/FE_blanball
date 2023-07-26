@@ -56,8 +56,8 @@ export class ChatService {
     return AxiosInstance.post(EndpointsEnum.Chats.EditChatMessage, data);
   }
 
-  static getInfoAboutMeInChat(chatId) {
-    return AxiosInstance.get(EndpointsEnum.Chats.GetInfoAboutMeInChat(chatId));
+  static getChatDetailData(chatId) {
+    return AxiosInstance.get(EndpointsEnum.Chats.GetChatDetailData(chatId));
   }
 
   static getAllMyChatsCount() {

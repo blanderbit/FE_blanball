@@ -16,6 +16,6 @@ export class ChatWebSocketTypes {
   static ReadOrUnreadMessages = 'read_or_unread_messages';
   static RemoveUserFromChat = 'remove_user_from_chat';
   static SetOrUnsetChatAdmin = 'set_or_unset_chat_admin';
-  static GetInfoAboutMeInChat = 'get_user_info_in_chat';
+  static GetChatDetailData = 'get_chat_detail_data';
   static OffOrOnPushNotifications = 'off_or_on_push_notifications';
 }

@@ -28,7 +28,11 @@
       @close-modal="closeContextMenu"
       @itemClick="contextMenuItemClick"
     />
-    <div v-if="chatData" ref="CHAT_TOP_SIDE_BLOCK" class="b-chat-top-side">
+    <div
+      v-if="checkIsChatSelected(chatData)"
+      ref="CHAT_TOP_SIDE_BLOCK"
+      class="b-chat-top-side"
+    >
       <ChatTopBlock
         :chatData="chatData"
         :selectedMessages="chatSelectedMessagesList"
@@ -45,7 +49,7 @@
         :heightStyle="messagesListBlockStyle"
       />
       <div
-        v-if="chatData"
+        v-if="checkIsChatSelected(chatData)"
         ref="CHAT_BOTTOM_SIDE_BLOCK"
         class="b-main-side-bottom-block"
       >
@@ -65,7 +69,7 @@
 
 <script>
 import { ref, computed, onBeforeMount, onBeforeUnmount, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
 
@@ -87,13 +91,19 @@ import { calcHeight } from '@workers/window-size-worker/calcHeight';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 import { ChatWebSocketTypes } from '@workers/web-socket-worker/message-types/chat/web.socket.types';
 import { API } from '@workers/api-worker/api.worker';
+import { checkIsChatSelected } from '@/components/main/chat/utils/checkIsChatSelected';
 import { ChatEventBus } from '@workers/event-bus-worker';
+import {
+  startSpinner,
+  finishSpinner,
+} from '@/workers/loading-worker/loading.worker';
 
 import { useChatDataStore } from '@/stores/chatData';
 import { useUserDataStore } from '@/stores/userData';
 
 import { CONSTS } from '@consts/index';
 import { ROUTES } from '@/routes/router.const';
+import { CHAT_DETAILS_TYPE_ENUM_ERRORS } from '@/workers/web-socket-worker/message-types/chat/web.socket.errors';
 
 const CHAT_PAGE_TOP_AND_BOTTOM_PADDINGS_PX = 20 + 0;
 
@@ -110,22 +120,15 @@ export default {
     StartPesonalChatModal,
   },
   setup() {
-    const chatData = ref(null);
-
-    // {
-    //   id: 50,
-    //   name: 'dffddfdfdf fdfddffd',
-    //   isChatRequest: false,
-    //   isGroup: false,
-    //   disabled: false,
-    //   link: 'helloflamingo.linkactive',
-    // }
     const chatDataStore = useChatDataStore();
     const userStore = useUserDataStore();
+
+    const chatData = ref(chatDataStore.chatData);
 
     const { t } = useI18n();
     const toast = useToast();
     const route = useRoute();
+    const router = useRouter();
 
     const isEditChatModalOpened = ref(false);
     const isChatWarningClosed = ref(false);
@@ -330,14 +333,33 @@ export default {
       isStartPesonalChatModalVisible.value = false;
     }
 
-    function getInfoAboutMeInChat() {
-      API.ChatService.getInfoAboutMeInChat(chatData.value.id);
+    function getChatDetailData(chatId) {
+      startSpinner();
+      API.ChatService.getChatDetailData(chatId);
     }
 
-    function getInfoAboutMeInChatMessageHandler(instanceType) {
+    function patchChatDataStore(infoAboutMe, chatData) {
       chatDataStore.$patch({
-        infoAboutMe: instanceType.getUserInfoData(),
+        infoAboutMe: infoAboutMe,
+        chatData: chatData,
       });
+    }
+
+    function chatNotFoundErrorHandler() {
+      router.push(ROUTES.APPLICATION.CHATS.absolute);
+    }
+
+    function getChatDetailDataMessageHandler(instanceType) {
+      patchChatDataStore(
+        instanceType.getUserInfoData(),
+        instanceType.getChatInfoData()
+      );
+      instanceType.onError(
+        CHAT_DETAILS_TYPE_ENUM_ERRORS.CHAT_NOT_FOUND,
+        chatNotFoundErrorHandler
+      );
+
+      finishSpinner();
     }
 
     function offOrOnPushNotificationsHandler(instanceType) {
@@ -353,17 +375,18 @@ export default {
     }
 
     watch(
-      () => route.path,
-      async (value) => {
-        if (route.name === ROUTES.APPLICATION.CHATS.name) {
-          console.log(value.split('/').slice(-1)[0]);
+      () => route.query.active_chat_room,
+      (newChatIdQuery) => {
+        if (newChatIdQuery) {
+          getChatDetailData(newChatIdQuery);
         }
-      }
+      },
+      { immediate: true }
     );
 
     ChatSocketWorkerInstance.registerCallback(
-      getInfoAboutMeInChatMessageHandler,
-      ChatWebSocketTypes.GetInfoAboutMeInChat
+      getChatDetailDataMessageHandler,
+      ChatWebSocketTypes.GetChatDetailData
     );
 
     ChatSocketWorkerInstance.registerCallback(
@@ -382,9 +405,7 @@ export default {
     );
 
     onBeforeUnmount(() => {
-      ChatSocketWorkerInstance.destroyCallback(
-        getInfoAboutMeInChatMessageHandler
-      );
+      ChatSocketWorkerInstance.destroyCallback(getChatDetailDataMessageHandler);
       ChatSocketWorkerInstance.destroyCallback(
         setCurrentUserAsRemovedMessageHandler
       );
@@ -392,7 +413,7 @@ export default {
       ChatSocketWorkerInstance.destroyCallback(offOrOnPushNotificationsHandler);
     });
 
-    // getInfoAboutMeInChat();
+    // getChatDetailData();
 
     return {
       chatData,
@@ -415,6 +436,7 @@ export default {
       submitModalConfig,
       editChatModalTransitionName,
       isSendMessagesDisabled,
+      checkIsChatSelected,
       showEditChatModal,
       closeEditChatModal,
       closeChatWarning,
