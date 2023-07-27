@@ -18,6 +18,7 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
     bottomSideVisible: true,
     closable: false,
     selectable: false,
+    notAnimate: false,
   };
   activity = ref(false);
   selectable = ref(false);
@@ -34,6 +35,7 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
       title: options.slideConfig.title,
       tabsGapPx: options.slideConfig.tabsGapPx,
       topSide: options.slideConfig.topSide,
+      notAnimate: options.slideConfig.notAnimate,
       bottomSideVisible: options.slideConfig.bottomSideVisible,
       tabs: Array.isArray(options.slideConfig.tabs)
         ? options.slideConfig.tabs

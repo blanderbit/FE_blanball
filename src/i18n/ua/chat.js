@@ -23,6 +23,7 @@ export default {
     symbols: 'Символи',
     flags: 'Прапори',
   },
+  event_group_chat: 'Чат події',
   chats: 'Чати',
   chat_lists: {
     all_chats_tab: 'Усі чати',

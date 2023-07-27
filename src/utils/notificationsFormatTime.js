@@ -16,7 +16,7 @@ export function notifionsFormatTime() {
       mm: '%d хв.',
       h: 'год.',
       hh: '%d год.',
-      d: 'дн.',
+      d: '1 дн.',
       dd: '%d дн.',
       M: 'м.',
       MM: '%d м.',

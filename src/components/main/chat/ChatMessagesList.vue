@@ -16,14 +16,20 @@
   />
 
   <div
-    v-if="checkIsChatSelected(chatData)"
     :class="[
       'b-chat-messages__list',
       { 'no-messages': !paginationElements.length },
     ]"
     :style="heightStyle"
-    @keydown.up="smoothScrollUp"
-    @keydown.down="smoothScrollDown"
+    @keydown.up="
+      smoothScrollUp(MESSAGES_SCROLL_SPEED, MESSAGES_SCROLL_ANIMATION_DURATION)
+    "
+    @keydown.down="
+      smoothScrollDown(
+        MESSAGES_SCROLL_SPEED,
+        MESSAGES_SCROLL_ANIMATION_DURATION
+      )
+    "
   >
     <SmartList
       :list="paginationElements"
@@ -61,8 +67,6 @@
       </template>
     </SmartList>
   </div>
-
-  <NotSelectedChatCard v-else />
 </template>
 
 <script>
@@ -89,7 +93,7 @@ import {
 } from '@workers/web-socket-worker';
 import { API } from '@workers/api-worker/api.worker';
 import { ChatWebSocketTypes } from '@workers/web-socket-worker/message-types/chat/web.socket.types';
-import { checkIsChatSelected } from './utils/checkIsChatSelected';
+import { smoothScrollUp, smoothScrollDown } from './utils/smoothScroll';
 
 import { useUserDataStore } from '@/stores/userData';
 
@@ -111,7 +115,6 @@ export default {
     SmartList,
     ContextMenu,
     ChatServiceMessage,
-    NoChatMessages,
     NotSelectedChatCard,
     ActionModal,
   },
@@ -269,48 +272,6 @@ export default {
       }
     }
 
-    function smoothScrollUp() {
-      const currentPosition = window.pageYOffset;
-      const targetPosition = currentPosition - MESSAGES_SCROLL_SPEED;
-
-      smoothScrollTo(targetPosition);
-    }
-
-    function smoothScrollDown() {
-      const currentPosition = window.pageYOffset;
-      const targetPosition = currentPosition + MESSAGES_SCROLL_SPEED;
-
-      smoothScrollTo(targetPosition);
-    }
-
-    function smoothScrollTo(targetPosition) {
-      const startPosition = window.pageYOffset;
-      const distance = targetPosition - startPosition;
-      let startTime = null;
-
-      function animation(currentTime) {
-        if (!startTime) startTime = currentTime;
-        const timeElapsed = currentTime - startTime;
-        const scrollY = easeInOutCubic(
-          timeElapsed,
-          startPosition,
-          distance,
-          MESSAGES_SCROLL_ANIMATION_DURATION
-        );
-        window.scrollTo(0, scrollY);
-        if (timeElapsed < MESSAGES_SCROLL_ANIMATION_DURATION) {
-          window.requestAnimationFrame(animation);
-        }
-      }
-
-      window.requestAnimationFrame(animation);
-    }
-
-    function easeInOutCubic(t, b, c, d) {
-      t /= d;
-      return c * t * t * t + b;
-    }
-
     function replyToMessage(messageData) {
       ChatEventBus.emit('replyToChatMessage', messageData);
     }
@@ -460,10 +421,12 @@ export default {
     watch(
       () => props.chatData.id,
       () => {
-        startNewMessagesLoading();
-        paginationClearData();
-        loadDataPaginationData(1, null);
-        finishNewMessagesLoading();
+        if (props.chatData.id) {
+          startNewMessagesLoading();
+          paginationClearData();
+          loadDataPaginationData(1, null);
+          finishNewMessagesLoading();
+        }
       },
       { immediate: true }
     );
@@ -491,7 +454,8 @@ export default {
       actionModalConfig,
       MESSAGES_LIST_VERTICAL_GAP_PX,
       paginationIsNextPage,
-      checkIsChatSelected,
+      MESSAGES_SCROLL_SPEED,
+      MESSAGES_SCROLL_ANIMATION_DURATION,
       restartInfiniteScroll,
       loadDataPaginationData,
       showContextMenu,

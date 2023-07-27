@@ -29,7 +29,7 @@
       @itemClick="contextMenuItemClick"
     />
     <div
-      v-if="checkIsChatSelected(chatData)"
+      v-if="isAnyChatSelected"
       ref="CHAT_TOP_SIDE_BLOCK"
       class="b-chat-top-side"
     >
@@ -42,14 +42,21 @@
         @editChat="showEditChatModal"
       />
     </div>
-    <div class="b-chat-page-main-side">
+    <div
+      :class="[
+        'b-chat-page-main-side',
+        { 'no-selected-chat': !isAnyChatSelected },
+      ]"
+    >
       <ChatMessagesList
+        v-if="isAnyChatSelected"
         ref="CHAT_MESSAGES_LIST_BLOCK"
         :chatData="chatData"
         :heightStyle="messagesListBlockStyle"
       />
+      <NotSelectedChatCard v-else />
       <div
-        v-if="checkIsChatSelected(chatData)"
+        v-if="isAnyChatSelected"
         ref="CHAT_BOTTOM_SIDE_BLOCK"
         class="b-main-side-bottom-block"
       >
@@ -68,8 +75,15 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeMount, onBeforeUnmount, watch } from 'vue';
-import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
+import {
+  ref,
+  computed,
+  onBeforeMount,
+  onBeforeUnmount,
+  watch,
+  onMounted,
+} from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
 
@@ -84,8 +98,8 @@ import ChatMessagesList from '@mainComponents/chat/ChatMessagesList.vue';
 import ContextMenu from '@sharedComponents/modals/ContextModal.vue';
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 import StartPesonalChatModal from '@mainComponents/chat/modals/StartPersonalChatModal.vue';
+import NotSelectedChatCard from '@/components/main/chat/NotSelectedChatCard.vue';
 
-import { accessToken } from '@workers/token-worker';
 import { ChatSocketWorkerInstance } from '@workers/web-socket-worker';
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
@@ -106,6 +120,8 @@ import { ROUTES } from '@/routes/router.const';
 import { CHAT_DETAILS_TYPE_ENUM_ERRORS } from '@/workers/web-socket-worker/message-types/chat/web.socket.errors';
 
 const CHAT_PAGE_TOP_AND_BOTTOM_PADDINGS_PX = 20 + 0;
+const SIDEBAR_ELEMENT_SELECTOR = '.b_sidebar';
+const SLIDE_MENU_ELEMENT_SELECTOR = '.b_slide_menu_main';
 
 export default {
   components: {
@@ -118,6 +134,7 @@ export default {
     RequestForChat,
     SubmitModal,
     StartPesonalChatModal,
+    NotSelectedChatCard,
   },
   setup() {
     const chatDataStore = useChatDataStore();
@@ -145,6 +162,8 @@ export default {
     const CHAT_TOP_SIDE_BLOCK = ref();
     const CHAT_BOTTOM_SIDE_BLOCK = ref();
     const CHAT_MESSAGES_LIST_BLOCK = ref();
+    const SIDEBAR_HTML_ELEMENT = ref();
+    const SLIDE_MENU_HTML_ELEMENT = ref();
 
     const { height: CHAT_TOP_SIDE_BLOCK_HEIGHT } =
       useElementSize(CHAT_TOP_SIDE_BLOCK);
@@ -158,6 +177,10 @@ export default {
 
     const editChatModalTransitionName = computed(() => {
       return isMobileSmall.value ? 'edit-chat-modal-slide' : null;
+    });
+
+    const isAnyChatSelected = computed(() => {
+      return checkIsChatSelected(chatData.value);
     });
 
     const mockData = computed(() => {
@@ -213,7 +236,13 @@ export default {
       toast.success(t('chat.toasts.chat_updated_success'));
     }
 
+    function highlightSidebarAndSlideMenu() {
+      SIDEBAR_HTML_ELEMENT.value.style.zIndex = 1000;
+      SLIDE_MENU_HTML_ELEMENT.value.style.zIndex = 1000;
+    }
+
     function showEditChatModal() {
+      highlightSidebarAndSlideMenu();
       isEditChatModalOpened.value = true;
     }
 
@@ -384,6 +413,16 @@ export default {
       { immediate: true }
     );
 
+    onMounted(() => {
+      SIDEBAR_HTML_ELEMENT.value = document.querySelector(
+        SIDEBAR_ELEMENT_SELECTOR
+      );
+      SLIDE_MENU_HTML_ELEMENT.value = document.querySelector(
+        SLIDE_MENU_ELEMENT_SELECTOR
+      );
+      ChatEventBus.emit('forceOpenChatsListSlideMenu');
+    });
+
     ChatSocketWorkerInstance.registerCallback(
       getChatDetailDataMessageHandler,
       ChatWebSocketTypes.GetChatDetailData
@@ -436,6 +475,7 @@ export default {
       submitModalConfig,
       editChatModalTransitionName,
       isSendMessagesDisabled,
+      isAnyChatSelected,
       checkIsChatSelected,
       showEditChatModal,
       closeEditChatModal,
@@ -454,7 +494,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .b-chat-page {
   height: fit-content;
   background-image: url('@images/chat/chat-background.svg');
@@ -477,12 +517,16 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100vh;
+    height: 100%;
     margin: 0 auto;
     position: relative;
 
     @include mobile {
       padding: 0px 8px 20px 8px;
+    }
+
+    &.no-selected-chat {
+      @include calc-height;
     }
 
     .b-main-side-bottom-block {

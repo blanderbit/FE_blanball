@@ -21,6 +21,7 @@
     :isMenuOpened="config.activity"
     :menuClosable="config.slideConfig.closable"
     :mainSideWidth="config.slideConfig.width"
+    :slideMenuWrapperAnimation="!config.slideConfig.notAnimate"
     ref="SLIDE_MENU_WRAPPER"
     @close="closeSlideMenu"
   >
@@ -118,6 +119,7 @@
               @infinite="test"
             >
               <template #complete>
+                {{ activeTabRecords }}
                 <empty-list
                   v-if="isEmptyListVisible"
                   :title="activeTabRecords.emptyListConfig.title"

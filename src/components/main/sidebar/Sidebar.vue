@@ -87,7 +87,11 @@ import TabLabel from '@sharedComponents/tabLabel/TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';
 
 import { useUserDataStore } from '@/stores/userData';
-import { NotificationsBus, BlanballEventBus } from '@workers/event-bus-worker';
+import {
+  NotificationsBus,
+  BlanballEventBus,
+  ChatEventBus,
+} from '@workers/event-bus-worker';
 import { logOut } from '@utils/logOut';
 
 import { ROUTES } from '@routes/router.const';
@@ -142,8 +146,15 @@ export default {
       );
     });
 
+    ChatEventBus.on('forceOpenChatsListSlideMenu', () => {
+      clickByMenuItem(
+        menuItems.value.find((item) => item.uniqueName === 'chat.point')
+      );
+    });
+
     onBeforeUnmount(() => {
       BlanballEventBus.off('OpenMobileMenu');
+      ChatEventBus.off('forceOpenChatsListSlideMenu');
     });
 
     function clickByMenuItem(item) {
@@ -203,7 +214,6 @@ $color-fff4ec: #fff4ec;
     position: relative;
     @include calc-height;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
-    border-radius: 6px;
     padding-top: 24px;
     padding-bottom: 44px;
     display: flex;

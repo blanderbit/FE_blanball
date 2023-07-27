@@ -1,6 +1,7 @@
 import { BasicButtonSlideActivatorModel } from '../models/basic.button.slide.activator.model';
+import { cloneDeep } from 'lodash';
 import notificationUnread from '@images/notificationUnread.svg';
-import { ActionModelTypeButton } from '../models/model.types';
+import { ActionModelTypeUrl } from '../models/model.types';
 import { API } from '@workers/api-worker/api.worker';
 import { TabModel } from '../models/tabs.model';
 import { ComponentButtonModel } from '../models/component.button.model';
@@ -10,6 +11,7 @@ import { ref, computed, watch } from 'vue';
 import { ChatSocketWorkerInstance } from '@/workers/web-socket-worker';
 import { WebSocketPaginationWorker } from '@/workers/pagination-worker';
 import { ChatWebSocketTypes } from '@/workers/web-socket-worker/message-types/chat/web.socket.types';
+import { ChatEventBus } from '@/workers/event-bus-worker';
 
 import ReadAllNotificationsIcon from '@images/notifications/double-check.svg';
 import ManageNotificationsIcon from '@images/dots.svg';
@@ -30,14 +32,6 @@ const CHATS_CONFIG_TOP_SIDE_STYLES = {
 };
 
 const generalConfigForAllTabs = {
-  scrollStrategy: 'infinite',
-  watchChanges: ['contextMenu', 'openTab'],
-  blockScrollToTopIfExist: true,
-  emptyListConfig: {
-    title: 'chats.no_chats_list.title',
-    description: 'chats.no_chats_list.description',
-    image: EmptyNotificationsIcon,
-  },
   badge: {
     count: 0,
   },
@@ -59,6 +53,14 @@ const generalConfigForAllTabs = {
       },
       paginationFunction: WebSocketPaginationWorker,
       messageType: ChatWebSocketTypes.GetChatsList,
+    },
+    blockScrollToTopIfExist: true,
+    watchChanges: ['contextMenu', 'openTab'],
+    scrollStrategy: 'infinite',
+    emptyListConfig: {
+      title: 'chat.no_chats_list.title',
+      description: 'chat.no_chats_list.description',
+      image: EmptyNotificationsIcon,
     },
   },
 };
@@ -119,18 +121,13 @@ export const createChatConfigItem = (routerInstance) => {
   };
 
   const chatItem = new BasicButtonSlideActivatorModel({
-    uniqueName: 'notification.point',
-    title: 'notification.title',
+    uniqueName: 'chat.point',
+    title: 'chat.title',
     disabled: false,
     icon: chatsSidebarIcon,
-    actionType: new ActionModelTypeButton({
-      action: () => {
-        import('@router/index').then((router) => {
-          router.default
-            .push(ROUTES.APPLICATION.CHATS)
-            .then((chatItem.activity.value = true));
-        });
-      },
+    actionType: new ActionModelTypeUrl({
+      url: ROUTES.APPLICATION.CHATS.absolute,
+      action: () => (chatItem.activity.value = true),
     }),
     onInit() {
       ChatSocketWorkerInstance.registerCallback(
@@ -143,14 +140,15 @@ export const createChatConfigItem = (routerInstance) => {
       ChatSocketWorkerInstance.destroyCallback(getChatsCountMessageHandler);
     },
     slideConfig: {
-      uniqueName: 'notification.slide',
-      title: 'notification.slide',
+      uniqueName: 'chat.slide',
+      title: 'chat.slide',
       defaultTab: 'chat.slideConfig.all_chats',
       logo: {
         text: 'chat.chats',
       },
       tabsGapPx: 10,
       closable: false,
+      notAnimate: true,
       selectable: false,
       bottomSideVisible: false,
       topSide: {
@@ -160,7 +158,7 @@ export const createChatConfigItem = (routerInstance) => {
       tabs: [
         new TabModel(
           {
-            ...generalConfigForAllTabs,
+            ...cloneDeep(generalConfigForAllTabs),
             uniqueName: 'chat.slideConfig.all_chats',
             title: 'chat.chat_lists.all_chats_tab',
           },
@@ -168,7 +166,7 @@ export const createChatConfigItem = (routerInstance) => {
         ),
         new TabModel(
           {
-            ...generalConfigForAllTabs,
+            ...cloneDeep(generalConfigForAllTabs),
             uniqueName: 'chat.slideConfig.dialogs',
             title: 'chat.chat_lists.dialogs_tab',
           },
@@ -176,7 +174,7 @@ export const createChatConfigItem = (routerInstance) => {
         ),
         new TabModel(
           {
-            ...generalConfigForAllTabs,
+            ...cloneDeep(generalConfigForAllTabs),
             uniqueName: 'chat.slideConfig.groupChats',
             title: 'chat.chat_lists.group_chats_tab',
           },
@@ -184,7 +182,7 @@ export const createChatConfigItem = (routerInstance) => {
         ),
         new TabModel(
           {
-            ...generalConfigForAllTabs,
+            ...cloneDeep(generalConfigForAllTabs),
             uniqueName: 'chat.slideConfig.chatRequests',
             title: 'chat.chat_lists.chat_requests_tab',
           },
