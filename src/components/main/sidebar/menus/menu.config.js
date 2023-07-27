@@ -14,8 +14,8 @@ import { createNotificationConfigItem } from './configs/notifications.config';
 import { createChatConfigItem } from './configs/chats.config';
 
 export const dinamicMenu = (instance) => {
-  const notificationItem = createNotificationConfigItem();
-  const chatItem = createChatConfigItem();
+  const notificationItem = createNotificationConfigItem(instance);
+  const chatItem = createChatConfigItem(instance);
 
   const closeCurrentActiveSlideMenu = () => {
     slideBarMenu.value = slideBarMenu.value.forEach((slideBarMenuItem) => {

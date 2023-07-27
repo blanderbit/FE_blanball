@@ -56,7 +56,10 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
       }
     });
     watch(this.activeTab, (value) => {
-      if (value) this.activeTab.value.loadNewData(1, null, false, false);
+      if (value) {
+        this.activeTab.value.paginationClearData();
+        this.activeTab.value.loadNewData(1, null, false, false);
+      }
     });
     this._context = this;
   }
@@ -76,9 +79,10 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
 
   openTab(uniqueName) {
     const foundTab = this.findTab(uniqueName);
-    if (this.activeTab.value && foundTab) {
-      this.activeTab.value.paginationClearData();
-    }
+    // FIXME
+    // if (this.activeTab.value && foundTab) {
+    //   this.activeTab.value.paginationClearData();
+    // }
     this.activeTab.value = foundTab;
   }
 }

@@ -6,6 +6,7 @@
           class="b-go-back-button-mobile"
           src="@images/chat/go-back-button.svg"
           alt=""
+          @click="$emit('goBackToCheChatsList')"
         />
         <div class="b-chat-info-block">
           <userAvatar
@@ -83,7 +84,12 @@ export default {
       default: false,
     },
   },
-  emits: ['searchChatMessages', 'manageChat', 'editChat'],
+  emits: [
+    'searchChatMessages',
+    'manageChat',
+    'editChat',
+    'goBackToCheChatsList',
+  ],
   setup(props) {
     const chatDataStore = useChatDataStore();
 
@@ -161,9 +167,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-:deep(.context-modal__tooltip-wrapper.transperent) {
-  z-index: 2000 !important;
-}
 .b-chat-top-block {
   background: #f9f9fc;
   box-shadow: 2px 2px 10px 0px rgba(56, 56, 251, 0.1);

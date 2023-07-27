@@ -90,6 +90,7 @@ export default {
     delete_chat: 'Видалити чат',
     search_messages: 'Пошук повідомлень',
     manage_group: 'Керування групою',
+    delete_chat: 'Видалити чат',
   },
   service_messages: {
     user_joined_to_chat: '{userFullName} щойно долучився до бесіди',

@@ -116,14 +116,17 @@ export default {
     const foundBug = () => {
       isBugReportModalOpened.value = true;
     };
+    const activeSlideElement = ref();
 
     const menuItems = dinamicMenu({
       router,
     }).slideBarMenu;
 
-    const activeSlideElement = ref(
-      menuItems.value.find((item) => item.uniqueName === 'notification.point')
-    );
+    function setDefaultSlideMenu() {
+      activeSlideElement.value = menuItems.value.find(
+        (item) => item.uniqueName === 'notification.point'
+      );
+    }
 
     const closeBugReportModal = () => (isBugReportModalOpened.value = false);
 
@@ -158,8 +161,11 @@ export default {
     });
 
     function clickByMenuItem(item) {
+      console.log(item);
       if (item.slideConfig) {
         activeSlideElement.value = item;
+      } else if (!item.slideConfig) {
+        setDefaultSlideMenu();
       }
       if (typeof item.actionType?.action === 'function') {
         item.actionType.action();
@@ -176,6 +182,8 @@ export default {
     //     );
     //   }
     // };
+
+    setDefaultSlideMenu();
 
     return {
       menuItems,

@@ -1,20 +1,19 @@
 import { BasicButtonSlideActivatorModel } from '../models/basic.button.slide.activator.model';
 import { cloneDeep } from 'lodash';
-import notificationUnread from '@images/notificationUnread.svg';
 import { ActionModelTypeUrl } from '../models/model.types';
 import { API } from '@workers/api-worker/api.worker';
 import { TabModel } from '../models/tabs.model';
 import { ComponentButtonModel } from '../models/component.button.model';
 import { ContextMenuModel } from '../models/context.menu.model';
-import { createNotificationFromData } from '@workers/utils-worker';
 import { ref, computed, watch } from 'vue';
-import { ChatSocketWorkerInstance } from '@/workers/web-socket-worker';
+import {
+  ChatSocketWorkerInstance,
+  AuthWebSocketWorkerInstance,
+} from '@/workers/web-socket-worker';
 import { WebSocketPaginationWorker } from '@/workers/pagination-worker';
 import { ChatWebSocketTypes } from '@/workers/web-socket-worker/message-types/chat/web.socket.types';
 import { ChatEventBus } from '@/workers/event-bus-worker';
 
-import ReadAllNotificationsIcon from '@images/notifications/double-check.svg';
-import ManageNotificationsIcon from '@images/dots.svg';
 import EmptyNotificationsIcon from '@images/no-records/empty-notifications.svg';
 import { FilterParamsDecorator } from '@/workers/api-worker/http/filter/filter.utils';
 
@@ -24,6 +23,8 @@ import trashRedIcon from '@images/trash-red.svg';
 import doubleCheckIcon from '@images/notifications/double-check.svg';
 import selectedIcon from '@images/selected.svg';
 import chatsSidebarIcon from '@images/chat/sidebar-chats-icon.svg';
+import pinChatIcon from '@images/chat/pin-chat-icon.svg';
+import disableChatNotificationsIcon from '@images/chat/disable-chat-push-notifications-button.svg';
 
 const CHATS_CONFIG_TOP_SIDE_STYLES = {
   display: 'flex',
@@ -31,38 +32,45 @@ const CHATS_CONFIG_TOP_SIDE_STYLES = {
   'align-items': 'center',
 };
 
-const generalConfigForAllTabs = {
-  badge: {
-    count: 0,
-  },
-  records: {
-    record: {
-      componentName: 'ChatCard',
+const generalConfigForAllTabs = (chatItem, apiRequestFilters = {}) => {
+  return {
+    badge: {
+      count: 0,
     },
-    request: {
-      api: (data) => API.ChatService.getMyChatsList(data),
-      filtersModel: {
-        type: {
-          type: String,
-          value: '',
-        },
-        skipids: {
-          type: Array,
-          value: [],
-        },
+    records: {
+      record: {
+        componentName: 'ChatCard',
       },
-      paginationFunction: WebSocketPaginationWorker,
-      messageType: ChatWebSocketTypes.GetChatsList,
+      request: {
+        api: (data) =>
+          API.ChatService.getMyChatsList({
+            ...data,
+            ...apiRequestFilters,
+          }),
+        filtersModel: {
+          chats_type: {
+            type: String,
+            value: '',
+          },
+          search: {
+            type: String,
+            value: '',
+          },
+        },
+        paginationFunction: WebSocketPaginationWorker,
+        messageType: ChatWebSocketTypes.GetChatsList,
+      },
+      contextMenu: createContextMenu(chatItem),
+      blockScrollToTopIfExist: true,
+      watchChanges: ['contextMenu', 'openTab'],
+      scrollStrategy: 'infinite',
+      emptyListConfig: {
+        title: 'chat.no_chats_list.title',
+        description: 'chat.no_chats_list.description',
+        image: EmptyNotificationsIcon,
+      },
     },
-    blockScrollToTopIfExist: true,
-    watchChanges: ['contextMenu', 'openTab'],
-    scrollStrategy: 'infinite',
-    emptyListConfig: {
-      title: 'chat.no_chats_list.title',
-      description: 'chat.no_chats_list.description',
-      image: EmptyNotificationsIcon,
-    },
-  },
+  };
 };
 
 const createContextMenu = (chatItem) => {
@@ -70,30 +78,23 @@ const createContextMenu = (chatItem) => {
     new ContextMenuModel({
       text: 'buttons.select',
       img: selectedIcon,
-      action: (itemInstance) => {
-        if (!chatItem.selectable.value) {
-          chatItem.selectable.value = true;
-        }
-        chatItem.activeTab.value.records.selectedList.push(
-          itemInstance.notification_id
-        );
-      },
+      action: (itemInstance) => {},
     }),
     new ContextMenuModel({
-      text: 'slide_menu.mark-as-read',
-      img: doubleCheckIcon,
-      action: (itemInstance) =>
-        API.NotificationService.readNotifications([
-          itemInstance.notification_id,
-        ]),
+      text: 'buttons.pin',
+      img: pinChatIcon,
+      action: (itemInstance) => {},
     }),
     new ContextMenuModel({
-      text: 'buttons.delete',
+      text: 'chat.buttons.disable_push_notifications',
+      img: disableChatNotificationsIcon,
+      action: (itemInstance) => {},
+    }),
+    new ContextMenuModel({
+      text: 'chat.buttons.delete_chat',
       img: trashRedIcon,
-      action: (itemInstance) =>
-        API.NotificationService.deleteNotifications([
-          itemInstance.notification_id,
-        ]),
+      textColor: '#F32929',
+      action: (itemInstance) => {},
     }),
   ];
 };
@@ -120,6 +121,24 @@ export const createChatConfigItem = (routerInstance) => {
     }
   };
 
+  watch(
+    () => routerInstance.router.currentRoute.value.path,
+    (newRoutePath) => {
+      if (
+        newRoutePath !== ROUTES.APPLICATION.CHATS.absolute &&
+        chatItem.activity.value
+      ) {
+        chatItem.activity.value = false;
+      }
+    }
+  );
+
+  const createChatMessageMessageHandler = (messageData) => {
+    const { paginationElements } = chatItem.activeTab.value;
+
+    messageData.updateChatInChatsList(paginationElements);
+  };
+
   const chatItem = new BasicButtonSlideActivatorModel({
     uniqueName: 'chat.point',
     title: 'chat.title',
@@ -134,10 +153,17 @@ export const createChatConfigItem = (routerInstance) => {
         getChatsCountMessageHandler,
         ChatWebSocketTypes.GetChatsCount
       );
+      AuthWebSocketWorkerInstance.registerCallback(
+        createChatMessageMessageHandler,
+        ChatWebSocketTypes.CreateMessage
+      );
       getChatsCount();
     },
     onDestroy() {
       ChatSocketWorkerInstance.destroyCallback(getChatsCountMessageHandler);
+      AuthWebSocketWorkerInstance.destroyCallback(
+        createChatMessageMessageHandler
+      );
     },
     slideConfig: {
       uniqueName: 'chat.slide',
@@ -158,7 +184,7 @@ export const createChatConfigItem = (routerInstance) => {
       tabs: [
         new TabModel(
           {
-            ...cloneDeep(generalConfigForAllTabs),
+            ...cloneDeep(generalConfigForAllTabs(chatItem)),
             uniqueName: 'chat.slideConfig.all_chats',
             title: 'chat.chat_lists.all_chats_tab',
           },
@@ -166,7 +192,11 @@ export const createChatConfigItem = (routerInstance) => {
         ),
         new TabModel(
           {
-            ...cloneDeep(generalConfigForAllTabs),
+            ...cloneDeep(
+              generalConfigForAllTabs(chatItem, {
+                chats_type: 'dialog',
+              })
+            ),
             uniqueName: 'chat.slideConfig.dialogs',
             title: 'chat.chat_lists.dialogs_tab',
           },
@@ -174,7 +204,11 @@ export const createChatConfigItem = (routerInstance) => {
         ),
         new TabModel(
           {
-            ...cloneDeep(generalConfigForAllTabs),
+            ...cloneDeep(
+              generalConfigForAllTabs(chatItem, {
+                chats_type: 'group',
+              })
+            ),
             uniqueName: 'chat.slideConfig.groupChats',
             title: 'chat.chat_lists.group_chats_tab',
           },
@@ -182,7 +216,11 @@ export const createChatConfigItem = (routerInstance) => {
         ),
         new TabModel(
           {
-            ...cloneDeep(generalConfigForAllTabs),
+            ...cloneDeep(
+              generalConfigForAllTabs(chatItem, {
+                chats_type: 'request',
+              })
+            ),
             uniqueName: 'chat.slideConfig.chatRequests',
             title: 'chat.chat_lists.chat_requests_tab',
           },

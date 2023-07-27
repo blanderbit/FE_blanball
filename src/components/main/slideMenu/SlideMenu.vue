@@ -119,7 +119,6 @@
               @infinite="test"
             >
               <template #complete>
-                {{ activeTabRecords }}
                 <empty-list
                   v-if="isEmptyListVisible"
                   :title="activeTabRecords.emptyListConfig.title"
@@ -222,7 +221,6 @@ export default {
     const itemOnWhatWasOpenedContextMenu = ref(null);
 
     const openContextMenu = (data) => {
-      console.log(data);
       itemOnWhatWasOpenedContextMenu.value = data.itemData;
       contextMenuY.value = data.yPosition;
       contextMenuX.value = data.xPosition;

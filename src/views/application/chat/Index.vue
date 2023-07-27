@@ -40,6 +40,7 @@
         @searchChatMessages=""
         @manageChat="showManageChatContextMenu"
         @editChat="showEditChatModal"
+        @goBackToCheChatsList="forceOpenChatsListSlideMenu"
       />
     </div>
     <div
@@ -173,7 +174,7 @@ export default {
     const { calculatedHeight: chatPageHeight } = calcHeight([
       CHAT_PAGE_TOP_AND_BOTTOM_PADDINGS_PX,
     ]);
-    const { isMobileSmall } = useWindowWidth();
+    const { isMobileSmall, detectedDevice, DEVICE_TYPES } = useWindowWidth();
 
     const editChatModalTransitionName = computed(() => {
       return isMobileSmall.value ? 'edit-chat-modal-slide' : null;
@@ -407,11 +408,30 @@ export default {
       () => route.query.active_chat_room,
       (newChatIdQuery) => {
         if (newChatIdQuery) {
+          closeEditChatModal({ force: true });
           getChatDetailData(newChatIdQuery);
         }
       },
       { immediate: true }
     );
+
+    watch(
+      () => detectedDevice.value,
+      (newDevice) => {
+        switch (newDevice) {
+          case DEVICE_TYPES.DESKTOP:
+            forceOpenChatsListSlideMenu();
+            break;
+          case DEVICE_TYPES.BETWEEN_TABLET_AND_DESKTOP:
+            forceOpenChatsListSlideMenu();
+            break;
+        }
+      }
+    );
+
+    function forceOpenChatsListSlideMenu() {
+      ChatEventBus.emit('forceOpenChatsListSlideMenu');
+    }
 
     onMounted(() => {
       SIDEBAR_HTML_ELEMENT.value = document.querySelector(
@@ -420,7 +440,7 @@ export default {
       SLIDE_MENU_HTML_ELEMENT.value = document.querySelector(
         SLIDE_MENU_ELEMENT_SELECTOR
       );
-      ChatEventBus.emit('forceOpenChatsListSlideMenu');
+      forceOpenChatsListSlideMenu();
     });
 
     ChatSocketWorkerInstance.registerCallback(
@@ -451,8 +471,6 @@ export default {
       ChatSocketWorkerInstance.destroyCallback(editChatMessageHandler);
       ChatSocketWorkerInstance.destroyCallback(offOrOnPushNotificationsHandler);
     });
-
-    // getChatDetailData();
 
     return {
       chatData,
@@ -489,6 +507,7 @@ export default {
       contextMenuItemClick,
       closeStartPersonalChatModal,
       showStartPersonalChatModal,
+      forceOpenChatsListSlideMenu,
     };
   },
 };

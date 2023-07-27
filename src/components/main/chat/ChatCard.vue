@@ -2,6 +2,7 @@
   <div
     :class="['b-chat-card', { pinned: isChatPinned }, { active: isChatActive }]"
     @click="chatCardClick"
+    @click.right.prevent="openContextMenu"
   >
     <div class="b-chat-card-left-side">
       <div class="b-chat-avatar">
@@ -99,7 +100,7 @@ export default {
   components: {
     UserAvatar,
   },
-  setup(props) {
+  setup(props, { emit }) {
     notifionsFormatTime();
     const { t } = useI18n();
     const router = useRouter();
@@ -142,6 +143,10 @@ export default {
       }
     });
 
+    function openContextMenu(e) {
+      emit('openContextMenu', e);
+    }
+
     function chatCardClick() {
       if (
         !route.query.active_chat_room ||
@@ -163,6 +168,7 @@ export default {
       isChatPinned,
       isChatEventGroup,
       chatCardClick,
+      openContextMenu,
     };
   },
 };
@@ -170,6 +176,7 @@ export default {
 
 <style lang="scss" scoped>
 .elipsis {
+  word-break: break-word;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
