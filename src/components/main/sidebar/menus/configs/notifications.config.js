@@ -8,13 +8,9 @@ import { ComponentButtonModel } from '../models/component.button.model';
 import { ContextMenuModel } from '../models/context.menu.model';
 import { createNotificationFromData } from '@workers/utils-worker';
 import { ref, computed, watch } from 'vue';
-import { CONSTS } from '@consts';
 import { PaginationWorker } from '@/workers/pagination-worker';
 
-import {
-  AuthWebSocketWorkerInstance,
-  GeneralSocketWorkerInstance,
-} from '@workers/web-socket-worker';
+import { AuthWebSocketWorkerInstance } from '@workers/web-socket-worker';
 
 import { NotificationsBus } from '@workers/event-bus-worker';
 
@@ -24,6 +20,10 @@ import ReadAllNotificationsIcon from '@images/notifications/double-check.svg';
 import ManageNotificationsIcon from '@images/dots.svg';
 import EmptyNotificationsIcon from '@images/no-records/empty-notifications.svg';
 import { FilterParamsDecorator } from '@/workers/api-worker/http/filter/filter.utils';
+
+import trashRedIcon from '@images/trash-red.svg';
+import doubleCheckIcon from '@images/notifications/double-check.svg';
+import selectedIcon from '@images/selected.svg';
 
 const findDublicates = (list, newList) => {
   return newList.filter((item) =>
@@ -38,13 +38,44 @@ const findDublicates = (list, newList) => {
 const generalConfigForAllTabs = {
   scrollStrategy: 'infinite',
   watchChanges: ['contextMenu', 'openTab'],
-  contextMenu: CONSTS.sidebar.notificationsContextMenuItems,
   blockScrollToTopIfExist: true,
   emptyListConfig: {
     title: 'no_records.noNotifications.title',
     description: 'no_records.noNotifications.description',
     image: EmptyNotificationsIcon,
   },
+};
+const createContextMenu = (notificationItem) => {
+  return [
+    new ContextMenuModel({
+      text: 'buttons.select',
+      img: selectedIcon,
+      action: (itemInstance) => {
+        if (!notificationItem.selectable.value) {
+          notificationItem.selectable.value = true;
+        }
+        notificationItem.activeTab.value.records.selectedList.push(
+          itemInstance.notification_id
+        );
+      },
+    }),
+    new ContextMenuModel({
+      text: 'slide_menu.mark-as-read',
+      img: doubleCheckIcon,
+      action: (itemInstance) =>
+        API.NotificationService.readNotifications([
+          itemInstance.notification_id,
+        ]),
+    }),
+    new ContextMenuModel({
+      text: 'buttons.delete',
+      img: trashRedIcon,
+      action: (itemInstance) =>
+        API.NotificationService.deleteNotifications([
+          itemInstance.notification_id,
+        ]),
+    }),
+  ];
 };
 
 export const createNotificationConfigItem = (routerInstance) => {
@@ -65,7 +96,7 @@ export const createNotificationConfigItem = (routerInstance) => {
     if (instanceType.notification) {
       notificationItem
         .getFilters()
-        ?.skipids.value.push(instanceType.notification_id);
+        .skipids.value.push(instanceType.notification_id);
     }
 
     if (instanceType.updateWebSocketMessage) {
@@ -100,14 +131,15 @@ export const createNotificationConfigItem = (routerInstance) => {
     }),
     onInit() {
       NotificationsBus.on('SidebarClearData', () => {
-        // skipids.value = [];
+        const skipids = notificationItem.getFilters().skipids;
+        skipids.value = [];
         notificationItem.activeTab.value.paginationClearData();
       });
 
       NotificationsBus.on(
         'hanlderToRemoveNewNotificationsInSidebar',
         (notificationId) => {
-          const skipids = notificationItem.getFilters()?.skipids;
+          const skipids = notificationItem.getFilters().skipids;
           const index = skipids.value.indexOf(notificationId);
 
           if (index > -1) {
@@ -181,9 +213,11 @@ export const createNotificationConfigItem = (routerInstance) => {
                 };
               }),
               componentEmitsHandlers: {
-                clickFunction: () =>
-                  (notificationItem.selectable.value =
-                    !notificationItem.selectable.value),
+                clickFunction: () => {
+                  notificationItem.activeTab.value.records.selectedList = [];
+                  notificationItem.selectable.value =
+                    !notificationItem.selectable.value;
+                },
               },
             }),
           ],
@@ -213,6 +247,7 @@ export const createNotificationConfigItem = (routerInstance) => {
                 beforeConcat: findDublicates,
                 paginationFunction: PaginationWorker,
               },
+              contextMenu: computed(() => createContextMenu(notificationItem)),
               ...generalConfigForAllTabs,
             },
             badge: {
@@ -249,6 +284,7 @@ export const createNotificationConfigItem = (routerInstance) => {
                 beforeConcat: findDublicates,
                 paginationFunction: PaginationWorker,
               },
+              contextMenu: computed(() => createContextMenu(notificationItem)),
               ...generalConfigForAllTabs,
             },
             badge: {

@@ -27,9 +27,6 @@
           @handler-action="handlerAction($event, item)"
           @selected="handleSelected($event)"
           @openContextMenu="$emit('openContextMenu', $event)"
-          @selectNotificationAfterHold="
-            $emit('selectNotificationAfterHold', $event)
-          "
         >
         </component>
       </DynamicScrollerItem>

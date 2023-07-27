@@ -19,6 +19,7 @@ export default {
     'button-1-text': 'Ні, не видаляти',
     'button-2-text': 'Так, видалити',
   },
+  'mark-as-read': 'Видмітити прочитаним',
   'flumx': 'FlumX',
   'blanball-year': '©BlanBall {year}'
 };
