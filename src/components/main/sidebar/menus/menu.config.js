@@ -12,6 +12,7 @@ import {
 import { BasicButtonModel } from './models/basic.button.model';
 import { createNotificationConfigItem } from './configs/notifications.config';
 import { createChatConfigItem } from './configs/chats.config';
+import { BlanballEventBus } from '@/workers/event-bus-worker';
 
 export const dinamicMenu = (instance) => {
   const notificationItem = createNotificationConfigItem(instance);
@@ -62,7 +63,10 @@ export const dinamicMenu = (instance) => {
       icon: bugReport,
       class: 'b-bug-report__icon',
       actionType: new ActionModelTypeButton({
-        action: closeCurrentActiveSlideMenu,
+        action: () => {
+          BlanballEventBus.emit('OpenBugReportModal');
+          closeCurrentActiveSlideMenu;
+        },
       }),
       disabled: false,
     }),

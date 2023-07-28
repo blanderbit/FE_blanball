@@ -20,7 +20,6 @@ import { FilterParamsDecorator } from '@/workers/api-worker/http/filter/filter.u
 import { ROUTES } from '@/routes/router.const';
 
 import trashRedIcon from '@images/trash-red.svg';
-import doubleCheckIcon from '@images/notifications/double-check.svg';
 import selectedIcon from '@images/selected.svg';
 import chatsSidebarIcon from '@images/chat/sidebar-chats-icon.svg';
 import pinChatIcon from '@images/chat/pin-chat-icon.svg';
