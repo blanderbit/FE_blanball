@@ -101,6 +101,7 @@
           @removePushNotificationAfterSidebarAction="
             removePushNotificationAfterSidebarAction
           "
+          @closeMobileMenu="closeSlideMenu(true)"
         >
           <template #before>
             <!--<Notification-->
@@ -180,6 +181,7 @@ import SlideMenuWrapper from './SlideMenuWrapper.vue';
 import WhiteBtn from '@/components/shared/button/WhiteBtn.vue';
 
 import { useUserDataStore } from '@/stores/userData';
+import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
 
 import { ROUTES } from '@routes/router.const';
 import { config } from 'dotenv';
@@ -219,6 +221,7 @@ export default {
     const contextMenuY = ref(null);
     const isContextMenuActive = ref(false);
     const itemOnWhatWasOpenedContextMenu = ref(null);
+    const { detectedDevice, DEVICE_TYPES } = useWindowWidth();
 
     const openContextMenu = (data) => {
       itemOnWhatWasOpenedContextMenu.value = data.itemData;
@@ -277,8 +280,20 @@ export default {
       }
     }
 
-    function closeSlideMenu() {
-      context.config.activity = false;
+    function closeSlideMenu(onlyMobileMenuVersion = false) {
+      if (onlyMobileMenuVersion) {
+        if (
+          [
+            DEVICE_TYPES.MOBILE,
+            DEVICE_TYPES.MOBILE,
+            DEVICE_TYPES.TABLET,
+          ].includes(detectedDevice.value)
+        ) {
+          context.config.activity = false;
+        }
+      } else {
+        context.config.activity = false;
+      }
     }
 
     function contextMenuItemClick(itemActionType, item) {

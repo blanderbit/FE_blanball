@@ -27,6 +27,7 @@
           @handler-action="handlerAction($event, item)"
           @selected="handleSelected($event)"
           @openContextMenu="$emit('openContextMenu', $event)"
+          @closeMobileMenu="$emit('closeMobileMenu', $event)"
         >
         </component>
       </DynamicScrollerItem>

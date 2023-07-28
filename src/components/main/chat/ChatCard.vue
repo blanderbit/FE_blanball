@@ -100,6 +100,7 @@ export default {
   components: {
     UserAvatar,
   },
+  emits: ['openContextMenu', 'closeMobileMenu'],
   setup(props, { emit }) {
     notifionsFormatTime();
     const { t } = useI18n();
@@ -157,6 +158,7 @@ export default {
           query: { active_chat_room: chatData.id },
         });
       }
+      emit('closeMobileMenu');
     }
 
     return {

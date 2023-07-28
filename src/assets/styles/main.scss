@@ -11,6 +11,11 @@
   }
 }
 
+.sidebar-light {
+  z-index: 1001 !important;
+  border-radius: 0px !important;
+}
+
 html {
   overflow: hidden !important;
   @include remove-scrollbar;
