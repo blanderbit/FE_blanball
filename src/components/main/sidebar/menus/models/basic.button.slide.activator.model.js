@@ -13,10 +13,12 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
       img: null,
       text: null,
     },
+    tabsGapPx: 20,
     topSide: {},
     bottomSideVisible: true,
     closable: false,
     selectable: false,
+    notAnimate: false,
   };
   activity = ref(false);
   selectable = ref(false);
@@ -31,7 +33,9 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
       closable: options.slideConfig.closable,
       logo: options.slideConfig.logo,
       title: options.slideConfig.title,
+      tabsGapPx: options.slideConfig.tabsGapPx,
       topSide: options.slideConfig.topSide,
+      notAnimate: options.slideConfig.notAnimate,
       bottomSideVisible: options.slideConfig.bottomSideVisible,
       tabs: Array.isArray(options.slideConfig.tabs)
         ? options.slideConfig.tabs
@@ -46,22 +50,24 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
       if (value) {
         this.onInit();
         this.activeTab.value = this.findTab(options.slideConfig.defaultTab);
-      } else if (!value && !this.slideConfig.closable) {
-        this.activity.value = true;
       } else {
         this.onDestroy();
-        this.activeTab.value.paginationClearData();
         this.activeTab.value = null;
       }
     });
     watch(this.activeTab, (value) => {
-      if (value) this.activeTab.value.loadNewData(1, null, false, false);
+      if (value) {
+        this.activeTab.value.paginationClearData();
+        this.activeTab.value.loadNewData(1, null, false, false);
+      }
     });
     this._context = this;
   }
 
   onInit() {}
-  onDestroy() {}
+  onDestroy() {
+    this.activeTab.value.paginationClearData();
+  }
 
   findTab(uniqueName) {
     return this.slideConfig.tabs.find((tab) => tab.uniqueName === uniqueName);
@@ -73,9 +79,10 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
 
   openTab(uniqueName) {
     const foundTab = this.findTab(uniqueName);
-    if (this.activeTab.value && foundTab) {
-      this.activeTab.value.paginationClearData();
-    }
+    // FIXME
+    // if (this.activeTab.value && foundTab) {
+    //   this.activeTab.value.paginationClearData();
+    // }
     this.activeTab.value = foundTab;
   }
 }

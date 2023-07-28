@@ -28,7 +28,11 @@
       @close-modal="closeContextMenu"
       @itemClick="contextMenuItemClick"
     />
-    <div ref="CHAT_TOP_SIDE_BLOCK" class="b-chat-top-side">
+    <div
+      v-if="isAnyChatSelected"
+      ref="CHAT_TOP_SIDE_BLOCK"
+      class="b-chat-top-side"
+    >
       <ChatTopBlock
         :chatData="chatData"
         :selectedMessages="chatSelectedMessagesList"
@@ -36,15 +40,27 @@
         @searchChatMessages=""
         @manageChat="showManageChatContextMenu"
         @editChat="showEditChatModal"
+        @goBackToCheChatsList="forceOpenChatsListSlideMenu"
       />
     </div>
-    <div class="b-chat-page-main-side">
+    <div
+      :class="[
+        'b-chat-page-main-side',
+        { 'no-selected-chat': !isAnyChatSelected },
+      ]"
+    >
       <ChatMessagesList
+        v-if="isAnyChatSelected"
         ref="CHAT_MESSAGES_LIST_BLOCK"
         :chatData="chatData"
         :heightStyle="messagesListBlockStyle"
       />
-      <div ref="CHAT_BOTTOM_SIDE_BLOCK" class="b-main-side-bottom-block">
+      <NotSelectedChatCard v-else />
+      <div
+        v-if="isAnyChatSelected"
+        ref="CHAT_BOTTOM_SIDE_BLOCK"
+        class="b-main-side-bottom-block"
+      >
         <Transition name="chat-warning">
           <ChatWarning v-if="isChatWarningVisible" @close="closeChatWarning" />
         </Transition>
@@ -60,8 +76,15 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeMount, onBeforeUnmount, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import {
+  ref,
+  computed,
+  onBeforeMount,
+  onBeforeUnmount,
+  watch,
+  onMounted,
+} from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
 
@@ -76,21 +99,30 @@ import ChatMessagesList from '@mainComponents/chat/ChatMessagesList.vue';
 import ContextMenu from '@sharedComponents/modals/ContextModal.vue';
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 import StartPesonalChatModal from '@mainComponents/chat/modals/StartPersonalChatModal.vue';
+import NotSelectedChatCard from '@/components/main/chat/NotSelectedChatCard.vue';
 
-import { accessToken } from '@workers/token-worker';
 import { ChatSocketWorkerInstance } from '@workers/web-socket-worker';
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 import { ChatWebSocketTypes } from '@workers/web-socket-worker/message-types/chat/web.socket.types';
 import { API } from '@workers/api-worker/api.worker';
+import { checkIsChatSelected } from '@/components/main/chat/utils/checkIsChatSelected';
 import { ChatEventBus } from '@workers/event-bus-worker';
+import {
+  startSpinner,
+  finishSpinner,
+} from '@/workers/loading-worker/loading.worker';
 
 import { useChatDataStore } from '@/stores/chatData';
 import { useUserDataStore } from '@/stores/userData';
 
 import { CONSTS } from '@consts/index';
+import { ROUTES } from '@/routes/router.const';
+import { CHAT_DETAILS_TYPE_ENUM_ERRORS } from '@/workers/web-socket-worker/message-types/chat/web.socket.errors';
 
 const CHAT_PAGE_TOP_AND_BOTTOM_PADDINGS_PX = 20 + 0;
+const SIDEBAR_ELEMENT_SELECTOR = '.b_sidebar';
+const SLIDE_MENU_ELEMENT_SELECTOR = '.b_slide_menu_main';
 
 export default {
   components: {
@@ -103,21 +135,18 @@ export default {
     RequestForChat,
     SubmitModal,
     StartPesonalChatModal,
+    NotSelectedChatCard,
   },
   setup() {
-    const chatData = ref({
-      id: 50,
-      name: 'dffddfdfdf fdfddffd',
-      isChatRequest: false,
-      isGroup: false,
-      disabled: false,
-      link: 'helloflamingo.linkactive',
-    });
     const chatDataStore = useChatDataStore();
     const userStore = useUserDataStore();
 
+    const chatData = ref(chatDataStore.chatData);
+
     const { t } = useI18n();
     const toast = useToast();
+    const route = useRoute();
+    const router = useRouter();
 
     const isEditChatModalOpened = ref(false);
     const isChatWarningClosed = ref(false);
@@ -134,6 +163,8 @@ export default {
     const CHAT_TOP_SIDE_BLOCK = ref();
     const CHAT_BOTTOM_SIDE_BLOCK = ref();
     const CHAT_MESSAGES_LIST_BLOCK = ref();
+    const SIDEBAR_HTML_ELEMENT = ref();
+    const SLIDE_MENU_HTML_ELEMENT = ref();
 
     const { height: CHAT_TOP_SIDE_BLOCK_HEIGHT } =
       useElementSize(CHAT_TOP_SIDE_BLOCK);
@@ -143,10 +174,14 @@ export default {
     const { calculatedHeight: chatPageHeight } = calcHeight([
       CHAT_PAGE_TOP_AND_BOTTOM_PADDINGS_PX,
     ]);
-    const { isMobileSmall } = useWindowWidth();
+    const { isMobileSmall, detectedDevice, DEVICE_TYPES } = useWindowWidth();
 
     const editChatModalTransitionName = computed(() => {
       return isMobileSmall.value ? 'edit-chat-modal-slide' : null;
+    });
+
+    const isAnyChatSelected = computed(() => {
+      return checkIsChatSelected(chatData.value);
     });
 
     const mockData = computed(() => {
@@ -202,7 +237,13 @@ export default {
       toast.success(t('chat.toasts.chat_updated_success'));
     }
 
+    function highlightSidebarAndSlideMenu() {
+      SIDEBAR_HTML_ELEMENT.value.style.zIndex = 1000;
+      SLIDE_MENU_HTML_ELEMENT.value.style.zIndex = 1000;
+    }
+
     function showEditChatModal() {
+      highlightSidebarAndSlideMenu();
       isEditChatModalOpened.value = true;
     }
 
@@ -322,14 +363,33 @@ export default {
       isStartPesonalChatModalVisible.value = false;
     }
 
-    function getInfoAboutMeInChat() {
-      API.ChatService.getInfoAboutMeInChat(chatData.value.id);
+    function getChatDetailData(chatId) {
+      startSpinner();
+      API.ChatService.getChatDetailData(chatId);
     }
 
-    function getInfoAboutMeInChatMessageHandler(instanceType) {
+    function patchChatDataStore(infoAboutMe, chatData) {
       chatDataStore.$patch({
-        infoAboutMe: instanceType.getUserInfoData(),
+        infoAboutMe: infoAboutMe,
+        chatData: chatData,
       });
+    }
+
+    function chatNotFoundErrorHandler() {
+      router.push(ROUTES.APPLICATION.CHATS.absolute);
+    }
+
+    function getChatDetailDataMessageHandler(instanceType) {
+      patchChatDataStore(
+        instanceType.getUserInfoData(),
+        instanceType.getChatInfoData()
+      );
+      instanceType.onError(
+        CHAT_DETAILS_TYPE_ENUM_ERRORS.CHAT_NOT_FOUND,
+        chatNotFoundErrorHandler
+      );
+
+      finishSpinner();
     }
 
     function offOrOnPushNotificationsHandler(instanceType) {
@@ -344,13 +404,48 @@ export default {
       instanceType.setCurrentUserAsRemoved(userStore.user.id, chatDataStore);
     }
 
-    ChatSocketWorkerInstance.connect({
-      token: accessToken.getToken(),
+    watch(
+      () => route.query.active_chat_room,
+      (newChatIdQuery) => {
+        if (newChatIdQuery) {
+          closeEditChatModal({ force: true });
+          getChatDetailData(newChatIdQuery);
+        }
+      },
+      { immediate: true }
+    );
+
+    watch(
+      () => detectedDevice.value,
+      (newDevice) => {
+        switch (newDevice) {
+          case DEVICE_TYPES.DESKTOP:
+            forceOpenChatsListSlideMenu();
+            break;
+          case DEVICE_TYPES.BETWEEN_TABLET_AND_DESKTOP:
+            forceOpenChatsListSlideMenu();
+            break;
+        }
+      }
+    );
+
+    function forceOpenChatsListSlideMenu() {
+      ChatEventBus.emit('forceOpenChatsListSlideMenu');
+    }
+
+    onMounted(() => {
+      SIDEBAR_HTML_ELEMENT.value = document.querySelector(
+        SIDEBAR_ELEMENT_SELECTOR
+      );
+      SLIDE_MENU_HTML_ELEMENT.value = document.querySelector(
+        SLIDE_MENU_ELEMENT_SELECTOR
+      );
+      forceOpenChatsListSlideMenu();
     });
 
     ChatSocketWorkerInstance.registerCallback(
-      getInfoAboutMeInChatMessageHandler,
-      ChatWebSocketTypes.GetInfoAboutMeInChat
+      getChatDetailDataMessageHandler,
+      ChatWebSocketTypes.GetChatDetailData
     );
 
     ChatSocketWorkerInstance.registerCallback(
@@ -369,18 +464,13 @@ export default {
     );
 
     onBeforeUnmount(() => {
-      ChatSocketWorkerInstance.disconnect();
-      ChatSocketWorkerInstance.destroyCallback(
-        getInfoAboutMeInChatMessageHandler
-      );
+      ChatSocketWorkerInstance.destroyCallback(getChatDetailDataMessageHandler);
       ChatSocketWorkerInstance.destroyCallback(
         setCurrentUserAsRemovedMessageHandler
       );
       ChatSocketWorkerInstance.destroyCallback(editChatMessageHandler);
       ChatSocketWorkerInstance.destroyCallback(offOrOnPushNotificationsHandler);
     });
-
-    getInfoAboutMeInChat();
 
     return {
       chatData,
@@ -403,6 +493,8 @@ export default {
       submitModalConfig,
       editChatModalTransitionName,
       isSendMessagesDisabled,
+      isAnyChatSelected,
+      checkIsChatSelected,
       showEditChatModal,
       closeEditChatModal,
       closeChatWarning,
@@ -415,12 +507,13 @@ export default {
       contextMenuItemClick,
       closeStartPersonalChatModal,
       showStartPersonalChatModal,
+      forceOpenChatsListSlideMenu,
     };
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .b-chat-page {
   height: fit-content;
   background-image: url('@images/chat/chat-background.svg');
@@ -445,9 +538,14 @@ export default {
     justify-content: space-between;
     height: 100%;
     margin: 0 auto;
+    position: relative;
 
     @include mobile {
       padding: 0px 8px 20px 8px;
+    }
+
+    &.no-selected-chat {
+      @include calc-height;
     }
 
     .b-main-side-bottom-block {

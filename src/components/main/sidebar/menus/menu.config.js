@@ -11,12 +11,23 @@ import {
 } from './models/model.types';
 import { BasicButtonModel } from './models/basic.button.model';
 import { createNotificationConfigItem } from './configs/notifications.config';
+import { createChatConfigItem } from './configs/chats.config';
 
 export const dinamicMenu = (instance) => {
-  const notificationItem = createNotificationConfigItem();
+  const notificationItem = createNotificationConfigItem(instance);
+  const chatItem = createChatConfigItem(instance);
+
+  const closeCurrentActiveSlideMenu = () => {
+    slideBarMenu.value = slideBarMenu.value.forEach((slideBarMenuItem) => {
+      if (slideBarMenuItem?.activity?.value) {
+        slideBarMenuItem.activity.value = !slideBarMenuItem.activity.value;
+      }
+    });
+  };
 
   const slideBarMenu = computed(() => [
     notificationItem,
+    chatItem,
     new BasicButtonModel({
       uniqueName: 'events.icon',
       title: 'events.icon',
@@ -24,7 +35,7 @@ export const dinamicMenu = (instance) => {
       disabled: false,
       actionType: new ActionModelTypeUrl({
         url: ROUTES.APPLICATION.EVENTS.absolute,
-        action: () => (notificationItem.activity.value = false),
+        action: closeCurrentActiveSlideMenu,
       }),
     }),
     new BasicButtonModel({
@@ -38,7 +49,7 @@ export const dinamicMenu = (instance) => {
       disabled: false,
       actionType: new ActionModelTypeUrl({
         url: ROUTES.APPLICATION.USERS.GENERAL.absolute,
-        action: () => (notificationItem.activity.value = false),
+        action: closeCurrentActiveSlideMenu,
       }),
     }),
     new BasicButtonModel({
@@ -51,7 +62,7 @@ export const dinamicMenu = (instance) => {
       icon: bugReport,
       class: 'b-bug-report__icon',
       actionType: new ActionModelTypeButton({
-        action: () => (instance.isBugReportModalOpened.value = true),
+        action: closeCurrentActiveSlideMenu,
       }),
       disabled: false,
     }),

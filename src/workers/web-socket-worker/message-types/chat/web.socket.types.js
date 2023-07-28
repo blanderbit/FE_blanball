@@ -11,10 +11,11 @@ export class ChatWebSocketTypes {
   static EditMessage = 'edit_message';
   static GetChatMessagesList = 'get_chat_messages_list';
   static GetChatUsersList = 'get_chat_users_list';
+  static GetChatsCount = 'get_chats_count';
   static GetChatsList = 'get_chats_list';
   static ReadOrUnreadMessages = 'read_or_unread_messages';
   static RemoveUserFromChat = 'remove_user_from_chat';
   static SetOrUnsetChatAdmin = 'set_or_unset_chat_admin';
-  static GetInfoAboutMeInChat = 'get_user_info_in_chat';
+  static GetChatDetailData = 'get_chat_detail_data';
   static OffOrOnPushNotifications = 'off_or_on_push_notifications';
 }

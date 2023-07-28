@@ -23,6 +23,23 @@ export default {
     symbols: 'Символи',
     flags: 'Прапори',
   },
+  event_group_chat: 'Чат події',
+  chats: 'Чати',
+  chat_lists: {
+    all_chats_tab: 'Усі чати',
+    dialogs_tab: 'Діалоги',
+    group_chats_tab: 'Групові чати',
+    chat_requests_tab: 'Запити',
+    there_werent_messages_yet: 'Тут ще не було повідомлень',
+  },
+  not_selected_chat_card: {
+    title: 'Чати',
+    description: 'Оберіть чат, щоб розпочати спілкування',
+  },
+  no_chats_list: {
+    title: 'У вас ще немає активних діалогів або чатів',
+    description: 'Оберіть того, з ким бажаєте розпочати спілкування',
+  },
   start_personal_chat_modal: {
     button_text: 'Зрозуміло',
     title: 'Вам потрібно отримати дозвіл користувача, щоб розпочати чат із ним',
@@ -73,6 +90,7 @@ export default {
     delete_chat: 'Видалити чат',
     search_messages: 'Пошук повідомлень',
     manage_group: 'Керування групою',
+    delete_chat: 'Видалити чат',
   },
   service_messages: {
     user_joined_to_chat: '{userFullName} щойно долучився до бесіди',

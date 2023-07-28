@@ -8,6 +8,8 @@ export const ChatsEnpointsEnum = {
   EditChatMessage: '/chat/client/edit/chat/message',
   EditChat: '/chat/client/edit/chat',
   OffOrOnnChatPushNotifications: '/chat/client/off/or/on/chat/push/notifications',
-  GetInfoAboutMeInChat: (chatId) =>
-    `/chat/client/get/info/about/me/in/chat/${chatId}`,
+  GetAllMyChatsCount: '/chat/client/get/all/my/chats/count',
+  GetMyChatsList: '/chat/client/get/chats/list',
+  GetChatDetailData: (chatId) =>
+    `/chat/client/get/chat/detail/data/${chatId}`,
 };

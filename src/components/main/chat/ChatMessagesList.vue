@@ -21,8 +21,15 @@
       { 'no-messages': !paginationElements.length },
     ]"
     :style="heightStyle"
-    @keydown.up="smoothScrollUp"
-    @keydown.down="smoothScrollDown"
+    @keydown.up="
+      smoothScrollUp(MESSAGES_SCROLL_SPEED, MESSAGES_SCROLL_ANIMATION_DURATION)
+    "
+    @keydown.down="
+      smoothScrollDown(
+        MESSAGES_SCROLL_SPEED,
+        MESSAGES_SCROLL_ANIMATION_DURATION
+      )
+    "
   >
     <SmartList
       :list="paginationElements"
@@ -63,7 +70,7 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeUnmount, onMounted } from 'vue';
+import { ref, computed, onBeforeUnmount, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { v4 as uuid } from 'uuid';
@@ -76,6 +83,7 @@ import ChatMessage from './ChatMessage.vue';
 import ChatServiceMessage from './ChatServiceMessage.vue';
 import NoChatMessages from './NoChatMessages.vue';
 import ActionModal from '@mainComponents/events/modals/ActionModal.vue';
+import NotSelectedChatCard from './NotSelectedChatCard.vue';
 
 import { ChatEventBus } from '@workers/event-bus-worker';
 import { WebSocketPaginationWorker } from '@workers/pagination-worker';
@@ -85,6 +93,7 @@ import {
 } from '@workers/web-socket-worker';
 import { API } from '@workers/api-worker/api.worker';
 import { ChatWebSocketTypes } from '@workers/web-socket-worker/message-types/chat/web.socket.types';
+import { smoothScrollUp, smoothScrollDown } from './utils/smoothScroll';
 
 import { useUserDataStore } from '@/stores/userData';
 
@@ -106,7 +115,7 @@ export default {
     SmartList,
     ContextMenu,
     ChatServiceMessage,
-    NoChatMessages,
+    NotSelectedChatCard,
     ActionModal,
   },
   props: {
@@ -124,6 +133,7 @@ export default {
     const refList = ref();
     const triggerForRestart = ref(false);
     const isActionModalOpened = ref(false);
+    const newChatMessagesLoading = ref(false);
 
     const blockScrollToTopIfExist = ref(false);
 
@@ -262,48 +272,6 @@ export default {
       }
     }
 
-    function smoothScrollUp() {
-      const currentPosition = window.pageYOffset;
-      const targetPosition = currentPosition - MESSAGES_SCROLL_SPEED;
-
-      smoothScrollTo(targetPosition);
-    }
-
-    function smoothScrollDown() {
-      const currentPosition = window.pageYOffset;
-      const targetPosition = currentPosition + MESSAGES_SCROLL_SPEED;
-
-      smoothScrollTo(targetPosition);
-    }
-
-    function smoothScrollTo(targetPosition) {
-      const startPosition = window.pageYOffset;
-      const distance = targetPosition - startPosition;
-      let startTime = null;
-
-      function animation(currentTime) {
-        if (!startTime) startTime = currentTime;
-        const timeElapsed = currentTime - startTime;
-        const scrollY = easeInOutCubic(
-          timeElapsed,
-          startPosition,
-          distance,
-          MESSAGES_SCROLL_ANIMATION_DURATION
-        );
-        window.scrollTo(0, scrollY);
-        if (timeElapsed < MESSAGES_SCROLL_ANIMATION_DURATION) {
-          window.requestAnimationFrame(animation);
-        }
-      }
-
-      window.requestAnimationFrame(animation);
-    }
-
-    function easeInOutCubic(t, b, c, d) {
-      t /= d;
-      return c * t * t * t + b;
-    }
-
     function replyToMessage(messageData) {
       ChatEventBus.emit('replyToChatMessage', messageData);
     }
@@ -387,6 +355,14 @@ export default {
       instanceType.createNewUserJoinedChatServiceMessage(paginationElements);
     }
 
+    function startNewMessagesLoading() {
+      newChatMessagesLoading.value = true;
+    }
+
+    function finishNewMessagesLoading() {
+      newChatMessagesLoading.value = false;
+    }
+
     ChatSocketWorkerInstance.registerCallback(
       createNewUserJoinedChatServiceMessageHandler,
       ChatWebSocketTypes.AddUserToChat
@@ -442,6 +418,19 @@ export default {
       ChatEventBus.off('bulkDeleteChatMessages');
     });
 
+    watch(
+      () => props.chatData.id,
+      () => {
+        if (props.chatData.id) {
+          startNewMessagesLoading();
+          paginationClearData();
+          loadDataPaginationData(1, null);
+          finishNewMessagesLoading();
+        }
+      },
+      { immediate: true }
+    );
+
     expose({
       selectedMessages,
     });
@@ -465,6 +454,8 @@ export default {
       actionModalConfig,
       MESSAGES_LIST_VERTICAL_GAP_PX,
       paginationIsNextPage,
+      MESSAGES_SCROLL_SPEED,
+      MESSAGES_SCROLL_ANIMATION_DURATION,
       restartInfiniteScroll,
       loadDataPaginationData,
       showContextMenu,

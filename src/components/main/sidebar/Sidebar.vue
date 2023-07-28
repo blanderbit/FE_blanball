@@ -87,7 +87,11 @@ import TabLabel from '@sharedComponents/tabLabel/TabLabel.vue';
 import MobileMenu from './MobileMenu.vue';
 
 import { useUserDataStore } from '@/stores/userData';
-import { NotificationsBus, BlanballEventBus } from '@workers/event-bus-worker';
+import {
+  NotificationsBus,
+  BlanballEventBus,
+  ChatEventBus,
+} from '@workers/event-bus-worker';
 import { logOut } from '@utils/logOut';
 
 import { ROUTES } from '@routes/router.const';
@@ -112,14 +116,17 @@ export default {
     const foundBug = () => {
       isBugReportModalOpened.value = true;
     };
+    const activeSlideElement = ref();
 
     const menuItems = dinamicMenu({
       router,
     }).slideBarMenu;
 
-    const activeSlideElement = ref(
-      menuItems.value.find((item) => item.uniqueName === 'notification.point')
-    );
+    function setDefaultSlideMenu() {
+      activeSlideElement.value = menuItems.value.find(
+        (item) => item.uniqueName === 'notification.point'
+      );
+    }
 
     const closeBugReportModal = () => (isBugReportModalOpened.value = false);
 
@@ -142,19 +149,27 @@ export default {
       );
     });
 
+    ChatEventBus.on('forceOpenChatsListSlideMenu', () => {
+      clickByMenuItem(
+        menuItems.value.find((item) => item.uniqueName === 'chat.point')
+      );
+    });
+
     onBeforeUnmount(() => {
-      NotificationsBus.off('SidebarClearData');
-      NotificationsBus.off('hanlderToRemoveNewNotificationsInSidebar');
       BlanballEventBus.off('OpenMobileMenu');
+      ChatEventBus.off('forceOpenChatsListSlideMenu');
     });
 
     function clickByMenuItem(item) {
+      console.log(item);
       if (item.slideConfig) {
         activeSlideElement.value = item;
+      } else if (!item.slideConfig) {
+        setDefaultSlideMenu();
       }
-      item.actionType &&
-        item.actionType.type === 'BUTTON' &&
+      if (typeof item.actionType?.action === 'function') {
         item.actionType.action();
+      }
     }
 
     //
@@ -167,6 +182,8 @@ export default {
     //     );
     //   }
     // };
+
+    setDefaultSlideMenu();
 
     return {
       menuItems,
@@ -205,7 +222,6 @@ $color-fff4ec: #fff4ec;
     position: relative;
     @include calc-height;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
-    border-radius: 6px;
     padding-top: 24px;
     padding-bottom: 44px;
     display: flex;

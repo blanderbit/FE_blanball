@@ -16,4 +16,16 @@ export class CreateChatMessage extends InitialUpdation {
     const newMessageData = this.data.data.data.message_data;
     paginationElements.value.unshift(transformDataFunction(newMessageData));
   }
+
+  updateChatInChatsList(paginationElements) {
+    if (!this.isError) {
+      const chatId = this.data.data.data.chat_id;
+      const newMessageData = this.data.data.data.message_data;
+      const createdMessageChat = paginationElements.find(
+        (element) => element.id === chatId
+      );
+      createdMessageChat.unread_messages_count += 1;
+      Object.assign(createdMessageChat.last_message, newMessageData);
+    }
+  }
 }

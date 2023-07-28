@@ -9,14 +9,14 @@
   />
   <div>
     <div
-      v-if="isMenuOpened"
+      v-if="isMenuOpened && menuClosable"
       class="b_slide_menu_back"
       @click="toggleMenu"
     ></div>
 
     <div class="b_slide_menu_wrapper" :style="slideMenuWrapperStyle">
       <div
-        v-if="isMenuOpened"
+        v-if="isMenuOpened && menuClosable"
         class="b_slide_menu_sidebar-arrow"
         @click="toggleMenu"
       >
@@ -140,6 +140,14 @@ export default {
       type: Number,
       required: true,
     },
+    menuClosable: {
+      type: Boolean,
+      default: true,
+    },
+    slideMenuWrapperAnimation: {
+      type: Boolean,
+      default: true,
+    },
   },
   emits: ['close'],
   setup(context, { emit, expose }) {
@@ -234,6 +242,9 @@ export default {
     const slideMenuWrapperStyle = computed(() => {
       if (isSlideMenuWrapperDesktop.value) {
         return {
+          transition: `all ${
+            context.slideMenuWrapperAnimation ? 0.7 : 0
+          }s ease`,
           right: context.isMenuOpened
             ? `-${slideMenuMainSideWidth.value}px`
             : '0px',
@@ -326,7 +337,6 @@ $color-dfdeed: #dfdeed;
 }
 
 .b_slide_menu_wrapper {
-  transition: all 0.7s ease;
   position: absolute;
   top: 0;
   right: -260px;
@@ -360,7 +370,7 @@ $color-dfdeed: #dfdeed;
     @include calc-height;
     background: $color-fcfcfc;
     box-shadow: 2px 2px 10px rgb(56 56 251 / 10%);
-    border-radius: 6px;
+    border-radius: 0px 6px 6px 0px;
     z-index: 11;
     display: flex;
     flex-direction: column;

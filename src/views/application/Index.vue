@@ -129,14 +129,12 @@ import NewVersionModal from '@mainComponents/versions/modals/NewVersionModal.vue
 import Hint from '@mainComponents/hints/Hint.vue';
 
 import { AuthWebSocketWorkerInstance } from '@workers/web-socket-worker';
+import { ChatSocketWorkerInstance } from '@workers/web-socket-worker';
 import { accessToken } from '@workers/token-worker';
 import { notificationButtonHandlerMessage } from '@workers/utils-worker';
 import { useUserDataStore } from '@/stores/userData';
 import { useHeaderHeightStore } from '@/stores/headerHeight';
-import {
-  NotificationsBus,
-  BlanballEventBus,
-} from '@workers/event-bus-worker';
+import { NotificationsBus, BlanballEventBus } from '@workers/event-bus-worker';
 import { MessageActionTypes } from '@workers/web-socket-worker/message.action.types';
 import { API } from '@workers/api-worker/api.worker';
 import { VersionDetectorWorker } from '@workers/version-detector-worker';
@@ -424,6 +422,10 @@ AuthWebSocketWorkerInstance.registerCallback(handleNewMessage).connect({
   token: accessToken.getToken(),
 });
 
+ChatSocketWorkerInstance.connect({
+  token: accessToken.getToken(),
+});
+
 const VersionHandling = {
   handleDifferentVersion: () => {
     isNewVersionModalActive.value = true;
@@ -468,6 +470,7 @@ onBeforeUnmount(() => {
   BlanballEventBus.off('closeScheduler');
   BlanballEventBus.off('createHints');
   AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect();
+  ChatSocketWorkerInstance.disconnect();
 });
 
 watch(
@@ -574,8 +577,6 @@ html {
   .main-block {
     height: 100%;
     .main-body-inner {
-      display: grid;
-      grid-template-rows: 90px 1fr;
       @include calc-height;
     }
   }

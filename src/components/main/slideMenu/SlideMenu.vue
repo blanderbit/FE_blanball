@@ -19,7 +19,9 @@
 
   <SlideMenuWrapper
     :isMenuOpened="config.activity"
+    :menuClosable="config.slideConfig.closable"
     :mainSideWidth="config.slideConfig.width"
+    :slideMenuWrapperAnimation="!config.slideConfig.notAnimate"
     ref="SLIDE_MENU_WRAPPER"
     @close="closeSlideMenu"
   >
@@ -33,7 +35,7 @@
         v-else-if="config.slideConfig.logo.text"
         class="b-slide-menu-logo-text"
       >
-        {{ config.slideConfig.logo.text }}
+        {{ $t(config.slideConfig.logo.text) }}
       </span>
     </template>
 
@@ -92,7 +94,7 @@
         <virtual-list
           :elements="config.activeTab.paginationElements"
           :selectable="config.selectable"
-          :recordComponent="activeTabRecords.record.componentName"
+          :virtualListRecord="activeTabRecords.record"
           v-model:selected-list="activeTabRecords.selectedList"
           v-model:scrollbar-existing="activeTabRecords.blockScrollToTopIfExist"
           @openContextMenu="openContextMenu"
@@ -180,6 +182,7 @@ import WhiteBtn from '@/components/shared/button/WhiteBtn.vue';
 import { useUserDataStore } from '@/stores/userData';
 
 import { ROUTES } from '@routes/router.const';
+import { config } from 'dotenv';
 
 export default {
   components: {
@@ -218,7 +221,6 @@ export default {
     const itemOnWhatWasOpenedContextMenu = ref(null);
 
     const openContextMenu = (data) => {
-      console.log(data);
       itemOnWhatWasOpenedContextMenu.value = data.itemData;
       contextMenuY.value = data.yPosition;
       contextMenuX.value = data.xPosition;
@@ -233,6 +235,12 @@ export default {
 
     const slideMenuHeight = computed(() => {
       return `${SLIDE_MENU_WRAPPER.value?.slideMenuWrapperMainContentHeight}px`;
+    });
+
+    const slideMenuTabStyle = computed(() => {
+      return {
+        width: `${100 / context.config.slideConfig.tabs.length}%`,
+      };
     });
 
     const activeTabRecords = computed(() => {
@@ -251,6 +259,7 @@ export default {
         'margin-bottom': `${
           context.config.activeTab.paginationElements.length ? 0 : 16
         }px`,
+        gap: `${context.config.slideConfig.tabsGapPx}px`,
       };
     });
 
@@ -289,6 +298,7 @@ export default {
       slideMenuHeight,
       SLIDE_MENU_WRAPPER,
       isEmptyListVisible,
+      slideMenuTabStyle,
       activeTabRecords,
       slideMenuTabsStyle,
       scrollbar,
@@ -379,8 +389,8 @@ $color-efeff6: #efeff6;
   display: flex;
   align-items: center;
   border-bottom: 1px solid $color-dfdeed;
-  gap: 32px;
-  margin-top: 16px;
+  margin-top: 12px;
+  width: 100%;
 
   @include beforeDesktop {
     display: flex;

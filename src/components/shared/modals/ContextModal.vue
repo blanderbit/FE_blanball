@@ -112,7 +112,7 @@ $color-f0f0f4: #f0f0f4;
   @include modal-wrapper;
 
   &.transperent {
-    @include modal-wrapper(transparent);
+    @include modal-wrapper(transparent, 1100);
 
     .context-modal__tooltip {
       box-shadow: 2px 2px 10px 0px rgba(56, 56, 251, 0.1);

@@ -1,19 +1,20 @@
 export class ActionModelTypeUrl {
-  type = "URL";
+  type = 'URL';
   url = '';
+  action = () => {};
 
   constructor(options = {}) {
-    this.url = options.url
+    this.url = options.url;
+    this.action = options.action;
   }
 }
 
 export class ActionModelTypeButton {
-  type = "BUTTON";
-  action = () => {
-  };
+  type = 'BUTTON';
+  action = () => {};
 
   constructor(options = {}) {
-    this.action = options.action
+    this.action = options.action;
   }
 }
 

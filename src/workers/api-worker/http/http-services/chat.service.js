@@ -5,6 +5,7 @@ import { FilterParamsDecorator } from '../filter/filter.utils';
 import {
   filterConfigForChatMessages,
   filterConfigForChatUsers,
+  filterConfigForChats,
 } from '../filter/filter.config';
 
 export class ChatService {
@@ -20,6 +21,14 @@ export class ChatService {
   static getChatUsers(options) {
     return AxiosInstance.get(
       EndpointsEnum.Chats.GetChatUsers(options.chat_id),
+      AxiosParams(AxiosQuery(options))
+    );
+  }
+
+  @FilterParamsDecorator(filterConfigForChats)
+  static getMyChatsList(options) {
+    return AxiosInstance.get(
+      EndpointsEnum.Chats.GetMyChatsList,
       AxiosParams(AxiosQuery(options))
     );
   }
@@ -47,8 +56,12 @@ export class ChatService {
     return AxiosInstance.post(EndpointsEnum.Chats.EditChatMessage, data);
   }
 
-  static getInfoAboutMeInChat(chatId) {
-    return AxiosInstance.get(EndpointsEnum.Chats.GetInfoAboutMeInChat(chatId));
+  static getChatDetailData(chatId) {
+    return AxiosInstance.get(EndpointsEnum.Chats.GetChatDetailData(chatId));
+  }
+
+  static getAllMyChatsCount() {
+    return AxiosInstance.get(EndpointsEnum.Chats.GetAllMyChatsCount);
   }
 
   static editChat(data) {
