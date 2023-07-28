@@ -82,7 +82,28 @@
       </form>
     </div>
 
-    <div class="b-donation-img" :style="imageStyle"></div>
+    <div class="b-donation-img" :style="imageStyle">
+      <div class="b-donation-fund-container">
+        <div class="b-donation-fund-top-container">
+          <img src="../../../assets/img/circle-download.svg" />
+          <span class="b-donation-fund-raised-amount">378 ₴</span>
+          <span class="b-donation-fund-raised-text">Зібрано грошей</span>
+
+          <div class="b-donation-fund-top-container-circle">
+            <div class="b-donation-fund-aim-percentage">
+              <span>30</span><span>%</span>
+            </div>
+            <span class="b-donation-fund-raised-text">Збору закрито</span>
+          </div>
+        </div>
+
+        <div class="b-donation-fund-aim-container">
+          <img src="../../../assets/img/group.svg" />
+          <span class="b-donation-fund-raised-amount">3 000 ₴</span>
+          <span class="b-donation-fund-raised-text">Ціль збору</span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -137,7 +158,7 @@ export default {
     const currencySign = computed(() => currencySignDict[currencyValue.value]);
 
     const getAmountOptionValue = (value) => `${value} ${currencySign.value}`;
-    const onAmountOptionClick = (value) => amountValue.value = Number(value);
+    const onAmountOptionClick = (value) => (amountValue.value = Number(value));
     const submitForm = (value) => {
       console.log(value);
     };
@@ -339,5 +360,95 @@ export default {
   border-radius: 12px;
   background-position-x: -8px;
   background-position-y: -8px;
+  position: relative;
+}
+
+.b-donation-fund-container {
+  width: 140px;
+  height: 468px;
+  position: absolute;
+  top: 28px;
+  left: -40px;
+  border-radius: 8px;
+  border-top-left-radius: 70px;
+  border-top-right-radius: 70px;
+  display: flex;
+  flex-direction: column;
+}
+
+.b-donation-fund-top-container {
+  width: 140px;
+  height: 296px;
+  border-radius: 70px;
+  background: #fafaff;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.b-donation-fund-raised-amount {
+  color: #262541;
+  font-family: 'Lato';
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 32px;
+  margin-top: 12px;
+}
+
+.b-donation-fund-raised-text {
+  color: #262541;
+  font-family: 'Inter';
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.b-donation-fund-top-container-circle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  padding: 16px;
+  border-radius: 100px;
+  border: 1.5px solid #fafaff;
+  background: #e3fbfa;
+  bottom: 0;
+}
+.b-donation-fund-aim-percentage {
+  display: flex;
+
+  & > span {
+    color: #148783;
+    font-family: 'Lato';
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 32px;
+  }
+
+  & > span:last-child {
+    font-size: 24px;
+  }
+}
+
+.b-donation-fund-aim-container {
+  display: flex;
+  width: 140px;
+  height: 156px;
+  padding: 20px 16px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  border: 1.5px solid #148783;
+  background: #e3fbfa;
+  margin-top: 16px;
 }
 </style>
