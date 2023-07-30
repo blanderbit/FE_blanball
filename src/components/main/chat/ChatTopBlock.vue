@@ -179,7 +179,7 @@ export default {
 
   &.chat-editing {
     @include afterMobile {
-      z-index: 1000;
+      z-index: 500;
       position: relative;
     }
   }

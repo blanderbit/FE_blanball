@@ -1,6 +1,6 @@
 <template>
   <div class="b-mob-menu__bottom-side">
-    <div class="b-mob-menu__found-error" @click="$emit('foundBug')">
+    <div class="b-mob-menu__found-error" @click="openBugReportModal">
       <img src="@images/white-warning-icon.svg" alt="" />
       <span>{{ $t('slide_menu.found-error') }}</span>
     </div>
@@ -9,18 +9,20 @@
       <router-link
         class="b-blanball__version"
         :to="versionsPageRoute"
-        @click="closeMobMenu"
+        @click="closeMenu"
       >
         <span>{{ $t('slide_menu.version') }} {{ clientVersion }}</span>
       </router-link>
       <div class="b-bottom-block__footer">
         <span>{{ $t('slide_menu.blanball-year', { year: currentYear }) }}</span>
-        <span @click="showPrivacyContextModal">{{
+        <span @click="$emit('showPrivacyContextModal', $event)">{{
           $t('policy.data-security')
         }}</span>
         <div class="b-bottom-block__company">
           <img src="@images/logo-flumx.svg" alt="" />
-          <span>{{ $t('slide_menu.flumx') }}</span>
+          <a :href="FLUMX_SITE_URL" target="_blank">{{
+            $t('slide_menu.flumx')
+          }}</a>
         </div>
       </div>
     </div>
@@ -30,10 +32,12 @@
 <script>
 import { ref, computed, inject } from 'vue';
 
+import { BlanballEventBus } from '@/workers/event-bus-worker';
+
 import { ROUTES } from '@/routes/router.const';
 
 export default {
-  setup() {
+  setup(_, { emit }) {
     const clientVersion = ref(inject('clientVersion'));
 
     const versionsPageRoute = computed(() => {
@@ -44,10 +48,25 @@ export default {
       return new Date().getFullYear();
     });
 
+    const FLUMX_SITE_URL = computed(() => {
+      return process.env.FLUMX_SITE_URL;
+    });
+
+    function closeMenu() {
+      emit('closeMenu');
+    }
+
+    function openBugReportModal() {
+      BlanballEventBus.emit('OpenBugReportModal');
+    }
+
     return {
       versionsPageRoute,
       clientVersion,
       currentYear,
+      FLUMX_SITE_URL,
+      closeMenu,
+      openBugReportModal,
     };
   },
 };

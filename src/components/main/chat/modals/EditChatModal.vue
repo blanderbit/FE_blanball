@@ -210,7 +210,16 @@ export default {
 
 <style lang="scss" scoped>
 .b-edit-chat-modal__wrapper {
-  @include modal-wrapper;
+  @include mobile {
+    @include modal-wrapper($z-index: 500);
+  }
+
+  @include afterMobile {
+    &::after {
+      content: '';
+      @include modal-wrapper($z-index: 500);
+    }
+  }
   .b-edit-chat-modal__modal-window {
     position: absolute;
     top: 50%;
@@ -225,6 +234,7 @@ export default {
     width: 400px;
     height: 600px;
     box-shadow: 2px 2px 10px 0px rgba(56, 56, 251, 0.1);
+    z-index: 550;
 
     @include mobile {
       width: 100%;

@@ -68,7 +68,7 @@ export const filterConfigForEvents = {
   ordering: new Enum(['id', '-id']), // TODO add date in backend
   skipids: Number,
   duration: Number,
-  dist: String,
+  dist: Number,
   point: String,
   place: String,
   date_and_time_after: String,

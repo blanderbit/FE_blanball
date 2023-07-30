@@ -96,6 +96,8 @@
           <slot v-if="isSlideMenuWrapperDesktop" name="bottom-block"> </slot>
           <MobileMenuSlideMenuBottomBlock
             v-if="isSlideMenuMobileBottomBlockVisible"
+            @closeMenu="toggleMenu"
+            @showPrivacyContextModal="showPrivacyContextModal"
           />
         </div>
       </div>
@@ -104,7 +106,7 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeUnmount } from 'vue';
+import { ref, computed, onBeforeUnmount, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useElementSize } from '@vueuse/core';
 
@@ -123,6 +125,8 @@ import { ROUTES } from '@routes/router.const';
 import { CONSTS } from '@consts';
 
 const SLIDE_MENU_MAIN_SIDE_PADDING = 32;
+const SLIDE_MENU_TRANSITION_DELAY_MS = 0.7;
+const SLIDE_MENU_TRANSITION_DELAY_MS_MOBILE = 0.3;
 
 export default {
   components: {
@@ -155,6 +159,7 @@ export default {
     const SLIDE_MENU_WRAPPER_TOP_BLOCK = ref();
     const SLIDE_MENU_WRAPPER_ALL_BLOCK = ref();
     const SLIDE_MENU_MAIN_CONTENT_MOBILE_BLOCK = ref();
+    const slideMenuVisibilityStyle = ref('hidden');
 
     const userStore = useUserDataStore();
 
@@ -243,7 +248,9 @@ export default {
       if (isSlideMenuWrapperDesktop.value) {
         return {
           transition: `all ${
-            context.slideMenuWrapperAnimation ? 0.7 : 0
+            context.slideMenuWrapperAnimation
+              ? SLIDE_MENU_TRANSITION_DELAY_MS
+              : 0
           }s ease`,
           right: context.isMenuOpened
             ? `-${slideMenuMainSideWidth.value}px`
@@ -255,12 +262,14 @@ export default {
     const slideMenuMainSideStyle = computed(() => {
       if (!isSlideMenuWrapperDesktop.value) {
         return {
+          visibility: slideMenuVisibilityStyle.value,
           left: !context.isMenuOpened
             ? `-${slideMenuMainSideWidth.value}px`
             : '0px',
         };
       }
       return {
+        visibility: slideMenuVisibilityStyle.value,
         width: `${slideMenuMainSideWidth.value}px`,
       };
     });
@@ -289,6 +298,19 @@ export default {
         slideMenuMainSideMobileBlock.value
       );
     });
+
+    watch(
+      () => context.isMenuOpened,
+      (newValue) => {
+        if (newValue) {
+          slideMenuVisibilityStyle.value = 'visible';
+        } else {
+          setTimeout(() => {
+            slideMenuVisibilityStyle.value = 'hidden';
+          }, SLIDE_MENU_TRANSITION_DELAY_MS_MOBILE * 1000);
+        }
+      }
+    );
 
     expose({
       slideMenuWrapperMainContentHeight,
@@ -383,7 +405,7 @@ $color-dfdeed: #dfdeed;
       padding: 16px;
       @include calc-height;
       z-index: 990;
-      transition: all 0.3s ease-out;
+      transition: left 0.3s ease-out;
       left: 0;
       top: 0;
     }
@@ -393,7 +415,6 @@ $color-dfdeed: #dfdeed;
     }
 
     .b_slide_menu_top-block {
-      height: calc(100% - 102px);
 
       @include beforeDesktop {
         height: 110px;
@@ -447,19 +468,6 @@ $color-dfdeed: #dfdeed;
           img {
             display: block;
           }
-        }
-      }
-    }
-    .b_slide_menu_bottom-block {
-      padding: 16px 11px;
-
-      .b-privacy-links__button {
-        @include inter(12px, 400, $--b-main-gray-color);
-        line-height: 20px;
-        margin-top: 5px;
-
-        span {
-          cursor: pointer;
         }
       }
     }

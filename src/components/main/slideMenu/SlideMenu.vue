@@ -101,6 +101,7 @@
           @removePushNotificationAfterSidebarAction="
             removePushNotificationAfterSidebarAction
           "
+          @closeMobileMenu="closeSlideMenu(true)"
         >
           <template #before>
             <!--<Notification-->
@@ -156,7 +157,13 @@
           {{ $t('slide_menu.version') }}
           <span>{{ clientVersion }}</span>
         </router-link>
-        <div class="b-blanball-made-by-flumx">Розроблено: FlumX</div>
+        <a
+          :href="FLUMX_SITE_URL"
+          target="_blank"
+          class="b-blanball-made-by-flumx"
+        >
+          Розроблено: FlumX
+        </a>
       </div>
       <div class="b-privacy-links__button">
         <span>
@@ -180,6 +187,7 @@ import SlideMenuWrapper from './SlideMenuWrapper.vue';
 import WhiteBtn from '@/components/shared/button/WhiteBtn.vue';
 
 import { useUserDataStore } from '@/stores/userData';
+import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
 
 import { ROUTES } from '@routes/router.const';
 import { config } from 'dotenv';
@@ -219,6 +227,7 @@ export default {
     const contextMenuY = ref(null);
     const isContextMenuActive = ref(false);
     const itemOnWhatWasOpenedContextMenu = ref(null);
+    const { detectedDevice, DEVICE_TYPES } = useWindowWidth();
 
     const openContextMenu = (data) => {
       itemOnWhatWasOpenedContextMenu.value = data.itemData;
@@ -254,6 +263,10 @@ export default {
       return scrollbar.value.state === 'loading';
     });
 
+    const FLUMX_SITE_URL = computed(() => {
+      return process.env.FLUMX_SITE_URL;
+    });
+
     const slideMenuTabsStyle = computed(() => {
       return {
         'margin-bottom': `${
@@ -277,8 +290,20 @@ export default {
       }
     }
 
-    function closeSlideMenu() {
-      context.config.activity = false;
+    function closeSlideMenu(onlyMobileMenuVersion = false) {
+      if (onlyMobileMenuVersion) {
+        if (
+          [
+            DEVICE_TYPES.MOBILE_SMALL,
+            DEVICE_TYPES.MOBILE,
+            DEVICE_TYPES.TABLET,
+          ].includes(detectedDevice.value)
+        ) {
+          context.config.activity = false;
+        }
+      } else {
+        context.config.activity = false;
+      }
     }
 
     function contextMenuItemClick(itemActionType, item) {
@@ -303,6 +328,7 @@ export default {
       slideMenuTabsStyle,
       scrollbar,
       isLoadingState,
+      FLUMX_SITE_URL,
       openContextMenu,
       closeContextMenu,
       closeSlideMenu,
@@ -335,6 +361,16 @@ $color-efeff6: #efeff6;
 
 .b_slide_menu_bottom-block {
   padding: 16px 11px;
+
+  .b-privacy-links__button {
+    @include inter(12px, 400, $--b-main-gray-color);
+    line-height: 20px;
+    margin-top: 5px;
+
+    span {
+      cursor: pointer;
+    }
+  }
 
   .b_slide_menu_top-line {
     width: 100%;
@@ -389,7 +425,7 @@ $color-efeff6: #efeff6;
   display: flex;
   align-items: center;
   border-bottom: 1px solid $color-dfdeed;
-  margin-top: 12px;
+  padding-top: 12px;
   width: 100%;
 
   @include beforeDesktop {

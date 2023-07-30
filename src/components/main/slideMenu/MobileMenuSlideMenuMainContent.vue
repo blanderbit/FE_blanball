@@ -1,64 +1,33 @@
 <template>
-  <div class="b-mob-menu__menu-block" :style="menuBlockStyle">
-    <div class="b-mob-menu__line" ref="MOBILE_MENU_TOP_LINE_BLOCK">
+  <div class="b-mobile-menu-block">
+    <div :class="['b-mobile-menu-items', { 'ative-item': isAnyElementActive }]">
       <div
-        class="b-mob-menu__menu-item"
-        v-for="item in mobileTopMenu"
-        :key="item.id"
-        :style="{
-          width: item.width,
-          height: item.height,
-          'justify-content': item.alignement,
-          background: item.background,
-        }"
-        @click="lineMenuClick(item.id, item.url, 'top-menu')"
+        v-if="isAnyElementActive"
+        class="b-return-to-all-items-button"
+        @click="returnToAllItemList"
       >
-        <img
-          :src="item.isIconActive ? item.imgActive : item.imgInactive"
-          alt=""
-        />
-        <span
-          :style="{
-            color: item.textColor,
-          }"
-          v-if="item.value_show"
-        >
-          {{ $t(item.value) }}
-        </span>
+        <img src="@images/arrow-left-gray.svg" alt="" />
+      </div>
+      <div
+        v-for="item in mobileMenuItems"
+        :class="[
+          'b-mobile-menu-item',
+          { active: activeElementId === item.id },
+          { hide: activeElementId && activeElementId !== item.id },
+        ]"
+        @click="itemClick(item)"
+      >
+        <img class="b-item-image" :src="item.imgInactive" alt="" />
+        <div class="b-item-text">{{ $t(item.value) }}</div>
       </div>
     </div>
     <div
-      v-if="showMainContent"
-      class="b-mob-menu__content-block"
+      v-if="isAnyElementActive"
+      class="b-mobile-menu-main-content-block"
       :style="mainContentHeightStyle"
     >
-      <div class="b-mob-menu__message-list" :style="mainContentHeightStyle">
-        <slot name="tabs"> </slot>
-        <slot name="main-content"></slot>
-      </div>
-    </div>
-    <div class="b-mob-menu__line" ref="MOBILE_MENU_BOTTOM_LINE_BLOCK">
-      <div
-        class="b-mob-menu__menu-item"
-        v-for="item in mobileBottomMenu"
-        :key="item.id"
-        :style="{
-          width: item.width,
-          height: item.height,
-          'justify-content': item.alignement,
-          background: item.background,
-          color: item.textColor,
-        }"
-        @click="lineMenuClick(item.id, item.url)"
-      >
-        <img
-          :src="item.isIconActive ? item.imgActive : item.imgInactive"
-          alt=""
-        />
-        <span v-if="item.value_show">
-          {{ $t(item.value) }}
-        </span>
-      </div>
+      <slot name="tabs"> </slot>
+      <slot name="main-content"></slot>
     </div>
   </div>
 </template>
@@ -79,6 +48,7 @@ import Members from '@images/members.svg';
 import MembersWhite from '@images/members-white.svg';
 import Settings from '@images/settings.svg';
 import SettingsWhite from '@images/settings-white.svg';
+import Chats from '@images/chat/sidebar-chats-icon.svg';
 
 export default {
   props: {
@@ -95,6 +65,7 @@ export default {
   setup(props, { emit, expose }) {
     const MOBILE_MENU_BOTTOM_LINE_BLOCK = ref();
     const MOBILE_MENU_TOP_LINE_BLOCK = ref();
+    const router = useRouter();
 
     const { height: MOBILE_MENU_BOTTOM_LINE_BLOCK_HEIGHT } = useElementSize(
       MOBILE_MENU_BOTTOM_LINE_BLOCK
@@ -104,154 +75,84 @@ export default {
       MOBILE_MENU_TOP_LINE_BLOCK
     );
 
-    const router = useRouter();
     const isBottomBlockShowing = ref(true);
 
-    const mobileTopMenu = ref([
-      {
-        id: 0,
-        value: 'slide_menu.messages',
-        value_show: true,
-        imgInactive: NotificationIcon,
-        imgActive: NotificationWhite,
-        isIconActive: false,
-        width: '50%',
-        height: '76px',
-        alignement: 'flex-start',
-        background: '#FFFFFF',
-        textColor: '#262541',
-      },
-      {
-        id: 1,
-        value: 'slide_menu.events',
-        value_show: true,
-        imgInactive: Record,
-        imgActive: RecordWhite,
-        isIconActive: false,
-        width: '50%',
-        height: '76px',
-        alignement: 'flex-start',
-        background: '#FFFFFF',
-        url: ROUTES.APPLICATION.EVENTS.absolute,
-      },
-    ]);
-    const mobileBottomMenu = ref([
-      {
-        id: 0,
-        value: 'slide_menu.user-raiting',
-        value_show: true,
-        imgInactive: Members,
-        imgActive: MembersWhite,
-        isIconActive: false,
-        width: '50%',
-        height: '76px',
-        alignement: 'flex-start',
-        background: '#FFFFFF',
-        url: ROUTES.APPLICATION.USERS.GENERAL.absolute,
-      },
-      {
-        id: 1,
-        value: 'slide_menu.settings',
-        value_show: true,
-        imgInactive: Settings,
-        imgActive: SettingsWhite,
-        isIconActive: false,
-        width: '50%',
-        height: '76px',
-        alignement: 'flex-start',
-        background: '#FFFFFF',
-        url: ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute,
-      },
-    ]);
+    const activeElementId = ref(null);
 
-    const menuBlockHeight = ref('auto');
-    const menuBlockStyle = computed(() => {
-      return {
-        height: menuBlockHeight.value,
-        'border-radius': `${props.selectedList.length ? 0 : 8}px`,
-      };
+    const isAnyElementActive = computed(() => {
+      return activeElementId.value;
     });
-
-    const showMainContent = ref(null);
 
     const mainContentHeightStyle = computed(() => {
       return {
-        height: `${props.mainContentHeight }px`,
+        height: `${props.mainContentHeight}px`,
       };
-    }); 
+    });
 
-    function closeMobMenu() {
-      normalizeBlock(mobileTopMenu);
-      normalizeBlock(mobileBottomMenu);
-      menuBlockHeight.value = 'auto';
-      emit('closeMenu');
+    const mobileMenuItems = ref([
+      {
+        id: 1,
+        value: 'slide_menu.messages',
+        imgInactive: NotificationIcon,
+        imgActive: NotificationWhite,
+        isIconActive: false,
+        showMainContent: true,
+      },
+      {
+        id: 2,
+        value: 'slide_menu.events',
+        imgInactive: Record,
+        imgActive: RecordWhite,
+        url: ROUTES.APPLICATION.EVENTS.absolute,
+      },
+      {
+        id: 3,
+        value: 'slide_menu.user-raiting',
+        imgInactive: Members,
+        imgActive: MembersWhite,
+        isIconActive: false,
+        url: ROUTES.APPLICATION.USERS.GENERAL.absolute,
+      },
+      {
+        id: 4,
+        value: 'slide_menu.settings',
+        imgInactive: Settings,
+        imgActive: SettingsWhite,
+        isIconActive: false,
+        url: ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute,
+      },
+      {
+        id: 5,
+        value: 'chat.chats',
+        imgInactive: Chats,
+        imgActive: SettingsWhite,
+        isIconActive: false,
+        url: ROUTES.APPLICATION.CHATS.absolute,
+        showMainContent: true,
+      },
+    ]);
+
+    function itemClick(item) {
+      if (item.url) {
+        router.push(item.url);
+        if (!item.showMainContent) {
+          closeMobileMenu();
+          isBottomBlockShowing.value = true;
+        }
+      }
+      if (item.showMainContent) {
+        activeElementId.value = item.id;
+        isBottomBlockShowing.value = false;
+      }
+    }
+
+    function returnToAllItemList() {
+      activeElementId.value = null;
       isBottomBlockShowing.value = true;
     }
-    function normalizeBlock(menu) {
-      showMainContent.value = false;
-      menu.value = menu.value.map((item) => {
-        return {
-          ...item,
-          value_show: true,
-          isIconActive: false,
-          width: '50%',
-          height: '76px',
-          alignement: 'flex-start',
-          background: '#FFFFFF',
-          textColor: '#575775',
-        };
-      });
-    }
-    function lineMenuClick(id, url, menuType) {
-      if (url) {
-        router.push(url);
-        closeMobMenu();
-        return;
-      }
-      menuBlockHeight.value = '100%';
-      const currentlyClickedMenu =
-        menuType === 'top-menu' ? mobileTopMenu : mobileBottomMenu;
-      const spareMenu =
-        menuType === 'top-menu' ? mobileBottomMenu : mobileTopMenu;
-      const spareId = id ? 0 : 1;
-      isBottomBlockShowing.value = false;
 
-      normalizeBlock(spareMenu);
-
-      showMainContent.value = true;
-
-      currentlyClickedMenu.value = currentlyClickedMenu.value.map((item) => {
-        if (item.id === id) {
-          return {
-            ...item,
-            value_show: true,
-            isIconActive: true,
-            width: '80%',
-            height: '52px',
-            alignement: 'flex-start',
-            background: '#575775',
-            textColor: '#fff',
-          };
-        } else {
-          return item;
-        }
-      });
-      currentlyClickedMenu.value = currentlyClickedMenu.value.map((item) => {
-        if (item.id === spareId) {
-          return {
-            ...item,
-            value_show: false,
-            isIconActive: false,
-            width: '20%',
-            height: '52px',
-            alignement: 'center',
-            background: '#FFFFFF',
-            textColor: '#575775',
-          };
-        } else {
-          return item;
-        }
-      });
+    function closeMobileMenu() {
+      emit('closeMenu');
     }
 
     expose({
@@ -261,133 +162,202 @@ export default {
     });
 
     return {
-      mobileBottomMenu,
-      mainContentHeightStyle,
-      mobileTopMenu,
-      menuBlockStyle,
-      showMainContent,
       MOBILE_MENU_BOTTOM_LINE_BLOCK,
       MOBILE_MENU_TOP_LINE_BLOCK,
-      lineMenuClick,
+      mobileMenuItems,
+      isAnyElementActive,
+      activeElementId,
+      mainContentHeightStyle,
+      itemClick,
+      returnToAllItemList,
+      closeMobileMenu,
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
-$color-efeff6: #efeff6;
-$color-8a8aa8: #8a8aa8;
-$color-148581: #148581;
-$color-dfdeed: #dfdeed;
-$color-1ccd62: #1ccd62;
+$-active-element-height: 44px;
+$color-f0f0f4: #f0f0f4;
 
-.b-mob-menu__menu-block {
+.b-mobile-menu-block {
   margin-top: 16px;
-  overflow: hidden;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  transition: all 0.3s ease-out;
-  .b-mob-menu__line {
+
+  .b-mobile-menu-items {
     display: flex;
-    border-bottom: 1.5px solid $color-dfdeed;
-    &:last-child {
-      border: none;
+    flex-wrap: wrap;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 12px;
+
+    &.ative-item {
+      border-radius: 0px;
+      flex-wrap: nowrap;
     }
-    .b-mob-menu__menu-item {
+
+    .b-return-to-all-items-button {
       display: flex;
       align-items: center;
-      justify-content: flex-start;
-      padding: 0 16px;
-      border-right: 1.5px solid $color-dfdeed;
-      transition: all 0.3s ease-out;
-      &:last-child {
-        border: none;
-      }
-      img {
-        width: 21.5px;
-        height: 21.5px;
-      }
-      span {
-        @include inter(12px, 500);
+      justify-content: center;
+      height: $-active-element-height;
+      padding: 0px 16px;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-items-default, #f0f0f4);
+      background: $--b-main-white-color;
+      flex-basis: 10%;
+      border-radius: 8px 0px 0px 0px;
+      cursor: pointer;
+    }
+
+    .b-mobile-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-basis: 50%;
+      padding: 0px 16px;
+      height: 56px;
+      background: $--b-main-white-color;
+      cursor: pointer;
+      border-left: 1px solid $color-f0f0f4;
+      border-top: 1px solid $color-f0f0f4;
+      .b-item-text {
+        @include inter(13px, 500, $--b-main-gray-color);
         line-height: 16px;
-        margin-left: 13px;
+      }
+      .b-item-image {
+        width: 20px;
+        height: 20px;
+      }
+
+      &.active {
+        background: $--b-main-gray-color;
+        flex-basis: 90%;
+        height: $-active-element-height;
+        border-radius: 0px 8px 0px 0px;
+
+        .b-item-text {
+          @include inter(13px, 500, $--b-main-white-color);
+          line-height: 16px;
+        }
+      }
+      &.hide {
+        display: none;
       }
     }
   }
-  .b-mob-menu__content-block {
+
+  .b-mobile-menu-main-content-block {
     background: $--b-main-white-color;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease-out;
-    .b-mob-menu__message-list {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-
-      .b-mob-menu__tabs {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 20px;
-
-        .b-mob-menu__tab {
-          line-height: 20px;
-          padding: 12px 0px;
-          cursor: pointer;
-          @include inter(13px, 400);
-
-          &.selected {
-            @include inter(13px, 500);
-            border-bottom: 2px solid $--b-main-black-color;
-            padding: 6px 0px;
-          }
-        }
-      }
-      .b-mob-menu__message {
-        padding: 14px 12px;
-        display: flex;
-        border-bottom: 1px solid $color-efeff6;
-        .b-mob-menu__left-side {
-          margin-right: 12px;
-          position: relative;
-          .b-mob-menu__is-user-active {
-            width: 10px;
-            height: 10px;
-            position: absolute;
-            right: 0;
-            bottom: 4px;
-            background: $color-1ccd62;
-            border: 2px solid $--b-main-white-color;
-            border-radius: 50%;
-          }
-        }
-
-        .b-mob-menu__right-side {
-          width: 100%;
-          .b-mob-menu__top-line {
-            @include inter(14px, 400, $color-8a8aa8);
-            line-height: 20px;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 4px;
-          }
-
-          .b-mob-menu__bottom-line {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            @include inter(14px, 600, $color-8a8aa8);
-            line-height: 20px;
-          }
-        }
-      }
-    }
   }
 }
+
+// .b-mob-menu__menu-block {
+//   margin-top: 16px;
+//   overflow: hidden;
+//   height: 100%;
+//   display: flex;
+//   flex-direction: column;
+//   transition: all 0.3s ease-out;
+//   .b-mob-menu__line {
+//     display: flex;
+//     border-bottom: 1.5px solid $color-dfdeed;
+//     &:last-child {
+//       border: none;
+//     }
+//     .b-mob-menu__menu-item {
+//       display: flex;
+//       align-items: center;
+//       justify-content: flex-start;
+//       padding: 0 16px;
+//       border-right: 1.5px solid $color-dfdeed;
+//       transition: all 0.3s ease-out;
+//       &:last-child {
+//         border: none;
+//       }
+//       img {
+//         width: 21.5px;
+//         height: 21.5px;
+//       }
+//       span {
+//         @include inter(12px, 500);
+//         line-height: 16px;
+//         margin-left: 13px;
+//       }
+//     }
+//   }
+//   .b-mob-menu__content-block {
+//     background: $--b-main-white-color;
+//     height: 100%;
+//     position: relative;
+//     overflow: hidden;
+//     transition: all 0.3s ease-out;
+//     .b-mob-menu__message-list {
+//       position: absolute;
+//       top: 0;
+//       left: 0;
+//       width: 100%;
+//       height: 100%;
+
+//       .b-mob-menu__tabs {
+//         display: flex;
+//         align-items: center;
+//         justify-content: center;
+//         gap: 20px;
+
+//         .b-mob-menu__tab {
+//           line-height: 20px;
+//           padding: 12px 0px;
+//           cursor: pointer;
+//           @include inter(13px, 400);
+
+//           &.selected {
+//             @include inter(13px, 500);
+//             border-bottom: 2px solid $--b-main-black-color;
+//             padding: 6px 0px;
+//           }
+//         }
+//       }
+//       .b-mob-menu__message {
+//         padding: 14px 12px;
+//         display: flex;
+//         border-bottom: 1px solid $color-efeff6;
+//         .b-mob-menu__left-side {
+//           margin-right: 12px;
+//           position: relative;
+//           .b-mob-menu__is-user-active {
+//             width: 10px;
+//             height: 10px;
+//             position: absolute;
+//             right: 0;
+//             bottom: 4px;
+//             background: $color-1ccd62;
+//             border: 2px solid $--b-main-white-color;
+//             border-radius: 50%;
+//           }
+//         }
+
+//         .b-mob-menu__right-side {
+//           width: 100%;
+//           .b-mob-menu__top-line {
+//             @include inter(14px, 400, $color-8a8aa8);
+//             line-height: 20px;
+
+//             display: flex;
+//             align-items: center;
+//             justify-content: space-between;
+//             margin-bottom: 4px;
+//           }
+
+//           .b-mob-menu__bottom-line {
+//             display: flex;
+//             align-items: center;
+//             justify-content: space-between;
+//             @include inter(14px, 600, $color-8a8aa8);
+//             line-height: 20px;
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
 </style>

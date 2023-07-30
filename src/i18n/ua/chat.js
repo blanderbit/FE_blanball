@@ -96,4 +96,8 @@ export default {
     user_joined_to_chat: '{userFullName} щойно долучився до бесіди',
     group_chat_created: 'Групу створено',
   },
+  cant_edit_message_after_10_minutes_modal: {
+    title: 'Упс... редагування недоступне',
+    main_text: 'Редагування можливе протягом перших 10 хв., після відправлення',
+  },
 };

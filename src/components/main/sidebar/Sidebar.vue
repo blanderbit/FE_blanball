@@ -113,9 +113,6 @@ export default {
     const isBugReportModalOpened = ref(false);
     const currentHoverSideBarItemID = ref(0);
 
-    const foundBug = () => {
-      isBugReportModalOpened.value = true;
-    };
     const activeSlideElement = ref();
 
     const menuItems = dinamicMenu({
@@ -149,6 +146,10 @@ export default {
       );
     });
 
+    BlanballEventBus.on('OpenBugReportModal', () => {
+      isBugReportModalOpened.value = true;
+    });
+
     ChatEventBus.on('forceOpenChatsListSlideMenu', () => {
       clickByMenuItem(
         menuItems.value.find((item) => item.uniqueName === 'chat.point')
@@ -158,10 +159,10 @@ export default {
     onBeforeUnmount(() => {
       BlanballEventBus.off('OpenMobileMenu');
       ChatEventBus.off('forceOpenChatsListSlideMenu');
+      BlanballEventBus.off('OpenBugReportModal');
     });
 
     function clickByMenuItem(item) {
-      console.log(item);
       if (item.slideConfig) {
         activeSlideElement.value = item;
       } else if (!item.slideConfig) {
@@ -172,30 +173,18 @@ export default {
       }
     }
 
-    //
-    // const removeNotifications = (ids) => {
-    //   if (ids === 'All') {
-    //     paginationElements.value = [];
-    //   } else {
-    //     paginationElements.value = paginationElements.value.filter(
-    //       (item) => !ids.includes(item.notification_id)
-    //     );
-    //   }
-    // };
-
     setDefaultSlideMenu();
 
     return {
       menuItems,
       userStore,
       currentHoverSideBarItemID,
-      isBugReportModalOpened,
       // removeNotifications,
       activeSlideElement,
+      isBugReportModalOpened,
       goToMainPage,
       leaveHoverSidebarItem,
       enterHoverSidebarItem,
-      foundBug,
       goToProfile,
       logOut,
       closeBugReportModal,

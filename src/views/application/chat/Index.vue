@@ -123,6 +123,7 @@ import { CHAT_DETAILS_TYPE_ENUM_ERRORS } from '@/workers/web-socket-worker/messa
 const CHAT_PAGE_TOP_AND_BOTTOM_PADDINGS_PX = 20 + 0;
 const SIDEBAR_ELEMENT_SELECTOR = '.b_sidebar';
 const SLIDE_MENU_ELEMENT_SELECTOR = '.b_slide_menu_main';
+const LIGHT_SIDEBAR_CLASS_NAME = 'sidebar-light';
 
 export default {
   components: {
@@ -238,8 +239,13 @@ export default {
     }
 
     function highlightSidebarAndSlideMenu() {
-      SIDEBAR_HTML_ELEMENT.value.style.zIndex = 1000;
-      SLIDE_MENU_HTML_ELEMENT.value.style.zIndex = 1000;
+      SIDEBAR_HTML_ELEMENT.value.classList.add(LIGHT_SIDEBAR_CLASS_NAME);
+      SLIDE_MENU_HTML_ELEMENT.value.classList.add(LIGHT_SIDEBAR_CLASS_NAME);
+    }
+
+    function normalizeSidebarAndSlideMenu() {
+      SIDEBAR_HTML_ELEMENT.value?.classList.remove(LIGHT_SIDEBAR_CLASS_NAME);
+      SLIDE_MENU_HTML_ELEMENT.value?.classList.remove(LIGHT_SIDEBAR_CLASS_NAME);
     }
 
     function showEditChatModal() {
@@ -263,6 +269,7 @@ export default {
       } else {
         isEditChatModalOpened.value = false;
         closeSubmitModal();
+        normalizeSidebarAndSlideMenu();
       }
     }
 
@@ -470,6 +477,7 @@ export default {
       );
       ChatSocketWorkerInstance.destroyCallback(editChatMessageHandler);
       ChatSocketWorkerInstance.destroyCallback(offOrOnPushNotificationsHandler);
+      normalizeSidebarAndSlideMenu();
     });
 
     return {
