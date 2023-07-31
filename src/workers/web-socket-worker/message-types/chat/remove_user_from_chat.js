@@ -22,6 +22,7 @@ export class RemoveUserFromChat extends InitialChatMessage {
   }
 
   setCurrentUserAsRemoved(userId, chatDataStore) {
+    console.log('setCurrentUserAsRemoved', this.data.data);
     if (userId === this.data.data.removed_user_id) {
       chatDataStore.$patch({
         infoAboutMe: {

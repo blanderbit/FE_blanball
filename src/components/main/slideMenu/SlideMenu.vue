@@ -22,7 +22,7 @@
     :menuClosable="config.slideConfig.closable"
     :mainSideWidth="config.slideConfig.width"
     :slideMenuWrapperAnimation="!config.slideConfig.notAnimate"
-    ref="SLIDE_MENU_WRAPPER"
+    ref="SLIDE_MENU_WRAPPER_ELEMENT"
     @close="closeSlideMenu"
   >
     <template #logo>
@@ -121,7 +121,9 @@
             >
               <template #complete>
                 <empty-list
-                  v-if="isEmptyListVisible"
+                  v-if="
+                    isEmptyListVisible && !config.activeTab?.records.loading
+                  "
                   :title="activeTabRecords.emptyListConfig.title"
                   :description="activeTabRecords.emptyListConfig.description"
                   :image="activeTabRecords.emptyListConfig.image"
@@ -139,7 +141,10 @@
       </ul>
     </template>
 
-    <template v-if="config.slideConfig.bottomSideVisible" #bottom-block>
+    <template
+      v-if="config.slideConfig.bottomSideVisible && config.activity"
+      #bottom-block
+    >
       <div class="b_slide_menu_top-line d-flex justify-content-between">
         <div class="b_slide_menu_name">
           {{ userStore.getUserFullName }}
@@ -165,7 +170,10 @@
           Розроблено: FlumX
         </a>
       </div>
-      <div class="b-privacy-links__button">
+      <div
+        class="b-privacy-links__button"
+        @click="SLIDE_MENU_WRAPPER_ELEMENT?.showPrivacyContextModal"
+      >
         <span>
           {{ $t('policy.data-security') }}
         </span>
@@ -175,7 +183,8 @@
 </template>
 
 <script>
-import { ref, inject, computed, nextTick, onMounted } from 'vue';
+import { ref, inject, computed, nextTick, onMounted, watch } from 'vue';
+import { v4 as uuid } from 'uuid';
 
 import VirtualList from '@mainComponents/virtualList/VirtualList.vue';
 import emptyList from '@sharedComponents/emptyList/EmptyList.vue';
@@ -216,7 +225,7 @@ export default {
   emits: ['openTab'],
   setup(context, { emit }) {
     const scrollbar = ref();
-    const SLIDE_MENU_WRAPPER = ref();
+    const SLIDE_MENU_WRAPPER_ELEMENT = ref();
     const userStore = useUserDataStore();
     const clientVersion = ref(inject('clientVersion'));
     const routeObject = computed(() => {
@@ -228,6 +237,10 @@ export default {
     const isContextMenuActive = ref(false);
     const itemOnWhatWasOpenedContextMenu = ref(null);
     const { detectedDevice, DEVICE_TYPES } = useWindowWidth();
+
+    const restartInfiniteScroll = () => {
+      triggerForRestart.value = uuid();
+    };
 
     const openContextMenu = (data) => {
       itemOnWhatWasOpenedContextMenu.value = data.itemData;
@@ -242,8 +255,12 @@ export default {
       isContextMenuActive.value = false;
     };
 
+    const isNewTabDataLoading = computed(() => {
+      return context.config.activeTab?.records.request.loading;
+    });
+
     const slideMenuHeight = computed(() => {
-      return `${SLIDE_MENU_WRAPPER.value?.slideMenuWrapperMainContentHeight}px`;
+      return `${SLIDE_MENU_WRAPPER_ELEMENT.value?.slideMenuWrapperMainContentHeight}px`;
     });
 
     const slideMenuTabStyle = computed(() => {
@@ -287,6 +304,7 @@ export default {
     function openTab(tab) {
       if (tab.uniqueName !== context.config.activeTab.uniqueName) {
         emit('openTab', tab.uniqueName);
+        restartInfiniteScroll();
       }
     }
 
@@ -312,6 +330,13 @@ export default {
       }
     }
 
+    // watch(
+    //   () => context.config.activeTab,
+    //   () => {
+    //     restartInfiniteScroll();
+    //   }
+    // );
+
     return {
       userStore,
       clientVersion,
@@ -321,7 +346,7 @@ export default {
       contextMenuX,
       contextMenuY,
       slideMenuHeight,
-      SLIDE_MENU_WRAPPER,
+      SLIDE_MENU_WRAPPER_ELEMENT,
       isEmptyListVisible,
       slideMenuTabStyle,
       activeTabRecords,
@@ -329,10 +354,12 @@ export default {
       scrollbar,
       isLoadingState,
       FLUMX_SITE_URL,
+      isNewTabDataLoading,
       openContextMenu,
       closeContextMenu,
       closeSlideMenu,
       contextMenuItemClick,
+      restartInfiniteScroll,
       openTab,
       test($event) {
         context.config.activeTab.$emit('loadNewData', {
@@ -361,6 +388,10 @@ $color-efeff6: #efeff6;
 
 .b_slide_menu_bottom-block {
   padding: 16px 11px;
+
+  @include beforeDesktop {
+    display: none;
+  }
 
   .b-privacy-links__button {
     @include inter(12px, 400, $--b-main-gray-color);

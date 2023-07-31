@@ -47,10 +47,17 @@
           {{ chatLastMessageTimeCreated }}
         </div>
       </div>
-      <div class="b-right-side-bottom-block">
-        <span class="b-chat-not-read-messages-count">{{
-          chatData.unread_messages_count
-        }}</span>
+      <div
+        :class="[
+          'b-right-side-bottom-block',
+          { 'no-not-read-messages': !chatData.unread_messages_count },
+        ]"
+      >
+        <span
+          v-if="chatData.unread_messages_count"
+          class="b-chat-not-read-messages-count"
+          >{{ chatData.unread_messages_count }}</span
+        >
         <svg
           class="b-chat-pinned-icon"
           width="16"
@@ -115,7 +122,6 @@ export default {
 
     const chatLastMessageText = computed(() => {
       if (chatData.last_message) {
-        console.log(chatData.last_message);
         if (chatData.last_message.service) {
           return detectServiceChatMessageTextByType(chatData.last_message, t);
         }
@@ -145,7 +151,11 @@ export default {
     });
 
     function openContextMenu(e) {
-      emit('openContextMenu', e);
+      emit('openContextMenu', {
+        yPosition: e.clientY,
+        xPosition: e.clientX,
+        itemData: chatData
+      });
     }
 
     function chatCardClick() {
@@ -259,6 +269,12 @@ export default {
       align-items: center;
       margin-top: 8px;
       gap: 4px;
+
+      &.no-not-read-messages {
+        * {
+          margin-left: auto;
+        }
+      }
 
       .b-chat-not-read-messages-count {
         width: max-content;

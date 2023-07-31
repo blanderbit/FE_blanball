@@ -14,6 +14,7 @@
   >
     <UserAvatar
       v-if="isMessageAvatarVisible"
+      class="b-chat-message-avatar"
       :link="senderMessageData.avatar"
       :full-name="senderMessageData.fullName"
     />
@@ -96,7 +97,7 @@ export default {
     const { messageData, isChatDisabed, searchMessagesValue } = props;
 
     const messageTime = computed(() => {
-      return dayjs(props.time_created).format('HH:mm');
+      return dayjs(props.messageData.time_created).format('HH:mm');
     });
 
     const isMessageMine = computed(() => {
@@ -108,7 +109,7 @@ export default {
     });
 
     const isMessageAvatarVisible = computed(() => {
-      return messageData.showAvatar && !props.selected;
+      return messageData.showAvatar;
     });
 
     const isMessageEdited = computed(() => {
@@ -188,16 +189,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$--message-avatar-gap: 6px;
+
 .b-chat-message-wrapper {
   display: flex;
   align-items: flex-end;
   align-items: center;
-  gap: 12px;
+  gap: $--message-avatar-gap;
   .b-chat-message-tail {
     @include mobile {
       width: 10px;
       height: fit-content;
     }
+  }
+
+  .b-chat-message-avatar {
+    align-self: flex-end;
   }
 
   &.selectableMode {
@@ -283,7 +290,7 @@ export default {
 
     &.isNextMessageFromTheSameSender {
       .b-chat-message {
-        margin-left: 40px;
+        margin-left: 40px + $--message-avatar-gap;
         border-radius: 12px;
       }
     }

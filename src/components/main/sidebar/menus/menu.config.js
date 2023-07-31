@@ -31,7 +31,7 @@ export const dinamicMenu = (instance) => {
     chatItem,
     new BasicButtonModel({
       uniqueName: 'events.icon',
-      title: 'events.icon',
+      title: 'slide_menu.events',
       icon: record,
       disabled: false,
       actionType: new ActionModelTypeUrl({
@@ -46,6 +46,7 @@ export const dinamicMenu = (instance) => {
     }),
     new BasicButtonModel({
       uniqueName: 'users.point',
+      title: 'slide_menu.user-raiting',
       icon: members,
       disabled: false,
       actionType: new ActionModelTypeUrl({
@@ -65,7 +66,6 @@ export const dinamicMenu = (instance) => {
       actionType: new ActionModelTypeButton({
         action: () => {
           BlanballEventBus.emit('OpenBugReportModal');
-          closeCurrentActiveSlideMenu;
         },
       }),
       disabled: false,

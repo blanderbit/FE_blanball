@@ -6,7 +6,7 @@ export class BasicButtonModel {
   actionType;
   class;
 
-  constructor (options) {
+  constructor(options) {
     Object.assign(this, {
       title: options.title,
       icon: options.icon,

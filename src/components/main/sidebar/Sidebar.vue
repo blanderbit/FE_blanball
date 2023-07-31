@@ -84,7 +84,6 @@ import SlideMenu from '@mainComponents/slideMenu/SlideMenu.vue';
 import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 import BugReportModal from '@sharedComponents/modals/BugReportModal.vue';
 import TabLabel from '@sharedComponents/tabLabel/TabLabel.vue';
-import MobileMenu from './MobileMenu.vue';
 
 import { useUserDataStore } from '@/stores/userData';
 import {
@@ -105,7 +104,6 @@ export default {
     userAvatar,
     BugReportModal,
     TabLabel,
-    MobileMenu,
   },
   setup() {
     const userStore = useUserDataStore();
@@ -150,15 +148,15 @@ export default {
       isBugReportModalOpened.value = true;
     });
 
-    ChatEventBus.on('forceOpenChatsListSlideMenu', () => {
+    ChatEventBus.on('activateSlideMenuByUniqName', (uniqueName) => {
       clickByMenuItem(
-        menuItems.value.find((item) => item.uniqueName === 'chat.point')
+        menuItems.value.find((item) => item.uniqueName === uniqueName)
       );
     });
 
     onBeforeUnmount(() => {
       BlanballEventBus.off('OpenMobileMenu');
-      ChatEventBus.off('forceOpenChatsListSlideMenu');
+      ChatEventBus.off('activateSlideMenuByUniqName');
       BlanballEventBus.off('OpenBugReportModal');
     });
 

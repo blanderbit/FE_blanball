@@ -126,7 +126,6 @@ import Scheduler from '@mainComponents/scheduler/index.vue';
 import LeftSidebar from '@mainComponents/scheduler/LeftSidebar.vue';
 import TopLineFriends from '@mainComponents/scheduler/TopLineFriends.vue';
 import NewVersionModal from '@mainComponents/versions/modals/NewVersionModal.vue';
-import Hint from '@mainComponents/hints/Hint.vue';
 
 import { AuthWebSocketWorkerInstance } from '@workers/web-socket-worker';
 import { ChatSocketWorkerInstance } from '@workers/web-socket-worker';
