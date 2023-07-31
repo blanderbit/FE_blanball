@@ -37,6 +37,7 @@
       @touchend.passive="endMessageHold"
     >
       <div v-html="highlightedMessageText" class="b-chat-message-text"></div>
+      {{ isMessageAvatarVisible }}
       <!-- <div class="b-like-message-button">
         <img src="@images/chat/like-button.svg" alt="" />
       </div> -->
@@ -108,7 +109,7 @@ export default {
     });
 
     const isMessageAvatarVisible = computed(() => {
-      return messageData.showAvatar && !props.selected;
+      return messageData.showAvatar;
     });
 
     const isMessageEdited = computed(() => {

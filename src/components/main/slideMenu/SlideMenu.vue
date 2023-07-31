@@ -121,7 +121,9 @@
             >
               <template #complete>
                 <empty-list
-                  v-if="isEmptyListVisible"
+                  v-if="
+                    isEmptyListVisible && !config.activeTab?.records.loading
+                  "
                   :title="activeTabRecords.emptyListConfig.title"
                   :description="activeTabRecords.emptyListConfig.description"
                   :image="activeTabRecords.emptyListConfig.image"
@@ -175,7 +177,8 @@
 </template>
 
 <script>
-import { ref, inject, computed, nextTick, onMounted } from 'vue';
+import { ref, inject, computed, nextTick, onMounted, watch } from 'vue';
+import { v4 as uuid } from 'uuid';
 
 import VirtualList from '@mainComponents/virtualList/VirtualList.vue';
 import emptyList from '@sharedComponents/emptyList/EmptyList.vue';
@@ -229,6 +232,10 @@ export default {
     const itemOnWhatWasOpenedContextMenu = ref(null);
     const { detectedDevice, DEVICE_TYPES } = useWindowWidth();
 
+    const restartInfiniteScroll = () => {
+      triggerForRestart.value = uuid();
+    };
+
     const openContextMenu = (data) => {
       itemOnWhatWasOpenedContextMenu.value = data.itemData;
       contextMenuY.value = data.yPosition;
@@ -241,6 +248,10 @@ export default {
       contextMenuX.value = null;
       isContextMenuActive.value = false;
     };
+
+    const isNewTabDataLoading = computed(() => {
+      return context.config.activeTab?.records.request.loading;
+    });
 
     const slideMenuHeight = computed(() => {
       return `${SLIDE_MENU_WRAPPER.value?.slideMenuWrapperMainContentHeight}px`;
@@ -312,6 +323,13 @@ export default {
       }
     }
 
+    watch(
+      () => context.config.activeTab,
+      () => {
+        restartInfiniteScroll();
+      }
+    );
+
     return {
       userStore,
       clientVersion,
@@ -329,10 +347,12 @@ export default {
       scrollbar,
       isLoadingState,
       FLUMX_SITE_URL,
+      isNewTabDataLoading,
       openContextMenu,
       closeContextMenu,
       closeSlideMenu,
       contextMenuItemClick,
+      restartInfiniteScroll,
       openTab,
       test($event) {
         context.config.activeTab.$emit('loadNewData', {

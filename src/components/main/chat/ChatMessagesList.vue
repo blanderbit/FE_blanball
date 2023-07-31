@@ -182,6 +182,43 @@ export default {
       return mockData.value.chatMessageContextMenuItems;
     });
 
+    const beforeConcatToCheckIsTheNextMessageFromTheSameSender = (
+      list,
+      newList
+    ) => {
+      const oldListLastElement = list.at(-1);
+      const newListFirstElement = newList.at(0);
+      if (oldListLastElement && newListFirstElement) {
+        Object.assign(
+          oldListLastElement,
+          setShowSenderMessageAvatarAndIsTheNextMessageFromTheSameAuthor(
+            oldListLastElement,
+            newListFirstElement
+          )
+        );
+      }
+
+      return newList;
+    };
+
+    function setShowSenderMessageAvatarAndIsTheNextMessageFromTheSameAuthor(
+      firstMessage,
+      secondMessage
+    ) {
+      const isMine = firstMessage?.sender.id === userStore.user.id;
+      const isNextMessageFromTheSameSender =
+        firstMessage?.sender.id === secondMessage?.sender?.id;
+      const showAvatar = props.chatData.is_group
+        ? !isMine && !isNextMessageFromTheSameSender
+        : false;
+
+      return {
+        isNextMessageFromTheSameSender,
+        showAvatar,
+        isMine,
+      };
+    }
+
     const {
       paginationElements,
       paginationPage,
@@ -196,6 +233,7 @@ export default {
           page: page,
         }),
       dataTransformation: handlingIncomeMessagesData,
+      beforeConcat: beforeConcatToCheckIsTheNextMessageFromTheSameSender,
       messageType: ChatWebSocketTypes.GetChatMessagesList,
     });
 
@@ -207,20 +245,20 @@ export default {
       });
     };
 
-    function handlingIncomeMessagesData(message) {
+    function handlingIncomeMessagesData(message, index, messages) {
       if (!message.service) {
-        const isMessageMine = message?.sender.id === userStore.user.id;
-        let isNextMessageFromTheSameSender = false;
+        let nextMessage = {};
 
-        const showAvatar = props.chatData.isGroup
-          ? !isMessageMine && !isNextMessageFromTheSameSender
-          : false;
+        if (messages) {
+          nextMessage = messages[index + 1];
+        }
 
         return {
           ...message,
-          isMine: isMessageMine,
-          showAvatar,
-          isNextMessageFromTheSameSender,
+          ...setShowSenderMessageAvatarAndIsTheNextMessageFromTheSameAuthor(
+            message,
+            nextMessage
+          ),
         };
       }
       return {
@@ -426,6 +464,7 @@ export default {
           paginationClearData();
           loadDataPaginationData(1, null);
           finishNewMessagesLoading();
+          restartInfiniteScroll();
         }
       },
       { immediate: true }

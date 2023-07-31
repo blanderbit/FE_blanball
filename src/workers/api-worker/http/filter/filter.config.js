@@ -15,7 +15,7 @@ export const filterConfigForChatUsers = {
 export const filterConfigForChats = {
   page: Number,
   search: String,
-  chats_type: new Enum(['dialog', 'group', 'request']),
+  chats_type: new Enum(['dialog', 'group', 'request', '']),
 };
 
 export const filterConfigForUsers = {

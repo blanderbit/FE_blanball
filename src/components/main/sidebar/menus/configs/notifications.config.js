@@ -1,6 +1,5 @@
 import { BasicButtonSlideActivatorModel } from '../models/basic.button.slide.activator.model';
-import notificationUnread from '@images/notificationUnread.svg';
-import notification from '@images/notification.svg';
+import { cloneDeep } from 'lodash';
 import { ActionModelTypeButton } from '../models/model.types';
 import { API } from '@workers/api-worker/api.worker';
 import { TabModel } from '../models/tabs.model';
@@ -9,21 +8,20 @@ import { ContextMenuModel } from '../models/context.menu.model';
 import { createNotificationFromData } from '@workers/utils-worker';
 import { ref, computed, watch } from 'vue';
 import { PaginationWorker } from '@/workers/pagination-worker';
-
 import { AuthWebSocketWorkerInstance } from '@workers/web-socket-worker';
-
 import { NotificationsBus } from '@workers/event-bus-worker';
-
-import SideBarLogoIcon from '@images/logo-sidebar.svg';
-
-import ReadAllNotificationsIcon from '@images/notifications/double-check.svg';
-import ManageNotificationsIcon from '@images/dots.svg';
-import EmptyNotificationsIcon from '@images/no-records/empty-notifications.svg';
+import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
 import { FilterParamsDecorator } from '@/workers/api-worker/http/filter/filter.utils';
 
 import trashRedIcon from '@images/trash-red.svg';
 import doubleCheckIcon from '@images/notifications/double-check.svg';
 import selectedIcon from '@images/selected.svg';
+import notificationUnread from '@images/notificationUnread.svg';
+import notification from '@images/notification.svg';
+import SideBarLogoIcon from '@images/logo-sidebar.svg';
+import ReadAllNotificationsIcon from '@images/notifications/double-check.svg';
+import ManageNotificationsIcon from '@images/dots.svg';
+import EmptyNotificationsIcon from '@images/no-records/empty-notifications.svg';
 
 const findDublicates = (list, newList) => {
   return newList.filter((item) =>
@@ -42,16 +40,51 @@ const NOTIFICATIONS_CONFIG_TOP_SIDE_STYLES = {
   'margin-top': '10px',
 };
 
-const generalConfigForAllTabs = {
-  scrollStrategy: 'infinite',
-  watchChanges: ['contextMenu', 'openTab'],
-  blockScrollToTopIfExist: true,
-  emptyListConfig: {
-    title: 'no_records.noNotifications.title',
-    description: 'no_records.noNotifications.description',
-    image: EmptyNotificationsIcon,
-  },
+const { detectedDevice, DEVICE_TYPES } = useWindowWidth();
+
+const generalConfigForAllTabs = (notificationItem, apiRequestFilters = {}) => {
+  return {
+    badge: {
+      count: 0,
+    },
+    records: {
+      record: {
+        componentName: 'Notification',
+        idKeyField: 'notification_id',
+      },
+      request: {
+        api: (data) =>
+          API.NotificationService.getNotifications({
+            ...data,
+            ...apiRequestFilters,
+          }),
+        filtersModel: {
+          type: {
+            ype: String,
+            value: '',
+          },
+          skipids: {
+            type: Array,
+            value: [],
+          },
+        },
+        dataTransformation: createNotificationFromData,
+        beforeConcat: findDublicates,
+        paginationFunction: PaginationWorker,
+      },
+      contextMenu: createContextMenu(notificationItem),
+      scrollStrategy: 'infinite',
+      watchChanges: ['contextMenu', 'openTab'],
+      blockScrollToTopIfExist: true,
+      emptyListConfig: {
+        title: 'no_records.noNotifications.title',
+        description: 'no_records.noNotifications.description',
+        image: EmptyNotificationsIcon,
+      },
+    },
+  };
 };
+
 const createContextMenu = (notificationItem) => {
   return [
     new ContextMenuModel({
@@ -122,7 +155,7 @@ export const createNotificationConfigItem = (routerInstance) => {
 
   const notificationItem = new BasicButtonSlideActivatorModel({
     uniqueName: 'notification.point',
-    title: 'notification.title',
+    title: 'slide_menu.notifications',
     disabled: false,
     icon: computed(() => {
       return notificationItem.findTab(
@@ -133,7 +166,11 @@ export const createNotificationConfigItem = (routerInstance) => {
     }),
     actionType: new ActionModelTypeButton({
       action: () => {
-        notificationItem.activity.value = !notificationItem.activity.value;
+        if (detectedDevice.value === DEVICE_TYPES.DESKTOP) {
+          notificationItem.activity.value = !notificationItem.activity.value;
+        } else {
+          notificationItem.activity.value = true;
+        }
       },
     }),
     onInit() {
@@ -233,33 +270,7 @@ export const createNotificationConfigItem = (routerInstance) => {
       tabs: [
         new TabModel(
           {
-            records: {
-              record: {
-                componentName: 'Notification',
-                idKeyField: 'notification_id',
-              },
-              request: {
-                api: (data) => API.NotificationService.getNotifications(data),
-                filtersModel: {
-                  type: {
-                    type: String,
-                    value: '',
-                  },
-                  skipids: {
-                    type: Array,
-                    value: [],
-                  },
-                },
-                dataTransformation: createNotificationFromData,
-                beforeConcat: findDublicates,
-                paginationFunction: PaginationWorker,
-              },
-              contextMenu: computed(() => createContextMenu(notificationItem)),
-              ...generalConfigForAllTabs,
-            },
-            badge: {
-              count: 0,
-            },
+            ...cloneDeep(generalConfigForAllTabs(notificationItem)),
             uniqueName: 'notification.slideConfig.all_notifications',
             title: 'slide_menu.all-notifications',
           },
@@ -267,36 +278,11 @@ export const createNotificationConfigItem = (routerInstance) => {
         ),
         new TabModel(
           {
-            records: {
-              record: {
-                componentName: 'Notification',
-              },
-              request: {
-                api: (data) =>
-                  API.NotificationService.getNotifications({
-                    ...data,
-                    type: 'Unread',
-                  }),
-                filtersModel: {
-                  type: {
-                    type: String,
-                    value: '',
-                  },
-                  skipids: {
-                    type: Array,
-                    value: [],
-                  },
-                },
-                dataTransformation: createNotificationFromData,
-                beforeConcat: findDublicates,
-                paginationFunction: PaginationWorker,
-              },
-              contextMenu: computed(() => createContextMenu(notificationItem)),
-              ...generalConfigForAllTabs,
-            },
-            badge: {
-              count: 0,
-            },
+            ...cloneDeep(
+              generalConfigForAllTabs(notificationItem, {
+                type: 'Unread',
+              })
+            ),
             uniqueName: 'notification.slideConfig.not_read_notifications',
             title: 'slide_menu.not-read',
           },

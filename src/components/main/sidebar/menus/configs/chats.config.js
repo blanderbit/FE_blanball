@@ -13,6 +13,8 @@ import {
 import { WebSocketPaginationWorker } from '@/workers/pagination-worker';
 import { ChatWebSocketTypes } from '@/workers/web-socket-worker/message-types/chat/web.socket.types';
 import { ChatEventBus } from '@/workers/event-bus-worker';
+import { useUserDataStore } from '@/stores/userData';
+import { pinia } from '@/plugins/pinia.plugin';
 
 import EmptyNotificationsIcon from '@images/no-records/empty-notifications.svg';
 import { FilterParamsDecorator } from '@/workers/api-worker/http/filter/filter.utils';
@@ -30,6 +32,8 @@ const CHATS_CONFIG_TOP_SIDE_STYLES = {
   'justify-content': 'space-between',
   'align-items': 'center',
 };
+
+const userStore = useUserDataStore(pinia);
 
 const generalConfigForAllTabs = (chatItem, apiRequestFilters = {}) => {
   return {
@@ -135,12 +139,12 @@ export const createChatConfigItem = (routerInstance) => {
   const createChatMessageMessageHandler = (messageData) => {
     const { paginationElements } = chatItem.activeTab.value;
 
-    messageData.updateChatInChatsList(paginationElements);
+    messageData.updateChatInChatsList(userStore.user.id, paginationElements);
   };
 
   const chatItem = new BasicButtonSlideActivatorModel({
     uniqueName: 'chat.point',
-    title: 'chat.title',
+    title: 'chat.chats',
     disabled: false,
     icon: chatsSidebarIcon,
     actionType: new ActionModelTypeUrl({

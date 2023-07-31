@@ -8,17 +8,23 @@
       >
         <img src="@images/arrow-left-gray.svg" alt="" />
       </div>
+
       <div
-        v-for="item in mobileMenuItems"
+        v-for="(item, index) in mobileMenuItems"
+        :key="index"
         :class="[
           'b-mobile-menu-item',
-          { active: activeElementId === item.id },
-          { hide: activeElementId && activeElementId !== item.id },
+          { active: activeElementUniqueName === item.uniqueName },
+          {
+            hide:
+              activeElementUniqueName &&
+              activeElementUniqueName !== item.uniqueName,
+          },
         ]"
         @click="itemClick(item)"
       >
-        <img class="b-item-image" :src="item.imgInactive" alt="" />
-        <div class="b-item-text">{{ $t(item.value) }}</div>
+        <img class="b-item-image" :src="item.icon" alt="" />
+        <div v-if="item.title" class="b-item-text">{{ $t(item.title) }}</div>
       </div>
     </div>
     <div
@@ -33,22 +39,13 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { useElementSize } from '@vueuse/core';
 
-import { ROUTES } from '@/routes/router.const';
-
-import NotificationIcon from '@images/notification-mob-default.svg';
-import NotificationWhite from '@images/notifications-not-read-mobile-icon.svg';
-import Record from '@images/record.svg';
-import RecordWhite from '@images/record-white.svg';
-import Members from '@images/members.svg';
-import MembersWhite from '@images/members-white.svg';
-import Settings from '@images/settings.svg';
-import SettingsWhite from '@images/settings-white.svg';
-import Chats from '@images/chat/sidebar-chats-icon.svg';
+import { dinamicMenu } from '../sidebar/menus/menu.config';
+import { ChatEventBus } from '@/workers/event-bus-worker';
 
 export default {
   props: {
@@ -77,10 +74,10 @@ export default {
 
     const isBottomBlockShowing = ref(true);
 
-    const activeElementId = ref(null);
+    const activeElementUniqueName = ref(null);
 
     const isAnyElementActive = computed(() => {
-      return activeElementId.value;
+      return activeElementUniqueName.value;
     });
 
     const mainContentHeightStyle = computed(() => {
@@ -89,65 +86,28 @@ export default {
       };
     });
 
-    const mobileMenuItems = ref([
-      {
-        id: 1,
-        value: 'slide_menu.messages',
-        imgInactive: NotificationIcon,
-        imgActive: NotificationWhite,
-        isIconActive: false,
-        showMainContent: true,
-      },
-      {
-        id: 2,
-        value: 'slide_menu.events',
-        imgInactive: Record,
-        imgActive: RecordWhite,
-        url: ROUTES.APPLICATION.EVENTS.absolute,
-      },
-      {
-        id: 3,
-        value: 'slide_menu.user-raiting',
-        imgInactive: Members,
-        imgActive: MembersWhite,
-        isIconActive: false,
-        url: ROUTES.APPLICATION.USERS.GENERAL.absolute,
-      },
-      {
-        id: 4,
-        value: 'slide_menu.settings',
-        imgInactive: Settings,
-        imgActive: SettingsWhite,
-        isIconActive: false,
-        url: ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute,
-      },
-      {
-        id: 5,
-        value: 'chat.chats',
-        imgInactive: Chats,
-        imgActive: SettingsWhite,
-        isIconActive: false,
-        url: ROUTES.APPLICATION.CHATS.absolute,
-        showMainContent: true,
-      },
-    ]);
+    const mobileMenuItems = dinamicMenu({
+      router,
+    }).slideBarMenu;
 
     function itemClick(item) {
-      if (item.url) {
-        router.push(item.url);
-        if (!item.showMainContent) {
+      console.log(item);
+      if (item.actionType.url) {
+        router.push(item.actionType.url);
+        if (!item.slideConfig) {
           closeMobileMenu();
           isBottomBlockShowing.value = true;
         }
       }
-      if (item.showMainContent) {
-        activeElementId.value = item.id;
+      if (item.slideConfig) {
+        activeElementUniqueName.value = item.uniqueName;
         isBottomBlockShowing.value = false;
+        ChatEventBus.emit('activateSlideMenuByUniqName', item.uniqueName);
       }
     }
 
     function returnToAllItemList() {
-      activeElementId.value = null;
+      activeElementUniqueName.value = null;
       isBottomBlockShowing.value = true;
     }
 
@@ -161,12 +121,20 @@ export default {
       MOBILE_MENU_BOTTOM_LINE_BLOCK_HEIGHT,
     });
 
+    watch(
+      () => mobileMenuItems.value,
+      () => {},
+      {
+        deep: true,
+      }
+    );
+
     return {
       MOBILE_MENU_BOTTOM_LINE_BLOCK,
       MOBILE_MENU_TOP_LINE_BLOCK,
       mobileMenuItems,
       isAnyElementActive,
-      activeElementId,
+      activeElementUniqueName,
       mainContentHeightStyle,
       itemClick,
       returnToAllItemList,

@@ -3,14 +3,6 @@ import eventMinStartTimeValidator from '../methods/eventMinStartTime';
 
 eventMinStartTimeValidator('errors.time-more-than-one-hour');
 
-function transformEmptyStringToUndefined(value, originalValue) {
-  if (typeof originalValue === 'string' && originalValue?.trim() === '') {
-    return undefined;
-  } else {
-    return value;
-  }
-}
-
 yup.addMethod(
   yup.mixed,
   'duration10min3hours',
@@ -90,29 +82,6 @@ export default {
                 .durationMustBeRound(time, 'errors.duration-must-be-round');
             return schema;
           }),
-        // duration: yup
-        //   .number()
-        //   .typeError('errors.type-number')
-        //   .required('errors.required')
-        //   .transform((value, originalValue) => {
-        //     if (
-        //       originalValue &&
-        //       schema.__originals.time &&
-        //       schema.__originals.end_time
-        //     ) {
-        //       const time = schema.__originals.time;
-        //       const endTime = schema.__originals.end_time;
-        //       const timeParts = time.split(':');
-        //       const endTimeParts = endTime.split(':');
-        //       const timeMinutes =
-        //         parseInt(timeParts[0]) * 60 + parseInt(timeParts[1]);
-        //       const endTimeMinutes =
-        //         parseInt(endTimeParts[0]) * 60 + parseInt(endTimeParts[1]);
-        //       return endTimeMinutes - timeMinutes;
-        //     }
-        //     return value;
-        //   })
-        //   .transform(transformEmptyStringToUndefined),
         place: yup.object({
           place_name: yup.string().required(() => 'errors.required'),
           lat: yup.number().required('errors.required'),
@@ -128,7 +97,11 @@ export default {
           .number()
           .typeError('errors.type-number')
           .required('errors.required')
-          .transform(transformEmptyStringToUndefined)
+          .transform((value, originalValue) =>
+            typeof originalValue === 'string' && originalValue?.trim() === ''
+              ? undefined
+              : value
+          )
           .min(6, 'errors.min6')
           .max(50, 'errors.max50'),
         price: yup
@@ -139,7 +112,12 @@ export default {
             then: yup
               .number()
               .typeError('errors.type-number')
-              .transform(transformEmptyStringToUndefined)
+              .transform((value, originalValue) =>
+                typeof originalValue === 'string' &&
+                originalValue?.trim() === ''
+                  ? undefined
+                  : value
+              )
               .required('errors.required')
               .min(1, 'errors.min1')
               .max(32767, 'errors.max32767'),
@@ -202,7 +180,11 @@ export default {
       amount_members: yup
         .number()
         .typeError('errors.type-number')
-        .transform(transformEmptyStringToUndefined)
+        .transform((value, originalValue) =>
+          typeof originalValue === 'string' && originalValue?.trim() === ''
+            ? undefined
+            : value
+        )
         .required('errors.required')
         .min(6, 'errors.min6')
         .max(50, 'errors.max50'),
@@ -214,7 +196,11 @@ export default {
           then: yup
             .number()
             .typeError('errors.type-number')
-            .transform(transformEmptyStringToUndefined)
+            .transform((value, originalValue) =>
+              typeof originalValue === 'string' && originalValue?.trim() === ''
+                ? undefined
+                : value
+            )
             .required('errors.required')
             .min(1, 'errors.min1')
             .max(32767, 'errors.max32767'),
