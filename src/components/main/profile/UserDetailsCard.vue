@@ -5,7 +5,7 @@
         <div class="b-user-card__picture-block">
           <div class="b-user-card__profile-picture">
             <userAvatar
-              class="b-user-card__profile-avatar"
+              avatarType="rounded-square"
               :link="userData.avatar_url"
               :full-name="fullUserName"
             />
@@ -21,7 +21,7 @@
                   ref="fileInput"
                 />
                 <img
-                  src="../../../assets/img/add-user-pic2.svg"
+                  src="@images/add-user-pic2.svg"
                   alt="add user picture"
                 />
               </label>
@@ -325,33 +325,26 @@
 </template>
 
 <script>
-import {
-  ref,
-  computed,
-  watch,
-  watchEffect,
-  onMounted,
-  onBeforeUnmount,
-} from 'vue';
+import { ref, computed, watch, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
 import dayjs from 'dayjs';
 import dayjsUkrLocale from 'dayjs/locale/uk';
 
-import MainInput from '../../shared/input/MainInput.vue';
-import mainTextArea from '../../shared/textArea/MainTextArea.vue';
-import dropdown from '../../shared/dropdown/Dropdown.vue';
-import userAvatar from '../../shared/userAvatar/UserAvatar.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import mainTextArea from '@sharedComponents/textArea/MainTextArea.vue';
+import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
+import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 import RatingCard from './RatingCard.vue';
 
-import { CONSTS } from '../../../consts';
-import { useWindowWidth } from '../../../utils/widthScreen';
+import { CONSTS } from '@consts';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
-import sortArrowHorizontally from '../../../assets/img/sort-arrows-horizontal.svg';
-import tick from '../../../assets/img/tick.svg';
-import edit from '../../../assets/img/edit.svg';
-import arrows from '../../../assets/img/sort-arrows-horizontal.svg';
+import sortArrowHorizontally from '@images/sort-arrows-horizontal.svg';
+import tick from '@images/tick.svg';
+import edit from '@images/edit.svg';
+import arrows from '@images/sort-arrows-horizontal.svg';
 
 const IMAGE_TYPES = ['image/jpeg', 'image/png'];
 
@@ -554,14 +547,6 @@ $color-efeff6: #efeff6;
         height: 52px;
         overflow: hidden;
         border-radius: 8px;
-        .b-user-card__profile-avatar {
-          :deep(.b-avatar) {
-            width: 52px;
-            height: 52px;
-            border-radius: 8px;
-            font-size: 23px;
-          }
-        }
         .b-user-card__add-pic-icon {
           position: absolute;
           top: 0;

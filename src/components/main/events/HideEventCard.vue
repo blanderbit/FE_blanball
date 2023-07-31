@@ -2,7 +2,7 @@
   <div :class="['b-hide-event-card', { hidden: data.hidden || isAllHidden }]">
     <div class="b-hide-event-card__top-side">
       <div class="b-hide-event-card__name">
-        <img src="../../../assets/img/hands-shake-small.svg" alt="" />
+        <img src="@images/hands-shake-small.svg" alt="" />
         <span>{{ data.name }}</span>
       </div>
       <div
@@ -12,13 +12,13 @@
         <img
           v-if="isAllHidden ? !isAllHidden : !data.hidden"
           class="b-show-or-hide__image"
-          src="../../../assets/img/eye-opened.svg"
+          src="@images/eye-opened.svg"
           alt=""
         />
         <img
           v-else
           class="b-show-or-hide__image"
-          src="../../../assets/img/eye-crossed.svg"
+          src="@images/eye-crossed.svg"
           alt=""
         />
       </div>
@@ -28,7 +28,7 @@
     </div>
     <div class="b-hide-event-card__bottom-side">
       <div class="b-hide-event-card__place">
-        <img src="../../../assets/img/location-point.svg" alt="" />
+        <img src="@images/location-point.svg" alt="" />
         <span>{{ data.place.place_name }}</span>
       </div>
       <div class="b-hide-event-card__labels">

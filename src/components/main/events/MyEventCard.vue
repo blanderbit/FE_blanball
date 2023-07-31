@@ -9,22 +9,22 @@
     ]"
     @click.right.prevent="$emit('cardRightClick', $event)"
     @click.prevent="$emit('cardLeftClick', card.id)"
-    @touchstart="startHoldOpenMenu"
-    @touchend="endHoldOpenMenu"
+    @touchstart.passive="startHoldOpenMenu"
+    @touchend.passive="endHoldOpenMenu"
   >
     <div v-if="isCardSelected" class="b-my-event-card-selected-icon">
-      <img src="../../../assets/img/green-nike-icon.svg" alt="" />
+      <img src="@images/green-nike-icon.svg" alt="" />
     </div>
     <div
       v-if="card.pinned && !isCardSelected"
       class="b-my-event-card-pinned-icon"
     >
-      <img src="../../../assets/img/gray-pin.svg" alt="" />
+      <img src="@images/gray-pin.svg" alt="" />
     </div>
     <div :class="['b-my-event-card__left-block', { selected: isCardSelected }]">
       <div class="b-my-event-card__col-1">
         <div class="b-my-event-card__card-icon">
-          <img src="../../../assets/img/hands-shake.svg" alt="" />
+          <img src="@images/hands-shake.svg" alt="" />
         </div>
       </div>
       <div class="b-my-event-card__col-2">
@@ -78,7 +78,7 @@
 <script>
 import { computed } from 'vue';
 
-import PlaceDetectorModal from '../../maps/PlaceDetectorModal.vue';
+import PlaceDetectorModal from '@mainComponents/maps/PlaceDetectorModal.vue';
 
 export default {
   components: {

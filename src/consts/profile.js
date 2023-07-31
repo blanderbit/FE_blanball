@@ -1,6 +1,6 @@
-import userIcon from '../assets/img/user-icon.svg';
-import databaseDisabled from '../assets/img/database-disabled.svg';
-import { ROUTES } from '../router/router.const';
+import userIcon from '@images/user-icon.svg';
+import databaseDisabled from '@images/database-disabled.svg';
+import { ROUTES } from '../routes/router.const';
 
 export default {
   ratingMaxValue: '5.0',

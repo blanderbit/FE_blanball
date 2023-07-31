@@ -9,7 +9,7 @@
     <template #main-content>
       <Form
         v-slot="data"
-        @submit="disableSubmit"
+        @submit="disableFormSubmit"
         :validation-schema="schema"
         :initial-values="initialValues"
       >
@@ -76,44 +76,46 @@ import { Form } from '@system.it.flumx.com/vee-validate';
 
 import { merge, cloneDeep } from 'lodash';
 
-import step1 from '../../components/main/registration/Step1.vue';
-import step2 from '../../components/main/registration/Step2.vue';
-import step3 from '../../components/main/registration/Step3.vue';
-import step4 from '../../components/main/registration/Step4.vue';
-import step5 from '../../components/main/registration/Step5.vue';
-import step6 from '../../components/main/registration/Step6.vue';
-import step7 from '../../components/main/registration/Step7.vue';
-import step8 from '../../components/main/registration/Step8.vue';
-import step9 from '../../components/main/registration/Step9.vue';
-import step10 from '../../components/main/registration/Step10.vue';
-import AuthenticationMain from '../../components/AuthenticationMain.vue';
+import step1 from '@mainComponents/registration/Step1.vue';
+import step2 from '@mainComponents/registration/Step2.vue';
+import step3 from '@mainComponents/registration/Step3.vue';
+import step4 from '@mainComponents/registration/Step4.vue';
+import step5 from '@mainComponents/registration/Step5.vue';
+import step6 from '@mainComponents/registration/Step6.vue';
+import step7 from '@mainComponents/registration/Step7.vue';
+import step8 from '@mainComponents/registration/Step8.vue';
+import step9 from '@mainComponents/registration/Step9.vue';
+import step10 from '@mainComponents/registration/Step10.vue';
+import AuthenticationMain from '@components/AuthenticationMain.vue';
 
-import { API } from '../../workers/api-worker/api.worker';
-import { accessToken, refreshToken } from '../../workers/token-worker';
-import { PositionMapBus } from '../../workers/event-bus-worker';
+import { API } from '@workers/api-worker/api.worker';
+import { accessToken, refreshToken } from '@workers/token-worker';
+import { PositionMapBus } from '@workers/event-bus-worker';
+import { disableFormSubmit } from '@utils/disableFormSubmit';
+import { useUkraineCitiesDataStore } from '@/stores/ukraineCities';
 
-import { ROUTES } from '../../router/router.const';
-import { CONSTS } from '../../consts';
-import SCHEMAS from '../../validators/schemas';
+import { ROUTES } from '@routes/router.const';
+import { CONSTS } from '@consts';
+import { SCHEMAS } from '@/validators/schemas';
 
-import imageStep_1 from '../../assets/img/registration-back-1.svg';
-import imageStep_2 from '../../assets/img/registration-back-2.svg';
-import imageStep_3 from '../../assets/img/registration-back-3.svg';
-import imageStep_4 from '../../assets/img/registration-back-4.svg';
-import onboardingStep_2 from '../../assets/img/onboarding-step-2.svg';
-import onboardingStep_3 from '../../assets/img/onboarding-step-3.svg';
-import onboardingStep_4 from '../../assets/img/onboarding-step-4.svg';
-import imageStepTab_1 from '../../assets/img/registration-back-tab1.svg';
-import imageStepTab_2 from '../../assets/img/registration-back-tab2.svg';
-import imageStepTab_3 from '../../assets/img/registration-back-tab3.svg';
-import imageStepTab_4 from '../../assets/img/registration-back-tab4.svg';
-import imageStepMob_1 from '../../assets/img/registration-back-mob1.svg';
-import imageStepMob_2 from '../../assets/img/registration-back-mob2.svg';
-import imageStepMob_3 from '../../assets/img/registration-back-mob3.svg';
-import imageStepMob_4 from '../../assets/img/registration-back-mob4.svg';
-import onboardingStepMob_2 from '../../assets/img/onboarding-step-mob2.svg';
-import onboardingStepMob_3 from '../../assets/img/onboarding-step-mob3.svg';
-import onboardingStepMob_4 from '../../assets/img/onboarding-step-mob4.svg';
+import imageStep_1 from '@images/registration-back-1.svg';
+import imageStep_2 from '@images/registration-back-2.svg';
+import imageStep_3 from '@images/registration-back-3.svg';
+import imageStep_4 from '@images/registration-back-4.svg';
+import onboardingStep_2 from '@images/onboarding-step-2.svg';
+import onboardingStep_3 from '@images/onboarding-step-3.svg';
+import onboardingStep_4 from '@images/onboarding-step-4.svg';
+import imageStepTab_1 from '@images/registration-back-tab1.svg';
+import imageStepTab_2 from '@images/registration-back-tab2.svg';
+import imageStepTab_3 from '@images/registration-back-tab3.svg';
+import imageStepTab_4 from '@images/registration-back-tab4.svg';
+import imageStepMob_1 from '@images/registration-back-mob1.svg';
+import imageStepMob_2 from '@images/registration-back-mob2.svg';
+import imageStepMob_3 from '@images/registration-back-mob3.svg';
+import imageStepMob_4 from '@images/registration-back-mob4.svg';
+import onboardingStepMob_2 from '@images/onboarding-step-mob2.svg';
+import onboardingStepMob_3 from '@images/onboarding-step-mob3.svg';
+import onboardingStepMob_4 from '@images/onboarding-step-mob4.svg';
 
 export default {
   name: 'register',
@@ -138,6 +140,7 @@ export default {
     let profileValues = {
       profile: {},
     };
+    const ukraineCitiesStore = useUkraineCitiesDataStore();
 
     const onboadringSteps = computed(() => {
       return currentStep.value > 2 && currentStep.value < 8;
@@ -226,7 +229,7 @@ export default {
       currentStep.value = 7;
     }
 
-    function goToEvents() {
+    async function goToEvents() {
       router.push(ROUTES.APPLICATION.EVENTS.absolute);
     }
 
@@ -263,7 +266,6 @@ export default {
               await API.UserService.getMyProfile();
             profileValues = apiRequestResultMyProfile.data;
           } catch (e) {
-            console.log(e)
             return;
           }
         }
@@ -309,7 +311,7 @@ export default {
             };
             await API.UserService.updateProfileData(profileValues);
             if (currentStep.value === 10) {
-              return goToEvents();
+              return await goToEvents();
             }
           } catch (e) {
             return;
@@ -320,10 +322,8 @@ export default {
       backToRoute() {
         router.push(ROUTES.AUTHENTICATIONS.LOGIN.absolute);
       },
-      disableSubmit: (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      },
+      disableFormSubmit,
+      ukraineCitiesStore,
     };
   },
 };

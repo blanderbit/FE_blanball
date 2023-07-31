@@ -92,30 +92,30 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
-import MainInput from '../../../components/shared/input/MainInput.vue';
-import UserCard from '../../../components/UserCard.vue';
-import smartList from '../../../components/shared/smartList/SmartList.vue';
-import emptyList from '../../../components/shared/emptyList/EmptyList.vue';
-import ScrollToTop from '../../../components/ScrollToTop.vue';
-import rightSidebar from '../../../components/main/rightSidebar/RightSidebar.vue';
-import TabLabel from '../../../components/shared/tabLabel/TabLabel.vue';
-import InfiniteLoading from '../../../components/main/infiniteLoading/InfiniteLoading.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import UserCard from '@mainComponents/users/UserCard.vue';
+import smartList from '@sharedComponents/smartList/SmartList.vue';
+import emptyList from '@sharedComponents/emptyList/EmptyList.vue';
+import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
+import rightSidebar from '@mainComponents/rightSidebar/RightSidebar.vue';
+import TabLabel from '@sharedComponents/tabLabel/TabLabel.vue';
+import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
 
-import members from '../../../assets/img/members.svg';
-import runner from '../../../assets/img/runner.svg';
-import ball from '../../../assets/img/ball.svg';
-import timer from '../../../assets/img/timer.svg';
-import tShirt from '../../../assets/img/t-shirt.svg';
+import members from '@images/members.svg';
+import runner from '@images/runner.svg';
+import ball from '@images/ball.svg';
+import timer from '@images/timer.svg';
+import tShirt from '@images/t-shirt.svg';
 
 import { v4 as uuid } from 'uuid';
-import { PaginationWorker } from '../../../workers/pagination-worker';
-import { API } from '../../../workers/api-worker/api.worker';
-import { calcHeight } from '../../../utils/calcHeight';
-import { useUserDataStore } from '../../../stores/userData';
+import { PaginationWorker } from '@workers/pagination-worker';
+import { API } from '@workers/api-worker/api.worker';
+import { calcHeight } from '@workers/window-size-worker/calcHeight';
+import { useUserDataStore } from '@/stores/userData';
 
-import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patch';
-import UsersFilters from '../../../components/filters/block-filters/UsersFilters.vue';
-import { ROUTES } from '../../../router/router.const';
+import { FilterPatch } from '@workers/api-worker/http/filter/filter.patch';
+import UsersFilters from '@mainComponents/filters/block-filters/UsersFilters.vue';
+import { ROUTES } from '@routes/router.const';
 
 export default {
   name: 'RatingPage',

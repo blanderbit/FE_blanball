@@ -12,7 +12,7 @@
     </div>
     <Teleport to="body">
       <ModalWindow v-if="activeModal" :isTitleShown="false">
-        <Form v-slot="data" @submit="disableSubmit" :validation-schema="schema">
+        <Form v-slot="data" @submit="disableFormSubmit" :validation-schema="schema">
           <div class="b-modal-position__block">
             <dropdown
               :outside-title="true"
@@ -85,20 +85,21 @@ import { ref, computed, watch } from 'vue';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import PositionMap from '../../../maps/PositionMap.vue';
-import dropdown from '../../../shared/dropdown/Dropdown.vue';
-import MainInput from '../../../shared/input/MainInput.vue';
-import ModalWindow from '../../../shared/modals/ModalWindow.vue';
-import GreenBtn from '../../../shared/button/GreenBtn.vue';
+import PositionMap from '@mainComponents/maps/PositionMap.vue';
+import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 
-import { PositionMapBus } from '../../../../workers/event-bus-worker';
-import { API } from '../../../../workers/api-worker/api.worker';
-import { startSpinner, finishSpinner } from '../../../../workers/loading-worker/loading.worker';
+import { PositionMapBus } from '@workers/event-bus-worker';
+import { API } from '@workers/api-worker/api.worker';
+import { startSpinner, finishSpinner } from '@workers/loading-worker/loading.worker';
+import { disableFormSubmit } from '@utils/disableFormSubmit';
 
-import { CONSTS } from '../../../../consts';
+import { CONSTS } from '@consts';
 
-import tickIcon from '../../../../assets/img/location-point.svg';
-import SCHEMAS from '../../../../validators/schemas';
+import tickIcon from '@images/location-point.svg';
+import { SCHEMAS } from '@/validators/schemas';
 
 export default {
   components: {
@@ -198,7 +199,7 @@ export default {
       nextButton.value = !region.value || !city.value;
     }
     async function getCoordsByName(str) {
-      return await API.LocationService.GetPlaceByAddress(str);
+      return await API.LocationService.getPlaceByAddress(str);
     }
     let timeout;
     return {
@@ -272,10 +273,7 @@ export default {
         });
         activeModal.value = false;
       },
-      disableSubmit: (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      },
+      disableFormSubmit
     };
   },
 };

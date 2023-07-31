@@ -1,13 +1,21 @@
 <template>
-  <div class="context-modal__tooltip-wrapper" @click.self="$emit('closeModal')">
+  <div
+    :class="['context-modal__tooltip-wrapper', { transperent: !background }]"
+    :style="modalWrapperStyle"
+    @click.self="closeModal"
+  >
     <div ref="modal" :style="modalStyle" class="context-modal__tooltip">
-      <div
-        v-for="item in modalItems"
-        class="context-modal__tooltip-item"
-        @click="$emit('itemClick', item.type)"
-      >
-        <img :src="item.img" alt="" />
-        <span class="b-item-text">{{ $t(item.text) }}</span>
+      <div v-for="item in modalItems">
+        <div
+          v-if="!item.hide"
+          class="context-modal__tooltip-item"
+          @click="itemClick(item)"
+        >
+          <img :src="item.img" alt="" />
+          <span class="b-item-text" :style="`color: ${item.textColor}`">{{
+            $t(item.text)
+          }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -34,8 +42,13 @@ export default {
       dafault: () => [],
       require: true,
     },
+    background: {
+      type: Boolean,
+      default: true,
+    },
   },
-  setup(props) {
+  emits: ['closeModal', 'itemClick'],
+  setup(props, { emit }) {
     const modal = ref();
     const { width, height } = useElementSize(modal);
     const modalStyle = computed(() => {
@@ -63,9 +76,29 @@ export default {
       };
     });
 
+    const modalWrapperStyle = computed(() => {
+      if (props.background) {
+        return {
+          background: props.background,
+        };
+      }
+    });
+
+    function closeModal() {
+      emit('closeModal');
+    }
+
+    function itemClick(item) {
+      emit('itemClick', item.type, item);
+      closeModal();
+    }
+
     return {
       modalStyle,
       modal,
+      modalWrapperStyle,
+      closeModal,
+      itemClick,
     };
   },
 };
@@ -78,12 +111,21 @@ $color-f0f0f4: #f0f0f4;
 .context-modal__tooltip-wrapper {
   @include modal-wrapper;
 
+  &.transperent {
+    @include modal-wrapper(transparent, 1100);
+
+    .context-modal__tooltip {
+      box-shadow: 2px 2px 10px 0px rgba(56, 56, 251, 0.1);
+    }
+  }
+
   .context-modal__tooltip {
     background: $--b-main-white-color;
     width: fit-content;
     min-width: 180px;
     position: absolute;
     border-radius: 6px;
+    width: max-content;
 
     .context-modal__tooltip-item {
       display: flex;

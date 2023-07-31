@@ -1,6 +1,6 @@
-import { createQueryStringFromObject } from '../workers/utils-worker';
+import { createQueryStringFromObject } from '@workers/utils-worker';
 import router from '../router';
-import { ROUTES } from '../router/router.const';
+import { ROUTES } from '../routes/router.const';
 
 export const handleChangeMaintenanceMessage = (instance) => {
   const maintenance = instance.data.maintenance.type;

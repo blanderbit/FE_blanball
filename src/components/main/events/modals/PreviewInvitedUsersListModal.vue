@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import InvitedUsersList from '../../manageEvent/InvitedUsersList.vue';
+import InvitedUsersList from '@mainComponents/manageEvent/InvitedUsersList.vue';
 
-import closeArrowUpIcon from '../../../../assets/img/close-arrow-up.svg';
+import closeArrowUpIcon from '@images/close-arrow-up.svg';
 
 export default {
   setup() {

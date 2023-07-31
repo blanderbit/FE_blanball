@@ -11,7 +11,7 @@
     </template>
     <template #header-image>
       <img
-        src="../../../assets/img/share-arrow.svg"
+        src="@images/share-arrow.svg"
         alt=""
         @click="closeShareEventModal"
       />
@@ -35,9 +35,9 @@
       />
     </template>
   </CopyModal>
-  <ActionEventModal
-    v-if="isActionEventModalOpened"
-    :modalData="actionEventModalConfig"
+  <ActionModal
+    v-if="isActionModalOpened"
+    :modalData="ActionModalConfig"
     @closeModal="closeEventActiondModal"
   />
   <SubmitModal
@@ -76,7 +76,7 @@
             @click-function="greenButton?.action($event)"
           />
           <div @click="openEventShareModal" class="b-event-info__share-link">
-            <img src="../../../assets/img/share-icon.svg" alt="" />
+            <img src="@images/share-icon.svg" alt="" />
             <span>
               {{ $t('my_events.share') }}
             </span>
@@ -91,12 +91,12 @@
         <div class="b-event-info__details-block">
           <div class="b-event-info__left-side">
             <div class="b-event-info__timing">
-              <img src="../../../assets/img/watch.svg" alt="" />
+              <img src="@images/watch.svg" alt="" />
               {{ eventData.date }}, {{ eventData.time }} -
               {{ eventData.end_time }}
             </div>
             <div class="b-event-info__address">
-              <img src="../../../assets/img/address-icon.svg" alt="" />
+              <img src="@images/address-icon.svg" alt="" />
               <span>{{ eventData.place.place_name }}</span>
             </div>
             <div
@@ -110,10 +110,10 @@
             >
               <img
                 v-if="!eventData.price"
-                src="../../../assets/img/info.svg"
+                src="@images/info.svg"
                 alt=""
               />
-              <img v-else src="../../../assets/img/green-info.svg" alt="" />
+              <img v-else src="@images/green-info.svg" alt="" />
               <span
                 >{{ $t('events.event-price') }}
                 <span v-if="eventData.price" class="b-price">{{
@@ -287,50 +287,50 @@ import { useRoute, useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
 
-import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
-import rightSidebar from '../../../components/main/rightSidebar/RightSidebar.vue';
-import EventInfoUsersTable from '../../../components/main/events/EventInfoUsersTable.vue';
-import PositionMap from '../../../components/maps/PositionMap.vue';
-import CopyModal from '../../../components/shared/modals/CopyModal.vue';
-import userAvatar from '../../../components/shared/userAvatar/UserAvatar.vue';
-import TabLabel from '../../../components/shared/tabLabel/TabLabel.vue';
-import ListOfEventRequestsToParticipations from '../../../components/ListOfEventRequestsToParticipations.vue';
-import EventInfoForms from '../../../components/main/events/EventInfoForms.vue';
-import ActionEventModal from '../../../components/main/events/modals/ActionEventModal.vue';
-import EditEventModal from '../../../components/main/manageEvent/modals/EditEventModal.vue';
-import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
-import ContextModal from '../../../components/shared/modals/ContextModal.vue';
-import MainInput from '../../../components/shared/input/MainInput.vue';
-import InviteManyUsersToEventModal from '../../../components/main/events/modals/InviteToEventModal/InviteManyUsersToEventModal.vue';
-import SmallUserCard from '../../../components/SmallUserCard.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
+import rightSidebar from '@mainComponents/rightSidebar/RightSidebar.vue';
+import EventInfoUsersTable from '@mainComponents/events/EventInfoUsersTable.vue';
+import PositionMap from '@mainComponents/maps/PositionMap.vue';
+import CopyModal from '@sharedComponents/modals/CopyModal.vue';
+import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
+import TabLabel from '@sharedComponents/tabLabel/TabLabel.vue';
+import ListOfEventRequestsToParticipations from '@mainComponents/events/ListOfEventRequestsToParticipations.vue';
+import EventInfoForms from '@mainComponents/events/EventInfoForms.vue';
+import ActionModal from '@mainComponents/events/modals/ActionModal.vue';
+import EditEventModal from '@mainComponents/manageEvent/modals/EditEventModal.vue';
+import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
+import ContextModal from '@sharedComponents/modals/ContextModal.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import InviteManyUsersToEventModal from '@mainComponents/events/modals/InviteToEventModal/InviteManyUsersToEventModal.vue';
+import SmallUserCard from '@mainComponents/users/SmallUserCard.vue';
 
-import { API } from '../../../workers/api-worker/api.worker';
-import { BlanballEventBus } from '../../../workers/event-bus-worker';
-import { useUserDataStore } from '../../../stores/userData';
-import { addMinutes } from '../../../utils/addMinutes';
-import { getDate } from '../../../utils/getDate';
-import { getTime } from '../../../utils/getTime';
-import { copyToClipboard } from '../../../utils/copyToClipBoard';
+import { API } from '@workers/api-worker/api.worker';
+import { BlanballEventBus } from '@workers/event-bus-worker';
+import { useUserDataStore } from '@/stores/userData';
+import { addMinutes } from '@utils/addMinutes';
+import { getDate } from '@utils/getDate';
+import { getTime } from '@utils/getTime';
+import { copyToClipboard } from '@utils/copyToClipBoard';
 import {
   startSpinner,
   finishSpinner,
-} from '../../../workers/loading-worker/loading.worker';
-import { calcHeight } from '../../../utils/calcHeight';
+} from '@workers/loading-worker/loading.worker';
+import { calcHeight } from '@workers/window-size-worker/calcHeight';
 
-import { CONSTS } from '../../../consts/index';
-import { ROUTES } from '../../../router/router.const';
+import { CONSTS } from '@consts/index';
+import { ROUTES } from '@routes/router.const';
 
-import emoji_1 from '../../../assets/img/emojies/1.svg';
-import emoji_2 from '../../../assets/img/emojies/2.svg';
-import emoji_3 from '../../../assets/img/emojies/3.svg';
-import emoji_4 from '../../../assets/img/emojies/4.svg';
-import emoji_5 from '../../../assets/img/emojies/5.svg';
-import noReviews from '../../../assets/img/no-records/no-reviews.svg';
-import noUserRecords from '../../../assets/img/no-records/no-user-records.svg';
-import editEvent from '../../../assets/img/edit-white.svg';
-import NoEditPermIcon from '../../../assets/img/no-edit-perm-modal-icon.svg';
-import ExitIcon from '../../../assets/img/exit-white.svg';
-import PlusIcon from '../../../assets/img/plus.svg';
+import emoji_1 from '@images/emojies/1.svg';
+import emoji_2 from '@images/emojies/2.svg';
+import emoji_3 from '@images/emojies/3.svg';
+import emoji_4 from '@images/emojies/4.svg';
+import emoji_5 from '@images/emojies/5.svg';
+import noReviews from '@images/no-records/no-reviews.svg';
+import noUserRecords from '@images/no-records/no-user-records.svg';
+import editEvent from '@images/edit-white.svg';
+import NoEditPermIcon from '@images/no-edit-perm-modal-icon.svg';
+import ExitIcon from '@images/exit-white.svg';
+import PlusIcon from '@images/plus.svg';
 
 const eventJoinTypes = {
   PLAY: 'play',
@@ -352,7 +352,7 @@ export default {
     EditEventModal,
     ListOfEventRequestsToParticipations,
     InviteManyUsersToEventModal,
-    ActionEventModal,
+    ActionModal,
     SubmitModal,
     MainInput,
     ContextModal,
@@ -381,8 +381,8 @@ export default {
     const eventJoinModalX = ref(null);
     const eventJoinModalY = ref(null);
 
-    const isActionEventModalOpened = ref(false);
-    const actionEventModalConfig = computed(() => {
+    const isActionModalOpened = ref(false);
+    const ActionModalConfig = computed(() => {
       return {
         title: t('modals.no_perm_to_edit.title'),
         description: t('modals.no_perm_to_edit.main-text'),
@@ -654,10 +654,10 @@ export default {
     }
 
     const closeEventActiondModal = () => {
-      isActionEventModalOpened.value = false;
+      isActionModalOpened.value = false;
     };
     const openEventActionModal = () => {
-      isActionEventModalOpened.value = true;
+      isActionModalOpened.value = true;
     };
 
     function handleIncomeEventData(data) {
@@ -805,9 +805,9 @@ export default {
       isTabLabel,
       greenButton,
       activeTab,
-      isActionEventModalOpened,
+      isActionModalOpened,
       noUsersData,
-      actionEventModalConfig,
+      ActionModalConfig,
       noFansData,
       eventPriceHover,
       isSubmitModalOpened,

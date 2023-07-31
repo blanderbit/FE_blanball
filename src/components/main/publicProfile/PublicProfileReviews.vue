@@ -18,15 +18,15 @@
         </div>
         <img
           v-if="reviewsTotalCount > 0"
-          src="../../../assets/img/star.svg"
+          src="@images/star.svg"
           alt=""
         />
-        <img v-else src="../../../assets/img/dashed-star.svg" alt="" />
+        <img v-else src="@images/dashed-star.svg" alt="" />
       </div>
     </div>
     <div class="b-public-profile__reviews-list">
       <div v-if="!userShowReviews" class="b-public-profile__reviews-hidden">
-        <img src="../../../assets/img/info-black.svg" alt="" />
+        <img src="@images/info-black.svg" alt="" />
         <span>{{ $t('player_page.feedback-hidden') }}</span>
       </div>
       <SimpleListWrapper :requestForGetData="getReviews" v-else>
@@ -38,7 +38,7 @@
                   <div class="b-review__grade">
                     {{ item.stars }}
                   </div>
-                  <img src="../../../assets/img/star.svg" alt="" />
+                  <img src="@images/star.svg" alt="" />
                 </div>
                 <div class="b-review__author-full-name">
                   {{ item.author.profile.last_name }}
@@ -58,7 +58,7 @@
         </template>
         <template #emptyList>
           <div class="b-public-profile__reviews-hidden">
-            <img src="../../../assets/img/info-black.svg" alt="" />
+            <img src="@images/info-black.svg" alt="" />
             <span>{{
               $t('no_records.noPublicProfileReviews.title', {
                 fullName: userFullName,
@@ -75,16 +75,16 @@
 import { ref, computed } from 'vue';
 import StarRating from 'vue-star-rating';
 
-import smartList from '../../shared/smartList/SmartList.vue';
-import InfiniteLoading from '../infiniteLoading/InfiniteLoading.vue';
-import ScrollToTop from '../../ScrollToTop.vue';
-import SimpleListWrapper from '../../shared/simpleList/SimpleList.vue';
+import smartList from '@sharedComponents/smartList/SmartList.vue';
+import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
+import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
+import SimpleListWrapper from '@sharedComponents/simpleList/SimpleList.vue';
 
-import { getDate } from '../../../utils/getDate';
+import { getDate } from '@utils/getDate';
 
-import { API } from '../../../workers/api-worker/api.worker';
+import { API } from '@workers/api-worker/api.worker';
 
-import { CONSTS } from '../../../consts';
+import { CONSTS } from '@consts';
 
 export default {
   name: 'RatingCard',

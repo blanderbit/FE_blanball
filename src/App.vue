@@ -7,12 +7,12 @@
 <script setup>
 import { onMounted, onBeforeUnmount } from 'vue';
 
-import { GeneralSocketWorkerInstance } from './workers/web-socket-worker';
-import { API } from './workers/api-worker/api.worker';
-import { setHeightVH } from './utils/calcHeight';
-import { handleChangeMaintenanceMessage } from './utils/handleChangeMaintenanceMessage';
+import { GeneralSocketWorkerInstance } from '@workers/web-socket-worker';
+import { API } from '@workers/api-worker/api.worker';
+import { setHeightVH } from '@workers/window-size-worker/calcHeight';
+import { handleChangeMaintenanceMessage } from '@utils/handleChangeMaintenanceMessage';
 
-import { WebSocketTypes } from './workers/web-socket-worker/web.socket.types';
+import { WebSocketTypes } from '@workers/web-socket-worker/web.socket.types';
 
 onMounted(() => {
   window.addEventListener('resize', setHeightVH);

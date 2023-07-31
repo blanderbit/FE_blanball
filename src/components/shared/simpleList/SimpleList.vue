@@ -30,11 +30,11 @@
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { PaginationWorker } from '../../../workers/pagination-worker';
-import smartList from '../smartList/SmartList.vue';
-import emptyList from '../emptyList/EmptyList.vue';
-import ScrollToTop from '../../ScrollToTop.vue';
-import InfiniteLoading from '../../main/infiniteLoading/InfiniteLoading.vue';
+import { PaginationWorker } from '@workers/pagination-worker';
+import smartList from '@sharedComponents/smartList/SmartList.vue';
+import emptyList from '@sharedComponents/emptyList/EmptyList.vue';
+import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
+import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
 
 export default {
   components: {

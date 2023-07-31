@@ -19,7 +19,7 @@
       <div class="b-invite-users-to-event-modal__header">
         <img
           class="b-invite-users-to-event-modal__close"
-          src="../../../../../assets/img/cross.svg"
+          src="@images/cross.svg"
           alt=""
           @click="closeModal"
         />
@@ -107,18 +107,18 @@
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import SearchBlockAll from '../../../../SearchBlockAll.vue';
-import MainInput from '../../../../shared/input/MainInput.vue';
-import userAvatar from '../../../../shared/userAvatar/UserAvatar.vue';
-import GreenBtn from '../../../../shared/button/GreenBtn.vue';
-import WhiteBtn from '../../../../shared/button/WhiteBtn.vue';
+import SearchBlockAll from '@mainComponents/header/SearchBlockAll.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
+import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 import InvitedUsersListModal from './InvitedUsersListModal.vue';
-import SubmitModal from '../../../../shared/modals/SubmitModal.vue';
+import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 
-import { API } from '../../../../../workers/api-worker/api.worker';
-import { useUserDataStore } from '../../../../../stores/userData';
+import { API } from '@workers/api-worker/api.worker';
+import { useUserDataStore } from '@/stores/userData';
 
-import SearchIcon from '../../../../../assets/img/search.svg';
+import SearchIcon from '@images/search.svg';
 
 export default {
   components: {

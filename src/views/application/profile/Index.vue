@@ -88,7 +88,7 @@
         v-slot="data"
         :validation-schema="schema"
         :initial-values="formValues"
-        @submit="disableSubmit"
+        @submit="disableFormSubmit"
         ref="myForm"
       >
         <ButtonsBlock
@@ -167,36 +167,37 @@ import { useToast } from 'vue-toastification';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
-import WhiteBtn from '../../../components/shared/button/WhiteBtn.vue';
-import MainInput from '../../../components/shared/input/MainInput.vue';
-import ModalWindow from '../../../components/shared/modals/ModalWindow.vue';
-import RatingCard from '../../../components/main/profile/RatingCard.vue';
-import UserDetailsCard from '../../../components/main/profile/UserDetailsCard.vue';
-import SecurityBlock from '../../../components/main/profile/SecurityBlock.vue';
-import TabLabel from '../../../components/shared/tabLabel/TabLabel.vue';
-import DeleteAccountModal from '../../../components/main/profile/modals/DeleteAccountModal.vue';
-import ChangePasswordModal from '../../../components/main/profile/modals/ChangePasswordModal.vue';
-import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
-import ChangeEmailModal from '../../../components/main/profile/modals/ChangeEmailModal.vue';
-import ButtonsBlock from '../../../components/main/profile/ButtonsBlock.vue';
-import EditAvatarModal from '../../../components/main/profile/modals/EditAvatarModal.vue';
-import PublicProfile from '../../../components/main/publicProfile/PublicProfile.vue';
-import HideMyEventsModal from '../../../components/main/events/modals/HideMyEventsModal.vue';
-import PublicProfileWrapper from '../../../components/main/publicProfile/PublicProfileWrapper.vue';
-import ReviewsListModal from '../../../components/main/profile/modals/ReviewsListModal/ReviewsListModal.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
+import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
+import RatingCard from '@mainComponents/profile/RatingCard.vue';
+import UserDetailsCard from '@mainComponents/profile/UserDetailsCard.vue';
+import SecurityBlock from '@mainComponents/profile/SecurityBlock.vue';
+import TabLabel from '@sharedComponents/tabLabel/TabLabel.vue';
+import DeleteAccountModal from '@mainComponents/profile/modals/DeleteAccountModal.vue';
+import ChangePasswordModal from '@mainComponents/profile/modals/ChangePasswordModal.vue';
+import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
+import ChangeEmailModal from '@mainComponents/profile/modals/ChangeEmailModal.vue';
+import ButtonsBlock from '@mainComponents/profile/ButtonsBlock.vue';
+import EditAvatarModal from '@mainComponents/profile/modals/EditAvatarModal.vue';
+import PublicProfile from '@mainComponents/publicProfile/PublicProfile.vue';
+import HideMyEventsModal from '@mainComponents/events/modals/HideMyEventsModal.vue';
+import PublicProfileWrapper from '@mainComponents/publicProfile/PublicProfileWrapper.vue';
+import ReviewsListModal from '@mainComponents/profile/modals/ReviewsListModal/ReviewsListModal.vue';
 
-import { API } from '../../../workers/api-worker/api.worker';
+import { API } from '@workers/api-worker/api.worker';
 import { useUserDataStore } from '@/stores/userData';
-import { useWindowWidth } from '../../../utils/widthScreen';
-import { calcHeight } from '../../../utils/calcHeight';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
+import { calcHeight } from '@workers/window-size-worker/calcHeight';
+import { disableFormSubmit } from '@utils/disableFormSubmit';
 
-import { CONSTS } from '../../../consts';
-import SCHEMAS from '../../../validators/schemas';
+import { CONSTS } from '@consts';
+import { SCHEMAS } from '@/validators/schemas';
 import {
   finishSpinner,
   startSpinner,
-} from '../../../workers/loading-worker/loading.worker';
+} from '@workers/loading-worker/loading.worker';
 
 const EDIT_BUTTON_ACTIONS = {
   SAVE: 'save',
@@ -663,26 +664,6 @@ export default {
     });
 
     return {
-      toggleEditMode,
-      saveDataFromPreviewWindow,
-      saveUserDataChanges,
-      handleSaveDataChanges,
-      declineUserDataChanges,
-      changeTab,
-      closeSubmitModal,
-      toggleModal,
-      switchTabLabel,
-      saveDataEdit,
-      cancelDataEdit,
-      openEditPictureModal,
-      getMyProfile,
-      closeModalAndHideEvents,
-      closeReviewsModal,
-      showReviewsModal,
-      cancelChangesAndGoToTheNextRoute,
-      showPreview,
-      showHideMyEventsModal,
-      closeHideMyEventsModal,
       isEditModeProfile,
       changeDataModalConfig,
       mockData,
@@ -704,10 +685,27 @@ export default {
       isTabletSize,
       restData,
       userAvatar,
-      disableSubmit: (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      },
+      toggleEditMode,
+      saveDataFromPreviewWindow,
+      saveUserDataChanges,
+      handleSaveDataChanges,
+      declineUserDataChanges,
+      changeTab,
+      closeSubmitModal,
+      toggleModal,
+      switchTabLabel,
+      saveDataEdit,
+      cancelDataEdit,
+      openEditPictureModal,
+      getMyProfile,
+      closeModalAndHideEvents,
+      closeReviewsModal,
+      showReviewsModal,
+      cancelChangesAndGoToTheNextRoute,
+      showPreview,
+      showHideMyEventsModal,
+      closeHideMyEventsModal,
+      disableFormSubmit,
     };
   },
 };

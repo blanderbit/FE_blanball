@@ -3,7 +3,8 @@
     v-if="isContextMenuActive"
     :clientX="contextMenuX"
     :clientY="contextMenuY"
-    :menu-text="mockData.menu_text"
+    :modalItems="mockData.menu_text"
+    :background=false
     @close-modal="isContextMenuActive = false"
     @itemClick="contextMenuItemClick"
   />
@@ -20,9 +21,9 @@
     :eventDataValue="updateEventData"
     @closeEventUpdateModal="closeEventUpdateModal"
   />
-  <ActionEventModal
-    v-if="isActionEventModalOpened"
-    :modalData="actionEventModalConfig"
+  <ActionModal
+    v-if="isActionModalOpened"
+    :modalData="ActionModalConfig"
     @closeModal="closeEventActiondModal"
   />
   <div class="b-events-page">
@@ -30,7 +31,7 @@
       @click="goToCreateEvent"
       class="b-events-page-create-event-mobile-button"
     >
-      <img src="../../../assets/img/plus.svg" alt="" />
+      <img src="@images/plus.svg" alt="" />
     </div>
     <div class="b-events-page__main-body" ref="mainEventsBlock">
       <div class="b-events-page__header-block">
@@ -184,47 +185,47 @@ import { useToast } from 'vue-toastification';
 
 import { v4 as uuid } from 'uuid';
 
-import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
-import MainInput from '../../../components/shared/input/MainInput.vue';
-import ContextMenu from '../../../components/shared/modals/ContextMenuModal.vue';
-import EventCard from '../../../components/main/events/EventCard.vue';
-import MyEventCard from '../../../components/main/events/MyEventCard.vue';
-import rightSidebar from '../../../components/main/rightSidebar/RightSidebar.vue';
-import emptyList from '../../../components/shared/emptyList/EmptyList.vue';
-import FilterBlock from '../../../components/filters/FilterBlock.vue';
-import smartGridList from '../../../components/shared/smartList/SmartGridList.vue';
-import ScrollToTop from '../../../components/ScrollToTop.vue';
-import InfiniteLoading from '../../../components/main/infiniteLoading/InfiniteLoading.vue';
-import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue';
-import WhiteBtn from '../../../components/shared/button/WhiteBtn.vue';
-import DeleteEventsModal from '../../../components/main/events/modals/DeleteEventsModal.vue';
-import EditEventModal from '../../../components/main/manageEvent/modals/EditEventModal.vue';
-import ActionEventModal from '../../../components/main/events/modals/ActionEventModal.vue';
-import SubmitModal from '../../../components/shared/modals/SubmitModal.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import ContextMenu from '@sharedComponents/modals/ContextModal.vue';
+import EventCard from '@mainComponents/events/EventCard.vue';
+import MyEventCard from '@mainComponents/events/MyEventCard.vue';
+import rightSidebar from '@mainComponents/rightSidebar/RightSidebar.vue';
+import emptyList from '@sharedComponents/emptyList/EmptyList.vue';
+import FilterBlock from '@mainComponents/filters/FilterBlock.vue';
+import smartGridList from '@sharedComponents/smartList/SmartGridList.vue';
+import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
+import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
+import EventsFilters from '@mainComponents/filters/block-filters/EventsFilters.vue';
+import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
+import DeleteEventsModal from '@mainComponents/events/modals/DeleteEventsModal.vue';
+import EditEventModal from '@mainComponents/manageEvent/modals/EditEventModal.vue';
+import ActionModal from '@mainComponents/events/modals/ActionModal.vue';
+import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 
-import { API } from '../../../workers/api-worker/api.worker';
-import { ROUTES } from '../../../router/router.const';
-import { PaginationWorker } from '../../../workers/pagination-worker';
-import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patch';
-import { addMinutes } from '../../../utils/addMinutes';
-import { getDate } from '../../../utils/getDate';
-import { getTime } from '../../../utils/getTime';
-import { prepareEventUpdateData } from '../../../utils/prepareEventUpdateData';
-import { calcHeight } from '../../../utils/calcHeight';
-import { useUserDataStore } from '../../../stores/userData';
+import { API } from '@workers/api-worker/api.worker';
+import { ROUTES } from '@routes/router.const';
+import { PaginationWorker } from '@workers/pagination-worker';
+import { FilterPatch } from '@workers/api-worker/http/filter/filter.patch';
+import { addMinutes } from '@utils/addMinutes';
+import { getDate } from '@utils/getDate';
+import { getTime } from '@utils/getTime';
+import { prepareEventUpdateData } from '@utils/prepareEventUpdateData';
+import { calcHeight } from '@workers/window-size-worker/calcHeight';
+import { useUserDataStore } from '@/stores/userData';
 import {
   startSpinner,
   finishSpinner,
-} from '../../../workers/loading-worker/loading.worker';
+} from '@workers/loading-worker/loading.worker';
 
-import { CONSTS } from '../../../consts/index';
+import { CONSTS } from '@consts/index';
 
-import Plus from '../../../assets/img/plus.svg';
-import WhiteBucket from '../../../assets/img/white-bucket.svg';
-import PinIcon from '../../../assets/img/pin.svg';
-import NoEditPermIcon from '../../../assets/img/no-edit-perm-modal-icon.svg';
-import CalendarIcon from '../../../assets/img/calendar.svg';
-import WatchIcon from '../../../assets/img/watch-gray.svg';
+import Plus from '@images/plus.svg';
+import WhiteBucket from '@images/white-bucket.svg';
+import PinIcon from '@images/pin.svg';
+import NoEditPermIcon from '@images/no-edit-perm-modal-icon.svg';
+import CalendarIcon from '@images/calendar.svg';
+import WatchIcon from '@images/watch-gray.svg';
 
 const TABS_ENUM = {
   TOPICAL: 1,
@@ -264,7 +265,7 @@ export default {
     FilterBlock,
     EventsFilters,
     WhiteBtn,
-    ActionEventModal,
+    ActionModal,
     DeleteEventsModal,
     SubmitModal,
   },
@@ -291,16 +292,16 @@ export default {
     const blockScrollToTopIfExist = ref(false);
     const triggerForRestart = ref('');
     const selectedTabId = ref(route.meta.tabId);
-    const isActionEventModalOpened = ref(false);
+    const isActionModalOpened = ref(false);
     const isSubmitModalOpened = ref(false);
     const nextRoutePath = ref('');
-    const actionEventModalData = ref({});
+    const ActionModalData = ref({});
     const submitModalData = ref({});
     const userStore = useUserDataStore();
 
-    const actionEventModalConfig = computed({
+    const ActionModalConfig = computed({
       get() {
-        return actionEventModalData.value;
+        return ActionModalData.value;
       },
       set() {},
     });
@@ -374,11 +375,11 @@ export default {
       isEventUpdateModalOpened.value = false;
     };
     const showEventActiondModal = (modalData) => {
-      actionEventModalConfig.value = modalData;
-      isActionEventModalOpened.value = true;
+      ActionModalConfig.value = modalData;
+      isActionModalOpened.value = true;
     };
     const closeEventActiondModal = () => {
-      isActionEventModalOpened.value = false;
+      isActionModalOpened.value = false;
     };
     const closeSubmitModal = () => {
       isSubmitModalOpened.value = false;
@@ -473,7 +474,7 @@ export default {
         isEventUpdateModalOpened.value = true;
       } else {
         showEventActiondModal(
-          (actionEventModalData.value = {
+          (ActionModalData.value = {
             title: t('modals.no_perm_to_edit.title'),
             description: t('modals.no_perm_to_edit.main-text'),
             image: NoEditPermIcon,
@@ -509,7 +510,7 @@ export default {
     async function pinEvents() {
       if ((await getCountPinnedEvents()) === MAX_PINNED_EVENTS_COUNT) {
         showEventActiondModal(
-          (actionEventModalData.value = {
+          (ActionModalData.value = {
             title: t('modals.no_perm_to_pin.title'),
             description: t('modals.no_perm_to_pin.main-text'),
             image: NoEditPermIcon,
@@ -793,12 +794,12 @@ export default {
       contextMenuY,
       PinIcon,
       myEventsBlockHeight,
-      actionEventModalConfig,
+      ActionModalConfig,
       isEventUpdateModalOpened,
       paginationTotalCount,
       selected,
       updateEventData,
-      isActionEventModalOpened,
+      isActionModalOpened,
       selectedContextMenuEvent,
       emptyListMessages,
       isContextMenuActive,

@@ -47,7 +47,7 @@ export const DETAILS_TYPE_ENUM = {
 
   MAINTENANCE_UPDATE: 'maintenance_updated',
   ALL_NOTIFICATIONS_DELETED: 'all_notifications_deleted',
-  ALL_NOTIFICATIONS_READED: 'all_notifications_readed',
+  ALL_NOTIFICATIONS_READ: 'all_notifications_read',
   CANT_UPDATE_MAINTENANCE: 'cant_update_maintenance',
   CANT_GET_MAINTENANCE: 'cant_get_maintenance',
 

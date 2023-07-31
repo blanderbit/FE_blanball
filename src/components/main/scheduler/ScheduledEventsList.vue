@@ -14,7 +14,7 @@
         >{{ userData.profile.last_name }} {{ userData.profile.name }}</span
       >
       <img
-        src="../../../assets/img/cross.svg"
+        src="@images/cross.svg"
         alt=""
         @click="$emit('deactivateSelectedUser')"
       />
@@ -82,19 +82,19 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import uk from 'dayjs/locale/uk';
 
 import NoScheduledEvents from './NoScheduledEvents.vue';
-import SubmitModal from '../../shared/modals/SubmitModal.vue';
+import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 import NotSelectedFriendCard from './NotSelectedFriendCard.vue';
-import SmartList from '../../shared/smartList/SmartList.vue';
-import InfiniteLoading from '../infiniteLoading/InfiniteLoading.vue';
-import ScrollToTop from '../../ScrollToTop.vue';
+import SmartList from '@sharedComponents/smartList/SmartList.vue';
+import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
+import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
 import ScheduledEventCard from './ScheduledEventCard.vue';
 
-import { API } from '../../../workers/api-worker/api.worker';
-import { PaginationWorker } from '../../../workers/pagination-worker';
-import { getDate } from '../../../utils/getDate';
-import { getTime } from '../../../utils/getTime';
-import { addMinutes } from '../../../utils/addMinutes';
-import { useUserDataStore } from '../../../stores/userData';
+import { API } from '@workers/api-worker/api.worker';
+import { PaginationWorker } from '@workers/pagination-worker';
+import { getDate } from '@utils/getDate';
+import { getTime } from '@utils/getTime';
+import { addMinutes } from '@utils/addMinutes';
+import { useUserDataStore } from '@/stores/userData';
 
 const REQUEST_USER_ROLES = {
   AUTHOR: 'author',

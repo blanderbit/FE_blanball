@@ -15,7 +15,7 @@
           friendsCount: usersNumber - visibleFriendsCount,
         })
       }}</span>
-      <img src="../../../assets/img/scheduler/dbl-arrow.svg" alt="" />
+      <img src="@images/scheduler/dbl-arrow.svg" alt="" />
     </div>
   </div>
 </template>

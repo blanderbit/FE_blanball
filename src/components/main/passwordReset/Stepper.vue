@@ -1,5 +1,5 @@
 <template>
-  <Form v-slot="data" :validation-schema="schema" @submit="disableSubmit">
+  <Form v-slot="data" :validation-schema="schema" @submit="disableFormSubmit">
     <div class="b-reset-step">
       <div class="b-reset-step__top-part">
         <div class="b-reset-step__title">
@@ -104,22 +104,23 @@ import { useToast } from 'vue-toastification';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import GreenBtn from '../../shared/button/GreenBtn.vue';
-import MainInput from '../../shared/input/MainInput.vue';
-import inputCode from '../../shared/inputCode/InputCode.vue';
-import Counter from '../../shared/counter/Counter.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import inputCode from '@sharedComponents/inputCode/InputCode.vue';
+import Counter from '@sharedComponents/counter/Counter.vue';
 
-import { API } from '../../../workers/api-worker/api.worker';
+import { API } from '@workers/api-worker/api.worker';
 import {
   finishSpinner,
   startSpinner,
-} from '../../../workers/loading-worker/loading.worker';
+} from '@workers/loading-worker/loading.worker';
+import { disableFormSubmit } from '@utils/disableFormSubmit';
 
-import { ROUTES } from '../../../router/router.const';
-import SCHEMAS from '../../../validators/schemas';
+import { ROUTES } from '@routes/router.const';
+import { SCHEMAS } from '@/validators/schemas';
 
-import eyeCross from '../../../assets/img/eye-crossed.svg';
-import eyeOpen from '../../../assets/img/eye-opened.svg';
+import eyeCross from '@images/eye-crossed.svg';
+import eyeOpen from '@images/eye-opened.svg';
 
 export default {
   name: 'Step1',
@@ -230,16 +231,13 @@ export default {
       handleNextClick,
       handleBackClick,
       resendResetVerifyCode,
+      disableFormSubmit,
       schema,
       userEmail,
       nextButtonText,
       currentStep,
       eyeCrossed,
       eyeOpened,
-      disableSubmit: (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      },
     };
   },
 };

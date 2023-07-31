@@ -55,9 +55,9 @@ import vSelect from 'vue-select';
 
 import OpenIndicator from './OpenIndicator.vue';
 
-import { CustomModelWorker } from '../../../workers/custom-model-worker/index';
+import { CustomModelWorker } from '@workers/custom-model-worker/index';
 
-import SearchIcon from '../../../assets/img/search.svg';
+import SearchIcon from '@images/search.svg';
 
 export default {
   components: {
@@ -272,7 +272,7 @@ $color-a8a8bd: #a8a8bd;
 $color-dfdeed: #dfdeed;
 $color-8a8aa8: #8a8aa8;
 
-@import '../../../assets/styles/forms.scss';
+@import '@sytles/forms.scss';
 :deep {
   .vs__clear {
     display: none;

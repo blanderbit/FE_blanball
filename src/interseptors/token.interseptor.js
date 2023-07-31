@@ -1,4 +1,4 @@
-import { accessToken } from '../workers/token-worker';
+import { accessToken } from '@workers/token-worker';
 
 export const TokenInterceptor = (request) => {
   const jwt = accessToken.getToken();

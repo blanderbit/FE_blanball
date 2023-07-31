@@ -4,7 +4,7 @@
       v-slot="data"
       :validation-schema="schema"
       :initial-values="initialValues"
-      @submit="disableSubmit"
+      @submit="disableFormSubmit"
     >
       <div class="b-select-forms-color-modal">
         <div class="b-select-forms-color-modal__top-side">
@@ -112,11 +112,13 @@ import { ref, computed } from 'vue';
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
-import dropdown from '../../../shared/dropdown/Dropdown.vue';
-import GreenBtn from '../../../shared/button/GreenBtn.vue';
+import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 
-import { CONSTS } from '../../../../consts/index';
-import SCHEMAS from '../../../../validators/schemas';
+import { disableFormSubmit } from '@utils/disableFormSubmit';
+
+import { CONSTS } from '@consts/index';
+import { SCHEMAS } from '@/validators/schemas';
 
 export default {
   components: {
@@ -161,10 +163,7 @@ export default {
       mockData,
       saveData,
       schema,
-      disableSubmit: (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      },
+      disableFormSubmit,
     };
   },
 };

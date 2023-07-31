@@ -1,13 +1,13 @@
-import { useHintsStore } from '../stores/hints';
-import { BlanballEventBus } from '../workers/event-bus-worker';
+import { useHintsStore } from '@stores/hints';
+import { BlanballEventBus } from '@workers/event-bus-worker';
 
 export function hintsDirective(el, hintsData) {
   const hintsStore = useHintsStore();
 
   const hintsToShow = hintsData.value.filter((result) => {
-    return hintsStore.hintsData.results.some(
-      (value) => value.name === result.name
-    );
+    // return hintsStore.hintsData.results.some(
+    //   (value) => value.name === result.name
+    // );
   });
 
   const calculatePosition = (hint) => {

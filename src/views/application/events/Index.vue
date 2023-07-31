@@ -4,6 +4,7 @@
     :clientX="eventJoinModalX"
     :clientY="eventJoinModalY"
     :modalItems="eventJoinToolTipItems"
+    :background=false
     @closeModal="closeEventJoinModal"
     @itemClick="joinEventModalItemClick"
   />
@@ -12,7 +13,7 @@
       @click="goToCreateEvent"
       class="b-events-page-create-event-mobile-button"
     >
-      <img src="../../../assets/img/plus.svg" alt="" />
+      <img src="@images/plus.svg" alt="" />
     </div>
     <div class="b-events-page__main-body" ref="mainEventsBlock">
       <div class="b-events-page__header-block">
@@ -120,38 +121,38 @@ import { useToast } from 'vue-toastification';
 
 import { v4 as uuid } from 'uuid';
 
-import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
-import MainInput from '../../../components/shared/input/MainInput.vue';
-import ContextMenu from '../../../components/shared/modals/ContextMenuModal.vue';
-import EventCard from '../../../components/main/events/EventCard.vue';
-import MyEventCard from '../../../components/main/events/MyEventCard.vue';
-import rightSidebar from '../../../components/main/rightSidebar/RightSidebar.vue';
-import emptyList from '../../../components/shared/emptyList/EmptyList.vue';
-import smartGridList from '../../../components/shared/smartList/SmartGridList.vue';
-import ScrollToTop from '../../../components/ScrollToTop.vue';
-import InfiniteLoading from '../../../components/main/infiniteLoading/InfiniteLoading.vue';
-import Dropdown from '../../../components/shared/dropdown/Dropdown.vue';
-import EventsFilters from '../../../components/filters/block-filters/EventsFilters.vue';
-import ContextModal from '../../../components/shared/modals/ContextModal.vue';
-import SelectFormsColorsModal from '../../../components/main/manageEvent/modals/SelectFormsColorsModal.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import ContextMenu from '@sharedComponents/modals/ContextModal.vue';
+import EventCard from '@mainComponents/events/EventCard.vue';
+import MyEventCard from '@mainComponents/events/MyEventCard.vue';
+import rightSidebar from '@mainComponents/rightSidebar/RightSidebar.vue';
+import emptyList from '@sharedComponents/emptyList/EmptyList.vue';
+import smartGridList from '@sharedComponents/smartList/SmartGridList.vue';
+import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
+import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
+import Dropdown from '@sharedComponents/dropdown/Dropdown.vue';
+import EventsFilters from '@mainComponents/filters/block-filters/EventsFilters.vue';
+import ContextModal from '@sharedComponents/modals/ContextModal.vue';
+import SelectFormsColorsModal from '@mainComponents/manageEvent/modals/SelectFormsColorsModal.vue';
 
-import { API } from '../../../workers/api-worker/api.worker';
-import { PaginationWorker } from '../../../workers/pagination-worker';
-import { FilterPatch } from '../../../workers/api-worker/http/filter/filter.patch';
-import { addMinutes } from '../../../utils/addMinutes';
-import { getDate } from '../../../utils/getDate';
-import { getTime } from '../../../utils/getTime';
-import { calcHeight } from '../../../utils/calcHeight';
+import { API } from '@workers/api-worker/api.worker';
+import { PaginationWorker } from '@workers/pagination-worker';
+import { FilterPatch } from '@workers/api-worker/http/filter/filter.patch';
+import { addMinutes } from '@utils/addMinutes';
+import { getDate } from '@utils/getDate';
+import { getTime } from '@utils/getTime';
+import { calcHeight } from '@workers/window-size-worker/calcHeight';
 import {
   finishSpinner,
   startSpinner,
-} from '../../../workers/loading-worker/loading.worker';
-import { useUserDataStore } from '../../../stores/userData';
+} from '@workers/loading-worker/loading.worker';
+import { useUserDataStore } from '@/stores/userData';
 
-import { ROUTES } from '../../../router/router.const';
-import { CONSTS } from '../../../consts/index';
+import { ROUTES } from '@routes/router.const';
+import { CONSTS } from '@consts/index';
 
-import Plus from '../../../assets/img/plus.svg';
+import Plus from '@images/plus.svg';
 
 const eventJoinTypes = {
   PLAY: 'play',

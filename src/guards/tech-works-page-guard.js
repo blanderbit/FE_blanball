@@ -1,8 +1,8 @@
 import router from '../router';
 
-import { API } from '../workers/api-worker/api.worker';
+import { API } from '@workers/api-worker/api.worker';
 
-import { ROUTES } from '../router/router.const';
+import { ROUTES } from '../routes/router.const';
 
 router.beforeEach(async (to, from, next) => {
   if (to.name === ROUTES.WORKS.name) {

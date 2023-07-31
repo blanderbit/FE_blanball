@@ -82,13 +82,13 @@
             >
               <template #prev-button>
                 <img
-                  src="../../../assets/img/scheduler/arrow-left.svg"
+                  src="@images/scheduler/arrow-left.svg"
                   alt=""
                 />
               </template>
               <template #next-button>
                 <img
-                  src="../../../assets/img/scheduler/arrow-right.svg"
+                  src="@images/scheduler/arrow-right.svg"
                   alt=""
                 />
               </template>
@@ -171,10 +171,10 @@
               </div>
             </template>
             <template #arrow-prev>
-              <img src="../../../assets/img/scheduler/arrow-left.svg" alt="" />
+              <img src="@images/scheduler/arrow-left.svg" alt="" />
             </template>
             <template #arrow-next>
-              <img src="../../../assets/img/scheduler/arrow-right.svg" alt="" />
+              <img src="@images/scheduler/arrow-right.svg" alt="" />
             </template>
             <template #cell-content="{ cell, events }">
               <div class="c-cell-wrapper">
@@ -252,39 +252,39 @@ import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
 
 import VueCal from 'vue-cal';
-import VueInlineCalendar from '../inlineCalendar/index.vue';
+import VueInlineCalendar from '@mainComponents/inlineCalendar/index.vue';
 
-import ContextModal from '../../shared/modals/ContextModal.vue';
-import WhiteBtn from '../../shared/button/WhiteBtn.vue';
+import ContextModal from '@sharedComponents/modals/ContextModal.vue';
+import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 import ScheduledEventsDots from './ScheduledEventsDots.vue';
 import SchedulerTabs from './SchedulerTabs.vue';
 import ScheduledEventsList from './ScheduledEventsList.vue';
 import SchedulerFriendsList from './SchedulerFriendsList.vue';
 import SchedulerInlineCalendarTitle from './SchedulerInlineCalendarTitle.vue';
-import GreenBtn from '../../shared/button/GreenBtn.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import JoinScheduledEventModal from './modals/JoinScheduledEventModal.vue';
 
-import { API } from '../../../workers/api-worker/api.worker';
-import { useUserDataStore } from '../../../stores/userData';
+import { API } from '@workers/api-worker/api.worker';
+import { useUserDataStore } from '@/stores/userData';
 import {
   startSpinner,
   finishSpinner,
-} from '../../../workers/loading-worker/loading.worker';
-import { BlanballEventBus } from '../../../workers/event-bus-worker';
-import { useWindowWidth } from '../../../utils/widthScreen';
+} from '@workers/loading-worker/loading.worker';
+import { BlanballEventBus } from '@workers/event-bus-worker';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 import { useElementSize } from '@vueuse/core';
-import { calcHeight } from '../../../utils/calcHeight';
+import { calcHeight } from '@workers/window-size-worker/calcHeight';
 
-import { CONSTS } from '../../../consts';
-import { ROUTES } from '../../../router/router.const';
+import { CONSTS } from '@consts';
+import { ROUTES } from '@routes/router.const';
 
 import 'vue-cal/dist/vuecal.css';
 
-import closeIcon from '../../../assets/img/scheduler/close-icton.svg';
-import goBackIcon from '../../../assets/img/back-arrow.svg';
-import grayClockIcon from '../../../assets/img/scheduler/gray-clock.svg';
-import whiteClockIcon from '../../../assets/img/scheduler/white-clock.svg';
-import inviteUserIcon from '../../../assets/img/add-user-white.svg';
+import closeIcon from '@images/scheduler/close-icton.svg';
+import goBackIcon from '@images/back-arrow.svg';
+import grayClockIcon from '@images/scheduler/gray-clock.svg';
+import whiteClockIcon from '@images/scheduler/white-clock.svg';
+import inviteUserIcon from '@images/add-user-white.svg';
 
 const mobileVersionSchedulerBottomMargin = 240;
 

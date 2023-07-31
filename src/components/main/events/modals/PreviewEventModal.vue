@@ -6,7 +6,7 @@
           {{ $t('events.poster-preview') }}
         </div>
         <img
-          src="../../../../assets/img/close-arrow-up.svg"
+          src="@images/close-arrow-up.svg"
           alt=""
           @click="$emit('closeModal')"
         />
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import EventCard from '../EventCard.vue';
+import EventCard from '@mainComponents/events/EventCard.vue';
 export default {
   components: {
     EventCard,

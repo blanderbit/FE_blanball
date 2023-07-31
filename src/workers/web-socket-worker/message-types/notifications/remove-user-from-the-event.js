@@ -9,7 +9,7 @@ import {
 
 import { MessageActionTypes } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
-import { NotificationImage } from '../../../../assets/img/notifications/notification.images';
+import { NotificationImage } from '@images/notifications/notification.images';
 import { i18n } from '../../../../plugins/i18n.plugin';
 
 @AuthWebSocketMessage()

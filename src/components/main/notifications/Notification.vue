@@ -14,7 +14,7 @@
     ]"
     @click.right.prevent="openContextMenu"
   >
-    <BlackSpinner :is-loading="loading"/> 
+    <BlackSpinner :is-loading="loading" />
     <div class="notification-parts d-flex justify-content-between">
       <div
         class="notification-image"
@@ -89,7 +89,10 @@
                 "
               >
                 <div
-                  :class="['notification-content', {'not-full-content': !isTextShow}]"
+                  :class="[
+                    'notification-content',
+                    { 'not-full-content': !isTextShow },
+                  ]"
                   style="margin-top: 10px"
                   v-for="item in notificationInstance.texts"
                 >
@@ -121,8 +124,8 @@
           v-else
           v-model:expanding="expanding"
           class="notification-mobile"
-          @touchstart="startHoldSelectNotification"
-          @touchend="endHoldSelectNotification"
+          @touchstart.passive="startHoldSelectNotification"
+          @touchend.passive="endHoldSelectNotification"
         >
           <template #title>
             <div class="notification-title">
@@ -143,25 +146,23 @@
             </div>
             <div
               class="notification-actions"
-              v-if="
-                notificationInstance?.actions?.length
-              "
+              v-if="notificationInstance?.actions?.length"
             >
-              <template v-for="item in notificationInstance.actions">
+              <!-- <template v-for="item in notificationInstance.actions">
                 <NotificationButton
                   @click-function="$emit('handler-action', item)"
                   :buttonData="item"
                   :notificationType="notificationType"
                 >
                 </NotificationButton>
-              </template>
+              </template> -->
             </div>
           </template>
 
           <template #icon>
             <img
               class="notification-collapsiple"
-              src="../../../assets/img/mob-notification-collapsible-icon.svg"
+              src="@images/mob-notification-collapsible-icon.svg"
               alt=""
             />
           </template>
@@ -172,8 +173,7 @@
           class="push-notification-main-content"
         >
           <div class="push-notification-content">
-            <collapsible-panel
-              :expanding="false">
+            <collapsible-panel :expanding="false">
               <template #title> Сьогодні: {{ getCurrentTime }}</template>
               <template #content>
                 <div
@@ -184,7 +184,7 @@
                 </div>
               </template>
               <template #icon>
-                <img src="../../../assets/img/collapsible-icon.svg" alt="" />
+                <img src="@images/collapsible-icon.svg" alt="" />
               </template>
             </collapsible-panel>
           </div>
@@ -233,11 +233,11 @@
 <script>
 import dayJs from 'dayjs';
 
-import BlackSpinner from '../../shared/loader/BlackSpinner.vue';
+import BlackSpinner from '@sharedComponents/loader/BlackSpinner.vue';
 import NotificationButton from './NotificationButton.vue';
-import checkBox from '../../shared/checkbox/Checkbox.vue';
-import CollapsiblePanel from '../collapsible/CollapsiblePanel.vue';
-import userAvatar from '../../shared/userAvatar/UserAvatar.vue';
+import checkBox from '@sharedComponents/checkbox/Checkbox.vue';
+import CollapsiblePanel from '@mainComponents/collapsible/CollapsiblePanel.vue';
+import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 
 export default {
   components: {
@@ -304,12 +304,14 @@ export default {
     clickExpandTextButton() {
       this.isTextShow = !this.isTextShow;
     },
-    startHoldSelectNotification() {
+    startHoldSelectNotification(e) {
+      console.log('startHoldSelectNotification');
+
       this.timeout = setTimeout(() => {
-        this.$emit(
-          'selectNotificationAfterHold',
-          this.notificationInstance.notification_id
-        );
+        openContextMenu({
+          clientX: e.touches[0].touch.pageX,
+          clientY: e.touches[0].touch.pageY,
+        });
       }, 500);
     },
     openContextMenu(e) {

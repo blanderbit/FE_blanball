@@ -2,9 +2,11 @@
   <DynamicScroller
     :items="list"
     :min-item-size="50"
+    :emitUpdate="true"
     :key-field="keyField"
     class="scroller"
     ref="scroller"
+    @scroll-start="scrollStart"
   >
     <template #before>
       <slot name="before"></slot>
@@ -16,7 +18,10 @@
         :size-dependencies="[list.length, item?.metadata?.expanding]"
         :data-index="index"
       >
-        <slot name="smartListItem" :index="index" :smartListItem="item"> </slot>
+        <div :style="itemsGapStyle">
+          <slot name="smartListItem" :index="index" :smartListItem="item">
+          </slot>
+        </div>
       </DynamicScrollerItem>
     </template>
     <template #after>
@@ -24,12 +29,13 @@
     </template>
   </DynamicScroller>
 </template>
+
 <script>
-import { ref, watch, nextTick } from 'vue';
+import { ref, watch, nextTick, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller';
 
-import notification from '../../main/notifications/Notification.vue';
+import notification from '@mainComponents/notifications/Notification.vue';
 
 export default {
   components: {
@@ -54,6 +60,10 @@ export default {
       type: String,
       default: 'id',
     },
+    itemsGap: {
+      type: Number,
+      default: 0,
+    },
   },
   emits: ['update:selected-list', 'update:scrollbar-existing'],
   setup(props, { emit, expose }) {
@@ -61,12 +71,19 @@ export default {
     let scroller = ref();
     const router = useRouter();
 
+    const itemsGapStyle = computed(() => {
+      if (props.itemsGap) {
+        return {
+          'padding-top': `${props.itemsGap}px`,
+        };
+      }
+    });
+
     watch(
       () => props.selectedList,
       () => {
         const array = [...props.selectedList];
-        list.value = Array.isArray(array) ? (!array.length ? [] : array) : [];
-        scroller.value.forceUpdate();
+        props.list = Array.isArray(array) ? (!array.length ? [] : array) : [];
       }
     );
 
@@ -74,6 +91,7 @@ export default {
       () => props.list,
       () => {
         nextTick(() => {
+          scroller.value.vScrollUpdate();
           emit(
             'update:scrollbar-existing',
             scroller.value.$el.scrollHeight > scroller.value.$el.clientHeight
@@ -81,6 +99,7 @@ export default {
         });
       },
       {
+        deep: true,
         immediate: true,
       }
     );
@@ -93,6 +112,7 @@ export default {
     return {
       activeNotification,
       scroller,
+      itemsGapStyle,
     };
   },
 };

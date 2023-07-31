@@ -6,10 +6,7 @@ import {
   AxiosSkipErrorMessageType,
 } from '../../../utils-worker';
 import { FilterParamsDecorator } from '../filter/filter.utils';
-import {
-  filterConfigForEvents,
-  filterConfigForUsers,
-} from '../filter/filter.config';
+import { filterConfigForEvents } from '../filter/filter.config';
 import { DETAILS_TYPE_ENUM } from '../../../type-request-message-worker';
 
 export class EventService {
@@ -140,15 +137,14 @@ export class EventService {
   inviteUsersToEvent(inviteUsersIds, event_id) {
     return AxiosInstance.post(EndpointsEnum.Events.InviteUsersToEvent, {
       ids: inviteUsersIds,
-      event_id: event_id
+      event_id: event_id,
     });
   }
 
-
   showOrHideMyEvents(ids) {
     return AxiosInstance.post(EndpointsEnum.Events.ShowOrHideMyEvents, {
-      ids: ids
-    })
+      ids: ids,
+    });
   }
 
   getCountPinnedEvents() {
@@ -165,7 +161,6 @@ export class EventService {
       )
     );
   }
-
 
   @FilterParamsDecorator(filterConfigForEvents)
   getMyPlannedEvents(options) {

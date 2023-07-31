@@ -1,5 +1,5 @@
 <script setup>
-import smallLoader from '../../shared/loader/SmallLoader.vue';
+import smallLoader from '@sharedComponents/loader/SmallLoader.vue';
 import { onMounted, ref, toRefs, onUnmounted, watch, nextTick } from 'vue';
 import {
   startObserver,
@@ -7,7 +7,7 @@ import {
   stateHandler,
   initEmitter,
   isVisible,
-} from '../../../workers/infinit-load-worker/index.js';
+} from '@workers/infinit-load-worker/index.js';
 
 const emit = defineEmits(['infinite']);
 const props = defineProps({
@@ -17,6 +17,10 @@ const props = defineProps({
   identifier: { required: false },
   firstload: { type: Boolean, required: false, default: true },
   slots: { type: Object, required: false },
+  showCompleteSlot: {
+    type: Boolean,
+    default: true,
+  },
 });
 const infiniteLoading = ref(null);
 const state = ref('ready');
@@ -58,6 +62,8 @@ onMounted(() => {
 onUnmounted(() => {
   stopObserver();
 });
+
+defineExpose({ state });
 </script>
 
 <template>
@@ -65,7 +71,7 @@ onUnmounted(() => {
     <slot v-if="state == 'loading'" name="spinner">
       <smallLoader />
     </slot>
-    <slot v-if="state == 'complete'" name="complete">
+    <slot v-if="state == 'complete' && showCompleteSlot" name="complete">
       <span> {{ slots?.complete || 'No more results!' }} </span>
     </slot>
     <slot v-if="state == 'error'" name="error" :retry="params.emit">

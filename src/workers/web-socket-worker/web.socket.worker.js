@@ -47,7 +47,7 @@ export class WebSocketWorker {
     this.instance = null;
   }
 
-  registerCallback(callback) {
+  registerCallback(callback, messageType = null) {
     // callback should be unique
     if (typeof callback !== 'function') {
       console.warn('registerCallback is not a function');
@@ -59,7 +59,14 @@ export class WebSocketWorker {
       return this;
     }
 
-    this.callbacks.push(callback);
+    if (!messageType) {
+      this.callbacks.push(callback);
+    } else {
+      this.callbacks.push({
+        messageType: messageType,
+        callbackFunction: callback,
+      });
+    }
 
     return this;
   }
@@ -70,18 +77,35 @@ export class WebSocketWorker {
       return this;
     }
 
-    const index = this.callbacks.findIndex(
-      (func) => func.name === destroyCallback.name
-    );
+    const index = this.callbacks.findIndex((callback) => {
+      if (typeof callback === 'function') {
+        return callback.name === destroyCallback.name;
+      } else if (
+        typeof callback === 'object' &&
+        typeof callback.callbackFunction === 'function'
+      ) {
+        return callback.callbackFunction.name === destroyCallback.name;
+      }
+    });
+
     if (index > -1) {
       this.callbacks.splice(index, 1);
       console.log('destroyCallback destroyed successfully');
     }
+
     return this;
   }
 
   _handleCallback(element) {
-    this.callbacks.forEach((item) => item(element));
+    this.callbacks.forEach((item) => {
+      if (typeof item === 'function') {
+        item(element);
+      } else if (typeof item === 'object') {
+        if (Object.getPrototypeOf(element)?.messageType == item?.messageType) {
+          item.callbackFunction(element);
+        }
+      }
+    });
   }
 
   _createElementAndCallHandler(message) {

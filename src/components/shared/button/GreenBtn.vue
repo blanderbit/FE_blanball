@@ -48,10 +48,6 @@ export default {
       type: Object,
       default: () => {},
     },
-    isIconAndTextApart: {
-      type: Boolean,
-      default: false,
-    },
     disabled: {
       type: Boolean,
       default: false,

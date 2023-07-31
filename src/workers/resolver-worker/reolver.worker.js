@@ -5,7 +5,8 @@ import {
   startSpinner,
 } from '../loading-worker/loading.worker.js';
 import { VueResolver } from './vue.resolver.js';
-import { ROUTES } from '../../router/router.const';
+import { ROUTES } from '../../routes/router.const';
+import { ukraineCitiesData } from '@/routes/helpers/ukraineCitiesData';
 
 export const routerAuthResolver = new VueResolver()
   .registerResolverFirstWorker(resolverFunctions.isUserAuthorized)
@@ -20,7 +21,9 @@ export const routerDataResolver = new VueResolver()
   .registerBeforeIntercept(startSpinner);
 
 export const routerResolverByLoginPage = routerAuthResolver.routeInterceptor(
-  () => ({}),
+  (to) => ({
+    ukraineCitiesData,
+  }),
   {
     afterIntercept: ({ next, error }) => {
       if (error !== 'FIRST_WORKER_ERROR') {
@@ -28,8 +31,7 @@ export const routerResolverByLoginPage = routerAuthResolver.routeInterceptor(
       }
       finishSpinner();
     },
-    resolveFirstWorkerError: ({ next }) =>
-     {
+    resolveFirstWorkerError: ({ next }) => {
       next(true);
       finishSpinner();
     },

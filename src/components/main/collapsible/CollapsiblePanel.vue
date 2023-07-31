@@ -49,8 +49,8 @@ import {
   watch,
 } from 'vue';
 
-import { toggleIcon } from '../../../workers/collapsible-worker/collapsible-panel.constant';
-import { useCollapsiblePanelStore } from '../../../workers/collapsible-worker/collapsible-panel.store';
+import { toggleIcon } from '@workers/collapsible-worker/collapsible-panel.constant';
+import { useCollapsiblePanelStore } from '@workers/collapsible-worker/collapsible-panel.store';
 import { v4 as uuid } from 'uuid';
 
 export default defineComponent({

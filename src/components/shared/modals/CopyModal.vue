@@ -20,10 +20,10 @@
 <script>
 import { ref } from 'vue';
 
-import MainInput from '../input/MainInput.vue';
-import GreenBtn from '../button/GreenBtn.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 
-import CopyIcon from '../../../assets/img/copy.svg';
+import CopyIcon from '@images/copy.svg';
 
 export default {
   components: {

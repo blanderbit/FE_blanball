@@ -10,7 +10,7 @@
         </router-link>
         <img
           v-if="!(idx + 1 === getBreadcrumbsList.length)"
-          src="../../../assets/img/arrow-right.svg"
+          src="@images/arrow-right.svg"
           alt=""
         />
       </li>

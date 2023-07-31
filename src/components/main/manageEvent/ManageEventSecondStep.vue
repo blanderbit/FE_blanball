@@ -106,19 +106,19 @@
 import { ref, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
-import MainInput from '../../shared/input/MainInput.vue';
-import mainTextArea from '../../shared/textArea/MainTextArea.vue';
-import switcher from '../../shared/switcher/Switcher.vue';
-import SearchBlockAll from '../../SearchBlockAll.vue';
-import radioButton from '../../shared/radioButton/RadioButton.vue';
+import MainInput from '@sharedComponents/input/MainInput.vue';
+import mainTextArea from '@sharedComponents/textArea/MainTextArea.vue';
+import switcher from '@sharedComponents/switcher/Switcher.vue';
+import SearchBlockAll from '@mainComponents/header/SearchBlockAll.vue';
+import radioButton from '@sharedComponents/radioButton/RadioButton.vue';
 
-import { ROUTES } from '../../../router/router.const';
+import { ROUTES } from '@routes/router.const';
 
-import HorArrow from '../../../assets/img/sort-arrows-down.svg';
-import AddUser from '../../../assets/img/add-user.svg';
-import Users from '../../../assets/img/members.svg';
-import Search from '../../../assets/img/search.svg';
-import PlusIcon from '../../../assets/img/gray-plus.svg';
+import HorArrow from '@images/sort-arrows-down.svg';
+import AddUser from '@images/add-user.svg';
+import Users from '@images/members.svg';
+import Search from '@images/search.svg';
+import PlusIcon from '@images/gray-plus.svg';
 
 export default {
   props: {

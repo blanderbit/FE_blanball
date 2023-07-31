@@ -11,7 +11,7 @@ import {
   MessageActionDataTypes,
 } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
-import { ROUTES } from '../../../../router/router.const';
+import { ROUTES } from '../../../../routes/router.const';
 
 @SetMessageType(WebSocketTypes.ChangeMaintenance)
 @GeneralWebSocketMessage()

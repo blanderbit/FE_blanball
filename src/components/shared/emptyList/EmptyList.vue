@@ -3,15 +3,19 @@
     <div class="b-empty-list__left-side">
       <div class="b-empty-list__titles-block">
         <div class="b-empty-list__title">
-          {{ title }}
+          {{ $t(title) }}
         </div>
         <div class="b-empty-list__description">
-          {{ description }}
+          {{ $t(description) }}
         </div>
       </div>
       <div v-if="buttonText" class="b-empty-list__actions">
-        <GreenBtn :width="170" :height="40" :text="buttonText"
-          @click-function="$emit('buttonClick')" />
+        <GreenBtn
+          :width="170"
+          :height="40"
+          :text="buttonText"
+          @click-function="$emit('buttonClick')"
+        />
       </div>
     </div>
     <div class="b-empty-list__right-side">
@@ -23,10 +27,9 @@
 <script>
 import { computed } from 'vue';
 
-import GreenBtn from '../button/GreenBtn.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 
-import EmptyNotificationsSvg from '../../../assets/img/no-records/empty-notifications.svg';
-import NoData from '../../../assets/img/no-records/no-data.svg';
+import NoData from '@images/no-records/no-data.svg';
 
 export default {
   name: 'emptyList',
@@ -43,11 +46,6 @@ export default {
       type: String,
       default: '',
     },
-    isNotification: {
-      type: Boolean,
-      require: false,
-      default: false,
-    },
     image: {
       type: String,
       default: '',
@@ -61,7 +59,7 @@ export default {
       if (props.image) {
         return props.image;
       } else {
-        return props.isNotification ? EmptyNotificationsSvg : NoData;
+        return NoData;
       }
     });
 

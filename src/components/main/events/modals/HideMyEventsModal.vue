@@ -5,7 +5,7 @@
         <div class="b-hide-events-modal__title">Приховати події</div>
         <img
           class="b-hide-events-modal__close-button"
-          src="../../../../assets/img/cross.svg"
+          src="@images/cross.svg"
           alt=""
           @click="closeModal"
         />
@@ -99,22 +99,22 @@
 import { ref, computed, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import smartGridList from '../../../shared/smartList/SmartGridList.vue';
-import InfiniteLoading from '../../infiniteLoading/InfiniteLoading.vue';
-import ScrollToTop from '../../../ScrollToTop.vue';
-import HideEventCard from '../HideEventCard.vue';
-import WhiteBtn from '../../../shared/button/WhiteBtn.vue';
-import GreenBtn from '../../../shared/button/GreenBtn.vue';
-import ActionEventModal from './ActionEventModal.vue';
+import smartGridList from '@sharedComponents/smartList/SmartGridList.vue';
+import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
+import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
+import HideEventCard from '@mainComponents/events/HideEventCard.vue';
+import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
+import ActionModal from './ActionModal.vue';
 
-import { API } from '../../../../workers/api-worker/api.worker';
-import { PaginationWorker } from '../../../../workers/pagination-worker';
-import { addMinutes } from '../../../../utils/addMinutes';
-import { getDate } from '../../../../utils/getDate';
-import { getTime } from '../../../../utils/getTime';
+import { API } from '@workers/api-worker/api.worker';
+import { PaginationWorker } from '@workers/pagination-worker';
+import { addMinutes } from '@utils/addMinutes';
+import { getDate } from '@utils/getDate';
+import { getTime } from '@utils/getTime';
 
-import SaveIcon from '../../../../assets/img/save-icon.svg';
-import NoEditPermIcon from '../../../../assets/img/no-edit-perm-modal-icon.svg';
+import SaveIcon from '@images/save-icon.svg';
+import NoEditPermIcon from '@images/no-edit-perm-modal-icon.svg';
 
 const TABS_ENUM = {
   SOME: 1,
@@ -128,7 +128,7 @@ export default {
     ScrollToTop,
     WhiteBtn,
     GreenBtn,
-    ActionEventModal,
+    ActionModal,
     HideEventCard,
   },
   emits: ['closeModal', 'closeAndSave'],
@@ -142,7 +142,7 @@ export default {
     const requestIDs = ref([]);
     const isAllHidden = ref(false);
 
-    const actionEventModalConfig = computed(() => {
+    const ActionModalConfig = computed(() => {
       return {
         title: t('modals.no_perm_to_hide_events.title'),
         description: t('modals.no_perm_to_hide_events.main-text'),
@@ -280,7 +280,7 @@ export default {
       paginationPage,
       paginationTotalCount,
       isAllHidden,
-      actionEventModalConfig,
+      ActionModalConfig,
       mainEventsBlock,
       SaveIcon,
       requestIDs,

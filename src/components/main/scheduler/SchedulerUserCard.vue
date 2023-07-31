@@ -35,7 +35,7 @@
       <div class="c-close-button">
         <img
           @click.stop="$emit('clickByUserToDiactivate')"
-          src="../../../assets/img/default-arrow-top.svg"
+          src="@images/default-arrow-top.svg"
           alt=""
         />
       </div>
@@ -44,8 +44,8 @@
 </template>
 
 <script>
-import UserAvatar from '../../shared/userAvatar/UserAvatar.vue';
-import GreenBtn from '../../shared/button/GreenBtn.vue';
+import UserAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 
 export default {
   props: {

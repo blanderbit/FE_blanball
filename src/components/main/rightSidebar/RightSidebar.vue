@@ -18,7 +18,7 @@
         v-if="!popularEvents.length && !loading"
         class="b-right-sidebar__no-events"
       >
-        <img src="../../../assets/img/info-black.svg" alt="" />
+        <img src="@images/info-black.svg" alt="" />
         <span>{{ $t('no_records.noPopularEvents.title') }}</span>
       </div>
     </div>
@@ -29,16 +29,16 @@
 import { ref, onBeforeUnmount} from 'vue';
 import { useRouter } from 'vue-router';
 
-import SmallEventCard from '../events/SmallEventCard.vue';
-import smallLoader from '../../shared/loader/SmallLoader.vue';
+import SmallEventCard from '@mainComponents/events/SmallEventCard.vue';
+import smallLoader from '@sharedComponents/loader/SmallLoader.vue';
 
-import { API } from '../../../workers/api-worker/api.worker';
-import { addMinutes } from '../../../utils/addMinutes';
-import { getDate } from '../../../utils/getDate';
-import { getTime } from '../../../utils/getTime';
-import { BlanballEventBus } from '../../../workers/event-bus-worker';
+import { API } from '@workers/api-worker/api.worker';
+import { addMinutes } from '@utils/addMinutes';
+import { getDate } from '@utils/getDate';
+import { getTime } from '@utils/getTime';
+import { BlanballEventBus } from '@workers/event-bus-worker';
 
-import { ROUTES } from '../../../router/router.const';
+import { ROUTES } from '@routes/router.const';
 
 const popularEvents = ref([]);
 const router = useRouter();
@@ -68,7 +68,6 @@ BlanballEventBus.on('userJoinedEvent', (data) => {
   const event = popularEvents.value.find((event) => event.id === data.eventId);
 
   if (event) {
-    console.log(data.participateType)
     event.request_user_role = data.participateType;
   }
 });

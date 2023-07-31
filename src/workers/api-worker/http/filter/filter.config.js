@@ -1,5 +1,22 @@
-import { CONSTS } from '../../../../consts';
+import { CONSTS } from '@consts';
 import { Enum } from './filter.utils';
+
+export const filterConfigForChatMessages = {
+  page: Number,
+  search: String,
+  chat_id: Number,
+};
+
+export const filterConfigForChatUsers = {
+  page: Number,
+  chat_id: Number,
+};
+
+export const filterConfigForChats = {
+  page: Number,
+  search: String,
+  chats_type: new Enum(['dialog', 'group', 'request', '']),
+};
 
 export const filterConfigForUsers = {
   page: Number,
@@ -51,17 +68,16 @@ export const filterConfigForEvents = {
   ordering: new Enum(['id', '-id']), // TODO add date in backend
   skipids: Number,
   duration: Number,
-  dist: String,
+  dist: Number,
   point: String,
   place: String,
   date_and_time_after: String,
   date_and_time_before: String,
 }; // TODO Add search by members list
 
-
 export const filterConfigForScheduler = {
   id: Number,
   page: Number,
   user_id: Number,
-  date: String
+  date: String,
 };
