@@ -189,6 +189,13 @@ export default {
       const oldListLastElement = list.at(-1);
       const newListFirstElement = newList.at(0);
       if (oldListLastElement && newListFirstElement) {
+        console.log(
+          setShowSenderMessageAvatarAndIsTheNextMessageFromTheSameAuthor(
+            oldListLastElement,
+            newListFirstElement
+          )
+        );
+
         Object.assign(
           oldListLastElement,
           setShowSenderMessageAvatarAndIsTheNextMessageFromTheSameAuthor(
@@ -205,10 +212,12 @@ export default {
       firstMessage,
       secondMessage
     ) {
-      const isMine = firstMessage?.sender.id === userStore.user.id;
+      const isMine =
+        !firstMessage.service && firstMessage?.sender?.id === userStore.user.id;
       const isNextMessageFromTheSameSender =
-        firstMessage?.sender.id === secondMessage?.sender?.id;
-      const showAvatar = props.chatData.is_group
+        !firstMessage.service &&
+        firstMessage?.sender?.id === secondMessage?.sender?.id;
+      const showAvatar = true
         ? !isMine && !isNextMessageFromTheSameSender
         : false;
 

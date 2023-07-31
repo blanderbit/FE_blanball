@@ -1,75 +1,80 @@
 <template>
-  <div class="b-chat-page">
-    <Transition :name="editChatModalTransitionName">
-      <EditChatModal
-        v-if="isEditChatModalOpened"
-        :chatData="chatData"
-        @closeModal="closeEditChatModal"
-        @updateChat="updateChatData"
+  <div class="b-chat-page-wrapper">
+    <div class="b-chat-page">
+      <Transition :name="editChatModalTransitionName">
+        <EditChatModal
+          v-if="isEditChatModalOpened"
+          :chatData="chatData"
+          @closeModal="closeEditChatModal"
+          @updateChat="updateChatData"
+        />
+      </Transition>
+      <SubmitModal
+        v-if="isSubmitModalOpened"
+        :config="submitModalConfig"
+        @closeModal="closeSubmitModal"
+        @closeEditChatModal="closeEditChatModal"
+        @leaveGroup="closeSubmitModal"
       />
-    </Transition>
-    <SubmitModal
-      v-if="isSubmitModalOpened"
-      :config="submitModalConfig"
-      @closeModal="closeSubmitModal"
-      @closeEditChatModal="closeEditChatModal"
-      @leaveGroup="closeSubmitModal"
-    />
-    <StartPesonalChatModal
-      v-if="isStartPesonalChatModalVisible"
-      @closeModal="closeStartPersonalChatModal"
-    />
-    <ContextMenu
-      v-if="isContextMenuOpened"
-      :clientX="contextMenuX"
-      :clientY="contextMenuY"
-      :modalItems="currentContextMenuItems"
-      :background="false"
-      @close-modal="closeContextMenu"
-      @itemClick="contextMenuItemClick"
-    />
-    <div
-      v-if="isAnyChatSelected"
-      ref="CHAT_TOP_SIDE_BLOCK"
-      class="b-chat-top-side"
-    >
-      <ChatTopBlock
-        :chatData="chatData"
-        :selectedMessages="chatSelectedMessagesList"
-        :isChatEditing="isEditChatModalOpened"
-        @searchChatMessages=""
-        @manageChat="showManageChatContextMenu"
-        @editChat="showEditChatModal"
-        @goBackToCheChatsList="forceOpenChatsListSlideMenu"
+      <StartPesonalChatModal
+        v-if="isStartPesonalChatModalVisible"
+        @closeModal="closeStartPersonalChatModal"
       />
-    </div>
-    <div
-      :class="[
-        'b-chat-page-main-side',
-        { 'no-selected-chat': !isAnyChatSelected },
-      ]"
-    >
-      <ChatMessagesList
-        v-if="isAnyChatSelected"
-        ref="CHAT_MESSAGES_LIST_BLOCK"
-        :chatData="chatData"
-        :heightStyle="messagesListBlockStyle"
+      <ContextMenu
+        v-if="isContextMenuOpened"
+        :clientX="contextMenuX"
+        :clientY="contextMenuY"
+        :modalItems="currentContextMenuItems"
+        :background="false"
+        @close-modal="closeContextMenu"
+        @itemClick="contextMenuItemClick"
       />
-      <NotSelectedChatCard v-else />
       <div
         v-if="isAnyChatSelected"
-        ref="CHAT_BOTTOM_SIDE_BLOCK"
-        class="b-main-side-bottom-block"
+        ref="CHAT_TOP_SIDE_BLOCK"
+        class="b-chat-top-side"
       >
-        <Transition name="chat-warning">
-          <ChatWarning v-if="isChatWarningVisible" @close="closeChatWarning" />
-        </Transition>
-        <RequestForChat v-if="isChatRequestVisible" :chatData="chatData" />
-        <SendMessageBlock
-          v-else
-          :disabled="isSendMessagesDisabled"
+        <ChatTopBlock
           :chatData="chatData"
+          :selectedMessages="chatSelectedMessagesList"
+          :isChatEditing="isEditChatModalOpened"
+          @searchChatMessages=""
+          @manageChat="showManageChatContextMenu"
+          @editChat="showEditChatModal"
+          @goBackToCheChatsList="forceOpenChatsListSlideMenu"
         />
+      </div>
+      <div
+        :class="[
+          'b-chat-page-main-side',
+          { 'no-selected-chat': !isAnyChatSelected },
+        ]"
+      >
+        <ChatMessagesList
+          v-if="isAnyChatSelected"
+          ref="CHAT_MESSAGES_LIST_BLOCK"
+          :chatData="chatData"
+          :heightStyle="messagesListBlockStyle"
+        />
+        <NotSelectedChatCard v-else />
+        <div
+          v-if="isAnyChatSelected"
+          ref="CHAT_BOTTOM_SIDE_BLOCK"
+          class="b-main-side-bottom-block"
+        >
+          <Transition name="chat-warning">
+            <ChatWarning
+              v-if="isChatWarningVisible"
+              @close="closeChatWarning"
+            />
+          </Transition>
+          <RequestForChat v-if="isChatRequestVisible" :chatData="chatData" />
+          <SendMessageBlock
+            v-else
+            :disabled="isSendMessagesDisabled"
+            :chatData="chatData"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -472,6 +477,7 @@ export default {
     );
 
     onBeforeUnmount(() => {
+      chatDataStore.$reset();
       ChatSocketWorkerInstance.destroyCallback(getChatDetailDataMessageHandler);
       ChatSocketWorkerInstance.destroyCallback(
         setCurrentUserAsRemovedMessageHandler
@@ -523,20 +529,24 @@ export default {
 </script>
 
 <style lang="scss">
-.b-chat-page {
-  height: fit-content;
+.b-chat-page-wrapper {
   background-image: url('@images/chat/chat-background.svg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+
+  @include mobile {
+    background: #efeff6;
+  }
+}
+
+.b-chat-page {
+  height: fit-content;
   width: calc(100% - 464px);
   margin-right: 0px;
   margin-left: auto;
   overflow: hidden;
 
-  @include mobile {
-    background: #efeff6;
-  }
   @include beforeDesktop {
     width: 100%;
   }

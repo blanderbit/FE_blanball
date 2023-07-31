@@ -151,7 +151,11 @@ export default {
     });
 
     function openContextMenu(e) {
-      emit('openContextMenu', e);
+      emit('openContextMenu', {
+        yPosition: e.clientY,
+        xPosition: e.clientX,
+        itemData: chatData
+      });
     }
 
     function chatCardClick() {

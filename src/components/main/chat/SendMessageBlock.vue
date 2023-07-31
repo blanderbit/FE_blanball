@@ -300,7 +300,7 @@ export default {
 
 .b-send-message-block {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   height: fit-content;
   gap: 8px;
   transition: all 0.5s;
@@ -328,6 +328,7 @@ export default {
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     border-radius: 100px;
     cursor: pointer;
+    margin-top: 5px;
   }
 
   .b-send-voice-message {

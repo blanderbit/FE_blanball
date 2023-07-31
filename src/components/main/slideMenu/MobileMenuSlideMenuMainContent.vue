@@ -25,6 +25,12 @@
       >
         <img class="b-item-image" :src="item.icon" alt="" />
         <div v-if="item.title" class="b-item-text">{{ $t(item.title) }}</div>
+        <img
+          class="b-deactivate-item-button"
+          src="@images/mobile-menu-white-cross.svg"
+          alt=""
+          @click.stop.prevent="returnToAllItemList"
+        />
       </div>
     </div>
     <div
@@ -59,7 +65,7 @@ export default {
     },
   },
   emits: ['closeMenu'],
-  setup(props, { emit, expose }) {
+  setup(props, { attrs, emit, expose }) {
     const MOBILE_MENU_BOTTOM_LINE_BLOCK = ref();
     const MOBILE_MENU_TOP_LINE_BLOCK = ref();
     const router = useRouter();
@@ -91,7 +97,6 @@ export default {
     }).slideBarMenu;
 
     function itemClick(item) {
-      console.log(item);
       if (item.actionType.url) {
         router.push(item.actionType.url);
         if (!item.slideConfig) {
@@ -188,6 +193,7 @@ $color-f0f0f4: #f0f0f4;
       cursor: pointer;
       border-left: 1px solid $color-f0f0f4;
       border-top: 1px solid $color-f0f0f4;
+      position: relative;
       .b-item-text {
         @include inter(13px, 500, $--b-main-gray-color);
         line-height: 16px;
@@ -195,6 +201,10 @@ $color-f0f0f4: #f0f0f4;
       .b-item-image {
         width: 20px;
         height: 20px;
+      }
+
+      .b-deactivate-item-button {
+        display: none;
       }
 
       &.active {
@@ -206,6 +216,12 @@ $color-f0f0f4: #f0f0f4;
         .b-item-text {
           @include inter(13px, 500, $--b-main-white-color);
           line-height: 16px;
+        }
+
+        .b-deactivate-item-button {
+          display: block;
+          position: absolute;
+          right: 20px;
         }
       }
       &.hide {

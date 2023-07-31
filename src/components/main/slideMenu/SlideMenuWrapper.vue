@@ -295,7 +295,8 @@ export default {
         SLIDE_MENU_WRAPPER_ALL_BLOCK_HEIGHT.value -
         SLIDE_MENU_WRAPPER_TOP_BLOCK_HEIGHT.value -
         SLIDE_MENU_WRAPPER_BOTTOM_BLOCK_HEIGHT.value -
-        slideMenuMainSideMobileBlock.value
+        slideMenuMainSideMobileBlock.value -
+        SLIDE_MENU_MAIN_SIDE_PADDING
       );
     });
 
@@ -314,6 +315,7 @@ export default {
 
     expose({
       slideMenuWrapperMainContentHeight,
+      showPrivacyContextModal,
     });
 
     return {
@@ -356,6 +358,10 @@ $color-dfdeed: #dfdeed;
   width: 100%;
   height: 100%;
   z-index: 2;
+}
+
+.b_slide_menu_bottom-block {
+  padding: 16px 11px;
 }
 
 .b_slide_menu_wrapper {
@@ -415,7 +421,6 @@ $color-dfdeed: #dfdeed;
     }
 
     .b_slide_menu_top-block {
-
       @include beforeDesktop {
         height: 110px;
       }

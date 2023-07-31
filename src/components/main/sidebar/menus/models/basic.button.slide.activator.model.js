@@ -55,10 +55,10 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
         this.activeTab.value = null;
       }
     });
-    watch(this.activeTab, (value) => {
+    watch(this.activeTab, async (value) => {
       if (value) {
         this.activeTab.value.paginationClearData();
-        this.activeTab.value.loadNewData(1, null, false, false);
+        await this.activeTab.value.loadNewData(1, null, false, false);
       }
     });
     this._context = this;
@@ -79,10 +79,8 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
 
   openTab(uniqueName) {
     const foundTab = this.findTab(uniqueName);
-    // FIXME
-    // if (this.activeTab.value && foundTab) {
-    //   this.activeTab.value.paginationClearData();
-    // }
-    this.activeTab.value = foundTab;
+    if (foundTab) {
+      this.activeTab.value = foundTab;
+    }
   }
 }

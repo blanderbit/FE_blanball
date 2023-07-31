@@ -22,7 +22,7 @@
     :menuClosable="config.slideConfig.closable"
     :mainSideWidth="config.slideConfig.width"
     :slideMenuWrapperAnimation="!config.slideConfig.notAnimate"
-    ref="SLIDE_MENU_WRAPPER"
+    ref="SLIDE_MENU_WRAPPER_ELEMENT"
     @close="closeSlideMenu"
   >
     <template #logo>
@@ -141,7 +141,10 @@
       </ul>
     </template>
 
-    <template v-if="config.slideConfig.bottomSideVisible" #bottom-block>
+    <template
+      v-if="config.slideConfig.bottomSideVisible && config.activity"
+      #bottom-block
+    >
       <div class="b_slide_menu_top-line d-flex justify-content-between">
         <div class="b_slide_menu_name">
           {{ userStore.getUserFullName }}
@@ -167,7 +170,10 @@
           Розроблено: FlumX
         </a>
       </div>
-      <div class="b-privacy-links__button">
+      <div
+        class="b-privacy-links__button"
+        @click="SLIDE_MENU_WRAPPER_ELEMENT?.showPrivacyContextModal"
+      >
         <span>
           {{ $t('policy.data-security') }}
         </span>
@@ -219,7 +225,7 @@ export default {
   emits: ['openTab'],
   setup(context, { emit }) {
     const scrollbar = ref();
-    const SLIDE_MENU_WRAPPER = ref();
+    const SLIDE_MENU_WRAPPER_ELEMENT = ref();
     const userStore = useUserDataStore();
     const clientVersion = ref(inject('clientVersion'));
     const routeObject = computed(() => {
@@ -254,7 +260,7 @@ export default {
     });
 
     const slideMenuHeight = computed(() => {
-      return `${SLIDE_MENU_WRAPPER.value?.slideMenuWrapperMainContentHeight}px`;
+      return `${SLIDE_MENU_WRAPPER_ELEMENT.value?.slideMenuWrapperMainContentHeight}px`;
     });
 
     const slideMenuTabStyle = computed(() => {
@@ -298,6 +304,7 @@ export default {
     function openTab(tab) {
       if (tab.uniqueName !== context.config.activeTab.uniqueName) {
         emit('openTab', tab.uniqueName);
+        restartInfiniteScroll();
       }
     }
 
@@ -323,12 +330,12 @@ export default {
       }
     }
 
-    watch(
-      () => context.config.activeTab,
-      () => {
-        restartInfiniteScroll();
-      }
-    );
+    // watch(
+    //   () => context.config.activeTab,
+    //   () => {
+    //     restartInfiniteScroll();
+    //   }
+    // );
 
     return {
       userStore,
@@ -339,7 +346,7 @@ export default {
       contextMenuX,
       contextMenuY,
       slideMenuHeight,
-      SLIDE_MENU_WRAPPER,
+      SLIDE_MENU_WRAPPER_ELEMENT,
       isEmptyListVisible,
       slideMenuTabStyle,
       activeTabRecords,
@@ -381,6 +388,10 @@ $color-efeff6: #efeff6;
 
 .b_slide_menu_bottom-block {
   padding: 16px 11px;
+
+  @include beforeDesktop {
+    display: none;
+  }
 
   .b-privacy-links__button {
     @include inter(12px, 400, $--b-main-gray-color);

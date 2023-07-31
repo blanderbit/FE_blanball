@@ -135,6 +135,7 @@ export const createChatConfigItem = (routerInstance) => {
       }
     }
   );
+  
 
   const createChatMessageMessageHandler = (messageData) => {
     const { paginationElements } = chatItem.activeTab.value;
