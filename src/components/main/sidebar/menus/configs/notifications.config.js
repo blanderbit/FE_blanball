@@ -229,6 +229,9 @@ export const createNotificationConfigItem = (routerInstance) => {
                     !notificationItem.activeTab.value?.paginationElements.length
                   ),
                   mainColor: '#575775',
+                  fontStyles: {
+                    'font-side': '12px'
+                  },
                   icon: ReadAllNotificationsIcon,
                   height: 32,
                 };
@@ -250,6 +253,9 @@ export const createNotificationConfigItem = (routerInstance) => {
                   isBorder: true,
                   borderColor: '#DFDEED',
                   mainColor: '#575775',
+                  fontStyles: {
+                    'font-side': '12px'
+                  },
                   hideElement: Boolean(
                     !notificationItem.activeTab.value?.paginationElements.length
                   ),

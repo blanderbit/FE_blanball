@@ -72,7 +72,9 @@
           </slot>
         </div>
         <ul>
-          <slot v-if="isSlideMenuWrapperDesktop" name="main-content"></slot>
+          <div v-if="isSlideMenuWrapperDesktop">
+            <slot name="main-content"></slot>
+          </div>
 
           <MobileMenuSlideMenuMainContent
             v-else

@@ -56,13 +56,19 @@ export const dinamicMenu = (instance) => {
     }),
     new BasicButtonModel({
       uniqueName: 'settings.point',
+      title: 'slide_menu.settings',
       icon: settings,
-      disabled: true,
+      disabled: false,
+      actionType: new ActionModelTypeUrl({
+        url: ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute,
+        action: closeCurrentActiveSlideMenu,
+      }),
     }),
     new BasicButtonModel({
       uniqueName: 'bug_report.point',
       icon: bugReport,
       class: 'b-bug-report__icon',
+      hideOnMobile: true,
       actionType: new ActionModelTypeButton({
         action: () => {
           BlanballEventBus.emit('OpenBugReportModal');
