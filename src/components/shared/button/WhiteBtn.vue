@@ -5,7 +5,7 @@
     @click.stop="!disabled && $emit('click-function', $event)"
   >
     <img v-if="icon" class="b_wbite-btn-left-icon" :src="icon" alt="" />
-    {{ btnText }}
+    {{ typeof $t === 'function' ? $t(text) : text }}
     <img
       v-if="rightIcon"
       class="b_wbite-btn-right-icon"
@@ -17,7 +17,6 @@
 
 <script>
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 export default {
   props: {
@@ -66,16 +65,6 @@ export default {
       return props.width ? props.width + 'px' : '100%';
     });
 
-    const { t } = useI18n();
-
-    const btnText = computed(() => {
-      try {
-        return t(props.text);
-      } catch {
-        return props.text;
-      }
-    });
-
     const styles = computed(() => {
       return {
         ...props.fontStyles,
@@ -94,7 +83,6 @@ export default {
 
     return {
       btnWidth,
-      btnText,
       styles,
     };
   },
@@ -110,7 +98,7 @@ export default {
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
   user-select: none;
   .b_wbite-btn-left-icon {

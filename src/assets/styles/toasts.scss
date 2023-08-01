@@ -1,0 +1,113 @@
+.Vue-Toastification__toast {
+  background: #262541;
+  width: 308px;
+  padding: 16px;
+
+  svg {
+    margin: 0px 8px 0px 0px;
+  }
+}
+
+.Vue-Toastification__toast {
+  svg {
+    margin-top: 5px;
+  }
+}
+
+.Vue-Toastification__close-button {
+  height: fit-content;
+  font-size: 24px;
+  padding: 0px;
+  font-weight: 100;
+  opacity: initial;
+}
+
+@mixin resetToastStyles($iconUrl) {
+  .Vue-Toastification__icon {
+    margin: 0px;
+    width: max-content;
+    margin-right: 8px;
+    margin-top: 3px;
+  }
+
+  .toast-custom-icon {
+    content: url($iconUrl);
+    height: fit-content;
+  }
+
+  .Vue-Toastification__progress-bar {
+    background-color: transparent;
+  }
+
+  .Vue-Toastification__toast-body {
+    max-width: 90%;
+  }
+
+  .Vue-Toastification__close-button {
+    color: $--b-main-black-color;
+  }
+}
+
+.Vue-Toastification__toast--success {
+  @include resetToastStyles('../img/toasts/toast-success.svg');
+  @include inter(14px, 400);
+  border-radius: 6px;
+  border: 1px solid $--b-main-green-color;
+  background: #e3fbfa;
+  justify-content: initial;
+  padding: 8px;
+}
+.Vue-Toastification__toast--error {
+  @include resetToastStyles('../img/toasts/toast-error.svg');
+  @include inter(14px, 400);
+  border-radius: 6px;
+  border: 1px solid #f32929;
+  background: #ffe8e8;
+  justify-content: initial;
+  padding: 8px;
+}
+.Vue-Toastification__toast--warning {
+  @include resetToastStyles('../img/toasts/toast-warning.svg');
+  @include inter(14px, 400);
+  border-radius: 6px;
+  border: 1px solid #F57125;
+  background: #FEF1E9;
+  justify-content: initial;
+  padding: 8px;
+}
+.Vue-Toastification__toast--info {
+  @include resetToastStyles('../img/toasts/toast-info.svg');
+  @include inter(14px, 400);
+  border-radius: 6px;
+  background: #f0f0f5;
+  line-height: 20px;
+  justify-content: initial;
+  padding: 8px;
+}
+
+.notification-success {
+  background: radial-gradient(
+      240.34% 150.94% at 34.38% 36.36%,
+      rgba(10, 230, 244, 0.3) 0%,
+      rgba(10, 224, 185, 0) 100%
+    ),
+    #262541;
+
+  padding: 16px;
+
+  .Vue-Toastification__close-button {
+    color: #fff;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+}
+
+.notification-error {
+  background: radial-gradient(
+      240.34% 150.94% at 34.38% 36.36%,
+      rgba(224, 10, 48, 0.3) 0%,
+      rgba(224, 10, 48, 0) 100%
+    ),
+    #262541;
+}

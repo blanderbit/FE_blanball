@@ -1,15 +1,6 @@
 @import '../../../node_modules/vue-toastification/dist/index.css';
 @import './variables.scss';
-
-.Vue-Toastification__toast {
-  background: #262541;
-  width: 308px;
-  padding: 16px;
-
-  svg {
-    margin: 0px 8px 0px 0px;
-  }
-}
+@import './toasts.scss';
 
 .sidebar-light {
   z-index: 520 !important;
@@ -49,80 +40,6 @@ html {
 
 input[type='password']::-ms-reveal {
   display: none;
-}
-
-.Vue-Toastification__toast--success {
-  background: #f4fde8;
-  border: 1px solid #71ba12;
-  border-radius: 6px;
-  color: #262541;
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 20px;
-  color: #262541;
-}
-.Vue-Toastification__toast--error {
-  background: #ffeeee;
-  border: 1px solid #f43e3e;
-  border-radius: 6px;
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 20px;
-  color: #262541;
-}
-.Vue-Toastification__toast--warning {
-  background: #fff4ec;
-  border: 1px solid #f6803c;
-  border-radius: 6px;
-  color: #262541;
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 20px;
-  color: #262541;
-}
-.Vue-Toastification__toast--info {
-  background: #f9f9fc;
-  border: 1px solid #dfdeed;
-  border-radius: 6px;
-  color: #262541;
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 20px;
-  color: #262541;
-  position: relative;
-}
-
-.Vue-Toastification__close-button {
-  color: #fff;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-
-.notification-success {
-  background: radial-gradient(
-      240.34% 150.94% at 34.38% 36.36%,
-      rgba(10, 230, 244, 0.3) 0%,
-      rgba(10, 224, 185, 0) 100%
-    ),
-    #262541;
-}
-
-.notification-error {
-  background: radial-gradient(
-      240.34% 150.94% at 34.38% 36.36%,
-      rgba(224, 10, 48, 0.3) 0%,
-      rgba(224, 10, 48, 0) 100%
-    ),
-    #262541;
 }
 
 :root {

@@ -98,8 +98,6 @@
 <script>
 import { computed } from 'vue';
 
-import { useDevice } from 'next-vue-device-detector';
-
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import PlaceDetectorModal from '@mainComponents/maps/PlaceDetectorModal.vue';
 import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
@@ -121,7 +119,6 @@ export default {
     WhiteBtn,
   },
   setup(props, context) {
-    const device = useDevice();
 
     const eventJoin = (e) => {
       context.emit('eventJoin', e);
@@ -147,7 +144,6 @@ export default {
     });
 
     return {
-      device,
       greenButtonAvalable,
       whiteButtonText,
       eventJoin,

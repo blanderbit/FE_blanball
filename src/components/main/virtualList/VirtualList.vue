@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import Notification from './Notification.vue';
+import Notification from '../notifications/Notification.vue';
 import ChatCard from '../chat/ChatCard.vue';
 import { useRouter } from 'vue-router';
 import {

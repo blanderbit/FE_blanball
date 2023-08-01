@@ -23,7 +23,6 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
   activity = ref(false);
   selectable = ref(false);
   activeTab = ref();
-  _context;
 
   constructor(options) {
     super(options);
@@ -61,7 +60,6 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
         await this.activeTab.value.loadNewData(1, null, false, false);
       }
     });
-    this._context = this;
   }
 
   onInit() {}

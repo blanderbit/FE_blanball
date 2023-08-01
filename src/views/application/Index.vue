@@ -296,7 +296,7 @@ const getToastOptions = (notificationInstance, toastId) => {
     componentOptions: {
       component: Notification,
       props: {
-        notificationInstance,
+        instanceData: notificationInstance,
         notificationType: 'notification-push',
       },
       listeners: {
@@ -495,7 +495,6 @@ const isSchedulerOpened = ref(false);
 <style lang="scss">
 $color-272643: #272643;
 $color-454461: #454461;
-
 html {
   overflow: hidden;
 }

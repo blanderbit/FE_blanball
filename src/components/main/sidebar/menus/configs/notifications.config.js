@@ -134,6 +134,7 @@ export const createNotificationConfigItem = (routerInstance) => {
     const { paginationElements, paginationLoad, paginationPage } =
       notificationItem.activeTab.value;
     if (instanceType.notification) {
+      console.log(notificationItem)
       notificationItem
         .getFilters()
         .skipids.value.push(instanceType.notification_id);
@@ -175,6 +176,7 @@ export const createNotificationConfigItem = (routerInstance) => {
     }),
     onInit() {
       NotificationsBus.on('SidebarClearData', () => {
+        console.log(notificationItem)
         const skipids = notificationItem.getFilters().skipids;
         skipids.value = [];
         notificationItem.activeTab.value.paginationClearData();
@@ -183,6 +185,7 @@ export const createNotificationConfigItem = (routerInstance) => {
       NotificationsBus.on(
         'hanlderToRemoveNewNotificationsInSidebar',
         (notificationId) => {
+          console.log(notificationItem)
           const skipids = notificationItem.getFilters().skipids;
           const index = skipids.value.indexOf(notificationId);
 

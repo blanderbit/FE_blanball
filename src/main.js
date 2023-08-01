@@ -1,7 +1,5 @@
 import { createApp } from 'vue';
 
-import { createDeviceDetector } from 'next-vue-device-detector';
-
 import VCalendar from 'v-calendar';
 import Toast from 'vue-toastification';
 
@@ -44,8 +42,11 @@ app
   .use(router)
   .use(i18n)
   .use(VCalendar, {})
-  .use(Toast)
+  .use(Toast, {
+    icon: {
+      iconClass: 'toast-custom-icon',
+    },
+  })
   .use(Maska)
-  .use(createDeviceDetector())
   .directive('hints', hintsDirective)
   .mount('#app');

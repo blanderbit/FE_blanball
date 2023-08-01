@@ -75,7 +75,6 @@ import StepWrapper from './StepWrapper.vue';
 
 import { PositionMapBus } from '@workers/event-bus-worker';
 import { API } from '@workers/api-worker/api.worker';
-import { useDevice } from 'next-vue-device-detector';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
 import { CONSTS } from '@consts/index';
@@ -124,7 +123,6 @@ export default {
     });
     let timeout;
     const { t } = useI18n();
-    const device = useDevice();
     const stepConfig = computed(() => ({
       title: t('register.locations'),
       subTitle: t('register.which-areas'),
@@ -158,7 +156,6 @@ export default {
       address,
       stepConfig,
       nextButton,
-      device,
       isMobile,
       async changeRegions(e) {
         region.value = e;
