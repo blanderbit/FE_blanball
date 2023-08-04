@@ -210,7 +210,9 @@
           }}</span>
           <div class="b-bottom-block__company">
             <img src="@images/logo-flumx.svg" alt="" />
-            <span>{{ $t('slide_menu.flumx') }}</span>
+            <a :href="FLUMX_SITE_URL" target="_blank">{{
+              $t('slide_menu.flumx')
+            }}</a>
           </div>
         </div>
       </div>
@@ -525,6 +527,10 @@ export default {
       });
     }
 
+    const FLUMX_SITE_URL = computed(() => {
+      return process.env.FLUMX_SITE_URL;
+    });
+
     const mobileMenuTopSideHeightConfig = ref({
       default: [60, 32, 48, 16],
       mobile: [selectedList.value.length ? 10 : 0],
@@ -688,6 +694,7 @@ export default {
       mobileMenuTopSideHeight,
       privacyContextModalItems,
       selectedTabId,
+      FLUMX_SITE_URL,
       triggerForRestart,
       privacyContextModalX,
       privacyContextModalY,

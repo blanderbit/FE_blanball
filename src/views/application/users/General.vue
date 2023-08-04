@@ -68,7 +68,7 @@
                 <emptyList
                   v-if="!paginationElements.length"
                   :title="emptyListMessages.title"
-                  :description="emptyListMessages.title"
+                  :description="emptyListMessages.description"
                 />
 
                 <ScrollToTop
