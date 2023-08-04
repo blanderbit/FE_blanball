@@ -284,6 +284,7 @@ $color-fff4ec: #fff4ec;
             align-items: center;
 
             img {
+              max-width: 20px;
               &:hover {
                 animation: shake 0.4s linear;
               }

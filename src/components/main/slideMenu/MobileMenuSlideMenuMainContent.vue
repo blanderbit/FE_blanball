@@ -23,7 +23,7 @@
         ]"
         @click="itemClick(item)"
       >
-        <img class="b-item-image" :src="item.icon" alt="" />
+        <img class="b-item-image" :src="item.icon.value || item.icon" alt="" />
         <div v-if="item.title" class="b-item-text">{{ $t(item.title) }}</div>
         <img
           class="b-deactivate-item-button"

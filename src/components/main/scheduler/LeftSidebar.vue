@@ -15,7 +15,7 @@
           inputMode="search"
           v-model="searchFriendsValue"
           :height="36"
-          :width="240"
+          :width="10"
           :icon="icons.search"
           :backgroundColor="'#fff'"
           name="search"

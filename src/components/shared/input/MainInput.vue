@@ -338,7 +338,6 @@ $color-dfdeed: #dfdeed;
       width: 40px;
       background: $--b-main-white-color;
       border-radius: 6px;
-      margin-right: 8px;
       cursor: pointer;
       img {
         margin: auto;

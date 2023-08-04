@@ -20,6 +20,7 @@
       'b-chat-messages__list',
       { 'no-messages': !paginationElements.length },
     ]"
+    ref="CHAT_MESSAGES_LIST_ROOT_ELEMENT_REF"
     :style="heightStyle"
     @keydown.up="
       smoothScrollUp(MESSAGES_SCROLL_SPEED, MESSAGES_SCROLL_ANIMATION_DURATION)
@@ -138,6 +139,7 @@ export default {
     const blockScrollToTopIfExist = ref(false);
 
     const MESSAGES_LIST_RECYCLE_SCROLLER_WRAPPER_ELEMENT = ref(null);
+    const CHAT_MESSAGES_LIST_ROOT_ELEMENT_REF = ref(null);
     const isContextMenuOpened = ref(false);
     const contextMenuX = ref(null);
     const contextMenuY = ref(null);
@@ -189,13 +191,6 @@ export default {
       const oldListLastElement = list.at(-1);
       const newListFirstElement = newList.at(0);
       if (oldListLastElement && newListFirstElement) {
-        console.log(
-          setShowSenderMessageAvatarAndIsTheNextMessageFromTheSameAuthor(
-            oldListLastElement,
-            newListFirstElement
-          )
-        );
-
         Object.assign(
           oldListLastElement,
           setShowSenderMessageAvatarAndIsTheNextMessageFromTheSameAuthor(
@@ -430,16 +425,46 @@ export default {
       ChatWebSocketTypes.DeleteMesssages
     );
 
-    const grabMessagesToReadOnScroll = debounce(() => {
-      console.log(
+    const chatMessagesListHeightValue = computed(() => {
+      return parseInt(props.heightStyle);
+    });
+
+    const messagesIdsToRead = ref([]);
+
+    const grabMessagesToReadOnScroll = () => {
+      const messages =
         MESSAGES_LIST_RECYCLE_SCROLLER_WRAPPER_ELEMENT.value.element.__vnode.ctx
-          .data.pool
-      );
-    }, 50);
+          .data.pool;
+      const minMessagePosition = 0;
+      const maxMessagePosition = chatMessagesListHeightValue.value;
+
+      messages.forEach((message) => {
+        if (
+          message.position >= minMessagePosition &&
+          message.position <= maxMessagePosition
+        ) {
+          const isMessageMine = message.item.item.isMine;
+          const isMessageAlreadyReadByMe = message.item.item.read_by.includes(
+            userStore.user.id
+          );
+          const isMesasgeAlreadyInTheListToRead =
+            messagesIdsToRead.value.includes(message.item.id);
+
+          const isMessageAbleToRead =
+            !isMessageMine &&
+            !isMessageAlreadyReadByMe &&
+            !isMesasgeAlreadyInTheListToRead;
+
+          if (isMessageAbleToRead) {
+            messagesIdsToRead.value.push(message.item.id);
+          }
+        }
+      });
+    };
 
     onMounted(() => {
       MESSAGES_LIST_RECYCLE_SCROLLER_WRAPPER_ELEMENT.value = {
-        element: document.querySelector(
+        element: CHAT_MESSAGES_LIST_ROOT_ELEMENT_REF.value.querySelector(
           RECYCLE_SCROLLER_WRAPPER_ELEMENT_SELECTOR
         ),
       };
@@ -498,8 +523,8 @@ export default {
       paginationPage,
       selectedMessages,
       isActionModalOpened,
-      grabMessagesToReadOnScroll,
       actionModalConfig,
+      CHAT_MESSAGES_LIST_ROOT_ELEMENT_REF,
       MESSAGES_LIST_VERTICAL_GAP_PX,
       paginationIsNextPage,
       MESSAGES_SCROLL_SPEED,
@@ -514,6 +539,7 @@ export default {
       smoothScrollUp,
       showActionModal,
       closeActionModal,
+      grabMessagesToReadOnScroll,
     };
   },
 };
@@ -525,8 +551,10 @@ export default {
     background: #efeff6;
   }
 }
+
 .b-chat-messages__list {
   overflow: scroll;
+
   &.no-messages {
     height: 100%;
   }
