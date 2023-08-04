@@ -62,20 +62,20 @@ export default {
     'Ви не можете залишити відгук про самого себе',
 
   invalid_page: 'Такої сторінки не існує',
-  not_found: '"{field}" - объект не был найден!',
+  not_found: 'На жаль, але такого "{field}" не було знайдено',
   required: 'Поле "{field}" обов`язкове для заповнення',
-  does_not_exist: '"{field}" - не існує',
+  does_not_exist: 'На жаль, але такого "{field}" не було знайдено',
   invalid_choice: 'Поле "{field}" Выбрано с неправильным значением!',
   unique: 'Поле "{field}" має бути унікальним',
   min_value: 'Ви ввели у значення менше мінімального для поля "{field}"',
   max_value: 'Ви ввели у значення більше максимального для поля "{field}"',
-  blank: 'Поле "{field}" не может быть пустым!',
+  blank: 'Поле "{field}" має бути заповненим',
 
   authentication_credentials_were_not_provided:
     'Не предоставлены учетные данные для аутентификации',
   authentication_token_not_valid: 'Не валідний токен аутентифікації',
   bad_authentication_token: 'Не валідний токен аутентифікації',
-  avatar_max_size_1_mb: 'Завантажене фото підвищує ліміт 1мб',
+  avatar_max_size_1_mb: 'Завантажене фото перевищує ліміт 1мб',
   profile_avatar_updated: 'Ваш аватар профілю був успішно оновлений',
   code_is_valid: 'Код для сбросу пароля валідний',
   phone_invalid_phone_number: 'Перевірте правильність введеного номера телефону',
@@ -88,9 +88,9 @@ export default {
     re_password: 'Підтвердіть пароль',
     get_planned_events: 'Заплановані події',
     configuration: 'Конфіденційність',
-    user: 'Користувач',
-    event: 'Подія',
-    notification: 'Нотифікація',
+    user: 'Користувача',
+    event: 'Події',
+    notification: 'Нотифікації',
     profile: {
       place: {
         place_name: 'Адреса',
