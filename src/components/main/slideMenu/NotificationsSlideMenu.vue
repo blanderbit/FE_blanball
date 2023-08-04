@@ -20,7 +20,7 @@
     @close="$emit('update:isMenuOpened', $event)"
   >
     <template #logo>
-      <img src="../../assets/img/logo-sidebar.svg" alt="" />
+      <img src="@images/logo-sidebar.svg" alt="" />
     </template>
 
     <template #top-side>
@@ -34,7 +34,7 @@
           @click="HandleAction.readAll()"
         >
           <img
-            src="../../assets/img/notifications/double-check.svg"
+            src="@images/notifications/double-check.svg"
             height="16"
             alt=""
           />
@@ -53,7 +53,7 @@
           <span v-else class="b-button-text">
             {{ $t('slide_menu.cancel-manage') }}
           </span>
-          <img v-if="!selectable" src="../../assets/img/dots.svg" alt="" />
+          <img v-if="!selectable" src="@images/dots.svg" alt="" />
         </button>
       </div>
       <div
@@ -62,7 +62,7 @@
       >
         <div class="b-selected-elements__count">
           <img
-            src="../../assets/img/cross.svg"
+            src="@images/cross.svg"
             alt=""
             @click="clearSelectedList"
           />
@@ -81,7 +81,7 @@
             class="d-flex align-items-center"
           >
             <img
-              src="../../assets/img/notifications/double-check.svg"
+              src="@images/notifications/double-check.svg"
               height="16"
               alt=""
             />
@@ -97,7 +97,7 @@
             class="d-flex align-items-center"
           >
             <img
-              src="../../assets/img/notifications/trash.svg"
+              src="@images/notifications/trash.svg"
               height="16"
               alt=""
             />

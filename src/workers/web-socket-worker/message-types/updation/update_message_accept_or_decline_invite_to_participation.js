@@ -6,7 +6,7 @@ import { WebSocketTypes } from '../../web.socket.types';
 @SetMessageType(WebSocketTypes.UpdateMessageAcceptOrDeclineParticipationToEvent)
 export class UpdateMessageAcceptOrDeclineParticipationToEventUpdation extends InitialUpdation {
   handleUpdate({ paginationElements }) {
-    const notificationForUpdate = paginationElements.find(
+    const notificationForUpdate = paginationElements.value.find(
       (item) => item.notification_id === this.data.notification.id
     );
     if (notificationForUpdate) {

@@ -206,7 +206,6 @@ $color-4c4a82: #4c4a82;
     }
 
     .b-my-event-card__col-2 {
-      min-width: 100%;
       .b-my-event-card__title {
         font-family: 'Exo 2';
         font-style: normal;
@@ -283,7 +282,8 @@ $color-4c4a82: #4c4a82;
       flex-direction: column;
       align-items: flex-end;
       justify-content: center;
-      margin-left: -20px;
+      margin-left: -120px;
+      position: absolute;
 
       .b-my-event-card__state {
         @include inter(13px, 400);

@@ -9,7 +9,10 @@ const unsecuredCopyToClipboard = (text) => {
   } catch (err) {
     console.error('Unable to copy to clipboard', err);
   }
-  document.body.removeChild(textArea);
+  // Add a slight delay before removing the textarea
+  setTimeout(() => {
+    document.body.removeChild(textArea);
+  }, 100);
 };
 
 /**

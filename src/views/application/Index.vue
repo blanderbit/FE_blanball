@@ -296,7 +296,7 @@ const getToastOptions = (notificationInstance, toastId) => {
     componentOptions: {
       component: Notification,
       props: {
-        instanceData: notificationInstance,
+        notificationInstance: notificationInstance,
         notificationType: 'notification-push',
       },
       listeners: {

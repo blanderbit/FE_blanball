@@ -120,12 +120,12 @@
           </span>
         </div>
         <div class="b-public-profile__buttons-block">
-          <div
+          <!-- <div
             class="b-public-profile__invite-button"
             @click="openInviteUserModal"
           >
             {{ $t('player_page.invite') }}
-          </div>
+          </div> -->
           <div class="b-public-profile__connection-buttons">
             <WhiteBtn
               v-if="userData.configuration.email"

@@ -241,6 +241,10 @@ import { calcHeight } from '@workers/window-size-worker/calcHeight';
 
 import { ROUTES } from '@routes/router.const';
 import { CONSTS } from '@consts/index';
+import {
+  startSpinner,
+  finishSpinner,
+} from '@/workers/loading-worker/loading.worker';
 
 import NotificationIcon from '@images/notification-mob-default.svg';
 import NotificationWhite from '@images/notifications-not-read-mobile-icon.svg';

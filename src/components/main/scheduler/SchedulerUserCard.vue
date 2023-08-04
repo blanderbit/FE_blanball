@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    <div v-if="isActive && type === 'friend'" class="c-invite-user-to-event">
+    <!-- <div v-if="isActive && type === 'friend'" class="c-invite-user-to-event">
       <GreenBtn
         class="c-invite-button"
         :height="32"
@@ -39,7 +39,7 @@
           alt=""
         />
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
