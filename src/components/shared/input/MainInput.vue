@@ -204,7 +204,7 @@ export default {
           inputType.value = PASSWORD_TYPES.PASSWORD;
         }
       } else {
-        emit('icon-click');
+        emit('rightIconClick');
       }
     }
 

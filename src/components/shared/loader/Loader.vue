@@ -69,6 +69,35 @@ $color-efeff6: #efeff6;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    container-type: inline-size;
+
+    @container (width < 150px) {
+      .spinner__ring::before {
+        position: absolute;
+        top: 8px;
+        left: 6px;
+      }
+
+      .spinner__ring::after {
+        position: absolute;
+        bottom: 8px;
+        right: 6px;
+      }
+    }
+
+    @container (width > 150px) {
+      .spinner__ring::before {
+        position: absolute;
+        top: 12px;
+        left: 8px;
+      }
+
+      .spinner__ring::after {
+        position: absolute;
+        bottom: 12px;
+        right: 8px;
+      }
+    }
   }
 }
 
@@ -100,8 +129,15 @@ $color-efeff6: #efeff6;
   width: 12px;
   height: 12px;
   border-radius: 100px;
-  background: linear-gradient(rgba(20, 135, 131, 0) 50%, $--b-main-green-color 50%),
-    linear-gradient(106.25deg, $--b-main-green-color 12.19%, rgba(69, 208, 204, 0.1) 102.49%);
+  background: linear-gradient(
+      rgba(20, 135, 131, 0) 50%,
+      $--b-main-green-color 50%
+    ),
+    linear-gradient(
+      106.25deg,
+      $--b-main-green-color 12.19%,
+      rgba(69, 208, 204, 0.1) 102.49%
+    );
 }
 
 .spinner__ring::before {
@@ -110,18 +146,6 @@ $color-efeff6: #efeff6;
 
 .spinner__ring::after {
   transform: rotate(-45deg);
-}
-
-.spinner__ring::before {
-  position: absolute;
-  top: 8px;
-  left: 6px;
-}
-
-.spinner__ring::after {
-  position: absolute;
-  bottom: 8px;
-  right: 6px;
 }
 
 @keyframes spinner-rotate {
