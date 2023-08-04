@@ -18,7 +18,6 @@ export const APPLICATION_INDEX_ROUTE = {
   component: () => import('../../views/application/Index.vue'),
   redirect: ROUTES.APPLICATION.EVENTS.absolute,
   children: [
-    CHAT_ROUTE,
     EVENTS_ROUTE,
     VERSIONS_ROUTE,
     MY_PROFILE_ROUTE,

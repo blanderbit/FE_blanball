@@ -20,10 +20,13 @@
         <span>{{ title }}</span>
       </div>
       <div
-        v-if="iconLeft.length"
-        class="b-input__icon-left"
-        @click="leftIconClick"
+        v-if="rightIcon?.length"
+        class="b-input__icon"
+        @click="iconClickAction"
       >
+        <img :src="rightIcon" alt="" />
+      </div>
+      <div v-if="iconLeft.length" class="b-input__icon-left">
         <img :src="iconLeft" alt="" />
       </div>
       <slot
@@ -51,16 +54,6 @@
           @blur="onUnFocus"
         />
       </slot>
-      <div v-if="inputRightText" class="b-input__right-text">
-        {{ inputRightText }}
-      </div>
-      <div
-        v-if="rightIcon.length"
-        class="b-input__icon"
-        @click="rightIconClick"
-      >
-        <img :src="rightIcon" alt="" />
-      </div>
     </div>
     <p class="b-input__error-message">
       {{ modelErrorMessage ? t(modelErrorMessage) : '' }}
@@ -72,10 +65,10 @@
 import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { CustomModelWorker } from '@workers/custom-model-worker/index';
+import { CustomModelWorker } from '../../../workers/custom-model-worker/index';
 
-import eyeCross from '@images/eye-crossed.svg';
-import eyeOpen from '@images/eye-opened.svg';
+import eyeCross from '../../../assets/img/eye-crossed.svg';
+import eyeOpen from '../../../assets/img/eye-opened.svg';
 
 const PASSWORD_TYPES = {
   PASSWORD: 'password',
@@ -154,14 +147,9 @@ export default {
       type: String,
       default: '',
     },
-    inputRightText: {
-      type: String,
-      default: '',
-    },
   },
   emits: [
-    'rightIconClick',
-    'leftIconClick',
+    'iconClick',
     'onClickAction',
     'sendInputCoordinates',
     'update:modelValue',
@@ -195,8 +183,8 @@ export default {
 
     const inputStyle = computed(() => {
       return {
-        'padding-left': '10px',
-        'padding-right': '10px',
+        'padding-left': 10 + props.titleWidth + 'px',
+        'padding-right': rightIcon.value?.length ? '50px' : '10px',
       };
     });
     const inputWrapper = computed(() => {
@@ -206,7 +194,7 @@ export default {
       };
     });
 
-    function rightIconClick(e) {
+    function iconClickAction() {
       if (props.type === PASSWORD_TYPES.PASSWORD) {
         if (inputType.value === PASSWORD_TYPES.PASSWORD) {
           rightIcon.value = eyeOpen;
@@ -216,12 +204,8 @@ export default {
           inputType.value = PASSWORD_TYPES.PASSWORD;
         }
       } else {
-        emit('rightIconClick', e);
+        emit('icon-click');
       }
-    }
-
-    function leftIconClick(e) {
-      emit('leftIconClick', e);
     }
 
     function resizeFunction() {
@@ -269,7 +253,7 @@ export default {
     });
 
     const onFocus = () => {
-      if (!props.isReadOnly && !props.isDisabled) {
+      if (!props.isReadOnly) {
         isFocused.value = true;
       }
     };
@@ -282,10 +266,9 @@ export default {
 
     const { t } = useI18n();
     return {
-      rightIconClick,
+      iconClickAction,
       onFocus,
       onUnFocus,
-      leftIconClick,
       titleValue,
       isFocused,
       staticModelValue,
@@ -310,7 +293,7 @@ $color-a8a8bd: #a8a8bd;
 // SCSS variables for hex colors
 $color-dfdeed: #dfdeed;
 
-@import '@sytles/forms.scss';
+@import '../../../assets/styles/forms.scss';
 .b-input__input-component {
   height: 100%;
   width: 100%;
@@ -325,46 +308,34 @@ $color-dfdeed: #dfdeed;
     font-size: 13px;
     line-height: 24px;
     color: $--b-main-black-color;
-    display: flex;
     &.focused {
       border: 1.5px solid $color-8a8aa8;
     }
     &.disabled {
-      border: 1px solid $color-d9d9d9;
+      border: 1px solid #d9d9d9;
     }
     .b-input__icon {
       display: flex;
       height: 100%;
-      width: 40px;
-      background: $--b-main-white-color;
+      width: 48px;
+      position: absolute;
+      top: 0;
+      right: 0;
       border-radius: 6px;
       cursor: pointer;
       img {
         margin: auto;
       }
     }
-
-    .b-input__right-text {
-      @include inter(14px, 400, #6e6d80);
-      line-height: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-right: 12px;
-
-      @include mobile {
-        @include inter(12px, 400, #6e6d80);
-        line-height: 12px;
-        margin-right: 8px;
-      }
-    }
     .b-input__icon-left {
       display: flex;
       height: 100%;
       width: 40px;
+      position: absolute;
+      top: 0;
+      left: 0;
       background: $--b-main-white-color;
       border-radius: 6px;
-      margin-left: 8px;
       cursor: pointer;
       img {
         margin: auto;
@@ -423,7 +394,7 @@ $color-dfdeed: #dfdeed;
       }
 
       &.disabled {
-        color: $color-a8a8bd;
+        color: #a8a8bd;
       }
     }
   }

@@ -32,7 +32,7 @@
             name="show_reviews"
           />
         </div>
-        <div class="b-hide-events__button">
+        <!-- <div class="b-hide-events__button">
           <MainInput
             :placeholder="'7 подій приховано'"
             :isDisabled="true"
@@ -42,7 +42,7 @@
             @click="$emit('openHideEventsModal')"
             name="change_email"
           />
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="b-security__top-table">

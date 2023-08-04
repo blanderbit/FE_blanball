@@ -278,12 +278,6 @@ export default {
       async handleUpdate(data) {
         const { valid } = await data.validate();
         if (!valid) return;
-        if (
-          currentStep.value === 10 &&
-          (!initialValues.value.lat || !initialValues.value.lon)
-        ) {
-          return;
-        }
         initialValues.value = merge(initialValues.value, data.controlledValues);
         const actionsSteps = [8, 9, 10];
         if (actionsSteps.includes(currentStep.value)) {
@@ -314,6 +308,7 @@ export default {
               return await goToEvents();
             }
           } catch (e) {
+            console.log(e);
             return;
           }
         }
