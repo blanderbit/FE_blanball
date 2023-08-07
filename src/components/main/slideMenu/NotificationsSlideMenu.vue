@@ -242,7 +242,7 @@ import { ROUTES } from '@routes/router.const';
 import { CONSTS } from '@consts';
 
 import sidebarArrowBack from '@images/sidebar-arrow-back.svg';
-import sidebarArrow from '@images/img/sidebar-arrow.svg';
+import sidebarArrow from '@images/sidebar-arrow.svg';
 import EmptyNotificationsIcon from '@images/no-records/empty-notifications.svg';
 
 export default {
