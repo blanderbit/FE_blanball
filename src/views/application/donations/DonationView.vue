@@ -91,9 +91,14 @@
 
           <div class="b-donation-fund-top-container-circle">
             <div class="b-donation-fund-aim-percentage">
-              <span>30</span><span>%</span>
+              <span>{{ percentageMock }}</span
+              ><span>%</span>
             </div>
             <span class="b-donation-fund-raised-text">Збору закрито</span>
+            <CircularProgress
+              class="b-donation-fund-raised-stat-circle-svg"
+              :percent="percentageMock"
+            />
           </div>
         </div>
 
@@ -111,21 +116,21 @@
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import LinearProgress from '../../../components/shared/progress/LinearProgress.vue';
 import RadioButton from '../../../components/shared/radioButton/RadioButton.vue';
 import WhiteBtn from '../../../components/shared/button/WhiteBtn.vue';
 import GreenBtn from '../../../components/shared/button/GreenBtn.vue';
 import MainInput from '../../../components/shared/input/MainInput.vue';
 // import Switcher from '../../../components/shared/switcher/Switcher.vue';
+import CircularProgress from '../../../components/shared/progress/CircularProgress.vue';
 
 import img from '../../../assets/img/donation.svg';
 
 //NOTE: mock until EP for donation is ready
 const nameMock = 'Розширення можливостей BlanBall';
 const descriptionMock = `Підтримайте розробку нової функції спортивного додатку BlanBall! Перед вами відкривається можливість зробити внесок у розмірі 5000 грн, щоб підтримати розробку цікавої та корисної функціональності. Ваша підтримка допоможе нам забезпечити ще більше можливостей для наших користувачів. Приєднуйтесь до нас у цьому захоплюючому шляху розвитку BlanBall! Дякуємо за вашу підтримку!`;
-const raisedMock = 378;
+const raisedMock = 978;
 const aimMock = 3000;
-const percentageMock = 30;
+const percentageMock = ((raisedMock * 100) / aimMock).toFixed(0);
 
 const amountOptions = [25, 50, 75, 100, 250];
 const currencyDict = {
@@ -140,11 +145,11 @@ const currencySignDict = {
 export default {
   name: 'DonationView',
   components: {
-    LinearProgress,
     RadioButton,
     WhiteBtn,
     GreenBtn,
     MainInput,
+    CircularProgress,
     // Switcher,
   },
   setup() {
@@ -450,5 +455,10 @@ export default {
   border: 1.5px solid #148783;
   background: #e3fbfa;
   margin-top: 16px;
+}
+
+.b-donation-fund-raised-stat-circle-svg {
+  position: absolute;
+  fill: none;
 }
 </style>
