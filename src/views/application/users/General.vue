@@ -193,6 +193,7 @@ export default {
 
     paginationPage.value = 1;
     paginationElements.value = route.meta.allUsersData.data.results;
+    paginationTotalCount.value = route.meta.allUsersData.data.total_count;
 
     const { getRawFilters, filters, setFilters, clearFilters } = FilterPatch({
       router,

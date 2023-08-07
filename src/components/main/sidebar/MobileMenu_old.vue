@@ -123,7 +123,7 @@
                       v-if="!notifications.length && !newNotifications"
                       :title="emptyListMessages.title"
                       :description="emptyListMessages.description"
-                      :is-notification="true"
+                      :image="emptyListMessages.image"
                     >
                     </empty-list>
                     <ScrollToTop
@@ -256,6 +256,7 @@ import Members from '@images/members.svg';
 import MembersWhite from '@images/members-white.svg';
 import Settings from '@images/settings.svg';
 import SettingsWhite from '@images/settings-white.svg';
+import EmptyNotificationsIcon from '@images/no-records/empty-notifications.svg';
 
 export default {
   name: 'MobileMenu',
@@ -417,6 +418,7 @@ export default {
       return {
         title: t('no_records.noNotifications.title'),
         description: t('no_records.noNotifications.description'),
+        image: EmptyNotificationsIcon,
       };
     });
 

@@ -61,11 +61,7 @@
         class="d-flex mb-2 justify-content-between"
       >
         <div class="b-selected-elements__count">
-          <img
-            src="@images/cross.svg"
-            alt=""
-            @click="clearSelectedList"
-          />
+          <img src="@images/cross.svg" alt="" @click="clearSelectedList" />
           <span>{{ selectedList.length }}</span>
           <div
             v-if="selectedList.length >= 100"
@@ -96,11 +92,7 @@
             "
             class="d-flex align-items-center"
           >
-            <img
-              src="@images/notifications/trash.svg"
-              height="16"
-              alt=""
-            />
+            <img src="@images/notifications/trash.svg" height="16" alt="" />
             {{ $t('buttons.delete') }}
           </button>
         </div>
@@ -173,7 +165,7 @@
                   v-if="!notifications.length && !newNotifications"
                   :title="emptyListMessages.title"
                   :description="emptyListMessages.description"
-                  :is-notification="true"
+                  :image="emptyListMessages.image"
                 >
                 </empty-list>
                 <ScrollToTop
@@ -251,6 +243,7 @@ import { CONSTS } from '@consts';
 
 import sidebarArrowBack from '@images/sidebar-arrow-back.svg';
 import sidebarArrow from '@images/img/sidebar-arrow.svg';
+import EmptyNotificationsIcon from '@images/no-records/empty-notifications.svg';
 
 export default {
   components: {
@@ -393,6 +386,7 @@ export default {
       return {
         title: t('no_records.noNotifications.title'),
         description: t('no_records.noNotifications.description'),
+        image: EmptyNotificationsIcon,
       };
     });
 

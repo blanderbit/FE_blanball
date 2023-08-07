@@ -1,7 +1,4 @@
 import * as yup from 'yup';
-import eventMinStartTimeValidator from '../methods/eventMinStartTime';
-
-eventMinStartTimeValidator('errors.time-more-than-one-hour');
 
 yup.addMethod(
   yup.mixed,
@@ -28,6 +25,24 @@ yup.addMethod(
         }
 
         return true;
+      } catch {
+        return false;
+      }
+    });
+  }
+);
+
+yup.addMethod(
+  yup.string,
+  'isOneHourLater',
+  function (selectedDate, errorMessage) {
+    return this.test('isOneHourLater', errorMessage, function (time) {
+      try {
+        const selectedDateTime = new Date(`${selectedDate} ${time}`);
+        const currentDateTime = new Date();
+        currentDateTime.setHours(currentDateTime.getHours() + 1);
+        
+        return selectedDateTime > currentDateTime;
       } catch {
         return false;
       }
@@ -69,7 +84,14 @@ export default {
           .matches(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/, 'errors.invalid-time')
           .min(5, 'errors.invalid-time')
           .required('errors.required')
-          .isOneHourLater('errors.time-more-than-one-hour'),
+          .when('date', (date, schema, value) => {
+            return schema.isOneHourLater(
+              date,
+              'errors.time-more-than-one-hour'
+            );
+          }),
+
+        date: yup.string().required('errors.required'),
         end_time: yup
           .string()
           .matches(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/, 'errors.invalid-time')
