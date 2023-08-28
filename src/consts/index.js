@@ -13,6 +13,7 @@ import Policy from './policy';
 import Storages from './storages';
 import Scheduler from './scheduler';
 import Chat from './chat';
+import * as Regex from './regex';
 
 export const CONSTS = {
   users_page: UsersPage,
@@ -30,4 +31,5 @@ export const CONSTS = {
   storages: Storages,
   scheduler: Scheduler,
   chat: Chat,
+  regex: Regex
 };

@@ -1,5 +1,6 @@
 import * as yup from 'yup';
 import eventMinStartTimeValidator from '../methods/eventMinStartTime';
+import { CONSTS }  from '@/consts'
 
 eventMinStartTimeValidator('errors.time-more-than-one-hour');
 
@@ -142,10 +143,7 @@ export default {
         contact_number: yup
           .string()
           .required('errors.required')
-          .matches(
-            /^(\+38|38)?\s*\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{2}[\s.-]?\d{2}$/,
-            'errors.invalid-phone'
-          ),
+          .matches(CONSTS.regex.PHONE_NUMBER_UKRAINE, 'errors.invalid-phone'),
       });
     }
     return yup.object({
@@ -219,10 +217,7 @@ export default {
       contact_number: yup
         .string()
         .required('errors.required')
-        .matches(
-          /^(\+38|38)?\s*\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{2}[\s.-]?\d{2}$/,
-          'errors.invalid-phone'
-        ),
+        .matches(CONSTS.regex.PHONE_NUMBER_UKRAINE, 'errors.invalid-phone'),
     });
   },
 };
