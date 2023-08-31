@@ -30,6 +30,8 @@ import Scheduler from './scheduler';
 import Hints from './hints';
 import PushNotifications from './push-notifications';
 import Chat from './chat';
+import Forms from './forms';
+import Dates from './dates'
 
 export const UA_LANGUAGE = {
   events: EventsPage,
@@ -64,4 +66,6 @@ export const UA_LANGUAGE = {
   hints: Hints,
   push_notifications: PushNotifications,
   chat: Chat,
+  forms: Forms,
+  dates: Dates,
 };

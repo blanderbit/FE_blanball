@@ -6,6 +6,7 @@ import BlackColor from '@images/colors/black.svg';
 import GreenColor from '@images/colors/green.svg';
 import OrangeColor from '@images/colors/orange.svg';
 import PurpleColor from '@images/colors/purple.svg';
+import { i18n } from '@plugins/i18n.plugin'
 
 const colorIcons = {
   Blue: BlueColor,
@@ -23,24 +24,24 @@ export default {
   tabs: [
     {
       id: 1,
-      text: 'Форми',
+      text: i18n.global.t('uniforms'),
       active: true,
     },
     {
       id: 2,
-      text: 'Маніжки',
+      text: i18n.global.t('bibs'),
       active: false,
     },
   ],
   teams: [
     {
       id: 1,
-      name: 'Команда №1',
+      name: i18n.global.t('team_1'),
       type: 'first_team',
     },
     {
       id: 2,
-      name: 'Команда №2',
+      name: i18n.global.t('team_2'),
       type: 'second_team',
     },
   ],
