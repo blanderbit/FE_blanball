@@ -15,7 +15,7 @@
             :outside-title="true"
             :placeholder="$t('register.district')"
             :main-title="$t('register.district')"
-            :options="mockData.district"
+            :options="cityList.district"
             v-model="region"
             taggable
             @new-value="changeRegions"
@@ -29,7 +29,7 @@
             :outside-title="true"
             :placeholder="$t('register.city')"
             :main-title="$t('register.city')"
-            :options="mockData.cities"
+            :options="cityList.cities"
             v-model="city"
             taggable
             @new-value="changeCity"
@@ -95,10 +95,9 @@ import {
 } from '@workers/loading-worker/loading.worker';
 import { disableFormSubmit } from '@utils/disableFormSubmit';
 
-import { CONSTS } from '@consts';
-
 import tickIcon from '@images/location-point.svg';
 import { SCHEMAS } from '@/validators/schemas';
+import { useUkraineCitiesDataStore } from '@/stores/ukraineCities';
 
 export default {
   components: {
@@ -121,6 +120,7 @@ export default {
     const nextButton = ref(false);
     const coords = ref({});
     const activeModal = ref(false);
+    const { jsonCitiesAndRegionsList } = useUkraineCitiesDataStore();
 
     const schema = computed(() => {
       return SCHEMAS.positionMap.schema(true);
@@ -168,13 +168,13 @@ export default {
         immediate: true,
       }
     );
-    const mockData = computed(() => {
+    const cityList = computed(() => {
       return {
         cities:
-          CONSTS.register.jsonCityRegions.find((item) =>
+          jsonCitiesAndRegionsList.find((item) =>
             item.name.includes(region.value)
           )?.cities || [],
-        district: CONSTS.register.jsonCityRegions,
+        district: jsonCitiesAndRegionsList,
       };
     });
     function updateCoords(e) {
@@ -192,7 +192,7 @@ export default {
     let timeout;
     return {
       schema,
-      mockData,
+      cityList,
       region,
       city,
       dist,
