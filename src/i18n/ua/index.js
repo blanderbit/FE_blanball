@@ -35,6 +35,8 @@ import Dates from './dates';
 import EventPage from './event_page'
 import ManageEvents from './manage_events'
 import UserPage from './user_page'
+import NotificationsFormatTime from './notifications_format_time'
+
 
 export const UA_LANGUAGE = {
   events: EventsPage,
@@ -73,5 +75,6 @@ export const UA_LANGUAGE = {
   dates: Dates,
   event_page: EventPage,
   manage_events: ManageEvents,
-  user_page: UserPage
+  user_page: UserPage,
+  note_format_time: NotificationsFormatTime,
 };
