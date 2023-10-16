@@ -1,13 +1,15 @@
+import { i18n } from '@plugins/i18n.plugin'
+
 export default {
   contextMenuItems: [
     {
       id: 0,
-      text: 'Створити подію',
+      text: i18n.global.t('profile.create_event'),
       type: 'select',
     },
     {
       id: 1,
-      text: 'Зайнятість інших',
+      text: i18n.global.t('profile.engagement_of_others'),
       type: 'read',
     },
   ],

@@ -3,18 +3,19 @@ import bucket from '@images/bucket.svg';
 import pin from '@images/pin.svg';
 import unpin from '@images/unpin.svg';
 import edit from '@images/edit-gray.svg';
+import { i18n } from '@plugins/i18n.plugin'
 
 export default {
   sport_type_dropdown: [
     {
       id: 1,
       value: 'Football',
-      name: 'Футбол',
+      name: i18n.global.t('event_page.football'),
     },
     {
       id: 2,
       value: 'Futsal',
-      name: 'Фут-зал',
+      name: i18n.global.t('event_page.futsal'),
     },
   ],
   gender_dropdown: [
@@ -34,25 +35,25 @@ export default {
   menu_text: (eventPinned) => [
     {
       id: 0,
-      text: 'Виділити',
+      text: i18n.global.t('event_page.hightlight'),
       img: circleTick,
       type: 'select',
     },
     {
       id: 1,
-      text: 'Видалити',
+      text: t('event_page.remove'),
       img: bucket,
       type: 'delete',
     },
     {
       id: 2,
-      text: !eventPinned ? 'Закріпити' : 'Відкріпити',
+      text: !eventPinned ? i18n.global.t('event_page.attach') : i18n.global.t('event_page.detach'),
       img: !eventPinned ? pin : unpin,
       type: !eventPinned ? 'pin' : 'unpin',
     },
     {
       id: 3,
-      text: 'Редагувати',
+      text: i18n.global.t('event_page.edit'),
       img: edit,
       type: 'edit',
     },
@@ -60,15 +61,15 @@ export default {
   status_ropdown: [
     {
       value: 'Planned',
-      name: 'Запланованi',
+      name: i18n.global.t('event_page.planned'),
     },
     {
       value: 'Active',
-      name: 'Активнi',
+      name: i18n.global.t('event_page.active'),
     },
     {
       value: 'Finished',
-      name: 'Завершенi',
+      name: i18n.global.t('event_page.complete'),
     },
   ],
 };

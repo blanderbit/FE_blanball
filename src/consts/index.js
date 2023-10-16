@@ -1,7 +1,6 @@
 import UsersPage from './user-page';
 import starStyle from './star-style';
 import modalFeedback from './modal-feedback';
-import Register from './register';
 import EventInfo from './event-info';
 import EventPage from './event-page';
 import ManageEvent from './manage-event';
@@ -13,11 +12,11 @@ import Policy from './policy';
 import Storages from './storages';
 import Scheduler from './scheduler';
 import Chat from './chat';
+import * as Regex from './regex';
 
 export const CONSTS = {
   users_page: UsersPage,
   star_style: starStyle,
-  register: Register,
   modal_feedback: modalFeedback,
   event_info: EventInfo,
   event_page: EventPage,
@@ -30,4 +29,5 @@ export const CONSTS = {
   storages: Storages,
   scheduler: Scheduler,
   chat: Chat,
+  regex: Regex
 };

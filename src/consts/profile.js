@@ -1,18 +1,19 @@
 import userIcon from '@images/user-icon.svg';
 import databaseDisabled from '@images/database-disabled.svg';
 import { ROUTES } from '../routes/router.const';
+import { i18n } from '@plugins/i18n.plugin'
 
 export default {
   ratingMaxValue: '5.0',
   mainLeg: [
     {
       value: 'Права',
-      name: 'Права',
+      name: i18n.global.t('profile.right'),
       id: 'Right',
     },
     {
       value: 'Ліва',
-      name: 'Ліва',
+      name: i18n.global.t('profile.left'),
       id: 'Left',
     },
   ],
@@ -105,9 +106,9 @@ export default {
     },
   ],
   tabTitles: [
-    { id: 0, title: 'Про мене', width: '119px' },
-    { id: 1, title: 'Ігрові характеристики', width: '186px' },
-    { id: 2, title: 'Контакти', width: '119px' },
+    { id: 0, title: i18n.global.t('profile.about-myself'), width: '119px' },
+    { id: 1, title: i18n.global.t('profile.game-features'), width: '186px' },
+    { id: 2, title: i18n.global.t('profile.contacts'), width: '119px' },
   ],
   labels: [
     { title: 'asdfkj' },

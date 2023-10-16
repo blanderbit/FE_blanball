@@ -19,5 +19,7 @@ export default {
     'title': 'Долучитися до події',
     'main-text': 'Бажаєте прийняти участь у Дружньому матчі «{eventName}»?',
     'take-part': 'Прийняти участь'
-  }
+  },
+   create_event: 'Створити подію',
+   engagement_of_others: 'Зайнятість інших'
 };

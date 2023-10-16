@@ -3,6 +3,7 @@ import Emoji_2 from '@images/emojies/2.svg';
 import Emoji_3 from '@images/emojies/3.svg';
 import Emoji_4 from '@images/emojies/4.svg';
 import Emoji_5 from '@images/emojies/5.svg';
+import { i18n } from '@plugins/i18n.plugin'
 
 import dayjs from 'dayjs';
 
@@ -19,17 +20,16 @@ export default {
     return [
       {
         id: 0,
-        title: 'Залиште відгук про «Дружній матч»',
-        subtitle: `${calculateEventEndTime()} Ви прийняли участь у події «${
-          eventData.name
-        }», поділіться вашими враженнями`,
-        buttons: { cancel: 'Нагадати пізніше', next: 'Залишити відгук' },
+        title: i18n.global.t('modal_feedback.leave_feedback_about_friendly_match'),
+        subtitle: `${calculateEventEndTime()} ${i18n.global.t('modal_feedback.you_took_part_in_event')} «${eventData.name
+          }», ${i18n.global.t('modal_feedback.share_your_impressions')}`,
+        buttons: { cancel: i18n.global.t('modal_feedback.estimate_venue'), next: i18n.global.t('modal_feedback.leave_feedback') },
         isOpened: true,
       },
       {
         id: 1,
-        title: 'Місце проведення',
-        subtitle: `Дайте оцінку місцю проведення «${eventData?.place?.place_name}»`,
+        title: i18n.global.t('modal_feedback.venue'),
+        subtitle: `${i18n.global.t('modal_feedback.remind_later')} «${eventData?.place?.place_name}»`,
         emojies: [
           { id: 1, emoji: Emoji_1, step: 1 },
           { id: 2, emoji: Emoji_2, step: 1 },
@@ -37,13 +37,13 @@ export default {
           { id: 4, emoji: Emoji_4, step: 1 },
           { id: 5, emoji: Emoji_5, step: 1 },
         ],
-        buttons: { cancel: 'Назад', next: 'Оцінити' },
+        buttons: { cancel: i18n.global.t('modal_feedback.back'), next: i18n.global.t('modal_feedback.estimate') },
         isOpened: true,
       },
       {
         id: 2,
-        title: 'Якість роботи судді',
-        subtitle: 'Чи було суддівство справедливим, на вашу думку?',
+        title: i18n.global.t('modal_feedback.referee_work_quality'),
+        subtitle: i18n.global.t('modal_feedback.was_refereeing_just'),
         emojies: [
           { id: 1, emoji: Emoji_1, step: 2 },
           { id: 2, emoji: Emoji_2, step: 2 },
@@ -51,14 +51,14 @@ export default {
           { id: 4, emoji: Emoji_4, step: 2 },
           { id: 5, emoji: Emoji_5, step: 2 },
         ],
-        buttons: { cancel: 'Назад', next: 'Оцінити' },
+        buttons: { cancel: i18n.global.t('modal_feedback.back'), next: i18n.global.t('modal_feedback.estimate') },
         isOpened: true,
       },
       {
         id: 3,
-        title: 'Рівень організації',
+        title: i18n.global.t('modal_feedback.organization_level'),
         subtitle:
-          'Вчасність початку події / відповідність події опису / якість роботи організатора заходу',
+          `${i18n.global.t('modal_feedback.event_start_punctuality')} / ${i18n.global.t('modal_feedback.compliance_of_event_with_description')} / ${i18n.global.t('modal_feedback.organizer_work_quality_of_event')}`,
         emojies: [
           { id: 1, emoji: Emoji_1, step: 3 },
           { id: 2, emoji: Emoji_2, step: 3 },
@@ -66,23 +66,21 @@ export default {
           { id: 4, emoji: Emoji_4, step: 3 },
           { id: 5, emoji: Emoji_5, step: 3 },
         ],
-        buttons: { cancel: 'Назад', next: 'Оцінити' },
+        buttons: { cancel: i18n.global.t('modal_feedback.back'), next: i18n.global.t('modal_feedback.estimate') },
         isOpened: true,
       },
       {
         id: 4,
-        title: 'Бажаєте залишити коментар?',
-        subtitle:
-          'Опишіть ваші враження, побажання стосовно відвіданої події або чогось конкретного',
-        buttons: { cancel: 'Назад', next: 'Надіслати відгук' },
+        title: i18n.global.t('modal_feedback.would_you_like_to_leave_comment'),
+        subtitle: i18n.global.t('modal_feedback.describe_your_impressions'),
+        buttons: { cancel: i18n.global.t('modal_feedback.back'), next: i18n.global.t('modal_feedback.send_feedback') },
         isOpened: true,
       },
       {
         id: 5,
-        title: 'Дякуємо!',
-        subtitle:
-          'Бали, які Ви залишили будуть враховані під час повторного влаштування події та допоможуть підняти якість майбутніх заходів.',
-        last_subtitle: 'Ми стараємося ставатими кращими для вас!',
+        title: i18n.global.t('modal_feedback.thank_you'),
+        subtitle: i18n.global.t('modal_feedback.point_that_you_left'),
+        last_subtitle: i18n.global.t('modal_feedback.we_aspire_to_become_better'),
         isOpened: true,
       },
     ];

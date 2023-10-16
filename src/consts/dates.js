@@ -1,16 +1,18 @@
+import { i18n } from '@plugins/i18n.plugin'
+
 const monthNames = [
-  'Січень',
-  'Лютий',
-  'Березень',
-  'Квітень',
-  'Травень',
-  'Червень',
-  'Липень',
-  'Серпень',
-  'Вересень',
-  'Жовтень',
-  'Листопад',
-  'Грудень',
+  i18n.global.t('dates.january'),
+  i18n.global.t('dates.february'),
+  i18n.global.t('dates.march'),
+  i18n.global.t('dates.april'),
+  i18n.global.t('dates.may'),
+  i18n.global.t('dates.june'),
+  i18n.global.t('dates.july'),
+  i18n.global.t('dates.august'),
+  i18n.global.t('dates.september'),
+  i18n.global.t('dates.october'),
+  i18n.global.t('dates.november'),
+  i18n.global.t('dates.december'),
 ];
 
 const yearsToSkip = 7
