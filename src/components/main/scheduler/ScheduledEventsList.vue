@@ -72,8 +72,8 @@
 </template>
 
 <script>
-import { ref, watch, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+ 
+
 
 import { v4 as uuid } from 'uuid';
 
@@ -89,7 +89,7 @@ import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue
 import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
 import ScheduledEventCard from './ScheduledEventCard.vue';
 
-import { API } from '@workers/api-worker/api.worker';
+
 import { PaginationWorker } from '@workers/pagination-worker';
 import { getDate } from '@utils/getDate';
 import { getTime } from '@utils/getTime';

@@ -21,8 +21,6 @@
 </template>
 
 <script>
-import { computed, ref, onMounted } from 'vue';
-
 export default {
   props: {
     hintData: {

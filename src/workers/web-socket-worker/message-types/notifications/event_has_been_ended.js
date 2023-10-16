@@ -6,7 +6,7 @@ import {
   AuthWebSocketMessage,
   NotificationSetImage,
 } from '../../type.decorator';
-import { i18n } from '../../../../plugins/i18n.plugin';
+import { i18n } from '@plugins/i18n.plugin';
 
 import {
   MessageActionTypes,
@@ -14,7 +14,6 @@ import {
 } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
 import { NotificationImage } from '@images/notifications/notification.images';
-import { NotificationsBus } from '../../../event-bus-worker';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.EventHasBeenEnded)
@@ -35,7 +34,7 @@ import { NotificationsBus } from '../../../event-bus-worker';
       'push_notifications.event_has_been_ended.second_button'
     ),
     action: ({ notificationInstance }) => {
-      NotificationsBus.emit('openEventReviewModal', notificationInstance);
+      EventBusInstance.emit('openEventReviewModal', notificationInstance);
     },
     actionType: MessageActionDataTypes.Callback,
     buttonType: 'default',

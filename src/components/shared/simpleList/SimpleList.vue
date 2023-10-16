@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+ 
+
 
 import { PaginationWorker } from '@workers/pagination-worker';
 import smartList from '@sharedComponents/smartList/SmartList.vue';

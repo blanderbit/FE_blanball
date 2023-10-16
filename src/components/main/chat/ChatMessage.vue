@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+ 
 import dayjs from 'dayjs';
 
 import UserAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';

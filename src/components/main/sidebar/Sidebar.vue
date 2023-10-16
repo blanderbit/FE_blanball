@@ -77,8 +77,7 @@
 </template>
 
 <script>
-import { ref, onBeforeUnmount, computed } from 'vue';
-import { useRouter } from 'vue-router';
+
 
 import SlideMenu from '@mainComponents/slideMenu/SlideMenu.vue';
 import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
@@ -86,11 +85,6 @@ import BugReportModal from '@sharedComponents/modals/BugReportModal.vue';
 import TabLabel from '@sharedComponents/tabLabel/TabLabel.vue';
 
 import { useUserDataStore } from '@/stores/userData';
-import {
-  NotificationsBus,
-  BlanballEventBus,
-  ChatEventBus,
-} from '@workers/event-bus-worker';
 import { logOut } from '@utils/logOut';
 
 import { ROUTES } from '@routes/router.const';
@@ -138,26 +132,36 @@ export default {
       router.push(ROUTES.APPLICATION.PROFILE.MY_PROFILE.absolute);
     };
 
-    BlanballEventBus.on('OpenMobileMenu', () => {
+    const OpenMobileMenu = () => {
       clickByMenuItem(
         menuItems.value.find((item) => item.uniqueName === 'notification.point')
       );
-    });
+    };
 
-    BlanballEventBus.on('OpenBugReportModal', () => {
+    const OpenBugReportModal = () => {
       isBugReportModalOpened.value = true;
-    });
+    };
 
-    ChatEventBus.on('activateSlideMenuByUniqName', (uniqueName) => {
+    const activateSlideMenuByUniqName = () => {
       clickByMenuItem(
         menuItems.value.find((item) => item.uniqueName === uniqueName)
       );
-    });
+    };
+
+    EventBusInstance.on('OpenMobileMenu', OpenMobileMenu);
+    EventBusInstance.on('OpenBugReportModal', OpenBugReportModal);
+    EventBusInstance.on(
+      'activateSlideMenuByUniqName',
+      activateSlideMenuByUniqName
+    );
 
     onBeforeUnmount(() => {
-      BlanballEventBus.off('OpenMobileMenu');
-      ChatEventBus.off('activateSlideMenuByUniqName');
-      BlanballEventBus.off('OpenBugReportModal');
+      EventBusInstance.off('OpenMobileMenu', OpenMobileMenu);
+      EventBusInstance.off(
+        'activateSlideMenuByUniqName',
+        activateSlideMenuByUniqName
+      );
+      EventBusInstance.off('OpenBugReportModal', OpenBugReportModal);
     });
 
     function clickByMenuItem(item) {

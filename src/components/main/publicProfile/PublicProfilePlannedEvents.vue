@@ -66,7 +66,7 @@ import SimpleListWrapper from '@sharedComponents/simpleList/SimpleList.vue';
 
 import { getDate } from '@utils/getDate';
 
-import { API } from '@workers/api-worker/api.worker';
+
 
 import { ROUTES } from '@routes/router.const';
 

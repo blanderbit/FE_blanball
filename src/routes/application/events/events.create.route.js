@@ -1,8 +1,8 @@
 import { routerAuthResolver } from '@workers/resolver-worker/reolver.worker';
 import { ROUTES } from '../../router.const';
-import { usersData } from '@/routes/helpers/usersData';
-import { hintsData } from '@/routes/helpers/hintsData';
-import { ukraineCitiesData } from '@/routes/helpers/ukraineCitiesData';
+import { usersData } from '@routes/helpers/usersData';
+import { hintsData } from '@routes/helpers/hintsData';
+import { ukraineCitiesData } from '@routes/helpers/ukraineCitiesData';
 
 export const EVENTS_CREATE_ROUTE = {
   path: ROUTES.APPLICATION.EVENTS.CREATE.relative,
@@ -11,7 +11,7 @@ export const EVENTS_CREATE_ROUTE = {
     action: () => 'CREATE',
     usersData,
     hintsData,
-    ukraineCitiesData
+    ukraineCitiesData,
   })),
   component: () => import('../../../views/application/events/Manage.vue'),
   meta: {

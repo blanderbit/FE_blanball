@@ -1,6 +1,7 @@
-import { API } from '@workers/api-worker/api.worker';
+
 import { useUserDataStore } from '@stores/userData';
-import { pinia } from '@/plugins/pinia.plugin';
+import { pinia } from '@plugins/pinia.plugin';
+
 
 const userStore = useUserDataStore(pinia);
 

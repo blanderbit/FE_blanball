@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+ 
 
 import RatePlayerCard from './RatePlayerCard.vue';
 import ModalTopCard from './ModalTopCard.vue';

@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import { ref, computed, watch } from 'vue';
+ 
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
@@ -87,8 +87,8 @@ import MainInput from '@sharedComponents/input/MainInput.vue';
 import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 
-import { PositionMapBus } from '@workers/event-bus-worker';
-import { API } from '@workers/api-worker/api.worker';
+
+
 import {
   startSpinner,
   finishSpinner,
@@ -154,7 +154,7 @@ export default {
       () => activeModal.value,
       () => {
         if (!activeModal.value) return;
-        PositionMapBus.emit('update:map:by:coords', {
+        EventBusInstance.emit('update:map:by:coords', {
           data: {
             coordinates: {
               lat: props.modelValue.lat,
@@ -203,7 +203,7 @@ export default {
         city.value = '';
         startSpinner();
         try {
-          PositionMapBus.emit(
+          EventBusInstance.emit(
             'update:map:by:coords',
             await getCoordsByName(region.value)
           );
@@ -217,7 +217,7 @@ export default {
         city.value = e;
         startSpinner();
         try {
-          PositionMapBus.emit(
+          EventBusInstance.emit(
             'update:map:by:coords',
             await getCoordsByName(`${region.value} ${city.value}`)
           );

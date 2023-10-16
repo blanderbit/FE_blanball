@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+ 
 
 import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';

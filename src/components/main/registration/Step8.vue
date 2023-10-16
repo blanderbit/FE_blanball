@@ -49,8 +49,8 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+ 
+
 
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import dropdown from '@sharedComponents/dropdown/Dropdown.vue';

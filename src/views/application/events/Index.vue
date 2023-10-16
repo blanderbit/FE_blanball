@@ -114,10 +114,9 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-import { useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
-import { useToast } from 'vue-toastification';
+ 
+
+
 
 import { v4 as uuid } from 'uuid';
 
@@ -136,7 +135,7 @@ import EventsFilters from '@mainComponents/filters/block-filters/EventsFilters.v
 import ContextModal from '@sharedComponents/modals/ContextModal.vue';
 import SelectFormsColorsModal from '@mainComponents/manageEvent/modals/SelectFormsColorsModal.vue';
 
-import { API } from '@workers/api-worker/api.worker';
+
 import { PaginationWorker } from '@workers/pagination-worker';
 import { FilterPatch } from '@workers/api-worker/http/filter/filter.patch';
 import { addMinutes } from '@utils/addMinutes';

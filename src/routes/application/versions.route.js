@@ -1,8 +1,8 @@
 import { routerAuthResolver } from '@workers/resolver-worker/reolver.worker';
-import { API } from '@/workers/api-worker/api.worker';
+
 import { ROUTES } from '../router.const';
-import { usersData } from '@/routes/helpers/usersData';
-import { hintsData } from '@/routes/helpers/hintsData';
+import { usersData } from '@routes/helpers/usersData';
+import { hintsData } from '@routes/helpers/hintsData';
 
 export const VERSIONS_ROUTE = {
   path: ROUTES.APPLICATION.VERSIONS.relative,

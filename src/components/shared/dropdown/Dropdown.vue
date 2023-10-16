@@ -46,9 +46,6 @@
 </template>
 
 <script>
-import { ref, watch, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-
 import { createPopper } from '@popperjs/core';
 
 import vSelect from 'vue-select';

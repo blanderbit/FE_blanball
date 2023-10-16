@@ -3,11 +3,6 @@
 </template>
 
 <script>
-import { onMounted, ref, watch } from 'vue';
-
-import { API } from '@workers/api-worker/api.worker';
-import { PositionMapBus } from '@workers/event-bus-worker';
-
 import {
   PositionMapBackgroundStyle,
   PositionMapStyles,
@@ -78,14 +73,15 @@ export default {
         };
 
         emit('update:coords', dataForEmit);
-        PositionMapBus.emit('update:coords', dataForEmit);
+        EventBusInstance.emit('update:coords', dataForEmit);
       } catch (e) {
         emit('update:coords-error');
-        PositionMapBus.emit('update:coords-error');
+        EventBusInstance.emit('update:coords-error');
       }
       finishSpinner();
     };
-    PositionMapBus.on('update:map:by:coords', (e) => {
+
+    const onUpdateMapByCords = (e) => {
       marker.value.setPosition({
         lat: +e.data.coordinates?.lat,
         lng: +e.data.coordinates?.lon,
@@ -95,7 +91,9 @@ export default {
         +e.data.coordinates?.lon
       );
       map.setCenter(myLatlng);
-    });
+    };
+
+    EventBusInstance.on('update:map:by:coords', onUpdateMapByCords);
 
     const createMap = async (crd) => {
       state.userCenter = crd
@@ -179,6 +177,10 @@ export default {
         }
       }
     );
+
+    onBeforeUnmount(() => {
+      EventBusInstance.off('update:map:by:coords', onUpdateMapByCords);
+    });
 
     onMounted(() => {
       if (props?.coords?.lat && props?.coords?.lng) {

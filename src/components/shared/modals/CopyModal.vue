@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+ 
 
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';

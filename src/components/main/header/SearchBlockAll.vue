@@ -50,10 +50,8 @@
 </template>
 
 <script>
-import { computed, watch, ref } from 'vue';
-
 import smallLoader from '@sharedComponents/loader/SmallLoader.vue';
- import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
+import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 
 export default {
   name: 'SearchBlockAll',

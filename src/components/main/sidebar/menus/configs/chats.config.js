@@ -1,25 +1,22 @@
 import { BasicButtonSlideActivatorModel } from '../models/basic.button.slide.activator.model';
 import { cloneDeep } from 'lodash';
 import { ActionModelTypeUrl } from '../models/model.types';
-import { API } from '@workers/api-worker/api.worker';
+
 import { TabModel } from '../models/tabs.model';
-import { ComponentButtonModel } from '../models/component.button.model';
 import { ContextMenuModel } from '../models/context.menu.model';
-import { ref, computed, watch } from 'vue';
+ 
 import {
   ChatSocketWorkerInstance,
   AuthWebSocketWorkerInstance,
-} from '@/workers/web-socket-worker';
-import { WebSocketPaginationWorker } from '@/workers/pagination-worker';
-import { ChatWebSocketTypes } from '@/workers/web-socket-worker/message-types/chat/web.socket.types';
-import { ChatEventBus } from '@/workers/event-bus-worker';
-import { useUserDataStore } from '@/stores/userData';
-import { pinia } from '@/plugins/pinia.plugin';
+} from '@workers/web-socket-worker';
+import { WebSocketPaginationWorker } from '@workers/pagination-worker';
+import { ChatWebSocketTypes } from '@workers/web-socket-worker/message-types/chat/web.socket.types';
+import { useUserDataStore } from '@stores/userData';
+import { pinia } from '@plugins/pinia.plugin';
 
 import EmptyNotificationsIcon from '@images/no-records/empty-notifications.svg';
-import { FilterParamsDecorator } from '@/workers/api-worker/http/filter/filter.utils';
 
-import { ROUTES } from '@/routes/router.const';
+import { ROUTES } from '@routes/router.const';
 
 import trashRedIcon from '@images/trash-red.svg';
 import selectedIcon from '@images/selected.svg';

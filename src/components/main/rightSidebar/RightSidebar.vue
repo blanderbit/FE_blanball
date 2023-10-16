@@ -26,17 +26,16 @@
 </template>
 
 <script setup>
-import { ref, onBeforeUnmount} from 'vue';
-import { useRouter } from 'vue-router';
+
 
 import SmallEventCard from '@mainComponents/events/SmallEventCard.vue';
 import smallLoader from '@sharedComponents/loader/SmallLoader.vue';
 
-import { API } from '@workers/api-worker/api.worker';
+
 import { addMinutes } from '@utils/addMinutes';
 import { getDate } from '@utils/getDate';
 import { getTime } from '@utils/getTime';
-import { BlanballEventBus } from '@workers/event-bus-worker';
+
 
 import { ROUTES } from '@routes/router.const';
 
@@ -64,26 +63,29 @@ getPopularEvents().then((value) => {
   loading.value = false;
 });
 
-BlanballEventBus.on('userJoinedEvent', (data) => {
+const onUserJoinedEvent = (data) => {
   const event = popularEvents.value.find((event) => event.id === data.eventId);
 
   if (event) {
     event.request_user_role = data.participateType;
   }
-});
+};
 
-BlanballEventBus.on('userLeftEvent', (data) => {
+const onUserLeftEvent = (data) => {
   const event = popularEvents.value.find((event) => event.id === data.eventId);
 
   if (event) {
     event.request_user_role = '';
   }
-});
+};
+
+EventBusInstance.on('userJoinedEvent', onUserJoinedEvent);
+EventBusInstance.on('userLeftEvent', onUserLeftEvent);
 
 onBeforeUnmount(() => {
-  BlanballEventBus.off('userLeftEvent');
-  BlanballEventBus.off('userJoinedEvent');
-})
+  EventBusInstance.off('userLeftEvent', onUserLeftEvent);
+  EventBusInstance.off('userJoinedEvent', onUserJoinedEvent);
+});
 
 function handlingIncomeData(item) {
   return {

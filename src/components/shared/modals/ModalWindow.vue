@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import { computed, onMounted, onBeforeUnmount } from 'vue';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
 export default {

@@ -47,9 +47,6 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeUnmount } from 'vue';
-import { useI18n } from 'vue-i18n';
-
 import { v4 as uuid } from 'uuid';
 
 import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
@@ -59,7 +56,7 @@ import ActionModal from '@mainComponents/events/modals/ActionModal.vue';
 import ChatUser from './ChatUser.vue';
 
 import { WebSocketPaginationWorker } from '@workers/pagination-worker';
-import { API } from '@workers/api-worker/api.worker';
+
 import { ChatWebSocketTypes } from '@workers/web-socket-worker/message-types/chat/web.socket.types';
 import { ChatSocketWorkerInstance } from '@workers/web-socket-worker';
 import { CHAT_DETAILS_TYPE_ENUM_ERRORS } from '@workers/web-socket-worker/message-types/chat/web.socket.errors';

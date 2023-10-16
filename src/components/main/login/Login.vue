@@ -78,8 +78,8 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
-import { useRouter } from 'vue-router';
+ 
+
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
@@ -87,7 +87,7 @@ import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import checkBox from '@sharedComponents/checkbox/Checkbox.vue';
 
-import { API } from '@workers/api-worker/api.worker';
+
 import { accessToken, refreshToken } from '@workers/token-worker';
 import {
   startSpinner,

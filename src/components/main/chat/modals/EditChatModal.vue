@@ -78,10 +78,7 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
-import { useToast } from 'vue-toastification';
-import { useI18n } from 'vue-i18n';
-import { useElementSize } from '@vueuse/core';
+
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 

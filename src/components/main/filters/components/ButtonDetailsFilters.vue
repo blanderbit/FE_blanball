@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+ 
 
 import CrossIcon from '@images/cross.svg';
 import SettingsIcon from '@images/set-filter.svg';

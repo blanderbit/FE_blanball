@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+ 
 
 import PositionMap from '@mainComponents/maps/PositionMap.vue';
 import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';

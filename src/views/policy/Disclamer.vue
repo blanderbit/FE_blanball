@@ -121,7 +121,7 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+ 
 
 import PolicyWrapper from '@mainComponents/policy/PolicyWrapper.vue';
 

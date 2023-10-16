@@ -108,11 +108,10 @@
   </div>
 </template>
 
-<script setup>
-import { ref, computed, watch, onBeforeUnmount, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import { useToast } from 'vue-toastification';
-import { useI18n } from 'vue-i18n';
+<script setup> 
+
+
+
 
 import { v4 as uuid } from 'uuid';
 
@@ -133,12 +132,11 @@ import { accessToken } from '@workers/token-worker';
 import { notificationButtonHandlerMessage } from '@workers/utils-worker';
 import { useUserDataStore } from '@/stores/userData';
 import { useHeaderHeightStore } from '@/stores/headerHeight';
-import { NotificationsBus, BlanballEventBus } from '@workers/event-bus-worker';
 import { MessageActionTypes } from '@workers/web-socket-worker/message.action.types';
-import { API } from '@workers/api-worker/api.worker';
+
 import { VersionDetectorWorker } from '@workers/version-detector-worker';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
-import { useElementSize } from '@vueuse/core';
+
 
 import EventUpdatedIcon from '@images/event-updated-modal-icon.svg';
 import EventCreatedIcon from '@images/event-creted-modal-icon.svg';
@@ -196,7 +194,7 @@ const closeEventReviewModal = () => {
   modalFeedBackAnimation.value = false;
 };
 const openMobileMenu = () => {
-  BlanballEventBus.emit('OpenMobileMenu');
+  EventBusInstance.emit('OpenMobileMenu');
 };
 
 const emailVerified = () => {
@@ -206,7 +204,7 @@ const emailVerified = () => {
     });
   });
   setHeaderHeight();
-  BlanballEventBus.emit('emailVerified');
+  EventBusInstance.emit('emailVerified');
 };
 
 const openEventReviewModal = () => {
@@ -219,28 +217,29 @@ const openEventReviewModal = () => {
   isCreateReviewModalActive.value = true;
 };
 
-NotificationsBus.on('openEventReviewModal', async (data) => {
+const onOpenEventReviewModal = async (mockData) => {
   const respone = await API.EventService.getOneEvent(data.data.event.id);
   endedEventData.value = respone.data;
   openEventReviewModal();
-});
+};
 
-BlanballEventBus.on('EventCreated', () => {
+const onEventCreated = () => {
   ActionModalConfig.value = {
     title: t('modals.event_created.title'),
     description: t('modals.event_created.main-text'),
     image: EventCreatedIcon,
   };
   openEventActionModal();
-});
-BlanballEventBus.on('EventUpdated', () => {
+};
+
+const onEventUpdated = () => {
   ActionModalConfig.value = {
     title: t('modals.event_updated.title'),
     description: t('modals.event_updated.main-text'),
     image: EventUpdatedIcon,
   };
   openEventActionModal();
-});
+};
 
 const emojiSelection = (emoji) => {
   for (let i = 0; i < selectedEmojies.value.length; i++) {
@@ -308,7 +307,7 @@ const getToastOptions = (notificationInstance, toastId) => {
           removePushFormActiveNotifications(
             notificationInstance.notification_id
           );
-          NotificationsBus.emit(
+          EventBusInstance.emit(
             'hanlderToRemoveNewNotificationsInSidebar',
             notificationInstance.notification_id
           );
@@ -342,28 +341,26 @@ const getToastOptions = (notificationInstance, toastId) => {
     },
   };
 };
-NotificationsBus.on(
-  'removePushNotificationAfterSidebarAction',
-  (notificationInstance) => {
-    if (notificationInstance?.remove_all) {
-      dismissAllToasts();
-      return;
-    }
 
-    const { notification_id, notification_ids } = notificationInstance || {};
-
-    const idsToDismiss = notification_ids || [notification_id];
-
-    activePushNotifications.value
-      .filter((notification) =>
-        idsToDismiss.includes(notification.notificationId)
-      )
-      .forEach((notification) => {
-        toast.dismiss(notification.toastId);
-        removePushFormActiveNotifications(notification.notificationId);
-      });
+const onRemovePushNotificationAfterSidebarAction = (notificationInstance) => {
+  if (notificationInstance?.remove_all) {
+    dismissAllToasts();
+    return;
   }
-);
+
+  const { notification_id, notification_ids } = notificationInstance || {};
+
+  const idsToDismiss = notification_ids || [notification_id];
+
+  activePushNotifications.value
+    .filter((notification) =>
+      idsToDismiss.includes(notification.notificationId)
+    )
+    .forEach((notification) => {
+      toast.dismiss(notification.toastId);
+      removePushFormActiveNotifications(notification.notificationId);
+    });
+};
 
 function dismissAllToasts() {
   activePushNotifications.value.forEach((notification) => {
@@ -448,13 +445,24 @@ function setHeaderHeight() {
     headerHeight: headerHeight.value,
   });
 }
-BlanballEventBus.on('createHints', (data) => {
-  avaliableHints.value = data.hints;
-});
 
-BlanballEventBus.on('closeScheduler', () => {
+const closeScheduler = () => {
   isSchedulerOpened.value = false;
-});
+};
+
+const createHints = (data) => {
+  avaliableHints.value = data.hints;
+};
+
+EventBusInstance.on('createHints', createHints);
+EventBusInstance.on('closeScheduler', closeScheduler);
+EventBusInstance.on('openEventReviewModal', onOpenEventReviewModal);
+EventBusInstance.on('EventCreated', onEventCreated);
+EventBusInstance.on('EventUpdated', onEventUpdated);
+EventBusInstance.on(
+  'removePushNotificationAfterSidebarAction',
+  onRemovePushNotificationAfterSidebarAction
+);
 
 onMounted(() => {
   setHeaderHeight();
@@ -462,12 +470,12 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  NotificationsBus.off('openEventReviewModal');
-  NotificationsBus.off('removePushNotificationAfterSidebarAction');
-  BlanballEventBus.off('EventCreated');
-  BlanballEventBus.off('EventUpdated');
-  BlanballEventBus.off('closeScheduler');
-  BlanballEventBus.off('createHints');
+  EventBusInstance.off('openEventReviewModal');
+  EventBusInstance.off('removePushNotificationAfterSidebarAction');
+  EventBusInstance.off('EventCreated');
+  EventBusInstance.off('EventUpdated');
+  EventBusInstance.off('closeScheduler', closeScheduler);
+  EventBusInstance.off('createHints', createHints);
   AuthWebSocketWorkerInstance.destroyCallback(handleNewMessage).disconnect();
   ChatSocketWorkerInstance.disconnect();
 });

@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import { onMounted, onUnmounted, ref } from 'vue';
 export default {
   name: 'TheObserver',
   props: {

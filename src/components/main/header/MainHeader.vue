@@ -66,9 +66,6 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue';
-import { useRouter } from 'vue-router';
-
 import BreadCrumbs from '@sharedComponents/breadcrumbs/Breadcrumbs.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import SearchModal from '@sharedComponents/modals/SearchModal.vue';
@@ -76,8 +73,8 @@ import SearchBlockAll from '@mainComponents/header/SearchBlockAll.vue';
 
 import { CONSTS } from '@consts/index';
 import { ROUTES } from '@routes/router.const';
-import { API } from '@workers/api-worker/api.worker';
-import { BlanballEventBus } from '@workers/event-bus-worker';
+
+
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
 import { HINTS_DATA } from '@workers/hints-worker/hints.data';
@@ -192,11 +189,13 @@ export default {
       }
     }
 
-    BlanballEventBus.on(
+    const onConfigureSchedulerGoBackButtonOnMobile = (buttonConfig) => {
+      goBackSchedulerButtonConfig.value = buttonConfig;
+    };
+
+    EventBusInstance.on(
       'configureSchedulerGoBackButtonOnMobile',
-      (buttonConfig) => {
-        goBackSchedulerButtonConfig.value = buttonConfig;
-      }
+      onConfigureSchedulerGoBackButtonOnMobile
     );
 
     onMounted(() => {
@@ -204,7 +203,10 @@ export default {
     });
 
     onBeforeUnmount(() => {
-      BlanballEventBus.off('configureSchedulerGoBackButtonOnMobile');
+      EventBusInstance.off(
+        'configureSchedulerGoBackButtonOnMobile',
+        onConfigureSchedulerGoBackButtonOnMobile
+      );
       window.removeEventListener('resize', setScreenWidth);
     });
 
@@ -233,7 +235,6 @@ export default {
 <style lang="scss" scoped>
 $color-dfdeed: #dfdeed;
 $color-fafafa: #fafafa;
-
 
 .b_header {
   display: flex;

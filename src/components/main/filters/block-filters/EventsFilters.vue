@@ -197,8 +197,6 @@
 </template>
 
 <script>
-import { computed, ref, watch, watchEffect } from 'vue';
-import { useRoute } from 'vue-router';
 import dayjs from 'dayjs';
 
 import dropdown from '@sharedComponents/dropdown/Dropdown.vue';

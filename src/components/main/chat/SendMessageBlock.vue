@@ -35,11 +35,7 @@
           src="@images/chat/send-message-button.svg"
           alt=""
         />
-        <img
-          v-else
-          src="@images/chat/messages-disabled.svg"
-          alt=""
-        />
+        <img v-else src="@images/chat/messages-disabled.svg" alt="" />
       </div>
     </div>
   </Form>
@@ -55,9 +51,6 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeUnmount } from 'vue';
-import { useI18n } from 'vue-i18n';
-
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import MainInput from '@sharedComponents/input/MainInput.vue';
@@ -66,7 +59,7 @@ import ManageMessageWrapper from './ManageMessageWrapper.vue';
 
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 import { ChatEventBus } from '@workers/event-bus-worker';
-import { API } from '@workers/api-worker/api.worker';
+
 import { disableFormSubmit } from '@utils/disableFormSubmit';
 
 import SendSmileIcon from '@images/chat/send-smile-button.svg';
@@ -224,7 +217,7 @@ export default {
       resetManageMessageWrapperData();
     }
 
-    ChatEventBus.on('replyToChatMessage', (messageData) => {
+    const onReplyToChatMessage = (messageData) => {
       if (editChatMessageData.value) {
         cancelEditingMessage();
       }
@@ -236,9 +229,9 @@ export default {
       };
 
       showManageMessageWrapper();
-    });
+    };
 
-    ChatEventBus.on('editChatMessage', (messageData) => {
+    const onEditChatMessage = (messageData) => {
       if (replyToMessageData.value) {
         cancelReplyToChatMessage();
       }
@@ -250,11 +243,14 @@ export default {
       };
 
       showManageMessageWrapper();
-    });
+    };
+
+    EventBusInstance.on('replyToChatMessage', onReplyToChatMessage);
+    EventBusInstance.on('editChatMessage', onEditChatMessage);
 
     onBeforeUnmount(() => {
-      ChatEventBus.off('replyToChatMessage');
-      ChatEventBus.off('editChatMessage');
+      EventBusInstance.off('replyToChatMessage', onReplyToChatMessage);
+      EventBusInstance.off('editChatMessage', onEditChatMessage);
     });
 
     return {

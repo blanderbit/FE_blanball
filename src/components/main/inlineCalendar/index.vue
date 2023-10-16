@@ -54,15 +54,6 @@
 </template>
 
 <script>
-import {
-  computed,
-  nextTick,
-  onBeforeUnmount,
-  onMounted,
-  reactive,
-  ref,
-  watch,
-} from 'vue';
 import { dragscroll } from 'vue-dragscroll';
 import checkSameDay from '@utils/checkSameDay';
 import checkIsWeekend from '@utils/checkDateInRange';

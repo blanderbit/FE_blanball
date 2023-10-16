@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+ 
 import StarRating from 'vue-star-rating';
 
 import smartList from '@sharedComponents/smartList/SmartList.vue';
@@ -82,7 +82,7 @@ import SimpleListWrapper from '@sharedComponents/simpleList/SimpleList.vue';
 
 import { getDate } from '@utils/getDate';
 
-import { API } from '@workers/api-worker/api.worker';
+
 
 import { CONSTS } from '@consts';
 

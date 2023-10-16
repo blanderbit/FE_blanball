@@ -1,4 +1,3 @@
-import { API } from '../api-worker/api.worker';
 import { refreshToken, accessToken } from '.';
 import { useTokensStore } from '@stores/tokens';
 import { AuthWebSocketWorkerInstance } from '../web-socket-worker';

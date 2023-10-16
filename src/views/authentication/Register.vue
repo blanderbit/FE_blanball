@@ -69,8 +69,8 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
-import { useRouter } from 'vue-router';
+ 
+
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
@@ -88,9 +88,9 @@ import step9 from '@mainComponents/registration/Step9.vue';
 import step10 from '@mainComponents/registration/Step10.vue';
 import AuthenticationMain from '@components/AuthenticationMain.vue';
 
-import { API } from '@workers/api-worker/api.worker';
+
 import { accessToken, refreshToken } from '@workers/token-worker';
-import { PositionMapBus } from '@workers/event-bus-worker';
+
 import { disableFormSubmit } from '@utils/disableFormSubmit';
 import { useUkraineCitiesDataStore } from '@/stores/ukraineCities';
 
@@ -213,7 +213,8 @@ export default {
     function getNumber(str) {
       return str.replace(/[\D]+/g, '');
     }
-    PositionMapBus.on('update:coords', (e) => {
+
+    const onUpdateCords = (e) => {
       profileValues.profile.place = {
         lat: e.lat,
         lon: e.lon,
@@ -224,7 +225,14 @@ export default {
         lon: e.lng,
         place_name: e.place,
       });
+    };
+
+    EventBusInstance.on('update:coords', onUpdateCords);
+
+    onBeforeUnmount(() => {
+      EventBusInstance.off('update:coords', onUpdateCords);
     });
+
     function finishOnBoarding() {
       currentStep.value = 7;
     }

@@ -1,10 +1,11 @@
 import { routerAuthResolver } from '@workers/resolver-worker/reolver.worker';
-import { transpileInterseptorQueryToConfig } from '@/workers/api-worker/http/filter/filter.utils';
-import { filterConfigForEvents } from '@/workers/api-worker/http/filter/filter.config';
-import { API } from '@/workers/api-worker/api.worker';
+import { transpileInterseptorQueryToConfig } from '@workers/api-worker/http/filter/filter.utils';
+import { filterConfigForEvents } from '@workers/api-worker/http/filter/filter.config';
+
 import { ROUTES } from '../../router.const';
-import { usersData } from '@/routes/helpers/usersData';
-import { hintsData } from '@/routes/helpers/hintsData';
+import { usersData } from '@routes/helpers/usersData';
+import { hintsData } from '@routes/helpers/hintsData';
+import { ukraineCitiesData } from '@routes/helpers/ukraineCitiesData';
 
 export const MY_EVENTS_FINISHED_ROUTE = {
   path: ROUTES.APPLICATION.MY_EVENTS.FINISHED.absolute,
@@ -16,6 +17,7 @@ export const MY_EVENTS_FINISHED_ROUTE = {
       ),
     usersData,
     hintsData,
+    ukraineCitiesData,
   })),
   component: () => import('../../../views/application/events/MyEvents.vue'),
   meta: {

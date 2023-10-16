@@ -75,7 +75,6 @@
 </template>
 
 <script>
-import { computed, ref, watchEffect } from 'vue';
 import { Form } from '@system.it.flumx.com/vee-validate';
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
@@ -87,7 +86,7 @@ import SaveIcon from '@images/save-icon.svg';
 
 import { useUserDataStore } from '@/stores/userData';
 
-import { API } from '@workers/api-worker/api.worker';
+
 
 export default {
   name: 'EditAvatarModal',

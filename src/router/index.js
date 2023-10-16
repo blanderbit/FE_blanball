@@ -1,13 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import { LOGIN_ROUTE } from '@/routes/login.route';
-import { COOKIE_POLICY_ROUTE } from '@/routes/cooke.policy.route';
-import { WORKS_ROUTE } from '@/routes/works.route';
-import { PRIVACY_POLICY_ROUTE } from '@/routes/privacy.policy.route';
-import { DISCLAMER_ROUTE } from '@/routes/disclamer.route';
-import { ROUTE_404 } from '@/routes/404.route.js';
-import { AUTHENTICATION_INDEX_ROUTE } from '@/routes/authentication/authentication.index.route';
-import { APPLICATION_INDEX_ROUTE } from '@/routes/application/application.index.route';
+import { LOGIN_ROUTE } from '@routes/login.route';
+import { COOKIE_POLICY_ROUTE } from '@routes/cooke.policy.route';
+import { WORKS_ROUTE } from '@routes/works.route';
+import { PRIVACY_POLICY_ROUTE } from '@routes/privacy.policy.route';
+import { DISCLAMER_ROUTE } from '@routes/disclamer.route';
+import { ROUTE_404 } from '@routes/404.route.js';
+import { AUTHENTICATION_INDEX_ROUTE } from '@routes/authentication/authentication.index.route';
+import { APPLICATION_INDEX_ROUTE } from '@routes/application/application.index.route';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

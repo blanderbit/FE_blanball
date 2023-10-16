@@ -4,7 +4,7 @@ import medal from '@images/medal.svg';
 import settings from '@images/settings.svg';
 import bugReport from '@images/warning-black.svg';
 import { ROUTES } from '@routes/router.const';
-import { computed } from 'vue';
+ 
 import {
   ActionModelTypeButton,
   ActionModelTypeUrl,
@@ -12,7 +12,7 @@ import {
 import { BasicButtonModel } from './models/basic.button.model';
 import { createNotificationConfigItem } from './configs/notifications.config';
 import { createChatConfigItem } from './configs/chats.config';
-import { BlanballEventBus } from '@/workers/event-bus-worker';
+
 
 export const dinamicMenu = (instance) => {
   const notificationItem = createNotificationConfigItem(instance);
@@ -71,7 +71,7 @@ export const dinamicMenu = (instance) => {
       hideOnMobile: true,
       actionType: new ActionModelTypeButton({
         action: () => {
-          BlanballEventBus.emit('OpenBugReportModal');
+          EventBusInstance.emit('OpenBugReportModal');
         },
       }),
       disabled: false,

@@ -12,7 +12,11 @@
     </div>
     <Teleport to="body">
       <ModalWindow v-if="activeModal" :isTitleShown="false">
-        <Form v-slot="data" @submit="disableFormSubmit" :validation-schema="schema">
+        <Form
+          v-slot="data"
+          @submit="disableFormSubmit"
+          :validation-schema="schema"
+        >
           <div class="b-modal-position__block">
             <dropdown
               :outside-title="true"
@@ -81,9 +85,7 @@
 </template>
 
 <script>
-import { ref, computed, watch } from 'vue';
-
-import { Form } from '@system.it.flumx.com/vee-validate';
+ import { Form } from '@system.it.flumx.com/vee-validate';
 
 import PositionMap from '@mainComponents/maps/PositionMap.vue';
 import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
@@ -91,9 +93,11 @@ import MainInput from '@sharedComponents/input/MainInput.vue';
 import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 
-import { PositionMapBus } from '@workers/event-bus-worker';
-import { API } from '@workers/api-worker/api.worker';
-import { startSpinner, finishSpinner } from '@workers/loading-worker/loading.worker';
+
+import {
+  startSpinner,
+  finishSpinner,
+} from '@workers/loading-worker/loading.worker';
 import { disableFormSubmit } from '@utils/disableFormSubmit';
 
 import tickIcon from '@images/location-point.svg';
@@ -166,7 +170,7 @@ export default {
       () => activeModal.value,
       () => {
         if (!activeModal.value) return;
-        PositionMapBus.emit('update:map:by:coords', {
+        EventBusInstance.emit('update:map:by:coords', {
           data: {
             coordinates: {
               lat: props.modelValue.lat,
@@ -217,7 +221,7 @@ export default {
         address.value = '';
         startSpinner();
         try {
-          PositionMapBus.emit(
+          EventBusInstance.emit(
             'update:map:by:coords',
             await getCoordsByName(region.value)
           );
@@ -231,7 +235,7 @@ export default {
         city.value = e;
         startSpinner();
         try {
-          PositionMapBus.emit(
+          EventBusInstance.emit(
             'update:map:by:coords',
             await getCoordsByName(
               `${region.value} ${city.value} ${address.value}`
@@ -249,7 +253,7 @@ export default {
         timeout = setTimeout(async () => {
           startSpinner();
           try {
-            PositionMapBus.emit(
+            EventBusInstance.emit(
               'update:map:by:coords',
               await getCoordsByName(
                 `${region.value} ${city.value} ${address.value}`
@@ -274,7 +278,7 @@ export default {
         });
         activeModal.value = false;
       },
-      disableFormSubmit
+      disableFormSubmit,
     };
   },
 };

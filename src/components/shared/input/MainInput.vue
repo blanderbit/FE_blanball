@@ -69,9 +69,6 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-
 import { CustomModelWorker } from '@workers/custom-model-worker/index';
 
 import eyeCross from '@images/eye-crossed.svg';

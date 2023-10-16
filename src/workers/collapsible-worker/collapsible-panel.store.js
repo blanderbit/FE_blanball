@@ -1,5 +1,3 @@
-import { computed, reactive } from 'vue';
-
 const state = reactive({
   panelGroups: {},
 });

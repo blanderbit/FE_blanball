@@ -10,11 +10,7 @@
       {{ $t('modals.share_event.title') }}
     </template>
     <template #header-image>
-      <img
-        src="@images/share-arrow.svg"
-        alt=""
-        @click="closeShareEventModal"
-      />
+      <img src="@images/share-arrow.svg" alt="" @click="closeShareEventModal" />
     </template>
     <template #input>
       <MainInput
@@ -108,11 +104,7 @@
               @mouseenter="eventPriceHover = true"
               @mouseleave="eventPriceHover = false"
             >
-              <img
-                v-if="!eventData.price"
-                src="@images/info.svg"
-                alt=""
-              />
+              <img v-if="!eventData.price" src="@images/info.svg" alt="" />
               <img v-else src="@images/green-info.svg" alt="" />
               <span
                 >{{ $t('events.event-price') }}
@@ -152,7 +144,9 @@
               </div>
               <EventInfoForms
                 class="b-event-info__forms-block"
-                v-if="Object.keys(eventData.forms).length !== 0"
+                v-if="
+                  eventData?.forms && Object.keys(eventData?.forms).length !== 0
+                "
                 :formsData="eventData.forms"
               />
 
@@ -282,11 +276,6 @@
 </template>
 
 <script>
-import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useToast } from 'vue-toastification';
-import { useI18n } from 'vue-i18n';
-
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import rightSidebar from '@mainComponents/rightSidebar/RightSidebar.vue';
 import EventInfoUsersTable from '@mainComponents/events/EventInfoUsersTable.vue';
@@ -304,8 +293,6 @@ import MainInput from '@sharedComponents/input/MainInput.vue';
 import InviteManyUsersToEventModal from '@mainComponents/events/modals/InviteToEventModal/InviteManyUsersToEventModal.vue';
 import SmallUserCard from '@mainComponents/users/SmallUserCard.vue';
 
-import { API } from '@workers/api-worker/api.worker';
-import { BlanballEventBus } from '@workers/event-bus-worker';
 import { useUserDataStore } from '@/stores/userData';
 import { addMinutes } from '@utils/addMinutes';
 import { getDate } from '@utils/getDate';
@@ -677,7 +664,7 @@ export default {
       } else {
         emitName = 'userLeftEvent';
       }
-      BlanballEventBus.emit(emitName, {
+      EventBusInstance.emit(emitName, {
         eventId: eventData.value.id,
         participateType: participateType,
       });

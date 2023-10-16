@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+ 
 
 import StarRating from 'vue-star-rating';
 

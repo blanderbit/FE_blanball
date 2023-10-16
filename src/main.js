@@ -1,5 +1,3 @@
-import { createApp } from 'vue';
-
 import VCalendar from 'v-calendar';
 import Toast from 'vue-toastification';
 

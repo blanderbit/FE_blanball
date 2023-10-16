@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+ 
 
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 

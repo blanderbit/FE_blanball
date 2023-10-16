@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router';
+
 
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';

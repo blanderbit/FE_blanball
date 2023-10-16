@@ -1,17 +1,15 @@
 import { BasicButtonSlideActivatorModel } from '../models/basic.button.slide.activator.model';
 import { cloneDeep } from 'lodash';
 import { ActionModelTypeButton } from '../models/model.types';
-import { API } from '@workers/api-worker/api.worker';
+
 import { TabModel } from '../models/tabs.model';
 import { ComponentButtonModel } from '../models/component.button.model';
 import { ContextMenuModel } from '../models/context.menu.model';
 import { createNotificationFromData } from '@workers/utils-worker';
-import { ref, computed, watch } from 'vue';
-import { PaginationWorker } from '@/workers/pagination-worker';
+ 
+import { PaginationWorker } from '@workers/pagination-worker';
 import { AuthWebSocketWorkerInstance } from '@workers/web-socket-worker';
-import { NotificationsBus } from '@workers/event-bus-worker';
-import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
-import { FilterParamsDecorator } from '@/workers/api-worker/http/filter/filter.utils';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
 import trashRedIcon from '@images/trash-red.svg';
 import doubleCheckIcon from '@images/notifications/double-check.svg';
@@ -134,7 +132,7 @@ export const createNotificationConfigItem = (routerInstance) => {
     const { paginationElements, paginationLoad, paginationPage } =
       notificationItem.activeTab.value;
     if (instanceType.notification) {
-      console.log(notificationItem)
+      console.log(notificationItem);
       notificationItem
         .getFilters()
         .skipids.value.push(instanceType.notification_id);
@@ -174,34 +172,41 @@ export const createNotificationConfigItem = (routerInstance) => {
         }
       },
     }),
+
+    onSidebarClearData() {
+      const skipids = notificationItem.getFilters().skipids;
+      skipids.value = [];
+      notificationItem.activeTab.value.paginationClearData();
+    },
+
+    onHanlderToRemoveNewNotificationsInSidebar() {
+      const skipids = notificationItem.getFilters().skipids;
+      const index = skipids.value.indexOf(notificationId);
+
+      if (index > -1) {
+        skipids.value.splice(index, 1);
+      }
+      notificationItem.activeTab.value.loadNewData(1, null, false, false);
+    },
+
     onInit() {
-      NotificationsBus.on('SidebarClearData', () => {
-        console.log(notificationItem)
-        const skipids = notificationItem.getFilters().skipids;
-        skipids.value = [];
-        notificationItem.activeTab.value.paginationClearData();
-      });
+      EventBusInstance.on('SidebarClearData', onSidebarClearData);
 
-      NotificationsBus.on(
+      EventBusInstance.on(
         'hanlderToRemoveNewNotificationsInSidebar',
-        (notificationId) => {
-          console.log(notificationItem)
-          const skipids = notificationItem.getFilters().skipids;
-          const index = skipids.value.indexOf(notificationId);
-
-          if (index > -1) {
-            skipids.value.splice(index, 1);
-          }
-          notificationItem.activeTab.value.loadNewData(1, null, false, false);
-        }
+        onHanlderToRemoveNewNotificationsInSidebar
       );
       AuthWebSocketWorkerInstance.registerCallback(handleMessageInSidebar);
       getNotificationsCount();
     },
+
     onDestroy() {
       AuthWebSocketWorkerInstance.destroyCallback(handleMessageInSidebar);
-      NotificationsBus.off('SidebarClearData');
-      NotificationsBus.off('hanlderToRemoveNewNotificationsInSidebar');
+      EventBusInstance.off('SidebarClearData', onSidebarClearData);
+      EventBusInstance.off(
+        'hanlderToRemoveNewNotificationsInSidebar',
+        onHanlderToRemoveNewNotificationsInSidebar
+      );
     },
     slideConfig: {
       uniqueName: 'notification.slide',
@@ -230,7 +235,7 @@ export const createNotificationConfigItem = (routerInstance) => {
                   ),
                   mainColor: '#575775',
                   fontStyles: {
-                    'font-side': '12px'
+                    'font-side': '12px',
                   },
                   icon: ReadAllNotificationsIcon,
                   height: 32,
@@ -254,7 +259,7 @@ export const createNotificationConfigItem = (routerInstance) => {
                   borderColor: '#DFDEED',
                   mainColor: '#575775',
                   fontStyles: {
-                    'font-side': '12px'
+                    'font-side': '12px',
                   },
                   hideElement: Boolean(
                     !notificationItem.activeTab.value?.paginationElements.length

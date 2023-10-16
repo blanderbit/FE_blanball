@@ -30,10 +30,6 @@
 </template>
 
 <script>
-import { ref, computed, inject } from 'vue';
-
-import { BlanballEventBus } from '@/workers/event-bus-worker';
-
 import { ROUTES } from '@/routes/router.const';
 
 export default {
@@ -57,7 +53,7 @@ export default {
     }
 
     function openBugReportModal() {
-      BlanballEventBus.emit('OpenBugReportModal');
+      EventBusInstance.emit('OpenBugReportModal');
     }
 
     return {

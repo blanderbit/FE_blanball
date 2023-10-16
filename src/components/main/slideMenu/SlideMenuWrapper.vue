@@ -108,9 +108,8 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeUnmount, watch } from 'vue';
-import { useRouter } from 'vue-router';
-import { useElementSize } from '@vueuse/core';
+
+
 
 import ContextModal from '@sharedComponents/modals/ContextModal.vue';
 import UserAvatar from '@/components/shared/userAvatar/UserAvatar.vue';

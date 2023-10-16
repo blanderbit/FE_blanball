@@ -1,8 +1,6 @@
 import { InitialUpdation } from './initial.message';
 
 import { SetMessageType, AuthWebSocketMessage } from '../../type.decorator';
-import { NotificationsBus } from '../../../event-bus-worker';
-
 import { WebSocketTypes } from '../../web.socket.types';
 
 @AuthWebSocketMessage()
@@ -15,6 +13,6 @@ export class NotificationAllDeletedNotificationsUpdation extends InitialUpdation
       callbackAfterAction();
     }
 
-    NotificationsBus.emit('SidebarClearData');
+    EventBusInstance.emit('SidebarClearData');
   }
 }

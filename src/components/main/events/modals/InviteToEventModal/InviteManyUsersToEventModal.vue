@@ -104,8 +104,8 @@
 </template>
 
 <script>
-import { computed, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
+ 
+
 
 import SearchBlockAll from '@mainComponents/header/SearchBlockAll.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
@@ -115,7 +115,7 @@ import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 import InvitedUsersListModal from './InvitedUsersListModal.vue';
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 
-import { API } from '@workers/api-worker/api.worker';
+
 import { useUserDataStore } from '@/stores/userData';
 
 import SearchIcon from '@images/search.svg';

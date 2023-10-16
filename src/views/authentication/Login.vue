@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+ 
 
 import login from '@mainComponents/login/Login.vue';
 import AuthenticationMain from '@components/AuthenticationMain.vue';

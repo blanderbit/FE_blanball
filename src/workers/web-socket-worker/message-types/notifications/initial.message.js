@@ -1,5 +1,5 @@
-import { API } from '../../../api-worker/api.worker';
-import { notifionsFormatTime } from '@/utils/notificationsFormatTime';
+
+import { notifionsFormatTime } from '@utils/notificationsFormatTime';
 
 import {
   PushNotification,

@@ -178,10 +178,6 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
-import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router';
-import { useI18n } from 'vue-i18n';
-import { useToast } from 'vue-toastification';
 
 import { v4 as uuid } from 'uuid';
 
@@ -203,7 +199,7 @@ import EditEventModal from '@mainComponents/manageEvent/modals/EditEventModal.vu
 import ActionModal from '@mainComponents/events/modals/ActionModal.vue';
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 
-import { API } from '@workers/api-worker/api.worker';
+
 import { ROUTES } from '@routes/router.const';
 import { PaginationWorker } from '@workers/pagination-worker';
 import { FilterPatch } from '@workers/api-worker/http/filter/filter.patch';

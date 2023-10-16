@@ -1,6 +1,7 @@
-import { API } from '@workers/api-worker/api.worker';
+
 import { useUkraineCitiesDataStore } from '@stores/ukraineCities';
-import { pinia } from '@/plugins/pinia.plugin';
+import { pinia } from '@plugins/pinia.plugin';
+
 
 const ukraineCitiesStore = useUkraineCitiesDataStore(pinia);
 

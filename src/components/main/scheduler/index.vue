@@ -81,16 +81,10 @@
               @ready="fillInlineCalendar"
             >
               <template #prev-button>
-                <img
-                  src="@images/scheduler/arrow-left.svg"
-                  alt=""
-                />
+                <img src="@images/scheduler/arrow-left.svg" alt="" />
               </template>
               <template #next-button>
-                <img
-                  src="@images/scheduler/arrow-right.svg"
-                  alt=""
-                />
+                <img src="@images/scheduler/arrow-right.svg" alt="" />
               </template>
 
               <template #title>
@@ -242,11 +236,7 @@
 </template>
 
 <script>
-import { computed, ref, onBeforeUnmount, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import { useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
-import { useToast } from 'vue-toastification';
+
 
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
@@ -264,15 +254,15 @@ import SchedulerInlineCalendarTitle from './SchedulerInlineCalendarTitle.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import JoinScheduledEventModal from './modals/JoinScheduledEventModal.vue';
 
-import { API } from '@workers/api-worker/api.worker';
+
 import { useUserDataStore } from '@/stores/userData';
 import {
   startSpinner,
   finishSpinner,
 } from '@workers/loading-worker/loading.worker';
-import { BlanballEventBus } from '@workers/event-bus-worker';
+
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
-import { useElementSize } from '@vueuse/core';
+
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
 
 import { CONSTS } from '@consts';
@@ -586,7 +576,7 @@ export default {
       }
 
       if (detectedDevice.value === DEVICE_TYPES.MOBILE_SMALL) {
-        BlanballEventBus.emit(
+        EventBusInstance.emit(
           'configureSchedulerGoBackButtonOnMobile',
           hideBtnConfig.value
         );
@@ -632,7 +622,7 @@ export default {
               schedulerConfig.value.isFriendsListShow = false;
               schedulerConfig.value.isScheduledEventsShow = true;
               deactivateUser();
-              BlanballEventBus.emit('schedulerSidebarForceSwitchTab', {
+              EventBusInstance.emit('schedulerSidebarForceSwitchTab', {
                 tabId: mockData.value.sideBarTabs.FRIENDS_PLANNED,
                 userData: null,
               });
@@ -817,31 +807,29 @@ export default {
       );
     }
 
-    BlanballEventBus.on('activateUserInScheduler', (userData) => {
+    const onActivateUserInScheduler = (userData) => {
       activateUserAndLoadData(userData);
-    });
-
-    BlanballEventBus.on('deactivateUser', () => {
+    };
+    const onDeactivateUser = () => {
       deactivateUserAndLoadData();
-    });
-
-    BlanballEventBus.on('switchedSchedulerSidebarTab', (tabId) => {
+    };
+    const onSwitchedSchedulerSidebarTab = (tabId) => {
       sidebarSelectedTabId.value = tabId;
       if (
         sidebarSelectedTabId.value ===
         mockData.value.sideBarTabs.FRIENDS_PLANNED
       ) {
         configureHideBtn(icons.value.goBack, () => {
-          BlanballEventBus.emit('schedulerSidebarForceSwitchTab', {
+          EventBusInstance.emit('schedulerSidebarForceSwitchTab', {
             tabId: mockData.value.sideBarTabs.MY_PLANNED,
             userData: userStore.user,
           });
           hideBtnConfig.value.action = () => backToTheMonthView();
         });
       }
-    });
+    };
 
-    BlanballEventBus.on('joinScheduledEvent', (eventData) => {
+    const onJoinScheduledEvent = (eventData) => {
       if (eventData.author.id === userStore.user.id) {
         router.push(ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(eventData.id));
 
@@ -851,13 +839,22 @@ export default {
       } else {
         showJoinScheduledEventModal(eventData);
       }
-    });
+    };
+
+    EventBusInstance.on('activateUserInScheduler', onActivateUserInScheduler);
+    EventBusInstance.on('deactivateUser', onDeactivateUser);
+
+    EventBusInstance.on(
+      'switchedSchedulerSidebarTab',
+      onSwitchedSchedulerSidebarTab
+    );
+    EventBusInstance.on('joinScheduledEvent', onJoinScheduledEvent);
 
     onBeforeUnmount(() => {
-      BlanballEventBus.off('activateUserInScheduler');
-      BlanballEventBus.off('switchedSchedulerSidebarTab');
-      BlanballEventBus.off('deactivateUser');
-      BlanballEventBus.off('joinScheduledEvent');
+      EventBusInstance.off('activateUserInScheduler', onActivateUserInScheduler);
+      EventBusInstance.off('switchedSchedulerSidebarTab', onSwitchedSchedulerSidebarTab);
+      EventBusInstance.off('deactivateUser', onDeactivateUser);
+      EventBusInstance.off('joinScheduledEvent', onJoinScheduledEvent);
     });
 
     function configureSchedulerAfterDesktopMode() {
@@ -886,12 +883,12 @@ export default {
         if (schedulerConfig.value.isFriendsListShow) {
           schedulerConfig.value.isScheduledEventsShow = true;
           schedulerConfig.value.isFriendsListShow = false;
-          BlanballEventBus.emit('schedulerSidebarForceSwitchTab', {
+          EventBusInstance.emit('schedulerSidebarForceSwitchTab', {
             tabId: mockData.value.sideBarTabs.FRIENDS_PLANNED,
             userData: null,
           });
         } else if (schedulerConfig.value.isScheduledEventsShow) {
-          BlanballEventBus.emit('schedulerSidebarForceSwitchTab', {
+          EventBusInstance.emit('schedulerSidebarForceSwitchTab', {
             tabId: mockData.value.sideBarTabs.FRIENDS_PLANNED,
             userData: activatedUserInSidebarData.value,
           });

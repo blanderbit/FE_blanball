@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import { ref, watch, computed, onMounted } from 'vue';
 
 export default {
   props: {

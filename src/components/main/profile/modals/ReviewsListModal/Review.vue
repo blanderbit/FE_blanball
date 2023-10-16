@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+ 
 import StarRating from 'vue-star-rating';
 
 import { getDate } from '@utils/getDate';

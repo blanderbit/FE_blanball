@@ -81,19 +81,9 @@
 </template>
 
 <script>
-import {
-  ref,
-  computed,
-  onBeforeMount,
-  onBeforeUnmount,
-  watch,
-  onMounted,
-} from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
-import { useToast } from 'vue-toastification';
 
-import { useElementSize } from '@vueuse/core';
+
+
 
 import SendMessageBlock from '@mainComponents/chat/SendMessageBlock.vue';
 import RequestForChat from '@mainComponents/chat/RequestForChat.vue';
@@ -110,7 +100,7 @@ import { ChatSocketWorkerInstance } from '@workers/web-socket-worker';
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 import { ChatWebSocketTypes } from '@workers/web-socket-worker/message-types/chat/web.socket.types';
-import { API } from '@workers/api-worker/api.worker';
+
 import { checkIsChatSelected } from '@/components/main/chat/utils/checkIsChatSelected';
 import { ChatEventBus } from '@workers/event-bus-worker';
 import {
@@ -443,7 +433,7 @@ export default {
     );
 
     function forceOpenChatsListSlideMenu() {
-      ChatEventBus.emit('activateSlideMenuByUniqName', 'chat.point');
+      EventBusInstance.emit('activateSlideMenuByUniqName', 'chat.point');
     }
 
     onMounted(() => {

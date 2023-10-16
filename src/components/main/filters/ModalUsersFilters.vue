@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { computed, ref, watch } from 'vue';
+ 
 
 import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
 import dropdown from '@sharedComponents/dropdown/Dropdown.vue';

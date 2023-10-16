@@ -1,5 +1,4 @@
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
-import { BlanballEventBus } from '../event-bus-worker';
+
 
 export const setHeightVH = () => {
   const doc = document.documentElement;
@@ -35,11 +34,12 @@ export const calcHeight = (
       appHeightValue.value -
       allHeights.reduce((total, current) => total + current);
   };
+  const onEmailVerified = () => {
+    calculatedHeight.value += 40;
+  };
 
   if (recalculateAfterVerifyEmail) {
-    BlanballEventBus.on('emailVerified', () => {
-      calculatedHeight.value += 40;
-    });
+    EventBusInstance.on('emailVerified', onEmailVerified);
   }
 
   const minusHeight = (height) => {
@@ -66,12 +66,12 @@ export const calcHeight = (
 
   onBeforeUnmount(() => {
     window.removeEventListener('resize', onAppHeightResize);
+    EventBusInstance.off('emailVerified', onEmailVerified);
   });
 
   watch(
     defaultHeights,
     () => {
-      console.log('dffddf');
       calculate();
     },
     { deep: true }

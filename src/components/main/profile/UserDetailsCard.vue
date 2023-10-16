@@ -325,10 +325,6 @@
 </template>
 
 <script>
-import { ref, computed, watch, watchEffect } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
-
 import dayjs from 'dayjs';
 import dayjsUkrLocale from 'dayjs/locale/uk';
 

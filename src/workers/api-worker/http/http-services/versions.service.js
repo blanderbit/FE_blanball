@@ -1,7 +1,7 @@
-import { AxiosInstance } from '../../../../plugins/axios.plugin';
+import { AxiosInstance } from '@plugins/axios.plugin';
 import { EndpointsEnum } from '../http-common/prefix.enum';
 
-import { AxiosParams, AxiosQuery } from '../../../utils-worker';
+import { AxiosParams, AxiosQuery } from '@workers/utils-worker';
 
 export class VersionsService {
   static getAllVersions(page) {

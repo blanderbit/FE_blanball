@@ -64,17 +64,15 @@
   </step-wrapper>
 </template>
 
-<script>
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
-import { useI18n } from 'vue-i18n';
+<script> 
 
 import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import RegisterModalPositionMap from './modals/RegisterModalPositionMap.vue';
 import StepWrapper from './StepWrapper.vue';
 
-import { PositionMapBus } from '@workers/event-bus-worker';
-import { API } from '@workers/api-worker/api.worker';
+
+
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
 import tickIcon from '@images/tick-white.svg';
@@ -116,12 +114,24 @@ export default {
     async function getCoordsByName(str) {
       return await API.LocationService.getPlaceByAddress(str);
     }
-    PositionMapBus.on('update:coords', (e) => {
+
+    const onUpdateCords = (e) => {
       region.value = e.place.region;
       city.value = e.place.village || e.place.city;
       loading.value = false;
       nextButton.value = !region.value || !city.value || !address.value;
-    });
+    };
+
+    const onUpdateCordsError = () => {
+      nextButton.value = true;
+      region.value = '';
+      city.value = '';
+      address.value = '';
+    };
+
+    EventBusInstance.on('update:coords', onUpdateCords);
+    EventBusInstance.on('update:coords-error', onUpdateCordsError);
+
     let timeout;
     const { t } = useI18n();
     const stepConfig = computed(() => ({
@@ -144,12 +154,11 @@ export default {
       },
     }));
 
-    PositionMapBus.on('update:coords-error', () => {
-      nextButton.value = true;
-      region.value = '';
-      city.value = '';
-      address.value = '';
+    onBeforeUnmount(() => {
+      EventBusInstance.off('update:coords', onUpdateCords);
+      EventBusInstance.off('update:coords-error', onUpdateCordsError);
     });
+
     return {
       cityList,
       tick,
@@ -165,7 +174,7 @@ export default {
         address.value = '';
         startSpinner();
         try {
-          PositionMapBus.emit(
+          EventBusInstance.emit(
             'update:map:by:coords',
             await getCoordsByName(region.value)
           );
@@ -180,7 +189,7 @@ export default {
         address.value = '';
         startSpinner();
         try {
-          PositionMapBus.emit(
+          EventBusInstance.emit(
             'update:map:by:coords',
             await getCoordsByName(`${region.value} ${city.value}`)
           );
@@ -196,7 +205,7 @@ export default {
         timeout = setTimeout(async () => {
           startSpinner();
           try {
-            PositionMapBus.emit(
+            EventBusInstance.emit(
               'update:map:by:coords',
               await getCoordsByName(
                 `${region.value} ${city.value} ${address.value}`

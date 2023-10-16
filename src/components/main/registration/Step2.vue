@@ -101,8 +101,8 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+ 
+
 
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import StepWrapper from './StepWrapper.vue';

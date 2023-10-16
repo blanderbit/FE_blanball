@@ -4,9 +4,8 @@
 
 <script>
 import PublicProfile from '@mainComponents/publicProfile/PublicProfile.vue';
-import { useRoute } from 'vue-router';
-import { ref, watch } from 'vue';
-import { API } from '@workers/api-worker/api.worker';
+
+
 
 import { ROUTES } from '@routes/router.const';
 export default {

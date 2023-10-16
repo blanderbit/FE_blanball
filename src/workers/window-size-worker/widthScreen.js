@@ -1,4 +1,4 @@
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
+ 
 
 export function useWindowWidth() {
   const windowWidth = ref(window.innerWidth);

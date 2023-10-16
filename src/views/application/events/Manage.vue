@@ -140,10 +140,6 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useRouter, useRoute, onBeforeRouteLeave } from 'vue-router';
-
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import { merge } from 'lodash';
@@ -164,9 +160,9 @@ import PreviewInvitedUsersListModal from '@mainComponents/events/modals/PreviewI
 import PreviewEventModal from '@mainComponents/events/modals/PreviewEventModal.vue';
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 
-import { API } from '@workers/api-worker/api.worker';
+
 import { useUserDataStore } from '@/stores/userData';
-import { BlanballEventBus } from '@workers/event-bus-worker';
+
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
 import { finishSpinner, startSpinner } from '@workers/loading-worker/loading.worker';
 import { disableFormSubmit } from '@utils/disableFormSubmit';
@@ -473,7 +469,7 @@ export default {
         }
         cancelAndGoToTheNextPage();
         setTimeout(() => {
-          BlanballEventBus.emit(emitName);
+          EventBusInstance.emit(emitName);
         }, 100);
       } catch {}
     }

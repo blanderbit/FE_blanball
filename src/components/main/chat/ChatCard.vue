@@ -83,9 +83,6 @@
 </template>
 
 <script>
-import { computed, onMounted } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useRouter, useRoute } from 'vue-router';
 import dayjs from 'dayjs';
 
 import { detectServiceChatMessageTextByType } from './utils/detectServiceChatMessageTextByType';

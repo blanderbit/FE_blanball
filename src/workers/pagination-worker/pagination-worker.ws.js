@@ -1,4 +1,3 @@
-import { ref, onBeforeUnmount, onMounted } from 'vue';
 import { ChatSocketWorkerInstance } from '../web-socket-worker';
 
 export const WebSocketPaginationWorker = (options) => {

@@ -1,5 +1,5 @@
 import { useHintsStore } from '@stores/hints';
-import { BlanballEventBus } from '@workers/event-bus-worker';
+
 
 export function hintsDirective(el, hintsData) {
   const hintsStore = useHintsStore();
@@ -21,6 +21,6 @@ export function hintsDirective(el, hintsData) {
   hintsToShow.map(calculatePosition);
 
   if (hintsToShow.length) {
-    BlanballEventBus.emit('createHints', { hints: hintsToShow, element: el });
+    EventBusInstance.emit('createHints', { hints: hintsToShow, element: el });
   }
 }

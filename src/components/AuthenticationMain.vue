@@ -49,8 +49,7 @@
   </div>
 </template>
 
-<script>
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
+<script> 
 import PositionMap from '@mainComponents/maps/PositionMap.vue';
 import { CONSTS } from '@consts/index';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';

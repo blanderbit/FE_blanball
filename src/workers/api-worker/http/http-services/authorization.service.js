@@ -1,7 +1,7 @@
-import { AxiosInstance } from '../../../../plugins/axios.plugin';
+import { AxiosInstance } from '@plugins/axios.plugin';
 import { EndpointsEnum } from '../http-common/prefix.enum';
-import { AxiosParams, AxiosSkipErrorMessageType } from '../../../utils-worker';
-import { DETAILS_TYPE_ENUM } from '../../../type-request-message-worker';
+import { AxiosParams, AxiosSkipErrorMessageType } from '@workers/utils-worker';
+import { DETAILS_TYPE_ENUM } from '@workers/type-request-message-worker';
 
 export class AuthorizationService {
   static login(data) {

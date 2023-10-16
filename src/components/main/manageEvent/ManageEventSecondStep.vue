@@ -103,8 +103,8 @@
 </template>
 
 <script>
-import { ref, watch, computed } from 'vue';
-import { useRouter } from 'vue-router';
+ 
+
 
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import mainTextArea from '@sharedComponents/textArea/MainTextArea.vue';

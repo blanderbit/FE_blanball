@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import { onMounted, onBeforeUnmount, computed } from 'vue';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
 export default {
@@ -40,11 +39,10 @@ export default {
 
     const labelPosition = computed(() => {
       if (props.position) {
-        return props.position
+        return props.position;
       }
       return isMobile.value ? 'bottom' : 'right';
     });
-
 
     return {
       isMobile,

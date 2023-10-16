@@ -1,16 +1,16 @@
-import { AxiosInstance } from '../../../../plugins/axios.plugin';
+import { AxiosInstance } from '@plugins/axios.plugin';
 import { EndpointsEnum } from '../http-common/prefix.enum';
 import {
   AxiosParams,
   AxiosQuery,
   AxiosSkipErrorMessageType,
-} from '../../../utils-worker';
+} from '@workers/utils-worker';
 import { FilterParamsDecorator } from '../filter/filter.utils';
 import {
   filterConfigForUsers,
   filterConfigForRelevantUsers,
 } from '../filter/filter.config';
-import { DETAILS_TYPE_ENUM } from '../../../type-request-message-worker';
+import { DETAILS_TYPE_ENUM } from '@workers/type-request-message-worker';
 
 export class UserService {
   getMyProfile() {

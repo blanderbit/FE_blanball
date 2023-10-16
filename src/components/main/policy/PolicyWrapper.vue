@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router';
+
 
 import { ROUTES } from '@routes/router.const';
 

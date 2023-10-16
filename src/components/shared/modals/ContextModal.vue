@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
-import { useElementSize } from '@vueuse/core';
+ 
+
 
 export default {
   props: {

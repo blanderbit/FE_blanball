@@ -32,12 +32,10 @@
 </template>
 
 <script>
-import { computed, ref, watch, onBeforeUnmount } from 'vue';
-
 import ModalTopCard from './ModalTopCard.vue';
 import ModalBottomCard from './ModalBottomCard.vue';
 
-import { API } from '@workers/api-worker/api.worker';
+
 
 import { CONSTS } from '@consts/index';
 

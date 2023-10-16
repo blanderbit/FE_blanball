@@ -171,8 +171,6 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue';
-import { useRoute } from 'vue-router';
 
 import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
 import FilterBlock from '@mainComponents/filters/FilterBlock.vue';

@@ -4,7 +4,7 @@
       <li v-for="(item, idx) in getBreadcrumbsList" :key="item.name">
         <router-link
           :to="idx + 1 === getBreadcrumbsList.length ? '' : item.path"
-          :class="{'b-current-route': idx + 1 === getBreadcrumbsList.length }"
+          :class="{ 'b-current-route': idx + 1 === getBreadcrumbsList.length }"
         >
           {{ item.name }}
         </router-link>
@@ -19,10 +19,6 @@
 </template>
 
 <script>
-import { computed } from 'vue';
-import { useRoute } from 'vue-router';
-import { useI18n } from 'vue-i18n';
-
 export default {
   setup() {
     const { tm } = useI18n();

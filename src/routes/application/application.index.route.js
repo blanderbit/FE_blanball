@@ -1,5 +1,5 @@
 import { ROUTES } from '../router.const';
-import { routerAuthResolver } from '@/workers/resolver-worker/reolver.worker';
+import { routerAuthResolver } from '@workers/resolver-worker/reolver.worker';
 import { VERSIONS_ROUTE } from './versions.route';
 import { CHAT_ROUTE } from './chat/chat.route';
 import { MY_PROFILE_ROUTE } from './profile/profile.my.profile.route';

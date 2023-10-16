@@ -9,7 +9,7 @@ import {
 
 import { MessageActionTypes } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
-import { i18n } from '../../../../plugins/i18n.plugin';
+import { i18n } from '@plugins/i18n.plugin';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.LeftFeedback)

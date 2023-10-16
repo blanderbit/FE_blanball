@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue'
 import Slider from '@vueform/slider'
 export default {
   components: {

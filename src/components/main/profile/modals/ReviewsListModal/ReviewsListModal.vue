@@ -68,8 +68,6 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 
 import { v4 as uuid } from 'uuid';
 
@@ -78,7 +76,7 @@ import SmartList from '@sharedComponents/smartList/SmartList.vue';
 import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
 import Review from './Review.vue';
 
-import { API } from '@workers/api-worker/api.worker';
+
 import { PaginationWorker } from '@workers/pagination-worker';
 import { useHeaderHeightStore } from '@/stores/headerHeight';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';

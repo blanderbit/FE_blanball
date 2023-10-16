@@ -71,9 +71,6 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeUnmount, onMounted, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-
 import { v4 as uuid } from 'uuid';
 import { debounce } from 'lodash';
 
@@ -92,7 +89,7 @@ import {
   AuthWebSocketWorkerInstance,
   ChatSocketWorkerInstance,
 } from '@workers/web-socket-worker';
-import { API } from '@workers/api-worker/api.worker';
+
 import { ChatWebSocketTypes } from '@workers/web-socket-worker/message-types/chat/web.socket.types';
 import { smoothScrollUp, smoothScrollDown } from './utils/smoothScroll';
 
@@ -315,7 +312,7 @@ export default {
     }
 
     function replyToMessage(messageData) {
-      ChatEventBus.emit('replyToChatMessage', messageData);
+      EventBusInstance.emit('replyToChatMessage', messageData);
     }
 
     function checkIfTenMinutesPassed(dateString) {
@@ -330,7 +327,7 @@ export default {
       if (checkIfTenMinutesPassed(messageData.time_created)) {
         showActionModal();
       } else {
-        ChatEventBus.emit('editChatMessage', messageData);
+        EventBusInstance.emit('editChatMessage', messageData);
       }
     }
 
@@ -470,9 +467,14 @@ export default {
       };
     });
 
-    ChatEventBus.on('deselectChatMessages', () => deselectChatMessages());
-    ChatEventBus.on('bulkDeleteChatMessages', () =>
-      deleteChatMessages(selectedMessages.value)
+    const onBulkDeleteChatMessagesEvent = () => {
+      deleteChatMessages(selectedMessages.value);
+    };
+
+    EventBusInstance.on('deselectChatMessages', deselectChatMessages);
+    EventBusInstance.on(
+      'bulkDeleteChatMessages',
+      onBulkDeleteChatMessagesEvent
     );
 
     onBeforeUnmount(() => {
@@ -486,8 +488,8 @@ export default {
       ChatSocketWorkerInstance.destroyCallback(
         createNewUserJoinedChatServiceMessageHandler
       );
-      ChatEventBus.off('deselectChatMessages');
-      ChatEventBus.off('bulkDeleteChatMessages');
+      EventBusInstance.off('deselectChatMessages', deselectChatMessages);
+      EventBusInstance.off('bulkDeleteChatMessages', onBulkDeleteChatMessagesEvent);
     });
 
     watch(

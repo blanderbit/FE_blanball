@@ -57,9 +57,7 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeUnmount } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
+
 
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import SmartList from '@sharedComponents/smartList/SmartList.vue';
@@ -72,7 +70,7 @@ import SchedulerFriendsList from './SchedulerFriendsList.vue';
 import SchedulerTabs from './SchedulerTabs.vue';
 
 import { useUserDataStore } from '@/stores/userData';
-import { BlanballEventBus } from '@workers/event-bus-worker';
+
 
 import { CONSTS } from '@consts';
 import { ROUTES } from '@routes/router.const';
@@ -128,7 +126,7 @@ export default {
     const switchTab = (tabId) => {
       if (selectedTabId.value !== tabId) {
         selectedTabId.value = tabId;
-        BlanballEventBus.emit('switchedSchedulerSidebarTab', tabId);
+        EventBusInstance.emit('switchedSchedulerSidebarTab', tabId);
         if (tabId === mockData.value.tabs.MY_PLANNED) {
           activateUser(userStore.user);
         } else {
@@ -141,7 +139,7 @@ export default {
       if (
         router.currentRoute.value.name === ROUTES.APPLICATION.EVENTS.CREATE.name
       ) {
-        BlanballEventBus.emit('closeScheduler');
+        EventBusInstance.emit('closeScheduler');
       } else {
         router.push(ROUTES.APPLICATION.EVENTS.CREATE.absolute);
       }
@@ -150,26 +148,34 @@ export default {
     function activateUser(userData) {
       if (activeUserId.value !== userData.id) {
         activeUserId.value = userData.id;
-        BlanballEventBus.emit('activateUserInScheduler', userData);
+        EventBusInstance.emit('activateUserInScheduler', userData);
       }
     }
 
     function deactivateUser() {
       activeUserId.value = 0;
-      BlanballEventBus.emit('deactivateUser');
+      EventBusInstance.emit('deactivateUser');
     }
 
-    BlanballEventBus.on('schedulerSidebarForceSwitchTab', (data) => {
+    const onSchedulerSidebarForceSwitchTab = (data) => {
       switchTab(data.tabId);
       if (data.userData) {
         activateUser(data.userData);
       } else {
         deactivateUser();
       }
-    });
+    };
+
+    EventBusInstance.on(
+      'schedulerSidebarForceSwitchTab',
+      onSchedulerSidebarForceSwitchTab
+    );
 
     onBeforeUnmount(() => {
-      BlanballEventBus.off('schedulerSidebarForceSwitchTab');
+      EventBusInstance.off(
+        'schedulerSidebarForceSwitchTab',
+        onSchedulerSidebarForceSwitchTab
+      );
     });
 
     return {

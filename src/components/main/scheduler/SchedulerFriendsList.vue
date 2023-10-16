@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { ref, computed, watch } from 'vue';
+ 
 
 import SmartList from '@sharedComponents/smartList/SmartList.vue';
 import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
@@ -45,7 +45,7 @@ import SchedulerNoUsersCard from './SchedulerNoUsersCard.vue';
 import { v4 as uuid } from 'uuid';
 
 import { PaginationWorker } from '@workers/pagination-worker';
-import { API } from '@workers/api-worker/api.worker';
+
 
 import { CONSTS } from '@consts';
 

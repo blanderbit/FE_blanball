@@ -1,4 +1,4 @@
-import { routerResolverByLoginPage } from '@/workers/resolver-worker/reolver.worker';
+import { routerResolverByLoginPage } from '@workers/resolver-worker/reolver.worker';
 import { ROUTES } from '../router.const';
 import { REGISTER_ROUTE } from './register.route';
 import { LOGIN_PAGE_ROUTE } from './login.page.route';

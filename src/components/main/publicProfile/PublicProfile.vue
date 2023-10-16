@@ -222,12 +222,10 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useToast } from 'vue-toastification';
+
 
 import StarRating from 'vue-star-rating';
-import { useElementSize } from '@vueuse/core';
+
 
 import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';

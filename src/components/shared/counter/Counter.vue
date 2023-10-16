@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import { ref, onBeforeUnmount } from 'vue';
 
 export default {
   props: {

@@ -102,12 +102,10 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
 
 import UserAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 
-import { BlanballEventBus } from '@workers/event-bus-worker';
+
 
 import { ROUTES } from '@routes/router.const';
 
@@ -255,11 +253,11 @@ export default {
       await router.push(
         ROUTES.APPLICATION.EVENTS.GET_ONE.absolute(props.eventData.id)
       );
-      BlanballEventBus.emit('closeScheduler');
+      EventBusInstance.emit('closeScheduler');
     };
 
     const joinScheduledEvent = () => {
-      BlanballEventBus.emit('joinScheduledEvent', props.eventData);
+      EventBusInstance.emit('joinScheduledEvent', props.eventData);
     };
 
     onMounted(() => {

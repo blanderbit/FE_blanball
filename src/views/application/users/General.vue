@@ -88,9 +88,6 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
 
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import UserCard from '@mainComponents/users/UserCard.vue';
@@ -109,7 +106,7 @@ import tShirt from '@images/t-shirt.svg';
 
 import { v4 as uuid } from 'uuid';
 import { PaginationWorker } from '@workers/pagination-worker';
-import { API } from '@workers/api-worker/api.worker';
+
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
 import { useUserDataStore } from '@/stores/userData';
 

@@ -15,8 +15,8 @@ import {
   MessageActionTypes,
 } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
-import { ROUTES } from '../../../../routes/router.const';
-import { i18n } from '../../../../plugins/i18n.plugin';
+import { ROUTES } from '@routes/router.const';
+import { i18n } from '@plugins/i18n.plugin';
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.LeaveUserFromTheEvent)

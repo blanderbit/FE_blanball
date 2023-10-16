@@ -136,16 +136,13 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
-import { useRoute } from 'vue-router';
-
 import dayjs from 'dayjs';
 
 import PaginationScale from '@sharedComponents/pagination/PaginationScale.vue';
 
 import { cloneDeep } from 'lodash';
 
-import { API } from '@workers/api-worker/api.worker';
+
 import { PaginationWorker } from '@workers/pagination-worker';
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
 import { useUserDataStore } from '@/stores/userData';

@@ -1,6 +1,6 @@
 import router from '../router';
 
-import { API } from '@workers/api-worker/api.worker';
+
 
 import { ROUTES } from '../routes/router.const';
 

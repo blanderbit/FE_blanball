@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+ 
 
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import PlaceDetectorModal from '@mainComponents/maps/PlaceDetectorModal.vue';

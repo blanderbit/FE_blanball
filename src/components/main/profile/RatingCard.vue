@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+ 
 
 import StarRating from 'vue-star-rating';
 

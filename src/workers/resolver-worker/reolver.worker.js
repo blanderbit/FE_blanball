@@ -6,7 +6,7 @@ import {
 } from '../loading-worker/loading.worker.js';
 import { VueResolver } from './vue.resolver.js';
 import { ROUTES } from '../../routes/router.const';
-import { ukraineCitiesData } from '@/routes/helpers/ukraineCitiesData';
+import { ukraineCitiesData } from '@routes/helpers/ukraineCitiesData';
 
 export const routerAuthResolver = new VueResolver()
   .registerResolverFirstWorker(resolverFunctions.isUserAuthorized)

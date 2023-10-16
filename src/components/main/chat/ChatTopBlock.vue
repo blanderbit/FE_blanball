@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+ 
 import UserAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
@@ -133,11 +133,11 @@ export default {
     });
 
     function deselectChatMessages() {
-      ChatEventBus.emit('deselectChatMessages');
+      EventBusInstance.emit('deselectChatMessages');
     }
 
     function bulkDeleteChatMessages() {
-      ChatEventBus.emit('bulkDeleteChatMessages');
+      EventBusInstance.emit('bulkDeleteChatMessages');
     }
 
     function chatRightSideSelectedMessagesActionClick(actionName) {

@@ -64,10 +64,10 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useToast } from 'vue-toastification';
-import { useI18n } from 'vue-i18n';
+ 
+
+
+
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
@@ -75,7 +75,7 @@ import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
 import Counter from '@sharedComponents/counter/Counter.vue';
 import inputCode from '@sharedComponents/inputCode/InputCode.vue';
 
-import { API } from '@workers/api-worker/api.worker';
+
 import { resetUserDataAndRedirectToLogin } from '@utils/logOut';
 import {
   startSpinner,

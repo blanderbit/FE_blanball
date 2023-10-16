@@ -183,7 +183,6 @@
 </template>
 
 <script>
-import { ref, inject, computed, nextTick, onMounted, watch } from 'vue';
 import { v4 as uuid } from 'uuid';
 
 import VirtualList from '@mainComponents/virtualList/VirtualList.vue';

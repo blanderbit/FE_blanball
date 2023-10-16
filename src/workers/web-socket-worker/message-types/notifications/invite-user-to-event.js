@@ -12,8 +12,8 @@ import {
   MessageActionDataTypes,
 } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
-import { API } from '../../../api-worker/api.worker';
-import { i18n } from '../../../../plugins/i18n.plugin';
+
+import { i18n } from '@plugins/i18n.plugin';
 import dayjs from 'dayjs';
 
 @AuthWebSocketMessage()

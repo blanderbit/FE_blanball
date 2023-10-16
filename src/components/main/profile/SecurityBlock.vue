@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+ 
 
 import switcher from '@sharedComponents/switcher/Switcher.vue';
 import sortArrowHorizontally from '@images/sort-arrows-horizontal.svg';

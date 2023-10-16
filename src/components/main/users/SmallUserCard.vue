@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router';
+
 
  import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 

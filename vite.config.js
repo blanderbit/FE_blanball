@@ -3,6 +3,7 @@ import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 import autoprefixer from 'autoprefixer';
 import vue from '@vitejs/plugin-vue';
+import AutoImport from 'unplugin-auto-import/vite';
 
 require('dotenv').config({ path: './stack.env' });
 import { babel } from '@rollup/plugin-babel';
@@ -15,6 +16,24 @@ export default defineConfig({
   plugins: [
     babel({
       babelHelpers: 'bundled',
+    }),
+    AutoImport({
+      dts: './auto-imports.d.ts',
+      dirs: ['./src/workers/api-worker', './src/workers/event-bus-worker'],
+      extensions: ['vue', 'js'],
+      imports: [
+        'vue',
+        'vue-router',
+        {
+          '@vueuse/core': ['useElementSize'],
+        },
+        {
+          'vue-i18n': ['useI18n'],
+        },
+        {
+          'vue-toastification': ['useToast'],
+        },
+      ],
     }),
     vue({
       script: {

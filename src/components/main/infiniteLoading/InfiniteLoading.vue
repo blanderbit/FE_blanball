@@ -1,6 +1,5 @@
 <script setup>
 import smallLoader from '@sharedComponents/loader/SmallLoader.vue';
-import { onMounted, ref, toRefs, onUnmounted, watch, nextTick } from 'vue';
 import {
   startObserver,
   stopObserver,
@@ -68,7 +67,6 @@ defineExpose({ state });
 
 <template>
   <div class="infiniteLoading" ref="infiniteLoading">
-    {{ state }}
     <slot v-if="state == 'loading'" name="spinner">
       <smallLoader />
     </slot>

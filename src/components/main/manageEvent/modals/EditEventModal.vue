@@ -87,8 +87,6 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
-
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import ManageEventFirstStep from '@mainComponents/manageEvent/ManageEventFirstStep.vue';
@@ -99,8 +97,8 @@ import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 
-import { API } from '@workers/api-worker/api.worker';
-import { BlanballEventBus } from '@workers/event-bus-worker';
+
+
 import {
   startSpinner,
   finishSpinner,
@@ -285,7 +283,7 @@ export default {
       await API.EventService.editOneEvent(eventData.value.id, createEventData);
       finishSpinner();
       emit('closeEventUpdateModal');
-      BlanballEventBus.emit('EventUpdated');
+      EventBusInstance.emit('EventUpdated');
     }
     return {
       searchUsersLoading,

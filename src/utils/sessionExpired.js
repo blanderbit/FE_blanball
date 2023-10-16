@@ -1,5 +1,5 @@
 import { resolverFunctions } from '@workers/resolver-worker/resolver.functions';
-import { BlanballEventBus } from '@workers/event-bus-worker';
+
 import { resetUserData } from './logOut';
 
 import router from '../router';
@@ -16,5 +16,5 @@ export async function sessionExpired() {
       ? resolverFunctions._createLoginPath(window.location.pathname)
       : ROUTES.AUTHENTICATIONS.LOGIN.absolute
   );
-  BlanballEventBus.emit('SessionExpired');
+  EventBusInstance.emit('SessionExpired');
 }

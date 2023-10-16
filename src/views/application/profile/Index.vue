@@ -160,10 +160,7 @@
 </template>
 
 <script>
-import { ref, computed, reactive, onMounted, onBeforeUnmount } from 'vue';
-import { useRouter, onBeforeRouteLeave } from 'vue-router';
-import { useI18n } from 'vue-i18n';
-import { useToast } from 'vue-toastification';
+
 
 import { Form } from '@system.it.flumx.com/vee-validate';
 
@@ -186,7 +183,7 @@ import HideMyEventsModal from '@mainComponents/events/modals/HideMyEventsModal.v
 import PublicProfileWrapper from '@mainComponents/publicProfile/PublicProfileWrapper.vue';
 import ReviewsListModal from '@mainComponents/profile/modals/ReviewsListModal/ReviewsListModal.vue';
 
-import { API } from '@workers/api-worker/api.worker';
+
 import { useUserDataStore } from '@/stores/userData';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
@@ -233,8 +230,7 @@ export default {
     const userStore = useUserDataStore();
 
     const router = useRouter();
-    const { isBetweenTabletAndDesktop, isMobile, isTablet } =
-      useWindowWidth();
+    const { isBetweenTabletAndDesktop, isMobile, isTablet } = useWindowWidth();
 
     const userInfo = ref(null);
     const userData = ref(null);

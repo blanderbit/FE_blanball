@@ -25,8 +25,6 @@
 </template>
 
 <script>
-import { watch, ref } from 'vue';
-
 export default {
   name: 'RadioGenderBox',
   props: {

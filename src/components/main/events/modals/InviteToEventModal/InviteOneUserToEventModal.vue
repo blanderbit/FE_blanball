@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+ 
 
 import mainTextArea from '@sharedComponents/textArea/MainTextArea.vue';
 import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';

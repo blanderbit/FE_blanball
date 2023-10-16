@@ -45,13 +45,12 @@
 </template>
 
 <script>
-import { ref, computed, watch } from 'vue';
-import { useRouter } from 'vue-router';
+ 
 
-import { useElementSize } from '@vueuse/core';
+
+
 
 import { dinamicMenu } from '../sidebar/menus/menu.config';
-import { ChatEventBus } from '@/workers/event-bus-worker';
 
 export default {
   props: {
@@ -107,7 +106,7 @@ export default {
       if (item.slideConfig) {
         activeElementUniqueName.value = item.uniqueName;
         isBottomBlockShowing.value = false;
-        ChatEventBus.emit('activateSlideMenuByUniqName', item.uniqueName);
+        EventBusInstance.emit('activateSlideMenuByUniqName', item.uniqueName);
       }
     }
 

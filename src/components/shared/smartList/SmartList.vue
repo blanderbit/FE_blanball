@@ -30,9 +30,8 @@
   </DynamicScroller>
 </template>
 
-<script>
-import { ref, watch, nextTick, computed } from 'vue';
-import { useRouter } from 'vue-router';
+<script> 
+
 import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller';
 
 import notification from '@mainComponents/notifications/Notification.vue';

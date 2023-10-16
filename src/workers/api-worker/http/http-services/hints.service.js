@@ -1,4 +1,4 @@
-import { AxiosInstance } from '../../../../plugins/axios.plugin';
+import { AxiosInstance } from '@plugins/axios.plugin';
 import { EndpointsEnum } from '../http-common/prefix.enum';
 
 export class HintsService {
