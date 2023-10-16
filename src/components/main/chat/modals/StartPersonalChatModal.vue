@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import GreenBtn from '@/components/shared/button/GreenBtn.vue';
+import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 export default {
   components: {
     GreenBtn,

@@ -37,7 +37,7 @@ import { getDate } from '@utils/getDate';
 import { getTime } from '@utils/getTime';
 
 
-import { ROUTES } from '@routes/router.const';
+
 
 const popularEvents = ref([]);
 const router = useRouter();

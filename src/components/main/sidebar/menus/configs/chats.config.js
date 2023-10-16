@@ -16,7 +16,7 @@ import { pinia } from '@plugins/pinia.plugin';
 
 import EmptyNotificationsIcon from '@images/no-records/empty-notifications.svg';
 
-import { ROUTES } from '@routes/router.const';
+
 
 import trashRedIcon from '@images/trash-red.svg';
 import selectedIcon from '@images/selected.svg';

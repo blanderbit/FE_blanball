@@ -29,7 +29,7 @@
 <script>
 
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
-import { ROUTES } from '@routes/router.const';
+
 
 export default {
   name: '404',

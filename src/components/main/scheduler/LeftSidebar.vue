@@ -69,11 +69,11 @@ import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import SchedulerFriendsList from './SchedulerFriendsList.vue';
 import SchedulerTabs from './SchedulerTabs.vue';
 
-import { useUserDataStore } from '@/stores/userData';
+import { useUserDataStore } from '@stores/userData';
 
 
-import { CONSTS } from '@consts';
-import { ROUTES } from '@routes/router.const';
+
+
 
 import searchIcon from '@images/scheduler/lens.svg';
 import whiteClockIcon from '@images/scheduler/white-clock.svg';

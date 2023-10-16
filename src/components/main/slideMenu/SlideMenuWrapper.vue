@@ -112,18 +112,18 @@
 
 
 import ContextModal from '@sharedComponents/modals/ContextModal.vue';
-import UserAvatar from '@/components/shared/userAvatar/UserAvatar.vue';
+import UserAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 import MobileMenuSlideMenuMainContent from './MobileMenuSlideMenuMainContent.vue';
 import MobileMenuSlideMenuBottomBlock from './MobileMenuSlideMenuBottomBlock.vue';
 
 import sidebarArrowBack from '@images/sidebar-arrow-back.svg';
 import sidebarArrow from '@images/sidebar-arrow.svg';
 
-import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
-import { logOut } from '@/utils/logOut';
-import { useUserDataStore } from '@/stores/userData';
-import { ROUTES } from '@routes/router.const';
-import { CONSTS } from '@consts';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
+import { logOut } from '@utils/logOut';
+import { useUserDataStore } from '@stores/userData';
+
+
 
 const SLIDE_MENU_MAIN_SIDE_PADDING = 32;
 const SLIDE_MENU_TRANSITION_DELAY_MS = 0.7;

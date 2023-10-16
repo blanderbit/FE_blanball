@@ -21,7 +21,7 @@
 
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 
-import { useUserDataStore } from '@/stores/userData';
+import { useUserDataStore } from '@stores/userData';
 
 import inviteToEventIcon from '@images/add-user-white.svg';
 

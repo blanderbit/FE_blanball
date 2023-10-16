@@ -1,4 +1,4 @@
-import { CONSTS } from '@consts';
+
 
 const CHAT_MESSAGE_TYPES = CONSTS.chat.CHAT_MESSAGE_TYPES;
 

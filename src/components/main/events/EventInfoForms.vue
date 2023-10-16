@@ -53,7 +53,7 @@
 <script>
  
 
-import { CONSTS } from '@consts/index';
+
 
 export default {
   props: {

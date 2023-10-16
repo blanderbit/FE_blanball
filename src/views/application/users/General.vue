@@ -108,11 +108,11 @@ import { v4 as uuid } from 'uuid';
 import { PaginationWorker } from '@workers/pagination-worker';
 
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
-import { useUserDataStore } from '@/stores/userData';
+import { useUserDataStore } from '@stores/userData';
 
 import { FilterPatch } from '@workers/api-worker/http/filter/filter.patch';
 import UsersFilters from '@mainComponents/filters/block-filters/UsersFilters.vue';
-import { ROUTES } from '@routes/router.const';
+
 
 export default {
   name: 'RatingPage',

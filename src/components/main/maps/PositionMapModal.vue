@@ -96,8 +96,8 @@ import {
 import { disableFormSubmit } from '@utils/disableFormSubmit';
 
 import tickIcon from '@images/location-point.svg';
-import { SCHEMAS } from '@/validators/schemas';
-import { useUkraineCitiesDataStore } from '@/stores/ukraineCities';
+import { SCHEMAS } from '@validators/schemas';
+import { useUkraineCitiesDataStore } from '@stores/ukraineCities';
 
 export default {
   components: {

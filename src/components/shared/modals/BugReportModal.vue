@@ -83,7 +83,7 @@ import mainTextArea from '@sharedComponents/textArea/MainTextArea.vue';
 
 import { disableFormSubmit } from '@utils/disableFormSubmit';
 
-import { SCHEMAS } from '@/validators/schemas';
+import { SCHEMAS } from '@validators/schemas';
 
 import addFileIcon from '@images/add-file-icon.svg';
 

@@ -200,7 +200,7 @@ import ActionModal from '@mainComponents/events/modals/ActionModal.vue';
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 
 
-import { ROUTES } from '@routes/router.const';
+
 import { PaginationWorker } from '@workers/pagination-worker';
 import { FilterPatch } from '@workers/api-worker/http/filter/filter.patch';
 import { addMinutes } from '@utils/addMinutes';
@@ -208,13 +208,13 @@ import { getDate } from '@utils/getDate';
 import { getTime } from '@utils/getTime';
 import { prepareEventUpdateData } from '@utils/prepareEventUpdateData';
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
-import { useUserDataStore } from '@/stores/userData';
+import { useUserDataStore } from '@stores/userData';
 import {
   startSpinner,
   finishSpinner,
 } from '@workers/loading-worker/loading.worker';
 
-import { CONSTS } from '@consts/index';
+
 
 import Plus from '@images/plus.svg';
 import WhiteBucket from '@images/white-bucket.svg';

@@ -1,5 +1,5 @@
 import { routerDataResolver } from '@workers/resolver-worker/reolver.worker';
-import { ROUTES } from './router.const';
+
 
 export const COOKIE_POLICY_ROUTE = {
   path: ROUTES.COOKIE_POLICY.relative,

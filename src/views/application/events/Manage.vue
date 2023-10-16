@@ -161,7 +161,7 @@ import PreviewEventModal from '@mainComponents/events/modals/PreviewEventModal.v
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 
 
-import { useUserDataStore } from '@/stores/userData';
+import { useUserDataStore } from '@stores/userData';
 
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
 import { finishSpinner, startSpinner } from '@workers/loading-worker/loading.worker';
@@ -169,8 +169,8 @@ import { disableFormSubmit } from '@utils/disableFormSubmit';
 
 import { runOnSelectEventDuration } from '@utils/runOnSelectEventDuration';
 
-import { ROUTES } from '@routes/router.const';
-import { SCHEMAS } from '@/validators/schemas';
+
+import { SCHEMAS } from '@validators/schemas';
 
 import Arrow from '@images/arrow-right-white.svg';
 

@@ -1,7 +1,6 @@
 import { accessToken, refreshToken } from '@workers/token-worker';
-import { ROUTES } from '../routes/router.const';
 import router from '../router';
-import { pinia } from '../plugins/pinia.plugin';
+import { pinia } from '@plugins/pinia.plugin';
 import { useUserDataStore } from '@stores/userData';
 import { useTokensStore } from '@stores/tokens';
 import { useHeaderHeightStore } from '@stores/headerHeight';

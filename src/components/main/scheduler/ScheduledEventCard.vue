@@ -107,7 +107,7 @@ import UserAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 
 
 
-import { ROUTES } from '@routes/router.const';
+
 
 import grayCrossIcon from '@images/gray-cross.svg';
 import blackCrossIcon from '@images/cross.svg';

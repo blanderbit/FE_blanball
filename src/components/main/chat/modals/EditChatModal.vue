@@ -95,7 +95,7 @@ import { disableFormSubmit } from '@utils/disableFormSubmit';
 import CopyChatLinkIcon from '@images/chat/infinite.svg';
 import ChatNameIcon from '@images/address-icon.svg';
 
-import { SCHEMAS } from '@/validators/schemas';
+import { SCHEMAS } from '@validators/schemas';
 
 export default {
   components: {

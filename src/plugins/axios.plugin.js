@@ -1,9 +1,9 @@
 import axios from 'axios/index';
 
-import { ErrorInterceptor } from '../interseptors/error.interseptor';
-import { UrlInterceptor } from '../interseptors/url.interseptor';
-import { TokenInterceptor } from '../interseptors/token.interseptor';
-import { ResponseInterceptor } from '../interseptors/response.interseptor';
+import { ErrorInterceptor } from '@interseptors/error.interseptor';
+import { UrlInterceptor } from '@interseptors/url.interseptor';
+import { TokenInterceptor } from '@interseptors/token.interseptor';
+import { ResponseInterceptor } from '@interseptors/response.interseptor';
 
 if (!process.env.API_BASE_URL) {
   throw new Error(

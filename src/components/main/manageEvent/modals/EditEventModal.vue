@@ -106,7 +106,7 @@ import {
 
 import { runOnSelectEventDuration } from '@utils/runOnSelectEventDuration';
 
-import { SCHEMAS } from '@/validators/schemas';
+import { SCHEMAS } from '@validators/schemas';
 
 export default {
   components: {

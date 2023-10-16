@@ -94,7 +94,7 @@ import { PaginationWorker } from '@workers/pagination-worker';
 import { getDate } from '@utils/getDate';
 import { getTime } from '@utils/getTime';
 import { addMinutes } from '@utils/addMinutes';
-import { useUserDataStore } from '@/stores/userData';
+import { useUserDataStore } from '@stores/userData';
 
 const REQUEST_USER_ROLES = {
   AUTHOR: 'author',

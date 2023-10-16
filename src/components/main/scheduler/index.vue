@@ -255,7 +255,7 @@ import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import JoinScheduledEventModal from './modals/JoinScheduledEventModal.vue';
 
 
-import { useUserDataStore } from '@/stores/userData';
+import { useUserDataStore } from '@stores/userData';
 import {
   startSpinner,
   finishSpinner,
@@ -265,8 +265,8 @@ import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
 
-import { CONSTS } from '@consts';
-import { ROUTES } from '@routes/router.const';
+
+
 
 import 'vue-cal/dist/vuecal.css';
 

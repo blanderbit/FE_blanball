@@ -19,7 +19,12 @@ export default defineConfig({
     }),
     AutoImport({
       dts: './auto-imports.d.ts',
-      dirs: ['./src/workers/api-worker', './src/workers/event-bus-worker'],
+      dirs: [
+        './src/workers/api-worker',
+        './src/workers/event-bus-worker',
+        './src/routes',
+        './src/consts',
+      ],
       extensions: ['vue', 'js'],
       imports: [
         'vue',
@@ -73,6 +78,9 @@ export default defineConfig({
       '@routes': fileURLToPath(new URL('./src/routes', import.meta.url)),
       '@router': fileURLToPath(new URL('./src/router', import.meta.url)),
       '@plugins': fileURLToPath(new URL('./src/plugins', import.meta.url)),
+      '@interseptors': fileURLToPath(
+        new URL('./src/interseptors', import.meta.url)
+      ),
     },
   },
   css: {

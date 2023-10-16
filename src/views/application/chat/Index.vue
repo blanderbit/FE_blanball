@@ -81,10 +81,6 @@
 </template>
 
 <script>
-
-
-
-
 import SendMessageBlock from '@mainComponents/chat/SendMessageBlock.vue';
 import RequestForChat from '@mainComponents/chat/RequestForChat.vue';
 import ChatWarning from '@mainComponents/chat/ChatWarning.vue';
@@ -94,26 +90,23 @@ import ChatMessagesList from '@mainComponents/chat/ChatMessagesList.vue';
 import ContextMenu from '@sharedComponents/modals/ContextModal.vue';
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 import StartPesonalChatModal from '@mainComponents/chat/modals/StartPersonalChatModal.vue';
-import NotSelectedChatCard from '@/components/main/chat/NotSelectedChatCard.vue';
+import NotSelectedChatCard from '@mainComponents/chat/NotSelectedChatCard.vue';
 
 import { ChatSocketWorkerInstance } from '@workers/web-socket-worker';
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 import { ChatWebSocketTypes } from '@workers/web-socket-worker/message-types/chat/web.socket.types';
 
-import { checkIsChatSelected } from '@/components/main/chat/utils/checkIsChatSelected';
-import { ChatEventBus } from '@workers/event-bus-worker';
+import { checkIsChatSelected } from '@mainComponents/chat/utils/checkIsChatSelected';
 import {
   startSpinner,
   finishSpinner,
-} from '@/workers/loading-worker/loading.worker';
+} from '@workers/loading-worker/loading.worker';
 
-import { useChatDataStore } from '@/stores/chatData';
-import { useUserDataStore } from '@/stores/userData';
+import { useChatDataStore } from '@stores/chatData';
+import { useUserDataStore } from '@stores/userData';
 
-import { CONSTS } from '@consts/index';
-import { ROUTES } from '@/routes/router.const';
-import { CHAT_DETAILS_TYPE_ENUM_ERRORS } from '@/workers/web-socket-worker/message-types/chat/web.socket.errors';
+import { CHAT_DETAILS_TYPE_ENUM_ERRORS } from '@workers/web-socket-worker/message-types/chat/web.socket.errors';
 
 const CHAT_PAGE_TOP_AND_BOTTOM_PADDINGS_PX = 20 + 0;
 const SIDEBAR_ELEMENT_SELECTOR = '.b_sidebar';

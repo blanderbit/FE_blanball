@@ -47,7 +47,7 @@ import { v4 as uuid } from 'uuid';
 import { PaginationWorker } from '@workers/pagination-worker';
 
 
-import { CONSTS } from '@consts';
+
 
 export default {
   components: {

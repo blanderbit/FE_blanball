@@ -293,7 +293,7 @@ import MainInput from '@sharedComponents/input/MainInput.vue';
 import InviteManyUsersToEventModal from '@mainComponents/events/modals/InviteToEventModal/InviteManyUsersToEventModal.vue';
 import SmallUserCard from '@mainComponents/users/SmallUserCard.vue';
 
-import { useUserDataStore } from '@/stores/userData';
+import { useUserDataStore } from '@stores/userData';
 import { addMinutes } from '@utils/addMinutes';
 import { getDate } from '@utils/getDate';
 import { getTime } from '@utils/getTime';
@@ -304,8 +304,8 @@ import {
 } from '@workers/loading-worker/loading.worker';
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
 
-import { CONSTS } from '@consts/index';
-import { ROUTES } from '@routes/router.const';
+
+
 
 import emoji_1 from '@images/emojies/1.svg';
 import emoji_2 from '@images/emojies/2.svg';

@@ -92,11 +92,11 @@ import AuthenticationMain from '@components/AuthenticationMain.vue';
 import { accessToken, refreshToken } from '@workers/token-worker';
 
 import { disableFormSubmit } from '@utils/disableFormSubmit';
-import { useUkraineCitiesDataStore } from '@/stores/ukraineCities';
+import { useUkraineCitiesDataStore } from '@stores/ukraineCities';
 
-import { ROUTES } from '@routes/router.const';
-import { CONSTS } from '@consts';
-import { SCHEMAS } from '@/validators/schemas';
+
+
+import { SCHEMAS } from '@validators/schemas';
 
 import imageStep_1 from '@images/registration-back-1.svg';
 import imageStep_2 from '@images/registration-back-2.svg';

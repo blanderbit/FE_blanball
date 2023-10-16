@@ -36,8 +36,8 @@
 
 import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 
-import { useUserDataStore } from '@/stores/userData';
-import { useChatDataStore } from '@/stores/chatData';
+import { useUserDataStore } from '@stores/userData';
+import { useChatDataStore } from '@stores/chatData';
 
 export default {
   props: {

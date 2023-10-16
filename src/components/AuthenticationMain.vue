@@ -51,7 +51,7 @@
 
 <script> 
 import PositionMap from '@mainComponents/maps/PositionMap.vue';
-import { CONSTS } from '@consts/index';
+
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
 export default {

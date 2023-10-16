@@ -145,7 +145,7 @@ import { cloneDeep } from 'lodash';
 
 import { PaginationWorker } from '@workers/pagination-worker';
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
-import { useUserDataStore } from '@/stores/userData';
+import { useUserDataStore } from '@stores/userData';
 
 import { VueperSlides, VueperSlide } from 'vueperslides';
 import 'vueperslides/dist/vueperslides.css';

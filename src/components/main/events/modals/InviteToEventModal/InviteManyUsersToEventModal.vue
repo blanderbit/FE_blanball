@@ -116,7 +116,7 @@ import InvitedUsersListModal from './InvitedUsersListModal.vue';
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 
 
-import { useUserDataStore } from '@/stores/userData';
+import { useUserDataStore } from '@stores/userData';
 
 import SearchIcon from '@images/search.svg';
 

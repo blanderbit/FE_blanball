@@ -130,8 +130,8 @@ import { AuthWebSocketWorkerInstance } from '@workers/web-socket-worker';
 import { ChatSocketWorkerInstance } from '@workers/web-socket-worker';
 import { accessToken } from '@workers/token-worker';
 import { notificationButtonHandlerMessage } from '@workers/utils-worker';
-import { useUserDataStore } from '@/stores/userData';
-import { useHeaderHeightStore } from '@/stores/headerHeight';
+import { useUserDataStore } from '@stores/userData';
+import { useHeaderHeightStore } from '@stores/headerHeight';
 import { MessageActionTypes } from '@workers/web-socket-worker/message.action.types';
 
 import { VersionDetectorWorker } from '@workers/version-detector-worker';

@@ -1,5 +1,5 @@
 import { routerAuthResolver } from '@workers/resolver-worker/reolver.worker';
-import { ROUTES } from '../../router.const';
+
 import { usersData } from '@routes/helpers/usersData';
 import { hintsData } from '@routes/helpers/hintsData';
 import { ukraineCitiesData } from '@routes/helpers/ukraineCitiesData';

@@ -166,7 +166,7 @@ import radioButton from '@sharedComponents/radioButton/RadioButton.vue';
 import PositionMap from '@mainComponents/maps/PositionMap.vue';
 import EventCreatePositionMap from './modals/EventCreatePositionMapModal.vue';
 
-import { CONSTS } from '@consts/index';
+
 
 import CalendarPic from '@images/calendar.svg';
 import WatchPic from '@images/watch.svg';

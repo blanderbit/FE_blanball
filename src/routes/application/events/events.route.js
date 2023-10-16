@@ -1,6 +1,6 @@
 import { routerAuthResolver } from '@workers/resolver-worker/reolver.worker';
 
-import { ROUTES } from '../../router.const';
+
 import { transpileInterseptorQueryToConfig } from '@workers/api-worker/http/filter/filter.utils';
 import { filterConfigForEvents } from '@workers/api-worker/http/filter/filter.config';
 import { usersData } from '@routes/helpers/usersData';

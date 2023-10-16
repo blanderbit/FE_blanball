@@ -15,7 +15,8 @@
       "@stores/*": ["src/stores/*"],
       "@routes/*": ["src/routes/*"],
       "@router/*": ["src/router/*"],
-      "@plugins/*": ["src/plugins/*"]
+      "@plugins/*": ["src/plugins/*"],
+      "@interseptors/*": ["src/interseptors*"]
     }
   },
   "exclude": ["node_modules", "dist"]

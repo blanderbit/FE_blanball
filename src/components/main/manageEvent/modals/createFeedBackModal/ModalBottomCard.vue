@@ -56,7 +56,7 @@
 import RatePlayerCard from './RatePlayerCard.vue';
 import ModalTopCard from './ModalTopCard.vue';
 
-import { CONSTS } from '@consts/index';
+
 
 export default {
   name: 'ModalBottomCard',

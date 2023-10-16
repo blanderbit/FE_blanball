@@ -68,7 +68,7 @@ import { getDate } from '@utils/getDate';
 
 
 
-import { ROUTES } from '@routes/router.const';
+
 
 export default {
   name: 'RatingCard',

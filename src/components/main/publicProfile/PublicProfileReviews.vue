@@ -84,7 +84,7 @@ import { getDate } from '@utils/getDate';
 
 
 
-import { CONSTS } from '@consts';
+
 
 export default {
   name: 'RatingCard',

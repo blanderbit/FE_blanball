@@ -14,7 +14,7 @@
  
 
 
-import { CONSTS } from '@consts';
+
 
 export default {
   props: {

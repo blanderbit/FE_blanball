@@ -84,7 +84,7 @@ import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 
 import SaveIcon from '@images/save-icon.svg';
 
-import { useUserDataStore } from '@/stores/userData';
+import { useUserDataStore } from '@stores/userData';
 
 
 

@@ -37,7 +37,7 @@ import ModalBottomCard from './ModalBottomCard.vue';
 
 
 
-import { CONSTS } from '@consts/index';
+
 
 export default {
   name: 'ModalFeedback',

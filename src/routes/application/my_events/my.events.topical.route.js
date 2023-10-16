@@ -2,7 +2,7 @@ import { routerAuthResolver } from '@workers/resolver-worker/reolver.worker';
 import { transpileInterseptorQueryToConfig } from '@workers/api-worker/http/filter/filter.utils';
 import { filterConfigForEvents } from '@workers/api-worker/http/filter/filter.config';
 
-import { ROUTES } from '../../router.const';
+
 import { usersData } from '@routes/helpers/usersData';
 import { hintsData } from '@routes/helpers/hintsData';
 import { ukraineCitiesData } from '@routes/helpers/ukraineCitiesData';

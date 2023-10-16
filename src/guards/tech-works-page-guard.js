@@ -1,9 +1,5 @@
 import router from '../router';
 
-
-
-import { ROUTES } from '../routes/router.const';
-
 router.beforeEach(async (to, from, next) => {
   if (to.name === ROUTES.WORKS.name) {
     const response = await API.NotificationService.getMaintenance();

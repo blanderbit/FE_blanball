@@ -192,12 +192,12 @@ import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 import ContextMenu from '@sharedComponents/modals/ContextModal.vue';
 import SlideMenuWrapper from './SlideMenuWrapper.vue';
-import WhiteBtn from '@/components/shared/button/WhiteBtn.vue';
+import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 
-import { useUserDataStore } from '@/stores/userData';
-import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
+import { useUserDataStore } from '@stores/userData';
+import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
-import { ROUTES } from '@routes/router.const';
+
 import { config } from 'dotenv';
 
 export default {

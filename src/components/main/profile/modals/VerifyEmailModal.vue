@@ -71,7 +71,7 @@ import {
   finishSpinner,
 } from '@workers/loading-worker/loading.worker';
 
-import { SCHEMAS } from '@/validators/schemas';
+import { SCHEMAS } from '@validators/schemas';
 
 export default {
   name: 'VerifyEmailModal',

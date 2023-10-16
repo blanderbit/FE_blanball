@@ -78,7 +78,7 @@ import Review from './Review.vue';
 
 
 import { PaginationWorker } from '@workers/pagination-worker';
-import { useHeaderHeightStore } from '@/stores/headerHeight';
+import { useHeaderHeightStore } from '@stores/headerHeight';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
 export default {

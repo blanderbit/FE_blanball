@@ -146,10 +146,10 @@ import {
   finishSpinner,
   startSpinner,
 } from '@workers/loading-worker/loading.worker';
-import { useUserDataStore } from '@/stores/userData';
+import { useUserDataStore } from '@stores/userData';
 
-import { ROUTES } from '@routes/router.const';
-import { CONSTS } from '@consts/index';
+
+
 
 import Plus from '@images/plus.svg';
 

@@ -184,13 +184,13 @@ import PublicProfileWrapper from '@mainComponents/publicProfile/PublicProfileWra
 import ReviewsListModal from '@mainComponents/profile/modals/ReviewsListModal/ReviewsListModal.vue';
 
 
-import { useUserDataStore } from '@/stores/userData';
+import { useUserDataStore } from '@stores/userData';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
 import { disableFormSubmit } from '@utils/disableFormSubmit';
 
-import { CONSTS } from '@consts';
-import { SCHEMAS } from '@/validators/schemas';
+
+import { SCHEMAS } from '@validators/schemas';
 import {
   finishSpinner,
   startSpinner,

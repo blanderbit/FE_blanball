@@ -334,7 +334,7 @@ import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
 import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 import RatingCard from './RatingCard.vue';
 
-import { CONSTS } from '@consts';
+
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
 import sortArrowHorizontally from '@images/sort-arrows-horizontal.svg';

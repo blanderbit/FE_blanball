@@ -93,9 +93,9 @@ import {
 import { ChatWebSocketTypes } from '@workers/web-socket-worker/message-types/chat/web.socket.types';
 import { smoothScrollUp, smoothScrollDown } from './utils/smoothScroll';
 
-import { useUserDataStore } from '@/stores/userData';
+import { useUserDataStore } from '@stores/userData';
 
-import { CONSTS } from '@consts';
+
 
 // FIXME нужно заменить иконку на другую
 import LimitOfAdminsIcon from '@images/chat/limit-of-admins-reached.svg';

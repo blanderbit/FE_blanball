@@ -83,7 +83,7 @@ import StarRating from 'vue-star-rating';
 import CollapsiblePanel from '@mainComponents/collapsible/CollapsiblePanel.vue';
 import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 
-import { CONSTS } from '@consts/index';
+
 
 export default {
   name: 'UserCard',

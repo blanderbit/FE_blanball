@@ -89,10 +89,7 @@ import { detectServiceChatMessageTextByType } from './utils/detectServiceChatMes
 
 import { notifionsFormatTime } from '@utils/notificationsFormatTime';
 
-import UserAvatar from '@/components/shared/userAvatar/UserAvatar.vue';
-
-import { ROUTES } from '@/routes/router.const';
-import { CONSTS } from '@/consts';
+import UserAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 
 export default {
   props: {
@@ -151,7 +148,7 @@ export default {
       emit('openContextMenu', {
         yPosition: e.clientY,
         xPosition: e.clientX,
-        itemData: chatData
+        itemData: chatData,
       });
     }
 

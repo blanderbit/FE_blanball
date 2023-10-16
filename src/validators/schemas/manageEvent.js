@@ -1,5 +1,4 @@
-import yup from '../yup'
-import { CONSTS } from '@consts'
+import yup from '../yup';
 
 export default {
   schema: (currentStep) => {

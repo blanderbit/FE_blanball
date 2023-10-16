@@ -183,7 +183,7 @@ import RangeFilter from '@mainComponents/filters/components/RangeFilter.vue';
 import { TransformedFiltersWorker } from './transformed.filters.worker';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
-import { CONSTS } from '@consts';
+
 
 import SearchIcon from '@images/search.svg';
 import arrowsUpIcon from '@images/sort-arrows.svg';

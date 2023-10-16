@@ -1,5 +1,5 @@
 import { routerAuthResolver } from '@workers/resolver-worker/reolver.worker';
-import { ROUTES } from '../../router.const';
+
 import { MY_EVENTS_TOPICAL_ROUTE } from './my.events.topical.route';
 import { MY_EVENTS_FINISHED_ROUTE } from './my.events.finished.route';
 

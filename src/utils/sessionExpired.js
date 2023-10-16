@@ -4,8 +4,6 @@ import { resetUserData } from './logOut';
 
 import router from '../router';
 
-import { ROUTES } from '../routes/router.const';
-
 export async function sessionExpired() {
   const findCurRouteFromList = window.location.pathname.includes(
     ROUTES.APPLICATION.name

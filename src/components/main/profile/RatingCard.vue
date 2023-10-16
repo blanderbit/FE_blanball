@@ -37,7 +37,7 @@
 
 import StarRating from 'vue-star-rating';
 
-import { CONSTS } from '@consts';
+
 
 export default {
   components: {

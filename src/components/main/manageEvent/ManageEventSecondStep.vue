@@ -112,7 +112,7 @@ import switcher from '@sharedComponents/switcher/Switcher.vue';
 import SearchBlockAll from '@mainComponents/header/SearchBlockAll.vue';
 import radioButton from '@sharedComponents/radioButton/RadioButton.vue';
 
-import { ROUTES } from '@routes/router.const';
+
 
 import HorArrow from '@images/sort-arrows-down.svg';
 import AddUser from '@images/add-user.svg';

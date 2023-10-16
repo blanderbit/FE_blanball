@@ -1,5 +1,5 @@
 import { routerResolverByLoginPage } from '@workers/resolver-worker/reolver.worker';
-import { ROUTES } from '../router.const';
+
 
 export const RESET_ROUTE = {
   path: ROUTES.AUTHENTICATIONS.RESET.relative,

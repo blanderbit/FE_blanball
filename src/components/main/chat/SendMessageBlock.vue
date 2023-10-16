@@ -65,7 +65,7 @@ import { disableFormSubmit } from '@utils/disableFormSubmit';
 import SendSmileIcon from '@images/chat/send-smile-button.svg';
 import AddFileIcon from '@images/chat/add-file.svg';
 
-import { SCHEMAS } from '@/validators/schemas';
+import { SCHEMAS } from '@validators/schemas';
 
 import EditMessageButtonIcon from '@images/chat/message-wrapper-edit-icon.svg';
 

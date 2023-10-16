@@ -82,7 +82,7 @@ import {
   startSpinner,
 } from '@workers/loading-worker/loading.worker';
 
-import { useUkraineCitiesDataStore } from '@/stores/ukraineCities';
+import { useUkraineCitiesDataStore } from '@stores/ukraineCities';
 
 export default {
   name: 'Step10',
