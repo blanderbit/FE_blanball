@@ -89,7 +89,7 @@ export default {
   setup(props) {
     const isEmojiPickerVisible = ref(false);
     const messageValue = ref('');
-    const { isMobileSmall } = useWindowWidth();
+    const { isMobileDevice } = useWindowWidth();
     const { t } = useI18n();
     const emojiPickerX = ref();
     const emojiPickerY = ref();
@@ -115,7 +115,7 @@ export default {
     });
 
     const inputPlaceholder = computed(() => {
-      if (isMobileSmall.value) {
+      if (isMobileDevice.value) {
         return t('chat.message');
       }
       return props.disabled
@@ -124,7 +124,7 @@ export default {
     });
 
     const emojiPickerTransitionName = computed(() => {
-      return !isMobileSmall.value ? 'emoji-picker' : null;
+      return !isMobileDevice.value ? 'emoji-picker' : null;
     });
 
     function closeEmojiPicker() {

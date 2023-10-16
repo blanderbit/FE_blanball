@@ -120,7 +120,7 @@ export default {
   flex-direction: column;
   margin-right: 32px;
 
-  @include mobile {
+  @include mobileDevice {
     width: 100%;
     margin-right: 0px;
   }

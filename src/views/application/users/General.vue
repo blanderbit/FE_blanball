@@ -334,10 +334,10 @@ $color-393762: #393762;
 $color-71ba12: #71ba12;
 :deep(.b-filters__wrapper) {
   margin-top: -30px;
-  @include beforeDesktop {
+  @include allDevicesBeforeDesktop {
     margin-top: -50px;
   }
-  @include mobile {
+  @include mobileDevice {
     margin-top: -75px;
   }
 }
@@ -345,7 +345,7 @@ $color-71ba12: #71ba12;
   display: grid;
   grid-template-columns: 1fr 256px;
   grid-gap: 28px;
-  @media (max-width: 992px) {
+  @include allDevicesBeforeDesktop {
     grid-template-columns: 1fr;
   }
   .main-body {
@@ -372,7 +372,7 @@ $color-71ba12: #71ba12;
           text-align: center;
           color: $--b-main-black-color;
           display: flex;
-          @media (max-width: 992px) {
+          @include allDevicesBeforeDesktop {
             display: none;
           }
           .general-events {
@@ -413,7 +413,7 @@ $color-71ba12: #71ba12;
     .tab-block-wrapper {
       height: 125px;
       overflow-x: scroll;
-      @include mobile {
+      @include mobileDevice {
         position: relative;
         margin-top: 24px;
       }
@@ -421,7 +421,7 @@ $color-71ba12: #71ba12;
         display: flex;
         border-bottom: 1px solid $color-dfdeed;
         margin-top: 28px;
-        @include mobile {
+        @include mobileDevice {
           position: absolute;
           margin-top: 0;
         }
@@ -468,11 +468,11 @@ $color-71ba12: #71ba12;
     .main-search-block {
       margin-top: 36px;
       position: relative;
-      @media (max-width: 992px) {
+      @include allDevicesBeforeDesktop {
         padding: 0;
       }
       .search-block {
-        @media (max-width: 992px) {
+        @include allDevicesBeforeDesktop {
           display: none;
         }
         .first-line {
@@ -687,7 +687,7 @@ $color-71ba12: #71ba12;
             display: flex;
             width: 132px;
             min-width: 132px;
-            @media (min-width: 768px) {
+            @include deskDevicesModel {
               width: 196px;
               min-width: 196px;
             }
@@ -704,7 +704,7 @@ $color-71ba12: #71ba12;
               width: 32px;
               min-width: 32px;
               height: 32px;
-              @media (min-width: 768px) {
+              @include deskDevicesModel {
                 width: 36px;
                 min-width: 36px;
                 height: 36px;
@@ -712,7 +712,7 @@ $color-71ba12: #71ba12;
               }
             }
             .text {
-              @include tabletAndMobile {
+              @include phoneDevicesModel {
                 display: none;
               }
             }
@@ -736,13 +736,13 @@ $color-71ba12: #71ba12;
           @media (min-width: 1200px) and (max-width: 1400px) {
             width: 408px;
           }
-          @media (min-width: 992px) and (max-width: 1199px) {
+          @media (min-width: 992px) and (max-width: 1200px) {
             width: 320px;
           }
-          @media (min-width: 768px) and (max-width: 991px) {
+          @media (min-width: 768px) and (max-width: 992px) {
             width: 344px;
           }
-          @include tabletAndMobile {
+          @include phoneDevicesModel {
             width: 100%;
           }
           &:before {
@@ -764,12 +764,12 @@ $color-71ba12: #71ba12;
           .address {
             &.desk-address {
               display: none;
-              // @media (max-width: 992px) {
+              // @include allDevicesBeforeDesktop {
               //   display: none;
               // }
             }
             &.mob-address {
-              // @media (max-width: 992px) {
+              // @include allDevicesBeforeDesktop {
               //   display: flex;
               // }
             }
@@ -777,7 +777,7 @@ $color-71ba12: #71ba12;
             background: $color-fafafa;
             padding: 0px 4px;
             margin-top: 4px;
-            @media (max-width: 992px) {
+            @include allDevicesBeforeDesktop {
               width: fit-content;
               margin-top: 8px;
             }
@@ -857,7 +857,7 @@ $color-71ba12: #71ba12;
             }
             .right-side {
               display: none;
-              // @media (max-width: 992px) {
+              // @include allDevicesBeforeDesktop {
               //   display: none;
               // }
             }
@@ -970,13 +970,13 @@ $color-71ba12: #71ba12;
           @media (min-width: 1200px) and (max-width: 1400px) {
             width: 408px;
           }
-          @media (min-width: 992px) and (max-width: 1199px) {
+          @media (min-width: 992px) and (max-width: 1200px) {
             width: 320px;
           }
-          @media (min-width: 768px) and (max-width: 991px) {
+          @media (min-width: 768px) and (max-width: 992px) {
             width: 344px;
           }
-          @include tabletAndMobile {
+          @include phoneDevicesModel {
             width: 100%;
           }
           &.active {
@@ -1004,13 +1004,13 @@ $color-71ba12: #71ba12;
               @media (min-width: 1200px) and (max-width: 1400px) {
                 width: 230px;
               }
-              @media (min-width: 992px) and (max-width: 1199px) {
+              @media (min-width: 992px) and (max-width: 1200px) {
                 width: 150px;
               }
-              @media (min-width: 768px) and (max-width: 991px) {
+              @media (min-width: 768px) and (max-width: 992px) {
                 width: 165px;
               }
-              @include tabletAndMobile {
+              @include phoneDevicesModel {
                 width: 70%;
               }
               .title {
@@ -1118,7 +1118,7 @@ $color-71ba12: #71ba12;
     }
   }
   .right-sidebar {
-    @media (max-width: 992px) {
+    @include allDevicesBeforeDesktop {
       display: none;
     }
     .title-block {

@@ -92,7 +92,7 @@
         ref="myForm"
       >
         <ButtonsBlock
-          v-if="!isMobile"
+          v-if="!isMobileDevice"
           class="b-user-cabinet__buttons-block"
           :cancel-btn-width="'auto'"
           :save-btn-width="'auto'"
@@ -113,7 +113,7 @@
           @cancel-changes="cancelChangesAndGoToTheNextRoute"
         />
         <RatingCard
-          v-if="!isTabletSize && !isMobile"
+          v-if="!isTabletSize && !isMobileDevice"
           :ratingScale="userRating"
           :reviewsCount="reviewsTotalCount"
           :disabled="isEditModeProfile"
@@ -144,7 +144,7 @@
           />
         </div>
         <ButtonsBlock
-          v-if="isMobile"
+          v-if="isMobileDevice"
           :is-edit-mode-profile="isEditModeProfile"
           :edit-btn-width="'auto'"
           :cancel-btn-width="'auto'"
@@ -226,7 +226,7 @@ export default {
     const userStore = useUserDataStore();
 
     const router = useRouter();
-    const { isBetweenTabletAndDesktop, isMobile, isTablet } = useWindowWidth();
+    const { isLaptopDevice, isMobileDevice, isTabletDevice } = useWindowWidth();
 
     const userInfo = ref(null);
     const userData = ref(null);
@@ -241,7 +241,7 @@ export default {
     const isHideMyEventsModalOpened = ref(false);
 
     const isTabletSize = computed(() => {
-      return isBetweenTabletAndDesktop.value || isTablet.value;
+      return isLaptopDevice.value || isTabletDevice.value;
     });
 
     const mockData = computed(() => {
@@ -671,7 +671,7 @@ export default {
       myForm,
       userInfo,
       userRating,
-      isMobile,
+      isMobileDevice,
       reviewsTotalCount,
       isTabLabel,
       isTabletSize,
@@ -749,7 +749,7 @@ $color-dfdeed: #dfdeed;
   }
 }
 .b-user-cabinet {
-  @media (min-width: 768px) {
+  @include deskDevicesModel {
     position: relative;
   }
 }
@@ -826,7 +826,7 @@ $color-dfdeed: #dfdeed;
     @media (min-width: 1200px) {
       justify-content: space-between;
     }
-    @include tabletAndMobile {
+    @include phoneDevicesModel {
       display: block;
     }
     .b-user-cabinet__buttons-block {
@@ -845,7 +845,7 @@ $color-dfdeed: #dfdeed;
       @media (min-width: 768px) and (max-width: 1200px) {
         flex-basis: 49%;
       }
-      @include mobile {
+      @include mobileDevice {
         padding-right: 0px;
       }
     }

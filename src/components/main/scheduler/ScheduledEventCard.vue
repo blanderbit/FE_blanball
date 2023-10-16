@@ -387,7 +387,7 @@ $color-dfdeed: #dfdeed;
       align-items: center;
       justify-content: space-between;
 
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
         padding: 16px 8px;
       }
 

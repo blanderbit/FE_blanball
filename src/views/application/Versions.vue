@@ -305,7 +305,7 @@ ul {
     justify-content: space-between;
     margin-top: 20px;
 
-    @include beforeDesktop {
+    @include allDevicesBeforeDesktop {
       display: flex;
       flex-direction: column;
       overflow-y: scroll;
@@ -315,13 +315,13 @@ ul {
     .b-versions__main-side {
       max-width: 560px;
 
-      @include desktop {
+      @include desktopDevice {
         overflow-y: scroll;
         @include calc-height(90px, 60px, 20px);
         padding-bottom: 20px;
       }
 
-      @include beforeDesktop {
+      @include allDevicesBeforeDesktop {
         max-width: none;
       }
 
@@ -337,11 +337,11 @@ ul {
       .b-main-version-content-block {
         margin-top: 16px;
 
-        @include beforeDesktop {
+        @include allDevicesBeforeDesktop {
           max-width: 464px;
         }
 
-        @include tabletAndMobile {
+        @include phoneDevicesModel {
           max-width: none;
         }
         .b-what-new {
@@ -394,7 +394,7 @@ ul {
         margin-left: 30px;
       }
 
-      @include beforeDesktop {
+      @include allDevicesBeforeDesktop {
         margin-top: 20px;
       }
       .b-history-side__title {
@@ -403,7 +403,7 @@ ul {
       }
 
       .b-history-side__content {
-        @include desktop {
+        @include desktopDevice {
           overflow-y: scroll;
           @include calc-height(90px, 60px, 30px);
           padding-bottom: 20px;

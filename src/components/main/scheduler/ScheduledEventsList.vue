@@ -307,7 +307,7 @@ $color-f0f0f4: #f0f0f4;
   align-items: center;
   justify-content: space-between;
   display: none;
-  @include beforeDesktop {
+  @include allDevicesBeforeDesktop {
     display: flex;
   }
   .c-user-full-name {

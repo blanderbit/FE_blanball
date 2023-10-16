@@ -382,7 +382,7 @@ $color-dfdeed: #dfdeed;
       margin: auto;
     }
 
-    @include beforeDesktop {
+    @include allDevicesBeforeDesktop {
       display: none;
     }
   }
@@ -400,7 +400,7 @@ $color-dfdeed: #dfdeed;
     flex-direction: column;
     // justify-content: space-between;
 
-    @include beforeDesktop {
+    @include allDevicesBeforeDesktop {
       position: fixed;
       width: 70%;
       background: #efeff6;
@@ -412,16 +412,16 @@ $color-dfdeed: #dfdeed;
       top: 0;
     }
 
-    @include mobile {
+    @include mobileDevice {
       width: 100%;
     }
 
     .b_slide_menu_top-block {
-      @include beforeDesktop {
+      @include allDevicesBeforeDesktop {
         height: 110px;
       }
       .b_slide_menu_logo {
-        @include desktop {
+        @include desktopDevice {
           padding-left: 8px;
         }
 

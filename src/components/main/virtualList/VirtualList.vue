@@ -78,9 +78,9 @@ export default {
     const router = useRouter();
     const maxSelectedNotificationsCount = 100;
 
-    const { isMobile, isTablet, onResize } = useWindowWidth();
+    const { isMobileDevice, isTabletDevice, onResize } = useWindowWidth();
 
-    const isCollapsible = computed(() => !(isMobile.value || isTablet.value));
+    const isCollapsible = computed(() => !(isMobileDevice.value || isTabletDevice.value));
 
     onMounted(() => {
       window.addEventListener('resize', onResize);

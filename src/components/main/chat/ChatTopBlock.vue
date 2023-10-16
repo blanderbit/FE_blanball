@@ -169,13 +169,13 @@ export default {
   box-shadow: 2px 2px 10px 0px rgba(56, 56, 251, 0.1);
   padding: 16px 24px;
 
-  @include mobile {
+  @include mobileDevice {
     padding: 12px 16px;
     background: $--b-main-white-color;
   }
 
   &.chat-editing {
-    @include afterMobile {
+    @include allDevicesAfterMobile {
       z-index: 500;
       position: relative;
     }
@@ -188,7 +188,7 @@ export default {
     gap: 16px;
     height: 52px;
 
-    @include mobile {
+    @include mobileDevice {
       height: 40px;
     }
 
@@ -196,7 +196,7 @@ export default {
       display: flex;
       align-items: center;
 
-      @include mobile {
+      @include mobileDevice {
         width: 100%;
       }
 
@@ -206,14 +206,14 @@ export default {
         gap: 12px;
         width: fit-content;
 
-        @include mobile {
+        @include mobileDevice {
           width: 100%;
           flex-direction: row-reverse;
           justify-content: space-between;
         }
 
         .b-chat-avatar {
-          @include mobile {
+          @include mobileDevice {
             &:deep(.b-avatar) {
               width: 40px;
               height: 40px;
@@ -250,7 +250,7 @@ export default {
         display: none;
         cursor: pointer;
         margin-right: 16px;
-        @include beforeDesktop {
+        @include allDevicesBeforeDesktop {
           display: block;
         }
       }
@@ -273,7 +273,7 @@ export default {
     justify-content: space-between;
     height: 52px;
 
-    @include mobile {
+    @include mobileDevice {
       height: 40px;
     }
     .b-selected-messages-count {

@@ -136,12 +136,12 @@ $color-f0f0f4: #f0f0f4;
     margin-top: 15px;
   }
 
-  @include beforeDesktop {
+  @include allDevicesBeforeDesktop {
     background: $--b-main-white-color;
     height: 400px;
     width: 310px;
   }
-  @include tabletAndMobile {
+  @include phoneDevicesModel {
     margin-left: 0px;
     width: 400px;
   }
@@ -160,7 +160,7 @@ $color-f0f0f4: #f0f0f4;
   overflow: scroll;
   height: 500px;
 
-  @include beforeDesktop {
+  @include allDevicesBeforeDesktop {
     height: 320px;
   }
   .b-event {

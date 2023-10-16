@@ -41,7 +41,7 @@ export default {
 $color-f9f9fc: #f9f9fc;
 
 .b-event-preview {
-  @include tabletAndMobile {
+  @include phoneDevicesModel {
     position: fixed;
     bottom: 0;
     background: #0000005c;
@@ -56,13 +56,13 @@ $color-f9f9fc: #f9f9fc;
     width: 564px;
     overflow: hidden;
 
-    @include tabletAndMobile {
+    @include phoneDevicesModel {
       display: none;
     }
 
     &.active {
       height: auto;
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
         padding: 12px 8px;
       }
     }
@@ -78,7 +78,7 @@ $color-f9f9fc: #f9f9fc;
       padding: 0;
       height: 44px;
     }
-    @include tabletAndMobile {
+    @include phoneDevicesModel {
       position: absolute;
       bottom: 8px;
       left: 50%;

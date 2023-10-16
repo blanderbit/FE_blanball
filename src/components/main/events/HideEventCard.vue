@@ -77,13 +77,13 @@ $color-dfdeed: #dfdeed;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
   }
 
-  @include tabletAndMobile {
+  @include phoneDevicesModel {
     box-shadow: none;
     border-bottom: 1px solid $color-efeff6;
     border-radius: 0px;
   }
 
-  @include mobile {
+  @include mobileDevice {
     padding: 8px 12px;
   }
 
@@ -97,7 +97,7 @@ $color-dfdeed: #dfdeed;
   .b-hide-event-card__top-side {
     border-bottom: 1px solid $color-efeff6;
 
-    @include tabletAndMobile {
+    @include phoneDevicesModel {
       width: 85%;
     }
     .b-hide-event-card__name {
@@ -108,7 +108,7 @@ $color-dfdeed: #dfdeed;
       line-height: 20px;
 
       img {
-        @include tabletAndMobile {
+        @include phoneDevicesModel {
           display: none;
         }
       }
@@ -128,7 +128,7 @@ $color-dfdeed: #dfdeed;
       top: 20px;
       cursor: pointer;
 
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
         top: 45%;
       }
     }
@@ -159,13 +159,13 @@ $color-dfdeed: #dfdeed;
         border: 1px solid $color-dfdeed;
         border-radius: 100px;
       }
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
         display: none;
       }
     }
     .b-hide-event-card__detail-info {
       display: none;
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
         display: block;
         @include inter(12px, 400, $--b-main-gray-color);
         line-height: 20px;

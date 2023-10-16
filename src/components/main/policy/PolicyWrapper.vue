@@ -84,7 +84,7 @@ $color-f0f0f4: #f0f0f4;
     display: grid;
     grid-template-columns: 2fr 1fr;
     justify-content: space-between;
-    @include beforeDesktop {
+    @include allDevicesBeforeDesktop {
       display: flex;
       flex-direction: column;
       overflow-y: scroll;
@@ -92,13 +92,13 @@ $color-f0f0f4: #f0f0f4;
     }
 
     .b-policy-main-text {
-      @include desktop {
+      @include desktopDevice {
         @include calc-height(60px, 20px, 36px);
         overflow-y: scroll;
       }
     }
     .b-policy-table-contents {
-      @include desktop {
+      @include desktopDevice {
         margin-left: 60px;
       }
       .b-table-title {
@@ -107,7 +107,7 @@ $color-f0f0f4: #f0f0f4;
       }
 
       .b-table-items {
-        @include desktop {
+        @include desktopDevice {
           overflow-y: scroll;
           @include calc-height(200px);
         }

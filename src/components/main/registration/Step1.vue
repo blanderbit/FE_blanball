@@ -125,7 +125,7 @@ $color-f4f4f4: #f4f4f4;
 $color-efeff6: #efeff6;
 
 :deep(.b-register-step__title) {
-  @include mobile {
+  @include mobileDevice {
     text-align: center;
     margin-top: 15px;
   }
@@ -134,7 +134,7 @@ $color-efeff6: #efeff6;
 .b-register-step__input {
   width: 384px;
   margin-top: 12px;
-  @media (max-width: 992px) {
+  @include allDevicesBeforeDesktop {
     width: 100%;
   }
 }
@@ -145,7 +145,7 @@ $color-efeff6: #efeff6;
   top: -30px;
   left: -30px;
   display: none;
-  @include mobile {
+  @include mobileDevice {
     display: block;
   }
 }
@@ -154,7 +154,7 @@ $color-efeff6: #efeff6;
   top: 0;
   right: 0;
   display: none;
-  @include mobile {
+  @include mobileDevice {
     display: block;
   }
 }

@@ -123,7 +123,7 @@ $color-8a8aa8: #8a8aa8;
 
   .c-invite-user-to-event {
     padding-bottom: 8px;
-    @include beforeDesktop {
+    @include allDevicesBeforeDesktop {
       display: none;
     }
     .c-invite-button {

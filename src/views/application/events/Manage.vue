@@ -614,7 +614,7 @@ $color-8a8aa8: #8a8aa8;
 .b-manage-event__main-body {
   margin-top: 0px;
   padding: 5px;
-  @include tabletAndMobile {
+  @include phoneDevicesModel {
     padding: 0px;
   }
 }
@@ -641,14 +641,14 @@ $color-8a8aa8: #8a8aa8;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    @include tabletAndMobile {
+    @include phoneDevicesModel {
       padding: 0;
     }
     .b-manage-event__btns-mob-block {
       @media (min-width: 1200px) {
         display: none;
       }
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
         width: 100%;
       }
     }
@@ -675,7 +675,7 @@ $color-8a8aa8: #8a8aa8;
         min-width: 350px;
         padding: 12px;
       }
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
         width: 100%;
         padding: 20px 0px;
         padding-top: 0px;
@@ -733,7 +733,7 @@ $color-8a8aa8: #8a8aa8;
         margin-top: 8px;
         display: none;
 
-        @include tabletAndMobile {
+        @include phoneDevicesModel {
           display: flex;
         }
 
@@ -750,7 +750,7 @@ $color-8a8aa8: #8a8aa8;
     }
 
     .b-manage-event-invited-users__list {
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
         display: none;
       }
     }
@@ -774,7 +774,7 @@ $color-8a8aa8: #8a8aa8;
 
 .b-manage-event-preview__block {
   margin-left: 50px;
-  @include tabletAndMobile {
+  @include phoneDevicesModel {
     margin-left: 0px;
   }
 }

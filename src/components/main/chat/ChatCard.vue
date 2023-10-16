@@ -246,7 +246,7 @@ export default {
           font-weight: 400;
           line-height: 20px;
 
-          @include tabletAndMobile {
+          @include phoneDevicesModel {
             display: none;
           }
         }

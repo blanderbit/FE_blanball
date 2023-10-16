@@ -104,7 +104,7 @@ $color-f9f9fc: #f9f9fc;
   overflow: hidden;
   height: 100%;
 
-  @media (max-width: 992px) {
+  @include allDevicesBeforeDesktop {
     display: none;
   }
 

@@ -349,7 +349,7 @@ $color-dfdeed: #dfdeed;
       align-items: center;
       margin-right: 12px;
 
-      @include mobile {
+      @include mobileDevice {
         @include inter(12px, 400, #6e6d80);
         line-height: 12px;
         margin-right: 8px;

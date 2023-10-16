@@ -35,17 +35,17 @@ export default {
     },
   },
   setup(props) {
-    const { isMobile } = useWindowWidth();
+    const { isMobileDevice } = useWindowWidth();
 
     const labelPosition = computed(() => {
       if (props.position) {
         return props.position;
       }
-      return isMobile.value ? 'bottom' : 'right';
+      return isMobileDevice.value ? 'bottom' : 'right';
     });
 
     return {
-      isMobile,
+      isMobileDevice,
       labelPosition,
     };
   },

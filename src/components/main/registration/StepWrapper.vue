@@ -119,10 +119,10 @@ $color-1ab2ad: #1ab2ad;
   border-radius: 28px 28px 0px 0px;
   position: relative;
   overflow: hidden;
-  @include mobile {
+  @include mobileDevice {
     padding: 30px 16px;
   }
-  @include tablet {
+  @include tabletDevice {
     border-radius: 8px;
   }
   .b-register-step__top-part {
@@ -156,7 +156,7 @@ $color-1ab2ad: #1ab2ad;
   .b-register-step__input {
     width: 384px;
     margin-top: 12px;
-    @media (max-width: 992px) {
+    @include allDevicesBeforeDesktop {
       width: 100%;
     }
   }
@@ -166,11 +166,11 @@ $color-1ab2ad: #1ab2ad;
     align-items: flex-end;
     justify-content: space-between;
 
-    @media (max-width: 992px) {
+    @include allDevicesBeforeDesktop {
       align-items: center;
     }
 
-    @include mobile {
+    @include mobileDevice {
       align-items: flex-start;
       margin-top: 40px;
     }
@@ -198,10 +198,10 @@ $color-1ab2ad: #1ab2ad;
   //   line-height: 20px;
   //   margin-top: 20px;
 
-  //   @include beforeDesktop {
+  //   @include allDevicesBeforeDesktop {
   //     margin-top: 0px;
   //   }
-  //   @include mobile {
+  //   @include mobileDevice {
   //     display: none;
   //   }
   // }

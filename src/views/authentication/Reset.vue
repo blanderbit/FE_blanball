@@ -41,7 +41,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 :deep(.b-auth__left-part) {
-  @include mobile {
+  @include mobileDevice {
     margin-top: 170px;
   }
 }

@@ -80,7 +80,7 @@ $color-dfdeed: #dfdeed;
   line-height: 20px;
   color: $--b-main-black-color;
 
-  @include tabletAndMobile {
+  @include phoneDevicesModel {
     width: 100%;
   }
   &.inactive {

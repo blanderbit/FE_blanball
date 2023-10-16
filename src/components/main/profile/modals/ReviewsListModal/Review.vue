@@ -85,7 +85,7 @@ $color-f9f9fc: #f9f9fc;
   border-bottom: 1px dashed $color-f0f0f4;
   height: fit-content;
 
-  @include mobile {
+  @include mobileDevice {
     padding: 12px 0px;
     border-top: 1px dashed $color-f0f0f4;
     border-bottom: none;
@@ -103,20 +103,20 @@ $color-f9f9fc: #f9f9fc;
     align-items: center;
     justify-content: space-between;
 
-    @include mobile {
+    @include mobileDevice {
       flex-direction: row-reverse;
     }
 
     .b-review__date {
       @include inter(13px, 500, $--b-main-gray-color);
       line-height: 20px;
-      @include mobile {
+      @include mobileDevice {
         display: none;
       }
     }
     .b-review__author-mobile {
       display: none;
-      @include mobile {
+      @include mobileDevice {
         display: block;
         @include inter(13px, 500);
         line-height: 20px;
@@ -128,13 +128,13 @@ $color-f9f9fc: #f9f9fc;
     .b-review__author {
       @include inter(13px, 500, $--b-main-gray-color);
       line-height: 16px;
-      @include mobile {
+      @include mobileDevice {
         display: none;
       }
     }
     .b-review__date-mobile {
       display: none;
-      @include mobile {
+      @include mobileDevice {
         display: block;
         @include inter(12px, 400, $--b-main-gray-color);
         line-height: 20px;

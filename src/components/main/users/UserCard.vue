@@ -124,7 +124,7 @@ $color-f7f7fc: #f7f7fc;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
-    @include tabletAndMobile {
+    @include phoneDevicesModel {
       display: flex;
       justify-content: space-between;
     }
@@ -133,7 +133,7 @@ $color-f7f7fc: #f7f7fc;
   &__picture-name {
     display: flex;
     align-items: center;
-    @include tabletAndMobile {
+    @include phoneDevicesModel {
       position: relative;
     }
     .b-user-card__picture {
@@ -149,21 +149,21 @@ $color-f7f7fc: #f7f7fc;
       font-size: 14px;
       line-height: 20px;
       color: $--b-main-black-color;
-      @include mobile {
+      @include mobileDevice {
         width: 110px;
       }
       .b-user-card__top-line-name-rating {
         .b-user-card__name {
           display: flex;
           align-items: center;
-          @include tabletAndMobile {
+          @include phoneDevicesModel {
             font-size: 13px;
             line-height: 16px;
           }
         }
         .b-user-card__team-rating-mob {
           display: none;
-          @include tabletAndMobile {
+          @include phoneDevicesModel {
             height: auto;
             display: block;
           }
@@ -178,7 +178,7 @@ $color-f7f7fc: #f7f7fc;
         font-size: 12px;
         line-height: 20px;
         color: $--b-main-black-color;
-        @include tabletAndMobile {
+        @include phoneDevicesModel {
           position: absolute;
           left: 0;
           width: max-content;
@@ -202,7 +202,7 @@ $color-f7f7fc: #f7f7fc;
       height: 32px;
       .b-user-card__team-rating {
         // .star-rating {
-        @include tabletAndMobile {
+        @include phoneDevicesModel {
           display: none;
         }
         // }
@@ -216,7 +216,7 @@ $color-f7f7fc: #f7f7fc;
           line-height: 20px;
           color: $--b-main-gray-color;
           margin-left: 30px;
-          @include tabletAndMobile {
+          @include phoneDevicesModel {
             margin-left: 0;
             font-size: 12px;
             line-height: 16px;
@@ -224,7 +224,7 @@ $color-f7f7fc: #f7f7fc;
         }
         .b-user-card__status-mob {
           display: none;
-          @include tabletAndMobile {
+          @include phoneDevicesModel {
             display: block;
             font-family: 'Inter';
             font-style: normal;
@@ -240,7 +240,7 @@ $color-f7f7fc: #f7f7fc;
     //   display: flex;
     //   align-items: center;
     //   margin-top: 6px;
-    //   @include tabletAndMobile {
+    //   @include phoneDevicesModel {
     //   }
     //   .title {
     //     font-family: 'Inter';
@@ -249,7 +249,7 @@ $color-f7f7fc: #f7f7fc;
     //     font-size: 12px;
     //     line-height: 20px;
     //     color: $--b-main-black-color;
-    //     @include tabletAndMobile {
+    //     @include phoneDevicesModel {
     //       display: none;
     //     }
     //   }
@@ -259,7 +259,7 @@ $color-f7f7fc: #f7f7fc;
     //     height: 20px;
     //     background: #F7F7FC;
     //     border-radius: 4px;
-    //     @include tabletAndMobile {
+    //     @include phoneDevicesModel {
     //       display: flex;
     //     }
     //     img {
@@ -274,7 +274,7 @@ $color-f7f7fc: #f7f7fc;
     //     font-size: 12px;
     //     line-height: 20px;
     //     color: $--b-main-gray-color;
-    //     @include tabletAndMobile {
+    //     @include phoneDevicesModel {
     //       font-weight: 500;
     //       color: $--b-main-black-color;
     //     }
@@ -287,7 +287,7 @@ $color-f7f7fc: #f7f7fc;
     align-items: center;
     justify-content: flex-end;
     height: 32px;
-    @include tabletAndMobile {
+    @include phoneDevicesModel {
       display: none;
     }
 
@@ -304,7 +304,7 @@ $color-f7f7fc: #f7f7fc;
   &__flipping-part {
     display: flex;
     margin-left: 60px;
-    @include tabletAndMobile {
+    @include phoneDevicesModel {
       margin-left: 0;
     }
     .b-user-card__pnz {
@@ -328,7 +328,7 @@ $color-f7f7fc: #f7f7fc;
     .b-user-card__gender {
       display: flex;
       align-items: center;
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
       }
       .title {
         font-family: 'Inter';
@@ -347,7 +347,7 @@ $color-f7f7fc: #f7f7fc;
         font-size: 12px;
         line-height: 20px;
         color: $--b-main-gray-color;
-        @include tabletAndMobile {
+        @include phoneDevicesModel {
           font-weight: 500;
           color: $--b-main-black-color;
         }

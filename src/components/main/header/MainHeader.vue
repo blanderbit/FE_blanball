@@ -107,13 +107,13 @@ export default {
     const goBackSchedulerButtonConfig = ref(null);
     let searchTimeout;
 
-    const { isMobileSmall } = useWindowWidth();
+    const { isMobileDevice } = useWindowWidth();
 
     const isGoBackSchedulerIconVisible = computed(() => {
       return (
         props.isSchedulerOpened &&
         goBackSchedulerButtonConfig.value &&
-        isMobileSmall.value
+        isMobileDevice.value
       );
     });
 
@@ -239,7 +239,7 @@ $color-fafafa: #fafafa;
   height: 88px;
   .b_header_mob-menu-icon {
     display: none;
-    @media (max-width: 992px) {
+    @include allDevicesBeforeDesktop {
       display: block;
       background: $color-fafafa;
       border-radius: 6px;
@@ -252,7 +252,7 @@ $color-fafafa: #fafafa;
   }
   .b_header_logo {
     display: none;
-    @include tablet {
+    @include tabletDevice {
       display: block;
     }
   }
@@ -278,7 +278,7 @@ $color-fafafa: #fafafa;
         cursor: pointer;
         background: $--b-main-white-color;
 
-        @include tabletAndMobile {
+        @include phoneDevicesModel {
           border: none;
           background: none;
           padding: 6px;

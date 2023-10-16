@@ -55,7 +55,7 @@
       </div>
       <div class="b-register-step__map">
         <RegisterModalPositionMap
-          v-if="isMobile"
+          v-if="isMobileDevice"
           :title="$t('register.select-position-on-map')"
         >
         </RegisterModalPositionMap>
@@ -90,7 +90,7 @@ export default {
     RegisterModalPositionMap,
   },
   setup() {
-    const { isMobile } = useWindowWidth();
+    const { isMobileDevice } = useWindowWidth();
     const region = ref('');
     const city = ref('');
     const address = ref('');
@@ -164,7 +164,7 @@ export default {
       address,
       stepConfig,
       nextButton,
-      isMobile,
+      isMobileDevice,
       async changeRegions(e) {
         region.value = e;
         city.value = '';
@@ -228,7 +228,7 @@ export default {
   font-size: 22px;
   line-height: 32px;
   color: $--b-main-black-color;
-  @include mobile {
+  @include mobileDevice {
     text-align: center;
   }
 }
@@ -244,7 +244,7 @@ export default {
 .b-register-step__dropdown {
   width: 384px;
   margin-bottom: 15px;
-  @media (max-width: 992px) {
+  @include allDevicesBeforeDesktop {
     width: 100%;
   }
 }

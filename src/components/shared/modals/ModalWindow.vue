@@ -56,13 +56,13 @@ export default {
     },
   },
   setup(props) {
-    const { isMobileSmall } = useWindowWidth();
+    const { isMobileDevice } = useWindowWidth();
 
     const windowStyle = computed(() => {
       return {
         padding: props.isTitleShown ? '80px 20px 20px 20px' : '20px',
         width: `${
-          isMobileSmall.value ? props.windowWidthMobile : props.windowWidth
+          isMobileDevice.value ? props.windowWidthMobile : props.windowWidth
         }px`,
       };
     });
@@ -189,7 +189,7 @@ $color-d3f8f7: #d3f8f7;
       justify-content: space-between;
       align-items: center;
 
-      @include mobile {
+      @include mobileDevice {
         flex-direction: column;
         gap: 8px;
       }
@@ -242,7 +242,7 @@ $color-d3f8f7: #d3f8f7;
         color: $--b-main-green-color;
         cursor: pointer;
 
-        @include mobile {
+        @include mobileDevice {
           text-align: center;
           width: 100%;
           padding: 8px 16px;

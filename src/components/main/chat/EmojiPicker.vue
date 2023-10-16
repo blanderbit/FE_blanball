@@ -44,10 +44,10 @@ export default {
 
     const { width: emojiPickerWidth, height: emojiPickerHeight } =
       useElementSize(EMOJI_PICKER_ELEMENT);
-    const { isMobileSmall } = useWindowWidth();
+    const { isMobileDevice } = useWindowWidth();
 
     const isEmojiPickerWrapperShown = computed(() => {
-      return !isMobileSmall.value;
+      return !isMobileDevice.value;
     });
 
     const emojiGroupNames = computed(() => {
@@ -115,14 +115,14 @@ export default {
 .b-emoji-picker-wrapper {
   @include modal-wrapper(transparent);
 
-  @include mobile {
+  @include mobileDevice {
     width: 100%;
   }
 
   .b-emoji-picker {
     position: absolute;
 
-    @include mobile {
+    @include mobileDevice {
       position: initial;
     }
   }
@@ -133,7 +133,7 @@ export default {
     height: 400px;
     width: 350px;
 
-    @include mobile {
+    @include mobileDevice {
       height: 320px;
       width: calc(100% + 16px);
       margin-left: -8px;

@@ -89,7 +89,7 @@ $color-dfdeed: #dfdeed;
 .b-user-cabinet__buttons {
   order: 4;
 
-  @include tabletAndMobile {
+  @include phoneDevicesModel {
     position: absolute;
     left: 50%;
     max-width: 515px;
@@ -100,7 +100,7 @@ $color-dfdeed: #dfdeed;
   }
   .b-user-cabinet__save-cancel-btns {
     padding: 0px 20px;
-    @include tabletAndMobile {
+    @include phoneDevicesModel {
       display: flex;
       flex-direction: column;
       background: rgba(255, 255, 255, 0.8);
@@ -110,7 +110,7 @@ $color-dfdeed: #dfdeed;
     .b-user-cabinet__btns-line {
       display: flex;
       justify-content: space-between;
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
         order: 2;
       }
       .b-user-cabinet__btn-cancel {
@@ -131,7 +131,7 @@ $color-dfdeed: #dfdeed;
       margin-top: 4px;
       cursor: pointer;
       border-bottom: 1px dashed $color-dfdeed;
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
         order: 1;
         text-align: center;
         border: none;

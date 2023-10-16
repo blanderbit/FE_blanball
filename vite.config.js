@@ -81,6 +81,9 @@ export default defineConfig({
       '@interseptors': fileURLToPath(
         new URL('./src/interseptors', import.meta.url)
       ),
+      '@validators': fileURLToPath(
+        new URL('./src/validators', import.meta.url)
+      ),
     },
   },
   css: {

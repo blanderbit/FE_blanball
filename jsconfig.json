@@ -16,7 +16,8 @@
       "@routes/*": ["src/routes/*"],
       "@router/*": ["src/router/*"],
       "@plugins/*": ["src/plugins/*"],
-      "@interseptors/*": ["src/interseptors*"]
+      "@interseptors/*": ["src/interseptors*"],
+      "@validators/*": ["src/validators*"]
     }
   },
   "exclude": ["node_modules", "dist"]

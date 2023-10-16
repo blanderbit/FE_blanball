@@ -63,7 +63,7 @@ $color-f5fffe: #f5fffe;
   .b-error-page__main-block {
     position: relative;
     margin: auto;
-    @include tabletAndMobile {
+    @include phoneDevicesModel {
       margin: 0;
       width: 100%;
     }
@@ -71,14 +71,14 @@ $color-f5fffe: #f5fffe;
       width: 100%;
     }
     .b-error-page__img-desk {
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
         display: none;
       }
     }
     .b-error-page__img-mob {
       display: none;
       margin: 20px auto;
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
         display: block;
       }
     }
@@ -86,7 +86,7 @@ $color-f5fffe: #f5fffe;
       position: absolute;
       bottom: 145px;
       left: 95px;
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
         position: static;
       }
       .b-error-page__text {
@@ -97,7 +97,7 @@ $color-f5fffe: #f5fffe;
         line-height: 24px;
         color: $--b-main-black-color;
         margin-bottom: 16px;
-        @include tabletAndMobile {
+        @include phoneDevicesModel {
           text-align: center;
           font-weight: 700;
           font-size: 24px;
@@ -107,7 +107,7 @@ $color-f5fffe: #f5fffe;
         }
       }
       .b-green-btn {
-        @include tabletAndMobile {
+        @include phoneDevicesModel {
           margin: 0 auto;
         }
       }

@@ -888,7 +888,7 @@ $color-8a8aa8: #8a8aa8;
           text-decoration: none;
         }
 
-        @include mobile {
+        @include mobileDevice {
           position: fixed;
           bottom: 0;
           background: rgba(249, 249, 252, 0.9);
@@ -934,12 +934,12 @@ $color-8a8aa8: #8a8aa8;
       gap: 48px;
       margin-top: 24px;
 
-      @media (max-width: 992px) {
+      @include allDevicesBeforeDesktop {
         grid-template-columns: 1fr;
         gap: 20px;
       }
 
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
         border-top: none;
         margin-top: 20px;
       }
@@ -1058,13 +1058,13 @@ $color-8a8aa8: #8a8aa8;
           flex-direction: column;
 
           .b-event-info__forms-block {
-            @include mobile {
+            @include mobileDevice {
               order: 3;
             }
           }
 
           .b-event-info__description-block {
-            @include mobile {
+            @include mobileDevice {
               order: 1;
               margin-bottom: 6px;
               margin-top: 16px;
@@ -1101,7 +1101,7 @@ $color-8a8aa8: #8a8aa8;
             margin-top: 20px;
             margin-bottom: 12px;
 
-            @include mobile {
+            @include mobileDevice {
               order: 2;
               margin-top: 8px;
               margin-bottom: 0px;
@@ -1134,7 +1134,7 @@ $color-8a8aa8: #8a8aa8;
             margin-bottom: 12px;
             padding-bottom: 12px;
             border-bottom: 1px solid $color-dfdeed;
-            @include mobile {
+            @include mobileDevice {
               border-top: 1px solid $color-dfdeed;
             }
 
@@ -1195,7 +1195,7 @@ $color-8a8aa8: #8a8aa8;
     .b-event-info__tables-block {
       margin-top: 36px;
 
-      @include mobile {
+      @include mobileDevice {
         padding-bottom: 70px;
       }
 
@@ -1214,7 +1214,7 @@ $color-8a8aa8: #8a8aa8;
         justify-content: space-between;
         align-items: center;
 
-        @include tabletAndMobile {
+        @include phoneDevicesModel {
           flex-direction: column;
         }
       }

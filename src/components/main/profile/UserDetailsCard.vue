@@ -46,7 +46,7 @@
     </div>
 
     <RatingCard
-      v-if="isMobile"
+      v-if="isMobileDevice"
       :rating-scale="userData.raiting"
       :reviewsCount="reviewsTotalCount"
       :disabled="isEditMode"
@@ -365,7 +365,7 @@ export default {
   },
   emits: ['openEditPictureModal'],
   setup(props, { emit }) {
-    const { isBetweenTabletAndDesktop, isMobile, isTablet } = useWindowWidth();
+    const { isLaptopDevice, isMobileDevice, isTabletDevice } = useWindowWidth();
     const { t } = useI18n();
     const router = useRouter();
 
@@ -402,7 +402,7 @@ export default {
 
     const isMobTabletSize = computed(() => {
       return (
-        isBetweenTabletAndDesktop.value || isMobile.value || isTablet.value
+        isLaptopDevice.value || isMobileDevice.value || isTabletDevice.value
       );
     });
 
@@ -483,7 +483,7 @@ export default {
       fullUserName,
       isMobTabletSize,
       fileInput,
-      isMobile,
+      isMobileDevice,
     };
   },
 };
@@ -514,7 +514,7 @@ $color-efeff6: #efeff6;
     flex-basis: 49%;
   }
 
-  @include tabletAndMobile {
+  @include phoneDevicesModel {
     padding: 0px 10px;
   }
 
@@ -526,7 +526,7 @@ $color-efeff6: #efeff6;
     @media (max-width: 1200px) {
       box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
     }
-    @include tabletAndMobile {
+    @include phoneDevicesModel {
       padding: 8px 8px 10px;
     }
 
@@ -626,7 +626,7 @@ $color-efeff6: #efeff6;
       @media (max-width: 1200px) {
         padding: 12px;
       }
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
         padding: 0px;
       }
       .b-user-card__tab-body {

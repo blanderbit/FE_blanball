@@ -48,7 +48,7 @@ $color-6f6f77: #6f6f77;
     flex-direction: column;
     transform: translate(-50%, -50%);
 
-    @include mobile {
+    @include mobileDevice {
       width: 100%;
     }
 
@@ -57,7 +57,7 @@ $color-6f6f77: #6f6f77;
       align-items: center;
       gap: 12px;
       align-self: flex-end;
-      @include mobile {
+      @include mobileDevice {
       }
 
       .b-public-profile__continue {
@@ -93,11 +93,11 @@ $color-6f6f77: #6f6f77;
       @include calc-height;
       margin-top: 12px;
 
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
         @include calc-height(100px);
       }
 
-      @include mobile {
+      @include mobileDevice {
         width: 100%;
         padding: 0px 15px 15px 15px;
         border-radius: 0px;

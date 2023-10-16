@@ -174,7 +174,7 @@
           }
         }
         .b-main-search-icon-status {
-          @include mobile {
+          @include mobileDevice {
             background: #1ccd62;
             border: 1.5px solid #ffffff;
             border-radius: 6px;
@@ -192,7 +192,7 @@
             display: block;
             width: max-content;
           }
-          @include mobile {
+          @include mobileDevice {
             display: none;
           }
           .b-main-search__title {
@@ -219,7 +219,7 @@
   justify-content: center;
   display: none;
 
-  @include tabletAndMobile {
+  @include phoneDevicesModel {
     display: flex;
   }
 }
@@ -227,7 +227,7 @@
 .b-main-search__search-input-tablet {
   margin: 16px;
 
-  @include tabletAndMobile {
+  @include phoneDevicesModel {
     display: none;
   }
 }

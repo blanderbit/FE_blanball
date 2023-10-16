@@ -259,7 +259,7 @@ export default {
     const isMobileSearchOpened = ref(false);
     const todaysDate = useTodaysDate();
     const dateFilterValue = ref(null);
-    const { isMobile, isTablet } = useWindowWidth();
+    const { isMobileDevice, isTabletDevice } = useWindowWidth();
     const icons = computed(() => {
       return {
         female: FemaleIcon,
@@ -283,8 +283,8 @@ export default {
       TransformedFiltersWorker({
         props,
         emit,
-        isMobile,
-        isTablet,
+        isMobileDevice,
+        isTabletDevice,
         setupTransformedCallback() {
           const [lng, lat] = props.modelValue?.point?.value?.split?.(',') || [];
           return {
@@ -392,7 +392,7 @@ export default {
     watch(
       () => activeFilters.value,
       (newVal) => {
-        if (!isMobile.value && !isTablet.value) {
+        if (!isMobileDevice.value && !isTabletDevice.value) {
           emit('updatedActiveFilters', newVal);
         }
       }

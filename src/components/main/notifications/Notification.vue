@@ -458,7 +458,7 @@ $color-000: #000;
 
   padding: 16px 16px 12px 16px;
 
-  @include beforeDesktop {
+  @include allDevicesBeforeDesktop {
     padding: 16px 0px 12px 16px;
   }
 
@@ -616,7 +616,7 @@ $color-000: #000;
 }
 .notification-image {
   margin-right: 12px;
-  @include mobile {
+  @include mobileDevice {
     margin: 0px;
   }
 }

@@ -189,12 +189,12 @@ $color-f0f0f4: #f0f0f4;
   .address {
     &.desk-address {
       display: none;
-      // @media (max-width: 992px) {
+      // @include allDevicesBeforeDesktop {
       //   display: none;
       // }
     }
     &.mob-address {
-      // @media (max-width: 992px) {
+      // @include allDevicesBeforeDesktop {
       //   display: flex;
       // }
     }
@@ -202,7 +202,7 @@ $color-f0f0f4: #f0f0f4;
     background: $color-fafafa;
     padding: 0px 4px;
     margin-top: 4px;
-    @media (max-width: 992px) {
+    @include allDevicesBeforeDesktop {
       width: fit-content;
       margin-top: 8px;
     }
@@ -283,7 +283,7 @@ $color-f0f0f4: #f0f0f4;
     .right-side {
       display: none;
       position: relative;
-      // @media (max-width: 992px) {
+      // @include allDevicesBeforeDesktop {
       //   display: none;
       // }
     }
@@ -328,7 +328,7 @@ $color-f0f0f4: #f0f0f4;
     margin-top: 12px;
     border-top: 1px dashed $color-dfdeed;
 
-    @include tabletAndMobile {
+    @include phoneDevicesModel {
       margin-top: 20px;
     }
 

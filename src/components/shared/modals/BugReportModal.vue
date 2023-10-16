@@ -181,7 +181,7 @@ $color-4c4a82: #4c4a82;
     border-radius: 6px;
     background: $--b-main-white-color;
 
-    @include mobile {
+    @include mobileDevice {
       width: 350px;
     }
 
@@ -247,7 +247,7 @@ $color-4c4a82: #4c4a82;
       justify-content: space-between;
       padding: 20px;
 
-      @include mobile {
+      @include mobileDevice {
         flex-direction: column;
         gap: 15px;
         padding: 15px;
@@ -276,7 +276,7 @@ $color-4c4a82: #4c4a82;
         color: $--b-main-white-color;
         cursor: pointer;
 
-        @include mobile {
+        @include mobileDevice {
           padding: 8px;
         }
       }

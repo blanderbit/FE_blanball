@@ -7,8 +7,8 @@ export const TransformedFiltersWorker = (config) => {
     ifSecondLineWasUsed,
     props,
     emit,
-    isMobile,
-    isTablet,
+    isMobileDevice,
+    isTabletDevice,
   } = config;
 
   if (
@@ -48,7 +48,7 @@ export const TransformedFiltersWorker = (config) => {
       if (a.ordering !== b.ordering || a.search !== b.search) {
         updateRealData();
       }
-      if (!(isMobile.value || isTablet.value)) {
+      if (!(isMobileDevice.value || isTabletDevice.value)) {
         updateRealData();
       }
     },

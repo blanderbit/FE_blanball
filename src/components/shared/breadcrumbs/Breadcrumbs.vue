@@ -52,7 +52,7 @@ export default {
       }
     }
   }
-  @media (max-width: 992px) {
+  @include allDevicesBeforeDesktop {
     display: none;
   }
 }

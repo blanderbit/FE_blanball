@@ -139,10 +139,10 @@ export default {
   .b-register-step__dropdown {
     margin-right: 10px;
     width: 120px;
-    @include tablet {
+    @include tabletDevice {
       width: 133px;
     }
-    @include mobile {
+    @include mobileDevice {
       width: 32.5%;
     }
   }

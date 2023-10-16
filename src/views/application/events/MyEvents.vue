@@ -707,13 +707,13 @@ export default {
         itemWidth.value = mainEventsBlock.value.clientWidth / 2;
         itemCount.value = 2;
       } else if (
-        window.matchMedia('(min-width: 992px) and (max-width: 1199px)').matches
+        window.matchMedia('(min-width: 992px) and (max-width: 1200px)').matches
       ) {
         itemHeight.value = 160;
         itemWidth.value = mainEventsBlock.value.clientWidth / 2;
         itemCount.value = 2;
       } else if (
-        window.matchMedia('(min-width: 768px) and (max-width: 991px)').matches
+        window.matchMedia('(min-width: 768px) and (max-width: 992px)').matches
       ) {
         itemHeight.value = 160;
         itemWidth.value = mainEventsBlock.value.clientWidth / 2;
@@ -849,7 +849,7 @@ $color-dfdeed: #dfdeed;
   position: relative;
   height: fit-content;
 
-  @media (max-width: 992px) {
+  @include allDevicesBeforeDesktop {
     grid-template-columns: 1fr;
   }
 
@@ -868,7 +868,7 @@ $color-dfdeed: #dfdeed;
     z-index: 10;
     bottom: calc(15% + 20px);
 
-    @media (max-width: 992px) {
+    @include allDevicesBeforeDesktop {
       display: flex;
     }
   }
@@ -898,7 +898,7 @@ $color-dfdeed: #dfdeed;
           line-height: 20px;
           color: $--b-main-gray-color;
 
-          @media (min-width: 992px) {
+          @include desktopDevice {
             display: none;
           }
         }
@@ -913,7 +913,7 @@ $color-dfdeed: #dfdeed;
           color: $--b-main-black-color;
           display: flex;
 
-          @media (max-width: 992px) {
+          @include allDevicesBeforeDesktop {
             display: none;
           }
 
@@ -957,7 +957,7 @@ $color-dfdeed: #dfdeed;
           padding: 4px;
           margin-top: 16px;
 
-          @media (max-width: 992px) {
+          @include allDevicesBeforeDesktop {
             display: flex;
           }
 
@@ -994,7 +994,7 @@ $color-dfdeed: #dfdeed;
       }
 
       .b-events-page__right-part {
-        @media (max-width: 992px) {
+        @include allDevicesBeforeDesktop {
           display: none;
         }
 
@@ -1063,7 +1063,7 @@ $color-dfdeed: #dfdeed;
       margin-bottom: 20px;
       position: relative;
 
-      @media (max-width: 992px) {
+      @include allDevicesBeforeDesktop {
         padding: 0;
       }
 

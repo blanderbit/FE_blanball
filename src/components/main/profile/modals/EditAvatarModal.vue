@@ -213,12 +213,12 @@ $color-efeff6: #efeff6;
     display: flex;
     justify-content: space-between;
     padding-bottom: 20px;
-    @include mobile {
+    @include mobileDevice {
       display: block;
     }
     :deep(.b-edit-avatar__right-side) {
       width: 200px;
-      @include mobile {
+      @include mobileDevice {
         width: 100%;
       }
 
@@ -226,11 +226,11 @@ $color-efeff6: #efeff6;
         overflow: hidden;
         height: 248px;
         width: 196px;
-        @include mobile {
+        @include mobileDevice {
           width: 100%;
         }
         img {
-          @include mobile {
+          @include mobileDevice {
             width: 100%;
           }
         }
@@ -242,7 +242,7 @@ $color-efeff6: #efeff6;
         height: 132px !important;
         overflow: hidden;
         border-radius: 4px;
-        @include mobile {
+        @include mobileDevice {
           display: none;
         }
       }
@@ -270,11 +270,11 @@ $color-efeff6: #efeff6;
         color: $--b-main-gray-color;
         margin-bottom: 12px;
         cursor: pointer;
-        @include mobile {
+        @include mobileDevice {
           margin-bottom: 0;
         }
         span {
-          @include mobile {
+          @include mobileDevice {
             display: none;
           }
         }
@@ -284,11 +284,11 @@ $color-efeff6: #efeff6;
         margin-top: 18px;
         img {
           margin-right: 9px;
-          @include mobile {
+          @include mobileDevice {
             margin-right: 0;
           }
         }
-        @include mobile {
+        @include mobileDevice {
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -299,32 +299,32 @@ $color-efeff6: #efeff6;
             align-items: center;
             cursor: pointer;
             .b-edit-avatar__desk-text {
-              @include mobile {
+              @include mobileDevice {
                 display: none;
               }
             }
             .b-edit-avatar__mob-text {
               display: none;
-              @include mobile {
+              @include mobileDevice {
                 display: block;
               }
             }
             img {
-              @include mobile {
+              @include mobileDevice {
                 display: none;
               }
             }
           }
         }
         .b-edit-avatar__left-mob-part {
-          @include mobile {
+          @include mobileDevice {
             display: flex;
           }
           .b-edit-avatar__rotate {
             margin-right: 8px;
           }
           .b-edit-avatar__rotate {
-            @include mobile {
+            @include mobileDevice {
               border: 1px solid $color-dfdeed;
               padding: 9px 17px;
               border-radius: 6px;

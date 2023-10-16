@@ -130,7 +130,7 @@ export default {
     const { height: MODAL_HEIGHT_VALUE } = useElementSize(
       ALL_MODAL_CONTENT_BLOCK
     );
-    const { isMobileSmall } = useWindowWidth();
+    const { isMobileDevice } = useWindowWidth();
 
     const toast = useToast();
     const { t } = useI18n();
@@ -148,10 +148,10 @@ export default {
 
     const cancelButtonConfig = computed(() => {
       return {
-        text: isMobileSmall.value
+        text: isMobileDevice.value
           ? 'Скасувати редагування'
           : t('buttons.cancel'),
-        width: isMobileSmall.value ? 200 : 80,
+        width: isMobileDevice.value ? 200 : 80,
       };
     });
 
@@ -205,11 +205,11 @@ export default {
 
 <style lang="scss" scoped>
 .b-edit-chat-modal__wrapper {
-  @include mobile {
+  @include mobileDevice {
     @include modal-wrapper($z-index: 500);
   }
 
-  @include afterMobile {
+  @include allDevicesAfterMobile {
     &::after {
       content: '';
       @include modal-wrapper($z-index: 500);
@@ -231,7 +231,7 @@ export default {
     box-shadow: 2px 2px 10px 0px rgba(56, 56, 251, 0.1);
     z-index: 550;
 
-    @include mobile {
+    @include mobileDevice {
       width: 100%;
       height: 100%;
       border-radius: 0px;
@@ -241,12 +241,12 @@ export default {
     .b-modal-window__top-side {
       .b-go-back-button {
         display: none;
-        @include mobile {
+        @include mobileDevice {
           display: block;
           cursor: pointer;
         }
       }
-      @include mobile {
+      @include mobileDevice {
         display: flex;
         gap: 16px;
         background: var(--bg-primary, #fff);
@@ -260,7 +260,7 @@ export default {
         @include exo(22px, 700);
         line-height: 32px;
 
-        @include mobile {
+        @include mobileDevice {
           @include exo(18px, 700);
           line-height: 24px;
         }
@@ -274,7 +274,7 @@ export default {
         top: 20px;
         cursor: pointer;
 
-        @include mobile {
+        @include mobileDevice {
           display: none;
         }
       }
@@ -309,7 +309,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      @include mobile {
+      @include mobileDevice {
         flex-direction: column-reverse;
         border-radius: 12px 12px 0px 0px;
         border-top: 1.5px solid #f0f0f4;

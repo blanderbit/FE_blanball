@@ -218,7 +218,7 @@ $color-fff4ec: #fff4ec;
     z-index: 12;
     background: $--b-main-white-color;
 
-    @include beforeDesktop {
+    @include allDevicesBeforeDesktop {
       display: none;
     }
 
@@ -351,7 +351,7 @@ $color-fff4ec: #fff4ec;
 }
 
 .b_mobile-menu {
-  @media (min-width: 992px) {
+  @include desktopDevice {
     display: none;
   }
 }

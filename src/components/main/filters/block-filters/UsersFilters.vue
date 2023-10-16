@@ -223,7 +223,7 @@ export default {
     const isModalFiltersActive = ref(false);
     const route = useRoute();
     const isMobileSearchOpened = ref(false);
-    const { isMobile, isTablet } = useWindowWidth();
+    const { isMobileDevice, isTabletDevice } = useWindowWidth();
     const icons = computed(() => {
       return {
         search: SearchIcon,
@@ -243,8 +243,8 @@ export default {
       TransformedFiltersWorker({
         props,
         emit,
-        isMobile,
-        isTablet,
+        isMobileDevice,
+        isTabletDevice,
         setupTransformedCallback() {
           return {
             profile__gender: props.modelValue.profile__gender.value,
@@ -316,7 +316,7 @@ export default {
     watch(
       () => activeFilters.value,
       (newVal) => {
-        if (!isMobile.value && !isTablet.value) {
+        if (!isMobileDevice.value && !isTabletDevice.value) {
           emit('updatedActiveFilters', newVal);
         }
       }

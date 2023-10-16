@@ -200,7 +200,7 @@ export default {
   width: 400px;
   z-index: 10;
 
-  @include mobile {
+  @include mobileDevice {
     width: calc(100% - 30px);
     margin: 0 auto;
   }

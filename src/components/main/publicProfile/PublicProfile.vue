@@ -297,7 +297,7 @@ export default {
         break;
     }
 
-    const { isBetweenTabletAndDesktop, isMobile, isTablet } = useWindowWidth();
+    const { isLaptopDevice, isMobileDevice, isTabletDevice } = useWindowWidth();
 
     const backgroundTop = computed(() => {
       return BackgroundTop;
@@ -327,7 +327,7 @@ export default {
     });
 
     const avatarType = computed(() => {
-      if (isMobile.value || isTablet.value) {
+      if (isMobileDevice.value || isTabletDevice.value) {
         return 'big-circle';
       } else {
         return 'square';
@@ -494,11 +494,11 @@ $color-d2f6a2: #d2f6a2;
     top: 100%;
   }
 
-  @include beforeDesktop {
+  @include allDevicesBeforeDesktop {
     top: 80%;
   }
 
-  @include tabletAndMobile {
+  @include phoneDevicesModel {
     top: 120%;
   }
 
@@ -554,11 +554,11 @@ $color-d2f6a2: #d2f6a2;
     width: 100%;
     z-index: 1;
 
-    @include tabletAndMobile {
+    @include phoneDevicesModel {
       z-index: 3;
     }
 
-    @include bigTablet {
+    @include laptopDevice {
       z-index: 3;
     }
 
@@ -574,7 +574,7 @@ $color-d2f6a2: #d2f6a2;
     position: relative;
     z-index: 2;
 
-    @include beforeDesktop {
+    @include allDevicesBeforeDesktop {
       z-index: inherit;
     }
 
@@ -582,7 +582,7 @@ $color-d2f6a2: #d2f6a2;
       padding: 40px 20px;
     }
 
-    @include tabletAndMobile {
+    @include phoneDevicesModel {
       flex-direction: column;
       align-items: center;
       padding: 40px 5px;
@@ -602,12 +602,12 @@ $color-d2f6a2: #d2f6a2;
         width: 300px;
       }
 
-      @include beforeDesktop {
+      @include allDevicesBeforeDesktop {
         padding: 16px;
         margin-top: 5px;
       }
 
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
         width: 400px;
         margin-top: -30px;
       }
@@ -629,11 +629,11 @@ $color-d2f6a2: #d2f6a2;
         display: flex;
         gap: 4px;
 
-        @include tablet {
+        @include tabletDevice {
           top: 80px;
         }
 
-        @include desktop {
+        @include desktopDevice {
         }
 
         @media (max-width: 500px) {
@@ -649,14 +649,14 @@ $color-d2f6a2: #d2f6a2;
         display: flex;
         gap: 12px;
 
-        @include beforeDesktop {
+        @include allDevicesBeforeDesktop {
           flex-direction: column;
           gap: 4px;
         }
 
         .b-public-profile__avatar {
           z-index: 22;
-          @include desktop {
+          @include desktopDevice {
             :deep(.b-avatar) {
               width: 96px;
               height: 96px;
@@ -671,7 +671,7 @@ $color-d2f6a2: #d2f6a2;
           flex-direction: column;
           gap: 4px 4px;
 
-          @include beforeDesktop {
+          @include allDevicesBeforeDesktop {
             flex-direction: row;
             justify-content: space-between;
           }
@@ -681,14 +681,14 @@ $color-d2f6a2: #d2f6a2;
             line-height: 24px;
             word-break: break-all;
 
-            @include tabletAndMobile {
+            @include phoneDevicesModel {
               @include exo(20px, 800);
               margin-top: 8px;
             }
           }
 
           .b-user-role-raiting {
-            @include beforeDesktop {
+            @include allDevicesBeforeDesktop {
               display: flex;
               flex-direction: column-reverse;
               align-items: flex-end;
@@ -699,7 +699,7 @@ $color-d2f6a2: #d2f6a2;
             @include inter(12px, 500, $--b-main-gray-color);
             line-height: 20px;
 
-            @include tabletAndMobile {
+            @include phoneDevicesModel {
               @include inter(14px, 500, $--b-main-gray-color);
             }
           }
@@ -764,7 +764,7 @@ $color-d2f6a2: #d2f6a2;
         flex-direction: column;
       }
 
-      @include beforeDesktop {
+      @include allDevicesBeforeDesktop {
         flex-direction: column;
         align-items: center;
       }
@@ -783,7 +783,7 @@ $color-d2f6a2: #d2f6a2;
         border-right: 1px solid $color-efeff6;
         overflow: hidden;
 
-        @include desktop {
+        @include desktopDevice {
           @include calc-height(90px, 60px);
         }
 
@@ -797,7 +797,7 @@ $color-d2f6a2: #d2f6a2;
           border-radius: 12px;
         }
 
-        @include beforeDesktop {
+        @include allDevicesBeforeDesktop {
           padding: 5px;
           background: transparent;
           box-shadow: none;
@@ -805,12 +805,12 @@ $color-d2f6a2: #d2f6a2;
           width: 320px;
         }
 
-        @include tabletAndMobile {
+        @include phoneDevicesModel {
           margin-left: 0px;
           width: 410px;
         }
 
-        @include bigTablet {
+        @include laptopDevice {
           z-index: 3;
         }
 
@@ -819,17 +819,17 @@ $color-d2f6a2: #d2f6a2;
         }
 
         .b-second-block__user-features-block {
-          @include beforeDesktop {
+          @include allDevicesBeforeDesktop {
             padding: 16px;
             box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
             background: $--b-main-white-color;
             border-radius: 12px;
           }
-          @include bigTablet {
+          @include laptopDevice {
             position: absolute;
             width: 300px;
           }
-          @include tabletAndMobile {
+          @include phoneDevicesModel {
             margin-top: 15px;
           }
 
@@ -848,7 +848,7 @@ $color-d2f6a2: #d2f6a2;
               padding-right: 30px;
             }
 
-            @include beforeDesktop {
+            @include allDevicesBeforeDesktop {
               padding-right: 0px;
               padding-top: 16px;
               border-top: 1px dashed $color-dfdeed;
@@ -887,14 +887,14 @@ $color-d2f6a2: #d2f6a2;
   justify-content: space-between;
 
   &.desktop {
-    @include beforeDesktop {
+    @include allDevicesBeforeDesktop {
       display: none;
     }
   }
 
   &.tablet {
     display: none;
-    @include beforeDesktop {
+    @include allDevicesBeforeDesktop {
       display: flex;
       margin-top: 8px;
     }

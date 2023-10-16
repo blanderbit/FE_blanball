@@ -158,7 +158,7 @@ export default {
 
 <style lang="scss" scoped>
 :deep(.b-register-step__title) {
-  @include mobile {
+  @include mobileDevice {
     text-align: center;
     margin-top: 15px;
   }
@@ -167,7 +167,7 @@ export default {
 .b-register-step__input {
   width: 384px;
   margin-top: 12px;
-  @media (max-width: 992px) {
+  @include allDevicesBeforeDesktop {
     width: 100%;
   }
 }
@@ -178,7 +178,7 @@ export default {
   top: -30px;
   left: -30px;
   display: none;
-  @include mobile {
+  @include mobileDevice {
     display: block;
   }
 }
@@ -187,7 +187,7 @@ export default {
   top: 0;
   right: 0;
   display: none;
-  @include mobile {
+  @include mobileDevice {
     display: block;
   }
 }
@@ -220,7 +220,7 @@ export default {
     vertical-align: bottom;
   }
   .remember-me__desktop {
-    @include mobile {
+    @include mobileDevice {
       display: none;
     }
   }
@@ -232,7 +232,7 @@ export default {
 }
 .b-register-step__accept-privacy {
   margin-top: 16px;
-  @include mobile {
+  @include mobileDevice {
     display: flex;
     align-items: center;
     justify-content: space-between;

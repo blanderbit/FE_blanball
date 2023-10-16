@@ -142,7 +142,7 @@ $color-d3f8f7: #d3f8f7;
     box-shadow: none;
     padding: 16px 0px;
   }
-  @include tabletAndMobile {
+  @include phoneDevicesModel {
     padding: 0px 10px;
     margin-bottom: 50px;
   }
@@ -175,7 +175,7 @@ $color-d3f8f7: #d3f8f7;
       margin-top: 20px;
       border-top: 1px solid $color-dfdeed;
 
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
         border-top: none;
         margin-top: 0px;
       }
@@ -196,7 +196,7 @@ $color-d3f8f7: #d3f8f7;
           border-bottom: 1px solid $color-dfdeed;
         }
 
-        @include tabletAndMobile {
+        @include phoneDevicesModel {
           font-weight: 500;
         }
       }
@@ -237,11 +237,11 @@ $color-d3f8f7: #d3f8f7;
       cursor: pointer;
       margin-bottom: 16px;
 
-      @media (max-width: 992px) {
+      @include allDevicesBeforeDesktop {
         justify-content: center;
         gap: 12px;
       }
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
         justify-content: center;
         flex-direction: row-reverse;
         gap: 12px;

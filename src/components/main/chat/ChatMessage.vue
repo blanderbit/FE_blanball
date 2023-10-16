@@ -196,7 +196,7 @@ $--message-avatar-gap: 6px;
   align-items: center;
   gap: $--message-avatar-gap;
   .b-chat-message-tail {
-    @include mobile {
+    @include mobileDevice {
       width: 10px;
       height: fit-content;
     }
@@ -319,11 +319,11 @@ $--message-avatar-gap: 6px;
     position: relative;
     max-width: 60%;
 
-    @include tablet {
+    @include tabletDevice {
       max-width: 70%;
     }
 
-    @include mobile {
+    @include mobileDevice {
       max-width: 80%;
     }
 

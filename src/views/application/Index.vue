@@ -158,7 +158,7 @@ let timeout;
 const avaliableHints = ref([]);
 const currentVisibleHint = ref({});
 
-const { isMobile, isTablet } = useWindowWidth();
+const { isMobileDevice, isTabletDevice } = useWindowWidth();
 const { width: headerWidth, height: headerHeight } = useElementSize(header);
 
 const isHeaderOnThisPageVisible = computed(() => {
@@ -170,11 +170,11 @@ const isContainerOnThisPage = computed(() => {
 });
 
 const isSchedulerSidebarVisible = computed(() => {
-  return !isMobile.value && !isTablet.value;
+  return !isMobileDevice.value && !isTabletDevice.value;
 });
 
 const schedulerTopSideMargin = computed(() => {
-  return isMobile.value || isTablet.value ? headerHeightStore.headerHeight : 80;
+  return isMobileDevice.value || isTabletDevice.value ? headerHeightStore.headerHeight : 80;
 });
 
 const closeEventActiondModal = () => {
@@ -508,7 +508,7 @@ html {
 }
 
 .header-block {
-  @include beforeDesktop {
+  @include allDevicesBeforeDesktop {
     background: $--b-main-white-color;
     position: relative;
     z-index: 501;
@@ -519,7 +519,7 @@ html {
   display: grid;
   grid-template-columns: 64px 1fr;
   @include calc-height;
-  @media (max-width: 992px) {
+  @include allDevicesBeforeDesktop {
     grid-template-columns: 1fr;
   }
 
@@ -528,11 +528,11 @@ html {
     left: 50%;
     transform: translate(-50%, 10px);
 
-    @media (max-width: 992px) {
+    @include allDevicesBeforeDesktop {
       position: relative;
     }
 
-    @include mobile {
+    @include mobileDevice {
       padding: 0px 16px;
     }
   }
@@ -543,7 +543,7 @@ html {
     border-radius: 6px;
     text-align: center;
 
-    @include mobile {
+    @include mobileDevice {
       display: flex;
       align-items: center;
       justify-content: space-between;

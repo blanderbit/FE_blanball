@@ -226,13 +226,13 @@ export default {
         itemWidth.value = mainEventsBlock.value.clientWidth / 3;
         itemCount.value = 3;
       } else if (
-        window.matchMedia('(min-width: 992px) and (max-width: 1199px)').matches
+        window.matchMedia('(min-width: 992px) and (max-width: 1200px)').matches
       ) {
         itemHeight.value = 150;
         itemWidth.value = mainEventsBlock.value.clientWidth / 3;
         itemCount.value = 3;
       } else if (
-        window.matchMedia('(min-width: 768px) and (max-width: 991px)').matches
+        window.matchMedia('(min-width: 768px) and (max-width: 992px)').matches
       ) {
         itemHeight.value = 150;
         itemWidth.value = mainEventsBlock.value.clientWidth / 3;
@@ -299,7 +299,7 @@ $color-dfdeed: #dfdeed;
 $color-e2e2e4: #e2e2e4;
 $color-efeff6: #efeff6;
 :deep(.vue-recycle-scroller__item-view) {
-  @include mobile {
+  @include mobileDevice {
     padding: 0px;
   }
 }
@@ -321,14 +321,14 @@ $color-efeff6: #efeff6;
     background: $--b-main-white-color;
     padding: 24px 20px;
 
-    @include desktop {
+    @include desktopDevice {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
     }
 
-    @include beforeDesktop {
+    @include allDevicesBeforeDesktop {
       width: 100%;
       height: 670px;
       box-shadow: 0px 0px 4px rgba(6, 95, 79, 0.04),
@@ -339,7 +339,7 @@ $color-efeff6: #efeff6;
       bottom: 0;
     }
 
-    @include mobile {
+    @include mobileDevice {
       padding: 22px 0px 8px;
       box-shadow: 0px 0px 4px rgba(6, 95, 79, 0.04),
         0px -4px 8px rgba(6, 95, 79, 0.06);
@@ -350,7 +350,7 @@ $color-efeff6: #efeff6;
         @include inter(13px, 400);
         line-height: 24px;
 
-        @include mobile {
+        @include mobileDevice {
           display: none;
         }
       }
@@ -363,7 +363,7 @@ $color-efeff6: #efeff6;
         right: 20px;
         top: 20px;
 
-        @include beforeDesktop {
+        @include allDevicesBeforeDesktop {
           display: none;
         }
       }
@@ -373,7 +373,7 @@ $color-efeff6: #efeff6;
         align-items: center;
         justify-content: space-between;
 
-        @include mobile {
+        @include mobileDevice {
           justify-content: center;
           padding-bottom: 8px;
         }
@@ -385,7 +385,7 @@ $color-efeff6: #efeff6;
           border-radius: 6px;
           height: 100%;
 
-          @include mobile {
+          @include mobileDevice {
             width: 328px;
             justify-content: center;
           }
@@ -404,7 +404,7 @@ $color-efeff6: #efeff6;
             align-items: center;
             justify-content: center;
 
-            @include mobile {
+            @include mobileDevice {
               height: 38px;
               flex-basis: 50%;
             }
@@ -415,7 +415,7 @@ $color-efeff6: #efeff6;
               @include inter(13px, 500, $--b-main-white-color);
               height: 32px;
 
-              @include mobile {
+              @include mobileDevice {
                 height: 38px;
               }
             }
@@ -428,11 +428,11 @@ $color-efeff6: #efeff6;
           gap: 8px;
           margin-right: 8px;
 
-          @include desktop {
+          @include desktopDevice {
             margin-right: 30px;
           }
 
-          @include mobile {
+          @include mobileDevice {
             display: none;
           }
         }
@@ -444,7 +444,7 @@ $color-efeff6: #efeff6;
       margin-top: 20px;
       overflow: hidden;
 
-      @include mobile {
+      @include mobileDevice {
         margin-top: 0px;
       }
 
@@ -459,7 +459,7 @@ $color-efeff6: #efeff6;
       margin-top: 1px solid $color-efeff6;
       display: none;
 
-      @include mobile {
+      @include mobileDevice {
         display: block;
       }
 

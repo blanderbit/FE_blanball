@@ -163,10 +163,10 @@ export default {
     const { calculatedHeight: chatPageHeight } = calcHeight([
       CHAT_PAGE_TOP_AND_BOTTOM_PADDINGS_PX,
     ]);
-    const { isMobileSmall, detectedDevice, DEVICE_TYPES } = useWindowWidth();
+    const { isMobileDevice, detectedDevice, DEVICE_TYPES } = useWindowWidth();
 
     const editChatModalTransitionName = computed(() => {
-      return isMobileSmall.value ? 'edit-chat-modal-slide' : null;
+      return isMobileDevice.value ? 'edit-chat-modal-slide' : null;
     });
 
     const isAnyChatSelected = computed(() => {
@@ -178,7 +178,7 @@ export default {
         chatMainContextMenuItems: CONSTS.chat.chatMainContextMenuItems(
           chatDataStore.infoAboutMe?.push_notifications,
           chatData.value.isGroup,
-          isMobileSmall.value
+          isMobileDevice.value
         ),
         CHAT_MAIN_CONTEXT_MENU_ACTIONS:
           CONSTS.chat.CHAT_MAIN_CONTEXT_MENU_ACTIONS,
@@ -518,7 +518,7 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
 
-  @include mobile {
+  @include mobileDevice {
     background: #efeff6;
   }
 }
@@ -530,7 +530,7 @@ export default {
   margin-left: auto;
   overflow: hidden;
 
-  @include beforeDesktop {
+  @include allDevicesBeforeDesktop {
     width: 100%;
   }
   .b-chat-page-main-side {
@@ -542,7 +542,7 @@ export default {
     margin: 0 auto;
     position: relative;
 
-    @include mobile {
+    @include mobileDevice {
       padding: 0px 8px 20px 8px;
     }
 

@@ -387,7 +387,7 @@ $color-efeff6: #efeff6;
 .b_slide_menu_bottom-block {
   padding: 16px 11px;
 
-  @include beforeDesktop {
+  @include allDevicesBeforeDesktop {
     display: none;
   }
 
@@ -457,7 +457,7 @@ $color-efeff6: #efeff6;
   padding-top: 12px;
   width: 100%;
 
-  @include beforeDesktop {
+  @include allDevicesBeforeDesktop {
     display: flex;
     align-items: center;
     justify-content: center;

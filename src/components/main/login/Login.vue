@@ -190,7 +190,7 @@ $color-e26767: #e26767;
 $color-8a8aa8: #8a8aa8;
 
 .remember-me__desktop {
-  @include mobile {
+  @include mobileDevice {
     display: none;
   }
 }
@@ -247,7 +247,7 @@ $color-8a8aa8: #8a8aa8;
       font-size: 28px;
       line-height: 28px;
       color: $--b-main-black-color;
-      @include mobile {
+      @include mobileDevice {
         text-align: center;
       }
     }
@@ -260,7 +260,7 @@ $color-8a8aa8: #8a8aa8;
       font-size: 22px;
       line-height: 32px;
       color: $--b-main-black-color;
-      @include mobile {
+      @include mobileDevice {
         text-align: center;
       }
     }
@@ -268,7 +268,7 @@ $color-8a8aa8: #8a8aa8;
   .b-login-step__input {
     width: 384px;
     margin-top: 12px;
-    @media (max-width: 992px) {
+    @include allDevicesBeforeDesktop {
       width: 100%;
     }
   }
@@ -285,13 +285,13 @@ $color-8a8aa8: #8a8aa8;
       border-bottom: 1px dashed $color-8a8aa8;
       cursor: pointer;
     }
-    @include mobile {
+    @include mobileDevice {
       display: none;
     }
   }
   .b-login-step__remember-me {
     margin-top: 26px;
-    @include mobile {
+    @include mobileDevice {
       display: flex;
       align-items: center;
       justify-content: space-between;

@@ -86,7 +86,7 @@ $color-fcfcfc: #fcfcfc;
     flex-basis: 312px;
   }
 
-  @include tabletAndMobile {
+  @include phoneDevicesModel {
     box-shadow: none;
     background: $color-efeff6;
     padding: 12px 16px;
@@ -97,7 +97,7 @@ $color-fcfcfc: #fcfcfc;
     @include exo(16px, 700);
     line-height: 20px;
 
-    @include tabletAndMobile {
+    @include phoneDevicesModel {
       @include exo(18px, 700);
     }
   }
@@ -107,7 +107,7 @@ $color-fcfcfc: #fcfcfc;
     line-height: 20px;
     margin-top: 4px;
 
-    @include tabletAndMobile {
+    @include phoneDevicesModel {
       display: none;
     }
   }
@@ -122,7 +122,7 @@ $color-fcfcfc: #fcfcfc;
     justify-content: space-between;
     align-items: center;
 
-    @include tabletAndMobile {
+    @include phoneDevicesModel {
       background: $color-fcfcfc;
       margin-top: 8px;
     }
@@ -149,7 +149,7 @@ $color-fcfcfc: #fcfcfc;
       cursor: pointer;
     }
 
-    @include tabletAndMobile {
+    @include phoneDevicesModel {
       text-align: left;
     }
   }

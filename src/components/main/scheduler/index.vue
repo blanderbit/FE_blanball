@@ -330,7 +330,7 @@ export default {
 
     const { height: schedulerCommonBlockHeight } =
       useElementSize(schedulerCommonBlock);
-    const { isTablet, isMobile, isMobileSmall, detectedDevice, DEVICE_TYPES } =
+    const { isTabletDevice, isMobileDevice, detectedDevice, DEVICE_TYPES } =
       useWindowWidth();
     const { calculatedHeight: schedulerCommonBlockCalculatedHeight } =
       calcHeight(mobileVersionSchedulerBottomMargin);
@@ -365,7 +365,7 @@ export default {
     });
 
     const bottomSidePlanEventButtonConfig = computed(() => {
-      const isMobileOrSmall = isMobile.value || isMobileSmall.value;
+      const isMobileOrSmall = isMobileDevice.value || isMobileDevice.value;
 
       return {
         type: isMobileOrSmall
@@ -411,21 +411,24 @@ export default {
           detectedDevice.value === DEVICE_TYPES.BETWEEN_TABLET_AND_DESKTOP
             ? 130
             : 90) -
-          (isTablet.value || isMobile.value ? 55 : 0) -
-          (isTablet.value || (isMobile.value && !isMobileSmall.value) ? 44 : 0)
+          (isTabletDevice.value || isMobileDevice.value ? 55 : 0) -
+          (isTabletDevice.value ||
+          (isMobileDevice.value && !isMobileDevice.value)
+            ? 44
+            : 0)
         }px`,
       };
     });
 
     const schdulerCommonBlockHeight = computed(() => {
       if (schedulerConfig.value.isScheduledEventsShow) {
-        return isMobileSmall.value
+        return isMobileDevice.value
           ? schedulerCommonBlockCalculatedHeight.value
           : schedulerCommonBlockCalculatedHeight.value;
       } else if (schedulerConfig.value.isFriendsListShow) {
         return schedulerCommonBlockCalculatedHeight.value;
       } else {
-        return isMobileSmall.value
+        return isMobileDevice.value
           ? mobileMinHeight
           : schedulerCommonBlockCalculatedHeight.value;
       }
@@ -461,7 +464,7 @@ export default {
         'margin-top': `${
           schedulerConfig.value.activeView ===
           mockData.value.schedulerActiveViews.MONTH
-            ? isMobileSmall.value
+            ? isMobileDevice.value
               ? 12
               : 16
             : 0
@@ -1008,20 +1011,20 @@ $color-e9fcfb: #e9fcfb;
 
 :deep {
   .inline-calendar {
-    @include beforeDesktop {
+    @include allDevicesBeforeDesktop {
       width: calc(100% + 40px);
       margin-left: -20px;
       padding-right: 0px;
     }
 
-    @include mobile {
+    @include mobileDevice {
       width: calc(100% + 32px);
       margin-left: -16px;
     }
   }
 
   .vuecal__flex[grow] {
-    @include mobile {
+    @include mobileDevice {
       flex: none !important;
     }
   }
@@ -1034,11 +1037,11 @@ $color-e9fcfb: #e9fcfb;
     margin-bottom: 0px;
     height: 40px;
 
-    @include beforeDesktop {
+    @include allDevicesBeforeDesktop {
       width: 464px;
       margin: 0 auto;
     }
-    @include mobile {
+    @include mobileDevice {
       width: inherit;
     }
   }
@@ -1060,7 +1063,7 @@ $color-e9fcfb: #e9fcfb;
     width: 100%;
   }
 
-  @include beforeDesktop {
+  @include allDevicesBeforeDesktop {
     display: block;
   }
 }
@@ -1085,7 +1088,7 @@ $color-e9fcfb: #e9fcfb;
       right: 0px;
     }
 
-    @include beforeDesktop {
+    @include allDevicesBeforeDesktop {
       right: 0px;
       padding: 20px;
       width: 100%;
@@ -1095,7 +1098,7 @@ $color-e9fcfb: #e9fcfb;
       padding-top: 0px;
     }
 
-    @include mobile {
+    @include mobileDevice {
       box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
       border-radius: 0px 0px 12px 12px;
       padding: 16px;
@@ -1105,7 +1108,7 @@ $color-e9fcfb: #e9fcfb;
 
     .c-scheduler-bottom-side {
       display: none;
-      @include beforeDesktop {
+      @include allDevicesBeforeDesktop {
         display: block;
       }
 
@@ -1122,7 +1125,7 @@ $color-e9fcfb: #e9fcfb;
             width: 464px !important;
             margin: 0 auto;
 
-            @include mobile {
+            @include mobileDevice {
               width: 100% !important;
             }
           }
@@ -1133,7 +1136,7 @@ $color-e9fcfb: #e9fcfb;
         :deep(.b-green-btn) {
           width: 464px !important;
           margin: 0 auto;
-          @include mobile {
+          @include mobileDevice {
             width: 215px !important;
           }
         }
@@ -1162,7 +1165,7 @@ $color-e9fcfb: #e9fcfb;
           }
         }
 
-        @include mobile {
+        @include mobileDevice {
           display: none;
         }
 
@@ -1187,7 +1190,7 @@ $color-e9fcfb: #e9fcfb;
               font-weight: 400;
             }
 
-            @include beforeDesktop {
+            @include allDevicesBeforeDesktop {
               display: none;
             }
           }
@@ -1200,17 +1203,17 @@ $color-e9fcfb: #e9fcfb;
         width: 704px;
         height: 644px;
         box-shadow: none;
-        @include beforeDesktop {
+        @include allDevicesBeforeDesktop {
           width: 100%;
         }
 
-        @include mobile {
+        @include mobileDevice {
           height: fit-content;
         }
 
         :deep {
           .vuecal__title {
-            @include mobile {
+            @include mobileDevice {
               width: calc(100% - 105px);
               margin: 0px !important;
             }
@@ -1223,7 +1226,7 @@ $color-e9fcfb: #e9fcfb;
               padding: 0px;
 
               .vuecal__title {
-                @include mobile {
+                @include mobileDevice {
                   width: fit-content !important;
                   margin: 0px 30px !important;
                 }
@@ -1232,13 +1235,13 @@ $color-e9fcfb: #e9fcfb;
           }
 
           .c-specific-day__main-content {
-            @include beforeDesktop {
+            @include allDevicesBeforeDesktop {
               padding: 0px 56px;
             }
-            @include tabletAndMobile {
+            @include phoneDevicesModel {
               padding: 0px 32px;
             }
-            @include mobile {
+            @include mobileDevice {
               padding: 0px;
             }
           }
@@ -1273,7 +1276,7 @@ $color-e9fcfb: #e9fcfb;
                   border-radius: 4px;
                   padding: 0px 10px;
                   color: $--b-main-white-color;
-                  @include mobile {
+                  @include mobileDevice {
                     padding: 4px;
                   }
                 }
@@ -1287,7 +1290,7 @@ $color-e9fcfb: #e9fcfb;
                 background: none;
                 justify-content: center;
 
-                @include mobile {
+                @include mobileDevice {
                   background: $color-f9f9fc;
                   width: calc(100% + 40px);
                   margin-left: -20px;
@@ -1308,7 +1311,7 @@ $color-e9fcfb: #e9fcfb;
               .vuecal__weekdays-headings {
                 border: none;
 
-                @include mobile {
+                @include mobileDevice {
                   background: $color-f9f9fc;
                   width: calc(100% + 40px);
                   margin-left: -20px;
@@ -1344,18 +1347,18 @@ $color-e9fcfb: #e9fcfb;
                   border: none;
                   width: fit-content;
                 }
-                @include mobile {
+                @include mobileDevice {
                   border: none !important;
                 }
 
                 .vuecal__flex[column] {
-                  @include mobile {
+                  @include mobileDevice {
                     flex: none !important;
                   }
                 }
 
                 .vuecal__cell-content {
-                  @include mobile {
+                  @include mobileDevice {
                     width: fit-content;
                     height: fit-content;
                   }
@@ -1363,7 +1366,7 @@ $color-e9fcfb: #e9fcfb;
                     height: 100%;
                     padding-top: 12px;
                     position: relative;
-                    @include mobile {
+                    @include mobileDevice {
                       width: 46px;
                       height: 52px;
                     }

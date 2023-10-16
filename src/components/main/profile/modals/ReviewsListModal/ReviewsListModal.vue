@@ -97,7 +97,7 @@ export default {
     const openedReviewId = ref(0);
 
     const headerHegihtStore = useHeaderHeightStore();
-    const { isMobileSmall } = useWindowWidth();
+    const { isMobileDevice } = useWindowWidth();
 
     const triggerForRestart = ref(false);
     const restartInfiniteScroll = () => {
@@ -107,7 +107,7 @@ export default {
     const reviewListModalTopMargin = computed(() => {
       return {
         top: `${
-          isMobileSmall.value ? headerHegihtStore.headerHeight + 'px' : '50%'
+          isMobileDevice.value ? headerHegihtStore.headerHeight + 'px' : '50%'
         }`,
       };
     });
@@ -170,7 +170,7 @@ $color-dfdeed: #dfdeed;
 .b-reviews-list-modal__wrapper {
   @include modal-wrapper;
 
-  @include mobile {
+  @include mobileDevice {
     background: transparent;
     z-index: 11 !important;
   }
@@ -186,12 +186,12 @@ $color-dfdeed: #dfdeed;
     padding-right: 34px;
     background: $--b-main-white-color;
 
-    @include afterMobile {
+    @include allDevicesAfterMobile {
       left: 50%;
       transform: translate(-50%, -50%);
     }
 
-    @include mobile {
+    @include mobileDevice {
       width: 100%;
       padding: 16px;
       border-radius: 0px;
@@ -207,7 +207,7 @@ $color-dfdeed: #dfdeed;
       border-bottom: 1px solid $color-dfdeed;
       position: relative;
 
-      @include mobile {
+      @include mobileDevice {
         border-bottom: none;
       }
       .b-close-modal-button {
@@ -216,7 +216,7 @@ $color-dfdeed: #dfdeed;
         right: -15px;
         top: -5px;
 
-        @include mobile {
+        @include mobileDevice {
           display: none;
         }
       }
@@ -226,7 +226,7 @@ $color-dfdeed: #dfdeed;
           @include exo(20px, 700);
           line-height: 24px;
 
-          @include mobile {
+          @include mobileDevice {
             display: none;
           }
         }
@@ -239,7 +239,7 @@ $color-dfdeed: #dfdeed;
             margin-left: 10px;
           }
 
-          @include mobile {
+          @include mobileDevice {
             display: block;
             @include exo(16px, 700);
           }
@@ -249,7 +249,7 @@ $color-dfdeed: #dfdeed;
           line-height: 20px;
           margin-top: 4px;
 
-          @include mobile {
+          @include mobileDevice {
             display: none;
           }
         }
@@ -262,7 +262,7 @@ $color-dfdeed: #dfdeed;
           @include exo(20px, 700);
           line-height: 24px;
 
-          @include mobile {
+          @include mobileDevice {
             @include exo(16px, 700);
           }
         }

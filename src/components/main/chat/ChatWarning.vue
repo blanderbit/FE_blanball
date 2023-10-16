@@ -42,12 +42,12 @@ export default {
   }
 
   .b-warning-text {
-    @include mobile {
+    @include mobileDevice {
       display: none;
     }
     &-mobile {
       display: none;
-      @include mobile {
+      @include mobileDevice {
         display: block;
       }
     }

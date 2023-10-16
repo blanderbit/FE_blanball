@@ -29,7 +29,7 @@ $color-f9f9fc: #f9f9fc;
     left: -16px;
     width: calc(100% + 16px + 16px);
     height: 200px;
-    @media (max-width: 992px) {
+    @include allDevicesBeforeDesktop {
       display: none;
     }
   }

@@ -81,7 +81,7 @@ export default {
   flex-wrap: wrap;
   justify-content: space-between;
   position: relative;
-  @include tabletAndMobile {
+  @include phoneDevicesModel {
     width: 100%;
   }
   .b-users-table__table-label {

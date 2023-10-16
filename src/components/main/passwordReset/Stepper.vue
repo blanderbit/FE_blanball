@@ -252,7 +252,7 @@ form {
   display: flex;
   height: 100%;
   flex-direction: column;
-  @include mobile {
+  @include mobileDevice {
     padding: 44px 16px;
   }
   .b-reset-step__top-part {
@@ -263,7 +263,7 @@ form {
       font-size: 22px;
       line-height: 32px;
       color: $--b-main-black-color;
-      @include mobile {
+      @include mobileDevice {
         text-align: center;
       }
     }
@@ -309,7 +309,7 @@ form {
       margin-bottom: 24px;
       justify-content: space-between;
       align-items: center;
-      @include mobile {
+      @include mobileDevice {
         justify-content: center;
       }
       input {
@@ -325,14 +325,14 @@ form {
           -webkit-appearance: none;
           margin: 0;
         }
-        @include mobile {
+        @include mobileDevice {
           margin-right: 6px;
         }
         /* Firefox */
         &[type='number'] {
           -moz-appearance: textfield;
         }
-        @include mobile {
+        @include mobileDevice {
           width: 60px;
         }
       }
@@ -341,7 +341,7 @@ form {
   .b-reset-step__input {
     width: 384px;
     margin-top: 12px;
-    @media (max-width: 992px) {
+    @include allDevicesBeforeDesktop {
       width: 100%;
     }
   }

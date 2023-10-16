@@ -82,7 +82,7 @@ export default {
     },
   },
   setup(props) {
-    const { windowWidth, isMobileSmall } = useWindowWidth();
+    const { windowWidth, isMobileDevice } = useWindowWidth();
     const mockData = computed(() => {
       return {
         LOGIN: CONSTS.register.authBlockTypes.login,
@@ -90,7 +90,7 @@ export default {
     });
 
     const authBlockStyles = computed(() => {
-      if (isMobileSmall.value) {
+      if (isMobileDevice.value) {
         return {
           'align-items': props.currentStep < 3 ? 'flex-start' : 'flex-end',
         };
@@ -123,11 +123,11 @@ export default {
   @include calc-height;
   display: flex;
   justify-content: center;
-  @include tablet {
+  @include tabletDevice {
     padding-top: 132px;
     overflow: hidden;
   }
-  @include mobile {
+  @include mobileDevice {
     padding-top: 140px;
     padding-top: 0;
     // display: block;
@@ -140,7 +140,7 @@ export default {
     top: 0;
     left: 0;
     width: 100%;
-    @include tablet {
+    @include tabletDevice {
       display: block;
     }
     img {
@@ -153,7 +153,7 @@ export default {
     z-index: -1;
     top: 0;
     left: 0;
-    @include mobile {
+    @include mobileDevice {
       display: block;
       width: 100%;
     }
@@ -172,12 +172,12 @@ export default {
     @media (min-width: 992px) and (max-width: 1200px) {
       width: 890px;
     }
-    @include tablet {
+    @include tabletDevice {
       width: 464px;
       box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
       border-radius: 8px;
     }
-    @include mobile {
+    @include mobileDevice {
       border-radius: 28px 28px 0px 0px;
       width: 100%;
       box-shadow: none;
@@ -195,14 +195,14 @@ export default {
       position: absolute;
       top: 0;
       right: 0;
-      @include tablet {
+      @include tabletDevice {
         display: none;
       }
     }
     .b-auth__left-part {
       width: 432px;
       background: $--b-main-white-color;
-      @media (max-width: 992px) {
+      @include allDevicesBeforeDesktop {
         width: 100%;
       }
 
@@ -218,7 +218,7 @@ export default {
       width: 560px;
       position: relative;
       height: 100%;
-      @media (max-width: 992px) {
+      @include allDevicesBeforeDesktop {
         display: none;
       }
       .b-auth__google-play-block {

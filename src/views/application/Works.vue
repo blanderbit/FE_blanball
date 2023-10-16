@@ -63,7 +63,7 @@ $color-8a8aa8: #8a8aa8;
     @media (min-width: 992px) and (max-width: 1200px) {
       padding: 8px;
     }
-    @media (max-width: 992px) {
+    @include allDevicesBeforeDesktop {
       display: none;
     }
     .b-tech-works__text {
@@ -82,13 +82,13 @@ $color-8a8aa8: #8a8aa8;
     align-items: center;
     margin-top: 20px;
     padding: 0 16px;
-    @include tabletAndMobile {
+    @include phoneDevicesModel {
       flex-direction: column;
     }
     .b-tech-works__left-side {
       width: 416px;
       margin-right: 40px;
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
         width: 100%;
         margin: 0;
       }
@@ -101,7 +101,7 @@ $color-8a8aa8: #8a8aa8;
         text-transform: uppercase;
         color: $--b-main-black-color;
         margin-bottom: 12px;
-        @include tabletAndMobile {
+        @include phoneDevicesModel {
           font-size: 20px;
           line-height: 28px;
         }
@@ -118,7 +118,7 @@ $color-8a8aa8: #8a8aa8;
         color: $--b-main-gray-color;
         padding-bottom: 28px;
         margin-bottom: 12px;
-        @include tabletAndMobile {
+        @include phoneDevicesModel {
           font-size: 12px;
         }
       }
@@ -141,7 +141,7 @@ $color-8a8aa8: #8a8aa8;
     }
     .b-tech-works__right-side {
       position: relative;
-      @include tabletAndMobile {
+      @include phoneDevicesModel {
         margin-top: 20px;
       }
       img {
@@ -154,7 +154,7 @@ $color-8a8aa8: #8a8aa8;
         margin: 0 20px;
         top: 5%;
         left: 5%;
-        @include mobile {
+        @include mobileDevice {
           top: 0;
           left: 0;
         }
@@ -167,7 +167,7 @@ $color-8a8aa8: #8a8aa8;
         width: 145px;
         height: 145px;
         animation: stid 2.5s linear infinite;
-        @include mobile {
+        @include mobileDevice {
           left: 0;
         }
       }
@@ -179,7 +179,7 @@ $color-8a8aa8: #8a8aa8;
         height: 180px;
         background: url('@images/wheel2.svg') no-repeat center / cover;
         animation: stidd 2.5s linear infinite;
-        @include mobile {
+        @include mobileDevice {
           left: 40%;
         }
       }
@@ -191,7 +191,7 @@ $color-8a8aa8: #8a8aa8;
         width: 110px;
         height: 110px;
         animation: stid 2.5s linear infinite;
-        @include mobile {
+        @include mobileDevice {
           top: 66%;
         }
       }

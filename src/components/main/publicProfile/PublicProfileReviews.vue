@@ -147,7 +147,7 @@ $color-f57125: #f57125;
 
 .b-public-profile-reviews__block {
   overflow: hidden;
-  @include beforeDesktop {
+  @include allDevicesBeforeDesktop {
     padding: 16px;
     background: $--b-main-white-color;
     box-shadow: 2px 2px 10px rgba(56, 56, 251, 0.1);
@@ -191,7 +191,7 @@ $color-f57125: #f57125;
   overflow-y: scroll;
   height: 430px;
 
-  @include beforeDesktop {
+  @include allDevicesBeforeDesktop {
     margin-top: 10px;
   }
 

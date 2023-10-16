@@ -45,7 +45,7 @@ export default {
   width: 100%;
   height: 100%;
 
-  @media (max-width: 992px) {
+  @include allDevicesBeforeDesktop {
     top: 40px;
   }
 

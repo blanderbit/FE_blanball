@@ -340,7 +340,7 @@ form {
   opacity: 0;
 }
 .b-register__onboarding-step:deep(.b-auth__left-part) {
-  @include mobile {
+  @include mobileDevice {
     margin-top: 150px;
   }
 }
