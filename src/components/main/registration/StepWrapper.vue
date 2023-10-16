@@ -53,7 +53,6 @@
   </div>
 </template>
 <script>
- 
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 
@@ -145,10 +144,10 @@ $color-1ab2ad: #1ab2ad;
         .b-register-step__section {
           width: 49%;
           height: 4px;
-          background: #CDDDE0;
+          background: #cddde0;
           border-radius: 2px;
           &.active {
-            background: #578D95;
+            background: #578d95;
           }
         }
       }

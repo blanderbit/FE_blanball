@@ -236,8 +236,6 @@
 </template>
 
 <script>
-
-
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
 
@@ -254,7 +252,6 @@ import SchedulerInlineCalendarTitle from './SchedulerInlineCalendarTitle.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import JoinScheduledEventModal from './modals/JoinScheduledEventModal.vue';
 
-
 import { useUserDataStore } from '@stores/userData';
 import {
   startSpinner,
@@ -264,9 +261,6 @@ import {
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
-
-
-
 
 import 'vue-cal/dist/vuecal.css';
 
@@ -851,8 +845,14 @@ export default {
     EventBusInstance.on('joinScheduledEvent', onJoinScheduledEvent);
 
     onBeforeUnmount(() => {
-      EventBusInstance.off('activateUserInScheduler', onActivateUserInScheduler);
-      EventBusInstance.off('switchedSchedulerSidebarTab', onSwitchedSchedulerSidebarTab);
+      EventBusInstance.off(
+        'activateUserInScheduler',
+        onActivateUserInScheduler
+      );
+      EventBusInstance.off(
+        'switchedSchedulerSidebarTab',
+        onSwitchedSchedulerSidebarTab
+      );
       EventBusInstance.off('deactivateUser', onDeactivateUser);
       EventBusInstance.off('joinScheduledEvent', onJoinScheduledEvent);
     });

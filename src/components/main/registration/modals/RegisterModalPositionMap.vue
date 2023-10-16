@@ -32,8 +32,6 @@
 </template>
 
 <script>
- 
-
 import PositionMap from '@mainComponents/maps/PositionMap.vue';
 import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';

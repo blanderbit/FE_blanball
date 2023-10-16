@@ -95,8 +95,6 @@ import { smoothScrollUp, smoothScrollDown } from './utils/smoothScroll';
 
 import { useUserDataStore } from '@stores/userData';
 
-
-
 // FIXME нужно заменить иконку на другую
 import LimitOfAdminsIcon from '@images/chat/limit-of-admins-reached.svg';
 
@@ -489,7 +487,10 @@ export default {
         createNewUserJoinedChatServiceMessageHandler
       );
       EventBusInstance.off('deselectChatMessages', deselectChatMessages);
-      EventBusInstance.off('bulkDeleteChatMessages', onBulkDeleteChatMessagesEvent);
+      EventBusInstance.off(
+        'bulkDeleteChatMessages',
+        onBulkDeleteChatMessagesEvent
+      );
     });
 
     watch(

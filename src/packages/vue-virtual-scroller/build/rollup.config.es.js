@@ -1,4 +1,4 @@
-import base from './rollup.config.base'
+import base from './rollup.config.base';
 
 const config = Object.assign({}, base, {
   output: {
@@ -7,12 +7,7 @@ const config = Object.assign({}, base, {
     format: 'es',
     sourcemap: true,
   },
-  external: [
-    ...base.external,
-    'mitt',
-    'vue-observe-visibility',
-    'vue-resize',
-  ],
-})
+  external: [...base.external, 'mitt', 'vue-observe-visibility', 'vue-resize'],
+});
 
-export default config
+export default config;

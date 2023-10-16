@@ -7,14 +7,14 @@ services:
       - stack.env
     image: registry.it-flumx.com/production_blanball_fe:latest
     expose:
-      - "80"
+      - '80'
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.blanball-fe-production.rule=Host(`client.blanball.com`) && PathPrefix(`/`)"
-      - "traefik.http.routers.blanball-fe-production.entrypoints=websecure"
-      - "traefik.http.routers.blanball-fe-production.tls.certresolver=myresolver"
-      - "traefik.http.routers.blanball-fe-production.service=blanball-fe-production"
-      - "traefik.http.services.blanball-fe-production.loadbalancer.server.port=80"
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.blanball-fe-production.rule=Host(`client.blanball.com`) && PathPrefix(`/`)'
+      - 'traefik.http.routers.blanball-fe-production.entrypoints=websecure'
+      - 'traefik.http.routers.blanball-fe-production.tls.certresolver=myresolver'
+      - 'traefik.http.routers.blanball-fe-production.service=blanball-fe-production'
+      - 'traefik.http.services.blanball-fe-production.loadbalancer.server.port=80'
     networks:
       - registry_default
 networks:

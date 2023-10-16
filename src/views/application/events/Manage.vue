@@ -160,15 +160,16 @@ import PreviewInvitedUsersListModal from '@mainComponents/events/modals/PreviewI
 import PreviewEventModal from '@mainComponents/events/modals/PreviewEventModal.vue';
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 
-
 import { useUserDataStore } from '@stores/userData';
 
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
-import { finishSpinner, startSpinner } from '@workers/loading-worker/loading.worker';
+import {
+  finishSpinner,
+  startSpinner,
+} from '@workers/loading-worker/loading.worker';
 import { disableFormSubmit } from '@utils/disableFormSubmit';
 
 import { runOnSelectEventDuration } from '@utils/runOnSelectEventDuration';
-
 
 import { SCHEMAS } from '@validators/schemas';
 
@@ -253,7 +254,7 @@ export default {
       [userStore.user.is_verified ? 0 : 40],
       true
     );
-    
+
     const createEventMainBlockHeight = computed(() => {
       return `${calculatedHeight.value}px`;
     });
@@ -549,7 +550,6 @@ export default {
         next();
       }
     });
-
 
     return {
       currentStep,

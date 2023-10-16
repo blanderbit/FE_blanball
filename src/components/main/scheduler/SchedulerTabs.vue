@@ -11,11 +11,6 @@
 </template>
 
 <script>
- 
-
-
-
-
 export default {
   props: {
     selectedTabId: {

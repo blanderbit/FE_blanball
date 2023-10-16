@@ -78,15 +78,11 @@
 </template>
 
 <script>
- 
-
-
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import checkBox from '@sharedComponents/checkbox/Checkbox.vue';
-
 
 import { accessToken, refreshToken } from '@workers/token-worker';
 import {
@@ -94,8 +90,6 @@ import {
   finishSpinner,
 } from '@workers/loading-worker/loading.worker';
 import { disableFormSubmit } from '@utils/disableFormSubmit';
-
-
 
 import { SCHEMAS } from '@validators/schemas';
 
@@ -183,7 +177,7 @@ export default {
       handleLogin,
       openResetPasswordModal,
       openRegisterPage,
-      disableFormSubmit
+      disableFormSubmit,
     };
   },
 };

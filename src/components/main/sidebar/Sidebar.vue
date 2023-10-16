@@ -77,8 +77,6 @@
 </template>
 
 <script>
-
-
 import SlideMenu from '@mainComponents/slideMenu/SlideMenu.vue';
 import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 import BugReportModal from '@sharedComponents/modals/BugReportModal.vue';
@@ -86,8 +84,6 @@ import TabLabel from '@sharedComponents/tabLabel/TabLabel.vue';
 
 import { useUserDataStore } from '@stores/userData';
 import { logOut } from '@utils/logOut';
-
-
 
 import { dinamicMenu } from './menus/menu.config';
 

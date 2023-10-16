@@ -31,8 +31,6 @@
 </template>
 
 <script>
- 
-
 import { v4 as uuid } from 'uuid';
 
 import { CustomModelWorker } from '@workers/custom-model-worker';

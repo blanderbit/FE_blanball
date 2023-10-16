@@ -19,11 +19,7 @@
 </template>
 
 <script>
- 
-
-
 import EmojiPicker from 'vue3-emoji-picker';
-
 
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 

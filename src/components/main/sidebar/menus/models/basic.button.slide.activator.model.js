@@ -1,4 +1,3 @@
- 
 import { BasicButtonModel } from './basic.button.model';
 
 const DEFAULT_SLIDE_MENU_WIDTH_PX = 464;

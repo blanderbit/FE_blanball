@@ -95,8 +95,6 @@
 </template>
 
 <script>
- 
-
 import { ErrorMessage } from '@system.it.flumx.com/vee-validate';
 
 import switcher from '@sharedComponents/switcher/Switcher.vue';

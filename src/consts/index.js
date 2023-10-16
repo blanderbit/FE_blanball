@@ -29,5 +29,5 @@ export const CONSTS = {
   storages: Storages,
   scheduler: Scheduler,
   chat: Chat,
-  regex: Regex
+  regex: Regex,
 };

@@ -222,10 +222,7 @@
 </template>
 
 <script>
-
-
 import StarRating from 'vue-star-rating';
-
 
 import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';

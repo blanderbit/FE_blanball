@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
 
-import { i18n } from '@plugins/i18n.plugin'
+import { i18n } from '@plugins/i18n.plugin';
 
 export function notifionsFormatTime() {
   dayjs.extend(relativeTime);
@@ -22,7 +22,7 @@ export function notifionsFormatTime() {
       dd: i18n.global.t('note_format_time.dd'),
       M: i18n.global.t('note_format_time.M'),
       MM: i18n.global.t('note_format_time.MM'),
-      y:  i18n.global.t('note_format_time.y'),
+      y: i18n.global.t('note_format_time.y'),
       yy: i18n.global.t('note_format_time.yy'),
     },
   });

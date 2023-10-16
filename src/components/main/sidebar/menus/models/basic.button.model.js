@@ -14,7 +14,7 @@ export class BasicButtonModel {
       disabled: options.disabled,
       actionType: options.actionType,
       class: options.class,
-      hideOnMobile: options.hideOnMobile
+      hideOnMobile: options.hideOnMobile,
     });
     this.uniqueName = options.uniqueName || this.__proto__.constructor.name;
   }

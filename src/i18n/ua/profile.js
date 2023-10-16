@@ -69,5 +69,4 @@ export default {
   'reviews-about-me': 'Відгуки про мене',
   right: 'Права',
   left: 'Ліва',
-  
 };

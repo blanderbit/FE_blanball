@@ -1,4 +1,3 @@
-
 import { Enum } from './filter.utils';
 
 export const filterConfigForChatMessages = {

@@ -35,10 +35,6 @@
 import ModalTopCard from './ModalTopCard.vue';
 import ModalBottomCard from './ModalBottomCard.vue';
 
-
-
-
-
 export default {
   name: 'ModalFeedback',
   components: {
@@ -75,7 +71,7 @@ export default {
 
     const nextClick = (eventReviewComment) => {
       if (currentStep.value === 4) {
-        emit('createEventReview', eventReviewComment)
+        emit('createEventReview', eventReviewComment);
       }
       currentStep.value++;
     };

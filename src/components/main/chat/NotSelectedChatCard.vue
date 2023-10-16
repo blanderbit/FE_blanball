@@ -33,7 +33,7 @@
     display: flex;
     align-items: center;
     text-align: center;
-    margin-top: -10px
+    margin-top: -10px;
   }
   .c-subtitle {
     @include inter(14px, 400, $--b-main-gray-color);

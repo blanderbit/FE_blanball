@@ -13,6 +13,6 @@ export const HINTS_DATA = {
     titleColor: '#FFFFFF',
     textsColor: '#DFDEED',
     headerImg: WhiteInfoIcon,
-    marginTop: 16
+    marginTop: 16,
   },
 };

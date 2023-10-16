@@ -20,10 +20,7 @@
                   @click="clearFileInputValue"
                   ref="fileInput"
                 />
-                <img
-                  src="@images/add-user-pic2.svg"
-                  alt="add user picture"
-                />
+                <img src="@images/add-user-pic2.svg" alt="add user picture" />
               </label>
             </div>
           </div>
@@ -333,7 +330,6 @@ import mainTextArea from '@sharedComponents/textArea/MainTextArea.vue';
 import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
 import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 import RatingCard from './RatingCard.vue';
-
 
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 

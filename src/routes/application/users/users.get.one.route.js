@@ -1,9 +1,7 @@
 import { routerAuthResolver } from '@workers/resolver-worker/reolver.worker';
 
-
 import { usersData } from '@routes/helpers/usersData';
 import { hintsData } from '@routes/helpers/hintsData';
-
 
 export const USERS_GET_ONE_ROUTE = {
   path: ROUTES.APPLICATION.USERS.GET_ONE.relative,

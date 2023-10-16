@@ -1,7 +1,5 @@
-
 import { useHintsStore } from '@stores/hints';
 import { pinia } from '@plugins/pinia.plugin';
-
 
 const hintsStore = useHintsStore(pinia);
 

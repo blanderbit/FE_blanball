@@ -71,15 +71,10 @@
 </template>
 
 <script>
- 
-
-
-
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import mainTextArea from '@sharedComponents/textArea/MainTextArea.vue';
-
 
 import { disableFormSubmit } from '@utils/disableFormSubmit';
 

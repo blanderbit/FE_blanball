@@ -9,7 +9,11 @@
       </span>
     </div>
     <ModalWindow v-if="activeModal" :isTitleShown="false">
-      <Form v-slot="data" @submit="disableFormSubmit" :validation-schema="schema">
+      <Form
+        v-slot="data"
+        @submit="disableFormSubmit"
+        :validation-schema="schema"
+      >
         <div class="b-modal-position__block">
           <dropdown
             :outside-title="true"
@@ -77,8 +81,6 @@
 </template>
 
 <script>
- 
-
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import PositionMap from './PositionMap.vue';
@@ -86,8 +88,6 @@ import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
-
-
 
 import {
   startSpinner,
@@ -240,7 +240,7 @@ export default {
         });
         activeModal.value = false;
       },
-      disableFormSubmit
+      disableFormSubmit,
     };
   },
 };

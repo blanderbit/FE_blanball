@@ -4,7 +4,7 @@
     :clientX="eventJoinModalX"
     :clientY="eventJoinModalY"
     :modalItems="eventJoinToolTipItems"
-    :background=false
+    :background="false"
     @closeModal="closeEventJoinModal"
     @itemClick="joinEventModalItemClick"
   />
@@ -114,10 +114,6 @@
 </template>
 
 <script>
- 
-
-
-
 import { v4 as uuid } from 'uuid';
 
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
@@ -135,7 +131,6 @@ import EventsFilters from '@mainComponents/filters/block-filters/EventsFilters.v
 import ContextModal from '@sharedComponents/modals/ContextModal.vue';
 import SelectFormsColorsModal from '@mainComponents/manageEvent/modals/SelectFormsColorsModal.vue';
 
-
 import { PaginationWorker } from '@workers/pagination-worker';
 import { FilterPatch } from '@workers/api-worker/http/filter/filter.patch';
 import { addMinutes } from '@utils/addMinutes';
@@ -147,9 +142,6 @@ import {
   startSpinner,
 } from '@workers/loading-worker/loading.worker';
 import { useUserDataStore } from '@stores/userData';
-
-
-
 
 import Plus from '@images/plus.svg';
 
@@ -222,16 +214,13 @@ export default {
       tablet: [userStore.user.is_verified ? 0 : 40],
       recalculateOnVerifyEmail: true,
     });
-    const {
-      calculatedHeight,
-      minusHeight,
-      plusHeight
-    } = calcHeight(...Object.values(allEventsBlockHeightConfig.value));
+    const { calculatedHeight, minusHeight, plusHeight } = calcHeight(
+      ...Object.values(allEventsBlockHeightConfig.value)
+    );
 
     const allEventsBlockHeight = computed(() => {
       return `${calculatedHeight.value}px`;
     });
-
 
     async function joinEvent(eventData, type) {
       let participationType;
@@ -325,7 +314,6 @@ export default {
     function switchToMyEvents() {
       router.push(ROUTES.APPLICATION.MY_EVENTS.index.absolute);
     }
-    
 
     function recalculateHeightAfterUpdateFiltersActive(status) {
       if (status) {
@@ -333,7 +321,7 @@ export default {
       } else {
         plusHeight(45);
       }
-    };
+    }
 
     const refList = ref();
     const blockScrollToTopIfExist = ref(false);
@@ -471,7 +459,6 @@ export default {
         forceUpdate: paginationPage.value === 1,
       });
     };
-
 
     return {
       emptyListMessages,

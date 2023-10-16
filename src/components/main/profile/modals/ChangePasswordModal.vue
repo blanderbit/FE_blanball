@@ -8,7 +8,11 @@
         <img src="@images/key.svg" alt="" />
       </template>
       <template #change-password>
-        <Form v-slot="data" @submit="disableFormSubmit" :validation-schema="schema">
+        <Form
+          v-slot="data"
+          @submit="disableFormSubmit"
+          :validation-schema="schema"
+        >
           <div class="input__wrapper">
             <MainInput
               :title="$t('modals.change_password.current-pass')"
@@ -64,17 +68,12 @@
 </template>
 
 <script>
- 
-
-
-
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
 import Counter from '@sharedComponents/counter/Counter.vue';
 import inputCode from '@sharedComponents/inputCode/InputCode.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
-
 
 import { refreshTokens } from '@workers/token-worker/refreshTokens';
 import {

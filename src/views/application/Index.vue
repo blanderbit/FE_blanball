@@ -108,11 +108,7 @@
   </div>
 </template>
 
-<script setup> 
-
-
-
-
+<script setup>
 import { v4 as uuid } from 'uuid';
 
 import Sidebar from '@mainComponents/sidebar/Sidebar.vue';
@@ -136,7 +132,6 @@ import { MessageActionTypes } from '@workers/web-socket-worker/message.action.ty
 
 import { VersionDetectorWorker } from '@workers/version-detector-worker';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
-
 
 import EventUpdatedIcon from '@images/event-updated-modal-icon.svg';
 import EventCreatedIcon from '@images/event-creted-modal-icon.svg';

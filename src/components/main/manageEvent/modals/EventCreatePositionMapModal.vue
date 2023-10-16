@@ -85,14 +85,13 @@
 </template>
 
 <script>
- import { Form } from '@system.it.flumx.com/vee-validate';
+import { Form } from '@system.it.flumx.com/vee-validate';
 
 import PositionMap from '@mainComponents/maps/PositionMap.vue';
 import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
-
 
 import {
   startSpinner,

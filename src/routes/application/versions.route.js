@@ -1,6 +1,5 @@
 import { routerAuthResolver } from '@workers/resolver-worker/reolver.worker';
 
-
 import { usersData } from '@routes/helpers/usersData';
 import { hintsData } from '@routes/helpers/hintsData';
 

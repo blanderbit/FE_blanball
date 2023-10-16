@@ -1,4 +1,4 @@
-import { i18n } from '@plugins/i18n.plugin'
+import { i18n } from '@plugins/i18n.plugin';
 
 export default {
   contextMenuItems: [

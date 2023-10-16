@@ -12,7 +12,7 @@
               {{ $t('users.filters') }}
             </div>
             <div class="b-modal-filters__subtitle">
-              {{  $t('events.found-events', { count: elementsCount }) }}
+              {{ $t('events.found-events', { count: elementsCount }) }}
             </div>
           </div>
           <div v-if="search" class="b-modal-filters__search-value">
@@ -78,8 +78,6 @@
 </template>
 
 <script>
- 
-
 import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
 import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
@@ -87,8 +85,6 @@ import RadioGenderBox from './components/RadioGenderBox.vue';
 import PositionMapModal from '@mainComponents/maps/PositionMapModal.vue';
 import ClearFilters from './components/ClearFilters.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
-
-
 
 import tickIcon from '@images/tick-white.svg';
 

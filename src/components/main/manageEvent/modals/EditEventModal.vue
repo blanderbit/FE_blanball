@@ -97,8 +97,6 @@ import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 
-
-
 import {
   startSpinner,
   finishSpinner,

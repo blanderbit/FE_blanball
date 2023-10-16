@@ -26,18 +26,12 @@
 </template>
 
 <script setup>
-
-
 import SmallEventCard from '@mainComponents/events/SmallEventCard.vue';
 import smallLoader from '@sharedComponents/loader/SmallLoader.vue';
-
 
 import { addMinutes } from '@utils/addMinutes';
 import { getDate } from '@utils/getDate';
 import { getTime } from '@utils/getTime';
-
-
-
 
 const popularEvents = ref([]);
 const router = useRouter();

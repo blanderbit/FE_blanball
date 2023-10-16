@@ -47,8 +47,6 @@
 </template>
 
 <script>
- 
-
 import mainTextArea from '@sharedComponents/textArea/MainTextArea.vue';
 import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';

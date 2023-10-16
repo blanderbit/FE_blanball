@@ -64,14 +64,11 @@
   </step-wrapper>
 </template>
 
-<script> 
-
+<script>
 import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import RegisterModalPositionMap from './modals/RegisterModalPositionMap.vue';
 import StepWrapper from './StepWrapper.vue';
-
-
 
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 

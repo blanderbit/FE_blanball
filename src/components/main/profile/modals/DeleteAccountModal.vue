@@ -64,17 +64,11 @@
 </template>
 
 <script>
- 
-
-
-
-
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
 import Counter from '@sharedComponents/counter/Counter.vue';
 import inputCode from '@sharedComponents/inputCode/InputCode.vue';
-
 
 import { resetUserDataAndRedirectToLogin } from '@utils/logOut';
 import {

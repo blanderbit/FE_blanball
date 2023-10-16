@@ -197,7 +197,6 @@ import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 import { useUserDataStore } from '@stores/userData';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
-
 import { config } from 'dotenv';
 
 export default {

@@ -55,15 +55,12 @@
 </template>
 
 <script>
- 
 import UserAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 import { ChatEventBus } from '@workers/event-bus-worker';
 import { useChatDataStore } from '@stores/chatData';
 import ContextMenu from '@sharedComponents/modals/ContextModal.vue';
-
-
 
 export default {
   components: {

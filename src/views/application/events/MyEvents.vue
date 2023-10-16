@@ -4,7 +4,7 @@
     :clientX="contextMenuX"
     :clientY="contextMenuY"
     :modalItems="mockData.menu_text"
-    :background=false
+    :background="false"
     @close-modal="isContextMenuActive = false"
     @itemClick="contextMenuItemClick"
   />
@@ -178,7 +178,6 @@
 </template>
 
 <script>
-
 import { v4 as uuid } from 'uuid';
 
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
@@ -199,8 +198,6 @@ import EditEventModal from '@mainComponents/manageEvent/modals/EditEventModal.vu
 import ActionModal from '@mainComponents/events/modals/ActionModal.vue';
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 
-
-
 import { PaginationWorker } from '@workers/pagination-worker';
 import { FilterPatch } from '@workers/api-worker/http/filter/filter.patch';
 import { addMinutes } from '@utils/addMinutes';
@@ -213,8 +210,6 @@ import {
   startSpinner,
   finishSpinner,
 } from '@workers/loading-worker/loading.worker';
-
-
 
 import Plus from '@images/plus.svg';
 import WhiteBucket from '@images/white-bucket.svg';

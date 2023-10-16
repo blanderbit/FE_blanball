@@ -12,7 +12,6 @@ import {
 } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
 
-
 @SetMessageType(WebSocketTypes.ChangeMaintenance)
 @GeneralWebSocketMessage()
 @SetActions([

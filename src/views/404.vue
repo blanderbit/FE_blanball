@@ -27,9 +27,7 @@
 </template>
 
 <script>
-
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
-
 
 export default {
   name: '404',

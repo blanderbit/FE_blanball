@@ -24,7 +24,7 @@ $color-dfdeed: #dfdeed;
   border-radius: 6px;
   display: flex;
   margin-right: 8px;
-  background: #EFEFF6;
+  background: #efeff6;
   cursor: pointer;
   img {
     margin: auto;

@@ -88,7 +88,6 @@
 </template>
 
 <script>
-
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import UserCard from '@mainComponents/users/UserCard.vue';
 import smartList from '@sharedComponents/smartList/SmartList.vue';
@@ -112,7 +111,6 @@ import { useUserDataStore } from '@stores/userData';
 
 import { FilterPatch } from '@workers/api-worker/http/filter/filter.patch';
 import UsersFilters from '@mainComponents/filters/block-filters/UsersFilters.vue';
-
 
 export default {
   name: 'RatingPage',
@@ -141,13 +139,12 @@ export default {
       triggerForRestart.value = uuid();
     };
 
-    const { calculatedHeight, plusHeight, minusHeight } =
-      calcHeight(
-        [90, 36, 31, 80, 36, 50],
-        [userStore.user.is_verified ? 0 : 40, -55],
-        [userStore.user.is_verified ? 0 : 40, -25],
-        true
-      );
+    const { calculatedHeight, plusHeight, minusHeight } = calcHeight(
+      [90, 36, 31, 80, 36, 50],
+      [userStore.user.is_verified ? 0 : 40, -55],
+      [userStore.user.is_verified ? 0 : 40, -25],
+      true
+    );
 
     const recalculateHeightAfterUpdateFiltersActive = (status) => {
       if (status) {

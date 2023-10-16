@@ -6,7 +6,7 @@ import { TabModel } from '../models/tabs.model';
 import { ComponentButtonModel } from '../models/component.button.model';
 import { ContextMenuModel } from '../models/context.menu.model';
 import { createNotificationFromData } from '@workers/utils-worker';
- 
+
 import { PaginationWorker } from '@workers/pagination-worker';
 import { AuthWebSocketWorkerInstance } from '@workers/web-socket-worker';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';

@@ -108,9 +108,6 @@
 </template>
 
 <script>
-
-
-
 import ContextModal from '@sharedComponents/modals/ContextModal.vue';
 import UserAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 import MobileMenuSlideMenuMainContent from './MobileMenuSlideMenuMainContent.vue';
@@ -122,8 +119,6 @@ import sidebarArrow from '@images/sidebar-arrow.svg';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 import { logOut } from '@utils/logOut';
 import { useUserDataStore } from '@stores/userData';
-
-
 
 const SLIDE_MENU_MAIN_SIDE_PADDING = 32;
 const SLIDE_MENU_TRANSITION_DELAY_MS = 0.7;

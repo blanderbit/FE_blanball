@@ -1,5 +1,3 @@
- 
- 
 import loader from '../../components/shared/loader/Loader.vue';
 
 let loading;

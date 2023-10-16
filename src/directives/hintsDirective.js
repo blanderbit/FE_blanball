@@ -1,6 +1,5 @@
 import { useHintsStore } from '@stores/hints';
 
-
 export function hintsDirective(el, hintsData) {
   const hintsStore = useHintsStore();
 

@@ -1,6 +1,5 @@
 import { routerDataResolver } from '@workers/resolver-worker/reolver.worker';
 
-
 export const WORKS_ROUTE = {
   path: ROUTES.WORKS.relative,
   name: ROUTES.WORKS.name,

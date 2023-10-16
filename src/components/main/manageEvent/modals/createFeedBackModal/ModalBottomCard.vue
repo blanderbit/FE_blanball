@@ -51,12 +51,8 @@
 </template>
 
 <script>
- 
-
 import RatePlayerCard from './RatePlayerCard.vue';
 import ModalTopCard from './ModalTopCard.vue';
-
-
 
 export default {
   name: 'ModalBottomCard',

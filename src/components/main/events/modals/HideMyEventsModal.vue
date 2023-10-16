@@ -104,7 +104,6 @@ import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import ActionModal from './ActionModal.vue';
 
-
 import { PaginationWorker } from '@workers/pagination-worker';
 import { addMinutes } from '@utils/addMinutes';
 import { getDate } from '@utils/getDate';

@@ -18,7 +18,11 @@
             :is-disabled="true"
           />
         </div>
-        <Form v-slot="data" :validation-schema="schema" @submit="disableFormSubmit">
+        <Form
+          v-slot="data"
+          :validation-schema="schema"
+          @submit="disableFormSubmit"
+        >
           <div class="input__wrapper">
             <MainInput
               :title="
@@ -69,16 +73,12 @@
 </template>
 
 <script>
- 
-
-
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
 import Counter from '@sharedComponents/counter/Counter.vue';
 import inputCode from '@sharedComponents/inputCode/InputCode.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
-
 
 import { refreshTokens } from '@workers/token-worker/refreshTokens';
 import {
@@ -177,7 +177,7 @@ export default {
       sendCode,
       nextStep,
       cancelClick,
-      disableFormSubmit
+      disableFormSubmit,
     };
   },
 };

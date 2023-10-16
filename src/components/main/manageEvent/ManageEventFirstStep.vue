@@ -154,8 +154,6 @@
 </template>
 
 <script>
- 
-
 import { ErrorMessage } from '@system.it.flumx.com/vee-validate';
 
 import dayjs from 'dayjs';
@@ -165,8 +163,6 @@ import MainInput from '@sharedComponents/input/MainInput.vue';
 import radioButton from '@sharedComponents/radioButton/RadioButton.vue';
 import PositionMap from '@mainComponents/maps/PositionMap.vue';
 import EventCreatePositionMap from './modals/EventCreatePositionMapModal.vue';
-
-
 
 import CalendarPic from '@images/calendar.svg';
 import WatchPic from '@images/watch.svg';

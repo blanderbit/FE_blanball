@@ -1,4 +1,3 @@
-
 import { cloneDeep, isEqual } from 'lodash';
 
 export const TransformedFiltersWorker = (config) => {

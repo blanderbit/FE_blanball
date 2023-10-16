@@ -171,7 +171,6 @@
 </template>
 
 <script>
-
 import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
 import FilterBlock from '@mainComponents/filters/FilterBlock.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
@@ -182,8 +181,6 @@ import RangeFilter from '@mainComponents/filters/components/RangeFilter.vue';
 
 import { TransformedFiltersWorker } from './transformed.filters.worker';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
-
-
 
 import SearchIcon from '@images/search.svg';
 import arrowsUpIcon from '@images/sort-arrows.svg';

@@ -57,8 +57,6 @@
 </template>
 
 <script>
-
-
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import SmartList from '@sharedComponents/smartList/SmartList.vue';
 import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
@@ -70,10 +68,6 @@ import SchedulerFriendsList from './SchedulerFriendsList.vue';
 import SchedulerTabs from './SchedulerTabs.vue';
 
 import { useUserDataStore } from '@stores/userData';
-
-
-
-
 
 import searchIcon from '@images/scheduler/lens.svg';
 import whiteClockIcon from '@images/scheduler/white-clock.svg';

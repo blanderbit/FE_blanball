@@ -6,8 +6,6 @@ import { useTokensStore } from '@stores/tokens';
 import { useHeaderHeightStore } from '@stores/headerHeight';
 import { useChatDataStore } from '@stores/chatData';
 
-
-
 const userStore = useUserDataStore(pinia);
 const tokensStore = useTokensStore(pinia);
 const headerHeightStore = useHeaderHeightStore(pinia);

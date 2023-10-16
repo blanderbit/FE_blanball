@@ -71,8 +71,6 @@ import MainInput from '@sharedComponents/input/MainInput.vue';
 import SearchModal from '@sharedComponents/modals/SearchModal.vue';
 import SearchBlockAll from '@mainComponents/header/SearchBlockAll.vue';
 
-
-
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
 import { HINTS_DATA } from '@workers/hints-worker/hints.data';

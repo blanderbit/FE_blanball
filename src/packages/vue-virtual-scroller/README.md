@@ -32,29 +32,32 @@ yarn add vue-virtual-scroller@next
 Install all the components:
 
 ```javascript
-import VueVirtualScroller from 'vue-virtual-scroller'
+import VueVirtualScroller from 'vue-virtual-scroller';
 
-app.use(VueVirtualScroller)
+app.use(VueVirtualScroller);
 ```
 
 Use specific components:
 
 ```javascript
-import { RecycleScroller } from 'vue-virtual-scroller'
+import { RecycleScroller } from 'vue-virtual-scroller';
 
-app.component('RecycleScroller', RecycleScroller)
+app.component('RecycleScroller', RecycleScroller);
 ```
 
 **⚠️ The line below should be included when importing the package:**
 
 ```js
-import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
 ```
 
 ## Browser
 
 ```html
-<link rel="stylesheet" href="vue-virtual-scroller/dist/vue-virtual-scroller.css"/>
+<link
+  rel="stylesheet"
+  href="vue-virtual-scroller/dist/vue-virtual-scroller.css"
+/>
 
 <script src="vue.js"></script>
 <script src="vue-virtual-scroller/dist/vue-virtual-scroller.min.js"></script>
@@ -63,13 +66,13 @@ import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 Install the component:
 
 ```javascript
-app.use(VueVirtualScroller)
+app.use(VueVirtualScroller);
 ```
 
 Or register it with a custom name:
 
 ```javascript
-app.component('RecycleScroller', VueVirtualScroller.RecycleScroller)
+app.component('RecycleScroller', VueVirtualScroller.RecycleScroller);
 ```
 
 # Usage
@@ -101,31 +104,29 @@ Use the scoped slot to render each item in the list:
     key-field="id"
     v-slot="{ item }"
   >
-    <div class="user">
-      {{ item.name }}
-    </div>
+    <div class="user">{{ item.name }}</div>
   </RecycleScroller>
 </template>
 
 <script>
-export default {
-  props: {
-    list: Array,
-  },
-}
+  export default {
+    props: {
+      list: Array,
+    },
+  };
 </script>
 
 <style scoped>
-.scroller {
-  height: 100%;
-}
+  .scroller {
+    height: 100%;
+  }
 
-.user {
-  height: 32%;
-  padding: 0 12px;
-  display: flex;
-  align-items: center;
-}
+  .user {
+    height: 32%;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+  }
 </style>
 ```
 
@@ -151,20 +152,14 @@ Here is what the internals of RecycleScroller look like in vertical mode:
 ```html
 <RecycleScroller>
   <!-- Wrapper element with a pre-calculated total height -->
-  <wrapper
-    :style="{ height: computedTotalHeight + 'px' }"
-  >
+  <wrapper :style="{ height: computedTotalHeight + 'px' }">
     <!-- Each view is translated to the computed position -->
     <view
       v-for="view of pool"
       :style="{ transform: 'translateY(' + view.computedTop + 'px)' }"
     >
       <!-- Your elements will be rendered here -->
-      <slot
-        :item="view.item"
-        :index="view.nr.index"
-        :active="view.nr.used"
-      />
+      <slot :item="view.item" :index="view.nr.index" :active="view.nr.used" />
     </view>
   </wrapper>
 </RecycleScroller>
@@ -224,19 +219,11 @@ When the user scrolls inside RecycleScroller, the views are mostly just moved ar
 Example:
 
 ```html
-<RecycleScroller
-  class="scroller"
-  :items="list"
-  :item-size="32"
->
-  <template #before>
-    Hey! I'm a message displayed before the items!
-  </template>
+<RecycleScroller class="scroller" :items="list" :item-size="32">
+  <template #before> Hey! I'm a message displayed before the items! </template>
 
   <template v-slot="{ item }">
-    <div class="user">
-      {{ item.name }}
-    </div>
+    <div class="user">{{ item.name }}</div>
   </template>
 </RecycleScroller>
 ```
@@ -254,9 +241,7 @@ The page mode expands the virtual-scroller and uses the page viewport to compute
   <!-- ... -->
 </RecycleScroller>
 
-<footer>
-  Copyright 2017 - Cat
-</footer>
+<footer>Copyright 2017 - Cat</footer>
 ```
 
 ### Variable size mode
@@ -288,7 +273,7 @@ const items = [
     label: 'Bar',
     size: 32,
   },
-]
+];
 ```
 
 ### Buffer
@@ -310,7 +295,7 @@ The `prerender` props can be set as the number of items to render on the server 
   :items="items"
   :item-size="42"
   :prerender="10"
->
+></RecycleScroller>
 ```
 
 ## DynamicScroller
@@ -321,11 +306,7 @@ This works just like the RecycleScroller, but it can render items with unknown s
 
 ```html
 <template>
-  <DynamicScroller
-    :items="items"
-    :min-item-size="54"
-    class="scroller"
-  >
+  <DynamicScroller :items="items" :min-item-size="54" class="scroller">
     <template v-slot="{ item, index, active }">
       <DynamicScrollerItem
         :item="item"
@@ -341,7 +322,7 @@ This works just like the RecycleScroller, but it can render items with unknown s
             :key="item.avatar"
             alt="avatar"
             class="image"
-          >
+          />
         </div>
         <div class="text">{{ item.message }}</div>
       </DynamicScrollerItem>
@@ -350,17 +331,17 @@ This works just like the RecycleScroller, but it can render items with unknown s
 </template>
 
 <script>
-export default {
-  props: {
-    items: Array,
-  },
-}
+  export default {
+    props: {
+      items: Array,
+    },
+  };
 </script>
 
 <style scoped>
-.scroller {
-  height: 100%;
-}
+  .scroller {
+    height: 100%;
+  }
 </style>
 ```
 
@@ -433,29 +414,29 @@ In this example, we use the `id` of the `item` to have a "scoped" state to the i
 </template>
 
 <script>
-import { IdState } from 'vue-virtual-scroller'
+  import { IdState } from 'vue-virtual-scroller';
 
-export default {
-  mixins: [
-    IdState({
-      // You can customize this
-      idProp: vm => vm.item.id,
-    }),
-  ],
+  export default {
+    mixins: [
+      IdState({
+        // You can customize this
+        idProp: (vm) => vm.item.id,
+      }),
+    ],
 
-  props: {
-    // Item in the list
-    item: Object,
-  },
+    props: {
+      // Item in the list
+      item: Object,
+    },
 
-  // This replaces data () { ... }
-  idState () {
-    return {
-      replyOpen: false,
-      replyText: '',
-    }
-  },
-}
+    // This replaces data () { ... }
+    idState() {
+      return {
+        replyOpen: false,
+        replyText: '',
+      };
+    },
+  };
 </script>
 ```
 

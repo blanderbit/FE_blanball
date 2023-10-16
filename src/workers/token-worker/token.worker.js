@@ -1,7 +1,6 @@
 import { pinia } from '../../plugins/pinia.plugin';
 import { useTokensStore } from '@stores/tokens';
 
-
 const tokensStore = useTokensStore(pinia);
 
 export class TokenServiceWorker {

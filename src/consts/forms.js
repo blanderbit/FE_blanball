@@ -6,7 +6,7 @@ import BlackColor from '@images/colors/black.svg';
 import GreenColor from '@images/colors/green.svg';
 import OrangeColor from '@images/colors/orange.svg';
 import PurpleColor from '@images/colors/purple.svg';
-import { i18n } from '@plugins/i18n.plugin'
+import { i18n } from '@plugins/i18n.plugin';
 
 const colorIcons = {
   Blue: BlueColor,

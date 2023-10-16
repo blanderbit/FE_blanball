@@ -22,9 +22,6 @@
 </template>
 
 <script>
- 
-
-
 export default {
   props: {
     clientX: {

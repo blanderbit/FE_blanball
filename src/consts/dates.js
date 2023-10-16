@@ -1,4 +1,4 @@
-import { i18n } from '@plugins/i18n.plugin'
+import { i18n } from '@plugins/i18n.plugin';
 
 const monthNames = [
   i18n.global.t('dates.january'),
@@ -15,7 +15,7 @@ const monthNames = [
   i18n.global.t('dates.december'),
 ];
 
-const yearsToSkip = 7
+const yearsToSkip = 7;
 const fullYear = new Date().getFullYear();
 const lastAvailableYear = fullYear - yearsToSkip;
 

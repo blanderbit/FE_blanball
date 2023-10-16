@@ -72,9 +72,6 @@
 </template>
 
 <script>
- 
-
-
 import { v4 as uuid } from 'uuid';
 
 import dayjs from 'dayjs';
@@ -88,7 +85,6 @@ import SmartList from '@sharedComponents/smartList/SmartList.vue';
 import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
 import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
 import ScheduledEventCard from './ScheduledEventCard.vue';
-
 
 import { PaginationWorker } from '@workers/pagination-worker';
 import { getDate } from '@utils/getDate';

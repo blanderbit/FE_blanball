@@ -8,7 +8,9 @@ export class AuthorizationService {
     return AxiosInstance.post(
       EndpointsEnum.Authorization.Login,
       data,
-      AxiosParams(AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_CREDENTIALS]))
+      AxiosParams(
+        AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_CREDENTIALS])
+      )
     );
   }
 
@@ -16,7 +18,9 @@ export class AuthorizationService {
     return AxiosInstance.post(
       EndpointsEnum.Authorization.Logout,
       data,
-      AxiosParams(AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_REFRESH_TOKEN]))
+      AxiosParams(
+        AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_REFRESH_TOKEN])
+      )
     );
   }
 
@@ -24,7 +28,9 @@ export class AuthorizationService {
     return AxiosInstance.post(
       EndpointsEnum.Authorization.RefreshTokens,
       data,
-      AxiosParams(AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_REFRESH_TOKEN]))
+      AxiosParams(
+        AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_REFRESH_TOKEN])
+      )
     );
   }
 

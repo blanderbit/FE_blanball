@@ -4,7 +4,7 @@ import { ActionModelTypeUrl } from '../models/model.types';
 
 import { TabModel } from '../models/tabs.model';
 import { ContextMenuModel } from '../models/context.menu.model';
- 
+
 import {
   ChatSocketWorkerInstance,
   AuthWebSocketWorkerInstance,
@@ -15,8 +15,6 @@ import { useUserDataStore } from '@stores/userData';
 import { pinia } from '@plugins/pinia.plugin';
 
 import EmptyNotificationsIcon from '@images/no-records/empty-notifications.svg';
-
-
 
 import trashRedIcon from '@images/trash-red.svg';
 import selectedIcon from '@images/selected.svg';
@@ -132,7 +130,6 @@ export const createChatConfigItem = (routerInstance) => {
       }
     }
   );
-  
 
   const createChatMessageMessageHandler = (messageData) => {
     const { paginationElements } = chatItem.activeTab.value;

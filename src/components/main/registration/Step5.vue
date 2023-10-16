@@ -16,9 +16,6 @@
 </template>
 
 <script>
- 
-
-
 import StepWrapper from './StepWrapper.vue';
 
 import arrowRight from '@images/arrow-right-white.svg';

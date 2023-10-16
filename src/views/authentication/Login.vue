@@ -11,12 +11,8 @@
 </template>
 
 <script>
- 
-
 import login from '@mainComponents/login/Login.vue';
 import AuthenticationMain from '@components/AuthenticationMain.vue';
-
-
 
 import bgTabPicture from '@images/registration-back-tab1.svg';
 import rightSidePicture from '@images/registration-back-1.svg';

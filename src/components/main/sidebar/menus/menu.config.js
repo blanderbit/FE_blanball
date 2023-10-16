@@ -4,7 +4,6 @@ import medal from '@images/medal.svg';
 import settings from '@images/settings.svg';
 import bugReport from '@images/warning-black.svg';
 
- 
 import {
   ActionModelTypeButton,
   ActionModelTypeUrl,
@@ -12,7 +11,6 @@ import {
 import { BasicButtonModel } from './models/basic.button.model';
 import { createNotificationConfigItem } from './configs/notifications.config';
 import { createChatConfigItem } from './configs/chats.config';
-
 
 export const dinamicMenu = (instance) => {
   const notificationItem = createNotificationConfigItem(instance);

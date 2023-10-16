@@ -1,5 +1,3 @@
- 
-
 export function useWindowWidth() {
   const windowWidth = ref(window.innerWidth);
   const isMobileSmall = ref(window.innerWidth <= 576);

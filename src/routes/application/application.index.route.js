@@ -1,4 +1,3 @@
-
 import { routerAuthResolver } from '@workers/resolver-worker/reolver.worker';
 import { VERSIONS_ROUTE } from './versions.route';
 import { CHAT_ROUTE } from './chat/chat.route';

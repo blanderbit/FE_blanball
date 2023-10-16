@@ -43,10 +43,7 @@
                 </div>
                 <div class="b-edit-avatar__left-mob-part">
                   <div class="b-edit-avatar__rotate" @click="rotateImage">
-                    <img
-                      src="@images/rotate-picture.svg"
-                      alt=""
-                    />
+                    <img src="@images/rotate-picture.svg" alt="" />
                     <span>
                       {{ $t('modals.edit_avatar.rotate') }}
                     </span>
@@ -85,8 +82,6 @@ import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import SaveIcon from '@images/save-icon.svg';
 
 import { useUserDataStore } from '@stores/userData';
-
-
 
 export default {
   name: 'EditAvatarModal',

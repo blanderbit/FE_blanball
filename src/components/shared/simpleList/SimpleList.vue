@@ -27,9 +27,6 @@
 </template>
 
 <script>
- 
-
-
 import { PaginationWorker } from '@workers/pagination-worker';
 import smartList from '@sharedComponents/smartList/SmartList.vue';
 import emptyList from '@sharedComponents/emptyList/EmptyList.vue';

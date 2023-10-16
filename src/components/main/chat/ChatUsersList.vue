@@ -62,8 +62,6 @@ import { ChatSocketWorkerInstance } from '@workers/web-socket-worker';
 import { CHAT_DETAILS_TYPE_ENUM_ERRORS } from '@workers/web-socket-worker/message-types/chat/web.socket.errors';
 import { useChatDataStore } from '@stores/chatData';
 
-
-
 import LimitOfAdminsIcon from '@images/chat/limit-of-admins-reached.svg';
 
 export default {

@@ -1,6 +1,6 @@
 import userIcon from '@images/user-icon.svg';
 import databaseDisabled from '@images/database-disabled.svg';
-import { i18n } from '@plugins/i18n.plugin'
+import { i18n } from '@plugins/i18n.plugin';
 
 export default {
   ratingMaxValue: '5.0',

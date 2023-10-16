@@ -72,8 +72,6 @@
 </template>
 
 <script>
- 
-
 import * as yup from 'yup';
 
 import { Form, ErrorMessage } from '@system.it.flumx.com/vee-validate';
@@ -107,8 +105,8 @@ export default {
     },
     title: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   setup(props, { emit }) {
     const eventComment = ref('');
@@ -185,7 +183,7 @@ export default {
       eventComment,
       emojiSelect,
       goToTheNextStep,
-      disableFormSubmit
+      disableFormSubmit,
     };
   },
 };

@@ -45,11 +45,6 @@
 </template>
 
 <script>
- 
-
-
-
-
 import { dinamicMenu } from '../sidebar/menus/menu.config';
 
 export default {

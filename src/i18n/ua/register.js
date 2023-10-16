@@ -50,7 +50,7 @@ export default {
   'address-placeholder': 'Володимирська, 60',
   'add-district': 'Додати район',
   'select-on-map': 'Вибрати локацію на карті',
-  'configure': 'Налаштувати',
+  configure: 'Налаштувати',
   optionally: 'Опціонально',
   finish: 'Завершити',
   welcome: 'Вітаємо у BLANBALL !',
@@ -84,6 +84,6 @@ export default {
   Olexandra: 'Олександра',
   Bilozerska: 'Білозерська',
   'select-position-on-map': 'Вибрати позицію на карті',
-  'accept': 'Підтвердити',
-  'search-radius': 'Радіус пошуку (м.)'
+  accept: 'Підтвердити',
+  'search-radius': 'Радіус пошуку (м.)',
 };

@@ -11,8 +11,6 @@
 </template>
 
 <script>
- 
-
 import Stepper from '@mainComponents/passwordReset/Stepper.vue';
 import AuthenticationMain from '@components/AuthenticationMain.vue';
 

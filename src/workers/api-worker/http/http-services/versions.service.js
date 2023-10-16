@@ -7,9 +7,7 @@ export class VersionsService {
   static getAllVersions(page) {
     return AxiosInstance.get(
       EndpointsEnum.Versions.GetAllVersions,
-      AxiosParams(
-        AxiosQuery(page),
-      )
+      AxiosParams(AxiosQuery(page))
     );
   }
 

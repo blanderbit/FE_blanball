@@ -5,9 +5,6 @@
 </template>
 
 <script>
- 
-
-
 import { detectServiceChatMessageTextByType } from './utils/detectServiceChatMessageTextByType';
 
 export default {

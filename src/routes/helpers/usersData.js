@@ -1,7 +1,5 @@
-
 import { useUserDataStore } from '@stores/userData';
 import { pinia } from '@plugins/pinia.plugin';
-
 
 const userStore = useUserDataStore(pinia);
 

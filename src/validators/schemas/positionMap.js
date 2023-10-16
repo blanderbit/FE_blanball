@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { turnEmptyStrIntoUnderfined } from '@utils/turnEmptyStrIntoUndefined'
+import { turnEmptyStrIntoUnderfined } from '@utils/turnEmptyStrIntoUndefined';
 
 export default {
   schema: (isDist) => {

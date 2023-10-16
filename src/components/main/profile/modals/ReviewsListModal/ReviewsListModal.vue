@@ -68,14 +68,12 @@
 </template>
 
 <script>
-
 import { v4 as uuid } from 'uuid';
 
 import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
 import SmartList from '@sharedComponents/smartList/SmartList.vue';
 import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
 import Review from './Review.vue';
-
 
 import { PaginationWorker } from '@workers/pagination-worker';
 import { useHeaderHeightStore } from '@stores/headerHeight';
@@ -90,7 +88,7 @@ export default {
   },
   emits: ['closeModal'],
   props: {
-    userRating: Number
+    userRating: Number,
   },
   setup() {
     const refList = ref();

@@ -104,9 +104,6 @@
 </template>
 
 <script>
- 
-
-
 import SearchBlockAll from '@mainComponents/header/SearchBlockAll.vue';
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
@@ -114,7 +111,6 @@ import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 import InvitedUsersListModal from './InvitedUsersListModal.vue';
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
-
 
 import { useUserDataStore } from '@stores/userData';
 
@@ -278,7 +274,7 @@ export default {
 $color-efeff6: #efeff6;
 
 :deep(.b-avatar) {
-  border: 1.5px solid #EFEFF6;
+  border: 1.5px solid #efeff6;
 }
 .b-invite-users-to-event-modal__wrapper {
   @include modal-wrapper;

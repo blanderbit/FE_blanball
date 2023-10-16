@@ -51,10 +51,6 @@
 </template>
 
 <script>
- 
-
-
-
 export default {
   props: {
     formsData: {

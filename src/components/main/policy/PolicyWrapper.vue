@@ -15,8 +15,11 @@
         <div class="b-policy-table-contents">
           <div class="b-table-title">{{ $t('policy.document-content') }}</div>
           <div class="b-table-items">
-            <div v-for="item in contentItems" class="b-table-item"
-              @click="scrollToBlockOfContent(item.elementId)">
+            <div
+              v-for="item in contentItems"
+              class="b-table-item"
+              @click="scrollToBlockOfContent(item.elementId)"
+            >
               {{ item.text }}
             </div>
           </div>
@@ -27,10 +30,6 @@
 </template>
 
 <script>
-
-
-
-
 export default {
   props: {
     contentItems: {
@@ -44,13 +43,13 @@ export default {
     const scrollToBlockOfContent = (elementHtmlId) => {
       const element = document.getElementById(elementHtmlId);
       element.scrollIntoView({ behavior: 'smooth' });
-    }
+    };
 
     const goBack = async () => {
-      return await router.push(        
-        router.currentRoute.value.redirectedFrom 
-        ? router.currentRoute.value.redirectedFrom
-        : ROUTES.APPLICATION.EVENTS.absolute
+      return await router.push(
+        router.currentRoute.value.redirectedFrom
+          ? router.currentRoute.value.redirectedFrom
+          : ROUTES.APPLICATION.EVENTS.absolute
       );
     };
     return {
@@ -116,7 +115,7 @@ $color-f0f0f4: #f0f0f4;
       .b-table-item {
         @include inter(14px, 500);
         background: $--b-main-white-color;
-        border: 1px solid #F0F0F4;
+        border: 1px solid #f0f0f4;
         border-radius: 6px;
         margin-top: 16px;
         padding: 16px;

@@ -11,7 +11,7 @@
             {{ $t('users.filters') }}
           </div>
           <div class="b-modal-filters__subtitle">
-            {{  $t('users.found-users', { count: elementsCount }) }}
+            {{ $t('users.found-users', { count: elementsCount }) }}
           </div>
           <div class="b-modal-filters__game-type-input">
             <dropdown
@@ -49,8 +49,6 @@
 </template>
 
 <script>
- 
-
 import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
 import dropdown from '@sharedComponents/dropdown/Dropdown.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
@@ -58,8 +56,6 @@ import RangeFilter from '@mainComponents/filters/components/RangeFilter.vue';
 import RadioGenderBox from '@mainComponents/filters/components/RadioGenderBox.vue';
 
 import tickIcon from '@images/tick-white.svg';
-
-
 
 export default {
   name: 'ModalUsersFilters',
@@ -131,7 +127,7 @@ export default {
       emit('clearFilters');
       emit('closeModal');
       positionData.value = '';
-      ageRangeData.value = []
+      ageRangeData.value = [];
       genderData.value = '';
     }
 

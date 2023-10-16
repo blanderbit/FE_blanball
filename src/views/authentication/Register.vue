@@ -69,9 +69,6 @@
 </template>
 
 <script>
- 
-
-
 import { Form } from '@system.it.flumx.com/vee-validate';
 
 import { merge, cloneDeep } from 'lodash';
@@ -88,13 +85,10 @@ import step9 from '@mainComponents/registration/Step9.vue';
 import step10 from '@mainComponents/registration/Step10.vue';
 import AuthenticationMain from '@components/AuthenticationMain.vue';
 
-
 import { accessToken, refreshToken } from '@workers/token-worker';
 
 import { disableFormSubmit } from '@utils/disableFormSubmit';
 import { useUkraineCitiesDataStore } from '@stores/ukraineCities';
-
-
 
 import { SCHEMAS } from '@validators/schemas';
 

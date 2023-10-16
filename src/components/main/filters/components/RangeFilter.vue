@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import Slider from '@vueform/slider'
+import Slider from '@vueform/slider';
 export default {
   components: {
     Slider,
@@ -33,33 +33,33 @@ export default {
     },
   },
   setup(props, { emit }) {
-    const minAge = ref(null)
-    const maxAge = ref(null)
-    const rangeValue = ref(null)
-    rangeValue.value = props.ageRange
-    minAge.value = props.ageRange[0]
-    maxAge.value = props.ageRange[1]
+    const minAge = ref(null);
+    const maxAge = ref(null);
+    const rangeValue = ref(null);
+    rangeValue.value = props.ageRange;
+    minAge.value = props.ageRange[0];
+    maxAge.value = props.ageRange[1];
     watch(
       () => props.ageRange,
       (newVal) => {
-        rangeValue.value = newVal
-        minAge.value = newVal[0]
-        maxAge.value = newVal[1]
+        rangeValue.value = newVal;
+        minAge.value = newVal[0];
+        maxAge.value = newVal[1];
       }
-    )
+    );
     function onSliderDrag(event) {
-      minAge.value = event[0]
-      maxAge.value = event[1]
-      emit('update:ageRange', event)
+      minAge.value = event[0];
+      maxAge.value = event[1];
+      emit('update:ageRange', event);
     }
     return {
       onSliderDrag,
       minAge,
       maxAge,
       rangeValue,
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped lang="scss">

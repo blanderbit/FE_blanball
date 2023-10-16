@@ -304,9 +304,6 @@ import {
 } from '@workers/loading-worker/loading.worker';
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
 
-
-
-
 import emoji_1 from '@images/emojies/1.svg';
 import emoji_2 from '@images/emojies/2.svg';
 import emoji_3 from '@images/emojies/3.svg';

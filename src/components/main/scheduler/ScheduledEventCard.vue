@@ -102,12 +102,7 @@
 </template>
 
 <script>
-
 import UserAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
-
-
-
-
 
 import grayCrossIcon from '@images/gray-cross.svg';
 import blackCrossIcon from '@images/cross.svg';

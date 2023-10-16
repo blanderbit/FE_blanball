@@ -4,7 +4,6 @@ import { prepareEventUpdateData } from '@utils/prepareEventUpdateData';
 import { usersData } from '@routes/helpers/usersData';
 import { hintsData } from '@routes/helpers/hintsData';
 
-
 export const EVENTS_EDIT_ROUTE = {
   path: ROUTES.APPLICATION.EVENTS.EDIT.relative,
   name: ROUTES.APPLICATION.EVENTS.EDIT.name,

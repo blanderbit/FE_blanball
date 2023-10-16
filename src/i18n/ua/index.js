@@ -32,11 +32,10 @@ import PushNotifications from './push-notifications';
 import Chat from './chat';
 import Forms from './forms';
 import Dates from './dates';
-import EventPage from './event_page'
-import ManageEvents from './manage_events'
-import UserPage from './user_page'
-import NotificationsFormatTime from './notifications_format_time'
-
+import EventPage from './event_page';
+import ManageEvents from './manage_events';
+import UserPage from './user_page';
+import NotificationsFormatTime from './notifications_format_time';
 
 export const UA_LANGUAGE = {
   events: EventsPage,

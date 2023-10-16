@@ -3,7 +3,7 @@ import bucket from '@images/bucket.svg';
 import pin from '@images/pin.svg';
 import unpin from '@images/unpin.svg';
 import edit from '@images/edit-gray.svg';
-import { i18n } from '@plugins/i18n.plugin'
+import { i18n } from '@plugins/i18n.plugin';
 
 export default {
   sport_type_dropdown: [
@@ -47,7 +47,9 @@ export default {
     },
     {
       id: 2,
-      text: !eventPinned ? i18n.global.t('event_page.attach') : i18n.global.t('event_page.detach'),
+      text: !eventPinned
+        ? i18n.global.t('event_page.attach')
+        : i18n.global.t('event_page.detach'),
       img: !eventPinned ? pin : unpin,
       type: !eventPinned ? 'pin' : 'unpin',
     },

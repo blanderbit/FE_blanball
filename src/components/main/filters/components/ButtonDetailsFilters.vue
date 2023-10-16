@@ -11,8 +11,6 @@
 </template>
 
 <script>
- 
-
 import CrossIcon from '@images/cross.svg';
 import SettingsIcon from '@images/set-filter.svg';
 

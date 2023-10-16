@@ -49,7 +49,7 @@
   </div>
 </template>
 
-<script> 
+<script>
 import PositionMap from '@mainComponents/maps/PositionMap.vue';
 
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
@@ -109,7 +109,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.8s ease;

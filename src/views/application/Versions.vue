@@ -115,12 +115,7 @@
                   src="@images/cross.svg"
                   alt=""
                 />
-                <img
-                  v-else
-                  width="8"
-                  src="@images/arrow-right.svg"
-                  alt=""
-                />
+                <img v-else width="8" src="@images/arrow-right.svg" alt="" />
               </div>
             </div>
           </div>
@@ -141,7 +136,6 @@ import dayjs from 'dayjs';
 import PaginationScale from '@sharedComponents/pagination/PaginationScale.vue';
 
 import { cloneDeep } from 'lodash';
-
 
 import { PaginationWorker } from '@workers/pagination-worker';
 import { calcHeight } from '@workers/window-size-worker/calcHeight';

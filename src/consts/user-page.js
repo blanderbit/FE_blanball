@@ -1,7 +1,7 @@
 import MaleIcon from '@images/female-icon.svg';
 import FemaleIcon from '@images/male-icon.svg';
 import UnisexIcon from '@images/unisex.svg';
-import { i18n } from '@plugins/i18n.plugin'
+import { i18n } from '@plugins/i18n.plugin';
 
 export default {
   months: {
@@ -19,7 +19,8 @@ export default {
       11: 'Листопад',
       12: 'Грудень',
     },
-    numberFromMonth: { //TODO: refactor to avoid object keys in Ukrainian
+    numberFromMonth: {
+      //TODO: refactor to avoid object keys in Ukrainian
       Січень: '01',
       Лютий: '02',
       Березень: '03',

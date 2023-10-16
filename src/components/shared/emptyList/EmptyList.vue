@@ -25,8 +25,6 @@
 </template>
 
 <script>
- 
-
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 
 import NoData from '@images/no-records/no-data.svg';

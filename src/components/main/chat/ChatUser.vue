@@ -31,9 +31,6 @@
 </template>
 
 <script>
- 
-
-
 import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 
 import { useUserDataStore } from '@stores/userData';

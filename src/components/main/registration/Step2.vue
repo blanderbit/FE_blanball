@@ -101,9 +101,6 @@
 </template>
 
 <script>
- 
-
-
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import StepWrapper from './StepWrapper.vue';
 import checkBox from '@sharedComponents/checkbox/Checkbox.vue';

@@ -66,10 +66,6 @@ import SimpleListWrapper from '@sharedComponents/simpleList/SimpleList.vue';
 
 import { getDate } from '@utils/getDate';
 
-
-
-
-
 export default {
   name: 'RatingCard',
   components: {

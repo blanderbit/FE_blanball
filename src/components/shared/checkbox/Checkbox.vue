@@ -1,7 +1,10 @@
 <template>
   <label :for="fieldId" :class="['checkbox', color]">
     <input
-      @input="(event) => !disabled ? $emit('update:checked', event.target.checked) : null"
+      @input="
+        (event) =>
+          !disabled ? $emit('update:checked', event.target.checked) : null
+      "
       type="checkbox"
       :checked="checked"
       :id="fieldId"
@@ -26,12 +29,12 @@ export default {
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     color: {
       type: String,
-      default: 'green'
-    }
+      default: 'green',
+    },
   },
 };
 </script>
@@ -84,7 +87,6 @@ label {
       border: 2px solid darken($color, 15%);
     }
 
-
     &:checked ~ span {
       color: $white;
       background: $color
@@ -112,7 +114,6 @@ label {
 }
 
 label.checkbox {
-
   &.blue {
     @include checkbox($blue);
   }

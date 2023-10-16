@@ -5,9 +5,6 @@
 <script>
 import PublicProfile from '@mainComponents/publicProfile/PublicProfile.vue';
 
-
-
-
 export default {
   name: 'PlayerPage',
   components: {

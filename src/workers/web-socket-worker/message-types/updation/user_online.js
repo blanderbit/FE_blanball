@@ -11,7 +11,6 @@ export class UpdateMessageUserOnline extends InitialUpdation {
     { paginationElements, paginationLoad, paginationPage },
     callbackAfterAction
   ) {
-    
     if (typeof callbackAfterAction === 'function') {
       callbackAfterAction();
     }
@@ -20,6 +19,6 @@ export class UpdateMessageUserOnline extends InitialUpdation {
       paginationElements.value.length / itemsPerPage
     );
 
-    paginationLoad({ pageNumber, forceUpdate: true })
+    paginationLoad({ pageNumber, forceUpdate: true });
   }
 }

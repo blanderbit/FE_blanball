@@ -1,7 +1,5 @@
-
 import { useUkraineCitiesDataStore } from '@stores/ukraineCities';
 import { pinia } from '@plugins/pinia.plugin';
-
 
 const ukraineCitiesStore = useUkraineCitiesDataStore(pinia);
 

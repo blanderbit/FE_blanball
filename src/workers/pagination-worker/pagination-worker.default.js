@@ -1,5 +1,3 @@
- 
-
 export const PaginationWorker = (options) => {
   const {
     paginationDataRequest,

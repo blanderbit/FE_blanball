@@ -37,8 +37,6 @@
 </template>
 
 <script>
- 
-
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 

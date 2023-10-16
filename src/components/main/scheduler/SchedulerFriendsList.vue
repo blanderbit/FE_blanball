@@ -34,8 +34,6 @@
 </template>
 
 <script>
- 
-
 import SmartList from '@sharedComponents/smartList/SmartList.vue';
 import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
 import InfiniteLoading from '@mainComponents/infiniteLoading/InfiniteLoading.vue';
@@ -45,9 +43,6 @@ import SchedulerNoUsersCard from './SchedulerNoUsersCard.vue';
 import { v4 as uuid } from 'uuid';
 
 import { PaginationWorker } from '@workers/pagination-worker';
-
-
-
 
 export default {
   components: {

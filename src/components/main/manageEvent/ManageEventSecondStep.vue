@@ -103,16 +103,11 @@
 </template>
 
 <script>
- 
-
-
 import MainInput from '@sharedComponents/input/MainInput.vue';
 import mainTextArea from '@sharedComponents/textArea/MainTextArea.vue';
 import switcher from '@sharedComponents/switcher/Switcher.vue';
 import SearchBlockAll from '@mainComponents/header/SearchBlockAll.vue';
 import radioButton from '@sharedComponents/radioButton/RadioButton.vue';
-
-
 
 import HorArrow from '@images/sort-arrows-down.svg';
 import AddUser from '@images/add-user.svg';
@@ -188,7 +183,6 @@ export default {
         users: Users,
       };
     });
-
 
     const openUserProfile = (userId) => {
       router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId));

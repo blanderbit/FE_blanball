@@ -15,8 +15,10 @@
     :height="buttonData.buttonHeight"
     :width="buttonData.buttonWidth"
     :disabled="buttonDisabled"
-    :main-color="notificationType === 'notification-push' ? '#FFFFFF' : '#575775'"
-    :is-border="notificationType === 'notification-push'? true : false"
+    :main-color="
+      notificationType === 'notification-push' ? '#FFFFFF' : '#575775'
+    "
+    :is-border="notificationType === 'notification-push' ? true : false"
     @click-function="$emit('click-function')"
   />
   <GreenBtn
@@ -31,8 +33,6 @@
 </template>
 
 <script>
- 
-
 import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 
@@ -44,12 +44,12 @@ export default {
     },
     notificationType: {
       type: String,
-      required: true
+      required: true,
     },
     buttonDisabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   components: {
     WhiteBtn,
@@ -60,12 +60,12 @@ export default {
       DEFAULT: 'default',
       ERROR: 'error',
       SUCCESS: 'success',
-    })
+    });
 
-    return { 
-      notificationTypes
-    }
-  }
+    return {
+      notificationTypes,
+    };
+  },
 };
 </script>
 

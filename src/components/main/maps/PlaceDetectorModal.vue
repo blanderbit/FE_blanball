@@ -30,8 +30,6 @@
 </template>
 
 <script>
- 
-
 import ModalWindow from '@sharedComponents/modals/ModalWindow.vue';
 import PositionMap from './PositionMap.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';

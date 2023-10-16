@@ -16,11 +16,7 @@
         <div class="b-public-profile__user-raiting">
           {{ userRating }} <span>/ {{ ratingMaxValue }}</span>
         </div>
-        <img
-          v-if="reviewsTotalCount > 0"
-          src="@images/star.svg"
-          alt=""
-        />
+        <img v-if="reviewsTotalCount > 0" src="@images/star.svg" alt="" />
         <img v-else src="@images/dashed-star.svg" alt="" />
       </div>
     </div>
@@ -72,7 +68,6 @@
 </template>
 
 <script>
- 
 import StarRating from 'vue-star-rating';
 
 import smartList from '@sharedComponents/smartList/SmartList.vue';
@@ -81,10 +76,6 @@ import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
 import SimpleListWrapper from '@sharedComponents/simpleList/SimpleList.vue';
 
 import { getDate } from '@utils/getDate';
-
-
-
-
 
 export default {
   name: 'RatingCard',
@@ -116,8 +107,8 @@ export default {
     const reviewsTotalCount = ref(0);
 
     const ratingMaxValue = computed(() => {
-      return CONSTS.profile.ratingMaxValue
-    })
+      return CONSTS.profile.ratingMaxValue;
+    });
 
     const getReviews = (page) => {
       return API.ReviewService.getUserReviews({

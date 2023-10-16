@@ -40,7 +40,7 @@
 </template>
 
 <script>
- import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
+import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
 

@@ -96,8 +96,6 @@
 </template>
 
 <script>
- 
-
 import GreenBtn from '@sharedComponents/button/GreenBtn.vue';
 import PlaceDetectorModal from '@mainComponents/maps/PlaceDetectorModal.vue';
 import WhiteBtn from '@sharedComponents/button/WhiteBtn.vue';
@@ -119,7 +117,6 @@ export default {
     WhiteBtn,
   },
   setup(props, context) {
-
     const eventJoin = (e) => {
       context.emit('eventJoin', e);
     };

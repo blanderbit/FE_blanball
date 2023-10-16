@@ -1,5 +1,3 @@
-
-
 import { addMinutes } from '../utils/addMinutes';
 import { getDate } from '../utils/getDate';
 import { getTime } from '../utils/getTime';

@@ -30,8 +30,6 @@
 </template>
 
 <script>
-
-
 export default {
   setup(_, { emit }) {
     const clientVersion = ref(inject('clientVersion'));

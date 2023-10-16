@@ -30,8 +30,7 @@
   </DynamicScroller>
 </template>
 
-<script> 
-
+<script>
 import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller';
 
 import notification from '@mainComponents/notifications/Notification.vue';
