@@ -174,7 +174,9 @@ const isSchedulerSidebarVisible = computed(() => {
 });
 
 const schedulerTopSideMargin = computed(() => {
-  return isMobileDevice.value || isTabletDevice.value ? headerHeightStore.headerHeight : 80;
+  return isMobileDevice.value || isTabletDevice.value
+    ? headerHeightStore.headerHeight
+    : 80;
 });
 
 const closeEventActiondModal = () => {

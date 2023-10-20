@@ -80,7 +80,9 @@ export default {
 
     const { isMobileDevice, isTabletDevice, onResize } = useWindowWidth();
 
-    const isCollapsible = computed(() => !(isMobileDevice.value || isTabletDevice.value));
+    const isCollapsible = computed(
+      () => !(isMobileDevice.value || isTabletDevice.value)
+    );
 
     onMounted(() => {
       window.addEventListener('resize', onResize);
