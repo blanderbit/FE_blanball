@@ -40,11 +40,10 @@ export default {
 
     const labelPosition = computed(() => {
       if (props.position) {
-        return props.position
+        return props.position;
       }
       return isMobile.value ? 'bottom' : 'right';
     });
-
 
     return {
       isMobile,

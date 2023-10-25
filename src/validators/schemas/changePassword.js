@@ -13,7 +13,7 @@ export default {
           .string()
           .required('errors.required')
           .min(8, 'errors.min8')
-          .max(68, 'errors.max68')
+          .max(68, 'errors.max68'),
       });
     }
     if (currentStep === 2) {

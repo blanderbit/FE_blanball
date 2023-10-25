@@ -1,5 +1,5 @@
-import base from './rollup.config.base'
-import { terser } from 'rollup-plugin-terser'
+import base from './rollup.config.base';
+import { terser } from 'rollup-plugin-terser';
 
 const config = Object.assign({}, base, {
   output: {
@@ -12,8 +12,8 @@ const config = Object.assign({}, base, {
       vue: 'Vue',
     },
   },
-})
+});
 
-config.plugins.push(terser())
+config.plugins.push(terser());
 
-export default config
+export default config;

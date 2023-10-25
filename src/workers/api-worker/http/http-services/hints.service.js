@@ -3,8 +3,6 @@ import { EndpointsEnum } from '../http-common/prefix.enum';
 
 export class HintsService {
   static getAllHints() {
-    return AxiosInstance.get(
-      EndpointsEnum.Hints.GetAllHints
-    );
+    return AxiosInstance.get(EndpointsEnum.Hints.GetAllHints);
   }
 }

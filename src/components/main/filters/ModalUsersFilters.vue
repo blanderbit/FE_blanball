@@ -11,7 +11,7 @@
             {{ $t('users.filters') }}
           </div>
           <div class="b-modal-filters__subtitle">
-            {{  $t('users.found-users', { count: elementsCount }) }}
+            {{ $t('users.found-users', { count: elementsCount }) }}
           </div>
           <div class="b-modal-filters__game-type-input">
             <dropdown
@@ -131,7 +131,7 @@ export default {
       emit('clearFilters');
       emit('closeModal');
       positionData.value = '';
-      ageRangeData.value = []
+      ageRangeData.value = [];
       genderData.value = '';
     }
 

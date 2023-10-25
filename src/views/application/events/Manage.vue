@@ -168,7 +168,10 @@ import { API } from '@workers/api-worker/api.worker';
 import { useUserDataStore } from '@/stores/userData';
 import { BlanballEventBus } from '@workers/event-bus-worker';
 import { calcHeight } from '@workers/window-size-worker/calcHeight';
-import { finishSpinner, startSpinner } from '@workers/loading-worker/loading.worker';
+import {
+  finishSpinner,
+  startSpinner,
+} from '@workers/loading-worker/loading.worker';
 import { disableFormSubmit } from '@utils/disableFormSubmit';
 
 import { runOnSelectEventDuration } from '@utils/runOnSelectEventDuration';
@@ -257,7 +260,7 @@ export default {
       [userStore.user.is_verified ? 0 : 40],
       true
     );
-    
+
     const createEventMainBlockHeight = computed(() => {
       return `${calculatedHeight.value}px`;
     });
@@ -553,7 +556,6 @@ export default {
         next();
       }
     });
-
 
     return {
       currentStep,

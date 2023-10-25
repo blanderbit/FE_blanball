@@ -1,4 +1,4 @@
-import base from './rollup.config.base'
+import base from './rollup.config.base';
 
 const config = Object.assign({}, base, {
   output: {
@@ -8,6 +8,6 @@ const config = Object.assign({}, base, {
     format: 'umd',
     sourcemap: true,
   },
-})
+});
 
-export default config
+export default config;

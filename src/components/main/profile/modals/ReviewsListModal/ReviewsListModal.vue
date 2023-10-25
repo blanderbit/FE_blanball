@@ -92,7 +92,7 @@ export default {
   },
   emits: ['closeModal'],
   props: {
-    userRating: Number
+    userRating: Number,
   },
   setup() {
     const refList = ref();

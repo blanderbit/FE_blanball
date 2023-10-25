@@ -8,7 +8,11 @@
         <img src="@images/key.svg" alt="" />
       </template>
       <template #change-password>
-        <Form v-slot="data" @submit="disableFormSubmit" :validation-schema="schema">
+        <Form
+          v-slot="data"
+          @submit="disableFormSubmit"
+          :validation-schema="schema"
+        >
           <div class="input__wrapper">
             <MainInput
               :title="$t('modals.change_password.current-pass')"

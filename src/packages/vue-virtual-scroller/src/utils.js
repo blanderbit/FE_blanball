@@ -1,13 +1,13 @@
-export let supportsPassive = false
+export let supportsPassive = false;
 
 if (typeof window !== 'undefined') {
-  supportsPassive = false
+  supportsPassive = false;
   try {
     const opts = Object.defineProperty({}, 'passive', {
-      get () {
-        supportsPassive = true
+      get() {
+        supportsPassive = true;
       },
-    })
-    window.addEventListener('test', null, opts)
+    });
+    window.addEventListener('test', null, opts);
   } catch (e) {}
 }

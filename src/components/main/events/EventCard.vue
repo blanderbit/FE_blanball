@@ -119,7 +119,6 @@ export default {
     WhiteBtn,
   },
   setup(props, context) {
-
     const eventJoin = (e) => {
       context.emit('eventJoin', e);
     };

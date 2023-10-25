@@ -18,7 +18,11 @@
             :is-disabled="true"
           />
         </div>
-        <Form v-slot="data" :validation-schema="schema" @submit="disableFormSubmit">
+        <Form
+          v-slot="data"
+          :validation-schema="schema"
+          @submit="disableFormSubmit"
+        >
           <div class="input__wrapper">
             <MainInput
               :title="
@@ -177,7 +181,7 @@ export default {
       sendCode,
       nextStep,
       cancelClick,
-      disableFormSubmit
+      disableFormSubmit,
     };
   },
 };

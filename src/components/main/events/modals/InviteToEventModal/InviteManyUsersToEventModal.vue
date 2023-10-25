@@ -278,7 +278,7 @@ export default {
 $color-efeff6: #efeff6;
 
 :deep(.b-avatar) {
-  border: 1.5px solid #EFEFF6;
+  border: 1.5px solid #efeff6;
 }
 .b-invite-users-to-event-modal__wrapper {
   @include modal-wrapper;

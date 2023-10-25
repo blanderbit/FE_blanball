@@ -11,8 +11,7 @@ const _createLoginPath = (redirectUrl) => {
   return `${ROUTES.AUTHENTICATIONS.LOGIN.absolute}?${query}`;
 };
 
-const isUserAuthorized = async () =>
-  !!accessToken.getToken();
+const isUserAuthorized = async () => !!accessToken.getToken();
 
 const isAuthorizedError = ({ to, next }) => {
   finishSpinner();
@@ -21,11 +20,11 @@ const isAuthorizedError = ({ to, next }) => {
 
 const isResolveDataError = async (error) => {
   // TODO remove router import on every function call
-  console.log(error)
+  console.log(error);
   if (error.errorDetails.code === 404) {
     import('../../router').then((router) => {
-      return router.default.push('/404')
-    })
+      return router.default.push('/404');
+    });
   }
   finishSpinner();
 };

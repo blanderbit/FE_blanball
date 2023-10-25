@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { ref, onBeforeUnmount} from 'vue';
+import { ref, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 
 import SmallEventCard from '@mainComponents/events/SmallEventCard.vue';
@@ -83,7 +83,7 @@ BlanballEventBus.on('userLeftEvent', (data) => {
 onBeforeUnmount(() => {
   BlanballEventBus.off('userLeftEvent');
   BlanballEventBus.off('userJoinedEvent');
-})
+});
 
 function handlingIncomeData(item) {
   return {

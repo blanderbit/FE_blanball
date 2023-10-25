@@ -16,11 +16,7 @@
         <div class="b-public-profile__user-raiting">
           {{ userRating }} <span>/ {{ ratingMaxValue }}</span>
         </div>
-        <img
-          v-if="reviewsTotalCount > 0"
-          src="@images/star.svg"
-          alt=""
-        />
+        <img v-if="reviewsTotalCount > 0" src="@images/star.svg" alt="" />
         <img v-else src="@images/dashed-star.svg" alt="" />
       </div>
     </div>
@@ -116,8 +112,8 @@ export default {
     const reviewsTotalCount = ref(0);
 
     const ratingMaxValue = computed(() => {
-      return CONSTS.profile.ratingMaxValue
-    })
+      return CONSTS.profile.ratingMaxValue;
+    });
 
     const getReviews = (page) => {
       return API.ReviewService.getUserReviews({

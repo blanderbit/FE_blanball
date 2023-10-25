@@ -50,8 +50,8 @@ const CHAT_RIGHT_SIDE_SELECTED_MESSAGES_ACTIONS_NAMES = {
 const CHAT_TYPES = {
   EVENT_GROUP: 'Event_Group',
   GROUP: 'Group',
-  PERSONAL: 'Personal'
-}
+  PERSONAL: 'Personal',
+};
 
 const CHAT_MAX_SELECTED_MESSAGES_COUNT = 20;
 const CHAT_MAX_USERS_COUNT = 100;

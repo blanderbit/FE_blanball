@@ -13,11 +13,11 @@ import {
 
 import { MessageActionTypes } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
-import { NotificationImage } from '@images/notifications/notification.images'
+import { NotificationImage } from '@images/notifications/notification.images';
 import Duration from 'dayjs/plugin/duration';
 import { i18n } from '../../../../plugins/i18n.plugin';
 
-dayjs.extend(Duration)
+dayjs.extend(Duration);
 
 @AuthWebSocketMessage()
 @SetMessageType(WebSocketTypes.EventTimeNotification)

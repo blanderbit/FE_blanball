@@ -1,1 +1,1 @@
-export { hintsDirective } from "./hintsDirective";
+export { hintsDirective } from './hintsDirective';

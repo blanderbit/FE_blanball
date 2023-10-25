@@ -134,7 +134,7 @@ export const createNotificationConfigItem = (routerInstance) => {
     const { paginationElements, paginationLoad, paginationPage } =
       notificationItem.activeTab.value;
     if (instanceType.notification) {
-      console.log(notificationItem)
+      console.log(notificationItem);
       notificationItem
         .getFilters()
         .skipids.value.push(instanceType.notification_id);
@@ -176,7 +176,7 @@ export const createNotificationConfigItem = (routerInstance) => {
     }),
     onInit() {
       NotificationsBus.on('SidebarClearData', () => {
-        console.log(notificationItem)
+        console.log(notificationItem);
         const skipids = notificationItem.getFilters().skipids;
         skipids.value = [];
         notificationItem.activeTab.value.paginationClearData();
@@ -185,7 +185,7 @@ export const createNotificationConfigItem = (routerInstance) => {
       NotificationsBus.on(
         'hanlderToRemoveNewNotificationsInSidebar',
         (notificationId) => {
-          console.log(notificationItem)
+          console.log(notificationItem);
           const skipids = notificationItem.getFilters().skipids;
           const index = skipids.value.indexOf(notificationId);
 
@@ -230,7 +230,7 @@ export const createNotificationConfigItem = (routerInstance) => {
                   ),
                   mainColor: '#575775',
                   fontStyles: {
-                    'font-side': '12px'
+                    'font-side': '12px',
                   },
                   icon: ReadAllNotificationsIcon,
                   height: 32,
@@ -254,7 +254,7 @@ export const createNotificationConfigItem = (routerInstance) => {
                   borderColor: '#DFDEED',
                   mainColor: '#575775',
                   fontStyles: {
-                    'font-side': '12px'
+                    'font-side': '12px',
                   },
                   hideElement: Boolean(
                     !notificationItem.activeTab.value?.paginationElements.length

@@ -81,16 +81,10 @@
               @ready="fillInlineCalendar"
             >
               <template #prev-button>
-                <img
-                  src="@images/scheduler/arrow-left.svg"
-                  alt=""
-                />
+                <img src="@images/scheduler/arrow-left.svg" alt="" />
               </template>
               <template #next-button>
-                <img
-                  src="@images/scheduler/arrow-right.svg"
-                  alt=""
-                />
+                <img src="@images/scheduler/arrow-right.svg" alt="" />
               </template>
 
               <template #title>

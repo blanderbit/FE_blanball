@@ -20,10 +20,7 @@
                   @click="clearFileInputValue"
                   ref="fileInput"
                 />
-                <img
-                  src="@images/add-user-pic2.svg"
-                  alt="add user picture"
-                />
+                <img src="@images/add-user-pic2.svg" alt="add user picture" />
               </label>
             </div>
           </div>

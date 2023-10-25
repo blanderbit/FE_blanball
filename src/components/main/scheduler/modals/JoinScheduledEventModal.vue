@@ -12,10 +12,7 @@
             alt=""
             @click="$emit('closeModal')"
           />
-          <img
-            src="@images/join-scheduled-event-icon.svg"
-            alt=""
-          />
+          <img src="@images/join-scheduled-event-icon.svg" alt="" />
         </div>
         <div class="c-join-scheduled-event-modal__main-side">
           <div class="c-join-scheduled-event-modal__title">

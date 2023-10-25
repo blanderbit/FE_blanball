@@ -48,5 +48,5 @@ export default {
   alow: 'Дозволити',
   select: 'Виділити',
   forward: 'Переслати',
-  reply: 'Відповісти'
+  reply: 'Відповісти',
 };

@@ -77,7 +77,7 @@ export default {
 
     const nextClick = (eventReviewComment) => {
       if (currentStep.value === 4) {
-        emit('createEventReview', eventReviewComment)
+        emit('createEventReview', eventReviewComment);
       }
       currentStep.value++;
     };

@@ -35,11 +35,7 @@
           src="@images/chat/send-message-button.svg"
           alt=""
         />
-        <img
-          v-else
-          src="@images/chat/messages-disabled.svg"
-          alt=""
-        />
+        <img v-else src="@images/chat/messages-disabled.svg" alt="" />
       </div>
     </div>
   </Form>

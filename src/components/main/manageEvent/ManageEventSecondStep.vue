@@ -189,7 +189,6 @@ export default {
       };
     });
 
-
     const openUserProfile = (userId) => {
       router.push(ROUTES.APPLICATION.USERS.GET_ONE.absolute(userId));
     };

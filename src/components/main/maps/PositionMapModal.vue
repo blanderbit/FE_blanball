@@ -9,7 +9,11 @@
       </span>
     </div>
     <ModalWindow v-if="activeModal" :isTitleShown="false">
-      <Form v-slot="data" @submit="disableFormSubmit" :validation-schema="schema">
+      <Form
+        v-slot="data"
+        @submit="disableFormSubmit"
+        :validation-schema="schema"
+      >
         <div class="b-modal-position__block">
           <dropdown
             :outside-title="true"
@@ -240,7 +244,7 @@ export default {
         });
         activeModal.value = false;
       },
-      disableFormSubmit
+      disableFormSubmit,
     };
   },
 };

@@ -234,7 +234,6 @@ export default {
 $color-dfdeed: #dfdeed;
 $color-fafafa: #fafafa;
 
-
 .b_header {
   display: flex;
   justify-content: space-between;

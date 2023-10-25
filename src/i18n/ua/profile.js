@@ -66,5 +66,5 @@ export default {
   'copy-address': 'Скопіювати адресу',
   'my-rating': 'Мій рейтинг',
   'based-on-reviews': 'Складається на основі оцінок інших користувачів',
-  'reviews-about-me': 'Відгуки про мене'
+  'reviews-about-me': 'Відгуки про мене',
 };

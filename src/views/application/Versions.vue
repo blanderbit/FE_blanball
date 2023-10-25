@@ -115,12 +115,7 @@
                   src="@images/cross.svg"
                   alt=""
                 />
-                <img
-                  v-else
-                  width="8"
-                  src="@images/arrow-right.svg"
-                  alt=""
-                />
+                <img v-else width="8" src="@images/arrow-right.svg" alt="" />
               </div>
             </div>
           </div>

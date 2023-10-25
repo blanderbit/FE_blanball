@@ -26,7 +26,11 @@
               :full-name="`${user.profile.last_name} ${user.profile.name}`"
             />
             <span class="b-invited-user__position">
-              {{ user.profile.position ? $t(`hashtags.${user.profile.position}`) : '----' }}
+              {{
+                user.profile.position
+                  ? $t(`hashtags.${user.profile.position}`)
+                  : '----'
+              }}
             </span>
             <span class="b-invited-user__full-name">
               {{ user.profile.last_name }} {{ user.profile.name }}
@@ -87,7 +91,7 @@
 </template>
 
 <script>
- import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
+import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 
 export default {
   props: {

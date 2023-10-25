@@ -154,7 +154,7 @@ export default {
       emit('openContextMenu', {
         yPosition: e.clientY,
         xPosition: e.clientX,
-        itemData: chatData
+        itemData: chatData,
       });
     }
 

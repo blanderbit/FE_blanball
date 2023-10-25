@@ -4,7 +4,7 @@
     :clientX="contextMenuX"
     :clientY="contextMenuY"
     :modalItems="mockData.menu_text"
-    :background=false
+    :background="false"
     @close-modal="isContextMenuActive = false"
     @itemClick="contextMenuItemClick"
   />

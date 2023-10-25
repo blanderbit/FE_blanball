@@ -183,7 +183,7 @@ export default {
       handleLogin,
       openResetPasswordModal,
       openRegisterPage,
-      disableFormSubmit
+      disableFormSubmit,
     };
   },
 };

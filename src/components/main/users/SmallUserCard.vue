@@ -19,10 +19,12 @@
       </div>
     </div>
     <div class="b-small-player-card__right-side">
-      <div
-        class="b-small-player-card__status"
-      >
-        {{ dataPlayer.profile.position ? $t(`hashtags.${dataPlayer.profile.position}`) : '----' }}
+      <div class="b-small-player-card__status">
+        {{
+          dataPlayer.profile.position
+            ? $t(`hashtags.${dataPlayer.profile.position}`)
+            : '----'
+        }}
       </div>
       <div class="b-small-player-card__icon">
         <img :src="dataPlayer.emoji" alt="" />
@@ -34,7 +36,7 @@
 <script>
 import { useRouter } from 'vue-router';
 
- import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
+import userAvatar from '@sharedComponents/userAvatar/UserAvatar.vue';
 
 import { ROUTES } from '@routes/router.const';
 

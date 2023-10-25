@@ -21,5 +21,5 @@ export const EndpointsEnum = {
   Scheduler: SchedulerEnpointsEnum,
   Hints: HintsEnpointsEnum,
   Chats: ChatsEnpointsEnum,
-  Location: LocationEnpointsEnum
+  Location: LocationEnpointsEnum,
 };

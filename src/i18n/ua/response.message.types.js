@@ -78,7 +78,8 @@ export default {
   avatar_max_size_1_mb: 'Завантажене фото перевищує ліміт 1мб',
   profile_avatar_updated: 'Ваш аватар профілю був успішно оновлений',
   code_is_valid: 'Код для сбросу пароля валідний',
-  phone_invalid_phone_number: 'Перевірте правильність введеного номера телефону',
+  phone_invalid_phone_number:
+    'Перевірте правильність введеного номера телефону',
   method_not_allowed: 'Метод http запиту заборонено',
 
   fields: {

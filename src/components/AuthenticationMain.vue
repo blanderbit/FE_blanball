@@ -110,7 +110,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.8s ease;

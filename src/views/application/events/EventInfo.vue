@@ -10,11 +10,7 @@
       {{ $t('modals.share_event.title') }}
     </template>
     <template #header-image>
-      <img
-        src="@images/share-arrow.svg"
-        alt=""
-        @click="closeShareEventModal"
-      />
+      <img src="@images/share-arrow.svg" alt="" @click="closeShareEventModal" />
     </template>
     <template #input>
       <MainInput
@@ -108,11 +104,7 @@
               @mouseenter="eventPriceHover = true"
               @mouseleave="eventPriceHover = false"
             >
-              <img
-                v-if="!eventData.price"
-                src="@images/info.svg"
-                alt=""
-              />
+              <img v-if="!eventData.price" src="@images/info.svg" alt="" />
               <img v-else src="@images/green-info.svg" alt="" />
               <span
                 >{{ $t('events.event-price') }}
