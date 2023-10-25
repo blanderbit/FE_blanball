@@ -99,8 +99,8 @@ import greenCrossIcon from '../../../assets/img/green-cross.svg';
 const EVENT_STATUSES = {
   PLANNED: 'Planned',
   ACTIVE: 'Active',
-  FINISHED: 'Finished'
-}
+  FINISHED: 'Finished',
+};
 
 export default {
   components: {

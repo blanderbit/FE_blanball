@@ -20,17 +20,13 @@ export class NewNotifications extends InitialMessage {
 
   set texts(value) {}
 
-  get texts() {
-  }
+  get texts() {}
 
   get title() {
     return `У вас є ${this.countOfNewNotifications} нових повідомлень`;
   }
 
-  set title(value) {
+  set title(value) {}
 
-  }
-  
-  createTitle() {
-  }
+  createTitle() {}
 }

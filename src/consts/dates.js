@@ -13,7 +13,7 @@ const monthNames = [
   'Грудень',
 ];
 
-const yearsToSkip = 7
+const yearsToSkip = 7;
 const fullYear = new Date().getFullYear();
 const lastAvailableYear = fullYear - yearsToSkip;
 

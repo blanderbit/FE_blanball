@@ -538,12 +538,8 @@ export default {
       tablet: [selectedList.value.length ? 50 : 0],
     });
 
-    const {
-      calculatedHeight,
-      minussedHeight,
-      minusHeight,
-      plusHeight,
-    } = calcHeight(...Object.values(mobileMenuTopSideHeightConfig.value));
+    const { calculatedHeight, minussedHeight, minusHeight, plusHeight } =
+      calcHeight(...Object.values(mobileMenuTopSideHeightConfig.value));
 
     const mobileMenuTopSideHeight = computed(() => {
       return `${calculatedHeight.value}px`;
@@ -677,7 +673,7 @@ export default {
         restartInfiniteScroll();
       }
     };
-    
+
     return {
       topMenu,
       selectable,

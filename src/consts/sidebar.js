@@ -1,6 +1,6 @@
 import trashRed from '../assets/img/trash-red.svg';
-import doubleCheck from '../assets/img/notifications/double-check.svg'
-import selected from '../assets/img/selected.svg'
+import doubleCheck from '../assets/img/notifications/double-check.svg';
+import selected from '../assets/img/selected.svg';
 
 export default {
   menu_text: [

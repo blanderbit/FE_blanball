@@ -4,7 +4,7 @@
       <li v-for="(item, idx) in getBreadcrumbsList" :key="item.name">
         <router-link
           :to="idx + 1 === getBreadcrumbsList.length ? '' : item.path"
-          :class="{'b-current-route': idx + 1 === getBreadcrumbsList.length }"
+          :class="{ 'b-current-route': idx + 1 === getBreadcrumbsList.length }"
         >
           {{ item.name }}
         </router-link>

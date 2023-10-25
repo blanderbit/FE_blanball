@@ -1,7 +1,3 @@
-<template>
+<template></template>
 
-</template>
-
-<style lang="sccs" scoped>
-
-</style>
+<style lang="sccs" scoped></style>

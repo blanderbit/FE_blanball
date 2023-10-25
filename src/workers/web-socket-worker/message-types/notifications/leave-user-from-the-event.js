@@ -44,13 +44,15 @@ import { ROUTES } from '../../../../router/router.const';
 export class LeaveUserFromTheEventMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `${data.sender.last_name} ${data.sender.name} вийшов зі списку учасників «${data.event.name}, ${dayjs(
-        new Date()
-      ).locale(dayjsUkrLocale).format('DD.MM.YYYY o HH:MM')}»`,
+      `${data.sender.last_name} ${
+        data.sender.name
+      } вийшов зі списку учасників «${data.event.name}, ${dayjs(new Date())
+        .locale(dayjsUkrLocale)
+        .format('DD.MM.YYYY o HH:MM')}»`,
     ];
   }
 
   createTitle() {
-    return 'Учасник відкликав свою участь у події'
+    return 'Учасник відкликав свою участь у події';
   }
 }

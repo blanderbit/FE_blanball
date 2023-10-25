@@ -232,8 +232,7 @@ export default {
     const userStore = useUserDataStore();
 
     const router = useRouter();
-    const { isBetweenTabletAndDesktop, isMobile, isTablet } =
-      useWindowWidth();
+    const { isBetweenTabletAndDesktop, isMobile, isTablet } = useWindowWidth();
 
     const userInfo = ref(null);
     const userData = ref(null);

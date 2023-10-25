@@ -433,7 +433,7 @@ export default {
   display: flex;
   margin-bottom: 8px;
   padding: 0 10px;
-  background: #F9F9FC;
+  background: #f9f9fc;
 
   &__dates {
     display: flex;

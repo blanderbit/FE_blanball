@@ -116,8 +116,8 @@ export default {
     const reviewsTotalCount = ref(0);
 
     const ratingMaxValue = computed(() => {
-      return CONSTS.profile.ratingMaxValue
-    })
+      return CONSTS.profile.ratingMaxValue;
+    });
 
     const getReviews = (page) => {
       return API.ReviewService.getUserReviews({

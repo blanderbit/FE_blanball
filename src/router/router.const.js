@@ -147,5 +147,5 @@ export const ROUTES = {
     relative: '/cookie/policy',
     absolute: '/cookie/policy',
     name: 'cookie-policy',
-  }
+  },
 };

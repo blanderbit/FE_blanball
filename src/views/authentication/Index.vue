@@ -36,7 +36,6 @@ export default {
       };
     });
 
-
     const showExpiredSessionModal = () => {
       isUserSessionExpiredModalOpened.value = true;
     };
@@ -52,7 +51,6 @@ export default {
     onBeforeUnmount(() => {
       BlanballEventBus.off('SessionExpired');
     });
-    
 
     return {
       isUserSessionExpiredModalOpened,

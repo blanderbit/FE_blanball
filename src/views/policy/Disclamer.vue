@@ -125,7 +125,7 @@ import { computed } from 'vue';
 
 import PolicyWrapper from '../../components/main/policy/PolicyWrapper.vue';
 
-import { CONSTS } from '../../consts'
+import { CONSTS } from '../../consts';
 
 export default {
   components: {
@@ -133,8 +133,8 @@ export default {
   },
   setup() {
     const contentItems = computed(() => {
-      return CONSTS.policy.DISCLAMER_ITEMS
-    })
+      return CONSTS.policy.DISCLAMER_ITEMS;
+    });
 
     return {
       contentItems,

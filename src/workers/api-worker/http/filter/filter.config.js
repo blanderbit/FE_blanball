@@ -58,10 +58,9 @@ export const filterConfigForEvents = {
   date_and_time_before: String,
 }; // TODO Add search by members list
 
-
 export const filterConfigForScheduler = {
   id: Number,
   page: Number,
   user_id: Number,
-  date: String
+  date: String,
 };

@@ -41,7 +41,9 @@ import { ROUTES } from '../../../../router/router.const';
 export class EventDeletedMessage extends InitialMessage {
   createTexts(data) {
     return [
-      `${data.sender.last_name} ${data.sender.name} скасував проведення події «${data.event.name}, 
+      `${data.sender.last_name} ${
+        data.sender.name
+      } скасував проведення події «${data.event.name}, 
       ${dayjs(new Date()).locale(dayjsUkrLocale).format('DD.MM.YYYY')}»"`,
     ];
   }

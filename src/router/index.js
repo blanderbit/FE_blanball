@@ -42,8 +42,8 @@ const router = createRouter({
           beforeEnter: routerResolverByLoginPage,
           component: () => import('../views/authentication/Login.vue'),
           meta: {
-            noGuards: true
-          }
+            noGuards: true,
+          },
         },
         {
           path: ROUTES.AUTHENTICATIONS.REGISTER.relative,
@@ -110,12 +110,13 @@ const router = createRouter({
                   ),
                 usersData,
               })),
-              component: () => import('../views/application/events/MyEvents.vue'),
+              component: () =>
+                import('../views/application/events/MyEvents.vue'),
               meta: {
                 breadcrumbs: {
                   i18n: 'breadcrumbs.myEvents',
                 },
-                tabId: 1
+                tabId: 1,
               },
             },
             {
@@ -128,15 +129,16 @@ const router = createRouter({
                   ),
                 usersData,
               })),
-              component: () => import('../views/application/events/MyEvents.vue'),
+              component: () =>
+                import('../views/application/events/MyEvents.vue'),
               meta: {
                 breadcrumbs: {
                   i18n: 'breadcrumbs.myEvents',
                 },
-                tabId: 2
+                tabId: 2,
               },
             },
-          ]
+          ],
         },
         {
           path: ROUTES.APPLICATION.EVENTS.relative,
@@ -274,7 +276,6 @@ const router = createRouter({
 });
 
 export default router;
-
 
 router.beforeEach(async (to, from, next) => {
   if (to.name === ROUTES.WORKS.name) {

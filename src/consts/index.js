@@ -9,7 +9,7 @@ import Dates from './dates';
 import Profile from './profile';
 import Forms from './forms';
 import Sidebar from './sidebar';
-import EventJoin from './event-join'
+import EventJoin from './event-join';
 import Policy from './policy';
 import Storages from './storages';
 import Scheduler from './scheduler';

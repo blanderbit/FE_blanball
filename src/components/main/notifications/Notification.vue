@@ -14,7 +14,7 @@
     ]"
     @click.right.prevent="openContextMenu"
   >
-    <BlackSpinner :is-loading="loading"/> 
+    <BlackSpinner :is-loading="loading" />
     <div class="notification-parts d-flex justify-content-between">
       <div
         class="notification-image"
@@ -89,7 +89,10 @@
                 "
               >
                 <div
-                  :class="['notification-content', {'not-full-content': !isTextShow}]"
+                  :class="[
+                    'notification-content',
+                    { 'not-full-content': !isTextShow },
+                  ]"
                   style="margin-top: 10px"
                   v-for="item in notificationInstance.texts"
                 >
@@ -143,9 +146,7 @@
             </div>
             <div
               class="notification-actions"
-              v-if="
-                notificationInstance?.actions?.length
-              "
+              v-if="notificationInstance?.actions?.length"
             >
               <template v-for="item in notificationInstance.actions">
                 <NotificationButton
@@ -172,8 +173,7 @@
           class="push-notification-main-content"
         >
           <div class="push-notification-content">
-            <collapsible-panel
-              :expanding="false">
+            <collapsible-panel :expanding="false">
               <template #title> Сьогодні: {{ getCurrentTime }}</template>
               <template #content>
                 <div

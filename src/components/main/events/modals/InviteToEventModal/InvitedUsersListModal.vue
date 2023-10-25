@@ -108,7 +108,6 @@ export default {
           align-items: center;
           justify-content: space-between;
           padding: 6px 8px;
-          
 
           .b-invited-user__info {
             display: flex;

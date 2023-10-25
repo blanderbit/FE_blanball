@@ -45,9 +45,9 @@ export class NewUserOnTheEventMessage extends InitialMessage {
   createTexts(data) {
     return [
       `${data.sender.last_name} ${data.sender.name} 
-       долучився до «${data.event.name}, ${dayjs(
-        new Date()
-      ).locale(dayjsUkrLocale).format('DD.MM.YYYY')}» як гравець`,
+       долучився до «${data.event.name}, ${dayjs(new Date())
+        .locale(dayjsUkrLocale)
+        .format('DD.MM.YYYY')}» як гравець`,
     ];
   }
 

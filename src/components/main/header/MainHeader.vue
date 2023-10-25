@@ -76,8 +76,8 @@ export default {
   props: {
     isSchedulerOpened: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   setup() {
     const isSearchBlock = ref(false);

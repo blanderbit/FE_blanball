@@ -105,8 +105,8 @@ export default {
     },
     title: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   setup(props, { emit }) {
     const eventComment = ref('');

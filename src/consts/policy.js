@@ -118,8 +118,8 @@ const COOKIE_POLICY_ITEMS = [
 const POLICY_ITEMS_TYPES = {
   PRIVACY: 'privacy',
   COOKIE: 'cookie',
-  DISCLAMER: 'disclamer'
-}
+  DISCLAMER: 'disclamer',
+};
 
 const ALL_POLICY_ITEMS = [
   {
@@ -137,8 +137,7 @@ const ALL_POLICY_ITEMS = [
     text: 'policy.disclamer',
     type: POLICY_ITEMS_TYPES.DISCLAMER,
   },
-]
-
+];
 
 export default {
   PRIVACY_POLICY_ITEMS,

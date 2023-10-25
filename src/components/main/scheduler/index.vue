@@ -1,7 +1,6 @@
 <template>
   <div @click.self="$emit('closeWindow')" class="c-scheduler-wrapper">
-    <div class="c-common-block"
-      :style="`top: ${marginTop}px`">
+    <div class="c-common-block" :style="`top: ${marginTop}px`">
       <!-- Sidebar Slot -->
       <slot
         name="LeftSidebar"
@@ -197,8 +196,8 @@ export default {
     },
     marginTop: {
       type: Number,
-      default: 80
-    }
+      default: 80,
+    },
   },
   emits: ['closeWindow'],
   setup(props, { emit }) {

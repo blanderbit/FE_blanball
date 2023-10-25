@@ -1,5 +1,5 @@
 <template>
-  <div class="b-avatar-wrapper" :style="avatarBorder" >
+  <div class="b-avatar-wrapper" :style="avatarBorder">
     <object
       class="b-avatar"
       :class="[`b-avatar-${avatarType}`]"

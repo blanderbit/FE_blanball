@@ -26,7 +26,9 @@
           @handler-action="handlerAction($event, item)"
           @selected="handleSelected($event)"
           @openContextMenu="$emit('openContextMenu', $event)"
-          @selectNotificationAfterHold="$emit('selectNotificationAfterHold', $event)"
+          @selectNotificationAfterHold="
+            $emit('selectNotificationAfterHold', $event)
+          "
         >
         </Notification>
       </DynamicScrollerItem>
@@ -40,7 +42,14 @@
 <script>
 import Notification from './Notification.vue';
 import { useRouter } from 'vue-router';
-import { ref, watch, nextTick, onMounted, onBeforeUnmount, computed } from 'vue';
+import {
+  ref,
+  watch,
+  nextTick,
+  onMounted,
+  onBeforeUnmount,
+  computed,
+} from 'vue';
 import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller';
 import { notificationButtonHandlerMessage } from '../../../workers/utils-worker';
 import { useWindowWidth } from '../../../utils/widthScreen';
@@ -71,13 +80,11 @@ export default {
     let list = ref(context.selectedList);
     let scroller = ref();
     const router = useRouter();
-    const maxSelectedNotificationsCount = 100
-
+    const maxSelectedNotificationsCount = 100;
 
     const { isMobile, isTablet } = useWindowWidth();
 
-
-    const isCollapsible = computed(() => !(isMobile.value || isTablet.value))
+    const isCollapsible = computed(() => !(isMobile.value || isTablet.value));
 
     watch(
       () => context.selectedList,
@@ -104,7 +111,7 @@ export default {
     );
 
     const handlerAction = async (button, notificationInstance) => {
-      emit('removePushNotificationAfterSidebarAction', notificationInstance)
+      emit('removePushNotificationAfterSidebarAction', notificationInstance);
       await notificationButtonHandlerMessage({
         button,
         notificationInstance,

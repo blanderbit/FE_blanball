@@ -792,7 +792,6 @@ export default {
       return `${calculatedHeight.value}px`;
     });
 
-
     return {
       mockData,
       ALL_ROUTES,

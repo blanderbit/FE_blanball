@@ -21,7 +21,7 @@ export class NotificationService {
         AxiosQuery({
           page,
           skipids: skipids?.join(','),
-          type
+          type,
         }),
         AxiosSkipErrorMessageType([DETAILS_TYPE_ENUM.INVALID_PAGE])
       )
@@ -53,6 +53,8 @@ export class NotificationService {
   }
 
   static getAllMyNotificationsIds() {
-    return AxiosInstance.get(EndpointsEnum.Notification.GetAllMyNotificationsIds);
+    return AxiosInstance.get(
+      EndpointsEnum.Notification.GetAllMyNotificationsIds
+    );
   }
 }

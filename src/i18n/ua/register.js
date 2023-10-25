@@ -83,6 +83,6 @@ export default {
   Olexandra: 'Олександра',
   Bilozerska: 'Білозерська',
   'select-position-on-map': 'Вибрати позицію на карті',
-  'accept': 'Підтвердити',
-  'search-radius': 'Радіус пошуку (м.)'
+  accept: 'Підтвердити',
+  'search-radius': 'Радіус пошуку (м.)',
 };

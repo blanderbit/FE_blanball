@@ -11,6 +11,5 @@ export const useUserDataStore = defineStore('userData', {
     },
     getUserAvatar: (state) => state.user?.profile?.avatar_url,
   },
-  actions: {
-  },
+  actions: {},
 });

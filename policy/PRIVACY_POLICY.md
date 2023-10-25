@@ -14,7 +14,7 @@ Collection of personal information
 
 You can access and use the Website and Services without telling us who you are or revealing any information by which someone could identify you as a specific, identifiable individual. If, however, you wish to use some of the features offered on the Website, you may be asked to provide certain Personal Information (for example, your name and e-mail address).
 
-We receive and store any information you knowingly provide to us when you create an account,  or fill any forms on the Website. When required, this information may include the following:
+We receive and store any information you knowingly provide to us when you create an account, or fill any forms on the Website. When required, this information may include the following:
 
 - Account details (such as user name, unique user ID, password, etc)
 - Contact information (such as email address, phone number, etc)

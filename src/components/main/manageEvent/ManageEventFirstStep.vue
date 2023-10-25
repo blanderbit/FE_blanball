@@ -147,10 +147,7 @@
       v-if="eventLocation.lat && eventLocation.lng"
       class="b-event-m-1st__event-map"
     >
-      <position-map
-        :coords="eventLocationOnMap"
-        disable-change-coords
-      >
+      <position-map :coords="eventLocationOnMap" disable-change-coords>
       </position-map>
     </div>
   </div>

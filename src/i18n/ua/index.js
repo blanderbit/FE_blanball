@@ -57,5 +57,5 @@ export const UA_LANGUAGE = {
   alts: Alts,
   no_records: NoRecords,
   policy: Policy,
-  scheduler: Scheduler
+  scheduler: Scheduler,
 };

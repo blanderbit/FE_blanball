@@ -5,7 +5,7 @@
       { active: card.status === 'Active' },
       { finished: card.status === 'Finished' },
       { selected: isCardSelected },
-      { pinned: card.pinned }
+      { pinned: card.pinned },
     ]"
     @click.right.prevent="$emit('cardRightClick', $event)"
     @click.prevent="$emit('cardLeftClick', card.id)"
@@ -31,10 +31,10 @@
         <div class="b-my-event-card__title">{{ card.name }}</div>
         <div class="b-my-event-card__place">
           <PlaceDetectorModal
-          v-if="card.place.place_name"
-          :place="card.place"
-          :disabled="isCardSelected"
-        />
+            v-if="card.place.place_name"
+            :place="card.place"
+            :disabled="isCardSelected"
+          />
         </div>
         <div class="b-my-event-card__labels">
           <div v-if="card.gender" class="b-my-event-card__label">
@@ -152,7 +152,7 @@ $color-4c4a82: #4c4a82;
     border: 1px solid $color-1ab2ad !important;
   }
   &.pinned {
-    border: 1px dashed #DFDEED;
+    border: 1px dashed #dfdeed;
   }
 
   .b-my-event-card-selected-icon {

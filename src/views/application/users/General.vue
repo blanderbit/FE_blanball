@@ -144,13 +144,12 @@ export default {
       triggerForRestart.value = uuid();
     };
 
-    const { calculatedHeight, plusHeight, minusHeight } =
-      calcHeight(
-        [90, 36, 31, 80, 36, 50],
-        [userStore.user.is_verified ? 0 : 40, -55],
-        [userStore.user.is_verified ? 0 : 40, -25],
-        true
-      );
+    const { calculatedHeight, plusHeight, minusHeight } = calcHeight(
+      [90, 36, 31, 80, 36, 50],
+      [userStore.user.is_verified ? 0 : 40, -55],
+      [userStore.user.is_verified ? 0 : 40, -25],
+      true
+    );
 
     const recalculateHeightAfterUpdateFiltersActive = (status) => {
       if (status) {

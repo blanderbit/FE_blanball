@@ -1,5 +1,8 @@
 export default {
-  versions: [{ name: 'Головна', path: '/' }, { name: 'Історія версій додатку' }],
+  versions: [
+    { name: 'Головна', path: '/' },
+    { name: 'Історія версій додатку' },
+  ],
   profile: [
     { name: 'Головна', path: '/' },
     { name: 'Профіль', path: '' },

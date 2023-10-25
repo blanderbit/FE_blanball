@@ -100,8 +100,15 @@ $color-efeff6: #efeff6;
   width: 12px;
   height: 12px;
   border-radius: 100px;
-  background: linear-gradient(rgba(20, 135, 131, 0) 50%, $--b-main-green-color 50%),
-    linear-gradient(106.25deg, $--b-main-green-color 12.19%, rgba(69, 208, 204, 0.1) 102.49%);
+  background: linear-gradient(
+      rgba(20, 135, 131, 0) 50%,
+      $--b-main-green-color 50%
+    ),
+    linear-gradient(
+      106.25deg,
+      $--b-main-green-color 12.19%,
+      rgba(69, 208, 204, 0.1) 102.49%
+    );
 }
 
 .spinner__ring::before {

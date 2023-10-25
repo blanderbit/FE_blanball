@@ -89,7 +89,10 @@ import checkBox from '../../shared/checkbox/Checkbox.vue';
 
 import { API } from '../../../workers/api-worker/api.worker';
 import { accessToken, refreshToken } from '../../../workers/token-worker';
-import { startSpinner , finishSpinner} from '../../../workers/loading-worker/loading.worker';
+import {
+  startSpinner,
+  finishSpinner,
+} from '../../../workers/loading-worker/loading.worker';
 
 import { ROUTES } from '../../../router/router.const';
 import { CONSTS } from '../../../consts';

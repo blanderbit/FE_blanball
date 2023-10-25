@@ -323,8 +323,8 @@ export default {
           };
         },
         ifSecondLineWasUsed() {
-          return true
-        }
+          return true;
+        },
       });
 
     const sportTypeDropdown = CONSTS.event_page.sport_type_dropdown;
@@ -349,7 +349,6 @@ export default {
         mask: 'YYYY-MM-DD', // Uses 'iso' if missing
       },
     });
-
 
     watchEffect(() => {
       if (dateFilterValue.value?.start) {

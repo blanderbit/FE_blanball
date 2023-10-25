@@ -222,16 +222,13 @@ export default {
       tablet: [userStore.user.is_verified ? 0 : 40],
       recalculateOnVerifyEmail: true,
     });
-    const {
-      calculatedHeight,
-      minusHeight,
-      plusHeight
-    } = calcHeight(...Object.values(allEventsBlockHeightConfig.value));
+    const { calculatedHeight, minusHeight, plusHeight } = calcHeight(
+      ...Object.values(allEventsBlockHeightConfig.value)
+    );
 
     const allEventsBlockHeight = computed(() => {
       return `${calculatedHeight.value}px`;
     });
-
 
     async function joinEvent(eventData, type) {
       let participationType;
@@ -325,7 +322,6 @@ export default {
     function switchToMyEvents() {
       router.push(ROUTES.APPLICATION.MY_EVENTS.index.absolute);
     }
-    
 
     function recalculateHeightAfterUpdateFiltersActive(status) {
       if (status) {
@@ -333,7 +329,7 @@ export default {
       } else {
         plusHeight(45);
       }
-    };
+    }
 
     const refList = ref();
     const blockScrollToTopIfExist = ref(false);
@@ -471,7 +467,6 @@ export default {
         forceUpdate: paginationPage.value === 1,
       });
     };
-
 
     return {
       emptyListMessages,

@@ -7,9 +7,7 @@ import {
   NotificationSetUserImage,
 } from '../../type.decorator';
 
-import {
-  MessageActionTypes,
-} from '../../message.action.types';
+import { MessageActionTypes } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
 
 @AuthWebSocketMessage()
@@ -26,9 +24,7 @@ import { WebSocketTypes } from '../../web.socket.types';
 ])
 export class LeftFeedbackMessage extends InitialMessage {
   createTexts(data) {
-    return [
-      data.review.text
-    ];
+    return [data.review.text];
   }
 
   createTitle() {

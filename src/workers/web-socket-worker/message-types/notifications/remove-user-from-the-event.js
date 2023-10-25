@@ -7,9 +7,7 @@ import {
   NotificationSetImage,
 } from '../../type.decorator';
 
-import {
-  MessageActionTypes,
-} from '../../message.action.types';
+import { MessageActionTypes } from '../../message.action.types';
 import { WebSocketTypes } from '../../web.socket.types';
 import { NotificationImage } from '../../../../assets/img/notifications/notification.images';
 

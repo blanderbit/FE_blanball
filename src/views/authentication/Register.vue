@@ -263,7 +263,7 @@ export default {
               await API.UserService.getMyProfile();
             profileValues = apiRequestResultMyProfile.data;
           } catch (e) {
-            console.log(e)
+            console.log(e);
             return;
           }
         }

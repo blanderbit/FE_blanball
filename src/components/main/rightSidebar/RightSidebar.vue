@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { ref, onBeforeUnmount} from 'vue';
+import { ref, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 
 import SmallEventCard from '../events/SmallEventCard.vue';
@@ -68,7 +68,7 @@ BlanballEventBus.on('userJoinedEvent', (data) => {
   const event = popularEvents.value.find((event) => event.id === data.eventId);
 
   if (event) {
-    console.log(data.participateType)
+    console.log(data.participateType);
     event.request_user_role = data.participateType;
   }
 });
@@ -84,7 +84,7 @@ BlanballEventBus.on('userLeftEvent', (data) => {
 onBeforeUnmount(() => {
   BlanballEventBus.off('userLeftEvent');
   BlanballEventBus.off('userJoinedEvent');
-})
+});
 
 function handlingIncomeData(item) {
   return {
