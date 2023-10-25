@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import { turnEmptyStrIntoUnderfined } from '@/utils/turnEmptyStrIntoUndefined'
 
 export default {
   schema: (isDist) => {
@@ -8,11 +9,7 @@ export default {
         city: yup.string().required('errors.required'),
         dist: yup
           .number()
-          .transform((value, originalValue) =>
-            typeof originalValue === 'string' && originalValue?.trim() === ''
-              ? undefined
-              : value
-          )
+          .transform(turnEmptyStrIntoUnderfined)
           .required('errors.required')
           .typeError('errors.type-number'),
       });

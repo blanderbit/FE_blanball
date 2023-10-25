@@ -53,6 +53,7 @@ export default defineConfig({
       '@stores': fileURLToPath(new URL('./src/stores', import.meta.url)),
       '@routes': fileURLToPath(new URL('./src/routes', import.meta.url)),
       '@router': fileURLToPath(new URL('./src/router', import.meta.url)),
+      '@plugins': fileURLToPath(new URL('./src/plugins', import.meta.url)),
     },
   },
   css: {

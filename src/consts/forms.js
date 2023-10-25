@@ -6,6 +6,7 @@ import BlackColor from '@images/colors/black.svg';
 import GreenColor from '@images/colors/green.svg';
 import OrangeColor from '@images/colors/orange.svg';
 import PurpleColor from '@images/colors/purple.svg';
+import { i18n } from '@plugins/i18n.plugin'
 
 const colorIcons = {
   Blue: BlueColor,
@@ -23,73 +24,73 @@ export default {
   tabs: [
     {
       id: 1,
-      text: 'Форми',
+      text: i18n.global.t('uniforms'),
       active: true,
     },
     {
       id: 2,
-      text: 'Маніжки',
+      text: i18n.global.t('bibs'),
       active: false,
     },
   ],
   teams: [
     {
       id: 1,
-      name: 'Команда №1',
+      name: i18n.global.t('team_1'),
       type: 'first_team',
     },
     {
       id: 2,
-      name: 'Команда №2',
+      name: i18n.global.t('team_2'),
       type: 'second_team',
     },
   ],
   colors: [
     {
       id: 0,
-      name: 'colors.Blue',
+      name: i18n.global.t('colors.Blue'),
       value: 'Blue',
       iconSrc: colorIcons.Blue,
     },
     {
       id: 1,
-      name: 'colors.Red',
+      name: i18n.global.t('colors.Red'),
       value: 'Red',
       iconSrc: colorIcons.Red,
     },
     {
       id: 3,
-      name: 'colors.Yellow',
+      name: i18n.global.t('colors.Yellow'),
       value: 'Yellow',
       iconSrc: colorIcons.Yellow,
     },
     {
       id: 4,
-      name: 'colors.White',
+      name: i18n.global.t('colors.White'),
       value: 'White',
       iconSrc: colorIcons.White,
     },
     {
       id: 5,
-      name: 'colors.Black',
+      name: i18n.global.t('colors.Black'),
       value: 'Black',
       iconSrc: colorIcons.Black,
     },
     {
       id: 6,
-      name: 'colors.Green',
+      name: i18n.global.t('colors.Green'),
       value: 'Green',
       iconSrc: colorIcons.Green,
     },
     {
       id: 7,
-      name: 'colors.Orange',
+      name: i18n.global.t('colors.Orange'),
       value: 'Orange',
       iconSrc: colorIcons.Orange,
     },
     {
       id: 8,
-      name: 'colors.Purple',
+      name: i18n.global.t('colors.Purple'),
       value: 'Purple',
       iconSrc: colorIcons.Purple,
     },

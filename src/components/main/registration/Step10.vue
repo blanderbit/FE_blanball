@@ -15,7 +15,7 @@
           :outside-title="true"
           :main-title="$t('register.district')"
           :placeholder="$t('register.district')"
-          :options="mockData.district"
+          :options="cityList.district"
           :model-value="region"
           :height="40"
           taggable
@@ -30,7 +30,7 @@
           :outside-title="true"
           :main-title="$t('register.city')"
           :placeholder="$t('register.city')"
-          :options="mockData.cities"
+          :options="cityList.cities"
           :model-value="city"
           :height="40"
           taggable
@@ -77,14 +77,14 @@ import { PositionMapBus } from '@workers/event-bus-worker';
 import { API } from '@workers/api-worker/api.worker';
 import { useWindowWidth } from '@workers/window-size-worker/widthScreen';
 
-import { CONSTS } from '@consts/index';
-
 import tickIcon from '@images/tick-white.svg';
 import nikeIcon from '@images/nike-icon.svg';
 import {
   finishSpinner,
   startSpinner,
 } from '@workers/loading-worker/loading.worker';
+
+import { useUkraineCitiesDataStore } from '@/stores/ukraineCities';
 
 export default {
   name: 'Step10',
@@ -100,13 +100,14 @@ export default {
     const city = ref('');
     const address = ref('');
     const nextButton = ref(false);
-    const mockData = computed(() => {
+    const { jsonCitiesAndRegionsList } = useUkraineCitiesDataStore();
+    const cityList = computed(() => {
       return {
         cities:
-          CONSTS.register.jsonCityRegions.find((item) =>
+          jsonCitiesAndRegionsList.find((item) =>
             item.name.includes(region.value)
           )?.cities || [],
-        district: CONSTS.register.jsonCityRegions,
+        district: jsonCitiesAndRegionsList,
       };
     });
     const tick = computed(() => {
@@ -142,6 +143,7 @@ export default {
         active: 3,
       },
     }));
+
     PositionMapBus.on('update:coords-error', () => {
       nextButton.value = true;
       region.value = '';
@@ -149,7 +151,7 @@ export default {
       address.value = '';
     });
     return {
-      mockData,
+      cityList,
       tick,
       region,
       city,

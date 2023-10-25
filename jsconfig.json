@@ -14,7 +14,8 @@
       "@views/*": ["src/views/*"],
       "@stores/*": ["src/stores/*"],
       "@routes/*": ["src/routes/*"],
-      "@router/*": ["src/router/*"]
+      "@router/*": ["src/router/*"],
+      "@plugins/*": ["src/plugins/*"]
     }
   },
   "exclude": ["node_modules", "dist"]

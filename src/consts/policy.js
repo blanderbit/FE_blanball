@@ -1,117 +1,119 @@
+import { i18n } from '@plugins/i18n.plugin'
+
 const PRIVACY_POLICY_ITEMS = [
   {
     elementId: 'automatic-collection-of-information',
-    text: 'Автоматичний збір інформації',
+    text: i18n.global.t('policy.automatic_information_collection'),
   },
   {
     elementId: 'collection-of-personal-information',
-    text: 'Збір особистої інформації',
+    text: i18n.global.t('policy.personal_information_collection'),
   },
   {
     elementId: 'privacy-of-children',
-    text: 'Конфіденційність дітей',
+    text: i18n.global.t('policy.children_privacy'),
   },
   {
     elementId: 'using-and-collection-information',
-    text: 'Використання та обробка зібраної інформації',
+    text: i18n.global.t('policy.information_use_and_processing'),
   },
   {
     elementId: 'managing-information',
-    text: 'Управління інформацією',
+    text: i18n.global.t('policy.information_management'),
   },
   {
     elementId: 'disclosure-of-information',
-    text: 'Розкриття інформації',
+    text: i18n.global.t('policy.information_disclosure'),
   },
   {
     elementId: 'retention-of-information',
-    text: 'Зберігання інформації',
+    text: i18n.global.t('policy.information_storage'),
   },
   {
     elementId: 'do-not-track-signals',
-    text: 'Сигнали про НЕ відстеження',
+    text: i18n.global.t('policy.do_not_track_signals'),
   },
   {
     elementId: 'social-media-features',
-    text: 'Функції соціальних мереж',
+    text: i18n.global.t('policy.social_network_functions'),
   },
   {
     elementId: 'links-to-other-resources',
-    text: 'Посилання на інші ресурси',
+    text: i18n.global.t('policy.links_to_other_resources'),
   },
   {
     elementId: 'information-security',
-    text: 'Інформаційна безпека',
+    text: i18n.global.t('policy.informational_security'),
   },
   {
     elementId: 'data-breach',
-    text: 'Порушення захисту даних',
+    text: i18n.global.t('policy.data_protection_breach'),
   },
   {
     elementId: 'changes-and-amendments',
-    text: 'Зміни та поправки',
+    text: i18n.global.t('policy.changes_and_amendments'),
   },
   {
     elementId: 'acceptance-of-this-policy',
-    text: 'Прийняття цієї політики',
+    text: i18n.global.t('policy.adoption_of_this_policy'),
   },
   {
     elementId: 'contacting-us',
-    text: "Зв'язок з нами",
+    text: i18n.global.t('policy.contact_us'),
   },
 ];
 
 const DISCLAMER_ITEMS = [
   {
     elementId: 'representation',
-    text: 'Представництво',
+    text: i18n.global.t('policy.representation'),
   },
   {
     elementId: 'content-and-postings',
-    text: 'Вміст та публікації',
+    text: i18n.global.t('policy.content_and_publications'),
   },
   {
     elementId: 'reviews-and-testimonials',
-    text: 'Відгуки та рекомендації',
+    text: i18n.global.t('policy.reviews_and_recommendations'),
   },
   {
     elementId: 'indemnification-and-warranties',
-    text: 'Компенсація та гарантії',
+    text: i18n.global.t('policy.indemnification_and_warranties'),
   },
   {
     elementId: 'changes-and-amendments',
-    text: 'Зміни та поправки',
+    text: i18n.global.t('policy.changes_and_amendments'),
   },
   {
     elementId: 'acceptance-of-this-disclaimer',
-    text: 'Прийняття цієї відмови',
+    text: i18n.global.t('policy.acceptance_of_refusal'),
   },
   {
     elementId: 'contacting-us',
-    text: "Зв'язок з нами",
+    text: i18n.global.t('policy.contact_us'),
   },
 ];
 
 const COOKIE_POLICY_ITEMS = [
   {
     elementId: 'what-are-cookies',
-    text: 'Що таке cookies?',
+    text: i18n.global.t('policy.what_are_cookies'),
   },
   {
     elementId: 'what-type-of-cookies-do-we-use',
-    text: 'Які типи файлів cookie ми використовуємо?',
+    text: i18n.global.t('policy.what_type_of_cookies_do_we_use'),
   },
   {
     elementId: 'changes-and-amendments',
-    text: 'Зміни та доповнення',
+    text: i18n.global.t('policy.changes_and_additions'),
   },
   {
     elementId: 'acceptance-of-this-policy',
-    text: 'Прийняття цієї політики',
+    text: i18n.global.t('policy.acceptance_of_this_policy'),
   },
   {
     elementId: 'contacting-us',
-    text: "Зв'язок з нами",
+    text: i18n.global.t('policy.contact_us'),
   },
 ];
 
