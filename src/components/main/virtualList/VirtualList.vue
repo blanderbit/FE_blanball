@@ -6,8 +6,7 @@
     class="scroller"
     ref="scroller"
   >
-    <template #before>
-    </template>
+    <template #before> </template>
     <template v-slot="{ item, index, active, itemWithSize }">
       <DynamicScrollerItem
         :item="item"

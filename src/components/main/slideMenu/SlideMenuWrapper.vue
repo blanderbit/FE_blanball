@@ -140,7 +140,7 @@ export default {
   props: {
     config: {
       type: Object,
-      default: () => {}
+      default: () => {},
     },
     isMenuOpened: {
       type: Boolean,
