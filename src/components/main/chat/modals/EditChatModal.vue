@@ -179,7 +179,6 @@ export default {
     }
 
     async function updateChat(data) {
-      console.log(data);
       const { valid } = await data.validate();
 
       if (!valid) {

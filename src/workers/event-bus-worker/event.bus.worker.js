@@ -4,17 +4,26 @@ export class EventBus {
   }
 
   on(eventName, fn) {
-    this.events[eventName] = fn;
+    this.events[eventName] = this.events[eventName] || [];
+    this.events[eventName].push(fn);
   }
 
-  off(eventName) {
-    delete this.events[eventName];
+  off(eventName, fn) {
+    if (this.events[eventName]) {
+      for (let i = 0; i < this.events[eventName].length; i++) {
+        if (this.events[eventName][i] === fn) {
+          this.events[eventName].splice(i, 1);
+          break;
+        }
+      }
+    }
   }
 
   emit(eventName, data) {
-    const fn = this.events[eventName];
-    if (fn && typeof fn === 'function') {
-      fn(data);
+    if (this.events[eventName]) {
+      this.events[eventName].forEach((fn) => {
+        fn(data);
+      });
     }
   }
 }

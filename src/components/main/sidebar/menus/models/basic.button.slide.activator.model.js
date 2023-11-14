@@ -19,6 +19,7 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
     closable: false,
     selectable: false,
     notAnimate: false,
+    updateTabsCount: null,
   };
   activity = ref(false);
   selectable = ref(false);
@@ -31,10 +32,12 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
       width: options.slideConfig?.width || DEFAULT_SLIDE_MENU_WIDTH_PX,
       closable: options.slideConfig.closable,
       logo: options.slideConfig.logo,
+      updateTabsCount: options.updateTabsCount,
       title: options.slideConfig.title,
       tabsGapPx: options.slideConfig.tabsGapPx,
       topSide: options.slideConfig.topSide,
       notAnimate: options.slideConfig.notAnimate,
+      updateBadgesCountFn: options.slideConfig?.updateBadgesCountFn,
       bottomSideVisible: options.slideConfig.bottomSideVisible,
       tabs: Array.isArray(options.slideConfig.tabs)
         ? options.slideConfig.tabs
@@ -43,12 +46,11 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
     this.activity.value = options.activity;
     this.onInit = options.onInit;
     this.onDestroy = options.onDestroy;
-    this.selectable.value = options.slideConfig.selectable;
 
     watch(this.activity, (value) => {
       if (value) {
+        this.openTab(options.slideConfig.defaultTab);
         this.onInit();
-        this.activeTab.value = this.findTab(options.slideConfig.defaultTab);
       } else {
         this.onDestroy();
         this.activeTab.value = null;
@@ -57,7 +59,6 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
     watch(this.activeTab, async (value) => {
       if (value) {
         this.activeTab.value.paginationClearData();
-        await this.activeTab.value.loadNewData(1, null, false, false);
       }
     });
   }
@@ -75,10 +76,13 @@ export class BasicButtonSlideActivatorModel extends BasicButtonModel {
     return this.activeTab.value.filters;
   }
 
-  openTab(uniqueName) {
+  openTab(uniqueName, restartInfScroll = null) {
     const foundTab = this.findTab(uniqueName);
     if (foundTab) {
       this.activeTab.value = foundTab;
+    }
+    if (restartInfScroll && typeof restartInfScroll === 'function') {
+      restartInfScroll();
     }
   }
 }

@@ -14,10 +14,10 @@ import { createNotificationConfigItem } from './configs/notifications.config';
 import { createChatConfigItem } from './configs/chats.config';
 import { BlanballEventBus } from '@/workers/event-bus-worker';
 
+// TODO почему то chatItem перебивает данные notificationItem
 export const dinamicMenu = (instance) => {
   const notificationItem = createNotificationConfigItem(instance);
-  const chatItem = createChatConfigItem(instance);
-
+  const chatConfigItem = createChatConfigItem(instance);
   const closeCurrentActiveSlideMenu = () => {
     slideBarMenu.value = slideBarMenu.value.forEach((slideBarMenuItem) => {
       if (slideBarMenuItem?.activity?.value) {
@@ -28,7 +28,7 @@ export const dinamicMenu = (instance) => {
 
   const slideBarMenu = computed(() => [
     notificationItem,
-    chatItem,
+    chatConfigItem,
     new BasicButtonModel({
       uniqueName: 'events.icon',
       title: 'slide_menu.events',

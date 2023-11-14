@@ -71,7 +71,6 @@ export const calcHeight = (
   watch(
     defaultHeights,
     () => {
-      console.log('dffddf');
       calculate();
     },
     { deep: true }

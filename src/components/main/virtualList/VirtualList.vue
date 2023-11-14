@@ -7,7 +7,6 @@
     ref="scroller"
   >
     <template #before>
-      <slot name="before"></slot>
     </template>
     <template v-slot="{ item, index, active, itemWithSize }">
       <DynamicScrollerItem
@@ -21,7 +20,7 @@
           :instanceData="item"
           :selectable="selectable"
           :active="activeNotification === item.notification_id"
-          :selectedCount="list.length"
+          :selectedCount="selectedList.length"
           :checked="selectedList.includes(item.notification_id)"
           :notCollapsible="isCollapsible"
           @handler-action="handlerAction($event, item)"
@@ -108,20 +107,20 @@ export default {
       }
     );
 
-    watch(
-      () => context.elements,
-      (e) => {
-        nextTick(() => {
-          emit(
-            'update:scrollbar-existing',
-            scroller.value.$el.scrollHeight > scroller.value.$el.clientHeight
-          );
-        });
-      },
-      {
-        immediate: true,
-      }
-    );
+    // watch(
+    //   () => context.elements,
+    //   (e) => {
+    //     nextTick(() => {
+    //       emit(
+    //         'update:scrollbar-existing',
+    //         scroller.value?.$el.scrollHeight > scroller.value.$el.clientHeight
+    //       );
+    //     });
+    //   },
+    //   {
+    //     immediate: true,
+    //   }
+    // );
 
     const handlerAction = async (button, notificationInstance) => {
       emit('removePushNotificationAfterSidebarAction', notificationInstance);
@@ -131,6 +130,7 @@ export default {
         router,
         activeNotification,
       });
+      emit('updateElements');
     };
 
     const handleSelected = (e) => {

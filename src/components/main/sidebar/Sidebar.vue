@@ -187,9 +187,11 @@ export default {
       logOut,
       closeBugReportModal,
       clickByMenuItem,
-      openTab(tabName) {
-        const item = menuItems.value.find((item) => item.findTab(tabName));
-        if (item) item.openTab(tabName);
+      openTab(payload) {
+        const item = menuItems.value.find((item) =>
+          item.findTab(payload.tabName)
+        );
+        if (item) item.openTab(payload.tabName, payload.restartInfiniteScroll);
       },
     };
   },

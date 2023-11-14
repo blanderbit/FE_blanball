@@ -18,6 +18,7 @@
   />
 
   <SlideMenuWrapper
+    :config="config"
     :isMenuOpened="config.activity"
     :menuClosable="config.slideConfig.closable"
     :mainSideWidth="config.slideConfig.width"
@@ -40,24 +41,12 @@
     </template>
 
     <template #top-side>
-      <div
-        v-for="elementsBlock in config.slideConfig.topSide.elements"
-        class="b_slide_menu-top-side"
-        :style="config.slideConfig.topSide.style"
+      <component
+        :is="config.slideConfig.topSide"
+        :config="config"
+        @deleteSelected="deleteSelected"
       >
-        <div
-          v-for="element in elementsBlock"
-          class="b_slide_menu_top-side-element"
-        >
-          <component
-            v-if="!element.componentProps.hideElement && element.componentName"
-            :is="element.componentName"
-            v-bind="element.componentProps"
-            v-on="element.componentEmitsHandlers"
-          >
-          </component>
-        </div>
-      </div>
+      </component>
     </template>
     <template #tabs>
       <div
@@ -93,7 +82,7 @@
       >
         <virtual-list
           :elements="config.activeTab.paginationElements"
-          :selectable="config.selectable"
+          :selectable="config.activeTab.selectable"
           :virtualListRecord="activeTabRecords.record"
           v-model:selected-list="activeTabRecords.selectedList"
           v-model:scrollbar-existing="activeTabRecords.blockScrollToTopIfExist"
@@ -103,21 +92,11 @@
           "
           @closeMobileMenu="closeSlideMenu(true)"
         >
-          <template #before>
-            <!--<Notification-->
-            <!--v-if="newNotifications"-->
-            <!--class="b-new-notification"-->
-            <!--:notificationInstance="getNewNotificationInstance"-->
-            <!--:not-collapsible="true"-->
-            <!--@handler-action="$emit('reLoading'), restartInfiniteScroll()"-->
-            <!--&gt;-->
-            <!--</Notification>-->
-          </template>
           <template #after>
             <InfiniteLoading
               :identifier="triggerForRestart"
               ref="scrollbar"
-              @infinite="test"
+              @infinite="loadData"
             >
               <template #complete>
                 <empty-list
@@ -193,10 +172,14 @@ import ScrollToTop from '@sharedComponents/scrollToTop/ScrollToTop.vue';
 import SubmitModal from '@sharedComponents/modals/SubmitModal.vue';
 import ContextMenu from '@sharedComponents/modals/ContextModal.vue';
 import SlideMenuWrapper from './SlideMenuWrapper.vue';
-import WhiteBtn from '@/components/shared/button/WhiteBtn.vue';
 
 import { useUserDataStore } from '@/stores/userData';
 import { useWindowWidth } from '@/workers/window-size-worker/widthScreen';
+import { API } from '@workers/api-worker/api.worker';
+import {
+  startSpinner,
+  finishSpinner,
+} from '@/workers/loading-worker/loading.worker';
 
 import { ROUTES } from '@routes/router.const';
 import { config } from 'dotenv';
@@ -210,7 +193,6 @@ export default {
     SubmitModal,
     VirtualList,
     ScrollToTop,
-    WhiteBtn,
   },
   props: {
     config: {
@@ -255,6 +237,17 @@ export default {
       isContextMenuActive.value = false;
     };
 
+    const deleteSelected = async () => {
+      if (!context.config.activeTab?.records.selectedList.length) return;
+      startSpinner();
+      await API.NotificationService.deleteNotifications(
+        context.config.activeTab?.records.selectedList
+      );
+      context.config.activeTab.cancelSelectable();
+      context.config.slideConfig.updateTabsCount();
+      finishSpinner();
+    };
+
     const isNewTabDataLoading = computed(() => {
       return context.config.activeTab?.records.request.loading;
     });
@@ -287,7 +280,7 @@ export default {
     const slideMenuTabsStyle = computed(() => {
       return {
         'margin-bottom': `${
-          context.config.activeTab.paginationElements.length ? 0 : 16
+          context.config.activeTab?.paginationElements?.length ? 0 : 16
         }px`,
         gap: `${context.config.slideConfig.tabsGapPx}px`,
       };
@@ -296,15 +289,17 @@ export default {
     const isEmptyListVisible = computed(() => {
       return (
         activeTabRecords.value.emptyListConfig &&
-        !context.config.activeTab.paginationElements.length &&
+        !context.config.activeTab?.paginationElements?.length &&
         !isLoadingState.value
       );
     });
 
     function openTab(tab) {
       if (tab.uniqueName !== context.config.activeTab.uniqueName) {
-        emit('openTab', tab.uniqueName);
-        restartInfiniteScroll();
+        emit('openTab', {
+          tabName: tab.uniqueName,
+          restartInfiniteScroll: restartInfiniteScroll,
+        });
       }
     }
 
@@ -330,12 +325,12 @@ export default {
       }
     }
 
-    // watch(
-    //   () => context.config.activeTab,
-    //   () => {
-    //     restartInfiniteScroll();
-    //   }
-    // );
+    watch(
+      () => context.config.activeTab,
+      () => {
+        restartInfiniteScroll();
+      }
+    );
 
     return {
       userStore,
@@ -360,10 +355,12 @@ export default {
       closeSlideMenu,
       contextMenuItemClick,
       restartInfiniteScroll,
+      deleteSelected,
       openTab,
-      test($event) {
+      loadData($event, page = null) {
+        page = page ?? context.config.activeTab.paginationPage + 1;
         context.config.activeTab.$emit('loadNewData', {
-          pageNumber: context.config.activeTab.paginationPage + 1,
+          pageNumber: page,
           $state: $event,
         });
       },
@@ -497,3 +494,5 @@ $color-efeff6: #efeff6;
   }
 }
 </style>
+
+github.com

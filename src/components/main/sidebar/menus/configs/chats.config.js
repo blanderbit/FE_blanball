@@ -10,7 +10,7 @@ import {
   ChatSocketWorkerInstance,
   AuthWebSocketWorkerInstance,
 } from '@/workers/web-socket-worker';
-import { WebSocketPaginationWorker } from '@/workers/pagination-worker';
+import { PaginationWorker } from '@/workers/pagination-worker';
 import { ChatWebSocketTypes } from '@/workers/web-socket-worker/message-types/chat/web.socket.types';
 import { ChatEventBus } from '@/workers/event-bus-worker';
 import { useUserDataStore } from '@/stores/userData';
@@ -60,7 +60,7 @@ const generalConfigForAllTabs = (chatItem, apiRequestFilters = {}) => {
             value: '',
           },
         },
-        paginationFunction: WebSocketPaginationWorker,
+        paginationFunction: PaginationWorker,
         messageType: ChatWebSocketTypes.GetChatsList,
       },
       contextMenu: createContextMenu(chatItem),

@@ -60,7 +60,7 @@ export const PaginationWorker = (options) => {
         if ($state?.loaded) $state.loaded();
         if (!paginationIsNextPage.value && $state?.complete) $state.complete();
       })
-      .catch(() => {
+      .catch((e) => {
         $state?.complete && $state.complete();
       });
     functionsResults.value.push(functionResult);

@@ -6,10 +6,8 @@ import {
   startSpinner,
 } from '@workers/loading-worker/loading.worker';
 import router from '@router/index';
-import {
-  MenuTabsConfigEventBus,
-  SupportTabsBusEvents,
-} from '../menu.event.bus';
+import { /*  */ SupportTabsBusEvents } from '../menu.event.bus';
+import { EventBus } from '@workers/event-bus-worker/event.bus.worker';
 
 export class TabModel {
   records = {
@@ -32,6 +30,8 @@ export class TabModel {
   badge = {
     count: ref(0),
   };
+  _bus = new EventBus();
+  selectable = ref(false);
 
   uniqueName = '';
 
@@ -66,8 +66,8 @@ export class TabModel {
     this.badge.count.value = options.badge.count || 0;
 
     this.uniqueName = options.uniqueName;
-
     this.title = options.title;
+    this.selectable.value = options.selectable;
 
     Object.assign(this, this.usePagination(routerInstance || {}));
 
@@ -81,6 +81,15 @@ export class TabModel {
     this.badge.count.value = value;
   }
 
+  clearSelectedList() {
+    this.records.selectedList = [];
+  }
+
+  cancelSelectable() {
+    this.selectable = false;
+    this.clearSelectedList();
+  }
+
   usePagination({ router: passedRouter }) {
     const {
       paginationElements,
@@ -89,11 +98,12 @@ export class TabModel {
       paginationClearData,
       paginationLoad,
     } = this.records.request.paginationFunction({
-      paginationDataRequest: (page) =>
-        this.records.request.api({
+      paginationDataRequest: (page) => {
+        return this.records.request.api({
           ...getRawFilters(),
           page,
-        }),
+        });
+      },
       dataTransformation: this.records.request.dataTransformation,
       beforeConcat: this.records.request.beforeConcat,
       messageType: this.records.request.messageType,
@@ -130,6 +140,21 @@ export class TabModel {
       }
     };
 
+    const removeElementById = (elementId, idFieldName = 'id') => {
+      const indexToRemove = paginationElements.value.findIndex(
+        (element) => element[idFieldName] === elementId
+      );
+      if (indexToRemove !== -1) {
+        paginationElements.value.splice(indexToRemove, 1);
+        paginationTotalCount.value--;
+      }
+    };
+
+    const addNewElement = (element) => {
+      paginationElements.value.unshift(element);
+      paginationTotalCount.value++;
+    };
+
     return {
       loadNewData,
       getRawFilters,
@@ -138,23 +163,22 @@ export class TabModel {
       clearFilters,
       setFilters,
       paginationElements,
+      removeElementById,
       paginationPage,
       paginationTotalCount,
       paginationClearData,
       paginationLoad,
+      addNewElement,
     };
   }
 
   $emit(emitName, options) {
-    MenuTabsConfigEventBus.emit(emitName, options);
+    this._bus.emit(emitName, options);
   }
 
   $registerOn(eventName, eventHandlerName) {
     if (eventHandlerName in this) {
-      MenuTabsConfigEventBus.on(
-        SupportTabsBusEvents.LoaTabData.event,
-        this[SupportTabsBusEvents.LoaTabData.handler].bind(this)
-      );
+      this._bus.on(eventName, this[eventHandlerName].bind(this));
     } else {
       console.error(
         '[BLANBALL.[tabs.model.js].$on], does not exist eventHandlerName'

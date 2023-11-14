@@ -413,7 +413,6 @@ export default {
     }
 
     function setCurrentUserAsRemovedMessageHandler(instanceType) {
-      console.log(instanceType, '-----------------------');
       instanceType.setCurrentUserAsRemoved(userStore.user.id, chatDataStore);
     }
 

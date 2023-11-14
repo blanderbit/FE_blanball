@@ -72,12 +72,12 @@
           </slot>
         </div>
         <ul>
-          <div v-if="isSlideMenuWrapperDesktop">
+          <div v-show="isSlideMenuWrapperDesktop">
             <slot name="main-content"></slot>
           </div>
 
           <MobileMenuSlideMenuMainContent
-            v-else
+            v-show="!isSlideMenuWrapperDesktop"
             ref="SLIDE_MENU_MAIN_CONTENT_MOBILE_BLOCK"
             :mainContentHeight="slideMenuWrapperMainContentHeight"
             @closeMenu="toggleMenu"
@@ -138,6 +138,10 @@ export default {
     MobileMenuSlideMenuBottomBlock,
   },
   props: {
+    config: {
+      type: Object,
+      default: () => {}
+    },
     isMenuOpened: {
       type: Boolean,
       default: false,
